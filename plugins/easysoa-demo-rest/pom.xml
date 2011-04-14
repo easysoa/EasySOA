@@ -36,5 +36,11 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+        	<groupId>org.easysoa</groupId>
+        	<artifactId>easysoa-demo-model-core</artifactId>
+        	<version>${project.version}</version>
+        	<scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

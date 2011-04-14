@@ -16,20 +16,16 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class WorkspaceDeployerComponent extends DefaultComponent {
 	
+	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(WorkspaceDeployerComponent.class);
 	private WorkspaceDeployer wsd = null;
 
 	public void activate(ComponentContext context) throws Exception {
-		log.debug("Default repository name: "
-				+ ((RepositoryManager) Framework
-						.getService(RepositoryManager.class))
-						.getDefaultRepository().getName());
-
 		this.wsd = new WorkspaceDeployer(((RepositoryManager) Framework
 				.getService(RepositoryManager.class)).getDefaultRepository()
 				.getName());
-
 		this.wsd.runUnrestricted();
+		
 	}
 
 	public List<String> getDescriptorTypes() {

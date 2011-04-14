@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.tools.RelationService;
 import org.easysoa.tools.VocabularyService;
+import org.easysoa.treestructure.WorkspaceDeployer;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -20,6 +21,13 @@ import org.ow2.easywsdl.wsdl.api.Endpoint;
 import org.ow2.easywsdl.wsdl.api.Service;
 import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
+/**
+ * WSDL creation/modification handling, for metadata extraction,
+ * and relations management.
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class WSDLService {
 	
 	private static final Log log = LogFactory.getLog(WSDLService.class);
@@ -101,7 +109,7 @@ public class WSDLService {
 				DocumentModel serviceDoc = null;
 				if (!serviceName.isEmpty()) {
 					serviceDoc = session.getDocument(new PathRef(
-							"/default-domain/workspaces/Services/"
+							WorkspaceDeployer.SERVICES_WORKSPACE
 									+ serviceName));
 					List descs = (List) serviceDoc.getProperty("serviceTags", "descriptors");
 					if (!descs.contains(doc.getName())) {

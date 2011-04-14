@@ -38,12 +38,12 @@ public class WorkspaceDeployer extends UnrestrictedSessionRunner {
 
 		// Workspace structure
 		if (!this.session.exists(new PathRef(DESCRIPTORS_WORKSPACE))) {
+			createAndSaveDocument(this.session, "Workspace", ROOT, "Descriptors"); // TODO: l10n
 			log.info("Created "+DESCRIPTORS_WORKSPACE);
-			createAndSaveDocument(this.session, "Workspace", ROOT, "Descripteurs"); // TODO: l10n
 		}
 		if (!this.session.exists(new PathRef(SERVICES_WORKSPACE))) {
-			log.info("Created "+SERVICES_WORKSPACE);
 			createAndSaveDocument(this.session, "Workspace", ROOT, "Services");
+			log.info("Created "+SERVICES_WORKSPACE);
 		}
 		for (String descriptorType : descriptorTypes) {
 			PathRef descriptorTypePath = new PathRef(DESCRIPTORS_WORKSPACE + descriptorType);
@@ -54,6 +54,9 @@ public class WorkspaceDeployer extends UnrestrictedSessionRunner {
 				log.info("Created " + descriptorTypePath);
 			}
 		}
+		
+		// Save changes
+		session.save();
 
 		// Relations vocabulary
 		try {
@@ -74,9 +77,7 @@ public class WorkspaceDeployer extends UnrestrictedSessionRunner {
 
 	private void createAndSaveDocument(CoreSession session, String type,
 			String parent, String name) throws ClientException {
-		DocumentModel docModel = session
-				.createDocumentModel(parent, name, type);
-
+		DocumentModel docModel = session.createDocumentModel(parent, name, type);
 		docModel = session.createDocument(docModel);
 		docModel.setProperty("dublincore", "title", name);
 		session.saveDocument(docModel);

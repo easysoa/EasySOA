@@ -17,6 +17,7 @@ import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 /**
  * Entry point for service descriptors handling (creation/modification).
  * Manages descriptor list vocabulary, and allows doctype-specific classes to do further processing.
+ * 
  * @author mkalam-alami
  *
  */

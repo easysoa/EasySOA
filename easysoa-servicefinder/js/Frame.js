@@ -1,5 +1,8 @@
 $(function() {
 
+	/**
+	 * Frame contents (= URL)
+	 */
 	window.FrameModel = Backbone.Model.extend({
 	
 		initialize: function() {
@@ -16,7 +19,10 @@ $(function() {
 	});
 	
 	window.Frame = new FrameModel;
-	
+
+	/**
+	 * Frame
+	 */
 	window.FrameView = Backbone.View.extend({
 	
 		el: $("#frame"),

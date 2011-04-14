@@ -10,7 +10,7 @@
 			    <include name="${ant.project.name}*.jar"/>
 			</fileset>
 		</delete>
-	    <copy todir="${dest}" flatten="true">
+	    <copy todir="${dest}" overwrite="true" flatten="true">
 	      <fileset dir="${basedir}">
 	        <include name="target/*.jar" />
 	        <exclude name="target/*-sources.jar" />

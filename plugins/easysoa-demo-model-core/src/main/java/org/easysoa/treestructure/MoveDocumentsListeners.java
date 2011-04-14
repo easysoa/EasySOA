@@ -14,22 +14,30 @@ import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.runtime.api.Framework;
 
+/**
+ * Moves documents on creation to the correct folders.
+ * 
+ * @author mkalam-alami
+ * 
+ */
 public class MoveDocumentsListeners implements EventListener {
 	
 	private static final Log log = LogFactory.getLog(MoveDocumentsListeners.class);
 	private static final String SERVICE_TYPE = "Service";
 
 	public void handleEvent(Event event) throws ClientException {
+		
+		// Check event type
 		EventContext ctx = event.getContext();
 		if (!(ctx instanceof DocumentEventContext)) {
 			return;
 		}
 
+		// Check document type
 		List<String> descriptorTypes = null;
 		try {
 			WorkspaceDeployerComponent wsDeployer = (WorkspaceDeployerComponent) Framework
 					.getRuntime().getComponent("org.easysoa.component.workspacedeployer");
-
 			descriptorTypes = wsDeployer.getDescriptorTypes();
 		} catch (Exception e) {
 			log.error("Cannot get Descriptor Types");
@@ -46,15 +54,16 @@ public class MoveDocumentsListeners implements EventListener {
 
 		CoreSession session = ctx.getCoreSession();
 
+		// Move document
 		if (descriptorTypes.contains(type)) {
 			log.info("Moved descriptor : " + doc.getPathAsString());
 			session.move(doc.getRef(), new PathRef(
-					"/default-domain/workspaces/Descriptors/" + doc.getType()),
+					WorkspaceDeployer.DESCRIPTORS_WORKSPACE + doc.getType()),
 					doc.getTitle());
 		} else if (!SERVICE_TYPE.equals(type)) {
 			log.info("Moved service : " + doc.getPathAsString());
 			session.move(doc.getRef(), new PathRef(
-					"/default-domain/workspaces/Services/" + doc.getType()),
+					WorkspaceDeployer.SERVICES_WORKSPACE + doc.getType()),
 					doc.getTitle());
 		}
 	}

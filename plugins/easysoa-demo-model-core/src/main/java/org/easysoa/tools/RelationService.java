@@ -23,6 +23,7 @@ import org.nuxeo.runtime.api.Framework;
 /**
  * Helpers for managing relations between documents.
  * Only considers the relations of type RelationService.DEFAULT_PREDICATE
+ * 
  * @author mkalam-alami
  *
  */

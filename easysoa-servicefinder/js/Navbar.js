@@ -29,6 +29,8 @@ $(function() {
 		},
 		
 		update: function(newUrl) {
+			if (newUrl == '')
+				newUrl = this.DEFAULT_URL;
 			this.set({"url": newUrl});
 		}
 	
@@ -47,11 +49,12 @@ $(function() {
 	
 		events: {
 			"click #navButtonGo": "navigationGo",
+			"click #navButtonClear": "navigationReset",
 			"keypress #navUrl": "navigationGoKeyboard"
 		},
 		
 		initialize: function() {
-			_.bindAll(this, 'render', 'navigationGo');
+			_.bindAll(this, 'render', 'navigationGo', 'navigationReset');
 			Navbar.view = this;
 			Navbar.bind('change', this.render);
 			this.render();
@@ -65,7 +68,7 @@ $(function() {
 			
 			// Nuxeo request
 			if (url != Navbar.DEFAULT_URL) {
-				
+
 				this.navUrl.attr("value", url);
 				
 				$.ajax({
@@ -77,10 +80,8 @@ $(function() {
 					crossDomain: true,
 					dataType: 'jsonp',
 					success: function(data, textStatus, jqXHR) {
-							
+							//console.log(data); // Firebug logging
 							Frame.setSource(data.url);
-							//Frame.view.html(data.html); // Transclusion
-							
 							var items = [];
 							$.each(data.foundLinks, function(descName, descUrl) {
 								Descriptors.add({
@@ -108,6 +109,9 @@ $(function() {
 				});*/
 				
 			}
+			else {
+				this.navUrl.attr("value", '');
+			}
 			
 		    return this;
 		},
@@ -121,10 +125,13 @@ $(function() {
 
 		// Change URL
 		navigationGo: function() {
-			Navbar.update(this.navUrl.attr("value"));
+			Navbar.update($.trim(this.navUrl.attr("value")));
+		},
+		
+		// Restore default URL
+		navigationReset: function() {
+			Navbar.update('');
 		}
-		
-		
 		
 	});
 	

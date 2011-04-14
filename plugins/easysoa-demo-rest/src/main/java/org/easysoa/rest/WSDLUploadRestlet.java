@@ -1,5 +1,7 @@
 package org.easysoa.rest;
 
+import org.easysoa.descriptors.WSDLService;
+import org.easysoa.treestructure.WorkspaceDeployer;
 import org.jboss.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +47,7 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 			e.printStackTrace();
 		}
 
-		if (!url.endsWith("wsdl")) {
+		if (!url.toLowerCase().contains("wsdl?")) {
 			failure = "Given URL doesn't seem to be a WSDL.";
 		}
 
@@ -62,8 +64,8 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 		if (failure == null) {
 			try {
 				DocumentModel model = this.session.createDocumentModel(
-						"/default-domain/workspaces/Descripteurs/WSDL", IdUtils
-								.generateStringId(), "WSDL");
+						WorkspaceDeployer.DESCRIPTORS_WORKSPACE + WSDLService.WSDL_DOCTYPE, IdUtils
+								.generateStringId(), WSDLService.WSDL_DOCTYPE);
 
 				model.setProperty("file", "content", f.getBlob());
 				this.session.createDocument(model);
@@ -77,16 +79,43 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 				failure = e.getMessage();
 			}
 		}
-
+ 
 		f.delete();
 		try {
 			result.append("error", failure);
 			if (failure != null)
 				response.setEntity(new StringRepresentation(JSONP.format(
-						result, request), MediaType.APPLICATION_JAVASCRIPT,
+						result, request), MediaType.APPLICATION_JSON,
 						Language.ALL, CharacterSet.UTF_8));
 		} catch (JSONException e) {
 			log.warn("Cannot send error message : " + e.getMessage());
+		}
+		
+		// Format result
+		String resultJSONP = null;
+		try {
+			result.append("error", failure);
+			failure = null;
+			resultJSONP = JSONP.format(result, request);
+		} catch (Exception e) {
+			log.warn("Cannot format JSONP message : " + e.getMessage());
+		}
+		
+		// Send result
+		try {
+			if (failure != null)
+				result.append("error", failure);
+			
+			if (resultJSONP != null)
+				response.setEntity(new StringRepresentation(JSONP.format(result,
+						request), MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
+						CharacterSet.UTF_8));
+			else
+				response.setEntity(new StringRepresentation(result.toString(2),
+						MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
+						CharacterSet.UTF_8));
+		} catch (Exception e) {
+			log.warn("Cannot send message : " + e.getMessage());
 		}
 	}
 }

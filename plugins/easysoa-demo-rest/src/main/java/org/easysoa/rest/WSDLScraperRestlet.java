@@ -35,6 +35,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 	public void handle(Request request, Response response) {
 		super.initRepository(response, REPOSITORY);
 
+		// Initialization
 		String failure = null;
 		JSONObject result = new JSONObject();
 		try {
@@ -44,7 +45,8 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			log.error("Cannot initialize JSON object.", e);
 			failure = e.getMessage();
 		}
-
+		
+		// URL parsing 
 		String url = null;
 		try {
 			url = RequestURL.parse(request);
@@ -54,6 +56,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			log.error("Cannot rebuild URL", e);
 		}
 
+		// Web page download
 		HttpFile f = new HttpFile(url);
 		if (failure == null) {
 			try {
@@ -64,6 +67,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			}
 		}
 
+		// Web page parsing
 		JSONObject foundLinks = new JSONObject();
 		try {
 			String host = HTTP + new URL(url).getHost();
@@ -73,18 +77,19 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 
 			for (Object o : links) {
 				TagNode link = (TagNode) o;
-				String name = link.getText().toString();
 				String ref = link.getAttributeByName("href");
+				String name = (link.getText() != null) ? link.getText().toString() : ref;
 				int i = 1;
-				if (ref.toLowerCase().endsWith("wsdl")) {
+				if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
 					while (foundLinks.has(name)) {
 						name = (i == 1 ? name + i++ : name.substring(0, name
 								.length() - 1))
 								+ i++;
 					}
-					foundLinks.put(name, host + ref);
+					foundLinks.put(name, absolute(ref, host));
 				}
 			}
+			result.append("step", "parsing3");
 			result.put("foundLinks", foundLinks);
 
 			changeToAbsolutePath(links, "href", host);
@@ -93,24 +98,49 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			changeToAbsolutePath(cleanHtml.evaluateXPath("//link"), "href",
 					host);
 			result.put("html", cleaner.getInnerHtml(cleanHtml));
+
+			result.append("step", "parsing ok");
 		} catch (Exception e) {
+			try {
+				result.append("step", "parsing "+e);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
 			log.info("Page download problem : " + e.getMessage());
 			failure = e.getMessage();
 		}
 
+		// Format result
+		String resultJSONP = null;
 		try {
-			result.put("error", failure);
-			response.setEntity(new StringRepresentation(JSONP.format(result,
-					request), MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
-					CharacterSet.UTF_8));
-		} catch (JSONException e) {
+			result.append("error", failure);
+			resultJSONP = JSONP.format(result, request);
+		} catch (Exception e) {
+			log.warn("Cannot format JSONP message : " + e.getMessage());
+			failure = e.getMessage();
+		}
+		
+		// Send result
+		try {
+			if (failure != null)
+				result.append("error", failure);
+			
+			if (resultJSONP != null)
+				response.setEntity(new StringRepresentation(JSONP.format(result,
+						request), MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
+						CharacterSet.UTF_8));
+			else
+				response.setEntity(new StringRepresentation(result.toString(2),
+						MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
+						CharacterSet.UTF_8));
+		} catch (Exception e) {
 			log.warn("Cannot send message : " + e.getMessage());
 		}
 
 		f.delete();
 	}
 
-	private void changeToAbsolutePath(Object[] tagNodes, String attribute,
+	private static void changeToAbsolutePath(Object[] tagNodes, String attribute,
 			String domain) {
 		for (Object o : tagNodes) {
 			TagNode tag = (TagNode) o;
@@ -118,5 +148,14 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			if ((attrValue != null) && (!attrValue.startsWith(HTTP)))
 				tag.setAttribute(attribute, domain + attrValue);
 		}
+	}
+	
+	private static String absolute(String url, String domain) {
+		if (url.startsWith(HTTP))
+			return url;
+		else if (domain.startsWith(HTTP))
+			return domain + url;
+		else
+			return HTTP + domain + url;
 	}
 }

@@ -113,11 +113,18 @@ li {
 	border: 1px solid gray;
 	padding: 10px;
 	background-color: #DDDDDD;
-	height: 250px;
+	height: 270px;
 }
 
 #submitSelectedWSDL {
-	width: 100%
+	width: 100%;
+}
+
+#submitSuccess {
+	background-color: white;
+	border: 1px solid darkgreen;
+	color: darkgreen;
+	padding: 3px;
 }
 
 #menuFoundList {
@@ -125,7 +132,8 @@ li {
 	border: 1px solid gray;
 	padding: 10px;
 	background-color: #EEEEEE;
-	height: 400px;
+	height: 422px;
+	overflow: auto;
 }
 
 .inputLabel {
@@ -136,6 +144,6 @@ li {
    ---- */
 
 .note {
-	font-size: 11pt;
+	font-size: 10pt;
 	font-style: italic;	
 }

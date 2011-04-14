@@ -17,6 +17,7 @@ import org.nuxeo.runtime.api.Framework;
 
 /**
  * Helpers for managing vocabularies.
+ * 
  * @author mkalam-alami
  *
  */

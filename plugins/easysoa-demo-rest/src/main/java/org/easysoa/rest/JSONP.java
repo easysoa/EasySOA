@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.restlet.data.Request;
 
 public class JSONP {
+	
 	public static final String CALLBACK = "callback";
 
 	/**
@@ -13,7 +14,7 @@ public class JSONP {
 	 *
 	 */
 	public static final String format(JSONObject json, Request request)
-			throws JSONException {
+			throws JSONException, NullPointerException {
 		// Note: Restlet request is needed to retrieve the callback name
 		return request.getResourceRef().getQueryAsForm().getFirst("callback")
 				.getValue()

@@ -20,6 +20,7 @@ import org.restlet.data.CharacterSet;
  *
  */
 public class HttpFile {
+	
 	private String url;
 	private HttpURLConnection connection;
 	private File file = null;
