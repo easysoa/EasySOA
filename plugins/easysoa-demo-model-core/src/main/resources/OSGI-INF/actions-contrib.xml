@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.openwide.test.actions">
+  
+  <!-- Désactivation des onglets inutiles à la consultation d'un document -->
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
+    <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" />
+    <action id="view_comments" enabled="false" />
+    <action id="TAB_CONTENT_HISTORY" enabled="false" />
+    <action id="TAB_PREVIEW" enabled="false" />
+    <!--<action id="TAB_MANAGE" enabled="false" />-->
+  </extension>
+
+</component>

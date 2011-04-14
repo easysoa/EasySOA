@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: mkalam-alami
+Build-Jdk: 1.6.0_24
+Bundle-ManifestVersion: 1
+Bundle-Version: 0.0.1
+Bundle-Name: easysoa-demo-rest
+Bundle-SymbolicName: org.easysoa.demo.rest;singleton:=true
+Bundle-Vendor: Open Wide
+Nuxeo-Require: org.nuxeo.runtime,org.nuxeo.ecm.core.api,org.openwide.t
+ est.core
+Nuxeo-Component: OSGI-INF/rest-contrib.xml
+

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.demo.rest.contrib">
+
+    <extension target="org.nuxeo.ecm.platform.ui.web.restAPI.service.PluggableRestletService"
+            point="restlets">
+            
+        <restletPlugin name="wsdlUpload"
+            class="org.easysoa.rest.WSDLUploadRestlet"
+            enabled="true" useSeam="false" useConversation="false">
+            <urlPatterns>
+            	<!-- Hack to get arguments containing slashes, as Nuxeo doesn't seem to support
+            	slashes/intterogations marks encoding -->
+                <urlPattern>/wsdlupload/{url1}</urlPattern>
+                <urlPattern>/wsdlupload/{url1}/{url2}</urlPattern>
+                <urlPattern>/wsdlupload/{url1}/{url2}/{url3}</urlPattern>
+                <urlPattern>/wsdlupload/{url1}/{url2}/{url3}/{url4}</urlPattern>
+                <urlPattern>/wsdlupload/{url1}/{url2}/{url3}/{url4}/{url5}</urlPattern>
+                <urlPattern>/wsdlupload/{url1}/{url2}/{url3}/{url4}/{url5}/{url6}</urlPattern>
+            </urlPatterns>
+        </restletPlugin>
+        
+        <restletPlugin name="wsdlScraper"
+            class="org.easysoa.rest.WSDLScraperRestlet"
+            enabled="true" useSeam="false" useConversation="false">
+            <urlPatterns>
+            	<!-- Hack to get arguments containing slashes, as Nuxeo doesn't seem to support
+            	slashes/intterogations marks encoding -->
+                <urlPattern>/wsdlscraper/{url1}</urlPattern>
+                <urlPattern>/wsdlscraper/{url1}/{url2}</urlPattern>
+                <urlPattern>/wsdlscraper/{url1}/{url2}/{url3}</urlPattern>
+                <urlPattern>/wsdlscraper/{url1}/{url2}/{url3}/{url4}</urlPattern>
+                <urlPattern>/wsdlscraper/{url1}/{url2}/{url3}/{url4}/{url5}</urlPattern>
+                <urlPattern>/wsdlscraper/{url1}/{url2}/{url3}/{url4}/{url5}/{url6}</urlPattern>
+            </urlPatterns>
+        </restletPlugin>
+        
+    </extension>
+    
+</component>

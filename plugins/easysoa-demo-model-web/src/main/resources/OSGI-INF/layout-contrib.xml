@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.openwide.test.vnavlayout">
+
+   <documentation>
+   Documentation et exemples de contributions :
+   org.nuxeo.ecm.platform.forms.layouts.webapp.listing--layouts
+   org.nuxeo.ecm.platform.forms.layouts.webapp.listing--widgets 
+   </documentation>
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
+
+	 <layout name="document_virtual_navigation_listing_ajax_location">
+      <templates>
+        <template mode="any">
+          /layouts/layout_listing_ajax_template.xhtml
+        </template>
+        <template mode="plain_csv">
+          /layouts/layout_listing_csv_template.xhtml
+        </template>
+      </templates>
+      <properties mode="any">
+        <property name="showListingHeader">true</property>
+        <property name="showRowEvenOddClass">true</property>
+      </properties>
+      <columns>
+        <column>
+          <properties mode="any">
+            <property name="isListingSelectionBox">true</property>
+            <property name="useFirstWidgetLabelAsColumnHeader">false</property>
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <properties mode="pdf">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_ajax_selection_box</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">false</property>
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <widget>listing_icon_type</widget>
+        </column>
+        
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">dc:title</property>
+          </properties>
+          <widget>listing_title_link</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_lock_icon</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">endp:address</property>
+          </properties>
+          <widget>listing_address</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">endp:protocols</property>
+          </properties>
+          <widget>listing_protocols</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">endp:servicename</property>
+          </properties>
+          <widget>listing_servicename</widget>
+        </column>
+        
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <widget>listing_livedit_link</widget>
+        </column>
+      </columns>
+    </layout>
+    
+
+	 <layout name="document_virtual_navigation_listing_ajax_service">
+      <templates>
+        <template mode="any">
+          /layouts/layout_listing_ajax_template.xhtml
+        </template>
+        <template mode="plain_csv">
+          /layouts/layout_listing_csv_template.xhtml
+        </template>
+      </templates>
+      <properties mode="any">
+        <property name="showListingHeader">true</property>
+        <property name="showRowEvenOddClass">true</property>
+      </properties>
+      <columns>
+        <column>
+          <properties mode="any">
+            <property name="isListingSelectionBox">true</property>
+            <property name="useFirstWidgetLabelAsColumnHeader">false</property>
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <properties mode="pdf">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_ajax_selection_box</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">false</property>
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <widget>listing_icon_type</widget>
+        </column>
+        
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">dc:title</property>
+          </properties>
+          <widget>listing_title_link</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_lock_icon</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="isSortable">false</property>
+          </properties>
+          <widget>listing_version</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">dc:modified</property>
+            <property name="defaultSortAscending">false</property>
+          </properties>
+          <widget>listing_modification_date</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">stags:implementations</property>
+          </properties>
+          <widget>listing_implementations</widget>
+        </column>
+        
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <widget>listing_livedit_link</widget>
+        </column>
+      </columns>
+    </layout>
+    
+  </extension>
+    
+    <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
+          <widget name="listing_address" type="text">
+            <labels>
+              <label mode="any">label.easysoa.endpoints.uri</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.endp.uri</field>
+            </fields>
+          </widget>
+          <widget name="listing_protocols" type="text">
+            <labels>
+              <label mode="any">label.easysoa.endpoints.protocols</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.endp.protocols</field>
+            </fields>
+          </widget>
+          <widget name="listing_servicename" type="text">
+            <labels>
+              <label mode="any">label.easysoa.endpoints.servicename</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.endp.servicename</field>
+            </fields>
+          </widget>
+          <widget name="listing_implementations" type="text">
+            <labels>
+              <label mode="any">label.easysoa.servicetags.implementations</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.stags.implementations</field>
+            </fields>
+          </widget>
+    </extension>
+    
+</component>

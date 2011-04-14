@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.openwide.test.layout">
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
+   
+    <layout name="fileRequired">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>fileRequired</widget>
+        </row>
+      </rows>
+      <widget name="fileRequired" type="template">
+        <labels>
+          <label mode="any">label.file.content</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>file:content</field>
+          <field>file:filename</field>
+        </fields>
+        <widgetModes>
+          <mode value="full_edit">edit</mode>
+          <mode value="edit">edit</mode>
+          <mode value="view">view</mode>
+          <mode value="view">preview</mode>
+        </widgetModes>
+        <properties mode="any">
+		  <property name="required">true</property>
+          <property name="template">
+            /widgets/extended_file_widget.xhtml
+          </property>
+        </properties>
+      </widget>
+    </layout>
+  
+    <layout name="serviceTags">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>servicetags_application</widget>
+        </row>
+        <!--<row>
+          <widget>servicetags_implementations</widget>
+        </row>-->
+      </rows>
+	  <widget name="servicetags_application" type="selectOneDirectory">
+	    <labels>
+	        <label mode="any">label.easysoa.servicetags.application</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	        <field>stags:application</field>
+	    </fields>
+	    <properties mode="any">
+	        <property name="directoryName">application</property>
+	        <property name="localize">true</property>
+	    </properties>
+	  </widget>
+      <widget name="servicetags_implementations" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicetags.implementations</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>stags:implementations</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+    </layout>
+    
+    <layout name="endpoints">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>endpoint_name</widget>
+        </row>
+        <row>
+          <widget>endpoint_uri</widget>
+        </row>
+        <row>
+          <widget>endpoint_machine</widget>
+        </row>
+        <row>
+          <widget>endpoint_protocols</widget>
+        </row>
+        <row>
+          <widget>endpoint_provider</widget>
+        </row>
+        <row>
+          <widget>endpoint_environment</widget>
+        </row>
+        <row>
+          <widget>endpoint_implementation</widget>
+        </row>
+      </rows>
+      <widget name="endpoint_name" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.endpoints.name</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>endp:name</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="endpoint_uri" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.endpoints.uri</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>endp:uri</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="endpoint_machine" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.endpoints.machine</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>endp:machine</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="endpoint_protocols" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.endpoints.protocols</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>endp:protocols</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="endpoint_provider" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.endpoints.provider</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>endp:provider</field>
+	      </fields>
+	  </widget>
+      <widget name="endpoint_environment" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.endpoints.environment</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>endp:environment</field>
+	      </fields>
+	  </widget>
+      <widget name="endpoint_implementation" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.endpoints.implementation</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>endp:implementation</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <layout name="serviceChooser">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>serviceChooser</widget>
+        </row>
+     </rows>
+     <widget name="serviceChooser" type="selectOneDirectory">
+	    <labels>
+	        <label mode="any">label.easysoa.service</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	        <field>endp:servicename</field>
+	    </fields>
+	    <properties mode="any">
+	        <property name="directoryName">servicelist</property>
+	        <property name="localize">true</property>
+	    </properties>
+        <widgetModes>
+            <mode value="view">hidden</mode>
+        </widgetModes>
+	  </widget>
+	</layout>
+    
+    <layout name="descriptorChooser">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>descriptorChooser</widget>
+        </row>
+     </rows>
+     <widget name="descriptorChooser" type="selectManyDirectory">
+	    <labels>
+	        <label mode="any">label.easysoa.descriptors</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	        <field>stags:descriptors</field> <!-- fsd:dc_nature ? -->
+	    </fields>
+	    <properties widgetMode="any">
+	        <property name="directoryName">descriptorlist</property>
+	        <property name="localize">true</property>
+        	<!--<property name="displayLabelOnly">true</property>-->
+	    </properties>
+        <properties widgetMode="edit">
+            <property name="wrapperMode">row</property>
+        </properties>
+        <widgetModes>
+            <mode value="view">hidden</mode>
+        </widgetModes>
+	  </widget>
+	</layout>
+  </extension>
+</component>

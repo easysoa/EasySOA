@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<xs:schema
+  targetNamespace="http://www.nuxeo.org/ecm/schemas/servicetags/"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:nxs="http://www.nuxeo.org/ecm/schemas/servicetags/">
+  
+  <xs:include schemaLocation="base.xsd" />
+  
+  <xs:element name="application" type="xs:string" />
+  
+  <!-- INTERNE : sélection des descripteurs -->
+  <xs:element name="descriptors" type="nxs:stringList" />
+  <!-- INTERNE : visualisation des implémentations (maintenu en fonction des descripteurs rattachés au service) -->
+  <xs:element name="implementations" type="xs:string" /> 
+
+</xs:schema>
