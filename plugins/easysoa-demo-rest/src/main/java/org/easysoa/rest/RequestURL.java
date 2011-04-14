@@ -5,6 +5,14 @@ import org.restlet.data.Parameter;
 import org.restlet.data.Request;
 
 public class RequestURL {
+	
+	/**
+	 * Rebuilds the URL parameter from REST query.
+	 * (a little hacky since Nuxeo doesn't seem to handle correctly some encoded special chars)
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	public static String parse(Request request) throws Exception {
 		String url = "";
 

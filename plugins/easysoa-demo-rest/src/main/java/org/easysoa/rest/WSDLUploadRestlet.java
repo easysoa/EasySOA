@@ -14,6 +14,18 @@ import org.restlet.data.Request;
 import org.restlet.data.Response;
 import org.restlet.resource.StringRepresentation;
 
+/**
+ * REST service to upload a WSDL to the Nuxeo repository.
+ * Currently uploads blindly any given file.
+ * 
+ * Use:
+ * .../nuxeo/restAPI/wsdlupload/{url}
+ * Params:
+ * {url} The file to upload, without the "http://" prefix (other protocols not supported), and not encoded
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 	
 	private static final Logger log = Logger.getLogger(WSDLUploadRestlet.class);

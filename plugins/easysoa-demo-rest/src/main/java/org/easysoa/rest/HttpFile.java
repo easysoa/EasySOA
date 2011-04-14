@@ -14,6 +14,11 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.restlet.data.CharacterSet;
 
+/**
+ * Encapsulation for manipulating a file from an HTTP url
+ * @author mkalam-alami
+ *
+ */
 public class HttpFile {
 	private String url;
 	private HttpURLConnection connection;

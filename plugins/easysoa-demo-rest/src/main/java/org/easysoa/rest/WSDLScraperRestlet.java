@@ -15,6 +15,17 @@ import org.restlet.data.Request;
 import org.restlet.data.Response;
 import org.restlet.resource.StringRepresentation;
 
+/**
+ * REST service to found WSDLs from given URL.
+ * 
+ * Use:
+ * .../nuxeo/restAPI/wsdlupload/{url}
+ * Params:
+ * {url} The page to consider, without the "http://" prefix (other protocols not supported), and not encoded
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 	private static final Logger log = Logger
 			.getLogger(WSDLScraperRestlet.class);
