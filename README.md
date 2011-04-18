@@ -25,13 +25,23 @@ This tool doesn't need any installation, since it's only made of client-side Jav
 
 ### Nuxeo registry
 
-TODO
+The registry introduces two new document types : *Services* and *WSDLs*. 
+ * The Service doctype represents the specifications/documentation of a service
+ * WSDLs are the implementations of these services
+Services are linked to WSDLs through Nuxeo's "relations", specified during document creation/modification (doesn't work well for now).
+
+You can navigate through the documents using differents navigations trees (see the tabs on the left). They represent the idea of showing the model from different points of view to different user profiles:
+ * Navigation by Application: For the business users
+ * Navigation by Server: For the administrators
+ * Navigation by Service: For the architects
 
 ### Service finder
 
 The idea is to automatically find WSDL files while the user navigates, then make him fill a form to fill some metadata and send the files to the Nuxeo repository.
 
 For now, the parser only looks for links whose URL ends with "wsdl", but we consider supporting several other ways to find services (from trying common URL patterns of services frameworks -"/cxf", etc. -, to custom scripts or URL patterns given by users).
+
+*NOTE: In order to see uploaded WSDLs in Nuxeo, you may need to refresh the `Descriptors/WSDL/` folder (look for an icon in the top-right corner).*
 
 ## About the sources
 
