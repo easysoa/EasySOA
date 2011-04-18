@@ -26,14 +26,16 @@ This tool doesn't need any installation, since it's only made of client-side Jav
 ### Nuxeo registry
 
 The registry introduces two new document types : *Services* and *WSDLs*. 
+
  * The Service doctype represents the specifications/documentation of a service
  * WSDLs are the implementations of these services
 Services are linked to WSDLs through Nuxeo's "relations", specified during document creation/modification (doesn't work well for now).
 
 You can navigate through the documents using differents navigations trees (see the tabs on the left). They represent the idea of showing the model from different points of view to different user profiles:
- * Navigation by Application: For the business users
- * Navigation by Server: For the administrators
- * Navigation by Service: For the architects
+
+ * *Navigation by Application*: For the business users
+ * *Navigation by Server*: For the administrators
+ * *Navigation by Service*: For the architects
 
 ### Service finder
 
