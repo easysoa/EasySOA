@@ -3,7 +3,6 @@ package org.easysoa.rest;
 import org.easysoa.descriptors.WSDLService;
 import org.easysoa.treestructure.WorkspaceDeployer;
 import org.jboss.logging.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -32,25 +31,29 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 	
 	private static final Logger log = Logger.getLogger(WSDLUploadRestlet.class);
 	private static final String REPOSITORY = "default";
+	private static final String API_PATH = "wsdlupload/";
 
 	public void handle(Request request, Response response) {
 		super.initRepository(response, REPOSITORY);
 		JSONObject result = new JSONObject();
 		String failure = null;
 
+		// URL Parsing
 		String url = null;
 		try {
-			url = RequestURL.parse(request);
+			url = RequestURL.parse(request, API_PATH);
 			result.append("url", url);
 		} catch (Exception e) {
 			failure = e.getMessage();
 			e.printStackTrace();
 		}
 
-		if (!url.toLowerCase().contains("wsdl?")) {
+		// Basic file path testing / TODO
+		if (!url.toLowerCase().contains("wsdl")) {
 			failure = "Given URL doesn't seem to be a WSDL.";
 		}
-
+		
+		// File download
 		HttpFile f = new HttpFile(url);
 		if (failure == null) {
 			try {
@@ -63,33 +66,21 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 
 		if (failure == null) {
 			try {
+				// Document creation
 				DocumentModel model = this.session.createDocumentModel(
 						WorkspaceDeployer.DESCRIPTORS_WORKSPACE + WSDLService.WSDL_DOCTYPE, IdUtils
 								.generateStringId(), WSDLService.WSDL_DOCTYPE);
-
 				model.setProperty("file", "content", f.getBlob());
 				this.session.createDocument(model);
 				this.session.save();
-
-				response.setEntity(new StringRepresentation(result.toString(),
-						MediaType.APPLICATION_JSON, Language.ALL,
-						CharacterSet.UTF_8));
 			} catch (ClientException e) {
 				log.error("Failed to create WSDL", e);
 				failure = e.getMessage();
 			}
 		}
  
+		// Delete temporary file
 		f.delete();
-		try {
-			result.append("error", failure);
-			if (failure != null)
-				response.setEntity(new StringRepresentation(JSONP.format(
-						result, request), MediaType.APPLICATION_JSON,
-						Language.ALL, CharacterSet.UTF_8));
-		} catch (JSONException e) {
-			log.warn("Cannot send error message : " + e.getMessage());
-		}
 		
 		// Format result
 		String resultJSONP = null;
@@ -112,7 +103,7 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 						CharacterSet.UTF_8));
 			else
 				response.setEntity(new StringRepresentation(result.toString(2),
-						MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
+						MediaType.APPLICATION_JSON, Language.ALL,
 						CharacterSet.UTF_8));
 		} catch (Exception e) {
 			log.warn("Cannot send message : " + e.getMessage());

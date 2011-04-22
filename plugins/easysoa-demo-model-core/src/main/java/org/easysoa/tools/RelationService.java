@@ -42,6 +42,8 @@ public class RelationService {
 			DocumentModel doc) {
 		DocumentModelList relations = null;
 		try {
+			
+			// Uses content automations
 			AutomationService automationService = (AutomationService) Framework
 					.getService(AutomationService.class);
 			OperationContext opCtxt = new OperationContext(session);
@@ -68,6 +70,9 @@ public class RelationService {
 	 */
 	public static final void createRelation(DocumentModel from, DocumentModel to) {
 		try {
+			
+			// Could also have used automations (see Relations.CreateRelation)
+			
 			RelationManager service = RelationHelper.getRelationManager();
 			QNameResource fromResource = RelationHelper
 					.getDocumentResource(from);

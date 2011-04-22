@@ -25,8 +25,12 @@
       <include>**/*.properties</include>
     </unzip>
     <append 
-      from="nuxeo.war/easysoa-l10n.tmp/l10n/messages.properties"
+      from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages.properties"
       to="nuxeo.war/WEB-INF/classes/messages.properties"
+      addNewLine="true"/>
+    <append 
+      from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages_fr.properties"
+      to="nuxeo.war/WEB-INF/classes/messages_fr.properties"
       addNewLine="true"/>
     <remove dir="nuxeo.war/easysoa-l10n.tmp" />
     
@@ -49,6 +53,11 @@
       <to-view-id>/service_virtual_navigation.xhtml</to-view-id>
       <redirect />
     </navigation-case>
+    <navigation-case>
+      <from-outcome>import_form</from-outcome>
+      <to-view-id>/import_form.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
   </extension>
   
   <extension target="pages#PAGES">
@@ -61,7 +70,7 @@
     <page view-id="/service_virtual_navigation.xhtml">
       breadcrumb=label.virtualnavigation.service
     </page>
-    <page view-id="/import.xhtml">
+    <page view-id="/import_form.xhtml">
       breadcrumb=label.easysoa.import
     </page>
   </extension>

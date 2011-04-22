@@ -8,10 +8,15 @@ Bundle-Version: 0.0.1
 Bundle-Name: easysoa-demo-model-core
 Bundle-SymbolicName: org.easysoa.demo.core;singleton:=true
 Bundle-Vendor: Open Wide
-Nuxeo-Require: org.nuxeo.ecm.core.api,org.nuxeo.ecm.core,org.nuxeo.ecm
- .core.schema,org.nuxeo.ecm.directory.api
-Nuxeo-Component: OSGI-INF/core-type-contrib.xml,OSGI-INF/ecm-type-cont
- rib.xml,OSGI-INF/layout-contrib.xml,OSGI-INF/nxdirectories-contrib.xm
- l,OSGI-INF/eventlistener-contrib.xml,OSGI-INF/actions-contrib.xml,OSG
- I-INF/WorkspaceDeployerComponent.xml
-
+Nuxeo-Require: org.nuxeo.ecm.core.api,
+ org.nuxeo.ecm.core,
+ org.nuxeo.ecm.core.schema,
+ org.nuxeo.ecm.directory.api
+Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
+ OSGI-INF/ecm-type-contrib.xml,
+ OSGI-INF/layout-contrib.xml,
+ OSGI-INF/nxdirectories-contrib.xml,
+ OSGI-INF/eventlistener-contrib.xml,
+ OSGI-INF/actions-contrib.xml,
+ OSGI-INF/seamremoting-contrib.xml,
+ OSGI-INF/WorkspaceDeployerComponent.xml

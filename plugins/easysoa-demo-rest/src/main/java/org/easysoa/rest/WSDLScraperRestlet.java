@@ -31,6 +31,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			.getLogger(WSDLScraperRestlet.class);
 	private static final String REPOSITORY = "default";
 	private static final String HTTP = "http://";
+	private static final String API_PATH = "wsdlscraper/";
 
 	public void handle(Request request, Response response) {
 		super.initRepository(response, REPOSITORY);
@@ -39,7 +40,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 		String failure = null;
 		JSONObject result = new JSONObject();
 		try {
-			result.put("html", "");
+			//result.put("html", "");
 			result.put("foundLinks", "");
 		} catch (JSONException e) {
 			log.error("Cannot initialize JSON object.", e);
@@ -49,8 +50,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 		// URL parsing 
 		String url = null;
 		try {
-			url = RequestURL.parse(request);
-			result.put("url", url);
+			url = RequestURL.parse(request, API_PATH);
 		} catch (Exception e) {
 			failure = e.getMessage();
 			log.error("Cannot rebuild URL", e);
@@ -70,14 +70,14 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 		// Web page parsing
 		JSONObject foundLinks = new JSONObject();
 		try {
-			String host = HTTP + new URL(url).getHost();
+			URL context = new URL(url);
 			HtmlCleaner cleaner = new HtmlCleaner();
 			TagNode cleanHtml = cleaner.clean(f.getFile());
 			Object[] links = cleanHtml.evaluateXPath("//a");
 
 			for (Object o : links) {
 				TagNode link = (TagNode) o;
-				String ref = link.getAttributeByName("href");
+				String ref = new URL(context, link.getAttributeByName("href")).toString();
 				String name = (link.getText() != null) ? link.getText().toString() : ref;
 				int i = 1;
 				if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
@@ -86,20 +86,16 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 								.length() - 1))
 								+ i++;
 					}
-					foundLinks.put(name, absolute(ref, host));
+					foundLinks.put(name, ref);
 				}
 			}
-			result.append("step", "parsing3");
 			result.put("foundLinks", foundLinks);
 
-			changeToAbsolutePath(links, "href", host);
-			changeToAbsolutePath(cleanHtml.evaluateXPath("//script"), "href",
-					host);
-			changeToAbsolutePath(cleanHtml.evaluateXPath("//link"), "href",
-					host);
-			result.put("html", cleaner.getInnerHtml(cleanHtml));
+			changeToAbsolutePath(links, "href", context);
+			changeToAbsolutePath(cleanHtml.evaluateXPath("//script"), "href", context);
+			changeToAbsolutePath(cleanHtml.evaluateXPath("//link"), "href", context);
+			//result.put("html", cleaner.getInnerHtml(cleanHtml));
 
-			result.append("step", "parsing ok");
 		} catch (Exception e) {
 			try {
 				result.append("step", "parsing "+e);
@@ -131,7 +127,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 						CharacterSet.UTF_8));
 			else
 				response.setEntity(new StringRepresentation(result.toString(2),
-						MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
+						MediaType.APPLICATION_JSON, Language.ALL,
 						CharacterSet.UTF_8));
 		} catch (Exception e) {
 			log.warn("Cannot send message : " + e.getMessage());
@@ -141,21 +137,19 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 	}
 
 	private static void changeToAbsolutePath(Object[] tagNodes, String attribute,
-			String domain) {
+			URL context) {
 		for (Object o : tagNodes) {
 			TagNode tag = (TagNode) o;
 			String attrValue = tag.getAttributeByName(attribute);
-			if ((attrValue != null) && (!attrValue.startsWith(HTTP)))
-				tag.setAttribute(attribute, domain + attrValue);
+			if ((attrValue != null) && (!attrValue.startsWith(HTTP))) {
+				try {
+					tag.setAttribute(attribute, new URL(context, attrValue).toString());
+				}
+				catch (Exception e) {
+					log.debug("Could not set "+attrValue+" to absolute path.");
+				}
+			}
 		}
 	}
 	
-	private static String absolute(String url, String domain) {
-		if (url.startsWith(HTTP))
-			return url;
-		else if (domain.startsWith(HTTP))
-			return domain + url;
-		else
-			return HTTP + domain + url;
-	}
 }

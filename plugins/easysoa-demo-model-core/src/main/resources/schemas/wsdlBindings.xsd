@@ -3,6 +3,8 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:nxs="http://www.nuxeo.org/ecm/schemas/wsdl/">
   
+  <!-- TODO -->
+  
   <xs:element name="files" type="nxs:bindings" />
   
   <xs:complexType name="bindings">
@@ -15,7 +17,6 @@
     <xs:sequence>
       <xs:element name="name" type="xs:string" />
       <xs:element name="endpointName" type="xs:string" />
-      <!-- TODO -->
     </xs:sequence>
   </xs:complexType>
     
