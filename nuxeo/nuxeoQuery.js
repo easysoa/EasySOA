@@ -1,3 +1,5 @@
+// Does a Nuxeo query using the Site Admin API.
+
 var http = require('http');
 
 var nuxeo = http.createClient(8080, 'localhost');

@@ -1,3 +1,5 @@
+// Returns as JSON the Content Automation API of a Nuxeo server.
+
 var http = require('http');
 var nuxeo = http.createClient(8080, 'localhost');
 var request = nuxeo.request('GET', '/nuxeo/site/automation',

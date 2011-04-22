@@ -1,32 +1,58 @@
-// HTTP proxy that dumps requests to CSV using https://github.com/koles/ya-csv
 //
-// written starting from proxyFuse.js
+// Tool for gathering data about HTTP exchanges, in order to help designing the easysoa model.
+//
+//
+// Listens to HTTP exchanges in proxy or tunnel mode. For each request / response, parses a few fields and write them to file as a CSV line using https://github.com/koles/ya-csv .
+//
+// How to use it :
+// * in proxy mode : start it on an unused port, configure your HTTP client application to use it as a proxy.
+// * in tunnel mode : configure it to use your HTTP server application as a server (tunneledHost, proxiedPort), start it on an unused port, configure your HTTP client application to use it as a server.
+// * use your HTTP client application (with a Nuxeo server, samples/nuxeo/nuxeoAutomationQuery[Fetch[Children]]_proxied.js can be used) and watch lines being added to proxy-log.csv .
+//
+//
+// Each CSV line is as follows :
+// "businessUseCase";"method";"res.statusCode"[;url elements][;path elements][;params][;request headers][;response headers];"url";"parameters";"req.headers";"res.headers"
+// where the following parts can be configured below :
+//   businessUseCase : "user operation" tag / column, entered from command line.
+//   path elements : Each path column contains one or a range of path elements, addressed by index or -m for the n-m path element, where n+1 is the total count of path elements.
+//   params : Each parameter column contains a request parameter. If the body is JSON, it is parsed and flattened. It is then merged with URL parameters.
+//   request headers : Each request header column contains a request header.
+//   response headers : Each response header column contains a response header.
+//
+// Sample title and first lines :
+// "businessUseCase";"method";"res.statusCode";"pathname";"path.1";"path.2-3";"path.n-1";"param.params.query";"param.input";"param.context";"req.host";"res.content-type";"res.date";"url";"parameters";"req.headers";"res.headers"
+// "nuxeoAutomationQuery";"POST";"200";"/nuxeo/site/automation/Document.Query";"nuxeo";"site/automation";"Document.Query";"select * from Document";"";"";"localhost";"application/json+nxentity";"Fri, 15 Apr 2011 10:39:15 GMT";"/nuxeo/site/automation/Document.Query";"{""params.query"":""select * from Document""}";"{""host"":""localhost"",""authorization"":""Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y"",""accept"":""application/json+nxentity, */*"",""content-type"":""application/json+nxrequest; charset=UTF-8"",""x-nxdocumentproperties"":""*"",""content-length"":""45"",""connection"":""close""}";"{""date"":""Fri, 15 Apr 2011 10:39:15 GMT"",""expires"":""Thu, 01 Jan 1970 00:00:00 GMT"",""set-cookie"":[""JSESSIONID=15a2p1j6fumfi;Path=/nuxeo""],""content-type"":""application/json+nxentity"",""connection"":""close"",""server"":""Jetty(6.1H.7)""}"
+//
+//
+// Written starting from proxyFuse.js .
 // see also http://www.catonmat.net/http-proxy-in-nodejs
 // existing node.js alternative (providing reverse proxy...) : https://github.com/nodejitsu/node-http-proxy
-// existing alternative software : TODO
+// existing alternative software : wireshark
 //
 // possible improvements :
+// parse xml request body
 // more flexible column ordering
-// allow to regroup several pathnames in a single column
 // filters : ex. filteredContentTypes (image/jpeg...)
-// "user operation" tag / column, entered from user input (command line, or even web ??), to mark distinct user operations
+// packaging (module), command line options, share code with other proxy*.js
 //
-// & always : packaging (module), improve command line options, share code with other proxy*.js
+
 
 var http = require('http');
 var fs = require('fs');
 var csv = require('ya-csv');
 
 
+// HTTP configuration
+var tunneledHost = null; // http proxy
+//var tunneledHost = '192.168.2.196'; // http tunnel
 //var proxiedPort = port; 
-var defaultProxiedHost = null; // true http proxy
-//var defaultProxiedHost = '192.168.2.196'; // forced http (reverse) proxy
-var proxiedPort = '8080'; // mostly for tests else port
-//var proxiedPort = '80'; // mostly for tests else port
+var proxiedPort = '8080'; // mostly for tests
+//var proxiedPort = '80'; // mostly for tests
 var host = 'localhost';
 //var host = '192.168.2.211'; // if remote
 var port = '8081';
 
+// CSV line configuration
 var urlElementsToExtract = { 'pathname':null };
 var urlPathElementsToExtract = [ [1], [2, 3], [-1] ]; // NB. 0 is /, 1 usually the application, -1 (latest) the service
 //var parametersToExtract = {};
@@ -35,10 +61,12 @@ var parametersToExtract = { 'params.query':null, 'input':null, 'context':null };
 var headersToExtract = { 'host':null };
 var responseHeadersToExtract = { 'content-type':null, 'date':null };
 
+// CSV configuration
+var csvFilePath = 'proxy_log.csv';
 var csvSeparator = ';';
 
 
-// init
+// default init
 var businessUseCase = '';
 
 
@@ -63,7 +91,7 @@ function deepObjCopy (dupeObj) {
 	return retObj;
 }
 
-function flatify (dupeObj, res, nameContext) {
+function flatten (dupeObj, res, nameContext) {
         if (typeof nameContext == 'undefined') {
           var nameContext = '';
         }
@@ -77,7 +105,7 @@ function flatify (dupeObj, res, nameContext) {
 		for (var objInd in dupeObj) {
                         var flatifiedObjInd = nameContext + objInd;
 			if (typeof(dupeObj[objInd]) == 'object') {
-				flatify(dupeObj[objInd], retObj, flatifiedObjInd + '.');
+				flatten(dupeObj[objInd], retObj, flatifiedObjInd + '.');
 			} else if (typeof(dupeObj[objInd]) == 'string') {
 				retObj[flatifiedObjInd] = dupeObj[objInd];
 			} else if (typeof(dupeObj[objInd]) == 'number') {
@@ -91,12 +119,13 @@ function flatify (dupeObj, res, nameContext) {
 }
 
 
-var csvOut = fs.createWriteStream('proxy_log.csv', { flags:'a', encoding:'Cp1252'});
+var csvOut = fs.createWriteStream(csvFilePath, { flags:'a', encoding:'Cp1252'});
 //var csvOut = process.stdout; // for tests
 //process.on('exit', function() {
 //   console.log('exit');
 //});
 var csvWriter = csv.createCsvStreamWriter(csvOut, { "separator":csvSeparator });
+
 // csv header line
 var headerRecord = ['businessUseCase', 'method', 'res.statusCode'];
 for (urlElement in urlElementsToExtract) {
@@ -138,7 +167,9 @@ headerRecord.push('res.headers');
 csvWriter.writeRecord(headerRecord);
 
 
+// HTTP proxy / tunnel
 function proxyRequest(req, res) {
+
 var proxiedHost = req.headers['host'];
 if (defaultProxiedHost != null) {
    proxiedHost = defaultProxiedHost;
@@ -148,25 +179,9 @@ var client = http.createClient(proxiedPort, proxiedHost);
 var method = req.method;
 var url = req.url;
 var headers = req.headers;
-//var headers = {};
-//for (h in req.headers) {
-//   headers[h] = req.headers[h];
-//}
-//headers.host = proxiedHost + ':' + proxiedPort;
-//headers.Authorization = 'Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y';
-//headers.cookie = null;
-//headers.COOKIE_SUPPORT = false;
-//headers.LOGIN = null;
 
 var request = client.request(method, url, headers);
 console.log('SENT HEADERS: ' + JSON.stringify(headers));
-//  {'host':proxiedHost + ':' + proxiedPort,
-//   'Authorization': 'Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y',
-//   'Accept': 'application/json+nxentity, */*',
-//   'Content-Type': 'application/json+nxrequest; charset=UTF-8',
-//   'X-NXVoidOperation': true,
-//   'X-NXDocumentProperties': '*',
-//   'Content-Length':body.length});
 var reqBody = '';
 req.on('data', function (chunk) {
   reqBody = reqBody + chunk;
@@ -237,7 +252,7 @@ request.on('response', function (proxiedRes) {
     // merging req and body parameters
     //if (method == 'POST') {      
     //}
-    var parameters = flatify(parsedReqBody);
+    var parameters = flatten(parsedReqBody);
     for (parameter in parsedUrl.query) {
       parameters[parameter] = parsedUrl.query[parameter];
     }
@@ -251,9 +266,9 @@ request.on('response', function (proxiedRes) {
       record.push(proxiedRes.headers[header]);
     }
     record.push(url);
-    record.push(JSON.stringify(parameters)); //.replace(csvSeparator,'!'));
-    record.push(JSON.stringify(headers)); //.replace(csvSeparator,'!'));
-    record.push(JSON.stringify(proxiedRes.headers)); //.replace(csvSeparator,'!'));
+    record.push(JSON.stringify(parameters));
+    record.push(JSON.stringify(headers));
+    record.push(JSON.stringify(proxiedRes.headers));
     csvWriter.writeRecord(record);
   });
 });
@@ -264,7 +279,8 @@ request.on('response', function (proxiedRes) {
 http.createServer(function (req, res) {
     proxyRequest(req, res);
 }).listen(port, host);
-console.log('Server running at http://' + host + ':' + port + '/');
+console.log('proxyDump.js server running at http://' + host + ':' + port + '/.');
+console.log('A new businessUseCase can be entered from command line followed byt ENTER.');
 
 process.stdin.resume();
 process.stdin.on('data', function(data) {

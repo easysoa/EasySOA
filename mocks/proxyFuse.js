@@ -1,7 +1,11 @@
+// Mock of a "fuse" behaviour in the easysoa service proxy layer.
+
 var http = require('http');
 var proxiedHost = 'localhost';
-var proxiedPort = '8080'; // mostly for tests else port
+//var proxiedPort = 'port;
+var proxiedPort = '8080'; // mostly for tests
 var host = 'localhost';
+//var host = '192.168.2.211'; // if remote
 var port = '8081';
 
 var client = http.createClient(proxiedPort, proxiedHost);

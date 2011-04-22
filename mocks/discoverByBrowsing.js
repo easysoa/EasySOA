@@ -1,3 +1,5 @@
+// Non working mock of the "pattern" strategy of the "service discovery by browsing" easysoa scenario.
+
 // sample URLs to inspect ; later gotten from UI
 var urls = [ "http://localhost:8080" ];
 
