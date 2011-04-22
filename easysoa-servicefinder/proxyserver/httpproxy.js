@@ -8,26 +8,34 @@ var url = require('url');
 var base64 = require('./tools/base64');
 
 eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
-var foundWSDLs = new Array();
+
+var status = new Object();
+status.foundLinks = new Object();
+status.url = "";
+
+// Send found WSDLs in JSONP format (or JSON by default)
+function getFoundWSDLs(callback) {
+	var json_string = JSON.stringify(status);
+	return (callback) ? callback+"("+json_string+");" : json_string;
+}
 
 // Scraper response handling
 function scraperResponse(response) {
-	var data;
+	var data = "";
 	response.on('data', function(chunk) {
 		data += chunk.toString("ascii");
 	});
 	response.on('end', function() {
 		try {
 			var json = JSON.parse(data);
-			for (link in json.foundLinks) {
-				var entry;
-				entry.name = link;
-				entry.url = json.foundLinks[link];
-				foundWSDLs.push(entry);
+			if (json.foundLinks) {
+				for (link in json.foundLinks) {
+					status.foundLinks[link] = json.foundLinks[link];			
+					console.log("Found: "+link+" = "+json.foundLinks[link]);
+				}
 			}
-			console.log("array : " + foundWSDLs);
 		} catch (err) {
-			console.log(err);
+			console.log("Note: "+err.message);
 		}
 	});
 }
@@ -35,12 +43,26 @@ function scraperResponse(response) {
 // HTTP Proxy Server
 http.createServer(function(request, response) {
 
+		var request_url = url.parse(request.url, true);
+	
+		// If direct request to proxy, send found WSDLs
+		if (request_url.host == "localhost:"+config.proxy_port) {
+			response.writeHead(200, {
+				"Content-Type": "text/javascript"
+			});
+			response.write(getFoundWSDLs(request_url.query.callback));
+			response.end();
+		}
+	
 		// Create request to wanted server
+		if (!request_url.port)
+			request_url.port = 80;
+		
 		var proxy_options = {
-			port : 80,
+			port : request_url.port,
 			method : request.method,
-			host : request.headers['host'],
-			path : request.url,
+			host : request_url.hostname,
+			path : request_url.href,
 			headers : request.headers
 		};
 
@@ -75,6 +97,16 @@ http.createServer(function(request, response) {
 			proxy_request.end();
 		});
 
+		// Don't scrape ignored paths
+		for (i = 0; i < config.ignore.length; i++) {
+			if (request_url.href.indexOf(config.ignore[i]) != -1) {
+				return;
+			}
+		}
+
+		console.log("Scraping: "+request_url.href);
+		status.url = request_url.href;
+		
 		// Notification to scrapers
 		for (scraper in config.scrapers) {
 			var scraperURL = url.parse(config.scrapers[scraper]);
@@ -86,13 +118,17 @@ http.createServer(function(request, response) {
 				port : scraperURL.port,
 				method : 'GET',
 				host : scraperURL.hostname,
-				path : scraperURL.href.replace('?', request.url),
-				headers : {
-					'authorization' : "Basic " + base64.encode("Administrator:Administrator")
-				}
+				path : scraperURL.href.replace('?', request.url)
 			};
 
-			console.log(scraperOptions.path);
+			// Hard-coded Nuxeo auth
+			if (scraperURL.href.indexOf("nuxeo/restAPI") != -1) {
+				scraperOptions.headers = {
+					'authorization': "Basic " + base64.encode("Administrator:Administrator")
+				};
+			}
+
+			// Scraper request
 			scraper_request = http.request(scraperOptions, function(scraper_response) {
 				scraperResponse(scraper_response);
 			});
