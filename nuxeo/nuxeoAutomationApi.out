@@ -1,0 +1,1666 @@
+STATUS: 200
+HEADERS: {"date":"Thu, 23 Dec 2010 10:54:26 GMT","expires":"Thu, 01 Jan 1970 00:00:00 GMT","set-cookie":["JSESSIONID=6zc243dibbbl;Path=/nuxeo"],"content-type":"application/json","connection":"close","server":"Jetty(6.1H.7)"}
+BODY: {
+  "paths": {"login": "login"},
+  "operations":   [
+        {
+      "id": "Blob.Attach",
+      "label": "Attach File",
+      "category": "Files",
+      "description": "Attach the input file to the document given as a parameter. If the xpath points to a blob list then the blob is appended to the list, otherwise the xpath should point to a blob property. If the save parameter is set the document modification will be automatically saved. Return the blob.",
+      "url": "Blob.Attach",
+      "signature":       [
+        "blob",
+        "blob"
+      ],
+      "params":       [
+                {
+          "name": "document",
+          "type": "document",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "save",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        },
+                {
+          "name": "xpath",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": ["file:content"]
+        }
+      ]
+    },
+        {
+      "id": "Seam.ChangeTab",
+      "label": "Change Tab",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Change the selected tab for the current document. Preserve the current input.",
+      "url": "Seam.ChangeTab",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params": [      {
+        "name": "tab",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Seam.ClearClipboard",
+      "label": "Clear Clipboard",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Clear the clipboard content.",
+      "url": "Seam.ClearClipboard",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.ClearWorklist",
+      "label": "Clear Worklist",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Clear the worklist content.",
+      "url": "Seam.ClearWorklist",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params": []
+    },
+        {
+      "id": "Context.FetchDocument",
+      "label": "Context Document",
+      "category": "Fetch",
+      "description": "Fetch the input of the context as a document. The document will become the input for the next operation.",
+      "url": "Context.FetchDocument",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.ToPDF",
+      "label": "Convert To PDF",
+      "category": "Files",
+      "description": "Convert the input file to a PDF and return the new file.",
+      "url": "Blob.ToPDF",
+      "signature":       [
+        "blob",
+        "blob",
+        "bloblist",
+        "bloblist"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.Copy",
+      "label": "Copy",
+      "category": "Document",
+      "description": "Copy the input document into the given folder. The name parameter will be used as the copy name otherwise if not specified the original name will be preserved. The target folder can be specified as an absolute or relative path (relative to the input document) as an UID or by using an EL expression. Return the newly created document (the copy).",
+      "url": "Document.Copy",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "target",
+          "type": "document",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Document.Create",
+      "label": "Create",
+      "category": "Document",
+      "description": "Create a new document in the input folder. You can initialize the document properties using the 'properties' parameter. The properties are specified as <i>key=value<\/i> pairs separated by a new line. The key used for a property is the property xpath. To specify multi-line values you can use a \\ charcater followed by a new line. <p>Example:<pre>dc:title=The Document Title<br>dc:description=foo bar<\/pre>. Returns the created document.",
+      "url": "Document.Create",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "properties",
+          "type": "properties",
+          "required": false,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Workflow.CreateTask",
+      "label": "Create task",
+      "category": "Services",
+      "description": "Enable to create a task binded to the document. <p><b>Directive<\/b>, <b>comment<\/b> and <b>due date<\/b> will be displayed in the task list of the user. In <b>accept operation chain<\/b> and <b>reject operation chain<\/b> fields, you can put the operation chain ID of your choice among the one you contributed. Those operations will be executed when the user validates the task, depending on  whether he accepts or rejects the task. You have to specifiy a variable name (the <b>key for ... <\/b> parameter) to resolve target users and groups to which the task will be assigned. You can use Get Users and Groups to update a context variable with some users and groups. If you check <b>create one task per actor<\/b>, each of the actors will have a task to achieve, versus \"the first who achieve the task makes it disappear for the others\".<\/p>",
+      "since": "5.3.2",
+      "url": "Workflow.CreateTask",
+      "signature":       [
+        "documents",
+        "documents",
+        "document",
+        "document"
+      ],
+      "params":       [
+                {
+          "name": "task name",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "due date",
+          "type": "date",
+          "required": false,
+          "order": 1,
+          "values": []
+        },
+                {
+          "name": "directive",
+          "type": "string",
+          "required": false,
+          "order": 2,
+          "values": []
+        },
+                {
+          "name": "comment",
+          "type": "string",
+          "required": false,
+          "order": 3,
+          "values": []
+        },
+                {
+          "name": "accept operation chain",
+          "type": "string",
+          "required": false,
+          "order": 4,
+          "values": []
+        },
+                {
+          "name": "reject operation chain",
+          "type": "string",
+          "required": false,
+          "order": 5,
+          "values": []
+        },
+                {
+          "name": "variable name for actors prefixed ids",
+          "type": "string",
+          "required": false,
+          "order": 6,
+          "values": []
+        },
+                {
+          "name": "additional list of actors prefixed ids",
+          "type": "stringlist",
+          "required": false,
+          "order": 7,
+          "values": []
+        },
+                {
+          "name": "create one task per actor",
+          "type": "boolean",
+          "required": false,
+          "order": 8,
+          "values": ["true"]
+        }
+      ]
+    },
+        {
+      "id": "Document.Delete",
+      "label": "Delete",
+      "category": "Document",
+      "description": "Delete the input document. The previous context input will be restored for the next operation.",
+      "url": "Document.Delete",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.Fetch",
+      "label": "Document",
+      "category": "Fetch",
+      "description": "Fetch a document from the repository given its reference (path or UID). The document will become the input of the next operation.",
+      "url": "Document.Fetch",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": [      {
+        "name": "value",
+        "type": "document",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Seam.DownloadFile",
+      "label": "Download file",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Download a file",
+      "url": "Seam.DownloadFile",
+      "signature":       [
+        "blob",
+        "void"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.Create",
+      "label": "File From URL",
+      "category": "Fetch",
+      "description": "Create a file from a given URL. The file parameter specify how to retrieve the file content. It should be an URL to the file you want to use as the source. You can also use an expression to get an URL from the context. Returns the created file.",
+      "url": "Blob.Create",
+      "signature":       [
+        "void",
+        "blob"
+      ],
+      "params":       [
+                {
+          "name": "file",
+          "type": "resource",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "encoding",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "filename",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "mime-type",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Document.Filter",
+      "label": "Filter List",
+      "category": "Document",
+      "description": "Filter the input list of documents given a condition. The condition can be expressed using 4 parameters: types, facets, lifecycle and condition. If more than one parameter is specified an AND will be used to group conditions. <br>The 'types' paramter can take a comma separated list of document type: File,Note.<br>The 'facet' parameter can take a single facet name.<br> The 'life cycle' parameter takes a name of a life cycle state the document should have.<br>The 'condition' parameter can take any EL expression.<p>Returns the list of documents that match the filter condition.",
+      "url": "Document.Filter",
+      "signature":       [
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "class",
+          "type": "string",
+          "required": false,
+          "widget": "Option",
+          "order": 0,
+          "values":           [
+            "Any",
+            "Regular Document",
+            "Document Link",
+            "Published Document",
+            "Document Proxy",
+            "Document Version",
+            "Immutable Document",
+            "Mutable Document"
+          ]
+        },
+                {
+          "name": "condition",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "facet",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "lifecycle",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "pathStartsWith",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "types",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Document.SetLifeCycle",
+      "label": "Follow Life Cycle Transition",
+      "category": "Document",
+      "description": "Follow the given transition on the input document life cycle state",
+      "url": "Document.SetLifeCycle",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": [      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Document.GetChildren",
+      "label": "Get Children",
+      "category": "Document",
+      "description": "Get the children of a document. The list of children will become the input for the next operation",
+      "url": "Document.GetChildren",
+      "signature":       [
+        "document",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.Get",
+      "label": "Get Document File",
+      "category": "Files",
+      "description": "Get a file attached on the input document. The file location is specified using an xpath to the blob property of the document. Returns the file",
+      "url": "Blob.Get",
+      "signature":       [
+        "document",
+        "blob",
+        "documents",
+        "bloblist"
+      ],
+      "params": [      {
+        "name": "xpath",
+        "type": "string",
+        "required": false,
+        "order": 0,
+        "values": ["file:content"]
+      }]
+    },
+        {
+      "id": "Blob.GetList",
+      "label": "Get Document Files",
+      "category": "Files",
+      "description": "Get a list of files that are attached on the input document. The files location should eb specified using the blob list property xpath. Return a list of files.",
+      "url": "Blob.GetList",
+      "signature":       [
+        "document",
+        "bloblist",
+        "documents",
+        "bloblist"
+      ],
+      "params": [      {
+        "name": "xpath",
+        "type": "string",
+        "required": false,
+        "order": 0,
+        "values": ["files:files"]
+      }]
+    },
+        {
+      "id": "Relations.GetRelations",
+      "label": "Get Linked Documents",
+      "category": "Services",
+      "description": "Get the relations for the input document. The 'outgoing' parameter ca be used to specify whether outgoing or incoming relations should be returned. Retuns a document list.",
+      "url": "Relations.GetRelations",
+      "signature":       [
+        "document",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "outgoing",
+          "type": "boolean",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "predicate",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Document.GetParent",
+      "label": "Get Parent",
+      "category": "Document",
+      "description": "Get the parent document of the input document. The parent document will become the input for the next operation. You can use the 'type' parameter to specify which parent to select from the document ancestors",
+      "url": "Document.GetParent",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": [      {
+        "name": "type",
+        "type": "string",
+        "required": false,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Document.GetPrincipalEmails",
+      "label": "Get Principal Emails",
+      "category": "Users & Groups",
+      "description": "Fetch the principal emails that have a given permission on the input document and then set them in the context under the given key variable name. The operation returns the in
+BODY: put document. You can later use the list of principals set by this operation on the context from another operation. The 'key' argument represents the variable name and the 'permission' argument the permission to check. If the 'ignore groups' argument is false then groups are recusively resolved, extracting user members of these groups. Be <b>warned<\/b> that this may be a very consuming operation.<ul>Note that <li><\/li><li>groups are not included<\/li><li>the list pushed into the context is a string list of emails.<\/li><\/ul>",
+      "url": "Document.GetPrincipalEmails",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params":       [
+                {
+          "name": "permission",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "variable name",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "ignore groups",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["false"]
+        }
+      ]
+    },
+        {
+      "id": "Document.GetUsersAndGroups",
+      "label": "Get Users and Groups",
+      "category": "Users & Groups",
+      "description": "Fetch the users and groups that have a given permission on the input document and then set them in the context under the given key variable name. The operation returns the input document. You can later use the list of identifiers set by this operation on the context from another operation. The 'key' argument represents the variable name and the 'permission' argument the permission to check. If the 'ignore groups' argument is false then groups will be part of the result. If the 'resolve groups' argument is true then groups are recusively resolved, adding user members of these groups in place of them. Be <b>warned<\/b> that this may be a very consuming operation. If the 'prefix identifiers' argument is true, then user identifiers are prefixed by 'user:' and groups identifiers are prefixed by 'group:'.",
+      "url": "Document.GetUsersAndGroups",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params":       [
+                {
+          "name": "permission",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "variable name",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "ignore groups",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["false"]
+        },
+                {
+          "name": "prefix identifiers",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["false"]
+        },
+                {
+          "name": "resolve groups",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["false"]
+        }
+      ]
+    },
+        {
+      "id": "Blob.Post",
+      "label": "HTTP Post",
+      "category": "Files",
+      "description": "Post the input file to a target HTTP URL. Return back the input file",
+      "url": "Blob.Post",
+      "signature":       [
+        "blob",
+        "blob"
+      ],
+      "params": [      {
+        "name": "url",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Document.Lock",
+      "label": "Lock",
+      "category": "Document",
+      "description": "Lock the input document in the name of the given 'owner'. The lock owner is an username and identify the user that owns the lock on the document. If the owner is not specified the current user will be used as the owner. Return back the locked document",
+      "url": "Document.Lock",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": [      {
+        "name": "owner",
+        "type": "string",
+        "required": false,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Audit.Log",
+      "label": "Log Event In Audit",
+      "category": "Services",
+      "description": "Log events into audit for each of the input document. The operation accept as input one ore more documents that are returned back as the output.",
+      "url": "Audit.Log",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "event",
+          "type": "string",
+          "required": true,
+          "widget": "AuditEvent",
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "category",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": ["Automation"]
+        },
+                {
+          "name": "comment",
+          "type": "string",
+          "required": false,
+          "widget": "TextArea",
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Document.Move",
+      "label": "Move",
+      "category": "Document",
+      "description": "Move the input document into the target folder",
+      "url": "Document.Move",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "target",
+          "type": "document",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Document.MultiPublish",
+      "label": "Multi-Publish",
+      "category": "Document",
+      "description": "Publish the input document(s) into several target sections. The target is evaluated to a document list (can be a path, UID or EL expression). Existing proxy is overrided if the override attribute is set. Returns a list with the created proxies.",
+      "url": "Document.MultiPublish",
+      "signature":       [
+        "document",
+        "documents",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "target",
+          "type": "documents",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "override",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        }
+      ]
+    },
+        {
+      "id": "Seam.NavigateTo",
+      "label": "Navigate to Document",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Navigate to the input document. The outcome of the UI action will be stored in the operation chain context as the 'Outcome' variable. Returns back the document.",
+      "url": "Seam.NavigateTo",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params": [      {
+        "name": "view",
+        "type": "string",
+        "required": false,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Document.Pop",
+      "label": "Pop Document",
+      "category": "Push & Pop",
+      "description": "Restore the last saved input document in the context input stack. This operation must be used only if a PUSH operation was previously made. Return the last <i>pushed<\/i> document.",
+      "url": "Document.Pop",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.PopList",
+      "label": "Pop Document List",
+      "category": "Push & Pop",
+      "description": "Restore the last saved input document list in the context input stack",
+      "url": "Document.PopList",
+      "signature":       [
+        "void",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.Pop",
+      "label": "Pop File",
+      "category": "Push & Pop",
+      "description": "Restore the last saved input file in the context input stack. This operation must be used only if a PUSH operation was previously made. Return the last <i>pushed<\/i> file.",
+      "url": "Blob.Pop",
+      "signature":       [
+        "void",
+        "blob"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.PopList",
+      "label": "Pop File List",
+      "category": "Push & Pop",
+      "description": "Restore the last saved input file list in the context input stack",
+      "url": "Blob.PopList",
+      "signature":       [
+        "void",
+        "bloblist"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.Publish",
+      "label": "Publish Document",
+      "category": "Document",
+      "description": "Publish the input document into the target section. Existing proxy is overrided if the override attribute is set. Return the created proxy.",
+      "url": "Document.Publish",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "target",
+          "type": "document",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "override",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        }
+      ]
+    },
+        {
+      "id": "Document.Pull",
+      "label": "Pull Document",
+      "category": "Push & Pop",
+      "description": "Restore the first saved input document in the context input stack. This operation must be used only if a PUSH operation was previously made. Return the first <i>pushed<\/i> document.",
+      "url": "Document.Pull",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.PullList",
+      "label": "Pull Document List",
+      "category": "Push & Pop",
+      "description": "Restore the first saved input document list in the context input stack",
+      "url": "Document.PullList",
+      "signature":       [
+        "void",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.Pull",
+      "label": "Pull File",
+      "category": "Push & Pop",
+      "description": "Restore the last saved input file in the context input stack. This operation must be used only if a PUSH operation was previously made. Return the first <i>pushed<\/i> file.",
+      "url": "Blob.Pull",
+      "signature":       [
+        "void",
+        "blob"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.PullList",
+      "label": "Pull File List",
+      "category": "Push & Pop",
+      "description": "Restore the first saved input file list in the context input stack",
+      "url": "Blob.PullList",
+      "signature":       [
+        "void",
+        "bloblist"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.Push",
+      "label": "Push Document",
+      "category": "Push & Pop",
+      "description": "Push the input document on the context stack. The document can be restored later as the input using the corrresponding pop operation. Returns the input document.",
+      "url": "Document.Push",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.PushList",
+      "label": "Push Document List",
+      "category": "Push & Pop",
+      "description": "Push the input document list on the context stack. The document list can be restored later as the input using the corrresponding pop operation. Returns the input document list.",
+      "url": "Document.PushList",
+      "signature":       [
+        "documents",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.Push",
+      "label": "Push File",
+      "category": "Push & Pop",
+      "description": "Push the input file on the context stack. The file can be restored later as the input using the corrresponding pop operation. Returns the input file.",
+      "url": "Blob.Push",
+      "signature":       [
+        "blob",
+        "blob"
+      ],
+      "params": []
+    },
+        {
+      "id": "Blob.PushList",
+      "label": "Push File List",
+      "category": "Push & Pop",
+      "description": "Push the input file list on the context stack. The file list can be restored later as the input using the corrresponding pop operation. Returns the input file list.",
+      "url": "Blob.PushList",
+      "signature":       [
+        "bloblist",
+        "bloblist"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.AddToClipboard",
+      "label": "Push to Clipboard",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Add a input document(s) to clipboard. Returns back the document(s)",
+      "url": "Seam.AddToClipboard",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.PushDocument",
+      "label": "Push to Seam Context",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Push the current input document into Seam context. Returns back the document.",
+      "url": "Seam.PushDocument",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params":       [
+                {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "scope",
+          "type": "string",
+          "required": true,
+          "widget": "Option",
+          "order": 0,
+          "values":           [
+            "session",
+            "conversation",
+            "page",
+            "event"
+          ]
+        }
+      ]
+    },
+        {
+      "id": "Seam.AddToWorklist",
+      "label": "Push to Worklist",
+      "category": "User Interface",
+      "requires": "Seam",
+      "description": "Add the input document(s) to worklist. Returns back the document(s)",
+      "url": "Seam.AddToWorklist",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.Query",
+      "label": "Query",
+      "category": "Fetch",
+      "description": "Perform a query on the repository. The query result will become the input for the next operation.",
+      "url": "Document.Query",
+      "signature":       [
+        "void",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "query",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "language",
+          "type": "string",
+          "required": false,
+          "widget": "Option",
+          "order": 0,
+          "values": ["NXQL"]
+        }
+      ]
+    },
+        {
+      "id": "Document.RemoveACL",
+      "label": "Remove ACL",
+      "category": "Document",
+      "description": "Remove a named Acces Control List from the input document(s). Returns the document(s).",
+      "url": "Document.RemoveACL",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": [      {
+        "name": "acl",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Blob.Remove",
+      "label": "Remove File",
+      "category": "Files",
+      "description": "Remove the file attached to the input document as specified by the 'xpath' parameter. If the 'xpath' point to a blob list then the list will be cleared. If the file to remove is part of a list it will be removed from the list otherwise the 'xpath' should point to a blob property that will be removed. If the save parameter is set the document modification will be automatically saved. Return the document.",
+      "url": "Blob.Remove",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params":       [
+                {
+          "name": "save",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        },
+                {
+          "name": "xpath",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": ["file:content"]
+        }
+      ]
+    },
+        {
+      "id": "Document.RemoveProperty",
+      "label": "Remove Property",
+      "category": "Document",
+      "description": "Remove the given property of the input document(s) as specified by the 'xpath' parameter. If the property points to a list then clear the list. Removing a property means setting it to null. Return the document(s).",
+      "url": "Document.RemoveProperty",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params":       [
+                {
+          "name": "xpath",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "save",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        }
+      ]
+    },
+        {
+      "id": "Document.Reload",
+      "label": "Reset",
+      "category": "Document",
+      "description": "Reload the input document from the repository. Any previous modification made by the chain on this document will be lost if these modifications were not saved. Return the reloaded document.",
+      "url": "Document.Reload",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Context.RestoreDocumentInput",
+      "label": "Restore Document Input",
+      "category": "Context",
+      "description": "Restore the document input from a context variable given its name. Return the document.",
+      "url": "Context.RestoreDocumentInput",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": [      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Context.RestoreDocumentsInput",
+      "label": "Restore Documents Input",
+      "category": "Context",
+      "description": "Restore the document list input from a context variable given its name. Return the document list.",
+      "url": "Context.RestoreDocumentsInput",
+      "signature":       [
+        "void",
+        "documents"
+      ],
+      "params": [      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Context.RestoreBlobInput",
+      "label": "Restore File Input",
+      "category": "Context",
+      "description": "Restore the file input from a context variable given its name. Return the file.",
+      "url": "Context.RestoreBlobInput",
+      "signature":       [
+        "void",
+        "blob"
+      ],
+      "params": [      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Context.RestoreBlobsInput",
+      "label": "Restore Files Input",
+      "category": "Context",
+      "description": "Restore the file list input from a context variable given its name. Return the files.",
+      "url": "Context.RestoreBlobsInput",
+      "signature":       [
+        "void",
+        "bloblist"
+      ],
+      "params": [      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Context.RunDocumentOperation",
+      "label": "Run Document Chain",
+      "category": "Chain Execution",
+      "description": "Run an operation chain which is returning a document in the current context. The input for the chain ro run is the current input of the operation. Return the output of the chain as a document.",
+      "url": "Context.RunDocumentOperation",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": [      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Context.RunOperation",
+      "label": "Run Operation",
+      "category": "Chain Execution",
+      "description": "Run an operation chain in the current context",
+      "url": "Context.RunOperation",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params": [      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Context.RunScript",
+      "label": "Run Script",
+      "category": "Scripting",
+      "description": "Run a script which content is specified as text in the 'script' parameter",
+      "url": "Context.RunScript",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params": [      {
+        "name": "script",
+        "type": "string",
+        "required": true,
+        "widget": "TextArea",
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Document.Save",
+      "label": "Save",
+      "category": "Document",
+      "description": "Save in the repository any modification that was done on the input document. Returns the saved document.",
+      "url": "Document.Save",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.SaveSession",
+      "label": "Save Session",
+      "category": "Chain Execution",
+      "description": "Commit any changes made by the operation on the documents. This can be used to explicitely commit changes. This operation can be executed on any type of input. The input of this operation will be preserved as the input for the next operation in the chain.",
+      "url": "Document.SaveSession",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params": []
+    },
+        {
+      "id": "Notification.SendMail",
+      "label": "Send E-Mail",
+      "category": "Notification",
+      "description": "Send an email using the input document to the specified recipients.",
+      "url": "Notification.SendMail",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "from",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "widget": "TextArea",
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "subject",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "to",
+          "type": "stringlist",
+          "required": true,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Document.SetACE",
+      "label": "Set ACL",
+      "category": "Document",
+      "description": "Set Acces Control Entry on the input document(s). Returns the document(s).",
+      "url": "Document.SetACE",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "permission",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "user",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "acl",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": ["local"]
+        },
+ 
+BODY:                {
+          "name": "grant",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        },
+                {
+          "name": "overwrite",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        }
+      ]
+    },
+        {
+      "id": "Context.SetVar",
+      "label": "Set Context Variable",
+      "category": "Context",
+      "description": "Set a context variable given a name and the value. To compute the value at runtime from the current context you should use an EL expression as the value. This operation works on any input type and return back the input as the output.",
+      "url": "Context.SetVar",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params":       [
+                {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "value",
+          "type": "object",
+          "required": true,
+          "order": 0,
+          "values": []
+        }
+      ]
+    },
+        {
+      "id": "Context.SetInputAsVar",
+      "label": "Set Context Variable From Input",
+      "category": "Context",
+      "description": "Set a context variable that points to the current input object. You must give a name for the variable. This operation works on any input type and return back the input as the output.",
+      "url": "Context.SetInputAsVar",
+      "signature":       [
+        "void",
+        "void"
+      ],
+      "params": [      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Blob.Set",
+      "label": "Set File",
+      "category": "Document",
+      "description": "Set the input file to the given property on the input document. If the xpath points to a blob list then the blob is appended to the list, otherwise the xpath should point to a blob property. If the save parameter is set the document modification will be automatically saved. Return the document.",
+      "url": "Blob.Set",
+      "signature":       [
+        "document",
+        "document"
+      ],
+      "params":       [
+                {
+          "name": "file",
+          "type": "blob",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "save",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        },
+                {
+          "name": "xpath",
+          "type": "string",
+          "required": false,
+          "order": 0,
+          "values": ["file:content"]
+        }
+      ]
+    },
+        {
+      "id": "Document.CreateVersion",
+      "label": "Snapshot Version",
+      "category": "Document",
+      "description": "Create a new version for the input document. Any modification made on the document by the chain will be automatically saved. Increment version if this was specified through the 'snapshot' parameter. Returns the live document (not the version).",
+      "url": "Document.CreateVersion",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": [      {
+        "name": "increment",
+        "type": "string",
+        "required": false,
+        "widget": "Option",
+        "order": 0,
+        "values":         [
+          "None",
+          "Minor",
+          "Major"
+        ]
+      }]
+    },
+        {
+      "id": "Seam.FetchFromClipboard",
+      "label": "UI Clipboard",
+      "category": "Fetch",
+      "requires": "Seam",
+      "description": "Get clipboard content from the UI context.",
+      "url": "Seam.FetchFromClipboard",
+      "signature":       [
+        "void",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.GetCurrentDocument",
+      "label": "UI Current Document",
+      "category": "Fetch",
+      "requires": "Seam",
+      "description": "Get the current Document from the UI context.",
+      "url": "Seam.GetCurrentDocument",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.GetCurrentDomain",
+      "label": "UI Current Domain",
+      "category": "Fetch",
+      "requires": "Seam",
+      "description": "Get the current Domain from the UI context.",
+      "url": "Seam.GetCurrentDomain",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.GetCurrentWorkspace",
+      "label": "UI Current Workspace",
+      "category": "Fetch",
+      "requires": "Seam",
+      "description": "Get the current Workspace from the UI context.",
+      "url": "Seam.GetCurrentWorkspace",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.FetchDocument",
+      "label": "UI Document From Seam",
+      "category": "Fetch",
+      "requires": "Seam",
+      "description": "Fetch a document from the Seam context given its Seam name.",
+      "url": "Seam.FetchDocument",
+      "signature":       [
+        "void",
+        "document"
+      ],
+      "params": [      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "order": 0,
+        "values": []
+      }]
+    },
+        {
+      "id": "Seam.GetSelectedDocuments",
+      "label": "UI Selected documents",
+      "category": "Fetch",
+      "requires": "Seam",
+      "description": "Fetch the documents selected in the current folder listing",
+      "url": "Seam.GetSelectedDocuments",
+      "signature":       [
+        "void",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Seam.FetchFromWorklist",
+      "label": "UI Worklist",
+      "category": "Fetch",
+      "requires": "Seam",
+      "description": "Get worklist content from the UI context.",
+      "url": "Seam.FetchFromWorklist",
+      "signature":       [
+        "void",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.Unlock",
+      "label": "Unlock",
+      "category": "Document",
+      "description": "Unlock the input document. The unlock will be executed in the name of the current user. An user can unlock a document only if has the UNLOCK permission granted on the document or if it the same user as the one that locked the document. Return the unlocked document",
+      "url": "Document.Unlock",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params": []
+    },
+        {
+      "id": "Document.Update",
+      "label": "Update Properties",
+      "category": "Document",
+      "description": "Set multiple properties on the input document. The properties are specified as <i>key=value<\/i> pairs separated by a new line. The key used for a property is the property xpath. To specify multi-line values you can use a \\ charcater followed by a new line. <p>Example:<pre>dc:title=The Document Title<br>dc:description=foo bar<\/pre>. Returns back the updated document.",
+      "url": "Document.Update",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "properties",
+          "type": "properties",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "save",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        }
+      ]
+    },
+        {
+      "id": "Document.SetProperty",
+      "label": "Update Property",
+      "category": "Document",
+      "description": "Set a single property value on the input document. The property is specified using its xpath. The document is automatically saved if 'save' parameter is true. If you unset the 'save' you need to save it later using Save Document operation. Return the modified document.",
+      "url": "Document.SetProperty",
+      "signature":       [
+        "document",
+        "document",
+        "documents",
+        "documents"
+      ],
+      "params":       [
+                {
+          "name": "value",
+          "type": "serializable",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "xpath",
+          "type": "string",
+          "required": true,
+          "order": 0,
+          "values": []
+        },
+                {
+          "name": "save",
+          "type": "boolean",
+          "required": false,
+          "order": 0,
+          "values": ["true"]
+        }
+      ]
+    },
+        {
+      "id": "Blob.CreateZip",
+      "label": "Zip",
+      "category": "Files",
+      "description": "Create a zip file from the input file(s). If no file name is given the first file name in the input will be used. Returns the zip file.",
+      "url": "Blob.CreateZip",
+      "signature":       [
+        "blob",
+        "blob",
+        "bloblist",
+        "blob"
+      ],
+      "params": [      {
+        "name": "filename",
+        "type": "string",
+        "required": false,
+        "order": 0,
+        "values": []
+      }]
+    }
+  ],
+  "chains": []
+}
