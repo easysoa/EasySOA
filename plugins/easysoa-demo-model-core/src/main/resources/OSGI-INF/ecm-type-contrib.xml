@@ -39,7 +39,7 @@
     <type id="WorkspaceRoot" coretype="WorkspaceRoot">
       <subtypes>
         <type>Service</type>
-        <type>ServiceDescriptor</type>
+        <!--<type>ServiceDescriptor</type>-->
         <type>WSDL</type>
       </subtypes>
     </type>
@@ -47,7 +47,7 @@
     <type id="Workspace" coretype="Workspace">
       <subtypes>
         <type>Service</type>
-        <type>ServiceDescriptor</type>
+        <!--<type>ServiceDescriptor</type>-->
         <type>WSDL</type>
       </subtypes>
     </type>
@@ -55,7 +55,7 @@
     <type id="Folder" coretype="Folder">
       <subtypes>
         <type>Service</type>
-        <type>ServiceDescriptor</type>
+        <!--<type>ServiceDescriptor</type>-->
         <type>WSDL</type>
       </subtypes>
     </type>

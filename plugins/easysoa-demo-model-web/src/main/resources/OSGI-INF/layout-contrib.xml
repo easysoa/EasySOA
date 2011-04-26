@@ -78,9 +78,9 @@
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">endp:servicename</property>
+            <property name="sortPropertyName">endp:serviceid</property>
           </properties>
-          <widget>listing_servicename</widget>
+          <widget>listing_serviceid</widget>
         </column>
         
         <column>
@@ -199,13 +199,13 @@
               <field>data.endp.protocols</field>
             </fields>
           </widget>
-          <widget name="listing_servicename" type="text">
+          <widget name="listing_serviceid" type="text">
             <labels>
-              <label mode="any">label.easysoa.endpoints.servicename</label>
+              <label mode="any">label.easysoa.endpoints.serviceid</label>
             </labels>
             <translated>true</translated>
             <fields>
-              <field>data.endp.servicename</field>
+              <field>data.endp.serviceid</field>
             </fields>
           </widget>
           <widget name="listing_implementations" type="text">

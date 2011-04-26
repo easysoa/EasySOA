@@ -1,13 +1,12 @@
 package org.easysoa.services;
 
-import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.tools.RelationService;
 import org.easysoa.tools.VocabularyService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -25,7 +24,6 @@ public class ServiceListener implements EventListener {
 	private static final String SERVICE_DOCTYPE = "Service";
 	private static final String SERVICE_VOCABULARY = "servicelist";
 
-	@SuppressWarnings("unchecked")
 	public void handleEvent(Event event) {
 		
 		// Check event type
@@ -44,29 +42,75 @@ public class ServiceListener implements EventListener {
 		
 		// Service list vocabulary management
 		try {
-			String name = doc.getTitle();
-			if (VocabularyService.entryExists(session, SERVICE_VOCABULARY, name))
-				VocabularyService.removeEntry(session, SERVICE_VOCABULARY, name);
-			VocabularyService.addEntry(session, SERVICE_VOCABULARY, name, name);
+			if (!VocabularyService.entryExists(session, SERVICE_VOCABULARY, doc.getId()))
+				VocabularyService.addEntry(session, SERVICE_VOCABULARY, doc.getId(), doc.getTitle());
 		} catch (Exception e) {
 			log.error("Error while updating vocabulary", e);
 		}
 
-		// Manage relations with descriptors
+		// Manage relation with descriptor
 		try {
-			List<String> descriptors = (List<String>) doc.getProperty("serviceTags",
-					"descriptors");
-			RelationService.clearRelations(doc);
-			for (String descriptor : descriptors) {
-				DocumentModelList models = session
-						.query("select * from Document where dc:title = '"
-								+ descriptor + "'");
 
-				for (DocumentModel model : models) {
-					RelationService.createRelation(model, doc);
-					model.setProperty("endpoint", "servicename", doc.getName());
-					session.saveDocument(model);
+			DocumentModel savedDoc = session.getDocument(doc.getRef());
+			String savedDescId = (String) savedDoc.getProperty("serviceTags", "descriptorid");
+
+			log.info("SERV: "+savedDescId + "  vs " + doc.getProperty("serviceTags", "descriptorid"));
+			
+			if (savedDescId != null &&
+					!savedDescId.equals(doc.getProperty("serviceTags", "descriptorid"))) {
+
+				log.info("Service's descriptor modified, updating relations.");
+				
+				// Clear old relation
+				RelationService.clearRelations(doc);
+				if (savedDescId != null && !savedDescId.equals("")) {
+					DocumentModel savedDesc = session.getDocument(new IdRef(savedDescId));
+					if (savedDesc != null &&
+								!savedDesc.getProperty("endpoints", "serviceid").equals("")) {
+							RelationService.clearRelations(savedDesc);
+							savedDesc.setProperty("endpoints", "serviceid", "");
+							log.info("Old descriptor cleared.");
+							// TODO: Save without saving loop...
+					}
+					else {
+						log.warn("Old service document of ID "+savedDescId+" not found.");
+					}
 				}
+				
+				// Create new relation
+				String newDescId = (String) doc.getProperty("serviceTags", "descriptorid");
+				if (newDescId != null && !newDescId.equals("")) {
+					DocumentModel newDesc = session.getDocument(new IdRef(newDescId));
+					if (newDesc != null) {
+						RelationService.createRelation(newDesc, doc);
+						if (!newDesc.getProperty("endpoints", "serviceid").equals(doc.getId())) {
+							newDesc.setProperty("endpoints", "serviceid", doc.getId());
+							log.info("New descriptor modified.");
+							// TODO: Save without saving loop...
+						}
+					}
+					else {
+						log.error("Service document of ID "+newDescId+" not found.");
+					}
+				}
+				
+				/*
+				// Allow several descriptors
+				List<String> descriptors = (List<String>) doc.getProperty("serviceTags",
+						"descriptors");
+				RelationService.clearRelations(doc);
+				for (String descriptor : descriptors) {
+					DocumentModelList models = session
+							.query("select * from Document where dc:title = '"
+									+ descriptor + "'");
+
+					for (DocumentModel model : models) {
+						RelationService.createRelation(model, doc);
+						model.setProperty("endpoint", "servicename", doc.getName());
+						session.saveDocument(model);
+					}
+				}*/
+				
 			}
 		} catch (Exception e) {
 			log.error("Error while updating relations", e);
@@ -80,10 +124,3 @@ public class ServiceListener implements EventListener {
 		}
 	}
 }
-
-/*
- * Location:
- * /data/home/mkalam-alami/workspace/decompilation/easysoa-demo-model-core
- * -0.1.1/ Qualified Name: org.easysoa.services.ServiceListener JD-Core Version:
- * 0.6.0
- */

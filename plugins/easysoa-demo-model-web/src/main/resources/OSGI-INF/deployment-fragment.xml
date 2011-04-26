@@ -4,12 +4,12 @@
   <require>org.nuxeo.ecm.webapp.core</require>
   <require>org.nuxeo.ecm.platform.lang</require>
 
-  <!--  Enregistrement du module 
+  <!--  Enregistrement du module -->
   <extension target="application#MODULE">
     <module>
       <ejb>${bundle.fileName}</ejb>
     </module>
-  </extension>-->
+  </extension>
   
   <install>
   

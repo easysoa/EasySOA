@@ -7,10 +7,11 @@
   <xs:include schemaLocation="base.xsd" />
   
   <xs:element name="application" type="xs:string" />
+  <xs:element name="uiUrl" type="xs:string" />
   
-  <!-- INTERNE : sélection des descripteurs -->
-  <xs:element name="descriptors" type="nxs:stringList" />
-  <!-- INTERNE : visualisation des implémentations (maintenu en fonction des descripteurs rattachés au service) -->
+  <!-- INTERNE : descriptor selection -->
+  <xs:element name="descriptorid" type="xs:string" />
+  <!-- INTERNE : implémentations visualization (maintained according to the related descriptor) -->
   <xs:element name="implementations" type="xs:string" /> 
 
 </xs:schema>

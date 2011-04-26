@@ -1,4 +1,3 @@
 "id","label","obsolete"
-"Environnement par défaut","Environnement par défaut","0"
-"Production","Production","0"
-"Développement","Développement","0"
+"Deployment","Deployment","0"
+"Testing","Testing","0"

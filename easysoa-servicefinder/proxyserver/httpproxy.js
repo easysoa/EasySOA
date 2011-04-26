@@ -11,7 +11,6 @@ eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
 
 var status = new Object();
 status.foundLinks = new Object();
-status.url = "";
 
 // Send found WSDLs in JSONP format (or JSON by default)
 function getFoundWSDLs(callback) {
@@ -105,7 +104,6 @@ http.createServer(function(request, response) {
 		}
 
 		console.log("Scraping: "+request_url.href);
-		status.url = request_url.href;
 		
 		// Notification to scrapers
 		for (scraper in config.scrapers) {

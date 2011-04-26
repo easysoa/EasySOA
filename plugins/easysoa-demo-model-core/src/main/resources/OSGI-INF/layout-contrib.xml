@@ -60,7 +60,16 @@
 	        <property name="localize">true</property>
 	    </properties>
 	  </widget>
-      <widget name="servicetags_implementations" type="text">
+      <widget name="servicetags_uiurl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicetags.uiurl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>stags:uiUrl</field>
+	      </fields>
+	  </widget>
+      <!--<widget name="servicetags_implementations" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.servicetags.implementations</label>
 	      </labels>
@@ -72,7 +81,7 @@
             <mode value="create">hidden</mode>
             <mode value="edit">hidden</mode>
           </widgetModes>
-	  </widget>
+	  </widget>-->
     </layout>
     
     <layout name="endpoints">
@@ -194,11 +203,11 @@
      </rows>
      <widget name="serviceChooser" type="selectOneDirectory">
 	    <labels>
-	        <label mode="any">label.easysoa.service</label>
+	        <label mode="any">label.easysoa.endpoints.serviceid</label>
 	    </labels>
 	    <translated>true</translated>
 	    <fields>
-	        <field>endp:servicename</field>
+	        <field>endp:serviceid</field>
 	    </fields>
 	    <properties mode="any">
 	        <property name="directoryName">servicelist</property>
@@ -219,18 +228,33 @@
           <widget>descriptorChooser</widget>
         </row>
      </rows>
-     <widget name="descriptorChooser" type="selectManyDirectory">
+     <widget name="descriptorChooser" type="selectOneDirectory">
+	    <labels>
+	        <label mode="any">label.easysoa.servicetags.descriptorid</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	        <field>stags:descriptorid</field>
+	    </fields>
+	    <properties mode="any">
+	        <property name="directoryName">descriptorlist</property>
+	        <property name="localize">true</property>
+	    </properties>
+        <widgetModes>
+            <mode value="view">hidden</mode>
+        </widgetModes>
+	  </widget>
+     <!--<widget name="descriptorChooser" type="selectManyDirectory">
 	    <labels>
 	        <label mode="any">label.easysoa.descriptors</label>
 	    </labels>
 	    <translated>true</translated>
 	    <fields>
-	        <field>stags:descriptors</field> <!-- fsd:dc_nature ? -->
+	        <field>stags:descriptors</field>
 	    </fields>
 	    <properties widgetMode="any">
 	        <property name="directoryName">descriptorlist</property>
 	        <property name="localize">true</property>
-        	<!--<property name="displayLabelOnly">true</property>-->
 	    </properties>
         <properties widgetMode="edit">
             <property name="wrapperMode">row</property>
@@ -238,7 +262,7 @@
         <widgetModes>
             <mode value="view">hidden</mode>
         </widgetModes>
-	  </widget>
+	  </widget>-->
 	</layout>
   </extension>
 </component>

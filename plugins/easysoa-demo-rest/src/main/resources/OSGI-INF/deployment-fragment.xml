@@ -18,17 +18,6 @@
       <include>web/nuxeo.war/**</include>
     </unzip>
     
-    <!-- Copie des traductions -->
-    <mkdir path="nuxeo.war/easysoa-l10n.tmp"/>
-    <unzip from="${bundle.fileName}" to="nuxeo.war/easysoa-l10n.tmp">
-      <include>l10n/**</include>
-    </unzip>
-    <append 
-      from="nuxeo.war/easysoa-l10n.tmp/l10n/messages.properties"
-      to="nuxeo.war/WEB-INF/classes/messages.properties"
-      addNewLine="true"/>
-    <remove dir="nuxeo.war/easysoa-l10n.tmp" />
-    
   </install>
   
   <!-- Pages spécifiques au nouveau mode de navigation virtuelle -->

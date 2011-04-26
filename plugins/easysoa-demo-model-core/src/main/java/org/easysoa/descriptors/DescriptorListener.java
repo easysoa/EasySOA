@@ -1,14 +1,12 @@
 package org.easysoa.descriptors;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.tools.RelationService;
 import org.easysoa.tools.VocabularyService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -26,10 +24,6 @@ public class DescriptorListener implements EventListener {
 	private static final Log log = LogFactory.getLog(DescriptorListener.class);
 	private static final String DESCRIPTOR_DOCTYPE = "ServiceDescriptor";
 	private static final String DESCRIPTOR_VOCABULARY = "descriptorlist";
-
-	// TODO : Reset user cache so that the relations are refreshed in the browser
-	/*@In(create = true)
-	protected transient NavigationContext navigationContext;*/
 
 	public void handleEvent(Event event) {
 		
@@ -56,32 +50,63 @@ public class DescriptorListener implements EventListener {
 		else {
 			return;
 		}
+		
+		// Manage relation with service
+		// TODO: put endpoints:serviceid in a Service Descriptor schema
+		try {
+			
+			DocumentModel savedDoc = session.getDocument(doc.getRef());
+			String savedServiceId = (String) savedDoc.getProperty("endpoints", "serviceid");
+			
+			log.info("DESC: "+savedServiceId + "  vs " + doc.getProperty("endpoints", "serviceid"));
+
+			if (savedServiceId != null &&
+					!savedServiceId.equals(doc.getProperty("endpoints", "serviceid"))) {
+				
+				log.info("Descriptor's service modified, updating relations.");
+				
+				// Clear old relation
+				RelationService.clearRelations(doc);
+				if (savedServiceId != null && !savedServiceId.equals("")) {
+					DocumentModel savedService = session
+						.getDocument(new IdRef(savedServiceId));
+					if (savedService != null
+								&& !savedService.getProperty("serviceTags", "descriptorid").equals("")) {
+							RelationService.clearRelations(savedService);
+							savedService.setProperty("serviceTags", "descriptorid", "");
+							log.info("Old service cleared.");
+							// TODO: Save without saving loop...
+					}
+					else {
+						log.warn("Old descriptor document of ID "+savedServiceId+" not found.");
+					}
+				}
+
+				// Create new relation
+				String newServiceId = (String) doc.getProperty("endpoints", "serviceid");
+				if (newServiceId != null && !newServiceId.equals("")) {
+					DocumentModel newService = session.getDocument(new IdRef(newServiceId));
+					if (newService != null)
+							RelationService.createRelation(newService, doc);
+							if (!newService.getProperty("serviceTags", "descriptorid").equals(doc.getId())) {
+							newService.setProperty("serviceTags", "descriptorid", doc.getId());
+							log.info("New service modified.");
+							// TODO: Save without saving loop...
+					}
+					else {
+						log.error("Descriptor document of ID "+newServiceId+" not found.");
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			log.error("Error while updating relations", e);
+		}
 
 		// Descriptor list vocaulary management
 		try {
-			
-			// New document = new entry
-			if (event.getName().equals("documentCreated")) {
-				String name = doc.getTitle();
-				if (!VocabularyService.entryExists(session, DESCRIPTOR_VOCABULARY,
-						name)) {
-					VocabularyService.addEntry(session, DESCRIPTOR_VOCABULARY, name,
-							name);
-				}
-
-			// Rebuild the whole descriptor list vocaulary
-			// (TODO : instead, remove only the current document entry, fetching the old document by ID)
-			} else {
-				VocabularyService.removeAllEntries(session, DESCRIPTOR_VOCABULARY);
-				DocumentModelList models = session
-						.query("SELECT * FROM Document WHERE ecm:primaryType = 'ServiceDescriptor'OR ecm:primaryType = 'WSDL'");
-
-				List<String> names = new ArrayList<String>();
-				for (DocumentModel model : models) {
-					names.add(model.getTitle());
-				}
-				VocabularyService.addEntries(session, DESCRIPTOR_VOCABULARY, names);
-			}
+			if (!VocabularyService.entryExists(session, DESCRIPTOR_VOCABULARY, doc.getId()))
+				VocabularyService.addEntry(session, DESCRIPTOR_VOCABULARY, doc.getId(), doc.getTitle());
 		} catch (Exception e) {
 			log.error("Error while updating vocabulary", e);
 		}
@@ -89,9 +114,6 @@ public class DescriptorListener implements EventListener {
 		// Save
 		try {
 			session.save();
-			/* NavigationContext navigationCxt = (NavigationContext) Contexts
-					.getConversationContext().get("navigationContext");
-			navigationCxt.resetCurrentContext();*/
 		} catch (Exception e) {
 			log.error("Error while saving descriptor", e);
 		}
