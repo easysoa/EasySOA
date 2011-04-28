@@ -34,9 +34,16 @@ public class DescriptorListener implements EventListener {
 		}
 		
 		CoreSession session = ctx.getCoreSession();
-
-		// Check document type + Document-type specific processing
 		DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
+
+		// Document removal
+		log.info(event.getName());
+		if (event.getName().equals("documentRemoved")) {
+			VocabularyService.removeEntry(session, DESCRIPTOR_VOCABULARY, doc.getId());
+			return;
+		}
+		
+		// Check document type + Document-type specific processing
 		if (doc == null) {
 			return;
 		}

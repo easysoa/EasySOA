@@ -1,10 +1,10 @@
 package org.easysoa.rest;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
-import org.jboss.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.platform.ui.web.restAPI.BaseStatelessNuxeoRestlet;
@@ -27,11 +27,9 @@ import org.restlet.resource.StringRepresentation;
  *
  */
 public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
-	private static final Logger log = Logger
-			.getLogger(WSDLScraperRestlet.class);
+	
 	private static final String REPOSITORY = "default";
 	private static final String HTTP = "http://";
-	private static final String API_PATH = "wsdlscraper/";
 
 	public void handle(Request request, Response response) {
 		super.initRepository(response, REPOSITORY);
@@ -40,20 +38,18 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 		String failure = null;
 		JSONObject result = new JSONObject();
 		try {
-			//result.put("html", "");
 			result.put("foundLinks", "");
 		} catch (JSONException e) {
-			log.error("Cannot initialize JSON object.", e);
-			failure = e.getMessage();
+			failure = "Cannot initialize JSON object: " + e.getMessage();
 		}
 		
 		// URL parsing 
 		String url = null;
 		try {
-			url = RequestURL.parse(request, API_PATH);
+			url = new RequestArgs(request.getResourceRef().toString()).getRemaining();
+			result.put("url", url);
 		} catch (Exception e) {
-			failure = e.getMessage();
-			log.error("Cannot rebuild URL", e);
+			failure = "Cannot rebuild URL: " + e.getMessage();
 		}
 
 		// Web page download
@@ -62,8 +58,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			try {
 				f.download();
 			} catch (Exception e) {
-				log.info("WSDL download problem : " + e.getMessage());
-				failure = e.getMessage();
+				failure = "WSDL download problem: " + e.getMessage();
 			}
 		}
 
@@ -73,20 +68,42 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			URL context = new URL(url);
 			HtmlCleaner cleaner = new HtmlCleaner();
 			TagNode cleanHtml = cleaner.clean(f.getFile());
+			
+			// Find app name / service name
+			TagNode[] titles = cleanHtml.getElementsByName("title", true);
+			if (titles.length > 0) {	
+				result.put("applicationName", titles[0].getText().toString().
+						replaceAll("([\n\r]|[ ]*WSDL|[ ]*wsdl)", "").trim());
+			}
+			
+			// Find links
 			Object[] links = cleanHtml.evaluateXPath("//a");
-
 			for (Object o : links) {
 				TagNode link = (TagNode) o;
-				String ref = new URL(context, link.getAttributeByName("href")).toString();
-				String name = (link.getText() != null) ? link.getText().toString() : ref;
-				int i = 1;
-				if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
-					while (foundLinks.has(name)) {
-						name = (i == 1 ? name + i++ : name.substring(0, name
-								.length() - 1))
-								+ i++;
+				try {
+					String ref = new URL(context, link.getAttributeByName("href")).toString();
+					String name = (link.getText() != null) ? link.getText().toString() : ref;
+					
+					// Truncate if name is an URL (serviceName cannot contain slashes)
+					if (name.contains("/")) {
+						String[] nameParts = name.split("/");
+						name = nameParts[nameParts.length-1].replaceAll("(\\?|\\.|wsdl)", "");
 					}
-					foundLinks.put(name, ref);
+					
+					// Append digits to the link name if it already exists
+					int i = 1;
+					if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
+						while (foundLinks.has(name)) {
+							name = (i == 1 ? name + i++ : name.substring(0, name
+									.length() - 1))
+									+ i++;
+						}
+						foundLinks.put(name, ref);
+					}
+					
+				}
+				catch (MalformedURLException e) {
+					// Nothing (link parsing failure)
 				}
 			}
 			result.put("foundLinks", foundLinks);
@@ -97,13 +114,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			//result.put("html", cleaner.getInnerHtml(cleanHtml));
 
 		} catch (Exception e) {
-			try {
-				result.append("step", "parsing "+e);
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}
-			log.info("Page download problem : " + e.getMessage());
-			failure = e.getMessage();
+			failure = "Page download problem: (" + e.getClass() + ") " + e.getMessage();
 		}
 
 		// Format result
@@ -112,8 +123,8 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			result.append("error", failure);
 			resultJSONP = JSONP.format(result, request);
 		} catch (Exception e) {
-			log.warn("Cannot format JSONP message : " + e.getMessage());
-			failure = e.getMessage();
+			failure = "Cannot format JSONP message : " + e.getMessage();
+
 		}
 		
 		// Send result
@@ -130,7 +141,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 						MediaType.APPLICATION_JSON, Language.ALL,
 						CharacterSet.UTF_8));
 		} catch (Exception e) {
-			log.warn("Cannot send message : " + e.getMessage());
+			failure = "Cannot send message : " + e.getMessage();
 		}
 
 		f.delete();
@@ -146,7 +157,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 					tag.setAttribute(attribute, new URL(context, attrValue).toString());
 				}
 				catch (Exception e) {
-					log.debug("Could not set "+attrValue+" to absolute path.");
+					// Nothing (Could not set attrValue to absolute path)
 				}
 			}
 		}

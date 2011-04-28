@@ -8,12 +8,14 @@
     <listener name="descriptorlistener" class="org.easysoa.descriptors.DescriptorListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
+      <event>documentRemoved</event>
     </listener>
     
     <listener name="servicelistener" class="org.easysoa.services.ServiceListener" 
     	async="false" postCommit="false" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
+      <event>documentRemoved</event>
     </listener>
     
     <listener name="movedocumentslistener" class="org.easysoa.treestructure.MoveDocumentsListeners" order="120">

@@ -72,10 +72,15 @@ public class WSDLService {
 
 				doc.setProperty("endpoints", "uri", uris);
 				doc.setProperty("endpoints", "machine", machine);
-				if (doc.getProperty("endpoints", "provider").equals("")) {
-					doc.setProperty("endpoints", "provider", new URL(
-							((Endpoint) service.getEndpoints().get(0))
-									.getAddress()).getAuthority());
+				try {
+					if (doc.getProperty("endpoints", "provider").equals("")) {
+						doc.setProperty("endpoints", "provider", new URL(
+								((Endpoint) service.getEndpoints().get(0))
+										.getAddress()).getAuthority());
+					}
+				}
+				catch(Exception e) {
+					// Nothing (authority extraction failed)
 				}
 
 				if (doc.getProperty("endpoints", "environment").equals(""))

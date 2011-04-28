@@ -1,6 +1,7 @@
 package org.easysoa.rest;
 
 import org.easysoa.descriptors.WSDLService;
+import org.easysoa.services.ServiceListener;
 import org.easysoa.treestructure.WorkspaceDeployer;
 import org.jboss.logging.Logger;
 import org.json.JSONObject;
@@ -20,8 +21,10 @@ import org.restlet.resource.StringRepresentation;
  * Currently uploads blindly any given file.
  * 
  * Use:
- * .../nuxeo/restAPI/wsdlupload/{url}
+ * .../nuxeo/restAPI/wsdlupload/{applicationName}/{serviceName}/{url}
  * Params:
+ * {applicationName} The application name, optional (ignored if empty) 
+ * {serviceName} The service name, optional (ignored if empty)
  * {url} The file to upload, without the "http://" prefix (other protocols not supported), and not encoded
  * 
  * @author mkalam-alami
@@ -31,7 +34,6 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 	
 	private static final Logger log = Logger.getLogger(WSDLUploadRestlet.class);
 	private static final String REPOSITORY = "default";
-	private static final String API_PATH = "wsdlupload/";
 
 	public void handle(Request request, Response response) {
 		super.initRepository(response, REPOSITORY);
@@ -39,9 +41,13 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 		String failure = null;
 
 		// URL Parsing
-		String url = null;
+		String serviceName = null, applicationName = null, url = null;
 		try {
-			url = RequestURL.parse(request, API_PATH);
+			RequestArgs args = new RequestArgs(request.getResourceRef().toString());
+			applicationName = args.getNext();
+			serviceName = args.getNext();
+			url = args.getRemaining();
+			
 			result.append("url", url);
 		} catch (Exception e) {
 			failure = e.getMessage();
@@ -66,13 +72,27 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 
 		if (failure == null) {
 			try {
-				// Document creation
+				// WSDL creation
 				DocumentModel model = this.session.createDocumentModel(
 						WorkspaceDeployer.DESCRIPTORS_WORKSPACE + WSDLService.WSDL_DOCTYPE, IdUtils
 								.generateStringId(), WSDLService.WSDL_DOCTYPE);
 				model.setProperty("file", "content", f.getBlob());
-				this.session.createDocument(model);
+				model = this.session.createDocument(model);
 				this.session.save();
+				
+				// Service creation
+				if (serviceName != null || applicationName != null) {
+					DocumentModel serviceModel = this.session.createDocumentModel(
+							WorkspaceDeployer.SERVICES_WORKSPACE,
+							IdUtils.generateStringId(),
+							ServiceListener.SERVICE_DOCTYPE);
+					serviceModel.setProperty("dublincore", "title", serviceName);
+					serviceModel.setProperty("serviceTags", "application", applicationName);
+					serviceModel.setProperty("serviceTags", "descriptorid", model.getId());
+					this.session.createDocument(serviceModel);
+					this.session.save();
+				}
+				
 			} catch (ClientException e) {
 				log.error("Failed to create WSDL", e);
 				failure = e.getMessage();

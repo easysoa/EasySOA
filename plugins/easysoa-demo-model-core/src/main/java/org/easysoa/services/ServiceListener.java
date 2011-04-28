@@ -20,9 +20,10 @@ import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
  */
 public class ServiceListener implements EventListener {
 	
+	public static final String SERVICE_DOCTYPE = "Service";
+	public static final String SERVICE_VOCABULARY = "servicelist";
+	
 	private static final Log log = LogFactory.getLog(ServiceListener.class);
-	private static final String SERVICE_DOCTYPE = "Service";
-	private static final String SERVICE_VOCABULARY = "servicelist";
 
 	public void handleEvent(Event event) {
 		
@@ -39,6 +40,13 @@ public class ServiceListener implements EventListener {
 		}
 
 		CoreSession session = ctx.getCoreSession();
+		
+		// Document removal
+		log.info(event.getName());
+		if (event.getName().equals("documentRemoved")) {
+			VocabularyService.removeEntry(session, SERVICE_VOCABULARY, doc.getId());
+			return;
+		}
 		
 		// Service list vocabulary management
 		try {
