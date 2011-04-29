@@ -63,11 +63,12 @@ public class DescriptorListener implements EventListener {
 		try {
 			
 			DocumentModel savedDoc = session.getDocument(doc.getRef());
-			String savedServiceId = (String) savedDoc.getProperty("endpoints", "serviceid");
+			String savedServiceId = (String) savedDoc.getProperty("endpoints", "serviceid"),
+					newServiceId = (String) doc.getProperty("endpoints", "serviceid");
 			
 			log.info("DESC: "+savedServiceId + "  vs " + doc.getProperty("endpoints", "serviceid"));
 
-			if (savedServiceId != null &&
+			if (savedServiceId == null ||
 					!savedServiceId.equals(doc.getProperty("endpoints", "serviceid"))) {
 				
 				log.info("Descriptor's service modified, updating relations.");
@@ -75,14 +76,15 @@ public class DescriptorListener implements EventListener {
 				// Clear old relation
 				RelationService.clearRelations(doc);
 				if (savedServiceId != null && !savedServiceId.equals("")) {
-					DocumentModel savedService = session
-						.getDocument(new IdRef(savedServiceId));
-					if (savedService != null
-								&& !savedService.getProperty("serviceTags", "descriptorid").equals("")) {
+					DocumentModel savedService = session.getDocument(new IdRef(savedServiceId));
+					if (savedService != null) {
+						String oldServiceDescId = (String) savedService.getProperty("serviceTags", "descriptorid");
+						if (oldServiceDescId != null && !oldServiceDescId.isEmpty()) {
 							RelationService.clearRelations(savedService);
 							savedService.setProperty("serviceTags", "descriptorid", "");
 							log.info("Old service cleared.");
 							// TODO: Save without saving loop...
+						}
 					}
 					else {
 						log.warn("Old descriptor document of ID "+savedServiceId+" not found.");
@@ -90,15 +92,16 @@ public class DescriptorListener implements EventListener {
 				}
 
 				// Create new relation
-				String newServiceId = (String) doc.getProperty("endpoints", "serviceid");
-				if (newServiceId != null && !newServiceId.equals("")) {
+				if (newServiceId != null && !newServiceId.isEmpty()) {
 					DocumentModel newService = session.getDocument(new IdRef(newServiceId));
-					if (newService != null)
-							RelationService.createRelation(newService, doc);
-							if (!newService.getProperty("serviceTags", "descriptorid").equals(doc.getId())) {
+					if (newService != null) {
+						RelationService.createRelation(newService, doc);
+						String newServiceDescId = (String) newService.getProperty("serviceTags", "descriptorid");
+						if (newServiceDescId == null || !newServiceDescId.equals(doc.getId())) {
 							newService.setProperty("serviceTags", "descriptorid", doc.getId());
 							log.info("New service modified.");
 							// TODO: Save without saving loop...
+						}
 					}
 					else {
 						log.error("Descriptor document of ID "+newServiceId+" not found.");

@@ -18,4 +18,5 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/nxdirectories-contrib.xml,
  OSGI-INF/eventlistener-contrib.xml,
  OSGI-INF/actions-contrib.xml,
+ OSGI-INF/lifecycle-contrib.xml,
  OSGI-INF/WorkspaceDeployerComponent.xml
