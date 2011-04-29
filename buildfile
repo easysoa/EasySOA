@@ -1,15 +1,22 @@
 repositories.remote << 'http://www.ibiblio.org/maven2'
 repositories.remote << 'http://maven.nuxeo.org/nexus/content/groups/public'
 
-# -------------------------------
-# CONFIG
-# -------------------------------
+############### CONFIG
 
-THIS_VERSION = '0.1.0-SNAPSHOT'
+THIS_VERSION = '0.1.1'
+NUXEO_PATH = '/opt/nuxeo-dm'
 
-# -------------------------------
-# DEPENDENCIES
-# -------------------------------
+# Generated
+NUXEO_PLUGINS = NUXEO_PATH+'/nxserver/plugins/'
+
+############### ALIASES
+
+task :nuxeo_dist => ['easysoa:plugins:easysoa-demo-model-web:package',
+                 'easysoa:plugins:easysoa-demo-model-web:package',
+                 'easysoa:plugins:easysoa-demo-rest:package',
+                 'easysoa:plugins:dist']
+
+############### DEPENDENCIES
 
 # NUXEO : Nuxeo & dependancies
 COMMONS_LOGGING = 'commons-logging:commons-logging:jar:1.0'
@@ -49,31 +56,36 @@ RESTLET = 'org.restlet:org.restlet:jar:1.0.7'
 # JSON
 JSON = 'org.json:json:jar:20070829'
 
-# -------------------------------
-# PROJECT DEFINITIONS
-# -------------------------------
+############### PROJECT DEFINITIONS
 
 define 'easysoa' do
   
   # Nuxeo plugins
   define 'plugins' do
   
+    task :dist do
+      rm FileList[_(NUXEO_PLUGINS+'*.jar')]
+      cp FileList[_('easysoa-demo-model-core/target/*.jar'),
+        _('easysoa-demo-model-web/target/*.jar'),
+        _('easysoa-demo-rest/target/*.jar')], NUXEO_PLUGINS
+    end
+  
     desc 'Plugin Nuxeo - Core'
     define 'easysoa-demo-model-core' do
-      project.version = '0.1.1'
+      project.version = THIS_VERSION
       package :jar
       compile.with NUXEO, EASYWSDL
     end
     
     desc 'Plugin Nuxeo - Web'
     define 'easysoa-demo-model-web' do
-      project.version = '0.1.1'
+      project.version = THIS_VERSION
       package :jar
     end
     
     desc 'Plugin Nuxeo - REST API'
     define 'easysoa-demo-rest' do
-      project.version = '0.1.1'
+      project.version = THIS_VERSION
       package :jar
       compile.with project('easysoa-demo-model-core'), NUXEO, HTMLCLEANER, RESTLET, JSON
     end
