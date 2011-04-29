@@ -3,7 +3,8 @@ package org.easysoa.rest;
 import org.easysoa.descriptors.WSDLService;
 import org.easysoa.services.ServiceListener;
 import org.easysoa.treestructure.WorkspaceDeployer;
-import org.jboss.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -32,7 +33,7 @@ import org.restlet.resource.StringRepresentation;
  */
 public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 	
-	private static final Logger log = Logger.getLogger(WSDLUploadRestlet.class);
+	private static final Log log = LogFactory.getLog(WSDLUploadRestlet.class);
 	private static final String REPOSITORY = "default";
 
 	public void handle(Request request, Response response) {
