@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.openwide.sca</groupId>
+  <artifactId>proxy</artifactId>
+  <packaging>jar</packaging>
+
+  <name>proxy</name>
+  <url>http://maven.apache.org</url>
+  
+  <parent>
+    <groupId>com.openwide</groupId>
+    <artifactId>pureAirFlowers-Release</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <build>
+	  <plugins>
+	  	<plugin>
+	    	<groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <configuration>
+	        	<source>1.6</source>
+	            <target>1.6</target>
+	        </configuration>
+	    </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.openwide.sca.proxy.ProxyLauncher</mainClass>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>	    
+	  </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>javax.ws.rs</groupId>
+    	<artifactId>jsr311-api</artifactId>
+    	<version>${jsr311.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>aopalliance</groupId>
+    	<artifactId>aopalliance</artifactId>
+    	<version>${aopalliance.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>osoa</groupId>
+    	<artifactId>osoa-java-api</artifactId>
+    	<version>${osoa.version}</version>
+    </dependency>
+    <!-- OW2 FraSCAti WS Binding. -->
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-ws</artifactId>
+      <version>1.4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.ow2.frascati</groupId>
+    	<artifactId>frascati-binding-rest</artifactId>
+    	<version>1.4-SNAPSHOT</version>
+    </dependency>
+    <!-- Intents -->
+    <dependency>
+    	<groupId>com.openwide.sca.intents</groupId>
+    	<artifactId>autoRearmFuseIntent</artifactId>
+    	<version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.openwide.sca.intents</groupId>
+    	<artifactId>logIntent</artifactId>
+    	<version>1.0-SNAPSHOT</version>
+    </dependency>    
+    <dependency>
+    	<groupId>org.ow2.frascati.intent</groupId>
+    	<artifactId>frascati-debug</artifactId>
+    	<version>1.3</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.ow2.frascati</groupId>
+    	<artifactId>frascati-assembly-factory</artifactId>
+    	<version>1.4-SNAPSHOT</version>
+    </dependency>
+    <!--<dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>ecore</artifactId>
+    	<version>2.2.3</version>
+    </dependency>-->
+    <!--<dependency>
+    	<groupId>org.eclipse.core</groupId>
+    	<artifactId>org.eclipse.core.runtime</artifactId>
+    	<version>3.4.0</version>
+    </dependency>-->
+  </dependencies>
+</project>

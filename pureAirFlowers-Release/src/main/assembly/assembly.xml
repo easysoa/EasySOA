@@ -1,0 +1,36 @@
+
+<assembly>
+	<id>with-dep</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<!-- unpack les dépendances avant de les inclures dans le jar final de 
+				l'application -->
+			<unpack>true</unpack>
+			<scope>runtime</scope>
+			<useProjectArtifact>false</useProjectArtifact>
+		</dependencySet>
+	</dependencySets>
+	<moduleSets>
+		<moduleSet>
+
+			<!-- Enable access to all projects in the current multimodule build! -->
+			<!--<useAllReactorProjects>true</useAllReactorProjects> -->
+
+			<!-- Now, select which projects to include in this module-set. -->
+			<includes>
+				<include>com.openwide.sca.intents:autoRearmFuseIntent</include>
+				<include>com.openwide.sca.intents:logIntent</include>
+				<include>com.openwide.sca:proxy</include>
+				<include>pureairflowers.clients:pureAirFlowerServer</include>
+			</includes>
+			<binaries>
+				<outputDirectory></outputDirectory>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+	</moduleSets>
+</assembly>
