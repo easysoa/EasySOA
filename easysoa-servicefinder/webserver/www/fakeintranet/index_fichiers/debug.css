@@ -1,0 +1,130 @@
+/* Debug stylesheets */
+td.debugheader
+{
+        background-color : #eeeeee;
+        border-top : 1px solid #444488;
+        border-bottom : 1px solid #444488;
+        font-size : 0.9em;
+        font-family: Arial, Helvetica, sans-serif;
+}
+
+pre.debugtransaction
+{
+        background-color : #f8f6d8;
+}
+
+td.timingpoint1
+{
+        background-color : #ffffff;
+        border-top : 1px solid #444488;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.9em;
+}
+
+td.timingpoint2
+{
+        background-color : #eeeeee;
+        border-top : 1px solid #444488;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.9em;
+}
+
+p.comment /* Class to be used during development for quick comments that someone should notice easily */
+{
+    background-color: #ffff00;
+    font-weight: bold;
+    padding: 4px;
+    margin: 4px;
+    border: 2px dashed;
+    display: block; /* Set this attribute to "none" to hide the comments */
+}
+
+/* eZSetup stuff */
+td.ezsetup_header
+{
+        background-color : #eeeeee;
+        border-top : 1px solid #444488;
+        border-bottom : 1px solid #444488;
+        font-size : 120%;
+        font-family: Arial, Helvetica, sans-serif;
+}
+
+td.ezsetup_req
+{
+        font-size : 80%;
+        font-family: Arial, Helvetica, sans-serif;
+}
+
+.ezsetup_critical
+{
+        background-color : #eeeeee;
+        border-top : 1px solid #444488;
+        border-bottom : 1px solid #444488;
+        font-size : 120%;
+        font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+        color: #FF0000;
+}
+
+.ezsetup_uncritical
+{
+        background-color : #eeeeee;
+        border-top : 1px solid #444488;
+        border-bottom : 1px solid #444488;
+        font-size : 120%;
+        font-family: Arial, Helvetica, sans-serif;
+
+        /*color: #E8E800;*/
+        color: #E2A31D;
+}
+
+.ezsetup_pass
+{
+        background-color : #eeeeee;
+        border-top : 1px solid #444488;
+        border-bottom : 1px solid #444488;
+        font-size : 120%;
+        font-family: Arial, Helvetica, sans-serif;
+
+        color: #00B500;
+}
+
+div.debug-toolbar label
+{
+    font-weight: normal;
+}
+
+/* used templates statistics */
+td.used_templates_stats1
+{
+        background-color : #ffffff;
+        border-top : 1px solid #444488;
+        font-family: Arial, Helvetica, sans-serif;
+}
+
+td.used_templates_stats2
+{
+        background-color : #eeeeee;
+        border-top : 1px solid #444488;
+        font-family: Arial, Helvetica, sans-serif;
+}
+
+div#debug
+{
+    text-align: left;
+}
+
+div#debug table + h2, table + h3
+{
+    margin-top: 1em;
+}
+
+table#templateusage th + th, table#templateusage td + td, table#timeaccumulators th + th, table#timeaccumulators td + td, table#timingpoints th + th, table#timingpoints td + td
+{
+        padding: 0.25em 0.5em 0.25em 0.5em;
+}
+
+div#debug th
+{
+    text-align: left;
+}

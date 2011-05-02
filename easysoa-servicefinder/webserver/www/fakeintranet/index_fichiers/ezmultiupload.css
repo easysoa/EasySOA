@@ -1,0 +1,64 @@
+.content-view-ezmultiupload #multiupload {
+    clear: both;
+    height: 0;
+}
+
+.content-view-ezmultiupload #thumbnails {
+    margin-top: 10px;
+}
+
+.content-view-ezmultiupload .thumbnail-block {
+    padding: 5px;
+    margin: 5px;
+    border: 3px solid #eee;
+    float: left;
+    width: 130px;
+    height: 150px;
+}
+
+.content-view-ezmultiupload .thumbnail-class-name {
+    clear: both;
+    padding: 3px;
+    background-color: #efefef;
+    text-align: center;
+}
+
+.content-view-ezmultiupload .thumbnail-movie-icon {
+    text-align: center;
+}
+
+.content-view-ezmultiupload #multiuploadProgress {
+    width: 320px;
+    display: none;
+    opacity: 0;
+    margin: 10px 0;
+    padding: 3px;
+    border: 1px solid #ffcc00;
+    background-color: #fff8eb;
+}
+
+.content-view-ezmultiupload #multiuploadProgress p {
+    word-break:keep-all;
+    line-height: 1;
+    font-weight:bold;
+}
+
+.content-view-ezmultiupload #multiuploadProgress #multiuploadProgressMessage {
+    color: #ff3366;
+}
+
+.content-view-ezmultiupload #multiuploadProgressBarOutline {
+    width: 300px;
+    padding: 1px;
+    border: 1px solid #ccc;
+}
+
+.content-view-ezmultiupload #multiuploadProgressBar {
+    width: 0px;
+    height: 8px;
+    background-color: #fc8c00;
+}
+
+.content-view-ezmultiupload #cancelUploadButton {
+    visibility: hidden;
+}

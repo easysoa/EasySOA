@@ -1,0 +1,136 @@
+.main #menu_header #main_menu {
+    color: #fff;
+    list-style-type: none;
+    float: right;
+    width: 720px;
+    height: 23px;
+    margin-top: 3px;
+    font-weight: bold;
+}
+
+.main #menu_header #main_menu ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+    padding-top: 5px;
+    /*padding-bottom: 3px;*/
+    line-height: 1em;
+    list-style: none;
+    z-index: 90;
+    float: right;
+    background: repeat-x right bottom;
+}
+
+.main #menu_header #main_menu ul li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    background: transparent;
+    font-size: 1em;
+    line-height: 1.5em;
+    list-style-type: none;
+    padding: 0 0.1em;
+}
+
+.main #menu_header #main_menu ul li.sep {
+    color: #000;
+    padding: 0.8em 0em 0.5em 0em;
+}
+
+.main #menu_header #main_menu ul li a {
+    float: left;
+    display: block;
+    width: auto;
+    background: transparent;
+    text-decoration: none;
+    /*color: #333333;*/ /*padding-bottom: 3px;*/
+    margin: 0;
+    border-bottom: 0px solid transparent;
+    padding: 0 0.5em 7px;
+}
+
+.main #menu_header #main_menu ul li a span.menu_out {
+    /*display: block;*/
+    visibility: visible;
+    /*z-index: 95;*/
+    position: absolute;
+}
+
+.main #menu_header #main_menu ul li a span.menu_over {
+    /*display: none;*/
+    visibility: hidden;
+    /*z-index: 100;*/
+    position: relative;
+    /*
+     top: 0px;
+     left: 0px;
+     visibility: hidden;
+     float: none;
+     */
+}
+
+.main #menu_header #main_menu ul li a.selected, .main #menu_header #main_menu ul li a:hover {
+    padding-bottom: 3px;
+    text-decoration: none;
+    border-bottom: 4px solid;
+}
+
+/*.main #menu_header #main_menu ul li a.selected.menu_out, .main #menu_header #main_menu ul li a:focus.menu_out, .main #menu_header #main_menu ul li a:hover.menu_out, .main #menu_header #main_menu ul li a:active.menu_out {
+    visibility: hidden;
+}
+
+.main #menu_header #main_menu ul li a.selected.menu_over, .main #menu_header #main_menu ul li a:focus.menu_over, .main #menu_header #main_menu ul li a:hover.menu_over, .main #menu_header #main_menu ul li a:active.menu_over {
+    visibility: visible;
+}*/
+
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+.main #menu_header #main_menu ul li a {
+    color: #333333;
+}
+
+.main #menu_header #main_menu ul.level2, .main #menu_header #main_menu ul.level3 {
+    position: absolute;
+    top: 23px !important;
+    left: 0px !important;
+    /*visibility: hidden;*/
+    display: none;
+    background: #fff;
+    font-weight: normal;
+    text-align: left;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    border: 1px solid;
+}
+
+.main #menu_header #main_menu ul.level2 li, .main #menu_header #main_menu ul.level3 li {
+    border-bottom: 0px solid #fff;
+    float: none;
+    margin: 0;
+    padding: 0;
+    width: 150px;
+    height: auto;
+}
+
+.main #menu_header #main_menu ul.level2 li a, .main #menu_header #main_menu ul.level3 li a {
+    padding: 0px 0px 0px 5px;
+    background-image: url(../images/dotted.gif);
+    background-position: bottom;
+    background-repeat: repeat-x;
+    font-size: 0.9em;
+    font-weight: bold;
+    border-bottom: 0px solid #fff;
+    height: auto;
+    float: none;
+}
+
+.main #menu_header #main_menu ul.level2 li a:hover, .main #menu_header #main_menu ul.level3 li a:hover {
+    background-color: #f3f3f3;
+    /*
+     background-image: none;
+     background-image: url(../images/dotted.gif);
+     background-position:bottom;
+     padding: 0px 0px 0px 5px;
+     */
+    border-bottom: 0px solid #fff;
+}

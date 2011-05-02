@@ -1,0 +1,32 @@
+/*
+ couleur openwide #007fb1
+ couleur accelance #7ab41e
+ couleur os4i #c80d1d
+ */
+.main #menu_header #main_menu  ul {
+	background-image: url(../images/gradient_main_menu.jpg);
+}
+
+.main #menu_header #main_menu ul li a.selected  , .main #menu_header #main_menu  ul li a:hover { /*
+ couleur openwide #278dba
+ couleur accelance #7ab41e
+ couleur os4i #c80d1d
+ */
+	color: #278dba;
+	/*
+ couleur openwide #007fb1
+ couleur accelance #7ab41e
+ couleur os4i #c80d1d
+ */
+	border-color-bottom: #067caf;
+}
+
+/* End IE5-Mac hack */
+.main #menu_header #main_menu  ul.level2 , .main #menu_header #main_menu ul.level3 {
+	/*
+ couleur openwide #007fb1
+ couleur accelance #7ab41e
+ couleur os4i #c80d1d
+ */
+	border-color: #067caf;
+}
