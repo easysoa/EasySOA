@@ -41,7 +41,7 @@
     	<version>${frascati.tinfi.oo.version}</version>
     </dependency>
     <dependency>
-    	<groupId>ws.rs</groupId>
+    	<groupId>javax.ws.rs</groupId>
     	<artifactId>jsr311-api</artifactId>
     	<version>${jsr311.version}</version>
     </dependency>     
