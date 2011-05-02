@@ -2,6 +2,7 @@ package org.easysoa.rest;
 
 import org.easysoa.descriptors.WSDLService;
 import org.easysoa.services.ServiceListener;
+import org.easysoa.tools.VocabularyService;
 import org.easysoa.treestructure.WorkspaceDeployer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,10 +80,10 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 								.generateStringId(), WSDLService.WSDL_DOCTYPE);
 				model.setProperty("file", "content", f.getBlob());
 				model = this.session.createDocument(model);
-				this.session.save();
 				
 				// Service creation
 				if (serviceName != null || applicationName != null) {
+					
 					DocumentModel serviceModel = this.session.createDocumentModel(
 							WorkspaceDeployer.SERVICES_WORKSPACE,
 							IdUtils.generateStringId(),
@@ -90,9 +91,21 @@ public class WSDLUploadRestlet extends BaseStatelessNuxeoRestlet {
 					serviceModel.setProperty("dublincore", "title", serviceName);
 					serviceModel.setProperty("serviceTags", "application", applicationName);
 					serviceModel.setProperty("serviceTags", "descriptorid", model.getId());
-					this.session.createDocument(serviceModel);
+					serviceModel = this.session.createDocument(serviceModel);
+
+					model.setProperty("endpoints", "serviceid", serviceModel.getId());
+					this.session.saveDocument(model);
+					
 					this.session.save();
+
+					// New application
+					if (applicationName != null
+							&& !VocabularyService.entryExists(session, "application", applicationName)) {
+						VocabularyService.addEntry(session, "application", applicationName, applicationName);
+					}
 				}
+				
+				this.session.save();
 				
 			} catch (ClientException e) {
 				log.error("Failed to create WSDL", e);

@@ -1,0 +1,502 @@
+/* PAGELAYOUT CSS - 20060522 */
+
+/* FULL PAGE */
+
+div#page
+{
+    width: 100%; /* This can be changed to any fixed width if desired */
+    margin: 0 auto 0 auto; /* General method for centering content if fixed page width, for other browsers than IE */
+    text-align: left; /* Reset IE method for centering page, to stop all other content on the page from centering */
+}
+
+div#page-content-position
+{
+    background-image: url(../images/bg.png);
+    background-repeat: repeat-x;
+    background-position: left 30px;
+}
+
+div#page-content
+{
+    background-image: url(../images/page-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center 30px;
+}
+
+/* HEADER */
+
+div#header-position
+{
+    background-color: #FFFFFF;
+}
+
+div#header
+{
+    margin: 0 auto;
+    text-align: left;
+    width: 770px;
+}
+
+div#header ul
+{
+    margin: 0;
+    padding: 0.25em 0 0.25em 0;
+}
+
+div#header ul li
+{
+    padding: 0;
+    display: inline;
+    margin-left: 1em;
+    background-image: none;
+}
+
+div#logo
+{
+    float: left;
+    margin: 0 0 0 1.5em;
+}
+
+div#languages
+{
+    text-align: right;
+    font-size: 0.85em;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    height: 18px;
+}
+
+div#languages a
+{
+    color: #a4a4a4;
+    text-decoration: none;
+}
+
+div#languages ul li
+{
+    background-image: url(../images/lang-li-bg.png);
+    background-position: 0 0.5em;
+    padding-left: 12px;
+    margin-left: 0.5em;
+}
+
+div#languages li.current_siteaccess a
+{
+    color: #c70000;
+}
+div#languages ul li.current_siteaccess
+{
+    background-image: url(../images/lang-li-curr-bg.png);
+}
+
+div#links
+{
+    text-align: right;
+    font-size: 0.85em;
+    font-weight: normal;
+    clear: both;
+}
+
+div#links ul li
+{
+    background-image: url(../images/links-li-bg.gif);
+    background-position: 0 0.5em;
+    padding-left: 12px;
+    margin-left: 0.5em;
+}
+
+div#links a
+{
+    color: #666666;
+    text-decoration: none;
+}
+
+div#searchbox
+{
+    width: 40em; /* Needs to be sufficient width to fit both text input and submit button to avoid Konqueror breaking the line between them */
+    margin-top: 0.5em;
+    margin-right: 1em;
+    padding-left: 5em;
+    text-align: right;
+    float: right;
+}
+
+div#searchbox img
+{
+    display: block;
+    float: left;
+    margin-top: 6px;
+    margin-right: 6px;
+}
+
+input#searchtext
+{
+    border: 1px solid #c3c7c5;
+    background-image: url(../images/search-input-bg.png);
+    background-position: left bottom;
+    background-repeat: repeat-x;
+    font-size: 0.85em;
+    height: 15px;
+    padding: 0;
+    width: 222px;
+    float: left;
+    margin-right: 5px;
+}
+
+input#searchbutton
+{
+    margin-top: 0;
+    margin-bottom: -0.5em;
+    display: block;
+    float: left;
+}
+
+div.corner-box
+{
+    margin: 1em auto 0 auto;
+    float: right;
+    background-color: #E2E2E2;
+    background-image: url(../images/links-bor-cont-bg.png);
+}
+
+div.corner-box div.corner-tl
+{
+    background: url(../images/links-corner-tl.png) no-repeat top left;
+}
+
+div.corner-box div.corner-tr
+{
+    background: url(../images/links-corner-tr.png) no-repeat top right;
+}
+
+div.corner-box div.corner-content
+{
+    height: 1%; /* Preventing margins on content from breaking the box (for IE) */
+    position: relative; /* Fix for IE */
+}
+
+div.corner-box div.corner-content:before, div.corner-box div.corner-content:after /* Preventing margins on content from breaking the box */
+{
+    content: "-";
+    height: 0;
+    visibility: hidden;
+    display: block; 
+    clear: both; 
+}
+
+div.corner-box div.corner-content
+{
+    padding-right: 1em;
+    padding-left: 0.5em;
+}
+
+/* TOPMENU */
+
+div#topmenu ul
+{
+    margin: 0 auto 0 auto;
+    width: 770px;
+}
+
+div#topmenu div#topmenu-firstlevel-position
+{
+    font-size: 0.8em;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    height: 31px;
+    background-image: url(../images/topmenu-bg.png);
+    background-repeat: repeat-x;
+}
+
+div#topmenu ul li
+{
+    background-image: none;
+    float: left;
+    padding: 0;
+    margin: 0;
+    line-height: normal;
+}
+
+div#topmenu ul#topmenu-firstlevel li
+{
+    background-image: url(../images/topmenu-sep.png);
+    background-position: left bottom;
+    background-repeat: no-repeat;
+}
+
+div#topmenu ul#topmenu-firstlevel li a
+{
+    color: #D8D8D8;
+    text-decoration: none;
+    padding: 10px 11px 6px 12px;
+    display: block;
+}
+
+div#topmenu ul#topmenu-firstlevel li.firstli
+{
+    background-image: none;
+}
+
+div#topmenu ul#topmenu-firstlevel li.selected a
+{
+    background-image: url(../images/topmenu-li-sel-bg.png);
+    background-repeat: repeat-x;
+    background-position: left bottom;
+    margin-left: 1px;
+}
+
+div#topmenu div#topmenu-secondlevel-overlay
+{
+    background-color: #000000;
+    height: 27px;
+    opacity: 0.5;
+    -moz-opacity: .50;
+    filter: alpha(opacity=50);
+}
+
+div#topmenu div#topmenu-secondlevel-position
+{
+    height: 27px;
+    margin: -27px auto 0 auto;
+    position: relative;
+}
+
+div#topmenu ul#topmenu-secondlevel li
+{
+    padding: 5px 11px 5px 12px;
+}
+
+div#topmenu ul#topmenu-secondlevel li a
+{
+    color: #9d9d9d;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 0.85em;
+}
+
+div#topmenu ul#topmenu-secondlevel li.selected a
+{
+    color: #FFFFFF;
+}
+
+/* PATH */
+
+div#path
+{
+    padding: 0.5em 0.5em 0.5em 2em;
+    font-size: 0.85em;
+    color: #fff;
+    clear: both;
+    width: 770px;
+    margin: 0 auto;
+}
+
+div#path p
+{
+    height: 1%; /* Preventing margins on content from breaking the box (for IE) */
+    position: relative; /* Fix for IE */
+    margin: 0;
+}
+
+div#path p:before, div#path p:after /* Preventing margins on content from breaking the box */
+{
+    content: "-";
+    height: 0;
+    visibility: hidden;
+    display: block; 
+    clear: both; 
+}
+
+div#path a
+{
+    color: #fff;
+    display: block;
+    float: left;
+    text-decoration: none;
+    background-image: url(../images/path-a-bg.gif);
+    background-repeat: repeat-x;
+    background-position: left bottom;
+    padding: 0 0 1px 0;
+    margin-right: 4px;
+}
+
+div#path span.path-separator, div#path span.path-text
+{
+    color: #fff;
+    display: block;
+    float: left;
+    margin-right: 4px;
+}
+
+/* TOOLBAR */
+
+div#toolbar
+{
+    width: 770px;
+    margin: 0 auto;
+}
+
+/* COLUMNS */
+
+div#columns-position
+{
+   width: 770px;
+   margin: 0 auto 0 auto;
+}
+
+div#columns
+{
+   padding: 0 284px 0 14em;
+}
+
+div.nosidemenu div#columns
+{
+   padding-left: 0;
+}
+
+div.noextrainfo div#columns
+{
+   padding-right: 0;
+}
+
+/* SIDE MENU */
+
+div#sidemenu-position
+{
+    width: 14em;
+    margin-left: -14em;
+    float: left;
+    display: inline; /* Fix for IE double margin bug */
+}
+
+div#sidemenu
+{
+    padding: 0
+}
+
+div.nosidemenu div#sidemenu-position
+{
+    display: none;
+}
+
+div#sidemenu ul
+{
+    list-style-type: none;
+    margin: 0.5em 0 0.5em 0;
+}
+
+div#sidemenu ul li
+{
+    margin: 0.25em 0 0.25em 0;
+    padding: 0;
+    list-style-type: none;
+    list-style-image: none;
+    background-image: none;
+}
+
+div#sidemenu div.box div.box-content
+{
+    padding-left: 0.75em;
+    padding-right: 0;
+}
+
+div#sidemenu h4
+{
+    margin: 0;
+}
+
+div#sidemenu h4 a
+{
+    color: #525345;
+    text-decoration: none;
+}
+
+div#sidemenu ul.menu-list a.selected
+{
+    font-weight: bold;
+}
+
+div#sidemenu ul.submenu-list
+{
+    list-style-type: none;
+    margin-left: 1em;
+}
+
+div#sidemenu ul.submenu-list a.selected
+{
+    font-weight: bold;
+}
+
+div#sidemenu ul.menu-list li a, div#sidemenu ul.submenu-list li a
+{
+    background-image: url(../images/sidemenu_bullet.png);
+    background-position: 0.2em 0.5em;
+    background-repeat: no-repeat;
+    padding-left: 18px;
+    display: block;
+    font-size: 0.85em;
+}
+
+/* MAIN AREA */
+
+div#main-position
+{
+    width: 100%;
+    float: left;
+}
+
+div#main
+{
+    position: relative;
+}
+
+div.nosidemenu div#main-position
+{
+    margin-left: 0;
+}
+
+div.noextrainfo div#main-position
+{
+    margin-right: 0;
+}
+
+/* EXTRA CONTENT */
+
+div#extrainfo-position
+{
+    width: 284px;
+    margin-right: -284px;
+    float: left;
+}
+
+div.noextrainfo div#extrainfo-position
+{
+    display: none;
+}
+
+div#extrainfo
+{
+    padding: 0;
+}
+
+/* FOOTER */
+
+div#footer
+{
+    clear: both; /* Ensures that the footer is pushed properly below the columns */
+    text-align: center;
+    padding-bottom: 1em;
+    margin: 3px auto 0 auto;
+    width: 770px;
+}
+
+div#footer div.border-content
+{
+    padding: 1.25em;
+    text-align: center;
+    font-size: 0.8em;
+    color: #7f7f7f;
+}
+
+div#footer address
+{
+    font-style:normal;
+}

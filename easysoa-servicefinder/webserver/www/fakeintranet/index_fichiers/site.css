@@ -1,0 +1,207 @@
+@charset "utf-8";
+
+a {
+	color:#067CAF;
+}
+
+/************** BLOC DU MILIEU: IMAGE BLEUE CENTREE  ******************************/
+.main #random_image_container {
+    background-image: url(../images-openwide/middle_gradient.jpg);
+}
+
+/************** BLOC INTERROGEZ-NOUS  ******************************/
+.main #container .inter a {
+    background-image: url(../images-openwide/bullet_inter.gif);
+}
+
+.main #container .inter a:hover {
+    color: #067caf;
+}
+
+/************** BLOC EXTRANET  ******************************/
+.main #container #col4 #fExtranet {
+    background-image: url(../images-openwide/bkgExtra.jpg);
+}
+
+.main #container #col4 #fExtranet #bConnect {
+    background-image: url(../images-openwide/btnConnection.gif);
+}
+
+.main #container #col4 #fExtranet #bConnect:hover {
+    background-image: url(../images-openwide/btnConnection_over.gif);
+}
+
+/************* FAQ ****************/
+.main #container #middle_container #faq h4 {
+    color: #067caf;
+}
+
+.main #container #middle_container #faq h2 {
+    color: #067caf;
+}
+
+.main #container #middle_container #faq a:hover {
+    background-image: url(../images-openwide/bullet_inter.gif);
+}
+
+/************** BLOC REF  ******************************/
+.main #container #col4 #ref {
+    border: 2px solid #007caf;
+    color: #007caf;
+}
+
+/************** BLOC NEWSLETTER  ******************************/
+.main #container #col4 #fNewsletter {
+    background-image: url(../images-openwide/gradient_newsletter.jpg);
+}
+
+.main #container #col4 #fNewsletter #bSubscribe {
+    background-image: url(../images-openwide/btnSubscribe.gif);
+}
+
+.main #container #col4 #fNewsletter #bSubscribe:hover {
+    background-image: url(../images-openwide/btnSubscribe_over.gif);
+}
+
+/************** BLOC LINKS  ******************************/
+.main #container #col4 .list {
+    background-color: #007caf;
+    background-image: url(../images-openwide/gradient_list.gif);
+}
+
+/************** BLOC GRIS COINS ARRONDIS  ******************************/
+.main #container #col4 .rounded h4, .main #container #col4 .rounded_middle h4 {
+    color: #067caf;
+}
+
+.main #container #col4 .rounded a, .main #container #col4 .rounded_middle a {
+    background-image: url(../images-openwide/bullet_rounded.gif);
+    color: #067caf;
+}
+
+/********** BLOC SQUARE  ******************/
+.main #container #col4 .square {
+    background-image: url(../images-openwide/gradient_square.gif);
+}
+
+/********** CONTACT ******************/
+.main #container #middle_container #contact h2 {
+    color: #067caf;
+}
+
+.main #container #middle_container #contact label {
+    color: #067caf;
+}
+
+.main #container #middle_container #contact #bSend {
+    background-image: url(../images-openwide/btnSend.gif);
+}
+
+.main #container #middle_container #contact #bSend:hover {
+    background-image: url(../images-openwide/btnSend_over.gif);
+}
+
+/************* EVENT / SEARCH ****************/
+.main #container #middle_container #event h2 {
+    color: #067caf;
+}
+
+.main #container #middle_container #event h5 {
+    color: #1785b4;
+}
+
+.main #container #middle_container #event h6 {
+    color: #009ee0;
+}
+
+.main #container #middle_container #event a, table.list a, div.pagenavigator a {
+    color: #009ee0;
+}
+
+/************* SUBMENU ****************/
+.main #container #col1 .submenu .title {
+    color: #067caf;
+}
+
+.main #container #col1 .submenu .sub_level2:hover, .main #container #col1 .submenu .selected {
+    background-image: url(../images-openwide/arrow_on.gif);
+    color: #067caf;
+}
+
+.main #container #col1 .submenu .block_level3 .sub_level3:hover, .main #container #col1 .submenu .block_level3 .selected2 {
+    color: #067caf;
+}
+
+/************* NEWS ****************/
+.main #container .content .title {
+    color: #067caf;
+}
+
+.main #container .content .date {
+    color: #009ee0;
+}
+
+/************** BLOCS OFFERS / SOLUTIONS ******************************/
+.main #container #offers a, .main #container #col1 div.nos_solutions a {
+    background-image: url(../images-openwide/bullet_offres.gif);
+    color: #067caf;
+}
+
+/************** BLOC GUEST HOME  ******************************/
+.main #container #guest_photo_container {
+    background-image: url(../images-openwide/barre.gif);
+}
+
+.main #container #guest_description .guest_title {
+    color: #067caf;
+}
+
+.main #container #guest_description .read_next {
+    color: #067caf;
+    background-image: url(../images-openwide/readnext.gif);
+}
+
+/***********Block liste simple***********/
+div.block_liste_simple .block_content a {
+	background-image:url(../images-openwide/bullet_offres.gif);
+	color:#067CAF;
+}
+
+/***********Block liste encadrée***********/
+div.block_liste_encadree .block_content a {
+	background-image:url(../images-openwide/bullet_inter.gif);
+}
+
+.block_content .block_content_class {
+	color:#067caf;
+}
+
+.block_content .degrade_horizontal .portlet {
+	background-color:#007CAF;
+	background-image:url(../images-openwide/gradient_square.gif);
+}
+
+.block_content .degrade_vertical .portlet {
+	background-color:#007CAF;
+	background-image:url(../images-openwide/gradient_list.gif);
+}
+
+.block_content .encadre_1 .portlet {
+border:2px solid #007CAF;
+color:#007CAF;
+}
+
+.block_content .encadre_2 .portlet {
+color:#007CAF;
+border: 1px #80BED7 solid;
+border-left-width: 2px;
+border-right-width: 2px;
+}
+
+.block_content .gris .portlet .portlet-title, .block_content .encadre_1 .portlet .portlet-title, .block_content .encadre_2 .portlet .portlet-title  {
+	color: #067caf;
+}
+
+.block_content .gris .portlet ul li, .block_content .encadre_1 .portlet ul li, .block_content .encadre_2 .portlet ul li {
+	list-style-image : url(../images-openwide/arrow_on.gif);
+}

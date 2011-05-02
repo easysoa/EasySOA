@@ -1,0 +1,178 @@
+/* Website Toolbar */
+
+div#ezwt
+{
+    margin: 0.5em auto 0.5em auto;
+}
+
+div#ezwt div.tl
+{
+    background: url(../images/websitetoolbar/ezwt-tl.gif) no-repeat top left;
+}
+
+div#ezwt div.tr
+{
+    background: url(../images/websitetoolbar/ezwt-tr.gif) no-repeat top right;
+}
+
+div#ezwt div.tc
+{
+    background: url(../images/websitetoolbar/ezwt-tc.gif) repeat-x top left;
+}
+
+div#ezwt div.mc
+{
+    background: #e8eaec url(../images/websitetoolbar/ezwt-mc.gif) repeat-x center left;
+}
+
+div#ezwt div.ml
+{
+    background: url(../images/websitetoolbar/ezwt-ml.gif) repeat-y center left;
+}
+
+div#ezwt div.mr
+{
+    background: url(../images/websitetoolbar/ezwt-mr.gif) repeat-y center right;
+}
+
+div#ezwt div.bl
+{
+    background: url(../images/websitetoolbar/ezwt-bl.gif) no-repeat bottom left;
+}
+
+div#ezwt div.br
+{
+    background: url(../images/websitetoolbar/ezwt-br.gif) no-repeat bottom right;
+}
+
+div#ezwt div.bc
+{
+    background: url(../images/websitetoolbar/ezwt-bc.gif) repeat-x bottom left;
+}
+
+div#ezwt div.tc, div#ezwt div.bc
+{
+    height: 4px;
+    font-size: 0;
+}
+
+div#ezwt div.tr, div#ezwt div.mr, div#ezwt div.br
+{
+    padding: 0 4px 0 4px;
+}
+
+div#ezwt-ezlogo
+{
+    margin: 3px 4px 2px 2px;
+    float: left;
+    display: inline; /* Fix for IE */
+}
+
+div#ezwt-oologo
+{
+    margin: 2px 4px 0 2px;
+    float: right;
+}
+
+div#ezwt form
+{
+    margin: 0;
+    padding: 0;
+}
+
+div#ezwt .left
+{
+    margin-left: 4px;
+    float: left;
+    display: inline; /* Fix for IE */
+}
+
+div#ezwt .right
+{
+    margin-right: 4px;
+    float: right;
+    display: inline; /* Fix for IE */
+}
+
+div#ezwt select, div#ezwt input
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.85em;
+}
+
+div#ezwt select
+{
+    color: #4a5054;
+    background-color: #f0f2f4;
+    margin: 2px 0 2px 0;
+    padding: 0;
+    border: 1px solid #ccd2d6;
+    border-color: #abb1b5 #ffffff #ffffff #abb1b5;
+    vertical-align: top;
+}
+
+div#ezwt input
+{
+    margin: 1px 0 0 0;
+}
+
+div#ezwt input.button
+{
+    color: #4a5054;
+    height: 1.8em;
+    background: #f2f4f6 url(../images/websitetoolbar/ezwt-button-bg.gif) repeat-x center left;
+    padding: 0 0.25em 0 0.25em;
+    border: 1px solid;
+    border-color: #ffffff #abb1b5 #abb1b5 #ffffff;
+    overflow: visible;
+}
+
+div#ezwt-help
+{
+    margin: 2px 3px 0 3px;
+    float: right;
+    display: inline; /* Fix for IE */
+}
+
+div#ezwt-help p
+{
+    margin: 0;
+    vertical-align: middle;
+}
+
+div#ezwt-help a
+{
+    font-weight: bold;
+    color: #4a5054;
+    padding: 0 2px 0 2px;
+    text-decoration: none;
+    display: block;
+}
+
+table#ezwt-sort-list tr.ezwt-sort-drag-handler
+{
+    cursor: move;
+}
+
+
+/* General styles */
+
+.hide
+{
+    display: none;
+}
+
+.float-break
+{
+    height: 1%;
+}
+
+.float-break:after
+{
+    content: "-";
+    height: 0;
+    font-size: 0;
+    visibility: hidden;
+    display: block; 
+    clear: both; 
+}

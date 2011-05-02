@@ -37,9 +37,8 @@ public class WSDLService {
 			Blob blob = (Blob) doc.getProperty("file", "content");
 			File tmpFile = File.createTempFile(doc.getId(), null);
 			blob.transferTo(tmpFile);
-
-			String environment = DEFAULT_ENVIRONMENT;
-			String machine = null;
+			
+			String environment = null, machine = null;
 			
 			try {
 
@@ -72,19 +71,24 @@ public class WSDLService {
 
 				doc.setProperty("endpoints", "uri", uris);
 				doc.setProperty("endpoints", "machine", machine);
-				try {
-					if (doc.getProperty("endpoints", "provider").equals("")) {
+
+				String formProvider = (String) doc.getProperty("endpoints", "provider");
+				if (formProvider == null || formProvider.isEmpty()) {
+					try {
 						doc.setProperty("endpoints", "provider", new URL(
-								((Endpoint) service.getEndpoints().get(0))
-										.getAddress()).getAuthority());
+							((Endpoint) service.getEndpoints().get(0))
+									.getAddress()).getAuthority());
+					}
+					catch(Exception e) {
+						// Nothing (authority extraction failed)
 					}
 				}
-				catch(Exception e) {
-					// Nothing (authority extraction failed)
-				}
 
-				if (doc.getProperty("endpoints", "environment").equals(""))
-					doc.setProperty("endpoints", "environment", environment);
+				environment = (String) doc.getProperty("endpoints", "environment");
+				if (environment == null || environment.isEmpty()) {
+					doc.setProperty("endpoints", "environment", DEFAULT_ENVIRONMENT);
+					environment = DEFAULT_ENVIRONMENT;
+				}
 				doc.setProperty("endpoints", "protocols",
 						((Binding) ((Endpoint) service.getEndpoints().get(0))
 								.getBinding()).getTransportProtocol());
@@ -101,7 +105,7 @@ public class WSDLService {
 
 			DocumentModel newService = null;
 			String newServiceId = (String) doc.getProperty("endpoint", "serviceid");
-			if (newServiceId != null) {
+			if (newServiceId != null && !newServiceId.isEmpty()) {
 				newService = session.getDocument(new IdRef(newServiceId));
 			}
 
@@ -112,10 +116,13 @@ public class WSDLService {
 				session.saveDocument(newService);
 			}
 
-			// Server vocabulary management
+			// Environment/Machine vocabulary management
 			try {
-				if (machine != null && !VocabularyService.entryExists(session, "machine", machine))
-					VocabularyService.addEntry(session, "machine", machine,environment);
+				if (machine != null && environment != null &&
+						!VocabularyService.entryExists(session, "machine", machine))
+					if (!VocabularyService.entryExists(session, "environment", environment))
+						VocabularyService.addEntry(session, "environment", environment, environment);
+					VocabularyService.addEntry(session, "machine", machine, machine, environment);
 			} catch (Exception e1) {
 				log.error("Cannot verify vocabulary");
 			}

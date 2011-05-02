@@ -207,7 +207,18 @@
             <fields>
               <field>data.endp.serviceid</field>
             </fields>
-          </widget>
+	       <!--  type="template"
+	       <labels>
+	            <label mode="any">label.easysoa.endpoints.serviceid</label>
+	        </labels>
+	        <translated>true</translated>
+	        <fields>
+	            <field>data.endp.serviceid</field>
+	        </fields>
+	        <properties mode="any">
+	            <property name="template">/widgets/service_link.xhtml</property>
+	        </properties>-->
+		  </widget>
           <widget name="listing_implementations" type="text">
             <labels>
               <label mode="any">label.easysoa.servicetags.implementations</label>

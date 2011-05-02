@@ -1,0 +1,687 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * This file is part of DotClear.
+ * Copyright (c) 2004 Maurice Svay and contributors. All rights
+ * reserved.
+ *
+ * DotClear is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * DotClear is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with DotClear; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * ***** END LICENSE BLOCK *****
+ *
+ * Contributor(s):
+ *  Maurice Svay
+ */
+ 
+/* A propos de ce theme
+ * Tests effectues:
+ * - IE de 5.01 a 6 Windows
+ * - Firefox 0.9x Windows
+ * - Opera 7.51 Windows
+ * - Safari 1.2.2 MacOS X (10.3)
+ * - Konqueror Linux
+ * - Opera Linux
+ *
+ * Le layout est dans une feuille de style separee
+ * 1 - Global style
+ * 2 - Header
+ * 3 - Post
+ * 4 - Trackbacks et commentaires
+ * 5 - Sidebar
+ * 6 - Footer
+ */
+ 
+@import "layout.css";
+
+/* Global style
+********************************************/
+html, body{
+	margin: 0;
+	padding: 0;
+}
+
+body  {
+	background: #EEE url(../images/background.png) repeat-x;
+}
+
+body, td {
+	color: #000;
+	font-family: Tahoma, Arial, Helvetica, "Bitstream Vera Sans", sans-serif;
+	font-size: 0.8em;
+}
+h1, h2, h3, h4, h5, h6{
+	font-family: "Trebuchet MS", sans-serif;
+}
+
+h2{font-size: 1.2em; margin: 1em 0;}
+h3{font-size: 1em; margin: 0.8em 0;}
+h4{font-size: 1em; font-weight: normal}
+
+a:link{color:#000; background:transparent;}
+a:visited{color:#844; background:transparent;}
+a:hover{color:#000; background:transparent;}
+a[hreflang]:after {content: "\0000a0[" attr(hreflang) "]"; color:#999; background:transparent;}
+a[href^="http://en.wikipedia.org"],a[href^="http://fr.wikipedia.org"]{
+	background: transparent url(../images/w.png) right no-repeat top;
+	padding-right: 12px;
+}
+a[href^="/"]{
+	background: transparent url(../images/dotted.png) repeat-x bottom;
+	border: none;
+	style: none;
+	text-decoration: none;
+}
+a img{border: none;}
+
+abbr, acronym{
+	border: none;
+	background: transparent url(../images/dotted.png) repeat-x bottom;
+	cursor : help;
+}
+
+code, pre, kbd {
+	font-family:"Courier New", Courier, monospace; font-size : 1em;
+}
+
+pre {
+	overflow: scroll;
+	width: 100%;
+}
+html>body pre {
+	overflow: auto;
+	width: auto;
+}
+
+fieldset {
+	border:1px #666666 solid;
+	background-color:#E7E7E7;
+	margin-bottom:25px;
+	padding:6px;
+}
+
+legend{
+	background-color:white;
+	border:1px #666666 solid;
+	font-size:1.1em;
+	font-weight:bold;
+	color:#955B5B;
+	padding:3px;
+	position:relative;
+	top:-1.2em;	
+}
+
+.field label{
+	display: block;
+	cursor: pointer;
+	cursor: hand; /* pour IE */
+}
+
+input, textarea{
+	border: 1px solid #999;
+	background: #FCFCFC;
+}
+
+textarea{
+	width: 99%;
+}
+
+.left{
+	float: left;
+	margin: 0 1em 1em 1em;
+}
+
+.right{
+	float: right;
+	margin: 0 1em 1em 1em;
+}
+
+/* Header
+********************************************/
+#logos {
+	float:left;
+}
+
+#logo-ow, #logo-acc, #logo-os4i, #logo-tech {
+	background-repeat:no-repeat;
+	padding-left:200px;
+	padding-top:60px;
+	margin-bottom:60px;
+	margin-left:10px;
+	/*position:absolute;
+	right:40px;*/
+}
+
+#logo-ow {
+	background-image:url(../images/logo_openwide.jpg);
+	margin-top:160px;
+	/*top:160px;*/
+}
+
+#logo-acc {
+	background-image:url(../images/logo_ow-outsourcing-200x60.png);
+	/*top:260px;*/
+}
+
+#logo-os4i {
+	background-image:url(../images/logo_ow-ingenierie-200x60.png);
+	/*top:360px;*/
+}
+
+#logo-tech {
+    background-image:url(../images/logo_ow-technologies-200x60.png);
+    /*top:360px;*/
+}
+
+#top{
+	background: #B62200 url(../images/header.jpg) no-repeat;
+}
+
+#top h1 {
+	line-height: 15px;
+	margin: 0;
+	font-size: 1em;
+	text-align:center;
+}
+
+#top h1 a{
+	text-decoration: none;
+	color: #31659C;
+	background: transparent;
+}
+
+#prelude{
+	color: #CD5C5C;
+	background: transparent;
+	text-align: center;
+	margin: 0;
+}
+
+#prelude a{
+	color: #CD5C5C;
+	background: transparent;
+	text-decoration:none;
+}
+
+#prelude a:hover{
+	color: #F0E68C;
+	background: transparent;
+}
+
+/* News */
+.news-latest-item h3{
+	padding-left: 20px;
+	background: #FFF url(../images/sstar.png) no-repeat left;
+	background-position: 0 0.1em;
+	color: #000;
+	margin-bottom: 0;
+}
+
+.news-latest-item h3 a{
+	text-decoration:none;
+}
+.news-head {
+	padding-left: 20px;
+	margin-top: 0;
+	color: #666;
+	background: transparent;
+}
+.news-head a{
+	text-decoration:none;
+}
+.news-latest-morelink a{
+
+}
+.news-single-item h2 {
+	padding-left: 20px;
+	background: #FFF url(../images/sstar.png) no-repeat left;
+	background-position: 0 0.1em;
+	color: #000;
+	margin-bottom: 0;
+	
+}
+/* Post
+********************************************/
+#content{
+	color: #222;
+	background: transparent;
+}
+
+.post{
+	margin-top: 20px;
+}
+
+.day-date{
+	display: none;
+}
+
+.post-title{
+	padding-left: 20px;
+	background: #FFF url(../images/sstar.png) no-repeat left;
+	background-position: 0 0.1em;
+	color: #000;
+	margin-bottom: 0;
+}
+
+.post-title a{
+	color: #000;
+	background: transparent;
+	text-decoration: none;
+}
+
+.post-info{
+	padding-left: 20px;
+	margin-top: 0;
+	color: #666;
+	background: transparent;
+}
+
+.post-info a{
+	color: #666;
+	background: transparent;
+}
+
+.post-content p{
+	width: 480px;
+	text-align: justify;
+	/*overflow: auto;*/
+}
+
+.post-content img{
+	max-width: 100%;
+}
+
+.post-content ul{
+	list-style-image: url(../images/puce.png);
+}
+
+.post blockquote{
+	font-style : italic;
+	border-left : 5px solid #999;
+	padding-left : 1em;
+}
+
+.post blockquote p{
+	width: auto;
+}
+
+.post-info-co{
+	clear: both;
+	text-align: right;
+	font-size: 0.8em;
+	border: 1px solid #E0E0E0;
+	background: #FFF url(../images/postinfo.png) repeat-x;
+	color: inherit;
+
+	margin-top: 0.5em;
+	margin-bottom: 3em;
+	padding: 0.5ex;
+	/* -moz-border-radius connu pour ne pas etre valide */
+	-moz-border-radius: 5px;
+}
+
+.post-info-co a{
+	color: #222;
+	background: transparent;
+	text-decoration: none;
+}
+
+.post-info-co a:before{
+	content: url(../images/bulle.png);
+	margin-right: 1ex;
+}
+
+/* Trackbacks et commentaires
+********************************************/
+
+#trackbacks, #comments{
+	margin-top: 4em;
+}
+
+#trackbacks blockquote, #comments blockquote{
+	background: #F5F5F5;
+	color: inherit;
+	border: 1px dotted #AAA;
+	margin: 0.5ex 0 1em 0;
+	padding: 1ex;
+	overflow: auto;
+}
+
+#trackbacks blockquote p, #comments blockquote p{
+	margin: 1ex 0;
+}
+
+.comment-info{
+	margin-bottom: 0;
+}
+
+#bread {
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+#bread a {
+	text-decoration: none;
+	color: #666;
+}
+
+/* Sidebar
+********************************************/
+#sidebar{
+	background: #FFF url(../images/menu.png) repeat-x;
+	color: #666;
+}
+
+#sidebar div{
+	/* aurait du etre #sidebar > div */
+	margin: 0 10px 2em 10px;
+}
+
+#sidebar h2{
+	margin: 0 0 1ex 0;
+}
+
+#sidebar ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#sidebar a{
+	text-decoration: none;
+}
+
+#sidebar li a{
+	display: block;
+	color: #666;
+	background: transparent;
+}
+
+#sidebar bloquote{
+	color: #AA0000;
+	background: transparent;
+}
+
+#sidebar li a:hover{
+	color: #333;
+	background: transparent url(../images/curseur.gif) repeat-y right; /* Bling Bling No Flash */
+}
+
+#sidebar ul li:first-child{
+	/* :fisrt-child selector ne fonctionne pas dans IE */
+	border-top: 1px solid #CCC;
+	padding: 0.5ex 0;
+}
+
+#sidebar ul li{
+	border-bottom: 1px solid #CCC;
+	padding: 0.5ex 0;
+}
+
+#sidebar .menu1-level1-no{
+	border-bottom: 1px solid #CCC;
+	padding: 0.5ex 0;
+	margin: 0;
+}
+
+#sidebar .menu1-level1-act{
+	border-bottom: 1px solid #CCC;
+	padding: 0.5ex 0;
+	margin: 0;
+}
+
+#sidebar .menu1-level2-no{
+	border-bottom: 1px solid #CCC;
+	padding: 0.5ex 0;
+	margin: 0;
+}
+
+#sidebar .menu1-level2-act{
+	border-bottom: 1px solid #CCC;
+	padding: 0.5ex 0;
+	margin: 0;
+}
+
+#sidebar .menu1-level3-no{
+	border-bottom: 1px solid #CCC;
+	padding: 0.5ex 0 0 2.5ex;
+	margin: 0;
+}
+
+#sidebar .menu1-level3-act{
+	border-bottom: 1px solid #CCC;
+	padding: 0.5ex 0 0 2.5ex;
+	margin: 0;
+}
+
+#search p{
+	text-align: center;
+	margin: 0;
+}
+
+#search input{
+	width: 15%;
+}
+
+#search input#q{
+	width: 70%;
+}
+
+#calendar table{
+	color: #666;
+	background: transparent;
+	margin: 0 auto;
+	/* Desole pour la taille de fonte en pixel, mais IE craint trop */
+	font-size: 10px;
+	text-align: center;
+}
+
+#calendar table td a{
+	color: #444;
+	font-weight: bold;
+}
+
+#separator {
+	width:96%;
+	margin-left:2%;
+	border-top: 1px solid #E7E7E7;
+	clear: both;
+}
+
+/* Footer
+********************************************/
+#footer {
+	margin: 0;
+	background: #FFF url(../images/footer.png) no-repeat center bottom;
+	padding-bottom:10px;
+	padding-left:30px;
+	text-align:left;
+}
+
+#footer a {
+	text-decoration: none;
+	color: #999;
+	background: transparent;
+}
+
+#footer img {
+	margin-left:78%;
+}
+
+.technorati a {
+	background: transparent url(../images/technobubble.gif) 0px 1px no-repeat;
+	padding: 1px 0px 1px 16px;
+}
+div#tags{
+	text-align: left;
+}
+
+div#tags a{
+	background: none;
+}
+.technorati1{
+	font-size:10pt;
+	color: #a1a1a1
+}
+.technorati2{
+	font-size:11pt;
+	color: #969696;
+}
+.technorati3{
+	font-size:12pt;
+	color: #646364;
+}
+.technorati4{
+	font-size:13pt;
+	color: #484949;
+}
+.technorati5{
+	font-size:14pt;
+	color: black;
+}
+
+
+/*
+** Autocomplete styles
+*/
+/* Suggestion list */
+#autocomplete {
+  position: absolute;
+  border: 1px solid #999999;
+  overflow: hidden;
+}
+#autocomplete ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#autocomplete li {
+  background: #fff;
+  color: #000;
+  white-space: pre;
+  padding-left: 2px;
+  cursor: default;
+}
+#autocomplete li.selected {
+  background: #999999;
+  color: #fff;
+}
+/* Animated throbber */
+input.form-autocomplete {
+  background: url('throbber.gif') no-repeat 100% 2px;
+}
+input.throbbing {
+  background-position: 100% -18px;
+}
+
+div.tx-owtrombinoscope-pi1, div.tx-owaffaire-pi1, div.tx-owfiler-pi1 {
+	margin-top:20px;
+}
+
+div.listrow {
+	margin-bottom:20px;
+}
+
+div.listrow table {
+	clear: both;
+	font-size:11pt;
+	text-align:center;
+	border: 1px solid #E0E0E0;
+	border-collapse:collapse;
+	background: #FFF url(../images/postinfo.png) repeat-x;
+	color: inherit;
+
+	width:96%;
+	
+	/* -moz-border-radius connu pour ne pas etre valide */
+	-moz-border-radius:5px;
+}
+
+div.listrow th {
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+tr.listrow-odd, div.singleView tr.odd {
+	background-color:#E7E7E7;
+}
+
+div.singleView tr.listrow-odd td, div.singleView tr.odd td, td.border, div#liensConnexes {
+	border:#444 1px solid;
+	-moz-border-radius:4px;
+}
+
+div.listrow td {
+	font-size:10pt;
+	height:64px;
+}
+
+div.listrow th a, div.listrow td a, div.singleView td a {
+	text-decoration:none;
+	color:#844;
+}
+
+div.listrow a:hover, div.singleView td a:hover {
+	color:black;
+}
+
+div.singleView table {
+	text-align:center;
+	width:96%;
+	margin-bottom:20px;
+}
+
+div.singleView td#name, div.singleView td#projet, span#liensConnexes {
+	font-size:11pt;
+	color:#844;
+}
+
+div.singleView td.right {
+	text-align:right;
+}
+
+div.singleView td {
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+div.singleView td img {
+	width:192px;
+}
+
+span.libelle {
+	text-transform:uppercase;
+	font-size:10pt;
+	color:#444;
+}
+
+div#liensConnexes {
+	padding:5px;
+}
+
+div.listrow p.bodytext {
+	text-align:justify;
+}
+
+div#colophon img, div#syndication img {
+	width:80px;
+	height:15px;
+}
+
+span.label {
+	font-weight:bold;
+	color:#884444;
+}
+
+.export-annuaire {
+	float:right;
+}
