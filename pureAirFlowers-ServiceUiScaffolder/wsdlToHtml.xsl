@@ -93,9 +93,9 @@
 	  	<!--complextype name : <xsl:value-of select="key('complexTypes', $elementName)/@name"/>-->
 		<table border="1">
 		<tr>
-			<td style="width:20%">Field type</td>
-			<td style="width:20%">Name</td>
-			<td style="width:60%">Value</td>
+			<td>Field type</td>
+			<td>Name</td>
+			<td>Value</td>
 		</tr>
 		<xsl:for-each select="key('complexTypes', $elementName)/xsd:sequence/xsd:element">
 		   	<tr>
