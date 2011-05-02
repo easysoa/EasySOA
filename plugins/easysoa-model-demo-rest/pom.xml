@@ -4,13 +4,13 @@
     <parent>
         <artifactId>nuxeo-features-parent</artifactId>
         <groupId>org.nuxeo.ecm.platform</groupId>
-        <version>5.4.1-SNAPSHOT</version>
+        <version>5.4.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.easysoa</groupId>
-    <artifactId>easysoa-demo-rest</artifactId>
-    <name>easysoa-demo-rest</name>
-    <version>0.1.1</version>
+    <artifactId>easysoa-model-demo-rest</artifactId>
+    <name>easysoa-model-demo-rest</name>
+    <version>0.1.2-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -32,13 +32,13 @@
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-platform-ui-web</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
         	<groupId>org.easysoa</groupId>
-        	<artifactId>easysoa-demo-model-core</artifactId>
+        	<artifactId>easysoa-model-demo-core</artifactId>
         	<version>${project.version}</version>
         	<scope>compile</scope>
         </dependency>

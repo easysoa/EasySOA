@@ -1,4 +1,4 @@
-<project name="easysoa-demo-model-web" default="dist" basedir=".">
+<project name="easysoa-model-demo-web" default="dist" basedir=".">
 
 	<!-- Initialization -->
 	<property name="dest" value="/opt/nuxeo-dm/nxserver/plugins" />

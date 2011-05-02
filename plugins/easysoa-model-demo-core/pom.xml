@@ -4,13 +4,13 @@
     <parent>
         <artifactId>nuxeo-features-parent</artifactId>
         <groupId>org.nuxeo.ecm.platform</groupId>
-        <version>5.4.1-SNAPSHOT</version>
+        <version>5.4.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.easysoa</groupId>
-    <artifactId>easysoa-demo-model-core</artifactId>
-    <name>easysoa-demo-model-core</name>
-    <version>0.1.1</version>
+    <artifactId>easysoa-model-demo-core</artifactId>
+    <name>easysoa-model-demo-core</name>
+    <version>0.1.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>org.ow2.easywsdl</groupId>
@@ -20,19 +20,19 @@
         <dependency>
             <groupId>org.nuxeo.ecm.core</groupId>
             <artifactId>nuxeo-core</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-platform-directory-sql</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-platform-relations-core</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-platform-relations-api</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -54,20 +54,20 @@
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-platform-ui-web</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.nuxeo.ecm.core</groupId>
             <artifactId>nuxeo-core-api</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-platform-webapp-base</artifactId>
-            <version>5.4.1-SNAPSHOT</version>
+            <version>5.4.1</version>
         </dependency>
     </dependencies>
 </project>
