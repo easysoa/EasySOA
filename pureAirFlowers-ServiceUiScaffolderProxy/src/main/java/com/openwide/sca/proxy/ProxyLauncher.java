@@ -20,17 +20,16 @@ public class ProxyLauncher {
 		}
 		String composite = args[0];
 		System.out.println("Composite to load : " + composite + "...");
-		//String composite = "RestSoapProxy";
 	    // Configure Java system properties.
 	    System.setProperty( "fscript-factory", "org.ow2.frascati.fscript.jsr223.FraSCAtiScriptEngineFactory" );
-	    /*if(systemProperties != null) {
-	      getLog().debug("Configuring Java system properties.");
-	      Properties oldSystemProperties = System.getProperties();
-	      Properties newSystemProperties = new Properties(oldSystemProperties);
-	      newSystemProperties.putAll(systemProperties);
-	      System.setProperties(newSystemProperties);
-	      getLog().debug(newSystemProperties.toString());
-	    }	  */  
+	    //if(systemProperties != null) {
+	      //getLog().debug("Configuring Java system properties.");
+	      //Properties oldSystemProperties = System.getProperties();
+	      //Properties newSystemProperties = new Properties(oldSystemProperties);
+	      //newSystemProperties.putAll(systemProperties);
+	      //System.setProperties(newSystemProperties);
+	      //getLog().debug(newSystemProperties.toString());
+	    //}  
 		try{
 			System.out.println("Frascati is starting...");
 			FraSCAti frascati = FraSCAti.newFraSCAti();

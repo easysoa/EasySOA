@@ -1,18 +1,18 @@
-<!--<assembly>
+<assembly>
     <id>with-dep</id>
     <formats>
-        <format>jar</format>
+        <format>zip</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
     <dependencySets>
-        <dependencySet>
+        <!--<dependencySet>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputDirectory>lib</outputDirectory>
             <excludes>
                 <exclude>com.openwide.sca:proxy</exclude>
             </excludes>
-        </dependencySet>
+        </dependencySet>-->
         <dependencySet>
             <outputDirectory></outputDirectory>
             <includes>
@@ -20,28 +20,28 @@
             </includes>
             </dependencySet>
     </dependencySets>
-</assembly>-->
+</assembly>
 
-<assembly>
+<!--<assembly>
     <id>bin</id>
-    <formats>
-    	<format>tar.gz</format>
-    	<format>tar.bz2</format>
-    	<format>zip</format>
-	</formats>
+    <formats>-->
+    	<!--<format>tar.gz</format>-->
+    	<!--<format>tar.bz2</format>-->
+    	<!--<format>zip</format>-->
+	<!--</formats>
     <fileSet>
       <directory>${project.build.directory}</directory>
-      <outputDirectory>lib/</outputDirectory>
+      <outputDirectory>/</outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
-    </fileSet>
-    <dependencySets>
+    </fileSet>-->
+    <!--<dependencySets>
         <dependencySet>
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>com.openwide.sca:proxy</include>
             </includes>
             </dependencySet>
-    </dependencySets>    
-</assembly>
+    </dependencySets>-->    
+<!--</assembly>-->
