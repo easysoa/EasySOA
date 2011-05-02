@@ -4,7 +4,9 @@ repositories.remote << 'http://maven.nuxeo.org/nexus/content/groups/public'
 ############### CONFIG
 
 THIS_VERSION = '0.1.1'
-NUXEO_PATH = '/opt/nuxeo-dm'
+#NUXEO_PATH = '/opt/nuxeo-dm'
+# MDU
+NUXEO_PATH = '/home/mdutoo/dev/easysoa/nuxeo-dm-5.4.1-tomcat'
 
 # Generated
 NUXEO_PLUGINS = NUXEO_PATH+'/nxserver/plugins/'
