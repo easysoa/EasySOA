@@ -25,11 +25,11 @@
     	<artifactId>aopalliance</artifactId>
     	<version>${aopalliance.version}</version>
     </dependency>
-    <dependency>
-    	<groupId>osoa</groupId>
-    	<artifactId>osoa-java-api</artifactId>
-    	<version>${osoa.version}</version>
-    </dependency>
+	<dependency>
+	  <groupId>org.eclipse.stp.sca.osoa.java</groupId>
+	  <artifactId>osoa-java-api</artifactId>
+	  <version>${osoa.version}</version>
+	</dependency>    
     <dependency>
     	<groupId>javax.ws.rs</groupId>
     	<artifactId>jsr311-api</artifactId>
