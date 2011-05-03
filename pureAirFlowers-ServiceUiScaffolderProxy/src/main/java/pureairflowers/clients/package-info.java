@@ -1,2 +1,2 @@
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://clients.PureAirFlowers/")
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://clients.pureairflowers/")
 package pureairflowers.clients;

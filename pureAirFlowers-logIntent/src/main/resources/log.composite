@@ -2,12 +2,12 @@
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:hw="http://log-intent" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="log">
 
   <sca:service name="intent" promote="logIntentHandler/logIntentService">
-    <sca:interface.java interface="org.ow2.frascati.tinfi.control.intent.IntentHandler"/>
+    <sca:interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler"/>
   </sca:service>
   
   <sca:component name="logIntentHandler">
      <sca:service name="logIntentService">
-       <sca:interface.java interface="org.ow2.frascati.tinfi.control.intent.IntentHandler"/>
+       <sca:interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler"/>
      </sca:service>
     <sca:implementation.java class="com.openwide.sca.intents.LogIntent"/>
   </sca:component>

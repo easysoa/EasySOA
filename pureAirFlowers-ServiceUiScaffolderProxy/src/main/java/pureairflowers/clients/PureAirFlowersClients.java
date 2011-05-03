@@ -15,13 +15,13 @@ import javax.xml.ws.ResponseWrapper;
  * 
  */
  
-@WebService(targetNamespace = "http://clients.PureAirFlowers/", name = "PureAirFlowersClients")
+@WebService(targetNamespace = "http://clients.pureairflowers/", name = "PureAirFlowersClients")
 @XmlSeeAlso({ObjectFactory.class})
 public interface PureAirFlowersClients {
 
     @WebResult(name = "ordersNumber", targetNamespace = "")
-    @RequestWrapper(localName = "getOrdersNumber", targetNamespace = "http://clients.PureAirFlowers/", className = "pureairflowers.clients.GetOrdersNumber")
-    @ResponseWrapper(localName = "getOrdersNumberResponse", targetNamespace = "http://clients.PureAirFlowers/", className = "pureairflowers.clients.GetOrdersNumberResponse")
+    @RequestWrapper(localName = "getOrdersNumber", targetNamespace = "http://clients.pureairflowers/", className = "pureairflowers.clients.GetOrdersNumber")
+    @ResponseWrapper(localName = "getOrdersNumberResponse", targetNamespace = "http://clients.pureairflowers/", className = "pureairflowers.clients.GetOrdersNumberResponse")
     @WebMethod
     public int getOrdersNumber(
         @WebParam(name = "ClientId", targetNamespace = "")

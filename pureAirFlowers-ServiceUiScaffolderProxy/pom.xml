@@ -9,13 +9,32 @@
   <name>proxy</name>
   <url>http://maven.apache.org</url>
   
-  <parent>
+  <!-- RELEASE Build -->
+  <!--<parent>
     <groupId>com.openwide</groupId>
     <artifactId>pureAirFlowers-Release</artifactId>
     <version>1.0-SNAPSHOT</version>
+  </parent>-->
+
+  <!-- MVN -Prun Build -->
+  <parent>
+    <groupId>org.ow2.frascati.examples</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.4-SNAPSHOT</version>
   </parent>
 
-  <build>
+  <!-- MVN -Prun Build -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!--<composite.file>RestSoapProxy</composite.file>-->
+    <composite.file>RestSoapProxy_withIntents</composite.file>
+    <!-- Not used -->
+    <!--<service.name>ProxyService</service.name>-->
+    <!--<method.name>redirectRequests</method.name>-->
+  </properties>
+
+  <!-- RELEASE Build -->
+  <!--<build>
 	  <plugins>
 	  	<plugin>
 	    	<groupId>org.apache.maven.plugins</groupId>
@@ -42,7 +61,7 @@
                 </configuration>
             </plugin>	    
 	  </plugins>
-  </build>
+  </build>-->
 
   <dependencies>
     <dependency>
@@ -53,22 +72,26 @@
     <dependency>
     	<groupId>javax.ws.rs</groupId>
     	<artifactId>jsr311-api</artifactId>
-    	<version>${jsr311.version}</version>
+    	<version>1.1.1</version>
+    	<!--<version>${jsr311.version}</version>-->
     </dependency>
     <dependency>
     	<groupId>aopalliance</groupId>
     	<artifactId>aopalliance</artifactId>
-    	<version>${aopalliance.version}</version>
+    	<version>1.0</version>
+    	<!--<version>${aopalliance.version}</version>-->
     </dependency>
 	<dependency>
 	  <groupId>org.eclipse.stp.sca.osoa.java</groupId>
 	  <artifactId>osoa-java-api</artifactId>
-	  <version>${osoa.version}</version>
+	  <version>1.0</version>
+	  <!--<version>${osoa.version}</version>-->
 	</dependency>     
     <!-- OW2 FraSCAti WS Binding. -->
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
+	  <version>1.4-SNAPSHOT</version>      
     </dependency>
     <dependency>
     	<groupId>org.ow2.frascati</groupId>

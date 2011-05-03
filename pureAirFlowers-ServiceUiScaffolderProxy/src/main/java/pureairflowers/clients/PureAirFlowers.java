@@ -23,12 +23,12 @@ import javax.xml.ws.Service;
 
 @WebServiceClient(name = "PureAirFlowers", 
                   wsdlLocation = "http://192.168.2.157:9010/PureAirFlowers?wsdl",
-                  targetNamespace = "http://clients.PureAirFlowers/") 
+                  targetNamespace = "http://clients.pureairflowers/") 
 public class PureAirFlowers extends Service {
 
     public final static URL WSDL_LOCATION;
-    public final static QName SERVICE = new QName("http://clients.PureAirFlowers/", "PureAirFlowers");
-    public final static QName PureAirFlowersClientsImplPort = new QName("http://clients.PureAirFlowers/", "PureAirFlowersClientsImplPort");
+    public final static QName SERVICE = new QName("http://clients.pureairflowers/", "PureAirFlowers");
+    public final static QName PureAirFlowersClientsImplPort = new QName("http://clients.pureairflowers/", "PureAirFlowersClientsImplPort");
     static {
         URL url = null;
         try {

@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GetOrdersNumber_QNAME = new QName("http://clients.PureAirFlowers/", "getOrdersNumber");
-    private final static QName _GetOrdersNumberResponse_QNAME = new QName("http://clients.PureAirFlowers/", "getOrdersNumberResponse");
+    private final static QName _GetOrdersNumber_QNAME = new QName("http://clients.pureaifflowers/", "getOrdersNumber");
+    private final static QName _GetOrdersNumberResponse_QNAME = new QName("http://clients.pureairflowers/", "getOrdersNumberResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: pureairflowers.clients
@@ -54,7 +54,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link GetOrdersNumber }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://clients.PureAirFlowers/", name = "getOrdersNumber")
+    @XmlElementDecl(namespace = "http://clients.pureairflowers/", name = "getOrdersNumber")
     public JAXBElement<GetOrdersNumber> createGetOrdersNumber(GetOrdersNumber value) {
         return new JAXBElement<GetOrdersNumber>(_GetOrdersNumber_QNAME, GetOrdersNumber.class, null, value);
     }
@@ -63,7 +63,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link GetOrdersNumberResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://clients.PureAirFlowers/", name = "getOrdersNumberResponse")
+    @XmlElementDecl(namespace = "http://clients.pureairflowers/", name = "getOrdersNumberResponse")
     public JAXBElement<GetOrdersNumberResponse> createGetOrdersNumberResponse(GetOrdersNumberResponse value) {
         return new JAXBElement<GetOrdersNumberResponse>(_GetOrdersNumberResponse_QNAME, GetOrdersNumberResponse.class, null, value);
     }

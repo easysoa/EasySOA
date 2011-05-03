@@ -2,7 +2,7 @@ package pureairflowers.clients;
 
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "PureAirFlowers.clients.PureAirFlowersClients", serviceName = "PureAirFlowers")
+@WebService(endpointInterface = "pureairflowers.clients.PureAirFlowersClients", serviceName = "PureAirFlowers")
 public class PureAirFlowersClientsImpl implements PureAirFlowersClients {
 
 	public int getOrdersNumber(String clientId) {
