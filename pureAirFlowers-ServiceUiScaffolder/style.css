@@ -1,149 +1,103 @@
-/* EasySOA - Service Browser Demo Style Sheet */
-
-/* Tags
----- */
-
 * {
-margin: 0;
-padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-width: 100%;
-height: 820px;
-padding: 10px;
-background-color: #EEF5FA;
-font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	width: 100%;
+	height: 820px;
+	background-color: #EEF5FA;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 h1 {
-margin: 10px;
-color: #005599;
-font: bold 20pt Arial;
+	padding-top: 20px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid grey;
+	color: #446;
+	font: 12pt Arial;
+}
+h1:first-child {
+  padding-top: 10px;
 }
 
 h2 {
-margin-bottom: 10px;
-border-bottom: 1px solid grey;
-color: #333333;
-font: 13pt Arial;
+	font: 11pt Arial;
+	font-weight: bold;
+	padding-top: 15px;
 }
-
-h3 {
-padding-top: 10px;
-margin-bottom: 5px;
-border-bottom: 1px solid grey;
-color: #555555;
-font: 11pt Arial;
+h2:first-child {
+  padding-top: 10px;
 }
+	
 
 div {
-float: left;
+	float: left;
 }
 
 li {
-margin-left: 20px;
-margin-bottom: 10px;
+	margin-left: 20px;
+	margin-bottom: 10px;
 }
 
-/* Structure
---------- */
-
-#main {
-margin: auto;
-height: 100%;
-width: 90%;
+#header {
+  width: 100%;
+  padding-top: 23px;
+  padding-left: 280px;
+  font-size: 14pt;
+  height: 47px;
+  background: url('img/LogoLight50.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border-bottom: 2px solid #444;
 }
 
-#content {
-width: 100%;
-height: 85%;
+#container { 
+	padding: 15px;
 }
 
-#navigation {
-margin-left: 21px;
-width: 80%;
-height: 100%;
+p {
+  font-size: 11pt;
 }
 
-/* Navigation bar
--------------- */
-
-#navBar {
-padding: 5px;
-background-color: #DDDDEE;
-border: 1px solid gray;
-}
-#navBar input[type=text] {
-width: 500px;
-}
-#navBar input[type=image] {
-vertical-align: middle;
+table {
+  border-spacing: 0;
+  border: 1px solid black;
+  margin: 10px;
+  width: 800px;
 }
 
-/* Page frame
----------- */
-
-#frameContainer {
-width: 100%;
-height: 100%;
-border: 1px solid gray;
+td {
+  border: 1px solid grey;
+  padding: 5px;
+  background-color: white;
 }
 
-#frame {
-width: 100%;
-height: 100%;
-border: none;
-background-color: #EEFAFD;
+th {
+  border: 1px solid grey;
+  padding: 5px;
+  background-color: #cde;
 }
 
-
-/* Left menus
----------- */
-
-#menu {
-width: 17%;
-height: 100%;
-float: left;
-font-size: 10pt;
+input[type=text] {
+  padding: 3px;
+  width: 100%;
+  font-weight: bold;
+  bolor: black;
 }
 
-#menuSubmitForm {
-width: 100%;
-border: 1px solid gray;
-padding: 10px;
-background-color: #DDDDDD;
-height: 270px;
+input[disabled] {
+  color: #444;
 }
 
-#submitSelectedWSDL {
-width: 100%;
+input[type=button] {
+  font-size: 13pt;
+  padding: 5px;
+  width: 150px;
 }
 
-#submitSuccess {
-background-color: white;
-border: 1px solid darkgreen;
-color: darkgreen;
-padding: 3px;
-}
-
-#menuFoundList {
-width: 100%;
-border: 1px solid gray;
-padding: 10px;
-background-color: #EEEEEE;
-height: 422px;
-overflow: auto;
-}
-
-.inputLabel {
-width: 100%;
-}
-
-/* Text
----- */
-
-.note {
-font-size: 10pt;
-font-style: italic;
+a {
+  color: darkblue;
+  text-decoration: none;
+  font-weight: bold;
 }
