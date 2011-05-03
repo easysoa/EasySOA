@@ -46,7 +46,20 @@ li {
   padding-left: 280px;
   font-size: 14pt;
   height: 47px;
-  background: url('img/LogoLight50.png') white;
+  background: url('img/Light50.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border-bottom: 2px solid #444;
+}
+
+#headerWelcome {
+  width: 100%;
+  padding-top: 15px;
+  padding-left: 280px;
+  font-size: 20pt;
+  font-weight: bold;
+  height: 50px;
+  background: url('img/Logo.png') white;
   background-repeat: no-repeat;
   background-position: 20px 10px;
   border-bottom: 2px solid #444;

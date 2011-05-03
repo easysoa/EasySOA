@@ -5,7 +5,7 @@ Built-By: mkalam-alami
 Build-Jdk: 1.6.0_24
 Bundle-ManifestVersion: 1
 Bundle-Version: 0.0.1
-Bundle-Name: easysoa-demo-model-core
+Bundle-Name: easysoa-model-demo-core
 Bundle-SymbolicName: org.easysoa.demo.core;singleton:=true
 Bundle-Vendor: Open Wide
 Nuxeo-Require: org.nuxeo.ecm.core.api,

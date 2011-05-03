@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<component name="org.openwide.test.directorytreemanager">
+<component name="org.openwide.demo.directorytreemanager">
 
   <require>org.nuxeo.ecm.webapp.directory.DirectoryTreeService</require>
   <require>org.nuxeo.runtime.started</require>
