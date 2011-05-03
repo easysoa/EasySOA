@@ -6,73 +6,32 @@
 	<xsl:template match="wsdl:definitions">	
 		<html>
 			<head>
-				<title>Pure Air Flowers ~ WS Form</title>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/debug.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/cjw_newsletter.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/ezlabel.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/ezflow.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/ezfind.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/ezmultiupload.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/cjw_newsletter.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/pagelayout.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/websitetoolbar.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/common_clean.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/site.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/site_ow.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/common_menu.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/menu.css"/>
-			    <link rel="stylesheet" type="text/css" href="index_fichiers/custom.css"/>
-  				<style media="screen" type="text/css">#random_image_flash {visibility:hidden}</style>			    
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>EasySOA Core - <xsl:value-of select="@name"/> Service</title>
+        <link rel="stylesheet" href="style.css"/>    
 			</head>
-	  		<body class="main">
-			    <div id="menu_header">
-      			<a id="logo" href="http://www.openwide.fr/" title="Pure Air Flowers" name="logo"><img alt="Pure Air Flowers" src="index_fichiers/logo_openwide.png"/></a>
-      			<form action="/content/search" method="post" id="fSearch" name="fSearch">
-        			<input name="SearchText" id="searchtext" value="Recherche" onclick="this.value='';" type="text"/> <input name="btnOk" id="btnOk" src="index_fichiers/btnOk.gif" type="image"/>
-      			</form>
-     			</div>
-    <div id="random_image_container" style="height: 180px;position:relative;top:-10px;left:0px">
-      <img src="img/bann.jpg" />
-    </div>
-    <div class="clearfloat"></div>
-    <div id="container">
-      <!-- COLUMNS 1 : START -->
-      <div id="col1">
-        <!-- ZONE CONTENT: START -->
-        <img src="index_fichiers/left_top.gif" alt="menu" class="fltlft" height="3" width="135"/>
-        <div class="submenu fltlft">
-          <div class="clearfloat"></div><span class="title clearfloat">Pure Air Flowers</span> <a class="sub_level2 selected" href="http://www.openwide.fr/Open-Wide/Open-Wide/Qui-sommes-nous">Présentation</a>
-          <div class="block_level3">
-            <a class="sub_level3" href="http://www.openwide.fr/Open-Wide/Open-Wide/Qui-sommes-nous/Histoire-et-vocation">- Histoire et vocation</a> <a class="sub_level3" href="http://www.openwide.fr/Open-Wide/Open-Wide/Qui-sommes-nous/Management">- Management</a> <a class="sub_level3" href="http://www.openwide.fr/Open-Wide/Open-Wide/Qui-sommes-nous/Chiffres-cles">- Chiffres clés</a>
-          </div><a class="sub_level2" href="http://www.openwide.fr/Open-Wide/Open-Wide/Notre-vision">Notre vision</a> <a class="sub_level2" href="http://www.openwide.fr/Open-Wide/Open-Wide/Nos-metiers">Nos métiers</a> <a class="sub_level2" href="http://www.openwide.fr/Open-Wide/Open-Wide/Communiques">Communiqués</a> <a class="sub_level2" href="http://www.openwide.fr/Open-Wide/Open-Wide/Contactez-nous">Contactez-nous</a>
-        </div><img src="index_fichiers/left_bottom.gif" alt="menu" class="fltlft"/><br/>
-        <div class="clearfloat"></div>
-        <div class="clearfloat"></div><!-- ZONE CONTENT: END -->
-      </div><!-- COLUMNS 1 : END -->
-      <!-- Main area: START -->
-      <!-- Main area content: START -->
-      <!-- COLUMNS MIDDLE_CONTAINER : START -->
-      <div id="middle_container">
-        <div class="dotted_thick"></div>
-        <div id="">
-          <div id="article">
-	  			<!-- Web service name -->
-	  			<h2><xsl:value-of select="@name"/></h2>
-	  			<h3><xsl:call-template name="service-address" mode="header"/></h3>
+			<body>
+
+	  	<!-- Web service name -->
+      <div id="header"><b><xsl:value-of select="@name"/></b> Service</div>
+      
+      <div id="container">
+
+        <h1>Service location</h1>
+        <p><xsl:call-template name="service-address" mode="header"/></p>
+
 				<!-- Web service endpoint-->
 				<xsl:key name="baseElements" match="xsd:element" use="@type"/>
 				<xsl:key name="complexTypes" match="xsd:complexType" use="@name"/>
 				<xsl:apply-templates/>
-				</div>
-				</div>
-				</div>
-				</div>
-		  	</body>
+				
+      </div>
+      </body>
 	  	</html>
   	</xsl:template>
 
   	<xsl:template name="service-address" mode="header">
-  		location : <xsl:value-of select="wsdl:service/wsdl:port/soap:address/@location"/>
+  		<xsl:value-of select="wsdl:service/wsdl:port/soap:address/@location"/>
   	</xsl:template>
   	
   	<xsl:template name="formFields">
@@ -91,11 +50,11 @@
   		<xsl:param name="readOnly"/>
   	    <!--param : <xsl:value-of select="$elementName"/><br/>-->
 	  	<!--complextype name : <xsl:value-of select="key('complexTypes', $elementName)/@name"/>-->
-		<table border="1">
+		<table>
 		<tr>
-			<td>Field type</td>
-			<td>Name</td>
-			<td>Value</td>
+	    <th style="width: 20%">Field type</th>
+	    <th style="width: 20%">Name</th>
+	    <th>Value</th>
 		</tr>
 		<xsl:for-each select="key('complexTypes', $elementName)/xsd:sequence/xsd:element">
 		   	<tr>
@@ -103,10 +62,10 @@
 				<td><xsl:value-of select="@name"/></td>
       			<xsl:choose>
         			<xsl:when test="$readOnly = false">
-						<td><input type='text' size="50" name='{@name}'/></td>		        
+						<td><input type='text' name='{@name}'/></td>		        
 			        </xsl:when>
         			<xsl:otherwise>
-						<td><input type='text' size="50" name='{@name}' disabled=""/></td>
+						<td><input type='text' name='{@name}' disabled=""/></td>
         			</xsl:otherwise>
       			</xsl:choose>
 		   	</tr>
@@ -118,7 +77,7 @@
 	<!-- for each operation, create an HTML form -->  	
   	<xsl:template match="wsdl:portType/wsdl:operation">
   		<xsl:variable name="operationName"><xsl:value-of select="@name"/></xsl:variable>
-  		<h3>Operation <xsl:value-of select="$operationName"/></h3>
+        <h1>Operation <b><xsl:value-of select="$operationName"/></b></h1>
 				<!-- ATTENTION : Nom du(des) champ(s) de retour en dur dans le code javascript !!! -->
 				<!-- A modifier pour rendre la génération du formulaire dynamique -->
 				<script type="text/javascript">
@@ -175,31 +134,32 @@
    						xhr.send(null); 
 					}
 				<!-- <![CDATA[...]]> -->
-				</script>  		
+				</script>
+				
   		<form name='{$operationName}' method="get" action="" enctype='text/plain'>
-			<!-- parameters input fields -->
-			Input fields : <br/>
-			<xsl:apply-templates select="wsdl:input"/>
-			<xsl:variable name="inMessName"><xsl:apply-templates select="wsdl:input/@message"/></xsl:variable>
-			<!--input message name : <xsl:value-of select="$inMessName"/><br/>--> 
-			<xsl:call-template name="formFields">
-				<xsl:with-param name="messageName" select="$inMessName"/>
-				<xsl:with-param name="readOnly" select="false()"/>
-			</xsl:call-template>
-			<!-- output fields -->
-			<br/>
-			Output fields : <br/>
-			<xsl:apply-templates select="wsdl:output"/>
-			<xsl:variable name="outMessName"><xsl:apply-templates select="wsdl:output/@message"/></xsl:variable>			
-			<!--output message name : <xsl:value-of select="$outMessName"/><br/>-->
-			<xsl:call-template name="formFields">
-				<xsl:with-param name="messageName" select="$outMessName"/>
-				<xsl:with-param name="readOnly" select="true()"/>
-			</xsl:call-template>
-			<br/>
+    		
+			  <!-- parameters input fields -->
+			  <h2>Input fields</h2>
+			  <xsl:apply-templates select="wsdl:input"/>
+			  <xsl:variable name="inMessName"><xsl:apply-templates select="wsdl:input/@message"/></xsl:variable>
+			  <!--input message name : <xsl:value-of select="$inMessName"/><br/>--> 
+			  <xsl:call-template name="formFields">
+				  <xsl:with-param name="messageName" select="$inMessName"/>
+				  <xsl:with-param name="readOnly" select="false()"/>
+			  </xsl:call-template>
+			
+			  <!-- output fields -->
+			  <h2>Output fields</h2>
+			  <xsl:apply-templates select="wsdl:output"/>
+			  <xsl:variable name="outMessName"><xsl:apply-templates select="wsdl:output/@message"/></xsl:variable>			
+			  <!--output message name : <xsl:value-of select="$outMessName"/><br/>-->
+			  <xsl:call-template name="formFields">
+				  <xsl:with-param name="messageName" select="$outMessName"/>
+				  <xsl:with-param name="readOnly" select="true()"/>
+			  </xsl:call-template>
+			  
   		</form>
-		<input type="button" value="Submit" OnClick="submit{$operationName}Form('{$operationName}');"/>
-		<br/>  		
+		<input type="button" value="Submit" OnClick="submit{$operationName}Form('{$operationName}');"/>		
   	</xsl:template>
 
   	<!-- Service, port & address template -->
