@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  text-align: center;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+}
+
+#container {
+  width: 800px;
+  margin: auto;
+  text-align: left;
+}
+
+#header {
+  margin-top: 30px;
+  height: 180px;
+  background: url('img/bann.jpg');
+  background-repeat: no-repeat;
+  background-position: 0px 40px;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+#menu {
+  padding: 10px;
+  border: 1px solid #333;
+  border-right: 0;
+  width: 229px;
+  background-color: #DDD;
+  float: left;
+  height: 200px;
+}
+
+#menu a {
+  width: 100%;
+  display: block;
+  text-decoration: none;
+  color: darkred;
+  background: url('img/flower.png');
+  background-repeat: no-repeat;  
+  font-weight: bold;
+  padding-left: 30px;
+}
+
+#content {
+  padding: 10px;
+  border: 1px solid #333;
+  width: 528px;
+  height: 400px;
+  background-color: #EEE;
+  float: left;
+}
+
+#title {
+  font-size: 14pt;
+  font-weight: bold;
+  padding: 10px;
+}
+
+h1 {
+  font-size: 13pt;
+  padding-top: 15px;
+}
