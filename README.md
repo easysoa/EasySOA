@@ -8,7 +8,7 @@ This demo contains a SOAP CXF server that provide a single operation web service
 
 This demo works with several technologies :
 
- * Soap web service implementaed by a CXF server.
+ * Soap web service implemented by a CXF server.
  * REST/SOAP proxy implemented with Frascati.
  * WSDL2HTML xslt transformation to generate HTML form.
 

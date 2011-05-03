@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--<sca:composite xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" name="RestSoapProxy" targetNamespace="http://eclipse.org/proxy/src/main/resources/RestSoapProxy">-->
-<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" name="RestSoapProxy">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--<sca:composite xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" name="RestSoapProxy" targetNamespace="http://eclipse.org/proxy/src/main/resources/RestSoapProxy">--><composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" name="RestSoapProxy">
   <component name="Proxy" requires="autoRearmFuse log">
     <implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl"/>
     <service name="restInterface">
@@ -8,15 +6,14 @@
     </service>
     <reference name="ws">
       <interface.java interface="pureairflowers.clients.PureAirFlowersClients"/>
-      <binding.ws name="webService" wsdlElement="http://clients.pureairflowers/#wsdl.port(PureAirFlowers/PureAirFlowersClientsImplPort)" instance:wsdlLocation="http://192.168.2.157:9010/PureAirFlowers?wsdl"/>
+      <binding.ws instance:wsdlLocation="http://localhost:9010/PureAirFlowers?wsdl" name="webService" wsdlElement="http://clients.pureairflowers/#wsdl.port(PureAirFlowers/PureAirFlowersClientsImplPort)"/>
     </reference>
   </component>
   <service name="ProxyService" promote="Proxy/restInterface" requires="log">
     <interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/>
     <frascati:binding.rest uri="http://localhost:7001/"/>
   </service>
-</composite>
-<!-- 
+</composite><!-- 
 <?xml version="1.0" encoding="UTF-8"?>
 <sca:composite xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" name="RestSoapProxy" targetNamespace="http://eclipse.org/proxy/src/main/resources/RestSoapProxy">
   <sca:component name="Proxy">

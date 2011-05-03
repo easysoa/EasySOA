@@ -22,7 +22,7 @@ import javax.xml.ws.Service;
 
 
 @WebServiceClient(name = "PureAirFlowers", 
-                  wsdlLocation = "http://192.168.2.157:9010/PureAirFlowers?wsdl",
+                  wsdlLocation = "http://localhost:9010/PureAirFlowers?wsdl",
                   targetNamespace = "http://clients.pureairflowers/") 
 public class PureAirFlowers extends Service {
 
@@ -32,9 +32,9 @@ public class PureAirFlowers extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("http://192.168.2.157:9010/PureAirFlowers?wsdl");
+            url = new URL("http://localhost:9010/PureAirFlowers?wsdl");
         } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from http://192.168.2.157:9010/PureAirFlowers?wsdl");
+            System.err.println("Can not initialize the default wsdl from http://localhost:9010/PureAirFlowers?wsdl");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;
