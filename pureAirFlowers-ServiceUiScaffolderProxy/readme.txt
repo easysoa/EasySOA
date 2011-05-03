@@ -9,6 +9,8 @@ This proxy is designed to run with the PureAirFlowers ServiceUIScaffolder and th
 The SCA component name to launch is "RestSoapProxy". 
 An other component "RestSoapProxy_withIntents" works with the Log intent and the autorearm fuse intent. To activate this component, change the value of the property "composite.file" in the "pom.xml" file with the value "RestSoapProxy_withIntents". 
 
+If you want to use the intents, you need to build them first !
+
 ## Execution
 
 To run this proxy :
