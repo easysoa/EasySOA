@@ -1,0 +1,103 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 100%;
+	height: 820px;
+	background-color: #EEF5FA;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+	padding-top: 20px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid grey;
+	color: #446;
+	font: 12pt Arial;
+}
+h1:first-child {
+  padding-top: 10px;
+}
+
+h2 {
+	font: 11pt Arial;
+	font-weight: bold;
+	padding-top: 15px;
+}
+h2:first-child {
+  padding-top: 10px;
+}
+	
+
+div {
+	float: left;
+}
+
+li {
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+#header {
+  width: 100%;
+  padding-top: 23px;
+  padding-left: 280px;
+  font-size: 14pt;
+  height: 47px;
+  background: url('img/LogoLight50.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border-bottom: 2px solid #444;
+}
+
+#container { 
+	padding: 15px;
+}
+
+p {
+  font-size: 11pt;
+}
+
+table {
+  border-spacing: 0;
+  border: 1px solid black;
+  margin: 10px;
+  width: 800px;
+}
+
+td {
+  border: 1px solid grey;
+  padding: 5px;
+  background-color: white;
+}
+
+th {
+  border: 1px solid grey;
+  padding: 5px;
+  background-color: #cde;
+}
+
+input[type=text] {
+  padding: 3px;
+  width: 100%;
+  font-weight: bold;
+  bolor: black;
+}
+
+input[disabled] {
+  color: #444;
+}
+
+input[type=button] {
+  font-size: 13pt;
+  padding: 5px;
+  width: 150px;
+}
+
+a {
+  color: darkblue;
+  text-decoration: none;
+  font-weight: bold;
+}

@@ -1,0 +1,21 @@
+<project name="easysoa-model-demo-web" default="dist" basedir=".">
+
+	<!-- Initialization -->
+	<property name="dest" value="/opt/nuxeo-dm/nxserver/plugins" />
+	
+	<!--  "dist" target: Bundle deployment -->
+	<target name="dist" description="send to nuxeo server">
+		<delete>
+			<fileset dir="${dest}">
+			    <include name="${ant.project.name}*.jar"/>
+			</fileset>
+		</delete>
+	    <copy todir="${dest}" overwrite="true" flatten="true">
+	      <fileset dir="${basedir}">
+	        <include name="target/*.jar" />
+	        <exclude name="target/*-sources.jar" />
+	      </fileset>
+	    </copy>
+	</target>
+	
+</project>
