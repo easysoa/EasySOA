@@ -32,3 +32,6 @@ To build this project, the requirements are :
 
 Before you can launch the proxy demo, you need to build Frascati in order to fill the maven repository with Frascati libs.
 Unpack the Frascati archive in a folder and then launch the "build-all.sh" script.
+
+To reduce to build time, you can modify the "build-all.sh" script by adding "-Dmaven.test.skip=true" parameter to the mvn commands.
+eg : "mvn -Dmaven.test.skip=true -f org.eclipse.stp.sca.model/pom.xml clean install"

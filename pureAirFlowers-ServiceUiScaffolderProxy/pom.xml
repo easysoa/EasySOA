@@ -10,19 +10,19 @@
   <url>http://maven.apache.org</url>
   
   <!-- RELEASE Build -->
-  <!--<parent>
+  <parent>
     <groupId>com.openwide</groupId>
     <artifactId>pureAirFlowers-Release</artifactId>
     <version>1.0-SNAPSHOT</version>
-  </parent>-->
-
+  </parent>
+ 
   <!-- MVN -Prun Build -->
-  <parent>
+  <!--<parent>
     <groupId>org.ow2.frascati.examples</groupId>
     <artifactId>parent</artifactId>
     <version>1.4-SNAPSHOT</version>
-  </parent>
-
+  </parent>--> 
+ 
   <!-- MVN -Prun Build -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +31,65 @@
     <!-- Not used -->
     <!--<service.name>ProxyService</service.name>-->
     <!--<method.name>redirectRequests</method.name>-->
+    <config.directory>..</config.directory>
+    <java.util.logging.config.file>${config.directory}/logging.properties</java.util.logging.config.file>
+    <cxf.config.file>${config.directory}/frascati-cxf.xml</cxf.config.file>
+    <org.ow2.frascati.class>org.ow2.frascati.FraSCAti</org.ow2.frascati.class>
+    <org.ow2.frascati.bootstrap>org.ow2.frascati.bootstrap.FraSCAti</org.ow2.frascati.bootstrap>
+    <org.ow2.frascati.composite>org.ow2.frascati.FraSCAti</org.ow2.frascati.composite>
   </properties>
+
+	<build>
+		  <plugins>
+		  	<plugin>
+		    	<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-compiler-plugin</artifactId>
+		        <configuration>
+		        	<source>1.6</source>
+		            <target>1.6</target>
+		        </configuration>
+		    </plugin>
+	    </plugins>
+	</build>
+
+  <profiles>
+    <!-- To execute an SCA composite type 'mvn -Prun'. -->
+    <profile>
+      <id>run</id>
+      <build>
+        <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4-SNAPSHOT:exec</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.ow2.frascati.mojo</groupId>
+            <artifactId>frascati-launcher-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <loggingConfFile>${java.util.logging.conf.file}</loggingConfFile>
+              <composite>${composite.file}</composite>
+              <service>${service.name}</service>
+              <method>${method.name}</method>
+              <methodParams>${method.params}</methodParams>
+              <systemProperties>
+                <org.ow2.frascati.class>${org.ow2.frascati.class}</org.ow2.frascati.class>
+                <org.ow2.frascati.bootstrap>${org.ow2.frascati.bootstrap}</org.ow2.frascati.bootstrap>
+                <org.ow2.frascati.composite>${org.ow2.frascati.composite}</org.ow2.frascati.composite>
+                <!-- Set the Apache CXF configuration file to load. -->
+                <cxf.config.file.url>file:${cxf.config.file}</cxf.config.file.url>
+              </systemProperties>
+            </configuration>
+          </plugin> 
+        </plugins>
+      </build>
+    </profile>
+    </profiles>
 
   <!-- RELEASE Build -->
   <!--<build>
@@ -67,6 +125,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <version>4.6</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -81,12 +140,12 @@
     	<version>1.0</version>
     	<!--<version>${aopalliance.version}</version>-->
     </dependency>
-	<dependency>
+	<!--<dependency>
 	  <groupId>org.eclipse.stp.sca.osoa.java</groupId>
 	  <artifactId>osoa-java-api</artifactId>
 	  <version>1.0</version>
-	  <!--<version>${osoa.version}</version>-->
-	</dependency>     
+	  <version>${osoa.version}</version>
+	</dependency>-->     
     <!-- OW2 FraSCAti WS Binding. -->
     <dependency>
       <groupId>org.ow2.frascati</groupId>
@@ -130,4 +189,7 @@
     	<version>3.4.0</version>
     </dependency>-->
   </dependencies>
+  
+
+  
 </project>
