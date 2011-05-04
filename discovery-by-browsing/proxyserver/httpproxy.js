@@ -5,7 +5,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var base64 = require('./tools/base64');
+var base64 = require('./tools/base64.js'); // ./proxyserver/tools/base64.js on Windows?
 
 eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
 
@@ -24,6 +24,7 @@ function getFoundWSDLs(callback) {
 
 // Scraper response handling
 function scraperResponse(response) {
+console.log("respo");
 	var data = "";
 	response.on('data', function(chunk) {
 		data += chunk.toString("ascii");
@@ -57,7 +58,7 @@ function responseError(request, response, msg) {
 
 // HTTP Proxy Server
 var server = http.createServer(function(request, response) {
-	
+
 	var request_url = url.parse(request.url, true);
 
 	// If direct request to proxy, send found WSDLs

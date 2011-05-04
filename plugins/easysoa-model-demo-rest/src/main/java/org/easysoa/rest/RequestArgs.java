@@ -11,7 +11,7 @@ public class RequestArgs {
 	public RequestArgs(String string) {
 		this.rawRequest = string;
 		this.request = string
-			.replaceAll("^[\\w\\:\\/]*restAPI/[\\w]*/", "")
+			.replaceAll("^[\\w\\:\\/.]*restAPI/[\\w]*/", "")
 			.split("/");
 	}
 

@@ -16,8 +16,7 @@ public class JSONP {
 	public static final String format(JSONObject json, Request request)
 			throws JSONException, NullPointerException {
 		// Note: Restlet request is needed to retrieve the callback name
-		return request.getResourceRef().getQueryAsForm().getFirst("callback")
-				.getValue()
-				+ "(" + json.toString(2) + ");";
+		return request.getResourceRef().getQueryAsForm().
+			getFirst("callback").getValue() + "(" + json.toString(2) + ");";
 	}
 }

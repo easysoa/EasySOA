@@ -456,9 +456,11 @@
       </selector>
       <selector path="a:hover, a:active">
         <text-decoration>underline</text-decoration>
+        <color>#035</color>
       </selector>
       <selector path="a, a:link, a:visited, a:hover, a:active">
-        <color preset="header.link (Galaxy colors)"/>
+       <!--<color preset="header.link (Galaxy colors)"/>  --> 
+        <color>#035</color>
       </selector>
       <selector path="img">
         <margin-left>5px</margin-left>
@@ -1748,7 +1750,7 @@
     <style element="page[1]/section[2]/cell[1]">
       <selector path="" view="cell frame">
         <border-right preset="leftcolumn (Galaxy borders)"/>
-        <background preset="leftmenu (Galaxy backgrounds)"/>
+        <background-color>#ddd</background-color>
       </selector>
     </style>
     <style element="page[1]/section[2]/cell[1]/fragment[1]" inherit="tree and clipboard column"/>
