@@ -8,6 +8,8 @@ Instructions :
 - Copy the two jar files "autoRearmFuseIntent-1.0-SNAPSHOT.jar" and "logIntent-1.0-SNAPSHOT.jar" in the "frascati-proxy/lib" folder.
 - copy the "pureAirFlowerServer-1.0-SNAPSHOT-with-dep.jar" in the "cxf-server" folder
 
+You can remove the 2 empty Readme files in "cxf-server" and "frascati-proxy" folders. 
+
 To launch the servers :
 
 Execute in this order :
