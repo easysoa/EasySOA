@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>EasySOA Core - PureAirFlowers Service</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
   <script type="text/javascript">
 
     function submitgetOrdersNumberForm(form){ 
@@ -36,8 +36,8 @@
 				    }
 		    };
 		    // Hard coded URL for demo purpose
-		    //var url = "http://localhost:7001/?";
-		    var url = "http://localhost:7001/?"
+		    //var url = "http://127.0.0.1:7001/?";
+		    var url = "http://127.0.0.1:7001/?"
 		    var params = "";
 	    // For each form field : add it in the url
 		
@@ -63,13 +63,16 @@
 </head>
 <body>
 
-<div id="header"><b>PureAirFlowers</b> Service</div>
+<div id="header">
+<div id="headerBreadcrumbs"><a href="/easysoa">EasySOA</a> > <a href="index.html">Light</a> > <b>PureAirFlowers</b></div>
+<b>PureAirFlowers</b> Service
+</div>
 
 <div id="container">
 
 <h1>Service location</h1>
 
-<p><a href="http://192.168.2.157:9010/PureAirFlowers">http://192.168.2.157:9010/PureAirFlowers</a></p>
+<p><a href="http://127.0.0.1:9010/PureAirFlowers">http://127.0.0.1:9010/PureAirFlowers</a></p>
 
 <h1>Operation <b>getOrdersNumber</b></h1>
 
