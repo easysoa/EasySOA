@@ -25,7 +25,7 @@ MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
 
 ############### CUSTOM FUNCTIONS
 
-def maven(goals, project)
+def maven(goals, project, version)
   command = 'mvn '
   if !goals.is_a?(Array)
     goals = [goals]
@@ -33,13 +33,15 @@ def maven(goals, project)
   for goal in goals
     case goal
       when 'package'
-        command += 'package -f '+project.base_dir+'/pom.xml '
-      when 'install'
-        command += 'install:install-file -Dfile=target/'+ project.name.sub(project.parent.name+':', '') + '-'+THIS_VERSION+'.jar -DpomFile=pom.xml '
+        command += 'package '
+      when 'install:install-file'
+        command += 'install:install-file -Dfile=target/'+ project.name.sub(project.parent.name+':', '') + '-'+version+'.jar -DpomFile=pom.xml '
       else
         command += goal+' '
     end
   end
+  command += '-f ' + project.base_dir + '/pom.xml'
+  puts command
   system command
   puts "", ""
 end
@@ -54,6 +56,9 @@ MODEL_REST = 'easysoa:easysoa-model-demo:plugins:easysoa-model-demo-rest'
 PAF_CXF = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-easysoa-demo-cxf-server'
 PAF_PROXY = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-ServiceUiScaffolderProxy'
 PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-Release'
+PAF_BUILD = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-BinaryBuildComponents'
+PAF_LOGINTENT = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-logIntent'
+PAF_FUSINTENT = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-autoRearmFuseIntent'
 
 define 'easysoa', :base_dir => '../' do
   
@@ -68,7 +73,7 @@ define 'easysoa', :base_dir => '../' do
         package(:jar).with :manifest=>_(MANIFEST_RELATIVE_PATH)
         
         task :mvn do
-          maven(['clean', 'package', 'install'], project)
+          maven(['clean', 'package', 'install:install-file'], project, MODEL_VERSION)
         end
       end
       
@@ -78,7 +83,7 @@ define 'easysoa', :base_dir => '../' do
         package(:jar).with :manifest=>_(MANIFEST_RELATIVE_PATH)
         
         task :mvn do
-          maven(['clean', 'package', 'install'], project)
+          maven(['clean', 'package', 'install:install-file'], project, MODEL_VERSION)
         end
       end
       
@@ -88,7 +93,7 @@ define 'easysoa', :base_dir => '../' do
         package(:jar).with :manifest=>_(MANIFEST_RELATIVE_PATH)
         
         task :mvn do
-          maven(['clean', 'package', 'install'], project)
+          maven(['clean', 'package', 'install:install-file'], project, MODEL_VERSION)
         end
       end
       
@@ -123,19 +128,17 @@ define 'easysoa', :base_dir => '../' do
   
   define 'easysoa-demo-pureAirFlowers' do
   
-    define 'pureAirFlowers-easysoa-demo-cxf-server' do
-      # Nothing
-    end
-    
     define 'pureAirFlowers-Release' do
       task :mvn do
-        maven(['clean', 'install'], project)
+        maven(['clean', 'install'], project, PAF_VERSION)
       end
     end
     
-    define 'pureAirFlowers-ServiceUiScaffolderProxy' do
-      # Nothing
-    end
+    define 'pureAirFlowers-easysoa-demo-cxf-server'
+    define 'pureAirFlowers-ServiceUiScaffolderProxy'
+    define 'pureAirFlowers-BinaryBuildComponents'
+    define 'pureAirFlowers-logIntent'
+    define 'pureAirFlowers-autoRearmFuseIntent'
     
   end
   
@@ -162,7 +165,10 @@ desc "Cleans all Nuxeo plugins"
 task :nx_clean => [MODEL_CORE+':clean', MODEL_WEB+':clean', MODEL_REST+':clean']
              
 desc "Builds PAF CXF server and service proxy"
-task :paf_mvn => [PAF_PROXY+':mvn']
+task :paf_mvn => [PAF_RELEASE+':mvn']
+
+desc "Builds all needed projects"
+task :buildall => ['paf_mvn', 'nx_mvn']
 
 desc "Creates the EasySOA package"
 task :tgz => ['nx_dist'] do
@@ -180,15 +186,21 @@ task :tgz => ['nx_dist'] do
   PATH_NUXEO = 'nuxeo-dm'
   mkdir TMP
   
-  puts "Copying web services (Apache CXF)..."
-  mkdir TMP+'/webservices'
-  cp project(PAF_CXF).base_dir+'/readme.txt', TMP+'/webservices'
-  cp project(PAF_CXF).base_dir+'/target/pureAirFlowerServer-'+PAF_VERSION+'-with-dep.jar', TMP+'/webservices'
+  puts "Copying web services (Apache CXF + FraSCAti)..."
+  cp_r project(PAF_BUILD).base_dir+'/distrib/', TMP
+  rm TMP+'/distrib/cxf-server/readme'
+  rm TMP+'/distrib/frascati-proxy/readme'
   
-  puts "Copying web services proxy (FraSCAti)..."
-  mkdir_p TMP+'/webservicesproxy/target'
-  cp_r FileList[project(PAF_PROXY).base_dir+"/target/*.jar"], TMP+'/webservicesproxy/target'
-  cp_r project(PAF_PROXY).base_dir+"/pom.xml", TMP+'/webservicesproxy'
+  cp FileList[project(PAF_CXF).base_dir+'/target/*dep.jar'].to_s, TMP+'/distrib/cxf-server/'
+  cp project(PAF_CXF).base_dir+'/readme.txt', TMP+'/distrib/cxf-server/'
+  
+  system 'unzip -q ' + project(PAF_BUILD).base_dir+'/Frascati_binary_runtime/*.zip -d ' + TMP + '/distrib/frascati-proxy'
+  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/lib'
+  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/lib'
+  mv TMP+'/distrib', TMP+'/webservices'
   
   puts "Copying web server (node.js + antinode)..."
   mkdir TMP+'/web'
