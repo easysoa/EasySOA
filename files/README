@@ -1,0 +1,11 @@
+# Prerequisites
+
+- Maven 2
+- A recent JVM (packages are built with 1.6.0_20)
+- The latest FraSCAti build (http://forge.ow2.org/svnsnapshots/frascati-svn-latest.tar.gz)
+
+# Setup
+
+1. Unzip the archive contents
+2. Set your proxy to 127.0.0.1:8081
+3. Use `run.sh` or launch the servers manually
