@@ -17,9 +17,10 @@ var config = {
       ".png",
       ".js",
       ".ico",
-      ":8083/client", // Discovery by browsing client
-      ":8080/nuxeo", // Nuxeo
-      ":8081", // The proxy itself
+      ":8083/easysoa", // EasySOA website
+      ":8080/nuxeo", // Nuxeo (part of EasySOA Core)
+      ":7001", // FraSCAti (part of EasySOA Light)
+      ":8081", // The web proxy itself
     ]
     
 };
