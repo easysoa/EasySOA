@@ -168,7 +168,9 @@ task :packageall => ['nx_dist'] do
   cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/sca-apps'
   cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/lib'
   cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/lib'
-  system 'chmod +x ' + PACKAGING_PATH+'/distrib/frascati-proxy/frascati'
+  system 'chmod +x ' + PACKAGING_PATH+'/distrib/frascati-proxy/bin/frascati'
+  system 'chmod +x ' + PACKAGING_PATH+'/distrib/start_frascati_proxy.sh'
+  system 'chmod +x ' + PACKAGING_PATH+'/distrib/start_cxf_server.sh'
   mv PACKAGING_PATH+'/distrib', PACKAGING_PATH+'/webservices'
   
   puts "Copying web server (node.js + antinode)..."

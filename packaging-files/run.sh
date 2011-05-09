@@ -30,7 +30,7 @@ webservices()
 {
   touch log/webservices.log
   cd webservices
-  ./start_cxf_server.sh > log/webservices.log 2>&1
+  ./start_cxf_server.sh > ../log/webservices.log 2>&1
   cd ..
 }
 
@@ -38,7 +38,7 @@ webservicesproxy()
 {
   touch log/webservicesproxy.log
   cd webservices
-  ./start_frascati_proxy.sh > log/webservicesproxy.log 2>&1
+  ./start_frascati_proxy.sh > ../log/webservicesproxy.log 2>&1
   cd ..
 }
 
@@ -58,7 +58,7 @@ echo "Press any key to stop."
 shutdown()
 {
   echo "Stopping all servers."
-  ps | awk 'NR>1 { print $1 }' | xargs kill > /dev/null 2>&1
+  ps | awk 'NR>2 { print $1 }' | xargs kill -9 > /dev/null 2>&1
 }
 
 trap shutdown SIGINT SIGTERM
