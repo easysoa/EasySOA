@@ -5,7 +5,7 @@ var config = {
     
     // Scrapers to be used to find WSDLs
     scrapers: [
-      "http://localhost:8080/nuxeo/restAPI/wsdlscraper/?", // Nuxeo
+      "http://127.0.0.1:8080/nuxeo/restAPI/wsdlscraper/?", // Nuxeo
       //"http://localhost:8082/url=?" // myscraper.js
     ],
     

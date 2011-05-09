@@ -24,15 +24,14 @@ function getFoundWSDLs(callback) {
 
 // Scraper response handling
 function scraperResponse(response) {
-console.log("respo");
 	var data = "";
 	response.on('data', function(chunk) {
 		data += chunk.toString("ascii");
 	});
 	response.on('end', function() {
+		var json = null;
 		try {
-			var json = JSON.parse(data);
-			console.log(json);
+			json = JSON.parse(data);
 			if (json.foundLinks) {
 				for (link in json.foundLinks) {
 					status.foundLinks[link] = {
@@ -44,7 +43,7 @@ console.log("respo");
 				}
 			}
 		} catch (err) {
-			console.log("[INFO] Note: "+err.message);
+			console.log("[INFO] Note: "+err.message+" ("+data+")");
 		}
 	});
 }
