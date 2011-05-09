@@ -2,8 +2,17 @@ Project for EasySOA contributors, used to tie all packages together.
 
 # Prerequisites
 
-* [Buildr][1] for building.
-* Installed [Nuxeo DM][4] for EasySOA Core packing.
+## For building
+
+* Sun's 1.6 Java JDK
+* Maven 2
+* [Buildr][1]
+* [Nuxeo DM][4] (with Derby as a database)
+
+## For running
+
+* Sun's 1.6 Java JDK
+* [Node.js][5]
 
 # Set up
 
@@ -29,7 +38,7 @@ Modify the `buildfile` file constants according to your config, then run the fol
 To launch EasySOA, go to the `easysoa` folder, and run:
 
     ./run.sh
-
+    
 # Task list
 
 * `buildr buildall` builds all needed projects
@@ -46,3 +55,4 @@ To launch EasySOA, go to the `easysoa` folder, and run:
 [2]: https://github.com/mkalam-alami/easysoa-model-demo
 [3]: https://github.com/JGuillemotte/easysoa-demo-pureAirFlowers-proxy
 [4]: http://www.nuxeo.com/en/products/document-management
+[5]: http://nodejs.org/
