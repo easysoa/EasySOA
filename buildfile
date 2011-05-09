@@ -192,6 +192,8 @@ task :packageall => ['nx_dist'] do
   rm_rf PACKAGING_PATH+'/serviceregistry/tmp/'
   rm_rf PACKAGING_PATH+'/serviceregistry/nxserver/data/'
   
+  cp FileList["packaging-files/*"], PACKAGING_PATH
+  
 end
 
 desc "Creates the EasySOA package"
@@ -203,7 +205,7 @@ task :tgz do
   puts "Compressing..."
   system 'tar -zcf ' + PACKAGING_FILE + ' -C ' + PACKAGING_PATH + \
     ' serviceregistry web webproxy webservices webservicesproxy ' + \
-    ' -C ../packaging-files/ ' + FileList["packaging-files/*"].sub('packaging-files/', '').to_s
+    FileList["packaging-files/*"].sub('packaging-files/', '').to_s
   
   puts "EasySOA successfully packaged in "+PACKAGING_FILE
   

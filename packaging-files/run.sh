@@ -29,28 +29,30 @@ webproxy()
 webservices()
 {
   touch log/webservices.log
-  java -jar `find ./webservices -name *.jar` > log/webservices.log 2>&1
+  cd webservices
+  ./start_cxf_server.sh > log/webservices.log 2>&1
+  cd ..
 }
 
 webservicesproxy()
 {
   touch log/webservicesproxy.log
-  cd ./webproxy
-  ./mvn -Prun > ../log/webservicesproxy.log 2>&1
+  cd webservices
+  ./start_frascati_proxy.sh > log/webservicesproxy.log 2>&1
+  cd ..
 }
 
 # Start processes
-echo "Starting EasySOA Demo."
+echo "Starting EasySOA Demo. A browser page will be opened in a few seconds."
 serviceregistry &
 #serviceregistrypid=$!
 web &
 webproxy &
 webservices &
 webservicesproxy &
+firefox "http://localhost:8083/easysoa" &
 
 echo "Press any key to stop."
-
-firefox "http://localhost:8083/easysoa"
 
 # Prepare to interrupt all running processes
 shutdown()
