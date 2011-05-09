@@ -31,11 +31,9 @@ $(function() {
 			var serviceName = $('#submitService').attr('value');
 			var appName = $('#submitApp').attr('value');
 			
-			console.log('http://localhost:8080/nuxeo/restAPI/wsdlupload/'
-						 + appName + '/' + serviceName + '/' + url);
 			if (url != '') {
 				$.ajax({
-					url: 'http://localhost:8080/nuxeo/restAPI/wsdlupload/'
+					url: 'http://127.0.0.1:8080/nuxeo/restAPI/wsdlupload/'
 						 + appName + '/' + serviceName + '/' + url,
 					crossDomain: true,
 					dataType: 'jsonp',

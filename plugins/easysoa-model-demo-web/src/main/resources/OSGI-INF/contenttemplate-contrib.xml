@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.openwide.test.contenttemplate">
+<component name="org.openwide.demo.contenttemplate">
 
   <require>org.nuxeo.ecm.platform.content.template.service.ContentTemplateService.defaultContrib</require>
 

@@ -5,7 +5,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var base64 = require('./tools/base64');
+var base64 = require('./tools/base64.js'); // ./proxyserver/tools/base64.js on Windows?
 
 eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
 
@@ -29,9 +29,9 @@ function scraperResponse(response) {
 		data += chunk.toString("ascii");
 	});
 	response.on('end', function() {
+		var json = null;
 		try {
-			var json = JSON.parse(data);
-			console.log(json);
+			json = JSON.parse(data);
 			if (json.foundLinks) {
 				for (link in json.foundLinks) {
 					status.foundLinks[link] = {
@@ -43,7 +43,7 @@ function scraperResponse(response) {
 				}
 			}
 		} catch (err) {
-			console.log("[INFO] Note: "+err.message);
+			console.log("[INFO] Note: "+err.message+" ("+data+")");
 		}
 	});
 }
@@ -57,7 +57,7 @@ function responseError(request, response, msg) {
 
 // HTTP Proxy Server
 var server = http.createServer(function(request, response) {
-	
+
 	var request_url = url.parse(request.url, true);
 
 	// If direct request to proxy, send found WSDLs

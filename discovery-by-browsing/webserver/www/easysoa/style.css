@@ -42,14 +42,34 @@ li {
 
 #header {
   width: 100%;
-  padding-top: 23px;
+  padding-top: 10px;
   padding-left: 280px;
   font-size: 14pt;
-  height: 47px;
-  background: url('img/LogoLight50.png') white;
+  height: 60px;
+  background: url('img/Light50.png') white;
   background-repeat: no-repeat;
   background-position: 20px 10px;
   border-bottom: 2px solid #444;
+}
+
+#headerWelcome {
+  width: 100%;
+  padding-top: 23px;
+  padding-left: 220px;
+  font-size: 14pt;
+  font-weight: bold;
+  height: 47px;
+  background: url('img/Logo.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 15px;
+  border-bottom: 2px solid #444;
+}
+
+#headerBreadcrumbs {
+  font-size: 10pt;
+  display: block;
+  width: 100%;
+  margin-bottom: 3px;
 }
 
 #container { 
@@ -58,6 +78,7 @@ li {
 
 p {
   font-size: 11pt;
+  margin-bottom: 10px;
 }
 
 table {
@@ -97,7 +118,29 @@ input[type=button] {
 }
 
 a {
-  color: darkblue;
+  color: #036;
   text-decoration: none;
   font-weight: bold;
 }
+
+p {
+  width: 100%;
+  display: block;
+}
+
+a img {
+  border: 0;
+}
+
+/* Main page */
+
+#shortcuts {
+  width: 40%;
+  text-align: right;
+  padding: 20px;
+  font-weight: bold;
+}
+
+#shortcuts a {
+  font-size: 18pt;
+} 

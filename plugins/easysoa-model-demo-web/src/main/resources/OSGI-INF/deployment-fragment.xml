@@ -18,6 +18,11 @@
       <include>web/nuxeo.war/**</include>
     </unzip>
     
+    <unzip from="${bundle.fileName}" to="/">
+      <include>themes/**</include>
+      <exclude>collections/**</exclude>
+    </unzip>
+    
     <!-- Copie des traductions -->
     <delete path="nuxeo.war/easysoa-l10n.tmp"/>
     <mkdir path="nuxeo.war/easysoa-l10n.tmp"/>

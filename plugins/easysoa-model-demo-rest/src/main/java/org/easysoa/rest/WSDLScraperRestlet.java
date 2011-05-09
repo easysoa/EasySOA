@@ -43,7 +43,7 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			failure = "Cannot initialize JSON object: " + e.getMessage();
 		}
 		
-		// URL parsing 
+		// URL parsing
 		String url = null;
 		try {
 			url = new RequestArgs(request.getResourceRef().toString()).getRemaining();
@@ -58,7 +58,12 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			try {
 				f.download();
 			} catch (Exception e) {
-				failure = "WSDL download problem: " + e.getMessage();
+				failure = "Web page download problem: "+e.getMessage();
+				try {
+					result.append("stacktrace", e.getStackTrace());
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 
@@ -117,33 +122,25 @@ public class WSDLScraperRestlet extends BaseStatelessNuxeoRestlet {
 			failure = "Page download problem: (" + e.getClass() + ") " + e.getMessage();
 		}
 
-		// Format result
-		String resultJSONP = null;
-		try {
-			result.append("error", failure);
-			resultJSONP = JSONP.format(result, request);
-		} catch (Exception e) {
-			failure = "Cannot format JSONP message : " + e.getMessage();
-
-		}
-		
-		// Send result
+		// Format & send result
 		try {
 			if (failure != null)
 				result.append("error", failure);
-			
-			if (resultJSONP != null)
-				response.setEntity(new StringRepresentation(JSONP.format(result,
-						request), MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
-						CharacterSet.UTF_8));
-			else
+			// ...in JSONP
+			response.setEntity(new StringRepresentation(JSONP.format(result,
+					request), MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
+					CharacterSet.UTF_8));
+		} catch (Exception e) {
+			try {
+				// ...else in JSON
 				response.setEntity(new StringRepresentation(result.toString(2),
 						MediaType.APPLICATION_JSON, Language.ALL,
 						CharacterSet.UTF_8));
-		} catch (Exception e) {
-			failure = "Cannot send message : " + e.getMessage();
+			} catch (JSONException e1) {
+				failure = "Cannot send message : " + e1.getMessage();
+			}
 		}
-
+		
 		f.delete();
 	}
 
