@@ -10,6 +10,7 @@ repositories.remote << 'http://maven.nuxeo.org/nexus/content/groups/public'
 ############### PREREQUISITES & COMMANDS
 
 # See README.md
+# (Command list: buildall, packageall, tgz, nx_mvn, nx_dist, nx_git, nx_clean, paf_mvn)
 
 ############### CONFIG
 
@@ -19,8 +20,11 @@ THIS_VERSION = '1.0-SNAPSHOT'
 MODEL_VERSION = '0.1.2-SNAPSHOT'
 PAF_VERSION = '1.0-SNAPSHOT'
 
+PACKAGING_PATH = 'easysoa'
+PACKAGING_FILE = 'easysoa-demo-'+THIS_VERSION+'.tar.gz';
+
 # Generated
-NUXEO_PLUGINS = NUXEO_PATH+'/nxserver/plugins/'
+NUXEO_PLUGINS_PATH = NUXEO_PATH+'/nxserver/plugins/'
 MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
 
 ############### CUSTOM FUNCTIONS
@@ -31,14 +35,7 @@ def maven(goals, project, version)
     goals = [goals]
   end
   for goal in goals
-    case goal
-      when 'package'
-        command += 'package '
-      when 'install:install-file'
-        command += 'install:install-file -Dfile=target/'+ project.name.sub(project.parent.name+':', '') + '-'+version+'.jar -DpomFile=pom.xml '
-      else
-        command += goal+' '
-    end
+    command += goal+' '
   end
   command += '-f ' + project.base_dir + '/pom.xml'
   puts command
@@ -50,9 +47,7 @@ end
 ############### PROJECT DEFINITIONS
 
 DBBROWSING = 'easysoa:easysoa-model-demo:discovery-by-browsing'
-MODEL_CORE = 'easysoa:easysoa-model-demo:plugins:easysoa-model-demo-core'
-MODEL_WEB = 'easysoa:easysoa-model-demo:plugins:easysoa-model-demo-web'
-MODEL_REST = 'easysoa:easysoa-model-demo:plugins:easysoa-model-demo-rest'
+MODEL = 'easysoa:easysoa-model-demo:plugins'
 PAF_CXF = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-easysoa-demo-cxf-server'
 PAF_PROXY = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-ServiceUiScaffolderProxy'
 PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-Release'
@@ -64,55 +59,28 @@ define 'easysoa', :base_dir => '../' do
   
   define 'easysoa-model-demo' do
     
-    # Nuxeo plugins
+    desc 'Nuxeo plugins'
     define 'plugins' do
     
-      desc 'Plugin Nuxeo - Core'
-      define 'easysoa-model-demo-core' do
-        project.version = MODEL_VERSION
-        package(:jar).with :manifest=>_(MANIFEST_RELATIVE_PATH)
-        
-        task :mvn do
-          maven(['clean', 'package', 'install:install-file'], project, MODEL_VERSION)
-        end
-      end
-      
-      desc 'Plugin Nuxeo - Web'
-      define 'easysoa-model-demo-web' do
-        project.version = MODEL_VERSION
-        package(:jar).with :manifest=>_(MANIFEST_RELATIVE_PATH)
-        
-        task :mvn do
-          maven(['clean', 'package', 'install:install-file'], project, MODEL_VERSION)
-        end
-      end
-      
-      desc 'Plugin Nuxeo - REST API'
-      define 'easysoa-model-demo-rest' do
-        project.version = MODEL_VERSION
-        package(:jar).with :manifest=>_(MANIFEST_RELATIVE_PATH)
-        
-        task :mvn do
-          maven(['clean', 'package', 'install:install-file'], project, MODEL_VERSION)
-        end
+      project.version = MODEL_VERSION
+      task :mvn do
+        maven(['clean', 'install'], project, MODEL_VERSION)
       end
       
       desc 'Send plugins to Nuxeo'
       task :dist do
-        DIST_DELETE = FileList[_(NUXEO_PLUGINS+'*.jar')]
-        DIST_COPY = FileList[_(project(MODEL_CORE).base_dir+'/target/*'+MODEL_VERSION+'.jar'),
-          _(project(MODEL_WEB).base_dir+'/target/*'+MODEL_VERSION+'.jar'),
-          _(project(MODEL_REST).base_dir+'/target/*'+MODEL_VERSION+'.jar')]
+        DIST_DELETE = FileList[_(NUXEO_PLUGINS_PATH+'*.jar')]
+        DIST_COPY = FileList[_(project(MODEL).base_dir+'/**/*'+MODEL_VERSION+'.jar')]
         puts "Nuxeo plugins - Deleting : ", DIST_DELETE
         rm DIST_DELETE
         puts "Nuxeo plugins - Deploying : ", DIST_COPY
-        mkdir_p NUXEO_PLUGINS
-        cp DIST_COPY, NUXEO_PLUGINS
+        mkdir_p NUXEO_PLUGINS_PATH
+        cp DIST_COPY, NUXEO_PLUGINS_PATH
       end
       
       desc 'Put Nuxeo jars in git build folder'
       task :git do
-        DIST_JARS = FileList[_(NUXEO_PLUGINS+'*'+MODEL_VERSION+'.jar')]
+        DIST_JARS = FileList[_(NUXEO_PLUGINS_PATH+'*'+MODEL_VERSION+'.jar')]
         puts "Nuxeo plugins - Deploying to Git folder : ", DIST_JARS
         cp DIST_JARS, "../easysoa-model-demo/build/"
       end
@@ -153,16 +121,16 @@ end
 ############### TASKS DEFINITIONS
                  
 desc "Builds Nuxeo plugins using Maven"
-task :nx_mvn => [MODEL_CORE+':mvn', MODEL_WEB+':mvn', MODEL_REST+':mvn']
+task :nx_mvn => [MODEL+':mvn']
                  
 desc "Deploys Nuxeo plugins"
-task :nx_dist => ['easysoa:easysoa-model-demo:plugins:dist']
+task :nx_dist => [MODEL+':dist']
 
 desc "Copise plugins to git build folder"
-task :nx_git => ['easysoa:easysoa-model-demo:plugins:git']
+task :nx_git => [MODEL+':git']
 
 desc "Cleans all Nuxeo plugins"
-task :nx_clean => [MODEL_CORE+':clean', MODEL_WEB+':clean', MODEL_REST+':clean']
+task :nx_clean => [MODEL+':clean']
              
 desc "Builds PAF CXF server and service proxy"
 task :paf_mvn => [PAF_RELEASE+':mvn']
@@ -171,67 +139,72 @@ desc "Builds all needed projects"
 task :buildall => ['paf_mvn', 'nx_mvn']
 
 desc "Creates the EasySOA package"
-task :tgz => ['nx_dist'] do
+task :packageall => ['nx_dist'] do
 
   puts "", "Starting to build EasySOA package"
-
-  TMP = '.tmp'
-  OUT = 'easysoa-demo-'+THIS_VERSION+'.tar.gz';
   
   # Prepare environment
-  rm_rf TMP
-  rm_f FileList['easysoa-demo-*']
+  rm_rf PACKAGING_PATH
   
   # Copy all needed files
   PATH_NUXEO = 'nuxeo-dm'
-  mkdir TMP
+  mkdir_p PACKAGING_PATH
   
   puts "Copying web services (Apache CXF + FraSCAti)..."
-  cp_r project(PAF_BUILD).base_dir+'/distrib/', TMP
-  rm TMP+'/distrib/cxf-server/readme'
-  rm TMP+'/distrib/frascati-proxy/readme'
+  cp_r project(PAF_BUILD).base_dir+'/distrib/', PACKAGING_PATH
+  rm PACKAGING_PATH+'/distrib/cxf-server/readme'
+  rm PACKAGING_PATH+'/distrib/frascati-proxy/readme'
   
-  cp FileList[project(PAF_CXF).base_dir+'/target/*dep.jar'].to_s, TMP+'/distrib/cxf-server/'
-  cp project(PAF_CXF).base_dir+'/readme.txt', TMP+'/distrib/cxf-server/'
+  begin
+    cp FileList[project(PAF_CXF).base_dir+'/target/*dep.jar'].to_s, PACKAGING_PATH+'/distrib/cxf-server/'
+  rescue Exception
+    raise "CXF server JAR seems missing"
+  end
+  cp project(PAF_CXF).base_dir+'/readme.txt', PACKAGING_PATH+'/distrib/cxf-server/'
   
-  system 'unzip -q ' + project(PAF_BUILD).base_dir+'/Frascati_binary_runtime/*.zip -d ' + TMP + '/distrib/frascati-proxy'
-  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/sca-apps'
-  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/sca-apps'
-  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/sca-apps'
-  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/lib'
-  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, TMP+'/distrib/frascati-proxy/lib'
-  mv TMP+'/distrib', TMP+'/webservices'
+  system 'unzip -q ' + project(PAF_BUILD).base_dir+'/Frascati_binary_runtime/*.zip -d ' + PACKAGING_PATH + '/distrib/frascati-proxy'
+  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/lib'
+  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/lib'
+  system 'chmod +x ' + PACKAGING_PATH+'/distrib/frascati-proxy/frascati'
+  mv PACKAGING_PATH+'/distrib', PACKAGING_PATH+'/webservices'
   
   puts "Copying web server (node.js + antinode)..."
-  mkdir TMP+'/web'
-  cp_r FileList[project(DBBROWSING).base_dir+"/webserver"], TMP+'/web'
-  cp_r project(DBBROWSING).base_dir+"/start-web.sh", TMP+'/web'
+  mkdir PACKAGING_PATH+'/web'
+  cp_r FileList[project(DBBROWSING).base_dir+"/webserver"], PACKAGING_PATH+'/web'
+  cp_r project(DBBROWSING).base_dir+"/start-web.sh", PACKAGING_PATH+'/web'
   
   puts "Copying web proxy (node.js)..."
-  mkdir TMP+'/webproxy'
-  cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], TMP+'/webproxy'
-  cp_r project(DBBROWSING).base_dir+"/start-proxy.sh", TMP+'/webproxy'
+  mkdir PACKAGING_PATH+'/webproxy'
+  cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], PACKAGING_PATH+'/webproxy'
+  cp_r project(DBBROWSING).base_dir+"/start-proxy.sh", PACKAGING_PATH+'/webproxy'
   
   puts "Copying service registry (Nuxeo)..."
   begin
-    cp_r NUXEO_PATH, TMP
+    cp_r NUXEO_PATH, PACKAGING_PATH
   rescue Exception
     raise "Files copy failed: Nuxeo is probably running. Could you please stop it?"
   end
-  system 'mv', '-T', TMP+'/nuxeo-dm', TMP+'/serviceregistry'
-  rm_rf TMP+'/serviceregistry/tmp/'
-  rm_rf TMP+'/serviceregistry/nxserver/data/'
+  system 'mv', '-T', FileList[PACKAGING_PATH+'/nuxeo-dm*'].to_s, PACKAGING_PATH+'/serviceregistry'
+  cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/lib/*.jar'], PACKAGING_PATH+'/serviceregistry/lib'
+  rm_rf PACKAGING_PATH+'/serviceregistry/tmp/'
+  rm_rf PACKAGING_PATH+'/serviceregistry/nxserver/data/'
+  
+end
+
+desc "Creates the EasySOA package"
+task :tgz do
+  
+  rm_f FileList['easysoa-demo-*']
   
   # Tar
   puts "Compressing..."
-  system 'tar -zcf ' + OUT + ' -C ' + TMP + \
+  system 'tar -zcf ' + PACKAGING_FILE + ' -C ' + PACKAGING_PATH + \
     ' serviceregistry web webproxy webservices webservicesproxy ' + \
-    ' -C ../files/ ' + FileList["files/*"].sub('files/', '').to_s
+    ' -C ../packaging-files/ ' + FileList["packaging-files/*"].sub('packaging-files/', '').to_s
   
-  # Clean
-  puts "Cleaning temporary files..."
-  system 'rm', '-r', TMP
-  
-  puts "EasySOA successfully packaged in "+OUT
+  puts "EasySOA successfully packaged in "+PACKAGING_FILE
   
 end

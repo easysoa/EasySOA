@@ -1,4 +1,0 @@
-1. Open install.sh and edit its configuration
-2. Run the install:
-   - "install.sh": Downloads the archive from given configuration
-   - "install.sh local": Installs from last downloaded archive

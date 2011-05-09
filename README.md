@@ -14,16 +14,27 @@ You will need to clone all needed projects:
 
 Once this is done, clone this repository in your workspace, on the same level than the other projects.
 
-# Build
+# Build and distribute
 
 Modify the `buildfile` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
 
-    buildr buildall tgz
+    buildr buildall packageall tgz
+    
+# Build and run
+
+Modify the `buildfile` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
+
+    buildr buildall packageall
+    
+To launch EasySOA, go to the `easysoa` folder, and run:
+
+    ./run.sh
 
 # Task list
 
 * `buildr buildall` builds all needed projects
-* `buildr tgz` creates a tar.gz containing the discovery-by-browsing tool + the Nuxeo installation
+* `buildr packageall` creates an easysoa folder including all components
+* `buildr tgz` creates a tar.gz from the easysoa package
 
 * `buildr nx_mvn` builds all Nuxeo bundles
 * `buildr nx_dist` deploys Nuxeo bundles to the Nuxeo plugins folder
