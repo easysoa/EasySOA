@@ -13,13 +13,9 @@ mkdir -p .tmp
 
 # Download archive
 cd .tmp
-if [ $1 != 'local' ]; then
-	echo "Downloading archive..."
-	scp $EASYSOAUSER@$EASYSOAIP:$EASYSOAFILE $EASYSOADEST
-else
-	echo "Skipping archive download"
-fi
-
+echo "Downloading archive..."
+scp $EASYSOAUSER@$EASYSOAIP:$EASYSOAFILE $EASYSOADEST
+	
 # Extract
 echo "Extracting files..."
 cd ../easysoa
