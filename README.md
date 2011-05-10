@@ -54,3 +54,5 @@ The code is split into 4 projects:
  * `plugins/easysoa-demo-model-web`: The Nuxeo web contributions, tightly linked to the `core` project.
  * `plugins/easysoa-demo-rest`: The REST API used by the service finder.
  * `easysoa-servicefinder`: The service finding tool.
+
+ 
