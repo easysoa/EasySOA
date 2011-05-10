@@ -1,7 +1,7 @@
 require 'shellwords'
 
 repositories.remote << 'http://www.ibiblio.org/maven2'
-repositories.remote << 'http://maven.nuxeo.org/nexus/content/groups/public'
+#repositories.remote << 'http://maven.nuxeo.org/nexus/content/groups/public'
 
 # ----------------------
 # EasySOA Demo Buildfile
@@ -14,11 +14,11 @@ repositories.remote << 'http://maven.nuxeo.org/nexus/content/groups/public'
 
 ############### CONFIG
 
-NUXEO_PATH = ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat'
+NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat'
 
-THIS_VERSION = '1.0-SNAPSHOT'
-MODEL_VERSION = '0.1.2-SNAPSHOT'
-PAF_VERSION = '1.0-SNAPSHOT'
+THIS_VERSION = Buildr.settings.build['release']['version']
+MODEL_VERSION = Buildr.settings.build['model']['version']
+PAF_VERSION = Buildr.settings.build['paf']['version']
 
 PACKAGING_PATH = 'easysoa'
 PACKAGING_FILE = 'easysoa-demo-'+THIS_VERSION+'.tar.gz';
@@ -48,12 +48,12 @@ end
 
 DBBROWSING = 'easysoa:easysoa-model-demo:discovery-by-browsing'
 MODEL = 'easysoa:easysoa-model-demo:plugins'
-PAF_CXF = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-easysoa-demo-cxf-server'
-PAF_PROXY = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-ServiceUiScaffolderProxy'
-PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-Release'
-PAF_BUILD = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-BinaryBuildComponents'
-PAF_LOGINTENT = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-logIntent'
-PAF_FUSINTENT = 'easysoa:easysoa-demo-pureAirFlowers:pureAirFlowers-autoRearmFuseIntent'
+PAF_CXF = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-easysoa-demo-cxf-server'
+PAF_PROXY = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-ServiceUiScaffolderProxy'
+PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-Release'
+PAF_BUILD = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-BinaryBuildComponents'
+PAF_LOGINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-logIntent'
+PAF_FUSINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-autoRearmFuseIntent'
 
 define 'easysoa', :base_dir => '../' do
   
@@ -94,7 +94,7 @@ define 'easysoa', :base_dir => '../' do
     
   end
   
-  define 'easysoa-demo-pureAirFlowers' do
+  define 'easysoa-demo-pureAirFlowers-proxy' do
   
     define 'pureAirFlowers-Release' do
       task :mvn do
