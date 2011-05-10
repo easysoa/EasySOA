@@ -1,0 +1,21 @@
+# EasySOA build settings
+#########################
+
+
+# prereqs (adjust it as needed)
+
+nuxeo:
+  #path: #/opt/nuxeo-dm-5.4.1-tomcat
+  path: /home/mdutoo/dev/easysoa/nuxeo-dm-5.4.1-tomcat
+
+
+# release configuration
+
+release:
+  version: 1.0-SNAPSHOT
+
+model:
+  version: 0.1.2-SNAPSHOT
+
+paf:
+  version: 1.0-SNAPSHOT
