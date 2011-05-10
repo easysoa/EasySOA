@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<component name="org.openwide.test.contentviews">
+<component name="org.openwide.demo.contentviews">
 
   <extension target="org.nuxeo.ecm.platform.ui.web.ContentViewService" point="contentViews">
 	

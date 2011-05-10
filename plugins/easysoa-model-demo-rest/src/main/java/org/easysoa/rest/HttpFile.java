@@ -31,8 +31,8 @@ public class HttpFile {
 
 	public void download() throws MalformedURLException, IOException,
 			URISyntaxException {
-		this.connection = ((HttpURLConnection) new URI(this.url).toURL()
-				.openConnection());
+		
+		this.connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
 		this.file = File.createTempFile("tmp", "tmp");
 
 		InputStream is = this.connection.getInputStream();

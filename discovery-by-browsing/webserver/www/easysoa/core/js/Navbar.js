@@ -16,23 +16,19 @@ $(function() {
 			this.set({"url": this.DEFAULT_URL});
 		},
 		
-		getURL: function(withoutHTTP) {
+		getURL: function(withHTTP) {
 			var url = this.get("url");
-			if (url.indexOf(this.HTTP) != -1)
-				return (withoutHTTP) ? url.substr(7) : url;
-			else {
-				if (url == this.DEFAULT_URL)
-					return url;
-				else
-					return (withoutHTTP) ? url : this.HTTP+url;
-			}
+			if (url.indexOf(this.HTTP) == -1)
+				return (withHTTP) ? this.HTTP+url : url;
+  		else
+  		  return url;
 		},
 		
 		update: function(newUrl) {
 			if (newUrl == '')
 				newUrl = this.DEFAULT_URL;
 			this.set({"url": newUrl});
-			Frame.setSource(newUrl);
+			Frame.setSource(this.getURL(true));
 		}
 	
 	});
@@ -93,7 +89,7 @@ $(function() {
 					}
 				});
 			
-			setTimeout(this.render, 1500);
+			setTimeout(this.render, 2000);
 		},
 		
 		// Change URL through keyboard

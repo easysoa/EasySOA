@@ -1,0 +1,138 @@
+<doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>EasySOA - Welcome Page</title>
+  <link rel="stylesheet" href="style.css">
+  <style type="text/css">
+    #shortcuts {
+      width: 35%;
+      padding: 20px;
+      padding-left: 0;
+      margin-left: 8%;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    #shortcuts a {
+      font-size: 18pt;
+    }
+
+    #shortcuts p {
+      width: 100%;
+      float: right;
+      margin-bottom: 10px;
+    }
+
+    #shortcuts div {
+      width: 50%;
+      float: right;
+      font-size: 10pt;
+      margin-top: -15px;
+    }
+    
+    #presentation {
+      width: 40%;
+      padding: 20px;
+      border-left: 1px solid #024;
+    } 
+    
+    #presentation p { 
+      font-size: 11pt;
+      background-color: white;
+      border: 1px solid #248;
+      padding: 5px;
+      text-align: justify;
+    }
+    
+    h2 div {
+      border: 1px solid #248;
+      color: white;
+      background-color: #248;
+      padding: 0 3px 0 3px;
+      margin-top: -1px;
+      margin-right: 8px;
+    }
+    
+    .exp {
+      font-size: 9pt;
+      vertical-align: sup;
+    }
+    
+  </style>
+</head>
+<body>
+
+<div id="headerWelcome">Welcome Page</div>
+
+<div id="container" style="width: 100%">
+  
+  <div id="shortcuts">
+  
+    <h1>Direct access</h1>
+    
+    <p>
+      <a href="http://localhost:8080/nuxeo">
+        <img src="img/Core100.png" height="50" style="vertical-align: middle; margin-top: -4px" alt="" />
+         &nbsp; Service registry
+      </a><br />
+      <div>Based on Nuxeo, the registry gathers all valuable information on your services.</div>
+    </p>
+    
+    <p>
+      <a href="core/index.html">
+        <img src="img/Core100.png" height="50" style="vertical-align: middle; margin-top: -4px" alt="" />
+         &nbsp; Service discovery
+      </a><br />
+      <div>Find any useful service from your intranet, or even the web: as you browse pages, informations on services are collected and sent the registry.</div>
+    </p>
+    
+    <p>
+      <a href="light/index.html">
+        <img src="img/Light100.png" height="50" style="vertical-align: middle; margin-top: -4px" alt="" />
+         &nbsp; Service scaffolder
+      </a><br />
+      <div>Take advantage of the services you find, by using them in this secured service scaffolder.</div>
+    </p>
+    
+  </div>
+  <div id="presentation">
+  
+    <h1>Introduction</h1>
+    
+    Welcome to <b>EasySOA</b> Core & Light!
+    
+    <h1><b>First time user</b>? Take the tour!</h1>
+    
+    <p><b>Note:</b> If you're asked for a user/password, just use "Administrator" for both.</p>
+     
+    <h2><div>Step 1</div> Discover services in your intranet</h2>
+    
+    <p>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Aire Flowers</i>. Let's
+browse it using the <a href="core/index.html">Service discovery</a>. From there, as you browse, you may see a service appearing in the left menu, meaning that EasySOA just found it. You're then two clicks away to register this service : just select it, then click "Save Service", and your done!</p>
+
+    <h2><div>Step 2</div> Explore all services</h2>
+
+    <p>Now, let's have a look to our registered service, that you will find in the <a href="http://localhost:8080/nuxeo">Service registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will fond here the service you just registered. If you click on it, all metadata are now here, business and technical (look for a link on the right to see "WSDL" details). You may override most of these metadata, and fill new ones if you want to document your service.</p>
+
+    <h2><div>Step 3</div> Call a service</h2>
+    
+    <p>Now you can use this service to get business data or do a business operation! While you're on the service registry, notice the "Call it!" button on your service page. Click it. The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
+    
+    <p>This call is actually made through a proxy layer that prevents from excessive use. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
+
+    <h2>Conclusion</h2>
+
+    <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from true proxy generation to an all-in-one architecture.  <b>TODO TODO TODO</b>
+<!--    
+(TODO later not a demo : true generation, all in one architecture...)
+(In the next 2 years / )further, EasySOA aims at... / For other people
+(devs, exploit), EasySOA...
+Next features will target REST services, cloud, monitoring
+Partners are / built using / lotsa thanks to...--></p>
+
+  </div>
+</div>
+
+</body>
+</html>
