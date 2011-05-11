@@ -18,5 +18,5 @@ pullRepo "JGuillemotte" "easysoa-demo-pureAirFlowers-proxy"
 pullRepo "mkalam-alami" "easysoa-model-demo"
 pullRepo "mkalam-alami" "easysoa-demo-dist"
 
-puts "Sources downloaded. Open easysoa-demo-dist/buildfile to configure it (especially your Nuxeo path),"
+puts "Sources downloaded. Please open easysoa-demo-dist/buildfile to configure it (especially your Nuxeo path),"
 puts "then go to easysoa-demo-dist and run 'buildr buildall packageall'"

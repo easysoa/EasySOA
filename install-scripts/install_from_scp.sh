@@ -20,4 +20,4 @@ scp $EASYSOAUSER@$EASYSOAIP:$EASYSOAFILE $EASYSOADEST
 echo "Extracting files..."
 cd ../easysoa
 tar xf ../.tmp/$EASYSOADEST
-echo "Done. Please use ~/Desktop/easysoa/run.sh to run the demo."
+echo "Done. Please use ./run.sh from the easysoa folder to run the demo."
