@@ -1,0 +1,90 @@
+﻿1
+00:00:04,749 --> 00:00:09,749
+Welcome ! Let's show you some
+EasySOA Core & Light features.
+
+2
+00:00:10,190 --> 00:00:15,190
+First, we are going to explore out
+intranet to look for web services.
+
+3
+00:00:25,821 --> 00:00:30,821
+We just found one of our company's
+services. Let's save it to see what we can do.
+
+4
+00:00:36,605 --> 00:00:41,605
+Note that a few business tags were
+extracted from the navigation context.
+
+5
+00:00:49,268 --> 00:00:54,268
+Our "Pure Air Flowers" service has
+just been saved!
+
+6
+00:00:58,469 --> 00:01:03,469
+Next, we are going to explore another
+part of EasySOA Core.
+
+7
+00:01:07,274 --> 00:01:12,274
+Here is our service registry,
+based on Nuxeo.
+
+8
+00:01:19,838 --> 00:01:24,838
+All of the information that was
+collected is stored here.
+
+9
+00:01:26,566 --> 00:01:30,066
+Now let's browse to our new service.
+
+10
+00:01:34,283 --> 00:01:39,283
+Most of these metadata can be
+overriden, for exemple to store
+some documentation.
+
+11
+00:01:39,427 --> 00:01:44,427
+For technical users, there is also
+more technical content you can browse.
+
+12
+00:01:53,970 --> 00:01:57,470
+New, what about this "Call it" button?
+
+13
+00:02:01,786 --> 00:02:06,786
+This link lead to this page, when
+we can indeed use the service!
+
+14
+00:02:06,831 --> 00:02:11,831
+This form was automatically generated
+to fit the service implementation.
+
+15
+00:02:12,081 --> 00:02:14,581
+Let's give a try.
+
+16
+00:02:14,831 --> 00:02:18,631
+Behind the scenes, the service is
+proxied, so that the calls are secured.
+
+17
+00:02:18,631 --> 00:02:24,000
+If you use the service excessively
+(here 10 times in 2mn), your won't be
+able to call it again before 2 minutes!
+
+18
+00:02:26,364 --> 00:02:29,364
+Of course, that's just a part of what
+EasySOA will be able to do...
+Thanks for watching!
+
