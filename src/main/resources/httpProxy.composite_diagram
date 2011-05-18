@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmi:id="_zJC1UH1WEeCRVNgFijEjVA" type="Sca" name="httpProxy.composite_diagram" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_zKUAoH1WEeCRVNgFijEjVA" type="2001">
+    <children xmi:type="notation:Node" xmi:id="_zKUAo31WEeCRVNgFijEjVA" type="5008"/>
+    <children xmi:type="notation:Node" xmi:id="_zKUApH1WEeCRVNgFijEjVA" type="7001">
+      <children xmi:type="notation:Node" xmi:id="_1ObNcH1WEeCRVNgFijEjVA" type="3001">
+        <children xmi:type="notation:Node" xmi:id="_1ObNc31WEeCRVNgFijEjVA" type="5001"/>
+        <children xmi:type="notation:Node" xmi:id="_1Ob0gH1WEeCRVNgFijEjVA" type="7005">
+          <styles xmi:type="notation:SortingStyle" xmi:id="_1Ob0gX1WEeCRVNgFijEjVA"/>
+          <styles xmi:type="notation:FilteringStyle" xmi:id="_1Ob0gn1WEeCRVNgFijEjVA"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_1Ob0g31WEeCRVNgFijEjVA" type="7006">
+          <styles xmi:type="notation:SortingStyle" xmi:id="_1Ob0hH1WEeCRVNgFijEjVA"/>
+          <styles xmi:type="notation:FilteringStyle" xmi:id="_1Ob0hX1WEeCRVNgFijEjVA"/>
+        </children>
+        <styles xmi:type="notation:ShapeStyle" xmi:id="_1ObNcX1WEeCRVNgFijEjVA" fontName="Ubuntu"/>
+        <element xmi:type="sca:Service" href="httpProxy.composite#//@composite/@service.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_1ObNcn1WEeCRVNgFijEjVA"/>
+      </children>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_zKUApX1WEeCRVNgFijEjVA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_zKUApn1WEeCRVNgFijEjVA"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_zKUnsH1WEeCRVNgFijEjVA" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_zKUnsX1WEeCRVNgFijEjVA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_zKUnsn1WEeCRVNgFijEjVA"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_zKUns31WEeCRVNgFijEjVA" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_zKUntH1WEeCRVNgFijEjVA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_zKUntX1WEeCRVNgFijEjVA"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_zKUntn1WEeCRVNgFijEjVA" type="7004">
+      <children xmi:type="notation:Node" xmi:id="_6r0qQH1WEeCRVNgFijEjVA" type="3012">
+        <children xmi:type="notation:Node" xmi:id="_6r1RUH1WEeCRVNgFijEjVA" type="5007"/>
+        <children xmi:type="notation:Node" xmi:id="_6r1RUX1WEeCRVNgFijEjVA" type="7009">
+          <children xmi:type="notation:Node" xmi:id="_CNsgQH1XEeCRVNgFijEjVA" type="3013">
+            <children xmi:type="notation:Node" xmi:id="_CNtHUH1XEeCRVNgFijEjVA" type="5004"/>
+            <children xmi:type="notation:Node" xmi:id="_CNtHUX1XEeCRVNgFijEjVA" type="7013">
+              <children xmi:type="notation:Node" xmi:id="_Ef5zcH1XEeCRVNgFijEjVA" type="3014">
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_Ef5zcX1XEeCRVNgFijEjVA" fontName="Ubuntu"/>
+                <element xmi:type="sca:JavaInterface" href="httpProxy.composite#//@composite/@component.0/@service.0/@interfaceGroup.0"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ef5zcn1XEeCRVNgFijEjVA"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_CNtHUn1XEeCRVNgFijEjVA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_CNtHU31XEeCRVNgFijEjVA"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_CNtHVH1XEeCRVNgFijEjVA" type="7014">
+              <styles xmi:type="notation:SortingStyle" xmi:id="_CNtHVX1XEeCRVNgFijEjVA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_CNtHVn1XEeCRVNgFijEjVA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_CNsgQX1XEeCRVNgFijEjVA" fontName="Ubuntu"/>
+            <element xmi:type="sca:ComponentService" href="httpProxy.composite#httpProxyService/httpServiceInput"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CNsgQn1XEeCRVNgFijEjVA"/>
+          </children>
+          <styles xmi:type="notation:SortingStyle" xmi:id="_6r1RUn1WEeCRVNgFijEjVA"/>
+          <styles xmi:type="notation:FilteringStyle" xmi:id="_6r1RU31WEeCRVNgFijEjVA"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_6r1RVH1WEeCRVNgFijEjVA" type="7010">
+          <children xmi:type="notation:Node" xmi:id="_BdnuMH1XEeCRVNgFijEjVA" type="3024">
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_BdnuMX1XEeCRVNgFijEjVA" fontName="Ubuntu"/>
+            <element xmi:type="sca:JavaImplementation" href="httpProxy.composite#//@composite/@component.0/@implementationGroup.0"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BdnuMn1XEeCRVNgFijEjVA"/>
+          </children>
+          <styles xmi:type="notation:SortingStyle" xmi:id="_6r1RVX1WEeCRVNgFijEjVA"/>
+          <styles xmi:type="notation:FilteringStyle" xmi:id="_6r1RVn1WEeCRVNgFijEjVA"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_6r1RV31WEeCRVNgFijEjVA" type="7011">
+          <styles xmi:type="notation:SortingStyle" xmi:id="_6r1RWH1WEeCRVNgFijEjVA"/>
+          <styles xmi:type="notation:FilteringStyle" xmi:id="_6r1RWX1WEeCRVNgFijEjVA"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_6r1RWn1WEeCRVNgFijEjVA" type="7012">
+          <styles xmi:type="notation:SortingStyle" xmi:id="_6r1RW31WEeCRVNgFijEjVA"/>
+          <styles xmi:type="notation:FilteringStyle" xmi:id="_6r1RXH1WEeCRVNgFijEjVA"/>
+        </children>
+        <styles xmi:type="notation:ShapeStyle" xmi:id="_6r0qQX1WEeCRVNgFijEjVA" fontName="Ubuntu"/>
+        <element xmi:type="sca:Component" href="httpProxy.composite#//@composite/@component.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6r0qQn1WEeCRVNgFijEjVA" x="180" y="67"/>
+      </children>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_zKUnt31WEeCRVNgFijEjVA"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_zKUnuH1WEeCRVNgFijEjVA"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_zKUAoX1WEeCRVNgFijEjVA" fontName="Ubuntu"/>
+    <element xmi:type="sca:Composite" href="httpProxy.composite#//@composite"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zKUAon1WEeCRVNgFijEjVA" width="636" height="346"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_zJC1UX1WEeCRVNgFijEjVA"/>
+  <element xmi:type="sca:DocumentRoot" href="httpProxy.composite#/"/>
+</notation:Diagram>
