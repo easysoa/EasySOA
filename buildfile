@@ -14,7 +14,7 @@ repositories.remote << 'http://www.ibiblio.org/maven2'
 
 ############### CONFIG
 
-NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat'
+NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || Buildr.settings.user['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat'
 
 THIS_VERSION = Buildr.settings.build['release']['version']
 MODEL_VERSION = Buildr.settings.build['model']['version']

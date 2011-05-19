@@ -2,11 +2,10 @@
 #########################
 
 
-# prereqs (adjust it as needed)
+# prereqs (adjust it as needed, after copying parts to $HOME/.buildr/settings.yaml)
 
 nuxeo:
-  #path: #/opt/nuxeo-dm-5.4.1-tomcat
-  path: /cygdrive/c/dev/easysoa/nuxeo-dm-5.4.1-tomcat 
+  path: # to use for packaging. By default $HOME/nuxeo-dm-5.4.1-tomcat
 
 
 # release configuration
