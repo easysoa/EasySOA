@@ -176,12 +176,12 @@ task :packageall => ['nx_dist'] do
   puts "Copying web server (node.js + antinode)..."
   mkdir PACKAGING_PATH+'/web'
   cp_r FileList[project(DBBROWSING).base_dir+"/webserver"], PACKAGING_PATH+'/web'
-  cp_r project(DBBROWSING).base_dir+"/start-web.sh", PACKAGING_PATH+'/web'
+  cp_r FileList[project(DBBROWSING).base_dir+"/start-web.*"], PACKAGING_PATH+'/web'
   
   puts "Copying web proxy (node.js)..."
   mkdir PACKAGING_PATH+'/webproxy'
   cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], PACKAGING_PATH+'/webproxy'
-  cp_r project(DBBROWSING).base_dir+"/start-proxy.sh", PACKAGING_PATH+'/webproxy'
+  cp_r FileList[project(DBBROWSING).base_dir+"/start-proxy.*"], PACKAGING_PATH+'/webproxy'
   
   puts "Copying service registry (Nuxeo)..."
   begin

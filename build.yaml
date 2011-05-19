@@ -6,7 +6,7 @@
 
 nuxeo:
   #path: #/opt/nuxeo-dm-5.4.1-tomcat
-  path: /home/mdutoo/dev/easysoa/nuxeo-dm-5.4.1-tomcat
+  path: /cygdrive/c/dev/easysoa/nuxeo-dm-5.4.1-tomcat 
 
 
 # release configuration
