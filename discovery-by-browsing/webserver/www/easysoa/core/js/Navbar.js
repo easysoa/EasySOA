@@ -67,7 +67,7 @@ $(function() {
 			// Request proxy server found links
 			// (Note: could probably use the Backbone.js server sync features instead)
 			$.ajax({
-				url: 'http://localhost:8081',
+				url: 'http://127.0.0.1:8081',
 				crossDomain: true,
 				dataType: 'jsonp',
 				success: function(data, textStatus, jqXHR) {

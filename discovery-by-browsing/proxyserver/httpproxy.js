@@ -61,7 +61,8 @@ var server = http.createServer(function(request, response) {
 	var request_url = url.parse(request.url, true);
 
 	// If direct request to proxy, send found WSDLs
-	if (request.headers['host'] == "localhost:"+config.proxy_port) {
+	if (request.headers['host'] == "localhost:"+config.proxy_port
+        || request.headers['host'] == "127.0.0.1:"+config.proxy_port) {
 		response.writeHead(200, {
 			"Content-Type": "text/javascript"
 		});
