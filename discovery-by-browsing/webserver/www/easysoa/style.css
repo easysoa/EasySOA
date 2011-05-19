@@ -12,22 +12,21 @@ body {
 
 h1 {
 	padding-top: 20px;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 	border-bottom: 1px solid grey;
 	color: #446;
-	font: 12pt Arial;
+	font-size: 15pt;
 }
 h1:first-child {
   padding-top: 10px;
 }
 
 h2 {
-	font: 11pt Arial;
+	font: 12pt Arial;
 	font-weight: bold;
-	padding-top: 15px;
-}
-h2:first-child {
-  padding-top: 10px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	color: #248;
 }
 	
 
@@ -40,7 +39,19 @@ li {
 	margin-bottom: 10px;
 }
 
-#header {
+#headerCore {
+  width: 100%;
+  padding-top: 10px;
+  padding-left: 280px;
+  font-size: 14pt;
+  height: 60px;
+  background: url('img/Core50.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border-bottom: 2px solid #444;
+}
+
+#headerLight {
   width: 100%;
   padding-top: 10px;
   padding-left: 280px;
@@ -131,16 +142,3 @@ p {
 a img {
   border: 0;
 }
-
-/* Main page */
-
-#shortcuts {
-  width: 40%;
-  text-align: right;
-  padding: 20px;
-  font-weight: bold;
-}
-
-#shortcuts a {
-  font-size: 18pt;
-} 
