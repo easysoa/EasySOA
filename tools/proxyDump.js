@@ -1,74 +1,41 @@
-//
-// Tool for gathering data about HTTP exchanges, in order to help designing the easysoa model.
-//
-//
-// Listens to HTTP exchanges in proxy or tunnel mode. For each request / response, parses a few fields and write them to file as a CSV line using https://github.com/koles/ya-csv .
-//
-// How to use it :
-// * in proxy mode : start it on an unused port, configure your HTTP client application to use it as a proxy.
-// * in tunnel mode : configure it to use your HTTP server application as a server (tunneledHost, proxiedPort), start it on an unused port, configure your HTTP client application to use it as a server.
-// * use your HTTP client application (with a Nuxeo server, samples/nuxeo/nuxeoAutomationQuery[Fetch[Children]]_proxied.js can be used) and watch lines being added to proxy-log.csv .
-//
-//
-// Each CSV line is as follows :
-// "businessUseCase";"method";"res.statusCode"[;url elements][;path elements][;params][;request headers][;response headers];"url";"parameters";"req.headers";"res.headers"
-// where the following parts can be configured below :
-//   businessUseCase : "user operation" tag / column, entered from command line.
-//   path elements : Each path column contains one or a range of path elements, addressed by index or -m for the n-m path element, where n+1 is the total count of path elements.
-//   params : Each parameter column contains a request parameter. If the body is JSON, it is parsed and flattened. It is then merged with URL parameters.
-//   request headers : Each request header column contains a request header.
-//   response headers : Each response header column contains a response header.
-//
-// Sample title and first lines :
-// "businessUseCase";"method";"res.statusCode";"pathname";"path.1";"path.2-3";"path.n-1";"param.params.query";"param.input";"param.context";"req.host";"res.content-type";"res.date";"url";"parameters";"req.headers";"res.headers"
-// "nuxeoAutomationQuery";"POST";"200";"/nuxeo/site/automation/Document.Query";"nuxeo";"site/automation";"Document.Query";"select * from Document";"";"";"localhost";"application/json+nxentity";"Fri, 15 Apr 2011 10:39:15 GMT";"/nuxeo/site/automation/Document.Query";"{""params.query"":""select * from Document""}";"{""host"":""localhost"",""authorization"":""Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y"",""accept"":""application/json+nxentity, */*"",""content-type"":""application/json+nxrequest; charset=UTF-8"",""x-nxdocumentproperties"":""*"",""content-length"":""45"",""connection"":""close""}";"{""date"":""Fri, 15 Apr 2011 10:39:15 GMT"",""expires"":""Thu, 01 Jan 1970 00:00:00 GMT"",""set-cookie"":[""JSESSIONID=15a2p1j6fumfi;Path=/nuxeo""],""content-type"":""application/json+nxentity"",""connection"":""close"",""server"":""Jetty(6.1H.7)""}"
-//
-//
-// Written starting from proxyFuse.js .
-// see also http://www.catonmat.net/http-proxy-in-nodejs
-// existing node.js alternative (providing reverse proxy...) : https://github.com/nodejitsu/node-http-proxy
-// existing alternative software : wireshark
-//
-// possible improvements :
-// parse xml request body
-// more flexible column ordering
-// filters : ex. filteredContentTypes (image/jpeg...)
-// packaging (module), command line options, share code with other proxy*.js
-//
+/*!
+ * EasySOA Incubation - Node Tools - proxyDump
+ * Copyright (c) 2010 Open Wide http://www.openwide.fr
+ * MIT Licensed
+ */
+
+
+/**
+ * proxyDump - tool for gathering data about HTTP exchanges, in order to help designing the easysoa model.
+ *
+ * See how to use & configure it in proxyDump-config.js
+ *
+ * Author : Marc Dutoo
+ *
+ * 
+ * Listens to HTTP exchanges in proxy or tunnel mode. For each request / response,
+ * parses a few fields (http, json or xml thanks to xml2js) and write them to file
+ * as a CSV line using https://github.com/koles/ya-csv .
+ *
+ * Written starting from proxyFuse.js .
+ * see also http://www.catonmat.net/http-proxy-in-nodejs
+ * existing node.js alternative (providing reverse proxy...) : https://github.com/nodejitsu/node-http-proxy
+ * existing alternative software : soapui, wireshark
+ *
+ * possible improvements :
+ * more flexible column ordering
+ * filters : ex. filteredContentTypes (image/jpeg...)
+ * packaging (module ?), command line options, share code with other proxy*.js
+ */
 
 
 var http = require('http');
 var fs = require('fs');
+var xml2js = require('xml2js');
 var csv = require('ya-csv');
+var sys = require('sys'); // for logging
 
-
-// HTTP configuration
-var tunneledHost = null; // http proxy
-//var tunneledHost = '192.168.2.196'; // http tunnel
-//var proxiedPort = port; 
-var proxiedPort = '8080'; // mostly for tests
-//var proxiedPort = '80'; // mostly for tests
-var host = 'localhost';
-//var host = '192.168.2.211'; // if remote
-var port = '8081';
-
-// CSV line configuration
-var urlElementsToExtract = { 'pathname':null };
-var urlPathElementsToExtract = [ [1], [2, 3], [-1] ]; // NB. 0 is /, 1 usually the application, -1 (latest) the service
-//var parametersToExtract = {};
-//var parametersToExtract = { 'q':null }; // for google
-var parametersToExtract = { 'params.query':null, 'input':null, 'context':null }; // for nuxeo
-var headersToExtract = { 'host':null };
-var responseHeadersToExtract = { 'content-type':null, 'date':null };
-
-// CSV configuration
-var csvFilePath = 'proxy_log.csv';
-var csvSeparator = ';';
-
-
-// default init
-var businessUseCase = '';
-
+eval(fs.readFileSync('proxyDump-config.js', 'ASCII'));
 
 
 function deepObjCopy (dupeObj) {
@@ -91,6 +58,7 @@ function deepObjCopy (dupeObj) {
 	return retObj;
 }
 
+// NOT USED (also allows for jsonpath like lookup of elements)
 function flatten (dupeObj, res, nameContext) {
         if (typeof nameContext == 'undefined') {
           var nameContext = '';
@@ -105,7 +73,7 @@ function flatten (dupeObj, res, nameContext) {
 		for (var objInd in dupeObj) {
                         var flatifiedObjInd = nameContext + objInd;
 			if (typeof(dupeObj[objInd]) == 'object') {
-				flatten(dupeObj[objInd], retObj, flatifiedObjInd + '.');
+				flatten(dupeObj[objInd], retObj, flatifiedObjInd + '.'); // TODO better to handle "bad" names ex. containing ':'
 			} else if (typeof(dupeObj[objInd]) == 'string') {
 				retObj[flatifiedObjInd] = dupeObj[objInd];
 			} else if (typeof(dupeObj[objInd]) == 'number') {
@@ -118,52 +86,99 @@ function flatten (dupeObj, res, nameContext) {
 	return retObj;
 }
 
+// for test only
+function parseXml2jsTest(xml) {
+  var fs = require('fs');
+  var xml2js = require('xml2js');
+  var sys = require('sys');
 
-var csvOut = fs.createWriteStream(csvFilePath, { flags:'a', encoding:'Cp1252'});
-//var csvOut = process.stdout; // for tests
-//process.on('exit', function() {
-//   console.log('exit');
-//});
-var csvWriter = csv.createCsvStreamWriter(csvOut, { "separator":csvSeparator });
+  var parser = new xml2js.Parser();
+  var parsedXml = null;
+  parser.addListener('end', function(result) {
+    console.log(sys.inspect(result));
+    parsedXml = eval('result' + '["soapenv:Body"]["Client"]["tns:Identifiant_Client"]');
+  });
+  fs.readFile('xml.xml', function(err, data) {
+    parser.parseString(data);
+    console.log('Done. ' + parsedXml); // null if not xml
+  });
+}
+
+function parseXml2js(xml) {
+  var parser = new xml2js.Parser();
+  var parsedXml = null;
+  parser.addListener('end', function(result) {
+    parsedXml = result;
+  });
+  parser.parseString(xml);
+  return parsedXml;
+}
+
+function getParamFromJson(json, param) {
+  var prefixedParam = (parameter.charAt(0) != '[' &&  parameter.charAt(0) != '.') ? '.' + parameter : parameter;
+  try {
+	 return eval('json' + prefixedParam);
+  } catch (e) {
+	 console.log('Parameter : no ' + param + ' found in\n' + sys.inspect(json));
+	 return '';
+  }
+}
+
+
+var businessUseCase = config.businessUseCase;
+
+var csvOut = fs.createWriteStream(config.csv.filePath, { flags: 'a', encoding: 'Cp1252'});
+var csvWriter = csv.createCsvStreamWriter(csvOut, { "separator": config.csv.separator });
 
 // csv header line
 var headerRecord = ['businessUseCase', 'method', 'res.statusCode'];
-for (urlElement in urlElementsToExtract) {
+for (var i in config.extract.urlElements) {
+  var urlElement = config.extract.urlElements[i];
   headerRecord.push(urlElement);
 }
-for (var i = 0; i < urlPathElementsToExtract.length; i++) {
-  var currentUrlPathElementsToExtract = urlPathElementsToExtract[i];
-  if (currentUrlPathElementsToExtract.length > 1) {
-    var start = currentUrlPathElementsToExtract[0];
+for (var i in config.extract.urlPathElements) {
+  var currentUrlPathElements = config.extract.urlPathElements[i];
+  if (currentUrlPathElements.length > 1) {
+    var start = currentUrlPathElements[0];
     if (start < 0) {
       start = 'n' + start;
     }
-    var end = currentUrlPathElementsToExtract[currentUrlPathElementsToExtract.length - 1];
+    var end = currentUrlPathElements[currentUrlPathElements.length - 1];
     if (end < 0) {
       end = 'n' + end;
     }
     headerRecord.push('path.' + start + '-' + end);
-  } else if (currentUrlPathElementsToExtract.length > 0) {
-    var single = currentUrlPathElementsToExtract[0];
+  } else if (currentUrlPathElements.length > 0) {
+    var single = currentUrlPathElements[0];
     if (single < 0) {
       single = 'n' + single;
     }
     headerRecord.push('path.' + single);
   }
 }
-for (parameter in parametersToExtract) {
-   headerRecord.push('param.' + parameter);
-}
-for (header in headersToExtract) {
+for (var i in config.extract.headers) {
+  var header = config.extract.headers[i];
   headerRecord.push('req.' + header);
 }
-for (header in responseHeadersToExtract) {
+for (var i in config.extract.parameters) {
+  var parameter = config.extract.parameters[i];
+  headerRecord.push('param.' + parameter);
+}
+for (var i in config.extract.responseHeaders) {
+  var header = config.extract.responseHeaders[i];
   headerRecord.push('res.' + header);
 }
+for (var i in config.extract.results) {
+  var result = config.extract.results[i];
+  headerRecord.push('result.' + result);
+}
+
+// adding raw data columns
 headerRecord.push('url');
-headerRecord.push('parameters');
 headerRecord.push('req.headers');
+headerRecord.push('parameters');
 headerRecord.push('res.headers');
+headerRecord.push('results');
 csvWriter.writeRecord(headerRecord);
 
 
@@ -171,10 +186,10 @@ csvWriter.writeRecord(headerRecord);
 function proxyRequest(req, res) {
 
 var proxiedHost = req.headers['host'];
-if (defaultProxiedHost != null) {
-   proxiedHost = defaultProxiedHost;
+if (config.http.tunneledHost != null) {
+   proxiedHost = config.http.tunneledHost;
 }
-var client = http.createClient(proxiedPort, proxiedHost);
+var client = http.createClient(config.http.proxiedPort, proxiedHost);
 
 var method = req.method;
 var url = req.url;
@@ -184,7 +199,7 @@ var request = client.request(method, url, headers);
 console.log('SENT HEADERS: ' + JSON.stringify(headers));
 var reqBody = '';
 req.on('data', function (chunk) {
-  reqBody = reqBody + chunk;
+  reqBody += chunk;
   request.write(chunk);
 });
 req.on('end', function () {
@@ -201,38 +216,71 @@ request.on('response', function (proxiedRes) {
   res.writeHead(proxiedRes.statusCode, resHeaders);
   //proxiedRes.setEncoding('utf8'); // default is 'binary' ?
 
+  var resBody = '';
   proxiedRes.on('data', function (chunk) {
-    res.write(chunk);
+    resBody += chunk;
+    res.write(chunk, 'binary');
   });
   proxiedRes.on('end', function() {
     res.end();
     console.log('END');
 
-    var record = [ businessUseCase, method, proxiedRes.statusCode ];
-
+    // preparing url
     var parsedUrl = require('url').parse(url, true);
     console.log('parsedUrl: ' + JSON.stringify(parsedUrl));
     var splitUrlPathNames = parsedUrl.pathname.split('/');
     //console.log('reqBody: ' + reqBody);
+    
+    // preparing req body
     var parsedReqBody;
-    if (reqBody.indexOf('{') === 0) {
-       parsedReqBody = eval('(' + reqBody + ')');
-    //} else if (reqBody.indexOf('<') === 0) {
-       // TODO XML
+    if (resBody.indexOf('</') > -1 || resBody.indexOf('/>') > -1) {
+       // xml
+       parsedReqBody = parseXml2js(reqBody);
+       if (parsedReqBody == null) {
+         parsedReqBody = { "XML":reqBody }; // failed to parse
+       }
+    } else if (reqBody.indexOf('{') === 0) {
+       // json
+       try {
+         parsedReqBody = eval('(' + reqBody + ')');
+       } catch (e) {
+         parsedResBody = { "JSON":resBody }; // failed to parse
+       }
     } else {
       parsedReqBody = { "UNKNOWN":reqBody };
     }
-    
 
-    for (urlElement in urlElementsToExtract) {
+    // preparing res body
+    var parsedResBody;
+    if (resBody.indexOf('</') > -1 || resBody.indexOf('/>') > -1) {
+       // xml
+       parsedResBody = parseXml2js(resBody);
+       if (parsedReqBody == null) {
+         parsedResBody = { "XML":resBody }; // failed to parse
+       }
+    } else if (resBody.indexOf('{') === 0) {
+       // json
+       try {
+         parsedResBody = eval('(' + resBody + ')');
+       } catch (e) {
+         parsedResBody = { "JSON":resBody }; // failed to parse
+       }
+    } else {
+      parsedResBody = { "UNKNOWN":resBody };
+    }
+    
+    // filling columns
+    var record = [ businessUseCase, method, proxiedRes.statusCode ];
+    for (var i in config.extract.urlElements) {
+      var urlElement = config.extract.urlElements[i];
       record.push(parsedUrl[urlElement]);
     }
-    for (var i = 0; i < urlPathElementsToExtract.length; i++) {
-      var currentUrlPathElementsToExtract = urlPathElementsToExtract[i];
-      var currentUrlPathElements = '';
+    for (var i in config.extract.urlPathElements) {
+      var currentUrlPathElements = config.extract.urlPathElements[i];
+      var currentUrlPath = '';
       var firstTime = true;
-      for (var j = 0; j < currentUrlPathElementsToExtract.length; j++) {
-        var urlPathElementsInd = currentUrlPathElementsToExtract[j];
+      for (var j in currentUrlPathElements) {
+        var urlPathElementsInd = currentUrlPathElements[j];
         if (urlPathElementsInd < 0) {
           urlPathElementsInd += splitUrlPathNames.length;
         }
@@ -240,35 +288,46 @@ request.on('response', function (proxiedRes) {
           if (firstTime) {
             firstTime = !firstTime;
           } else {
-            currentUrlPathElements += '/';
+            currentUrlPath += '/';
           }
-          currentUrlPathElements += splitUrlPathNames[urlPathElementsInd];
+          currentUrlPath += splitUrlPathNames[urlPathElementsInd];
         } else {
           break;
         }
       }
-      record.push(currentUrlPathElements);
+      record.push(currentUrlPath);
+    }
+    for (var i in config.extract.headers) {
+      var header = config.extract.headers[i];
+      record.push(req.headers[header]);
     }
     // merging req and body parameters
     //if (method == 'POST') {      
     //}
-    var parameters = flatten(parsedReqBody);
-    for (parameter in parsedUrl.query) {
-      parameters[parameter] = parsedUrl.query[parameter];
+    for (var i in config.extract.parameters) {
+      var parameter = config.extract.parameters[i];
+      var value = parsedUrl.query[parameter];
+      if (typeof(value) != 'undefined') {
+        record.push(value);
+      } else {
+        record.push(getParamFromJson(parsedReqBody, parameter)); // ex. '["soapenv:Body"]["Client"]["tns:Identifiant_Client"]'
+      }
     }
-    for (parameter in parametersToExtract) {
-      record.push(parameters[parameter]);
-    }
-    for (header in headersToExtract) {
-      record.push(req.headers[header]);
-    }
-    for (header in responseHeadersToExtract) {
+    for (var i in config.extract.responseHeaders) {
+      var header = config.extract.responseHeaders[i];
       record.push(proxiedRes.headers[header]);
     }
+    for (var i in config.extract.results) {
+      var result = config.extract.results[i];
+	   record.push(getParamFromJson('parsedResBody', result)); // ex. '["soapenv:Body"]["fr:ClientResponse"]["tns:string"][0]'
+    }
+
+    // adding raw data columns
     record.push(url);
-    record.push(JSON.stringify(parameters));
     record.push(JSON.stringify(headers));
+    record.push(JSON.stringify(parameters));
     record.push(JSON.stringify(proxiedRes.headers));
+    record.push(JSON.stringify(results));
     csvWriter.writeRecord(record);
   });
 });
@@ -278,8 +337,8 @@ request.on('response', function (proxiedRes) {
 
 http.createServer(function (req, res) {
     proxyRequest(req, res);
-}).listen(port, host);
-console.log('proxyDump.js server running at http://' + host + ':' + port + '/.');
+}).listen(config.http.port, config.http.host);
+console.log('proxyDump.js server running at http://' + config.http.host + ':' + config.http.port + '/.');
 console.log('A new businessUseCase can be entered from command line followed byt ENTER.');
 
 process.stdin.resume();
