@@ -15,11 +15,14 @@ The Nuxeo Installation Guide explains how to install and run Nuxeo DM: <http://d
  * Copy `lib/` contents to `nuxeo-dm/lib/`
  * Copy `build/` contents to `nuxeo-dm/nxserver/plugins/`
 
-### Service finder
+### Discovery by browsing
 
-This tool doesn't need any installation, since it's only made of client-side Javascript. Simply run the `index.html` file in `easysoa-servicefinder`.
+In order to use this tool, you have to launch a specific HTTP proxy and configure your browser to use it.
 
-*NOTE: The Nuxeo registry must be launched in order to function properly. If Nuxeo is hosted on a different computer than the client, please change `js/NavbarView.js:26` accordingly.*
+* In order to launch the proxy, run the `start-proxy.sh` script in the `discovery-by-browsing` folder.
+* Launch the web server with the `start-web.sh` script (same folder), then browse to *http://127.0.0.1:8083/easysoa/core/*.
+
+*NOTE: The Nuxeo registry, web proxy, web server and web client are configured to be run on the same machine.*
 
 ## Features
 
@@ -38,11 +41,11 @@ You can navigate through the documents using differents navigations trees (see t
  * *Navigation by Server*: For the administrators
  * *Navigation by Service*: For the architects
 
-### Service finder
+### Discovery by browsing
 
 The idea is to automatically find WSDL files while the user navigates, then make him fill a form to fill some metadata and send the files to the Nuxeo repository.
 
-For now, the parser only looks for links whose URL ends with "wsdl", but we consider supporting several other ways to find services (from trying common URL patterns of services frameworks -"/cxf", etc. -, to custom scripts or URL patterns given by users).
+For now, the parser only looks for links whose URL ends with "wsdl", but we consider supporting several other ways to find services (from trying common URL patterns of services frameworks -"/cxf", etc. -, to custom scripts or application-specific URL patterns).
 
 *NOTE: In order to see uploaded WSDLs in Nuxeo, you may need to refresh the `Descriptors/WSDL/` folder (look for an icon in the top-right corner).*
 
@@ -53,4 +56,4 @@ The code is split into 4 projects:
  * `plugins/easysoa-demo-model-core`: The Nuxeo core contributions.
  * `plugins/easysoa-demo-model-web`: The Nuxeo web contributions, tightly linked to the `core` project.
  * `plugins/easysoa-demo-rest`: The REST API used by the service finder.
- * `easysoa-servicefinder`: The service finding tool.
+ * `discovery-by-browsing`: The service discovery tool.
