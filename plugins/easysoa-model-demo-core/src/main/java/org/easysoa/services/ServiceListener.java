@@ -67,13 +67,13 @@ public class ServiceListener implements EventListener {
 				log.info("Service's descriptor modified, updating relations.");
 				
 				// Clear old relation
-				RelationService.clearRelations(doc);
+				RelationService.clearRelations(session, doc);
 				if (savedDescId != null && !savedDescId.equals("")) {
 					DocumentModel savedDesc = session.getDocument(new IdRef(savedDescId));
 					if (savedDesc != null) {
 						String oldDescServiceId = (String) savedDesc.getProperty("endpoints", "serviceid");
 						if (oldDescServiceId != null && !oldDescServiceId.isEmpty()) {
-							RelationService.clearRelations(savedDesc);
+							RelationService.clearRelations(session, savedDesc);
 							savedDesc.setProperty("endpoints", "serviceid", "");
 							log.info("Old descriptor cleared.");
 							// TODO: Save without saving loop...
@@ -88,7 +88,7 @@ public class ServiceListener implements EventListener {
 				if (newDescId != null && !newDescId.isEmpty()) {
 					DocumentModel newDesc = session.getDocument(new IdRef(newDescId));
 					if (newDesc != null) {
-						RelationService.createRelation(newDesc, doc);
+						RelationService.createRelation(session, newDesc, doc);
 						String newDescServiceId = (String) newDesc.getProperty("endpoints", "serviceid");
 						if (newDescServiceId == null || !newDescServiceId.equals(doc.getId())) {
 							newDesc.setProperty("endpoints", "serviceid", doc.getId());

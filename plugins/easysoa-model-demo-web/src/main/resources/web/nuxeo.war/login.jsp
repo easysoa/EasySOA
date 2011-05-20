@@ -300,7 +300,7 @@ nxthemes css is not used in login.jsp */
                 </td>
                 <td>
                   <input class="login_input" type="text"
-                    name="user_name" id="username" size="22">
+                    name="user_name" id="username" value="Administrator" size="22">
                 </td>
               </tr>
               <tr>
@@ -311,7 +311,7 @@ nxthemes css is not used in login.jsp */
                 </td>
                 <td>
                   <input class="login_input" type="password"
-                      name="user_password" id="password" size="22">
+                      name="user_password" id="password" value="Administrator" size="22">
                 </td>
               </tr>
               <tr>

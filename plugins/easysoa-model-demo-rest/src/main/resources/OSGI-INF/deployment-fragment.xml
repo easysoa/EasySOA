@@ -1,54 +1,13 @@
 <?xml version="1.0" ?>
 <fragment version="1">
 
-  <require>org.nuxeo.ecm.webapp.core</require>
-  <require>org.nuxeo.ecm.platform.lang</require>
-
-  <!--  Enregistrement du module 
-  <extension target="application#MODULE">
-    <module>
-      <ejb>${bundle.fileName}</ejb>
-    </module>
-  </extension>-->
-  
   <install>
-  
+
     <!--  Copie du contenu web -->
     <unzip from="${bundle.fileName}" to="/" prefix="web">
       <include>web/nuxeo.war/**</include>
     </unzip>
     
   </install>
-  
-  <!-- Pages spécifiques au nouveau mode de navigation virtuelle -->
-  <extension target="faces-config#NAVIGATION">
-    <navigation-case>
-      <from-outcome>application_virtual_navigation</from-outcome>
-      <to-view-id>/application_virtual_navigation.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>location_virtual_navigation</from-outcome>
-      <to-view-id>/location_virtual_navigation.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>service_virtual_navigation</from-outcome>
-      <to-view-id>/service_virtual_navigation.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-  </extension>
-  
-  <extension target="pages#PAGES">
-    <page view-id="/application_virtual_navigation.xhtml">
-      breadcrumb=label.virtualnavigation.application
-    </page>
-    <page view-id="/location_virtual_navigation.xhtml">
-      breadcrumb=label.virtualnavigation.location
-    </page>
-    <page view-id="/service_virtual_navigation.xhtml">
-      breadcrumb=label.virtualnavigation.service
-    </page>
-  </extension>
   
 </fragment>

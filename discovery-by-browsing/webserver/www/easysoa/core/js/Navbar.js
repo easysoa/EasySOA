@@ -9,7 +9,7 @@ $(function() {
 		// NavbarModel Attributes
 		//   url = Navigation URL
 		
-		DEFAULT_URL: "/client/default.html",
+		DEFAULT_URL: "/easysoa/core/default.html",
 		HTTP: "http://",
 	
 		initialize: function() {
@@ -67,7 +67,7 @@ $(function() {
 			// Request proxy server found links
 			// (Note: could probably use the Backbone.js server sync features instead)
 			$.ajax({
-				url: 'http://localhost:8081',
+				url: 'http://127.0.0.1:8081',
 				crossDomain: true,
 				dataType: 'jsonp',
 				success: function(data, textStatus, jqXHR) {
@@ -76,11 +76,9 @@ $(function() {
 							SubmitForm.failure(data.error); // TODO: Display somewhere else
 						}
 						else {
-							var i = Descriptors.size();
-							var objs = Descriptors.first(i);
-							Descriptors.remove(objs);
 							$.each(data.foundLinks, function(descName, descContent) {
-								Descriptors.add(descContent);
+							  if (!Descriptors.contains(descContent))
+  								Descriptors.add(descContent);
 							});
 						}
 					},
@@ -89,7 +87,7 @@ $(function() {
 					}
 				});
 			
-			setTimeout(this.render, 2000);
+			setTimeout(this.render, 1500);
 		},
 		
 		// Change URL through keyboard

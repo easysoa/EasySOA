@@ -7,8 +7,8 @@ Bundle-ManifestVersion: 1
 Bundle-Version: 0.0.1
 Bundle-Name: easysoa-model-demo-rest
 Bundle-SymbolicName: org.easysoa.demo.rest;singleton:=true
-Bundle-Vendor: Open Wide
-Nuxeo-Require: org.nuxeo.runtime,org.nuxeo.ecm.core.api,org.openwide.t
- est.core
-Nuxeo-Component: OSGI-INF/rest-contrib.xml
-
+Bundle-Vendor: EasySOA Consortium
+Bundle-Category: web,stateless
+Require-Bundle: org.nuxeo.ecm.platform.webengine.sites.api;visibility:=reexport
+Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
+Nuxeo-Component: OSGI-INF/rights-contrib.xml

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.seam.contexts.Contexts;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
@@ -28,6 +29,7 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public class RelationService {
+	
 	private static final Log log = LogFactory.getLog(RelationService.class);
 	public static final String DEFAULT_PREDICATE = "Est rattaché à";
 	public static final String DEFAULT_PREDICATE_INVERSE = "Est implémenté par";
@@ -68,11 +70,17 @@ public class RelationService {
 	 * @param from
 	 * @param to
 	 */
-	public static final void createRelation(DocumentModel from, DocumentModel to) {
+	public static final void createRelation(CoreSession session,
+			DocumentModel from, DocumentModel to) {
+		
+		//XXX Debug
+		log.info("names:");
+		for (String n: Contexts.getEventContext().getNames())
+			log.info(n);
+		
 		try {
-			
+			// Relation creation
 			// Could also have used automations (see Relations.CreateRelation)
-			
 			RelationManager service = RelationHelper.getRelationManager();
 			QNameResource fromResource = RelationHelper
 					.getDocumentResource(from);
@@ -91,6 +99,7 @@ public class RelationService {
 				log.info("Relation " + from.getTitle() + " -> " + to.getTitle()
 						+ " already exists.");
 			}
+			
 		} catch (Exception e) {
 			log.error("Relation creation failed", e);
 		}
@@ -100,14 +109,16 @@ public class RelationService {
 	 * Clears all relations from specified document.
 	 * @param doc
 	 */
-	public static final void clearRelations(DocumentModel doc) {
-		try {
+	public static final void clearRelations(CoreSession session, DocumentModel doc) {
+		try {			
 			Resource predicate = new ResourceImpl(DEFAULT_PREDICATE);
 			List<Statement> stmts = RelationHelper.getStatements(doc, predicate);
 			log.info("Deleting all " + stmts.size() + " relations of document " + doc.getTitle());
 			RelationHelper.getRelationManager().remove("default", stmts);
+			
 		} catch (Exception e) {
 			log.error("Relations reset failed", e);
 		}
 	}
+
 }

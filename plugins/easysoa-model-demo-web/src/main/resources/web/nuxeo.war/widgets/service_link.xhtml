@@ -8,7 +8,7 @@
   id="#{widget.id}">
 
   <div>
-  	<!-- Currently used and doesn't work -->
+  	<!-- Currently unused and doesn't work -->
   	<h:outputText value="#{'SELECT * FROM Document WHERE ecm:uuid = \''+field_0+'\''}" />
   	<nxd:documentLink document="#{documentManager.query('select * from Document where ecm:uuid = '+field).get(0)}" />
   </div>

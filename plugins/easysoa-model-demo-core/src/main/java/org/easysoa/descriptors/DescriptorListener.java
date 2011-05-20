@@ -37,7 +37,6 @@ public class DescriptorListener implements EventListener {
 		DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
 
 		// Document removal
-		log.info(event.getName());
 		if (event.getName().equals("documentRemoved")) {
 			VocabularyService.removeEntry(session, DESCRIPTOR_VOCABULARY, doc.getId());
 			return;
@@ -65,8 +64,6 @@ public class DescriptorListener implements EventListener {
 			DocumentModel savedDoc = session.getDocument(doc.getRef());
 			String savedServiceId = (String) savedDoc.getProperty("endpoints", "serviceid"),
 					newServiceId = (String) doc.getProperty("endpoints", "serviceid");
-			
-			log.info("DESC: "+savedServiceId + "  vs " + doc.getProperty("endpoints", "serviceid"));
 
 			if (savedServiceId == null ||
 					!savedServiceId.equals(doc.getProperty("endpoints", "serviceid"))) {
@@ -74,13 +71,13 @@ public class DescriptorListener implements EventListener {
 				log.info("Descriptor's service modified, updating relations.");
 				
 				// Clear old relation
-				RelationService.clearRelations(doc);
+				RelationService.clearRelations(session, doc);
 				if (savedServiceId != null && !savedServiceId.equals("")) {
 					DocumentModel savedService = session.getDocument(new IdRef(savedServiceId));
 					if (savedService != null) {
 						String oldServiceDescId = (String) savedService.getProperty("serviceTags", "descriptorid");
 						if (oldServiceDescId != null && !oldServiceDescId.isEmpty()) {
-							RelationService.clearRelations(savedService);
+							RelationService.clearRelations(session, savedService);
 							savedService.setProperty("serviceTags", "descriptorid", "");
 							log.info("Old service cleared.");
 							// TODO: Save without saving loop...
@@ -95,7 +92,7 @@ public class DescriptorListener implements EventListener {
 				if (newServiceId != null && !newServiceId.isEmpty()) {
 					DocumentModel newService = session.getDocument(new IdRef(newServiceId));
 					if (newService != null) {
-						RelationService.createRelation(newService, doc);
+						RelationService.createRelation(session, newService, doc);
 						String newServiceDescId = (String) newService.getProperty("serviceTags", "descriptorid");
 						if (newServiceDescId == null || !newServiceDescId.equals(doc.getId())) {
 							newService.setProperty("serviceTags", "descriptorid", doc.getId());

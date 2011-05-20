@@ -69,8 +69,8 @@ Service discovery by browsing
   
   <!-- Templates -->
   <script type="text/template" id="descriptorEntry">
-	<input type="radio" name="descriptor" value="<%= url %>" /> <b><%= url %></b><br />
-	<a href="<%= url %>"><%= url %></a>
+	  <input id="<%= url %>" type="radio" name="descriptor" value="<%= url %>" /> <b><label for="<%= url %>"><%= serviceName %></label></b><br />
+	  <a href="<%= url %>" target="_blank"><%= url %></a>
   </script>
 
 </body>

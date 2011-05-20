@@ -1,11 +1,7 @@
-// TODO : Allow client polling, implement scraper reponse
-
-// /!\ : DOC When specifying the proxy, disable proxy bypass for localhost
-
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var base64 = require('./tools/base64.js'); // ./proxyserver/tools/base64.js on Windows?
+var base64 = require('./tools/base64.js');
 
 eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
 
@@ -26,11 +22,13 @@ function getFoundWSDLs(callback) {
 function scraperResponse(response) {
 	var data = "";
 	response.on('data', function(chunk) {
+		console.log("received sthg");
 		data += chunk.toString("ascii");
 	});
 	response.on('end', function() {
 		var json = null;
 		try {
+			console.log("result:" +data);
 			json = JSON.parse(data);
 			if (json.foundLinks) {
 				for (link in json.foundLinks) {
@@ -61,7 +59,7 @@ var server = http.createServer(function(request, response) {
 	var request_url = url.parse(request.url, true);
 
 	// If direct request to proxy, send found WSDLs
-	if (request.headers['host'] == "localhost:"+config.proxy_port) {
+	if (request.headers['host'] == "127.0.0.1:"+config.proxy_port) {
 		response.writeHead(200, {
 			"Content-Type": "text/javascript"
 		});
@@ -134,13 +132,7 @@ var server = http.createServer(function(request, response) {
 			host : scraperURL.hostname,
 			path : scraperURL.href.replace('?', request.url)
 		};
-
-		// Hard-coded Nuxeo auth
-		if (scraperURL.href.indexOf("nuxeo/restAPI") != -1) {
-			scraperOptions.headers = {
-				'authorization': "Basic " + base64.encode("Administrator:Administrator")
-			};
-		}
+		console.log(scraperOptions);
 
 		// Scraper request
 		scraper_request = http.request(scraperOptions, function(scraper_response) {

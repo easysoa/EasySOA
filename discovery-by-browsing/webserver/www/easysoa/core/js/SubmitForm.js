@@ -32,19 +32,20 @@ $(function() {
 			var appName = $('#submitApp').attr('value');
 			
 			if (url != '') {
+			console.log('http://127.0.0.1:8080/nuxeo/site/easysoa/notification/' + appName + '/' + serviceName + '/' + url);
 				$.ajax({
-					url: 'http://127.0.0.1:8080/nuxeo/restAPI/wsdlupload/'
-						 + appName + '/' + serviceName + '/' + url,
+					url: 'http://127.0.0.1:8080/nuxeo/site/easysoa/notification/' + appName + '/' + serviceName + '/' + url,
 					crossDomain: true,
 					dataType: 'jsonp',
 					success: function(data, textStatus, jqXHR) {
-							if (data.error == "")
-								SubmitForm.success(); // TODO Error handling
+					console.log(data);
+							if (data.result == "ok")
+								SubmitForm.success();
 							else
-								SubmitForm.failure(data.error);
+								SubmitForm.failure(data.result);
 						},
 					error: function(jqXHR, textStatus, errorThrown) {
-							SubmitForm.failure(errorThrown);
+							SubmitForm.failure("Request failed: "+errorThrown);
 						}
 					});
 			}
@@ -110,7 +111,7 @@ $(function() {
 		},
 		
 		failure: function(error) {
-			this.submitFailure.html("<b>ERROR:</b> "+error);
+			this.submitFailure.html(error);
 			this.submitFailure.fadeIn(500, function() {
 					setTimeout(function() {
 						$('#submitFailure').fadeOut(500);
