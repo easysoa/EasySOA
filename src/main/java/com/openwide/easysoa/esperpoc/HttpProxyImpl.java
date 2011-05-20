@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.esperpoc.esper.Message;
 
@@ -14,18 +16,30 @@ import com.openwide.easysoa.esperpoc.esper.Message;
 public class HttpProxyImpl extends HttpServlet {
 
 	/**
+	 * Logger
+	 */
+	static Logger logger = Logger.getLogger(HttpProxyImpl.class.getName());
+
+	/**
+	 * Log system init
+	 */
+	static {
+		PropertyConfigurator.configure(HttpProxyImpl.class.getClassLoader().getResource("log4j.properties"));
+	}
+	
+	/**
 	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */
 	@Override
 	public final void doGet(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("------------------");
-		System.out.println("Method: " + request.getMethod());
-		System.out.println("RequestURI : " + request.getRequestURI());
-		System.out.println("Query : " + request.getQueryString());
-		System.out.println("server: " + request.getServerName());
-		System.out.println("port: " + request.getServerPort());
-		System.out.println("request URL: " + request.getRequestURL());
-		PrintWriter respOut = response.getWriter();		
+		logger.debug("------------------");
+		logger.debug("--- Method: " + request.getMethod());
+		logger.debug("--- RequestURI : " + request.getRequestURI());
+		logger.debug("--- Query : " + request.getQueryString());
+		logger.debug("--- server: " + request.getServerName());
+		logger.debug("--- port: " + request.getServerPort());
+		logger.debug("--- request URL: " + request.getRequestURL());
+		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
 	    	// RESTLET
@@ -36,29 +50,30 @@ public class HttpProxyImpl extends HttpServlet {
 	    		sb.append("?");
 	    		sb.append(request.getQueryString());
 	    	}
-	    	System.out.println("*** Complete request : " + sb.toString());
-	    	// registering WSDL web service
-	    	if(sb.toString().toLowerCase().endsWith("?wsdl")){
-	    		// Create a new message received object and sand it to Esper
-	    		System.out.println("****** WSDL found, create Message !");
+	    	logger.debug("--- Complete request : " + sb.toString());
+	    	if(sb.toString().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"))){
+		    	// Registering WSDL web service
+	    		// Create a new message received object and send it to Esper
+	    		logger.debug("--- ****** WSDL found, create Message !");
 	    		Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString());				
 				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
-	    	} /*else {*/
-	    		/*System.out.println("****** Processing regex to find rest web service !");
-	    		String regex = "\\w*?\\w*=\\w*";
-	    		if(sb.toString().toLowerCase().matches(regex)){
-	    			System.out.println("Service with parameters found !");
-	    		}*/
-	    		// Other checks to verify if the request is a call to a web service
-	    		//
-	    		// url with parameters
-	    		// www.google.fr/search?q=test&lang=fr
-	    		// 	    		//
-	    		// dynamic url
-	    		// www.freebooks.org/library/getBook/7548669-874-98854
-	    		//
-	    		// Pattern => www.freebooks.org/library/getBook/{id or isbn}
-	    	/*}*/
+	    	} else {
+	    		logger.debug("--- ****** Processing regex to find rest web service !");
+	    		if(sb.toString().toLowerCase().matches(PropertyManager.getProperty("proxy.rest.request.detect.parameters"))){
+		    		// Registering a REST web service with parameters
+	    			// url with parameters
+		    		// www.google.fr/search?q=test&lang=fr
+	    			logger.debug("--- REST Service with parameters found, create Message !");
+	    			Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString());
+	    			EsperEngineSingleton.getEsperRuntime().sendEvent(msg);	
+	    		}
+	    		else {
+	    			// Registering a 'dynamic' web service (with parameters directly in the url)
+		    		// dynamic url
+		    		// www.freebooks.org/library/getBook/7548669-874-98854
+		    		// Pattern => www.freebooks.org/library/getBook/{id or isbn}
+	    		}
+	    	}
 	    	ClientResource resource = new ClientResource(sb.toString());
 	    	InputStream in = resource.get().getStream();
     	    if(in != null){
@@ -74,8 +89,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    	respOut.println(ex.getMessage() + "</body></html>");
 	    }
 	    finally {
-	    	System.out.println("Closing response flow");
-	    	//respOut.println("Finally block ..... Something goes wrong !!");
+	    	logger.debug("--- Closing response flow");
 	    	respOut.close();
 	    }
 	}

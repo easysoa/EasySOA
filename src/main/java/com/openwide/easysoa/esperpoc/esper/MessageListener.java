@@ -1,21 +1,23 @@
 package com.openwide.easysoa.esperpoc.esper;
 
 import java.util.HashMap;
+import org.apache.log4j.Logger;
 //import java.util.Iterator;
-
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 
 public class MessageListener implements UpdateListener {
 
+	/**
+	 * Logger
+	 */
+	static Logger logger = Logger.getLogger(MessageListener.class.getName());
+	
 	public void update(EventBean[] newData, EventBean[] oldData) {
-		System.out.println("--- Event received: " + newData[0].getUnderlying());
-		System.out.println("--- " + newData[0].getUnderlying().getClass().getName());
+		logger.debug("[MessageListener] --- Event received: " + newData[0].getUnderlying());
+		logger.debug("[MessageListener] --- " + newData[0].getUnderlying().getClass().getName());
 		//Message msg = (Message)(newData[0].getUnderlying());
 		@SuppressWarnings("unchecked")
 		HashMap<String,Object> hm = (HashMap<String,Object>)(newData[0].getUnderlying());
@@ -37,24 +39,9 @@ public class MessageListener implements UpdateListener {
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		Service service = new Service(serviceName, msg.getHost(), msg.getCompleteMessage());
-		StringBuffer sb = new StringBuffer("http://localhost:8080/nuxeo/restAPI/wsdlupload/");
-	    sb.append(service.getAppName()); //App Name
-	    sb.append("/");
-	    sb.append(service.getServiceName()); //Service name
-	    sb.append("/");
-	    //sb.append("http://localhost:9010/PureAirFlowers?wsdl");
-	    sb.append(service.getUrl());
-		System.out.println("Request URL = " + sb.toString());
-		// Send request to register the service
-		Client client = Client.create();
-		client.addFilter(new HTTPBasicAuthFilter("Administrator", "Administrator")); 
-		WebResource webResource = client.resource(sb.toString());
-		ClientResponse response = webResource.accept("text/plain").get(ClientResponse.class);
-	   	int status = response.getStatus();
-	   	System.out.println("Registration request response status = " + status);
-		String textEntity = response.getEntity(String.class);
-		System.out.println("Registration request response = " + textEntity);
+		Service service = new Service(msg.getHost(), serviceName, msg.getCompleteMessage());
+		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
+		nrs.registerService(service);
     }
 	
 }
