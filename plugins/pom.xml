@@ -20,5 +20,24 @@
     	<module>easysoa-model-demo-web</module>
     	<module>easysoa-model-demo-rest</module>
     </modules>
+
+
+    <!-- ============= -->
+    <!-- Repositories  -->
+    <!-- ============= -->
+
+    <repositories>
+      <repository>
+        <id>Nuxeo</id>
+        <name>Nuxeo Public Releases Repository</name>
+        <url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+      </repository>
+    </repositories>
     
 </project>
