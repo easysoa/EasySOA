@@ -7,6 +7,28 @@ public class Message {
 	private int port;
 	private String pathName;
 	private String parameters;
+	private String content;
+
+	/**
+	 * Constructor
+	 * @param host
+	 * @param port
+	 * @param pathName
+	 * @param parameters
+	 * @param content
+	 */
+	public Message(String protocol, String host, int port, String pathName, String parameters, String content){
+		if(protocol.toLowerCase().contains("http")){
+			this.protocol = "http";
+		} else {
+			this.protocol = protocol;
+		}
+		this.host = host;
+		this.port = port;
+		this.pathName = pathName;
+		this.parameters = parameters;
+		this.content = content;
+	}
 
 	/**
 	 * Constructor
@@ -25,8 +47,9 @@ public class Message {
 		this.port = port;
 		this.pathName = pathName;
 		this.parameters = parameters;
+		this.content = "";
 	}
-
+	
 	/**
 	 * 
 	 * @return
@@ -71,6 +94,14 @@ public class Message {
 	 * 
 	 * @return
 	 */
+	public String getContent(){
+		return content;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getCompleteMessage(){
 		StringBuffer sb = new StringBuffer();
 		sb.append(protocol);
@@ -83,6 +114,22 @@ public class Message {
 		sb.append(parameters);
 		return sb.toString();
 	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getCompletePath(){
+		StringBuffer sb = new StringBuffer();
+		sb.append(protocol);
+		sb.append("://");
+		sb.append(host);
+		sb.append(":");
+		sb.append(port);
+		sb.append(pathName);
+		return sb.toString();
+	}	
+	
 	
 	@Override
 	public String toString(){
@@ -98,6 +145,8 @@ public class Message {
 		sb.append(pathName);
 		sb.append(", parameters: ");
 		sb.append(parameters);
+		sb.append(", content: ");
+		sb.append(content);		
 		sb.append("]");
 		return sb.toString();
 	}
