@@ -20,8 +20,8 @@ Instructions to setup these applications (including Git) are detailed on [this p
 
 You will need to clone all needed projects:
 
-* [mkalam-alami/easysoa-model-demo][2]
-* [JGuillemotte/easysoa-demo-pureAirFlowers-proxy][3]
+* [easysoa-model-demo][2]
+* [easysoa-demo-pureAirFlowers-proxy][3]
 
 Once this is done, clone this repository in your workspace, on the same level than the other projects.
 
@@ -55,7 +55,7 @@ To launch EasySOA, type these commands:
 * `buildr paf_mvn` builds PAF CXF server and service proxy
 
 [1]: http://buildr.apache.org/
-[2]: https://github.com/mkalam-alami/easysoa-model-demo
-[3]: https://github.com/JGuillemotte/easysoa-demo-pureAirFlowers-proxy
+[2]: https://github.com/easysoa/easysoa-model-demo
+[3]: https://github.com/easysoa/easysoa-demo-pureAirFlowers-proxy
 [4]: http://www.nuxeo.com/en/products/document-management
 [5]: http://nodejs.org/
