@@ -14,6 +14,8 @@ Project for EasySOA contributors, used to tie all packages together.
 * Sun's 1.6 Java JDK
 * [Node.js][5]
 
+Instructions to setup these applications (including Git) are detailed on [this page](https://github.com/easysoa/easysoa-model-demo/wiki/Development-Environment).
+
 # Set up
 
 You will need to clone all needed projects:
