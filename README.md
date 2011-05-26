@@ -27,7 +27,7 @@ Once this is done, clone this repository in your workspace, on the same level th
 
 # Build and distribute
 
-Modify the `buildfile` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
+Modify the `build.yaml` file constants according to your config (especially the Nuxeo path, since Nuxeo is not included in our repositories). Then, run the following command, from the `easysoa-demo-dist` folder:
 
     buildr buildall packageall tgz
     
