@@ -33,14 +33,15 @@ Modify the `build.yaml` file constants according to your config (especially the 
     
 # Build and run
 
-Modify the `buildfile` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
+Modify the `build.yaml` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
 
     buildr buildall packageall
     
-To launch EasySOA, go to the `easysoa` folder, and run:
+To launch EasySOA, type these commands:
 
+    cd easysoa
     ./run.sh
-    
+
 # Task list
 
 * `buildr buildall` builds all needed projects
