@@ -1,4 +1,4 @@
-package org.easysoa.rest;
+package org.easysoa.rest.scraper;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -17,8 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import org.easysoa.rest.tools.HttpFile;
-import org.easysoa.rest.tools.JSONP;
+import org.easysoa.rest.HttpFile;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
@@ -41,7 +40,7 @@ import org.restlet.resource.StringRepresentation;
  */
 @Path("easysoa/wsdlscraper")
 @Produces("application/x-javascript")
-public class ScraperService {
+public class ScraperRest {
 
 	@GET
 	public Object doGet() {
@@ -145,19 +144,11 @@ public class ScraperService {
 				for (String error : errors)
 					result.append("error", error);
 			}
-			// ...in JSONP
-			return new StringRepresentation(JSONP.format(result, callback),
-					MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
-					CharacterSet.UTF_8).getText();
-		} catch (Exception e) {
-			try {
-				// ...else in JSON
-				return new StringRepresentation(result.toString(2),
+			return new StringRepresentation(result.toString(2),
 						MediaType.APPLICATION_JSON, Language.ALL,
 						CharacterSet.UTF_8).getText();
-			} catch (JSONException e1) {
-				errors.add("Cannot format anwser: " + e1.getMessage());
-			}
+		} catch (JSONException e) {
+			errors.add("Cannot format anwser: " + e.getMessage());
 		}
 		
 		// If everything else fails, show errors in plain text

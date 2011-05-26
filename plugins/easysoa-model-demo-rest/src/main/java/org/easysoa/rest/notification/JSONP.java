@@ -1,4 +1,4 @@
-package org.easysoa.rest.tools;
+package org.easysoa.rest.notification;
 
 import org.json.JSONException;
 import org.json.JSONObject;

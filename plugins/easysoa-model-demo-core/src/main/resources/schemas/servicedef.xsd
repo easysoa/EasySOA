@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/servicedef/"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="url" type="xs:string" />
+  <xs:element name="lightUri" type="xs:string" />
+  <xs:element name="callcount" type="xs:int" />
+  <xs:element name="relatedUsers" type="xs:string" />
+  <xs:element name="httpMethod" type="xs:string" />
+  <xs:element name="contentTypeIn" type="xs:string" />
+  <xs:element name="contentTypeOut" type="xs:string" />
+  
+</xs:schema>

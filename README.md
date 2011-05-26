@@ -20,7 +20,7 @@ The Nuxeo Installation Guide explains how to install and run Nuxeo DM: <http://d
 In order to use this tool, you have to launch a specific HTTP proxy and configure your browser to use it.
 
 * In order to launch the proxy, run the `start-proxy.sh` (or `.bat`) script in the `discovery-by-browsing` folder.
-* Launch the web server with the `start-web.sh` (or `.bat`) script (same folder), then browse to *http://127.0.0.1:8083/easysoa/core/*.
+* Launch the web server with the `start-web.sh` (or `.bat`) script (same folder), then browse to http://127.0.0.1:8083/easysoa/core/.
 
 *NOTE: The Nuxeo registry, web proxy, web server and web client are configured to be run on the same machine.*
 

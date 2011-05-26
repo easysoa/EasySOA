@@ -1,4 +1,4 @@
-package org.easysoa.rest.tools;
+package org.easysoa.rest;
 
 import java.io.BufferedWriter;
 import java.io.File;

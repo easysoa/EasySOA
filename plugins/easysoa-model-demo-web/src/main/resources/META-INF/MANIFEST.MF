@@ -11,7 +11,4 @@ Bundle-Vendor: Open Wide
 Bundle-Category: web
 Nuxeo-Require: org.nuxeo.runtime,org.nuxeo.ecm.core.api,org.nuxeo.ecm.
  webapp.core,org.nuxeo.ecm.webapp.ui,org.openwide.demo.core
-Nuxeo-Component: OSGI-INF/layout-contrib.xml,
- OSGI-INF/contentviews-contrib.xml,
- OSGI-INF/directorytreemanager-contrib.xml,
- OSGI-INF/directory-ui-contrib.xml
+Nuxeo-Component: OSGI-INF/directory-ui-contrib.xml

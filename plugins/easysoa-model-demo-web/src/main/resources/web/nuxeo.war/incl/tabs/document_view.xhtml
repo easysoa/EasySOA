@@ -16,7 +16,9 @@
     <a4j:region id="documentViewRegion">
       <a4j:outputPanel id="documentViewPanel">
       
-	  
+	  <!-- EasySOA : Empty cache -->
+	  <h:outputText value="#{relationActions.resetStatements()}" rendered="true"/>
+  
 	  <!-- EasySOA : Link it button -->
 	  <c:if test="${currentDocument.getType() == 'Service'}">
 	     <div style="width: 100%; float: left; margin-top: 20px">
@@ -36,11 +38,10 @@
 		  </c:choose>
 		  </div>
 	  </c:if>
-		  
+	  
+	  <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
 
-      <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
-
-    </a4j:outputPanel>
+      </a4j:outputPanel>
     </a4j:region>
   </h:form>
 

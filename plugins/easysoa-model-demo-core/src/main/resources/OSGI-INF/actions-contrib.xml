@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.openwide.test.actions">
+<component name="org.easysoa.core.contrib.actions">
   
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
   
- 	<!-- Désactivation des onglets inutiles à la consultation d'un document -->
+ 	<!-- Disable unused tabs -->
     <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" />
     <action id="view_comments" enabled="false" />
     <action id="TAB_CONTENT_HISTORY" enabled="false" />
     <action id="TAB_PREVIEW" enabled="false" />
     <!--<action id="TAB_MANAGE" enabled="false" />-->
     
- 	<!-- Page d'import -->
+ 	<!-- Import page -->
     <action id="easysoa-import" link="import_form" label="label.easysoa.import">
         <category>USER_SERVICES</category>
     </action>
     
   </extension>
+  
+  <!-- Enable "new" button for custom folder types -->
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
+  	
+  	<filter id="create">
+        <rule grant="true">
+            <type>ServiceAPI</type>
+            <type>Workspace</type>
+        </rule>
+    </filter>
+  	
+  </extension>  
 
 </component>

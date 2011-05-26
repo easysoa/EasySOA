@@ -1,4 +1,4 @@
-package org.easysoa.tools;
+package org.easysoa.services;
 
 import java.util.HashMap;
 import java.util.List;
