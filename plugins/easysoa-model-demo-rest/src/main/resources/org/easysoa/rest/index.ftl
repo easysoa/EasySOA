@@ -10,6 +10,16 @@
 			font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 			color: #023;
 		}
+		
+		h1 {
+			border-bottom: 1px solid #023;
+			padding: 3px;
+			margin-bottom: 10px;
+		}
+		
+		p {
+			font-family: monospace;
+		}
 	->
 	</style>
 </html>
@@ -25,7 +35,7 @@
 	Use: <b>.../nuxeo/site/easysoa/notification/(appliimpl|api|service)/</b></p>
 	
 	<p>Parameters have to be specified through the request content, following the content-type <i>application/x-www-form-urlencoded</i>.<br />
-	Append <b>/doc</b> to the path of any of the 3 services to get further documentation.</p>
+	Send a request with the <b>GET</b> method to any of the 3 services to get further documentation.</p>
 	
 <h3>Cross-domain clients compliant API</h3>
 

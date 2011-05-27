@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 import org.easysoa.rest.notification.APINotificationRest;
+import org.easysoa.rest.notification.AppliImplNotificationRest;
 import org.easysoa.rest.notification.ServiceNotificationRest;
 import org.easysoa.rest.scraper.ScraperRest;
 
@@ -19,6 +20,7 @@ public class EasySOAApp extends Application {
 		result.add(ScraperRest.class);
 		result.add(ServiceNotificationRest.class);
 		result.add(APINotificationRest.class);
+		result.add(AppliImplNotificationRest.class);
 		
 		return result;
     }

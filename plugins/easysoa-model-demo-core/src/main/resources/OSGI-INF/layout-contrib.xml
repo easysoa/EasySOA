@@ -58,7 +58,7 @@
           <widget>appliimpldef_rootServicesUrl</widget>
         </row>
         <row>
-          <widget>appliimpldef_sources</widget>
+          <widget>appliimpldef_sourcesUrl</widget>
         </row>
       </rows>
       <widget name="appliimpldef_technology" type="text">
@@ -106,13 +106,13 @@
 	        <field>app:rootServicesUrl</field>
 	      </fields>
 	  </widget>
-      <widget name="appliimpldef_sources" type="text">
+      <widget name="appliimpldef_sourcesUrl" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.sources</label>
+	        <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>app:sources</field>
+	        <field>app:sourcesUrl</field>
 	      </fields>
 	  </widget>
     </layout>

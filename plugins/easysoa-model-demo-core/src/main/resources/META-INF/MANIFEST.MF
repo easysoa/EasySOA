@@ -19,4 +19,4 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/eventlistener-contrib.xml,
  OSGI-INF/actions-contrib.xml,
  OSGI-INF/lifecycle-contrib.xml,
- OSGI-INF/EasySOAComponent.xml
+ OSGI-INF/DomainInitComponent.xml

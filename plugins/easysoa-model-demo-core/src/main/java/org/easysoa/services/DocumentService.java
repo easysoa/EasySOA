@@ -2,6 +2,7 @@ package org.easysoa.services;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -34,7 +35,7 @@ public class DocumentService {
 	public static final DocumentModel createAppliImpl(CoreSession session, String title) throws ClientException {
 		
 		DocumentModel appliImpl = session.createDocumentModel(APPLIIMPL_DOCTYPE);
-		appliImpl.setPathInfo(getWSRoot(session).getPathAsString(), appliImpl.getName());
+		appliImpl.setPathInfo(getWSRoot(session).getPathAsString(), IdUtils.generateStringId());
 		appliImpl.setProperty("dublincore", "title", title);
 		session.createDocument(appliImpl);
 		return appliImpl;
@@ -56,7 +57,7 @@ public class DocumentService {
 		}
 
 		DocumentModel serviceAPI = session.createDocumentModel(SERVICEAPI_DOCTYPE);
-		serviceAPI.setPathInfo(parentModel.getPathAsString(), serviceAPI.getName());
+		serviceAPI.setPathInfo(parentModel.getPathAsString(), IdUtils.generateStringId());
 		serviceAPI.setProperty("dublincore", "title", title);
 		session.createDocument(serviceAPI);
 		return serviceAPI;
@@ -76,7 +77,7 @@ public class DocumentService {
 		
 		if (api != null) {
 			DocumentModel service = session.createDocumentModel(SERVICE_DOCTYPE);
-			service.setPathInfo(api.getPathAsString(), api.getName());
+			service.setPathInfo(api.getPathAsString(), IdUtils.generateStringId());
 			service.setProperty("dublincore", "title", title);
 			session.createDocument(service);
 			return service;
@@ -97,7 +98,7 @@ public class DocumentService {
 		if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
 			DocumentModel appliimpl = DocumentService.getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
 			if (appliimpl == null) {
-				DocumentModel appliImpl = createAppliImpl(session, APPLIIMPL_DOCTYPE);
+				DocumentModel appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_TITLE);
 				session.save();
 				defaultAppliImpl = appliImpl;
 				return defaultAppliImpl;
@@ -137,7 +138,7 @@ public class DocumentService {
 
 	private static DocumentModel getChild(CoreSession session, DocumentRef parent, String childTitle) throws ClientException { 
 		for (DocumentModel model : session.getChildren(parent)) {
-			if (model.getTitle().equals(childTitle)) {
+			if (model.getTitle().equals(childTitle) && model.getCurrentLifeCycleState() != "deleted") {
 				return model;
 			}
 		}

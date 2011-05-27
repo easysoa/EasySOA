@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
@@ -22,10 +23,6 @@ import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.restlet.data.CharacterSet;
-import org.restlet.data.Language;
-import org.restlet.data.MediaType;
-import org.restlet.resource.StringRepresentation;
 
 @Path("easysoa/notification/api")
 public class APINotificationRest extends NotificationRest {
@@ -42,10 +39,9 @@ public class APINotificationRest extends NotificationRest {
 	 * @return
 	 * @throws JSONException
 	 */
-	@POST
-	@Path("/doc")
-	@Produces("application/json")
-	public Object doPost() throws JSONException {
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object doGet() throws JSONException {
 
 		JSONObject result = new JSONObject();
 		
@@ -58,11 +54,11 @@ public class APINotificationRest extends NotificationRest {
 		result.put("parameters", params);
 		result.put("description", "Service-level notification.");
 		
-		return result;
+		return format(result);
 	}
 	
 	@POST
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Object doPost(@FormParam("apiUrl") String apiUrl,
 			@FormParam("parentUrl") String parentUrl,
 			@FormParam("name") String name,
@@ -91,7 +87,8 @@ public class APINotificationRest extends NotificationRest {
 				DocumentModel apiModel = DocumentService.findServiceApi(session, apiUrl);
 				if (apiModel == null)
 					apiModel = DocumentService.createServiceAPI(session, parentUrl, name);
-				
+
+				setPropertyIfNotNull(apiModel, "dublincore", "title", name);
 				setPropertyIfNotNull(apiModel, "serviceapidef", "url", apiUrl);
 				setPropertyIfNotNull(apiModel, "serviceapidef", "sourceUrl", sourceUrl);
 				session.saveDocument(apiModel);
@@ -108,7 +105,7 @@ public class APINotificationRest extends NotificationRest {
 		}
 		
 		// Return formatted result
-		return result.toString(2);
+		return format(result);
 
 	}
 
@@ -127,8 +124,8 @@ public class APINotificationRest extends NotificationRest {
 	 *
 	 */
 	@GET
-	@Path("/{all:.*}") // {applicationName}/{serviceName}/{url}
 	@Produces("application/x-javascript")
+	@Path("/{all:.*}") // {applicationName}/{serviceName}/{url}
 	public Object doGet(@Context UriInfo uriInfo) {
 		 
 		// Parameters extraction
@@ -242,24 +239,12 @@ public class APINotificationRest extends NotificationRest {
 		if (f.isDownloaded())
 			f.delete();
 		
-		// Format result
-		String resultJSONP = null;
+		// Format & send result
 		try {
-			resultJSONP = JSONP.format(result, callback);
-		} catch (Exception e) {
-			log.info("Cannot format JSONP message (" + e.getMessage() + "), using JSON instead.");
-		}
-		
-		// Send result
-		try {
-			if (resultJSONP != null)
-				return new StringRepresentation(resultJSONP,
-						MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
-						CharacterSet.UTF_8).getText();
+			if (callback != null)
+				return format(result, callback);
 			else
-				return new StringRepresentation(result.toString(2),
-						MediaType.APPLICATION_JSON, Language.ALL,
-						CharacterSet.UTF_8).getText();
+				return format(result);
 		} catch (Exception e) {
 			log.warn("Cannot send message : " + e.getMessage());
 			return "Error : "+e.getMessage();
