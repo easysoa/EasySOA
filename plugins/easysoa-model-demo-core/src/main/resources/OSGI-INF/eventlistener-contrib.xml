@@ -8,7 +8,6 @@
     <listener name="serviceapilistener" class="org.easysoa.listeners.ServiceAPIListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
-      <event>documentRemoved</event>
     </listener>
     
   </extension>

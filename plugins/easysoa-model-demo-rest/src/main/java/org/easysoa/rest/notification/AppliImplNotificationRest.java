@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.services.DocumentService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -41,17 +42,11 @@ public class AppliImplNotificationRest extends NotificationRest {
 				
 				DocumentModel appliImplModel = session.getDocument(new PathRef(REGISTRY_ROOT+appliName));
 				if (appliImplModel == null) {
-					appliImplModel = session.createDocumentModel("Workspace");
-					appliImplModel.setPathInfo(REGISTRY_ROOT, appliName);
-					appliImplModel = session.createDocument(appliImplModel);		
-					appliImplModel.setProperty("dublincore", "title", appliName);
+					appliImplModel = DocumentService.createAppliImpl(session, appliName);
 				}
 				
-				if (technology != null)
-					appliImplModel.setProperty("appliimpldef", "technology", technology);
-
-				if (standard != null)
-					appliImplModel.setProperty("appliimpldef", "standard", standard);
+				setPropertyIfNotNull(appliImplModel, "appliimpldef", "technology", technology);
+				setPropertyIfNotNull(appliImplModel, "appliimpldef", "standard", standard);
 
 				session.save();
 				

@@ -5,7 +5,7 @@
   
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
     <schema name="servicedef" src="schemas/servicedef.xsd" prefix="serv" />
-    <schema name="serviceapidef" src="schemas/apidef.xsd" prefix="api" />
+    <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
     <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
     <schema name="querynav2" src="schemas/querynav2.xsd" />
   </extension>

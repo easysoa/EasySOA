@@ -6,6 +6,7 @@
   <xs:element name="standard" type="xs:string" />
   <xs:element name="server" type="xs:string" />
   <xs:element name="uiUrl" type="xs:string" />
+  <xs:element name="rootServicesUrl" type="xs:string" />
   <xs:element name="sources" type="xs:string" />
     
 </xs:schema>

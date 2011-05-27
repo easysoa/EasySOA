@@ -6,7 +6,7 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.EasySOA;
+import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -43,7 +43,7 @@ public class ServiceAPIListener implements EventListener {
 			return;
 		}
 		String type = doc.getType();
-		if (!type.equals(EasySOA.SERVICEAPI_DOCTYPE)) {
+		if (!type.equals(DocumentService.SERVICEAPI_DOCTYPE)) {
 			return;
 		}
 		

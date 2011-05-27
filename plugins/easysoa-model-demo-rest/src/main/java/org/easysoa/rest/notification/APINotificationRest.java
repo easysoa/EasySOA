@@ -13,9 +13,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.EasySOA;
-import org.easysoa.EasySOAComponent;
 import org.easysoa.rest.HttpFile;
+import org.easysoa.services.DocumentService;
 import org.easysoa.services.VocabularyService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,8 +22,6 @@ import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.PathRef;
-import org.nuxeo.runtime.api.Framework;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Language;
 import org.restlet.data.MediaType;
@@ -43,34 +40,36 @@ public class APINotificationRest extends NotificationRest {
 	@POST
 	@Produces("application/json")
 	public Object doPost(@FormParam("apiUrl") String apiUrl,
-			@FormParam("application") String application,
+			@FormParam("parentURL") String parentURL,
 			@FormParam("name") String name,
-			@FormParam("sourceURL") String sourceURL) throws JSONException {
+			@FormParam("sourceURL") String sourceUrl) throws JSONException {
 		
 		// Initialize
 		JSONObject result = new JSONObject();
 		result.put("result", "ok");
 		
 		// Create API
-		if (apiUrl != null) {
+		if (apiUrl != null && parentURL != null) {
 			
 			if (name == null)
 				name = apiUrl;
 			
 			try {
 				
-				DocumentModel appliImplModel = session.getDocument(new PathRef(REGISTRY_ROOT+application));
-				if (appliImplModel == null) {
-					appliImplModel = session.createDocumentModel("Workspace");
-					appliImplModel.setPathInfo(REGISTRY_ROOT, application);
-					appliImplModel.setProperty("dublincore", "title", application);
-					session.createDocument(appliImplModel);					
+				DocumentModel parentModel = DocumentService.findServiceApi(session, parentURL);
+				if (parentModel == null) {
+					parentModel = DocumentService.findAppliImpl(session, parentURL);
+				}
+				if (parentModel == null) {
+					parentModel = DocumentService.createAppliImpl(session, parentURL);
+					parentModel.setProperty("appliimpldef", "rootServicesUrl", parentURL);
+					session.saveDocument(parentModel);
 				}
 				
-				DocumentModel apiModel = session.createDocumentModel("ServiceAPI");
-				apiModel.setPathInfo(appliImplModel.getPathAsString(), name);
-				apiModel.setProperty("dublincore", "title", name);
-				apiModel.setProperty("serviceapidef", "sourceURL", sourceURL);
+				DocumentModel apiModel = DocumentService.createServiceAPI(session, parentURL, name);
+				setPropertyIfNotNull(apiModel, "serviceapidef", "url", apiUrl);
+				setPropertyIfNotNull(apiModel, "serviceapidef", "sourceUrl", sourceUrl);
+				session.createDocument(apiModel);
 
 				session.save();
 				
@@ -80,7 +79,7 @@ public class APINotificationRest extends NotificationRest {
 
 		}
 		else {
-			appendError(result, "API URL not informed");
+			appendError(result, "API URL or parent API/Appli. URL not informed");
 		}
 		
 		// Return formatted result
@@ -103,7 +102,7 @@ public class APINotificationRest extends NotificationRest {
 	 *
 	 */
 	@GET
-	@Path("/{all:.*}")
+	@Path("/{all:.*}") // {applicationName}/{serviceName}/{url}
 	@Produces("application/x-javascript")
 	public Object doGet(@Context UriInfo uriInfo) {
 		 
@@ -128,7 +127,7 @@ public class APINotificationRest extends NotificationRest {
 			if (!paramArray[0].isEmpty())
 				applicationName = paramArray[0];
 			if (!paramArray[1].isEmpty())
-				serviceName = paramArray[1];
+				serviceName = paramArray[1].replaceAll("(WSDL|wsdl)", "").trim();
 			url = paramArray[2] + ((query != null) ? "?"+query : "");
 		}
 		
@@ -160,51 +159,49 @@ public class APINotificationRest extends NotificationRest {
 				} catch (ClientException e) {
 					log.error("Failed to query existing WSDLs", e);
 				}
+				
+				DocumentModel model;
 				if (list != null && list.size() > 0) {
-					appendError(result, "WSDL already registered");
+					// Document selection
+					model = list.get(0);
+					log.info("WSDL already registered, updating the document.");
+				}
+				else {
+					// (or) Document creation
+					DocumentModel parentModel = session.getDocument(DocumentService.getDefaultAppliImpl(session).getRef());
+					if (parentModel == null) {
+						throw new NullPointerException("Parent application not found.");
+					}
+					else {
+						model = session.createDocumentModel(parentModel.getPathAsString(),
+								IdUtils.generateStringId(), DocumentService.DEFAULT_APPLIIMPL_TITLE);
+					}
+					model.setProperty("file", "content", f.getBlob());
+					model = session.createDocument(model);
 				}
 				
-				else {
+				try {
 					
-					try {
+					// Service creation
+					if (serviceName != null || applicationName != null) {
 						
-						// WSDL creation
-						DocumentModel model = session.createDocumentModel(
-								session.getDocument(EasySOA.getDefaultAppliImpl(session)).getPathAsString(),
-								IdUtils.generateStringId(), EasySOA.SERVICEAPI_DOCTYPE);
-						model.setProperty("file", "content", f.getBlob());
-						model = session.createDocument(model);
+						model.setProperty("dublincore", "title", serviceName);
+						model.setProperty("serviceapidef", "application", applicationName);
+						session.saveDocument(model);
 						
-						// Service creation
-						if (serviceName != null || applicationName != null) {
-							
-							DocumentModel serviceModel = session.createDocumentModel(
-									session.getDocument(EasySOA.getDefaultAppliImpl(session)).getPathAsString(),
-									IdUtils.generateStringId(), "Service");
-							serviceModel.setProperty("dublincore", "title", serviceName);
-							serviceModel.setProperty("serviceTags", "application", applicationName);
-							serviceModel.setProperty("serviceTags", "descriptorid", model.getId());
-							serviceModel = session.createDocument(serviceModel);
-		
-							model.setProperty("endpoints", "serviceid", serviceModel.getId());
-							session.saveDocument(model);
-							
-							session.save();
-		
-							// New application
-							if (applicationName != null
-									&& !VocabularyService.entryExists(session, "application", applicationName)) {
-								VocabularyService.addEntry(session, "application", applicationName, applicationName);
-							}
+						// New application in the vocabulary
+						if (applicationName != null
+								&& !VocabularyService.entryExists(session, "application", applicationName)) {
+							VocabularyService.addEntry(session, "application", applicationName, applicationName);
 						}
-						
-						session.save();
-						
-					} catch (ClientException e) {
-						appendError(result, "Failed to create WSDL : "+e.getMessage());
-					} catch (Exception e) {
-						appendError(result, "Error during WSDL creation : "+e.getMessage());
 					}
+					
+					session.save();
+					
+				} catch (ClientException e) {
+					appendError(result, "Failed to create WSDL : "+e.getMessage());
+				} catch (Exception e) {
+					appendError(result, "Error during WSDL creation : "+e.getMessage());
 				}
 				
 			} catch (Exception e) {
@@ -216,7 +213,6 @@ public class APINotificationRest extends NotificationRest {
 			appendError(result, "Given URL doesn't seem to be a WSDL.");
 		}
 		
- 
 		// Delete temporary file
 		if (f.isDownloaded())
 			f.delete();
@@ -241,13 +237,9 @@ public class APINotificationRest extends NotificationRest {
 						CharacterSet.UTF_8).getText();
 		} catch (Exception e) {
 			log.warn("Cannot send message : " + e.getMessage());
-		}
-		
-		try {
-			return result.get("result");
-		} catch (JSONException e) {
 			return "Error : "+e.getMessage();
 		}
+		
 	}
 	
 }

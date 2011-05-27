@@ -6,7 +6,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.webengine.WebEngine;
 import org.nuxeo.runtime.api.Framework;
 import org.restlet.data.CharacterSet;
@@ -18,7 +20,7 @@ public abstract class NotificationRest {
 
 	private static final Log log = LogFactory.getLog(NotificationRest.class);
 	
-	protected static final String REGISTRY_ROOT = "/EasySOA/Service Registry/";
+	protected static final String REGISTRY_ROOT = "/default-domain/workspaces/";
 	private static final String ERROR = "[ERROR] ";
 	
 	protected final CoreSession session;
@@ -56,21 +58,35 @@ public abstract class NotificationRest {
 	}
 
 	/**
-	 * Formats the JSONObject into a string
-	 * @param result
-	 * @return
-	 */
-	protected static final String format(JSONObject result) {
-		return format(result, false, null);
-	}
-
-	/**
 	 * Formats the JSONObject into a JSONP string
 	 * @param result
 	 * @return
 	 */
 	protected static final String format(JSONObject result, String callback) {
 		return format(result, true, callback);
+	}
+
+	/**
+	 * Sets a property to a model, but only if the value parameter is not null.
+	 * @param result
+	 * @param callback
+	 * @return
+	 * @throws ClientException 
+	 */
+	protected static final void setPropertyIfNotNull(DocumentModel model, String schema, 
+			String property, Object value) throws ClientException {
+		if (value != null) {
+			model.setProperty(schema, property, value);
+		}
+	}
+
+	/**
+	 * Formats the JSONObject into a string
+	 * @param result
+	 * @return
+	 */
+	protected static final String format(JSONObject result) {
+		return format(result, false, null);
 	}
 
 	private static final String format(JSONObject result, boolean jsonp, String callback) {
