@@ -37,39 +37,64 @@ public class APINotificationRest extends NotificationRest {
 		super();
 	}
 
+	/**
+	 * Documentation
+	 * @return
+	 * @throws JSONException
+	 */
+	@POST
+	@Path("/doc")
+	@Produces("application/json")
+	public Object doPost() throws JSONException {
+
+		JSONObject result = new JSONObject();
+		
+		JSONObject params = new JSONObject();
+		params.put("apiUrl", "(mandatory) Service API url (WSDL address, parent path...)");
+		params.put("parentUrl", "(mandatory) The parent URL, which is either another service API, or the service root");
+		params.put("name", "Service name");
+		params.put("sourceUrl", "The web page where the service has been found (useful for REST only)");
+		
+		result.put("parameters", params);
+		result.put("description", "Service-level notification.");
+		
+		return result;
+	}
+	
 	@POST
 	@Produces("application/json")
 	public Object doPost(@FormParam("apiUrl") String apiUrl,
-			@FormParam("parentURL") String parentURL,
+			@FormParam("parentUrl") String parentUrl,
 			@FormParam("name") String name,
-			@FormParam("sourceURL") String sourceUrl) throws JSONException {
+			@FormParam("sourceUrl") String sourceUrl) throws JSONException {
 		
 		// Initialize
 		JSONObject result = new JSONObject();
 		result.put("result", "ok");
 		
 		// Create API
-		if (apiUrl != null && parentURL != null) {
+		if (apiUrl != null && parentUrl != null) {
 			
 			if (name == null)
 				name = apiUrl;
 			
 			try {
 				
-				DocumentModel parentModel = DocumentService.findServiceApi(session, parentURL);
-				if (parentModel == null) {
-					parentModel = DocumentService.findAppliImpl(session, parentURL);
-				}
-				if (parentModel == null) {
-					parentModel = DocumentService.createAppliImpl(session, parentURL);
-					parentModel.setProperty("appliimpldef", "rootServicesUrl", parentURL);
+				DocumentModel parentModel = DocumentService.findServiceApi(session, parentUrl);
+				if (parentModel == null)
+					parentModel = DocumentService.findAppliImpl(session, parentUrl);
+				if (parentModel == null)
+					parentModel = DocumentService.createAppliImpl(session, parentUrl);
+					parentModel.setProperty("appliimpldef", "rootServicesUrl", parentUrl);
 					session.saveDocument(parentModel);
-				}
 				
-				DocumentModel apiModel = DocumentService.createServiceAPI(session, parentURL, name);
+				DocumentModel apiModel = DocumentService.findServiceApi(session, apiUrl);
+				if (apiModel == null)
+					apiModel = DocumentService.createServiceAPI(session, parentUrl, name);
+				
 				setPropertyIfNotNull(apiModel, "serviceapidef", "url", apiUrl);
 				setPropertyIfNotNull(apiModel, "serviceapidef", "sourceUrl", sourceUrl);
-				session.createDocument(apiModel);
+				session.saveDocument(apiModel);
 
 				session.save();
 				

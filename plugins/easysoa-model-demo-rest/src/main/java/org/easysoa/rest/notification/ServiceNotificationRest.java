@@ -25,6 +25,33 @@ public class ServiceNotificationRest extends NotificationRest {
 	public ServiceNotificationRest() throws LoginException {
 		super();
 	}
+
+	/**
+	 * Documentation
+	 * @return
+	 * @throws JSONException
+	 */
+	@POST
+	@Path("/doc")
+	public Object doPost() throws JSONException {
+
+		JSONObject result = new JSONObject();
+		
+		JSONObject params = new JSONObject();
+		params.put("name", "Service name");
+		params.put("url", "(mandatory) Service URL");
+		params.put("apiUrl", "(mandatory) Service API URL (WSDL address, parent path...)");
+		params.put("callcount", "Times the service has been called since last notification");
+		params.put("relatedUsers", "Users that have been using the service");
+		params.put("httpMethod", "POST, GET...");
+		params.put("contentTypeIn", "HTTP content type of the request body");
+		params.put("contentTypeOut", "HTTP content type of the result body");
+		
+		result.put("parameters", params);
+		result.put("description", "Service-level notification.");
+		
+		return result;
+	}
 	
 	@POST
 	public Object doPost(@FormParam("url") String url,
@@ -49,20 +76,23 @@ public class ServiceNotificationRest extends NotificationRest {
 			try {
 				
 				DocumentModel apiModel = DocumentService.findServiceApi(session, apiUrl);
-				if (apiModel == null) {
+				if (apiModel == null)
 					apiModel = DocumentService.createServiceAPI(session, DocumentService.DEFAULT_APPLIIMPL_TITLE, apiUrl);
-				}
 				
-				DocumentModel serviceModel = session.createDocumentModel("ServiceAPI");
+				DocumentModel serviceModel = DocumentService.findService(session, url);
+				if (serviceModel == null)
+					serviceModel = session.createDocumentModel("ServiceAPI");
+				
 				serviceModel.setPathInfo(apiModel.getPathAsString(), name);
 				serviceModel.setProperty("dublincore", "title", name);
+				serviceModel.setProperty("servicedef", "callcount", 
+						(Integer) serviceModel.getProperty("servicedef", "callcount")+callcount);
 				setPropertyIfNotNull(serviceModel, "servicedef", "url", url);
-				setPropertyIfNotNull(serviceModel, "servicedef", "callcount", callcount);
 				setPropertyIfNotNull(serviceModel, "servicedef", "relatedUsers", relatedUsers);
 				setPropertyIfNotNull(serviceModel, "servicedef", "httpMethod", httpMethod);
 				setPropertyIfNotNull(serviceModel, "servicedef", "contentTypeIn", contentTypeIn);
 				setPropertyIfNotNull(serviceModel, "servicedef", "contentTypeOut", contentTypeOut);
-				session.createDocument(serviceModel);
+				session.saveDocument(serviceModel);
 
 				session.save();
 				

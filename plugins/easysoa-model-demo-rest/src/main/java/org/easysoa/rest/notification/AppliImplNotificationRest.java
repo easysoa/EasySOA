@@ -15,7 +15,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
 
-@Path("easysoa/notification/api")
+@Path("easysoa/notification/appliimpl")
 @Produces("application/json")
 public class AppliImplNotificationRest extends NotificationRest {
 
@@ -24,6 +24,28 @@ public class AppliImplNotificationRest extends NotificationRest {
 	
 	public AppliImplNotificationRest() throws LoginException {
 		super();
+	}
+	
+	/**
+	 * Documentation
+	 * @return
+	 * @throws JSONException
+	 */
+	@POST
+	@Path("/doc")
+	public Object doPost() throws JSONException {
+
+		JSONObject result = new JSONObject();
+		
+		JSONObject params = new JSONObject();
+		params.put("name", "(mandatory) Application name");
+		params.put("technology", "The services implementation technology");
+		params.put("standard", "A possible protocol standard");
+		
+		result.put("parameters", params);
+		result.put("description", "Notification concerning an application implementation.");
+		
+		return result;
 	}
 
 	@POST
@@ -41,12 +63,12 @@ public class AppliImplNotificationRest extends NotificationRest {
 			try {
 				
 				DocumentModel appliImplModel = session.getDocument(new PathRef(REGISTRY_ROOT+appliName));
-				if (appliImplModel == null) {
+				if (appliImplModel == null)
 					appliImplModel = DocumentService.createAppliImpl(session, appliName);
-				}
 				
 				setPropertyIfNotNull(appliImplModel, "appliimpldef", "technology", technology);
 				setPropertyIfNotNull(appliImplModel, "appliimpldef", "standard", standard);
+				session.saveDocument(appliImplModel);
 
 				session.save();
 				

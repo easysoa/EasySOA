@@ -108,17 +108,21 @@ public class DocumentService {
 		return defaultAppliImpl;
 	}
 	public static DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
-		return findFirstDocument(session, SERVICEAPI_DOCTYPE, "app:rootServicesUrl", appliUrl);
+		return findFirstDocument(session, APPLIIMPL_DOCTYPE, "app:rootServicesUrl", appliUrl);
 	}
 	
 	public static DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
 		return findFirstDocument(session, SERVICEAPI_DOCTYPE, "api:url", apiUrl);
 	}
+	
+	public static DocumentModel findService(CoreSession session, String serviceUrl) throws ClientException {
+		return findFirstDocument(session, SERVICE_DOCTYPE, "serv:url", serviceUrl);
+	}
 
 	private static DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
 		DocumentModelList apis = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				type + "' AND " + field + " = '" +  value + "'");
-		return (apis != null) ? apis.get(0) : null;
+				type + "' AND " + field + " = '" +  value + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		return (apis != null && apis.size() > 0) ? apis.get(0) : null;
 	}
 
 	private static DocumentModel getWSRoot(CoreSession session) throws ClientException {

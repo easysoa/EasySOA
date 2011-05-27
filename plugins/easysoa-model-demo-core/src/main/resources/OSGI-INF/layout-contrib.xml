@@ -55,6 +55,9 @@
           <widget>appliimpldef_uiUrl</widget>
         </row>
         <row>
+          <widget>appliimpldef_rootServicesUrl</widget>
+        </row>
+        <row>
           <widget>appliimpldef_sources</widget>
         </row>
       </rows>
@@ -92,6 +95,15 @@
 	      <translated>true</translated>
 	      <fields>
 	        <field>app:uiUrl</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_rootServicesUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.rootServicesUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:rootServicesUrl</field>
 	      </fields>
 	  </widget>
       <widget name="appliimpldef_sources" type="text">
