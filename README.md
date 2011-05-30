@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Turns Nuxeo into a simple service registry. Contains also a "Service Finder" web client, that allows to scrape web pages during navigation and send found WSDLs to Nuxeo through a custom REST API.
+Turns Nuxeo into a simple service registry. Contains also a "Discovery by browsing" web client, that allows to scrape web pages during navigation and send found WSDLs to Nuxeo through a custom REST API.
 
 *NOTE: This demo code is neither fully functional nor stable.*
 
@@ -28,18 +28,25 @@ In order to use this tool, you have to launch a specific HTTP proxy and configur
 
 ### Nuxeo registry
 
-The registry introduces two new document types : *Services* and *WSDLs*. 
+#### General
 
- * The Service doctype represents the specifications/documentation of a service
- * WSDLs are the implementations of these services.
+The registry is based on three document types:
 
-Services are linked to WSDLs through Nuxeo's "relations", specified during document creation/modification (doesn't work well for now).
+ * The "Service" doctype represents the specifications/documentation of a single service.
+ * "Service API" is an aggregation of services. In the case of SOAP services, it can store and parse a WSDL file.
+ * "Appli Impl" stands for an application, i.e. the services root. It is called "application implementation" in contrast to "business application" (technical, concrete vs business-oriented information).
 
-You can navigate through the documents using differents navigations trees (see the tabs on the left). They represent the idea of showing the model from different points of view to different user profiles:
+The registry arborescence is made to reflect the different aggregations : Applications contain APIs, and APIs contain either Services or other, lower level APIs.
+
+_*(Doesn't work yet for this version)*_ You can navigate through the documents using differents navigations trees (see the tabs on the left). They represent the idea of showing the model from different points of view to different user profiles:
 
  * *Navigation by Application*: For the business users
  * *Navigation by Server*: For the administrators
  * *Navigation by Service*: For the architects
+
+#### REST services
+
+The whole registry can be informed through RESTful webservices. Visit http://localhost:8080/nuxeo/site/easysoa/ to see how to use these.
 
 ### Discovery by browsing
 
