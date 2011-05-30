@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.security.auth.login.LoginException;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +29,9 @@ public abstract class NotificationRest {
 	protected static final String REGISTRY_ROOT = "/default-domain/workspaces/";
 	protected static final String DC_SCHEMA = "dublincore";
 	
+	protected static final String PARAM_TITLE = "title";
+	protected static final String PARAM_DESCRIPTION = "description";
+	
 	protected final CoreSession session;
 	protected JSONObject result = new JSONObject();
 	protected boolean errorFound = false;
@@ -50,8 +54,8 @@ public abstract class NotificationRest {
 		
 		if (dublinCoreDef == null) {
 			dublinCoreDef = new HashMap<String, String>();
-			dublinCoreDef.put("title", "The name of the document.");
-			dublinCoreDef.put("description", "A short description.");
+			dublinCoreDef.put(PARAM_TITLE, "The name of the document.");
+			dublinCoreDef.put(PARAM_DESCRIPTION, "A short description.");
 		}
 		
 	}
@@ -68,6 +72,67 @@ public abstract class NotificationRest {
 		if (value != null) {
 			model.setProperty(schema, property, value);
 		}
+	}
+
+	/**
+	 * Sets properties of given schema to the specified model, but only if the value parameter is not null.
+	 * If the property is not found in the given schema, it will try to find a matchin Dublin Core property.
+	 * @param result
+	 * @param callback
+	 * @return
+	 * @throws ClientException 
+	 */
+	protected final void setPropertiesIfNotNull(DocumentModel model, String schema, 
+			Map<String, String> schemaDef, MultivaluedMap<String, String> properties) throws ClientException {
+		// Update optional properties
+		for (String key : properties.keySet()) {
+			// Given schema specific properties
+			if (schemaDef.containsKey(key)) {
+				setPropertyIfNotNull(model, schema, key, properties.get(key).get(0));
+			}
+			// Dublin Core properties
+			else if (model.getPart(DC_SCHEMA).getSchema().hasField(key)) {
+				setPropertyIfNotNull(model, DC_SCHEMA, key, properties.get(key).get(0));
+			}
+			// Unknown
+			else {
+				appendError(result, "Unknown parameter "+key+" ");
+				break;
+			}
+		}
+	}
+
+	protected Form getForm(HttpContext httpContext) {
+		/*
+		 * When accessing the form the usual way, the returned Form is empty,
+		 * and the following Warning is logged. This hack avoids the problem.
+		 * 
+		 * "ATTENTION: A servlet POST request, to the URI ###, contains form
+		 * parameters in the request body but the request body has been 
+		 * consumed by the servlet or a servlet filter accessing the request parameters.
+		 * Only resource methods using @FormParam will work as expected. Resource methods
+		 * consuming the request body by other means will not work as expected."
+		 */
+		return (Form) ((ContainerRequest) httpContext.getRequest()).
+				getProperties().get("com.sun.jersey.api.representation.form");
+	}
+
+	/**
+	 * Formats the JSONObject into a JSONP string
+	 * @param result
+	 * @return
+	 */
+	protected final String getFormattedResult(String callback) {
+		return format(true, callback);
+	}
+
+	/**
+	 * Formats the JSONObject into a string
+	 * @param result
+	 * @return
+	 */
+	protected final String getFormattedResult() {
+		return format(false, null);
 	}
 
 	/**
@@ -93,24 +158,6 @@ public abstract class NotificationRest {
 		}
 	}
 
-	/**
-	 * Formats the JSONObject into a JSONP string
-	 * @param result
-	 * @return
-	 */
-	protected final String getFormattedResult(String callback) {
-		return format(true, callback);
-	}
-
-	/**
-	 * Formats the JSONObject into a string
-	 * @param result
-	 * @return
-	 */
-	protected final String getFormattedResult() {
-		return format(false, null);
-	}
-
 	private final String format(boolean jsonp, String callback) {
 		try {
 			return new StringRepresentation((jsonp) ? JSONP.format(result, callback) : result.toString(2),
@@ -120,22 +167,6 @@ public abstract class NotificationRest {
 		catch (JSONException e) {
 			return "{ result: \""+ERROR+"Could not format results to JSON.\"}";
 		}
-	}
-	
-
-	protected Form getForm(HttpContext httpContext) {
-		/*
-		 * When accessing the form the usual way, the returned Form is empty,
-		 * and the following Warning is logged. This hack avoids the problem.
-		 * 
-		 * "ATTENTION: A servlet POST request, to the URI ###, contains form
-		 * parameters in the request body but the request body has been 
-		 * consumed by the servlet or a servlet filter accessing the request parameters.
-		 * Only resource methods using @FormParam will work as expected. Resource methods
-		 * consuming the request body by other means will not work as expected."
-		 */
-		return (Form) ((ContainerRequest) httpContext.getRequest()).
-				getProperties().get("com.sun.jersey.api.representation.form");
 	}
 	
 }

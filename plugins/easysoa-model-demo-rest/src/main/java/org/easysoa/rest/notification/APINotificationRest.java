@@ -1,9 +1,10 @@
 package org.easysoa.rest.notification;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.security.auth.login.LoginException;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -24,14 +25,32 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 
+import com.sun.jersey.api.core.HttpContext;
+import com.sun.jersey.api.representation.Form;
+
 @Path("easysoa/notification/api")
 public class APINotificationRest extends NotificationRest {
 
+	public static final String APIDEF_SCHEMA = "serviceapidef";
+	
+	public static final String PARAM_URL = "url";
+	public static final String PARAM_PARENTURL = "parentUrl";
+	public static final String PARAM_SOURCEURL = "squrceUrl";
+	public static final String PARAM_APPLICATION = "application";
+	
 	private static final Log log = LogFactory.getLog(APINotificationRest.class);
-	private static final String PATH = "easysoa/notification/api/";
+	private static final String PATH = "easysoa/notification/api/"; // TODO: Replace
+	private static Map<String, String> apiDef; 
 	
 	public APINotificationRest() throws LoginException, JSONException {
 		super();
+		if (apiDef == null) {
+			apiDef = new HashMap<String, String>(); 
+			apiDef.put(PARAM_URL, "(mandatory) Service API url (WSDL address, parent path...).");
+			apiDef.put(PARAM_PARENTURL, "(mandatory) The parent URL, which is either another service API, or the service root.");
+			apiDef.put(PARAM_SOURCEURL, "The web page where the service has been found (useful for REST only).");
+			apiDef.put(PARAM_APPLICATION, "The related business application.");
+		}
 	}
 
 	/**
@@ -40,17 +59,18 @@ public class APINotificationRest extends NotificationRest {
 	 * @throws JSONException
 	 */
 	@GET
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doGet() throws JSONException {
-
+		
 		JSONObject result = new JSONObject();
-		
 		JSONObject params = new JSONObject();
-		params.put("apiUrl", "(mandatory) Service API url (WSDL address, parent path...)");
-		params.put("parentUrl", "(mandatory) The parent URL, which is either another service API, or the service root");
-		params.put("name", "Service name");
-		params.put("sourceUrl", "The web page where the service has been found (useful for REST only)");
-		
+		for (String key : apiDef.keySet()) {
+			params.put(key, apiDef.get(key));
+		}
+		for (String key : dublinCoreDef.keySet()) {
+			params.put(key, dublinCoreDef.get(key));
+		}
 		result.put("parameters", params);
 		result.put("description", "Service-level notification.");
 		
@@ -59,36 +79,48 @@ public class APINotificationRest extends NotificationRest {
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object doPost(@FormParam("apiUrl") String apiUrl,
-			@FormParam("parentUrl") String parentUrl,
-			@FormParam("name") String name,
-			@FormParam("sourceUrl") String sourceUrl) throws JSONException {
+	public Object doPost(@Context HttpContext httpContext) throws JSONException {
 		
-		// Create API
-		if (apiUrl != null && parentUrl != null) {
+		// Initialize
+		Form params = getForm(httpContext);
+		
+		// Check mandatory fields
+		if (params.get(PARAM_URL) != null && params.get(PARAM_PARENTURL) != null) {
+			
+			// Exctract main fields
+			String url = params.get(PARAM_URL).get(0),
+				parentUrl = params.get(PARAM_PARENTURL).get(0),
+				name = params.get(PARAM_TITLE).get(0);
 			
 			if (name == null)
-				name = apiUrl;
-			
+				name = url;
+
 			try {
-				
+
+				// Find or create document and parent
 				DocumentModel parentModel = DocumentService.findServiceApi(session, parentUrl);
 				if (parentModel == null)
 					parentModel = DocumentService.findAppliImpl(session, parentUrl);
-				if (parentModel == null)
+				if (parentModel == null) {
 					parentModel = DocumentService.createAppliImpl(session, parentUrl);
-					parentModel.setProperty("appliimpldef", "rootServicesUrl", parentUrl);
+					parentModel.setProperty(AppliImplNotificationRest.APPLIIMPLDEF_SCHEMA, 
+							AppliImplNotificationRest.PARAM_ROOTSERVICESURL, parentUrl);
 					session.saveDocument(parentModel);
-				
-				DocumentModel apiModel = DocumentService.findServiceApi(session, apiUrl);
+				}
+				DocumentModel apiModel = DocumentService.findServiceApi(session, url);
 				if (apiModel == null)
 					apiModel = DocumentService.createServiceAPI(session, parentUrl, name);
 
-				setPropertyIfNotNull(apiModel, "dublincore", "title", name);
-				setPropertyIfNotNull(apiModel, "serviceapidef", "url", apiUrl);
-				setPropertyIfNotNull(apiModel, "serviceapidef", "sourceUrl", sourceUrl);
-				session.saveDocument(apiModel);
-
+				// Update optional properties
+				params.remove(PARAM_PARENTURL);
+				setPropertiesIfNotNull(apiModel, APIDEF_SCHEMA, apiDef, params);
+				
+				// Save
+				if (!errorFound) {
+					session.saveDocument(apiModel);
+					session.save();
+				}
+				
 				session.save();
 				
 			} catch (ClientException e) {
@@ -97,7 +129,7 @@ public class APINotificationRest extends NotificationRest {
 
 		}
 		else {
-			appendError(result, "API URL or parent API/Appli. URL not informed");
+			appendError(result, "API URL or parent URL not informed");
 		}
 		
 		// Return formatted result
@@ -197,8 +229,8 @@ public class APINotificationRest extends NotificationRest {
 					// Service creation
 					if (serviceName != null || applicationName != null) {
 						
-						model.setProperty("dublincore", "title", serviceName);
-						model.setProperty("serviceapidef", "application", applicationName);
+						model.setProperty(DC_SCHEMA, PARAM_TITLE, serviceName);
+						model.setProperty(APIDEF_SCHEMA, PARAM_APPLICATION, applicationName);
 						session.saveDocument(model);
 						
 						// New application in the vocabulary

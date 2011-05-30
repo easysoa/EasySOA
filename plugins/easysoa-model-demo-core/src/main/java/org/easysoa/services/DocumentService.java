@@ -41,16 +41,27 @@ public class DocumentService {
 		return appliImpl;
 	}
 
+	/**
+	 * 
+	 * @param session
+	 * @param parentURL If null, default application is used
+	 * @param title
+	 * @return
+	 * @throws ClientException
+	 */
 	public static final DocumentModel createServiceAPI(CoreSession session, String parentURL, String title) throws ClientException {
 		
-		DocumentModel parentModel = DocumentService.findServiceApi(session, parentURL);
-		if (parentModel == null) {
-			parentModel = DocumentService.findAppliImpl(session, parentURL);
-		}
-		if (parentModel == null) {
-			parentModel = DocumentService.createAppliImpl(session, parentURL);
-			parentModel.setProperty("appliimpldef", "rootServicesUrl", parentURL);
-			session.saveDocument(parentModel);
+		DocumentModel parentModel = null;
+		if (parentURL == null) {
+			parentModel = DocumentService.findServiceApi(session, parentURL);
+			if (parentModel == null) {
+				parentModel = DocumentService.findAppliImpl(session, parentURL);
+			}
+			if (parentModel == null) {
+				parentModel = DocumentService.createAppliImpl(session, parentURL);
+				parentModel.setProperty("appliimpldef", "rootServicesUrl", parentURL);
+				session.saveDocument(parentModel);
+			}
 		}
 		if (parentModel == null) {
 			parentModel = session.getDocument(getDefaultAppliImpl(session).getRef());

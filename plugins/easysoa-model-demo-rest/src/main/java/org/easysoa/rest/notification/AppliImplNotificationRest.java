@@ -37,16 +37,19 @@ public class AppliImplNotificationRest extends NotificationRest {
 
 	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(AppliImplNotificationRest.class);
-	private Map<String, String> appliImplDef = new HashMap<String, String>(); 
+	private static Map<String, String> appliImplDef; 
 	
 	public AppliImplNotificationRest() throws LoginException, JSONException {
 		super();
-		appliImplDef.put(PARAM_ROOTSERVICESURL, "(mandatory) Services root");
-		appliImplDef.put(PARAM_UIURL, "Application GUI entry point");
-		appliImplDef.put(PARAM_SERVER, "IP of the server");
-		appliImplDef.put(PARAM_TECHNOLOGY, "Services implementation technology");
-		appliImplDef.put(PARAM_STANDARD, "Protocol standard if applicable");
-		appliImplDef.put(PARAM_SOURCESURL, "Source code access");
+		if (appliImplDef == null) {
+			appliImplDef = new HashMap<String, String>();
+			appliImplDef.put(PARAM_ROOTSERVICESURL, "(mandatory) Services root.");
+			appliImplDef.put(PARAM_UIURL, "Application GUI entry point.");
+			appliImplDef.put(PARAM_SERVER, "IP of the server.");
+			appliImplDef.put(PARAM_TECHNOLOGY, "Services implementation technology.");
+			appliImplDef.put(PARAM_STANDARD, "Protocol standard if applicable.");
+			appliImplDef.put(PARAM_SOURCESURL, "Source code access.");
+		}
 	}
 	
 	/**
@@ -58,6 +61,8 @@ public class AppliImplNotificationRest extends NotificationRest {
 	@Path("/")
 	public Object doGet() throws JSONException {
 
+		JSONObject result = new JSONObject();
+		
 		JSONObject params = new JSONObject();
 		for (String key : appliImplDef.keySet()) {
 			params.put(key, appliImplDef.get(key));
@@ -94,21 +99,7 @@ public class AppliImplNotificationRest extends NotificationRest {
 				appliImplModel.setProperty(APPLIIMPLDEF_SCHEMA, PARAM_ROOTSERVICESURL, params.get(PARAM_ROOTSERVICESURL).get(0));
 				
 				// Update optional properties
-				for (String key : params.keySet()) {
-					// AppliImpl properties
-					if (appliImplDef.containsKey(key)) {
-						setPropertyIfNotNull(appliImplModel, APPLIIMPLDEF_SCHEMA, key, params.get(key).get(0));
-					}
-					// Dublincore properties
-					else if (appliImplModel.getPart(DC_SCHEMA).getSchema().hasField(key)) {
-						setPropertyIfNotNull(appliImplModel, DC_SCHEMA, key, params.get(key).get(0));
-					}
-					// Unknown
-					else {
-						appendError(result, "Unknown parameter "+key+" ");
-						break;
-					}
-				}
+				setPropertiesIfNotNull(appliImplModel, APPLIIMPLDEF_SCHEMA, appliImplDef, params);
 				
 				// Save
 				if (!errorFound) {

@@ -35,7 +35,7 @@
 	Use: <b>.../nuxeo/site/easysoa/notification/(appliimpl|api|service)/</b></p>
 	
 	<p>Parameters have to be specified through the request content, following the content-type <i>application/x-www-form-urlencoded</i>.<br />
-	Send a request with the <b>GET</b> method to any of the 3 services to get further documentation.</p>
+	Send a request with the <b>GET</b> method to any of the 3 services to learn what are the available parameters.</p>
 	
 <h3>Cross-domain clients compliant API</h3>
 
