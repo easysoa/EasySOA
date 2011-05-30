@@ -6,7 +6,7 @@ Turns Nuxeo into a simple service registry. Contains also a "Discovery by browsi
 
 *NOTE: This demo code is neither fully functional nor stable.*
 
-## Installation
+## Setup
 
 ### Nuxeo registry
 
@@ -46,7 +46,13 @@ _*(Doesn't work yet for this version)*_ You can navigate through the documents u
 
 #### REST services
 
-The whole registry can be informed through RESTful webservices. Visit http://localhost:8080/nuxeo/site/easysoa/ to see how to use these.
+The registry can be filled thanks to RESTful webservices:
+
+* http://localhost:8080/nuxeo/site/easysoa/notification/appliimpl
+* http://localhost:8080/nuxeo/site/easysoa/notification/api
+* http://localhost:8080/nuxeo/site/easysoa/notification/service
+
+Visit http://localhost:8080/nuxeo/site/easysoa/ to see how to use them. For now, no authentication is required.
 
 ### Discovery by browsing
 
