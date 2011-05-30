@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
-
 @Path("easysoa/notification/service")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceNotificationRest extends NotificationRest {
@@ -24,7 +23,7 @@ public class ServiceNotificationRest extends NotificationRest {
 	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(ServiceNotificationRest.class);
 
-	public ServiceNotificationRest() throws LoginException {
+	public ServiceNotificationRest() throws LoginException, JSONException {
 		super();
 	}
 
@@ -52,7 +51,7 @@ public class ServiceNotificationRest extends NotificationRest {
 		result.put("parameters", params);
 		result.put("description", "Service-level notification.");
 
-		return format(result);
+		return getFormattedResult();
 	}
 	
 	@POST
@@ -65,10 +64,6 @@ public class ServiceNotificationRest extends NotificationRest {
 			@FormParam("contentTypeIn") String contentTypeIn,
 			@FormParam("contentTypeOut") String contentTypeOut) throws JSONException {
 
-		// Initialize
-		JSONObject result = new JSONObject();
-		result.put("result", "ok");
-		
 		// Create service
 		if (url != null && apiUrl != null) {
 			
@@ -86,8 +81,13 @@ public class ServiceNotificationRest extends NotificationRest {
 					serviceModel = session.createDocumentModel("ServiceAPI");
 				
 				serviceModel.setPathInfo(apiModel.getPathAsString(), name);
-				serviceModel.setProperty("servicedef", "callcount", 
-						(Integer) serviceModel.getProperty("servicedef", "callcount")+callcount);
+				try {
+					serviceModel.setProperty("servicedef", "callcount", 
+							((Integer) serviceModel.getProperty("servicedef", "callcount")) + callcount);
+				}
+				catch (Exception e) {
+					serviceModel.setProperty("servicedef", "callcount", callcount);
+				}
 				setPropertyIfNotNull(serviceModel, "dublincore", "title", name);
 				setPropertyIfNotNull(serviceModel, "servicedef", "url", url);
 				setPropertyIfNotNull(serviceModel, "servicedef", "relatedUsers", relatedUsers); // TODO merging
@@ -108,7 +108,7 @@ public class ServiceNotificationRest extends NotificationRest {
 		}
 		
 		// Return formatted result
-		return format(result);
+		return getFormattedResult();
 
 	}
 	

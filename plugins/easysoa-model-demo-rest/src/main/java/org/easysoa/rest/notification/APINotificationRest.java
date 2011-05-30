@@ -30,7 +30,7 @@ public class APINotificationRest extends NotificationRest {
 	private static final Log log = LogFactory.getLog(APINotificationRest.class);
 	private static final String PATH = "easysoa/notification/api/";
 	
-	public APINotificationRest() throws LoginException {
+	public APINotificationRest() throws LoginException, JSONException {
 		super();
 	}
 
@@ -54,7 +54,7 @@ public class APINotificationRest extends NotificationRest {
 		result.put("parameters", params);
 		result.put("description", "Service-level notification.");
 		
-		return format(result);
+		return getFormattedResult();
 	}
 	
 	@POST
@@ -63,10 +63,6 @@ public class APINotificationRest extends NotificationRest {
 			@FormParam("parentUrl") String parentUrl,
 			@FormParam("name") String name,
 			@FormParam("sourceUrl") String sourceUrl) throws JSONException {
-		
-		// Initialize
-		JSONObject result = new JSONObject();
-		result.put("result", "ok");
 		
 		// Create API
 		if (apiUrl != null && parentUrl != null) {
@@ -105,7 +101,7 @@ public class APINotificationRest extends NotificationRest {
 		}
 		
 		// Return formatted result
-		return format(result);
+		return getFormattedResult();
 
 	}
 
@@ -159,12 +155,6 @@ public class APINotificationRest extends NotificationRest {
 		
 		// Initialization
 		HttpFile f = new HttpFile(url);
-		JSONObject result = new JSONObject();
-		try {
-			result.put("result", "ok");
-		} catch (JSONException e) {
-			return "Error : "+e.getMessage();
-		}
 		
 		// Basic file path testing / TODO
 		if (url.toLowerCase().contains("wsdl")) {
@@ -242,9 +232,9 @@ public class APINotificationRest extends NotificationRest {
 		// Format & send result
 		try {
 			if (callback != null)
-				return format(result, callback);
+				return getFormattedResult(callback);
 			else
-				return format(result);
+				return getFormattedResult();
 		} catch (Exception e) {
 			log.warn("Cannot send message : " + e.getMessage());
 			return "Error : "+e.getMessage();
