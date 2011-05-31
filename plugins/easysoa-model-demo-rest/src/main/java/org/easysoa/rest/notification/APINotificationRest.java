@@ -90,7 +90,7 @@ public class APINotificationRest extends NotificationRest {
 			// Exctract main fields
 			String url = params.get(PARAM_URL).get(0),
 				parentUrl = params.get(PARAM_PARENTURL).get(0),
-				name = params.get(PARAM_TITLE).get(0);
+				name = (params.get(PARAM_TITLE) != null) ? params.get(PARAM_TITLE).get(0) : null;
 			
 			if (name == null)
 				name = url;

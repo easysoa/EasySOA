@@ -89,10 +89,10 @@ public class ServiceNotificationRest extends NotificationRest {
 			// Exctract main fields
 			String url = params.get(PARAM_URL).get(0),
 				parentUrl = params.get(PARAM_PARENTURL).get(0),
-				name = params.get(PARAM_TITLE).get(0);
+				name = (params.get(PARAM_TITLE) != null) ? params.get(PARAM_TITLE).get(0) : null;
 			int callcount;
 			try {
-				callcount = Integer.parseInt(params.get(PARAM_CALLCOUNT).get(0));
+				callcount = (params.get(PARAM_CALLCOUNT) != null) ? Integer.parseInt(params.get(PARAM_CALLCOUNT).get(0)) : 0;
 			}
 			catch (NumberFormatException e) {
 				callcount = 0;
