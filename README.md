@@ -15,6 +15,8 @@ The Nuxeo Installation Guide explains how to install and run Nuxeo DM: <http://d
  * Copy `lib/` contents to `nuxeo-dm/lib/`
  * Copy `build/` contents to `nuxeo-dm/nxserver/plugins/`
 
+If you're updating from a previous version of the model, please reset all your data by deleting the following folder : `nuxeo-dm/nxserver/data`.
+
 ### Discovery by browsing
 
 In order to use this tool, you have to launch a specific HTTP proxy and configure your browser to use it.
