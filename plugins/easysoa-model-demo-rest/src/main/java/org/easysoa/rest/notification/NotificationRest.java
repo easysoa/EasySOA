@@ -91,7 +91,7 @@ public abstract class NotificationRest {
 				setPropertyIfNotNull(model, schema, key, properties.get(key).get(0));
 			}
 			// Dublin Core properties
-			else if (model.getPart(DC_SCHEMA).getSchema().hasField(key)) {
+			else if (dublinCoreDef.containsKey(key)) {
 				setPropertyIfNotNull(model, DC_SCHEMA, key, properties.get(key).get(0));
 			}
 			// Unknown

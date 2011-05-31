@@ -104,13 +104,14 @@ public class ServiceNotificationRest extends NotificationRest {
 				
 				// Find or create document and parent
 				DocumentModel apiModel = DocumentService.findServiceApi(session, parentUrl);
-				if (apiModel == null)
+				if (apiModel == null) {
 					apiModel = DocumentService.createServiceAPI(session, DocumentService.DEFAULT_APPLIIMPL_TITLE, parentUrl);
+					apiModel.setProperty(APINotificationRest.APIDEF_SCHEMA, APINotificationRest.PARAM_URL, parentUrl);
+					session.saveDocument(apiModel);
+				}
 				DocumentModel serviceModel = DocumentService.findService(session, url);
 				if (serviceModel == null) {
-					serviceModel = DocumentService.createService(session, 
-							(String) apiModel.getProperty(APINotificationRest.APIDEF_SCHEMA, APINotificationRest.PARAM_URL),
-							name);
+					serviceModel = DocumentService.createService(session, parentUrl, name);
 				}
 
 				// Update optional properties
