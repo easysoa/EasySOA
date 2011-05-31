@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.descriptors.WSDLService;
 import org.easysoa.services.ServiceListener;
+import org.easysoa.tools.RelationService;
 import org.easysoa.tools.VocabularyService;
 import org.easysoa.treestructure.WorkspaceDeployer;
 import org.json.JSONObject;
@@ -36,7 +37,7 @@ import org.restlet.resource.StringRepresentation;
  * Currently uploads blindly any given file.
  * 
  * Use:
- * .../nuxeo/restAPI/wsdlupload/{applicationName}/{serviceName}/{url}
+ * .../nuxeo/restAPI/notification/{applicationName}/{serviceName}/{url}
  * Params:
  * {applicationName} The application name, optional (ignored if empty) 
  * {serviceName} The service name, optional (ignored if empty)
@@ -133,7 +134,6 @@ public class NotificationService {
 			else {
 				try {
 					
-					
 					// WSDL creation
 					DocumentModel model = session.createDocumentModel(
 							WorkspaceDeployer.DESCRIPTORS_WORKSPACE + WSDLService.WSDL_DOCTYPE, IdUtils
@@ -155,6 +155,8 @@ public class NotificationService {
 	
 						model.setProperty("endpoints", "serviceid", serviceModel.getId());
 						session.saveDocument(model);
+						
+						RelationService.createRelation(session, serviceModel, model);
 						
 						session.save();
 	

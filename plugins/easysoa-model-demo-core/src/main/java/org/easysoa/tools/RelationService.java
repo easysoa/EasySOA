@@ -73,11 +73,6 @@ public class RelationService {
 	public static final void createRelation(CoreSession session,
 			DocumentModel from, DocumentModel to) {
 		
-		//XXX Debug
-		log.info("names:");
-		for (String n: Contexts.getEventContext().getNames())
-			log.info(n);
-		
 		try {
 			// Relation creation
 			// Could also have used automations (see Relations.CreateRelation)

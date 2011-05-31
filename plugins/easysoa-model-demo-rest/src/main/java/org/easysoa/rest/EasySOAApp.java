@@ -7,15 +7,15 @@ import javax.ws.rs.core.Application;
 
 public class EasySOAApp extends Application {
 
-	@Override
+    @Override
     public Set<Class<?>> getClasses() {
 
-		Set<Class<?>> result = new HashSet<Class<?>>();
-		result.add(EasySOAAppRoot.class);
-		result.add(ScraperService.class);
-		result.add(NotificationService.class);
+		    Set<Class<?>> result = new HashSet<Class<?>>();
+		    result.add(EasySOAAppRoot.class);
+		    result.add(ScraperService.class);
+		    result.add(NotificationService.class);
 		
-		return result;
+		    return result;
     }
 	
 }

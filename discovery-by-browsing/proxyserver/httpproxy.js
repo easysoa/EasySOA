@@ -59,12 +59,8 @@ var server = http.createServer(function(request, response) {
 	var request_url = url.parse(request.url, true);
 
 	// If direct request to proxy, send found WSDLs
-<<<<<<< HEAD
-	if (request.headers['host'] == "127.0.0.1:"+config.proxy_port) {
-=======
 	if (request.headers['host'] == "localhost:"+config.proxy_port
         || request.headers['host'] == "127.0.0.1:"+config.proxy_port) {
->>>>>>> 2697f9d78e1feee67a294de30a1173f8dea32f5b
 		response.writeHead(200, {
 			"Content-Type": "text/javascript"
 		});
@@ -137,7 +133,6 @@ var server = http.createServer(function(request, response) {
 			host : scraperURL.hostname,
 			path : scraperURL.href.replace('?', request.url)
 		};
-		console.log(scraperOptions);
 
 		// Scraper request
 		scraper_request = http.request(scraperOptions, function(scraper_response) {
