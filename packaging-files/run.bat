@@ -6,6 +6,7 @@ IF NOT EXIST log mkdir log
 
 rem Start processes
 echo Starting EasySOA Demo. A browser page will be opened in a few seconds.
+echo Note that the service registry will take between 30s and 2mn to launch.
 
 
 rem serviceregistry

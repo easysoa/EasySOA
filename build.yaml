@@ -5,8 +5,9 @@
 # prereqs (adjust it as needed, after copying parts to $HOME/.buildr/settings.yaml)
 
 nuxeo:
-  path: # to use for packaging. By default $HOME/nuxeo-dm-5.4.1-tomcat
-
+  path: 
+  # to use for packaging. By default $HOME/nuxeo-dm-5.4.1-tomcat
+  # specify the path either absolute or relative to the buildfile.
 
 # release configuration
 
