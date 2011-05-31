@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>EasySOA REST Services Documentation</title>
-	</head>
+<head>
+	<title>EasySOA REST Services Documentation</title>
 	<style type="text/css">
 	<!--
 		body {
@@ -22,8 +21,7 @@
 		}
 	->
 	</style>
-</html>
-<body>
+</head>
 
 <h1>EasySOA REST Services Documentation</h1>
 
@@ -66,3 +64,4 @@
 
 
 </body>
+</html>
