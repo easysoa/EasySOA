@@ -18,9 +18,20 @@
 	</ui:define>  -->
 
 	<ui:define name="body">
-		<div>
-			<h1>#{messages['label.easysoa.import']}</h1>
-			<p>Will be used for mass data import, SCA import, etc.</p>
-		</div>
+		<h:form id="formImport">
+		
+			<p>File to upload:<br />
+			<nxu:inputFile id="compositeFile" editFilename="false" /></p>
+		
+			<p>Document type:<br />
+			<h:selectOneMenu id="doctype">
+			  <f:selectItem id="serviceapi" itemLabel="Service API" itemValue="serviceapi" />
+			  <f:selectItem id="appliimpl" itemLabel="Application Impl." itemValue="appliimpl" />
+			</h:selectOneMenu></p>
+			
+			<p><h:commandButton id="send" value="#{messages['label.easysoa.importbutton']}" 
+				action="#{scaImportBean.doImport}" /></p>
+			
+		</h:form>
 	</ui:define>
 </nxthemes:composition>

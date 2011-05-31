@@ -19,9 +19,10 @@
 		p {
 			font-family: monospace;
 		}
-	->
+	-->
 	</style>
 </head>
+<body>
 
 <h1>EasySOA REST Services Documentation</h1>
 

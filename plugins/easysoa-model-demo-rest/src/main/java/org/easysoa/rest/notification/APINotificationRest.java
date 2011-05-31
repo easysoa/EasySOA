@@ -35,7 +35,7 @@ public class APINotificationRest extends NotificationRest {
 	
 	public static final String PARAM_URL = "url";
 	public static final String PARAM_PARENTURL = "parentUrl";
-	public static final String PARAM_SOURCEURL = "squrceUrl";
+	public static final String PARAM_SOURCEURL = "sourceUrl";
 	public static final String PARAM_APPLICATION = "application";
 	
 	private static final Log log = LogFactory.getLog(APINotificationRest.class);
@@ -63,7 +63,7 @@ public class APINotificationRest extends NotificationRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doGet() throws JSONException {
 		
-		JSONObject result = new JSONObject();
+		result = new JSONObject();
 		JSONObject params = new JSONObject();
 		for (String key : apiDef.keySet()) {
 			params.put(key, apiDef.get(key));

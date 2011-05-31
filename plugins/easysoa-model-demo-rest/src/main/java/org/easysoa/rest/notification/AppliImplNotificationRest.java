@@ -60,9 +60,8 @@ public class AppliImplNotificationRest extends NotificationRest {
 	@GET
 	@Path("/")
 	public Object doGet() throws JSONException {
-
-		JSONObject result = new JSONObject();
 		
+		result = new JSONObject();
 		JSONObject params = new JSONObject();
 		for (String key : appliImplDef.keySet()) {
 			params.put(key, appliImplDef.get(key));

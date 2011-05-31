@@ -62,7 +62,8 @@ public class ServiceNotificationRest extends NotificationRest {
 	@GET
 	@Path("/")
 	public Object doGet() throws JSONException {
-		JSONObject result = new JSONObject();
+		
+		result = new JSONObject();
 		JSONObject params = new JSONObject();
 		for (String key : serviceDef.keySet()) {
 			params.put(key, serviceDef.get(key));
