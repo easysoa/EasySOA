@@ -1,8 +1,8 @@
-# A simple Frascati HTTP proxy.
+# A simple Frascati HTTP proxy with a web service detection.
 
 ## Introduction
 
-The goal of this proxy is to detect web-services and register them in Nuxeo. It works only with WSDL web-services at this moment.
+The goal of this proxy is to detect web-services and register them in Nuxeo. It works only with WSDL and REST web-services at this moment.
 It is build to run with Frascati (1.4 or more).
 
 This proxy accept only HTTP "GET" requests.
