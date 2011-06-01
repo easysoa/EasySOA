@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.security.auth.login.LoginException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -78,6 +79,7 @@ public class ServiceNotificationRest extends NotificationRest {
 	}
 	
 	@POST
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Object doPost(@Context HttpContext httpContext) throws JSONException {
 		
 		// Initialize
@@ -108,11 +110,13 @@ public class ServiceNotificationRest extends NotificationRest {
 					apiModel = DocumentService.createServiceAPI(session, DocumentService.DEFAULT_APPLIIMPL_TITLE, parentUrl);
 					apiModel.setProperty(APINotificationRest.APIDEF_SCHEMA, APINotificationRest.PARAM_URL, parentUrl);
 					session.saveDocument(apiModel);
+					session.save();
 				}
 				DocumentModel serviceModel = DocumentService.findService(session, url);
-				if (serviceModel == null) {
+				if (serviceModel == null)
 					serviceModel = DocumentService.createService(session, parentUrl, name);
-				}
+				else
+					serviceModel.setPathInfo(apiModel.getPathAsString(), serviceModel.getName());
 
 				// Update optional properties
 				params.remove(PARAM_PARENTURL);
@@ -132,17 +136,23 @@ public class ServiceNotificationRest extends NotificationRest {
 				}
 				
 			} catch (ClientException e) {
-				appendError(result, "Document creation failed: "+e.getMessage());
+				appendError("Document creation failed: "+e.getMessage());
 			}
 
 		}
 		else {
-			appendError(result, "Service URL or parent API URL not informed");
+			appendError("Service URL or parent API URL not informed");
 		}
 		
 		// Return formatted result
 		return getFormattedResult();
 
+	}
+
+	@POST
+	public Object doPost() throws JSONException {
+		appendError("Content type should be 'application/x-www-form-urlencoded'");
+		return getFormattedResult();
 	}
 	
 }

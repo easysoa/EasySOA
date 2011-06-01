@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.security.auth.login.LoginException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -78,6 +79,7 @@ public class APINotificationRest extends NotificationRest {
 	}
 	
 	@POST
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doPost(@Context HttpContext httpContext) throws JSONException {
 		
@@ -106,10 +108,14 @@ public class APINotificationRest extends NotificationRest {
 					parentModel.setProperty(AppliImplNotificationRest.APPLIIMPLDEF_SCHEMA, 
 							AppliImplNotificationRest.PARAM_ROOTSERVICESURL, parentUrl);
 					session.saveDocument(parentModel);
+					session.save();
 				}
+				
 				DocumentModel apiModel = DocumentService.findServiceApi(session, url);
 				if (apiModel == null)
 					apiModel = DocumentService.createServiceAPI(session, parentUrl, name);
+				else
+					apiModel.setPathInfo(parentModel.getPathAsString(), apiModel.getName());
 
 				// Update optional properties
 				params.remove(PARAM_PARENTURL);
@@ -124,17 +130,25 @@ public class APINotificationRest extends NotificationRest {
 				session.save();
 				
 			} catch (ClientException e) {
-				appendError(result, "Document creation failed: "+e.getMessage());
+				appendError("Document creation failed: "+e.getMessage());
 			}
 
 		}
 		else {
-			appendError(result, "API URL or parent URL not informed");
+			appendError("API URL or parent URL not informed");
 		}
 		
 		// Return formatted result
 		return getFormattedResult();
 
+	}
+	
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object doPost() throws JSONException {
+		appendError("Content type should be 'application/x-www-form-urlencoded'");
+		return getFormattedResult();
 	}
 
 	/**
@@ -243,18 +257,18 @@ public class APINotificationRest extends NotificationRest {
 					session.save();
 					
 				} catch (ClientException e) {
-					appendError(result, "Failed to create WSDL : "+e.getMessage());
+					appendError("Failed to create WSDL : "+e.getMessage());
 				} catch (Exception e) {
-					appendError(result, "Error during WSDL creation : "+e.getMessage());
+					appendError("Error during WSDL creation : "+e.getMessage());
 				}
 				
 			} catch (Exception e) {
-				appendError(result, "WSDL download problem : " + e.getMessage());
+				appendError("WSDL download problem : " + e.getMessage());
 			}
 			
 		}
 		else {
-			appendError(result, "Given URL doesn't seem to be a WSDL.");
+			appendError("Given URL doesn't seem to be a WSDL.");
 		}
 		
 		// Delete temporary file

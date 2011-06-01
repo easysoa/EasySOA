@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.security.auth.login.LoginException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -77,6 +78,7 @@ public class AppliImplNotificationRest extends NotificationRest {
 	}
 
 	@POST
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Object doPost(@Context HttpContext httpContext) throws JSONException {
 		
 		// Initialize
@@ -84,7 +86,7 @@ public class AppliImplNotificationRest extends NotificationRest {
 		
 		// Check mandatory field
 		if (params.get(PARAM_ROOTSERVICESURL) != null) {
-			
+		
 			try {
 				
 				// Find or create document
@@ -107,17 +109,23 @@ public class AppliImplNotificationRest extends NotificationRest {
 				}
 				
 			} catch (ClientException e) {
-				appendError(result, "Document creation failed: "+e.getMessage());
+				appendError("Document creation failed: "+e.getMessage());
 			}
 		
 		}
 		else {
-			appendError(result, "Appli name or root services URL not informed");
+			appendError("Appli name or root services URL not informed");
 		}
 		
 		// Return formatted result
 		return getFormattedResult();
 
+	}
+
+	@POST
+	public Object doPost() throws JSONException {
+		appendError("Content type should be 'application/x-www-form-urlencoded'");
+		return getFormattedResult();
 	}
 	
 }

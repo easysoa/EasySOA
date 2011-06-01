@@ -96,7 +96,7 @@ public abstract class NotificationRest {
 			}
 			// Unknown
 			else {
-				appendError(result, "Unknown parameter "+key+" ");
+				appendError("Unknown parameter "+key+" ");
 				break;
 			}
 		}
@@ -141,17 +141,17 @@ public abstract class NotificationRest {
 	 * @param msg
 	 * @throws JSONException
 	 */
-	protected final void appendError(JSONObject json, String msg) {
+	protected final void appendError(String msg) {
 		try {
 			errorFound = true;
 			String formattedMsg = ERROR+msg;
 			Object existingResult;
-				existingResult = json.get("result");
+				existingResult = result.get("result");
 			if (existingResult.equals("ok")) {
-				json.put("result", formattedMsg);
+				result.put("result", formattedMsg);
 			}
 			else {
-				json.append("result", formattedMsg);
+				result.append("result", formattedMsg);
 			}
 		} catch (JSONException e) {
 			log.error("Failed to append error '"+msg+"' in response", e);
