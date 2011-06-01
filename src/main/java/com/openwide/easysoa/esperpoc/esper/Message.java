@@ -8,6 +8,8 @@ public class Message {
 	private String pathName;
 	private String parameters;
 	private String content;
+	private String method;
+	private String type;
 
 	/**
 	 * Constructor
@@ -17,7 +19,7 @@ public class Message {
 	 * @param parameters
 	 * @param content
 	 */
-	public Message(String protocol, String host, int port, String pathName, String parameters, String content){
+	public Message(String protocol, String host, int port, String pathName, String parameters, String content, String method, String type){
 		if(protocol.toLowerCase().contains("http")){
 			this.protocol = "http";
 		} else {
@@ -28,6 +30,8 @@ public class Message {
 		this.pathName = pathName;
 		this.parameters = parameters;
 		this.content = content;
+		this.method = method;
+		this.type = type;
 	}
 
 	/**
@@ -37,7 +41,7 @@ public class Message {
 	 * @param pathName
 	 * @param parameters
 	 */
-	public Message(String protocol, String host, int port, String pathName, String parameters){
+	public Message(String protocol, String host, int port, String pathName, String parameters, String type){
 		if(protocol.toLowerCase().contains("http")){
 			this.protocol = "http";
 		} else {
@@ -47,7 +51,9 @@ public class Message {
 		this.port = port;
 		this.pathName = pathName;
 		this.parameters = parameters;
+		this.type = type;
 		this.content = "";
+		this.method = "";
 	}
 	
 	/**
@@ -96,6 +102,22 @@ public class Message {
 	 */
 	public String getContent(){
 		return content;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getMethod(){
+		return method;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getType(){
+		return type;
 	}
 	
 	/**

@@ -11,6 +11,7 @@ import com.espertech.esper.client.EPStatement;
 import com.openwide.easysoa.esperpoc.esper.Message;
 import com.openwide.easysoa.esperpoc.esper.MessageListener;
 import com.openwide.easysoa.esperpoc.esper.MessageCounter;
+import com.openwide.easysoa.esperpoc.esper.UrlTreeEventListener;
 
 public class EsperEngineSingleton {
 
@@ -46,7 +47,8 @@ public class EsperEngineSingleton {
     		// Esper configuration
 			Configuration cepConfig = new Configuration();
 	        // We register Message as objects the engine will have to handle
-	        cepConfig.addEventType("Message", Message.class);	
+	        cepConfig.addEventType("Message", Message.class);
+	        cepConfig.addEventType("UrlTreeNodeEvent", UrlTreeNodeEvent.class);
 	    	EPServiceProvider cep = EPServiceProviderManager.getProvider("myCEPEngine",cepConfig);
 	    	cepRT = cep.getEPRuntime();
 	    	cepAdm = cep.getEPAdministrator();
@@ -68,6 +70,10 @@ public class EsperEngineSingleton {
 	    	//EPStatement cepStatementMessageCounter = cepAdm.createEPL("select count(*) as count, completeMessage as service from Message group by completeMessage output all every 1 minute");
 	    	EPStatement cepStatementMessageCounter = cepAdm.createEPL(PropertyManager.getProperty("esper.message.counter.statement"));
 	    	cepStatementMessageCounter.addListener(new MessageCounter());
+	    	
+	    	// Listen event on URL tree (new node added or modified node)
+	    	EPStatement cepStatementUrlTreeEventListener = cepAdm.createEPL(PropertyManager.getProperty("esper.url.tree.event.statement"));
+	    	cepStatementUrlTreeEventListener.addListener(new UrlTreeEventListener());
         }
         catch(Throwable t){
         	t.printStackTrace();

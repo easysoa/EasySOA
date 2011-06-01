@@ -15,9 +15,14 @@ public class MessageListener implements UpdateListener {
 	 */
 	static Logger logger = Logger.getLogger(MessageListener.class.getName());
 	
+	/**
+	 * 
+	 */
 	public void update(EventBean[] newData, EventBean[] oldData) {
 		logger.debug("[MessageListener] --- Event received: " + newData[0].getUnderlying());
 		logger.debug("[MessageListener] --- " + newData[0].getUnderlying().getClass().getName());
+		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
+		Service service;
 		//Message msg = (Message)(newData[0].getUnderlying());
 		@SuppressWarnings("unchecked")
 		HashMap<String,Object> hm = (HashMap<String,Object>)(newData[0].getUnderlying());
@@ -33,15 +38,18 @@ public class MessageListener implements UpdateListener {
 		Message msg = (Message)(beb.getUnderlying());
 		
 		// Construction d'un service + send service event
-		// TODO STATIC variable for Nuxeo address
 		String serviceName = msg.getPathName();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		Service service = new Service(msg.getHost(), serviceName, msg.getCompleteMessage());
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		nrs.registerService(service);
+		if("WSDl".equals(msg.getType())){
+			service = new Service(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
+			nrs.registerWSDLService(service);
+		} else {
+			service = new Service(msg.getHost(), serviceName, msg.getPathName(), msg.getMethod());
+			nrs.registerRestService(service);
+		}
     }
 	
 }

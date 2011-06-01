@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +17,24 @@ import org.apache.log4j.PropertyConfigurator;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.esperpoc.esper.Message;
+import com.openwide.easysoa.esperpoc.UrlTree;
+import com.openwide.easysoa.esperpoc.UrlTreeNode;
 
+/**
+ * HTTP Proxy 
+ * 
+ * Work on the top of Frascati
+ * 
+ * Does : 
+ * - Detect GET WSDL request messages, then register the WSDL in Nuxeo Easysoa model
+ * - Detect GET REST request messages with parameters but no dynamic path parts, then register the REST service in Nuxeo Easysoa model
+ * - Detect GET REST request messages with dynamic URL (in development)
+ * 
+ * - Detect POST SOAP request messages, check if a WSDL is associated with a message and register it in Nuxeo Easysoa model 
+ *
+ * @author jguillemotte
+ *
+ */
 @SuppressWarnings("serial")
 public class HttpProxyImpl extends HttpServlet {
 
@@ -24,10 +44,16 @@ public class HttpProxyImpl extends HttpServlet {
 	static Logger logger = Logger.getLogger(HttpProxyImpl.class.getName());
 
 	/**
+	 * 
+	 */
+	private static UrlTree urlTree;
+	
+	/**
 	 * Log system init
 	 */
 	static {
 		PropertyConfigurator.configure(HttpProxyImpl.class.getClassLoader().getResource("log4j.properties"));
+		urlTree = new UrlTree(new UrlTreeNode("root"));
 	}
 	
 	/**
@@ -45,8 +71,7 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	// RESTLET
-			// Create the client resource 
+			// Create the client resource
 	    	StringBuffer sb = new StringBuffer();
 	    	sb.append(request.getRequestURL().toString());
 	    	if(request.getQueryString() != null){
@@ -58,23 +83,47 @@ public class HttpProxyImpl extends HttpServlet {
 		    	// Registering WSDL web service
 	    		// Create a new message received object and send it to Esper
 	    		logger.debug("--- ****** WSDL found, create Message !");
-	    		Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString());				
+	    		Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "WSDL");				
 				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
 	    	} else {
-	    		logger.debug("--- ****** Processing regex to find rest web service !");
-	    		if(sb.toString().toLowerCase().matches(PropertyManager.getProperty("proxy.rest.request.detect.parameters"))){
+	    		//logger.debug("--- ****** Processing regex to find rest web service !");
+	    		//TODO
+	    		// Not possible to make 2 different strategies : one for static url with parameters and one for dynamic url because it is possible to have dynamic url with parameters ...
+	    		//if(sb.toString().toLowerCase().matches(PropertyManager.getProperty("proxy.rest.request.detect.parameters"))){
 		    		// Registering a REST web service with parameters
 		    		// eg : www.google.fr/search?q=test&lang=fr
 	    			logger.debug("--- REST Service with parameters found, create Message !");
-	    			Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString());
-	    			EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
-	    		}
-	    		else {
+	    			Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "REST");
+	    			//EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
+	    		//}
+	    		//else {
+		    		// Registering a REST web service with parameters
+		    		// eg : www.imedia.com/shop/getBook/{bookId}    			
+	    			// Add the url in the url tree structure
+	    			logger.debug("--- REST Service with dynamic path found, registering in URL tree !");
+	    			//urlTree.addUrlNode(request.getRequestURL().toString().substring(6));
+	    			urlTree.addUrlNode(request.getRequestURL().toString().substring(6), msg);
+	    			
+	    			// TODO : Add authentification
+	    			// Make links between url tree and esper to analyse tree data and to produce api and service to register in nuxeo
+	    			
+	    			
+	    			// Mock avec un hashset contenant des exemples d'URL
+	    			// treeset avec un compteur pour chacun des noeuds/feuilles => incrementation en temps réel
+
 	    			// Registering a 'dynamic' web service (with parameters directly in the url)
 		    		// dynamic url
 		    		// www.freebooks.org/library/getBook/7548669-874-98854
 		    		// eg Pattern => www.freebooks.org/library/getBook/{id or isbn}
-	    		}
+
+	    			// Filtre pour ne pas prendre en compte les resources statiques
+	    			// Verifier existance d'un WADL
+
+	    			// Seule solution pour detection correcte : Analyse de la requete et de la reponse associée.
+	    			// Si reponse contient du JSON => webservice, si html simple => pas webservice
+	    			// Ce qui implique de modifier le pojo message pour faire 2 parties disctinctes : request / response
+	    			//
+	    		//}
 	    	}
 	    	ClientResource resource = new ClientResource(sb.toString());
 	    	InputStream in = resource.get().getStream();
@@ -94,6 +143,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    	logger.debug("--- Closing response flow");
 	    	respOut.close();
 	    }
+	    //printUrlTree();
 	}
 	
 	/**
@@ -102,9 +152,7 @@ public class HttpProxyImpl extends HttpServlet {
 	@Override
 	public final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//@TODO
-		// OK : Detecter si body contient du xml -> pour setter dynamiquement le type RESTLET --> automatique
-		// Detecter si body contient du SOAP -> recuperation wsdl, creation d'un message esper + enregistrement du service
-		// Généraliser pour écouter également les requetes post RESTFull
+		// Add code to listen REST post requests
 		logger.debug("------------------");
 		logger.debug("Method: " + request.getMethod());
 		logger.debug("RequestURI : " + request.getRequestURI());
@@ -146,14 +194,14 @@ public class HttpProxyImpl extends HttpServlet {
 	    } else {
 	    	logger.debug("Request body is empty ! ");
 	    }
-		
+		// Check if the request body is a soap message
 		if(bodyContent.toString().toLowerCase().contains("schemas.xmlsoap.org") && bodyContent.toString().toLowerCase().startsWith("<?xml")){
 			logger.debug("SOAP Message found, create Esper message");
-			// tester si existence d'un WSDL
+			// Check if a WSDL exists
 			if(checkWsdl(request.getRequestURL().toString())){
 				logger.debug("WSDL found");
 				logger.debug("Registering in nuxeo");
-				Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), "wsdl", bodyContent.toString());
+				Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), "wsdl", bodyContent.toString(), request.getMethod(), "WSDL");
 				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);				
 			}
 		}
@@ -210,8 +258,24 @@ public class HttpProxyImpl extends HttpServlet {
 		return result;
 	}
 	
-	
-	
+	/**
+	 * 
+	 */
+	private void printUrlTree(){
+		logger.debug("[printUrlTree()] Printing tree node index ***");
+		logger.debug("[printUrlTree()] Total url count : " + urlTree.getTotalUrlCount());
+		String key;
+		HashMap<String, UrlTreeNode> index = urlTree.getNodeIndex();
+		Iterator<String> iter2 = index.keySet().iterator();
+		UrlTreeNode parentNode;
+		float ratio;
+		while(iter2.hasNext()){
+			key = iter2.next();
+			parentNode = (UrlTreeNode)(index.get(key).getParent());
+			ratio = (float)index.get(key).getPartialUrlcallCount() / urlTree.getTotalUrlCount();
+			logger.debug("[printUrlTree()] " + key + " -- " + index.get(key).toString() + ", parent node => " + parentNode.getNodeName() + ", Depth => " + index.get(key).getDepth() + ", node childs => " + index.get(key).getChildCount() + ", ratio => " + ratio);
+		}
+	}
 	
 }
 

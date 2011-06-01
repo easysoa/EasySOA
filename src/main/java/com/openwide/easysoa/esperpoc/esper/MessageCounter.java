@@ -13,9 +13,7 @@ public class MessageCounter implements UpdateListener {
 	 */
 	static Logger logger = Logger.getLogger(MessageCounter.class.getName());
 	
-	/**
-	 * 
-	 */
+	@Override
 	public void update(EventBean[] newData, EventBean[] oldData) {
 		logger.debug("[MessageCounter] ****");
 		if(newData != null){
