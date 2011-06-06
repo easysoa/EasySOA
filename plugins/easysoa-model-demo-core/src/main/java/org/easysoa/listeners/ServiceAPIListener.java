@@ -38,6 +38,7 @@ public class ServiceAPIListener implements EventListener {
 		if (!(ctx instanceof DocumentEventContext)) {
 			return;
 		}
+		boolean documentCreated = event.getName().equals("documentCreated");
 		
 		CoreSession session = ctx.getCoreSession();
 		DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
@@ -89,7 +90,7 @@ public class ServiceAPIListener implements EventListener {
 					}
 					url = firstEndpoint.getAddress();
 				}
-
+				
 				// Fill document metadata
 
 				String title  = (String) doc.getProperty("dublincore", "title");
@@ -120,21 +121,32 @@ public class ServiceAPIListener implements EventListener {
 				doc.setProperty(SERVICEAPIDEF_SCHEMA, "protocols",
 						((Binding) ((Endpoint) firstService.getEndpoints().get(0))
 								.getBinding()).getTransportProtocol());
-				
-				// Generate services
-				for (Service service : desc.getServices()) {
-					String serviceName = service.getQName().getLocalPart();
-					if (DocumentService.findService(session, url) == null) {
-						DocumentModel serviceModel = DocumentService.createService(session, url, serviceName);
-						serviceModel.setPathInfo(doc.getPathAsString(), serviceModel.getName());
-						try {
-							serviceModel.setProperty(SERVICEDEF_SCHEMA, "url", service.getEndpoints().get(0).getAddress());
+					
+				if (!documentCreated) {
+					// Generate services
+					for (Service service : desc.getServices()) {
+						String serviceName = service.getQName().getLocalPart();
+						if (DocumentService.findService(session, url) == null) {
+							DocumentModel serviceModel = DocumentService.createService(session, url, serviceName);
+							serviceModel.setPathInfo(doc.getPathAsString(), serviceModel.getName());
+							try {
+								String serviceUrl = service.getEndpoints().get(0).getAddress();
+								serviceModel.setProperty(SERVICEDEF_SCHEMA, "url", serviceUrl);
+								if (url.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
+									serviceModel.setProperty(SERVICEAPIDEF_SCHEMA, "lightUrl", "http://localhost:8083/easysoa/light/paf.html");
+								}
+							}
+							catch (Exception e) {
+								// Do nothing (endpoint address not found)
+							}
+							session.saveDocument(serviceModel);
 						}
-						catch (Exception e) {
-							// Do nothing (endpoint address not found)
-						}
-						session.saveDocument(serviceModel);
 					}
+				}
+				else {
+					// Services creation cannot be done during service api creation
+					// (setPathInfo problem ?)
+					doc = session.saveDocument(doc);
 				}
 
 			} catch (Exception e) {

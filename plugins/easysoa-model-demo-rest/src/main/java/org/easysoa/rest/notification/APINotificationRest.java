@@ -232,7 +232,7 @@ public class APINotificationRest extends NotificationRest {
 					}
 					else {
 						model = session.createDocumentModel(parentModel.getPathAsString(),
-								IdUtils.generateStringId(), DocumentService.DEFAULT_APPLIIMPL_TITLE);
+								IdUtils.generateStringId(), DocumentService.SERVICEAPI_DOCTYPE);
 					}
 					model.setProperty("file", "content", f.getBlob());
 					model = session.createDocument(model);

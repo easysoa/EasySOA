@@ -21,7 +21,6 @@ $(function() {
         }
         else {
           obj = jQuery.parseJSON(obj);
-          console.log(obj);
           if (!Descriptors.contains(obj)) {
             Descriptors.add(obj);
           }

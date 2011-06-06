@@ -30,7 +30,7 @@ $(function() {
 			var url = this.getURL();
 			var serviceName = $('#submitService').attr('value');
 			var appName = $('#submitApp').attr('value');
-			
+			console.log('http://127.0.0.1:8080/nuxeo/site/easysoa/notification/api/' + appName + '/' + serviceName + '/' + url);
 			if (url != '') {
 				$.ajax({
 					url: 'http://127.0.0.1:8080/nuxeo/site/easysoa/notification/api/' + appName + '/' + serviceName + '/' + url,

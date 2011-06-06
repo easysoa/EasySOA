@@ -19,12 +19,12 @@
 	  <!-- EasySOA : Empty cache -->
 	  <h:outputText value="#{relationActions.resetStatements()}" rendered="true"/>
   
-	  <!-- EasySOA : Link it button -->
+	  <!-- EasySOA : Call it button -->
 	  <c:if test="${currentDocument.getType() == 'Service'}">
 	     <div style="width: 100%; float: left; margin-top: 20px">
 	     <c:choose>
-		 	  <c:when test="${currentDocument.getTitle().toLowerCase().contains('flowers')}">
-			      <a href="http://127.0.0.1:8083/easysoa/light/paf.html" target="_blank">
+		 	  <c:when test="${currentDocument.getProperty('serviceapidef', 'lightUrl') != null}">
+			      <a href="${currentDocument.getProperty('serviceapidef', 'lightUrl')}" target="_blank">
 					<img src="img/callIt.png" 
 						title="Call the service using EasySOA Light"
 						alt="Call it!" />
@@ -32,7 +32,7 @@
 			  </c:when>
 			  <c:otherwise>
 				  <img src="img/callItOff.png"
-				  	title="Call the service using EasySOA Light (currently only availaible with the 'Pure Air Flowers' service)"
+				  	title="Call the service using EasySOA Light (unavailable for this service)"
 				  	alt="Call it! (Unavailable)" />
 			  </c:otherwise>
 		  </c:choose>
