@@ -86,12 +86,13 @@ public class ImportBean {
 		DocumentModel apiModel = DocumentService.findServiceApi(documentManager, url);
 		if (apiModel == null) {
 			apiModel = DocumentService.createServiceAPI(documentManager, url, title);
+			apiModel.setProperty("serviceapidef", "url", url);
+			documentManager.saveDocument(apiModel);
 			documentManager.save();
 		}
 		else {
 			apiChildren = documentManager.getChildren(apiModel.getRef());
 		}
-		apiModel.setProperty("serviceapidef", "sourceUrl", url);
 		documentManager.move(apiModel.getRef(), new IdRef(parentAppliImpl), apiModel.getName());
 		
 		// Look for services
@@ -104,8 +105,8 @@ public class ImportBean {
 							
 							// Create found service if it doesn't exist already
 							boolean serviceExists = false;
+							String serviceTitle = ((Element) child2).getAttributeValue("name");
 							if (apiChildren != null) {
-								String serviceTitle = ((Element) child2).getAttributeValue("name");
 								for (DocumentModel model : apiChildren) {
 									if (model.getTitle().equals(serviceTitle)) {
 										serviceExists = true;
@@ -114,7 +115,7 @@ public class ImportBean {
 								}
 							}
 							if (!serviceExists)
-								DocumentService.createService(documentManager, url, title);
+								DocumentService.createService(documentManager, url, serviceTitle);
 						}
 					}
 

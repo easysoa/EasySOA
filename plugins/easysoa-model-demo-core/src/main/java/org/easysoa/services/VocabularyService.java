@@ -26,6 +26,10 @@ public class VocabularyService {
 	private static final Log log = LogFactory.getLog(VocabularyService.class);
 	private static final DirectoryServiceImpl dirService = (DirectoryServiceImpl) Framework
 			.getRuntime().getComponent(DirectoryService.NAME);
+	
+	public static final String VOCBULARY_APPLICATION = "application"; 
+	public static final String VOCBULARY_ENVIRONMENT = "environment"; 
+	public static final String VOCBULARY_MACHINE = "machine"; 
 
 	/**
 	 * Checks if entry ID exists in a vocabulary.

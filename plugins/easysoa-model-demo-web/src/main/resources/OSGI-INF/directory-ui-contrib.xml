@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.openwide.demo.directoryUI">
+<component name="org.easysoa.web.contrib.directoryUI">
 
   <require>org.nuxeo.ecm.webapp.directory.directoryUI</require>
 
