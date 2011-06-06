@@ -104,7 +104,7 @@ public class APINotificationRest extends NotificationRest {
 				if (parentModel == null)
 					parentModel = DocumentService.findAppliImpl(session, parentUrl);
 				if (parentModel == null) {
-					parentModel = DocumentService.createAppliImpl(session, parentUrl);
+					parentModel = DocumentService.createAppliImpl(session, parentUrl, parentUrl);
 					parentModel.setProperty(AppliImplNotificationRest.APPLIIMPLDEF_SCHEMA, 
 							AppliImplNotificationRest.PARAM_ROOTSERVICESURL, parentUrl);
 					session.saveDocument(parentModel);

@@ -93,11 +93,8 @@ public class AppliImplNotificationRest extends NotificationRest {
 				DocumentModel appliImplModel = DocumentService.findAppliImpl(session, params.get(PARAM_ROOTSERVICESURL).get(0));
 				if (appliImplModel == null) {
 					String title = (params.get("title") != null) ? params.get("title").get(0) : params.get(PARAM_ROOTSERVICESURL).get(0);
-					appliImplModel = DocumentService.createAppliImpl(session, title);
+					appliImplModel = DocumentService.createAppliImpl(session, params.get(PARAM_ROOTSERVICESURL).get(0), title);
 				}
-				
-				// Update mandatory properties
-				appliImplModel.setProperty(APPLIIMPLDEF_SCHEMA, PARAM_ROOTSERVICESURL, params.get(PARAM_ROOTSERVICESURL).get(0));
 				
 				// Update optional properties
 				setPropertiesIfNotNull(appliImplModel, APPLIIMPLDEF_SCHEMA, appliImplDef, params);

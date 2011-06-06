@@ -18,15 +18,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 import org.easysoa.rest.HttpFile;
+import org.easysoa.rest.notification.JSONP;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.restlet.data.CharacterSet;
-import org.restlet.data.Language;
-import org.restlet.data.MediaType;
-import org.restlet.resource.StringRepresentation;
 
 /**
  * REST service to find WSDLs from given URL.
@@ -143,10 +140,10 @@ public class ScraperRest {
 			if (!errors.isEmpty()) {
 				for (String error : errors)
 					result.append("error", error);
-			}
-			return new StringRepresentation(result.toString(2),
-						MediaType.APPLICATION_JSON, Language.ALL,
-						CharacterSet.UTF_8).getText();
+			}			
+			return (callback == null) ? 
+					result.toString(2) : 
+					JSONP.format(result, callback);
 		} catch (JSONException e) {
 			errors.add("Cannot format anwser: " + e.getMessage());
 		}

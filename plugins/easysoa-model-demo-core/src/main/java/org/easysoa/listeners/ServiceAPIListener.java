@@ -51,6 +51,13 @@ public class ServiceAPIListener implements EventListener {
 		try {
 			
 			Blob blob = (Blob) doc.getProperty("file", "content");
+			
+			// Check that the API contains a file
+			if (blob == null) {
+				return;
+			}
+			
+			// Extract file to system 
 			File tmpFile = File.createTempFile(doc.getId(), null);
 			blob.transferTo(tmpFile);
 			

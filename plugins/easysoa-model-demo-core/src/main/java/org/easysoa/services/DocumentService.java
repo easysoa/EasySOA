@@ -23,6 +23,7 @@ public class DocumentService {
 	public static final String DOMAIN_TITLE = "EasySOA";
 	public static final String WORKSPACE_ROOT_TITLE = "Service Registry";
 	public static final String DEFAULT_APPLIIMPL_TITLE = "Default application";
+	public static final String DEFAULT_APPLIIMPL_URL = "(Unknown)";
 
 	public static final String APPLIIMPL_DOCTYPE = "Workspace";
 	public static final String SERVICEAPI_DOCTYPE = "ServiceAPI";
@@ -32,10 +33,12 @@ public class DocumentService {
 	private static DocumentModel defaultAppliImpl = null;
 	private static DocumentModel wsRoot = null; 
 	
-	public static final DocumentModel createAppliImpl(CoreSession session, String title) throws ClientException {
+	public static final DocumentModel createAppliImpl(CoreSession session,
+			String url, String title) throws ClientException {
 		
 		DocumentModel appliImpl = session.createDocumentModel(APPLIIMPL_DOCTYPE);
 		appliImpl.setPathInfo(getWSRoot(session).getPathAsString(), IdUtils.generateStringId());
+		appliImpl.setProperty("appliimpldef", "rootServicesUrl", url);
 		appliImpl.setProperty("dublincore", "title", title);
 		session.createDocument(appliImpl);
 		return appliImpl;
@@ -49,7 +52,8 @@ public class DocumentService {
 	 * @return
 	 * @throws ClientException
 	 */
-	public static final DocumentModel createServiceAPI(CoreSession session, String parentURL, String title) throws ClientException {
+	public static final DocumentModel createServiceAPI(CoreSession session,
+			String parentURL, String title) throws ClientException {
 		
 		DocumentModel parentModel = null;
 		if (parentURL == null) {
@@ -58,8 +62,7 @@ public class DocumentService {
 				parentModel = DocumentService.findAppliImpl(session, parentURL);
 			}
 			if (parentModel == null) {
-				parentModel = DocumentService.createAppliImpl(session, parentURL);
-				parentModel.setProperty("appliimpldef", "rootServicesUrl", parentURL);
+				parentModel = DocumentService.createAppliImpl(session, parentURL, parentURL);
 				session.saveDocument(parentModel);
 			}
 		}
@@ -109,7 +112,7 @@ public class DocumentService {
 		if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
 			DocumentModel appliimpl = DocumentService.getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
 			if (appliimpl == null) {
-				DocumentModel appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_TITLE);
+				DocumentModel appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_URL, DEFAULT_APPLIIMPL_TITLE);
 				session.save();
 				defaultAppliImpl = appliImpl;
 				return defaultAppliImpl;
