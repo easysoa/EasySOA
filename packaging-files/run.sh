@@ -16,6 +16,7 @@ web()
 {
   touch log/web.log
   cd web
+  chmod +x ./start-web.sh
   ./start-web.sh > ../log/web.log 2>&1
 }
 
@@ -23,6 +24,7 @@ webproxy()
 {
   touch log/webproxy.log
   cd webproxy
+  chmod +x ./start-proxy.sh
   ./start-proxy.sh > ../log/webproxy.log 2>&1
 }
 
@@ -44,8 +46,9 @@ webservicesproxy()
 
 # Start processes
 echo "Starting EasySOA Demo. A browser page will be opened in a few seconds."
-echo "(Note: the service registry will take between 30s and 2mn to start)"
+echo "Note that the service registry will take between 30s and 2mn to launch."
 serviceregistry &
+sleep 5 # Give time to read the msg
 #serviceregistrypid=$!
 web &
 webproxy &

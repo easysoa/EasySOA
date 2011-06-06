@@ -2,6 +2,8 @@ Project for EasySOA contributors, used to tie all packages together.
 
 # Prerequisites
 
+Instructions to setup these applications (including Git) are detailed on [this page](https://github.com/easysoa/easysoa-model-demo/wiki/Development-Environment).
+
 ## For building
 
 * Sun's 1.6 Java JDK
@@ -18,27 +20,28 @@ Project for EasySOA contributors, used to tie all packages together.
 
 You will need to clone all needed projects:
 
-* [mkalam-alami/easysoa-model-demo][2]
-* [JGuillemotte/easysoa-demo-pureAirFlowers-proxy][3]
+* [easysoa-model-demo][2]
+* [easysoa-demo-pureAirFlowers-proxy][3]
 
 Once this is done, clone this repository in your workspace, on the same level than the other projects.
 
 # Build and distribute
 
-Modify the `buildfile` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
+Modify the `build.yaml` file constants according to your config (especially the Nuxeo path, since Nuxeo is not included in our repositories). Then, run the following command, from the `easysoa-demo-dist` folder:
 
     buildr buildall packageall tgz
     
 # Build and run
 
-Modify the `buildfile` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
+Modify the `build.yaml` file constants according to your config, then run the following command, from the `easysoa-demo-dist` folder:
 
     buildr buildall packageall
     
-To launch EasySOA, go to the `easysoa` folder, and run:
+To launch EasySOA, type these commands:
 
+    cd easysoa
     ./run.sh
-    
+
 # Task list
 
 * `buildr buildall` builds all needed projects
@@ -52,7 +55,7 @@ To launch EasySOA, go to the `easysoa` folder, and run:
 * `buildr paf_mvn` builds PAF CXF server and service proxy
 
 [1]: http://buildr.apache.org/
-[2]: https://github.com/mkalam-alami/easysoa-model-demo
-[3]: https://github.com/JGuillemotte/easysoa-demo-pureAirFlowers-proxy
+[2]: https://github.com/easysoa/easysoa-model-demo
+[3]: https://github.com/easysoa/easysoa-demo-pureAirFlowers-proxy
 [4]: http://www.nuxeo.com/en/products/document-management
 [5]: http://nodejs.org/
