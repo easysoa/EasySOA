@@ -206,7 +206,7 @@ task :tgz do
   # Tar
   puts "Compressing..."
   system 'tar -zcf ' + PACKAGING_FILE + ' -C ' + PACKAGING_PATH + \
-    ' serviceregistry web webproxy webservices webservicesproxy ' + \
+    ' serviceregistry web webproxy webservices ' + \
     FileList["packaging-files/*"].sub('packaging-files/', '').to_s
   
   puts "EasySOA successfully packaged in "+PACKAGING_FILE
