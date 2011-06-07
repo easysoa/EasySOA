@@ -96,7 +96,7 @@ public class UrlTree extends DefaultTreeModel {
 			}
 			// Send a event
 			if(urlNode != null){
-				EsperEngineSingleton.getEsperRuntime().sendEvent(new UrlTreeNodeEvent(urlNode));
+				EsperEngineSingleton.getEsperRuntime().sendEvent(new UrlTreeNodeEvent(urlNode, this));
 			}
 		}
 		// Increase the root for each url to obtain the total number of url

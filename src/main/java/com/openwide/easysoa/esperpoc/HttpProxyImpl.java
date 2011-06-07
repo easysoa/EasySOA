@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+//import org.restlet.data.ChallengeScheme;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.esperpoc.esper.Message;
@@ -74,6 +74,7 @@ public class HttpProxyImpl extends HttpServlet {
 			// Create the client resource
 	    	StringBuffer sb = new StringBuffer();
 	    	sb.append(request.getRequestURL().toString());
+	    	
 	    	if(request.getQueryString() != null){
 	    		sb.append("?");
 	    		sb.append(request.getQueryString());
@@ -126,6 +127,11 @@ public class HttpProxyImpl extends HttpServlet {
 	    		//}
 	    	}
 	    	ClientResource resource = new ClientResource(sb.toString());
+	    	// Send an authenticated request using the Basic authentication scheme.
+	    	/*if(request.getRemoteUser() != null){
+	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), "secret");
+	    	}*/
+	    	//
 	    	InputStream in = resource.get().getStream();
     	    if(in != null){
     	    	int c;

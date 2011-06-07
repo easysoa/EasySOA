@@ -22,7 +22,7 @@ public class MessageListener implements UpdateListener {
 		logger.debug("[MessageListener] --- Event received: " + newData[0].getUnderlying());
 		logger.debug("[MessageListener] --- " + newData[0].getUnderlying().getClass().getName());
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		Service service;
+		WSDLService service;
 		//Message msg = (Message)(newData[0].getUnderlying());
 		@SuppressWarnings("unchecked")
 		HashMap<String,Object> hm = (HashMap<String,Object>)(newData[0].getUnderlying());
@@ -44,10 +44,10 @@ public class MessageListener implements UpdateListener {
 		}
 		serviceName = serviceName.replace('/', '_');
 		if("WSDl".equals(msg.getType())){
-			service = new Service(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
+			service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
 			nrs.registerWSDLService(service);
 		} else {
-			service = new Service(msg.getHost(), serviceName, msg.getPathName(), msg.getMethod());
+			service = new WSDLService(msg.getHost(), serviceName, msg.getPathName(), msg.getMethod());
 			nrs.registerRestService(service);
 		}
     }

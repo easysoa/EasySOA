@@ -34,6 +34,11 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 	private int completeUrlCallCount;
 
 	/**
+	 * 
+	 */
+	private boolean registered;
+	
+	/**
 	 * @param urlPart
 	 * @param counter
 	 */
@@ -43,6 +48,7 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 		this.partialUrlCallCount = 0;
 		this.completeUrlCallCount = 0;
 		this.msgs = new ArrayDeque<Message>();
+		this.registered = false;
 	}
 
 	/**
@@ -84,11 +90,20 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 		logger.debug("[increasePartialUrlCounter()] Increase completeUrlCallCount !!");
 		this.completeUrlCallCount++;
 	}	
-	/*
-	public void getTotalChildNumber(){
-		this.
+	
+	/**
+	 * 
+	 */
+	public boolean isRegistered(){
+		return registered;
 	}
-	*/
+	
+	/**
+	 * 
+	 */
+	public void setRegistered(){
+		this.registered = true;
+	}
 	
 	/**
 	 * Add a message in the message list 
