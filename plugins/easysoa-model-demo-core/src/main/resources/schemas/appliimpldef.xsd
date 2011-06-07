@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/appliimpldef/"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:element name="technology" type="xs:string" />
+  <xs:element name="standard" type="xs:string" />
+  <xs:element name="server" type="xs:string" />
+  <xs:element name="uiUrl" type="xs:string" />
+  <xs:element name="rootServicesUrl" type="xs:string" />
+  <xs:element name="sourcesUrl" type="xs:string" />
+    
+</xs:schema>

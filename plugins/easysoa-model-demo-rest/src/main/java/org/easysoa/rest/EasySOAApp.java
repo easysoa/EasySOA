@@ -5,17 +5,24 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import org.easysoa.rest.notification.APINotificationRest;
+import org.easysoa.rest.notification.AppliImplNotificationRest;
+import org.easysoa.rest.notification.ServiceNotificationRest;
+import org.easysoa.rest.scraper.ScraperRest;
+
 public class EasySOAApp extends Application {
 
-    @Override
+	@Override
     public Set<Class<?>> getClasses() {
 
-		    Set<Class<?>> result = new HashSet<Class<?>>();
-		    result.add(EasySOAAppRoot.class);
-		    result.add(ScraperService.class);
-		    result.add(NotificationService.class);
+		Set<Class<?>> result = new HashSet<Class<?>>();
+		result.add(EasySOAAppRoot.class);
+		result.add(ScraperRest.class);
+		result.add(ServiceNotificationRest.class);
+		result.add(APINotificationRest.class);
+		result.add(AppliImplNotificationRest.class);
 		
-		    return result;
+		return result;
     }
 	
 }

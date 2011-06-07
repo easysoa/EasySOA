@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.openwide.test.lifecycle">
+<component name="org.easysoa.core.contrib.lifecycle">
+
 	<extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
 		<types>
-		  <type name="Service"></type>
-		  <type name="ServiceDescriptor"></type>
-		  <type name="WSDL"></type>
+		  <type name="Service">default</type>
 		</types>
 	</extension>
+	
 </component>

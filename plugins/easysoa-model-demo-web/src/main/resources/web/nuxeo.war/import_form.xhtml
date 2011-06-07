@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <nxthemes:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -6,21 +7,61 @@
 	xmlns:nxthemes="http://nuxeo.org/nxthemes"
 	xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
 	xmlns:nxd="http://nuxeo.org/nxweb/document"
-	xmlns:nxu="http://nuxeo.org/nxweb/util">
+	xmlns:nxu="http://nuxeo.org/nxweb/util"
+	xmlns:nxh="http://nuxeo.org/nxweb/html">
 
 	<ui:define name="page title">
 		<h:outputText
-			value="#{nuxeoApplicationName} - #{messages['label.easysoa.import']}" />
+			value="#{nuxeoApplicationName} - #{messages['label.easysoa.import.link']}" />
 	</ui:define>
-
-	<!--<ui:define name="bookmark">
-		<link rel="bookmark" href="#{navigationContext.currentDocumentFullUrl}" />
-	</ui:define>  -->
 
 	<ui:define name="body">
-		<div>
-			<h1>#{messages['label.easysoa.import']}</h1>
-			<p>Will be used for mass data import, SCA import, etc.</p>
-		</div>
+		<div id="content">
+
+		<h1><h:outputText
+			value="#{messages['label.easysoa.import.pagetitle']}" /></h1>
+
+		<h:form enctype="multipart/form-data">
+
+			<table class="dataInput">
+				<tbody>
+
+					<tr>
+						<td class="labelColumn"><h:outputText
+							value="#{messages['label.easysoa.import.file']}" /></td>
+						<td class="fieldColumn"><nxu:inputFile id="compositeFile"
+							value="#{easysoaImport.compositeFile}" editFilename="false" /></td>
+					</tr>
+
+					<tr>
+						<td class="labelColumn"><h:outputText
+							value="#{messages['label.easysoa.import.parent']}" /></td>
+						<td class="fieldColumn">
+						
+						<h:selectOneMenu id="doctype"
+							value="#{easysoaImport.parentAppliImpl}">
+							<f:selectItems value="#{easysoaImport.appliImpls}"/>
+						</h:selectOneMenu>
+						
+						</td>
+					</tr>
+
+					<tr>
+						<td class="labelColumn"></td>
+						<td class="fieldColumn"><nxu:methodResult name="actions"
+							value="#{webActions.getActionsList('EASYSOA_IMPORT')}">
+							<nxu:dataList layout="simple" var="action" value="#{actions}"
+								rowIndexVar="row" rowCountVar="rowCount">
+								<nxh:commandButton value="#{messages[action.label]}"
+									action="#{action.getLink()}" />
+							</nxu:dataList>
+						</nxu:methodResult></td>
+					</tr>
+
+				</tbody>
+			</table>
+
+		</h:form></div>
 	</ui:define>
+
 </nxthemes:composition>
