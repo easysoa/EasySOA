@@ -40,8 +40,7 @@ public class DocumentService {
 		appliImpl.setPathInfo(getWSRoot(session).getPathAsString(), IdUtils.generateStringId());
 		appliImpl.setProperty("appliimpldef", "rootServicesUrl", url);
 		appliImpl.setProperty("dublincore", "title", title);
-		session.createDocument(appliImpl);
-		return appliImpl;
+		return session.createDocument(appliImpl);
 	}
 
 	/**
@@ -53,7 +52,7 @@ public class DocumentService {
 	 * @throws ClientException
 	 */
 	public static final DocumentModel createServiceAPI(CoreSession session,
-			String parentURL, String title) throws ClientException {
+			String parentURL, String url) throws ClientException {
 		
 		DocumentModel parentModel = null;
 		if (parentURL == null) {
@@ -72,13 +71,13 @@ public class DocumentService {
 
 		DocumentModel serviceAPI = session.createDocumentModel(SERVICEAPI_DOCTYPE);
 		serviceAPI.setPathInfo(parentModel.getPathAsString(), IdUtils.generateStringId());
-		serviceAPI.setProperty("dublincore", "title", title);
-		session.createDocument(serviceAPI);
-		return serviceAPI;
+		serviceAPI.setProperty("serviceapidef", "url", url);
+		serviceAPI.setProperty("dublincore", "title", url);
+		return session.createDocument(serviceAPI);
 	}
 	
 	/**
-	 * Returns null if the service doesn't exist.
+	 * Returns null if the service API doesn't exist.
 	 * @param session
 	 * @param apiTitle
 	 * @param title
@@ -93,8 +92,7 @@ public class DocumentService {
 			DocumentModel service = session.createDocumentModel(SERVICE_DOCTYPE);
 			service.setPathInfo(api.getPathAsString(), IdUtils.generateStringId());
 			service.setProperty("dublincore", "title", title);
-			session.createDocument(service);
-			return service;
+			return session.createDocument(service);
 		}
 		else {
 			return null;

@@ -85,8 +85,10 @@ public class ImportBean {
 		// Root document
 		DocumentModel apiModel = DocumentService.findServiceApi(documentManager, url);
 		if (apiModel == null) {
-			apiModel = DocumentService.createServiceAPI(documentManager, url, title);
-			apiModel.setProperty("serviceapidef", "url", url);
+			apiModel = DocumentService.createServiceAPI(documentManager, 
+					(String) DocumentService.getDefaultAppliImpl(documentManager).
+							getProperty("appliimpldef", "rootServicesUrl"), url);
+			apiModel.setProperty("dublincore", "title", title);
 			documentManager.saveDocument(apiModel);
 			documentManager.save();
 		}

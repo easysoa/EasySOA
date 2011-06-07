@@ -3,6 +3,7 @@ package org.easysoa.rest.notification;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -36,6 +37,7 @@ public abstract class NotificationRest {
 	protected JSONObject result = new JSONObject();
 	protected boolean errorFound = false;
 	protected static Map<String, String> dublinCoreDef; 
+	protected static LoginContext loginContext; 
 	
 	private static final Log log = LogFactory.getLog(NotificationRest.class);
 	private static final String ERROR = "[ERROR] ";
@@ -47,7 +49,7 @@ public abstract class NotificationRest {
 	 */
 	public NotificationRest() throws LoginException, JSONException {
 		// XXX: As the REST API is (for now) anonymously available, we need to explicitly log in
-		Framework.login("Administrator", "Administrator");
+		loginContext = Framework.login("Administrator", "Administrator");
 		session = WebEngine.getActiveContext().getUserSession().getCoreSession(null);
 
 		result.put("result", "ok");
@@ -155,6 +157,14 @@ public abstract class NotificationRest {
 			}
 		} catch (JSONException e) {
 			log.error("Failed to append error '"+msg+"' in response", e);
+		}
+	}
+	
+	protected void logout() {
+		try {
+			loginContext.logout();
+		} catch (LoginException e) {
+			log.warn("Failed to logout: "+e.getMessage());
 		}
 	}
 

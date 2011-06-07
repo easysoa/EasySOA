@@ -75,6 +75,7 @@ public class ServiceNotificationRest extends NotificationRest {
 		result.put("parameters", params);
 		result.put("description", "Service-level notification.");
 
+		logout();
 		return getFormattedResult();
 	}
 	
@@ -108,15 +109,13 @@ public class ServiceNotificationRest extends NotificationRest {
 				DocumentModel apiModel = DocumentService.findServiceApi(session, parentUrl);
 				if (apiModel == null) {
 					apiModel = DocumentService.createServiceAPI(session, DocumentService.DEFAULT_APPLIIMPL_TITLE, parentUrl);
-					apiModel.setProperty(APINotificationRest.APIDEF_SCHEMA, APINotificationRest.PARAM_URL, parentUrl);
 					session.saveDocument(apiModel);
 					session.save();
 				}
 				DocumentModel serviceModel = DocumentService.findService(session, url);
 				if (serviceModel == null)
 					serviceModel = DocumentService.createService(session, parentUrl, name);
-				else
-					serviceModel.setPathInfo(apiModel.getPathAsString(), serviceModel.getName());
+				session.move(serviceModel.getRef(), apiModel.getRef(), serviceModel.getName());
 
 				// Update optional properties
 				params.remove(PARAM_PARENTURL);
@@ -145,6 +144,7 @@ public class ServiceNotificationRest extends NotificationRest {
 		}
 		
 		// Return formatted result
+		logout();
 		return getFormattedResult();
 
 	}
@@ -152,6 +152,7 @@ public class ServiceNotificationRest extends NotificationRest {
 	@POST
 	public Object doPost() throws JSONException {
 		appendError("Content type should be 'application/x-www-form-urlencoded'");
+		logout();
 		return getFormattedResult();
 	}
 	

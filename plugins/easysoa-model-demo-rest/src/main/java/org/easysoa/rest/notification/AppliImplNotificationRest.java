@@ -73,7 +73,8 @@ public class AppliImplNotificationRest extends NotificationRest {
 		
 		result.put("parameters", params);
 		result.put("description", "Notification concerning an application implementation.");
-		
+
+		logout();
 		return getFormattedResult();
 	}
 
@@ -115,6 +116,7 @@ public class AppliImplNotificationRest extends NotificationRest {
 		}
 		
 		// Return formatted result
+		logout();
 		return getFormattedResult();
 
 	}
@@ -122,6 +124,7 @@ public class AppliImplNotificationRest extends NotificationRest {
 	@POST
 	public Object doPost() throws JSONException {
 		appendError("Content type should be 'application/x-www-form-urlencoded'");
+		logout();
 		return getFormattedResult();
 	}
 	

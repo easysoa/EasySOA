@@ -23,8 +23,8 @@
 	  <c:if test="${currentDocument.getType() == 'Service'}">
 	     <div style="width: 100%; float: left; margin-top: 20px">
 	     <c:choose>
-		 	  <c:when test="${currentDocument.getProperty('serviceapidef', 'lightUrl') != null}">
-			      <a href="${currentDocument.getProperty('serviceapidef', 'lightUrl')}" target="_blank">
+		 	  <c:when test="${currentDocument.getProperty('servicedef', 'lightUrl') != null}">
+			      <a href="${currentDocument.getProperty('servicedef', 'lightUrl')}" target="_blank">
 					<img src="img/callIt.png" 
 						title="Call the service using EasySOA Light"
 						alt="Call it!" />

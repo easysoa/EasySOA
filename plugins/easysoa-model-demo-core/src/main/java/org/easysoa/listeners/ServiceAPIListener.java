@@ -38,7 +38,7 @@ public class ServiceAPIListener implements EventListener {
 		if (!(ctx instanceof DocumentEventContext)) {
 			return;
 		}
-		boolean documentCreated = event.getName().equals("documentCreated");
+		boolean creationEvent = event.getName().equals("documentCreated");
 		
 		CoreSession session = ctx.getCoreSession();
 		DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
@@ -121,32 +121,34 @@ public class ServiceAPIListener implements EventListener {
 				doc.setProperty(SERVICEAPIDEF_SCHEMA, "protocols",
 						((Binding) ((Endpoint) firstService.getEndpoints().get(0))
 								.getBinding()).getTransportProtocol());
-					
-				if (!documentCreated) {
-					// Generate services
+				
+				// Generate services
+				if (!creationEvent) {
 					for (Service service : desc.getServices()) {
 						String serviceName = service.getQName().getLocalPart();
 						if (DocumentService.findService(session, url) == null) {
 							DocumentModel serviceModel = DocumentService.createService(session, url, serviceName);
-							serviceModel.setPathInfo(doc.getPathAsString(), serviceModel.getName());
-							try {
-								String serviceUrl = service.getEndpoints().get(0).getAddress();
-								serviceModel.setProperty(SERVICEDEF_SCHEMA, "url", serviceUrl);
-								if (url.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
-									serviceModel.setProperty(SERVICEAPIDEF_SCHEMA, "lightUrl", "http://localhost:8083/easysoa/light/paf.html");
+							if (serviceModel != null) {
+								try {
+									String serviceUrl = service.getEndpoints().get(0).getAddress();
+									serviceModel.setProperty(SERVICEDEF_SCHEMA, "url", serviceUrl);
+									if (url.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
+										serviceModel.setProperty(SERVICEDEF_SCHEMA, "lightUrl", "http://localhost:8083/easysoa/light/paf.html");
+									}
+								}
+								catch (Exception e) {
+									log.warn("Cannot set extracted service url : "+e.getMessage());
 								}
 							}
-							catch (Exception e) {
-								// Do nothing (endpoint address not found)
+							else {
+								throw new NullPointerException("Cannot find Service API for child service creation.");
 							}
-							session.saveDocument(serviceModel);
 						}
 					}
 				}
 				else {
-					// Services creation cannot be done during service api creation
-					// (setPathInfo problem ?)
-					doc = session.saveDocument(doc);
+					// Service creation fails on API creation (TODO: why?)
+					session.saveDocument(doc);
 				}
 
 			} catch (Exception e) {
@@ -165,20 +167,21 @@ public class ServiceAPIListener implements EventListener {
 		// Update vocabulary
 		try {
 			String app = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "application");
-			if (app != null && !VocabularyService.entryExists(
+			if (app != null && !app.isEmpty() && !VocabularyService.entryExists(
 					session, VocabularyService.VOCBULARY_APPLICATION, app)) {
 				VocabularyService.addEntry(session, VocabularyService.VOCBULARY_APPLICATION,
 						app, app);
 			}
 			String environment = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "environment");
-			if (environment != null) {
+			
+			if (environment != null && !environment.isEmpty()) {
 				if (!VocabularyService.entryExists(
 					session, VocabularyService.VOCBULARY_ENVIRONMENT, environment)) {
 					VocabularyService.addEntry(session, VocabularyService.VOCBULARY_ENVIRONMENT,
 							environment, environment);
 				}
 				String machine = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "machine");
-				if (machine != null && !VocabularyService.entryExists(
+				if (machine != null && !machine.isEmpty() && !VocabularyService.entryExists(
 						session, VocabularyService.VOCBULARY_MACHINE, machine)) {
 					VocabularyService.addEntry(session, VocabularyService.VOCBULARY_MACHINE,
 							machine, machine, environment);

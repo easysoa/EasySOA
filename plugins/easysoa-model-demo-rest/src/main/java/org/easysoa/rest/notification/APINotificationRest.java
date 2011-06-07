@@ -75,6 +75,7 @@ public class APINotificationRest extends NotificationRest {
 		result.put("parameters", params);
 		result.put("description", "Service-level notification.");
 		
+		logout();
 		return getFormattedResult();
 	}
 	
@@ -92,10 +93,10 @@ public class APINotificationRest extends NotificationRest {
 			// Exctract main fields
 			String url = params.get(PARAM_URL).get(0),
 				parentUrl = params.get(PARAM_PARENTURL).get(0),
-				name = (params.get(PARAM_TITLE) != null) ? params.get(PARAM_TITLE).get(0) : null;
+				title = (params.get(PARAM_TITLE) != null) ? params.get(PARAM_TITLE).get(0) : null;
 			
-			if (name == null)
-				name = url;
+			if (title == null)
+				title = url;
 
 			try {
 
@@ -113,9 +114,8 @@ public class APINotificationRest extends NotificationRest {
 				
 				DocumentModel apiModel = DocumentService.findServiceApi(session, url);
 				if (apiModel == null)
-					apiModel = DocumentService.createServiceAPI(session, parentUrl, name);
-				else
-					apiModel.setPathInfo(parentModel.getPathAsString(), apiModel.getName());
+					apiModel = DocumentService.createServiceAPI(session, parentUrl, url);
+				session.move(apiModel.getRef(), parentModel.getRef(), apiModel.getName());
 
 				// Update optional properties
 				params.remove(PARAM_PARENTURL);
@@ -127,8 +127,6 @@ public class APINotificationRest extends NotificationRest {
 					session.save();
 				}
 				
-				session.save();
-				
 			} catch (ClientException e) {
 				appendError("Document creation failed: "+e.getMessage());
 			}
@@ -139,6 +137,7 @@ public class APINotificationRest extends NotificationRest {
 		}
 		
 		// Return formatted result
+		logout();
 		return getFormattedResult();
 
 	}
@@ -148,6 +147,7 @@ public class APINotificationRest extends NotificationRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doPost() throws JSONException {
 		appendError("Content type should be 'application/x-www-form-urlencoded'");
+		logout();
 		return getFormattedResult();
 	}
 
@@ -204,66 +204,72 @@ public class APINotificationRest extends NotificationRest {
 		
 		// Basic file path testing / TODO
 		if (url.toLowerCase().contains("wsdl")) {
-			
-			try {
 
+			try {
+				
 				// WSDL download
 				f.download();
-				
-				// Check is the WSDL is already online
-				DocumentModelList list = null;
+			
 				try {
-					list = session.query("SELECT * FROM Document WHERE dc:title = '"+serviceName+"'");
-				} catch (ClientException e) {
-					log.error("Failed to query existing WSDLs", e);
-				}
-				
-				DocumentModel model;
-				if (list != null && list.size() > 0) {
-					// Document selection
-					model = list.get(0);
-					log.info("WSDL already registered, updating the document.");
-				}
-				else {
-					// (or) Document creation
-					DocumentModel parentModel = session.getDocument(DocumentService.getDefaultAppliImpl(session).getRef());
-					if (parentModel == null) {
-						throw new NullPointerException("Parent application not found.");
+					
+					// Check is the WSDL is already online
+					DocumentModelList list = null;
+					try {
+						list = session.query("SELECT * FROM Document WHERE dc:title = '"+serviceName+"'");
+					} catch (ClientException e) {
+						log.error("Failed to query existing WSDLs", e);
+					}
+					
+					DocumentModel model;
+					if (list != null && list.size() > 0) {
+						// Document selection
+						model = list.get(0);
+						log.info("WSDL already registered, updating the document.");
 					}
 					else {
-						model = session.createDocumentModel(parentModel.getPathAsString(),
-								IdUtils.generateStringId(), DocumentService.SERVICEAPI_DOCTYPE);
-					}
-					model.setProperty("file", "content", f.getBlob());
-					model = session.createDocument(model);
-				}
-				
-				try {
-					
-					// Service creation
-					if (serviceName != null || applicationName != null) {
-						
-						model.setProperty(DC_SCHEMA, PARAM_TITLE, serviceName);
-						model.setProperty(APIDEF_SCHEMA, PARAM_APPLICATION, applicationName);
-						session.saveDocument(model);
-						
-						// New application in the vocabulary
-						if (applicationName != null
-								&& !VocabularyService.entryExists(session, "application", applicationName)) {
-							VocabularyService.addEntry(session, "application", applicationName, applicationName);
+						// (or) Document creation
+						DocumentModel parentModel = session.getDocument(DocumentService.getDefaultAppliImpl(session).getRef());
+						if (parentModel == null) {
+							throw new NullPointerException("Parent application not found.");
 						}
+						else {
+							model = session.createDocumentModel(parentModel.getPathAsString(),
+									IdUtils.generateStringId(), DocumentService.SERVICEAPI_DOCTYPE);
+						}
+						model.setProperty("file", "content", f.getBlob());
+						model = session.createDocument(model);
 					}
 					
-					session.save();
+					try {
+						
+						// Service creation
+						if (serviceName != null || applicationName != null) {
+							
+							model.setProperty(DC_SCHEMA, PARAM_TITLE, serviceName);
+							model.setProperty(APIDEF_SCHEMA, PARAM_APPLICATION, applicationName);
+							session.saveDocument(model);
+							
+							// New application in the vocabulary
+							if (applicationName != null
+									&& !VocabularyService.entryExists(session, "application", applicationName)) {
+								VocabularyService.addEntry(session, "application", applicationName, applicationName);
+							}
+						}
+						
+						session.save();
+						
+					} catch (ClientException e) {
+						appendError("Failed to create WSDL : "+e.getMessage());
+					} catch (Exception e) {
+						appendError("Error during WSDL creation : "+e.getMessage());
+					}
 					
-				} catch (ClientException e) {
-					appendError("Failed to create WSDL : "+e.getMessage());
 				} catch (Exception e) {
-					appendError("Error during WSDL creation : "+e.getMessage());
+					appendError("Error during WSDL parsing: "+e.getMessage());
 				}
-				
-			} catch (Exception e) {
-				appendError("WSDL download problem : " + e.getMessage());
+			}
+			catch (Exception e) {
+				appendError("WSDL download failed: " + e.getMessage());
 			}
 			
 		}
@@ -276,6 +282,7 @@ public class APINotificationRest extends NotificationRest {
 			f.delete();
 		
 		// Format & send result
+		logout();
 		try {
 			if (callback != null)
 				return getFormattedResult(callback);
