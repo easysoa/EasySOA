@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<!-- Unused -->
-<component name="org.easysoa.web.contrib.theme">
+<component name="org.openwide.demo.theme">
 
 	<require>org.nuxeo.theme.nuxeo.default</require>
 

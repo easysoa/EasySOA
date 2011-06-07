@@ -1,49 +1,62 @@
 <?xml version="1.0" ?>
-<component name="org.easysoa.core.contrib.ecmtypes">
-
-  <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewExtensionPoint/org.nuxeo.ecm.platform.types.TypeService--types</documentation>
+<component name="org.openwide.test.ecmtypes">
 
   <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
     
     <type id="Service" coretype="Service">
       <label>Service</label>
-      <icon>/icons/text.png</icon>
-      <bigIcon>/icons/note_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
-        <layout>servicedef</layout>
+        <layout>descriptorChooser</layout>
+        <layout>serviceTags</layout>
+        <layout>files</layout>
       </layouts>
     </type>
     
-    <type id="ServiceAPI" coretype="ServiceAPI">
-      <label>Service API</label>
-      <icon>/icons/folder.gif</icon>
-      <bigIcon>/icons/folder_100.png</bigIcon>
-      <icon-expanded>/icons/folder_open.gif</icon-expanded>
+     <type id="ServiceDescriptor" coretype="ServiceDescriptor">
+      <label>Service Descriptor</label>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>heading</layout>
-        <layout>file</layout>
-        <layout>serviceapidef</layout>
+        <!--<layout>heading</layout>-->
+        <layout>fileRequired</layout>
+        <layout>serviceChooser</layout>
+        <layout>endpoints</layout>
       </layouts>
+    </type>
+    
+     <type id="WSDL" coretype="WSDL">
+      <label>WSDL</label>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <!--<layout>heading</layout>-->
+        <layout>fileRequired</layout>
+        <layout>serviceChooser</layout>
+        <layout>endpoints</layout>
+      </layouts>
+    </type>
+    
+    <type id="WorkspaceRoot" coretype="WorkspaceRoot">
       <subtypes>
-        <type>ServiceAPI</type>
         <type>Service</type>
+        <!--<type>ServiceDescriptor</type>-->
+        <type>WSDL</type>
       </subtypes>
-      <contentViews category="content">
-        <contentView>document_content</contentView>
-      </contentViews>
     </type>
     
     <type id="Workspace" coretype="Workspace">
-      <label>Application Impl.</label>
-      <layouts mode="any">
-        <layout>heading</layout>
-        <layout>appliimpldef</layout>
-      </layouts>
       <subtypes>
-        <type>ServiceAPI</type>
+        <type>Service</type>
+        <!--<type>ServiceDescriptor</type>-->
+        <type>WSDL</type>
+      </subtypes>
+    </type>
+    
+    <type id="Folder" coretype="Folder">
+      <subtypes>
+        <type>Service</type>
+        <!--<type>ServiceDescriptor</type>-->
+        <type>WSDL</type>
       </subtypes>
     </type>
     
