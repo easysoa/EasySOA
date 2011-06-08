@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
-import com.openwide.easysoa.esperpoc.UrlTreeNode;
-import com.openwide.easysoa.esperpoc.UrlTreeNodeEvent;
+import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
+import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
 
 public class UrlTreeEventListener implements UpdateListener {
 

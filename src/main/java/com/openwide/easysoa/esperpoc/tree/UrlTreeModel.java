@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc.treeStructure;
+package com.openwide.easysoa.esperpoc.tree;
 
 public interface UrlTreeModel {
 

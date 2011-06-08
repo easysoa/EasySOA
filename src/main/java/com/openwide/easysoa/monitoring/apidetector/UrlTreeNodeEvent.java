@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.monitoring.apidetector;
 
 public class UrlTreeNodeEvent {
 

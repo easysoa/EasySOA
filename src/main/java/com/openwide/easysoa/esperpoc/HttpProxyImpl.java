@@ -19,8 +19,8 @@ import org.restlet.data.ChallengeScheme;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.esperpoc.esper.Message;
-import com.openwide.easysoa.esperpoc.UrlTree;
-import com.openwide.easysoa.esperpoc.UrlTreeNode;
+import com.openwide.easysoa.monitoring.apidetector.UrlTree;
+import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 
 /**
  * HTTP Proxy 
@@ -89,39 +89,14 @@ public class HttpProxyImpl extends HttpServlet {
 	    	} else {
 	    		//TODO
 	    		// Not possible to make 2 different strategies : one for static url with parameters and one for dynamic url because it is possible to have dynamic url with parameters ...
-	    		//if(sb.toString().toLowerCase().matches(PropertyManager.getProperty("proxy.rest.request.detect.parameters"))){
-		    		// Registering a REST web service with parameters
-		    		// eg : www.google.fr/search?q=test&lang=fr
-	    			logger.debug("--- REST Service with parameters found, create Message !");
-	    			Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "REST");
-	    			//EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
-	    		//}
-	    		//else {
-		    		// Registering a REST web service with parameters
-		    		// eg : www.imedia.com/shop/getBook/{bookId}    			
-	    			// Add the url in the url tree structure
-	    			logger.debug("--- REST Service with dynamic path found, registering in URL tree !");
-	    			urlTree.addUrlNode(request.getRequestURL().toString().substring(6), msg);
-	    			
-	    			// TODO : Add authentification
-	    			// Make links between url tree and esper to analyse tree data and to produce api and service to register in nuxeo
-	    			
-	    			// Mock avec un hashset contenant des exemples d'URL
-	    			// treeset avec un compteur pour chacun des noeuds/feuilles => incrementation en temps réel
-
-	    			// Registering a 'dynamic' web service (with parameters directly in the url)
-		    		// dynamic url
-		    		// www.freebooks.org/library/getBook/7548669-874-98854
-		    		// eg Pattern => www.freebooks.org/library/getBook/{id or isbn}
-
-	    			// Filtre pour ne pas prendre en compte les resources statiques
-	    			// Verifier existance d'un WADL
-
-	    			// Seule solution pour detection correcte : Analyse de la requete et de la reponse associée.
-	    			// Si reponse contient du JSON => webservice, si html simple => pas webservice
-	    			// Ce qui implique de modifier le pojo message pour faire 2 parties disctinctes : request / response
-	    			//
-	    		//}
+    			Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "REST");
+    			// Add the url in the url tree structure
+    			logger.debug("--- REST Service found, registering in URL tree !");
+    			urlTree.addUrlNode(request.getRequestURL().toString().substring(6), msg);
+    			// Filtre pour ne pas prendre en compte les resources statiques
+    			// Seule solution pour detection correcte : Analyse de la requete et de la reponse associée.
+    			// Si reponse contient du JSON => webservice, si html simple ou image => pas webservice ...
+    			// Ce qui implique de modifier le pojo message pour faire 2 parties distinctes : request / response
 	    	}
 	    	ClientResource resource = new ClientResource(sb.toString());
 	    	// Send an authenticated request using the Basic authentication scheme.
@@ -153,7 +128,7 @@ public class HttpProxyImpl extends HttpServlet {
 	 */	
 	@Override
 	public final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//@TODO
+		//TODO
 		// Add code to listen REST post requests
 		logger.debug("------------------");
 		logger.debug("Method: " + request.getMethod());
@@ -183,7 +158,6 @@ public class HttpProxyImpl extends HttpServlet {
 			String parameterValue = request.getParameter(parameterName);
 			logger.debug("Header name = " + parameterName + ", Header value = " + parameterValue);
 		}*/
-
 		BufferedReader br = request.getReader();
     	StringBuffer bodyContent = new StringBuffer();
 		if(br != null){

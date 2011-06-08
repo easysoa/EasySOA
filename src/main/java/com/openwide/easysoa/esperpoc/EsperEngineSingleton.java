@@ -12,6 +12,7 @@ import com.openwide.easysoa.esperpoc.esper.Message;
 import com.openwide.easysoa.esperpoc.esper.MessageListener;
 import com.openwide.easysoa.esperpoc.esper.MessageCounter;
 import com.openwide.easysoa.esperpoc.esper.UrlTreeEventListener;
+import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
 
 public class EsperEngineSingleton {
 
@@ -41,7 +42,7 @@ public class EsperEngineSingleton {
 	private EsperEngineSingleton(){
 		// get current context classloader                                                                                                                                  
 		ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
-		// then alter the class-loader
+		// then alter the classloader
 		Thread.currentThread().setContextClassLoader(EsperEngineSingleton.class.getClassLoader());
         try{
     		// Esper configuration

@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.monitoring.apidetector;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -6,6 +6,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
 
+import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
 import com.openwide.easysoa.esperpoc.esper.Message;
 
 @SuppressWarnings("serial")
