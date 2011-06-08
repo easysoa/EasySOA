@@ -1,19 +1,21 @@
 package com.openwide.easysoa.esperpoc;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-//import org.restlet.data.ChallengeScheme;
+import org.restlet.data.ChallengeScheme;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.esperpoc.esper.Message;
@@ -71,10 +73,8 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-			// Create the client resource
 	    	StringBuffer sb = new StringBuffer();
 	    	sb.append(request.getRequestURL().toString());
-	    	
 	    	if(request.getQueryString() != null){
 	    		sb.append("?");
 	    		sb.append(request.getQueryString());
@@ -102,12 +102,10 @@ public class HttpProxyImpl extends HttpServlet {
 		    		// eg : www.imedia.com/shop/getBook/{bookId}    			
 	    			// Add the url in the url tree structure
 	    			logger.debug("--- REST Service with dynamic path found, registering in URL tree !");
-	    			//urlTree.addUrlNode(request.getRequestURL().toString().substring(6));
 	    			urlTree.addUrlNode(request.getRequestURL().toString().substring(6), msg);
 	    			
 	    			// TODO : Add authentification
 	    			// Make links between url tree and esper to analyse tree data and to produce api and service to register in nuxeo
-	    			
 	    			
 	    			// Mock avec un hashset contenant des exemples d'URL
 	    			// treeset avec un compteur pour chacun des noeuds/feuilles => incrementation en temps réel
@@ -128,10 +126,10 @@ public class HttpProxyImpl extends HttpServlet {
 	    	}
 	    	ClientResource resource = new ClientResource(sb.toString());
 	    	// Send an authenticated request using the Basic authentication scheme.
-	    	/*if(request.getRemoteUser() != null){
-	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), "secret");
-	    	}*/
-	    	//
+	    	if(request.getRemoteUser() != null){
+	    		String authhead=request.getHeader("Authorization");
+	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authhead));
+	    	}
 	    	InputStream in = resource.get().getStream();
     	    if(in != null){
     	    	int c;
@@ -226,6 +224,11 @@ public class HttpProxyImpl extends HttpServlet {
 	    	//Representation representation = new org.restlet.representation.StringRepresentation(bodyContent.toString(),MediaType.APPLICATION_XML);
 	    	Representation representation = new org.restlet.representation.StringRepresentation(bodyContent.toString());
 	    	ClientResource resource = new ClientResource(sb.toString());
+	    	// Send an authenticated request using the Basic authentication scheme.
+	    	if(request.getRemoteUser() != null){
+	    		String authhead=request.getHeader("Authorization");
+	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authhead));
+	    	}	    	
 	    	InputStream in = resource.post(representation).getStream();
     	    if(in != null){
     	    	int c;
@@ -283,16 +286,20 @@ public class HttpProxyImpl extends HttpServlet {
 		}
 	}
 	
-}
+	/**
+	 * 
+	 * @param authhead
+	 * @return
+	 * @throws Exception
+	 */
+	private String decodePassword(String authhead) throws Exception {
+		ByteArrayInputStream bais = new ByteArrayInputStream(authhead.getBytes());
+        InputStream b64is = MimeUtility.decode(bais, "base64");
+        byte[] tmp = new byte[authhead.getBytes().length];
+        int n = b64is.read(tmp);
+        byte[] res = new byte[n];
+        System.arraycopy(tmp, 0, res, 0, n);
+        return new String(res);
+    } 
 
-// Utilisation de Jersey client avec Frascati ...
-/*Client client = Client.create();
-//client.addFilter(new HTTPBasicAuthFilter("Administrator", "Administrator")); 
-WebResource webResource = client.resource(request.getRequestURL().toString());
-ClientResponse resp = webResource.get(ClientResponse.class);
-int status = resp.getStatus();
-	System.out.println("Registration request response status = " + status);
-	//String textEntity = resp.getEntity(String.class);
-//System.out.println("Registration request response = " + textEntity);		
-System.out.println("resp.getEntityInputStream():" + resp.getEntityInputStream());
-//respOut.println(textEntity);*/
+}

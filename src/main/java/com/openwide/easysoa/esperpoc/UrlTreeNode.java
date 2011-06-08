@@ -1,6 +1,8 @@
 package com.openwide.easysoa.esperpoc;
 
 import java.util.ArrayDeque;
+import java.util.Deque;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.log4j.Logger;
 import com.openwide.easysoa.esperpoc.esper.Message;
@@ -110,6 +112,14 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 	 */
 	public void addMessage(Message msg){
 		this.msgs.add(msg);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Deque<Message> getMessages(){
+		return this.msgs;
 	}
 	
 	@Override

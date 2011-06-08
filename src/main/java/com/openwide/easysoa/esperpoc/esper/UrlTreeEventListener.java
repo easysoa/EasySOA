@@ -15,7 +15,6 @@ public class UrlTreeEventListener implements UpdateListener {
 	static Logger logger = Logger.getLogger(UrlTreeEventListener.class.getName());
 	
 	/**
-	 * Triggered all 5 minutes :
 	 * newData contains all the events received from the app start !!!!
 	 */
 	@Override
@@ -29,15 +28,11 @@ public class UrlTreeEventListener implements UpdateListener {
 			logger.debug("[MessageListener] --- Event received : " + newData[i].getUnderlying());
 			logger.debug("[MessageListener] --- " + newData[i].getUnderlying().getClass().getName());
 			NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-			//Service service;
 			UrlTreeNodeEvent event = (UrlTreeNodeEvent)(newData[i].getUnderlying());
 			UrlTreeNode node = event.getEventSource();
-			//UrlTreeNode parentNode = (UrlTreeNode)(node.getParent());
 			logger.debug("[MessageListener] --- node name " + node.getNodeName());
 			
-			// Application dectection
-			// Ratio complete = 0%
-			//if(parentNode != null && parentNode.isRoot()){
+			// Application detection
 			UrlTreeNode parentNode = (UrlTreeNode)(node.getParent());					
 			logger.debug("[MessageListener] --- node level " + node.getLevel());
 			logger.debug("[MessageListener] --- node registered " + node.isRegistered());
@@ -57,13 +52,7 @@ public class UrlTreeEventListener implements UpdateListener {
 					}
 				}
 			}
-			// API detection, racine commune => assemblage de plusieurs noeuds
-			// Ratio complete = 0%
-			// Root qui n'est pas un appli root
-			// child qui n'est pas une feuille
-			// www.imedia.com/shop -- [node name : shop, node partial url call count : 24000, node complete url call count : 0], parent node => www.imedia.com, Depth => 2, node childs => 6, ratioPartial => 100.0%, ratioComplete => 0.0%, Ratio childs = 0.025%
-			// www.imedia.com/shop/addBookToBasket -- [node name : addBookToBasket, node partial url call count : 2000, node complete url call count : 0], parent node => shop, Depth => 1, node childs => 851, ratioPartial => 8.333333%, ratioComplete => 0.0%, Ratio childs = 42.55%
-			// www.imedia.com/shop/getBook -- [node name : getBook, node partial url call count : 8000, node complete url call count : 0], parent node => shop, Depth => 1, node childs => 1001, ratioPartial => 33.333332%, ratioComplete => 0.0%, Ratio childs = 12.5125%
+			// API detection
 			else if(node.getChildCount() > 0 && event.getRatioComplete() == 0 && node.getLevel() >= 2  && node.getPartialUrlcallCount() > 5 && !node.isRegistered() && parentNode.isRegistered()){
 				logger.debug("[MessageListener] --- new Api to register !!!!");
 				Api api = new Api(node.getNodeName(), parentNode.getNodeName());
@@ -72,18 +61,19 @@ public class UrlTreeEventListener implements UpdateListener {
 					node.setRegistered();
 				}
 			}
-			
 			// Service detection
 			//Comment faire la distinction entre service et api ????
 			// identification d'un service atomique : ratio du noeud aux messages vu > 
 			// 1 à 10 (?) et ratio du noeud à ses enfants (s'il en a) > 1 à 10 (?)
-			/*else if(){
-				
+			/*else if(event.getRatioAllChilds()){
+				Message lastMessage = node.getMessages().getLast();
+				Service service = new Service(node.getNodeName(), parentNode.getNodeName());
+				service.setCallCount(node.getMessages().size());
+				service.setHttpMethod(lastMessage.getMethod());
+				if(!"ok".equals(nrs.registerRestService(service))){
+					node.setRegistered();
+				}
 			}*/
-			// Detecting API / Application / Services 
-			// Analyse ratio, Depth ....
-			// Esper request or Java algorithm ????  
-			
 			// Application => direct childs of root node
 			// API => level 2 childs to level n childs 
 			// Atomic service => level n+1 to level n+n

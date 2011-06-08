@@ -57,11 +57,6 @@ public class UrlTree extends DefaultTreeModel {
 			// if node already seen, increase counter value
 			if(urlNode != null){
 				logger.debug("[addUrlNode()] Node found, counter ++");
-				//
-				// Ajout boucle pour incrementer chaque partie de l'url
-				// url complete  = url d'origine
-				// url partielle = url decomposée
-				//
 				if(path.toString().equalsIgnoreCase(url)){
 					urlNode.increaseCompleteUrlCounter();
 				} else {
@@ -75,7 +70,7 @@ public class UrlTree extends DefaultTreeModel {
 				if(path.toString().equalsIgnoreCase(url)){
 					urlNode.increaseCompleteUrlCounter();
 				} else {
-					urlNode.increasePartialUrlCounter();					
+					urlNode.increasePartialUrlCounter();
 				}
 				// Get the parent node and add a new child
 				// if path = token => parent node = root
@@ -87,7 +82,7 @@ public class UrlTree extends DefaultTreeModel {
 					logger.debug("[addUrlNode()] Node to get : " + path.toString().subSequence(0, path.toString().lastIndexOf('/')));
 					nodeIndex.get(path.toString().subSequence(0, path.toString().lastIndexOf('/'))).add(urlNode);
 				}
-				logger.debug("[addUrlNode()] New node index : " + path.toString()); 
+				logger.debug("[addUrlNode()] New node index : " + path.toString());
 				nodeIndex.put(path.toString(), urlNode);
 			}
 			// Add the msg in the node list if the last node is reached
@@ -100,7 +95,7 @@ public class UrlTree extends DefaultTreeModel {
 			}
 		}
 		// Increase the root for each url to obtain the total number of url
-		((UrlTreeNode)(this.getRoot())).increasePartialUrlCounter();		
+		((UrlTreeNode)(this.getRoot())).increasePartialUrlCounter();
 	}
 
 	/**

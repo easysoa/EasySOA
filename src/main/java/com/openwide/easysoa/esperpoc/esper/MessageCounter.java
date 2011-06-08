@@ -18,12 +18,11 @@ public class MessageCounter implements UpdateListener {
 		logger.debug("[MessageCounter] ****");
 		if(newData != null){
 			logger.debug("[MessageCounter] --- newData Event received with : " + newData.length + " elements");
-			
 			for(int i = 0; i < newData.length; i++){
 				logger.debug("[MessageCounter] --- newData Event " + i + " received: " + newData[i].getUnderlying());
 				logger.debug("[MessageCounter] --- " + newData[i].getUnderlying().getClass().getName());
 				@SuppressWarnings("unchecked")
-				HashMap<String,Object> hm = (HashMap<String,Object>)(newData[i].getUnderlying());		
+				HashMap<String,Object> hm = (HashMap<String,Object>)(newData[i].getUnderlying());
 				Iterator<String> iter = hm.keySet().iterator();
 				while(iter.hasNext()){
 					String key = iter.next();
@@ -38,7 +37,7 @@ public class MessageCounter implements UpdateListener {
 			logger.debug("[MessageCounter] --- oldData Event received: " + oldData[0].getUnderlying());
 			logger.debug("[MessageCounter] --- " + oldData[0].getUnderlying().getClass().getName());
 			@SuppressWarnings("unchecked")
-			HashMap<String,Object> hm = (HashMap<String,Object>)(oldData[0].getUnderlying());		
+			HashMap<String,Object> hm = (HashMap<String,Object>)(oldData[0].getUnderlying());
 			Iterator<String> iter = hm.keySet().iterator();
 			while(iter.hasNext()){
 				String key = iter.next();
@@ -47,8 +46,6 @@ public class MessageCounter implements UpdateListener {
 				logger.debug("[MessageCounter] Clazz value : " + hm.get(key).getClass().getName());
 			}
 		}		
-		
-		
 	}
 	
 }

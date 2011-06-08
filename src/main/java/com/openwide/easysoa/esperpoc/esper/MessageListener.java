@@ -22,8 +22,6 @@ public class MessageListener implements UpdateListener {
 		logger.debug("[MessageListener] --- Event received: " + newData[0].getUnderlying());
 		logger.debug("[MessageListener] --- " + newData[0].getUnderlying().getClass().getName());
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		WSDLService service;
-		//Message msg = (Message)(newData[0].getUnderlying());
 		@SuppressWarnings("unchecked")
 		HashMap<String,Object> hm = (HashMap<String,Object>)(newData[0].getUnderlying());
 		/*Iterator<String> iter = hm.keySet().iterator();
@@ -33,23 +31,25 @@ public class MessageListener implements UpdateListener {
 			System.out.println("Value : " + hm.get(key));
 			System.out.println("Clazz value : " + hm.get(key).getClass().getName());
 		}*/
-		//Message msg =  (Message)(hm.get("s"));
 		BeanEventBean beb = (BeanEventBean)(hm.get("s"));
 		Message msg = (Message)(beb.getUnderlying());
 		
-		// Construction d'un service + send service event
+		// Service construction + send Esper event
 		String serviceName = msg.getPathName();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
 		if("WSDl".equals(msg.getType())){
+			WSDLService service;
 			service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
 			nrs.registerWSDLService(service);
-		} else {
-			service = new WSDLService(msg.getHost(), serviceName, msg.getPathName(), msg.getMethod());
-			nrs.registerRestService(service);
-		}
+		} /*else {
+			//Service service;
+			//service = new Service(msg.getHost(), serviceName, msg.getPathName(), msg.getMethod());
+			// TODO : change this to call the good method 
+			//nrs.registerRestService(service);
+		}*/
     }
 	
 }
