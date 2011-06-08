@@ -43,24 +43,75 @@
       </templates>
       <rows>
         <row>
+          <widget>appliimpldef_url</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_uiUrl</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_sourcesUrl</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_server</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_provider</widget>
+        </row>
+        <row>
           <widget>appliimpldef_technology</widget>
         </row>
         <row>
           <widget>appliimpldef_standard</widget>
         </row>
         <row>
-          <widget>appliimpldef_server</widget>
-        </row>
-        <row>
-          <widget>appliimpldef_uiUrl</widget>
-        </row>
-        <row>
-          <widget>appliimpldef_rootServicesUrl</widget>
-        </row>
-        <row>
-          <widget>appliimpldef_sourcesUrl</widget>
+          <widget>appliimpldef_environment</widget>
         </row>
       </rows>
+      <widget name="appliimpldef_url" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.uUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:url</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_uiUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.uiUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:uiUrl</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_sourcesUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:sourcesUrl</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_server" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.server</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:server</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_provider" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.provider</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:provider</field>
+	      </fields>
+	  </widget>
       <widget name="appliimpldef_technology" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.appliimpldef.technology</label>
@@ -79,40 +130,13 @@
 	        <field>app:standard</field>
 	      </fields>
 	  </widget>
-      <widget name="appliimpldef_server" type="text">
+	  <widget name="appliimpldef_environment" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.server</label>
+	        <label mode="any">label.easysoa.appliimpldef.environment</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>app:server</field>
-	      </fields>
-	  </widget>
-      <widget name="appliimpldef_uiUrl" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.uiUrl</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:uiUrl</field>
-	      </fields>
-	  </widget>
-      <widget name="appliimpldef_rootServicesUrl" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.rootServicesUrl</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:rootServicesUrl</field>
-	      </fields>
-	  </widget>
-      <widget name="appliimpldef_sourcesUrl" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:sourcesUrl</field>
+	        <field>app:environment</field>
 	      </fields>
 	  </widget>
     </layout>
@@ -130,16 +154,7 @@
           <widget>apidef_url</widget>
         </row>
         <row>
-          <widget>apidef_machine</widget>
-        </row>
-        <row>
           <widget>apidef_protocols</widget>
-        </row>
-        <row>
-          <widget>apidef_provider</widget>
-        </row>
-        <row>
-          <widget>apidef_environment</widget>
         </row>
       </rows>
 	  <widget name="apidef_application" type="selectOneDirectory">
@@ -168,19 +183,6 @@
             <mode value="edit">hidden</mode>
           </widgetModes>
 	  </widget>
-      <widget name="apidef_machine" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.apidef.machine</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>api:machine</field>
-	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
-	  </widget>
       <widget name="apidef_protocols" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.apidef.protocols</label>
@@ -193,24 +195,6 @@
             <mode value="create">hidden</mode>
             <mode value="edit">hidden</mode>
           </widgetModes>
-	  </widget>
-      <widget name="apidef_provider" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.apidef.provider</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>api:provider</field>
-	      </fields>
-	  </widget>
-      <widget name="apidef_environment" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.apidef.environment</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>api:environment</field>
-	      </fields>
 	  </widget>
     </layout>
     
@@ -228,6 +212,16 @@
         </row>
         <row>
           <widget>servicedef_relatedUsers</widget>
+        </row>
+        <!-- TODO: Custom widget to display signature -->
+        <row>
+          <widget>servicedef_httpMethod</widget>
+        </row>
+        <row>
+          <widget>servicedef_contentTypeIn</widget>
+        </row>
+        <row>
+          <widget>servicedef_contentTypeOut</widget>
         </row>
        </rows>
       <widget name="servicedef_url" type="text">
@@ -266,6 +260,33 @@
             <mode value="create">hidden</mode>
           </widgetModes>
 	  </widget>
+      <widget name="servicedef_httpMethod" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.httpMethod</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:httpMethod</field>
+	      </fields>
+	  </widget>
+      <widget name="servicedef_contentTypeIn" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.contentTypeIn</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:contentTypeIn</field>
+	      </fields>
+	  </widget>
+      <widget name="servicedef_contentTypeOut" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.contentTypeOut</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:contentTypeOut</field>
+	      </fields>
+	  </widget>
     </layout>
     
 	<!-- Override default Dublin Core layout -->
@@ -289,34 +310,5 @@
       </rows>
     </layout>
     
-    <!--
-    <layout name="serviceChooser">
-      <templates>
-        <template mode="any">/layouts/layout_default_template.xhtml</template>
-      </templates>
-      <rows>
-        <row>
-          <widget>serviceChooser</widget>
-        </row>
-     </rows>
-     <widget name="serviceChooser" type="selectOneDirectory">
-	    <labels>
-	        <label mode="any">label.easysoa.apidef.serviceid</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	        <field>api:serviceid</field>
-	    </fields>
-	    <properties mode="any">
-	        <property name="directoryName">servicelist</property>
-	        <property name="localize">true</property>
-	    </properties>
-        <widgetModes>
-            <mode value="view">hidden</mode>
-        </widgetModes>
-	  </widget>
-	</layout>
-	-->
-	
   </extension>
 </component>

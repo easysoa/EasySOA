@@ -16,7 +16,7 @@ import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.restlet.data.CharacterSet;
 
 /**
- * Encapsulation for manipulating a file from an HTTP url
+ * Encapsulation for downloading a file from an HTTP url
  * @author mkalam-alami
  *
  */
@@ -38,7 +38,7 @@ public class HttpFile {
 		this.connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
 		this.file = File.createTempFile("tmp", "tmp");
 		
-		connection.setReadTimeout(DOWNLOAD_TIMEOUT);
+		connection.setReadTimeout(DOWNLOAD_TIMEOUT); // TODO: Doesn't work?
 		InputStream is = this.connection.getInputStream();
 		FileOutputStream fos = new FileOutputStream(this.file);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,

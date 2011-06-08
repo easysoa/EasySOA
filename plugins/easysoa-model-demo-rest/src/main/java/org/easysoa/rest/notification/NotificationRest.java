@@ -28,17 +28,13 @@ import com.sun.jersey.spi.container.ContainerRequest;
 public abstract class NotificationRest {
 
 	protected static final String REGISTRY_ROOT = "/default-domain/workspaces/";
-	protected static final String DC_SCHEMA = "dublincore";
-	
-	protected static final String PARAM_TITLE = "title";
-	protected static final String PARAM_DESCRIPTION = "description";
-	
-	protected final CoreSession session;
+
+	protected CoreSession session = null;
 	protected JSONObject result = new JSONObject();
 	protected boolean errorFound = false;
 	protected static Map<String, String> dublinCoreDef; 
 	protected static LoginContext loginContext; 
-	
+
 	private static final Log log = LogFactory.getLog(NotificationRest.class);
 	private static final String ERROR = "[ERROR] ";
 
@@ -47,21 +43,59 @@ public abstract class NotificationRest {
 	 * @throws LoginException
 	 * @throws JSONException 
 	 */
-	public NotificationRest() throws LoginException, JSONException {
-		// XXX: As the REST API is (for now) anonymously available, we need to explicitly log in
-		loginContext = Framework.login("Administrator", "Administrator");
-		session = WebEngine.getActiveContext().getUserSession().getCoreSession(null);
-
-		result.put("result", "ok");
+	public NotificationRest() {
+	
+		try {
+			result.put("result", "ok");
+		} catch (JSONException e) {
+			log.error(e);
+		}
 		
 		if (dublinCoreDef == null) {
 			dublinCoreDef = new HashMap<String, String>();
-			dublinCoreDef.put(PARAM_TITLE, "The name of the document.");
-			dublinCoreDef.put(PARAM_DESCRIPTION, "A short description.");
+			dublinCoreDef.put("title", "The name of the document.");
+			dublinCoreDef.put("description", "A short description.");
 		}
 		
 	}
 	
+	protected void login() throws LoginException {
+		// XXX: As the REST API is (for now) anonymously available, we need to explicitly log in
+		loginContext = Framework.login("Administrator", "Administrator");
+		session = WebEngine.getActiveContext().getUserSession().getCoreSession(null);
+	}
+	
+	protected void logout() {
+		try {
+			loginContext.logout();
+		} catch (LoginException e) {
+			log.warn("Failed to logout: "+e.getMessage());
+		}
+	}
+
+	/**
+	 * Appends an error to a JSON object (in the "result" item)
+	 * @param json
+	 * @param msg
+	 * @throws JSONException
+	 */
+	protected final void appendError(String msg) {
+		try {
+			errorFound = true;
+			String formattedMsg = ERROR+msg;
+			Object existingResult;
+				existingResult = result.get("result");
+			if (existingResult.equals("ok")) {
+				result.put("result", formattedMsg);
+			}
+			else {
+				result.append("result", formattedMsg);
+			}
+		} catch (JSONException e) {
+			log.error("Failed to append error '"+msg+"' in response", e);
+		}
+	}
+
 	/**
 	 * Sets a property to a model, but only if the value parameter is not null.
 	 * @param result
@@ -90,15 +124,15 @@ public abstract class NotificationRest {
 		for (String key : properties.keySet()) {
 			// Given schema specific properties
 			if (schemaDef.containsKey(key)) {
-				setPropertyIfNotNull(model, schema, key, properties.get(key).get(0));
+				setPropertyIfNotNull(model, schema, key, properties.getFirst(key));
 			}
 			// Dublin Core properties
 			else if (dublinCoreDef.containsKey(key)) {
-				setPropertyIfNotNull(model, DC_SCHEMA, key, properties.get(key).get(0));
+				setPropertyIfNotNull(model, "dublincore", key, properties.getFirst(key));
 			}
 			// Unknown
 			else {
-				appendError("Unknown parameter "+key+" ");
+				appendError("Unknown parameter "+key);
 				break;
 			}
 		}
@@ -135,37 +169,6 @@ public abstract class NotificationRest {
 	 */
 	protected final String getFormattedResult() {
 		return format(false, null);
-	}
-
-	/**
-	 * Appends an error to a JSON object (in the "result" item)
-	 * @param json
-	 * @param msg
-	 * @throws JSONException
-	 */
-	protected final void appendError(String msg) {
-		try {
-			errorFound = true;
-			String formattedMsg = ERROR+msg;
-			Object existingResult;
-				existingResult = result.get("result");
-			if (existingResult.equals("ok")) {
-				result.put("result", formattedMsg);
-			}
-			else {
-				result.append("result", formattedMsg);
-			}
-		} catch (JSONException e) {
-			log.error("Failed to append error '"+msg+"' in response", e);
-		}
-	}
-	
-	protected void logout() {
-		try {
-			loginContext.logout();
-		} catch (LoginException e) {
-			log.warn("Failed to logout: "+e.getMessage());
-		}
 	}
 
 	private final String format(boolean jsonp, String callback) {

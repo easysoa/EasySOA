@@ -2,6 +2,9 @@ package org.easysoa.services;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceAPI;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -25,53 +28,39 @@ public class DocumentService {
 	public static final String DEFAULT_APPLIIMPL_TITLE = "Default application";
 	public static final String DEFAULT_APPLIIMPL_URL = "(Unknown)";
 
-	public static final String APPLIIMPL_DOCTYPE = "Workspace";
-	public static final String SERVICEAPI_DOCTYPE = "ServiceAPI";
-	public static final String SERVICE_DOCTYPE = "Service";
-
 	// Must not be directly accessed, use getters
 	private static DocumentModel defaultAppliImpl = null;
 	private static DocumentModel wsRoot = null; 
 	
-	public static final DocumentModel createAppliImpl(CoreSession session,
-			String url, String title) throws ClientException {
+	public static final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException {
 		
-		DocumentModel appliImpl = session.createDocumentModel(APPLIIMPL_DOCTYPE);
-		appliImpl.setPathInfo(getWSRoot(session).getPathAsString(), IdUtils.generateStringId());
-		appliImpl.setProperty("appliimpldef", "rootServicesUrl", url);
-		appliImpl.setProperty("dublincore", "title", title);
+		DocumentModel appliImpl = session.createDocumentModel(
+				getWSRoot(session).getPathAsString(),
+				IdUtils.generateStringId(),
+				AppliImpl.DOCTYPE);
+		appliImpl.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, url);
+		appliImpl.setProperty("dublincore", "title", url);
 		return session.createDocument(appliImpl);
 	}
 
 	/**
 	 * 
 	 * @param session
-	 * @param parentURL If null, default application is used
+	 * @param parentPath If null, default application is used
 	 * @param title
 	 * @return
 	 * @throws ClientException
 	 */
 	public static final DocumentModel createServiceAPI(CoreSession session,
-			String parentURL, String url) throws ClientException {
+			String parentPath, String url) throws ClientException {
 		
-		DocumentModel parentModel = null;
-		if (parentURL == null) {
-			parentModel = DocumentService.findServiceApi(session, parentURL);
-			if (parentModel == null) {
-				parentModel = DocumentService.findAppliImpl(session, parentURL);
-			}
-			if (parentModel == null) {
-				parentModel = DocumentService.createAppliImpl(session, parentURL, parentURL);
-				session.saveDocument(parentModel);
-			}
-		}
-		if (parentModel == null) {
-			parentModel = session.getDocument(getDefaultAppliImpl(session).getRef());
+		if (parentPath == null) {
+			parentPath = session.getDocument(getDefaultAppliImpl(session).getRef()).getPathAsString();
 		}
 
-		DocumentModel serviceAPI = session.createDocumentModel(SERVICEAPI_DOCTYPE);
-		serviceAPI.setPathInfo(parentModel.getPathAsString(), IdUtils.generateStringId());
-		serviceAPI.setProperty("serviceapidef", "url", url);
+		DocumentModel serviceAPI = session.createDocumentModel(
+				parentPath, IdUtils.generateStringId(), ServiceAPI.DOCTYPE);
+		serviceAPI.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_URL, url);
 		serviceAPI.setProperty("dublincore", "title", url);
 		return session.createDocument(serviceAPI);
 	}
@@ -84,14 +73,14 @@ public class DocumentService {
 	 * @return
 	 * @throws ClientException
 	 */
-	public static final DocumentModel createService(CoreSession session, String apiUrl, String title) throws ClientException {
+	public static final DocumentModel createService(CoreSession session,
+			String parentPath, String url) throws ClientException {
 		
-		DocumentModel api = findServiceApi(session, apiUrl);
-		
-		if (api != null) {
-			DocumentModel service = session.createDocumentModel(SERVICE_DOCTYPE);
-			service.setPathInfo(api.getPathAsString(), IdUtils.generateStringId());
-			service.setProperty("dublincore", "title", title);
+		if (parentPath != null) {
+			DocumentModel service = session.createDocumentModel(
+					parentPath, IdUtils.generateStringId(), Service.DOCTYPE);
+			service.setProperty(Service.SCHEMA, Service.PROP_URL, url);
+			service.setProperty("dublincore", "title", url);
 			return session.createDocument(service);
 		}
 		else {
@@ -110,7 +99,9 @@ public class DocumentService {
 		if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
 			DocumentModel appliimpl = DocumentService.getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
 			if (appliimpl == null) {
-				DocumentModel appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_URL, DEFAULT_APPLIIMPL_TITLE);
+				DocumentModel appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_URL);
+				appliImpl.setProperty("dublincore", "title", DEFAULT_APPLIIMPL_TITLE);
+				session.saveDocument(appliImpl);
 				session.save();
 				defaultAppliImpl = appliImpl;
 				return defaultAppliImpl;
@@ -120,16 +111,26 @@ public class DocumentService {
 		}
 		return defaultAppliImpl;
 	}
+	
 	public static DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
-		return findFirstDocument(session, APPLIIMPL_DOCTYPE, "app:rootServicesUrl", appliUrl);
+		if (appliUrl == null)
+			return null;
+		return findFirstDocument(session, AppliImpl.DOCTYPE, 
+				AppliImpl.SCHEMA_PREFIX+AppliImpl.PROP_URL, appliUrl);
 	}
 	
 	public static DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
-		return findFirstDocument(session, SERVICEAPI_DOCTYPE, "api:url", apiUrl);
+		if (apiUrl == null)
+			return null;
+		return findFirstDocument(session, ServiceAPI.DOCTYPE, 
+				ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL, apiUrl);
 	}
 	
 	public static DocumentModel findService(CoreSession session, String serviceUrl) throws ClientException {
-		return findFirstDocument(session, SERVICE_DOCTYPE, "serv:url", serviceUrl);
+		if (serviceUrl == null)
+			return null;
+		return findFirstDocument(session, Service.DOCTYPE,
+				Service.SCHEMA_PREFIX+Service.PROP_URL, serviceUrl);
 	}
 
 	private static DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
@@ -140,10 +141,13 @@ public class DocumentService {
 
 	private static DocumentModel getWSRoot(CoreSession session) throws ClientException {
 		if (wsRoot == null || !session.exists(wsRoot.getRef())) {
-			DocumentModel root = DocumentService.getChild(session, session.getRootDocument().getRef(), DOMAIN_TITLE);
-			if (root == null)
-				return null;
-			wsRoot = DocumentService.getChild(session, root.getRef(), WORKSPACE_ROOT_TITLE);
+			DocumentModel defaultDomain = session.getChildren(session.getRootDocument().getRef()).get(0);
+			DocumentModelList domainChildren =  session.getChildren(defaultDomain.getRef());
+			for (DocumentModel model : domainChildren) {
+				if (model.getType().equals("WorkspaceRoot")) {
+					return model;
+				}
+			}
 		}
 		return wsRoot;
 	}

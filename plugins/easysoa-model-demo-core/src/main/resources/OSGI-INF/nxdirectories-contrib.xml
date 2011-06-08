@@ -27,40 +27,16 @@
       <createTablePolicy>on_missing_columns</createTablePolicy>
     </directory>
     
-    <directory name="machine">
-      <schema>xvocabulary</schema> <!-- et non "vocabulary" -->
-      <parentDirectory>environment</parentDirectory> <!-- Sous-vocabulaire d'environnement -->
+    <directory name="server">
+      <schema>xvocabulary</schema> <!-- not "vocabulary" -->
+      <parentDirectory>environment</parentDirectory> <!-- "server" is a sub-vocabulary of "environement" -->
       <dataSource>java:/nxsqldirectory</dataSource>
       <cacheTimeout>3600</cacheTimeout>
       <cacheMaxSize>1000</cacheMaxSize>
-      <table>voc_machine</table>
+      <table>voc_server</table>
       <idField>id</idField>
       <autoincrementIdField>false</autoincrementIdField>
-      <dataFile>vocabularies/machine.csv</dataFile>
-      <createTablePolicy>on_missing_columns</createTablePolicy>
-    </directory>
-    
-    <!-- Internal list for creating Service <=> Descriptor relations -->
-    <directory name="servicelist">
-      <schema>vocabulary</schema>
-      <dataSource>java:/nxsqldirectory</dataSource>
-      <cacheTimeout>3600</cacheTimeout>
-      <cacheMaxSize>1000</cacheMaxSize>
-      <table>servicelist</table>
-      <idField>id</idField>
-      <autoincrementIdField>false</autoincrementIdField>
-      <!--<dataFile>vocabularies/empty.csv</dataFile>-->
-      <createTablePolicy>on_missing_columns</createTablePolicy>
-    </directory>
-    <directory name="descriptorlist">
-      <schema>vocabulary</schema>
-      <dataSource>java:/nxsqldirectory</dataSource>
-      <cacheTimeout>3600</cacheTimeout>
-      <cacheMaxSize>1000</cacheMaxSize>
-      <table>descriptorlist</table>
-      <idField>id</idField>
-      <autoincrementIdField>false</autoincrementIdField>
-      <!--<dataFile>vocabularies/empty.csv</dataFile>-->
+      <dataFile>vocabularies/server.csv</dataFile>
       <createTablePolicy>on_missing_columns</createTablePolicy>
     </directory>
     

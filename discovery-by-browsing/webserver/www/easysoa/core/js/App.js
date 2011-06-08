@@ -20,9 +20,14 @@ $(function() {
           SubmitForm.failure(obj.substring(7, obj.length-1));
         }
         else {
-          obj = jQuery.parseJSON(obj);
-          if (!Descriptors.contains(obj)) {
-            Descriptors.add(obj);
+          try {
+            obj = jQuery.parseJSON(obj);
+            if (!Descriptors.contains(obj)) {
+              Descriptors.add(obj);
+            }
+          }
+          catch (error) {
+            console.log(error);
           }
         }
       });

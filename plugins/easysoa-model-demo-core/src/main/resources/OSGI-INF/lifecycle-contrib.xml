@@ -4,6 +4,7 @@
 	<extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
 		<types>
 		  <type name="Service">default</type>
+		  <type name="ServiceAPI">default</type>
 		</types>
 	</extension>
 	

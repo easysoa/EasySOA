@@ -27,9 +27,9 @@ public class VocabularyService {
 	private static final DirectoryServiceImpl dirService = (DirectoryServiceImpl) Framework
 			.getRuntime().getComponent(DirectoryService.NAME);
 	
-	public static final String VOCBULARY_APPLICATION = "application"; 
-	public static final String VOCBULARY_ENVIRONMENT = "environment"; 
-	public static final String VOCBULARY_MACHINE = "machine"; 
+	public static final String VOCABULARY_APPLICATION = "application"; 
+	public static final String VOCABULARY_ENVIRONMENT = "environment"; 
+	public static final String VOCABULARY_SERVER = "server"; 
 
 	/**
 	 * Checks if entry ID exists in a vocabulary.

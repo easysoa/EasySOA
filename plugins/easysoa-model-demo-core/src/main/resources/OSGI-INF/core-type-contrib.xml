@@ -40,22 +40,6 @@
       </subtypes>
     </doctype>
     
-    <!--
-    <doctype name="Workspace" extends="Folder">
-      <schema name="file"/>
-      <schema name="webcontainer"/>
-      <schema name="publishing"/>
-      <schema name="files" />
-      <facet name="SuperSpace"/>
-      <facet name="WebView"/>
-      <subtypes>
-        <type>Workspace</type>
-        <type>Folder</type>
-        <type>File</type>
-        <type>Note</type>
-      </subtypes>
-    </doctype> -->
-    
     <doctype extends="Folder" name="Workspace">
       <schema name="dublincore"/>
       <schema name="appliimpldef"/>

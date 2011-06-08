@@ -1,6 +1,10 @@
 package org.easysoa.rest.notification;
 
-import java.util.HashMap;
+import static org.easysoa.doctypes.ServiceAPI.PROP_APPLICATION;
+import static org.easysoa.doctypes.ServiceAPI.PROP_PARENTURL;
+import static org.easysoa.doctypes.ServiceAPI.PROP_URL;
+import static org.easysoa.doctypes.ServiceAPI.SCHEMA;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +20,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.rest.HttpFile;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.VocabularyService;
@@ -32,68 +37,25 @@ import com.sun.jersey.api.representation.Form;
 @Path("easysoa/notification/api")
 public class APINotificationRest extends NotificationRest {
 
-	public static final String APIDEF_SCHEMA = "serviceapidef";
-	
-	public static final String PARAM_URL = "url";
-	public static final String PARAM_PARENTURL = "parentUrl";
-	public static final String PARAM_SOURCEURL = "sourceUrl";
-	public static final String PARAM_APPLICATION = "application";
-	
 	private static final Log log = LogFactory.getLog(APINotificationRest.class);
-	private static final String PATH = "easysoa/notification/api/"; // TODO: Replace
-	private static Map<String, String> apiDef; 
-	
-	public APINotificationRest() throws LoginException, JSONException {
-		super();
-		if (apiDef == null) {
-			apiDef = new HashMap<String, String>(); 
-			apiDef.put(PARAM_URL, "(mandatory) Service API url (WSDL address, parent path...).");
-			apiDef.put(PARAM_PARENTURL, "(mandatory) The parent URL, which is either another service API, or the service root.");
-			apiDef.put(PARAM_SOURCEURL, "The web page where the service has been found (useful for REST only).");
-			apiDef.put(PARAM_APPLICATION, "The related business application.");
-		}
-	}
-
-	/**
-	 * Documentation
-	 * @return
-	 * @throws JSONException
-	 */
-	@GET
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Object doGet() throws JSONException {
-		
-		result = new JSONObject();
-		JSONObject params = new JSONObject();
-		for (String key : apiDef.keySet()) {
-			params.put(key, apiDef.get(key));
-		}
-		for (String key : dublinCoreDef.keySet()) {
-			params.put(key, dublinCoreDef.get(key));
-		}
-		result.put("parameters", params);
-		result.put("description", "Service-level notification.");
-		
-		logout();
-		return getFormattedResult();
-	}
+	private static final String PATH = "easysoa/notification/api/"; // TODO: Access from httpContext
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object doPost(@Context HttpContext httpContext) throws JSONException {
+	public Object doPost(@Context HttpContext httpContext) throws JSONException, LoginException {
 		
 		// Initialize
+		login();
 		Form params = getForm(httpContext);
 		
 		// Check mandatory fields
-		if (params.get(PARAM_URL) != null && params.get(PARAM_PARENTURL) != null) {
+		if (params.get(PROP_URL) != null) {
 			
 			// Exctract main fields
-			String url = params.get(PARAM_URL).get(0),
-				parentUrl = params.get(PARAM_PARENTURL).get(0),
-				title = (params.get(PARAM_TITLE) != null) ? params.get(PARAM_TITLE).get(0) : null;
+			String url = params.getFirst(PROP_URL),
+				parentUrl = params.getFirst(PROP_PARENTURL),
+				title = params.getFirst("title");
 			
 			if (title == null)
 				title = url;
@@ -105,21 +67,32 @@ public class APINotificationRest extends NotificationRest {
 				if (parentModel == null)
 					parentModel = DocumentService.findAppliImpl(session, parentUrl);
 				if (parentModel == null) {
-					parentModel = DocumentService.createAppliImpl(session, parentUrl, parentUrl);
-					parentModel.setProperty(AppliImplNotificationRest.APPLIIMPLDEF_SCHEMA, 
-							AppliImplNotificationRest.PARAM_ROOTSERVICESURL, parentUrl);
-					session.saveDocument(parentModel);
+					if (parentUrl == null) {
+						parentModel = DocumentService.getDefaultAppliImpl(session);
+					}
+					else {
+						parentModel = DocumentService.createAppliImpl(session, parentUrl);
+					}
 					session.save();
 				}
 				
 				DocumentModel apiModel = DocumentService.findServiceApi(session, url);
 				if (apiModel == null)
-					apiModel = DocumentService.createServiceAPI(session, parentUrl, url);
+					apiModel = DocumentService.createServiceAPI(session, parentModel.getPathAsString(), url);
 				session.move(apiModel.getRef(), parentModel.getRef(), apiModel.getName());
 
 				// Update optional properties
-				params.remove(PARAM_PARENTURL);
-				setPropertiesIfNotNull(apiModel, APIDEF_SCHEMA, apiDef, params);
+				if (url.toLowerCase().contains("wsdl")) {
+					try {
+						HttpFile f = new HttpFile(params.getFirst(url));
+						f.download();
+						apiModel.setProperty("file", "content", f.getBlob());
+					} catch (Exception e) {
+						appendError("Failed to download attached file");
+					}
+				}
+				params.remove(PROP_PARENTURL);
+				setPropertiesIfNotNull(apiModel, SCHEMA, ServiceAPI.getPropertyList(), params);
 				
 				// Save
 				if (!errorFound) {
@@ -145,9 +118,31 @@ public class APINotificationRest extends NotificationRest {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object doPost() throws JSONException {
+	public Object doPost() throws JSONException, LoginException {
 		appendError("Content type should be 'application/x-www-form-urlencoded'");
-		logout();
+		return getFormattedResult();
+	}
+
+	/**
+	 * Documentation
+	 * @return
+	 * @throws JSONException
+	 */
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object doGet() throws JSONException {
+		result = new JSONObject();
+		JSONObject params = new JSONObject();
+		Map<String, String> apiDef = ServiceAPI.getPropertyList();
+		for (String key : apiDef.keySet()) {
+			params.put(key, apiDef.get(key));
+		}
+		for (String key : dublinCoreDef.keySet()) {
+			params.put(key, dublinCoreDef.get(key));
+		}
+		result.put("parameters", params);
+		result.put("description", "Service-level notification.");
 		return getFormattedResult();
 	}
 
@@ -163,13 +158,16 @@ public class APINotificationRest extends NotificationRest {
 	 * {url} The file to upload, not encoded. Other protocols than HTTP are not supported.
 	 * 
 	 * @author mkalam-alami
+	 * @throws LoginException 
 	 *
 	 */
 	@GET
 	@Produces("application/x-javascript")
 	@Path("/{all:.*}") // {applicationName}/{serviceName}/{url}
-	public Object doGet(@Context UriInfo uriInfo) {
-		 
+	public Object doGet(@Context UriInfo uriInfo) throws LoginException {
+
+		login();
+		
 		// Parameters extraction
 		
 		List<String> callbacks = uriInfo.getQueryParameters().get("callback");
@@ -234,7 +232,7 @@ public class APINotificationRest extends NotificationRest {
 						}
 						else {
 							model = session.createDocumentModel(parentModel.getPathAsString(),
-									IdUtils.generateStringId(), DocumentService.SERVICEAPI_DOCTYPE);
+									IdUtils.generateStringId(), ServiceAPI.DOCTYPE);
 						}
 						model.setProperty("file", "content", f.getBlob());
 						model = session.createDocument(model);
@@ -245,8 +243,8 @@ public class APINotificationRest extends NotificationRest {
 						// Service creation
 						if (serviceName != null || applicationName != null) {
 							
-							model.setProperty(DC_SCHEMA, PARAM_TITLE, serviceName);
-							model.setProperty(APIDEF_SCHEMA, PARAM_APPLICATION, applicationName);
+							model.setProperty("dublincore", "title", serviceName);
+							model.setProperty(SCHEMA, PROP_APPLICATION, applicationName);
 							session.saveDocument(model);
 							
 							// New application in the vocabulary

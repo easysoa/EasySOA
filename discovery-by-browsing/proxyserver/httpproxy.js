@@ -118,6 +118,7 @@ var server = http.createServer(function(request, response) {
                       'serviceName': link,
                       'applicationName': json.applicationName
                     };
+                console.log("[INFO] Found: "+newLink.url);
                 if (clients != null) {
                   clients.broadcast(JSON.stringify(newLink));
                 }
@@ -150,7 +151,7 @@ io.on('connection', function(client){
   // Give global access to socket.io connections
   if (clients == null)
     clients = client;
-    
+  
   // Send stored WSDLs
   for (key in wsdlList) {
     client.send(JSON.stringify(wsdlList[key]));

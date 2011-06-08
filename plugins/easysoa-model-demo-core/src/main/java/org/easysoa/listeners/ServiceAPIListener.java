@@ -1,11 +1,16 @@
 package org.easysoa.listeners;
 
+import static org.easysoa.doctypes.ServiceAPI.*;
+
 import java.io.File;
 import java.net.InetAddress;
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.VocabularyService;
 import org.nuxeo.ecm.core.api.Blob;
@@ -20,16 +25,13 @@ import org.ow2.easywsdl.wsdl.WSDLFactory;
 import org.ow2.easywsdl.wsdl.api.Binding;
 import org.ow2.easywsdl.wsdl.api.Description;
 import org.ow2.easywsdl.wsdl.api.Endpoint;
-import org.ow2.easywsdl.wsdl.api.Service;
 import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
 public class ServiceAPIListener implements EventListener {
 	
 	private static final Log log = LogFactory.getLog(ServiceAPIListener.class);
 
-	public static final String SERVICEAPIDEF_SCHEMA = "serviceapidef";
 	public static final String DEFAULT_ENVIRONMENT = "Production";
-	public static final String SERVICEDEF_SCHEMA = "servicedef";
 
 	public void handleEvent(Event event) {
 		
@@ -48,9 +50,11 @@ public class ServiceAPIListener implements EventListener {
 			return;
 		}
 		String type = doc.getType();
-		if (!type.equals(DocumentService.SERVICEAPI_DOCTYPE)) {
+		if (!type.equals(ServiceAPI.DOCTYPE)) {
 			return;
 		}
+		
+		String environment = null, server = null;
 		
 		// If the file contains a WSDL file, parse it
 		try {
@@ -68,8 +72,6 @@ public class ServiceAPIListener implements EventListener {
 			
 			// TODO: Test if WSDL
 			
-			String environment = null, machine = null;
-			
 			try {
 
 				// Analyze WSDL
@@ -77,14 +79,15 @@ public class ServiceAPIListener implements EventListener {
 				Description desc = reader.read(tmpFile.toURI().toURL());
 
 				// Initialization
-				Service firstService = (Service) desc.getServices().get(0);
+				org.ow2.easywsdl.wsdl.api.Service firstService = 
+					(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
 				
 				// Default URL
-				String url = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "url");
+				String url = (String) doc.getProperty(SCHEMA, PROP_URL);
 				if (url == null) {
 					Endpoint firstEndpoint = firstService.getEndpoints().get(0);
-					if (machine == null) {
-						machine = InetAddress.getByName(
+					if (server == null) {
+						server = InetAddress.getByName(
 								new URL(firstEndpoint.getAddress()).getHost())
 								.getHostAddress();
 					}
@@ -98,50 +101,58 @@ public class ServiceAPIListener implements EventListener {
 					doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
 				}
 
-				doc.setProperty(SERVICEAPIDEF_SCHEMA, "url", url);
-				doc.setProperty(SERVICEAPIDEF_SCHEMA, "machine", machine);
-
-				String formProvider = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "provider");
-				if (formProvider == null || formProvider.isEmpty()) {
-					try {
-						doc.setProperty(SERVICEAPIDEF_SCHEMA, "provider", new URL(
-							((Endpoint) firstService.getEndpoints().get(0))
-									.getAddress()).getAuthority());
-					}
-					catch(Exception e) {
-						// Nothing (authority extraction failed)
-					}
-				}
-
-				environment = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "environment");
-				if (environment == null || environment.isEmpty()) {
-					doc.setProperty(SERVICEAPIDEF_SCHEMA, "environment", DEFAULT_ENVIRONMENT);
-					environment = DEFAULT_ENVIRONMENT;
-				}
-				doc.setProperty(SERVICEAPIDEF_SCHEMA, "protocols",
+				doc.setProperty(SCHEMA, PROP_URL, url);
+				doc.setProperty(SCHEMA, PROP_PROTOCOLS,
 						((Binding) ((Endpoint) firstService.getEndpoints().get(0))
 								.getBinding()).getTransportProtocol());
 				
+				// Update parent's properties
+				DocumentModel parentModel = session.getDocument(doc.getParentRef());
+				String existingServer = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
+				if (existingServer == null || !server.equals(existingServer)) {
+					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, server);
+					session.saveDocument(parentModel);
+				}
+				try {
+					String provider = new URL(((Endpoint) firstService.getEndpoints().get(0)).getAddress()).getAuthority();
+					String existingProvider = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
+					if (existingProvider == null || !provider.equals(existingProvider)) {
+						parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER, provider);
+						session.saveDocument(parentModel);
+					}
+				}
+				catch(Exception e) {
+					// Nothing (authority extraction failed)
+				}
+				environment = (String) doc.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT);
+				if (environment == null || environment.isEmpty()) {
+					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, DEFAULT_ENVIRONMENT);
+					environment = DEFAULT_ENVIRONMENT;
+				}
+				
 				// Generate services
 				if (!creationEvent) {
-					for (Service service : desc.getServices()) {
+					for (org.ow2.easywsdl.wsdl.api.Service service : desc.getServices()) {
 						String serviceName = service.getQName().getLocalPart();
 						if (DocumentService.findService(session, url) == null) {
-							DocumentModel serviceModel = DocumentService.createService(session, url, serviceName);
-							if (serviceModel != null) {
-								try {
-									String serviceUrl = service.getEndpoints().get(0).getAddress();
-									serviceModel.setProperty(SERVICEDEF_SCHEMA, "url", serviceUrl);
-									if (url.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
-										serviceModel.setProperty(SERVICEDEF_SCHEMA, "lightUrl", "http://localhost:8083/easysoa/light/paf.html");
+							try {
+								String serviceUrl = service.getEndpoints().get(0).getAddress();
+								DocumentModel serviceModel = DocumentService.createService(session, 
+										doc.getPathAsString(), serviceUrl);
+								if (serviceModel != null) {
+									serviceModel.setProperty("dublincore", "title", serviceName);
+									if (serviceUrl.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
+										serviceModel.setProperty(Service.SCHEMA, Service.PROP_LIGHTURL,
+												"http://localhost:8083/easysoa/light/paf.html");
 									}
+									session.saveDocument(serviceModel);
 								}
-								catch (Exception e) {
-									log.warn("Cannot set extracted service url : "+e.getMessage());
+								else {
+									throw new NullPointerException("Cannot find Service API for child service creation.");
 								}
 							}
-							else {
-								throw new NullPointerException("Cannot find Service API for child service creation.");
+							catch (Exception e) {
+								log.warn("Cannot set extracted service url : "+e.getMessage());
 							}
 						}
 					}
@@ -165,31 +176,29 @@ public class ServiceAPIListener implements EventListener {
 		}
 		
 		// Update vocabulary
+		// TODO: Update on document deletion
 		try {
-			String app = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "application");
+			String app = (String) doc.getProperty(SCHEMA, PROP_APPLICATION);
 			if (app != null && !app.isEmpty() && !VocabularyService.entryExists(
-					session, VocabularyService.VOCBULARY_APPLICATION, app)) {
-				VocabularyService.addEntry(session, VocabularyService.VOCBULARY_APPLICATION,
+					session, VocabularyService.VOCABULARY_APPLICATION, app)) {
+				VocabularyService.addEntry(session, VocabularyService.VOCABULARY_APPLICATION,
 						app, app);
 			}
-			String environment = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "environment");
-			
 			if (environment != null && !environment.isEmpty()) {
 				if (!VocabularyService.entryExists(
-					session, VocabularyService.VOCBULARY_ENVIRONMENT, environment)) {
-					VocabularyService.addEntry(session, VocabularyService.VOCBULARY_ENVIRONMENT,
+					session, VocabularyService.VOCABULARY_ENVIRONMENT, environment)) {
+					VocabularyService.addEntry(session, VocabularyService.VOCABULARY_ENVIRONMENT,
 							environment, environment);
 				}
-				String machine = (String) doc.getProperty(SERVICEAPIDEF_SCHEMA, "machine");
-				if (machine != null && !machine.isEmpty() && !VocabularyService.entryExists(
-						session, VocabularyService.VOCBULARY_MACHINE, machine)) {
-					VocabularyService.addEntry(session, VocabularyService.VOCBULARY_MACHINE,
-							machine, machine, environment);
+				if (server != null && !server.isEmpty() && !VocabularyService.entryExists(
+						session, VocabularyService.VOCABULARY_SERVER, server)) {
+					VocabularyService.addEntry(session, VocabularyService.VOCABULARY_SERVER,
+							server, server, environment);
 				}
 			}
 		}
 		catch (ClientException e) {
-			log.error("Error while updating "+VocabularyService.VOCBULARY_APPLICATION+" vocabulary", e);
+			log.error("Error while updating "+VocabularyService.VOCABULARY_APPLICATION+" vocabulary", e);
 		}
 		
 	}

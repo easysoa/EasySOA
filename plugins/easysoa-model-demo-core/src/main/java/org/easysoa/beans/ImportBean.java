@@ -8,6 +8,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
@@ -55,7 +56,8 @@ public class ImportBean {
 		compositeFile = null;
 		documentManager = getOrCreateDocumentManager();
 		appliImpls = new ArrayList<SelectItem>();
-		DocumentModelList appliImplList = documentManager.query("SELECT * FROM Workspace WHERE ecm:currentLifeCycleState <> 'deleted'");
+		DocumentModelList appliImplList = documentManager.query("SELECT * FROM " + AppliImpl.DOCTYPE
+				+ " WHERE ecm:currentLifeCycleState <> 'deleted'");
 		for (DocumentModel appliImpl : appliImplList) {
 			try {
 				appliImpls.add(new SelectItem(appliImpl.getId(), appliImpl.getTitle()));
@@ -68,10 +70,8 @@ public class ImportBean {
 
 	public void importSCA() throws Exception {
 		
-
 		// Initialization
-		File tmpFile = File.createTempFile(IdUtils.generateStringId(),
-				".composite");
+		File tmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
 		compositeFile.transferTo(tmpFile);
 		SAXBuilder builder = new SAXBuilder();
 		Document document = builder.build(tmpFile);
@@ -84,10 +84,12 @@ public class ImportBean {
 
 		// Root document
 		DocumentModel apiModel = DocumentService.findServiceApi(documentManager, url);
+		DocumentModel parentModel = documentManager.getDocument(new IdRef(parentAppliImpl));
 		if (apiModel == null) {
-			apiModel = DocumentService.createServiceAPI(documentManager, 
-					(String) DocumentService.getDefaultAppliImpl(documentManager).
-							getProperty("appliimpldef", "rootServicesUrl"), url);
+			if (parentModel == null)
+				apiModel = DocumentService.createServiceAPI(documentManager, null, url);
+			else
+				apiModel = DocumentService.createServiceAPI(documentManager, parentModel.getPathAsString(), url);
 			apiModel.setProperty("dublincore", "title", title);
 			documentManager.saveDocument(apiModel);
 			documentManager.save();
@@ -117,7 +119,7 @@ public class ImportBean {
 								}
 							}
 							if (!serviceExists)
-								DocumentService.createService(documentManager, url, serviceTitle);
+								DocumentService.createService(documentManager, apiModel.getPathAsString(), serviceTitle);
 						}
 					}
 

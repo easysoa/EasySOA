@@ -1,0 +1,37 @@
+package org.easysoa.doctypes;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class AppliImpl {
+
+	public static final String DOCTYPE = "Workspace";
+	public static final String SCHEMA = "appliimpldef";
+	public static final String SCHEMA_PREFIX = "app:";
+	
+	public static final String PROP_URL = "url";
+	public static final String PROP_UIURL = "uiUrl";
+	public static final String PROP_SOURCESURL = "sourcesUrl";
+	public static final String PROP_SERVER = "server";
+	public static final String PROP_PROVIDER = "provider";
+	public static final String PROP_ENVIRONMENT = "environment";
+	public static final String PROP_TECHNOLOGY = "technology";
+	public static final String PROP_STANDARD = "standard";
+
+	private static Map<String, String> propertyList = null;
+	
+	public static Map<String, String> getPropertyList() {
+		if (propertyList == null) {
+			propertyList = new HashMap<String, String>(); 
+			propertyList.put(PROP_URL, "(mandatory) Services root.");
+			propertyList.put(PROP_UIURL, "Application GUI entry point.");
+			propertyList.put(PROP_SOURCESURL, "Source code access.");
+			propertyList.put(PROP_SERVER, "IP of the server.");
+			propertyList.put(PROP_PROVIDER, "Company that provides these services.");
+			propertyList.put(PROP_ENVIRONMENT, "The application environment (production, development...)");
+			propertyList.put(PROP_TECHNOLOGY, "Services implementation technology.");
+			propertyList.put(PROP_STANDARD, "Protocol standard if applicable.");
+		}
+		return propertyList;
+	}
+}

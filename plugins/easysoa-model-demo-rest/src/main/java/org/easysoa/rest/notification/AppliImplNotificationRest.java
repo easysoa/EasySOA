@@ -1,5 +1,7 @@
 package org.easysoa.rest.notification;
 
+import static org.easysoa.doctypes.AppliImpl.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,15 +29,6 @@ import com.sun.jersey.api.representation.Form;
 @Produces(MediaType.APPLICATION_JSON)
 public class AppliImplNotificationRest extends NotificationRest {
 
-	public static final String APPLIIMPLDEF_SCHEMA = "appliimpldef";
-	
-	public static final String PARAM_ROOTSERVICESURL = "rootServicesUrl";
-	public static final String PARAM_UIURL = "uiUrl";
-	public static final String PARAM_SERVER = "server";
-	public static final String PARAM_TECHNOLOGY = "technology";
-	public static final String PARAM_STANDARD = "standard";
-	public static final String PARAM_SOURCESURL = "sourcesUrl";
-
 	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(AppliImplNotificationRest.class);
 	private static Map<String, String> appliImplDef; 
@@ -44,40 +37,9 @@ public class AppliImplNotificationRest extends NotificationRest {
 		super();
 		if (appliImplDef == null) {
 			appliImplDef = new HashMap<String, String>();
-			appliImplDef.put(PARAM_ROOTSERVICESURL, "(mandatory) Services root.");
-			appliImplDef.put(PARAM_UIURL, "Application GUI entry point.");
-			appliImplDef.put(PARAM_SERVER, "IP of the server.");
-			appliImplDef.put(PARAM_TECHNOLOGY, "Services implementation technology.");
-			appliImplDef.put(PARAM_STANDARD, "Protocol standard if applicable.");
-			appliImplDef.put(PARAM_SOURCESURL, "Source code access.");
 		}
 	}
 	
-	/**
-	 * Documentation
-	 * @return
-	 * @throws JSONException
-	 */
-	@GET
-	@Path("/")
-	public Object doGet() throws JSONException {
-		
-		result = new JSONObject();
-		JSONObject params = new JSONObject();
-		for (String key : appliImplDef.keySet()) {
-			params.put(key, appliImplDef.get(key));
-		}
-		for (String key : dublinCoreDef.keySet()) {
-			params.put(key, dublinCoreDef.get(key));
-		}
-		
-		result.put("parameters", params);
-		result.put("description", "Notification concerning an application implementation.");
-
-		logout();
-		return getFormattedResult();
-	}
-
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Object doPost(@Context HttpContext httpContext) throws JSONException {
@@ -86,19 +48,21 @@ public class AppliImplNotificationRest extends NotificationRest {
 		Form params = getForm(httpContext);
 		
 		// Check mandatory field
-		if (params.get(PARAM_ROOTSERVICESURL) != null) {
+		if (params.get(PROP_URL) != null) {
 		
 			try {
 				
 				// Find or create document
-				DocumentModel appliImplModel = DocumentService.findAppliImpl(session, params.get(PARAM_ROOTSERVICESURL).get(0));
+				DocumentModel appliImplModel = DocumentService.findAppliImpl(session, params.getFirst(PROP_URL));
 				if (appliImplModel == null) {
-					String title = (params.get("title") != null) ? params.get("title").get(0) : params.get(PARAM_ROOTSERVICESURL).get(0);
-					appliImplModel = DocumentService.createAppliImpl(session, params.get(PARAM_ROOTSERVICESURL).get(0), title);
+					String title = (params.get("title") != null) ? params.getFirst("title") : params.getFirst(PROP_URL);
+					appliImplModel = DocumentService.createAppliImpl(session, params.getFirst(PROP_URL));
+					appliImplModel.setProperty("dublincore", "title", title);
+					session.saveDocument(appliImplModel);
 				}
 				
 				// Update optional properties
-				setPropertiesIfNotNull(appliImplModel, APPLIIMPLDEF_SCHEMA, appliImplDef, params);
+				setPropertiesIfNotNull(appliImplModel, SCHEMA, appliImplDef, params);
 				
 				// Save
 				if (!errorFound) {
@@ -124,6 +88,31 @@ public class AppliImplNotificationRest extends NotificationRest {
 	@POST
 	public Object doPost() throws JSONException {
 		appendError("Content type should be 'application/x-www-form-urlencoded'");
+		logout();
+		return getFormattedResult();
+	}
+
+	/**
+	 * Documentation
+	 * @return
+	 * @throws JSONException
+	 */
+	@GET
+	@Path("/")
+	public Object doGet() throws JSONException {
+		
+		result = new JSONObject();
+		JSONObject params = new JSONObject();
+		for (String key : appliImplDef.keySet()) {
+			params.put(key, appliImplDef.get(key));
+		}
+		for (String key : dublinCoreDef.keySet()) {
+			params.put(key, dublinCoreDef.get(key));
+		}
+		
+		result.put("parameters", params);
+		result.put("description", "Notification concerning an application implementation.");
+	
 		logout();
 		return getFormattedResult();
 	}
