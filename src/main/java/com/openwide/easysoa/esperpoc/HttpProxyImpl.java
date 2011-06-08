@@ -87,7 +87,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    		Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "WSDL");				
 				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
 	    	} else {
-	    		//logger.debug("--- ****** Processing regex to find rest web service !");
 	    		//TODO
 	    		// Not possible to make 2 different strategies : one for static url with parameters and one for dynamic url because it is possible to have dynamic url with parameters ...
 	    		//if(sb.toString().toLowerCase().matches(PropertyManager.getProperty("proxy.rest.request.detect.parameters"))){
@@ -127,8 +126,8 @@ public class HttpProxyImpl extends HttpServlet {
 	    	ClientResource resource = new ClientResource(sb.toString());
 	    	// Send an authenticated request using the Basic authentication scheme.
 	    	if(request.getRemoteUser() != null){
-	    		String authhead=request.getHeader("Authorization");
-	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authhead));
+	    		String authHead=request.getHeader("Authorization");
+	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authHead));
 	    	}
 	    	InputStream in = resource.get().getStream();
     	    if(in != null){
@@ -147,7 +146,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    	logger.debug("--- Closing response flow");
 	    	respOut.close();
 	    }
-	    //printUrlTree();
 	}
 	
 	/**
@@ -226,8 +224,8 @@ public class HttpProxyImpl extends HttpServlet {
 	    	ClientResource resource = new ClientResource(sb.toString());
 	    	// Send an authenticated request using the Basic authentication scheme.
 	    	if(request.getRemoteUser() != null){
-	    		String authhead=request.getHeader("Authorization");
-	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authhead));
+	    		String authHead=request.getHeader("Authorization");
+	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authHead));
 	    	}	    	
 	    	InputStream in = resource.post(representation).getStream();
     	    if(in != null){
@@ -270,6 +268,7 @@ public class HttpProxyImpl extends HttpServlet {
 	/**
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	private void printUrlTree(){
 		logger.debug("[printUrlTree()] Printing tree node index ***");
 		logger.debug("[printUrlTree()] Total url count : " + urlTree.getTotalUrlCount());
