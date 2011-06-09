@@ -69,7 +69,7 @@
       </rows>
       <widget name="appliimpldef_url" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.uUrl</label>
+	        <label mode="any">label.easysoa.appliimpldef.url</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>

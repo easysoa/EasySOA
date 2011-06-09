@@ -1,6 +1,10 @@
 package org.easysoa.listeners;
 
-import static org.easysoa.doctypes.ServiceAPI.*;
+import static org.easysoa.doctypes.ServiceAPI.DOCTYPE;
+import static org.easysoa.doctypes.ServiceAPI.PROP_APPLICATION;
+import static org.easysoa.doctypes.ServiceAPI.PROP_PROTOCOLS;
+import static org.easysoa.doctypes.ServiceAPI.PROP_URL;
+import static org.easysoa.doctypes.ServiceAPI.SCHEMA;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -10,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
-import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.VocabularyService;
 import org.nuxeo.ecm.core.api.Blob;
@@ -31,8 +34,6 @@ public class ServiceAPIListener implements EventListener {
 	
 	private static final Log log = LogFactory.getLog(ServiceAPIListener.class);
 
-	public static final String DEFAULT_ENVIRONMENT = "Production";
-
 	public void handleEvent(Event event) {
 		
 		// Check event type
@@ -50,7 +51,7 @@ public class ServiceAPIListener implements EventListener {
 			return;
 		}
 		String type = doc.getType();
-		if (!type.equals(ServiceAPI.DOCTYPE)) {
+		if (!type.equals(DOCTYPE)) {
 			return;
 		}
 		
@@ -110,15 +111,13 @@ public class ServiceAPIListener implements EventListener {
 				DocumentModel parentModel = session.getDocument(doc.getParentRef());
 				String existingServer = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
 				if (existingServer == null || !server.equals(existingServer)) {
-					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, server);
-					session.saveDocument(parentModel);
+					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, server);
 				}
 				try {
 					String provider = new URL(((Endpoint) firstService.getEndpoints().get(0)).getAddress()).getAuthority();
 					String existingProvider = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
 					if (existingProvider == null || !provider.equals(existingProvider)) {
 						parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER, provider);
-						session.saveDocument(parentModel);
 					}
 				}
 				catch(Exception e) {
@@ -126,9 +125,10 @@ public class ServiceAPIListener implements EventListener {
 				}
 				environment = (String) doc.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT);
 				if (environment == null || environment.isEmpty()) {
-					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, DEFAULT_ENVIRONMENT);
-					environment = DEFAULT_ENVIRONMENT;
+					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, AppliImpl.DEFAULT_ENVIRONMENT);
+					environment = AppliImpl.DEFAULT_ENVIRONMENT;
 				}
+				session.saveDocument(parentModel);
 				
 				// Generate services
 				if (!creationEvent) {
@@ -183,18 +183,6 @@ public class ServiceAPIListener implements EventListener {
 					session, VocabularyService.VOCABULARY_APPLICATION, app)) {
 				VocabularyService.addEntry(session, VocabularyService.VOCABULARY_APPLICATION,
 						app, app);
-			}
-			if (environment != null && !environment.isEmpty()) {
-				if (!VocabularyService.entryExists(
-					session, VocabularyService.VOCABULARY_ENVIRONMENT, environment)) {
-					VocabularyService.addEntry(session, VocabularyService.VOCABULARY_ENVIRONMENT,
-							environment, environment);
-				}
-				if (server != null && !server.isEmpty() && !VocabularyService.entryExists(
-						session, VocabularyService.VOCABULARY_SERVER, server)) {
-					VocabularyService.addEntry(session, VocabularyService.VOCABULARY_SERVER,
-							server, server, environment);
-				}
 			}
 		}
 		catch (ClientException e) {
