@@ -1,30 +1,32 @@
 package com.openwide.easysoa.esperpoc.esper;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
+
 import org.apache.log4j.Logger;
-//import java.util.Iterator;
+
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
-import com.espertech.esper.event.bean.BeanEventBean;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
-import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.monitoring.soa.WSDLService;
 
 
 /**
- * Sync message listener
- * able to use all of Message's props, including content
+ * Aggregated message listener
+ * only able to use aggregated msg props
  * 
  * @author jguillemotte
  *
  */
-public class MessageListener implements UpdateListener {
+public class AggregatedMessageListener implements UpdateListener {
 
 	/**
 	 * Logger
 	 */
-	static Logger logger = Logger.getLogger(MessageListener.class.getName());
+	static Logger logger = Logger.getLogger(AggregatedMessageListener.class.getName());
 	
 	/**
 	 * 
@@ -34,13 +36,12 @@ public class MessageListener implements UpdateListener {
 			update(newData);
 		}
     }
-	
+
 	public void update(EventBean newData) {
 		logger.debug("[MessageListener] --- Event received: " + newData.getUnderlying());
 		logger.debug("[MessageListener] --- " + newData.getUnderlying().getClass().getName());
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		@SuppressWarnings("unchecked")
-		HashMap<String,Object> hm = (HashMap<String,Object>)(newData.getUnderlying());
+		HashMap<String, Object> aggregatedProps = (HashMap) (newData.getUnderlying());
 		/*Iterator<String> iter = hm.keySet().iterator();
 		while(iter.hasNext()){
 			String key = iter.next();
@@ -48,27 +49,35 @@ public class MessageListener implements UpdateListener {
 			System.out.println("Value : " + hm.get(key));
 			System.out.println("Clazz value : " + hm.get(key).getClass().getName());
 		}*/
-		BeanEventBean beb = (BeanEventBean)(hm.get("s"));
-		Message msg = (Message)(beb.getUnderlying());
 		
 		// Service construction + send Esper event
-		String serviceName = msg.getPathName();
-		if(serviceName.startsWith("/")){
-			serviceName = serviceName.substring(1);
-		}
-		serviceName = serviceName.replace('/', '_');
-		
-		if("WSDl".equals(msg.getType())){
+		long count = (Long) aggregatedProps.get("count"); // TODO
+		String serviceUrl = (String) aggregatedProps.get("url");
+		String messageType = (String) aggregatedProps.get("messageType");
+
+		if("WSDl".equals(messageType)){
 			WSDLService service;
-			service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
-			nrs.registerWSDLService(service);
+			URL url;
+			try {
+				String servicePath = (String) aggregatedProps.get("url");
+				if(servicePath.startsWith("/")){
+					servicePath = serviceUrl.substring(1);
+				}
+				servicePath = serviceUrl.replace('/', '_');
+				
+				url = new URL(serviceUrl);
+				service = new WSDLService(url.getHost(), servicePath, serviceUrl, "POST"); // TODO better method in aggregation
+				nrs.registerWSDLService(service);
+			} catch (MalformedURLException e) {
+				logger.error("Bad url", e);
+			}
 			
 		} else {
 			// getting parent url
-			int lastSlashIndex = msg.getUrl().lastIndexOf('/');
-			String parentUrl = msg.getUrl().substring(0, lastSlashIndex);
+			int lastSlashIndex = serviceUrl.lastIndexOf('/');
+			String parentUrl = serviceUrl.substring(0, lastSlashIndex);
 			
-			Service service = new Service(msg.getUrl(), parentUrl);
+			Service service = new Service(serviceUrl, parentUrl);
 			// TODO also register to nuxeo parent apis if required
 			nrs.registerRestService(service);
 			// TODO put urlType in msg and handle it here to register also apis and appliimpls to nuxeo

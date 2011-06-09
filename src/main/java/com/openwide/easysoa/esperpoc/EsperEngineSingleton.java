@@ -8,10 +8,10 @@ import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
-import com.openwide.easysoa.esperpoc.esper.Message;
+import com.openwide.easysoa.esperpoc.esper.AggregatedMessageListener;
 import com.openwide.easysoa.esperpoc.esper.MessageListener;
 import com.openwide.easysoa.esperpoc.esper.MessageCounter;
-import com.openwide.easysoa.esperpoc.esper.UrlTreeEventListener;
+import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
 
 public class EsperEngineSingleton {
@@ -61,7 +61,7 @@ public class EsperEngineSingleton {
 	    	/*
 	    	// Message counter statement
 	    	//EPStatement cepStatementWindowCounter = cepAdm.createEPL("create window countWindow.win:keepall() as select count(*) as count, completeMessage as service from Message group by completeMessage"); 
-	    	// Chaque Message est compté et groupé mais trop d'event généré par le MessageCounter ....
+	    	// Chaque Message est compté et groupé mais trop d'event générés par le MessageCounter ....
 	    	//EPStatement cepStatementMessageCounter = cepAdm.createEPL("select count(*) as count, completeMessage as service from Message group by completeMessage output all every 1 minute");
 	    	// Même probleme : le counter genere un event pour chaque message recu ...
 	    	//EPStatement cepStatementMessageCounter = cepAdm.createEPL("select count(*) as count, completeMessage as service from Message group by completeMessage output every 1 minute");
@@ -71,10 +71,14 @@ public class EsperEngineSingleton {
 	    	//EPStatement cepStatementMessageCounter = cepAdm.createEPL("select count(*) as count, completeMessage as service from Message group by completeMessage output all every 1 minute");
 	    	EPStatement cepStatementMessageCounter = cepAdm.createEPL(PropertyManager.getProperty("esper.message.counter.statement"));
 	    	cepStatementMessageCounter.addListener(new MessageCounter());
+
+	    	EPStatement cepStatementAggregatedMessageListener = cepAdm.createEPL(PropertyManager.getProperty("esper.message.aggregatedListener.statement"));
+	    	cepStatementAggregatedMessageListener.addListener(new AggregatedMessageListener());	    	
 	    	
 	    	// Listen event on URL tree (new node added or modified node)
-	    	EPStatement cepStatementUrlTreeEventListener = cepAdm.createEPL(PropertyManager.getProperty("esper.url.tree.event.statement"));
-	    	cepStatementUrlTreeEventListener.addListener(new UrlTreeEventListener());
+	    	// TODO no more on each tree node update, LATER trigger it on run end event
+	    	//EPStatement cepStatementUrlTreeEventListener = cepAdm.createEPL(PropertyManager.getProperty("esper.url.tree.event.statement"));
+	    	//cepStatementUrlTreeEventListener.addListener(new UrlTreeEventListener());
         }
         catch(Throwable t){
         	t.printStackTrace();

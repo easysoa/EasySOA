@@ -1,11 +1,17 @@
 package com.openwide.easysoa.esperpoc;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.core.GenericEntity;
 import org.apache.log4j.Logger;
-import com.openwide.easysoa.esperpoc.esper.Api;
-import com.openwide.easysoa.esperpoc.esper.Appli;
-import com.openwide.easysoa.esperpoc.esper.Service;
-import com.openwide.easysoa.esperpoc.esper.WSDLService;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.openwide.easysoa.monitoring.soa.Api;
+import com.openwide.easysoa.monitoring.soa.Appli;
+import com.openwide.easysoa.monitoring.soa.Node;
+import com.openwide.easysoa.monitoring.soa.Service;
+import com.openwide.easysoa.monitoring.soa.WSDLService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -118,7 +124,7 @@ public class NuxeoRegistrationService {
 		url.append("appliimpl");
 		StringBuffer body = new StringBuffer();
 		body.append("rootServicesUrl=");
-		body.append(appli.getRootServicesUrl());
+		body.append(appli.getUrl());
 		body.append("&uiUrl=");
 		body.append(appli.getUiUrl());
 		body.append("&server=");
@@ -177,6 +183,90 @@ public class NuxeoRegistrationService {
 		return sendRequest(url.toString(), body.toString());
 	}
 	
+	/*public JSONObject getAllSoaNodes() {
+		String query = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
+		String res =  sendQuery(query);
+		try {
+			return new JSONObject(res);
+		} catch (JSONException e) {
+			logger.error(e);
+			return null;
+		}
+	}*/
+	
+	public List<Node> getAllSoaNodes() {
+		String query = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
+		JsonMapper soaNodesJsonMapper = new SoaNodesJsonMapper();
+		try {
+			return getAllTo(query, soaNodesJsonMapper);
+		} catch (JSONException e) {
+			logger.error(e);
+			// TODO technical error
+			return null;
+		}
+	}
+	
+	public List<Node> getAllTo(String query , JsonMapper jsonMapper) throws JSONException {
+		String res =  sendQuery(query);
+		ArrayList<Node> soaNodes = new ArrayList<Node>();
+		JSONArray resObject = new JSONObject(res).getJSONArray("entries");
+		for (int i = 0; i < resObject.length(); i++) {
+			try {
+				JSONObject child = resObject.getJSONObject(i);
+				Node soaNode = (Node) jsonMapper.mapTo(child);
+				soaNodes.add(soaNode);
+			} catch (JSONException e) {
+				logger.error(e);
+				// skipping
+			}
+		}
+		return soaNodes;
+	}
+		
+	/**
+	 * Queries nuxeo docs
+	 * @param url Nuxeo url
+	 * @param body Message to send
+	 * @return The response send back by Nuxeo
+	 */
+	private String sendQuery(String query){
+		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_DEFAULT_URL));
+		urlBuf.append("/");
+	    urlBuf.append("Document.Query"); // operation name
+
+	    try {
+		    JSONObject bodyBuf = new JSONObject();
+		    JSONObject bodyBufQuery = new JSONObject();
+		    bodyBufQuery.put("query", query);
+			bodyBuf.put("params", bodyBufQuery);
+		    
+			logger.debug("[sendQuery()] --- Request URL = " + urlBuf.toString());
+			
+			// Send request to register the service
+			Client client = Client.create();
+			client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
+			
+			WebResource webResource = client.resource(urlBuf.toString());
+			GenericEntity<String> entity = new GenericEntity<String>(bodyBuf.toString()) {};
+			ClientResponse response = webResource
+				.entity(entity)
+				.type("application/json+nxrequest; charset=UTF-8")
+				.accept("application/json+nxentity")
+				.header("X-NXDocumentProperties", "*")
+				.post(ClientResponse.class);
+			
+		   	int status = response.getStatus();
+		   	logger.debug("[sendQuery()] --- Registration request response status = " + status);
+			String textEntity = response.getEntity(String.class);
+			logger.debug("[sendQuery()] --- Registration request response = " + textEntity);	
+			return textEntity;		
+			
+		} catch (JSONException e) {
+			logger.error("Failed to create request body", e);
+			return null;
+		}
+	}
+	
 	/**
 	 * Send a request to Nuxeo to register or to update an application / api / service
 	 * @param url Nuxeo url
@@ -184,6 +274,8 @@ public class NuxeoRegistrationService {
 	 * @return The response send back by Nuxeo
 	 */
 	private String sendRequest(String url, String body){
+		String q = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
+		
 		Client client = Client.create();
 		client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
 		WebResource webResource = client.resource(url.toString());

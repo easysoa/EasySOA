@@ -20,7 +20,17 @@
      <name>Public online Restlet repository</name>
      <url>http://maven.restlet.org</url>
     </repository>
-  </repositories> 
+    <repository>
+      <id>Frascati</id>
+      <name>Frascati repository</name>
+      <url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+    </repository>
+    <repository>
+      <id>Download.java.net</id>
+      <name>Download.java.net repository</name>
+      <url>http://download.java.net/maven/2/</url>
+    </repository>    
+  </repositories>
 
   <dependencies>
     <dependency>
@@ -38,12 +48,12 @@
 	<dependency>
 	    <groupId>org.ow2.frascati</groupId>
 	    <artifactId>frascati-binding-ws</artifactId>
-	    <version>1.4-SNAPSHOT</version>
+	    <version>1.4</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.ow2.frascati</groupId>
 	    <artifactId>frascati-binding-http</artifactId>
-	    <version>1.4-SNAPSHOT</version>
+	    <version>1.4</version>
 	</dependency>
     <dependency>
     	<groupId>javax.ws.rs</groupId>
@@ -53,7 +63,7 @@
     <dependency>
     	<groupId>com.sun.jersey</groupId>
     	<artifactId>jersey-client</artifactId>
-    	<version>1.7-ea06</version>
+    	<version>1.8-ea02</version>
     </dependency>
 	<dependency>
 	  <groupId>org.restlet.jse</groupId>
@@ -74,6 +84,11 @@
 		<groupId>log4j</groupId>
 		<artifactId>log4j</artifactId>
 		<version>1.2.16</version>
+	</dependency>
+	<dependency>
+		<groupId>org.json</groupId>
+		<artifactId>json</artifactId>
+		<version>20090211</version>
 	</dependency>
   </dependencies>
   

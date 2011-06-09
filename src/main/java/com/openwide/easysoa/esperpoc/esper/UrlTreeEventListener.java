@@ -6,7 +6,18 @@ import com.espertech.esper.client.UpdateListener;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
+import com.openwide.easysoa.monitoring.soa.Api;
+import com.openwide.easysoa.monitoring.soa.Appli;
 
+
+/**
+ * Triggered on every node update (LATER could be triggered on run end event)
+ * Receives one event per url(TreeNode) each time
+ * and registers the corresponding service to nuxeo
+ * 
+ * @author jguillemotte
+ *
+ */
 public class UrlTreeEventListener implements UpdateListener {
 
 	/**
@@ -24,20 +35,18 @@ public class UrlTreeEventListener implements UpdateListener {
 		// An analysis must be done to determine if a new service can be registered in Nuxeo ....
 		logger.debug("[MessageListener] --- NewData length : " + newData.length);
 		for(int i=0; i<newData.length; i++){
-			
 			logger.debug("[MessageListener] --- Event received : " + newData[i].getUnderlying());
-			logger.debug("[MessageListener] --- " + newData[i].getUnderlying().getClass().getName());
 			NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 			UrlTreeNodeEvent event = (UrlTreeNodeEvent)(newData[i].getUnderlying());
 			UrlTreeNode node = event.getEventSource();
-			logger.debug("[MessageListener] --- node name " + node.getNodeName());
 			
 			// Application detection
-			UrlTreeNode parentNode = (UrlTreeNode)(node.getParent());					
+			UrlTreeNode parentNode = (UrlTreeNode)(node.getParent());
+			logger.debug("[MessageListener] --- node name " + node.getNodeName());
 			logger.debug("[MessageListener] --- node level " + node.getLevel());
 			logger.debug("[MessageListener] --- node registered " + node.isRegistered());
 			logger.debug("[MessageListener] --- node child count " + node.getChildCount());
-			logger.debug("[MessageListener] --- node ratio complete " + event.getRatioComplete());
+			logger.debug("[MessageListener] --- node ratio complete " + node.getRatioComplete(event.getUrlTree()));
 			logger.debug("[MessageListener] --- node partial url count " + node.getPartialUrlcallCount());
 			logger.debug("[MessageListener] --- node parent registered "  + parentNode.isRegistered());
 
@@ -53,7 +62,7 @@ public class UrlTreeEventListener implements UpdateListener {
 				}
 			}
 			// API detection
-			else if(node.getChildCount() > 0 && event.getRatioComplete() == 0 && node.getLevel() >= 2  && node.getPartialUrlcallCount() > 5 && !node.isRegistered() && parentNode.isRegistered()){
+			else if(node.getChildCount() > 0 && node.getRatioComplete(event.getUrlTree()) == 0 && node.getLevel() >= 2  && node.getPartialUrlcallCount() > 5 && !node.isRegistered() && parentNode.isRegistered()){
 				logger.debug("[MessageListener] --- new Api to register !!!!");
 				Api api = new Api(node.getNodeName(), parentNode.getNodeName());
 				api.setTitle(node.getNodeName());

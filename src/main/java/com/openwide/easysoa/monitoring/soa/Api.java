@@ -1,13 +1,10 @@
-package com.openwide.easysoa.esperpoc.esper;
+package com.openwide.easysoa.monitoring.soa;
 
-public class Api {
+public class Api extends Node {
 
-    private String title;
     private String application;
-    private String description;
     private String parentUrl;
     private String sourceUrl;
-    private String url;
     /*
 	"title": "The name of the document.",
     "application": "The related business application.",
@@ -18,34 +15,20 @@ public class Api {
     */
     
     public Api(String url, String parentUrl) throws IllegalArgumentException {
-		if(url == null || parentUrl == null || "".equals(url) || "".equals(parentUrl)){
-			throw new IllegalArgumentException("url and parentUrl must not be null or empty");
+    	super(url);
+		if(parentUrl == null || "".equals(parentUrl)){
+			throw new IllegalArgumentException("parentUrl must not be null or empty");
 		}
-    	this.url = url;
     	this.parentUrl = parentUrl;
-    	this.title = "";
-    	this.description = "";
     	this.application = "";
     	this.sourceUrl = "";
     }
     
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
 	public String getApplication() {
 		return application;
 	}
 	public void setApplication(String application) {
 		this.application = application;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public String getSourceUrl() {
 		return sourceUrl;
@@ -55,8 +38,5 @@ public class Api {
 	}
 	public String getParentUrl() {
 		return parentUrl;
-	}
-	public String getUrl() {
-		return url;
 	}
 }

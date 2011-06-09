@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc.esper;
+package com.openwide.easysoa.monitoring.soa;
 
 public class WSDLService {
 

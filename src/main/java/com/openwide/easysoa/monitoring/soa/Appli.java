@@ -1,6 +1,6 @@
-package com.openwide.easysoa.esperpoc.esper;
+package com.openwide.easysoa.monitoring.soa;
 
-public class Appli {
+public class Appli extends Node {
 
 	/*
 	 * { "description":
@@ -13,25 +13,10 @@ public class Appli {
 	 */
 
 	/**
-	 * A short description.
-	 */
-	private String description;
-	
-	/**
-	 * (mandatory) Services root.
-	 */
-	private String rootServicesUrl;
-	
-	/**
 	 * Application GUI entry point.
 	 */
 	private String uiUrl;
 	
-	/**
-	 * The name of the document.
-	 */
-	private String title;
-
 	/**
 	 * Services implementation technology
 	 */
@@ -57,46 +42,24 @@ public class Appli {
 	 * @param rootServicesUrl
 	 * @throws IllegalArgumentException
 	 */
-	public Appli(String appliName, String rootServicesUrl) throws IllegalArgumentException {
-		if(rootServicesUrl == null || appliName == null || "".equals(appliName) || "".equals(rootServicesUrl)){
-			throw new IllegalArgumentException("appliname and rootServiceUrl parameters must not be null");
+	public Appli(String appliName, String url) throws IllegalArgumentException {
+		super(url);
+		if(appliName == null || "".equals(appliName)){
+			throw new IllegalArgumentException("appliname must not be null or empty");
 		}
-		this.rootServicesUrl = rootServicesUrl;
-		this.title = appliName;
 		this.server = "";
 		this.sourcesUrl = "";
 		this.standard = "";
-		this.description = "";
 		this.technology = "";
 		this.uiUrl = "";
 	}
 	
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getRootServicesUrl() {
-		return rootServicesUrl;
-	}
-
 	public String getUiUrl() {
 		return uiUrl;
 	}
 
 	public void setUiUrl(String uiUrl) {
 		this.uiUrl = uiUrl;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getTechnology() {

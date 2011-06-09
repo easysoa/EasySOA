@@ -1,4 +1,6 @@
-package com.openwide.easysoa.esperpoc.esper;
+package com.openwide.easysoa.monitoring;
+
+import java.net.URL;
 
 public class Message {
 
@@ -10,6 +12,7 @@ public class Message {
 	private String content;
 	private String method;
 	private String type;
+	private String url;
 
 	/**
 	 * Constructor
@@ -41,7 +44,8 @@ public class Message {
 	 * @param pathName
 	 * @param parameters
 	 */
-	public Message(String protocol, String host, int port, String pathName, String parameters, String type){
+	public Message(String url, String protocol, String host, int port, String pathName, String parameters, String type){
+		this.url = url;
 		if(protocol.toLowerCase().contains("http")){
 			this.protocol = "http";
 		} else {
@@ -56,6 +60,24 @@ public class Message {
 		this.method = "";
 	}
 	
+	public Message(URL url, String type) {
+		this(url.toString(), url.getProtocol(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), type);
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	/**
 	 * 
 	 * @return

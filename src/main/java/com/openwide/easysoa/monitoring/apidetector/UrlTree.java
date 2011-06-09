@@ -2,12 +2,12 @@ package com.openwide.easysoa.monitoring.apidetector;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
+
 import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
 
-import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
-import com.openwide.easysoa.esperpoc.esper.Message;
+import com.openwide.easysoa.monitoring.Message;
 
 @SuppressWarnings("serial")
 public class UrlTree extends DefaultTreeModel {
@@ -36,7 +36,9 @@ public class UrlTree extends DefaultTreeModel {
 	 * If the node exists, 
 	 * @param url The url to add in the tree
 	 */
-	public void addUrlNode(String url, Message msg){
+	public void addUrlNode(Message msg){
+		String url = msg.getUrl();
+		
 		UrlTreeNode urlNode;
 		StringBuffer path = new StringBuffer();
 		String token;
@@ -51,28 +53,20 @@ public class UrlTree extends DefaultTreeModel {
 				path.append("/");
 			}
 			path.append(token);
+			
 			// Find the node if exist in index
 			logger.debug("[addUrlNode()] -----");
 			logger.debug("[addUrlNode()] URL Partielle : " + path.toString());
 			urlNode = findNode(path.toString());
+			
 			// if node already seen, increase counter value
 			if(urlNode != null){
 				logger.debug("[addUrlNode()] Node found, counter ++");
-				if(path.toString().equalsIgnoreCase(url)){
-					urlNode.increaseCompleteUrlCounter();
-				} else {
-					urlNode.increasePartialUrlCounter();					
-				}
 			}
 			// else add a new node in the tree
 			else {
 				logger.debug("[addUrlNode()] Add node in tree");
 				urlNode = new UrlTreeNode(token);
-				if(path.toString().equalsIgnoreCase(url)){
-					urlNode.increaseCompleteUrlCounter();
-				} else {
-					urlNode.increasePartialUrlCounter();
-				}
 				// Get the parent node and add a new child
 				// if path = token => parent node = root
 				if(path.toString().equals(token)){
@@ -86,14 +80,22 @@ public class UrlTree extends DefaultTreeModel {
 				logger.debug("[addUrlNode()] New node index : " + path.toString());
 				nodeIndex.put(path.toString(), urlNode);
 			}
+			
+			// local computes :
+			if(path.toString().equalsIgnoreCase(url)){
+				urlNode.increaseCompleteUrlCounter();
+			} else {
+				urlNode.increasePartialUrlCounter();
+			}
+			
 			// Add the msg in the node list if the last node is reached
 			if(!st.hasMoreTokens()){
 				urlNode.addMessage(msg);
 			}
-			// Send a event
-			if(urlNode != null){
-				EsperEngineSingleton.getEsperRuntime().sendEvent(new UrlTreeNodeEvent(urlNode, this));
-			}
+			// Send a event NO at the end of the run now
+			//if(urlNode != null){
+			//	EsperEngineSingleton.getEsperRuntime().sendEvent(new UrlTreeNodeEvent(urlNode, this));
+			//}
 		}
 		// Increase the root for each url to obtain the total number of url
 		((UrlTreeNode)(this.getRoot())).increasePartialUrlCounter();

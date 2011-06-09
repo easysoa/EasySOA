@@ -18,7 +18,8 @@ import org.apache.log4j.PropertyConfigurator;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
-import com.openwide.easysoa.esperpoc.esper.Message;
+
+import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 
@@ -84,16 +85,16 @@ public class HttpProxyImpl extends HttpServlet {
 		    	// Registering WSDL web service
 	    		// Create a new message received object and send it to Esper
 	    		logger.debug("--- ****** WSDL found, create Message !");
-	    		Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "WSDL");				
+	    		Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "WSDL");				
 				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
 	    	} else {
 	    		//TODO
 	    		// Not possible to make 2 different strategies : one for static url with parameters and one for dynamic url because it is possible to have dynamic url with parameters ...
-    			Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "REST");
+    			Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "REST");
     			// Add the url in the url tree structure
     			logger.debug("--- REST Service found, registering in URL tree !");
-    			urlTree.addUrlNode(request.getRequestURL().toString().substring(6), msg);
-    			// Filtre pour ne pas prendre en compte les resources statiques
+    			urlTree.addUrlNode(msg);
+    			// Filtre pour ne pas prendre en compte les resources statiques : pas la meilleure solution
     			// Seule solution pour detection correcte : Analyse de la requete et de la reponse associée.
     			// Si reponse contient du JSON => webservice, si html simple ou image => pas webservice ...
     			// Ce qui implique de modifier le pojo message pour faire 2 parties distinctes : request / response
