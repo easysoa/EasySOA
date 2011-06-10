@@ -39,13 +39,12 @@ import org.nuxeo.ecm.webapp.delegate.DocumentManagerBusinessDelegate;
 @Install(precedence = Install.FRAMEWORK)
 public class ImportBean {
 
-	private static final Log log = LogFactory.getLog(ImportBean.class);
-
-	private static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
-	private static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
-	private static final String WSDLINSTANCE_URI = "http://www.w3.org/2004/08/wsdl-instance";
+	public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
+	public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
+	public static final String WSDLINSTANCE_URI = "http://www.w3.org/2004/08/wsdl-instance";
+	public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
 	
-	private static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
+	private static final Log log = LogFactory.getLog(ImportBean.class);
 	
 	CoreSession documentManager;
 
@@ -116,10 +115,13 @@ public class ImportBean {
 						
 						// create api
 						String apiImplUrl = (String) ImportBean.this.appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-						String apiUrl = ImportBean.this.getApiUrl(serviceUrl, apiImplUrl, ImportBean.this.serviceStackUrl);
 						String appliImplPath = ImportBean.this.appliImplModel.getPathAsString();
+						String apiUrl = ImportBean.this.getApiUrl(serviceUrl, apiImplUrl, ImportBean.this.serviceStackUrl);
 						String apiName = ImportBean.this.serviceStackType; // TODO better, ex. from composite name...
-						DocumentModel apiModel = ImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
+						
+						DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);
+						if (apiModel == null)
+							apiModel = ImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
 						
 						// create service
 						DocumentService.createService(ImportBean.this.documentManager, apiModel.getPathAsString(), serviceNameString);
@@ -139,21 +141,26 @@ public class ImportBean {
 					public void visit(XMLStreamReader compositeReader, String serviceNameString) throws ClientException {
 						String serviceUrl = compositeReader.getAttributeValue(FRASCATI_URI, "uri");
 						
-						DocumentModel serviceModel = DocumentService.findService(ImportBean.this.documentManager, serviceUrl);
-						if (serviceModel != null){
-							// TODO handle enriching / merge of service or even api
-							return;
+						if (serviceUrl != null) {
+							DocumentModel serviceModel = DocumentService.findService(ImportBean.this.documentManager, serviceUrl);
+							if (serviceModel != null){
+								// TODO handle enriching / merge of service or even api
+								return;
+							}
+							
+							// create api
+							String apiUrl = ImportBean.this.getApiUrl(serviceUrl, ImportBean.this.appliImplModel.getPathAsString(),
+									ImportBean.this.serviceStackUrl);
+							String appliImplPath = ImportBean.this.appliImplModel.getPathAsString();
+							String apiName = ImportBean.this.serviceStackType; // TODO better, ex. from composite name...
+							
+							DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);
+							if (apiModel == null)
+								apiModel = ImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
+							
+							// create service
+							DocumentService.createService(ImportBean.this.documentManager, apiModel.getPathAsString(), serviceNameString);
 						}
-						
-						// create api
-						String apiUrl = ImportBean.this.getApiUrl(serviceUrl, ImportBean.this.appliImplModel.getPathAsString(),
-								ImportBean.this.serviceStackUrl);
-						String appliImplPath = ImportBean.this.appliImplModel.getPathAsString();
-						String apiName = ImportBean.this.serviceStackType; // TODO better, ex. from composite name...
-						DocumentModel apiModel = ImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
-						
-						// create service
-						DocumentService.createService(ImportBean.this.documentManager, apiModel.getPathAsString(), serviceNameString);
 					}
 	
 					
@@ -211,20 +218,21 @@ public class ImportBean {
 	
 	
 	// TODO move e.g. in DocumentService
-	
+	/*
 	private DocumentModel getApiOfService(String serviceUrl) throws ClientException {
 		DocumentModel serviceModel = DocumentService.findService(documentManager, serviceUrl);
 		if (serviceModel == null){
 			return null;	
 		}
 		return documentManager.getDocument(serviceModel.getParentRef());
-	}
+	}*/
 	
 	private DocumentModel createApiOfService(String appliImplPath, String apiUrl, String apiName) throws ClientException {
 		// assuming it is the parent TODO tree :
 		DocumentModel apiModel = DocumentService.createServiceAPI(documentManager, appliImplPath, apiUrl);
 		apiModel.setProperty("dublincore", "title", apiName);
 		documentManager.saveDocument(apiModel);
+		documentManager.save(); // Save all so that the newly created API can be found by the DocumentService
 		return apiModel;
 	}
 

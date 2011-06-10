@@ -11,4 +11,5 @@ Bundle-Vendor: EasySOA Consortium
 Bundle-Category: web,stateless
 Require-Bundle: org.nuxeo.ecm.platform.webengine.sites.api;visibility:=reexport
 Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
-Nuxeo-Component: OSGI-INF/rights-contrib.xml
+Nuxeo-Component: OSGI-INF/gadget-contrib.xml,
+ OSGI-INF/rights-contrib.xml

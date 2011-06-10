@@ -3,19 +3,16 @@ package org.easysoa.rest.notification;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.rest.LoggedRest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.webengine.WebEngine;
-import org.nuxeo.runtime.api.Framework;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Language;
 import org.restlet.data.MediaType;
@@ -25,15 +22,13 @@ import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.spi.container.ContainerRequest;
 
-public abstract class NotificationRest {
+public abstract class NotificationRest extends LoggedRest {
 
 	protected static final String REGISTRY_ROOT = "/default-domain/workspaces/";
 
-	protected CoreSession session = null;
 	protected JSONObject result = new JSONObject();
 	protected boolean errorFound = false;
 	protected static Map<String, String> dublinCoreDef; 
-	protected static LoginContext loginContext; 
 
 	private static final Log log = LogFactory.getLog(NotificationRest.class);
 	private static final String ERROR = "[ERROR] ";
@@ -57,20 +52,6 @@ public abstract class NotificationRest {
 			dublinCoreDef.put("description", "A short description.");
 		}
 		
-	}
-	
-	protected void login() throws LoginException {
-		// XXX: As the REST API is (for now) anonymously available, we need to explicitly log in
-		loginContext = Framework.login("Administrator", "Administrator");
-		session = WebEngine.getActiveContext().getUserSession().getCoreSession(null);
-	}
-	
-	protected void logout() {
-		try {
-			loginContext.logout();
-		} catch (LoginException e) {
-			log.warn("Failed to logout: "+e.getMessage());
-		}
 	}
 
 	/**

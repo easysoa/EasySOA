@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import org.easysoa.rest.gadgets.ServiceStatsRest;
 import org.easysoa.rest.notification.APINotificationRest;
 import org.easysoa.rest.notification.AppliImplNotificationRest;
 import org.easysoa.rest.notification.ServiceNotificationRest;
@@ -21,6 +22,7 @@ public class EasySOAApp extends Application {
 		result.add(ServiceNotificationRest.class);
 		result.add(APINotificationRest.class);
 		result.add(AppliImplNotificationRest.class);
+		result.add(ServiceStatsRest.class);
 		
 		return result;
     }

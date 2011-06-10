@@ -11,6 +11,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.api.PathRef;
 
 /**
  * 
@@ -46,7 +47,7 @@ public class DocumentService {
 	/**
 	 * 
 	 * @param session
-	 * @param parentPath If null, default application is used
+	 * @param parentPath If null or invalid, default application is used
 	 * @param title
 	 * @return
 	 * @throws ClientException
@@ -54,7 +55,15 @@ public class DocumentService {
 	public static final DocumentModel createServiceAPI(CoreSession session,
 			String parentPath, String url) throws ClientException {
 		
+		boolean invalidParent = false;
 		if (parentPath == null) {
+			invalidParent = true;
+		}
+		else if (!session.exists(new PathRef(parentPath))) {
+			log.warn("Parent AppliImpl "+parentPath+" not found, using default");
+			invalidParent = true;
+		}
+		if (invalidParent) {
 			parentPath = session.getDocument(getDefaultAppliImpl(session).getRef()).getPathAsString();
 		}
 
@@ -79,8 +88,10 @@ public class DocumentService {
 		if (parentPath != null) {
 			DocumentModel service = session.createDocumentModel(
 					parentPath, IdUtils.generateStringId(), Service.DOCTYPE);
-			service.setProperty(Service.SCHEMA, Service.PROP_URL, url);
-			service.setProperty("dublincore", "title", url);
+			if (service != null) {
+				service.setProperty(Service.SCHEMA, Service.PROP_URL, url);
+				service.setProperty("dublincore", "title", url);
+			}
 			return session.createDocument(service);
 		}
 		else {
