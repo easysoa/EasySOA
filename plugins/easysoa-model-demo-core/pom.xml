@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<<<<<<< HEAD
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>nuxeo-features-parent</artifactId>
@@ -83,4 +84,76 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+=======
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>nuxeo-features-parent</artifactId>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <version>5.4.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.easysoa</groupId>
+    <artifactId>easysoa-model-demo-core</artifactId>
+    <name>easysoa-model-demo-core</name>
+    <version>0.1.2-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.ow2.easywsdl</groupId>
+            <artifactId>easywsdl-wsdl</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.core</groupId>
+            <artifactId>nuxeo-core</artifactId>
+            <version>5.4.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-directory-sql</artifactId>
+            <version>5.4.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-relations-core</artifactId>
+            <version>5.4.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.automation</groupId>
+            <artifactId>nuxeo-automation-core</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-relations-api</artifactId>
+            <version>5.4.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-ui-web</artifactId>
+            <version>5.4.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.core</groupId>
+            <artifactId>nuxeo-core-api</artifactId>
+            <version>5.4.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-webapp-base</artifactId>
+            <version>5.4.1</version>
+        </dependency>
+    </dependencies>
+>>>>>>> origin/master
 </project>

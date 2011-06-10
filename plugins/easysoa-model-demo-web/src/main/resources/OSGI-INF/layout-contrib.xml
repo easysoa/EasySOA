@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.easysoa.web.contrib.layout">
+<component name="org.openwide.demo.vnavlayout">
 
    <documentation>
-   Documentation and contribution examples:
+   Documentation et exemples de contributions :
    org.nuxeo.ecm.platform.forms.layouts.webapp.listing--layouts
    org.nuxeo.ecm.platform.forms.layouts.webapp.listing--widgets 
    </documentation>
@@ -64,16 +64,23 @@
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">api:url</property>
+            <property name="sortPropertyName">endp:address</property>
           </properties>
-          <widget>listing_url</widget>
+          <widget>listing_address</widget>
         </column>
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">api:protocols</property>
+            <property name="sortPropertyName">endp:protocols</property>
           </properties>
           <widget>listing_protocols</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">endp:serviceid</property>
+          </properties>
+          <widget>listing_serviceid</widget>
         </column>
         
         <column>
@@ -157,16 +164,9 @@
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">app:technology</property>
+            <property name="sortPropertyName">stags:implementations</property>
           </properties>
-          <widget>listing_technology</widget>
-        </column>
-        <column>
-          <properties mode="any">
-            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">app:sourcesUrl</property>
-          </properties>
-          <widget>listing_sources</widget>
+          <widget>listing_implementations</widget>
         </column>
         
         <column>
@@ -180,43 +180,54 @@
     
   </extension>
     
-  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
-	  <widget name="listing_url" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.serviceapidef.url</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.api.url</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_protocols" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.serviceapidef.protocols</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.api.protocols</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_technology" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.appliimpldef.technology</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.app.technology</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_sources" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.app.sourcesUrl</field>
-	    </fields>
-	  </widget>
-  </extension>
+    <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
+          <widget name="listing_address" type="text">
+            <labels>
+              <label mode="any">label.easysoa.endpoints.uri</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.endp.uri</field>
+            </fields>
+          </widget>
+          <widget name="listing_protocols" type="text">
+            <labels>
+              <label mode="any">label.easysoa.endpoints.protocols</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.endp.protocols</field>
+            </fields>
+          </widget>
+          <widget name="listing_serviceid" type="text">
+            <labels>
+              <label mode="any">label.easysoa.endpoints.serviceid</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.endp.serviceid</field>
+            </fields>
+	       <!--  type="template"
+	       <labels>
+	            <label mode="any">label.easysoa.endpoints.serviceid</label>
+	        </labels>
+	        <translated>true</translated>
+	        <fields>
+	            <field>data.endp.serviceid</field>
+	        </fields>
+	        <properties mode="any">
+	            <property name="template">/widgets/service_link.xhtml</property>
+	        </properties>-->
+		  </widget>
+          <widget name="listing_implementations" type="text">
+            <labels>
+              <label mode="any">label.easysoa.servicetags.implementations</label>
+            </labels>
+            <translated>true</translated>
+            <fields>
+              <field>data.stags.implementations</field>
+            </fields>
+          </widget>
+    </extension>
     
 </component>

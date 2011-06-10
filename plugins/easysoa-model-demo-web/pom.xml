@@ -11,6 +11,4 @@
     <artifactId>easysoa-model-demo-web</artifactId>
     <name>easysoa-model-demo-web</name>
     <version>0.1.2-SNAPSHOT</version>
-    <dependencies>
-    </dependencies>
 </project>

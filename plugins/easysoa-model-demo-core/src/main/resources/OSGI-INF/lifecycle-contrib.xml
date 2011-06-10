@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.easysoa.core.contrib.lifecycle">
-
+<component name="org.openwide.test.lifecycle">
 	<extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
 		<types>
+<<<<<<< HEAD
 		  <type name="Service">default</type>
 		  <type name="ServiceAPI">default</type>
+=======
+		  <type name="Service"></type>
+		  <type name="ServiceDescriptor"></type>
+		  <type name="WSDL"></type>
+>>>>>>> origin/master
 		</types>
 	</extension>
-	
 </component>

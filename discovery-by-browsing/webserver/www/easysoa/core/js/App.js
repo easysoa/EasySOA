@@ -1,18 +1,16 @@
 $(function() {
 
-	window.socket = new io.Socket(null, {port: 8081, rememberTransport: false});
-  
 	window.AppView = Backbone.View.extend({
 	
 		/**
 		 * Application initialization
 		 */
 		initialize: function() {
-    
 			this.descriptorsView = new DescriptorsView;
 			this.frameView = new FrameView;
 			this.navBarView = new NavbarView;
 			this.submitFormView = new SubmitFormView;
+<<<<<<< HEAD
       
       socket.connect();
       socket.on('message', function(obj){
@@ -33,6 +31,8 @@ $(function() {
       });
       socket.send('hi');
       
+=======
+>>>>>>> origin/master
 		}
 	
 	});

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<component name="org.easysoa.web.contrib.contentviews">
+<component name="org.openwide.demo.contentviews">
 
   <extension target="org.nuxeo.ecm.platform.ui.web.ContentViewService" point="contentViews">
 	
@@ -11,12 +11,12 @@
       <coreQueryPageProvider>
         <property name="coreSession">#{documentManager}</property>
         <whereClause docType="QueryNav2">
-          <predicate parameter="api:application" operator="STARTSWITH">
+          <predicate parameter="stags:application" operator="STARTSWITH">
             <field schema="querynav2" name="application" />
           </predicate>
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
-            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'ServiceAPI'
+            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'Service'
           </fixedPart>
         </whereClause>
         <sort column="dc:title" ascending="true" />
@@ -57,12 +57,16 @@
       <coreQueryPageProvider>
         <property name="coreSession">#{documentManager}</property>
         <whereClause docType="QueryNav2">
+<<<<<<< HEAD
           <predicate parameter="app:server" operator="STARTSWITH">
+=======
+          <predicate parameter="endp:location" operator="STARTSWITH">
+>>>>>>> origin/master
             <field schema="querynav2" name="location" />
           </predicate>
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
-            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'AppliImpl'
+            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'WSDL'
           </fixedPart>
         </whereClause>
         <sort column="dc:title" ascending="true" />
@@ -88,7 +92,7 @@
       
     </contentView>
     
-    <!--
+    
     <contentView name="byServiceContentView">
       <title>label.easysoa.service</title>
       <translateTitle>true</translateTitle>
@@ -96,12 +100,12 @@
       <coreQueryPageProvider>
         <property name="coreSession">#{documentManager}</property>
         <whereClause docType="QueryNav2">
-          <predicate parameter="api:application" operator="STARTSWITH">
+          <predicate parameter="stags:application" operator="STARTSWITH">
             <field schema="querynav2" name="application" />
           </predicate>
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
-            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'ServiceAPI'
+            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'Service'
           </fixedPart>
         </whereClause>
         <sort column="dc:title" ascending="true" />
@@ -125,7 +129,7 @@
       <selectionList>CURRENT_SELECTION</selectionList>
       <actions category="CURRENT_SELECTION_LIST" />
       
-    </contentView>-->
+    </contentView>
     
     </extension>
 </component>

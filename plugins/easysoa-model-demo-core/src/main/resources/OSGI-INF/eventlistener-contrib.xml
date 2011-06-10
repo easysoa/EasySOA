@@ -1,13 +1,25 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.core.contrib.eventlistener">
+<component name="org.openwide.test.eventlistener">
 
-  <require>org.easysoa.core.component.easysoa</require>
+  <require>org.easysoa.component.workspacedeployer</require>
 
   <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
   
-    <listener name="serviceapilistener" class="org.easysoa.listeners.ServiceAPIListener" order="120">
+    <listener name="descriptorlistener" class="org.easysoa.descriptors.DescriptorListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
+      <event>documentRemoved</event>
+    </listener>
+    
+    <listener name="servicelistener" class="org.easysoa.services.ServiceListener" 
+    	async="false" postCommit="false" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+      <event>documentRemoved</event>
+    </listener>
+    
+    <listener name="movedocumentslistener" class="org.easysoa.treestructure.MoveDocumentsListeners" order="120">
+      <event>documentCreated</event>
     </listener>
     
   </extension>

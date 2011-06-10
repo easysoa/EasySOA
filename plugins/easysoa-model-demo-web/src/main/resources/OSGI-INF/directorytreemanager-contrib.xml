@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<component name="org.easysoa.web.contrib.directorytreemanager">
+<component name="org.openwide.demo.directorytreemanager">
 
   <require>org.nuxeo.ecm.webapp.directory.DirectoryTreeService</require>
   <require>org.nuxeo.runtime.started</require>
@@ -24,12 +24,12 @@
       <directory>environment</directory>
       <directory>server</directory>
     </directoryTree>
-    <!--
+    
     <directoryTree name="byServiceNavigation" label="label.easysoa.navservice"
       contentView="byServiceContentView" field="application" schema="querynav2"
       outcome="service_virtual_navigation" enabled="true">
       <directory>application</directory>
-    </directoryTree>-->
+    </directoryTree>
    
   </extension>
 
