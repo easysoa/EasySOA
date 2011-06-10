@@ -1,4 +1,4 @@
-# EasySOA Model Demo
+# EasySOA Model Demo v1.0 (May 20, 2011)
 
 ## Introduction
 
