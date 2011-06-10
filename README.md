@@ -24,8 +24,13 @@ You will need to clone all needed projects:
 
 * [easysoa-model-demo][2]
 * [easysoa-demo-pureAirFlowers-proxy][3]
+* This repository
 
-Once this is done, clone this repository in your workspace, on the same level than the other projects.
+All projects have to be on the same level.
+
+    git clone git@github.com:easysoa/easysoa-demo-pureAirFlowers-proxy.git --branch v1.0_20110520
+    git clone git@github.com:easysoa/easysoa-model-demo.git --branch v1.0_20110520
+    git clone git@github.com:easysoa/easysoa-demo-dist.git --branch v1.0_20110520
 
 # Build and distribute
 
