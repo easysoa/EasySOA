@@ -1,3 +1,5 @@
+# EasySOA Demo Distribution v1.0 (May 20, 2011)
+
 Project for EasySOA contributors, used to tie all packages together.
 
 # Prerequisites
