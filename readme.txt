@@ -29,6 +29,9 @@ To build and run this project, the requirements are :
 
 - Maven 2.2 or Maven 3 must be installed on your computer.
 - Frascati 1.4 must be installed on your computer (Can be found here : http://forge.ow2.org/project/showfiles.php?group_id=329)
+- The following additional libraries must be copied into the Fracati lib folder (check your m2 repository folder)  :
+ 	* org.restlet.ext.simple-2.1-M3.jar
+	* org.restlet-2.1-M3.jar
 
 ----------------------------------
 

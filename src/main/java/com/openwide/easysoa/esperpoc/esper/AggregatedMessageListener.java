@@ -1,12 +1,9 @@
 package com.openwide.easysoa.esperpoc.esper;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
-
 import org.apache.log4j.Logger;
-
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
@@ -38,8 +35,8 @@ public class AggregatedMessageListener implements UpdateListener {
     }
 
 	public void update(EventBean newData) {
-		logger.debug("[MessageListener] --- Event received: " + newData.getUnderlying());
-		logger.debug("[MessageListener] --- " + newData.getUnderlying().getClass().getName());
+		logger.debug("[AggregatedMessageListener] --- Event received: " + newData.getUnderlying());
+		logger.debug("[AggregatedMessageListener] --- " + newData.getUnderlying().getClass().getName());
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		HashMap<String, Object> aggregatedProps = (HashMap) (newData.getUnderlying());
 		/*Iterator<String> iter = hm.keySet().iterator();
@@ -64,7 +61,6 @@ public class AggregatedMessageListener implements UpdateListener {
 					servicePath = serviceUrl.substring(1);
 				}
 				servicePath = serviceUrl.replace('/', '_');
-				
 				url = new URL(serviceUrl);
 				service = new WSDLService(url.getHost(), servicePath, serviceUrl, "POST"); // TODO better method in aggregation
 				nrs.registerWSDLService(service);

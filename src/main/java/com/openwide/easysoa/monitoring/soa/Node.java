@@ -1,5 +1,10 @@
 package com.openwide.easysoa.monitoring.soa;
 
+/**
+ * Describe a SOA Node
+ * @author jguillemotte
+ *
+ */
 public class Node {
 
 	private String description;

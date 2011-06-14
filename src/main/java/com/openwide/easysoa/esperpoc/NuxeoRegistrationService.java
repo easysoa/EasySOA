@@ -194,6 +194,10 @@ public class NuxeoRegistrationService {
 		}
 	}*/
 	
+	/**
+	 * return all soa node registred in Nuxeo
+	 * @return A <code>List</code> of soa <code>Node</code> 
+	 */
 	public List<Node> getAllSoaNodes() {
 		String query = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
 		JsonMapper soaNodesJsonMapper = new SoaNodesJsonMapper();
@@ -206,6 +210,13 @@ public class NuxeoRegistrationService {
 		}
 	}
 	
+	/**
+	 * Return all the objects registered in nuxeo and corresponding to the query
+	 * @param query The query to find objects in Nuxeo
+	 * @param jsonMapper The mapper to map the results in Java objects
+	 * @return A <code>List</code> of soa <code>Node</code>
+	 * @throws JSONException In case of problem
+	 */
 	public List<Node> getAllTo(String query , JsonMapper jsonMapper) throws JSONException {
 		String res =  sendQuery(query);
 		ArrayList<Node> soaNodes = new ArrayList<Node>();

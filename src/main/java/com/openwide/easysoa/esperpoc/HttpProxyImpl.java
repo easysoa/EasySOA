@@ -5,9 +5,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +23,13 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
 import com.openwide.easysoa.monitoring.Message;
+import com.openwide.easysoa.monitoring.Message.MessageType;
+import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
+import com.openwide.easysoa.monitoring.MessageHandler;
+import com.openwide.easysoa.monitoring.MonitorService;
+import com.openwide.easysoa.monitoring.RestMessageHandler;
+import com.openwide.easysoa.monitoring.SoapMessageHandler;
+import com.openwide.easysoa.monitoring.WSDLMessageHandler;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 
@@ -47,16 +57,12 @@ public class HttpProxyImpl extends HttpServlet {
 	static Logger logger = Logger.getLogger(HttpProxyImpl.class.getName());
 
 	/**
-	 * 
+	 * Log system initialization
 	 */
-	private static UrlTree urlTree;
-	
-	/**
-	 * Log system init
-	 */
+	//TODO add a way to specify dynamically the monitoring mode, default monitoring mode is stored in httpProxy.properties
 	static {
 		PropertyConfigurator.configure(HttpProxyImpl.class.getClassLoader().getResource("log4j.properties"));
-		urlTree = new UrlTree(new UrlTreeNode("root"));
+		MonitorService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
 	}
 	
 	/**
@@ -74,37 +80,23 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	StringBuffer sb = new StringBuffer();
-	    	sb.append(request.getRequestURL().toString());
+	    	StringBuffer requestUrlBuf = new StringBuffer();
+	    	requestUrlBuf.append(request.getRequestURL().toString());
 	    	if(request.getQueryString() != null){
-	    		sb.append("?");
-	    		sb.append(request.getQueryString());
+	    		requestUrlBuf.append("?");
+	    		requestUrlBuf.append(request.getQueryString());
 	    	}
-	    	logger.debug("--- Complete request : " + sb.toString());
-	    	if(sb.toString().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"))){
-		    	// Registering WSDL web service
-	    		// Create a new message received object and send it to Esper
-	    		logger.debug("--- ****** WSDL found, create Message !");
-	    		Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "WSDL");				
-				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
-	    	} else {
-	    		//TODO
-	    		// Not possible to make 2 different strategies : one for static url with parameters and one for dynamic url because it is possible to have dynamic url with parameters ...
-    			Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), "REST");
-    			// Add the url in the url tree structure
-    			logger.debug("--- REST Service found, registering in URL tree !");
-    			urlTree.addUrlNode(msg);
-    			// Filtre pour ne pas prendre en compte les resources statiques : pas la meilleure solution
-    			// Seule solution pour detection correcte : Analyse de la requete et de la reponse associée.
-    			// Si reponse contient du JSON => webservice, si html simple ou image => pas webservice ...
-    			// Ce qui implique de modifier le pojo message pour faire 2 parties distinctes : request / response
-	    	}
-	    	ClientResource resource = new ClientResource(sb.toString());
+	    	String requestUrlString = requestUrlBuf.toString();
+	    	logger.debug("--- Complete request : " + requestUrlString);
+	    	
+	    	// send to actual server :
+	    	ClientResource resource = new ClientResource(requestUrlString);
 	    	// Send an authenticated request using the Basic authentication scheme.
 	    	if(request.getRemoteUser() != null){
 	    		String authHead=request.getHeader("Authorization");
 	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authHead));
 	    	}
+	    	// TODO get the response for monitoring purpose before sending it back
 	    	InputStream in = resource.get().getStream();
     	    if(in != null){
     	    	int c;
@@ -112,6 +104,41 @@ public class HttpProxyImpl extends HttpServlet {
     	    		respOut.write(c);
     	    	}
     	    }
+	    	
+	    	// TODO .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
+    	    // TODO in all methods (doGet, doPost), for (mh in List<>Message Handler ) { boolean isOKFor(); handle() return stopHandling; }
+    	    // TODO GetWSDLMessageHandler, SoapMessageHandler, RestMessageHandler
+    	    
+    	    // TODO MonitorService : mode, soaModel, listen() -> "for (mh..." called here
+    	    // TODO refactor the test with MonitorService.listen()
+    	    // TODO move doGet() code in forward() 
+    	    
+    	    // TODO at the start (end ?!) of MonitorService.listen(), RunRecorder.record(Message)
+    	    // TODO RunRecorder (NB. not a RunRepository, yet) : record(Message)
+    	    // TODO Run : startDate, stopDate...
+    	    // TODO RunManager : runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run) -> for (run... MonitorService.listen(...
+    	    
+    	    Message message = new Message(request);
+    	    MonitorService.getMonitorService().listen(message);
+    	    
+	    	/*if(isWSDL(requestUrlString)){
+	    		// Registering WSDL web service
+	    		// Create a new message received object and send it to Esper
+	    		logger.debug("--- ****** WSDL found, create Message !");
+	    		Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), MessageType.WSDL);				
+				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
+	    	} else {
+	    		//TODO
+	    		// Not possible to make 2 different strategies : one for static url with parameters and one for dynamic url because it is possible to have dynamic url with parameters ...
+    			Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), MessageType.REST);
+    			// Add the url in the url tree structure
+    			logger.debug("--- REST Service found, registering in URL tree !");
+    			urlTree.addUrlNode(msg);
+    			// Filtre pour ne pas prendre en compte les resources statiques : pas la meilleure solution
+    			// Seule solution pour detection correcte : Analyse de la requete et de la reponse associée.
+    			// Si reponse contient du JSON => webservice, si html simple ou image => pas webservice ...
+    			// Ce qui implique de modifier le pojo message pour faire 2 parties distinctes : request / response
+	    	}*/
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
@@ -172,21 +199,21 @@ public class HttpProxyImpl extends HttpServlet {
 	    	logger.debug("Request body is empty ! ");
 	    }
 		// Check if the request body is a soap message
-		if(bodyContent.toString().toLowerCase().contains("schemas.xmlsoap.org") && bodyContent.toString().toLowerCase().startsWith("<?xml")){
+		/*if(bodyContent.toString().toLowerCase().contains("schemas.xmlsoap.org") && bodyContent.toString().toLowerCase().startsWith("<?xml")){
 			logger.debug("SOAP Message found, create Esper message");
 			// Check if a WSDL exists
 			if(checkWsdl(request.getRequestURL().toString())){
 				logger.debug("WSDL found");
 				logger.debug("Registering in nuxeo");
-				Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), "wsdl", bodyContent.toString(), request.getMethod(), "WSDL");
+				Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), "wsdl", bodyContent.toString(), request.getMethod(), MessageType.WSDL);
 				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);				
 			}
-		}
+		}*/
 		
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-			// Create the client resource  
+			// Create the client resource
 	    	StringBuffer sb = new StringBuffer();
 	    	sb.append(request.getRequestURL().toString());
 	    	if(request.getQueryString() != null){
@@ -201,7 +228,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    	if(request.getRemoteUser() != null){
 	    		String authHead=request.getHeader("Authorization");
 	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authHead));
-	    	}	    	
+	    	}
 	    	InputStream in = resource.post(representation).getStream();
     	    if(in != null){
     	    	int c;
@@ -209,6 +236,9 @@ public class HttpProxyImpl extends HttpServlet {
     	    		respOut.write(c);
     	    	}
     	    }
+    	    Message message = new Message(request);
+    	    message.setBody(bodyContent.toString());
+    	    MonitorService.getMonitorService().listen(message);
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
@@ -223,42 +253,75 @@ public class HttpProxyImpl extends HttpServlet {
 	}
 	
 	/**
-	 * Check if a WSDL service exists
-	 * @param url The url to check
-	 * @return true if the WSDL service send a response, false otherwise.
-	 */
-	private boolean checkWsdl(String url){
-		boolean result = false;
-		try{
-			ClientResource resource = new ClientResource(url + "/?wsdl");
-			resource.get();
-			result = true;
-		}
-		catch(Exception ex){
-			logger.debug("Unable to get a correct response from " + url + "/?wsdl");
-		}
-		return result;
-	}
-	
-	/**
 	 * 
 	 */
+	//TODO : Move this method or change the way to obtain urlTree !!
 	@SuppressWarnings("unused")
 	private void printUrlTree(){
 		logger.debug("[printUrlTree()] Printing tree node index ***");
-		logger.debug("[printUrlTree()] Total url count : " + urlTree.getTotalUrlCount());
+		logger.debug("[printUrlTree()] Total url count : " + MonitorService.getMonitorService().getUrlTree().getTotalUrlCount());
 		String key;
-		HashMap<String, UrlTreeNode> index = urlTree.getNodeIndex();
+		HashMap<String, UrlTreeNode> index = MonitorService.getMonitorService().getUrlTree().getNodeIndex();
 		Iterator<String> iter2 = index.keySet().iterator();
 		UrlTreeNode parentNode;
 		float ratio;
 		while(iter2.hasNext()){
 			key = iter2.next();
 			parentNode = (UrlTreeNode)(index.get(key).getParent());
-			ratio = (float)index.get(key).getPartialUrlcallCount() / urlTree.getTotalUrlCount();
+			ratio = (float)index.get(key).getPartialUrlcallCount() / MonitorService.getMonitorService().getUrlTree().getTotalUrlCount();
 			logger.debug("[printUrlTree()] " + key + " -- " + index.get(key).toString() + ", parent node => " + parentNode.getNodeName() + ", Depth => " + index.get(key).getDepth() + ", node childs => " + index.get(key).getChildCount() + ", ratio => " + ratio);
 		}
 	}
+
+	/**
+	 * Send back the request to the original recipient and get the response
+	 * @throws IOException 
+	 */
+	//TODO Use this method in doGet and doPost methods
+	public void forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		PrintWriter respOut = response.getWriter();
+		//try{
+			StringBuffer requestUrlBuffer = new StringBuffer();
+			requestUrlBuffer.append(request.getRequestURL().toString());
+	    	if(request.getQueryString() != null){
+	    		requestUrlBuffer.append("?");
+	    		requestUrlBuffer.append(request.getQueryString());
+	    	}
+	    	String requestUrlString = requestUrlBuffer.toString();
+
+			BufferedReader requestBufferedReader = request.getReader();
+	    	StringBuffer bodyContent = new StringBuffer();
+			if(requestBufferedReader != null){
+		    	String line;
+		    	while((line = requestBufferedReader.readLine()) != null){
+		    		bodyContent.append(line);
+		    	}
+		    }
+			String requestBodyString = bodyContent.toString();
+			
+	    	ClientResource resource = new ClientResource(requestUrlString);
+	    	Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
+	    	InputStream in = resource.post(representation).getStream();
+    	    if(in != null){
+    	    	int c;
+    	    	while((c = in.read()) != -1){
+    	    		respOut.write(c);
+    	    	}
+    	    }
+	    /*}
+		catch(Throwable ex){
+	    	ex.printStackTrace();
+	    	//respOut.println("<html><body>httpProxy : An errror occurs.<br/>");
+	    	//respOut.println(ex.getMessage() + "</body></html>");
+	    }
+	    finally {
+	    	logger.debug("Closing response flow");
+	    	//respOut.println("Finally block ..... Something goes wrong !!");
+	    	respOut.close();
+	    }*/
+    	    respOut.close();
+	}
+	
 	
 	/**
 	 * 

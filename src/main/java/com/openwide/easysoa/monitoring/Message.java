@@ -1,8 +1,16 @@
 package com.openwide.easysoa.monitoring;
 
 import java.net.URL;
+import javax.servlet.http.HttpServletRequest;
 
 public class Message {
+
+	/**
+	 *	Message types 
+	 */
+	public enum MessageType {
+	    WSDL, REST, SOAP 
+	}
 
 	private String protocol;
 	private String host;
@@ -11,8 +19,9 @@ public class Message {
 	private String parameters;
 	private String content;
 	private String method;
-	private String type;
+	private MessageType type;
 	private String url;
+	private String body;
 
 	/**
 	 * Constructor
@@ -22,7 +31,7 @@ public class Message {
 	 * @param parameters
 	 * @param content
 	 */
-	public Message(String protocol, String host, int port, String pathName, String parameters, String content, String method, String type){
+	public Message(String protocol, String host, int port, String pathName, String parameters, String content, String method, MessageType type){
 		if(protocol.toLowerCase().contains("http")){
 			this.protocol = "http";
 		} else {
@@ -35,8 +44,21 @@ public class Message {
 		this.content = content;
 		this.method = method;
 		this.type = type;
+		this.body = "";
+		
 	}
 
+	public Message(HttpServletRequest request){
+		this.pathName = request.getRequestURI();
+		this.parameters = request.getQueryString();
+		this.host = request.getServerName();
+		this.port = request.getServerPort();		
+		this.protocol = request.getProtocol();
+		this.method = request.getMethod();
+		this.content = "";
+		this.body = "";
+	}	
+	
 	/**
 	 * Constructor
 	 * @param host
@@ -44,7 +66,7 @@ public class Message {
 	 * @param pathName
 	 * @param parameters
 	 */
-	public Message(String url, String protocol, String host, int port, String pathName, String parameters, String type){
+	public Message(String url, String protocol, String host, int port, String pathName, String parameters, MessageType type){
 		this.url = url;
 		if(protocol.toLowerCase().contains("http")){
 			this.protocol = "http";
@@ -58,9 +80,10 @@ public class Message {
 		this.type = type;
 		this.content = "";
 		this.method = "";
+		this.body = "";
 	}
 	
-	public Message(URL url, String type) {
+	public Message(URL url, MessageType type) {
 		this(url.toString(), url.getProtocol(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), type);
 	}
 
@@ -83,6 +106,9 @@ public class Message {
 	 * @return
 	 */
 	public String getParameters(){
+		if(parameters == null){
+			parameters = "";
+		}
 		return parameters;
 	}
 	
@@ -91,6 +117,9 @@ public class Message {
 	 * @return
 	 */
 	public String getHost() {
+		if(host == null){
+			host = "";
+		}		
 		return host;
 	}
 
@@ -99,6 +128,9 @@ public class Message {
 	 * @return
 	 */
 	public String getPathName() {
+		if(pathName == null){
+			pathName = "";
+		}
 		return pathName;
 	}
 
@@ -115,6 +147,9 @@ public class Message {
 	 * @return
 	 */
 	public String getProtocol(){
+		if(protocol == null){
+			protocol = "";
+		}		
 		return protocol;
 	}
 	
@@ -123,6 +158,9 @@ public class Message {
 	 * @return
 	 */
 	public String getContent(){
+		if(content == null){
+			content = "";
+		}		
 		return content;
 	}
 	
@@ -131,6 +169,9 @@ public class Message {
 	 * @return
 	 */
 	public String getMethod(){
+		if(method == null){
+			method = "";
+		}		
 		return method;
 	}
 	
@@ -138,8 +179,35 @@ public class Message {
 	 * 
 	 * @return
 	 */
-	public String getType(){
+	public MessageType getType(){
 		return type;
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 */
+	public void setType(MessageType type){
+		this.type = type;
+	}
+	
+	/**
+	 * 
+	 * @param body
+	 */
+	public void setBody(String body){
+		this.body = body;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getBody(){
+		if(body == null){
+			body = "";
+		}
+		return this.body;
 	}
 	
 	/**

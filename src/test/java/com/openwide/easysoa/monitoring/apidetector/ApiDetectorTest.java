@@ -9,6 +9,9 @@ import org.apache.log4j.Logger;
 import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message;
+import com.openwide.easysoa.monitoring.Message.MessageType;
+import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
+import com.openwide.easysoa.monitoring.MonitorService;
 import com.openwide.easysoa.monitoring.MonitoringModel;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
@@ -28,8 +31,8 @@ public class ApiDetectorTest extends TestCase {
 	 */
 	private static Logger logger = Logger.getLogger(getInvokingClassName());
 	
-	private MonitoringModel monitoringModel; // scope : global
-	private UrlTree urlTree; // scope : run
+	//private MonitoringModel monitoringModel; // scope : global
+	//private UrlTree urlTree; // scope : run
 	
     /**
      * Create the test case
@@ -53,64 +56,28 @@ public class ApiDetectorTest extends TestCase {
      */
 	public void testUrlDetection(){
 		// init
-		monitoringModel = null; // none
+		//TODO A initialiser dans le Monitor service
+		//monitoringModel = null; // none
 
 		// pre run
 		// init apidetector tree :
-		urlTree = new UrlTree(new UrlTreeNode("root"));
+		//urlTree = new UrlTree(new UrlTreeNode("root"));
 
+		MonitorService.getMonitorService(MonitoringMode.DISCOVERY);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
 		urlDetectionCompute();
 		urlDetectionDebugResults();
 		
 		// post run (detection mode)
-		// let esper send detected apis & services to nuxeo
-		registerDetectedServicesToNuxeo();
+		//TODO Warning, do not call this method in VALIDATED MODE Otherwise crash !!!!
+		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
 
 		// load nuxeo model and display it
-		MonitoringModel testSoaModel = new MonitoringModel();
+		/*MonitoringModel testSoaModel = new MonitoringModel();
 		testSoaModel.fetchFromNuxeo();
 		logger.debug("allNodes:\n" + testSoaModel.getSoaNodes());
-		
-		urlTree = null;
-	}
-	
-	private void registerDetectedServicesToNuxeo() {
-		UrlTreeNode rootNode = (UrlTreeNode) urlTree.getRoot();
-		registerChildren(rootNode);
-	}
-
-	private void registerChildren(UrlTreeNode node) {
-		
-		for (int i = 0; i < node.getChildCount(); i++) {
-			
-			UrlTreeNode childNode = (UrlTreeNode) node.getChildAt(i);
-			
-			node = (UrlTreeNode) childNode.getParent();
-			if(childNode.getLevel() == 1){
-				// Application detected
-				logger.debug("[MessageListener] --- new Appli to register !!!!");
-				if(!childNode.isRegistered() && childNode.getPartialUrlcallCount() > 5 && childNode.getCompleteUrlcallCount() == 0){
-					Appli appli = new Appli(childNode.getNodeName(), childNode.getNodeName());
-					appli.setUiUrl(childNode.getNodeName());
-					if(!"ok".equals(new NuxeoRegistrationService().registerRestAppli(appli))){
-						childNode.setRegistered();
-					}
-				}
-			}
-			// API detection
-			else if(childNode.getChildCount() > 0 && childNode.getRatioComplete(urlTree) == 0 && childNode.getLevel() >= 2 
-					&& childNode.getPartialUrlcallCount() > 5 && !childNode.isRegistered() && node.isRegistered()){
-				logger.debug("[MessageListener] --- new Api to register !!!!");
-				Api api = new Api(childNode.getNodeName(), node.getNodeName());
-				api.setTitle(childNode.getNodeName());
-				if(!"ok".equals(new NuxeoRegistrationService().registerRestApi(api))){
-					childNode.setRegistered();
-				}
-			}
-			
-			registerChildren(childNode);
-		}
+		*/
+		//urlTree = null;
 	}
 
 	/**
@@ -120,16 +87,16 @@ public class ApiDetectorTest extends TestCase {
 		// NB. in validation mode, no concept or pre or post run
 
 		// init
-		monitoringModel = new MonitoringModel();
+		//monitoringModel = new MonitoringModel();
 		// fill it from nuxeo
-		monitoringModel.fetchFromNuxeo();
-		logger.debug("allNodes:\n" + monitoringModel.getSoaNodes());
+		//monitoringModel.fetchFromNuxeo();
+		//logger.debug("allNodes:\n" + monitoringModel.getSoaNodes());
 		/*soaModelUrlToTypeMap = new HashMap<String, String>();
 		soaModelUrlToTypeMap.put("http://api.twitter.com/1/users/show", SOA_MODEL_TYPE_SERVICE);*/
 		// TODO LATER cache it
-
-		//urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+		MonitorService.getMonitorService(MonitoringMode.VALIDATED);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+		//urlDetectionSimulate(new UrlMock().getTwitterUrlData());
 		// TODO LATER mixed mode : do compute and debugResults BUT ONLY on unknown messages ?!
 		//urlDetectionCompute();
 		//urlDetectionDebugResults();
@@ -144,6 +111,7 @@ public class ApiDetectorTest extends TestCase {
 	 * @param arrayList 
 	 * 
 	 */
+	//TODO Stay here ????
 	public void urlDetectionSimulate(ArrayList<String> arrayList){
 		// simulate rest exchanges
 		logger.debug( "Test URL detection start");
@@ -156,10 +124,10 @@ public class ApiDetectorTest extends TestCase {
 				logger.debug("**** New URL :" + urlString);
 				try{
 					URL url = new URL(urlString);
-					Message msg = new Message(url, "REST");
-					
+					Message msg = new Message(url, MessageType.REST);
+					MonitorService.getMonitorService().listen(msg);
 					// actual handling :
-					handleMessage(msg);
+					//handleMessage(msg);
 				}
 				catch(Exception ex){
 					logger.error("**** problem spotted ! ", ex);
@@ -169,71 +137,40 @@ public class ApiDetectorTest extends TestCase {
 		logger.debug("Test URL detection stop");
 	}
 		
+	//TODO Stay here ?
 	public void urlDetectionCompute(){
 		// compute additional, non-local indicators :
 		// TODO compute them ; for now, only computed on demand at the end
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	// TODO Stay here ? Remove this method ?
 	public void urlDetectionDebugResults(){
-		// debug / print them :
-		logger.debug("Printing tree node index ***");
-		logger.debug("Total url count : " + urlTree.getTotalUrlCount());
-		String key;
-		HashMap<String, UrlTreeNode> index = urlTree.getNodeIndex();
-		Iterator<String> iter2 = index.keySet().iterator();
-		UrlTreeNode node;
-		UrlTreeNode parentNode;
-		while(iter2.hasNext()){
-			key = iter2.next();
-			node = index.get(key);
-			if(node.getLevel() <= 3){
-				parentNode = (UrlTreeNode)(node.getParent());
-				logger.debug("complete = " + node.getCompleteUrlcallCount() + ",partial = " + node.getPartialUrlcallCount() + ",total = " + urlTree.getTotalUrlCount());
-				logger.debug(key + " -- " + node.toString() + ", parent node => " + parentNode.getNodeName() + ", Depth => " + node.getDepth() + ", Level => " + node.getLevel()); 
-				logger.debug(", direct node childs => " + node.getChildCount() + "Total childs number => " + node.getTotalChildsNumber());
-				logger.debug(", ratioPartial => " + node.getRatioPartial(urlTree) + "%, ratioComplete => " + node.getRatioComplete(urlTree) + "%" + ", Ratio childs => " + node.getRatioChilds() + "%" + ", Ratio childs to ancestor => " + node.getRatioChildsToAncestor() + "%");
+		// debug / print them only in discovery mode :
+		UrlTree urlTree = MonitorService.getMonitorService().getUrlTree();
+		if(urlTree != null){
+			logger.debug("Printing tree node index ***");
+			logger.debug("Total url count : " + urlTree.getTotalUrlCount());
+			String key;
+			HashMap<String, UrlTreeNode> index = urlTree.getNodeIndex();
+			Iterator<String> iter2 = index.keySet().iterator();
+			UrlTreeNode node;
+			UrlTreeNode parentNode;
+			while(iter2.hasNext()){
+				key = iter2.next();
+				node = index.get(key);
+				if(node.getLevel() <= 3){
+					parentNode = (UrlTreeNode)(node.getParent());
+					logger.debug("complete = " + node.getCompleteUrlcallCount() + ",partial = " + node.getPartialUrlcallCount() + ",total = " + urlTree.getTotalUrlCount());
+					logger.debug(key + " -- " + node.toString() + ", parent node => " + parentNode.getNodeName() + ", Depth => " + node.getDepth() + ", Level => " + node.getLevel()); 
+					logger.debug(", direct node childs => " + node.getChildCount() + "Total childs number => " + node.getTotalChildsNumber());
+					logger.debug(", ratioPartial => " + node.getRatioPartial(urlTree) + "%, ratioComplete => " + node.getRatioComplete(urlTree) + "%" + ", Ratio childs => " + node.getRatioChilds() + "%" + ", Ratio childs to ancestor => " + node.getRatioChildsToAncestor() + "%");
+				}
 			}
 		}
-	}
-	
-	/**
-	 * 
-	 * @param msg
-	 */
-	private void handleMessage(Message msg) {
-		if (monitoringModel == null) {
-			// detection mode
-			
-			// put in the tree, and compute local indicators :
-			urlTree.addUrlNode(msg);
-			
-		} else {
-			// validation mode
-			
-			// TODO match url in soaModel
-			String urlSoaModelType = monitoringModel.getSoaModelUrlToTypeMap().get(msg.getUrl());
-			
-			// if none, maybe it is a resource :
-			if (urlSoaModelType == null) {
-				int lastSlashIndex = msg.getUrl().lastIndexOf('/'); // TODO BETTER regexp or finite automat OR ESPER OR SHARED MODEL WITH TREE OR ABSTRACT TREE ??!!
-				String serviceUrlOfResource = msg.getUrl().substring(0, lastSlashIndex);
-				msg.setUrl(serviceUrlOfResource); // HACK TODO rather add a field
-				urlSoaModelType = monitoringModel.getSoaModelUrlToTypeMap().get(serviceUrlOfResource);
-			}
+	}	
 
-			if (urlSoaModelType != null) {
-				// if there, feed it to esper
-				// TODO put known serviceUrl in esper
-				// TODO write listener that groups by serviceUrl and registers them to nuxeo every minute
-				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
-			
-			} else {
-				// else add it to unknownMessageStore (if service not there already) & remember to send an alert (also aggregated)
-				//TODO
-			}
-		}
-	}
+	
 }

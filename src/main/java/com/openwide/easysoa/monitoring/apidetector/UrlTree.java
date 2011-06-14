@@ -2,11 +2,8 @@ package com.openwide.easysoa.monitoring.apidetector;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
 import javax.swing.tree.DefaultTreeModel;
-
 import org.apache.log4j.Logger;
-
 import com.openwide.easysoa.monitoring.Message;
 
 @SuppressWarnings("serial")
@@ -37,15 +34,18 @@ public class UrlTree extends DefaultTreeModel {
 	 * @param url The url to add in the tree
 	 */
 	public void addUrlNode(Message msg){
+		// TODO check if it is necessary to remove the http prefix
+		// Problem is that a special node http is created in nuxeo, consequence of StringTokenizer use with '/' delimiter
+		//String url = msg.getUrl().substring(msg.getUrl().indexOf("/"));
 		String url = msg.getUrl();
-		
+
 		UrlTreeNode urlNode;
 		StringBuffer path = new StringBuffer();
 		String token;
 		// Cut the url in tokens
 		StringTokenizer st = new StringTokenizer(url, "/");
 		// For each token
-		logger.debug("[addUrlNode()] URL Complete : " + url);
+		logger.debug("[addUrlNode()] Complete URL : " + url);
 		while(st.hasMoreTokens()){
 			token = st.nextToken();
 			logger.debug("[addUrlNode()] node : " + token);
@@ -56,7 +56,7 @@ public class UrlTree extends DefaultTreeModel {
 			
 			// Find the node if exist in index
 			logger.debug("[addUrlNode()] -----");
-			logger.debug("[addUrlNode()] URL Partielle : " + path.toString());
+			logger.debug("[addUrlNode()] Partial URL : " + path.toString());
 			urlNode = findNode(path.toString());
 			
 			// if node already seen, increase counter value
