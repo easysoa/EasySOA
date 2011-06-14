@@ -1,4 +1,4 @@
-package org.easysoa.rest.tools;
+package org.easysoa.rest;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,6 +21,8 @@ import org.restlet.data.CharacterSet;
  */
 public class HttpFile {
 	
+	private static final int DOWNLOAD_TIMEOUT = 3000;
+	
 	private String url;
 	private HttpURLConnection connection;
 	private File file = null;
@@ -34,12 +36,7 @@ public class HttpFile {
 		
 		this.connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
 		this.file = File.createTempFile("tmp", "tmp");
-<<<<<<< HEAD:plugins/easysoa-model-demo-rest/src/main/java/org/easysoa/rest/HttpFile.java
-		
 		connection.setReadTimeout(DOWNLOAD_TIMEOUT); // TODO: Doesn't work?
-=======
-
->>>>>>> origin/master:plugins/easysoa-model-demo-rest/src/main/java/org/easysoa/rest/tools/HttpFile.java
 		InputStream is = this.connection.getInputStream();
 		FileOutputStream fos = new FileOutputStream(this.file);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,

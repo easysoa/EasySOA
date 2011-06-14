@@ -21,7 +21,6 @@ import org.nuxeo.ecm.core.api.PathRef;
 // TODO: Switch to real Nuxeo service instead of static access
 public class DocumentService {
 	
-	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(DocumentService.class);
 	
 	public static final String DOMAIN_TITLE = "EasySOA";

@@ -11,7 +11,7 @@
     <!--<action id="TAB_MANAGE" enabled="false" />-->
     
  	<!-- Page d'import -->
-    <action id="easysoa-import" link="import_form" label="label.easysoa.import">
+    <action id="easysoa-import" link="sca_import_form" label="label.easysoa.import">
         <category>USER_SERVICES</category>
     </action>
     

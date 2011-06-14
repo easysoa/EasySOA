@@ -1,4 +1,4 @@
-package org.easysoa.tools;
+package org.easysoa.services;
 
 import java.util.ArrayList;
 import java.util.List;

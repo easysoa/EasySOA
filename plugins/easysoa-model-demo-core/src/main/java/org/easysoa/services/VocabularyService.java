@@ -1,4 +1,4 @@
-package org.easysoa.tools;
+package org.easysoa.services;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,13 +26,10 @@ public class VocabularyService {
 	private static final Log log = LogFactory.getLog(VocabularyService.class);
 	private static final DirectoryServiceImpl dirService = (DirectoryServiceImpl) Framework
 			.getRuntime().getComponent(DirectoryService.NAME);
-<<<<<<< HEAD:plugins/easysoa-model-demo-core/src/main/java/org/easysoa/services/VocabularyService.java
 	
 	public static final String VOCABULARY_APPLICATION = "application"; 
 	public static final String VOCABULARY_ENVIRONMENT = "environment"; 
 	public static final String VOCABULARY_SERVER = "server"; 
-=======
->>>>>>> origin/master:plugins/easysoa-model-demo-core/src/main/java/org/easysoa/tools/VocabularyService.java
 
 	/**
 	 * Checks if entry ID exists in a vocabulary.

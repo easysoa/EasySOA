@@ -1,4 +1,4 @@
-package org.easysoa.rest;
+package org.easysoa.rest.scraper;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -17,8 +17,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import org.easysoa.rest.tools.HttpFile;
-import org.easysoa.rest.tools.JSONP;
+import org.easysoa.rest.HttpFile;
+import org.easysoa.rest.notification.JSONP;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
@@ -41,7 +41,7 @@ import org.restlet.resource.StringRepresentation;
  */
 @Path("easysoa/wsdlscraper")
 @Produces("application/x-javascript")
-public class ScraperService {
+public class ScraperRest {
 
 	@GET
 	public Object doGet() {

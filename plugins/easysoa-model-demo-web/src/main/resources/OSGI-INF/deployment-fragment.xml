@@ -59,8 +59,8 @@
       <redirect />
     </navigation-case>
     <navigation-case>
-      <from-outcome>import_form</from-outcome>
-      <to-view-id>/import_form.xhtml</to-view-id>
+      <from-outcome>sca_import_form</from-outcome>
+      <to-view-id>/sca_import_form.xhtml</to-view-id>
       <redirect />
     </navigation-case>
   </extension>
@@ -75,7 +75,7 @@
     <page view-id="/service_virtual_navigation.xhtml">
       breadcrumb=label.virtualnavigation.service
     </page>
-    <page view-id="/import_form.xhtml">
+    <page view-id="/sca_import_form.xhtml">
       breadcrumb=label.easysoa.import
     </page>
   </extension>

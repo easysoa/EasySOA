@@ -1,4 +1,4 @@
-package org.easysoa.beans;
+package org.easysoa.sca;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,14 +37,14 @@ import org.nuxeo.ecm.webapp.delegate.DocumentManagerBusinessDelegate;
 @Name("easysoaImport")
 @Scope(ScopeType.CONVERSATION)
 @Install(precedence = Install.FRAMEWORK)
-public class ImportBean {
+public class ScaImportBean {
 
 	public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
 	public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
 	public static final String WSDLINSTANCE_URI = "http://www.w3.org/2004/08/wsdl-instance";
 	public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
 	
-	private static final Log log = LogFactory.getLog(ImportBean.class);
+	private static final Log log = LogFactory.getLog(ScaImportBean.class);
 	
 	CoreSession documentManager;
 
@@ -107,24 +107,24 @@ public class ImportBean {
 							}
 						}
 						
-						DocumentModel serviceModel = DocumentService.findService(ImportBean.this.documentManager, serviceUrl);
+						DocumentModel serviceModel = DocumentService.findService(ScaImportBean.this.documentManager, serviceUrl);
 						if (serviceModel != null){
 							// TODO handle enriching / merge of service or even api
 							return;
 						}
 						
 						// create api
-						String apiImplUrl = (String) ImportBean.this.appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-						String appliImplPath = ImportBean.this.appliImplModel.getPathAsString();
-						String apiUrl = ImportBean.this.getApiUrl(serviceUrl, apiImplUrl, ImportBean.this.serviceStackUrl);
-						String apiName = ImportBean.this.serviceStackType; // TODO better, ex. from composite name...
+						String apiImplUrl = (String) ScaImportBean.this.appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+						String appliImplPath = ScaImportBean.this.appliImplModel.getPathAsString();
+						String apiUrl = ScaImportBean.this.getApiUrl(serviceUrl, apiImplUrl, ScaImportBean.this.serviceStackUrl);
+						String apiName = ScaImportBean.this.serviceStackType; // TODO better, ex. from composite name...
 						
 						DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);
 						if (apiModel == null)
-							apiModel = ImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
+							apiModel = ScaImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
 						
 						// create service
-						DocumentService.createService(ImportBean.this.documentManager, apiModel.getPathAsString(), serviceNameString);
+						DocumentService.createService(ScaImportBean.this.documentManager, apiModel.getPathAsString(), serviceNameString);
 					}
 	
 					
@@ -142,24 +142,24 @@ public class ImportBean {
 						String serviceUrl = compositeReader.getAttributeValue(FRASCATI_URI, "uri");
 						
 						if (serviceUrl != null) {
-							DocumentModel serviceModel = DocumentService.findService(ImportBean.this.documentManager, serviceUrl);
+							DocumentModel serviceModel = DocumentService.findService(ScaImportBean.this.documentManager, serviceUrl);
 							if (serviceModel != null){
 								// TODO handle enriching / merge of service or even api
 								return;
 							}
 							
 							// create api
-							String apiUrl = ImportBean.this.getApiUrl(serviceUrl, ImportBean.this.appliImplModel.getPathAsString(),
-									ImportBean.this.serviceStackUrl);
-							String appliImplPath = ImportBean.this.appliImplModel.getPathAsString();
-							String apiName = ImportBean.this.serviceStackType; // TODO better, ex. from composite name...
+							String apiUrl = ScaImportBean.this.getApiUrl(serviceUrl, ScaImportBean.this.appliImplModel.getPathAsString(),
+									ScaImportBean.this.serviceStackUrl);
+							String appliImplPath = ScaImportBean.this.appliImplModel.getPathAsString();
+							String apiName = ScaImportBean.this.serviceStackType; // TODO better, ex. from composite name...
 							
 							DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);
 							if (apiModel == null)
-								apiModel = ImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
+								apiModel = ScaImportBean.this.createApiOfService(appliImplPath, apiUrl, apiName);
 							
 							// create service
-							DocumentService.createService(ImportBean.this.documentManager, apiModel.getPathAsString(), serviceNameString);
+							DocumentService.createService(ScaImportBean.this.documentManager, apiModel.getPathAsString(), serviceNameString);
 						}
 					}
 	

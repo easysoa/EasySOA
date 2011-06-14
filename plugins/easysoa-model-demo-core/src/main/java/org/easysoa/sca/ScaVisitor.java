@@ -1,4 +1,4 @@
-package org.easysoa.beans;
+package org.easysoa.sca;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
