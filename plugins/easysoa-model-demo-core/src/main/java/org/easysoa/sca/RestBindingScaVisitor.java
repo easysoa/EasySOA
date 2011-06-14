@@ -32,12 +32,12 @@ public class RestBindingScaVisitor implements ScaVisitor {
 	}
 	
 	public boolean isOkFor(QName bindingQName) {
-		return bindingQName.equals(new QName(ScaImportBean.SCA_URI, "binding.rest"));
+		return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.rest"));
 	}
 	
 	public void visit(XMLStreamReader compositeReader, String serviceName) throws ClientException {
 
-		String serviceUrl = compositeReader.getAttributeValue(ScaImportBean.FRASCATI_URI, "uri");
+		String serviceUrl = compositeReader.getAttributeValue(ScaImporter.FRASCATI_URI, "uri");
 		if (serviceUrl != null) {
 		
 			DocumentModel serviceModel = DocumentService.findService(documentManager, serviceUrl);
@@ -49,7 +49,7 @@ public class RestBindingScaVisitor implements ScaVisitor {
 			// create api
 			String apiImplUrl = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
 			String appliImplPath = appliImplModel.getPathAsString();
-			String apiUrl = ScaImportBean.getApiUrl(serviceUrl, apiImplUrl, serviceStackUrl);
+			String apiUrl = ScaImporter.getApiUrl(serviceUrl, apiImplUrl, serviceStackUrl);
 			String apiName = serviceStackType; // TODO better, ex. from composite name...
 			
 			DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);

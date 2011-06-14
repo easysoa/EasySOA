@@ -32,14 +32,14 @@ public class WSBindingScaVisitor implements ScaVisitor {
 	}
 	
 	public boolean isOkFor(QName bindingQName) {
-		return bindingQName.equals(new QName(ScaImportBean.SCA_URI, "binding.ws"));
+		return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.ws"));
 	}
 	
 	public void visit(XMLStreamReader compositeReader, String serviceName) throws ClientException {
 		
 		String serviceUrl = compositeReader.getAttributeValue("", "uri");
 		if (serviceUrl == null) {
-			String wsdlLocation = compositeReader.getAttributeValue(ScaImportBean.WSDLINSTANCE_URI , "wsdlLocation");
+			String wsdlLocation = compositeReader.getAttributeValue(ScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
 			if (wsdlLocation != null) {
 				serviceUrl = wsdlLocation.replace("?wsdl", "");
 			}
@@ -54,7 +54,7 @@ public class WSBindingScaVisitor implements ScaVisitor {
 		// create api
 		String appliImplUrl = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
 		String appliImplPath = appliImplModel.getPathAsString();
-		String apiUrl = ScaImportBean.getApiUrl(serviceUrl, appliImplUrl, serviceStackUrl);
+		String apiUrl = ScaImporter.getApiUrl(serviceUrl, appliImplUrl, serviceStackUrl);
 		String apiName = serviceStackType; // TODO better, ex. from composite name...
 		
 		DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);
