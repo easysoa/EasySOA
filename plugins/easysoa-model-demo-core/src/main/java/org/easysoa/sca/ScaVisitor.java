@@ -9,6 +9,6 @@ public interface ScaVisitor {
 
 	boolean isOkFor(QName bindingQName);
 
-	void visit(XMLStreamReader compositeReader, String serviceNameString) throws ClientException;
+	void visit(XMLStreamReader compositeReader, String serviceName) throws ClientException;
 
 }

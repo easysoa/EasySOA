@@ -76,7 +76,7 @@
       breadcrumb=label.virtualnavigation.service
     </page>
     <page view-id="/sca_import_form.xhtml">
-      breadcrumb=label.easysoa.import
+      breadcrumb=label.easysoa.import.link
     </page>
   </extension>
   

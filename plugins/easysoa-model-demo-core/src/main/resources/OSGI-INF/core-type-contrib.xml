@@ -1,35 +1,60 @@
 <?xml version="1.0"?>
-<component name="org.openwide.test.coretypes">
+<component name="org.easysoa.core.contrib.coretypes">
 
-  <!-- Déclaration des schémas -->
+  <!-- Schema declarations -->
+  
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
-    <schema name="endpoints" src="schemas/endpoints.xsd" prefix="endp" />
-    <schema name="serviceTags" src="schemas/serviceTags.xsd" prefix="stags" />
-    <schema name="wsdlBindings" src="schemas/wsdlBindings.xsd" prefix="wsdl" />
+    <schema name="servicedef" src="schemas/servicedef.xsd" prefix="serv" />
+    <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
+    <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
     <schema name="querynav2" src="schemas/querynav2.xsd" />
   </extension>
   
-  <!-- Enregistrement des nouveaux types de documents -->
-  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+  <!-- Doctypes registration -->
   
-    <doctype name="Service" extends="Document">
+  <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewContribution/org.nuxeo.ecm.core.CoreExtensions--doctype</documentation>
+  
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+    
+    <doctype extends="Document" name="Service">
 	  <schema name="common"/>
-	  <schema name="note"/>
 	  <schema name="uid"/>
+	  <schema name="note"/>
 	  <schema name="dublincore"/>
-      <schema name="files" />
-      <schema name="serviceTags" />
+      <schema name="servicedef" />
       <facet name="Commentable" />
       <facet name="Versionable" />
       <facet name="Indexable" />
     </doctype>
     
-    <doctype name="ServiceDescriptor" extends="File">
-      <schema name="endpoints"/>
-      <facet name="Versionable" />
-      <facet name="Indexable" />
+    <doctype extends="Folder" name="ServiceAPI">
+      <schema name="dublincore"/>
+      <schema name="serviceapidef"/>
+      <schema name="file"/>
+      <schema name="files"/>
+      <facet name="Folderish" />
+      <facet name="Commentable"/>
+      <subtypes>
+        <type>ServiceAPI</type>
+        <type>Service</type>
+      </subtypes>
     </doctype>
-<<<<<<< HEAD
+    
+    <!--
+    <doctype name="Workspace" extends="Folder">
+      <schema name="file"/>
+      <schema name="webcontainer"/>
+      <schema name="publishing"/>
+      <schema name="files" />
+      <facet name="SuperSpace"/>
+      <facet name="WebView"/>
+      <subtypes>
+        <type>Workspace</type>
+        <type>Folder</type>
+        <type>File</type>
+        <type>Note</type>
+      </subtypes>
+    </doctype> -->
     
     <doctype extends="Folder" name="Workspace">
       <schema name="dublincore"/>
@@ -40,16 +65,9 @@
       <subtypes>
         <type>ServiceAPI</type>
       </subtypes>
-=======
-  
-    <doctype name="WSDL" extends="ServiceDescriptor">
-      <schema name="wsdlBindings"/>
-      <facet name="Versionable" />
-      <facet name="Indexable" />
->>>>>>> origin/master
     </doctype>
     
-    <!-- Sert uniquement pour la navigation virtuelle -->
+    <!-- (Only used for virtual navigation) -->
     <doctype name="QueryNav2" extends="Document">
       <schema name="querynav2" />
     </doctype>

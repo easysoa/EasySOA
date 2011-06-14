@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.openwide.test.layout">
+<component name="org.easysoa.core.contrib.layout">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
    
+    <!-- Alternative file layout that makes the file field mandatory. -->
     <layout name="fileRequired">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml</template>
@@ -34,14 +35,14 @@
         </properties>
       </widget>
     </layout>
-  
-    <layout name="serviceTags">
+    
+    <!-- Application Implementation definition layout -->
+    <layout name="appliimpldef">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml</template>
       </templates>
       <rows>
         <row>
-<<<<<<< HEAD
           <widget>appliimpldef_url</widget>
         </row>
         <row>
@@ -64,15 +65,8 @@
         </row>
         <row>
           <widget>appliimpldef_environment</widget>
-=======
-          <widget>servicetags_application</widget>
->>>>>>> origin/master
         </row>
-        <!--<row>
-          <widget>servicetags_implementations</widget>
-        </row>-->
       </rows>
-<<<<<<< HEAD
       <widget name="appliimpldef_url" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.appliimpldef.url</label>
@@ -143,121 +137,65 @@
 	      <translated>true</translated>
 	      <fields>
 	        <field>app:environment</field>
-=======
-	  <widget name="servicetags_application" type="selectOneDirectory">
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <!-- Service API definition layout -->
+    <layout name="serviceapidef">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>apidef_application</widget>
+        </row>
+        <row>
+          <widget>apidef_url</widget>
+        </row>
+        <row>
+          <widget>apidef_protocols</widget>
+        </row>
+      </rows>
+	  <widget name="apidef_application" type="selectOneDirectory">
 	    <labels>
-	        <label mode="any">label.easysoa.servicetags.application</label>
+	        <label mode="any">label.easysoa.apidef.application</label>
 	    </labels>
 	    <translated>true</translated>
 	    <fields>
-	        <field>stags:application</field>
+	        <field>api:application</field>
 	    </fields>
 	    <properties mode="any">
 	        <property name="directoryName">application</property>
 	        <property name="localize">true</property>
 	    </properties>
 	  </widget>
-      <widget name="servicetags_uiurl" type="text">
+      <widget name="apidef_url" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.servicetags.uiurl</label>
+	        <label mode="any">label.easysoa.apidef.url</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>stags:uiUrl</field>
-	      </fields>
-	  </widget>
-      <!--<widget name="servicetags_implementations" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.servicetags.implementations</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>stags:implementations</field>
->>>>>>> origin/master
-	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
-	  </widget>-->
-    </layout>
-    
-    <layout name="endpoints">
-      <templates>
-        <template mode="any">/layouts/layout_default_template.xhtml</template>
-      </templates>
-      <rows>
-        <row>
-          <widget>endpoint_name</widget>
-        </row>
-        <row>
-          <widget>endpoint_uri</widget>
-        </row>
-        <row>
-          <widget>endpoint_machine</widget>
-        </row>
-        <row>
-<<<<<<< HEAD
-          <widget>apidef_protocols</widget>
-        </row>
-=======
-          <widget>endpoint_protocols</widget>
-        </row>
-        <row>
-          <widget>endpoint_provider</widget>
-        </row>
-        <row>
-          <widget>endpoint_environment</widget>
-        </row>
-        <row>
-          <widget>endpoint_implementation</widget>
-        </row>
->>>>>>> origin/master
-      </rows>
-      <widget name="endpoint_name" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.endpoints.name</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>endp:name</field>
+	        <field>api:url</field>
 	      </fields>
           <widgetModes>
             <mode value="create">hidden</mode>
             <mode value="edit">hidden</mode>
           </widgetModes>
 	  </widget>
-<<<<<<< HEAD
       <widget name="apidef_protocols" type="text">
-=======
-      <widget name="endpoint_uri" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.endpoints.uri</label>
+	        <label mode="any">label.easysoa.apidef.protocols</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>endp:uri</field>
+	        <field>api:protocols</field>
 	      </fields>
           <widgetModes>
             <mode value="create">hidden</mode>
             <mode value="edit">hidden</mode>
           </widgetModes>
 	  </widget>
-      <widget name="endpoint_machine" type="text">
->>>>>>> origin/master
-	      <labels>
-	        <label mode="any">label.easysoa.endpoints.machine</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>endp:machine</field>
-	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
-	  </widget>
-<<<<<<< HEAD
     </layout>
     
     <!-- Service definition layout -->
@@ -287,47 +225,40 @@
         </row>
        </rows>
       <widget name="servicedef_url" type="text">
-=======
-      <widget name="endpoint_protocols" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.endpoints.protocols</label>
+	        <label mode="any">label.easysoa.servicedef.url</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>endp:protocols</field>
+	        <field>serv:url</field>
 	      </fields>
           <widgetModes>
             <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
           </widgetModes>
 	  </widget>
-      <widget name="endpoint_provider" type="text">
+      <widget name="servicedef_callcount" type="int">
 	      <labels>
-	        <label mode="any">label.easysoa.endpoints.provider</label>
+	        <label mode="any">label.easysoa.servicedef.callcount</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>endp:provider</field>
+	        <field>serv:callcount</field>
 	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
 	  </widget>
-      <widget name="endpoint_environment" type="text">
->>>>>>> origin/master
+      <widget name="servicedef_relatedUsers" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.endpoints.environment</label>
+	        <label mode="any">label.easysoa.servicedef.relatedUsers</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>endp:environment</field>
+	        <field>serv:relatedUsers</field>
 	      </fields>
-	  </widget>
-      <widget name="endpoint_implementation" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.endpoints.implementation</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>endp:implementation</field>
-	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
 	  </widget>
       <widget name="servicedef_httpMethod" type="text">
 	      <labels>
@@ -358,82 +289,7 @@
 	  </widget>
     </layout>
     
-    <layout name="serviceChooser">
-      <templates>
-        <template mode="any">/layouts/layout_default_template.xhtml</template>
-      </templates>
-      <rows>
-        <row>
-          <widget>serviceChooser</widget>
-        </row>
-     </rows>
-     <widget name="serviceChooser" type="selectOneDirectory">
-	    <labels>
-	        <label mode="any">label.easysoa.endpoints.serviceid</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	        <field>endp:serviceid</field>
-	    </fields>
-	    <properties mode="any">
-	        <property name="directoryName">servicelist</property>
-	        <property name="localize">true</property>
-	    </properties>
-        <widgetModes>
-            <mode value="view">hidden</mode>
-        </widgetModes>
-	  </widget>
-	</layout>
-    
-<<<<<<< HEAD
-=======
-    <layout name="descriptorChooser">
-      <templates>
-        <template mode="any">/layouts/layout_default_template.xhtml</template>
-      </templates>
-      <rows>
-        <row>
-          <widget>descriptorChooser</widget>
-        </row>
-     </rows>
-     <widget name="descriptorChooser" type="selectOneDirectory">
-	    <labels>
-	        <label mode="any">label.easysoa.servicetags.descriptorid</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	        <field>stags:descriptorid</field>
-	    </fields>
-	    <properties mode="any">
-	        <property name="directoryName">descriptorlist</property>
-	        <property name="localize">true</property>
-	    </properties>
-        <widgetModes>
-            <mode value="view">hidden</mode>
-        </widgetModes>
-	  </widget>
-     <!--<widget name="descriptorChooser" type="selectManyDirectory">
-	    <labels>
-	        <label mode="any">label.easysoa.descriptors</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	        <field>stags:descriptors</field>
-	    </fields>
-	    <properties widgetMode="any">
-	        <property name="directoryName">descriptorlist</property>
-	        <property name="localize">true</property>
-	    </properties>
-        <properties widgetMode="edit">
-            <property name="wrapperMode">row</property>
-        </properties>
-        <widgetModes>
-            <mode value="view">hidden</mode>
-        </widgetModes>
-	  </widget>-->
-	</layout>
-	
-	<!-- Override -->
+	<!-- Override default Dublin Core layout -->
 	<layout name="dublincore">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml</template>
@@ -453,7 +309,6 @@
         </row>
       </rows>
     </layout>
-	
->>>>>>> origin/master
+    
   </extension>
 </component>

@@ -57,11 +57,7 @@
       <coreQueryPageProvider>
         <property name="coreSession">#{documentManager}</property>
         <whereClause docType="QueryNav2">
-<<<<<<< HEAD
           <predicate parameter="app:server" operator="STARTSWITH">
-=======
-          <predicate parameter="endp:location" operator="STARTSWITH">
->>>>>>> origin/master
             <field schema="querynav2" name="location" />
           </predicate>
           <fixedPart>
