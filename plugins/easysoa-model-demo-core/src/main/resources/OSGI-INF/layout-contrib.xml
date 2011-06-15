@@ -178,6 +178,10 @@
 	      <fields>
 	        <field>api:url</field>
 	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
 	  </widget>
       <widget name="apidef_protocols" type="text">
 	      <labels>
@@ -187,6 +191,10 @@
 	      <fields>
 	        <field>api:protocols</field>
 	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
 	  </widget>
     </layout>
     
