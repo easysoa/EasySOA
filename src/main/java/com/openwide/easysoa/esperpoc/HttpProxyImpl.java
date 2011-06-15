@@ -109,14 +109,17 @@ public class HttpProxyImpl extends HttpServlet {
     	    	}
     	    }
 
-	    	// TODO .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
+    	    // Forward the request to the original recipient    	    
+    	    //forward(request, response);
+    	    
+    	    // TODO .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
     	    // TODO in all methods (doGet, doPost), for (mh in List<>Message Handler ) { boolean isOKFor(); handle() return stopHandling; }
     	    // TODO GetWSDLMessageHandler, SoapMessageHandler, RestMessageHandler
-    	    
+
     	    // TODO MonitorService : mode, soaModel, listen() -> "for (mh..." called here
     	    // TODO refactor the test with MonitorService.listen()
-    	    // TODO move doGet() code in forward() 
-    	    
+    	    // TODO move doGet() code in forward() to finish 
+
     	    // TODO at the start (end ?!) of MonitorService.listen(), RunRecorder.record(Message)
     	    // TODO RunRecorder (NB. not a RunRepository, yet) : record(Message)
     	    // TODO Run : startDate, stopDate...
@@ -301,7 +304,7 @@ public class HttpProxyImpl extends HttpServlet {
 		   	}
 		}
 		String requestBodyString = bodyContent.toString();
-			
+
 	    ClientResource resource = new ClientResource(requestUrlString);
 	    Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
 	    InputStream in = resource.post(representation).getStream();

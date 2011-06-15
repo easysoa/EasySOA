@@ -138,7 +138,8 @@ public class MonitorService {
 	    		logger.debug("MessageHandler found : " + mh.getClass().getName());
 	    		mh.handle(message);
 	    	}
-	    }		
+	    }
+		
 	}
 	
 	/**

@@ -11,7 +11,7 @@ public class RestMessageHandler implements MessageHandler {
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(RestMessageHandler.class.getName());	
-	
+
 	@Override
 	public boolean isOkFor(Message message) {
 		// TODO : How to determine if a message is a pure rest message ....
