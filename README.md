@@ -1,4 +1,4 @@
-# EasySOA Demo Distribution
+# EasySOA Demo Distribution (not updated for the latest version yet)
 
 Project for EasySOA contributors, used to tie all packages together.
 
