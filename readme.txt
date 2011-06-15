@@ -32,6 +32,7 @@ To build and run this project, the requirements are :
 - The following additional libraries must be copied into the Fracati lib folder (check your m2 repository folder)  :
  	* org.restlet.ext.simple-2.1-M3.jar
 	* org.restlet-2.1-M3.jar
+	* log4j-1.2.16.jar
 
 ----------------------------------
 

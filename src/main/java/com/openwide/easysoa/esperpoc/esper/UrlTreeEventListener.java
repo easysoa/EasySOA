@@ -56,6 +56,8 @@ public class UrlTreeEventListener implements UpdateListener {
 				if(!node.isRegistered() && node.getPartialUrlcallCount() > 5 && node.getCompleteUrlcallCount() == 0){
 					Appli appli = new Appli(node.getNodeName(), node.getNodeName());
 					appli.setUiUrl(node.getNodeName());
+					appli.setDescription(node.getNodeName());
+					appli.setTitle(node.getNodeName());
 					if(!"ok".equals(nrs.registerRestAppli(appli))){
 						node.setRegistered();
 					}
@@ -66,6 +68,7 @@ public class UrlTreeEventListener implements UpdateListener {
 				logger.debug("[MessageListener] --- new Api to register !!!!");
 				Api api = new Api(node.getNodeName(), parentNode.getNodeName());
 				api.setTitle(node.getNodeName());
+				api.setDescription(node.getNodeName());
 				if(!"ok".equals(nrs.registerRestApi(api))){
 					node.setRegistered();
 				}

@@ -1,16 +1,10 @@
 package com.openwide.easysoa.monitoring;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
-import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
-import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.soa.Api;
@@ -87,19 +81,24 @@ public class MonitorService {
 	 */
 	private MonitorService(MonitoringMode monitoringMode){
 		mode = monitoringMode;
-		if(MonitoringMode.DISCOVERY.equals(mode)){
+		logger.debug("In MonitorService constructor !!");
+		if(MonitoringMode.DISCOVERY.compareTo(mode) == 0){
+			logger.debug("Mode = DISCOVERY !!");
 			monitoringModel = null;
 			urlTree = new UrlTree(new UrlTreeNode("root"));
-		} else if(MonitoringMode.VALIDATED.equals(mode)) {
+		} else if(MonitoringMode.VALIDATED.compareTo(mode) == 0) {
 			// init & fill it from Nuxeo
+			logger.debug("Mode = VALIDATED !!");
 			monitoringModel = new MonitoringModel();
 			monitoringModel.fetchFromNuxeo();
-			logger.debug("allNodes:\n" + monitoringModel.getSoaNodes());
+			//logger.debug("allNodes:\n" + monitoringModel.getSoaNodes());
+			logger.debug("Validated mode : Printing monitoring model keyset");
+			Iterator<String> iter = monitoringModel.getSoaModelUrlToTypeMap().keySet().iterator();
+			while(iter.hasNext()){
+				logger.debug("key = " + iter.next());
+			}
 			urlTree = null;
 		}
-		monitoringModel = new MonitoringModel();
-		//monitoringModel.fetchFromNuxeo();
-		// init monitoringmodel ....
 	}
 	
 	/**
@@ -131,14 +130,13 @@ public class MonitorService {
 	 * 
 	 */
 	public void listen(Message message){
-		//TODO call the MessageHandler here
-	    for(MessageHandler mh : messageHandlers){
+	    logger.debug("Listenning message : " + message);
+		for(MessageHandler mh : messageHandlers){
 	    	// add code here to call each messageHandler
 	    	// When the good message handler is found, stop the loop
 	    	if(mh.isOkFor(message)){
-	    		if(mh.handle(message)){
-	    			break;
-	    		}
+	    		logger.debug("MessageHandler found : " + mh.getClass().getName());
+	    		mh.handle(message);
 	    	}
 	    }		
 	}
@@ -180,6 +178,7 @@ public class MonitorService {
 	 * 
 	 * @param node
 	 */
+	//TODO Method used in class UrlTreeEventListener !!! Factorisation !
 	private void registerChildren(UrlTreeNode node) {
 		for (int i = 0; i < node.getChildCount(); i++) {
 			UrlTreeNode childNode = (UrlTreeNode) node.getChildAt(i);
@@ -190,6 +189,8 @@ public class MonitorService {
 				if(!childNode.isRegistered() && childNode.getPartialUrlcallCount() > 5 && childNode.getCompleteUrlcallCount() == 0){
 					Appli appli = new Appli(childNode.getNodeName(), childNode.getNodeName());
 					appli.setUiUrl(childNode.getNodeName());
+					appli.setTitle(childNode.getNodeName());
+					appli.setDescription(childNode.getNodeName());
 					if(!"ok".equals(new NuxeoRegistrationService().registerRestAppli(appli))){
 						childNode.setRegistered();
 					}
@@ -201,6 +202,7 @@ public class MonitorService {
 				logger.debug("[MessageListener] --- new Api to register !!!!");
 				Api api = new Api(childNode.getNodeName(), node.getNodeName());
 				api.setTitle(childNode.getNodeName());
+				api.setDescription(childNode.getNodeName());
 				if(!"ok".equals(new NuxeoRegistrationService().registerRestApi(api))){
 					childNode.setRegistered();
 				}
@@ -216,7 +218,7 @@ public class MonitorService {
 	 */
 	//TODO Move this method in Each Message Handler
 	// Problem : How to deal with the modes .....
-	private void handleMessage(Message msg) {
+	/*private void handleMessage(Message msg) {
 		if (MonitoringMode.DISCOVERY.equals(mode)) {
 			// detection mode
 			// put in the tree, and compute local indicators :
@@ -243,7 +245,7 @@ public class MonitorService {
 				//TODO
 			}
 		}
-	}	
+	}*/	
 	
 	
 	

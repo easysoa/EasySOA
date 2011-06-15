@@ -36,9 +36,10 @@ public class UrlTree extends DefaultTreeModel {
 	public void addUrlNode(Message msg){
 		// TODO check if it is necessary to remove the http prefix
 		// Problem is that a special node http is created in nuxeo, consequence of StringTokenizer use with '/' delimiter
-		//String url = msg.getUrl().substring(msg.getUrl().indexOf("/"));
-		String url = msg.getUrl();
-
+		String url = msg.getUrl().substring(msg.getUrl().indexOf("//")+2);
+		logger.debug("url = " +  url);
+		//String url = msg.getUrl();
+		
 		UrlTreeNode urlNode;
 		StringBuffer path = new StringBuffer();
 		String token;

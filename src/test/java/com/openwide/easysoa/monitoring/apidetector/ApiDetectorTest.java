@@ -55,28 +55,20 @@ public class ApiDetectorTest extends TestCase {
      * 
      */
 	public void testUrlDetection(){
-		// init
-		//TODO A initialiser dans le Monitor service
-		//monitoringModel = null; // none
-
-		// pre run
-		// init apidetector tree :
-		//urlTree = new UrlTree(new UrlTreeNode("root"));
-
 		MonitorService.getMonitorService(MonitoringMode.DISCOVERY);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+		//urlDetectionSimulate(new UrlMock().getIMediaUrlData());
 		urlDetectionCompute();
 		urlDetectionDebugResults();
-		
 		// post run (detection mode)
 		//TODO Warning, do not call this method in VALIDATED MODE Otherwise crash !!!!
-		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
+		//MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
 
 		// load nuxeo model and display it
-		/*MonitoringModel testSoaModel = new MonitoringModel();
-		testSoaModel.fetchFromNuxeo();
-		logger.debug("allNodes:\n" + testSoaModel.getSoaNodes());
-		*/
+		//MonitoringModel testSoaModel = new MonitoringModel();
+		//testSoaModel.fetchFromNuxeo();
+		//logger.debug("allNodes:\n" + testSoaModel.getSoaNodes());
+		
 		//urlTree = null;
 	}
 
@@ -85,22 +77,12 @@ public class ApiDetectorTest extends TestCase {
 	 */
 	public void testUrlValidated(){
 		// NB. in validation mode, no concept or pre or post run
-
-		// init
-		//monitoringModel = new MonitoringModel();
-		// fill it from nuxeo
-		//monitoringModel.fetchFromNuxeo();
-		//logger.debug("allNodes:\n" + monitoringModel.getSoaNodes());
-		/*soaModelUrlToTypeMap = new HashMap<String, String>();
-		soaModelUrlToTypeMap.put("http://api.twitter.com/1/users/show", SOA_MODEL_TYPE_SERVICE);*/
 		// TODO LATER cache it
 		MonitorService.getMonitorService(MonitoringMode.VALIDATED);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
-		//urlDetectionSimulate(new UrlMock().getTwitterUrlData());
 		// TODO LATER mixed mode : do compute and debugResults BUT ONLY on unknown messages ?!
 		//urlDetectionCompute();
 		//urlDetectionDebugResults();
-		
 		// load nuxeo model and display it
 		//MonitoringModel testSoaModel = new MonitoringModel();
 		//testSoaModel.fetchFromNuxeo();
@@ -126,8 +108,6 @@ public class ApiDetectorTest extends TestCase {
 					URL url = new URL(urlString);
 					Message msg = new Message(url, MessageType.REST);
 					MonitorService.getMonitorService().listen(msg);
-					// actual handling :
-					//handleMessage(msg);
 				}
 				catch(Exception ex){
 					logger.error("**** problem spotted ! ", ex);
@@ -141,6 +121,7 @@ public class ApiDetectorTest extends TestCase {
 	public void urlDetectionCompute(){
 		// compute additional, non-local indicators :
 		// TODO compute them ; for now, only computed on demand at the end
+		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
 	}
 
 	/**
@@ -170,7 +151,6 @@ public class ApiDetectorTest extends TestCase {
 				}
 			}
 		}
-	}	
-
+	}
 	
 }

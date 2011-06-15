@@ -60,6 +60,10 @@ public class HttpProxyImpl extends HttpServlet {
 	 * Log system initialization
 	 */
 	//TODO add a way to specify dynamically the monitoring mode, default monitoring mode is stored in httpProxy.properties
+	//TODO Add a way to finish the run in discovery mode to register all the applications / services / api stored in the urlTree
+	//TODO Special command with url send to the proxy ?
+	// In this case, we need a complate set of command to start, stop a run ....
+	// Other solution : Use a Frascati sca property and update it with a hot update => needs an external GUI or Frascati explorer
 	static {
 		PropertyConfigurator.configure(HttpProxyImpl.class.getClassLoader().getResource("log4j.properties"));
 		MonitorService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
@@ -88,7 +92,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    	}
 	    	String requestUrlString = requestUrlBuf.toString();
 	    	logger.debug("--- Complete request : " + requestUrlString);
-	    	
+
 	    	// send to actual server :
 	    	ClientResource resource = new ClientResource(requestUrlString);
 	    	// Send an authenticated request using the Basic authentication scheme.
@@ -104,7 +108,7 @@ public class HttpProxyImpl extends HttpServlet {
     	    		respOut.write(c);
     	    	}
     	    }
-	    	
+
 	    	// TODO .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
     	    // TODO in all methods (doGet, doPost), for (mh in List<>Message Handler ) { boolean isOKFor(); handle() return stopHandling; }
     	    // TODO GetWSDLMessageHandler, SoapMessageHandler, RestMessageHandler
@@ -117,10 +121,9 @@ public class HttpProxyImpl extends HttpServlet {
     	    // TODO RunRecorder (NB. not a RunRepository, yet) : record(Message)
     	    // TODO Run : startDate, stopDate...
     	    // TODO RunManager : runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run) -> for (run... MonitorService.listen(...
-    	    
     	    Message message = new Message(request);
     	    MonitorService.getMonitorService().listen(message);
-    	    
+
 	    	/*if(isWSDL(requestUrlString)){
 	    		// Registering WSDL web service
 	    		// Create a new message received object and send it to Esper
@@ -150,7 +153,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    	respOut.close();
 	    }
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest, HttpServletResponse)
 	 */	
@@ -251,7 +254,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    	respOut.close();
 	    }
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -281,33 +284,33 @@ public class HttpProxyImpl extends HttpServlet {
 	public void forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter respOut = response.getWriter();
 		//try{
-			StringBuffer requestUrlBuffer = new StringBuffer();
-			requestUrlBuffer.append(request.getRequestURL().toString());
-	    	if(request.getQueryString() != null){
-	    		requestUrlBuffer.append("?");
-	    		requestUrlBuffer.append(request.getQueryString());
-	    	}
-	    	String requestUrlString = requestUrlBuffer.toString();
+		StringBuffer requestUrlBuffer = new StringBuffer();
+		requestUrlBuffer.append(request.getRequestURL().toString());
+	    if(request.getQueryString() != null){
+	    	requestUrlBuffer.append("?");
+	    	requestUrlBuffer.append(request.getQueryString());
+	    }
+	    String requestUrlString = requestUrlBuffer.toString();
 
-			BufferedReader requestBufferedReader = request.getReader();
-	    	StringBuffer bodyContent = new StringBuffer();
-			if(requestBufferedReader != null){
-		    	String line;
-		    	while((line = requestBufferedReader.readLine()) != null){
-		    		bodyContent.append(line);
-		    	}
-		    }
-			String requestBodyString = bodyContent.toString();
+	    BufferedReader requestBufferedReader = request.getReader();
+	    StringBuffer bodyContent = new StringBuffer();
+		if(requestBufferedReader != null){
+		   	String line;
+		   	while((line = requestBufferedReader.readLine()) != null){
+		   		bodyContent.append(line);
+		   	}
+		}
+		String requestBodyString = bodyContent.toString();
 			
-	    	ClientResource resource = new ClientResource(requestUrlString);
-	    	Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
-	    	InputStream in = resource.post(representation).getStream();
-    	    if(in != null){
-    	    	int c;
-    	    	while((c = in.read()) != -1){
-    	    		respOut.write(c);
-    	    	}
-    	    }
+	    ClientResource resource = new ClientResource(requestUrlString);
+	    Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
+	    InputStream in = resource.post(representation).getStream();
+    	if(in != null){
+    	   	int c;
+    	   	while((c = in.read()) != -1){
+    	   		respOut.write(c);
+    	   	}
+    	}
 	    /*}
 		catch(Throwable ex){
 	    	ex.printStackTrace();
@@ -319,10 +322,9 @@ public class HttpProxyImpl extends HttpServlet {
 	    	//respOut.println("Finally block ..... Something goes wrong !!");
 	    	respOut.close();
 	    }*/
-    	    respOut.close();
+    	respOut.close();
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param authhead

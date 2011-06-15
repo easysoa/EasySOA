@@ -12,8 +12,7 @@ public interface MessageHandler {
 	/**
 	 * Handle the message
 	 * @param message The message to handle
-	 * @return true if the handling can stop.
 	 */
-	public boolean handle(Message message);
+	public void handle(Message message);
 
 }

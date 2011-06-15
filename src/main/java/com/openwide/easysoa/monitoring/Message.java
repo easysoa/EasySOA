@@ -31,6 +31,7 @@ public class Message {
 	 * @param parameters
 	 * @param content
 	 */
+	/*@Deprecated
 	public Message(String protocol, String host, int port, String pathName, String parameters, String content, String method, MessageType type){
 		if(protocol.toLowerCase().contains("http")){
 			this.protocol = "http";
@@ -45,9 +46,12 @@ public class Message {
 		this.method = method;
 		this.type = type;
 		this.body = "";
-		
-	}
+		this.url = "";
+	}*/
 
+	/**
+	 * 
+	 */
 	public Message(HttpServletRequest request){
 		this.pathName = request.getRequestURI();
 		this.parameters = request.getQueryString();
@@ -57,6 +61,7 @@ public class Message {
 		this.method = request.getMethod();
 		this.content = "";
 		this.body = "";
+		this.url = request.getRequestURL().toString();
 	}	
 	
 	/**
@@ -83,6 +88,11 @@ public class Message {
 		this.body = "";
 	}
 	
+	/**
+	 * 
+	 * @param url
+	 * @param type
+	 */
 	public Message(URL url, MessageType type) {
 		this(url.toString(), url.getProtocol(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), type);
 	}

@@ -24,20 +24,20 @@ public class WSDLMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public boolean handle(Message message) {
-		if(isOkFor(message)){
-			// enrich the message
-			message.setType(MessageType.WSDL);
-			logger.debug("WSDL found");
-			//TODO What to do here ?? Fill urlTree or not, mode dependency
-			//EsperEngineSingleton.getEsperRuntime().sendEvent(message);
-			NuxeoRegistrationService nuxeoRS = new NuxeoRegistrationService();
-			nuxeoRS.registerWSDLService(new WSDLService(appname, serviceName, url, type));
-			
-			return true;
-		} else {
-			return false;
+	public void handle(Message message) {
+		// enrich the message
+		message.setType(MessageType.WSDL);
+		logger.debug("WSDL found");
+		//TODO What to do here ?? Fill urlTree or not, mode dependency
+		//EsperEngineSingleton.getEsperRuntime().sendEvent(message);
+		NuxeoRegistrationService nuxeoRS = new NuxeoRegistrationService();
+		// Service construction
+		String serviceName = message.getPathName();
+		if(serviceName.startsWith("/")){
+			serviceName = serviceName.substring(1);
 		}
+		serviceName = serviceName.replace('/', '_');
+		nuxeoRS.registerWSDLService(new WSDLService(message.getHost(), serviceName, message.getCompleteMessage(), message.getMethod()));
 	}
 
 }
