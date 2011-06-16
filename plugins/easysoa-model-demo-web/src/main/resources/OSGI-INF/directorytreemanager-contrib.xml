@@ -22,7 +22,7 @@
       contentView="byLocationContentView" field="location" schema="querynav2"
       outcome="location_virtual_navigation">
       <directory>environment</directory>
-      <directory>machine</directory>
+      <directory>server</directory>
     </directoryTree>
     <!--
     <directoryTree name="byServiceNavigation" label="label.easysoa.navservice"

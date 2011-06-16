@@ -40,6 +40,15 @@ public class APINotificationRest extends NotificationRest {
 	private static final Log log = LogFactory.getLog(APINotificationRest.class);
 	private static final String PATH = "easysoa/notification/api/"; // TODO: Access from httpContext
 	
+	/**
+	 * params : TODO
+	 * sample : ex. url=http://www.ebi.ac.uk/Tools/webservices/wsdl/WSPhobius.wsdl&title=Phobius&parentUrl=http://www.ebi.ac.uk/webservices/
+	 * 
+	 * @param httpContext
+	 * @return
+	 * @throws JSONException
+	 * @throws LoginException
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)

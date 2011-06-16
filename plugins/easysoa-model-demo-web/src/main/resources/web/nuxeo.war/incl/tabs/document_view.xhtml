@@ -16,13 +16,15 @@
     <a4j:region id="documentViewRegion">
       <a4j:outputPanel id="documentViewPanel">
       
-	  
-	  <!-- EasySOA : Link it button -->
+	  <!-- EasySOA : Empty cache (XXX: Doesn't work) -->
+	  <h:outputText value="#{relationActions.resetStatements()}" rendered="true"/>
+  
+	  <!-- EasySOA : Call it button -->
 	  <c:if test="${currentDocument.getType() == 'Service'}">
 	     <div style="width: 100%; float: left; margin-top: 20px">
 	     <c:choose>
-		 	  <c:when test="${currentDocument.getTitle().toLowerCase().contains('flowers')}">
-			      <a href="http://127.0.0.1:8083/easysoa/light/paf.html" target="_blank">
+		 	  <c:when test="${currentDocument.getProperty('servicedef', 'lightUrl') != null}">
+			      <a href="${currentDocument.getProperty('servicedef', 'lightUrl')}" target="_blank">
 					<img src="img/callIt.png" 
 						title="Call the service using EasySOA Light"
 						alt="Call it!" />
@@ -30,17 +32,16 @@
 			  </c:when>
 			  <c:otherwise>
 				  <img src="img/callItOff.png"
-				  	title="Call the service using EasySOA Light (currently only availaible with the 'Pure Air Flowers' service)"
+				  	title="Call the service using EasySOA Light (unavailable for this service)"
 				  	alt="Call it! (Unavailable)" />
 			  </c:otherwise>
 		  </c:choose>
 		  </div>
 	  </c:if>
-		  
+	  
+	  <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
 
-      <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
-
-    </a4j:outputPanel>
+      </a4j:outputPanel>
     </a4j:region>
   </h:form>
 

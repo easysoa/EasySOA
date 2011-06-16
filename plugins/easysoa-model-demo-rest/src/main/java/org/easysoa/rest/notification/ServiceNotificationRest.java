@@ -7,6 +7,7 @@ import static org.easysoa.doctypes.Service.PROP_URL;
 
 import java.util.Map;
 
+import javax.security.auth.login.LoginException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -34,11 +35,21 @@ public class ServiceNotificationRest extends NotificationRest {
 	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(ServiceNotificationRest.class);
 
+	/**
+	 * params : TODO
+	 * sample : url=http://www.ebi.ac.uk/Tools/es/ws-servers/WSPhobius&callcount=3&apiUrl=http://www.ebi.ac.uk/Tools/webservices/wsdl/WSPhobius.wsdl&title=PhobiusService&contentTypeIn=SOAP&contentTypeOut=SOAP&httpMethod=POST
+	 * 
+	 * @param httpContext
+	 * @return
+	 * @throws JSONException
+	 * @throws LoginException 
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Object doPost(@Context HttpContext httpContext) throws JSONException {
+	public Object doPost(@Context HttpContext httpContext) throws JSONException, LoginException {
 		
 		// Initialize
+		login();
 		Form params = getForm(httpContext);
 
 		// Check mandatory fields
@@ -63,7 +74,7 @@ public class ServiceNotificationRest extends NotificationRest {
 				// Find or create document and parent
 				DocumentModel apiModel = DocumentService.findServiceApi(session, parentUrl);
 				if (apiModel == null) {
-					apiModel = DocumentService.createServiceAPI(session, null, parentUrl);
+					apiModel = DocumentService.createServiceAPI(session, null, parentUrl); // TODO "by default", or even fail
 					session.saveDocument(apiModel);
 					session.save();
 				}

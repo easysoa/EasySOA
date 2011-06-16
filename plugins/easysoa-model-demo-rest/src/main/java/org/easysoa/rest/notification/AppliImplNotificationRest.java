@@ -1,8 +1,9 @@
+
 package org.easysoa.rest.notification;
 
-import static org.easysoa.doctypes.AppliImpl.*;
+import static org.easysoa.doctypes.AppliImpl.PROP_URL;
+import static org.easysoa.doctypes.AppliImpl.SCHEMA;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.security.auth.login.LoginException;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.services.DocumentService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,20 +33,22 @@ public class AppliImplNotificationRest extends NotificationRest {
 
 	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(AppliImplNotificationRest.class);
-	private static Map<String, String> appliImplDef; 
 	
-	public AppliImplNotificationRest() throws LoginException, JSONException {
-		super();
-		if (appliImplDef == null) {
-			appliImplDef = new HashMap<String, String>();
-		}
-	}
-	
+	/**
+	 * params : TODO
+	 * sample : ex. url=http://www.ebi.ac.uk/webservices/&title=EBI Services&technology=Apache CXF&server=193.62.197.12
+	 * 
+	 * @param httpContext
+	 * @return
+	 * @throws JSONException
+	 * @throws LoginException 
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Object doPost(@Context HttpContext httpContext) throws JSONException {
+	public Object doPost(@Context HttpContext httpContext) throws JSONException, LoginException {
 		
 		// Initialize
+		login();
 		Form params = getForm(httpContext);
 		
 		// Check mandatory field
@@ -62,7 +66,7 @@ public class AppliImplNotificationRest extends NotificationRest {
 				}
 				
 				// Update optional properties
-				setPropertiesIfNotNull(appliImplModel, SCHEMA, appliImplDef, params);
+				setPropertiesIfNotNull(appliImplModel, SCHEMA, AppliImpl.getPropertyList(), params);
 				
 				// Save
 				if (!errorFound) {
@@ -88,7 +92,6 @@ public class AppliImplNotificationRest extends NotificationRest {
 	@POST
 	public Object doPost() throws JSONException {
 		appendError("Content type should be 'application/x-www-form-urlencoded'");
-		logout();
 		return getFormattedResult();
 	}
 
@@ -103,6 +106,7 @@ public class AppliImplNotificationRest extends NotificationRest {
 		
 		result = new JSONObject();
 		JSONObject params = new JSONObject();
+		Map<String, String> appliImplDef = AppliImpl.getPropertyList();
 		for (String key : appliImplDef.keySet()) {
 			params.put(key, appliImplDef.get(key));
 		}
@@ -113,7 +117,6 @@ public class AppliImplNotificationRest extends NotificationRest {
 		result.put("parameters", params);
 		result.put("description", "Notification concerning an application implementation.");
 	
-		logout();
 		return getFormattedResult();
 	}
 	

@@ -106,7 +106,7 @@ public class ScaImporter {
 			apiPathIndex = serviceUrl.lastIndexOf('/');
 		}
 		
-		return serviceUrl.substring(0, apiPathIndex + apiPath.length());
+		return serviceUrl.substring(0, apiPathIndex + apiPath.length()); // TODO http://localhost:9000/hrestSoapProxyWSIntern
 	}
 
 	private void acceptBindingVisitors(XMLStreamReader compositeReader, String serviceName) throws ClientException {

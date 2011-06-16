@@ -42,6 +42,10 @@
         <layout>heading</layout>
         <layout>appliimpldef</layout>
       </layouts>
+      <layouts mode="edit">
+        <layout>heading</layout>
+        <layout>appliimpldef</layout>
+      </layouts>
       <subtypes>
         <type>ServiceAPI</type>
       </subtypes>
