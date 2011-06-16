@@ -1,4 +1,4 @@
-package org.easysoa.test.rest.tools;
+package org.easysoa.test.rest.tools.notification;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RESTNotificationImpl implements RESTNotification {
+public class RESTNotificationImpl implements RESTNotificationRequest {
 
 	private static final Log log = LogFactory.getLog(RESTNotificationImpl.class);
 	
@@ -28,8 +28,9 @@ public class RESTNotificationImpl implements RESTNotification {
 		requestProperties = new HashMap<String, String>();
 	}
 	
-	public void setProperty(String property, String value) {
+	public RESTNotificationRequest setProperty(String property, String value) {
 		requestProperties.put(property, value);
+		return this;
 	}
 	
 	public void send() throws IOException, ProtocolException {

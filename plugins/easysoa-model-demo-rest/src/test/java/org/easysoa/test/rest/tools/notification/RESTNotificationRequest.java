@@ -1,12 +1,17 @@
-package org.easysoa.test.rest.tools;
+package org.easysoa.test.rest.tools.notification;
 
 import java.io.IOException;
 import java.net.ProtocolException;
 
-public interface RESTNotification {
+public interface RESTNotificationRequest {
 
-
-	public void setProperty(String property, String value);
+	/**
+	 * Sets a form parameter to be send with the request.
+	 * @param property
+	 * @param value
+	 * @return
+	 */
+	public RESTNotificationRequest setProperty(String property, String value);
 	
 	/**
 	 * Sends the notification.

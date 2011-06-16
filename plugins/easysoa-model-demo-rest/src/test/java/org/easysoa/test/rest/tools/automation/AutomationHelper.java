@@ -1,0 +1,38 @@
+package org.easysoa.test.rest.tools.automation;
+
+import org.easysoa.doctypes.Doctype;
+import org.nuxeo.ecm.automation.client.jaxrs.OperationRequest;
+import org.nuxeo.ecm.automation.client.jaxrs.Session;
+import org.nuxeo.ecm.automation.client.jaxrs.impl.HttpAutomationClient;
+import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
+import org.nuxeo.ecm.automation.core.operations.document.Query;
+
+/**
+ * Thin layer to ease the use of the Nuxeo automation API.
+ * @author mkalam-alami
+ *
+ */
+public class AutomationHelper {
+
+	private HttpAutomationClient client;
+
+	private Session session;
+	
+	public AutomationHelper(String nuxeoUrl) throws Exception {
+        client = new HttpAutomationClient(nuxeoUrl+"/site/automation");
+        session = client.getSession("Administrator", "Administrator");
+	}
+
+	public Documents findDocumentByUrl(String doctype, String url) throws Exception {
+		return query("SELECT * FROM " + doctype + " WHERE " + 
+			Doctype.getSchemaPrefix(doctype) + "url = '" + url + "'");
+	}
+	
+	public Documents query(String query) throws Exception {
+		OperationRequest request = session.newRequest(Query.ID);
+		request.setHeader("X-NXDocumentProperties", "*");
+		request.set("query", query);
+		return (Documents) request.execute();
+	}
+	
+}

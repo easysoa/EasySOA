@@ -1,4 +1,4 @@
-package org.easysoa.test.rest.tools;
+package org.easysoa.test.rest.tools.notification;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,9 +20,9 @@ public class RestNotificationFactory {
 	private static final Log log = LogFactory.getLog(RestNotificationFactory.class);
 	
 	private final static String API_PATH = "/site/easysoa/notification/";
-	private final static String API_APPLIIMPL = "appliimpl";
-	private final static String API_SERVICEAPI = "api";
-	private final static String API_SERVICE = "service";
+	private final static String SERVICE_APPLIIMPL = "appliimpl";
+	private final static String SERVICE_SERVICEAPI = "api";
+	private final static String SERVICE_SERVICE = "service";
 	
 	private Map<RestNotificationAPI, String> apiUrls;
 	
@@ -36,16 +36,16 @@ public class RestNotificationFactory {
 		// Test connection
 		new URL(nuxeoUrl+"/site").openConnection();
 		
-		// Store API URLs
+		// Store API services URLs
 		String notificationApiUrl = nuxeoUrl + API_PATH;
 		apiUrls = new HashMap<RestNotificationAPI, String>();
-		apiUrls.put(RestNotificationAPI.APPLIIMPL, notificationApiUrl + API_APPLIIMPL);
-		apiUrls.put(RestNotificationAPI.SERVICEAPI, notificationApiUrl + API_SERVICEAPI);
-		apiUrls.put(RestNotificationAPI.SERVICE, notificationApiUrl + API_SERVICE);
+		apiUrls.put(RestNotificationAPI.APPLIIMPL, notificationApiUrl + SERVICE_APPLIIMPL);
+		apiUrls.put(RestNotificationAPI.SERVICEAPI, notificationApiUrl + SERVICE_SERVICEAPI);
+		apiUrls.put(RestNotificationAPI.SERVICE, notificationApiUrl + SERVICE_SERVICE);
 		
 	}
 	
-	public RESTNotification createNotification(RestNotificationAPI api) {
+	public RESTNotificationRequest createNotification(RestNotificationAPI api) {
 		try {
 			RESTNotificationImpl notif = new RESTNotificationImpl(apiUrls.get(api));
 			return notif;

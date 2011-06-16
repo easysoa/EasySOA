@@ -80,7 +80,7 @@ public class ServiceNotificationRest extends NotificationRest {
 				}
 				DocumentModel serviceModel = DocumentService.findService(session, url);
 				if (serviceModel == null)
-					serviceModel = DocumentService.createService(session, parentUrl, name);
+					serviceModel = DocumentService.createService(session, apiModel.getPathAsString(), name);
 				session.move(serviceModel.getRef(), apiModel.getRef(), serviceModel.getName());
 
 				// Update optional properties
