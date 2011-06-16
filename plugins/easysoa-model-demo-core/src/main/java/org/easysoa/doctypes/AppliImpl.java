@@ -3,7 +3,7 @@ package org.easysoa.doctypes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AppliImpl {
+public class AppliImpl extends Doctype {
 
 	public static final String DOCTYPE = "Workspace";
 	public static final String SCHEMA = "appliimpldef";

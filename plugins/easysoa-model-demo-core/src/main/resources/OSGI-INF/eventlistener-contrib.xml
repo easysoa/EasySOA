@@ -5,9 +5,15 @@
 
   <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
   
+    <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+      <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries-->
+    </listener>
     <listener name="serviceapilistener" class="org.easysoa.listeners.ServiceAPIListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
+      <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries-->
     </listener>
     
   </extension>
