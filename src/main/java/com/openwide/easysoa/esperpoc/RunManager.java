@@ -46,19 +46,20 @@ public class RunManager {
 	}
 	
 	/**
-	 * Returns the current run. null is returned if there is no current run ! 
+	 * Returns the current run. if thers is no current run, a new run is automatically started (autostart).
 	 * @return The current <code>Run</code>
 	 */
 	public Run getCurrentRun(){
+		start("");
 		return this.currentRun;
 	}
 	
 	/**
 	 * Starts a new run. A new <code>Run</code> is started only if the current run was stopped before with a call to the stop() method. 
 	 */
-	public void start(){
+	public void start(String runName){
 		if(currentRun == null){
-			currentRun = new Run();
+			currentRun = new Run(runName);
 			currentRun.setStartDate(new Date());
 		}
 	}

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
+import com.openwide.easysoa.esperpoc.RunManager;
+import com.openwide.easysoa.esperpoc.RunRecorder;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.soa.Api;
@@ -127,10 +129,13 @@ public class MonitorService {
 	}
 	
 	/**
-	 * 
+	 * Listen a message
+	 * @param message The <code>Message</code> to listen
 	 */
 	public void listen(Message message){
 	    logger.debug("Listenning message : " + message);
+	    RunRecorder recorder = new RunRecorder();
+	    recorder.record(message);
 		for(MessageHandler mh : messageHandlers){
 	    	// add code here to call each messageHandler
 	    	// When the good message handler is found, stop the loop

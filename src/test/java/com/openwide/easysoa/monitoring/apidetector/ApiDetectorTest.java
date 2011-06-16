@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
+import com.openwide.easysoa.esperpoc.RunManager;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
@@ -99,6 +100,8 @@ public class ApiDetectorTest extends TestCase {
 		logger.debug( "Test URL detection start");
 		Iterator<String> iter = arrayList.iterator();;
 		String urlString;
+		// Start the RunManager
+		RunManager.getInstance().start("Test run");
 		//for(int i=0; i<1000;i++){
 		for(int i=0; i<1;i++){
 			while(iter.hasNext()){
@@ -107,6 +110,7 @@ public class ApiDetectorTest extends TestCase {
 				try{
 					URL url = new URL(urlString);
 					Message msg = new Message(url, MessageType.REST);
+					// listen message
 					MonitorService.getMonitorService().listen(msg);
 				}
 				catch(Exception ex){
@@ -114,6 +118,8 @@ public class ApiDetectorTest extends TestCase {
 				}
 			}
 		}
+		// Stop the RunManager
+		RunManager.getInstance().stop();
 		logger.debug("Test URL detection stop");
 	}
 		

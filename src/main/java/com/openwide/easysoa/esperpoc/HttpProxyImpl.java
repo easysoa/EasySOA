@@ -10,7 +10,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +20,6 @@ import org.apache.log4j.PropertyConfigurator;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
-
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
@@ -56,6 +54,8 @@ public class HttpProxyImpl extends HttpServlet {
 	 */
 	static Logger logger = Logger.getLogger(HttpProxyImpl.class.getName());
 
+
+	
 	/**
 	 * Log system initialization
 	 */
@@ -344,4 +344,8 @@ public class HttpProxyImpl extends HttpServlet {
         return new String(res);
     } 
 
+	/************************************************************************************************************************************/
+	
+	
+	
 }

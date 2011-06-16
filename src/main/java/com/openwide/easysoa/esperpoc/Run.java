@@ -28,12 +28,21 @@ public class Run {
 	 */
 	private Date stopDate;
 	
+	/**
+	 * Run name
+	 */
+	private String name;
+	
 	// Contains a collection of messages & informations like startDate, stopDate...
 	
 	/**
 	 * Initialize a new <code>Run</code> instance 
 	 */
-	public Run(){
+	public Run(String name) throws IllegalArgumentException {
+		if(name == null){
+			throw new IllegalArgumentException("name parameter must not be null");
+		}
+		this.name = name;
 		messagesList = new ArrayDeque<Message>();
 		startDate = null;
 		stopDate = null;
@@ -47,6 +56,7 @@ public class Run {
 		if(message == null){
 			throw new IllegalArgumentException("The parameter message must not be null !");
 		}
+		logger.debug("Adding message in message list : " + message);
 		this.messagesList.add(message);
 	}
 	
@@ -90,4 +100,23 @@ public class Run {
 		return this.stopDate;
 	}
 
+	/**
+	 * Returns the run name
+	 * @return A<code>String</code> for the run name
+	 */
+	public String getName(){
+		return this.name;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 */
+	public void setName(String name) throws IllegalArgumentException {
+		if(name == null){
+			throw new IllegalArgumentException();
+		}
+		this.name = name;
+	}
+	
 }
