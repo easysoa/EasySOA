@@ -3,11 +3,11 @@ package org.easysoa.rest.notification;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.security.auth.login.LoginException;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.rest.LoggedRest;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,31 +27,18 @@ public abstract class NotificationRest extends LoggedRest {
 	protected static final String REGISTRY_ROOT = "/default-domain/workspaces/";
 
 	protected JSONObject result = new JSONObject();
+	private Map<String, String> commonPropertiesDocumentation;
 	protected boolean errorFound = false;
-	protected static Map<String, String> dublinCoreDef; 
-
+	
 	private static final Log log = LogFactory.getLog(NotificationRest.class);
 	private static final String ERROR = "[ERROR] ";
 
-	/**
-	 * Creates an instance which is logged in the repository.
-	 * @throws LoginException
-	 * @throws JSONException 
-	 */
 	public NotificationRest() {
-	
 		try {
 			result.put("result", "ok");
 		} catch (JSONException e) {
 			log.error(e);
 		}
-		
-		if (dublinCoreDef == null) {
-			dublinCoreDef = new HashMap<String, String>();
-			dublinCoreDef.put("title", "The name of the document.");
-			dublinCoreDef.put("description", "A short description.");
-		}
-		
 	}
 
 	/**
@@ -70,7 +57,7 @@ public abstract class NotificationRest extends LoggedRest {
 				result.put("result", formattedMsg);
 			}
 			else {
-				result.append("result", formattedMsg);
+				result.accumulate("result", formattedMsg);
 			}
 		} catch (JSONException e) {
 			log.error("Failed to append error '"+msg+"' in response", e);
@@ -107,8 +94,12 @@ public abstract class NotificationRest extends LoggedRest {
 			if (schemaDef.containsKey(key)) {
 				setPropertyIfNotNull(model, schema, key, properties.getFirst(key));
 			}
+			// EasySOA specific properties
+			else if (EasySOADoctype.getCommonPropertyList().containsKey(key)) {
+				setPropertyIfNotNull(model, EasySOADoctype.SCHEMA_COMMON, key, properties.getFirst(key));
+			}
 			// Dublin Core properties
-			else if (dublinCoreDef.containsKey(key)) {
+			else if (EasySOADoctype.getDublinCorePropertyList().containsKey(key)) {
 				setPropertyIfNotNull(model, "dublincore", key, properties.getFirst(key));
 			}
 			// Unknown
@@ -119,6 +110,21 @@ public abstract class NotificationRest extends LoggedRest {
 		}
 	}
 
+	protected Map<String, String> getCommonPropertiesDocumentation() throws JSONException {
+		if (commonPropertiesDocumentation == null) {
+			commonPropertiesDocumentation = new HashMap<String, String>();
+			Map<String, String> dcPropertyList = EasySOADoctype.getDublinCorePropertyList();
+			for (String key : dcPropertyList.keySet()) {
+				commonPropertiesDocumentation.put(key, dcPropertyList.get(key));
+			}
+			Map<String, String> commonPropertyList = EasySOADoctype.getCommonPropertyList();
+			for (String key : commonPropertyList.keySet()) {
+				commonPropertiesDocumentation.put(key, commonPropertyList.get(key));
+			}
+		}
+		return commonPropertiesDocumentation;
+	}
+	
 	protected Form getForm(HttpContext httpContext) {
 		/*
 		 * When accessing the form the usual way, the returned Form is empty,

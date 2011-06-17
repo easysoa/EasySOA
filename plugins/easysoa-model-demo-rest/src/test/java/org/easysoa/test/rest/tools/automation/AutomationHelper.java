@@ -1,6 +1,6 @@
 package org.easysoa.test.rest.tools.automation;
 
-import org.easysoa.doctypes.Doctype;
+import org.easysoa.doctypes.EasySOADoctype;
 import org.nuxeo.ecm.automation.client.jaxrs.OperationRequest;
 import org.nuxeo.ecm.automation.client.jaxrs.Session;
 import org.nuxeo.ecm.automation.client.jaxrs.impl.HttpAutomationClient;
@@ -25,7 +25,7 @@ public class AutomationHelper {
 
 	public Documents findDocumentByUrl(String doctype, String url) throws Exception {
 		return query("SELECT * FROM " + doctype + " WHERE " + 
-			Doctype.getSchemaPrefix(doctype) + "url = '" + url + "'");
+			EasySOADoctype.getSchemaPrefix(doctype) + "url = '" + url + "'");
 	}
 	
 	public Documents query(String query) throws Exception {

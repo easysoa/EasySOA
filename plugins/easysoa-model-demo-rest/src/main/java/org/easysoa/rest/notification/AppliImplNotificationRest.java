@@ -106,14 +106,14 @@ public class AppliImplNotificationRest extends NotificationRest {
 		
 		result = new JSONObject();
 		JSONObject params = new JSONObject();
+		Map<String, String> commonDef = getCommonPropertiesDocumentation();
+		for (String key : commonDef.keySet()) {
+			params.put(key, commonDef.get(key));
+		}
 		Map<String, String> appliImplDef = AppliImpl.getPropertyList();
 		for (String key : appliImplDef.keySet()) {
 			params.put(key, appliImplDef.get(key));
 		}
-		for (String key : dublinCoreDef.keySet()) {
-			params.put(key, dublinCoreDef.get(key));
-		}
-		
 		result.put("parameters", params);
 		result.put("description", "Notification concerning an application implementation.");
 	

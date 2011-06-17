@@ -289,6 +289,63 @@
 	  </widget>
     </layout>
     
+    <!-- (UNUSED) Common properties layout -->
+    <layout name="soacommon">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>common_dtbrowsing</widget>
+        </row>
+        <row>
+          <widget>common_dtmonitoring</widget>
+        </row>
+        <row>
+          <widget>common_dtimport</widget>
+        </row>
+      </rows>
+      <widget name="common_dtbrowsing" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.common.dtbrowsing</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:discoveryTypeBrowsing</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="common_dtmonitoring" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.common.dtmonitoring</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:discoveryTypeMonitoring</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="common_dtimport" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.common.dtimport</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:discoveryTypeImport</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+    </layout>
+    
 	<!-- Override default Dublin Core layout -->
 	<layout name="dublincore">
       <templates>

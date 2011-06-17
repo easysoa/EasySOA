@@ -92,6 +92,14 @@ public class ScaImporter {
 		this.serviceStackUrl = serviceStackUrl;
 	}
 
+	/**
+	 * Guesses an API url given the service URL and others
+	 * XXX: Currently, is somehow hacky and doesn't always work as expected
+	 * @param serviceUrl
+	 * @param appliImplUrl
+	 * @param serviceStackUrl
+	 * @return
+	 */
 	public static String getApiUrl(String serviceUrl, String appliImplUrl, String serviceStackUrl) {
 		
 		int apiPathIndex = -1;

@@ -24,10 +24,6 @@ import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.restlet.data.CharacterSet;
-import org.restlet.data.Language;
-import org.restlet.data.MediaType;
-import org.restlet.resource.StringRepresentation;
 
 /**
  * REST service to find WSDLs from given URL.
@@ -50,8 +46,9 @@ public class ScraperRest {
 
 	@GET
 	@Path("/{url:.*}")
-	public Object doGet(@PathParam("url") String url,
+	public Object doGet(@Context UriInfo uriInfo,
 			@QueryParam("callback") String callback) {
+
 		
 		List<String> errors = new ArrayList<String>();
 		JSONObject result = new JSONObject();
@@ -60,7 +57,7 @@ public class ScraperRest {
 		try {
 			
 			// Initialization
-			url = URLDecoder.decode(url, "UTF-8");
+			String url = uriInfo.getRequestUri().toString().substring(uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length());
 			result.put("foundLinks", "");
 
 			// Web page download
@@ -144,20 +141,12 @@ public class ScraperRest {
 			if (!errors.isEmpty()) {
 				for (String error : errors)
 					result.append("error", error);
-			}
-			// ...in JSONP
-			return new StringRepresentation(JSONP.format(result, callback),
-					MediaType.APPLICATION_JAVASCRIPT, Language.ALL,
-					CharacterSet.UTF_8).getText();
-		} catch (Exception e) {
-			try {
-				// ...else in JSON
-				return new StringRepresentation(result.toString(2),
-						MediaType.APPLICATION_JSON, Language.ALL,
-						CharacterSet.UTF_8).getText();
-			} catch (JSONException e1) {
-				errors.add("Cannot format anwser: " + e1.getMessage());
-			}
+			}			
+			return (callback == null) ? 
+					result.toString(2) : 
+					JSONP.format(result, callback);
+		} catch (JSONException e) {
+			errors.add("Cannot format anwser: " + e.getMessage());
 		}
 		
 		// If everything else fails, show errors in plain text
@@ -167,24 +156,6 @@ public class ScraperRest {
 		return html;
 	}
 	
-	@POST
-	public Object doPost(@Context UriInfo uriInfo) {
-		
-		// TODO: Real notifications
-		String result = "";
-		for (String key : uriInfo.getQueryParameters().keySet()) {
-			result += key+": ";
-			if (uriInfo.getQueryParameters().get(key) != null) {
-				for (String value : uriInfo.getQueryParameters().get(key)) {
-					result += value+", ";
-				}
-			}
-			result += "<br />\n";
-		}
-		
-		return result;
-	}
-
 	private static void changeToAbsolutePath(Object[] tagNodes,
 			String attribute, URL context) {
 		for (Object o : tagNodes) {

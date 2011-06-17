@@ -8,7 +8,7 @@ import java.util.Map;
  * @author mkalam-alami
  *
  */
-public class ServiceAPI extends Doctype {
+public class ServiceAPI extends EasySOADoctype {
 
 	public static final String DOCTYPE = "ServiceAPI";
 	public static final String SCHEMA = "serviceapidef";

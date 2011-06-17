@@ -143,12 +143,13 @@ public class APINotificationRest extends NotificationRest {
 	public Object doGet() throws JSONException {
 		result = new JSONObject();
 		JSONObject params = new JSONObject();
+		Map<String, String> commonDef = getCommonPropertiesDocumentation();
+		for (String key : commonDef.keySet()) {
+			params.put(key, commonDef.get(key));
+		}
 		Map<String, String> apiDef = ServiceAPI.getPropertyList();
 		for (String key : apiDef.keySet()) {
 			params.put(key, apiDef.get(key));
-		}
-		for (String key : dublinCoreDef.keySet()) {
-			params.put(key, dublinCoreDef.get(key));
 		}
 		result.put("parameters", params);
 		result.put("description", "Service-level notification.");

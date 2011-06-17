@@ -3,7 +3,7 @@ package org.easysoa.doctypes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Service extends Doctype {
+public class Service extends EasySOADoctype {
 
 	public static final String DOCTYPE = "Service";
 	public static final String SCHEMA = "servicedef";

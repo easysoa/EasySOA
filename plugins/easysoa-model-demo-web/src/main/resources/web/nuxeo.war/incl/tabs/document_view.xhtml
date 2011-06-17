@@ -19,9 +19,29 @@
 	  <!-- EasySOA : Empty cache (XXX: Doesn't work) -->
 	  <h:outputText value="#{relationActions.resetStatements()}" rendered="true"/>
   
+  	  <!-- EasySOA : Discovery type icons -->
+  	  <c:set var="dtbrowsing" value="${currentDocument.getProperty('soacommon', 'dtbrowsing')}" scope="view" />
+  	  <c:set var="dtmonitoring" value="${currentDocument.getProperty('soacommon', 'dtmonitoring')}" scope="view" />
+  	  <c:set var="dtimport" value="${currentDocument.getProperty('soacommon', 'dtimport')}" scope="view" />
+	  <c:if test="${dtbrowsing != '' || dtmonitoring != '' || dtimport != ''}">
+	     <div style="float: left; margin-top: 20px; margin-right: 50px">
+		    <c:if test="${dtbrowsing != ''}">
+	        	<img src="img/dtBrowsing.png" alt="- Notified by browsing" 
+	        		style="margin-right: 10px" title="${dtbrowsing}" />
+		  	</c:if>
+		    <c:if test="${dtmonitoring != ''}">
+	        	<img src="img/dtMonitoring.png" alt="- Notified by monitoring"
+	        		style="margin-right: 10px" title="${dtmonitoring}" />
+		  	</c:if>
+		    <c:if test="${dtimport != ''}">
+	        	<img src="img/dtImport.png" alt="- Notified by import" title="${dtimport}" />
+		  	</c:if>
+		 </div>
+	  </c:if>
+	  
 	  <!-- EasySOA : Call it button -->
 	  <c:if test="${currentDocument.getType() == 'Service'}">
-	     <div style="width: 100%; float: left; margin-top: 20px">
+	     <div style="float: left; margin-top: 20px">
 	     <c:choose>
 		 	  <c:when test="${currentDocument.getProperty('servicedef', 'lightUrl') != null}">
 			      <a href="${currentDocument.getProperty('servicedef', 'lightUrl')}" target="_blank">
