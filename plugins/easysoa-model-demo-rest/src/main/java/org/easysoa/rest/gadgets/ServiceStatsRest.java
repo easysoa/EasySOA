@@ -16,6 +16,11 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 
+/***
+ * Returns service callcounts (for the servicestats gadget)
+ * @author mkalam-alami
+ *
+ */
 @Path("easysoa/stats")
 @Produces(MediaType.APPLICATION_JSON)
 public class ServiceStatsRest extends LoggedRest {

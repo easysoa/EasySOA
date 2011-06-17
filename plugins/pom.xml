@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.easysoa</groupId>
     <artifactId>easysoa-model-demo</artifactId>
-    <name>easysoa-model-demo</name>
+    <name>EasySOA Model (Demo)</name>
     <packaging>pom</packaging>
     <version>0.1.2-SNAPSHOT</version>
     
@@ -19,6 +19,7 @@
     	<module>easysoa-model-demo-core</module>
     	<module>easysoa-model-demo-web</module>
     	<module>easysoa-model-demo-rest</module>
+    	<module>easysoa-model-demo-dashboard</module>
     </modules>
 
 

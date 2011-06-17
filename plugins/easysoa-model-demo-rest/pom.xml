@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.easysoa</groupId>
 	<artifactId>easysoa-model-demo-rest</artifactId>
-	<name>easysoa-model-demo-rest</name>
+	<name>EasySOA Model REST (Demo)</name>
 	<version>0.1.2-SNAPSHOT</version>
 
 	<dependencies>

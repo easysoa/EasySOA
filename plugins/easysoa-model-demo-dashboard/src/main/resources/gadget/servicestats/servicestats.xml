@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="__MSG_servicestats__" height="95" scrolling="true"
+    scaling="true" directory_title="__MSG_servicestats__"
+    description="__MSG_description__" author="EasySOA">
+    <Locale messages="ALL_ALL.xml"/>
+    <Locale lang="fr" messages="fr_ALL.xml"/>
+    <Require feature="opensocial-0.8" />
+    <Require feature="dynamic-height" />
+    <Require feature="settitle" />
+    <Require feature="jquery" />
+    <Require feature="nuxeo" />
+  </ModulePrefs>
+
+  <!--  XXX: Rest url hardcoded -->
+  <Content type="html">
+  <![CDATA[
+  
+    <script type="text/javascript" language="javascript" src="servicestats.js"></script>
+    <script type="text/javascript">
+      function handleJSONResponse(response) {
+        renderStats(response.data, jQuery("#documentList"));
+      }
+      jQuery(document).ready(function(){
+      	var params = {};
+		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+        gadgets.io.makeRequest("http://localhost:8080/nuxeo/site/easysoa/stats",
+        	handleJSONResponse, params);
+      });
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="documentlists.css"/>
+    <div id="documentList">
+       <img src="${org.nuxeo.ecm.contextPath}/img/standart_waiter.gif">
+    </div>
+
+  ]]>
+  </Content>
+</Module>

@@ -9,6 +9,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.easysoa</groupId>
     <artifactId>easysoa-model-demo-web</artifactId>
-    <name>easysoa-model-demo-web</name>
+    <name>EasySOA Model Web (Demo)</name>
     <version>0.1.2-SNAPSHOT</version>
 </project>

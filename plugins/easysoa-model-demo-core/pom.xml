@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.easysoa</groupId>
 	<artifactId>easysoa-model-demo-core</artifactId>
-	<name>easysoa-model-demo-core</name>
+	<name>EasySOA Model Core (Demo)</name>
 	<version>0.1.2-SNAPSHOT</version>
 	<dependencies>
 		<dependency>

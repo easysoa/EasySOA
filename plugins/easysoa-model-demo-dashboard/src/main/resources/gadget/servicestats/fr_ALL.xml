@@ -1,0 +1,4 @@
+<messagebundle>
+  <msg name="servicestats">Stats Services</msg> 
+  <msg name="description">Statistiques d'utilisation des services</msg>
+</messagebundle>
