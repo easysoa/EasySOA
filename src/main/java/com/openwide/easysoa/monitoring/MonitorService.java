@@ -114,8 +114,7 @@ public class MonitorService {
 			return monitorService;
 		}
 	}
-	
-	
+
 	/**
 	 * Returns an instance of MonitorService. If the mode is changed since the last call to this method, a new instance of MonitorService is returned !
 	 * @param mode Monitoring mode 
@@ -127,7 +126,7 @@ public class MonitorService {
 		}
 		return monitorService;
 	}
-	
+
 	/**
 	 * Listen a message
 	 * @param message The <code>Message</code> to listen
@@ -141,12 +140,13 @@ public class MonitorService {
 	    	// When the good message handler is found, stop the loop
 	    	if(mh.isOkFor(message)){
 	    		logger.debug("MessageHandler found : " + mh.getClass().getName());
-	    		mh.handle(message);
+	    		if(mh.handle(message)){
+	    			break;
+	    		}
 	    	}
 	    }
-		
 	}
-	
+
 	/**
 	 * Return the monitoring mode
 	 * @return <code>MonitoringMode</code>

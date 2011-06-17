@@ -24,7 +24,7 @@ public class SoapMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public void handle(Message message) {
+	public boolean handle(Message message) {
 		// enrich the message
 		message.setType(MessageType.SOAP);
 		logger.debug("WSDL found");
@@ -36,7 +36,8 @@ public class SoapMessageHandler implements MessageHandler {
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		nuxeoRS.registerWSDLService(new WSDLService(message.getHost(), serviceName, message.getCompleteMessage(), message.getMethod()));			
+		nuxeoRS.registerWSDLService(new WSDLService(message.getHost(), serviceName, message.getCompleteMessage(), message.getMethod()));
+		return true;
 	}
 	
 	/**

@@ -6,16 +6,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
-import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
-import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.esperpoc.RunManager;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 import com.openwide.easysoa.monitoring.MonitorService;
-import com.openwide.easysoa.monitoring.MonitoringModel;
-import com.openwide.easysoa.monitoring.soa.Api;
-import com.openwide.easysoa.monitoring.soa.Appli;
 
 /**
  * Unit test for simple App.
@@ -37,7 +32,6 @@ public class ApiDetectorTest extends TestCase {
 	
     /**
      * Create the test case
-     *
      * @param testName name of the test case
      */
     public ApiDetectorTest(String testName){
@@ -55,28 +49,24 @@ public class ApiDetectorTest extends TestCase {
     /**
      * 
      */
-	public void testUrlDetection(){
+    //TODO : add assert to automatically check the result of the test
+	public void testUrlDiscoveryMode(){
 		MonitorService.getMonitorService(MonitoringMode.DISCOVERY);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
 		//urlDetectionSimulate(new UrlMock().getIMediaUrlData());
 		urlDetectionCompute();
 		urlDetectionDebugResults();
-		// post run (detection mode)
-		//TODO Warning, do not call this method in VALIDATED MODE Otherwise crash !!!!
-		//MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
-
-		// load nuxeo model and display it
-		//MonitoringModel testSoaModel = new MonitoringModel();
-		//testSoaModel.fetchFromNuxeo();
-		//logger.debug("allNodes:\n" + testSoaModel.getSoaNodes());
+		// assertEquals, assertFalse / assertTrue, assertSame, assertNull / assertNotNull
 		
-		//urlTree = null;
+		// -> check dans Nuxeo que les applications, services et api sont bien enregistrees ...
+		//
 	}
 
 	/**
 	 * 
 	 */
-	public void testUrlValidated(){
+    //TODO : add assert to automatically check the result of the test	
+	public void testUrlValidatedMode(){
 		// NB. in validation mode, no concept or pre or post run
 		// TODO LATER cache it
 		MonitorService.getMonitorService(MonitoringMode.VALIDATED);
@@ -84,10 +74,6 @@ public class ApiDetectorTest extends TestCase {
 		// TODO LATER mixed mode : do compute and debugResults BUT ONLY on unknown messages ?!
 		//urlDetectionCompute();
 		//urlDetectionDebugResults();
-		// load nuxeo model and display it
-		//MonitoringModel testSoaModel = new MonitoringModel();
-		//testSoaModel.fetchFromNuxeo();
-		//logger.debug("allNodes:\n" + testSoaModel.getSoaNodes());
 	}
 	
 	/**

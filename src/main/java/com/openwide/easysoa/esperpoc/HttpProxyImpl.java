@@ -72,7 +72,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    	forward(request, response);
     	    Message message = new Message(request);
     	    MonitorService.getMonitorService().listen(message);
-    	    
     	    // TODO .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
     	    // TODO in all methods (doGet, doPost), for (mh in List<>Message Handler ) { boolean isOKFor(); handle() return stopHandling; }
     	    // TODO GetWSDLMessageHandler, SoapMessageHandler, RestMessageHandler
@@ -85,6 +84,8 @@ public class HttpProxyImpl extends HttpServlet {
     	    // TODO RunRecorder (NB. not a RunRepository, yet) : record(Message)
     	    // TODO Run : startDate, stopDate...
     	    // TODO RunManager : runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run) -> for (run... MonitorService.listen(...
+    	    
+    	    // TODO Add a unknow message datastructure to store unknow messages and analyse / register them later
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
@@ -122,7 +123,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    } else {
 	    	logger.debug("Request body is empty ! ");
 	    }
-		
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{

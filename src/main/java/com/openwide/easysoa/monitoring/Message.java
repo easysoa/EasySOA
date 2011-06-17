@@ -56,14 +56,20 @@ public class Message {
 		this.pathName = request.getRequestURI();
 		this.parameters = request.getQueryString();
 		this.host = request.getServerName();
-		this.port = request.getServerPort();		
-		this.protocol = request.getProtocol();
+		this.port = request.getServerPort();
+		//TODO : Need to test the protocol returned by the request because it contains the version
+		// Maybe it is possible to do without a test
+		if(request.getProtocol().toLowerCase().contains("http")){
+			this.protocol = "http";
+		} else {
+			this.protocol = request.getProtocol();
+		}
 		this.method = request.getMethod();
 		this.content = "";
 		this.body = "";
 		this.url = request.getRequestURL().toString();
-	}	
-	
+	}
+
 	/**
 	 * Constructor
 	 * @param host
@@ -71,6 +77,7 @@ public class Message {
 	 * @param pathName
 	 * @param parameters
 	 */
+
 	public Message(String url, String protocol, String host, int port, String pathName, String parameters, MessageType type){
 		this.url = url;
 		if(protocol.toLowerCase().contains("http")){
@@ -221,7 +228,7 @@ public class Message {
 	}
 	
 	/**
-	 * 
+	 * Returns the complete message. url + url parameters
 	 * @return
 	 */
 	public String getCompleteMessage(){
@@ -238,7 +245,7 @@ public class Message {
 	}
 
 	/**
-	 * 
+	 * Returns the complete path. Url without url parameters
 	 * @return
 	 */
 	public String getCompletePath(){

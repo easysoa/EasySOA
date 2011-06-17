@@ -19,7 +19,7 @@ public class RestMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public void handle(Message message) {
+	public boolean handle(Message message) {
 		// Add the url in the url tree structure
 		logger.debug("REST message found");
 		message.setType(MessageType.REST);
@@ -54,6 +54,7 @@ public class RestMessageHandler implements MessageHandler {
 				//TODO else add it to unknownMessageStore (if service not there already) & remember to send an alert (also aggregated)
 			}			
 		}
+		return true;
 	}
 
 }

@@ -19,8 +19,9 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 public class NuxeoRegistrationService {
 
-	//private final static String NUXEO_DEFAULT_URL = "http://localhost:8080/nuxeo/restAPI/wsdlupload/";
-	private final static String NUXEO_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/notification/";
+	private final static String NUXEO_WSDL_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/wsdlscraper/";
+	private final static String NUXEO_REST_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/notification/";
+	private final static String NUXEO_AUTOMATION_DEFAULT_URL = "http://localhost:8080/nuxeo/site/automation";
 	/**
 	 * Logger
 	 */
@@ -32,11 +33,11 @@ public class NuxeoRegistrationService {
 	 * @return The response send back by Nuxeo
 	 */
 	public String registerWSDLService(WSDLService service){
-		StringBuffer sb = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.url", NUXEO_DEFAULT_URL));
-	    sb.append(service.getAppName()); //Application Name
+		StringBuffer sb = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.wsdl.url", NUXEO_WSDL_DEFAULT_URL));
+	    /*sb.append(service.getAppName()); //Application Name
 	    sb.append("/");
 	    sb.append(service.getServiceName()); //Service name
-	    sb.append("/");
+	    sb.append("/");*/
 	    sb.append(service.getUrl());
 		logger.debug("[resgisterWSDLService()] --- Request URL = " + sb.toString());
 		// Send request to register the service
@@ -56,6 +57,7 @@ public class NuxeoRegistrationService {
 	 * @param service The service to register
 	 * @return The response send back by Nuxeo
 	 */
+	//TODO Update this classe since the Nuxeo interface has changed	
 	public String registerRestService(Service service){
 		/*
 		{
@@ -63,17 +65,20 @@ public class NuxeoRegistrationService {
 		  "parameters": {
 		    "contentTypeOut": "HTTP content type of the result body",
 		    "relatedUsers": "Users that have been using the service",
-		    "title": "The name of the document.",
 		    "contentTypeIn": "HTTP content type of the request body",
+		    "title": "The name of the document.",
+		    "discoveryTypeImport": "Notes about import-specific notifications. Informs the document of the notification source.",
+		    "discoveryTypeBrowsing": "Notes about browsing-specific notifications. Informs the document of the notification source.",
 		    "httpMethod": "POST, GET...",
 		    "description": "A short description.",
+		    "discoveryTypeMonitoring": "INotes about monitoring-specific notifications. Informs the document of the notification source.",
 		    "parentUrl": "(mandatory) Service API URL (WSDL address, parent path...)",
 		    "callcount": "Times the service has been called since last notification",
 		    "url": "(mandatory) Service URL."
 		  }
 		}
 		*/
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.url", NUXEO_DEFAULT_URL));
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
 		url.append("service");
 		StringBuffer body = new StringBuffer();
 		body.append("url=");
@@ -93,7 +98,7 @@ public class NuxeoRegistrationService {
 		body.append("&description=");
 		body.append(service.getDescription());
 		body.append("&httpMethod=");
-		body.append(service.getHttpMethod());		
+		body.append(service.getHttpMethod());
 		logger.debug("[registerRESTService()] --- Message url : " + url.toString());
 		logger.debug("[registerRESTService()] --- Message body : " + body.toString());
 		return sendRequest(url.toString(), body.toString());
@@ -104,26 +109,32 @@ public class NuxeoRegistrationService {
 	 * @param appli The application to register
 	 * @return The response send back by Nuxeo
 	 */
+	//TODO Update this classe since the Nuxeo interface has changed
 	public String registerRestAppli(Appli appli){
 		/*
-	 	{
+		{
 		  "description": "Notification concerning an application implementation.",
 		  "parameters": {
-		    "rootServicesUrl": "(mandatory) Services root.",
-		    "uiUrl": "Application GUI entry point.",
-		    "title": "The name of the document.",
 		    "technology": "Services implementation technology.",
 		    "standard": "Protocol standard if applicable.",
+		    "provider": "Company that provides these services.",
+		    "url": "(mandatory) Services root.",
+		    "uiUrl": "Application GUI entry point.",
+		    "title": "The name of the document.",
+		    "discoveryTypeBrowsing": "Notes about browsing-specific notifications. Informs the document of the notification source.",
+		    "discoveryTypeImport": "Notes about import-specific notifications. Informs the document of the notification source.",
+		    "environment": "The application environment (production, development...)",
 		    "sourcesUrl": "Source code access.",
 		    "description": "A short description.",
+		    "discoveryTypeMonitoring": "INotes about monitoring-specific notifications. Informs the document of the notification source.",
 		    "server": "IP of the server."
 		  }
 		}
-		 */
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.url", NUXEO_DEFAULT_URL));
+		*/	
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
 		url.append("appliimpl");
 		StringBuffer body = new StringBuffer();
-		body.append("rootServicesUrl=");
+		body.append("url=");
 		body.append(appli.getUrl());
 		body.append("&uiUrl=");
 		body.append(appli.getUiUrl());
@@ -149,21 +160,25 @@ public class NuxeoRegistrationService {
 	 * @param api The API to register
 	 * @return The response send back by Nuxeo
 	 */
+	//TODO Update this classe since the Nuxeo interface has changed	
 	public String registerRestApi(Api api){
 		/*
 		{
 		  "description": "Service-level notification.",
 		  "parameters": {
-		    "title": "The name of the document.",
 		    "application": "The related business application.",
+		    "title": "The name of the document.",
+		    "discoveryTypeImport": "Notes about import-specific notifications. Informs the document of the notification source.",
+		    "discoveryTypeBrowsing": "Notes about browsing-specific notifications. Informs the document of the notification source.",
 		    "description": "A short description.",
-		    "parentUrl": "(mandatory) The parent URL, which is either another service API, or the service root.",
-		    "sourceUrl": "The web page where the service has been found (useful for REST only).",
+		    "protocols": "The supported protocols.",
+		    "discoveryTypeMonitoring": "INotes about monitoring-specific notifications. Informs the document of the notification source.",
+		    "parentUrl": "The parent URL, which is either another service API, or the service root.",
 		    "url": "(mandatory) Service API url (WSDL address, parent path...)."
 		  }
 		}
 		 */
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.url", NUXEO_DEFAULT_URL));
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
 		url.append("api");
 		StringBuffer body = new StringBuffer();
 		body.append("url=");
@@ -176,8 +191,8 @@ public class NuxeoRegistrationService {
 		body.append(api.getApplication());
 		body.append("&description=");
 		body.append(api.getDescription());
-		body.append("&sourceUrl=");
-		body.append(api.getSourceUrl());	
+		//body.append("&sourceUrl=");
+		//body.append(api.getSourceUrl());	
 		logger.debug("[registerRestApi()] --- Message url : " + url.toString());
 		logger.debug("[registerRestApi()] --- Message body : " + body.toString());
 		return sendRequest(url.toString(), body.toString());
@@ -241,7 +256,7 @@ public class NuxeoRegistrationService {
 	 * @return The response send back by Nuxeo
 	 */
 	private String sendQuery(String query){
-		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_DEFAULT_URL));
+		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_AUTOMATION_DEFAULT_URL));
 		urlBuf.append("/");
 	    urlBuf.append("Document.Query"); // operation name
 
@@ -252,7 +267,6 @@ public class NuxeoRegistrationService {
 			bodyBuf.put("params", bodyBufQuery);
 		    
 			logger.debug("[sendQuery()] --- Request URL = " + urlBuf.toString());
-			
 			// Send request to register the service
 			Client client = Client.create();
 			client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));

@@ -13,6 +13,6 @@ public interface MessageHandler {
 	 * Handle the message
 	 * @param message The message to handle
 	 */
-	public void handle(Message message);
+	public boolean handle(Message message);
 
 }
