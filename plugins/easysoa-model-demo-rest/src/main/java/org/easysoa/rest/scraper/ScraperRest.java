@@ -57,7 +57,7 @@ public class ScraperRest {
 		try {
 			
 			// Initialization
-			String url = uriInfo.getRequestUri().toString().substring(uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length());
+			String url = uriInfo.getRequestUri().toString().substring(uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length()); // TODO remove callback
 			result.put("foundLinks", "");
 
 			// Web page download
