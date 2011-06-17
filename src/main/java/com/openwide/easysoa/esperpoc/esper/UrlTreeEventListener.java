@@ -80,7 +80,7 @@ public class UrlTreeEventListener implements UpdateListener {
 			/*else if(event.getRatioAllChilds()){
 				Message lastMessage = node.getMessages().getLast();
 				Service service = new Service(node.getNodeName(), parentNode.getNodeName());
-				service.setCallCount(node.getMessages().size());
+				service.setCallCount(service.getCallCount() + node.getMessages().size());
 				service.setHttpMethod(lastMessage.getMethod());
 				if(!"ok".equals(nrs.registerRestService(service))){
 					node.setRegistered();

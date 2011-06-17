@@ -5,30 +5,20 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.restlet.data.ChallengeScheme;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
-import com.openwide.easysoa.monitoring.MessageHandler;
 import com.openwide.easysoa.monitoring.MonitorService;
-import com.openwide.easysoa.monitoring.RestMessageHandler;
-import com.openwide.easysoa.monitoring.SoapMessageHandler;
-import com.openwide.easysoa.monitoring.WSDLMessageHandler;
-import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 
 /**
@@ -53,19 +43,14 @@ public class HttpProxyImpl extends HttpServlet {
 	 * Logger
 	 */
 	static Logger logger = Logger.getLogger(HttpProxyImpl.class.getName());
-
-
 	
 	/**
 	 * Log system initialization
 	 */
 	//TODO add a way to specify dynamically the monitoring mode, default monitoring mode is stored in httpProxy.properties
-	//TODO Add a way to finish the run in discovery mode to register all the applications / services / api stored in the urlTree
-	//TODO Special command with url send to the proxy ?
 	// In this case, we need a complate set of command to start, stop a run ....
-	// Other solution : Use a Frascati sca property and update it with a hot update => needs an external GUI or Frascati explorer
 	static {
-		PropertyConfigurator.configure(HttpProxyImpl.class.getClassLoader().getResource("log4j.properties"));
+		ProxyConfigurator.configure();
 		MonitorService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
 	}
 	
@@ -84,33 +69,9 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	StringBuffer requestUrlBuf = new StringBuffer();
-	    	requestUrlBuf.append(request.getRequestURL().toString());
-	    	if(request.getQueryString() != null){
-	    		requestUrlBuf.append("?");
-	    		requestUrlBuf.append(request.getQueryString());
-	    	}
-	    	String requestUrlString = requestUrlBuf.toString();
-	    	logger.debug("--- Complete request : " + requestUrlString);
-
-	    	// send to actual server :
-	    	ClientResource resource = new ClientResource(requestUrlString);
-	    	// Send an authenticated request using the Basic authentication scheme.
-	    	if(request.getRemoteUser() != null){
-	    		String authHead=request.getHeader("Authorization");
-	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authHead));
-	    	}
-	    	// TODO get the response for monitoring purpose before sending it back
-	    	InputStream in = resource.get().getStream();
-    	    if(in != null){
-    	    	int c;
-    	    	while((c = in.read()) != -1){
-    	    		respOut.write(c);
-    	    	}
-    	    }
-
-    	    // Forward the request to the original recipient    	    
-    	    //forward(request, response);
+	    	forward(request, response);
+    	    Message message = new Message(request);
+    	    MonitorService.getMonitorService().listen(message);
     	    
     	    // TODO .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
     	    // TODO in all methods (doGet, doPost), for (mh in List<>Message Handler ) { boolean isOKFor(); handle() return stopHandling; }
@@ -124,31 +85,11 @@ public class HttpProxyImpl extends HttpServlet {
     	    // TODO RunRecorder (NB. not a RunRepository, yet) : record(Message)
     	    // TODO Run : startDate, stopDate...
     	    // TODO RunManager : runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run) -> for (run... MonitorService.listen(...
-    	    Message message = new Message(request);
-    	    MonitorService.getMonitorService().listen(message);
-
-	    	/*if(isWSDL(requestUrlString)){
-	    		// Registering WSDL web service
-	    		// Create a new message received object and send it to Esper
-	    		logger.debug("--- ****** WSDL found, create Message !");
-	    		Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), MessageType.WSDL);				
-				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
-	    	} else {
-	    		//TODO
-	    		// Not possible to make 2 different strategies : one for static url with parameters and one for dynamic url because it is possible to have dynamic url with parameters ...
-    			Message msg = new Message(request.getRequestURL().toString(), request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), request.getQueryString(), MessageType.REST);
-    			// Add the url in the url tree structure
-    			logger.debug("--- REST Service found, registering in URL tree !");
-    			urlTree.addUrlNode(msg);
-    			// Filtre pour ne pas prendre en compte les resources statiques : pas la meilleure solution
-    			// Seule solution pour detection correcte : Analyse de la requete et de la reponse associée.
-    			// Si reponse contient du JSON => webservice, si html simple ou image => pas webservice ...
-    			// Ce qui implique de modifier le pojo message pour faire 2 parties distinctes : request / response
-	    	}*/
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
-	    	respOut.println("<html><body>httpProxy : An errror occurs.<br/>");
+	    	logger.error("An error occurs in doGet method.", ex);
+	    	respOut.println("<html><body>httpProxy : An errror occurs :<br/>");
 	    	respOut.println(ex.getMessage() + "</body></html>");
 	    }
 	    finally {
@@ -162,8 +103,6 @@ public class HttpProxyImpl extends HttpServlet {
 	 */	
 	@Override
 	public final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO
-		// Add code to listen REST post requests
 		logger.debug("------------------");
 		logger.debug("Method: " + request.getMethod());
 		logger.debug("RequestURI : " + request.getRequestURI());
@@ -171,28 +110,7 @@ public class HttpProxyImpl extends HttpServlet {
 		logger.debug("server: " + request.getServerName());
 		logger.debug("port: " + request.getServerPort());
 		logger.debug("request URL: " + request.getRequestURL());
-		// List header info
-		Enumeration<String> enum1 = request.getHeaderNames(); 
-		while(enum1.hasMoreElements()){
-			String headerName = enum1.nextElement();
-			String headerValue = request.getHeader(headerName);
-			logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
-		}
-		// List attributes
-		/*Enumeration<String> enum2 = request.getAttributeNames();
-		while(enum2.hasMoreElements()){
-			String attributeName = enum2.nextElement();
-			Object attributeValue = request.getAttribute(attributeName);
-			logger.debug("Header name = " + attributeName + ", Header value = " + attributeValue);
-		}*/
-		// List parameters
-		/*Enumeration<String> enum3 = request.getParameterNames();
-		while(enum3.hasMoreElements()){
-			String parameterName = enum3.nextElement();
-			String parameterValue = request.getParameter(parameterName);
-			logger.debug("Header name = " + parameterName + ", Header value = " + parameterValue);
-		}*/
-		BufferedReader br = request.getReader();
+	    BufferedReader br = request.getReader();
     	StringBuffer bodyContent = new StringBuffer();
 		if(br != null){
 	    	logger.debug("Request body : ");
@@ -204,56 +122,23 @@ public class HttpProxyImpl extends HttpServlet {
 	    } else {
 	    	logger.debug("Request body is empty ! ");
 	    }
-		// Check if the request body is a soap message
-		/*if(bodyContent.toString().toLowerCase().contains("schemas.xmlsoap.org") && bodyContent.toString().toLowerCase().startsWith("<?xml")){
-			logger.debug("SOAP Message found, create Esper message");
-			// Check if a WSDL exists
-			if(checkWsdl(request.getRequestURL().toString())){
-				logger.debug("WSDL found");
-				logger.debug("Registering in nuxeo");
-				Message msg = new Message(request.getProtocol(), request.getServerName(), request.getServerPort(), request.getRequestURI(), "wsdl", bodyContent.toString(), request.getMethod(), MessageType.WSDL);
-				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);				
-			}
-		}*/
 		
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-			// Create the client resource
-	    	StringBuffer sb = new StringBuffer();
-	    	sb.append(request.getRequestURL().toString());
-	    	if(request.getQueryString() != null){
-	    		sb.append("?");
-	    		sb.append(request.getQueryString());
-	    	}
-	    	logger.debug("*** Complete request : " + sb.toString());
-	    	//Representation representation = new org.restlet.representation.StringRepresentation(bodyContent.toString(),MediaType.APPLICATION_XML);
-	    	Representation representation = new org.restlet.representation.StringRepresentation(bodyContent.toString());
-	    	ClientResource resource = new ClientResource(sb.toString());
-	    	// Send an authenticated request using the Basic authentication scheme.
-	    	if(request.getRemoteUser() != null){
-	    		String authHead=request.getHeader("Authorization");
-	    		resource.setChallengeResponse(ChallengeScheme.HTTP_BASIC, request.getRemoteUser(), decodePassword(authHead));
-	    	}
-	    	InputStream in = resource.post(representation).getStream();
-    	    if(in != null){
-    	    	int c;
-    	    	while((c = in.read()) != -1){
-    	    		respOut.write(c);
-    	    	}
-    	    }
+	    	forward(request, response);
     	    Message message = new Message(request);
     	    message.setBody(bodyContent.toString());
     	    MonitorService.getMonitorService().listen(message);
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
-	    	//respOut.println("<html><body>httpProxy : An errror occurs.<br/>");
-	    	//respOut.println(ex.getMessage() + "</body></html>");
+	    	logger.error("A" , ex);
+	    	respOut.println("<html><body>httpProxy : An errror occurs :<br/>");
+	    	respOut.println(ex.getMessage() + "</body></html>");
 	    }
 	    finally {
 	    	logger.debug("Closing response flow");
-	    	//respOut.println("Finally block ..... Something goes wrong !!");
 	    	respOut.close();
 	    }
 	}
@@ -284,9 +169,19 @@ public class HttpProxyImpl extends HttpServlet {
 	 * @throws IOException 
 	 */
 	//TODO Use this method in doGet and doPost methods
-	public void forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter respOut = response.getWriter();
-		//try{
+		// Header
+		Enumeration<String> enum1 = request.getHeaderNames(); 
+		logger.debug("Requests Headers");
+		//Form form = new Form();
+		while(enum1.hasMoreElements()){
+			String headerName = enum1.nextElement();
+			String headerValue = request.getHeader(headerName);
+			logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
+			//form.add(headerName, headerValue);
+		}
+		// URL
 		StringBuffer requestUrlBuffer = new StringBuffer();
 		requestUrlBuffer.append(request.getRequestURL().toString());
 	    if(request.getQueryString() != null){
@@ -294,7 +189,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    	requestUrlBuffer.append(request.getQueryString());
 	    }
 	    String requestUrlString = requestUrlBuffer.toString();
-
+	    // Body
 	    BufferedReader requestBufferedReader = request.getReader();
 	    StringBuffer bodyContent = new StringBuffer();
 		if(requestBufferedReader != null){
@@ -304,27 +199,26 @@ public class HttpProxyImpl extends HttpServlet {
 		   	}
 		}
 		String requestBodyString = bodyContent.toString();
-
 	    ClientResource resource = new ClientResource(requestUrlString);
-	    Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
-	    InputStream in = resource.post(representation).getStream();
-    	if(in != null){
-    	   	int c;
-    	   	while((c = in.read()) != -1){
-    	   		respOut.write(c);
+        //Representation rep = form.getWebRepresentation();
+        //Request restletRequest = new Request();
+        //restletRequest.getAttributes().put("org.restlet.http.headers", rep);
+        //resource.setRequest(restletRequest);
+	    InputStream in = null;
+	    if("GET".equalsIgnoreCase(request.getMethod())){
+	    	in = resource.get().getStream();
+	    } else {
+	    	Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
+	    	in = resource.post(representation).getStream();
+	    }
+	    //TODO Take too much time when the received response is big ... Try to find an other method to optimize
+	    byte[] byteArray = new byte[8192];
+	    if(in != null){
+	    	logger.debug("Sending response to original recipient ...");
+    	   	while((in.read(byteArray)) != -1){
+    	   		respOut.write(new String(byteArray));
     	   	}
     	}
-	    /*}
-		catch(Throwable ex){
-	    	ex.printStackTrace();
-	    	//respOut.println("<html><body>httpProxy : An errror occurs.<br/>");
-	    	//respOut.println(ex.getMessage() + "</body></html>");
-	    }
-	    finally {
-	    	logger.debug("Closing response flow");
-	    	//respOut.println("Finally block ..... Something goes wrong !!");
-	    	respOut.close();
-	    }*/
     	respOut.close();
 	}
 
@@ -344,8 +238,4 @@ public class HttpProxyImpl extends HttpServlet {
         return new String(res);
     } 
 
-	/************************************************************************************************************************************/
-	
-	
-	
 }

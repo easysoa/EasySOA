@@ -28,7 +28,8 @@ public class RunManager {
 	private ArrayDeque<Run> runList;
 	
 	// Contains a collection of Run's & Methods to manipulate a Run	
-	// runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run) 
+	// runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run)
+	// In this version, RunManager can only manage ONE active run and several terminated runs !
 	
 	private RunManager(){
 		runList = new ArrayDeque<Run>();
@@ -50,13 +51,16 @@ public class RunManager {
 	 * @return The current <code>Run</code>
 	 */
 	public Run getCurrentRun(){
-		start("");
+		if(currentRun == null){
+			start("Auto started run");
+		}
 		return this.currentRun;
 	}
 	
 	/**
 	 * Starts a new run. A new <code>Run</code> is started only if the current run was stopped before with a call to the stop() method. 
 	 */
+	//TODO if the current run is not stopped, throw a new exception !!
 	public void start(String runName){
 		if(currentRun == null){
 			currentRun = new Run(runName);
@@ -95,6 +99,7 @@ public class RunManager {
 	 * 
 	 * @param run
 	 */
+	//TODO Add code in this method (rerun)
 	public void reRun(Run run){
 		
 	}

@@ -11,6 +11,7 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
+import com.openwide.easysoa.monitoring.soa.Service;
 
 public class MonitorService {
 
@@ -93,7 +94,6 @@ public class MonitorService {
 			logger.debug("Mode = VALIDATED !!");
 			monitoringModel = new MonitoringModel();
 			monitoringModel.fetchFromNuxeo();
-			//logger.debug("allNodes:\n" + monitoringModel.getSoaNodes());
 			logger.debug("Validated mode : Printing monitoring model keyset");
 			Iterator<String> iter = monitoringModel.getSoaModelUrlToTypeMap().keySet().iterator();
 			while(iter.hasNext()){
@@ -176,28 +176,32 @@ public class MonitorService {
 	 * Sends detected apis & services to nuxeo
 	 */
 	public void registerDetectedServicesToNuxeo() {
+		logger.debug("Analysing urlTree and registering in Nuxeo");
 		UrlTreeNode rootNode = (UrlTreeNode) urlTree.getRoot();
 		registerChildren(rootNode);
 	}
-	
+
 	/**
 	 * 
 	 * @param node
 	 */
-	//TODO Method used in class UrlTreeEventListener !!! Factorisation !
+	//TODO Method used in class UrlTreeEventListener !!!
 	private void registerChildren(UrlTreeNode node) {
+		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		for (int i = 0; i < node.getChildCount(); i++) {
 			UrlTreeNode childNode = (UrlTreeNode) node.getChildAt(i);
 			node = (UrlTreeNode) childNode.getParent();
+			// APLLI detection
 			if(childNode.getLevel() == 1){
 				// Application detected
-				logger.debug("[MessageListener] --- new Appli to register !!!!");
+				logger.debug("[registerChildren] --- new Appli to register !!!!");
 				if(!childNode.isRegistered() && childNode.getPartialUrlcallCount() > 5 && childNode.getCompleteUrlcallCount() == 0){
 					Appli appli = new Appli(childNode.getNodeName(), childNode.getNodeName());
 					appli.setUiUrl(childNode.getNodeName());
 					appli.setTitle(childNode.getNodeName());
 					appli.setDescription(childNode.getNodeName());
-					if(!"ok".equals(new NuxeoRegistrationService().registerRestAppli(appli))){
+					logger.debug("Calling Nuxeo service");
+					if(!"ok".equals(nrs.registerRestAppli(appli))){
 						childNode.setRegistered();
 					}
 				}
@@ -205,54 +209,29 @@ public class MonitorService {
 			// API detection
 			else if(childNode.getChildCount() > 0 && childNode.getRatioComplete(urlTree) == 0 && childNode.getLevel() >= 2 
 					&& childNode.getPartialUrlcallCount() > 5 && !childNode.isRegistered() && node.isRegistered()){
-				logger.debug("[MessageListener] --- new Api to register !!!!");
+				logger.debug("[registerChildren] --- new Api to register !!!!");
 				Api api = new Api(childNode.getNodeName(), node.getNodeName());
 				api.setTitle(childNode.getNodeName());
 				api.setDescription(childNode.getNodeName());
-				if(!"ok".equals(new NuxeoRegistrationService().registerRestApi(api))){
+				if(!"ok".equals(nrs.registerRestApi(api))){
 					childNode.setRegistered();
 				}
 			}
-			
+			// Service detection
+			//Comment faire la distinction entre service et api ????
+			// identification d'un service atomique : ratio du noeud aux messages vu > 
+			// 1 à 10 (?) et ratio du noeud à ses enfants (s'il en a) > 1 à 10 (?)
+			/*else if(event.getRatioAllChilds()){
+				Message lastMessage = node.getMessages().getLast();
+				Service service = new Service(node.getNodeName(), parentNode.getNodeName());
+				service.setCallCount(service.getCallCount() + node.getMessages().size());
+				service.setHttpMethod(lastMessage.getMethod());
+				if(!"ok".equals(nrs.registerRestService(service))){
+					node.setRegistered();
+				}
+			}*/
 			registerChildren(childNode);
 		}
 	}	
-	
-	/**
-	 * Handle a message
-	 * @param msg
-	 */
-	//TODO Move this method in Each Message Handler
-	// Problem : How to deal with the modes .....
-	/*private void handleMessage(Message msg) {
-		if (MonitoringMode.DISCOVERY.equals(mode)) {
-			// detection mode
-			// put in the tree, and compute local indicators :
-			urlTree.addUrlNode(msg);
-			
-		} else if(MonitoringMode.VALIDATED.equals(mode)){
-			// validation mode
-			// TODO match url in soaModel
-			String urlSoaModelType = monitoringModel.getSoaModelUrlToTypeMap().get(msg.getUrl());
-			// if none, maybe it is a resource :
-			if (urlSoaModelType == null) {
-				int lastSlashIndex = msg.getUrl().lastIndexOf('/'); // TODO BETTER regexp or finite automat OR ESPER OR SHARED MODEL WITH TREE OR ABSTRACT TREE ??!!
-				String serviceUrlOfResource = msg.getUrl().substring(0, lastSlashIndex);
-				msg.setUrl(serviceUrlOfResource); // HACK TODO rather add a field
-				urlSoaModelType = monitoringModel.getSoaModelUrlToTypeMap().get(serviceUrlOfResource);
-			}
-			if (urlSoaModelType != null) {
-				// if there, feed it to esper
-				// TODO put known serviceUrl in esper
-				// TODO write listener that groups by serviceUrl and registers them to nuxeo every minute
-				EsperEngineSingleton.getEsperRuntime().sendEvent(msg);
-			} else {
-				// else add it to unknownMessageStore (if service not there already) & remember to send an alert (also aggregated)
-				//TODO
-			}
-		}
-	}*/	
-	
-	
 	
 }

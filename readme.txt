@@ -33,6 +33,8 @@ To build and run this project, the requirements are :
  	* org.restlet.ext.simple-2.1-M3.jar
 	* org.restlet-2.1-M3.jar
 	* log4j-1.2.16.jar
+	* jersey-client-1.7-ea06.jar
+ 	* jersey-core-1.7-ea06.jar
 
 ----------------------------------
 
