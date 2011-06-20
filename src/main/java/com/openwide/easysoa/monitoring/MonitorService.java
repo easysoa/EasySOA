@@ -174,6 +174,7 @@ public class MonitorService {
 	
 	/**
 	 * Sends detected apis & services to nuxeo
+	 * Analyse the urlTree
 	 */
 	public void registerDetectedServicesToNuxeo() {
 		logger.debug("Analysing urlTree and registering in Nuxeo");
@@ -182,8 +183,8 @@ public class MonitorService {
 	}
 
 	/**
-	 * 
-	 * @param node
+	 * REgister the children of the node
+	 * @param node The node 
 	 */
 	//TODO Method used in class UrlTreeEventListener !!!
 	private void registerChildren(UrlTreeNode node) {
@@ -191,7 +192,7 @@ public class MonitorService {
 		for (int i = 0; i < node.getChildCount(); i++) {
 			UrlTreeNode childNode = (UrlTreeNode) node.getChildAt(i);
 			node = (UrlTreeNode) childNode.getParent();
-			// APLLI detection
+			// APLLICATION detection
 			if(childNode.getLevel() == 1){
 				// Application detected
 				logger.debug("[registerChildren] --- new Appli to register !!!!");
@@ -200,14 +201,15 @@ public class MonitorService {
 					appli.setUiUrl(childNode.getNodeName());
 					appli.setTitle(childNode.getNodeName());
 					appli.setDescription(childNode.getNodeName());
-					logger.debug("Calling Nuxeo service");
+					//logger.debug("Calling Nuxeo service");
 					if(!"ok".equals(nrs.registerRestAppli(appli))){
 						childNode.setRegistered();
 					}
 				}
 			}
 			// API detection
-			else if(childNode.getChildCount() > 0 && childNode.getRatioComplete(urlTree) == 0 && childNode.getLevel() >= 2 
+			//TODO CHange the parameters to detect API (Hardcoded level parameter !)
+			else if(childNode.getChildCount() > 0 && childNode.getRatioComplete(urlTree) == 0 && childNode.getLevel() >= 2 && childNode.getLevel() < 4 
 					&& childNode.getPartialUrlcallCount() > 5 && !childNode.isRegistered() && node.isRegistered()){
 				logger.debug("[registerChildren] --- new Api to register !!!!");
 				Api api = new Api(childNode.getNodeName(), node.getNodeName());
@@ -218,18 +220,24 @@ public class MonitorService {
 				}
 			}
 			// Service detection
-			//Comment faire la distinction entre service et api ????
-			// identification d'un service atomique : ratio du noeud aux messages vu > 
-			// 1 à 10 (?) et ratio du noeud à ses enfants (s'il en a) > 1 à 10 (?)
-			/*else if(event.getRatioAllChilds()){
-				Message lastMessage = node.getMessages().getLast();
-				Service service = new Service(node.getNodeName(), parentNode.getNodeName());
-				service.setCallCount(service.getCallCount() + node.getMessages().size());
-				service.setHttpMethod(lastMessage.getMethod());
+			// How to make distinction between service and api ????
+			// identification d'un service atomique : ratio du noeud aux messages vu > 1 à 10 (?) et ratio du noeud à ses enfants (s'il en a) > 1 à 10 (?)
+			//TODO CHange the parameters to detect service (Hardcoded level parameter !)
+			else if(childNode.getLevel() == 4  && !childNode.isRegistered() && node.isRegistered()){
+				// Message lastMessage = childNode.getMessages().getLast(); // Pas sur une feuille donc ArrayDeque message pas rempli ...
+				//TODO Revoir le systeme de remplissage des messages, mise en place d'un système pour detecter des patterns dans les url
+				logger.debug("[registerChildren] --- new Service to register !!!!");
+				Service service = new Service(childNode.getNodeName(), node.getNodeName());
+				// Idem ce dessus, pas de messages dans un noeud qui n'est pas une feuille ...
+				// service.setCallCount(service.getCallCount() + childNode.getMessages().size());
+				service.setCallCount(1);
+				service.setTitle(childNode.getNodeName());
+				service.setDescription(childNode.getNodeName());
+				// service.setHttpMethod(lastMessage.getMethod());
 				if(!"ok".equals(nrs.registerRestService(service))){
-					node.setRegistered();
+					childNode.setRegistered();
 				}
-			}*/
+			}
 			registerChildren(childNode);
 		}
 	}	

@@ -57,7 +57,6 @@ public class ApiDetectorTest extends TestCase {
 		urlDetectionCompute();
 		urlDetectionDebugResults();
 		// assertEquals, assertFalse / assertTrue, assertSame, assertNull / assertNotNull
-		
 		// -> check dans Nuxeo que les applications, services et api sont bien enregistrees ...
 		//
 	}

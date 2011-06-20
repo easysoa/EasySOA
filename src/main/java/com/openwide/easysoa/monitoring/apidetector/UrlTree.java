@@ -54,7 +54,7 @@ public class UrlTree extends DefaultTreeModel {
 				path.append("/");
 			}
 			path.append(token);
-			
+		
 			// Find the node if exist in index
 			logger.debug("[addUrlNode()] -----");
 			logger.debug("[addUrlNode()] Partial URL : " + path.toString());
@@ -90,6 +90,7 @@ public class UrlTree extends DefaultTreeModel {
 			}
 			
 			// Add the msg in the node list if the last node is reached
+			//TODO Problem : the informations contained in the message are not available for other nodes
 			if(!st.hasMoreTokens()){
 				urlNode.addMessage(msg);
 			}
