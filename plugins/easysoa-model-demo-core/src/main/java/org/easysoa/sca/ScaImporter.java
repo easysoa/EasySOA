@@ -103,11 +103,10 @@ public class ScaImporter {
 	public static String getApiUrl(String serviceUrl, String appliImplUrl, String serviceStackUrl) {
 		
 		int apiPathIndex = -1;
-		 
+
 		String apiPath = serviceStackUrl; // TODO  + "/" + serviceStackUrl + "/"
-		if (appliImplUrl != null) {
-			apiPath = appliImplUrl + apiPath;
-			apiPathIndex = serviceUrl.indexOf(apiPath);
+		if (serviceUrl.contains(appliImplUrl + apiPath)) {
+			apiPathIndex = serviceUrl.indexOf(appliImplUrl + apiPath);
 		}
 		
 		if (apiPathIndex == -1) {

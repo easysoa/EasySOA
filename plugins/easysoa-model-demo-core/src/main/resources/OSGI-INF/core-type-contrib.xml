@@ -4,7 +4,7 @@
   <!-- Schema declarations -->
   
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
-    <schema name="soacommon" src="schemas/appliimpldef.xsd" prefix="soa" />
+    <schema name="soacommon" src="schemas/soacommon.xsd" prefix="soa" />
     <schema name="servicedef" src="schemas/servicedef.xsd" prefix="serv" />
     <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
     <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />

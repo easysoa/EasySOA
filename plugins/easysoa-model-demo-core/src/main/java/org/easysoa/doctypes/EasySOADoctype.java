@@ -22,7 +22,7 @@ public class EasySOADoctype {
 		if (commonPropertyList == null) {
 			commonPropertyList = new HashMap<String, String>();
 			commonPropertyList.put(EasySOADoctype.PROP_DTBROWSING, "Notes about browsing-specific notifications. Informs the document of the notification source.");
-			commonPropertyList.put(EasySOADoctype.PROP_DTMONITORING, "INotes about monitoring-specific notifications. Informs the document of the notification source.");
+			commonPropertyList.put(EasySOADoctype.PROP_DTMONITORING, "Notes about monitoring-specific notifications. Informs the document of the notification source.");
 			commonPropertyList.put(EasySOADoctype.PROP_DTIMPORT, "Notes about import-specific notifications. Informs the document of the notification source.");
 		}
 		return commonPropertyList;
