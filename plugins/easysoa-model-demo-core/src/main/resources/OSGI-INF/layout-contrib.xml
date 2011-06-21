@@ -289,6 +289,75 @@
 	  </widget>
     </layout>
     
+    <!-- Service definition layout -->
+    <layout name="serviceref">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>serviceref_name</widget>
+        </row>
+        <row>
+          <widget>serviceref_refPath</widget>
+        </row>
+        <row>
+          <widget>serviceref_refUrl</widget>
+        </row>
+        <row>
+          <widget>serviceref_archiPath</widget>
+        </row>
+       </rows>
+      <widget name="serviceref_name" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.name</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:name</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="serviceref_refPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.refPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:refPath</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="serviceref_refUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.refUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:refUrl</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="serviceref_archiPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.archiPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:archiPath</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+    </layout>
+    
     <!-- (UNUSED) Common properties layout -->
     <layout name="soacommon">
       <templates>

@@ -3,6 +3,7 @@ package org.easysoa.services;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Reference;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.nuxeo.common.utils.IdUtils;
@@ -47,7 +48,7 @@ public class DocumentService {
 	 * 
 	 * @param session
 	 * @param parentPath If null or invalid, default application is used
-	 * @param title
+	 * @param url
 	 * @return
 	 * @throws ClientException
 	 */
@@ -76,8 +77,8 @@ public class DocumentService {
 	/**
 	 * Returns null if the service API doesn't exist.
 	 * @param session
-	 * @param apiTitle
-	 * @param title
+	 * @param parentPath service API
+	 * @param url
 	 * @return
 	 * @throws ClientException
 	 */
@@ -92,6 +93,31 @@ public class DocumentService {
 				service.setProperty("dublincore", "title", url);
 			}
 			return session.createDocument(service);
+		}
+		else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Returns null if the service API Impl doesn't exist.
+	 * @param session
+	 * @param parentPath service API Impl
+	 * @param url
+	 * @return
+	 * @throws ClientException
+	 */
+	public static final DocumentModel createReference(CoreSession session,
+			String parentPath, String name) throws ClientException {
+		
+		if (parentPath != null) {
+			DocumentModel reference = session.createDocumentModel(
+					parentPath, IdUtils.generateStringId(), Reference.DOCTYPE);
+			if (reference != null) {
+				//reference.setProperty(Reference.SCHEMA, Reference.PROP_NAME, name);
+				reference.setProperty("dublincore", "title", name);
+			}
+			return session.createDocument(reference);
 		}
 		else {
 			return null;
@@ -141,6 +167,15 @@ public class DocumentService {
 			return null;
 		return findFirstDocument(session, Service.DOCTYPE,
 				Service.SCHEMA_PREFIX+Service.PROP_URL, serviceUrl);
+	}
+
+	public static DocumentModel findReference(CoreSession session,
+			String referenceName) throws ClientException {
+		if (referenceName == null) {
+			return null;
+		}
+		return findFirstDocument(session, Reference.DOCTYPE,
+				Reference.SCHEMA_PREFIX+Reference.PROP_NAME, referenceName);
 	}
 
 	private static DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {

@@ -7,6 +7,7 @@
     <schema name="soacommon" src="schemas/soacommon.xsd" prefix="soa" />
     <schema name="servicedef" src="schemas/servicedef.xsd" prefix="serv" />
     <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
+    <schema name="serviceref" src="schemas/serviceref.xsd" prefix="ref" />
     <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
     <schema name="querynav2" src="schemas/querynav2.xsd" />
   </extension>
@@ -43,6 +44,18 @@
       </subtypes>
     </doctype>
     
+    <doctype extends="Document" name="ServiceReference">
+	  <schema name="common"/>
+	  <schema name="uid"/>
+	  <schema name="note"/>
+	  <schema name="dublincore"/>
+      <schema name="soacommon" />
+      <schema name="serviceref" />
+      <facet name="Commentable" />
+      <facet name="Versionable" />
+      <facet name="Indexable" />
+    </doctype>
+    
     <!--
     <doctype name="Workspace" extends="Folder">
       <schema name="file"/>
@@ -68,6 +81,7 @@
       <facet name="Commentable"/>
       <subtypes>
         <type>ServiceAPI</type>
+        <type>ServiceReference</type>
       </subtypes>
     </doctype>
     
