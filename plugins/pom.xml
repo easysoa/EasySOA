@@ -15,6 +15,15 @@
     <packaging>pom</packaging>
     <version>0.1.2-SNAPSHOT</version>
     
+    <dependencies>
+        <!-- Testing with Nuxeo, see http://doc.nuxeo.com/display/CORG/Unit+Testing -->
+        <dependency>
+            <groupId>org.nuxeo.runtime</groupId>
+            <artifactId>nuxeo-runtime-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <modules>
     	<module>easysoa-model-demo-core</module>
     	<module>easysoa-model-demo-web</module>
