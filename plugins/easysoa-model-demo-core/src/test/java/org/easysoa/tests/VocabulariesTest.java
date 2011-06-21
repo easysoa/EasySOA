@@ -24,6 +24,8 @@ import org.nuxeo.ecm.directory.api.DirectoryService;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.Jetty;
+import org.nuxeo.runtime.test.runner.JettyFeature;
 
 import com.google.inject.Inject;
 
@@ -34,15 +36,18 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Deploy({ // all required, else no dirService
+    //"org.mortbay.jetty.plus",
     "org.nuxeo.ecm.directory",
     "org.nuxeo.ecm.directory.api",
     "org.nuxeo.ecm.directory.sql",
-    "org.nuxeo.ecm.directory.sql:OSGI-INF/SQLDirectoryFactory.xml",
-    "org.nuxeo.ecm.config",
+    //"org.nuxeo.ecm.directory.sql:OSGI-INF/SQLDirectoryFactory.xml",
+    //"org.nuxeo.ecm.config",
     "org.easysoa.demo.core:OSGI-INF/nxdirectories-contrib.xml" // required, else no custom vocabularies
 })
-@Features(EasySOAFeature.class)
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=DefaultRepositoryInit.class)
+//@Features(EasySOAFeature.class)
+//@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=DefaultRepositoryInit.class)
+@Features(JettyFeature.class)
+@Jetty(config="/home/mdutoo/dev/easysoa/nuxeo-dm-5.3.2-jetty/config/jetty.xml") //,port=9980
 public class VocabulariesTest {
 
     static final Log log = LogFactory.getLog(VocabulariesTest.class);
@@ -65,7 +70,7 @@ public class VocabulariesTest {
 
 		String environment = "test test environment";
 		
-		// the following fails with :
+		// the following fails because of missing container with :
 		
 		/*
 		
