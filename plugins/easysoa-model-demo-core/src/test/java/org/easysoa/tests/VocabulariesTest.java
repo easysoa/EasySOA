@@ -44,10 +44,10 @@ import com.google.inject.Inject;
     //"org.nuxeo.ecm.config",
     "org.easysoa.demo.core:OSGI-INF/nxdirectories-contrib.xml" // required, else no custom vocabularies
 })
-//@Features(EasySOAFeature.class)
-//@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=DefaultRepositoryInit.class)
-@Features(JettyFeature.class)
-@Jetty(config="/home/mdutoo/dev/easysoa/nuxeo-dm-5.3.2-jetty/config/jetty.xml") //,port=9980
+@Features(EasySOAFeature.class)
+@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=DefaultRepositoryInit.class)
+//@Features(JettyFeature.class)
+//@Jetty(config="/home/mdutoo/dev/easysoa/nuxeo-dm-5.3.2-jetty/config/jetty.xml") //,port=9980
 public class VocabulariesTest {
 
     static final Log log = LogFactory.getLog(VocabulariesTest.class);
