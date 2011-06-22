@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.easysoa.doctypes.Reference;
+import org.easysoa.doctypes.EasySOADoctype;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
 import org.junit.Before;
@@ -84,28 +85,35 @@ public class SCAImportTest {
 		importer.importSCA();
 
 		DocumentModelList resDocList;
-		//DocumentModel resDoc;
+		DocumentModel resDoc;
 		
 		// services :
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(resDocList.size(), 1);
-		//resDoc = resDocList.get(0);
+		resDoc = resDocList.get(0);
+		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(resDocList.size(), 1);
+		resDoc = resDocList.get(0);
+		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
 
 		
 		// references :
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Reference.DOCTYPE + "' AND " + "ref:archiPath" + " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				ServiceReference.DOCTYPE + "' AND "
+				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
+				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(resDocList.size(), 1);
 
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Reference.DOCTYPE + "' AND " + "ref:archiPath" + " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				ServiceReference.DOCTYPE + "' AND "
+				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
+				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(resDocList.size(), 1);
     }
 }

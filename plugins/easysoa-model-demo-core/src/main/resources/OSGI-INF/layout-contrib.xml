@@ -295,9 +295,6 @@
         <template mode="any">/layouts/layout_default_template.xhtml</template>
       </templates>
       <rows>
-        <!-- row>
-          <widget>serviceref_name</widget>
-        </row>
         <row>
           <widget>serviceref_refPath</widget>
         </row>
@@ -306,27 +303,18 @@
         </row>
         <row>
           <widget>serviceref_archiPath</widget>
-        </row -->
+        </row>
+        <row>
+          <widget>serviceref_archiLocalName</widget>
+        </row>
        </rows>
-      <!-- widget name="serviceref_name" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.serviceref.name</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>ref:name</field>
-	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-          </widgetModes>
-	  </widget>
       <widget name="serviceref_refPath" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.serviceref.refPath</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>ref:refPath</field>
+	        <field>sref:refPath</field>
 	      </fields>
           <widgetModes>
             <mode value="create">hidden</mode>
@@ -338,19 +326,46 @@
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>ref:refUrl</field>
+	        <field>sref:refUrl</field>
 	      </fields>
           <widgetModes>
             <mode value="create">hidden</mode>
           </widgetModes>
-	  </widget -->
-      <widget name="serviceref_archiPath" type="text">
+	  </widget>
+    </layout>
+    
+    <!-- soacommon archi layout -->
+    <layout name="soacommon_archi">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>soacommon_archi_archiPath</widget>
+        </row>
+        <row>
+          <widget>soacommon_archi_archiLocalName</widget>
+        </row>
+       </rows>
+      <widget name="soacommon_archi_archiPath" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.serviceref.archiPath</label>
+	        <label mode="any">label.easysoa.soacommon.archiPath</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>ref:archiPath</field>
+	        <field>soa:archiPath</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="soacommon_archi_archiLocalName" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiLocalName</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiLocalName</field>
 	      </fields>
           <widgetModes>
             <mode value="create">hidden</mode>
@@ -359,7 +374,7 @@
     </layout>
     
     <!-- (UNUSED) Common properties layout -->
-    <layout name="soacommon">
+    <layout name="soacommon_dt">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml</template>
       </templates>

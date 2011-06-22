@@ -13,6 +13,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>servicedef</layout>
+        <layout>soacommon_archi</layout>
       </layouts>
     </type>
     
@@ -44,6 +45,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>serviceref</layout>
+        <layout>soacommon_archi</layout>
       </layouts>
     </type>
     

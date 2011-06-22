@@ -14,6 +14,8 @@ public class EasySOADoctype {
 	public static final String PROP_DTBROWSING = "discoveryTypeBrowsing";
 	public static final String PROP_DTMONITORING = "discoveryTypeMonitoring";
 	public static final String PROP_DTIMPORT = "discoveryTypeImport";
+	public static final String PROP_ARCHIPATH = "archiPath";
+	public static final String PROP_ARCHILOCALNAME = "archiLocalName";
 
 	private static Map<String, String> commonPropertyList = null;
 	private static Map<String, String> dublinCorePropertyList = null;
@@ -24,6 +26,8 @@ public class EasySOADoctype {
 			commonPropertyList.put(EasySOADoctype.PROP_DTBROWSING, "Notes about browsing-specific notifications. Informs the document of the notification source.");
 			commonPropertyList.put(EasySOADoctype.PROP_DTMONITORING, "Notes about monitoring-specific notifications. Informs the document of the notification source.");
 			commonPropertyList.put(EasySOADoctype.PROP_DTIMPORT, "Notes about import-specific notifications. Informs the document of the notification source.");
+			commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known");
+			commonPropertyList.put(PROP_ARCHILOCALNAME, "Reference local name in architecture if known");
 		}
 		return commonPropertyList;
 	}

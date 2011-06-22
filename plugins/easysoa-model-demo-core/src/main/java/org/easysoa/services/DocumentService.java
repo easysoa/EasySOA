@@ -3,7 +3,8 @@ package org.easysoa.services;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.Reference;
+import org.easysoa.doctypes.EasySOADoctype;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.nuxeo.common.utils.IdUtils;
@@ -112,7 +113,7 @@ public class DocumentService {
 		
 		if (parentPath != null) {
 			DocumentModel reference = session.createDocumentModel(
-					parentPath, IdUtils.generateStringId(), Reference.DOCTYPE);
+					parentPath, IdUtils.generateStringId(), ServiceReference.DOCTYPE);
 			if (reference != null) {
 				reference.setProperty("dublincore", "title", title);
 			}
@@ -169,12 +170,12 @@ public class DocumentService {
 	}
 
 	public static DocumentModel findReference(CoreSession session,
-			String referenceName) throws ClientException {
-		if (referenceName == null) {
+			String referenceArchiPath) throws ClientException {
+		if (referenceArchiPath == null) {
 			return null;
 		}
-		return findFirstDocument(session, Reference.DOCTYPE,
-				Reference.SCHEMA_PREFIX+Reference.PROP_NAME, referenceName);
+		return findFirstDocument(session, ServiceReference.DOCTYPE,
+				EasySOADoctype.SCHEMA_COMMON_PREFIX +ServiceReference.PROP_ARCHIPATH, referenceArchiPath);
 	}
 
 	private static DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
