@@ -103,19 +103,18 @@ public class DocumentService {
 	 * Returns null if the service API Impl doesn't exist.
 	 * @param session
 	 * @param parentPath service API Impl
-	 * @param url
+	 * @param archiPath
 	 * @return
 	 * @throws ClientException
 	 */
 	public static final DocumentModel createReference(CoreSession session,
-			String parentPath, String name) throws ClientException {
+			String parentPath, String title) throws ClientException {
 		
 		if (parentPath != null) {
 			DocumentModel reference = session.createDocumentModel(
 					parentPath, IdUtils.generateStringId(), Reference.DOCTYPE);
 			if (reference != null) {
-				//reference.setProperty(Reference.SCHEMA, Reference.PROP_NAME, name);
-				reference.setProperty("dublincore", "title", name);
+				reference.setProperty("dublincore", "title", title);
 			}
 			return session.createDocument(reference);
 		}
