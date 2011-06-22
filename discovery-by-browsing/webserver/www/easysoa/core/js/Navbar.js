@@ -9,7 +9,7 @@ $(function() {
 		// NavbarModel Attributes
 		//   url = Navigation URL
 		
-		DEFAULT_URL: "/easysoa/core/default.html",
+		DEFAULT_URL: location.host+"/easysoa/core/default.html",
 		HTTP: "http://",
 	
 		initialize: function() {
@@ -54,40 +54,13 @@ $(function() {
 			_.bindAll(this, 'render', 'navigationGo', 'navigationReset');
 			Navbar.view = this;
 			Navbar.bind('change', this.render);
-			this.render();
 		},
 		
 		// Render page
 		render: function() {
-			
 			var url = Navbar.getURL();
 			if (!this.navUrl === document.activeElement)
 				this.navUrl.attr("value", url);
-
-			// Request proxy server found links
-			// (Note: could probably use the Backbone.js server sync features instead)
-			$.ajax({
-				url: 'http://127.0.0.1:8081',
-				crossDomain: true,
-				dataType: 'jsonp',
-				success: function(data, textStatus, jqXHR) {
-						if (data.error != null) {
-							console.log(data.error);
-							SubmitForm.failure(data.error); // TODO: Display somewhere else
-						}
-						else {
-							$.each(data.foundLinks, function(descName, descContent) {
-							  if (!Descriptors.contains(descContent))
-  								Descriptors.add(descContent);
-							});
-						}
-					},
-				error: function(jqXHR, textStatus, errorThrown) {
-						alert('error : ' + errorThrown);
-					}
-				});
-			
-			setTimeout(this.render, 1500);
 		},
 		
 		// Change URL through keyboard

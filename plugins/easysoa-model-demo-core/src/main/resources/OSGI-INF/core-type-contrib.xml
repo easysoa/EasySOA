@@ -9,6 +9,7 @@
     <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
     <schema name="serviceref" src="schemas/serviceref.xsd" prefix="ref" />
     <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
+    <schema name="feature" src="schemas/feature.xsd" prefix="feat" />
     <schema name="querynav2" src="schemas/querynav2.xsd" />
   </extension>
   
@@ -56,25 +57,10 @@
       <facet name="Indexable" />
     </doctype>
     
-    <!--
-    <doctype name="Workspace" extends="Folder">
-      <schema name="file"/>
-      <schema name="webcontainer"/>
-      <schema name="publishing"/>
-      <schema name="files" />
-      <facet name="SuperSpace"/>
-      <facet name="WebView"/>
-      <subtypes>
-        <type>Workspace</type>
-        <type>Folder</type>
-        <type>File</type>
-        <type>Note</type>
-      </subtypes>
-    </doctype> -->
-    
     <doctype extends="Folder" name="Workspace">
       <schema name="dublincore"/>
       <schema name="soacommon" />
+      <schema name="feature" />
       <schema name="appliimpldef"/>
       <schema name="webcontainer"/>
       <facet name="Folderish" />

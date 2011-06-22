@@ -45,14 +45,6 @@ li {
 	font-size: 10pt;
 }
 
-#navigation {
-  margin-left: 21px;
-  position: fixed;
-  left: 20%;
-  right: 0;
-	height: 95%;
-}
-
 /* Navigation bar 
    -------------- */
 
@@ -61,21 +53,62 @@ li {
 	padding: 5px;
 	background-color: #DDDDEE;
 	border: 1px solid gray;
+	margin-bottom: -1px;
 }
 #navBar input[type=text] {
-	width: 80%;
+	width: 70%;
 }
 #navBar input[type=image] {
 	vertical-align: middle;
+}
+
+#messages {
+	width: 20%;
+	height: 27px;
+	margin-right: 10px;
+	padding-right: 15px;
+	border-right: 1px solid grey;
+}
+
+#message {
+  position: absolute;
+	width: 20%;
+	z-index: 1;
+	background-color: white;
+	border: 1px solid grey;
+	color: grey;
+	padding: 3px;
+}
+
+#messageSuccess {
+  position: absolute;
+	width: 20%;
+	z-index: 2;
+	background-color: white;
+	border: 1px solid darkgreen;
+	color: darkgreen;
+	padding: 3px;
+}
+
+#messageFailure {
+  position: absolute;
+	width: 20%;
+	z-index: 3;
+	background-color: white;
+	border: 1px solid darkred;
+	color: darkred;
+	padding: 3px;
 }
 
 /* Page frame 
    ---------- */
 
 #frameContainer {
-	width: 100%;
+	width: 78%;
 	height: 100%;
 	border: 1px solid gray;
+	float: left;
+	margin-left: 21px;
 }
 
 #frame {
@@ -94,8 +127,7 @@ li {
 	border: 1px solid gray;
 	padding: 10px;
 	background-color: #DDDDDD;
-	height: 40%;
-	overflow: auto;
+	height: 260px;
 	word-wrap: break-word;
 }
 
@@ -116,22 +148,6 @@ li {
 	width: 100%;
 	word-wrap: break-word;
 	font-weight: bold;
-}
-
-#submitSuccess {
-	width: 100%;
-	background-color: white;
-	border: 1px solid darkgreen;
-	color: darkgreen;
-	padding: 3px;
-}
-
-#submitFailure {
-	width: 100%;
-	background-color: white;
-	border: 1px solid darkred;
-	color: darkred;
-	padding: 3px;
 }
 
 #menuFoundList {
