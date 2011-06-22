@@ -1,4 +1,4 @@
-package org.easysoa.sca;
+package org.easysoa.test;
 
 import java.io.File;
 import java.io.IOException;

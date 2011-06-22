@@ -9,6 +9,7 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
+import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

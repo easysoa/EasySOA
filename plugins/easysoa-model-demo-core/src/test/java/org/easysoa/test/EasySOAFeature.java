@@ -1,4 +1,4 @@
-package org.easysoa.sca;
+package org.easysoa.test;
 
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.runtime.test.runner.Deploy;
