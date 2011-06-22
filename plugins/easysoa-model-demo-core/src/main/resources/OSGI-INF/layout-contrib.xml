@@ -1,425 +1,440 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.core.contrib.layout">
-	<extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
-		point="layouts">
-
-		<!-- Alternative file layout that makes the file field mandatory. -->
-		<layout name="fileRequired">
-			<templates>
-				<template mode="any">/layouts/layout_default_template.xhtml
-				</template>
-			</templates>
-			<rows>
-				<row>
-					<widget>fileRequired</widget>
-				</row>
-			</rows>
-			<widget name="fileRequired" type="template">
-				<labels>
-					<label mode="any">label.file.content</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>file:content</field>
-					<field>file:filename</field>
-				</fields>
-				<widgetModes>
-					<mode value="full_edit">edit</mode>
-					<mode value="edit">edit</mode>
-					<mode value="view">view</mode>
-					<mode value="view">preview</mode>
-				</widgetModes>
-				<properties mode="any">
-					<property name="required">true</property>
-					<property name="template">
-						/widgets/extended_file_widget.xhtml
-					</property>
-				</properties>
-			</widget>
-		</layout>
-
-		<!-- Application Implementation definition layout -->
-		<layout name="appliimpldef">
-			<templates>
-				<template mode="any">/layouts/layout_default_template.xhtml
-				</template>
-			</templates>
-			<rows>
-				<row>
-					<widget>appliimpldef_url</widget>
-				</row>
-				<row>
-					<widget>appliimpldef_uiUrl</widget>
-				</row>
-				<row>
-					<widget>appliimpldef_sourcesUrl</widget>
-				</row>
-				<row>
-					<widget>appliimpldef_server</widget>
-				</row>
-				<row>
-					<widget>appliimpldef_provider</widget>
-				</row>
-				<row>
-					<widget>appliimpldef_technology</widget>
-				</row>
-				<row>
-					<widget>appliimpldef_standard</widget>
-				</row>
-				<row>
-					<widget>appliimpldef_environment</widget>
-				</row>
-			</rows>
-			<widget name="appliimpldef_url" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.url</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:url</field>
-				</fields>
-			</widget>
-			<widget name="appliimpldef_uiUrl" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.uiUrl</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:uiUrl</field>
-				</fields>
-			</widget>
-			<widget name="appliimpldef_sourcesUrl" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:sourcesUrl</field>
-				</fields>
-			</widget>
-			<widget name="appliimpldef_server" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.server</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:server</field>
-				</fields>
-			</widget>
-			<widget name="appliimpldef_provider" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.provider</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:provider</field>
-				</fields>
-			</widget>
-			<widget name="appliimpldef_technology" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.technology</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:technology</field>
-				</fields>
-			</widget>
-			<widget name="appliimpldef_standard" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.standard</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:standard</field>
-				</fields>
-			</widget>
-			<widget name="appliimpldef_environment" type="text">
-				<labels>
-					<label mode="any">label.easysoa.appliimpldef.environment</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>app:environment</field>
-				</fields>
-			</widget>
-		</layout>
-
-		<!-- Feature definition layout -->
-		<layout name="feature">
-			<templates>
-				<template mode="any">/layouts/layout_default_template.xhtml
-				</template>
-			</templates>
-			<rows>
-				<row>
-					<widget>feature_creator</widget>
-				</row>
-				<row>
-					<widget>feature_designDocument</widget>
-				</row>
-			</rows>
-			<widget name="feature_creator" type="text">
-				<labels>
-					<label mode="any">label.easysoa.feature.creator</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>ft:creator</field>
-				</fields>
-			</widget>
-			<widget name="feature_designDocument" type="template">
-				<labels>
-					<label mode="any">label.file.content</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>ft:designDocument</field>
-					<field>ft:designDocumentSource</field>
-				</fields>
-				<widgetModes>
-					<mode value="full_edit">edit</mode>
-					<mode value="edit">edit</mode>
-					<mode value="view">view</mode>
-					<mode value="view">preview</mode>
-				</widgetModes>
-				<properties mode="any">
-					<property name="required">true</property>
-					<property name="template">
-						/widgets/extended_file_widget.xhtml
-					</property>
-				</properties>
-			</widget>
-		</layout>
-
-		<!-- Service API definition layout -->
-		<layout name="serviceapidef">
-			<templates>
-				<template mode="any">/layouts/layout_default_template.xhtml
-				</template>
-			</templates>
-			<rows>
-				<row>
-					<widget>apidef_application</widget>
-				</row>
-				<row>
-					<widget>apidef_url</widget>
-				</row>
-				<row>
-					<widget>apidef_protocols</widget>
-				</row>
-			</rows>
-			<widget name="apidef_application" type="selectOneDirectory">
-				<labels>
-					<label mode="any">label.easysoa.apidef.application</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>api:application</field>
-				</fields>
-				<properties mode="any">
-					<property name="directoryName">application</property>
-					<property name="localize">true</property>
-				</properties>
-			</widget>
-			<widget name="apidef_url" type="text">
-				<labels>
-					<label mode="any">label.easysoa.apidef.url</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>api:url</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-					<mode value="edit">hidden</mode>
-				</widgetModes>
-			</widget>
-			<widget name="apidef_protocols" type="text">
-				<labels>
-					<label mode="any">label.easysoa.apidef.protocols</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>api:protocols</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-					<mode value="edit">hidden</mode>
-				</widgetModes>
-			</widget>
-		</layout>
-
-		<!-- Service definition layout -->
-		<layout name="servicedef">
-			<templates>
-				<template mode="any">/layouts/layout_default_template.xhtml
-				</template>
-			</templates>
-			<rows>
-				<row>
-					<widget>servicedef_url</widget>
-				</row>
-				<row>
-					<widget>servicedef_callcount</widget>
-				</row>
-				<row>
-					<widget>servicedef_relatedUsers</widget>
-				</row>
-				<!-- TODO: Custom widget to display signature -->
-				<row>
-					<widget>servicedef_httpMethod</widget>
-				</row>
-				<row>
-					<widget>servicedef_contentTypeIn</widget>
-				</row>
-				<row>
-					<widget>servicedef_contentTypeOut</widget>
-				</row>
-			</rows>
-			<widget name="servicedef_url" type="text">
-				<labels>
-					<label mode="any">label.easysoa.servicedef.url</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>serv:url</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-				</widgetModes>
-			</widget>
-			<widget name="servicedef_callcount" type="int">
-				<labels>
-					<label mode="any">label.easysoa.servicedef.callcount</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>serv:callcount</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-				</widgetModes>
-			</widget>
-			<widget name="servicedef_relatedUsers" type="text">
-				<labels>
-					<label mode="any">label.easysoa.servicedef.relatedUsers</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>serv:relatedUsers</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-				</widgetModes>
-			</widget>
-			<widget name="servicedef_httpMethod" type="text">
-				<labels>
-					<label mode="any">label.easysoa.servicedef.httpMethod</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>serv:httpMethod</field>
-				</fields>
-			</widget>
-			<widget name="servicedef_contentTypeIn" type="text">
-				<labels>
-					<label mode="any">label.easysoa.servicedef.contentTypeIn</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>serv:contentTypeIn</field>
-				</fields>
-			</widget>
-			<widget name="servicedef_contentTypeOut" type="text">
-				<labels>
-					<label mode="any">label.easysoa.servicedef.contentTypeOut</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>serv:contentTypeOut</field>
-				</fields>
-			</widget>
-		</layout>
-
-		<!-- (UNUSED) Common properties layout -->
-		<layout name="soacommon">
-			<templates>
-				<template mode="any">/layouts/layout_default_template.xhtml
-				</template>
-			</templates>
-			<rows>
-				<row>
-					<widget>common_dtbrowsing</widget>
-				</row>
-				<row>
-					<widget>common_dtmonitoring</widget>
-				</row>
-				<row>
-					<widget>common_dtimport</widget>
-				</row>
-			</rows>
-			<widget name="common_dtbrowsing" type="text">
-				<labels>
-					<label mode="any">label.easysoa.common.dtbrowsing</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>soa:discoveryTypeBrowsing</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-					<mode value="edit">hidden</mode>
-				</widgetModes>
-			</widget>
-			<widget name="common_dtmonitoring" type="text">
-				<labels>
-					<label mode="any">label.easysoa.common.dtmonitoring</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>soa:discoveryTypeMonitoring</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-					<mode value="edit">hidden</mode>
-				</widgetModes>
-			</widget>
-			<widget name="common_dtimport" type="text">
-				<labels>
-					<label mode="any">label.easysoa.common.dtimport</label>
-				</labels>
-				<translated>true</translated>
-				<fields>
-					<field>soa:discoveryTypeImport</field>
-				</fields>
-				<widgetModes>
-					<mode value="create">hidden</mode>
-					<mode value="edit">hidden</mode>
-				</widgetModes>
-			</widget>
-		</layout>
-
-		<!-- Override default Dublin Core layout -->
-		<layout name="dublincore">
-			<templates>
-				<template mode="any">/layouts/layout_default_template.xhtml
-				</template>
-			</templates>
-			<rows>
-				<row>
-					<widget>created</widget>
-				</row>
-				<row>
-					<widget>modified</widget>
-				</row>
-				<row>
-					<widget>author</widget>
-				</row>
-				<row>
-					<widget>contributors</widget>
-				</row>
-			</rows>
-		</layout>
-
-	</extension>
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
+   
+    <!-- Alternative file layout that makes the file field mandatory. -->
+    <layout name="fileRequired">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>fileRequired</widget>
+        </row>
+      </rows>
+      <widget name="fileRequired" type="template">
+        <labels>
+          <label mode="any">label.file.content</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>file:content</field>
+          <field>file:filename</field>
+        </fields>
+        <widgetModes>
+          <mode value="full_edit">edit</mode>
+          <mode value="edit">edit</mode>
+          <mode value="view">view</mode>
+          <mode value="view">preview</mode>
+        </widgetModes>
+        <properties mode="any">
+		  <property name="required">true</property>
+          <property name="template">
+            /widgets/extended_file_widget.xhtml
+          </property>
+        </properties>
+      </widget>
+    </layout>
+    
+    <!-- Application Implementation definition layout -->
+    <layout name="appliimpldef">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>appliimpldef_url</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_uiUrl</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_sourcesUrl</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_server</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_provider</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_technology</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_standard</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_environment</widget>
+        </row>
+      </rows>
+      <widget name="appliimpldef_url" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.url</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:url</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_uiUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.uiUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:uiUrl</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_sourcesUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:sourcesUrl</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_server" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.server</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:server</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_provider" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.provider</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:provider</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_technology" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.technology</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:technology</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_standard" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.standard</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:standard</field>
+	      </fields>
+	  </widget>
+	  <widget name="appliimpldef_environment" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.environment</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:environment</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <!-- Service API definition layout -->
+    <layout name="serviceapidef">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>apidef_application</widget>
+        </row>
+        <row>
+          <widget>apidef_url</widget>
+        </row>
+        <row>
+          <widget>apidef_protocols</widget>
+        </row>
+      </rows>
+	  <widget name="apidef_application" type="selectOneDirectory">
+	    <labels>
+	        <label mode="any">label.easysoa.apidef.application</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	        <field>api:application</field>
+	    </fields>
+	    <properties mode="any">
+	        <property name="directoryName">application</property>
+	        <property name="localize">true</property>
+	    </properties>
+	  </widget>
+      <widget name="apidef_url" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.apidef.url</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>api:url</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="apidef_protocols" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.apidef.protocols</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>api:protocols</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+    </layout>
+    
+    <!-- Service definition layout -->
+    <layout name="servicedef">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>servicedef_url</widget>
+        </row>
+        <row>
+          <widget>servicedef_callcount</widget>
+        </row>
+        <row>
+          <widget>servicedef_relatedUsers</widget>
+        </row>
+        <!-- TODO: Custom widget to display signature -->
+        <row>
+          <widget>servicedef_httpMethod</widget>
+        </row>
+        <row>
+          <widget>servicedef_contentTypeIn</widget>
+        </row>
+        <row>
+          <widget>servicedef_contentTypeOut</widget>
+        </row>
+       </rows>
+      <widget name="servicedef_url" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.url</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:url</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="servicedef_callcount" type="int">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.callcount</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:callcount</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="servicedef_relatedUsers" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.relatedUsers</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:relatedUsers</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="servicedef_httpMethod" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.httpMethod</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:httpMethod</field>
+	      </fields>
+	  </widget>
+      <widget name="servicedef_contentTypeIn" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.contentTypeIn</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:contentTypeIn</field>
+	      </fields>
+	  </widget>
+      <widget name="servicedef_contentTypeOut" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.contentTypeOut</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:contentTypeOut</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <!-- Service reference layout -->
+    <layout name="serviceref">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>serviceref_name</widget>
+        </row>
+        <row>
+          <widget>serviceref_refPath</widget>
+        </row>
+        <row>
+          <widget>serviceref_refUrl</widget>
+        </row>
+        <row>
+          <widget>serviceref_archiPath</widget>
+        </row>
+       </rows>
+      <widget name="serviceref_name" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.name</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:name</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="serviceref_refPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.refPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:refPath</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="serviceref_refUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.refUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:refUrl</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="serviceref_archiPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.archiPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>ref:archiPath</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+    </layout>
+    
+    <!-- (UNUSED) Common properties layout -->
+    <layout name="soacommon">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>common_dtbrowsing</widget>
+        </row>
+        <row>
+          <widget>common_dtmonitoring</widget>
+        </row>
+        <row>
+          <widget>common_dtimport</widget>
+        </row>
+      </rows>
+      <widget name="common_dtbrowsing" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.common.dtbrowsing</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:discoveryTypeBrowsing</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="common_dtmonitoring" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.common.dtmonitoring</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:discoveryTypeMonitoring</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+      <widget name="common_dtimport" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.common.dtimport</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:discoveryTypeImport</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+            <mode value="edit">hidden</mode>
+          </widgetModes>
+	  </widget>
+    </layout>
+    
+	<!-- Override default Dublin Core layout -->
+	<layout name="dublincore">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>created</widget>
+        </row>
+        <row>
+          <widget>modified</widget>
+        </row>
+        <row>
+          <widget>author</widget>
+        </row>
+        <row>
+          <widget>contributors</widget>
+        </row>
+      </rows>
+    </layout>
+    
+  </extension>
 </component>

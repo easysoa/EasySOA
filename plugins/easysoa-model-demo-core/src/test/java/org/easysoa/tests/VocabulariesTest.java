@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.sca.EasySOAFeature;
+import org.easysoa.sca.EasySOAServerFeature;
 import org.easysoa.services.VocabularyService;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,10 +45,10 @@ import com.google.inject.Inject;
     //"org.nuxeo.ecm.config",
     "org.easysoa.demo.core:OSGI-INF/nxdirectories-contrib.xml" // required, else no custom vocabularies
 })
-@Features(EasySOAFeature.class)
+@Features(EasySOAServerFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=DefaultRepositoryInit.class)
 //@Features(JettyFeature.class)
-//@Jetty(config="/home/mdutoo/dev/easysoa/nuxeo-dm-5.3.2-jetty/config/jetty.xml") //,port=9980
+@Jetty(config="/home/mdutoo/dev/easysoa/nuxeo-dm-5.3.2-jetty/config/jetty.xml") //,port=9980
 public class VocabulariesTest {
 
     static final Log log = LogFactory.getLog(VocabulariesTest.class);
@@ -117,12 +118,12 @@ javax.naming.NoInitialContextException: Need to specify class name in environmen
 	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
 	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
 		 */
-	
+
 		/*
 		// none yet :
 		assertTrue(!VocabularyService.entryExists(session,
 				VocabularyService.VOCABULARY_ENVIRONMENT, environment));
-		
+
 		// adding one :
 		VocabularyService.addEntry(session,
 				VocabularyService.VOCABULARY_ENVIRONMENT,

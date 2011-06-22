@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.easysoa.doctypes.Reference;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
 import org.junit.Before;
@@ -71,7 +72,7 @@ public class SCAImportTest {
     public void testSCA() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
-    	String scaFilePath = "src/test/resources/" + "org/easysoa/tests/RestSoapProxy.composite";
+    	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
@@ -85,6 +86,8 @@ public class SCAImportTest {
 		DocumentModelList resDocList;
 		//DocumentModel resDoc;
 		
+		// services :
+		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(resDocList.size(), 1);
@@ -92,6 +95,17 @@ public class SCAImportTest {
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		assertEquals(resDocList.size(), 1);
+
+		
+		// references :
+		
+		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				Reference.DOCTYPE + "' AND " + "ref:archiPath" + " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		assertEquals(resDocList.size(), 1);
+
+		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				Reference.DOCTYPE + "' AND " + "ref:archiPath" + " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(resDocList.size(), 1);
     }
 }

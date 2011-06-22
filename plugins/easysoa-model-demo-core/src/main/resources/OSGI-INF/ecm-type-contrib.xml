@@ -36,6 +36,17 @@
       </contentViews>
     </type>
     
+    <type id="ServiceReference" coretype="ServiceReference">
+      <label>Service Ref.</label>
+      <icon>/icons/contextuallink.png</icon>
+      <bigIcon>/icons/contextuallink_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>serviceref</layout>
+      </layouts>
+    </type>
+    
     <type id="Workspace" coretype="Workspace">
       <label>Application Impl.</label>
       <layouts mode="any">
@@ -48,6 +59,7 @@
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
+        <type>ServiceReference</type>
       </subtypes>
     </type>
     

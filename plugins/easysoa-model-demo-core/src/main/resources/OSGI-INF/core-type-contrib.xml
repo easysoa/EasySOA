@@ -5,10 +5,11 @@
   
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
     <schema name="soacommon" src="schemas/soacommon.xsd" prefix="soa" />
+    <schema name="servicedef" src="schemas/servicedef.xsd" prefix="serv" />
+    <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
+    <schema name="serviceref" src="schemas/serviceref.xsd" prefix="ref" />
     <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
     <schema name="feature" src="schemas/feature.xsd" prefix="feat" />
-    <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
-    <schema name="servicedef" src="schemas/servicedef.xsd" prefix="serv" />
     <schema name="querynav2" src="schemas/querynav2.xsd" />
   </extension>
   
@@ -44,6 +45,18 @@
       </subtypes>
     </doctype>
     
+    <doctype extends="Document" name="ServiceReference">
+	  <schema name="common"/>
+	  <schema name="uid"/>
+	  <schema name="note"/>
+	  <schema name="dublincore"/>
+      <schema name="soacommon" />
+      <schema name="serviceref" />
+      <facet name="Commentable" />
+      <facet name="Versionable" />
+      <facet name="Indexable" />
+    </doctype>
+    
     <doctype extends="Folder" name="Workspace">
       <schema name="dublincore"/>
       <schema name="soacommon" />
@@ -54,6 +67,7 @@
       <facet name="Commentable"/>
       <subtypes>
         <type>ServiceAPI</type>
+        <type>ServiceReference</type>
       </subtypes>
     </doctype>
     
