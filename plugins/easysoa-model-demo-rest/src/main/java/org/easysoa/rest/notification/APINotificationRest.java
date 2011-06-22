@@ -93,7 +93,7 @@ public class APINotificationRest extends NotificationRest {
 				// Update optional properties
 				if (url.toLowerCase().contains("wsdl")) {
 					try {
-						HttpFile f = new HttpFile(params.getFirst(url));
+						HttpFile f = new HttpFile(url);
 						f.download();
 						apiModel.setProperty("file", "content", f.getBlob());
 					} catch (Exception e) {

@@ -1,74 +1,46 @@
 <div class="summary" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:nxdir="http://nuxeo.org/nxdirectory"
-	xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
-	xmlns:nxd="http://nuxeo.org/nxweb/document"
-	xmlns:nxh="http://nuxeo.org/nxweb/html"
-	xmlns:nxl="http://nuxeo.org/nxforms/layout"
-	xmlns:nxu="http://nuxeo.org/nxweb/util">
+	xmlns:c="http://java.sun.com/jstl/core">
 
-	<!-- EasySOA : Empty cache (XXX: Doesn't work) -->
+	<!-- Empty cache (XXX: Doesn't work) -->
 	<h:outputText value="#{relationActions.resetStatements()}"
 		rendered="true" />
 
-	<!-- EasySOA : Discovery type icons -->
 	<c:if test="${currentDocument.hasSchema('soacommon')}">
 		<div style="float: left; width: 100%">
-
-			<c:set var="dtbrowsing"
-				value="${currentDocument.getProperty('soacommon', 'discoveryTypeBrowsing')}"
-				scope="view" />
-			<c:set var="dtmonitoring"
-				value="${currentDocument.getProperty('soacommon', 'discoveryTypeMonitoring')}"
-				scope="view" />
-			<c:set var="dtimport"
-				value="${currentDocument.getProperty('soacommon', 'discoveryTypeImport')}"
-				scope="view" />
+			<!-- Notification icons -->
 			<div style="float: left; margin-top: 20px; margin-right: 50px">
-				<c:choose>
-					<c:when test="${dtbrowsing != null}">
-						<img src="img/dtBrowsing.png" alt="- Notified by browsing"
-							style="margin-right: 10px" title="${dtbrowsing}" />
-					</c:when>
-					<c:otherwise>
-						<img src="img/dtBrowsingOff.png" alt="" style="margin-right: 10px"
-							title="(Not notified by browsing)" />
-					</c:otherwise>
-				</c:choose>
-				<c:choose>
-					<c:when test="${dtmonitoring != null}">
-						<img src="img/dtMonitoring.png" alt="- Notified by monitoring"
-							style="margin-right: 10px" title="${dtmonitoring}" />
-					</c:when>
-					<c:otherwise>
-						<img src="img/dtMonitoringOff.png" alt=""
-							style="margin-right: 10px" title="(Not notified by monitoring)" />
-					</c:otherwise>
-				</c:choose>
-				<c:choose>
-					<c:when test="${dtimport != null}">
-						<img src="img/dtImport.png" alt="- Notified by import"
-							style="margin-right: 10px" title="${dtimport}" />
-					</c:when>
-					<c:otherwise>
-						<img src="img/dtImportOff.png" alt="" style="margin-right: 10px"
-							title="(Not notified by import)" />
-					</c:otherwise>
-				</c:choose>
+				<div style="float: left">
+					<ui:include src="easysoa_view_icon.xhtml">
+					  <ui:param name="image" value="dtBrowsing"/>
+					  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeBrowsing')}"/>
+					  <ui:param name="type" value="Browsing"/>
+					</ui:include>
+				</div>
+				<div style="float: left">
+					<ui:include src="easysoa_view_icon.xhtml">
+					  <ui:param name="image" value="dtMonitoring"/>
+					  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeMonitoring')}"/>
+					  <ui:param name="type" value="Monitoring"/>
+					</ui:include>
+				</div>
+				<div style="float: left">
+					<ui:include src="easysoa_view_icon.xhtml">
+					  <ui:param name="image" value="dtImport"/>
+					  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeImport')}"/>
+					  <ui:param name="type" value="Import"/>
+					</ui:include>
+				</div>
 			</div>
 
-			<!-- EasySOA : Call it button -->
+			<!-- Call it button -->
 			<c:if test="${currentDocument.getType() == 'Service'}">
 				<div style="float: left; margin-top: 20px">
 					<c:choose>
 						<c:when
 							test="${currentDocument.getProperty('servicedef', 'lightUrl') != null}">
-							<a
-								href="${currentDocument.getProperty('servicedef', 'lightUrl')}"
+							<a href="${currentDocument.getProperty('servicedef', 'lightUrl')}"
 								target="_blank"> <img src="img/callIt.png"
 								title="Call the service using EasySOA Light" alt="Call it!" />
 							</a>

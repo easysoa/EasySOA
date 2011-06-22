@@ -15,8 +15,12 @@
   <h:form id="document_view">
     <a4j:region id="documentViewRegion">
       <a4j:outputPanel id="documentViewPanel">
-          <ui:include src="/incl/tabs/easysoa_view.xhtml" />
+      
+      	 <!-- EasySOA hook -->
+         <ui:include src="/incl/tabs/easysoa_view.xhtml" />
+          
 	     <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
+	     
       </a4j:outputPanel>
     </a4j:region>
   </h:form>

@@ -2,73 +2,53 @@ var http = require('http');
 var fs = require('fs');
 var url = require('url');
 var base64 = require('./tools/base64.js');
+var io = require('./tools/socket.io');
 
 eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
 
-var status = new Object();
-status.error = null;
-status.foundLinks = new Object();
-
-// Send found WSDLs in JSONP format (or JSON by default)
-function getFoundWSDLs(callback) {
-	var json_string = JSON.stringify(status);
-	if (status.error != null) {
-		status.error = null;
-	}
-	return (callback) ? callback+"("+json_string+");" : json_string;
-}
-
-// Scraper response handling
-function scraperResponse(response) {
-	var data = "";
-	response.on('data', function(chunk) {
-		console.log("received sthg");
-		data += chunk.toString("ascii");
-	});
-	response.on('end', function() {
-		var json = null;
-		try {
-			console.log("result:" +data);
-			json = JSON.parse(data);
-			if (json.foundLinks) {
-				for (link in json.foundLinks) {
-					status.foundLinks[link] = {
-						'url': json.foundLinks[link],
-						'serviceName': link,
-						'applicationName': json.applicationName
-					};			
-					console.log("Found: "+link+" = "+json.foundLinks[link]);
-				}
-			}
-		} catch (err) {
-			console.log("[INFO] Note: "+err.message+" ("+data+")");
-		}
-	});
-}
+var wsdlList = new Array();
+var clients = null;
+var nuxeo_upload_url = url.parse(config.wsdl_upload_service);
 
 function responseError(request, response, msg) {
-	console.log("[ERROR] " + msg + " (on request for "+request.url+")");
+	console.error("[ERROR] " + msg + " (on request for "+request.url+")");
 	response.writeHead(404);
 	response.write(msg);
 	response.end();
 }
 
-// HTTP Proxy Server
+process.on('uncaughtException', function (err) {
+  console.error("[ERROR] Uncaught exception: "+err);
+});
+
+// Source: http://keithdevens.com/weblog/archive/2007/Jun/07/javascript.clone
+function clone(obj) {
+    if(obj == null || typeof(obj) != 'object')
+        return obj;
+    var temp = new obj.constructor();
+    for (var key in obj)
+        temp[key] = clone(obj[key]);
+    return temp;
+}
+
+/**** HTTP Proxying ****/
+
 var server = http.createServer(function(request, response) {
 
 	var request_url = url.parse(request.url, true);
 
-	// If direct request to proxy, send found WSDLs
+  // Don't allow exceptions
 	if (request.headers['host'] == "localhost:"+config.proxy_port
         || request.headers['host'] == "127.0.0.1:"+config.proxy_port) {
 		response.writeHead(200, {
-			"Content-Type": "text/javascript"
+			"Content-type": "text/javascript"
 		});
-		response.write(getFoundWSDLs(request_url.query.callback));
 		response.end();
 		return;
 	}
-
+  
+  //// Proxying
+  
 	// Create request to wanted server
 	if (!request_url.port)
 		request_url.port = 80;
@@ -80,7 +60,7 @@ var server = http.createServer(function(request, response) {
 		path : request_url.href,
 		headers : request.headers
 	};
-	
+  
 	// Send request
 	var proxy_request = http.request(proxy_options,
 			function(proxy_response) {
@@ -111,13 +91,15 @@ var server = http.createServer(function(request, response) {
 		proxy_request.end();
 	});
 
+  //// Scraping
+  
 	// Don't scrape ignored paths
 	for (i = 0; i < config.ignore.length; i++) {
 		if (request_url.href.indexOf(config.ignore[i]) != -1) {
 			return;
 		}
 	}
-
+  
 	console.log("[INFO] Scraping: "+request_url.href);
 	
 	// Notification to scrapers
@@ -133,10 +115,10 @@ var server = http.createServer(function(request, response) {
 			host : scraperURL.hostname,
 			path : scraperURL.href.replace('?', request.url)
 		};
-
+                    
 		// Scraper request
 		scraper_request = http.request(scraperOptions, function(scraper_response) {
-		
+			
       // Scraper response handling
         var data = "";
         scraper_response.on('data', function(chunk) {
@@ -150,9 +132,9 @@ var server = http.createServer(function(request, response) {
                 var newLink = {
                       'url': json.foundLinks[link],
                       'serviceName': link,
-                      'applicationName': json.applicationName
+                      'applicationName': json.applicationName,
+                      'messageType': 'wsdl'
                     };
-                console.log("[INFO] Found: "+newLink.url);
                 if (clients != null) {
                   clients.broadcast(JSON.stringify(newLink));
                 }
@@ -166,8 +148,11 @@ var server = http.createServer(function(request, response) {
         
 		});
 		scraper_request.addListener('error', function(error) {
-			status.error = "Scraper unavailable: "+config.scrapers[scraper];
-			console.log("[WARN] "+status.error);
+		  msg = "Scraper unavailable: "+config.scrapers[scraper];
+		  if (clients != null) {
+  		  clients.broadcast("ERROR: "+msg);
+  		}
+			console.log("[WARN] "+msg);
 		});
 		scraper_request.end();
 		
@@ -176,16 +161,129 @@ var server = http.createServer(function(request, response) {
 
 server.listen(config.proxy_port);
 
+/**** Check that Nuxeo is ready ****/
+
+var nuxeoReady = false;
+
+function checkNuxeo() {
+
+  var request_options = {
+	  port : nuxeo_upload_url.port,
+	  method : 'POST',
+	  host : nuxeo_upload_url.hostname,
+	  path : nuxeo_upload_url.href,
+	  headers : {
+	    'Content-Type': 'application/x-www-form-urlencoded'
+	  }
+  };
+  
+  // Test request
+  var nx_site = http.createClient(nuxeo_upload_url.port, nuxeo_upload_url.hostname);
+  nx_site.on('error', function(error) {
+     console.log("[INFO] Failed to connect to Nuxeo: "+error);
+  });
+  var nx_request = nx_site.request('POST', nuxeo_upload_url.href, {'host': nuxeo_upload_url.hostname});
+  nx_request.on('response', function(res) {
+    if (!nuxeoReady) {
+      console.log('[INFO] Nuxeo is ready for scraping/upload');
+      nuxeoReady = true;
+      if (clients != null) {
+        clients.broadcast(JSON.stringify({'messageType':'ready'}));
+      }
+    }
+  });
+  nx_request.end();
+	
+  if (!nuxeoReady) {
+	  console.log("[INFO] Nuxeo is not ready yet...");
+    setTimeout(checkNuxeo, 3000);
+  }
+}
+
+checkNuxeo();
+
+/**** Send found WSDLs on connection ****/
+
 var io = io.listen(server);
+
 io.on('connection', function(client){
 
   // Give global access to socket.io connections
   if (clients == null)
     clients = client;
-  
+    
   // Send stored WSDLs
   for (key in wsdlList) {
     client.send(JSON.stringify(wsdlList[key]));
   }
+  
+  // Notify that Nuxeo is ready
+  if (nuxeoReady) {
+    client.send(JSON.stringify({'messageType':'ready'}));
+  }
+
+  /**** Send notifications to Nuxeo on client request ****/
+
+  /**
+   * Message from the client should have the following JSON format:
+   * {
+   *  'url': 'The URL',
+   *  'applicationname': 'The Application Name',
+   *  'servicename': 'The Service Name'
+   * }
+   */
+  client.on('message', function(string) {
+
+    try {
     
+	    // Prepare header & body
+      data = JSON.parse(string);
+      var body = 'url='+data.url+'&parentUrl='+data.applicationname+'&title='+data.servicename+'&discoveryTypeBrowsing=Discovered by browsing';
+      var nuxeo_upload_options = {
+			  port : nuxeo_upload_url.port,
+			  method : 'POST',
+			  host : nuxeo_upload_url.hostname,
+			  path : nuxeo_upload_url.href,
+			  headers : {
+			    'Content-Type': 'application/x-www-form-urlencoded',
+	        'Content-Length': body.length
+			  }
+		  };
+		  
+	    // Send request
+	    rest_request = http.request(nuxeo_upload_options, function(rest_response) {
+		
+          // Nuxeo response handling
+          var data = "";
+          rest_response.on('data', function(chunk) {
+            data += chunk.toString("ascii");
+          });
+          rest_response.on('end', function() {
+            var json;
+            try {
+              json = JSON.parse(data);
+            }
+            catch (error) {
+              error = 'ERROR: Nuxeo response cannot be parsed into JSON ('+error+')';
+              json = {'result': error};
+              console.log("[WARN] "+error);
+            }
+            json.messageType = 'upload';
+            client.send(JSON.stringify(json));
+          });
+          
+	    });
+	    rest_request.addListener('error', function(error) {
+		    console.log("[WARN] Failure while sending REST request to Nuxeo "+error);
+	    });
+	    rest_request.write(body);
+	    rest_request.end();
+	
+	  }
+	  catch (error) {
+	    console.error("[ERROR] Client message badly formatted. "+error);
+	  }
+    
+  });
+  
 });

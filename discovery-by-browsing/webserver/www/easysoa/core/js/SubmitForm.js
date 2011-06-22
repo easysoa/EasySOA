@@ -26,29 +26,14 @@ $(function() {
 		},
 		
 		submit: function() {
-			
-			var url = this.getURL();
-			var serviceName = $('#submitService').attr('value');
-			var appName = $('#submitApp').attr('value');
-			
-			if (url != '') {
-			console.log('http://127.0.0.1:8080/nuxeo/site/easysoa/notification/' + appName + '/' + serviceName + '/' + url);
-				$.ajax({
-					url: 'http://127.0.0.1:8080/nuxeo/site/easysoa/notification/' + appName + '/' + serviceName + '/' + url,
-					crossDomain: true,
-					dataType: 'jsonp',
-					success: function(data, textStatus, jqXHR) {
-					console.log(data);
-							if (data.result == "ok")
-								SubmitForm.success();
-							else
-								SubmitForm.failure(data.result);
-						},
-					error: function(jqXHR, textStatus, errorThrown) {
-							SubmitForm.failure("Request failed: "+errorThrown);
-						}
-					});
-			}
+			if (this.getURL() != '') {
+			  data = {
+			    'url': this.getURL(),
+			    'servicename': $('#submitService').attr('value'),
+			    'applicationname': $('#submitApp').attr('value') 
+			  }
+			  socket.send(JSON.stringify(data));
+			 }
 		},
 		
 		select: function(descriptor) {
@@ -78,8 +63,8 @@ $(function() {
 		selectedWSDL: $('#submitSelectedWSDL'),
 		submitService: $('#submitService'),
 		submitApp: $('#submitApp'),
-		submitSuccess: $('#submitSuccess'),
-		submitFailure: $('#submitFailure'),
+		messageSuccess: $('#messageSuccess'),
+		messageFailure: $('#messageFailure'),
 		
 		events: {
 			"click #submit": "submit"
@@ -103,18 +88,19 @@ $(function() {
 		},
 		
 		success: function() {
-			this.submitSuccess.fadeIn(500, function() {
+			this.messageSuccess.html('<img src="img/ok.png" height="15" /> WSDL registered');
+			this.messageSuccess.fadeIn(500, function() {
 					setTimeout(function() {
-						$('#submitSuccess').fadeOut(500);
+						$('#messageSuccess').fadeOut(500);
 					}, 3000);
 				});
 		},
 		
 		failure: function(error) {
-			this.submitFailure.html(error);
-			this.submitFailure.fadeIn(500, function() {
+			this.messageFailure.html(error);
+			this.messageFailure.fadeIn(500, function() {
 					setTimeout(function() {
-						$('#submitFailure').fadeOut(500);
+						$('#messageFailure').fadeOut(500);
 					}, 5000);
 				});
 		}
