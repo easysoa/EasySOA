@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 
+@Deprecated
 public class MessageCounter implements UpdateListener {
 
 	/**

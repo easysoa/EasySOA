@@ -15,6 +15,11 @@ public class RunManager {
 	/**
 	 * 
 	 */
+	private static boolean autoStart = false;
+	
+	/**
+	 * 
+	 */
 	private static RunManager runManager = null;
 
 	/**
@@ -47,24 +52,38 @@ public class RunManager {
 	}
 	
 	/**
-	 * Returns the current run. if thers is no current run, a new run is automatically started (autostart).
+	 * Set the auto start. The auto start feature create a new <code>Run</code> automatically even if the start method was not called before.
+	 * @param autoStart true if a new run should be created automatically when the method getCurrentRun is called, false otherwise
+	 */
+	public static void setAutoStart(boolean autoStart){
+		RunManager.autoStart = autoStart;
+	}
+	
+	/**
+	 * Returns the current run. if there is no current run and autoStart is set to true, a new run is automatically started (autostart), otherwise null is returned
 	 * @return The current <code>Run</code>
 	 */
 	public Run getCurrentRun(){
-		if(currentRun == null){
-			start("Auto started run");
+		if(currentRun == null && autoStart){
+			try {
+				start("Auto started run");
+			} catch (Exception e) {
+				// Nothing to do here
+			}
 		}
 		return this.currentRun;
 	}
 	
 	/**
 	 * Starts a new run. A new <code>Run</code> is started only if the current run was stopped before with a call to the stop() method. 
+	 * @param runName The name of the run
 	 */
-	//TODO if the current run is not stopped, throw a new exception !!
-	public void start(String runName){
+	public void start(String runName) throws Exception {
 		if(currentRun == null){
 			currentRun = new Run(runName);
 			currentRun.setStartDate(new Date());
+		} else {
+			throw new Exception("The run '" + currentRun.getName() + "' is currently started, please stop the current run before to start another one !");
 		}
 	}
 	
@@ -99,9 +118,8 @@ public class RunManager {
 	 * 
 	 * @param run
 	 */
-	//TODO Add code in this method (rerun)
-	public void reRun(Run run){
+	/*public void reRun(Run run){
 		
-	}
+	}*/
 	
 }

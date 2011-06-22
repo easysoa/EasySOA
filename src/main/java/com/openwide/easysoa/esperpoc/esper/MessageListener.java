@@ -1,23 +1,26 @@
 package com.openwide.easysoa.esperpoc.esper;
 
 import java.util.HashMap;
+import java.util.List;
 import org.apache.log4j.Logger;
-//import java.util.Iterator;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message;
+import com.openwide.easysoa.monitoring.MonitorService;
+import com.openwide.easysoa.monitoring.Message.MessageType;
+import com.openwide.easysoa.monitoring.soa.Api;
+import com.openwide.easysoa.monitoring.soa.Appli;
+import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.monitoring.soa.WSDLService;
-
 
 /**
  * Sync message listener
  * able to use all of Message's props, including content
  * 
  * @author jguillemotte
- *
  */
 public class MessageListener implements UpdateListener {
 
@@ -27,7 +30,7 @@ public class MessageListener implements UpdateListener {
 	static Logger logger = Logger.getLogger(MessageListener.class.getName());
 	
 	/**
-	 * 
+	 * Update
 	 */
 	public void update(EventBean[] newDatas, EventBean[] oldData) {
 		for (EventBean newData : newDatas) {
@@ -35,43 +38,45 @@ public class MessageListener implements UpdateListener {
 		}
     }
 	
+	/**
+	 * Update 
+	 * @param newData New event data
+	 */
 	public void update(EventBean newData) {
 		logger.debug("[MessageListener] --- Event received: " + newData.getUnderlying());
 		logger.debug("[MessageListener] --- " + newData.getUnderlying().getClass().getName());
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		@SuppressWarnings("unchecked")
 		HashMap<String,Object> hm = (HashMap<String,Object>)(newData.getUnderlying());
-		/*Iterator<String> iter = hm.keySet().iterator();
-		while(iter.hasNext()){
-			String key = iter.next();
-			System.out.println("Key : " + key);
-			System.out.println("Value : " + hm.get(key));
-			System.out.println("Clazz value : " + hm.get(key).getClass().getName());
-		}*/
 		BeanEventBean beb = (BeanEventBean)(hm.get("s"));
 		Message msg = (Message)(beb.getUnderlying());
-		
-		// Service construction + send Esper event
 		String serviceName = msg.getPathName();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		
-		if("WSDl".equals(msg.getType())){
+		if(MessageType.WSDL.compareTo(msg.getType()) == 0){
 			WSDLService service;
 			service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
 			nrs.registerWSDLService(service);
-			
 		} else {
-			// getting parent url
-			int lastSlashIndex = msg.getUrl().lastIndexOf('/');
-			String parentUrl = msg.getUrl().substring(0, lastSlashIndex);
-			
-			Service service = new Service(msg.getUrl(), parentUrl);
-			// TODO also register to nuxeo parent apis if required
-			nrs.registerRestService(service);
-			// TODO put urlType in msg and handle it here to register also apis and appliimpls to nuxeo
+			List<Node> soaNodes = MonitorService.getMonitorService().getModel().getSoaNodes();
+			Node soaNode = null;
+			for(Node node : soaNodes){
+				if(node.getUrl().equals(msg.getUrl())){
+					soaNode = node;
+					logger.debug("Node found ! " + soaNode.getTitle());					
+				}
+			}
+			if(soaNode instanceof Service){
+				Service service = (Service) soaNode;
+				service.setCallCount(service.getCallCount() + 1);
+				nrs.registerRestService(service);
+			} else if(soaNode instanceof Api){
+				// Nothing to do, no counter to increase for API
+			} else if(soaNode instanceof Appli){
+				// Nothing to do, no counter to increase for Appli
+			}
 		}
 	}
 	

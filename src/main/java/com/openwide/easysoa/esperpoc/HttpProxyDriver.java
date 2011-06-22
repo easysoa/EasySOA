@@ -12,9 +12,10 @@ public interface HttpProxyDriver {
 
 	/**
 	 * Returns a help text with the available commands
-	 * @param ui
+	 * @param ui Context UriInfo
 	 * @return The <code>String</code> help text
 	 */
+	// TODO in case of error, return the user informations
 	@GET
 	@Path("/")
 	public String returnUseInformations(@Context UriInfo ui);	
@@ -24,7 +25,6 @@ public interface HttpProxyDriver {
 	 * @param runName The new run name
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
-	//TODO change GET to POST
 	@GET
 	@Path("/startNewRun/{runName}")
 	public String startNewRun(@PathParam("runName") String runName);
@@ -33,9 +33,8 @@ public interface HttpProxyDriver {
 	 * Stop the current run
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
-	//TODO change GET to POST
 	@GET
 	@Path("/stopCurrentRun")
-	public String startNewRun();	
+	public String stopCurrentRun();	
 	
 }

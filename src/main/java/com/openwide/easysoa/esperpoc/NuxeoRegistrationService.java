@@ -34,11 +34,11 @@ public class NuxeoRegistrationService {
 	 */
 	public String registerWSDLService(WSDLService service){
 		StringBuffer sb = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.wsdl.url", NUXEO_WSDL_DEFAULT_URL));
-	    /*sb.append(service.getAppName()); //Application Name
+		/*sb.append(service.getAppName()); //Application Name
 	    sb.append("/");
 	    sb.append(service.getServiceName()); //Service name
 	    sb.append("/");*/
-	    sb.append(service.getUrl());
+		sb.append(service.getUrl());
 		logger.debug("[resgisterWSDLService()] --- Request URL = " + sb.toString());
 		// Send request to register the service
 		Client client = Client.create();
@@ -57,7 +57,6 @@ public class NuxeoRegistrationService {
 	 * @param service The service to register
 	 * @return The response send back by Nuxeo
 	 */
-	//TODO Update this classe since the Nuxeo interface has changed	
 	public String registerRestService(Service service){
 		/*
 		{
@@ -99,6 +98,9 @@ public class NuxeoRegistrationService {
 		body.append(service.getDescription());
 		body.append("&httpMethod=");
 		body.append(service.getHttpMethod());
+		//TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications. Informs the document of the notification source." Replace localhost with other details		
+		body.append("&discoveryTypeMonitoring=");
+		body.append("localhost");
 		logger.debug("[registerRESTService()] --- Message url : " + url.toString());
 		logger.debug("[registerRESTService()] --- Message body : " + body.toString());
 		return sendRequest(url.toString(), body.toString());
@@ -109,7 +111,6 @@ public class NuxeoRegistrationService {
 	 * @param appli The application to register
 	 * @return The response send back by Nuxeo
 	 */
-	//TODO Update this classe since the Nuxeo interface has changed
 	public String registerRestAppli(Appli appli){
 		/*
 		{
@@ -149,7 +150,9 @@ public class NuxeoRegistrationService {
 		body.append("&sourcesUrl=");
 		body.append(appli.getSourcesUrl());		
 		body.append("&description=");
-		body.append(appli.getDescription());		
+		body.append(appli.getDescription());
+		body.append("&discoveryTypeMonitoring=");
+		body.append("localhost");		
 		logger.debug("[registerRestAppli()] --- Message url : " + url.toString());
 		logger.debug("[registerRestAppli()] --- Message body : " + body.toString());
 		return sendRequest(url.toString(), body.toString());
@@ -160,7 +163,6 @@ public class NuxeoRegistrationService {
 	 * @param api The API to register
 	 * @return The response send back by Nuxeo
 	 */
-	//TODO Update this classe since the Nuxeo interface has changed	
 	public String registerRestApi(Api api){
 		/*
 		{
@@ -192,7 +194,9 @@ public class NuxeoRegistrationService {
 		body.append("&description=");
 		body.append(api.getDescription());
 		//body.append("&sourceUrl=");
-		//body.append(api.getSourceUrl());	
+		//body.append(api.getSourceUrl());
+		body.append("&discoveryTypeMonitoring=");
+		body.append("localhost");
 		logger.debug("[registerRestApi()] --- Message url : " + url.toString());
 		logger.debug("[registerRestApi()] --- Message body : " + body.toString());
 		return sendRequest(url.toString(), body.toString());
@@ -257,7 +261,7 @@ public class NuxeoRegistrationService {
 	 */
 	private String sendQuery(String query){
 		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_AUTOMATION_DEFAULT_URL));
-		urlBuf.append("/");
+		//urlBuf.append("/");
 	    urlBuf.append("Document.Query"); // operation name
 
 	    try {
@@ -267,7 +271,7 @@ public class NuxeoRegistrationService {
 			bodyBuf.put("params", bodyBufQuery);
 		    
 			logger.debug("[sendQuery()] --- Request URL = " + urlBuf.toString());
-			// Send request to register the service
+			// Send request get registered services
 			Client client = Client.create();
 			client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
 			
@@ -285,7 +289,6 @@ public class NuxeoRegistrationService {
 			String textEntity = response.getEntity(String.class);
 			logger.debug("[sendQuery()] --- Registration request response = " + textEntity);	
 			return textEntity;		
-			
 		} catch (JSONException e) {
 			logger.error("Failed to create request body", e);
 			return null;
@@ -299,8 +302,6 @@ public class NuxeoRegistrationService {
 	 * @return The response send back by Nuxeo
 	 */
 	private String sendRequest(String url, String body){
-		String q = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
-		
 		Client client = Client.create();
 		client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
 		WebResource webResource = client.resource(url.toString());

@@ -20,7 +20,7 @@ public class SoapMessageHandler implements MessageHandler {
 			return true;
 		} else {
 			return false;
-		}	
+		}
 	}
 
 	@Override
@@ -28,8 +28,6 @@ public class SoapMessageHandler implements MessageHandler {
 		// enrich the message
 		message.setType(MessageType.SOAP);
 		logger.debug("WSDL found");
-		//TODO What to do here ?? Fill urlTree or not, mode dependency			
-		//EsperEngineSingleton.getEsperRuntime().sendEvent(message);
 		NuxeoRegistrationService nuxeoRS = new NuxeoRegistrationService();
 		String serviceName = message.getPathName();
 		if(serviceName.startsWith("/")){

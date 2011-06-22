@@ -30,11 +30,8 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
  * - Detect GET WSDL request messages, then register the WSDL in Nuxeo Easysoa model
  * - Detect GET REST request messages with parameters but no dynamic path parts, then register the REST service in Nuxeo Easysoa model
  * - Detect GET REST request messages with dynamic URL (in development)
- * 
  * - Detect POST SOAP request messages, check if a WSDL is associated with a message and register it in Nuxeo Easysoa model 
- *
  * @author jguillemotte
- *
  */
 @SuppressWarnings("serial")
 public class HttpProxyImpl extends HttpServlet {
@@ -72,19 +69,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    	forward(request, response);
     	    Message message = new Message(request);
     	    MonitorService.getMonitorService().listen(message);
-    	    // TODO .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
-    	    // TODO in all methods (doGet, doPost), for (mh in List<>Message Handler ) { boolean isOKFor(); handle() return stopHandling; }
-    	    // TODO GetWSDLMessageHandler, SoapMessageHandler, RestMessageHandler
-
-    	    // TODO MonitorService : mode, soaModel, listen() -> "for (mh..." called here
-    	    // TODO refactor the test with MonitorService.listen()
-    	    // TODO move doGet() code in forward() to finish 
-
-    	    // TODO at the start (end ?!) of MonitorService.listen(), RunRecorder.record(Message)
-    	    // TODO RunRecorder (NB. not a RunRepository, yet) : record(Message)
-    	    // TODO Run : startDate, stopDate...
-    	    // TODO RunManager : runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run) -> for (run... MonitorService.listen(...
-    	    
     	    // TODO Add a unknow message datastructure to store unknow messages and analyse / register them later
 	    }
 	    catch(Throwable ex){
@@ -146,7 +130,6 @@ public class HttpProxyImpl extends HttpServlet {
 	/**
 	 * 
 	 */
-	//TODO : Move this method or change the way to obtain urlTree !!
 	@SuppressWarnings("unused")
 	private void printUrlTree(){
 		logger.debug("[printUrlTree()] Printing tree node index ***");
@@ -168,18 +151,15 @@ public class HttpProxyImpl extends HttpServlet {
 	 * Send back the request to the original recipient and get the response
 	 * @throws IOException 
 	 */
-	//TODO Use this method in doGet and doPost methods
 	private void forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter respOut = response.getWriter();
 		// Header
-		Enumeration<String> enum1 = request.getHeaderNames(); 
+		Enumeration<String> enum1 = request.getHeaderNames();
 		logger.debug("Requests Headers");
-		//Form form = new Form();
 		while(enum1.hasMoreElements()){
 			String headerName = enum1.nextElement();
 			String headerValue = request.getHeader(headerName);
 			logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
-			//form.add(headerName, headerValue);
 		}
 		// URL
 		StringBuffer requestUrlBuffer = new StringBuffer();
@@ -211,7 +191,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    	Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
 	    	in = resource.post(representation).getStream();
 	    }
-	    //TODO Take too much time when the received response is big ... Try to find an other method to optimize
 	    byte[] byteArray = new byte[8192];
 	    if(in != null){
 	    	logger.debug("Sending response to original recipient ...");

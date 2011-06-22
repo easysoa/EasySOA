@@ -68,12 +68,12 @@ public class EsperEngineSingleton {
 	    	//EPStatement cepStatementMessageCounter = cepAdm.createEPL("select count(*) as count, completeMessage as serviceName from Message.win:time_batch(1 min) group by completeMessage");
 	    	*/
 	    	// Generate a MessageCounter event each minute. Even if no new message is received.
-	    	//EPStatement cepStatementMessageCounter = cepAdm.createEPL("select count(*) as count, completeMessage as service from Message group by completeMessage output all every 1 minute");
 	    	EPStatement cepStatementMessageCounter = cepAdm.createEPL(PropertyManager.getProperty("esper.message.counter.statement"));
 	    	cepStatementMessageCounter.addListener(new MessageCounter());
 
-	    	EPStatement cepStatementAggregatedMessageListener = cepAdm.createEPL(PropertyManager.getProperty("esper.message.aggregatedListener.statement"));
-	    	cepStatementAggregatedMessageListener.addListener(new AggregatedMessageListener());	    	
+	    	//TODO check this listener and reactivate it needed
+	    	//EPStatement cepStatementAggregatedMessageListener = cepAdm.createEPL(PropertyManager.getProperty("esper.message.aggregatedListener.statement"));
+	    	//cepStatementAggregatedMessageListener.addListener(new AggregatedMessageListener());	    	
 	    	
 	    	// Listen event on URL tree (new node added or modified node)
 	    	// TODO no more on each tree node update, LATER trigger it on run end event

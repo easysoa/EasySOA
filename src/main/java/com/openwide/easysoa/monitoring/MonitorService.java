@@ -84,11 +84,11 @@ public class MonitorService {
 	 */
 	private MonitorService(MonitoringMode monitoringMode){
 		mode = monitoringMode;
-		logger.debug("In MonitorService constructor !!");
+		//logger.debug("In MonitorService constructor !!");
 		if(MonitoringMode.DISCOVERY.compareTo(mode) == 0){
 			logger.debug("Mode = DISCOVERY !!");
 			monitoringModel = null;
-			urlTree = new UrlTree(new UrlTreeNode("root"));
+			urlTree = new UrlTree(new UrlTreeNode("root", ""));
 		} else if(MonitoringMode.VALIDATED.compareTo(mode) == 0) {
 			// init & fill it from Nuxeo
 			logger.debug("Mode = VALIDATED !!");
@@ -96,8 +96,10 @@ public class MonitorService {
 			monitoringModel.fetchFromNuxeo();
 			logger.debug("Validated mode : Printing monitoring model keyset");
 			Iterator<String> iter = monitoringModel.getSoaModelUrlToTypeMap().keySet().iterator();
+			String key;
 			while(iter.hasNext()){
-				logger.debug("key = " + iter.next());
+				key = iter.next();
+				logger.debug("key = " + key + ", value = " + monitoringModel.getSoaModelUrlToTypeMap().get(key));
 			}
 			urlTree = null;
 		}
@@ -121,7 +123,7 @@ public class MonitorService {
 	 * @return An instance of <code>MonitorService</code> 
 	 */
 	public static MonitorService getMonitorService(MonitoringMode monitoringMode){
-		if(monitorService == null && !monitoringMode.equals(mode)){
+		if(monitorService == null || monitoringMode.compareTo(mode) != 0){
 			monitorService = new MonitorService(monitoringMode);
 		}
 		return monitorService;
@@ -194,14 +196,12 @@ public class MonitorService {
 			node = (UrlTreeNode) childNode.getParent();
 			// APLLICATION detection
 			if(childNode.getLevel() == 1){
-				// Application detected
 				logger.debug("[registerChildren] --- new Appli to register !!!!");
 				if(!childNode.isRegistered() && childNode.getPartialUrlcallCount() > 5 && childNode.getCompleteUrlcallCount() == 0){
-					Appli appli = new Appli(childNode.getNodeName(), childNode.getNodeName());
-					appli.setUiUrl(childNode.getNodeName());
+					Appli appli = new Appli(childNode.getNodeName(), childNode.getPartialUrl());
+					appli.setUiUrl(childNode.getPartialUrl());
 					appli.setTitle(childNode.getNodeName());
 					appli.setDescription(childNode.getNodeName());
-					//logger.debug("Calling Nuxeo service");
 					if(!"ok".equals(nrs.registerRestAppli(appli))){
 						childNode.setRegistered();
 					}
@@ -212,7 +212,7 @@ public class MonitorService {
 			else if(childNode.getChildCount() > 0 && childNode.getRatioComplete(urlTree) == 0 && childNode.getLevel() >= 2 && childNode.getLevel() < 4 
 					&& childNode.getPartialUrlcallCount() > 5 && !childNode.isRegistered() && node.isRegistered()){
 				logger.debug("[registerChildren] --- new Api to register !!!!");
-				Api api = new Api(childNode.getNodeName(), node.getNodeName());
+				Api api = new Api(childNode.getPartialUrl(), node.getPartialUrl());
 				api.setTitle(childNode.getNodeName());
 				api.setDescription(childNode.getNodeName());
 				if(!"ok".equals(nrs.registerRestApi(api))){
@@ -222,18 +222,17 @@ public class MonitorService {
 			// Service detection
 			// How to make distinction between service and api ????
 			// identification d'un service atomique : ratio du noeud aux messages vu > 1 à 10 (?) et ratio du noeud à ses enfants (s'il en a) > 1 à 10 (?)
-			//TODO CHange the parameters to detect service (Hardcoded level parameter !)
+			// TODO Change the parameters to detect service (Hardcoded level parameter !)
 			else if(childNode.getLevel() == 4  && !childNode.isRegistered() && node.isRegistered()){
 				// Message lastMessage = childNode.getMessages().getLast(); // Pas sur une feuille donc ArrayDeque message pas rempli ...
-				//TODO Revoir le systeme de remplissage des messages, mise en place d'un système pour detecter des patterns dans les url
+				// TODO Revoir le systeme de remplissage des messages, mise en place d'un système pour detecter des patterns dans les url
 				logger.debug("[registerChildren] --- new Service to register !!!!");
-				Service service = new Service(childNode.getNodeName(), node.getNodeName());
-				// Idem ce dessus, pas de messages dans un noeud qui n'est pas une feuille ...
-				// service.setCallCount(service.getCallCount() + childNode.getMessages().size());
-				service.setCallCount(1);
+				Service service = new Service(childNode.getPartialUrl(), node.getPartialUrl());
+				logger.debug("Messages size : " + childNode.getMessages().size());
+				service.setCallCount(childNode.getMessages().size());
 				service.setTitle(childNode.getNodeName());
 				service.setDescription(childNode.getNodeName());
-				// service.setHttpMethod(lastMessage.getMethod());
+				service.setHttpMethod(childNode.getMessages().getLast().getMethod());
 				if(!"ok".equals(nrs.registerRestService(service))){
 					childNode.setRegistered();
 				}

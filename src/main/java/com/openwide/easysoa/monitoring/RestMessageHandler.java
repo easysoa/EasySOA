@@ -15,6 +15,7 @@ public class RestMessageHandler implements MessageHandler {
 	@Override
 	public boolean isOkFor(Message message) {
 		// TODO : How to determine if a message is a pure rest message ....
+		// TODO : Use a Data Mining framework to discover URI patterns 
 		return true;
 	}
 
@@ -28,12 +29,9 @@ public class RestMessageHandler implements MessageHandler {
 			MonitorService.getMonitorService().getUrlTree().addUrlNode(message);
 		}
 		else if(MonitoringMode.VALIDATED.compareTo(MonitorService.getMonitorService().getMode()) == 0){
-			// validation mode
-			// TODO match url in soaModel
 			logger.debug("Validated mode, checking if message exists in urlSoaModel");
 			MonitoringModel monitoringModel =  MonitorService.getMonitorService().getModel();
 			logger.debug("searched key : " + message.getUrl());
-			//TODO : the entire url is never stored in Nuxeo ....
 			//TODO change this to match with partial url
 			String urlSoaModelType =  monitoringModel.getSoaModelUrlToTypeMap().get(message.getUrl());
 			// if none, maybe it is a resource :
@@ -47,8 +45,7 @@ public class RestMessageHandler implements MessageHandler {
 			if (urlSoaModelType != null) {
 				logger.debug("Validated mode, message send to esper");
 				// if there, feed it to esper
-				// TODO put known serviceUrl in esper
-				// TODO write listener that groups by serviceUrl and registers them to nuxeo every minute
+				// TODO write listener that group by serviceUrl and register to nuxeo every minute
 				EsperEngineSingleton.getEsperRuntime().sendEvent(message);
 			} else {
 				//TODO else add it to unknownMessageStore (if service not there already) & remember to send an alert (also aggregated)

@@ -35,6 +35,8 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 	 */
 	private int completeUrlCallCount;
 
+	private String partialUrl;
+	
 	/**
 	 * 
 	 */
@@ -44,13 +46,14 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 	 * @param urlPart
 	 * @param counter
 	 */
-	public UrlTreeNode(String nodeName) {
+	public UrlTreeNode(String nodeName, String partialUrl) {
 		super();
 		this.nodeName = nodeName;
 		this.partialUrlCallCount = 0;
 		this.completeUrlCallCount = 0;
 		this.msgs = new ArrayDeque<Message>();
 		this.registered = false;
+		this.setPartialUrl(partialUrl);
 	}
 
 	/**
@@ -200,6 +203,14 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 			}
 		}
 		return nodeChildNumber + childNumber;
+	}
+
+	public void setPartialUrl(String partialUrl) {
+		this.partialUrl = partialUrl;
+	}
+
+	public String getPartialUrl() {
+		return partialUrl;
 	}	
 
 }

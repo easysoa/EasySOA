@@ -43,6 +43,10 @@ public class MonitoringModel {
 		}
 	}
 	
+	/**
+	 * @param soaNode
+	 * @return The type as a <code>String</code> of the soaNode. If the type is unknown returns null
+	 */
 	private String getNodeType(Node soaNode) {
 		if (soaNode instanceof Service) {
 			return SERVICE_TYPE;
@@ -54,7 +58,6 @@ public class MonitoringModel {
 			return APPLI_TYPE;
 		}
 		else {
-			// TODO: Throw exception
 			return null;
 		}
 	}

@@ -28,8 +28,6 @@ public class WSDLMessageHandler implements MessageHandler {
 		// enrich the message
 		message.setType(MessageType.WSDL);
 		logger.debug("WSDL found");
-		//TODO What to do here ?? Fill urlTree or not, mode dependency
-		//EsperEngineSingleton.getEsperRuntime().sendEvent(message);
 		NuxeoRegistrationService nuxeoRS = new NuxeoRegistrationService();
 		// Service construction
 		String serviceName = message.getPathName();

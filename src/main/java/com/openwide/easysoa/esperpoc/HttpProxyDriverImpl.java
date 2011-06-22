@@ -18,7 +18,6 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	
 	@Override
 	public String returnUseInformations(UriInfo ui) {
-		// TODO Auto-generated method stub
 		logger.debug("Returning help informations");
 		StringBuffer help = new StringBuffer();
 		help.append("<HTML><HEAD><TITLE>");
@@ -35,15 +34,18 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 
 	@Override
 	public String startNewRun(String runName) {
-		// TODO Auto-generated method stub
 		logger.debug("Starting a new run !");
-		RunManager.getInstance().start(runName);
+		try{
+			RunManager.getInstance().start(runName);
+		} catch(Exception ex){
+			logger.error("Unable to start a new run", ex);
+			return ex.getMessage();			
+		}
 		return "Run '" + runName + "' started !";
 	}
 
 	@Override
-	public String startNewRun() {
-		// TODO Add code to register recorded services in Nuxeo at the end of the run
+	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
 		RunManager.getInstance().stop();
 		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();

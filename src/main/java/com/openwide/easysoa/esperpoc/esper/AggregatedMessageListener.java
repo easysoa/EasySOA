@@ -3,10 +3,17 @@ package com.openwide.easysoa.esperpoc.esper;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
+import com.espertech.esper.event.bean.BeanEventBean;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
+import com.openwide.easysoa.monitoring.Message;
+import com.openwide.easysoa.monitoring.MonitorService;
+import com.openwide.easysoa.monitoring.Message.MessageType;
+import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.monitoring.soa.WSDLService;
 
@@ -18,6 +25,7 @@ import com.openwide.easysoa.monitoring.soa.WSDLService;
  * @author jguillemotte
  *
  */
+@Deprecated
 public class AggregatedMessageListener implements UpdateListener {
 
 	/**
@@ -47,12 +55,14 @@ public class AggregatedMessageListener implements UpdateListener {
 			System.out.println("Clazz value : " + hm.get(key).getClass().getName());
 		}*/
 		
+		BeanEventBean beb = (BeanEventBean)(aggregatedProps.get("s"));
+		Message msg = (Message)(beb.getUnderlying());		
 		// Service construction + send Esper event
-		long count = (Long) aggregatedProps.get("count"); // TODO
+		long count = (Long) aggregatedProps.get("count");
 		String serviceUrl = (String) aggregatedProps.get("url");
-		String messageType = (String) aggregatedProps.get("messageType");
+		MessageType messageType = (MessageType) aggregatedProps.get("messageType");
 
-		if("WSDl".equals(messageType)){
+		if(MessageType.WSDL.compareTo(messageType) == 0){
 			WSDLService service;
 			URL url;
 			try {
@@ -70,10 +80,27 @@ public class AggregatedMessageListener implements UpdateListener {
 			
 		} else {
 			// getting parent url
-			int lastSlashIndex = serviceUrl.lastIndexOf('/');
-			String parentUrl = serviceUrl.substring(0, lastSlashIndex);
+			int lastSlashIndex = msg.getUrl().lastIndexOf('/');
+			String parentUrl = msg.getUrl().substring(0, lastSlashIndex);
 			
-			Service service = new Service(serviceUrl, parentUrl);
+			List<Node> soaNodes = MonitorService.getMonitorService().getModel().getSoaNodes();
+			Node soaNode = null;
+			for(Node node : soaNodes){
+				if(node.getUrl().equals(msg.getUrl())){
+					soaNode = node;
+					logger.debug("Node found ! " + soaNode.getTitle());					
+				}
+			}
+			Service service;
+			if(soaNode instanceof Service){
+				service = (Service) soaNode;
+				service.setCallCount(service.getCallCount() + 1);
+			} else {
+				service = new Service(msg.getUrl(), parentUrl);
+				service.setTitle(msg.getUrl().substring(lastSlashIndex+1));
+				service.setDescription(msg.getUrl().substring(lastSlashIndex+1));
+				service.setCallCount(1);
+			}
 			// TODO also register to nuxeo parent apis if required
 			nrs.registerRestService(service);
 			// TODO put urlType in msg and handle it here to register also apis and appliimpls to nuxeo

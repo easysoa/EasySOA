@@ -27,9 +27,6 @@ public class ApiDetectorTest extends TestCase {
 	 */
 	private static Logger logger = Logger.getLogger(getInvokingClassName());
 	
-	//private MonitoringModel monitoringModel; // scope : global
-	//private UrlTree urlTree; // scope : run
-	
     /**
      * Create the test case
      * @param testName name of the test case
@@ -56,9 +53,13 @@ public class ApiDetectorTest extends TestCase {
 		//urlDetectionSimulate(new UrlMock().getIMediaUrlData());
 		urlDetectionCompute();
 		urlDetectionDebugResults();
-		// assertEquals, assertFalse / assertTrue, assertSame, assertNull / assertNotNull
-		// -> check dans Nuxeo que les applications, services et api sont bien enregistrees ...
-		//
+
+		// JUnit automatic tests
+		// Get regsitered data form Nuxeo and compare them to expected data's		
+		// Build tree ? or use the MonitoringModel datastructure ?
+		//Object registeredInNuxeo = getDataFromNuxeo();
+		//Object expectedResult = buildExpectedResult(); 
+		//assertEquals(expectedResult, registeredInNuxeo);
 	}
 
 	/**
@@ -71,8 +72,6 @@ public class ApiDetectorTest extends TestCase {
 		MonitorService.getMonitorService(MonitoringMode.VALIDATED);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
 		// TODO LATER mixed mode : do compute and debugResults BUT ONLY on unknown messages ?!
-		//urlDetectionCompute();
-		//urlDetectionDebugResults();
 	}
 	
 	/**
@@ -86,39 +85,46 @@ public class ApiDetectorTest extends TestCase {
 		Iterator<String> iter = arrayList.iterator();;
 		String urlString;
 		// Start the RunManager
-		RunManager.getInstance().start("Test run");
-		//for(int i=0; i<1000;i++){
-		for(int i=0; i<1;i++){
-			while(iter.hasNext()){
-				urlString = iter.next();
-				logger.debug("**** New URL :" + urlString);
-				try{
-					URL url = new URL(urlString);
-					Message msg = new Message(url, MessageType.REST);
-					// listen message
-					MonitorService.getMonitorService().listen(msg);
-				}
-				catch(Exception ex){
-					logger.error("**** problem spotted ! ", ex);
+		try{
+			RunManager.getInstance().start("Test run");
+			//for(int i=0; i<1000;i++){
+			for(int i=0; i<1;i++){
+				while(iter.hasNext()){
+					urlString = iter.next();
+					logger.debug("**** New URL :" + urlString);
+					try{
+						URL url = new URL(urlString);
+						Message msg = new Message(url, MessageType.REST);
+						// listen message
+						MonitorService.getMonitorService().listen(msg);
+					}
+					catch(Exception ex){
+						logger.error("**** problem spotted ! ", ex);
+					}
 				}
 			}
+			// Stop the RunManager
+			RunManager.getInstance().stop();			
 		}
-		// Stop the RunManager
-		RunManager.getInstance().stop();
+		catch(Exception ex){
+			logger.error("An error occurs when trying to start a new run", ex);
+		}
 		logger.debug("Test URL detection stop");
 	}
 		
-	//TODO Stay here ?
+	/**
+	 * 
+	 */
+	//TODO Stay here ? Remove this method ?	
 	public void urlDetectionCompute(){
 		// compute additional, non-local indicators :
-		// TODO compute them ; for now, only computed on demand at the end
 		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
 	}
 
 	/**
 	 *
 	 */
-	// TODO Stay here ? Remove this method ?
+	//TODO Stay here ? Remove this method ?
 	public void urlDetectionDebugResults(){
 		// debug / print them only in discovery mode :
 		UrlTree urlTree = MonitorService.getMonitorService().getUrlTree();
@@ -143,5 +149,5 @@ public class ApiDetectorTest extends TestCase {
 			}
 		}
 	}
-	
+
 }

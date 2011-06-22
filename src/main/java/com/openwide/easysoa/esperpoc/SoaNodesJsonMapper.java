@@ -17,7 +17,6 @@ public class SoaNodesJsonMapper implements JsonMapper {
 		Node res = null;
 		if("ServiceAPI".equals(child.get("type"))){
 			String apiUrl = child.getJSONObject("properties").getString("api:url");
-			// getting parent url
 			int lastSlashIndex = apiUrl.lastIndexOf('/');
 			String parentUrl;
 			if (lastSlashIndex != -1) {
@@ -27,11 +26,13 @@ public class SoaNodesJsonMapper implements JsonMapper {
 			}
 			Api api = new Api(apiUrl, parentUrl);
 			api.setTitle(child.getJSONObject("properties").getString("dc:title"));
+			api.setDescription(child.getJSONObject("properties").getString("dc:description"));
+			api.setApplication(child.getJSONObject("properties").getString("api:application"));
+			api.setSourceUrl(child.getJSONObject("properties").getString("dc:source"));
 			res = api;
 		}
 		else if("Service".equals(child.get("type"))){
 			String serviceUrl = child.getJSONObject("properties").getString("serv:url");
-			// getting parent url
 			int lastSlashIndex = serviceUrl.lastIndexOf('/');
 			String parentUrl;
 			if (lastSlashIndex != -1) {
@@ -40,12 +41,24 @@ public class SoaNodesJsonMapper implements JsonMapper {
 				parentUrl = "http:"; // HACK TODO BETTER in nuxeo soa model
 			}
 			Service service = new Service(serviceUrl, parentUrl);
-			service.setTitle(child.getJSONObject("properties").getString("dc:title"));
+			service.setTitle(child.getString("title"));
+			service.setDescription(child.getJSONObject("properties").getString("dc:title"));
+			service.setCallCount(child.getJSONObject("properties").getInt("serv:callcount"));
+			service.setContentTypeIn(child.getJSONObject("properties").getString("serv:contentTypeIn"));
+			service.setContentTypeOut(child.getJSONObject("properties").getString("serv:contentTypeOut"));
+			service.setHttpMethod(child.getJSONObject("properties").getString("serv:httpMethod"));
+			service.setRelatedUsers(child.getJSONObject("properties").getString("serv:relatedUsers"));
 			res = service;
 		}
 		else if ("Workspace".equals(child.get("type"))){
 			Appli appli = new Appli(child.getJSONObject("properties").getString("webc:name"), child.getJSONObject("properties").getString("app:rootServicesUrl"));
 			appli.setTitle(child.getJSONObject("properties").getString("dc:title"));
+			appli.setDescription(child.getJSONObject("properties").getString("dc:description"));
+			appli.setServer(child.getJSONObject("properties").getString("app:server"));
+			appli.setSourcesUrl(child.getJSONObject("properties").getString("app:sourcesUrl"));
+			appli.setStandard(child.getJSONObject("properties").getString("app:standard"));
+			appli.setTechnology(child.getJSONObject("properties").getString("app:technology"));
+			appli.setUiUrl(child.getJSONObject("properties").getString("app:uiUrl"));
 			res = appli;
 		}
 		return res;

@@ -24,41 +24,14 @@ public class Message {
 	private String body;
 
 	/**
-	 * Constructor
-	 * @param host
-	 * @param port
-	 * @param pathName
-	 * @param parameters
-	 * @param content
-	 */
-	/*@Deprecated
-	public Message(String protocol, String host, int port, String pathName, String parameters, String content, String method, MessageType type){
-		if(protocol.toLowerCase().contains("http")){
-			this.protocol = "http";
-		} else {
-			this.protocol = protocol;
-		}
-		this.host = host;
-		this.port = port;
-		this.pathName = pathName;
-		this.parameters = parameters;
-		this.content = content;
-		this.method = method;
-		this.type = type;
-		this.body = "";
-		this.url = "";
-	}*/
-
-	/**
-	 * 
+	 * Initialize a new message
+	 * @param request The HttpServletRequest
 	 */
 	public Message(HttpServletRequest request){
 		this.pathName = request.getRequestURI();
 		this.parameters = request.getQueryString();
 		this.host = request.getServerName();
 		this.port = request.getServerPort();
-		//TODO : Need to test the protocol returned by the request because it contains the version
-		// Maybe it is possible to do without a test
 		if(request.getProtocol().toLowerCase().contains("http")){
 			this.protocol = "http";
 		} else {
@@ -69,7 +42,7 @@ public class Message {
 		this.body = "";
 		this.url = request.getRequestURL().toString();
 	}
-
+	
 	/**
 	 * Constructor
 	 * @param host
@@ -77,7 +50,6 @@ public class Message {
 	 * @param pathName
 	 * @param parameters
 	 */
-
 	public Message(String url, String protocol, String host, int port, String pathName, String parameters, MessageType type){
 		this.url = url;
 		if(protocol.toLowerCase().contains("http")){
@@ -96,9 +68,9 @@ public class Message {
 	}
 	
 	/**
-	 * 
-	 * @param url
-	 * @param type
+	 * Constructor
+	 * @param url Url
+	 * @param type Type
 	 */
 	public Message(URL url, MessageType type) {
 		this(url.toString(), url.getProtocol(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), type);
@@ -128,7 +100,7 @@ public class Message {
 		}
 		return parameters;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -158,7 +130,7 @@ public class Message {
 	public int getPort() {
 		return port;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -169,7 +141,7 @@ public class Message {
 		}		
 		return protocol;
 	}
-	
+
 	/**
 	 * 
 	 * @return
