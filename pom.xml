@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.inria.galaxy.j1</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <artifactId>scenario1</artifactId>
+    <name>J1: Demo project</name>
+
+    <packaging>pom</packaging>
+
+    <!-- ============= -->
+    <!-- Repositories. -->
+    <!-- ============= -->
+
+    <repositories>
+        <!-- repository>
+            <id>inria-galaxy-repository</id>
+            <name>INRIA Galaxy Maven Repository</name>
+            <url>http://galaxy.gforge.inria.fr/repository/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository -->
+	</repositories>
+
+    <!-- ============ -->
+    <!-- Distribution -->
+    <!-- ============ -->
+
+    <distributionManagement>
+        <repository>
+            <id>inria-galaxy-repository</id>
+            <name>INRIA Galaxy Maven repository</name>
+            <url>scp://scm.gforge.inria.fr/home/groups/galaxy/htdocs/repository/maven2/</url>
+        </repository>
+    </distributionManagement>
+    
+    <!-- ======= -->
+    <!-- Modules -->
+    <!-- ======= -->
+
+    <modules>
+       <module>trip</module>
+       <module>meteo-model</module>
+       <module>summary-model</module>
+       <module>translate-model</module>
+       <module>currency-model</module>
+       <module>meteo-backup</module>
+       <module>currency-backup</module>
+       <module>demo-ui-servlet</module>
+       <module>create-summary-proactive</module>
+       <module>currency-sca-backup</module>
+       <module>meteo-sca-backup</module>
+    </modules>
+
+</project>

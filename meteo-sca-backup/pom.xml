@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.inria.galaxy.j1</groupId>
+	<artifactId>meteo-sca-backup</artifactId>
+	<version>1.0-SNAPSHOT</version>
+
+	<name>J1: Meteo WS Backup using SCA</name>
+
+	<parent>
+		<groupId>fr.inria.galaxy.j1</groupId>
+		<version>1.0-SNAPSHOT</version>
+		<artifactId>scenario1</artifactId>
+	</parent>
+
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>meteo-model</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+	    <!-- Include in the war the FraSCAti Servlet CXF. -->
+    	<dependency>
+      		<groupId>org.ow2.frascati</groupId>
+      		<artifactId>frascati-servlet-cxf</artifactId>
+			<version>1.3</version>
+    	</dependency>
+
+    	<!-- Include in the war the FraSCAti Runtime Factory. -->
+    	<dependency>
+      		<groupId>org.ow2.frascati</groupId>
+      		<artifactId>frascati-runtime-factory</artifactId>
+			<version>1.3</version>
+      		<scope>runtime</scope>
+    	</dependency>
+
+	</dependencies>
+
+	<!-- ======= -->
+	<!-- Build   -->
+	<!-- ======= -->
+
+	<build>
+		<defaultGoal>war:war</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+
+			<!-- Build the Web Application aRchive. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+			</plugin>
+
+			<!-- type 'mvn jetty:run' to launch this war with Jetty. -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

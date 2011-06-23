@@ -1,0 +1,65 @@
+body {
+	background-color: #ccc;
+	font-family: "Verdana";
+	font-size: 13px;
+}
+
+#center {
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+	border: 1px solid black;
+	background-color: white;
+	padding: 0px;
+}
+
+#header {
+	background: url(../img/galaxy-header.png) no-repeat;
+	height: 80px;
+	padding: 0px;
+}
+
+#footer {
+	padding-top: 20px;
+}
+
+#left {
+	
+}
+
+#right {
+	margin-left: 420px;
+}
+
+#content {
+	padding: 10px;
+}
+
+#meteo{
+  padding-left:200px;
+  width:300px;
+  float: left;
+}
+
+#echangeRate{
+width:300px;
+}
+
+#proposition{
+	border: #ccc solid 1px;
+	background-color: #F5F1FF;
+	padding : 10px;
+	width: 650px;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+h2 {
+	font-family: "Verdana";
+	font-size: 15px;
+	font-variant: small-caps;
+}
+
+#city{
+	text-align:center;
+}

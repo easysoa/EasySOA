@@ -1,0 +1,11 @@
+<jaxws:bindings wsdlLocation="./translate_new.wsdl"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb">
+
+    <jaxws:bindings
+     node="wsdl:definitions/wsdl:service[@name='Soap']/wsdl:port[@name='BasicHttpBinding_LanguageService']">
+         <jaxws:class name="BasicHttpBinding_LanguageService"/>
+    </jaxws:bindings>
+</jaxws:bindings>

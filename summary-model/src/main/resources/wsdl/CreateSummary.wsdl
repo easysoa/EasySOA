@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ISummaryService" targetNamespace="http://scenario1.j1.galaxy.inria.fr/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://scenario1.j1.galaxy.inria.fr/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://scenario1.j1.galaxy.inria.fr/" xmlns:tns="http://scenario1.j1.galaxy.inria.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:element name="summarize" type="tns:summarize"/>
+<xsd:complexType name="summarize">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="arg0" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="arg1" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="arg2" nillable="true" type="xsd:string"/>
+<xsd:element name="arg3" type="xsd:double"/>
+<xsd:element minOccurs="0" name="arg4" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="arg5" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:element name="summarizeResponse" type="tns:summarizeResponse"/>
+<xsd:complexType name="summarizeResponse">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="summarize">
+    <wsdl:part element="tns:summarize" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="summarizeResponse">
+    <wsdl:part element="tns:summarizeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ISummaryServicePortType">
+    <wsdl:operation name="summarize">
+      <wsdl:input message="tns:summarize" name="summarize">
+    </wsdl:input>
+      <wsdl:output message="tns:summarizeResponse" name="summarizeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ISummaryServiceSoapBinding" type="tns:ISummaryServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="summarize">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="summarize">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="summarizeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ISummaryService">
+    <wsdl:port binding="tns:ISummaryServiceSoapBinding" name="ISummaryServicePort">
+      <soap:address location="http://localhost:8080/CreateSummary"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
