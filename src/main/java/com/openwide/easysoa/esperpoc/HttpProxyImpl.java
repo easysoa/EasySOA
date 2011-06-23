@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.restlet.Client;
+import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.monitoring.Message;
@@ -44,11 +46,12 @@ public class HttpProxyImpl extends HttpServlet {
 	/**
 	 * Log system initialization
 	 */
-	//TODO add a way to specify dynamically the monitoring mode, default monitoring mode is stored in httpProxy.properties
-	// In this case, we need a complate set of command to start, stop a run ....
 	static {
 		ProxyConfigurator.configure();
-		MonitorService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
+		// If MonitorService is not set, set with the default monitoring mode
+		if(MonitorService.getMode() == null){
+			MonitorService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
+		}
 	}
 	
 	/**
@@ -69,7 +72,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    	forward(request, response);
     	    Message message = new Message(request);
     	    MonitorService.getMonitorService().listen(message);
-    	    // TODO Add a unknow message datastructure to store unknow messages and analyse / register them later
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
@@ -95,9 +97,9 @@ public class HttpProxyImpl extends HttpServlet {
 		logger.debug("server: " + request.getServerName());
 		logger.debug("port: " + request.getServerPort());
 		logger.debug("request URL: " + request.getRequestURL());
-	    BufferedReader br = request.getReader();
-    	StringBuffer bodyContent = new StringBuffer();
-		if(br != null){
+	    //BufferedReader br = request.getReader();
+    	//StringBuffer bodyContent = new StringBuffer();
+		/*if(br != null){
 	    	logger.debug("Request body : ");
 	    	String line;
 	    	while((line = br.readLine()) != null){
@@ -106,13 +108,14 @@ public class HttpProxyImpl extends HttpServlet {
 	    	}
 	    } else {
 	    	logger.debug("Request body is empty ! ");
-	    }
+	    }*/
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
 	    	forward(request, response);
     	    Message message = new Message(request);
-    	    message.setBody(bodyContent.toString());
+    	    //TODO Fill with message body
+    	    //message.setBody(bodyContent.toString());
     	    MonitorService.getMonitorService().listen(message);
 	    }
 	    catch(Throwable ex){
@@ -179,6 +182,8 @@ public class HttpProxyImpl extends HttpServlet {
 		   	}
 		}
 		String requestBodyString = bodyContent.toString();
+		logger.debug("Request URL String : " +  requestUrlString);
+		logger.debug("Request Body String : " + requestBodyString);
 	    ClientResource resource = new ClientResource(requestUrlString);
         //Representation rep = form.getWebRepresentation();
         //Request restletRequest = new Request();
@@ -189,13 +194,22 @@ public class HttpProxyImpl extends HttpServlet {
 	    	in = resource.get().getStream();
 	    } else {
 	    	Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
+	    	if(requestBodyString.contains("soap:Envelope")){
+	    		logger.debug("Setting mediatype to text/xml");		
+	    		representation.setMediaType(MediaType.TEXT_XML);
+	    	}
+	    	resource.setRetryOnError(true);
+	    	resource.setRetryAttempts(3);
 	    	in = resource.post(representation).getStream();
 	    }
 	    byte[] byteArray = new byte[8192];
+	    String responseBuffer;
 	    if(in != null){
 	    	logger.debug("Sending response to original recipient ...");
     	   	while((in.read(byteArray)) != -1){
-    	   		respOut.write(new String(byteArray));
+    	   		responseBuffer = new String(byteArray);
+    	   		logger.debug("ResponseBuffer : " + responseBuffer);
+    	   		respOut.write(responseBuffer);
     	   	}
     	}
     	respOut.close();

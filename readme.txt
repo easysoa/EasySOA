@@ -35,6 +35,7 @@ To build and run this project, the requirements are :
 	* log4j-1.2.16.jar
 	* jersey-client-1.7-ea06.jar
  	* jersey-core-1.7-ea06.jar
+	* esper-4.2.0.jar
 
 ----------------------------------
 

@@ -1,5 +1,6 @@
 package com.openwide.easysoa.monitoring;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +38,7 @@ public class MonitorService {
 	/**
 	 * Monitoring mode
 	 */
-	private static MonitoringMode mode;
+	private static MonitoringMode mode = null;
 	
 	/**
 	 * 
@@ -50,9 +51,14 @@ public class MonitorService {
 	private MonitoringModel monitoringModel; // scope : global
 	
 	/**
-	 * 
+	 * urlTree
 	 */
 	private UrlTree urlTree; // scope : run	
+	
+	/**
+	 * Data structure to store unknown messages
+	 */
+	private ArrayDeque<Message> unknownMessagesList;
 	
 	/**
 	 * List of message handlers
@@ -89,9 +95,11 @@ public class MonitorService {
 			logger.debug("Mode = DISCOVERY !!");
 			monitoringModel = null;
 			urlTree = new UrlTree(new UrlTreeNode("root", ""));
+			unknownMessagesList = null;
 		} else if(MonitoringMode.VALIDATED.compareTo(mode) == 0) {
 			// init & fill it from Nuxeo
 			logger.debug("Mode = VALIDATED !!");
+			unknownMessagesList = new ArrayDeque<Message>();
 			monitoringModel = new MonitoringModel();
 			monitoringModel.fetchFromNuxeo();
 			logger.debug("Validated mode : Printing monitoring model keyset");
@@ -124,6 +132,15 @@ public class MonitorService {
 	 */
 	public static MonitorService getMonitorService(MonitoringMode monitoringMode){
 		if(monitorService == null || monitoringMode.compareTo(mode) != 0){
+			// If monitor Service != null => register before to create a new Monitoring service
+			if(monitorService != null){
+				logger.debug("Changing monitoring mode, processing messages data before switching");
+				if(MonitoringMode.DISCOVERY.compareTo(monitorService.getMode())==0){
+					monitorService.registerDetectedServicesToNuxeo();	
+				} else {
+					monitorService.registerUnknownMessagesToNuxeo();
+				}
+			}
 			monitorService = new MonitorService(monitoringMode);
 		}
 		return monitorService;
@@ -153,9 +170,8 @@ public class MonitorService {
 	 * Return the monitoring mode
 	 * @return <code>MonitoringMode</code>
 	 */
-	@SuppressWarnings("static-access")
-	public MonitoringMode getMode(){
-		return this.mode;
+	public static MonitoringMode getMode(){
+		return mode;
 	}
 
 	/**
@@ -167,11 +183,23 @@ public class MonitorService {
 	}
 	
 	/**
-	 * 
+	 * Returns the url tree
 	 * @return
 	 */
 	public UrlTree getUrlTree(){
 		return this.urlTree;
+	}
+	
+	/**
+	 * Returns the unknown messages list
+	 * @return
+	 */
+	public ArrayDeque<Message> getUnknownMessagesList(){
+		return this.unknownMessagesList;
+	}
+	
+	public void registerUnknownMessagesToNuxeo(){
+		// TODO => Proceed unknown message list to send a message / notification
 	}
 	
 	/**
@@ -180,12 +208,14 @@ public class MonitorService {
 	 */
 	public void registerDetectedServicesToNuxeo() {
 		logger.debug("Analysing urlTree and registering in Nuxeo");
-		UrlTreeNode rootNode = (UrlTreeNode) urlTree.getRoot();
-		registerChildren(rootNode);
+		if(urlTree != null){
+			UrlTreeNode rootNode = (UrlTreeNode) urlTree.getRoot();
+			registerChildren(rootNode);
+		}
 	}
 
 	/**
-	 * REgister the children of the node
+	 * Register the children of the node
 	 * @param node The node 
 	 */
 	//TODO Method used in class UrlTreeEventListener !!!

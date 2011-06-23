@@ -15,7 +15,7 @@ public class RunManager {
 	/**
 	 * 
 	 */
-	private static boolean autoStart = false;
+	private static boolean autoStart = true;
 	
 	/**
 	 * 
@@ -63,14 +63,17 @@ public class RunManager {
 	 * Returns the current run. if there is no current run and autoStart is set to true, a new run is automatically started (autostart), otherwise null is returned
 	 * @return The current <code>Run</code>
 	 */
-	public Run getCurrentRun(){
+	public Run getCurrentRun() throws Exception{
 		if(currentRun == null && autoStart){
 			try {
 				start("Auto started run");
 			} catch (Exception e) {
 				// Nothing to do here
 			}
+		} else if(currentRun==null && !autoStart){
+			throw new Exception("Autostart is set to false, unable to start a new run automatically !");
 		}
+		
 		return this.currentRun;
 	}
 	

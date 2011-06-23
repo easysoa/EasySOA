@@ -4,6 +4,7 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;
 
 import com.openwide.easysoa.monitoring.MonitorService;
+import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 
 public class HttpProxyDriverImpl implements HttpProxyDriver {
 
@@ -50,6 +51,21 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		RunManager.getInstance().stop();
 		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
 		return "Current run stopped !";
+	}
+
+	@Override
+	public String setMonitoringMode(String mode) {
+		logger.debug("Set monitoring mode !");
+		try {
+			if(mode == null || "".equals(mode)){
+				throw new IllegalArgumentException("Monitoring mode must not be null or empty");
+			}
+			MonitorService.getMonitorService(MonitoringMode.valueOf(mode.toUpperCase()));
+		} catch(Exception ex){
+			logger.error("Unable to set monitoring mode", ex);
+			return ex.getMessage();			
+		}		
+		return "Monitoring mode set";
 	}
 
 }

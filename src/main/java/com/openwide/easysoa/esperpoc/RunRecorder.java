@@ -17,7 +17,12 @@ public class RunRecorder {
 	public void record(Message message){
 		// Get the current run and add a message
 		logger.debug("Recording message : " + message);
-		RunManager.getInstance().getCurrentRun().addMessage(message);
+		try{
+			RunManager.getInstance().getCurrentRun().addMessage(message);
+		}
+		catch(Exception ex){
+			logger.error("Unable to record message !", ex);
+		}
 	}
 	
 }

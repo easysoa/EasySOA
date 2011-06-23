@@ -48,7 +48,8 @@ public class RestMessageHandler implements MessageHandler {
 				// TODO write listener that group by serviceUrl and register to nuxeo every minute
 				EsperEngineSingleton.getEsperRuntime().sendEvent(message);
 			} else {
-				//TODO else add it to unknownMessageStore (if service not there already) & remember to send an alert (also aggregated)
+				// Unknown message
+				MonitorService.getMonitorService().getUnknownMessagesList().add(message);
 			}			
 		}
 		return true;

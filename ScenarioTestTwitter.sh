@@ -2,6 +2,8 @@
 # 
 # This script launch curl with twitter REST API URL. To test the proxy.
 
+#Set monitoring mode
+curl http://localhost:8083/setMonitoringMode/VALIDATED
 
 # Start a run
 curl http://localhost:8083/startNewRun/test

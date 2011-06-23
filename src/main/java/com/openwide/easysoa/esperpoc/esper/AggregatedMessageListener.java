@@ -3,6 +3,7 @@ package com.openwide.easysoa.esperpoc.esper;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,7 +26,6 @@ import com.openwide.easysoa.monitoring.soa.WSDLService;
  * @author jguillemotte
  *
  */
-@Deprecated
 public class AggregatedMessageListener implements UpdateListener {
 
 	/**
@@ -42,30 +42,34 @@ public class AggregatedMessageListener implements UpdateListener {
 		}
     }
 
+	/**
+	 * 
+	 * @param newData
+	 */
 	public void update(EventBean newData) {
 		logger.debug("[AggregatedMessageListener] --- Event received: " + newData.getUnderlying());
 		logger.debug("[AggregatedMessageListener] --- " + newData.getUnderlying().getClass().getName());
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		HashMap<String, Object> aggregatedProps = (HashMap) (newData.getUnderlying());
-		/*Iterator<String> iter = hm.keySet().iterator();
+		Iterator<String> iter = aggregatedProps.keySet().iterator();
 		while(iter.hasNext()){
 			String key = iter.next();
-			System.out.println("Key : " + key);
-			System.out.println("Value : " + hm.get(key));
-			System.out.println("Clazz value : " + hm.get(key).getClass().getName());
-		}*/
-		
+			logger.debug("Key : " + key);
+			logger.debug("Value : " + aggregatedProps.get(key));
+			logger.debug("Clazz value : " + aggregatedProps.get(key).getClass().getName());
+		}
+/*		
 		BeanEventBean beb = (BeanEventBean)(aggregatedProps.get("s"));
 		Message msg = (Message)(beb.getUnderlying());		
 		// Service construction + send Esper event
 		long count = (Long) aggregatedProps.get("count");
 		String serviceUrl = (String) aggregatedProps.get("url");
 		MessageType messageType = (MessageType) aggregatedProps.get("messageType");
-
-		if(MessageType.WSDL.compareTo(messageType) == 0){
+*/
+		//if(MessageType.WSDL.compareTo(messageType) == 0){
 			WSDLService service;
 			URL url;
-			try {
+			/*try {
 				String servicePath = (String) aggregatedProps.get("url");
 				if(servicePath.startsWith("/")){
 					servicePath = serviceUrl.substring(1);
@@ -76,13 +80,13 @@ public class AggregatedMessageListener implements UpdateListener {
 				nrs.registerWSDLService(service);
 			} catch (MalformedURLException e) {
 				logger.error("Bad url", e);
-			}
+			}*/
 			
-		} else {
+		//} else {
 			// getting parent url
-			int lastSlashIndex = msg.getUrl().lastIndexOf('/');
-			String parentUrl = msg.getUrl().substring(0, lastSlashIndex);
-			
+			//int lastSlashIndex = msg.getUrl().lastIndexOf('/');
+			//String parentUrl = msg.getUrl().substring(0, lastSlashIndex);
+			/*
 			List<Node> soaNodes = MonitorService.getMonitorService().getModel().getSoaNodes();
 			Node soaNode = null;
 			for(Node node : soaNodes){
@@ -104,7 +108,8 @@ public class AggregatedMessageListener implements UpdateListener {
 			// TODO also register to nuxeo parent apis if required
 			nrs.registerRestService(service);
 			// TODO put urlType in msg and handle it here to register also apis and appliimpls to nuxeo
-		}
+			*/
+		//}
 	}
 	
 }

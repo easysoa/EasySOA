@@ -37,4 +37,13 @@ public interface HttpProxyDriver {
 	@Path("/stopCurrentRun")
 	public String stopCurrentRun();	
 	
+	/**
+	 * Set the monitoring mode
+	 * @param mode The monitoring mode
+	 * @return a <code>String</code> to indicate if the command succeed
+	 */
+	@GET
+	@Path("/setMonitoringMode/{mode}")
+	public String setMonitoringMode(@PathParam("mode") String mode);
+	
 }

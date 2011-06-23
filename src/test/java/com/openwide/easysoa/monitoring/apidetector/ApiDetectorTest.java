@@ -71,6 +71,7 @@ public class ApiDetectorTest extends TestCase {
 		// TODO LATER cache it
 		MonitorService.getMonitorService(MonitoringMode.VALIDATED);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+		
 		// TODO LATER mixed mode : do compute and debugResults BUT ONLY on unknown messages ?!
 	}
 	
@@ -118,7 +119,11 @@ public class ApiDetectorTest extends TestCase {
 	//TODO Stay here ? Remove this method ?	
 	public void urlDetectionCompute(){
 		// compute additional, non-local indicators :
-		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
+		if(MonitoringMode.DISCOVERY.compareTo(MonitorService.getMonitorService().getMode()) == 0){
+			MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
+		} else {
+			MonitorService.getMonitorService().registerUnknownMessagesToNuxeo();
+		}
 	}
 
 	/**
