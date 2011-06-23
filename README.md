@@ -10,7 +10,7 @@ Turns Nuxeo into a simple service registry. Contains also a "Discovery by browsi
 
 ### Nuxeo registry
 
-The Nuxeo Installation Guide explains how to install and run Nuxeo DM: <http://doc.nuxeo.com/display/DMDOC/Nuxeo+DM+-+Installation+Guide>. After having installed Nuxeo 5.4:
+The Nuxeo Installation Guide explains how to install and run Nuxeo DM: <http://doc.nuxeo.com/display/DMDOC/Nuxeo+DM+-+Installation+Guide>. After having installed Nuxeo 5.4.1:
 
  * Copy `lib/` contents to `nuxeo-dm/lib/`
  * Copy `build/` contents to `nuxeo-dm/nxserver/plugins/`
