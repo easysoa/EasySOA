@@ -145,12 +145,14 @@ public class ScaImporter {
 			}
 		}
 		
+		documentManager.save(); // required else saved documents won't be resolved in postCheck
+		
 		// post check
 		for (ScaVisitor scaVisitor : scaVisitorsToPostCheck) {
 			scaVisitor.postCheck();
 		}
 
-		documentManager.save(); // TODO still required !?
+		documentManager.save(); // NB. only required for additional, external code
 	}
 
 	public void setServiceStackType(String serviceStackType) {

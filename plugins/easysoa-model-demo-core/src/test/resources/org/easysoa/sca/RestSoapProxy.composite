@@ -5,12 +5,23 @@
     <implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl"/>
     <service name="restInterface">
       <interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/>
-      <binding.ws uri="http://localhost:9000/hrestSoapProxyWSInternal"/>
+      <binding.ws uri="http://localhost:9000/restSoapProxyWSInternal"/>
     </service>
     <reference name="ws">
       <interface.java interface="pureairflowers.clients.PureAirFlowersClients"/>
       <binding.ws name="webService" wsdlElement="http://clients.pureairflowers/#wsdl.port(PureAirFlowers/PureAirFlowersClientsImplPort)" instance:wsdlLocation="http://localhost:9010/PureAirFlowers?wsdl"/>
     </reference>
+    <reference name="wsLocalTest">
+      <interface.java interface="pureairflowers.clients.PureAirFlowersClients"/>
+      <binding.ws name="webService" wsdlElement="http://clients.pureairflowers/#wsdl.port(PureAirFlowers/PureAirFlowersClientsImplPort)" instance:wsdlLocation="http://localhost:9000/PureAirFlowersClientsLocalTest?wsdl"/>
+    </reference>
+  </component>
+  <component name="PureAirFlowersClientsLocalTest">
+    <implementation.java class="pureairflowers.clients.PureAirFlowersClientsLocalTestImpl"/>
+    <service name="PureAirFlowersClients">
+      <interface.java interface="pureairflowers.clients.PureAirFlowersClients"/>
+      <binding.ws uri="http://localhost:9000/PureAirFlowersClientsLocalTest"/>
+    </service>
   </component>
   <component name="ProxyUnused">
     <implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl"/>
