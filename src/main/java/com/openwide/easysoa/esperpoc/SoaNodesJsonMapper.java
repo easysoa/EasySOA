@@ -8,6 +8,14 @@ import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
 
+
+/**
+ * Maps JSON to ServiceAPI, Service, Workspace
+ * else (ex.Folder) returns null
+ * 
+ * @author mdutoo
+ *
+ */
 public class SoaNodesJsonMapper implements JsonMapper {
 	
 	private static Logger logger = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());

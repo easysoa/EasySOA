@@ -244,6 +244,10 @@ public class NuxeoRegistrationService {
 			try {
 				JSONObject child = resObject.getJSONObject(i);
 				Node soaNode = (Node) jsonMapper.mapTo(child);
+				if (soaNode == null) {
+					logger.warn("Skipping node of non-SOA type : " + child.toString());
+					continue;
+				}
 				soaNodes.add(soaNode);
 			} catch (JSONException e) {
 				logger.error(e);
