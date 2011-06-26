@@ -13,11 +13,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.restlet.Client;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
+
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 import com.openwide.easysoa.monitoring.MonitorService;
@@ -118,11 +123,40 @@ public class HttpProxyImpl extends HttpServlet {
     	    //message.setBody(bodyContent.toString());
     	    MonitorService.getMonitorService().listen(message);
 	    }
+	    catch(ResourceException rex){
+	         // attempting to reset response
+	         response.reset();
+	         response.setStatus(rex.getStatus().getCode());
+	         
+	         // filling response
+	         response.setContentType("text/xml"); // TODO get expected content type from request
+	         PrintWriter out = response.getWriter();
+	         out.write(rex.getMessage());
+	         out.close();
+	         
+	         // debugging
+		     logger.debug("httpProxy : error in proxied server : "
+		    		 + rex.getStatus() + " - " + rex.getMessage());
+	    }
 	    catch(Throwable ex){
-	    	ex.printStackTrace();
-	    	logger.error("A" , ex);
-	    	respOut.println("<html><body>httpProxy : An errror occurs :<br/>");
-	    	respOut.println(ex.getMessage() + "</body></html>");
+	    	// TODO rather send appropriate HTTP error
+
+	         // attempting to reset response
+	         response.reset();
+	         response.setStatus(500);
+	         
+	         // filling response
+	         response.setContentType("text/xml"); // TODO get expected content type from request
+	         PrintWriter out = response.getWriter();
+	         String msg = "httpProxy : unknown error in proxy : " + ex.getMessage();
+	         out.write(msg);
+	         ex.printStackTrace(out);
+	         out.close();
+	         
+	    	//ex.printStackTrace();
+	    	logger.error(msg , ex);
+	    	//respOut.println("<html><body>httpProxy : An errror occurs :<br/>");
+	    	//respOut.println(ex.getMessage() + "</body></html>");
 	    }
 	    finally {
 	    	logger.debug("Closing response flow");
@@ -149,9 +183,9 @@ public class HttpProxyImpl extends HttpServlet {
 			logger.debug("[printUrlTree()] " + key + " -- " + index.get(key).toString() + ", parent node => " + parentNode.getNodeName() + ", Depth => " + index.get(key).getDepth() + ", node childs => " + index.get(key).getChildCount() + ", ratio => " + ratio);
 		}
 	}
-
 	/**
 	 * Send back the request to the original recipient and get the response
+	 * TODO rather use HTTPClient to send all headers and back in a simple way
 	 * @throws IOException 
 	 */
 	private void forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
