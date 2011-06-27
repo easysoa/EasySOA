@@ -8,7 +8,7 @@ eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
 
 var wsdlList = new Array();
 var clients = null;
-var nuxeo_upload_url = url.parse(config.wsdl_upload_service);
+var nuxeo_notification = url.parse(config.nuxeo_notification);
 
 function responseError(request, response, msg) {
 	console.error("[ERROR] " + msg + " (on request for "+request.url+")");
@@ -168,21 +168,21 @@ var nuxeoReady = false;
 function checkNuxeo() {
 
   var request_options = {
-	  port : nuxeo_upload_url.port,
+	  port : nuxeo_notification.port,
 	  method : 'POST',
-	  host : nuxeo_upload_url.hostname,
-	  path : nuxeo_upload_url.href,
+	  host : nuxeo_notification.hostname,
+	  path : nuxeo_notification.href+"service",
 	  headers : {
 	    'Content-Type': 'application/x-www-form-urlencoded'
 	  }
   };
   
   // Test request
-  var nx_site = http.createClient(nuxeo_upload_url.port, nuxeo_upload_url.hostname);
+  var nx_site = http.createClient(nuxeo_notification.port, nuxeo_notification.hostname);
   nx_site.on('error', function(error) {
      console.log("[INFO] Failed to connect to Nuxeo: "+error);
   });
-  var nx_request = nx_site.request('POST', nuxeo_upload_url.href, {'host': nuxeo_upload_url.hostname});
+  var nx_request = nx_site.request('POST', nuxeo_notification.href, {'host': nuxeo_notification.hostname});
   nx_request.on('response', function(res) {
     if (!nuxeoReady) {
       console.log('[INFO] Nuxeo is ready for scraping/upload');
@@ -203,6 +203,39 @@ function checkNuxeo() {
 checkNuxeo();
 
 /**** Send found WSDLs on connection ****/
+
+function sendRestRequest(client, nuxeo_upload_options, body) {
+
+  rest_request = http.request(nuxeo_upload_options, function(rest_response) {
+	
+      // Nuxeo response handling
+      var data = "";
+      rest_response.on('data', function(chunk) {
+        data += chunk.toString("ascii");
+      });
+      rest_response.on('end', function() {
+        var json;
+        try {
+          json = JSON.parse(data);
+        }
+        catch (error) {
+          error = 'ERROR: Nuxeo response cannot be parsed into JSON ('+error+')';
+          json = {'result': error};
+          console.log("[WARN] "+error);
+        }
+        json.messageType = 'upload';
+        client.send(JSON.stringify(json));
+      });
+      
+  });
+  
+  rest_request.addListener('error', function(error) {
+    console.log("[WARN] Failure while sending REST request to Nuxeo "+error);
+  });
+  rest_request.write(body);
+  rest_request.end();
+    
+}
 
 var io = io.listen(server);
 
@@ -235,54 +268,79 @@ io.on('connection', function(client){
   client.on('message', function(string) {
 
     try {
-    
-	    // Prepare header & body
+
       data = JSON.parse(string);
-      var body = 'url='+data.url+'&parentUrl='+data.applicationname+'&title='+data.servicename+'&discoveryTypeBrowsing=Discovered by browsing';
+        
+      // TODO : Make use of the refactored logic from Nuxeo when available
+      var apiUrl = data.url.substring(0, data.url.lastIndexOf('/')); 
+      var appliUrl = data.url.substring(0, data.url.lastIndexOf(':'));
+
+      //// Appli. notification
+    
+      var body = 'url='+appliUrl+
+          '&title='+data.applicationname;
       var nuxeo_upload_options = {
-			  port : nuxeo_upload_url.port,
+			  port : nuxeo_notification.port,
 			  method : 'POST',
-			  host : nuxeo_upload_url.hostname,
-			  path : nuxeo_upload_url.href,
+			  host : nuxeo_notification.hostname,
+			  path : nuxeo_notification.href+"appliimpl",
 			  headers : {
 			    'Content-Type': 'application/x-www-form-urlencoded',
-	        'Content-Length': body.length
+			    'Content-Length': body.length
 			  }
 		  };
+      
+      sendRestRequest(client, nuxeo_upload_options, body);
+      
+      setTimeout(function () { // XXX : Hack to ensure previous call is over
+    	  
+          //// API notification
+    	  
+	      body = 'url='+apiUrl+
+	          '&parentUrl='+appliUrl+
+	          '&application='+data.applicationname+
+	          '&title='+data.servicename+' API';
+	      nuxeo_upload_options = {
+				  port : nuxeo_notification.port,
+				  method : 'POST',
+				  host : nuxeo_notification.hostname,
+				  path : nuxeo_notification.href+"api",
+				  headers : {
+				    'Content-Type': 'application/x-www-form-urlencoded',
+				    'Content-Length': body.length
+				  }
+			  };  
+	      sendRestRequest(client, nuxeo_upload_options, body);
+	      
+	      setTimeout(function () { 
+
+	          //// Service notification
+	        
+	          body = 'url='+data.url+
+	              '&fileUrl='+data.url+
+	              '&parentUrl='+apiUrl+
+	              '&title='+data.servicename+
+	              '&discoveryTypeBrowsing=Discovered by browsing';
+	          nuxeo_upload_options = {
+	    			  port : nuxeo_notification.port,
+	    			  method : 'POST',
+	    			  host : nuxeo_notification.hostname,
+	    			  path : nuxeo_notification.href+"service",
+	    			  headers : {
+	    			    'Content-Type': 'application/x-www-form-urlencoded',
+	    			    'Content-Length': body.length
+	    			  }
+	    		  };
+	          sendRestRequest(client, nuxeo_upload_options, body);
+	    	  
+	      }, 300);
+	      
+      }, 300);
 		  
-	    // Send request
-	    rest_request = http.request(nuxeo_upload_options, function(rest_response) {
-		
-          // Nuxeo response handling
-          var data = "";
-          rest_response.on('data', function(chunk) {
-            data += chunk.toString("ascii");
-          });
-          rest_response.on('end', function() {
-            var json;
-            try {
-              json = JSON.parse(data);
-            }
-            catch (error) {
-              error = 'ERROR: Nuxeo response cannot be parsed into JSON ('+error+')';
-              json = {'result': error};
-              console.log("[WARN] "+error);
-            }
-            json.messageType = 'upload';
-            client.send(JSON.stringify(json));
-          });
-          
-	    });
-	    rest_request.addListener('error', function(error) {
-		    console.log("[WARN] Failure while sending REST request to Nuxeo "+error);
-	    });
-	    rest_request.write(body);
-	    rest_request.end();
-	
-	  }
-	  catch (error) {
-	    console.error("[ERROR] Client message badly formatted. "+error);
-	  }
+    }
+    catch (error) {
+      console.error("[ERROR] Client message badly formatted. "+error);
+    }
     
   });
   

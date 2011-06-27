@@ -16,6 +16,7 @@ public class EasySOADoctype {
 	public static final String PROP_DTIMPORT = "discoveryTypeImport";
 	public static final String PROP_ARCHIPATH = "archiPath";
 	public static final String PROP_ARCHILOCALNAME = "archiLocalName";
+	public static final String PROP_FILEURL = "fileUrl";
 
 	private static Map<String, String> commonPropertyList = null;
 	private static Map<String, String> dublinCorePropertyList = null;
@@ -23,11 +24,12 @@ public class EasySOADoctype {
 	public static Map<String, String> getCommonPropertyList() {
 		if (commonPropertyList == null) {
 			commonPropertyList = new HashMap<String, String>();
-			commonPropertyList.put(EasySOADoctype.PROP_DTBROWSING, "Notes about browsing-specific notifications. Informs the document of the notification source.");
-			commonPropertyList.put(EasySOADoctype.PROP_DTMONITORING, "Notes about monitoring-specific notifications. Informs the document of the notification source.");
-			commonPropertyList.put(EasySOADoctype.PROP_DTIMPORT, "Notes about import-specific notifications. Informs the document of the notification source.");
-			commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known");
-			commonPropertyList.put(PROP_ARCHILOCALNAME, "Reference local name in architecture if known");
+			commonPropertyList.put(PROP_DTBROWSING, "Notes about browsing-specific notifications. Informs the document of the notification source.");
+			commonPropertyList.put(PROP_DTMONITORING, "Notes about monitoring-specific notifications. Informs the document of the notification source.");
+			commonPropertyList.put(PROP_DTIMPORT, "Notes about import-specific notifications. Informs the document of the notification source.");
+			commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known.");
+			commonPropertyList.put(PROP_ARCHILOCALNAME, "Reference local name in architecture if known.");
+			commonPropertyList.put(PROP_FILEURL, "The URL of a file to attach to the document.");
 		}
 		return commonPropertyList;
 	}
@@ -35,8 +37,8 @@ public class EasySOADoctype {
 	public static Map<String, String> getDublinCorePropertyList() {
 		if (dublinCorePropertyList == null) {
 			dublinCorePropertyList = new HashMap<String, String>();
-			dublinCorePropertyList.put(EasySOADoctype.PROP_TITLE, "The name of the document.");
-			dublinCorePropertyList.put(EasySOADoctype.PROP_DESCRIPTION, "A short description.");
+			dublinCorePropertyList.put(PROP_TITLE, "The name of the document.");
+			dublinCorePropertyList.put(PROP_DESCRIPTION, "A short description.");
 		}
 		return dublinCorePropertyList;
 	}

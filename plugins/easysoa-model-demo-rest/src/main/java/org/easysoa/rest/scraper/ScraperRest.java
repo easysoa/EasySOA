@@ -17,7 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-import org.easysoa.rest.HttpFile;
+import org.easysoa.listeners.HttpFile;
 import org.easysoa.rest.notification.JSONP;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;

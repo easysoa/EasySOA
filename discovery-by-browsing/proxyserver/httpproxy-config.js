@@ -22,7 +22,7 @@ var config = {
       ":8081", // The web proxy itself
     ],
     
-    // Address of the REST service on which to send WSDLs
-    wsdl_upload_service: "http://127.0.0.1:8080/nuxeo/site/easysoa/notification/api"
+    // Address of the REST services on which to send notifications
+    nuxeo_notification: "http://127.0.0.1:8080/nuxeo/site/easysoa/notification/"
     
 };
