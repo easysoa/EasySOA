@@ -1,10 +1,19 @@
 package com.openwide.easysoa.monitoring;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 public class Message {
 
+	/**
+	 * Logger
+	 */
+	private static Logger logger = Logger.getLogger(getInvokingClassName());
+	
 	/**
 	 *	Message types 
 	 */
@@ -12,6 +21,8 @@ public class Message {
 	    WSDL, REST, SOAP 
 	}
 
+	//TODO : Detect loop call on proxy to avoid a dead lock request
+		
 	private String protocol;
 	private String host;
 	private int port;
@@ -23,6 +34,14 @@ public class Message {
 	private String url;
 	private String body;
 
+    /**
+     * 
+     * @return
+     */
+    public static String getInvokingClassName() {
+    	return Thread.currentThread().getStackTrace()[1].getClassName();
+    }	
+	
 	/**
 	 * Initialize a new message
 	 * @param request The HttpServletRequest
@@ -39,7 +58,31 @@ public class Message {
 		}
 		this.method = request.getMethod();
 		this.content = "";
-		this.body = "";
+	    BufferedReader requestBufferedReader;
+		try {
+			requestBufferedReader = request.getReader();
+		    StringBuffer bodyContent = new StringBuffer();
+			if(requestBufferedReader != null){
+			   	String line;
+			   	try{
+			   		requestBufferedReader.reset();
+			   	} catch(IOException ex){
+			   		logger.debug("BufferedReader reset failed");
+			   	}
+			   	while((line = requestBufferedReader.readLine()) != null){
+			   		logger.debug("appending body");
+			   		bodyContent.append(line);
+			   	}
+			}
+			else {
+				logger.debug("requestBufferedReader is null");
+			}
+			this.body = bodyContent.toString();
+		} catch (IOException ex) {
+			//TODO Throw the exception !!
+			logger.error("An error occurs when trying to fill the message body.", ex);
+			this.body = "";
+		}
 		this.url = request.getRequestURL().toString();
 	}
 	

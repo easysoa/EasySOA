@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.restlet.Client;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -69,14 +72,13 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	forward(request, response);
-    	    Message message = new Message(request);
+	    	Message message = forward(request, response);
     	    MonitorService.getMonitorService().listen(message);
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
 	    	logger.error("An error occurs in doGet method.", ex);
-	    	respOut.println("<html><body>httpProxy : An errror occurs :<br/>");
+	    	respOut.println("<html><body>httpProxy, doGet : An errror occurs :<br/>");
 	    	respOut.println(ex.getMessage() + "</body></html>");
 	    }
 	    finally {
@@ -97,35 +99,27 @@ public class HttpProxyImpl extends HttpServlet {
 		logger.debug("server: " + request.getServerName());
 		logger.debug("port: " + request.getServerPort());
 		logger.debug("request URL: " + request.getRequestURL());
-	    //BufferedReader br = request.getReader();
-    	//StringBuffer bodyContent = new StringBuffer();
-		/*if(br != null){
-	    	logger.debug("Request body : ");
-	    	String line;
-	    	while((line = br.readLine()) != null){
-	    		logger.debug(line);
-	    		bodyContent.append(line);
-	    	}
-	    } else {
-	    	logger.debug("Request body is empty ! ");
-	    }*/
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	forward(request, response);
-    	    Message message = new Message(request);
-    	    //TODO Fill with message body
-    	    //message.setBody(bodyContent.toString());
+	    	Message message = forward(request, response);
     	    MonitorService.getMonitorService().listen(message);
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
-	    	logger.error("A" , ex);
-	    	respOut.println("<html><body>httpProxy : An errror occurs :<br/>");
-	    	respOut.println(ex.getMessage() + "</body></html>");
+	    	logger.error("An error occurs in doPost method." , ex);
+	    	HashMap<String, Object> headers = new HashMap<String, Object>();
+	    	if(headers.containsKey("SOAPAction")){
+	    		// Returns SOAP Fault
+	    		respOut.print(this.buildSoapFault(ex.getMessage()));
+	    	} else {
+	    		// Returns HTML response
+	    		respOut.println("<html><body>httpProxy, doPost : An errror occurs :<br/>");
+	    		respOut.println(ex.getMessage() + "</body></html>");
+	    	}
 	    }
 	    finally {
-	    	logger.debug("Closing response flow");
+	    	logger.debug("--- Closing response flow");
 	    	respOut.close();
 	    }
 	}
@@ -154,16 +148,22 @@ public class HttpProxyImpl extends HttpServlet {
 	 * Send back the request to the original recipient and get the response
 	 * @throws IOException 
 	 */
-	private void forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private Message forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter respOut = response.getWriter();
+		
 		// Header
 		Enumeration<String> enum1 = request.getHeaderNames();
+		HashMap<String, Object> headers = new HashMap<String, Object>();
+		Form headersForm = new Form();
 		logger.debug("Requests Headers");
 		while(enum1.hasMoreElements()){
 			String headerName = enum1.nextElement();
 			String headerValue = request.getHeader(headerName);
+			headersForm.add(headerName, headerValue);
 			logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
 		}
+		headers.put("org.restlet.http.headers", headersForm);
+		
 		// URL
 		StringBuffer requestUrlBuffer = new StringBuffer();
 		requestUrlBuffer.append(request.getRequestURL().toString());
@@ -172,8 +172,9 @@ public class HttpProxyImpl extends HttpServlet {
 	    	requestUrlBuffer.append(request.getQueryString());
 	    }
 	    String requestUrlString = requestUrlBuffer.toString();
+	    
 	    // Body
-	    BufferedReader requestBufferedReader = request.getReader();
+	    /*BufferedReader requestBufferedReader = request.getReader();
 	    StringBuffer bodyContent = new StringBuffer();
 		if(requestBufferedReader != null){
 		   	String line;
@@ -181,38 +182,38 @@ public class HttpProxyImpl extends HttpServlet {
 		   		bodyContent.append(line);
 		   	}
 		}
-		String requestBodyString = bodyContent.toString();
+		String requestBodyString = bodyContent.toString();*/
+		Message message = new Message(request);
 		logger.debug("Request URL String : " +  requestUrlString);
-		logger.debug("Request Body String : " + requestBodyString);
+		logger.debug("Request Body String : " + message.getBody());
 	    ClientResource resource = new ClientResource(requestUrlString);
-        //Representation rep = form.getWebRepresentation();
-        //Request restletRequest = new Request();
-        //restletRequest.getAttributes().put("org.restlet.http.headers", rep);
-        //resource.setRequest(restletRequest);
 	    InputStream in = null;
-	    if("GET".equalsIgnoreCase(request.getMethod())){
-	    	in = resource.get().getStream();
-	    } else {
-	    	Representation representation = new org.restlet.representation.StringRepresentation(requestBodyString);
-	    	if(requestBodyString.contains("soap:Envelope")){
-	    		logger.debug("Setting mediatype to text/xml");		
-	    		representation.setMediaType(MediaType.TEXT_XML);
+		    if("GET".equalsIgnoreCase(request.getMethod())){
+		    	in = resource.get().getStream();
+		    } else {
+		    	Representation representation = new org.restlet.representation.StringRepresentation(message.getBody());
+		    	if(message.getBody().contains("soap:Envelope")){
+		    		logger.debug("Setting mediatype to text/xml");		
+		    		representation.setMediaType(MediaType.TEXT_XML);
+		    		
+		    	}
+		    	resource.getRequest().setAttributes(headers);
+		    	resource.setRetryOnError(true);
+		    	resource.setRetryAttempts(3);
+		    	in = resource.post(representation).getStream();
+		    }
+		    byte[] byteArray = new byte[8192];
+		    String responseBuffer;
+		    if(in != null){
+		    	logger.debug("Sending response to original recipient ...");
+	    	   	while((in.read(byteArray)) != -1){
+	    	   		responseBuffer = new String(byteArray);
+	    	   		logger.debug("ResponseBuffer : " + responseBuffer);
+	    	   		respOut.write(responseBuffer);
+	    	   	}
 	    	}
-	    	resource.setRetryOnError(true);
-	    	resource.setRetryAttempts(3);
-	    	in = resource.post(representation).getStream();
-	    }
-	    byte[] byteArray = new byte[8192];
-	    String responseBuffer;
-	    if(in != null){
-	    	logger.debug("Sending response to original recipient ...");
-    	   	while((in.read(byteArray)) != -1){
-    	   		responseBuffer = new String(byteArray);
-    	   		logger.debug("ResponseBuffer : " + responseBuffer);
-    	   		respOut.write(responseBuffer);
-    	   	}
-    	}
     	respOut.close();
+	    return message;
 	}
 
 	/**
@@ -229,6 +230,25 @@ public class HttpProxyImpl extends HttpServlet {
         byte[] res = new byte[n];
         System.arraycopy(tmp, 0, res, 0, n);
         return new String(res);
-    } 
+    }
+	
+	/**
+	 * 
+	 * @param error
+	 * @return
+	 */
+	private String buildSoapFault(String error){
+		StringBuffer fault = new StringBuffer();
+		fault.append("<?xml version=\"1.0\"?>");
+		fault.append("<SOAP-ENV:Envelope SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\">");
+		fault.append("<SOAP-ENV:Body><SOAP-ENV:Fault>");		
+		fault.append("<faultcode>SOAP-ENV:Client</faultcode>"); 
+		fault.append("<faultstring>");
+		fault.append(error.replace("\"", "\\\""));
+		fault.append("</faultstring>");
+		fault.append("</SOAP-ENV:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>");
+		return fault.toString();
+	}
 
 }
+

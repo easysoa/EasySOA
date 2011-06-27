@@ -16,6 +16,7 @@ public class RestMessageHandler implements MessageHandler {
 	public boolean isOkFor(Message message) {
 		// TODO : How to determine if a message is a pure rest message ....
 		// TODO : Use a Data Mining framework to discover URI patterns 
+		logger.debug("Returns true");		
 		return true;
 	}
 

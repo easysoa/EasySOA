@@ -33,11 +33,8 @@ public class NuxeoRegistrationService {
 	 * @return The response send back by Nuxeo
 	 */
 	public String registerWSDLService(WSDLService service){
+		//TODO Change this to register correctly WSDl in Nuxeo
 		StringBuffer sb = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.wsdl.url", NUXEO_WSDL_DEFAULT_URL));
-		/*sb.append(service.getAppName()); //Application Name
-	    sb.append("/");
-	    sb.append(service.getServiceName()); //Service name
-	    sb.append("/");*/
 		sb.append(service.getUrl());
 		logger.debug("[resgisterWSDLService()] --- Request URL = " + sb.toString());
 		// Send request to register the service
@@ -50,6 +47,55 @@ public class NuxeoRegistrationService {
 		String textEntity = response.getEntity(String.class);
 		logger.debug("[registerWSDLService()] --- Registration request response = " + textEntity);	
 		return textEntity;
+	}
+	
+	public String registerWSDLService(Service service){
+		/*
+		{
+		  "description": "Service-level notification.",
+		  "parameters": {
+		    "contentTypeOut": "HTTP content type of the result body",
+		    "relatedUsers": "Users that have been using the service",
+		    "contentTypeIn": "HTTP content type of the request body",
+		    "title": "The name of the document.",
+		    "discoveryTypeImport": "Notes about import-specific notifications. Informs the document of the notification source.",
+		    "discoveryTypeBrowsing": "Notes about browsing-specific notifications. Informs the document of the notification source.",
+		    "httpMethod": "POST, GET...",
+		    "description": "A short description.",
+		    "discoveryTypeMonitoring": "INotes about monitoring-specific notifications. Informs the document of the notification source.",
+		    "parentUrl": "(mandatory) Service API URL (WSDL address, parent path...)",
+		    "callcount": "Times the service has been called since last notification",
+		    "url": "(mandatory) Service URL."
+		  }
+		}
+		*/
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
+		url.append("service");
+		StringBuffer body = new StringBuffer();
+		body.append("url=");
+		body.append(service.getUrl());
+		body.append("&parentUrl=");
+		body.append(service.getParentUrl());
+		body.append("&callcount=");
+		body.append(service.getCallCount());
+		body.append("&title=");
+		body.append(service.getTitle());
+		body.append("&contentTypeOut=");
+		body.append(service.getContentTypeOut());
+		body.append("&contentTypeIn=");
+		body.append(service.getContentTypeIn());
+		body.append("&relatedUsers=");
+		body.append(service.getRelatedUsers());
+		body.append("&description=");
+		body.append(service.getDescription());
+		body.append("&httpMethod=");
+		body.append(service.getHttpMethod());
+		//TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications. Informs the document of the notification source." Replace localhost with other details		
+		body.append("&discoveryTypeMonitoring=");
+		body.append("localhost");
+		logger.debug("[registerRESTService()] --- Message url : " + url.toString());
+		logger.debug("[registerRESTService()] --- Message body : " + body.toString());
+		return sendRequest(url.toString(), body.toString());
 	}
 	
 	/**
