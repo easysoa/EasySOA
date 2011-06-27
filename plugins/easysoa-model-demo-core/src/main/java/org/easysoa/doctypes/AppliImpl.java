@@ -18,7 +18,9 @@ public class AppliImpl extends EasySOADoctype {
 	public static final String PROP_ENVIRONMENT = "environment";
 	public static final String PROP_TECHNOLOGY = "technology";
 	public static final String PROP_STANDARD = "standard";
-
+	
+	public static final String PROP_SERVERENTRY = "serverEntry"; // Internal
+	
 	private static Map<String, String> propertyList = null;
 	
 	public static Map<String, String> getPropertyList() {

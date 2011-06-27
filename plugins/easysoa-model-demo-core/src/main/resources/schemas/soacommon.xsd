@@ -8,7 +8,10 @@
   <xs:element name="discoveryTypeMonitoring" type="xs:string" />
   <xs:element name="discoveryTypeImport" type="xs:string" />
 
-
+  <!-- Whom, which role, which environment is the service originiated from / by ? (e.g: Eclipse SOA, John as a business architect) -->
+  <xs:element name="author" type="xs:string" />
+  <xs:element name="authorInformation" type="xs:string" />
+ 
   <!-- Architecture info : -->
 
   <!-- path in (sca) archi. TODO or rather in disco info, or in ref & service ? TODO or reused from File / title ?? -->

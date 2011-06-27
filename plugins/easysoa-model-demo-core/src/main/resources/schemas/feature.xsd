@@ -12,10 +12,9 @@
        or the project's maturity's phases (inception, elaboration, construction, transition, ...) -->
   <xs:element name="lifeCycleStatus" type="xs:string" />
   
-  <!-- Actor/originator -->
-  <xs:element name="authorInformation" type="xs:string" />
- 
+  <!-- Feature design document -->
   <xs:element name="designDocument" type="nxs:content" />
+  <xs:element name="designDocumentName" type="xs:string" />
   <xs:element name="designDocumentSource" type="xs:string" />
 
 </xs:schema>

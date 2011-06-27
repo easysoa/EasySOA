@@ -207,9 +207,9 @@
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">feat:authorInformation</property>
+            <property name="sortPropertyName">feat:domain</property>
           </properties>
-          <widget>listing_authorInformation</widget>
+          <widget>listing_domain</widget>
         </column>
         <column>
           <properties mode="any">
@@ -283,13 +283,13 @@
 	      <field>data.app.uiUrl</field>
 	    </fields>
 	  </widget>
-	  <widget name="listing_authorInformation" type="text">
+	  <widget name="listing_domain" type="text">
 	    <labels>
-	      <label mode="any">label.easysoa.feature.authorInformation</label>
+	      <label mode="any">label.easysoa.feature.domain</label>
 	    </labels>
 	    <translated>true</translated>
 	    <fields>
-	      <field>data.feat.authorInformation</field>
+	      <field>data.feat.domain</field>
 	    </fields>
 	  </widget>
 	  <widget name="listing_lifeCycleStatus" type="text">
@@ -310,7 +310,6 @@
 	      <field>data.app.sourcesUrl</field>
 	    </fields>
 	  </widget>
-	  
   </extension>
   
 </component>
