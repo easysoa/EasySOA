@@ -17,8 +17,11 @@ public class WSDLMessageHandler implements MessageHandler {
 	@Override
 	public boolean isOkFor(Message message) {
 		if(message != null){
+			logger.debug("Message parameters : " + message.getParameters());
+			//logger.debug("Returns true");
 			return message.getParameters().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"));
 		} else {
+			logger.debug("Returns false");			
 			return false;
 		}
 	}
