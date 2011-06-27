@@ -21,6 +21,25 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
 		super(scaImporter);
 	}
 	
+	@Override
+	public String getDescription() {
+		StringBuffer sbuf = new StringBuffer(this.toString());
+		sbuf.append("[path=");
+		sbuf.append(referenceModel.getPathAsString());
+		sbuf.append(",type=");
+		sbuf.append(referenceModel.getType());
+		sbuf.append(",title=");
+		try {
+			sbuf.append(referenceModel.getPropertyValue("dc:title"));
+		} catch (Exception ex) {
+			String msg = "error while getting title";
+			sbuf.append("(" + msg + ")");
+			log.error(msg, ex);
+		}
+		sbuf.append("]");
+		return sbuf.toString();
+	}
+	
 	public void visit() throws ClientException {
 		
 		// find existing reference
