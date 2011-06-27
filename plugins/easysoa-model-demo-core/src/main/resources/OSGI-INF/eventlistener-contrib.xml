@@ -15,6 +15,10 @@
       <event>beforeDocumentModification</event>
       <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries-->
     </listener>
+    <listener name="servicelistener" class="org.easysoa.listeners.ServiceListener" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+    </listener>
     
   </extension>
   
