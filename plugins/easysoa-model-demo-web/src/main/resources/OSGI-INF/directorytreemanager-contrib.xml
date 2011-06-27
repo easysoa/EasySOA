@@ -24,12 +24,12 @@
       <directory>environment</directory>
       <directory>server</directory>
     </directoryTree>
-    <!--
-    <directoryTree name="byServiceNavigation" label="label.easysoa.navservice"
-      contentView="byServiceContentView" field="application" schema="querynav2"
-      outcome="service_virtual_navigation" enabled="true">
-      <directory>application</directory>
-    </directoryTree>-->
+    
+    <directoryTree name="byFeatureNavigation" label="label.easysoa.navfeature"
+      contentView="byFeatureContentView" field="location" schema="querynav2"
+      outcome="feature_virtual_navigation" enabled="true">
+      <directory>environment</directory>
+    </directoryTree>
    
   </extension>
 

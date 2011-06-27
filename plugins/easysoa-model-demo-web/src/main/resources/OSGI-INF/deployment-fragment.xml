@@ -54,8 +54,8 @@
       <redirect />
     </navigation-case>
     <navigation-case>
-      <from-outcome>service_virtual_navigation</from-outcome>
-      <to-view-id>/service_virtual_navigation.xhtml</to-view-id>
+      <from-outcome>feature_virtual_navigation</from-outcome>
+      <to-view-id>/feature_virtual_navigation.xhtml</to-view-id>
       <redirect />
     </navigation-case>
     <navigation-case>
@@ -72,8 +72,8 @@
     <page view-id="/location_virtual_navigation.xhtml">
       breadcrumb=label.virtualnavigation.location
     </page>
-    <page view-id="/service_virtual_navigation.xhtml">
-      breadcrumb=label.virtualnavigation.service
+    <page view-id="/feature_virtual_navigation.xhtml">
+      breadcrumb=label.virtualnavigation.feature
     </page>
     <page view-id="/sca_import_form.xhtml">
       breadcrumb=label.easysoa.import.link

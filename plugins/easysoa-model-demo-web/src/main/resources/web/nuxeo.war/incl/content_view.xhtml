@@ -132,17 +132,22 @@
     </a4j:region>
     </c:if>
 
-  <!-- EasySOA : Icons -->
-  <ui:include src="/incl/tabs/easysoa_view.xhtml" />
           
-  <!-- EasySOA : Metadata -->
-  <h:form id="document_view">
-    <a4j:region id="documentViewRegion">
-      <a4j:outputPanel id="documentViewPanel">
-      <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
-    </a4j:outputPanel>
-    </a4j:region>
-  </h:form>
+  <!-- EasySOA : Bypass this during virtual navigation -->
+  <c:if test="#{multiNavTreeManager.selectedNavigationTree == 'CONTENT_TREE'}">
+  
+	  <!-- EasySOA : Icons -->
+	  <ui:include src="/incl/tabs/easysoa_view.xhtml" />
+  
+ 	  <!-- EasySOA : Metadata-->
+	  <h:form id="document_view">
+	    <a4j:region id="documentViewRegion">
+	      <a4j:outputPanel id="documentViewPanel">
+	      <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
+	    </a4j:outputPanel>
+	    </a4j:region>
+	  </h:form>
+  </c:if>
 
   </nxu:set>
   </nxu:set>

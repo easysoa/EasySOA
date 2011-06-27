@@ -9,6 +9,75 @@
 
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
 
+	 <layout name="document_virtual_navigation_listing_ajax_application">
+      <templates>
+        <template mode="any">
+          /layouts/layout_listing_ajax_template.xhtml
+        </template>
+        <template mode="plain_csv">
+          /layouts/layout_listing_csv_template.xhtml
+        </template>
+      </templates>
+      <properties mode="any">
+        <property name="showListingHeader">true</property>
+        <property name="showRowEvenOddClass">true</property>
+      </properties>
+      <columns>
+        <column>
+          <properties mode="any">
+            <property name="isListingSelectionBox">true</property>
+            <property name="useFirstWidgetLabelAsColumnHeader">false</property>
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <properties mode="pdf">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_ajax_selection_box</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">false</property>
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <widget>listing_icon_type</widget>
+        </column>
+        
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">dc:title</property>
+          </properties>
+          <widget>listing_title_link</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">dc:description</property>
+          </properties>
+          <widget>listing_description</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_lock_icon</widget>
+        </column>
+        
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <widget>listing_livedit_link</widget>
+        </column>
+      </columns>
+    </layout>
+    
 	 <layout name="document_virtual_navigation_listing_ajax_location">
       <templates>
         <template mode="any">
@@ -54,26 +123,33 @@
         </column>
         <column>
           <properties mode="any">
-            <property name="columnStyleClass">iconColumn</property>
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+            <property name="sortPropertyName">app:technology</property>
           </properties>
-          <properties mode="csv">
-            <property name="isHidden">true</property>
-          </properties>
-          <widget>listing_lock_icon</widget>
+          <widget>listing_technology</widget>
         </column>
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">api:url</property>
+            <property name="sortPropertyName">app:url</property>
           </properties>
           <widget>listing_url</widget>
         </column>
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">api:protocols</property>
+            <property name="sortPropertyName">app:uiUrl</property>
           </properties>
-          <widget>listing_protocols</widget>
+          <widget>listing_uiUrl</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_lock_icon</widget>
         </column>
         
         <column>
@@ -85,8 +161,7 @@
       </columns>
     </layout>
     
-
-	 <layout name="document_virtual_navigation_listing_ajax_service">
+	 <layout name="document_virtual_navigation_listing_ajax_feature">
       <templates>
         <template mode="any">
           /layouts/layout_listing_ajax_template.xhtml
@@ -131,42 +206,33 @@
         </column>
         <column>
           <properties mode="any">
-            <property name="columnStyleClass">iconColumn</property>
-          </properties>
-          <properties mode="csv">
-            <property name="isHidden">true</property>
-          </properties>
-          <widget>listing_lock_icon</widget>
-        </column>
-        <column>
-          <properties mode="any">
-            <property name="columnStyleClass">iconColumn</property>
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="isSortable">false</property>
+            <property name="sortPropertyName">feat:authorInformation</property>
           </properties>
-          <widget>listing_version</widget>
+          <widget>listing_authorInformation</widget>
         </column>
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">dc:modified</property>
-            <property name="defaultSortAscending">false</property>
+            <property name="sortPropertyName">feat:lifeCycleStatus</property>
           </properties>
-          <widget>listing_modification_date</widget>
-        </column>
-        <column>
-          <properties mode="any">
-            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
-            <property name="sortPropertyName">app:technology</property>
-          </properties>
-          <widget>listing_technology</widget>
+          <widget>listing_lifeCycleStatus</widget>
         </column>
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
             <property name="sortPropertyName">app:sourcesUrl</property>
           </properties>
-          <widget>listing_sources</widget>
+          <widget>listing_sourcesUrl</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_lock_icon</widget>
         </column>
         
         <column>
@@ -181,22 +247,13 @@
   </extension>
     
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
-	  <widget name="listing_url" type="text">
+	  <widget name="listing_description" type="text">
 	    <labels>
-	      <label mode="any">label.easysoa.serviceapidef.url</label>
+	      <label mode="any">label.dublincore.description</label>
 	    </labels>
 	    <translated>true</translated>
 	    <fields>
-	      <field>data.api.url</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_protocols" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.serviceapidef.protocols</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.api.protocols</field>
+	      <field>data.dc.description</field>
 	    </fields>
 	  </widget>
 	  <widget name="listing_technology" type="text">
@@ -208,7 +265,43 @@
 	      <field>data.app.technology</field>
 	    </fields>
 	  </widget>
-	  <widget name="listing_sources" type="text">
+	  <widget name="listing_url" type="text">
+	    <labels>
+	      <label mode="any">label.easysoa.appliimpldef.url</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	      <field>data.app.url</field>
+	    </fields>
+	  </widget>
+	  <widget name="listing_uiUrl" type="text">
+	    <labels>
+	      <label mode="any">label.easysoa.appliimpldef.uiUrl</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	      <field>data.app.uiUrl</field>
+	    </fields>
+	  </widget>
+	  <widget name="listing_authorInformation" type="text">
+	    <labels>
+	      <label mode="any">label.easysoa.feature.authorInformation</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	      <field>data.feat.authorInformation</field>
+	    </fields>
+	  </widget>
+	  <widget name="listing_lifeCycleStatus" type="text">
+	    <labels>
+	      <label mode="any">label.easysoa.feature.lifeCycleStatus</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	      <field>data.feat.lifeCycleStatus</field>
+	    </fields>
+	  </widget>
+	  <widget name="listing_sourcesUrl" type="text">
 	    <labels>
 	      <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
 	    </labels>
@@ -217,6 +310,7 @@
 	      <field>data.app.sourcesUrl</field>
 	    </fields>
 	  </widget>
+	  
   </extension>
-    
+  
 </component>
