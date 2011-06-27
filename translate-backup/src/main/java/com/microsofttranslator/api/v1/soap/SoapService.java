@@ -22,7 +22,7 @@ import javax.xml.ws.Service;
 
 
 @WebServiceClient(name = "SoapService", 
-                  wsdlLocation = "http://api.microsofttranslator.com/V1/Soap.svc?WSDL",
+                  wsdlLocation = "file:/data/home/jguillemotte/Workspace_Galaxy_demo/EasySOADemoTravel/translate-backup/src/main/resources/translateserverwebservice.wsdl",
                   targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc") 
 public class SoapService extends Service {
 
@@ -32,9 +32,9 @@ public class SoapService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("http://api.microsofttranslator.com/V1/Soap.svc?WSDL");
+            url = new URL("file:/data/home/jguillemotte/Workspace_Galaxy_demo/EasySOADemoTravel/translate-backup/src/main/resources/translateserverwebservice.wsdl");
         } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from http://api.microsofttranslator.com/V1/Soap.svc?WSDL");
+            System.err.println("Can not initialize the default wsdl from file:/data/home/jguillemotte/Workspace_Galaxy_demo/EasySOADemoTravel/translate-backup/src/main/resources/translateserverwebservice.wsdl");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;
