@@ -141,6 +141,76 @@
 	  </widget>
     </layout>
     
+    <!-- Feature definition layout -->
+    <layout name="feature">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>feature_domain</widget>
+        </row>
+        <row>
+          <widget>feature_lifeCycleStatus</widget>
+        </row>
+        <row>
+          <widget>feature_designDocument</widget>
+        </row>
+        <row>
+          <widget>feature_designDocumentSource</widget>
+        </row>
+      </rows>
+	  <widget name="feature_domain" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.feature.domain</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>feat:domain</field>
+	      </fields>
+	  </widget>
+	  <widget name="feature_lifeCycleStatus" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.feature.lifeCycleStatus</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>feat:lifeCycleStatus</field>
+	      </fields>
+	  </widget>
+      <widget name="feature_designDocument" type="template">
+        <labels>
+          <label mode="any">label.easysoa.feature.designDocument</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>feat:designDocument</field>
+          <field>feat:designDocumentName</field>
+        </fields>
+        <widgetModes>
+          <mode value="full_edit">edit</mode>
+          <mode value="edit">edit</mode>
+          <mode value="view">view</mode>
+          <mode value="view">preview</mode>
+        </widgetModes>
+        <properties mode="any">
+		  <property name="required">false</property>
+          <property name="template">
+            /widgets/extended_file_widget.xhtml
+          </property>
+        </properties>
+      </widget>
+	  <widget name="feature_designDocumentSource" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.feature.designDocumentSource</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>feat:designDocumentSource</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
     <!-- Service API definition layout -->
     <layout name="serviceapidef">
       <templates>
@@ -373,60 +443,36 @@
 	  </widget>
     </layout>
     
-    <!-- (UNUSED) Common properties layout -->
-    <layout name="soacommon_dt">
+    <!-- Common author information -->
+    <layout name="soacommon_author">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml</template>
       </templates>
       <rows>
         <row>
-          <widget>common_dtbrowsing</widget>
+          <widget>common_author</widget>
         </row>
         <row>
-          <widget>common_dtmonitoring</widget>
-        </row>
-        <row>
-          <widget>common_dtimport</widget>
+          <widget>common_authorInformation</widget>
         </row>
       </rows>
-      <widget name="common_dtbrowsing" type="text">
+      <widget name="common_author" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.common.dtbrowsing</label>
+	        <label mode="any">label.easysoa.soacommon.author</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>soa:discoveryTypeBrowsing</field>
+	        <field>soa:author</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
 	  </widget>
-      <widget name="common_dtmonitoring" type="text">
+      <widget name="common_authorInformation" type="text">
 	      <labels>
-	        <label mode="any">label.easysoa.common.dtmonitoring</label>
+	        <label mode="any">label.easysoa.soacommon.authorInformation</label>
 	      </labels>
 	      <translated>true</translated>
 	      <fields>
-	        <field>soa:discoveryTypeMonitoring</field>
+	        <field>soa:authorInformation</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
-	  </widget>
-      <widget name="common_dtimport" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.common.dtimport</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>soa:discoveryTypeImport</field>
-	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
 	  </widget>
     </layout>
     
