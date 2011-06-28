@@ -14,7 +14,7 @@ repositories.remote << 'http://www.ibiblio.org/maven2'
 
 ############### CONFIG
 
-NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || Buildr.settings.user['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat'
+NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat' #|| Buildr.settings.user['nuxeo']['path']
 
 THIS_VERSION = Buildr.settings.build['release']['version']
 MODEL_VERSION = Buildr.settings.build['model']['version']
@@ -29,7 +29,7 @@ MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
 
 ############### CUSTOM FUNCTIONS
 
-def maven(goals, project, version)
+def maven(goals, project)
   command = 'mvn '
   if !goals.is_a?(Array)
     goals = [goals]
@@ -54,6 +54,8 @@ PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-Release'
 PAF_BUILD = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-BinaryBuildComponents'
 PAF_LOGINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-logIntent'
 PAF_FUSINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-autoRearmFuseIntent'
+TRAVEL = 'easysoa:EasySOADemoTravel'
+ESPER = 'easysoa:esper-frascati-poc'
 
 define 'easysoa', :base_dir => '../' do
   
@@ -64,7 +66,7 @@ define 'easysoa', :base_dir => '../' do
     
       project.version = MODEL_VERSION
       task :mvn do
-        maven(['clean', 'install'], project, MODEL_VERSION)
+        maven(['clean', 'install'], project)
       end
       
       desc 'Send plugins to Nuxeo'
@@ -98,7 +100,7 @@ define 'easysoa', :base_dir => '../' do
   
     define 'pureAirFlowers-Release' do
       task :mvn do
-        maven(['clean', 'install'], project, PAF_VERSION)
+        maven(['clean', 'install'], project)
       end
     end
     
@@ -108,6 +110,18 @@ define 'easysoa', :base_dir => '../' do
     define 'pureAirFlowers-logIntent'
     define 'pureAirFlowers-autoRearmFuseIntent'
     
+  end
+  
+  define 'EasySOADemoTravel' do
+    task :mvn do
+      maven(['clean', 'install'], project)  # TODO Enable tests
+    end
+  end
+  
+  define 'esper-frascati-poc' do
+    task :mvn do
+      maven(['clean', 'install', '-DskipTests'], project)
+    end
   end
   
   desc 'EasySOA packaging'
@@ -135,8 +149,11 @@ task :nx_clean => [MODEL+':clean']
 desc "Builds PAF CXF server and service proxy"
 task :paf_mvn => [PAF_RELEASE+':mvn']
 
+task :esper => [ESPER+':mvn']
+task :travel => [TRAVEL+':mvn']
+
 desc "Builds all needed projects"
-task :buildall => ['paf_mvn', 'nx_mvn']
+task :buildall => ['paf_mvn', 'nx_mvn', 'esper', 'travel']
 
 desc "Creates the EasySOA package"
 task :packageall => ['nx_dist'] do
@@ -194,7 +211,17 @@ task :packageall => ['nx_dist'] do
   rm_rf PACKAGING_PATH+'/serviceregistry/tmp/'
   rm_rf PACKAGING_PATH+'/serviceregistry/nxserver/data/'
   
+  puts "Copying Esper POC..."
+  mkdir PACKAGING_PATH+'/esper'
+  cp_r FileList[project(ESPER).base_dir+"/*"], PACKAGING_PATH+'/esper'
+  
+  puts "Copying Travel demo..."
+  mkdir PACKAGING_PATH+'/travel'
+  cp_r FileList[project(TRAVEL).base_dir+"/*"], PACKAGING_PATH+'/travel'
+  
   cp FileList["packaging-files/*"], PACKAGING_PATH
+  
+  puts "Packaging done."
   
 end
 
@@ -209,6 +236,6 @@ task :tgz do
     ' serviceregistry web webproxy webservices ' + \
     FileList["packaging-files/*"].sub('packaging-files/', '').to_s
   
-  puts "EasySOA successfully packaged in "+PACKAGING_FILE
+  puts "EasySOA successfully compressed in "+PACKAGING_FILE
   
 end

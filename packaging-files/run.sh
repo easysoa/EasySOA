@@ -33,7 +33,6 @@ webservices()
   touch log/webservices.log
   cd webservices
   ./start_cxf_server.sh > ../log/webservices.log 2>&1
-  cd ..
 }
 
 webservicesproxy()
@@ -41,19 +40,25 @@ webservicesproxy()
   touch log/webservicesproxy.log
   cd webservices
   ./start_frascati_proxy.sh > ../log/webservicesproxy.log 2>&1
-  cd ..
+}
+
+travel()
+{
+  touch log/travel.log
+  cd travel/trip
+  mvn -Prun > ../../log/travel.log 2>&1
 }
 
 # Start processes
 echo "Starting EasySOA Demo. A browser page will be opened in a few seconds."
 echo "Note that the service registry will take between 30s and 2mn to launch."
 serviceregistry &
-sleep 5 # Give time to read the msg
-#serviceregistrypid=$!
-web &
 webproxy &
+sleep 5 # Give time to read the msg & let the webproxy launch
+web &
 webservices &
 webservicesproxy &
+#travel & # Automatically shuts down
 firefox "http://localhost:8083/easysoa" &
 
 echo "Press any key to stop."

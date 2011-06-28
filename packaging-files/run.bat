@@ -19,7 +19,6 @@ cd web
 start "EasySOA Demo - Web" start-web.bat > ..\log\web.log 2>&1
 cd ..
 
-
 rem webproxy
 cd webproxy
 start "EasySOA Demo - Web Proxy" start-proxy.bat > ..\log\webproxy.log 2>&1
@@ -35,5 +34,9 @@ cd webservices
 start "EasySOA Demo - Service Proxy" start_frascati_proxy.bat > ..\log\webservicesproxy.log 2>&1
 cd ..
 
-
 call explorer "http://localhost:8083/easysoa"
+
+rem travel
+cd travel/trip
+start "EasySOA Demo - Travel" mvn -Prun > ..\log\travel.log 2>&1
+cd ..
