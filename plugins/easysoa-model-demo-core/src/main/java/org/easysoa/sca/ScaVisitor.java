@@ -2,14 +2,31 @@ package org.easysoa.sca;
 
 import javax.xml.namespace.QName;
 
-import org.nuxeo.ecm.core.api.ClientException;
-
 public interface ScaVisitor {
 
+	/**
+	 * If this visitor applies 
+	 * @param bindingQName
+	 * @return
+	 */
 	boolean isOkFor(QName bindingQName);
 
-	void visit() throws ClientException;
+	/**
+	 * 
+	 * @throws Exception when local, not fatal error
+	 */
+	void visit() throws Exception;
 
-	void postCheck() throws ClientException;
+	/**
+	 * To resolve linking when visit is finished
+	 * @throws Exception when local, not fatal error
+	 */
+	void postCheck() throws Exception;
+
+	/**
+	 * Describes the scaVisitor instance for debugging purpose
+	 * @return
+	 */
+	String getDescription();
 
 }

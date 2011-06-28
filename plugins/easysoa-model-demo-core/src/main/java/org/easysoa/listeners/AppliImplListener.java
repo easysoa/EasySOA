@@ -3,6 +3,7 @@ package org.easysoa.listeners;
 import static org.easysoa.doctypes.AppliImpl.DOCTYPE;
 import static org.easysoa.doctypes.AppliImpl.PROP_ENVIRONMENT;
 import static org.easysoa.doctypes.AppliImpl.PROP_SERVER;
+import static org.easysoa.doctypes.AppliImpl.PROP_SERVERENTRY;
 import static org.easysoa.doctypes.AppliImpl.SCHEMA;
 
 import org.apache.commons.logging.Log;
@@ -39,6 +40,15 @@ public class AppliImplListener implements EventListener {
 		String type = doc.getType();
 		if (!type.equals(DOCTYPE)) {
 			return;
+		}
+		
+		// Maintain internal properties
+		try {
+			doc.setProperty(SCHEMA, PROP_SERVERENTRY, 
+					doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + 
+					doc.getProperty(SCHEMA, PROP_SERVER));
+		} catch (ClientException e) {
+			log.error("Failed to maintain internal property", e);
 		}
 
 		// Update vocabulary

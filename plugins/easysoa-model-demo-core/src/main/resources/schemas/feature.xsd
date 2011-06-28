@@ -5,8 +5,16 @@
 
   <xs:include schemaLocation="core-types.xsd" />
 
-  <xs:element name="creator" type="xs:string" />
+  <!-- Business application or functional domain -->
+  <xs:element name="domain" type="xs:string" />  
+  
+  <!-- wrt the IT process (business modeling, functional architecture, technical architecture, technical design, implementation, tests, ...)
+       or the project's maturity's phases (inception, elaboration, construction, transition, ...) -->
+  <xs:element name="lifeCycleStatus" type="xs:string" />
+  
+  <!-- Feature design document -->
   <xs:element name="designDocument" type="nxs:content" />
+  <xs:element name="designDocumentName" type="xs:string" />
   <xs:element name="designDocumentSource" type="xs:string" />
 
 </xs:schema>

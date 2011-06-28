@@ -3,6 +3,8 @@ package org.easysoa.sca;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,11 @@ public class ScaImporter {
 	public static final QName SCA_COMPONENT_QNAME = new QName(SCA_URI, "component");
 	public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
 	public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
+
+	private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
+	private static final String ERROR_API_URL_APPLIIMPL = ERROR_API_URL_BASE + "bad appliimpl URL";
+	private static final String ERROR_API_URL_API = ERROR_API_URL_BASE + "bad api URL";
+	private static final String ERROR_API_URL_SERVICE = ERROR_API_URL_BASE + "bad service URL";
 	
 	private static final Log log = LogFactory.getLog(ScaImporter.class);
 
@@ -100,12 +107,12 @@ public class ScaImporter {
 		while(compositeReader.hasNext()) {
 			compositeReader.next();
 
-			if (compositeReader.getEventType() == XMLEvent.START_ELEMENT) {
+			/*if (compositeReader.getEventType() == XMLEvent.START_ELEMENT) {
 				ScaVisitor elementVisitor = elementQnameToScaVisitor.get(compositeReader.getName());
 				if (elementVisitor != null) {
 					elementVisitor.visit();
 				}
-			}
+			}*/
 			
 			if (compositeReader.getEventType() == XMLEvent.START_ELEMENT) {
 				String name = compositeReader.getAttributeValue(null, "name"); // rather than "" ?! // TODO SCA_URI
@@ -150,7 +157,12 @@ public class ScaImporter {
 		
 		// post check
 		for (ScaVisitor scaVisitor : scaVisitorsToPostCheck) {
-			scaVisitor.postCheck();
+			try {
+				scaVisitor.postCheck();
+			} catch (Exception ex) {
+				log.error("Error while postChecking scaVisitor " + scaVisitor.getDescription()
+						+ " in SCA composite file " + compositeFile.getFilename(), ex);
+			}
 		}
 
 		documentManager.save(); // NB. only required for additional, external code
@@ -169,27 +181,91 @@ public class ScaImporter {
 	}
 
 	/**
-	 * Guesses an API url given the service URL and others
-	 * XXX: Currently, is somehow hacky and doesn't always work as expected
-	 * @param serviceUrl
-	 * @param appliImplUrl
-	 * @param serviceStackUrl
+	 * Guesses an API url given the service URL and others.
+	 * Normalizes URLs first.
+	 * @param appliImplUrl has to be empty (means no default root url for this appliimpl)
+	 * or a well-formed URL.
+	 * @param apiUrlPath
+	 * @param serviceUrlPath
+	 * @return
+	 * @throws MalformedURLException 
+	 */
+	public static String getApiUrl(String appliImplUrl, String apiUrlPath,
+			String serviceUrlPath) throws MalformedURLException {
+		apiUrlPath = normalizeUrl(apiUrlPath, ERROR_API_URL_API);
+		serviceUrlPath = normalizeUrl(serviceUrlPath, ERROR_API_URL_SERVICE);
+		
+		int apiPathEndIndex = -1;
+		
+		if (appliImplUrl.length() != 0) {
+			// appliImplUrl has to be well-formed
+			appliImplUrl = normalizeUrl(appliImplUrl, ERROR_API_URL_APPLIIMPL);
+			String defaultApiUrl = concatUrlPath(appliImplUrl, apiUrlPath);
+			if (serviceUrlPath.contains(defaultApiUrl)) {
+				apiPathEndIndex = serviceUrlPath.indexOf(defaultApiUrl) + defaultApiUrl.length();
+			} // else default appliImplUrl does not apply
+		} // else empty appliImplUrl means no default appliImplUrl for apis
+		
+		if (apiPathEndIndex == -1) {
+			apiPathEndIndex = serviceUrlPath.lastIndexOf('/');
+		}
+		
+		return normalizeUrl(serviceUrlPath.substring(0, apiPathEndIndex), ERROR_API_URL_API); // TODO http://localhost:9000/hrestSoapProxyWSIntern
+	}
+
+	/**
+	 * NB. no normalization done
+	 * @param url
+	 * @param urlPath
 	 * @return
 	 */
-	public static String getApiUrl(String serviceUrl, String appliImplUrl, String serviceStackUrl) {
-		
-		int apiPathIndex = -1;
+	private static String concatUrlPath(String ... urlPath) {
+		StringBuffer sbuf = new StringBuffer();
+		for (String urlPathElement : urlPath) {
+			if (urlPath != null && urlPath.length != 0) {
+				sbuf.append(urlPathElement);
+				sbuf.append('/');
+			}
+		}
+		if (sbuf.length() != 0) {
+			sbuf.deleteCharAt(sbuf.length() - 1);
+		}
+		return sbuf.toString();
+	}
 
-		String apiPath = serviceStackUrl; // TODO  + "/" + serviceStackUrl + "/"
-		if (serviceUrl.contains(appliImplUrl + apiPath)) {
-			apiPathIndex = serviceUrl.indexOf(appliImplUrl + apiPath);
+	/**
+	 * Normalizes the given URL :
+	 * ensures all pathElements are separated by a single /
+	 * AND IF IT CONTAINS "://" that it is OK according to java.net.URL
+	 * @param stringUrl
+	 * @param errMsg
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	private static String normalizeUrl(String stringUrl, String errMsg) throws MalformedURLException {
+		if (stringUrl == null) {
+			throw new MalformedURLException(errMsg + " : " + stringUrl);
 		}
-		
-		if (apiPathIndex == -1) {
-			apiPathIndex = serviceUrl.lastIndexOf('/');
+		if (stringUrl.indexOf("://") != -1) {
+			URL url = new URL(stringUrl);
+			stringUrl = url.toString();
+			return normalizeUrlPath(url.toString(), errMsg);
 		}
-		
-		return serviceUrl.substring(0, apiPathIndex + apiPath.length()); // TODO http://localhost:9000/hrestSoapProxyWSIntern
+		return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
+	}
+
+	/**
+	 * Normalizes the given URL path : ensures all pathElements are separated by a single /
+	 * @param stringUrl
+	 * @param errMsg
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	private static String normalizeUrlPath(String stringUrl, String errMsg) throws MalformedURLException {
+		if (stringUrl == null) {
+			throw new MalformedURLException(errMsg + " : " + stringUrl);
+		}
+		return concatUrlPath(stringUrl.split("/"));
 	}
 
 	private void acceptBindingParentVisitors(XMLStreamReader compositeReader,
@@ -213,10 +289,10 @@ public class ScaImporter {
 				try {
 					bindingVisitor.visit();
 					scaVisitorsToPostCheck.add(bindingVisitor);
-				} catch (ClientException cex) {
-					log.error("Error when importing binding " + bindingVisitor
+				} catch (Exception ex) {
+					log.error("Error when visiting binding " + bindingVisitor.getDescription()
 							+ " at archi path " + toCurrentArchiPath()
-							+ " in SCA composite file " + compositeFile.getFilename(), cex);
+							+ " in SCA composite file " + compositeFile.getFilename(), ex);
 				}
 			}
 		}

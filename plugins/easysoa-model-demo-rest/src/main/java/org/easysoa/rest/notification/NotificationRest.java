@@ -80,7 +80,7 @@ public abstract class NotificationRest extends LoggedRest {
 
 	/**
 	 * Sets properties of given schema to the specified model, but only if the value parameter is not null.
-	 * If the property is not found in the given schema, it will try to find a matchin Dublin Core property.
+	 * If the property is not found in the given schema, it will try to find a match in SOA Common or Dublin Core property.
 	 * @param result
 	 * @param callback
 	 * @return

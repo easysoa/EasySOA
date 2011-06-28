@@ -32,7 +32,7 @@
       <cacheSize>1</cacheSize>
       
       <resultLayouts>
-        <layout name="document_virtual_navigation_listing_ajax"
+        <layout name="document_virtual_navigation_listing_ajax_application"
           title="document_listing" translateTitle="true"
           iconPath="/icons/document_listing_icon.png" />
         <layout
@@ -57,12 +57,12 @@
       <coreQueryPageProvider>
         <property name="coreSession">#{documentManager}</property>
         <whereClause docType="QueryNav2">
-          <predicate parameter="app:server" operator="STARTSWITH">
+          <predicate parameter="app:serverEntry" operator="STARTSWITH">
             <field schema="querynav2" name="location" />
           </predicate>
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
-            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'AppliImpl'
+            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'Workspace'
           </fixedPart>
         </whereClause>
         <sort column="dc:title" ascending="true" />
@@ -88,20 +88,20 @@
       
     </contentView>
     
-    <!--
-    <contentView name="byServiceContentView">
-      <title>label.easysoa.service</title>
+    
+    <contentView name="byFeatureContentView">
+      <title>label.easysoa.feature</title>
       <translateTitle>true</translateTitle>
       
       <coreQueryPageProvider>
         <property name="coreSession">#{documentManager}</property>
         <whereClause docType="QueryNav2">
-          <predicate parameter="api:application" operator="STARTSWITH">
-            <field schema="querynav2" name="application" />
+          <predicate parameter="app:environment" operator="STARTSWITH">
+            <field schema="querynav2" name="location" />
           </predicate>
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
-            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'ServiceAPI'
+            !='deleted' AND ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'Workspace'
           </fixedPart>
         </whereClause>
         <sort column="dc:title" ascending="true" />
@@ -117,7 +117,7 @@
       <cacheSize>1</cacheSize>
       
       <resultLayouts>
-        <layout name="document_virtual_navigation_listing_ajax_service"
+        <layout name="document_virtual_navigation_listing_ajax_feature"
           title="document_listing" translateTitle="true"
           iconPath="/icons/document_listing_icon.png" />
       </resultLayouts>
@@ -125,7 +125,7 @@
       <selectionList>CURRENT_SELECTION</selectionList>
       <actions category="CURRENT_SELECTION_LIST" />
       
-    </contentView>-->
+    </contentView>
     
     </extension>
 </component>

@@ -11,6 +11,7 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -70,7 +71,7 @@ public class SCAImportTest {
 		// session.removeDocument(parentAppliImplModel.getRef());
     }
     
-    @Test
+    @Test @Ignore
     public void testSCA() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project

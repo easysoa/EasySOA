@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.VocabularyService;
 import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -53,7 +54,7 @@ public class VocabulariesTest {
   	  	assertNotNull("Cannot get directory service component", dirService);
     }
     
-    @Test
+    @Test @Ignore
     public void test() throws Exception {
     	List<Directory> dirList = dirService.getDirectories();
   	  	assertNotNull(dirList);

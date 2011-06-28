@@ -57,8 +57,7 @@ public class ServiceNotificationRest extends NotificationRest {
 
 			// Exctract main fields
 			String url = params.getFirst(PROP_URL),
-				parentUrl = params.getFirst(PROP_PARENTURL),
-				name = (params.get("title") != null) ? params.getFirst("title") : null;
+				parentUrl = params.getFirst(PROP_PARENTURL);
 			int callcount;
 			try {
 				callcount = (params.get(PROP_CALLCOUNT) != null) ? Integer.parseInt(params.getFirst(PROP_CALLCOUNT)) : 0;
@@ -66,8 +65,6 @@ public class ServiceNotificationRest extends NotificationRest {
 			catch (NumberFormatException e) {
 				callcount = 0;
 			}
-			if (name == null)
-				name = url;
 			
 			try {
 				
@@ -80,7 +77,7 @@ public class ServiceNotificationRest extends NotificationRest {
 				}
 				DocumentModel serviceModel = DocumentService.findService(session, url);
 				if (serviceModel == null)
-					serviceModel = DocumentService.createService(session, apiModel.getPathAsString(), name);
+					serviceModel = DocumentService.createService(session, apiModel.getPathAsString(), url);
 				session.move(serviceModel.getRef(), apiModel.getRef(), serviceModel.getName());
 
 				// Update optional properties

@@ -10,5 +10,8 @@
   <xs:element name="environment" type="xs:string" />
   <xs:element name="technology" type="xs:string" />
   <xs:element name="standard" type="xs:string" />
+  
+  <!-- Internal : needed by virtual navigation by server-->
+  <xs:element name="serverEntry" type="xs:string" />
     
 </xs:schema>

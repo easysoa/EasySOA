@@ -1,5 +1,7 @@
 package org.easysoa.sca;
 
+import java.net.MalformedURLException;
+
 import javax.xml.namespace.QName;
 
 import org.easysoa.doctypes.AppliImpl;
@@ -20,12 +22,12 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
 	public ServiceBindingVisitorBase(ScaImporter scaImporter) {
 		super(scaImporter);
 	}
-	
+
 	public boolean isOkFor(QName bindingQName) {
 		return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.ws"));
 	}
 	
-	public void visit() throws ClientException {
+	public void visit() throws ClientException, MalformedURLException {
 		
 		String serviceUrl = getBindingUrl();
 		if (serviceUrl == null) {
@@ -42,7 +44,7 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
 		// create api
 		String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
 		String appliImplPath = scaImporter.getParentAppliImplModel().getPathAsString();
-		String apiUrl = ScaImporter.getApiUrl(serviceUrl, appliImplUrl, scaImporter.getServiceStackUrl());
+		String apiUrl = ScaImporter.getApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
 		String apiName = scaImporter.getServiceStackType(); // TODO better, ex. from composite name...
 		
 		DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);
