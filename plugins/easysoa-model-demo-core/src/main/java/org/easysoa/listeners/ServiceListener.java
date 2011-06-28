@@ -1,6 +1,11 @@
 package org.easysoa.listeners;
 
-import static org.easysoa.doctypes.Service.*;
+import static org.easysoa.doctypes.EasySOADoctype.PROP_FILEURL;
+import static org.easysoa.doctypes.EasySOADoctype.SCHEMA_COMMON;
+import static org.easysoa.doctypes.Service.DOCTYPE;
+import static org.easysoa.doctypes.Service.PROP_LIGHTURL;
+import static org.easysoa.doctypes.Service.PROP_URL;
+import static org.easysoa.doctypes.Service.SCHEMA;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -9,7 +14,6 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -145,14 +149,8 @@ public class ServiceListener implements EventListener {
 						// Nothing (authority extraction failed)
 					}
 					
-					// Environment
-					environment = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT);
-					if (environment == null || environment.isEmpty()) {
-						appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, AppliImpl.DEFAULT_ENVIRONMENT);
-						environment = AppliImpl.DEFAULT_ENVIRONMENT;
-					}
-					
 					session.saveDocument(apiModel);
+					session.saveDocument(appliImplModel);
 	
 				} catch (Exception e) {
 					log.error("WSDL parsing failed", e);

@@ -55,7 +55,7 @@ public class ServiceAPIListener implements EventListener {
 			return;
 		}
 		
-		String environment = null, server = null;
+		String server = null;
 		
 		// If the file contains a WSDL file, parse it
 		try {
@@ -63,113 +63,113 @@ public class ServiceAPIListener implements EventListener {
 			Blob blob = (Blob) doc.getProperty("file", "content");
 			
 			// Check that the API contains a file
-			if (blob == null) {
-				return;
-			}
-			
-			// Extract file to system 
-			File tmpFile = File.createTempFile(doc.getId(), null);
-			blob.transferTo(tmpFile);
-			
-			// TODO: Test if WSDL
-			
-			try {
-
-				// Analyze WSDL
-				WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
-				Description desc = reader.read(tmpFile.toURI().toURL());
-
-				// Initialization
-				org.ow2.easywsdl.wsdl.api.Service firstService = 
-					(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
+			if (blob != null) {
 				
-				// Default URL
-				String url = (String) doc.getProperty(SCHEMA, PROP_URL);
-				if (url == null) {
-					Endpoint firstEndpoint = firstService.getEndpoints().get(0);
-					if (server == null) {
-						server = InetAddress.getByName(
-								new URL(firstEndpoint.getAddress()).getHost())
-								.getHostAddress();
-					}
-					url = firstEndpoint.getAddress();
-				}
+				// Extract file to system 
+				File tmpFile = File.createTempFile(doc.getId(), null);
+				blob.transferTo(tmpFile);
 				
-				// Fill document metadata
-
-				String title  = (String) doc.getProperty("dublincore", "title");
-				if (title == null || title.isEmpty()) {
-					doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
-				}
-
-				doc.setProperty(SCHEMA, PROP_URL, url);
-				doc.setProperty(SCHEMA, PROP_PROTOCOLS,
-						((Binding) ((Endpoint) firstService.getEndpoints().get(0))
-								.getBinding()).getTransportProtocol());
+				// TODO: Test if WSDL
 				
-				// Update parent's properties
-				DocumentModel parentModel = session.getDocument(doc.getParentRef());
-				String existingServer = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
-				if (existingServer == null || !server.equals(existingServer)) {
-					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, server);
-				}
 				try {
-					String provider = new URL(((Endpoint) firstService.getEndpoints().get(0)).getAddress()).getAuthority();
-					String existingProvider = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
-					if (existingProvider == null || !provider.equals(existingProvider)) {
-						parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER, provider);
+	
+					// Analyze WSDL
+					WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
+					Description desc = reader.read(tmpFile.toURI().toURL());
+	
+					// Initialization
+					org.ow2.easywsdl.wsdl.api.Service firstService = 
+						(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
+					
+					// Default URL
+					String url = (String) doc.getProperty(SCHEMA, PROP_URL);
+					if (url == null) {
+						Endpoint firstEndpoint = firstService.getEndpoints().get(0);
+						if (server == null) {
+							server = InetAddress.getByName(
+									new URL(firstEndpoint.getAddress()).getHost())
+									.getHostAddress();
+						}
+						url = firstEndpoint.getAddress();
 					}
-				}
-				catch(Exception e) {
-					// Nothing (authority extraction failed)
-				}
-				environment = (String) doc.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT);
-				if (environment == null || environment.isEmpty()) {
-					parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, AppliImpl.DEFAULT_ENVIRONMENT);
-					environment = AppliImpl.DEFAULT_ENVIRONMENT;
-				}
-				session.saveDocument(parentModel);
-				
-				// Generate services
-				if (!creationEvent) {
-					for (org.ow2.easywsdl.wsdl.api.Service service : desc.getServices()) {
-						String serviceName = service.getQName().getLocalPart();
-						if (DocumentService.findService(session, url) == null) {
-							try {
-								String serviceUrl = service.getEndpoints().get(0).getAddress();
-								DocumentModel serviceModel = DocumentService.createService(session, 
-										doc.getPathAsString(), serviceUrl);
-								if (serviceModel != null) {
-									serviceModel.setProperty("dublincore", "title", serviceName);
-									if (serviceUrl.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
-										serviceModel.setProperty(Service.SCHEMA, Service.PROP_LIGHTURL,
-												"http://localhost:8083/easysoa/light/paf.html");
+					
+					// Fill document metadata
+	
+					String title  = (String) doc.getProperty("dublincore", "title");
+					if (title == null || title.isEmpty()) {
+						doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
+					}
+	
+					doc.setProperty(SCHEMA, PROP_URL, url);
+					doc.setProperty(SCHEMA, PROP_PROTOCOLS,
+							((Binding) ((Endpoint) firstService.getEndpoints().get(0))
+									.getBinding()).getTransportProtocol());
+					
+					// Update parent's properties
+					DocumentModel parentModel = session.getDocument(doc.getParentRef());
+					/*String existingServer = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
+					if (existingServer == null || !server.equals(existingServer)) {
+						parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, server);
+					}*/
+					try {
+						String provider = new URL(((Endpoint) firstService.getEndpoints().get(0)).getAddress()).getAuthority();
+						String existingProvider = (String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
+						if (existingProvider == null || !provider.equals(existingProvider)) {
+							parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER, provider);
+						}
+					}
+					catch(Exception e) {
+						// Nothing (authority extraction failed)
+					}
+					/*environment = (String) doc.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT);
+					if (environment == null || environment.isEmpty()) {
+						parentModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, AppliImpl.DEFAULT_ENVIRONMENT);
+						environment = AppliImpl.DEFAULT_ENVIRONMENT;
+					}*/
+					session.saveDocument(parentModel);
+					
+					// Generate services
+					if (!creationEvent) {
+						for (org.ow2.easywsdl.wsdl.api.Service service : desc.getServices()) {
+							String serviceName = service.getQName().getLocalPart();
+							if (DocumentService.findService(session, url) == null) {
+								try {
+									String serviceUrl = service.getEndpoints().get(0).getAddress();
+									DocumentModel serviceModel = DocumentService.createService(session, 
+											doc.getPathAsString(), serviceUrl);
+									if (serviceModel != null) {
+										serviceModel.setProperty("dublincore", "title", serviceName);
+										if (serviceUrl.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
+											serviceModel.setProperty(Service.SCHEMA, Service.PROP_LIGHTURL,
+													"http://localhost:8083/easysoa/light/paf.html");
+										}
+										session.saveDocument(serviceModel);
 									}
-									session.saveDocument(serviceModel);
+									else {
+										throw new NullPointerException("Cannot find Service API for child service creation.");
+									}
 								}
-								else {
-									throw new NullPointerException("Cannot find Service API for child service creation.");
+								catch (Exception e) {
+									log.warn("Cannot set extracted service url : "+e.getMessage());
 								}
-							}
-							catch (Exception e) {
-								log.warn("Cannot set extracted service url : "+e.getMessage());
 							}
 						}
 					}
+					else {
+						// Service creation fails on API creation (TODO: why?)
+						session.saveDocument(doc);
+					}
+	
+				} catch (Exception e) {
+					log.error("WSDL parsing failed", e);
+				} finally {
+					tmpFile.delete();
 				}
-				else {
-					// Service creation fails on API creation (TODO: why?)
-					session.saveDocument(doc);
-				}
-
-			} catch (Exception e) {
-				log.error("WSDL parsing failed", e);
-			} finally {
-				tmpFile.delete();
+	
+				// Save
+				session.save();
+			
 			}
-
-			// Save
-			session.save();
 
 		} catch (Exception e) {
 			log.error("Error while parsing WSDL", e);

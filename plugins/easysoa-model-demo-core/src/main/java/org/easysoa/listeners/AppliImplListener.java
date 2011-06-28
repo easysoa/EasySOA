@@ -4,7 +4,10 @@ import static org.easysoa.doctypes.AppliImpl.DOCTYPE;
 import static org.easysoa.doctypes.AppliImpl.PROP_ENVIRONMENT;
 import static org.easysoa.doctypes.AppliImpl.PROP_SERVER;
 import static org.easysoa.doctypes.AppliImpl.PROP_SERVERENTRY;
+import static org.easysoa.doctypes.AppliImpl.PROP_URL;
 import static org.easysoa.doctypes.AppliImpl.SCHEMA;
+
+import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,22 +45,40 @@ public class AppliImplListener implements EventListener {
 			return;
 		}
 		
-		// Maintain internal properties
+		String url = null, server = null, environment = null;
+		
 		try {
+			
+			url = (String) doc.getProperty(SCHEMA, PROP_URL);
+			server = (String) doc.getProperty(SCHEMA, PROP_SERVER);
+			environment = (String) doc.getProperty(SCHEMA, PROP_ENVIRONMENT);
+
+			// Default server value
+			if (url != null && !url.isEmpty() && (server == null || server.isEmpty())) {
+				try {
+					server = new URL(url).getHost();
+					doc.setProperty(SCHEMA, PROP_SERVER, server);
+				}
+				catch (Exception e) {
+					log.warn("Failed to parse application URL.");
+				}
+			}
+			
+			// Default environment
+			
+
+			// Maintain internal properties
 			doc.setProperty(SCHEMA, PROP_SERVERENTRY, 
-					doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + 
-					doc.getProperty(SCHEMA, PROP_SERVER));
+					doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
+			
 		} catch (ClientException e) {
 			log.error("Failed to maintain internal property", e);
 		}
-
+		
 		// Update vocabulary
 		// TODO: Update on document deletion
 		try {
 			
-			String environment = (String) doc.getProperty(SCHEMA, PROP_ENVIRONMENT);
-			String server = (String) doc.getProperty(SCHEMA, PROP_SERVER);
-
 			if (environment == null)
 				environment = DEFAULT_ENVIRONMENT;
 		
