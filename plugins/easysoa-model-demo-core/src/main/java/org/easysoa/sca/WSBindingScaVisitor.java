@@ -22,7 +22,7 @@ public class WSBindingScaVisitor extends ServiceBindingVisitorBase {
 
 	@Override
 	protected String getBindingUrl() {
-		String serviceUrl = compositeReader.getAttributeValue("", "uri");
+		String serviceUrl = compositeReader.getAttributeValue(null, "uri"); // rather than "" ?! // TODO SCA_URI
 		if (serviceUrl == null) {
 			String wsdlLocation = compositeReader.getAttributeValue(ScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
 			if (wsdlLocation != null) {

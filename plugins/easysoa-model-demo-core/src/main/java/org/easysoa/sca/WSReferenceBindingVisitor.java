@@ -21,7 +21,7 @@ public class WSReferenceBindingVisitor extends ReferenceBindingVisitorBase {
 	@Override
 	protected String getBindingUrl() {
 		// getting referenced service url
-		String refUrl = compositeReader.getAttributeValue("", "uri");
+		String refUrl = compositeReader.getAttributeValue(null, "uri"); // rather than "" ?! // TODO SCA_URI
 		if (refUrl == null) {
 			String wsdlLocation = compositeReader.getAttributeValue(ScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
 			if (wsdlLocation != null) {
