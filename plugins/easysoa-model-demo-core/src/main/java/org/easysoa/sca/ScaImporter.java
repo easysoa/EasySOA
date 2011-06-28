@@ -108,28 +108,29 @@ public class ScaImporter {
 			}
 			
 			if (compositeReader.getEventType() == XMLEvent.START_ELEMENT) {
-				String name = compositeReader.getAttributeValue("", "name"); // TODO SCA_URI
+				String name = compositeReader.getAttributeValue(null, "name"); // rather than "" ?! // TODO SCA_URI
+				QName elementName = compositeReader.getName();
 				
-				if (compositeReader.getName().equals(SCA_COMPONENT_QNAME)) {
+				if (elementName.equals(SCA_COMPONENT_QNAME)) {
 					// component !
 					getArchiNameStack().push(name);
 
 				} else if (compositeReader.getLocalName().startsWith("implementation.")) {
 					// implementation !
 					if (compositeReader.getLocalName().equals("implementation.composite")) {
-						String compositeName = compositeReader.getAttributeValue(ScaImporter.SCA_URI, "name");
+						String compositeName = compositeReader.getAttributeValue(null, "name"); // rather than "" ?! // TODO SCA_URI
 						//TODO visitComposite BUT CAN'T SINCE ONLY ONE SCA FILE HAS BEEN UPLOADED
 						// so TODO alts : upload zip, use scm connector, export button from eclipse... 
 					}
 
-				} else if (compositeReader.getName().equals(SCA_SERVICE_QNAME)) {
+				} else if (elementName.equals(SCA_SERVICE_QNAME)) {
 					// service !
 					getArchiNameStack().push(name);
 					acceptBindingParentVisitors(compositeReader,
 							SCA_SERVICE_QNAME, createServiceBindingVisitors());
 					getArchiNameStack().pop();
 					
-				} else if (compositeReader.getName().equals(SCA_REFERENCE_QNAME)) {
+				} else if (elementName.equals(SCA_REFERENCE_QNAME)) {
 					// reference !
 					getArchiNameStack().push(name);
 					acceptBindingParentVisitors(compositeReader,
