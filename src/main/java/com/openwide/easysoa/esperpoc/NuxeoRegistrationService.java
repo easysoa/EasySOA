@@ -32,8 +32,9 @@ public class NuxeoRegistrationService {
 	 * @param service The service to register
 	 * @return The response send back by Nuxeo
 	 */
+	@Deprecated
 	public String registerWSDLService(WSDLService service){
-		//TODO Change this to register correctly WSDl in Nuxeo
+		//TODO Change this method to register correctly WSDl in Nuxeo
 		StringBuffer sb = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.wsdl.url", NUXEO_WSDL_DEFAULT_URL));
 		sb.append(service.getUrl());
 		logger.debug("[resgisterWSDLService()] --- Request URL = " + sb.toString());
@@ -73,9 +74,11 @@ public class NuxeoRegistrationService {
 		url.append("service");
 		StringBuffer body = new StringBuffer();
 		body.append("url=");
-		body.append(service.getUrl());
+		body.append(service.getUrl()); // ex. http://localhost:9080/CreateSummary
 		body.append("&parentUrl=");
-		body.append(service.getParentUrl());
+		body.append(service.getUrl().substring(0, service.getUrl().lastIndexOf('/'))); // ex. 	http://localhost:9080
+		body.append("&fileUrl=");
+		body.append(service.getParentUrl());		
 		body.append("&callcount=");
 		body.append(service.getCallCount());
 		body.append("&title=");
