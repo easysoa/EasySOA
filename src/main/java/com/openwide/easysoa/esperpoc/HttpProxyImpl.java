@@ -31,7 +31,7 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 /**
  * HTTP Proxy 
  * 
- * Work on the top of Frascati
+ * Work on the top of FraSCAti
  * 
  * Does : 
  * - Detect GET WSDL request messages, then register the WSDL in Nuxeo Easysoa model
