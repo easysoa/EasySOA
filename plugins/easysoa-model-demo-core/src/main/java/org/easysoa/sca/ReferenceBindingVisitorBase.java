@@ -41,21 +41,17 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
 	}
 	
 	public void visit() throws ClientException {
-		
-		// find existing reference
 		String referenceArchiPath = scaImporter.toCurrentArchiPath();
-		referenceModel = DocumentService.findReference(documentManager, referenceArchiPath);
-		if (referenceModel != null){
-			// TODO handle enriching / merge of service or even api
-			return;
-		}
 
 		// getting referenced service url
 		String refUrl = getBindingUrl();
 		
-		// create reference
-		referenceModel = DocumentService.createReference(documentManager,
-				scaImporter.getParentAppliImplModel().getPathAsString(), referenceArchiPath);
+		// find reference, then enrich or create
+		referenceModel = DocumentService.findReference(documentManager, referenceArchiPath);
+		if (referenceModel == null){
+			referenceModel = DocumentService.createReference(documentManager,
+					scaImporter.getParentAppliImplModel().getPathAsString(), referenceArchiPath);
+		}
 		referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL, refUrl);
 		referenceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH, referenceArchiPath);
 		referenceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());

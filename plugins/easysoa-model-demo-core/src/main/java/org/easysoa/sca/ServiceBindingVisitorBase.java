@@ -35,29 +35,26 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
 			return;
 		}
 		
-		DocumentModel serviceModel = DocumentService.findService(documentManager, serviceUrl);
-		if (serviceModel != null){
-			// TODO handle enriching / merge of service or even api
-			return;
-		}
-		
-		// create api
 		String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
 		String appliImplPath = scaImporter.getParentAppliImplModel().getPathAsString();
 		String apiUrl = ScaImporter.getApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
 		String apiName = scaImporter.getServiceStackType(); // TODO better, ex. from composite name...
-		
+
+		// find api, then enrich or create
 		DocumentModel apiModel = DocumentService.findServiceApi(documentManager, apiUrl);
 		if (apiModel == null) {	// assuming it is the parent TODO tree :
 			apiModel = DocumentService.createServiceAPI(documentManager, appliImplPath, apiUrl);
-			apiModel.setProperty("dublincore", "title", apiName);
-			apiModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
-			apiModel = documentManager.saveDocument(apiModel);
-			documentManager.save(); // Save all so that the newly created API can be found by the DocumentService
 		}
+		apiModel.setProperty("dublincore", "title", apiName);
+		apiModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
+		apiModel = documentManager.saveDocument(apiModel);
+		documentManager.save(); // Save all so that the newly created API can be found by the DocumentService
 		
-		// create service
-		serviceModel = DocumentService.createService(documentManager, apiModel.getPathAsString(), serviceUrl);
+		// find service, then enrich or create
+		DocumentModel serviceModel = DocumentService.findService(documentManager, serviceUrl);
+		if (serviceModel == null){
+			serviceModel = DocumentService.createService(documentManager, apiModel.getPathAsString(), serviceUrl);
+		}
 		serviceModel.setProperty("dublincore", "title", scaImporter.getCurrentArchiName());
 		serviceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
 		serviceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
