@@ -18,8 +18,6 @@ public class Service extends EasySOADoctype {
 	public static final String PROP_CONTENTTYPEIN = "contentTypeIn";
 	public static final String PROP_CONTENTTYPEOUT = "contentTypeOut";
 	
-	private static Map<String, String> propertyList = null;
-	
 	public static Map<String, String> getPropertyList() {
 		if (propertyList == null) {
 			propertyList = new HashMap<String, String>(); 

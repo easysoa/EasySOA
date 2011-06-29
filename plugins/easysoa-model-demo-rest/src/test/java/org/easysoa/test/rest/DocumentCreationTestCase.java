@@ -5,8 +5,7 @@ import static org.junit.Assert.*;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.test.rest.tools.NotificationTestCase;
-import org.easysoa.test.rest.tools.notification.RESTNotificationRequest;
+import org.easysoa.test.rest.tools.notification.RestNotificationRequest;
 import org.easysoa.test.rest.tools.notification.RestNotificationFactory.RestNotificationAPI;
 import org.junit.Test;
 
@@ -15,9 +14,9 @@ import org.junit.Test;
  * @author mkalam-alami
  *
  */
-public class DocumentCreationTests extends NotificationTestCase {
+public class DocumentCreationTestCase extends AbstractNotificationTestCase {
 	
-	public DocumentCreationTests() throws Exception {
+	public DocumentCreationTestCase() throws Exception {
 		super();
 	}
 
@@ -30,7 +29,7 @@ public class DocumentCreationTests extends NotificationTestCase {
 		
 		String url = "http://myApp.com/", title = "myApp";
 		
-		RESTNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.APPLIIMPL);
+		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.APPLIIMPL);
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
 		notification.setProperty(AppliImpl.PROP_URL, url);
 		notification.send();
@@ -47,7 +46,7 @@ public class DocumentCreationTests extends NotificationTestCase {
 		
 		String url = "api/", parentUrl = "http://myApp.com/", title = "myApi";
 		
-		RESTNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.SERVICEAPI);
+		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.SERVICEAPI);
 		notification.setProperty(ServiceAPI.PROP_TITLE, title)
 				.setProperty(ServiceAPI.PROP_PARENTURL, parentUrl)
 				.setProperty(ServiceAPI.PROP_URL, url);
@@ -65,7 +64,7 @@ public class DocumentCreationTests extends NotificationTestCase {
 		
 		String url = "service", parentUrl = "api/", title = "myService";
 		
-		RESTNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.SERVICE);
+		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.SERVICE);
 		notification.setProperty(Service.PROP_TITLE, title)
 				.setProperty(Service.PROP_PARENTURL, parentUrl)
 				.setProperty(Service.PROP_URL, url);

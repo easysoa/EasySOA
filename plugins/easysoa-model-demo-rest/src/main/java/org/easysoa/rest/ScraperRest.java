@@ -1,24 +1,19 @@
-package org.easysoa.rest.scraper;
+package org.easysoa.rest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 import org.easysoa.listeners.HttpFile;
-import org.easysoa.rest.notification.JSONP;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
@@ -46,8 +41,7 @@ public class ScraperRest {
 
 	@GET
 	@Path("/{url:.*}")
-	public Object doGet(@Context UriInfo uriInfo,
-			@QueryParam("callback") String callback) {
+	public Object doGet(@Context UriInfo uriInfo) {
 
 		
 		List<String> errors = new ArrayList<String>();
@@ -142,9 +136,7 @@ public class ScraperRest {
 				for (String error : errors)
 					result.append("error", error);
 			}			
-			return (callback == null) ? 
-					result.toString(2) : 
-					JSONP.format(result, callback);
+			return result.toString(2) ;
 		} catch (JSONException e) {
 			errors.add("Cannot format anwser: " + e.getMessage());
 		}

@@ -18,8 +18,6 @@ public class ServiceAPI extends EasySOADoctype {
 	public static final String PROP_PARENTURL = "parentUrl";
 	public static final String PROP_APPLICATION = "application";
 	public static final String PROP_PROTOCOLS = "protocols";
-
-	private static Map<String, String> propertyList = null;
 	
 	public static Map<String, String> getPropertyList() {
 		if (propertyList == null) {

@@ -1,9 +1,10 @@
-package org.easysoa.sca;
+package org.easysoa.sca.visitors;
 
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.sca.ScaImporter;
 import org.nuxeo.ecm.core.api.CoreSession;
 
 /**

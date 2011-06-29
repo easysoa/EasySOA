@@ -19,6 +19,7 @@ import org.nuxeo.ecm.platform.relations.api.impl.ResourceImpl;
 import org.nuxeo.ecm.platform.relations.api.impl.StatementImpl;
 import org.nuxeo.ecm.platform.relations.api.util.RelationHelper;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * Helpers for managing relations between documents.
@@ -27,19 +28,20 @@ import org.nuxeo.runtime.api.Framework;
  * @author mkalam-alami
  *
  */
-public class RelationService {
+public class ImplementationRelationService extends DefaultComponent {
 	
-	private static final Log log = LogFactory.getLog(RelationService.class);
+	private static final Log log = LogFactory.getLog(ImplementationRelationService.class);
+	
 	public static final String DEFAULT_PREDICATE = "Est rattaché à";
 	public static final String DEFAULT_PREDICATE_INVERSE = "Est implémenté par";
 
 	/**
-	 * Returns all document related to specified document.
-	 * @param session
-	 * @param doc
-	 * @return
-	 */
-	public static final DocumentModelList getRelations(CoreSession session,
+	* Returns all document related to specified document.
+	* @param session
+	* @param doc
+	* @return
+	*/
+	public final DocumentModelList getRelations(CoreSession session,
 			DocumentModel doc) {
 		DocumentModelList relations = null;
 		try {
@@ -65,11 +67,11 @@ public class RelationService {
 	}
 
 	/**
-	 * Creates a relation between two documents.
-	 * @param from
-	 * @param to
-	 */
-	public static final void createRelation(CoreSession session,
+	* Creates a relation between two documents.
+	* @param from
+	* @param to
+	*/
+	public final void createRelation(CoreSession session,
 			DocumentModel from, DocumentModel to) {
 		
 		try {
@@ -100,10 +102,10 @@ public class RelationService {
 	}
 
 	/**
-	 * Clears all relations from specified document.
-	 * @param doc
-	 */
-	public static final void clearRelations(CoreSession session, DocumentModel doc) {
+	* Clears all relations from specified document.
+	* @param doc
+	*/
+	public final void clearRelations(CoreSession session, DocumentModel doc) {
 		try {			
 			Resource predicate = new ResourceImpl(DEFAULT_PREDICATE);
 			List<Statement> stmts = RelationHelper.getStatements(doc, predicate);

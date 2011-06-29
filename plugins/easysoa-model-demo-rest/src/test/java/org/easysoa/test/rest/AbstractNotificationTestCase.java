@@ -1,4 +1,4 @@
-package org.easysoa.test.rest.tools;
+package org.easysoa.test.rest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,16 +14,17 @@ import org.easysoa.test.rest.tools.notification.RestNotificationFactory;
  * @author mkalam-alami
  *
  */
-public abstract class NotificationTestCase {
+public abstract class AbstractNotificationTestCase {
 	
-	private static final Log log = LogFactory.getLog(NotificationTestCase.class);
+	private static final Log log = LogFactory.getLog(AbstractNotificationTestCase.class);
 
 	protected RestNotificationFactory notificationFactory = null;
 	protected AutomationHelper automation = null;
 
 	private String nuxeoUrl = null;
 	
-	public NotificationTestCase() throws Exception {
+	public AbstractNotificationTestCase() throws Exception {
+		
 		// Load properties
 		FileInputStream isProps = new FileInputStream("src/test/resources/targetednuxeo.properties");
 		Properties props = new Properties();

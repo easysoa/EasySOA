@@ -20,6 +20,7 @@ public class EasySOADoctype {
 
 	private static Map<String, String> commonPropertyList = null;
 	private static Map<String, String> dublinCorePropertyList = null;
+	protected static Map<String, String> propertyList = null;
 
 	public static Map<String, String> getCommonPropertyList() {
 		if (commonPropertyList == null) {
@@ -64,6 +65,11 @@ public class EasySOADoctype {
 		if (doctype.equals(Service.DOCTYPE))
 			return Service.SCHEMA_PREFIX;
 		return null;
+	}
+	
+	public static void loadMetadataProperties() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

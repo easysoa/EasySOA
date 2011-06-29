@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<component name="org.easysoa.core.component.easysoa">
-
-  <implementation class="org.easysoa.DomainInitComponent" />
-
-</component>

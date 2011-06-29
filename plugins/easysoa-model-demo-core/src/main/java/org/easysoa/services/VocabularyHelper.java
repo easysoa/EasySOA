@@ -14,6 +14,7 @@ import org.nuxeo.ecm.directory.DirectoryServiceImpl;
 import org.nuxeo.ecm.directory.Session;
 import org.nuxeo.ecm.directory.api.DirectoryService;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * Helpers for managing vocabularies.
@@ -21,16 +22,18 @@ import org.nuxeo.runtime.api.Framework;
  * @author mkalam-alami
  *
  */
-public class VocabularyService {
+public class VocabularyHelper extends DefaultComponent {
 
-	private static final Log log = LogFactory.getLog(VocabularyService.class);
-	private static final DirectoryServiceImpl dirService = (DirectoryServiceImpl) Framework
-			.getRuntime().getComponent(DirectoryService.NAME);
-	
-	public static final String VOCABULARY_APPLICATION = "application"; 
-	public static final String VOCABULARY_ENVIRONMENT = "environment"; 
+	public static final String VOCABULARY_APPLICATION = "application";
+	public static final String VOCABULARY_ENVIRONMENT = "environment";
 	public static final String VOCABULARY_SERVER = "server"; 
+	
+	private static final Log log = LogFactory.getLog(VocabularyHelper.class);
+	
+	private final DirectoryServiceImpl dirService = (DirectoryServiceImpl) Framework
+			.getRuntime().getComponent(DirectoryService.NAME);
 
+	
 	/**
 	 * Checks if entry ID exists in a vocabulary.
 	 * @param session
@@ -39,7 +42,7 @@ public class VocabularyService {
 	 * @throws DirectoryException
 	 * @throws ClientException
 	 */
-	public static boolean entryExists(CoreSession session,
+	public boolean entryExists(CoreSession session,
 			String vocabularyName, String entryId) throws DirectoryException,
 			ClientException {
 		Session dirSession = dirService.open(vocabularyName);
@@ -62,7 +65,7 @@ public class VocabularyService {
 	 * @param entryId
 	 * @param entryName
 	 */
-	public static void addEntry(CoreSession session, String vocabularyName,
+	public void addEntry(CoreSession session, String vocabularyName,
 			String entryId, String entryName) {
 		addEntry(session, vocabularyName, entryId, entryName, null);
 	}
@@ -75,7 +78,7 @@ public class VocabularyService {
 	 * @param entryName
 	 * @param parentId
 	 */
-	public static void addEntry(CoreSession session, String vocabularyName,
+	public void addEntry(CoreSession session, String vocabularyName,
 			String entryId, String entryName, String parentId) {
 		try {
 			if (entryExists(session, vocabularyName, entryId)) {
@@ -106,7 +109,7 @@ public class VocabularyService {
 	 * @param vocabularyName
 	 * @param entryNames
 	 */
-	public static void addEntries(CoreSession session, String vocabularyName,
+	public void addEntries(CoreSession session, String vocabularyName,
 			List<String> entryNames) {
 		try {
 			Session dirSession = dirService.open(vocabularyName);
@@ -130,7 +133,7 @@ public class VocabularyService {
 	 * @param vocabularyName
 	 * @param entryId
 	 */
-	public static void removeEntry(CoreSession session, String vocabularyName,
+	public void removeEntry(CoreSession session, String vocabularyName,
 			String entryId) {
 		try {
 			Session dirSession = dirService.open(vocabularyName);
@@ -148,7 +151,7 @@ public class VocabularyService {
 	 * @param session
 	 * @param vocabularyName
 	 */
-	public static void removeAllEntries(CoreSession session,
+	public void removeAllEntries(CoreSession session,
 			String vocabularyName) {
 		try {
 			Session dirSession = dirService.open(vocabularyName);

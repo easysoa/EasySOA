@@ -1,10 +1,12 @@
-package org.easysoa.sca;
+package org.easysoa.sca.visitors;
 
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.sca.ScaImporter;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * Visitor for REST reference bindings
@@ -47,9 +49,10 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
 		String refUrl = getBindingUrl();
 		
 		// find reference, then enrich or create
-		referenceModel = DocumentService.findReference(documentManager, referenceArchiPath);
+		DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
+		referenceModel = docService.findReference(documentManager, referenceArchiPath);
 		if (referenceModel == null){
-			referenceModel = DocumentService.createReference(documentManager,
+			referenceModel = docService.createReference(documentManager,
 					scaImporter.getParentAppliImplModel().getPathAsString(), referenceArchiPath);
 		}
 		referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL, refUrl);
@@ -62,9 +65,10 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
 	
 	@Override
 	public void postCheck() throws ClientException {
+		DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
 		// find referenced service
 		String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);
-		DocumentModel refServiceModel = DocumentService.findService(documentManager, refUrl);
+		DocumentModel refServiceModel = docService.findService(documentManager, refUrl);
 		if (refServiceModel != null) {
 			referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFPATH, refServiceModel.getPathAsString());
 			documentManager.saveDocument(referenceModel);

@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.services.VocabularyService;
+import org.easysoa.services.DocumentService;
+import org.easysoa.services.VocabularyHelper;
+import org.easysoa.services.VocabularyHelper;
 import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,6 +20,7 @@ import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.directory.Directory;
 import org.nuxeo.ecm.directory.api.DirectoryService;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -61,27 +64,29 @@ public class VocabulariesTest {
   	  	assertEquals(dirList.size(), 3);
 
 		String environment = "test test environment";
+
+		VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
 		
 		// none yet :
-		VocabularyService.removeEntry(session,
-				VocabularyService.VOCABULARY_ENVIRONMENT,
+		vocService.removeEntry(session,
+				VocabularyHelper.VOCABULARY_ENVIRONMENT,
 				environment); // in case previous tests let crap be there
-		assertTrue(!VocabularyService.entryExists(session,
-				VocabularyService.VOCABULARY_ENVIRONMENT, environment));
+		assertTrue(!vocService.entryExists(session,
+				VocabularyHelper.VOCABULARY_ENVIRONMENT, environment));
 
 		// adding one :
-		VocabularyService.addEntry(session,
-				VocabularyService.VOCABULARY_ENVIRONMENT,
+		vocService.addEntry(session,
+				VocabularyHelper.VOCABULARY_ENVIRONMENT,
 				environment, environment);
-		assertTrue(VocabularyService.entryExists(session,
-				VocabularyService.VOCABULARY_ENVIRONMENT, environment));
+		assertTrue(vocService.entryExists(session,
+				VocabularyHelper.VOCABULARY_ENVIRONMENT, environment));
 
 		// removing it :
-		VocabularyService.removeEntry(session,
-				VocabularyService.VOCABULARY_ENVIRONMENT,
+		vocService.removeEntry(session,
+				VocabularyHelper.VOCABULARY_ENVIRONMENT,
 				environment);
-		assertTrue(!VocabularyService.entryExists(session,
-				VocabularyService.VOCABULARY_ENVIRONMENT, environment));
+		assertTrue(!vocService.entryExists(session,
+				VocabularyHelper.VOCABULARY_ENVIRONMENT, environment));
     }
 
 }

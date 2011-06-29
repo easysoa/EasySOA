@@ -52,7 +52,7 @@ public class ServiceListener implements EventListener {
 			return;
 		}
 		
-		String environment = null, server = null;
+		String server = null;
 		
 		try {
 			// Extract data from specified document

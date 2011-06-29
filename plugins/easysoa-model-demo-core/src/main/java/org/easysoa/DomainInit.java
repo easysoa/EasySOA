@@ -43,8 +43,6 @@ public class DomainInit extends UnrestrictedSessionRunner {
 				rootChild.setProperty("dublincore", "title", DocumentService.WORKSPACE_ROOT_TITLE);
 				session.saveDocument(rootChild);
 				session.save();
-				
-				DocumentService.getDefaultAppliImpl(session);
 			}
 		}
 		

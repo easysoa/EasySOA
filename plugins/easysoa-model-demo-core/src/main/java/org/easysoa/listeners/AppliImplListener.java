@@ -11,7 +11,7 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.services.VocabularyService;
+import org.easysoa.services.VocabularyHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -19,6 +19,7 @@ import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
+import org.nuxeo.runtime.api.Framework;
 
 public class AppliImplListener implements EventListener {
 
@@ -81,18 +82,20 @@ public class AppliImplListener implements EventListener {
 			
 			if (environment == null)
 				environment = DEFAULT_ENVIRONMENT;
-		
-			if (!VocabularyService.entryExists(session,
-					VocabularyService.VOCABULARY_ENVIRONMENT, environment)) {
-				VocabularyService.addEntry(session,
-						VocabularyService.VOCABULARY_ENVIRONMENT,
+
+			VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
+			
+			if (!vocService.entryExists(session,
+					VocabularyHelper.VOCABULARY_ENVIRONMENT, environment)) {
+				vocService.addEntry(session,
+						VocabularyHelper.VOCABULARY_ENVIRONMENT,
 						environment, environment);
 			}
 			if (server != null && !server.isEmpty()
-					&& !VocabularyService.entryExists(session,
-							VocabularyService.VOCABULARY_SERVER, server)) {
-				VocabularyService.addEntry(session,
-						VocabularyService.VOCABULARY_SERVER, server,
+					&& !vocService.entryExists(session,
+							VocabularyHelper.VOCABULARY_SERVER, server)) {
+				vocService.addEntry(session,
+						VocabularyHelper.VOCABULARY_SERVER, server,
 						server, environment);
 			}
 		} catch (ClientException e) {

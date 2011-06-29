@@ -4,9 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
-import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.doctypes.ServiceReference;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -14,6 +14,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * 
@@ -21,20 +22,20 @@ import org.nuxeo.ecm.core.api.PathRef;
  *
  */
 // TODO: Switch to real Nuxeo service instead of static access
-public class DocumentService {
-	
-	private static final Log log = LogFactory.getLog(DocumentService.class);
-	
+public class DocumentService extends DefaultComponent {
+
 	public static final String DOMAIN_TITLE = "EasySOA";
 	public static final String WORKSPACE_ROOT_TITLE = "Service Registry";
 	public static final String DEFAULT_APPLIIMPL_TITLE = "Default application";
 	public static final String DEFAULT_APPLIIMPL_URL = "(Unknown)";
+	
+	private static final Log log = LogFactory.getLog(DocumentService.class);
 
 	// Must not be directly accessed, use getters
-	private static DocumentModel defaultAppliImpl = null;
-	private static DocumentModel wsRoot = null; 
+	private DocumentModel defaultAppliImpl = null;
+	private DocumentModel wsRoot = null; 
 	
-	public static final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException {
+	public final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException {
 		
 		DocumentModel appliImpl = session.createDocumentModel(
 				getWSRoot(session).getPathAsString(),
@@ -53,7 +54,7 @@ public class DocumentService {
 	 * @return
 	 * @throws ClientException
 	 */
-	public static final DocumentModel createServiceAPI(CoreSession session,
+	public final DocumentModel createServiceAPI(CoreSession session,
 			String parentPath, String url) throws ClientException {
 		
 		boolean invalidParent = false;
@@ -77,13 +78,14 @@ public class DocumentService {
 	
 	/**
 	 * Returns null if the service API doesn't exist.
+	 * 
 	 * @param session
 	 * @param parentPath service API
 	 * @param url
 	 * @return
 	 * @throws ClientException
 	 */
-	public static final DocumentModel createService(CoreSession session,
+	public final DocumentModel createService(CoreSession session,
 			String parentPath, String url) throws ClientException {
 		
 		if (parentPath != null) {
@@ -102,13 +104,14 @@ public class DocumentService {
 	
 	/**
 	 * Returns null if the service API Impl doesn't exist.
+	 * 
 	 * @param session
 	 * @param parentPath service API Impl
 	 * @param archiPath
 	 * @return
 	 * @throws ClientException
 	 */
-	public static final DocumentModel createReference(CoreSession session,
+	public final DocumentModel createReference(CoreSession session,
 			String parentPath, String title) throws ClientException {
 		
 		if (parentPath != null) {
@@ -130,10 +133,10 @@ public class DocumentService {
 	 * @return
 	 * @throws ClientException
 	 */
-	public static DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
+	public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
 		
 		if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
-			DocumentModel appliimpl = DocumentService.getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
+			DocumentModel appliimpl = getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
 			if (appliimpl == null) {
 				DocumentModel appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_URL);
 				appliImpl.setProperty("dublincore", "title", DEFAULT_APPLIIMPL_TITLE);
@@ -148,28 +151,31 @@ public class DocumentService {
 		return defaultAppliImpl;
 	}
 	
-	public static DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
+	public DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
 		if (appliUrl == null)
 			return null;
 		return findFirstDocument(session, AppliImpl.DOCTYPE, 
 				AppliImpl.SCHEMA_PREFIX+AppliImpl.PROP_URL, appliUrl);
 	}
 	
-	public static DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
+	public DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
 		if (apiUrl == null)
 			return null;
 		return findFirstDocument(session, ServiceAPI.DOCTYPE, 
 				ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL, apiUrl);
 	}
 	
-	public static DocumentModel findService(CoreSession session, String serviceUrl) throws ClientException {
+	public DocumentModel findService(CoreSession session, String serviceUrl) throws ClientException {
 		if (serviceUrl == null)
 			return null;
 		return findFirstDocument(session, Service.DOCTYPE,
 				Service.SCHEMA_PREFIX+Service.PROP_URL, serviceUrl);
 	}
 
-	public static DocumentModel findReference(CoreSession session,
+	/* (non-Javadoc)
+	 * @see org.easysoa.services.DocumentService#findReference(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
+	 */
+	public DocumentModel findReference(CoreSession session,
 			String referenceArchiPath) throws ClientException {
 		if (referenceArchiPath == null) {
 			return null;
@@ -178,13 +184,13 @@ public class DocumentService {
 				EasySOADoctype.SCHEMA_COMMON_PREFIX +ServiceReference.PROP_ARCHIPATH, referenceArchiPath);
 	}
 
-	private static DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
+	private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
 		DocumentModelList apis = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				type + "' AND " + field + " = '" +  value + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		return (apis != null && apis.size() > 0) ? apis.get(0) : null;
 	}
 
-	private static DocumentModel getWSRoot(CoreSession session) throws ClientException {
+	private DocumentModel getWSRoot(CoreSession session) throws ClientException {
 		if (wsRoot == null || !session.exists(wsRoot.getRef())) {
 			DocumentModel defaultDomain = session.getChildren(session.getRootDocument().getRef()).get(0);
 			DocumentModelList domainChildren =  session.getChildren(defaultDomain.getRef());
@@ -197,7 +203,7 @@ public class DocumentService {
 		return wsRoot;
 	}
 
-	private static DocumentModel getChild(CoreSession session, DocumentRef parent, String childTitle) throws ClientException { 
+	private DocumentModel getChild(CoreSession session, DocumentRef parent, String childTitle) throws ClientException { 
 		for (DocumentModel model : session.getChildren(parent)) {
 			if (model.getTitle().equals(childTitle) && model.getCurrentLifeCycleState() != "deleted") {
 				return model;

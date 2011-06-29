@@ -14,8 +14,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
-import org.easysoa.services.VocabularyService;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.VocabularyHelper;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -24,6 +24,7 @@ import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
+import org.nuxeo.runtime.api.Framework;
 import org.ow2.easywsdl.wsdl.WSDLFactory;
 import org.ow2.easywsdl.wsdl.api.Binding;
 import org.ow2.easywsdl.wsdl.api.Description;
@@ -128,14 +129,16 @@ public class ServiceAPIListener implements EventListener {
 					}*/
 					session.saveDocument(parentModel);
 					
+					DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
+					
 					// Generate services
 					if (!creationEvent) {
 						for (org.ow2.easywsdl.wsdl.api.Service service : desc.getServices()) {
 							String serviceName = service.getQName().getLocalPart();
-							if (DocumentService.findService(session, url) == null) {
+							if (docService.findService(session, url) == null) {
 								try {
 									String serviceUrl = service.getEndpoints().get(0).getAddress();
-									DocumentModel serviceModel = DocumentService.createService(session, 
+									DocumentModel serviceModel = docService.createService(session, 
 											doc.getPathAsString(), serviceUrl);
 									if (serviceModel != null) {
 										serviceModel.setProperty("dublincore", "title", serviceName);
@@ -178,15 +181,17 @@ public class ServiceAPIListener implements EventListener {
 		// Update vocabulary
 		// TODO: Update on document deletion
 		try {
+			VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
+			
 			String app = (String) doc.getProperty(SCHEMA, PROP_APPLICATION);
-			if (app != null && !app.isEmpty() && !VocabularyService.entryExists(
-					session, VocabularyService.VOCABULARY_APPLICATION, app)) {
-				VocabularyService.addEntry(session, VocabularyService.VOCABULARY_APPLICATION,
+			if (app != null && !app.isEmpty() && !vocService.entryExists(
+					session, VocabularyHelper.VOCABULARY_APPLICATION, app)) {
+				vocService.addEntry(session, VocabularyHelper.VOCABULARY_APPLICATION,
 						app, app);
 			}
 		}
 		catch (ClientException e) {
-			log.error("Error while updating "+VocabularyService.VOCABULARY_APPLICATION+" vocabulary", e);
+			log.error("Error while updating "+VocabularyHelper.VOCABULARY_APPLICATION+" vocabulary", e);
 		}
 		
 	}

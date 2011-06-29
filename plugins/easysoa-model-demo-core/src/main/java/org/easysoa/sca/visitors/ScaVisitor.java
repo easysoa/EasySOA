@@ -1,4 +1,4 @@
-package org.easysoa.sca;
+package org.easysoa.sca.visitors;
 
 import javax.xml.namespace.QName;
 

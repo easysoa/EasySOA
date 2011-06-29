@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.component.relations">
+
+  <implementation class="org.easysoa.services.ImplementationRelationService" />
+
+  <service>
+    <provide interface="org.easysoa.services.ImplementationRelationService" />
+  </service>
+  
+</component>

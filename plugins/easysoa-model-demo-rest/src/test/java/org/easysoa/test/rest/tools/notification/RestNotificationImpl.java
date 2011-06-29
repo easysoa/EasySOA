@@ -16,19 +16,19 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RESTNotificationImpl implements RESTNotificationRequest {
+public class RestNotificationImpl implements RestNotificationRequest {
 
-	private static final Log log = LogFactory.getLog(RESTNotificationImpl.class);
+	private static final Log log = LogFactory.getLog(RestNotificationImpl.class);
 	
 	private URL requestUrl;
 	private Map<String, String> requestProperties; 
 	
-	public RESTNotificationImpl(String requestUrlString) throws MalformedURLException {
+	public RestNotificationImpl(String requestUrlString) throws MalformedURLException {
 		requestUrl = new URL(requestUrlString);
 		requestProperties = new HashMap<String, String>();
 	}
 	
-	public RESTNotificationRequest setProperty(String property, String value) {
+	public RestNotificationRequest setProperty(String property, String value) {
 		requestProperties.put(property, value);
 		return this;
 	}

@@ -1,13 +1,13 @@
 package org.easysoa.sca;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
 
 import org.easysoa.doctypes.EasySOADoctype;
-import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;
@@ -23,6 +23,7 @@ import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.services.resource.ResourceService;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -49,13 +50,16 @@ public class SCAImportTest {
     
     @Before
     public void setUp() throws ClientException {
+    	
+		DocumentService docService = Framework.getRuntime().getService(DocumentService.class);
+
     	// Find or create appli
     	String appliUrl = "http://test/appli/";
-		parentAppliImplModel = DocumentService.findAppliImpl(session, appliUrl);
+		parentAppliImplModel = docService.findAppliImpl(session, appliUrl);
 		assertEquals(parentAppliImplModel, null);
 		
 		String title = "Test Appli Title";
-		parentAppliImplModel = DocumentService.createAppliImpl(session, appliUrl);
+		parentAppliImplModel = docService.createAppliImpl(session, appliUrl);
 		parentAppliImplModel.setProperty("dublincore", "title", title);
 		session.saveDocument(parentAppliImplModel);
 		session.save();

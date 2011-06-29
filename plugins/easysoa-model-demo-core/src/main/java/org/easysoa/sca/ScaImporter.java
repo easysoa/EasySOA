@@ -18,12 +18,18 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.sca.visitors.RestBindingScaVisitor;
+import org.easysoa.sca.visitors.RestReferenceBindingVisitor;
+import org.easysoa.sca.visitors.ScaVisitor;
+import org.easysoa.sca.visitors.WSBindingScaVisitor;
+import org.easysoa.sca.visitors.WSReferenceBindingVisitor;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.runtime.api.Framework;
 
 
 /**
@@ -69,8 +75,8 @@ public class ScaImporter {
 	public ScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
-		this.parentAppliImplModel = DocumentService.getDefaultAppliImpl(documentManager);
-		
+		this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class)
+				.getDefaultAppliImpl(documentManager);
 		init();
 	}
 
