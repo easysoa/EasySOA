@@ -14,7 +14,9 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -22,6 +24,7 @@ import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
+import org.nuxeo.runtime.api.Framework;
 import org.ow2.easywsdl.wsdl.WSDLFactory;
 import org.ow2.easywsdl.wsdl.api.Binding;
 import org.ow2.easywsdl.wsdl.api.Description;
@@ -71,11 +74,9 @@ public class ServiceListener implements EventListener {
 				File tmpFile = File.createTempFile(doc.getId(), null);
 				blob.transferTo(tmpFile);
 				
-				// TODO: Test if WSDL
-				
+				// Analyze WSDL
 				try {
 	
-					// Analyze WSDL
 					WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
 					Description desc = reader.read(tmpFile.toURI().toURL());
 	
@@ -86,7 +87,16 @@ public class ServiceListener implements EventListener {
 					// URL extraction
 					Endpoint firstEndpoint = firstService.getEndpoints().get(0);
 					url = firstEndpoint.getAddress();
-					doc.setProperty(SCHEMA, PROP_URL, url);
+					doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
+					
+					// Test if the service already exists, delete this one if it is the case
+					DocumentService docService = Framework.getService(DocumentService.class);
+					DocumentModel existingServiceModel = docService.findService(session, url);
+					if (existingServiceModel != null) {
+						event.cancel();
+						docService.mergeDocument(session, doc, existingServiceModel, false);
+						return; // TODO: No return in the middle of the method
+					}
 					
 					// Service name extraction
 					if (title == null || title.isEmpty() || title.equals(url)) {

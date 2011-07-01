@@ -1,5 +1,6 @@
 package org.easysoa.sca.visitors;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,10 +65,15 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
 		DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
 		// find referenced service
 		String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);
-		DocumentModel refServiceModel = docService.findService(documentManager, refUrl);
-		if (refServiceModel != null) {
-			referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFPATH, refServiceModel.getPathAsString());
-			documentManager.saveDocument(referenceModel);
+		DocumentModel refServiceModel;
+		try {
+			refServiceModel = docService.findService(documentManager, refUrl);
+			if (refServiceModel != null) {
+				referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFPATH, refServiceModel.getPathAsString());
+				documentManager.saveDocument(referenceModel);
+			}
+		} catch (MalformedURLException e) {
+			log.warn("Reference URL is invalid", e);
 		}
 	}
 

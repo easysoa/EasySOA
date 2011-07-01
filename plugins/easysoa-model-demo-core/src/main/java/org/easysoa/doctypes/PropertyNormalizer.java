@@ -1,0 +1,88 @@
+package org.easysoa.doctypes;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * Tools to allow for an uniform format of EasySOA specific properties.
+ * @author mkalam-alami
+ *
+ */
+public class PropertyNormalizer extends EasySOADoctype {
+
+	@SuppressWarnings("unused")
+	private static final Log log = LogFactory.getLog(PropertyNormalizer.class);
+
+	private static final String DEFAULT_NORMALIZE_ERROR = "Failed to normalize property";
+
+	/**
+	 * Normalizes the given URL :
+	 * ensures all pathElements are separated by a single /
+	 * AND IF IT CONTAINS "://" that it is OK according to java.net.URL
+	 * @param stringUrl
+	 * @param errMsg
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	public static final String normalizeUrl(String stringUrl, String errMsg) throws MalformedURLException {
+		if (stringUrl == null) {
+			throw new MalformedURLException(errMsg + " : " + stringUrl);
+		}
+		if (stringUrl.indexOf("://") != -1) {
+			URL url = new URL(stringUrl);
+			stringUrl = url.toString();
+			return normalizeUrlPath(url.toString(), errMsg);
+		}
+		return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
+	}
+
+	public static final String normalizeUrl(String stringUrl) throws MalformedURLException {
+		return normalizeUrl(stringUrl, DEFAULT_NORMALIZE_ERROR);
+	}
+
+	/**
+	 * Normalizes the given URL path : ensures all pathElements are separated by a single /
+	 * @param stringUrl
+	 * @param errMsg
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	public static final String normalizeUrlPath(String stringUrl, String errMsg) throws MalformedURLException {
+		if (stringUrl == null) {
+			throw new MalformedURLException(errMsg + " : " + stringUrl);
+		}
+		if (stringUrl.contains("localhost")) {
+			stringUrl = stringUrl.replaceFirst("localhost", "127.0.0.1");
+		}
+		return concatUrlPath(stringUrl.split("/"));
+	}
+
+	public static final String normalizeUrlPath(String stringUrl) throws MalformedURLException {
+		return normalizeUrlPath(stringUrl, DEFAULT_NORMALIZE_ERROR);
+	}
+
+	/**
+	 * NB. no normalization done
+	 * @param url
+	 * @param urlPath
+	 * @return
+	 */
+	public static final String concatUrlPath(String... urlPath) {
+		StringBuffer sbuf = new StringBuffer();
+		for (String urlPathElement : urlPath) {
+			if (urlPath != null && urlPath.length != 0) {
+				sbuf.append(urlPathElement);
+				sbuf.append('/');
+			}
+		}
+		if (sbuf.length() != 0) {
+			sbuf.deleteCharAt(sbuf.length() - 1);
+		}
+		return sbuf.toString();
+	}
+
+
+}

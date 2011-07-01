@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.MalformedURLException;
 
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
@@ -50,7 +51,7 @@ public class SCAImportTest {
     
     
     @Before
-    public void setUp() throws ClientException {
+    public void setUp() throws ClientException, MalformedURLException {
     	
 		DocumentService docService = Framework.getRuntime().getService(DocumentService.class);
 

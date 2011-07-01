@@ -1,9 +1,14 @@
 package org.easysoa.services;
 
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
+import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
@@ -14,6 +19,8 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.api.pathsegment.PathSegmentService;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
@@ -35,15 +42,13 @@ public class DocumentService extends DefaultComponent {
 	private DocumentModel defaultAppliImpl = null;
 	private DocumentModel wsRoot = null; 
 	
-	public final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException {
-		
-		DocumentModel appliImpl = session.createDocumentModel(
-				getWSRoot(session).getPathAsString(),
-				IdUtils.generateStringId(),
-				AppliImpl.DOCTYPE);
-		appliImpl.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, url);
-		appliImpl.setProperty("dublincore", "title", url);
-		return session.createDocument(appliImpl);
+	public final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException, MalformedURLException {
+		url = PropertyNormalizer.normalizeUrl(url);
+		DocumentModel appliImplModel = session.createDocumentModel(AppliImpl.DOCTYPE);
+		appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, url);
+		appliImplModel.setProperty("dublincore", "title", url);
+		appliImplModel.setPathInfo(getWSRoot(session).getPathAsString(), generateDocumentID(appliImplModel));
+		return session.createDocument(appliImplModel);
 	}
 
 	/**
@@ -53,10 +58,11 @@ public class DocumentService extends DefaultComponent {
 	 * @param url
 	 * @return
 	 * @throws ClientException
+	 * @throws MalformedURLException 
 	 */
 	public final DocumentModel createServiceAPI(CoreSession session,
-			String parentPath, String url) throws ClientException {
-		
+			String parentPath, String url) throws ClientException, MalformedURLException {
+		url = PropertyNormalizer.normalizeUrl(url);
 		boolean invalidParent = false;
 		if (parentPath == null) {
 			invalidParent = true;
@@ -69,11 +75,11 @@ public class DocumentService extends DefaultComponent {
 			parentPath = session.getDocument(getDefaultAppliImpl(session).getRef()).getPathAsString();
 		}
 
-		DocumentModel serviceAPI = session.createDocumentModel(
-				parentPath, IdUtils.generateStringId(), ServiceAPI.DOCTYPE);
-		serviceAPI.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_URL, url);
-		serviceAPI.setProperty("dublincore", "title", url);
-		return session.createDocument(serviceAPI);
+		DocumentModel apiModel = session.createDocumentModel(ServiceAPI.DOCTYPE);
+		apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_URL, url);
+		apiModel.setProperty("dublincore", "title", url);
+		apiModel.setPathInfo(parentPath, generateDocumentID(apiModel));
+		return session.createDocument(apiModel);
 	}
 	
 	/**
@@ -84,18 +90,17 @@ public class DocumentService extends DefaultComponent {
 	 * @param url
 	 * @return
 	 * @throws ClientException
+	 * @throws MalformedURLException 
 	 */
 	public final DocumentModel createService(CoreSession session,
-			String parentPath, String url) throws ClientException {
-		
+			String parentPath, String url) throws ClientException, MalformedURLException {
 		if (parentPath != null) {
-			DocumentModel service = session.createDocumentModel(
-					parentPath, IdUtils.generateStringId(), Service.DOCTYPE);
-			if (service != null) {
-				service.setProperty(Service.SCHEMA, Service.PROP_URL, url);
-				service.setProperty("dublincore", "title", url);
-			}
-			return session.createDocument(service);
+			url = PropertyNormalizer.normalizeUrl(url);
+			DocumentModel serviceModel = session.createDocumentModel(Service.DOCTYPE);
+			serviceModel.setProperty(Service.SCHEMA, Service.PROP_URL, url);
+			serviceModel.setProperty("dublincore", "title", url);
+			serviceModel.setPathInfo(parentPath, generateDocumentID(serviceModel));
+			return session.createDocument(serviceModel);
 		}
 		else {
 			return null;
@@ -115,59 +120,44 @@ public class DocumentService extends DefaultComponent {
 			String parentPath, String title) throws ClientException {
 		
 		if (parentPath != null) {
-			DocumentModel reference = session.createDocumentModel(
-					parentPath, IdUtils.generateStringId(), ServiceReference.DOCTYPE);
-			if (reference != null) {
-				reference.setProperty("dublincore", "title", title);
-			}
-			return session.createDocument(reference);
+			DocumentModel referenceModel = session.createDocumentModel(ServiceReference.DOCTYPE);
+			referenceModel.setProperty("dublincore", "title", title);
+			referenceModel.setPathInfo(parentPath, generateDocumentID(referenceModel));
+			return session.createDocument(referenceModel);
 		}
 		else {
 			return null;
 		}
 	}
 	
-	/**
-	 * Returns the default Appli Impl., creates it if necessary.
-	 * @param session
-	 * @return
-	 * @throws ClientException
-	 */
-	public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
-		
-		if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
-			DocumentModel appliimpl = getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
-			if (appliimpl == null) {
-				DocumentModel appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_URL);
-				appliImpl.setProperty("dublincore", "title", DEFAULT_APPLIIMPL_TITLE);
-				session.saveDocument(appliImpl);
-				session.save();
-				defaultAppliImpl = appliImpl;
-				return defaultAppliImpl;
-			}
-			else
-				defaultAppliImpl = appliimpl;
-		}
-		return defaultAppliImpl;
-	}
-	
 	public DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
 		if (appliUrl == null)
 			return null;
-		return findFirstDocument(session, AppliImpl.DOCTYPE, 
-				AppliImpl.SCHEMA_PREFIX+AppliImpl.PROP_URL, appliUrl);
+		try {
+			return findFirstDocument(session, AppliImpl.DOCTYPE, 
+					AppliImpl.SCHEMA_PREFIX+AppliImpl.PROP_URL,
+					PropertyNormalizer.normalizeUrl(appliUrl));
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 	
 	public DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
 		if (apiUrl == null)
 			return null;
-		return findFirstDocument(session, ServiceAPI.DOCTYPE, 
-				ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL, apiUrl);
+		try {
+			return findFirstDocument(session, ServiceAPI.DOCTYPE, 
+					ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL,
+					PropertyNormalizer.normalizeUrl(apiUrl));
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 	
-	public DocumentModel findService(CoreSession session, String url) throws ClientException {
+	public DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException {
 		if (url == null)
 			return null;
+		url = PropertyNormalizer.normalizeUrl(url);
 		DocumentModel result = findFirstDocument(session, Service.DOCTYPE,
 				Service.SCHEMA_PREFIX+Service.PROP_URL, url);
 		if (result == null) {
@@ -180,9 +170,6 @@ public class DocumentService extends DefaultComponent {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.easysoa.services.DocumentService#findReference(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
-	 */
 	public DocumentModel findReference(CoreSession session,
 			String referenceArchiPath) throws ClientException {
 		if (referenceArchiPath == null) {
@@ -190,6 +177,81 @@ public class DocumentService extends DefaultComponent {
 		}
 		return findFirstDocument(session, ServiceReference.DOCTYPE,
 				EasySOADoctype.SCHEMA_COMMON_PREFIX +ServiceReference.PROP_ARCHIPATH, referenceArchiPath);
+	}
+	
+	/**
+	 * Merges properties from a document to another,
+	 * i.e. copies properties from a source model to the destination.
+	 * The source document is deleted, and the destination saved.
+	 * @param from
+	 * @param to
+	 * @param overwrite If destination properties have to be overwritten
+	 * @return
+	 * @throws ClientException
+	 */
+	public boolean mergeDocument(CoreSession session, DocumentModel from,
+			DocumentModel to, boolean overwrite) throws ClientException {
+		if (from.getType().equals(to.getType())) {
+			for (String dataModelKey : from.getDataModels().keySet()) {
+				String schema = from.getDataModels().get(dataModelKey).getSchema();
+				Map<String, Object> schemaPropertiesFrom = from.getProperties(schema);
+				Map<String, Object> schemaPropertiesTo = to.getProperties(schema);
+				for (String property : schemaPropertiesFrom.keySet()) {
+					Serializable fromValue = (Serializable) schemaPropertiesFrom.get(property);
+					if (fromValue != null && (schemaPropertiesTo.get(property) == null || overwrite)) {
+						to.setPropertyValue(property, fromValue);
+					}
+				}
+			}
+			session.removeDocument(from.getRef());
+			session.save();
+			session.saveDocument(to);
+			session.save();
+			return true; 
+		}
+		else {
+			return false;
+		}
+	}
+
+	public String generateDocumentID(DocumentModel doc) {
+		try {
+			PathSegmentService pathSegmentService = Framework.getService(PathSegmentService.class);
+			return pathSegmentService.generatePathSegment(doc);
+		}
+		catch (Exception e) {
+			return IdUtils.generateStringId();
+		}
+	}
+
+	/**
+	 * Returns the default Appli Impl., creates it if necessary.
+	 * @param session
+	 * @return
+	 * @throws ClientException
+	 */
+	public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
+		
+		if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
+			DocumentModel appliimpl = getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
+			if (appliimpl == null) {
+				DocumentModel appliImpl;
+				try {
+					appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_URL);
+					appliImpl.setProperty("dublincore", "title", DEFAULT_APPLIIMPL_TITLE);
+					session.saveDocument(appliImpl);
+					session.save();
+					defaultAppliImpl = appliImpl;
+					return defaultAppliImpl;
+				} catch (MalformedURLException e) {
+					log.error("Default Appli Impl. URL is invalid", e);
+					return null;
+				}
+			}
+			else
+				defaultAppliImpl = appliimpl;
+		}
+		return defaultAppliImpl;
 	}
 
 	private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
@@ -219,6 +281,5 @@ public class DocumentService extends DefaultComponent {
 		}
 		return null;
 	}
-
 
 }

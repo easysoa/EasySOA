@@ -222,6 +222,7 @@ public class NotificationRest extends LoggedRest {
 		for (String key : params.keySet()) {
 			map.put(key, params.getFirst(key));
 		}
+		
 		return map;
 	}
 

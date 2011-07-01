@@ -1,13 +1,14 @@
 package org.easysoa.services;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
+import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
@@ -32,6 +33,18 @@ public class NotificationService extends DefaultComponent {
 	private static final String ERROR_API_URL_API = ERROR_API_URL_BASE + "bad api URL";
 	private static final String ERROR_API_URL_SERVICE = ERROR_API_URL_BASE + "bad service URL";
 	
+	private static final Map<String, String> propertyFilter = new HashMap<String, String>();
+	
+	public NotificationService() {
+		propertyFilter.put(AppliImpl.PROP_URL, null);
+		
+		propertyFilter.put(ServiceAPI.PROP_URL, null);
+		propertyFilter.put(ServiceAPI.PROP_PARENTURL, null);
+		
+		propertyFilter.put(Service.PROP_URL, null);
+		propertyFilter.put(Service.PROP_PARENTURL, null);
+	}
+	
     /**
      * Creates or update an Appli Impl. given the specified properties.
      * Properties require at least application's URL (PROP_URL).
@@ -39,8 +52,10 @@ public class NotificationService extends DefaultComponent {
      * @param properties A set of properties of the document, among the AppliImpl.PROP_XXX constants.
 	 * @return The created/updated Appli Impl.
      * @throws ClientException
+     * @throws MalformedURLException 
      */
-	public final DocumentModel notifyAppliImpl(CoreSession session, Map<String, String> properties) throws ClientException {
+	public final DocumentModel notifyAppliImpl(CoreSession session, Map<String, String> properties)
+			throws ClientException, MalformedURLException {
 		
 		// Check mandatory field
 		if (properties.get(AppliImpl.PROP_URL) != null) {
@@ -78,8 +93,10 @@ public class NotificationService extends DefaultComponent {
      * @param properties A set of properties of the document, among the ServiceAPI.PROP_XXX constants.
 	 * @return The created/updated API
 	 * @throws ClientException
+	 * @throws MalformedURLException 
 	 */
-	public final DocumentModel notifyApi(CoreSession session, Map<String, String> properties) throws ClientException {
+	public final DocumentModel notifyApi(CoreSession session, Map<String, String> properties)
+			throws ClientException, MalformedURLException {
 		
 		// Check mandatory fields
 		if (properties.get(ServiceAPI.PROP_URL) != null) {
@@ -124,7 +141,6 @@ public class NotificationService extends DefaultComponent {
 					throw new ClientException("Failed to download attached file");
 				}
 			}
-			properties.remove(ServiceAPI.PROP_PARENTURL);
 			setPropertiesIfNotNull(apiModel, ServiceAPI.SCHEMA, ServiceAPI.getPropertyList(), properties);
 			
 			// Save
@@ -146,22 +162,31 @@ public class NotificationService extends DefaultComponent {
      * @param properties A set of properties of the document, among the Service.PROP_XXX constants.
 	 * @return The created/updated Service
 	 * @throws ClientException
+	 * @throws MalformedURLException 
 	 */
 	public final DocumentModel notifyService(CoreSession session,
-			Map<String, String> properties) throws ClientException {
+			Map<String, String> properties) throws ClientException, MalformedURLException {
 
 		// Check mandatory fields
-		if (properties.get(Service.PROP_URL) != null && properties.get(Service.PROP_PARENTURL) != null) {
+		if (properties.get(Service.PROP_URL) != null) {
 
 			// Exctract main fields
 			String url = properties.get(Service.PROP_URL),
 				parentUrl = properties.get(Service.PROP_PARENTURL);
+			
+			if (parentUrl == null) {
+				parentUrl = computeApiUrl(url);
+			}
 		
 			// Find or create document and parent
 			DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
 			DocumentModel apiModel = docService.findServiceApi(session, parentUrl);
 			if (apiModel == null) {
 				apiModel = docService.createServiceAPI(session, null, parentUrl); // TODO "by default", or even fail
+				String serviceTitle = properties.get(Service.PROP_URL);
+				if (serviceTitle != null) {
+					apiModel.setProperty("dublincore", "title", serviceTitle+" API");
+				}
 				session.saveDocument(apiModel);
 				session.save();
 			}
@@ -177,7 +202,7 @@ public class NotificationService extends DefaultComponent {
 			try {
 				newCallcount = Integer.parseInt((String) serviceModel.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT));
 			}
-			catch (NumberFormatException e) {
+			catch (Exception e) {
 				newCallcount = 0;
 			}
 			try {
@@ -190,7 +215,6 @@ public class NotificationService extends DefaultComponent {
 			properties.put(Service.PROP_CALLCOUNT, Integer.toString(newCallcount));
 			
 			// Update optional properties
-			properties.remove(Service.PROP_PARENTURL);
 			setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
 			
 			// Save
@@ -262,27 +286,46 @@ public class NotificationService extends DefaultComponent {
 	 */
 	public final String computeApiUrl(String appliImplUrl, String apiUrlPath,
 			String serviceUrlPath) throws MalformedURLException {
-		apiUrlPath = normalizeUrl(apiUrlPath, ERROR_API_URL_API);
-		serviceUrlPath = normalizeUrl(serviceUrlPath, ERROR_API_URL_SERVICE);
+		
+		apiUrlPath = PropertyNormalizer.normalizeUrl(apiUrlPath, ERROR_API_URL_API);
+		serviceUrlPath = PropertyNormalizer.normalizeUrl(serviceUrlPath, ERROR_API_URL_SERVICE);
 		
 		int apiPathEndIndex = -1;
 		
 		if (appliImplUrl.length() != 0) {
 			// appliImplUrl has to be well-formed
-			appliImplUrl = normalizeUrl(appliImplUrl, ERROR_API_URL_APPLIIMPL);
-			String defaultApiUrl = concatUrlPath(appliImplUrl, apiUrlPath);
+			appliImplUrl = PropertyNormalizer.normalizeUrl(appliImplUrl, ERROR_API_URL_APPLIIMPL);
+			String defaultApiUrl = PropertyNormalizer.concatUrlPath(appliImplUrl, apiUrlPath);
 			if (serviceUrlPath.contains(defaultApiUrl)) {
 				apiPathEndIndex = serviceUrlPath.indexOf(defaultApiUrl) + defaultApiUrl.length();
 			} // else default appliImplUrl does not apply
 		} // else empty appliImplUrl means no default appliImplUrl for apis
 		
 		if (apiPathEndIndex == -1) {
-			apiPathEndIndex = serviceUrlPath.lastIndexOf('/');
+			return computeApiUrl(serviceUrlPath);
 		}
 		
-		return normalizeUrl(serviceUrlPath.substring(0, apiPathEndIndex), ERROR_API_URL_API); // TODO http://localhost:9000/hrestSoapProxyWSIntern
+		return PropertyNormalizer.normalizeUrl(
+				serviceUrlPath.substring(0, apiPathEndIndex), ERROR_API_URL_API); // TODO http://localhost:9000/hrestSoapProxyWSIntern
 	}
 	
+	public String computeApiUrl(String serviceUrlPath) throws MalformedURLException {
+		return PropertyNormalizer.normalizeUrl(
+				serviceUrlPath.substring(0, serviceUrlPath.lastIndexOf('/')),
+				ERROR_API_URL_API); 
+	}
+
+	/**
+	 * Allows to check the format of certain properties and standardize them.
+	 * Should be done on any
+	 * @param map
+	 * @return
+	 */
+	public Map<String, String> standardizeProperties(Map<String, String> map) {
+		
+		return null;
+	}
+
 	/**
 	 * Sets a property to a model, but only if the value parameter is not null.
 	 * @param result
@@ -292,7 +335,7 @@ public class NotificationService extends DefaultComponent {
 	 */
 	private final void setPropertyIfNotNull(DocumentModel model, String schema, 
 			String property, Object value) throws ClientException {
-		if (value != null) {
+		if (value != null && !propertyFilter.containsKey(property)) {
 			model.setProperty(schema, property, value);
 		}
 	}
@@ -308,80 +351,30 @@ public class NotificationService extends DefaultComponent {
 	private final void setPropertiesIfNotNull(DocumentModel model, String schema, 
 			Map<String, String> schemaDef, Map<String, String> properties) throws ClientException {
 		
+		properties.putAll(propertyFilter);
+		
 		// Update optional properties
 		for (String key : properties.keySet()) {
-			// Given schema specific properties
-			if (schemaDef.containsKey(key)) {
-				setPropertyIfNotNull(model, schema, key, properties.get(key));
-			}
-			// EasySOA specific properties
-			else if (EasySOADoctype.getCommonPropertyList().containsKey(key)) {
-				setPropertyIfNotNull(model, EasySOADoctype.SCHEMA_COMMON, key, properties.get(key));
-			}
-			// Dublin Core properties
-			else if (EasySOADoctype.getDublinCorePropertyList().containsKey(key)) {
-				setPropertyIfNotNull(model, "dublincore", key, properties.get(key));
-			}
-			// Unknown
-			else {
-				throw new ClientException("Unkown property "+key);
-			}
-		}
-	}
-
-	/**
-	 * NB. no normalization done
-	 * @param url
-	 * @param urlPath
-	 * @return
-	 */
-	private final String concatUrlPath(String ... urlPath) {
-		StringBuffer sbuf = new StringBuffer();
-		for (String urlPathElement : urlPath) {
-			if (urlPath != null && urlPath.length != 0) {
-				sbuf.append(urlPathElement);
-				sbuf.append('/');
+			String value = properties.get(key);
+			if (value != null && !value.isEmpty()) {
+				// Given schema specific properties
+				if (schemaDef.containsKey(key)) {
+					setPropertyIfNotNull(model, schema, key, value);
+				}
+				// EasySOA specific properties
+				else if (EasySOADoctype.getCommonPropertyList().containsKey(key)) {
+					setPropertyIfNotNull(model, EasySOADoctype.SCHEMA_COMMON, key, value);
+				}
+				// Dublin Core properties
+				else if (EasySOADoctype.getDublinCorePropertyList().containsKey(key)) {
+					setPropertyIfNotNull(model, "dublincore", key, value);
+				}
+				// Unknown
+				else {
+					throw new ClientException("Unkown property "+key);
+				}
 			}
 		}
-		if (sbuf.length() != 0) {
-			sbuf.deleteCharAt(sbuf.length() - 1);
-		}
-		return sbuf.toString();
-	}
-
-	/**
-	 * Normalizes the given URL :
-	 * ensures all pathElements are separated by a single /
-	 * AND IF IT CONTAINS "://" that it is OK according to java.net.URL
-	 * @param stringUrl
-	 * @param errMsg
-	 * @return
-	 * @throws MalformedURLException
-	 */
-	private final String normalizeUrl(String stringUrl, String errMsg) throws MalformedURLException {
-		if (stringUrl == null) {
-			throw new MalformedURLException(errMsg + " : " + stringUrl);
-		}
-		if (stringUrl.indexOf("://") != -1) {
-			URL url = new URL(stringUrl);
-			stringUrl = url.toString();
-			return normalizeUrlPath(url.toString(), errMsg);
-		}
-		return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
-	}
-
-	/**
-	 * Normalizes the given URL path : ensures all pathElements are separated by a single /
-	 * @param stringUrl
-	 * @param errMsg
-	 * @return
-	 * @throws MalformedURLException
-	 */
-	private final String normalizeUrlPath(String stringUrl, String errMsg) throws MalformedURLException {
-		if (stringUrl == null) {
-			throw new MalformedURLException(errMsg + " : " + stringUrl);
-		}
-		return concatUrlPath(stringUrl.split("/"));
 	}
 	
 }

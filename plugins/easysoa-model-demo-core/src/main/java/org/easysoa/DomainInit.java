@@ -6,6 +6,7 @@ import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * Creates all needed folders on Nuxeo startup.
@@ -44,6 +45,14 @@ public class DomainInit extends UnrestrictedSessionRunner {
 				session.saveDocument(rootChild);
 				session.save();
 			}
+		}
+		
+		DocumentService docService;
+		try {
+			docService = Framework.getService(DocumentService.class);
+			docService.getDefaultAppliImpl(session); // Touch Default Application
+		} catch (Exception e) {
+			// Failed to touch Default Application
 		}
 		
 		session.save();

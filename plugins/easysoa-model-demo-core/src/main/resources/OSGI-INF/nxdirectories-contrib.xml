@@ -36,7 +36,7 @@
       <table>voc_machine</table>
       <idField>id</idField>
       <autoincrementIdField>false</autoincrementIdField>
-      <dataFile>vocabularies/machine.csv</dataFile>
+      <dataFile>vocabularies/server.csv</dataFile>
       <createTablePolicy>on_missing_columns</createTablePolicy>
     </directory>
     

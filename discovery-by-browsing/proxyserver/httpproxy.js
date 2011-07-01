@@ -290,52 +290,29 @@ io.on('connection', function(client){
 			    'Content-Length': body.length
 			  }
 		  };
-      
       sendRestRequest(client, nuxeo_upload_options, body);
       
       setTimeout(function () { // XXX : Hack to ensure previous call is over
-    	  
-          //// API notification
-    	  
-	      body = 'url='+apiUrl+
-	          '&parentUrl='+appliUrl+
-	          '&application='+data.applicationname+
-	          '&title='+data.servicename+' API';
-	      nuxeo_upload_options = {
-				  port : nuxeo_notification.port,
-				  method : 'POST',
-				  host : nuxeo_notification.hostname,
-				  path : nuxeo_notification.href+"api",
-				  headers : {
-				    'Content-Type': 'application/x-www-form-urlencoded',
-				    'Content-Length': body.length
-				  }
-			  };  
-	      sendRestRequest(client, nuxeo_upload_options, body);
-	      
-	      setTimeout(function () { 
-
-	          //// Service notification
-	        
-	          body = 'url='+data.url+
-	              '&fileUrl='+data.url+
-	              '&parentUrl='+apiUrl+
-	              '&title='+data.servicename+
-	              '&discoveryTypeBrowsing=Discovered by browsing';
-	          nuxeo_upload_options = {
-	    			  port : nuxeo_notification.port,
-	    			  method : 'POST',
-	    			  host : nuxeo_notification.hostname,
-	    			  path : nuxeo_notification.href+"service",
-	    			  headers : {
-	    			    'Content-Type': 'application/x-www-form-urlencoded',
-	    			    'Content-Length': body.length
-	    			  }
-	    		  };
-	          sendRestRequest(client, nuxeo_upload_options, body);
+      
+          //// Service notification
+        
+          body = 'url='+data.url+
+              '&fileUrl='+data.url+
+              '&parentUrl='+apiUrl+
+              '&title='+data.servicename+
+              '&discoveryTypeBrowsing=Discovered by browsing';
+          nuxeo_upload_options = {
+    			  port : nuxeo_notification.port,
+    			  method : 'POST',
+    			  host : nuxeo_notification.hostname,
+    			  path : nuxeo_notification.href+"service",
+    			  headers : {
+    			    'Content-Type': 'application/x-www-form-urlencoded',
+    			    'Content-Length': body.length
+    			  }
+    		  };
+          sendRestRequest(client, nuxeo_upload_options, body);
 	    	  
-	      }, 300);
-	      
       }, 300);
 		  
     }
