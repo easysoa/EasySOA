@@ -1,14 +1,13 @@
-package org.easysoa.tests;
+package org.easysoa.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.services.DocumentService;
-import org.easysoa.services.VocabularyHelper;
-import org.easysoa.services.VocabularyHelper;
 import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;
 import org.junit.Ignore;

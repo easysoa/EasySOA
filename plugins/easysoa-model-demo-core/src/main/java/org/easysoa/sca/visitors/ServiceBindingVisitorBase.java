@@ -1,16 +1,16 @@
 package org.easysoa.sca.visitors;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.EasySOADoctype;
+import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.sca.ScaImporter;
-import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * Visitor for WS bindings.
@@ -38,33 +38,24 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
 		}
 		
 		String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-		String appliImplPath = scaImporter.getParentAppliImplModel().getPathAsString();
-		String apiUrl = ScaImporter.getApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
-		String apiName = scaImporter.getServiceStackType(); // TODO better, ex. from composite name...
+		String apiUrl = notificationService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
+		
+		// enrich or create API
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put(ServiceAPI.PROP_URL, apiUrl);
+		properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
+		properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
+		properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);
+		notificationService.notifyApi(documentManager, properties);
 
-		DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
-		
-		// find api, then enrich or create
-		DocumentModel apiModel = docService.findServiceApi(documentManager, apiUrl);
-		if (apiModel == null) {	// assuming it is the parent TODO tree :
-			apiModel = docService.createServiceAPI(documentManager, appliImplPath, apiUrl);
-		}
-		apiModel.setProperty("dublincore", "title", apiName);
-		apiModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
-		apiModel = documentManager.saveDocument(apiModel);
-		documentManager.save(); // Save all so that the newly created API can be found by the DocumentService
-		
-		// find service, then enrich or create
-		DocumentModel serviceModel = docService.findService(documentManager, serviceUrl);
-		if (serviceModel == null){
-			serviceModel = docService.createService(documentManager, apiModel.getPathAsString(), serviceUrl);
-		}
-		serviceModel.setProperty("dublincore", "title", scaImporter.getCurrentArchiName());
-		serviceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
-		serviceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-		serviceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_DTIMPORT,
-				scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
-		documentManager.saveDocument(serviceModel);
+		// enrich or create service
+		properties = new HashMap<String, String>();
+		properties.put(Service.PROP_URL, serviceUrl);
+		properties.put(Service.PROP_PARENTURL, apiUrl);
+		properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
+		properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
+		properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?
+		notificationService.notifyService(documentManager, properties);
 		
 	}
 

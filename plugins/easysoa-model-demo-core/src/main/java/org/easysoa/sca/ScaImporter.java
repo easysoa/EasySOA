@@ -3,8 +3,6 @@ package org.easysoa.sca;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,11 +48,6 @@ public class ScaImporter {
 	public static final QName SCA_COMPONENT_QNAME = new QName(SCA_URI, "component");
 	public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
 	public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
-
-	private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
-	private static final String ERROR_API_URL_APPLIIMPL = ERROR_API_URL_BASE + "bad appliimpl URL";
-	private static final String ERROR_API_URL_API = ERROR_API_URL_BASE + "bad api URL";
-	private static final String ERROR_API_URL_SERVICE = ERROR_API_URL_BASE + "bad service URL";
 	
 	private static final Log log = LogFactory.getLog(ScaImporter.class);
 
@@ -80,12 +73,6 @@ public class ScaImporter {
 		init();
 	}
 
-	private void init() {
-		elementQnameToScaVisitor = new HashMap<QName, ScaVisitor>();
-		elementQnameToScaVisitor.put(SCA_SERVICE_QNAME, null);
-		elementQnameToScaVisitor.put(SCA_REFERENCE_QNAME, null);
-	}
-	 
 	public List<ScaVisitor> createServiceBindingVisitors() {
 		ArrayList<ScaVisitor> serviceBindingVisitors = new ArrayList<ScaVisitor>();
 		serviceBindingVisitors.add(new WSBindingScaVisitor(this));
@@ -131,7 +118,7 @@ public class ScaImporter {
 				} else if (compositeReader.getLocalName().startsWith("implementation.")) {
 					// implementation !
 					if (compositeReader.getLocalName().equals("implementation.composite")) {
-						String compositeName = compositeReader.getAttributeValue(null, "name"); // rather than "" ?! // TODO SCA_URI
+						//String compositeName = compositeReader.getAttributeValue(null, "name"); // rather than "" ?! // TODO SCA_URI
 						//TODO visitComposite BUT CAN'T SINCE ONLY ONE SCA FILE HAS BEEN UPLOADED
 						// so TODO alts : upload zip, use scm connector, export button from eclipse... 
 					}
@@ -186,92 +173,10 @@ public class ScaImporter {
 		this.serviceStackUrl = serviceStackUrl;
 	}
 
-	/**
-	 * Guesses an API url given the service URL and others.
-	 * Normalizes URLs first.
-	 * @param appliImplUrl has to be empty (means no default root url for this appliimpl)
-	 * or a well-formed URL.
-	 * @param apiUrlPath
-	 * @param serviceUrlPath
-	 * @return
-	 * @throws MalformedURLException 
-	 */
-	public static String getApiUrl(String appliImplUrl, String apiUrlPath,
-			String serviceUrlPath) throws MalformedURLException {
-		apiUrlPath = normalizeUrl(apiUrlPath, ERROR_API_URL_API);
-		serviceUrlPath = normalizeUrl(serviceUrlPath, ERROR_API_URL_SERVICE);
-		
-		int apiPathEndIndex = -1;
-		
-		if (appliImplUrl.length() != 0) {
-			// appliImplUrl has to be well-formed
-			appliImplUrl = normalizeUrl(appliImplUrl, ERROR_API_URL_APPLIIMPL);
-			String defaultApiUrl = concatUrlPath(appliImplUrl, apiUrlPath);
-			if (serviceUrlPath.contains(defaultApiUrl)) {
-				apiPathEndIndex = serviceUrlPath.indexOf(defaultApiUrl) + defaultApiUrl.length();
-			} // else default appliImplUrl does not apply
-		} // else empty appliImplUrl means no default appliImplUrl for apis
-		
-		if (apiPathEndIndex == -1) {
-			apiPathEndIndex = serviceUrlPath.lastIndexOf('/');
-		}
-		
-		return normalizeUrl(serviceUrlPath.substring(0, apiPathEndIndex), ERROR_API_URL_API); // TODO http://localhost:9000/hrestSoapProxyWSIntern
-	}
-
-	/**
-	 * NB. no normalization done
-	 * @param url
-	 * @param urlPath
-	 * @return
-	 */
-	private static String concatUrlPath(String ... urlPath) {
-		StringBuffer sbuf = new StringBuffer();
-		for (String urlPathElement : urlPath) {
-			if (urlPath != null && urlPath.length != 0) {
-				sbuf.append(urlPathElement);
-				sbuf.append('/');
-			}
-		}
-		if (sbuf.length() != 0) {
-			sbuf.deleteCharAt(sbuf.length() - 1);
-		}
-		return sbuf.toString();
-	}
-
-	/**
-	 * Normalizes the given URL :
-	 * ensures all pathElements are separated by a single /
-	 * AND IF IT CONTAINS "://" that it is OK according to java.net.URL
-	 * @param stringUrl
-	 * @param errMsg
-	 * @return
-	 * @throws MalformedURLException
-	 */
-	private static String normalizeUrl(String stringUrl, String errMsg) throws MalformedURLException {
-		if (stringUrl == null) {
-			throw new MalformedURLException(errMsg + " : " + stringUrl);
-		}
-		if (stringUrl.indexOf("://") != -1) {
-			URL url = new URL(stringUrl);
-			stringUrl = url.toString();
-			return normalizeUrlPath(url.toString(), errMsg);
-		}
-		return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
-	}
-
-	/**
-	 * Normalizes the given URL path : ensures all pathElements are separated by a single /
-	 * @param stringUrl
-	 * @param errMsg
-	 * @return
-	 * @throws MalformedURLException
-	 */
-	private static String normalizeUrlPath(String stringUrl, String errMsg) throws MalformedURLException {
-		if (stringUrl == null) {
-			throw new MalformedURLException(errMsg + " : " + stringUrl);
-		}
-		return concatUrlPath(stringUrl.split("/"));
+	private void init() {
+		elementQnameToScaVisitor = new HashMap<QName, ScaVisitor>();
+		elementQnameToScaVisitor.put(SCA_SERVICE_QNAME, null);
+		elementQnameToScaVisitor.put(SCA_REFERENCE_QNAME, null);
 	}
 
 	private void acceptBindingParentVisitors(XMLStreamReader compositeReader,

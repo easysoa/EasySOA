@@ -9,5 +9,6 @@
   <xs:element name="httpMethod" type="xs:string" />
   <xs:element name="contentTypeIn" type="xs:string" />
   <xs:element name="contentTypeOut" type="xs:string" />
+  <xs:element name="fileUrl" type="xs:string" />
   
 </xs:schema>

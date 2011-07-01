@@ -140,7 +140,7 @@ public class NotificationRest extends LoggedRest {
 		login();
 		Map<String, String> params = getFormValues(httpContext);
 		try {
-			notifService.notifyApi(session, params);
+			notifService.notifyService(session, params);
 		}
 		catch (Exception e) {
 			appendError(e.getMessage());

@@ -52,15 +52,14 @@ public class ServiceListener implements EventListener {
 			return;
 		}
 		
-		String server = null;
-		
 		try {
 			// Extract data from specified document
+			String title = (String) doc.getProperty("dublincore", "title");
+			String url = (String) doc.getProperty(SCHEMA, PROP_URL);
 			String fileUrl = (String) doc.getProperty(SCHEMA_COMMON, PROP_FILEURL);
+			
+			// Extract data from WSDL
 			if (fileUrl != null) {
-
-				// Parse the WSDL once, then forget it
-				doc.setProperty(SCHEMA_COMMON, PROP_FILEURL, null);
 				
 				// Download file
 				Blob blob = new HttpFile(fileUrl).download().getBlob();
@@ -86,30 +85,20 @@ public class ServiceListener implements EventListener {
 					
 					// URL extraction
 					Endpoint firstEndpoint = firstService.getEndpoints().get(0);
-					String	url = firstEndpoint.getAddress();
+					url = firstEndpoint.getAddress();
 					doc.setProperty(SCHEMA, PROP_URL, url);
 					
-					// Server extraction
-					if (server == null) {
-						server = InetAddress.getByName(
-								new URL(firstEndpoint.getAddress()).getHost())
-								.getHostAddress();
-					}
-					
 					// Service name extraction
-					String title  = (String) doc.getProperty("dublincore", "title");
 					if (title == null || title.isEmpty() || title.equals(url)) {
 						doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
 					}
 					
 					// EasySOA Light 
 					// XXX: Hard-coded PureAirFlowers Light URL
-					if (url.contains("PureAirFlowers")) { 
+					if (url.contains("PureAirFlowers Orders")) { 
 						doc.setProperty(SCHEMA, PROP_LIGHTURL,
 								"http://localhost:8083/easysoa/light/paf.html");
 					}
-					
-					session.saveDocument(doc);
 					
 					//// Update parent's properties
 					
@@ -133,8 +122,11 @@ public class ServiceListener implements EventListener {
 					
 					// Server
 					String existingServer = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
-					if (existingServer == null || !server.equals(existingServer)) {
-						appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, server);
+					String newServer = InetAddress.getByName(
+								new URL(firstEndpoint.getAddress()).getHost())
+								.getHostAddress();
+					if (existingServer == null || !newServer.equals(existingServer)) {
+						appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
 					}
 					
 					// Provider
@@ -158,14 +150,19 @@ public class ServiceListener implements EventListener {
 					tmpFile.delete();
 				}
 	
-				// Save
-				session.save();
-	
 			}
+			
+			// Default properties
+			if (title == null || title.isEmpty() || title.equals(url)) {
+				doc.setProperty("dublincore", "title", url.substring(title.lastIndexOf('/')+1));
+			}
+			
+			session.save();
+			
 		} catch (Exception e) {
 			log.error("Error while parsing WSDL", e);
 		}
-		
+
 	}
 	
 }

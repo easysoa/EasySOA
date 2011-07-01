@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.core.component.docservice">
 
-  <implementation class="org.easysoa.doctypes.services.DocumentService" />
+  <implementation class="org.easysoa.services.DocumentService" />
   
   <service>
-    <provide interface="org.easysoa.doctypes.services.DocumentService" />
+    <provide interface="org.easysoa.services.DocumentService" />
   </service>
   
 </component>

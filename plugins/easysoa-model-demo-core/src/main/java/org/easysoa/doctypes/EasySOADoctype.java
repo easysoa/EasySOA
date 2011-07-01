@@ -20,7 +20,6 @@ public class EasySOADoctype {
 
 	private static Map<String, String> commonPropertyList = null;
 	private static Map<String, String> dublinCorePropertyList = null;
-	protected static Map<String, String> propertyList = null;
 
 	public static Map<String, String> getCommonPropertyList() {
 		if (commonPropertyList == null) {

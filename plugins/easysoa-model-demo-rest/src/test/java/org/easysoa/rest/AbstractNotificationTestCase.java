@@ -1,4 +1,4 @@
-package org.easysoa.test.rest;
+package org.easysoa.rest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -6,8 +6,8 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.test.rest.tools.automation.AutomationHelper;
-import org.easysoa.test.rest.tools.notification.RestNotificationFactory;
+import org.easysoa.test.AutomationHelper;
+import org.easysoa.test.RestNotificationFactory;
 
 /**
  * Class to be extended for the creation of notification test cases.

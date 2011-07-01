@@ -1,6 +1,9 @@
 package org.easysoa.sca.visitors;
 
-import org.easysoa.doctypes.EasySOADoctype;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.ScaImporter;
 import org.easysoa.services.DocumentService;
@@ -43,28 +46,21 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
 	}
 	
 	public void visit() throws ClientException {
-		String referenceArchiPath = scaImporter.toCurrentArchiPath();
 
-		// getting referenced service url
-		String refUrl = getBindingUrl();
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put(ServiceReference.PROP_REFURL, getBindingUrl()); // getting referenced service url
+		properties.put(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
+		properties.put(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
+		properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
+		properties.put(ServiceReference.PROP_PARENTURL, 
+				(String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+		referenceModel = notificationService.notifyServiceReference(documentManager, properties);
 		
-		// find reference, then enrich or create
-		DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
-		referenceModel = docService.findReference(documentManager, referenceArchiPath);
-		if (referenceModel == null){
-			referenceModel = docService.createReference(documentManager,
-					scaImporter.getParentAppliImplModel().getPathAsString(), referenceArchiPath);
-		}
-		referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL, refUrl);
-		referenceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH, referenceArchiPath);
-		referenceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-		referenceModel.setProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_DTIMPORT,
-				scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
-		documentManager.saveDocument(referenceModel);
 	}
 	
 	@Override
 	public void postCheck() throws ClientException {
+		
 		DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
 		// find referenced service
 		String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);

@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.sca.ScaImporter;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;

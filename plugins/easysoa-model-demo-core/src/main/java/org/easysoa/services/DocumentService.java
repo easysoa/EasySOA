@@ -165,11 +165,19 @@ public class DocumentService extends DefaultComponent {
 				ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL, apiUrl);
 	}
 	
-	public DocumentModel findService(CoreSession session, String serviceUrl) throws ClientException {
-		if (serviceUrl == null)
+	public DocumentModel findService(CoreSession session, String url) throws ClientException {
+		if (url == null)
 			return null;
-		return findFirstDocument(session, Service.DOCTYPE,
-				Service.SCHEMA_PREFIX+Service.PROP_URL, serviceUrl);
+		DocumentModel result = findFirstDocument(session, Service.DOCTYPE,
+				Service.SCHEMA_PREFIX+Service.PROP_URL, url);
+		if (result == null) {
+			// Match either service url or WSDL url
+			return findFirstDocument(session, Service.DOCTYPE,
+					Service.SCHEMA_PREFIX+Service.PROP_FILEURL, url);
+		}
+		else {
+			return result;
+		}
 	}
 
 	/* (non-Javadoc)

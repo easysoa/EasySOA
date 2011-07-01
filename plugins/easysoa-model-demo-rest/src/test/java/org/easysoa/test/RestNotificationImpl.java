@@ -1,4 +1,4 @@
-package org.easysoa.test.rest.tools.notification;
+package org.easysoa.test;
 
 import java.io.BufferedReader;
 import java.io.IOException;

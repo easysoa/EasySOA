@@ -1,12 +1,12 @@
-package org.easysoa.test.rest;
+package org.easysoa.rest;
 
 import static org.junit.Assert.*;
 
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.test.rest.tools.notification.RestNotificationRequest;
-import org.easysoa.test.rest.tools.notification.RestNotificationFactory.RestNotificationAPI;
+import org.easysoa.test.RestNotificationRequest;
+import org.easysoa.test.RestNotificationFactory.RestNotificationAPI;
 import org.junit.Test;
 
 /**

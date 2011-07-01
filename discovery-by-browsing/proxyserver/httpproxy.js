@@ -129,6 +129,7 @@ var server = http.createServer(function(request, response) {
             var json = JSON.parse(data);
             if (json.foundLinks) {
               for (link in json.foundLinks) {
+                console.log("[INFO] Found: "+json.foundLinks[link]);
                 var newLink = {
                       'url': json.foundLinks[link],
                       'serviceName': link,

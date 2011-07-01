@@ -1,4 +1,4 @@
-package org.easysoa.test.rest.tools.automation;
+package org.easysoa.test;
 
 import org.easysoa.doctypes.EasySOADoctype;
 import org.nuxeo.ecm.automation.client.jaxrs.OperationRequest;

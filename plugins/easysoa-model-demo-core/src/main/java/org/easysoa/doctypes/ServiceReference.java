@@ -12,6 +12,8 @@ public class ServiceReference extends EasySOADoctype {
 	public static final String PROP_REFURL = "refUrl";
 	public static final String PROP_REFPATH = "refPath";
 
+	public static final String PROP_PARENTURL = "parentUrl";
+	
 	private static Map<String, String> propertyList = null;
 	
 	public static Map<String, String> getPropertyList() {
@@ -19,6 +21,7 @@ public class ServiceReference extends EasySOADoctype {
 			propertyList = new HashMap<String, String>(); 
 			propertyList.put(PROP_REFURL, "Referenced Service URL");
 			propertyList.put(PROP_REFPATH, "Path of Referenced Service in registry if known");
+			propertyList.put(PROP_PARENTURL, "The parent application URL.");
 		}
 		return propertyList;
 	}
