@@ -195,10 +195,11 @@ public class NotificationService extends DefaultComponent {
 				serviceModel = docService.createService(session, apiModel.getPathAsString(), url);
 
 			// Update optional properties
-			setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
 			properties.put(Service.PROP_CALLCOUNT, 
 					getNewCallcount(serviceModel, properties.get(Service.PROP_CALLCOUNT))
 				);
+			setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
+			
 			
 			// Update location
 			if (!apiModel.getRef().equals(serviceModel.getParentRef())) {
@@ -307,17 +308,16 @@ public class NotificationService extends DefaultComponent {
 		Long previousCallcount, newCallsLong;
 		try {
 			previousCallcount = (Long) serviceModel.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT);
-		} catch (ClientException e) {
+		} catch (Exception e) {
 			previousCallcount = new Long(0);
 		}
 		if (previousCallcount == null) {
 			previousCallcount = new Long(0);
 		}
-		if (newCalls == null) {
-			newCallsLong = new Long(0);
-		}
-		else {
+		try {
 			newCallsLong = Long.parseLong(newCalls);
+		} catch (Exception e) {
+			newCallsLong = new Long(0);
 		}
 		return ((Long) (newCallsLong + previousCallcount)).toString();
 	}

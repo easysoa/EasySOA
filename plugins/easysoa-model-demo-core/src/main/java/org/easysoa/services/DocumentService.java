@@ -197,10 +197,8 @@ public class DocumentService extends DefaultComponent {
 					}
 				}
 			}
-			//session.removeDocument(from.getRef()); // TODO Remove
-			session.saveDocument(to);
-			session.save();
-			return true; 
+			session.removeDocument(from.getRef());
+			return true;
 		}
 		else {
 			return false;

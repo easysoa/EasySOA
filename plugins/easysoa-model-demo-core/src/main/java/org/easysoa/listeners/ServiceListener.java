@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -23,6 +24,7 @@ import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
+import org.nuxeo.runtime.api.Framework;
 import org.ow2.easywsdl.wsdl.WSDLFactory;
 import org.ow2.easywsdl.wsdl.api.Binding;
 import org.ow2.easywsdl.wsdl.api.Description;
@@ -86,6 +88,13 @@ public class ServiceListener implements EventListener {
 					Endpoint firstEndpoint = firstService.getEndpoints().get(0);
 					url = firstEndpoint.getAddress();
 					doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
+					
+					// Test if the service already exists, delete the other one if necessary
+					DocumentService docService = Framework.getService(DocumentService.class);
+					DocumentModel existingServiceModel = docService.findService(session, url);
+					if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
+						docService.mergeDocument(session, existingServiceModel, doc, false);
+					}
 					
 					// Service name extraction
 					if (title == null || title.isEmpty() || title.equals(url)) {

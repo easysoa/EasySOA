@@ -33,14 +33,21 @@ public class RestNotificationImpl implements RestNotificationRequest {
 		return this;
 	}
 	
-	public void send() throws IOException, ProtocolException {
+	public boolean send() throws IOException, ProtocolException {
 		
 		// Prepare request
 		String body = computeRequestBody();
 		String logString = "url= "+requestUrl+", body: "+body;
 		
 		// Send
-		JSONObject result = send(body);
+		JSONObject result = null;
+		try {
+			result = send(body);
+		}
+		catch (Exception e) {
+			log.warn("Failed to send the notification due to an external problem (Nuxeo not started?)");
+			return false;
+		}
 		
 		try {
 			// Check result, throw error if necessary
@@ -49,10 +56,13 @@ public class RestNotificationImpl implements RestNotificationRequest {
 				throw new ProtocolException(result.getString("result"));
 			}
 			log.info("OK: "+logString);
+			return true;
+			
 		} catch (JSONException e) {
 			log.warn("Failure: "+logString);
 			throw new IOException("Response is not formatted as expected", e);
 		}
+		
 	}
 	
 	private String computeRequestBody() {

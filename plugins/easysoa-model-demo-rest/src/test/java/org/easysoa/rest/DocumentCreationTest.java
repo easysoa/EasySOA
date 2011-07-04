@@ -1,12 +1,13 @@
 package org.easysoa.rest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.test.RestNotificationRequest;
 import org.easysoa.test.RestNotificationFactory.RestNotificationAPI;
+import org.easysoa.test.RestNotificationRequest;
+import org.junit.Assume;
 import org.junit.Test;
 
 /**
@@ -32,7 +33,7 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.APPLIIMPL);
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
 		notification.setProperty(AppliImpl.PROP_URL, url);
-		notification.send();
+		Assume.assumeTrue(notification.send());
 		
 		assertFalse(automation.findDocumentByUrl(AppliImpl.DOCTYPE, url).isEmpty());
 	}

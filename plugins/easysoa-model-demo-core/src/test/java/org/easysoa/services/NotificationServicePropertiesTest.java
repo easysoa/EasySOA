@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.test.EasySOAFeature;
 import org.easysoa.test.EasySOARepositoryInit;
-import org.easysoa.test.RepositoryLogger;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;

@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.test.AutomationHelper;
 import org.easysoa.test.RestNotificationFactory;
+import org.junit.Assume;
 
 /**
  * Class to be extended for the creation of notification test cases.
@@ -49,7 +50,12 @@ public abstract class AbstractNotificationTest {
 		
 		// Create testing objects
 		notificationFactory = new RestNotificationFactory(nuxeoUrl);
-		automation = new AutomationHelper(nuxeoUrl);
+		try {
+			automation = new AutomationHelper(nuxeoUrl);
+		}
+		catch (Exception e) {
+			automation = null;
+		}
 	}
 	
 	public AutomationHelper getAutomationHelper() throws IOException {
