@@ -10,9 +10,10 @@ Please see [this repository's wiki](https://github.com/easysoa/easysoa-model-dem
 
 ## Repository structure
 
-The code is split into 4 projects:
+The code is split into 5 projects:
 
  * `plugins/easysoa-demo-model-core`: The Nuxeo core contributions.
  * `plugins/easysoa-demo-model-web`: The Nuxeo web contributions, tightly linked to the `core` project.
  * `plugins/easysoa-demo-rest`: The REST API used by the service finder.
- * `discovery-by-browsing`: The service discovery tool.
+ * `plugins/easysoa-demo-dashboard`: A basic dashboard "gadget".
+ * `discovery-by-browsing`: The service discovery tool (a web proxy + a web server).
