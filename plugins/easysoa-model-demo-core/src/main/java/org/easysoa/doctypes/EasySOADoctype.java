@@ -10,7 +10,9 @@ public class EasySOADoctype {
 
 	public static final String SCHEMA_COMMON = "soacommon";
 	public static final String SCHEMA_COMMON_PREFIX = "soa:";
+	public static final String SCHEMA_DUBLINCORE = "dublincore";
 	
+	// SOA Common properties
 	public static final String PROP_DTBROWSING = "discoveryTypeBrowsing";
 	public static final String PROP_DTMONITORING = "discoveryTypeMonitoring";
 	public static final String PROP_DTIMPORT = "discoveryTypeImport";

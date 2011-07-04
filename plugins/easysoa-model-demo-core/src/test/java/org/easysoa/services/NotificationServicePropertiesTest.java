@@ -11,12 +11,14 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.test.EasySOAFeature;
 import org.easysoa.test.EasySOARepositoryInit;
+import org.easysoa.test.RepositoryLogger;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Features;
@@ -32,9 +34,9 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(EasySOAFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class NotificationServicePropsTest {
+public class NotificationServicePropertiesTest {
 
-    static final Log log = LogFactory.getLog(NotificationServicePropsTest.class);
+    static final Log log = LogFactory.getLog(NotificationServicePropertiesTest.class);
     
     @Inject NotificationService notifService;
     
@@ -81,4 +83,48 @@ public class NotificationServicePropsTest {
     	assertEquals(new Long(15), (Long) doc.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT));
     	
     }
+    
+    /**
+     * Test the upload of services using the file URL property
+     * (which attaches a WSDL to a Service for data extraction)
+     * @throws Exception
+     */
+    @Test
+    public void testFileUrl() throws Exception {
+
+    	String wsdlUrl = "http://soatest.parasoft.com/calculator.wsdl",
+    		serviceUrl = "http://ws1.parasoft.com/glue/calculator",
+    		query = "SELECT * FROM Document WHERE serv:url = '"+serviceUrl+"'";
+    	
+    	// Create Service
+    	Map<String, String> properties = new HashMap<String, String>();
+    	properties.put("title", "My Service");
+    	properties.put(Service.PROP_URL, wsdlUrl);
+    	properties.put(Service.PROP_CALLCOUNT, "5");
+    	properties.put(Service.PROP_FILEURL, wsdlUrl);
+    	notifService.notifyService(session, properties);
+    	
+    	// The URL should have been changed according to the WSDL contents
+    	DocumentModel doc = docService.findService(session, serviceUrl);
+    	assertNotNull("The WSDL hasn't been parsed", doc);
+    	doc = docService.findService(session, wsdlUrl);
+    	assertNotNull("(DocumentService failure)", doc); // TODO: DocumentServiceTest test case
+    	DocumentModelList list = session.query(query);
+    	assertEquals(1, list.size());
+    	
+    	// A second notification should update the same document
+    	properties = new HashMap<String, String>();
+    	properties.put("title", "My Updated Service");
+    	properties.put(Service.PROP_URL, wsdlUrl);
+    	properties.put(Service.PROP_FILEURL, wsdlUrl);
+    	properties.put(Service.PROP_DESCRIPTION, "hello");
+    	notifService.notifyService(session, properties);
+    	
+    	list = session.query(query);
+    	assertEquals(1, list.size());
+    	assertEquals("hello", list.get(0).getProperty(Service.SCHEMA_DUBLINCORE, Service.PROP_DESCRIPTION));
+    	assertEquals("My Updated Service", list.get(0).getTitle());
+    	
+    }
+    
 }

@@ -270,21 +270,19 @@ io.on('connection', function(client){
 
     try {
 
-      data = JSON.parse(string);
-        
-      // TODO : Make use of the refactored logic from Nuxeo when available
-      var apiUrl = data.url.substring(0, data.url.lastIndexOf('/')); 
-      var appliUrl = data.url.substring(0, data.url.lastIndexOf(':'));
-
-      //// Appli. notification
+      var data = JSON.parse(string);
     
-      var body = 'url='+appliUrl+
-          '&title='+data.applicationname;
+      // Service notification
+        
+      var body = 'url='+data.url+
+          '&fileUrl='+data.url+
+          '&title='+data.servicename+
+          '&discoveryTypeBrowsing=Discovered by browsing';
       var nuxeo_upload_options = {
 			  port : nuxeo_notification.port,
 			  method : 'POST',
 			  host : nuxeo_notification.hostname,
-			  path : nuxeo_notification.href+"appliimpl",
+			  path : nuxeo_notification.href+"service",
 			  headers : {
 			    'Content-Type': 'application/x-www-form-urlencoded',
 			    'Content-Length': body.length
@@ -292,28 +290,10 @@ io.on('connection', function(client){
 		  };
       sendRestRequest(client, nuxeo_upload_options, body);
       
-      setTimeout(function () { // XXX : Hack to ensure previous call is over
       
-          //// Service notification
-        
-          body = 'url='+data.url+
-              '&fileUrl='+data.url+
-              '&parentUrl='+apiUrl+
-              '&title='+data.servicename+
-              '&discoveryTypeBrowsing=Discovered by browsing';
-          nuxeo_upload_options = {
-    			  port : nuxeo_notification.port,
-    			  method : 'POST',
-    			  host : nuxeo_notification.hostname,
-    			  path : nuxeo_notification.href+"service",
-    			  headers : {
-    			    'Content-Type': 'application/x-www-form-urlencoded',
-    			    'Content-Length': body.length
-    			  }
-    		  };
-          sendRestRequest(client, nuxeo_upload_options, body);
-	    	  
-      }, 300);
+      // Application notification
+      // TODO : Update it after the service, by finding the service's parent(s)
+	    
 		  
     }
     catch (error) {

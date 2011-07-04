@@ -152,13 +152,12 @@ public class DocumentService extends DefaultComponent {
 	public DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException {
 		if (url == null)
 			return null;
-		url = PropertyNormalizer.normalizeUrl(url);
 		DocumentModel result = findFirstDocument(session, Service.DOCTYPE,
-				Service.SCHEMA_PREFIX+Service.PROP_URL, url);
+				Service.SCHEMA_PREFIX+Service.PROP_URL, PropertyNormalizer.normalizeUrl(url));
 		if (result == null) {
 			// Match either service url or WSDL url
 			return findFirstDocument(session, Service.DOCTYPE,
-					Service.SCHEMA_PREFIX+Service.PROP_FILEURL, url);
+					Service.SCHEMA_COMMON_PREFIX+Service.PROP_FILEURL, url);
 		}
 		else {
 			return result;
@@ -198,7 +197,7 @@ public class DocumentService extends DefaultComponent {
 					}
 				}
 			}
-			session.removeDocument(from.getRef());
+			//session.removeDocument(from.getRef()); // TODO Remove
 			session.saveDocument(to);
 			session.save();
 			return true; 

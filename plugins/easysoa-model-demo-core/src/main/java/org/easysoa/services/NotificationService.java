@@ -128,7 +128,7 @@ public class NotificationService extends DefaultComponent {
 			if (apiModel == null)
 				apiModel = docService.createServiceAPI(session, parentModel.getPathAsString(), url);
 			if (!parentModel.getRef().equals(apiModel.getParentRef())) {
-				session.move(apiModel.getRef(), parentModel.getRef(), null);
+				apiModel = session.move(apiModel.getRef(), parentModel.getRef(), null);
 			}
 
 			// Update optional properties
@@ -166,7 +166,7 @@ public class NotificationService extends DefaultComponent {
 	 */
 	public final DocumentModel notifyService(CoreSession session,
 			Map<String, String> properties) throws ClientException, MalformedURLException {
-
+		
 		// Check mandatory fields
 		if (properties.get(Service.PROP_URL) != null) {
 
@@ -193,26 +193,27 @@ public class NotificationService extends DefaultComponent {
 			DocumentModel serviceModel = docService.findService(session, url);
 			if (serviceModel == null)
 				serviceModel = docService.createService(session, apiModel.getPathAsString(), url);
-			if (!apiModel.getRef().equals(serviceModel.getParentRef())) {
-				session.move(serviceModel.getRef(), apiModel.getRef(), null);
-			}
 
+			// Update optional properties
+			setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
 			properties.put(Service.PROP_CALLCOUNT, 
 					getNewCallcount(serviceModel, properties.get(Service.PROP_CALLCOUNT))
 				);
 			
-			// Update optional properties
-			setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
+			// Update location
+			if (!apiModel.getRef().equals(serviceModel.getParentRef())) {
+				serviceModel = session.move(serviceModel.getRef(), apiModel.getRef(), null);
+			}
 			
 			// Save
-			session.saveDocument(serviceModel);
+			session.saveDocument(serviceModel); 
 			session.save();
 
 			return serviceModel;
 			
 		}
 		else {
-			throw new ClientException("Service URL or parent API URL not informed");
+			throw new ClientException("Service URL not informed");
 		}
 		
 	}
@@ -257,7 +258,7 @@ public class NotificationService extends DefaultComponent {
 
 		}
 		else {
-			throw new ClientException("Parent application URL not informed");
+			throw new ClientException("Parent application URL or architecture path not informed");
 		}
 	}
 	
