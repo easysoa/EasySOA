@@ -197,22 +197,9 @@ public class NotificationService extends DefaultComponent {
 				session.move(serviceModel.getRef(), apiModel.getRef(), null);
 			}
 
-			// Compute call count
-			int newCallcount;
-			try {
-				newCallcount = Integer.parseInt((String) serviceModel.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT));
-			}
-			catch (Exception e) {
-				newCallcount = 0;
-			}
-			try {
-				newCallcount += (properties.get(Service.PROP_CALLCOUNT) != null) ? 
-						Integer.parseInt(properties.get(Service.PROP_CALLCOUNT)) : 0;
-			}
-			catch (NumberFormatException e) {
-				// Do nothing (invalid parameter)
-			}
-			properties.put(Service.PROP_CALLCOUNT, Integer.toString(newCallcount));
+			properties.put(Service.PROP_CALLCOUNT, 
+					getNewCallcount(serviceModel, Long.parseLong(properties.get(Service.PROP_CALLCOUNT)))
+				);
 			
 			// Update optional properties
 			setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
@@ -315,17 +302,22 @@ public class NotificationService extends DefaultComponent {
 				ERROR_API_URL_API); 
 	}
 
-	/**
-	 * Allows to check the format of certain properties and standardize them.
-	 * Should be done on any
-	 * @param map
-	 * @return
-	 */
-	public Map<String, String> standardizeProperties(Map<String, String> map) {
-		
-		return null;
+	private String getNewCallcount(DocumentModel serviceModel, Long newCalls) {
+		Long previousCallcount;
+		try {
+			previousCallcount = (Long) serviceModel.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT);
+		} catch (ClientException e) {
+			previousCallcount = new Long(0);
+		}
+		if (previousCallcount == null) {
+			previousCallcount = new Long(0);
+		}
+		if (newCalls == null) {
+			newCalls =  new Long(0);
+		}
+		return ((Long) (newCalls + previousCallcount)).toString();
 	}
-
+	
 	/**
 	 * Sets a property to a model, but only if the value parameter is not null.
 	 * @param result

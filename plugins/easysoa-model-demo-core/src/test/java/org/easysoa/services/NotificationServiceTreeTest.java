@@ -15,6 +15,7 @@ import org.easysoa.test.EasySOAFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.RepositoryLogger;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,9 +40,9 @@ import com.google.inject.Inject;
 	"org.easysoa.demo.core:OSGI-INF/DocumentServiceComponent.xml"
 })
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class NotificationServiceTest {
+public class NotificationServiceTreeTest {
 
-    static final Log log = LogFactory.getLog(NotificationServiceTest.class);
+    static final Log log = LogFactory.getLog(NotificationServiceTreeTest.class);
     
     private static final String APPLIIMPL_URL = "http://www.myapp.com/services";
     private static final String APPLIIMPL_TITLE= "My App";
@@ -53,6 +54,8 @@ public class NotificationServiceTest {
     
     private static final String SERVICE_URL = API_URL+"/clients";
     private static final String SERVICE_TITLE = "Clients service";
+    private static final String SERVICE2_URL = API2_URL+"/helloWorld";
+    private static final String SERVICE2_TITLE = "Hello world";
 
     private static CoreSession sessionStatic;
     
@@ -96,8 +99,10 @@ public class NotificationServiceTest {
      */
     @Test
     public void testServiceAPICreation() throws Exception {
+
+    	Assume.assumeNotNull(docService.findAppliImpl(session, APPLIIMPL_URL));
     	
-    	//// In newly created application
+    	//// In the newly created application
     	
     	// Create API
     	Map<String, String> properties = new HashMap<String, String>();
@@ -114,6 +119,7 @@ public class NotificationServiceTest {
     	// Check parent
     	assertEquals(APPLIIMPL_TITLE, (String) session.getDocument(doc.getParentRef())
     			.getPropertyValue("dc:title"));
+    	
     	
     	//// Default behaviour: a new application is created with given URLs
 
@@ -141,6 +147,10 @@ public class NotificationServiceTest {
 
     @Test
     public void testServiceCreation() throws Exception {
+
+    	Assume.assumeNotNull(docService.findServiceApi(session, API_URL));
+    	
+    	//// In the newly created API
     	
     	// Create service
     	Map<String, String> properties = new HashMap<String, String>();
@@ -148,7 +158,7 @@ public class NotificationServiceTest {
     	properties.put(Service.PROP_URL, SERVICE_URL);
     	properties.put(Service.PROP_PARENTURL, API_URL);
     	notifService.notifyService(session, properties);
-    	
+
     	// Check creation
     	DocumentModel doc = docService.findService(session, SERVICE_URL);
     	assertNotNull(doc);
@@ -157,6 +167,31 @@ public class NotificationServiceTest {
     	// Check parent
     	assertEquals(API_TITLE, (String) session.getDocument(doc.getParentRef())
     			.getPropertyValue("dc:title"));
+    	
+    	
+    	//// Default behaviour: a new application is created with given URLs
+
+    	String newApiUrl = "http://www.i-dont-exist.com/api";
+    	
+    	// Create service
+    	properties = new HashMap<String, String>();
+    	properties.put("title", SERVICE2_TITLE);
+    	properties.put(Service.PROP_URL, SERVICE2_URL);
+    	properties.put(Service.PROP_PARENTURL, newApiUrl);
+    	notifService.notifyService(session, properties);
+
+    	// Check creation
+    	doc = docService.findService(session, SERVICE2_URL);
+    	assertNotNull(doc);
+    	assertEquals(SERVICE2_TITLE, (String) doc.getPropertyValue("dc:title"));
+    	
+    	// Check parent
+    	doc = session.getDocument(doc.getParentRef());
+    	assertEquals(newApiUrl, (String) doc.getProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_URL));
+
+    	// Check parent's parent
+    	doc = session.getDocument(doc.getParentRef());
+    	assertEquals(AppliImpl.DEFAULT_APPLIIMPL_TITLE, (String) doc.getPropertyValue("dc:title"));
     	
     }
     
