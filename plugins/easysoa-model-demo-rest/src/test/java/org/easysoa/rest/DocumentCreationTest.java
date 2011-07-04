@@ -31,6 +31,7 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 		String url = "http://myApp.com/", title = "myApp";
 		
 		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.APPLIIMPL);
+		Assume.assumeNotNull(notification); // TODO: Assumes are a bit random atm, improve them
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
 		notification.setProperty(AppliImpl.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
@@ -48,10 +49,11 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 		String url = "api/", parentUrl = "http://myApp.com/", title = "myApi";
 		
 		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.SERVICEAPI);
+		Assume.assumeNotNull(notification);
 		notification.setProperty(ServiceAPI.PROP_TITLE, title)
 				.setProperty(ServiceAPI.PROP_PARENTURL, parentUrl)
 				.setProperty(ServiceAPI.PROP_URL, url);
-		notification.send();
+		Assume.assumeTrue(notification.send());
 		
 		assertFalse(automation.findDocumentByUrl(ServiceAPI.DOCTYPE, url).isEmpty());
 	}
@@ -66,10 +68,11 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 		String url = "service", parentUrl = "api/", title = "myService";
 		
 		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.SERVICE);
+		Assume.assumeNotNull(notification);
 		notification.setProperty(Service.PROP_TITLE, title)
 				.setProperty(Service.PROP_PARENTURL, parentUrl)
 				.setProperty(Service.PROP_URL, url);
-		notification.send();
+		Assume.assumeTrue(notification.send());
 
 		assertFalse(automation.findDocumentByUrl(Service.DOCTYPE, url).isEmpty());
 	}

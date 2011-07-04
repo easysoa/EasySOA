@@ -43,6 +43,8 @@ public class RestNotificationImpl implements RestNotificationRequest {
 		JSONObject result = null;
 		try {
 			result = send(body);
+			if (result == null)
+				throw new Exception();
 		}
 		catch (Exception e) {
 			log.warn("Failed to send the notification due to an external problem (Nuxeo not started?)");

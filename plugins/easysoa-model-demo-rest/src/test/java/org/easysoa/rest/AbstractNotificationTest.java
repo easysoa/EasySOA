@@ -8,7 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.test.AutomationHelper;
 import org.easysoa.test.RestNotificationFactory;
-import org.junit.Assume;
 
 /**
  * Class to be extended for the creation of notification test cases.
