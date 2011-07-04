@@ -80,13 +80,6 @@ define 'easysoa', :base_dir => '../' do
         cp DIST_COPY, NUXEO_PLUGINS_PATH
       end
       
-      desc 'Put Nuxeo jars in git build folder'
-      task :git do
-        DIST_JARS = FileList[_(NUXEO_PLUGINS_PATH+'*'+MODEL_VERSION+'.jar')]
-        puts "Nuxeo plugins - Deploying to Git folder : ", DIST_JARS
-        cp DIST_JARS, "../easysoa-model-demo/build/"
-      end
-      
     end
     
     desc 'Discovery by browsing'
@@ -140,9 +133,6 @@ task :nx_mvn => [MODEL+':mvn']
 desc "Deploys Nuxeo plugins"
 task :nx_dist => [MODEL+':dist']
 
-desc "Copise plugins to git build folder"
-task :nx_git => [MODEL+':git']
-
 desc "Cleans all Nuxeo plugins"
 task :nx_clean => [MODEL+':clean']
              
@@ -150,6 +140,7 @@ desc "Builds PAF CXF server and service proxy"
 task :paf_mvn => [PAF_RELEASE+':mvn']
 
 task :esper => [ESPER+':mvn']
+
 task :travel => [TRAVEL+':mvn']
 
 desc "Builds all needed projects"
