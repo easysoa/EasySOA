@@ -48,23 +48,24 @@ public class VocabularyServiceTest {
 
     static final Log log = LogFactory.getLog(VocabularyServiceTest.class);
     
-    @Inject DirectoryService dirService;
     @Inject CoreSession session;
+
+    @Inject VocabularyHelper vocService;
+    
+    @Inject DirectoryService dirService;
 
     @Before
     public void setUp() throws Exception {
   	  	assertNotNull("Cannot get directory service component", dirService);
     }
     
-    @Test @Ignore
-    public void test() throws Exception {
+    @Test
+    public void testVocabulary() throws Exception {
     	List<Directory> dirList = dirService.getDirectories();
   	  	assertNotNull(dirList);
   	  	assertEquals(dirList.size(), 3);
 
 		String environment = "test test environment";
-
-		VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
 		
 		// none yet :
 		vocService.removeEntry(session,
