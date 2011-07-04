@@ -5,12 +5,13 @@ import java.util.Map;
 
 public class EasySOADoctype {
 
-	public static final String PROP_TITLE = "title";
-	public static final String PROP_DESCRIPTION = "description";
-
 	public static final String SCHEMA_COMMON = "soacommon";
 	public static final String SCHEMA_COMMON_PREFIX = "soa:";
 	public static final String SCHEMA_DUBLINCORE = "dublincore";
+	
+	// Dublin Core properties
+	public static final String PROP_TITLE = "title";
+	public static final String PROP_DESCRIPTION = "description";
 	
 	// SOA Common properties
 	public static final String PROP_DTBROWSING = "discoveryTypeBrowsing";

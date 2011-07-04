@@ -20,6 +20,7 @@ import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -89,13 +90,6 @@ public class ServiceListener implements EventListener {
 					url = firstEndpoint.getAddress();
 					doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
 					
-					// Test if the service already exists, delete the other one if necessary
-					DocumentService docService = Framework.getService(DocumentService.class);
-					DocumentModel existingServiceModel = docService.findService(session, url);
-					if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
-						docService.mergeDocument(session, existingServiceModel, doc, false);
-					}
-					
 					// Service name extraction
 					if (title == null || title.isEmpty() || title.equals(url)) {
 						doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
@@ -111,46 +105,54 @@ public class ServiceListener implements EventListener {
 					//// Update parent's properties
 					
 					// Supported protocols
-					DocumentModel apiModel = session.getDocument(doc.getParentRef());
-					String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
-							.getBinding()).getTransportProtocol();
-					String storedProtocol = (String) apiModel.getProperty(
-							ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
-					if (storedProtocol == null || !storedProtocol.contains(protocol)) {
-						if (storedProtocol == null || storedProtocol.isEmpty()) {
-							apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
+					
+					if (doc.getParentRef() != null) {
+						
+						DocumentModel apiModel = session.getDocument(doc.getParentRef());
+						String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
+								.getBinding()).getTransportProtocol();
+						String storedProtocol = (String) apiModel.getProperty(
+								ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
+						if (storedProtocol == null || !storedProtocol.contains(protocol)) {
+							if (storedProtocol == null || storedProtocol.isEmpty()) {
+								apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
+							}
+							else {
+								apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
+										storedProtocol + ", " + protocol);
+							}
 						}
-						else {
-							apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
-									storedProtocol + ", " + protocol);
-						}
-					}
 
-					DocumentModel appliImplModel = session.getDocument(apiModel.getParentRef());
-					
-					// Server
-					String existingServer = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
-					String newServer = InetAddress.getByName(
-								new URL(firstEndpoint.getAddress()).getHost())
-								.getHostAddress();
-					if (existingServer == null || !newServer.equals(existingServer)) {
-						appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
-					}
-					
-					// Provider
-					try {
-						String provider = new URL(((Endpoint) firstService.getEndpoints().get(0)).getAddress()).getAuthority();
-						String existingProvider = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
-						if (existingProvider == null || !provider.equals(existingProvider)) {
-							appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER, provider);
+						if (apiModel.getParentRef() != null) {
+								
+							DocumentModel appliImplModel = session.getDocument(apiModel.getParentRef());
+							
+							// Server
+							String existingServer = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
+							String newServer = InetAddress.getByName(
+										new URL(firstEndpoint.getAddress()).getHost())
+										.getHostAddress();
+							if (existingServer == null || !newServer.equals(existingServer)) {
+								appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
+							}
+							
+							// Provider
+							try {
+								String provider = new URL(((Endpoint) firstService.getEndpoints().get(0)).getAddress()).getAuthority();
+								String existingProvider = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
+								if (existingProvider == null || !provider.equals(existingProvider)) {
+									appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER, provider);
+								}
+							}
+							catch(Exception e) {
+								// Nothing (authority extraction failed)
+							}
+							
+							session.saveDocument(appliImplModel);
 						}
+						
+						session.saveDocument(apiModel);
 					}
-					catch(Exception e) {
-						// Nothing (authority extraction failed)
-					}
-					
-					session.saveDocument(apiModel);
-					session.saveDocument(appliImplModel);
 	
 				} catch (Exception e) {
 					log.error("WSDL parsing failed", e);
@@ -169,6 +171,20 @@ public class ServiceListener implements EventListener {
 			
 		} catch (Exception e) {
 			log.error("Error while parsing WSDL", e);
+		}
+		
+		// Test if the service already exists, delete the other one(s) if necessary
+		try {
+			DocumentService docService = Framework.getService(DocumentService.class);
+			DocumentModelList existingServiceModels = session.query(
+					"SELECT * FROM Service WHERE serv:url = '" + doc.getProperty(SCHEMA, PROP_URL) + "'");
+			for (DocumentModel existingServiceModel : existingServiceModels) {
+				if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
+					docService.mergeDocument(session, existingServiceModel, doc, false);
+				}
+			}
+		} catch (Exception e) {
+			log.error("Error while trying to merge documents", e);
 		}
 
 	}

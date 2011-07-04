@@ -19,8 +19,6 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
-import org.nuxeo.ecm.core.api.pathsegment.PathSegmentService;
-import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
@@ -185,9 +183,8 @@ public class DocumentService extends DefaultComponent {
 	 */
 	public boolean mergeDocument(CoreSession session, DocumentModel from,
 			DocumentModel to, boolean overwrite) throws ClientException {
-		if (from.getType().equals(to.getType())) {
-			for (String dataModelKey : from.getDataModels().keySet()) {
-				String schema = from.getDataModels().get(dataModelKey).getSchema();
+		if (to.getType().equals(to.getType())) {
+			for (String schema : from.getDeclaredSchemas()) {
 				Map<String, Object> schemaPropertiesFrom = from.getProperties(schema);
 				Map<String, Object> schemaPropertiesTo = to.getProperties(schema);
 				for (String property : schemaPropertiesFrom.keySet()) {
@@ -207,8 +204,7 @@ public class DocumentService extends DefaultComponent {
 
 	public String generateDocumentID(DocumentModel doc) {
 		try {
-			PathSegmentService pathSegmentService = Framework.getService(PathSegmentService.class);
-			return pathSegmentService.generatePathSegment(doc);
+			return IdUtils.generateId(doc.getTitle(), "-", true, 0);
 		}
 		catch (Exception e) {
 			return IdUtils.generateStringId();
