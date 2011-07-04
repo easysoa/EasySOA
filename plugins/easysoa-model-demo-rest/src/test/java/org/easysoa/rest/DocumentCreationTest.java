@@ -14,9 +14,9 @@ import org.junit.Test;
  * @author mkalam-alami
  *
  */
-public class DocumentCreationTestCase extends AbstractNotificationTestCase {
+public class DocumentCreationTest extends AbstractNotificationTest {
 	
-	public DocumentCreationTestCase() throws Exception {
+	public DocumentCreationTest() throws Exception {
 		super();
 	}
 

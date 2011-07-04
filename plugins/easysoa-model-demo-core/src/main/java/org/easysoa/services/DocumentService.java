@@ -204,7 +204,6 @@ public class DocumentService extends DefaultComponent {
 				}
 			}
 			session.removeDocument(from.getRef());
-			session.save();
 			session.saveDocument(to);
 			session.save();
 			return true; 

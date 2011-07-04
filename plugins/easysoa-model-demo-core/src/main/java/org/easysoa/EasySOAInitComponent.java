@@ -14,10 +14,11 @@ public class EasySOAInitComponent extends DefaultComponent {
 
 	public void activate(ComponentContext context) throws Exception {
 		
-		// Init domain
-		new DomainInit(((RepositoryManager) Framework
-				.getService(RepositoryManager.class)).getDefaultRepository()
-				.getName()).runUnrestricted();
+		RepositoryManager repoService = Framework.getService(RepositoryManager.class);
+
+		// Init default domain
+		String defaultRepoName = repoService.getDefaultRepository().getName();
+		new DomainInit(defaultRepoName).runUnrestricted();
 		
 	}
 

@@ -9,12 +9,12 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.test.EasySOAFeature;
+import org.easysoa.test.EasySOARepositoryInit;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.directory.Directory;
@@ -43,10 +43,10 @@ import com.google.inject.Inject;
     "org.easysoa.demo.core:OSGI-INF/nxdirectories-contrib.xml" // required, else no custom easysoa vocabularies
 })
 @LocalDeploy("org.easysoa.demo.core:org/easysoa/tests/datasource-contrib.xml")
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=DefaultRepositoryInit.class)
-public class VocabulariesTest {
+@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
+public class VocabularyServiceTest {
 
-    static final Log log = LogFactory.getLog(VocabulariesTest.class);
+    static final Log log = LogFactory.getLog(VocabularyServiceTest.class);
     
     @Inject DirectoryService dirService;
     @Inject CoreSession session;
