@@ -30,11 +30,6 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 // TODO: Switch to real Nuxeo service instead of static access
 public class DocumentService extends DefaultComponent {
-
-	public static final String DOMAIN_TITLE = "EasySOA";
-	public static final String WORKSPACE_ROOT_TITLE = "Service Registry";
-	public static final String DEFAULT_APPLIIMPL_TITLE = "Default application";
-	public static final String DEFAULT_APPLIIMPL_URL = "(Unknown)";
 	
 	private static final Log log = LogFactory.getLog(DocumentService.class);
 
@@ -232,12 +227,12 @@ public class DocumentService extends DefaultComponent {
 	public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
 		
 		if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
-			DocumentModel appliimpl = getChild(session, getWSRoot(session).getRef(), DEFAULT_APPLIIMPL_TITLE);
+			DocumentModel appliimpl = getChild(session, getWSRoot(session).getRef(), AppliImpl.DEFAULT_APPLIIMPL_TITLE);
 			if (appliimpl == null) {
 				DocumentModel appliImpl;
 				try {
-					appliImpl = createAppliImpl(session, DEFAULT_APPLIIMPL_URL);
-					appliImpl.setProperty("dublincore", "title", DEFAULT_APPLIIMPL_TITLE);
+					appliImpl = createAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);
+					appliImpl.setProperty("dublincore", "title", AppliImpl.DEFAULT_APPLIIMPL_TITLE);
 					session.saveDocument(appliImpl);
 					session.save();
 					defaultAppliImpl = appliImpl;

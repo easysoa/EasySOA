@@ -15,6 +15,9 @@ import org.nuxeo.runtime.api.Framework;
  * 
  */
 public class DomainInit extends UnrestrictedSessionRunner {
+
+	public static final String DOMAIN_TITLE = "EasySOA";
+	public static final String WORKSPACE_ROOT_TITLE = "Service Registry";
 	
 	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(DomainInit.class);
@@ -31,8 +34,8 @@ public class DomainInit extends UnrestrictedSessionRunner {
 		
 		DocumentModel root = session.getChildren(this.session.getRootDocument().getRef()).get(0);
 		
-		if (!root.getTitle().equals(DocumentService.DOMAIN_TITLE)) {
-			root.setProperty("dublincore", "title", DocumentService.DOMAIN_TITLE);
+		if (!root.getTitle().equals(DOMAIN_TITLE)) {
+			root.setProperty("dublincore", "title", DOMAIN_TITLE);
 			session.saveDocument(root);
 		}
 			
@@ -41,7 +44,7 @@ public class DomainInit extends UnrestrictedSessionRunner {
 				session.removeDocument(rootChild.getRef());
 			}
 			else {
-				rootChild.setProperty("dublincore", "title", DocumentService.WORKSPACE_ROOT_TITLE);
+				rootChild.setProperty("dublincore", "title", WORKSPACE_ROOT_TITLE);
 				session.saveDocument(rootChild);
 				session.save();
 			}

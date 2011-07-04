@@ -46,7 +46,7 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
 		properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
 		properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
 		properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);
-		notificationService.notifyApi(documentManager, properties);
+		notificationService.notifyServiceApi(documentManager, properties);
 
 		// enrich or create service
 		properties = new HashMap<String, String>();

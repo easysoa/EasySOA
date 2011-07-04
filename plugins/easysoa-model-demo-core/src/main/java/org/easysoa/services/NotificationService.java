@@ -95,7 +95,7 @@ public class NotificationService extends DefaultComponent {
 	 * @throws ClientException
 	 * @throws MalformedURLException 
 	 */
-	public final DocumentModel notifyApi(CoreSession session, Map<String, String> properties)
+	public final DocumentModel notifyServiceApi(CoreSession session, Map<String, String> properties)
 			throws ClientException, MalformedURLException {
 		
 		// Check mandatory fields
