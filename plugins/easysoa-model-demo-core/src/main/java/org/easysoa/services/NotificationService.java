@@ -198,7 +198,7 @@ public class NotificationService extends DefaultComponent {
 			}
 
 			properties.put(Service.PROP_CALLCOUNT, 
-					getNewCallcount(serviceModel, Long.parseLong(properties.get(Service.PROP_CALLCOUNT)))
+					getNewCallcount(serviceModel, properties.get(Service.PROP_CALLCOUNT))
 				);
 			
 			// Update optional properties
@@ -302,8 +302,8 @@ public class NotificationService extends DefaultComponent {
 				ERROR_API_URL_API); 
 	}
 
-	private String getNewCallcount(DocumentModel serviceModel, Long newCalls) {
-		Long previousCallcount;
+	private String getNewCallcount(DocumentModel serviceModel, String newCalls) {
+		Long previousCallcount, newCallsLong;
 		try {
 			previousCallcount = (Long) serviceModel.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT);
 		} catch (ClientException e) {
@@ -313,9 +313,12 @@ public class NotificationService extends DefaultComponent {
 			previousCallcount = new Long(0);
 		}
 		if (newCalls == null) {
-			newCalls =  new Long(0);
+			newCallsLong = new Long(0);
 		}
-		return ((Long) (newCalls + previousCallcount)).toString();
+		else {
+			newCallsLong = Long.parseLong(newCalls);
+		}
+		return ((Long) (newCallsLong + previousCallcount)).toString();
 	}
 	
 	/**

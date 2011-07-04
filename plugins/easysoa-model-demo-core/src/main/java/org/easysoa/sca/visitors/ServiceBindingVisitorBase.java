@@ -51,6 +51,7 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
 		// enrich or create service
 		properties = new HashMap<String, String>();
 		properties.put(Service.PROP_URL, serviceUrl);
+		properties.put(Service.PROP_TITLE, scaImporter.getCurrentArchiName());
 		properties.put(Service.PROP_PARENTURL, apiUrl);
 		properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
 		properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());

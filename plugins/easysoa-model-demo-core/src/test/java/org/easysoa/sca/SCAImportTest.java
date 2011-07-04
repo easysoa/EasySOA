@@ -12,8 +12,8 @@ import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOAFeature;
 import org.easysoa.test.EasySOARepositoryInit;
+import org.easysoa.test.RepositoryLogger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -24,7 +24,6 @@ import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.services.resource.ResourceService;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -43,16 +42,17 @@ import com.google.inject.Inject;
 @Features(EasySOAFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class SCAImportTest {
+
     @Inject CoreSession session;
+
+    @Inject DocumentService docService;
+    
     @Inject ResourceService resourceService;
     
     DocumentModel parentAppliImplModel;
     
-    
     @Before
     public void setUp() throws ClientException, MalformedURLException {
-    	
-		DocumentService docService = Framework.getRuntime().getService(DocumentService.class);
 
     	// Find or create appli
     	String appliUrl = "http://test/appli/";
@@ -76,7 +76,7 @@ public class SCAImportTest {
 		// session.removeDocument(parentAppliImplModel.getRef());
     }
     
-    @Test @Ignore
+    @Test
     public void testSCA() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -94,17 +94,20 @@ public class SCAImportTest {
 		DocumentModelList resDocList;
 		DocumentModel resDoc;
 		
+		// Log repository
+		new RepositoryLogger(session, "Repository state after import").logAllRepository();
+		
 		// services :
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(resDocList.size(), 1);
+		assertEquals(1, resDocList.size());
 		resDoc = resDocList.get(0);
 		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(resDocList.size(), 1);
+		assertEquals(1, resDocList.size());
 		resDoc = resDocList.get(0);
 		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
 
@@ -115,12 +118,12 @@ public class SCAImportTest {
 				ServiceReference.DOCTYPE + "' AND "
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
 				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(resDocList.size(), 1);
+		assertEquals(1, resDocList.size());
 
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				ServiceReference.DOCTYPE + "' AND "
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
 				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(resDocList.size(), 1);
+		assertEquals(1, resDocList.size());
     }
 }

@@ -23,7 +23,6 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
@@ -36,9 +35,6 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Features(EasySOAFeature.class)
-@Deploy({
-	"org.easysoa.demo.core:OSGI-INF/DocumentServiceComponent.xml"
-})
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class NotificationServiceTreeTest {
 
