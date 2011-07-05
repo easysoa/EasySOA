@@ -1,247 +1,303 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <groupId>com.openwide.easysoa</groupId>
-  <artifactId>esperfrascatipoc</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <name>esperfrascatipoc</name>
-  <url>http://maven.apache.org</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-  <repositories>
-    <repository>
-     <id>maven-restlet</id>
-     <name>Public online Restlet repository</name>
-     <url>http://maven.restlet.org</url>
-    </repository>
-    <repository>
-      <id>Frascati</id>
-      <name>Frascati repository</name>
-      <url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
-    </repository>
-    <repository>
-      <id>Download.java.net</id>
-      <name>Download.java.net repository</name>
-      <url>http://download.java.net/maven/2/</url>
-    </repository>
-    <repository>
-    	<id>ow2-snapshot</id>
-        <url>http://maven.ow2.org//maven2-snapshot</url>
-    </repository>
-	<repository>
-		<id>eclipse mirror</id>
-		<name>Eclipse EMF Mirror</name>
-		<url>http://www.openarchitectureware.org/m2</url>
-	</repository>
-	<repository>
-		<id>frascati mirror</id>
-		<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
-	</repository>			
-    <repository>
-        <id>apache.incubator</id>
-        <url>http://people.apache.org/repo/m2-incubating-repository</url>
-     </repository>
-      <repository>
-        <id>Nuxeo</id>
-        <name>Nuxeo Public Releases Repository</name>
-        <url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
-        <releases>
-          <enabled>true</enabled>
-        </releases>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots>
-      </repository>
-  </repositories>
-
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>com.espertech</groupId>
-    	<artifactId>esper</artifactId>
-    	<version>4.2.0</version>
-    </dependency>
-	<dependency>
-	    <groupId>org.ow2.frascati</groupId>
-	    <artifactId>frascati-binding-ws</artifactId>
-	    <version>1.4</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.ow2.frascati</groupId>
-	    <artifactId>frascati-binding-http</artifactId>
-	    <version>1.4</version>
-	</dependency>
-	<dependency>
-		<groupId>org.ow2.frascati</groupId>
-		<artifactId>frascati-binding-rest</artifactId>
-		<version>1.4</version>
-	</dependency>	
-    <dependency>
-    	<groupId>javax.ws.rs</groupId>
-    	<artifactId>jsr311-api</artifactId>
-    	<version>1.1.1</version>
-    </dependency>	
-    <dependency>
-    	<groupId>com.sun.jersey</groupId>
-    	<artifactId>jersey-client</artifactId>
-    	<version>1.8-ea02</version>
-    </dependency>
-	<dependency>
-	  <groupId>org.restlet.jse</groupId>
-	  <artifactId>org.restlet</artifactId>
-	  <version>2.1-M3</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.restlet.jse</groupId>
-	  <artifactId>org.restlet.ext.simple</artifactId>
-	  <version>2.1-M3</version>
-	</dependency>
-	<dependency>
-		<groupId>org.ow2.jonas.osgi</groupId>
-		<artifactId>monolog</artifactId>
-		<version>5.1.1</version>
-	</dependency>
-	<dependency>
-		<groupId>log4j</groupId>
-		<artifactId>log4j</artifactId>
-		<version>1.2.16</version>
-	</dependency>
-	<dependency>
-		<groupId>org.json</groupId>
-		<artifactId>json</artifactId>
-		<version>20090211</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.httpcomponents</groupId>
-		<artifactId>httpclient</artifactId>
-		<version>4.1.1</version>
-	</dependency>
-	<dependency>
-		<groupId>fr.inria.galaxy.j1</groupId>
-		<artifactId>scenario1</artifactId>
-		<version>1.0-SNAPSHOT</version>
-		<scope>test</scope>
-		<type>pom</type>
-	</dependency>
-	<dependency>
-		<groupId>fr.inria.galaxy.j1</groupId>
-		<artifactId>trip</artifactId>
-		<version>1.0-SNAPSHOT</version>
-		<scope>test</scope>
-		<type>jar</type>
-	</dependency>	
-	<dependency>
-  		<groupId>org.nuxeo.runtime</groupId>
-  		<artifactId>nuxeo-runtime-test</artifactId>
-  		<version>5.4.1</version>
-  		<scope>test</scope>
-	</dependency>
-	<dependency>
-  		<groupId>org.nuxeo.ecm.core</groupId>
-  		<artifactId>nuxeo-core-test</artifactId>
-  		<version>5.4.1</version>
-  		<scope>test</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.nuxeo.common</groupId>
-		<artifactId>nuxeo-common</artifactId>
-		<version>5.4.1</version>
-		<scope>test</scope>		
-	</dependency>
-	<dependency>
-		<groupId>com.google.inject</groupId>
-		<artifactId>guice</artifactId>
-		<version>3.0</version>
-		<scope>test</scope>
-	</dependency>
-	<dependency>
-   		<groupId>org.apache.cxf</groupId>
-   		<artifactId>cxf-rt-transports-http-jetty</artifactId>
-   		<version>2.4.1</version>
-   		<scope>test</scope>
-	</dependency>
-	<!--<dependency>
+	<parent>
 		<groupId>org.easysoa</groupId>
-		<artifactId>easysoa-model-demo-core</artifactId>
+		<artifactId>easysoa-model-demo-parent</artifactId>
 		<version>0.1.2-SNAPSHOT</version>
-		<scope>test</scope>
-	</dependency>-->
-	<dependency>
-		<groupId>org.easysoa</groupId>
-		<artifactId>easysoa-model-demo-core</artifactId>
-		<version>0.1.2-SNAPSHOT</version>
-		<scope>test</scope>
-	</dependency>
-  </dependencies>
-  
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.openwide.easysoa</groupId>
+	<artifactId>esperfrascatipoc</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>esperfrascatipoc</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+		<repository>
+			<id>Frascati</id>
+			<name>Frascati repository</name>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>
+		<repository>
+			<id>Download.java.net</id>
+			<name>Download.java.net repository</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+		<repository>
+			<id>ow2-snapshot</id>
+			<url>http://maven.ow2.org//maven2-snapshot</url>
+		</repository>
+		<repository>
+			<id>eclipse mirror</id>
+			<name>Eclipse EMF Mirror</name>
+			<url>http://www.openarchitectureware.org/m2</url>
+		</repository>
+		<repository>
+			<id>frascati mirror</id>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>
+		<repository>
+			<id>apache.incubator</id>
+			<url>http://people.apache.org/repo/m2-incubating-repository</url>
+		</repository>
+		<repository>
+			<id>Nuxeo</id>
+			<name>Nuxeo Public Releases Repository</name>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.espertech</groupId>
+			<artifactId>esper</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.8-ea02</version>
+		</dependency>
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet</artifactId>
+			<version>2.1-M3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet.ext.simple</artifactId>
+			<version>2.1-M3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.jonas.osgi</groupId>
+			<artifactId>monolog</artifactId>
+			<version>5.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>scenario1</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>test</scope>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>trip</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>test</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime-test</artifactId>
+			<version>5.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-test</artifactId>
+			<version>5.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-directory-sql</artifactId>
+			<version>5.4.1</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-relations-core</artifactId>
+			<version>5.4.1</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.automation</groupId>
+			<artifactId>nuxeo-automation-core</artifactId>
+			<version>5.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-relations-api</artifactId>
+			<version>5.4.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-ui-web</artifactId>
+			<version>5.4.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-api</artifactId>
+			<version>5.4.1</version><!--$NO-MVN-MAN-VER$ -->
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-webapp-base</artifactId>
+			<version>5.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.common</groupId>
+			<artifactId>nuxeo-common</artifactId>
+			<version>5.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>3.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
+			<version>2.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa</groupId>
+			<artifactId>easysoa-model-demo-core</artifactId>
+			<version>0.1.2-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa</groupId>
+			<artifactId>easysoa-model-demo-rest</artifactId>
+			<version>0.1.2-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime-datasource</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-directory-types-contrib</artifactId>
+			<version>5.4.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<build>
-		  <plugins>
-		  	<plugin>
-		    	<groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-compiler-plugin</artifactId>
-		        <configuration>
-		        	<source>1.6</source>
-		            <target>1.6</target>
-		        </configuration>
-		        <version>2.3.2</version>
-		    </plugin>
-	    </plugins>
-	</build>  
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+				<version>2.3.2</version>
+			</plugin>
+		</plugins>
+	</build>
 
-    <profiles>
-        <profile>
-            <id>run</id>
-            <build>                                             
-			  <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal>
-			  <plugins>                                                                                    
-			    <plugin>                                                                                                         
-			      <groupId>org.ow2.frascati.mojo</groupId>                                                                    
-			      <artifactId>frascati-launcher-plugin</artifactId>                                                               
-			      <executions>                                                                                                   
-			        <execution>                                                                                                  
-			          <phase>package</phase>                                                                                     
-			          <goals>
-			          	<goal>exec</goal>
-			          </goals>
-			        </execution>
-			      </executions>
-			      <configuration>
-			      	<executable>java</executable>
-					<arguments>
-			      	</arguments>
-			        <!--<loggingConfFile>${logging.conf.file}</loggingConfFile>-->
-			        <!--<composite>${composite.file}</composite>-->
-			        <!--<service>${service.name}</service>-->
-			        <!--<method>${method.name}</method>-->
-			        <!--<methodParams>${method.params}</methodParams>-->
-			            <composite>httpProxy</composite>
-			    		<!-- useFscript>true</useFscript -->
-			    		<useFscript>false</useFscript>
-			    	</configuration>
-					<dependencies>
-                            <!-- other poc deps ? -->
-                            <!-- other frascati deps ? -->
-					        <!-- dependency>
-					        	<groupId>org.ow2.frascati</groupId>
-					            <artifactId>frascati-implementation-fractal</artifactId>
-					            <version>1.4</version>        
-					        </dependency -->
-                        </dependencies>
-			    </plugin>                                                                                                        
-			  </plugins>                                                                                                         
+	<profiles>
+		<profile>
+			<id>run</id>
+			<build>
+				<defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.ow2.frascati.mojo</groupId>
+						<artifactId>frascati-launcher-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+							</arguments>
+							<!--<loggingConfFile>${logging.conf.file}</loggingConfFile> -->
+							<!--<composite>${composite.file}</composite> -->
+							<!--<service>${service.name}</service> -->
+							<!--<method>${method.name}</method> -->
+							<!--<methodParams>${method.params}</methodParams> -->
+							<composite>httpProxy</composite>
+							<!-- useFscript>true</useFscript -->
+							<useFscript>false</useFscript>
+						</configuration>
+						<dependencies>
+							<!-- other poc deps ? -->
+							<!-- other frascati deps ? -->
+							<!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-implementation-fractal</artifactId> 
+								<version>1.4</version> </dependency -->
+						</dependencies>
+					</plugin>
+				</plugins>
 			</build>
-        </profile>
-     </profiles>
-  
+		</profile>
+	</profiles>
+
 </project>
