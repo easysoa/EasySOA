@@ -238,10 +238,6 @@
 	      <fields>
 	        <field>api:url</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
           <properties mode="any">
 		    <property name="required">true</property>
 		  </properties>
@@ -267,10 +263,6 @@
 	      <fields>
 	        <field>api:protocols</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-            <mode value="edit">hidden</mode>
-          </widgetModes>
 	  </widget>
     </layout>
     
@@ -282,9 +274,6 @@
       <rows>
         <row>
           <widget>servicedef_url</widget>
-        </row>
-        <row>
-          <widget>servicedef_fileUrl</widget>
         </row>
         <row>
           <widget>servicedef_callcount</widget>
@@ -302,6 +291,9 @@
         <row>
           <widget>servicedef_contentTypeOut</widget>
         </row>
+        <row>
+          <widget>servicedef_fileUrl</widget>
+        </row>
        </rows>
       <widget name="servicedef_url" type="text">
 	      <labels>
@@ -314,15 +306,6 @@
           <properties mode="any">
 		    <property name="required">true</property>
 		  </properties>
-	  </widget>
-      <widget name="servicedef_fileUrl" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.servicedef.fileUrl</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>serv:fileUrl</field>
-	      </fields>
 	  </widget>
       <widget name="servicedef_callcount" type="int">
 	      <labels>
@@ -372,6 +355,15 @@
 	        <field>serv:contentTypeOut</field>
 	      </fields>
 	  </widget>
+      <widget name="servicedef_fileUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.fileUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:fileUrl</field>
+	      </fields>
+	  </widget>
     </layout>
     
     <!-- Service reference layout -->
@@ -401,9 +393,6 @@
 	      <fields>
 	        <field>sref:refPath</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-          </widgetModes>
 	  </widget>
       <widget name="serviceref_refUrl" type="text">
 	      <labels>
@@ -413,9 +402,6 @@
 	      <fields>
 	        <field>sref:refUrl</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-          </widgetModes>
 	  </widget>
     </layout>
     
@@ -440,9 +426,6 @@
 	      <fields>
 	        <field>soa:archiPath</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-          </widgetModes>
 	  </widget>
       <widget name="soacommon_archi_archiLocalName" type="text">
 	      <labels>
@@ -452,9 +435,6 @@
 	      <fields>
 	        <field>soa:archiLocalName</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-          </widgetModes>
 	  </widget>
     </layout>
     

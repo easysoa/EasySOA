@@ -13,6 +13,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>servicedef</layout>
+        <layout>file</layout>
         <layout>soacommon_archi</layout>
         <layout>soacommon_author</layout>
       </layouts>

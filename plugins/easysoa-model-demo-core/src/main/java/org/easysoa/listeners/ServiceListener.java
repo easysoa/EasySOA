@@ -16,6 +16,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.NotificationService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -75,9 +76,10 @@ public class ServiceListener implements EventListener {
 				
 				if (blob != null) {
 					
-					// Save blob
+					// Save WSDLblob
+					NotificationService notifService = Framework.getService(NotificationService.class);
 					doc.setProperty("file", "content", blob);
-					doc.setProperty("file", "filename", fileUrl);
+					doc.setProperty("file", "filename", notifService.computeServiceTitle(fileUrl)+".wsdl");
 					
 					// Extract file to system for analysis
 					File tmpFile = File.createTempFile(doc.getId(), null);
@@ -95,8 +97,8 @@ public class ServiceListener implements EventListener {
 						
 						// URL extraction
 						Endpoint firstEndpoint = firstService.getEndpoints().get(0);
-						url = firstEndpoint.getAddress();
-						doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
+						url = PropertyNormalizer.normalizeUrl(firstEndpoint.getAddress());
+						doc.setProperty(SCHEMA, PROP_URL, url);
 						
 						// Service name extraction
 						if (title == null || title.isEmpty() || title.equals(url) || title.equals(fileUrl)) {

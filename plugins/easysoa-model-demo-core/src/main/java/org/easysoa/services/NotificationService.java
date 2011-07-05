@@ -184,9 +184,7 @@ public class NotificationService extends DefaultComponent {
 				parentUrl = computeApiUrl(url);
 			}
 			if (title == null) {
-				String lastUrlPart = url.substring(url.lastIndexOf('/')+1);
-				title = lastUrlPart.replaceAll("(wsdl|WSDL|[^\\w.-])", "");
-				properties.put(Service.PROP_TITLE, title);
+				properties.put(Service.PROP_TITLE, computeServiceTitle(url));
 			}
 		
 			// Find or create document and parent
@@ -310,6 +308,11 @@ public class NotificationService extends DefaultComponent {
 		return PropertyNormalizer.normalizeUrl(
 				serviceUrlPath.substring(0, serviceUrlPath.lastIndexOf('/')),
 				ERROR_API_URL_API); 
+	}
+
+	public String computeServiceTitle(String serviceUrlPath) throws MalformedURLException {
+		String lastUrlPart = serviceUrlPath.substring(serviceUrlPath.lastIndexOf('/')+1);
+		return lastUrlPart.replaceAll("(wsdl|WSDL|[^\\w.-])", "");
 	}
 	
 	private String getNewCallcount(DocumentModel serviceModel, String newCalls) {
