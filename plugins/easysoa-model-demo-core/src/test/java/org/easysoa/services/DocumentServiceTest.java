@@ -63,6 +63,7 @@ public class DocumentServiceTest {
     	DocumentModel model1 = docService.createService(session, apiModel.getPathAsString(), url);
     	model1.setProperty(Service.SCHEMA, Service.PROP_LIGHTURL, lightUrl);
     	session.saveDocument(model1);
+    	session.save();
     	DocumentModel model2 = docService.createService(session, apiModel.getPathAsString(), url);
     	model2.setProperty(Service.SCHEMA_DUBLINCORE, Service.PROP_DESCRIPTION, description);
     	session.saveDocument(model2);
@@ -78,6 +79,37 @@ public class DocumentServiceTest {
     }
     
     /**
+     * Test the file download and parsing when the URL matches a WSDL
+     * @throws Exception
+     */
+    @Test
+    public void testWSDL() throws Exception {
+
+    	String wsdlUrl = "http://www.ebi.ac.uk/Tools/webservices/wsdl/WSCensor.wsdl",
+    		apiUrl = "http://www.ebi.ac.uk/Tools/es/ws-servers",
+    		serviceUrl = "http://www.ebi.ac.uk/Tools/es/ws-servers/WSCensor";
+    	
+    	// Create API
+    	DocumentModel appliImplModel = docService.getDefaultAppliImpl(session);
+    	DocumentModel apiModel = docService.createServiceAPI(session, appliImplModel.getPathAsString(), apiUrl);
+
+    	// Create Service with WSDL adress only
+    	DocumentModel model = docService.createService(session, apiModel.getPathAsString(), wsdlUrl);
+    	session.saveDocument(model);
+    	session.save();
+    	
+    	// Check service contents
+    	model = docService.findService(session, serviceUrl);
+    	assertNotNull("Failed to fetch document by fileUrl", model);
+    	assertEquals("Service didn't recognize URL as a WSDL file", wsdlUrl, 
+    			model.getProperty(Service.SCHEMA, Service.PROP_FILEURL));
+    	assertEquals("Failed to extract service URL from WSDL", serviceUrl, 
+    			model.getProperty(Service.SCHEMA, Service.PROP_URL));
+    	assertNotNull("Failed to save WSDL in 'file' schema", model.getProperty("file", "content"));
+    	
+    }
+    
+    /**
      * Test the service fetch by its fileUrl value
      * @throws Exception
      */
@@ -88,19 +120,22 @@ public class DocumentServiceTest {
     		apiUrl = "http://soatest.parasoft.com/glue",
     		serviceUrl = "http://ws1.parasoft.com/glue/calculator";
 
-    	// Create API
-    	DocumentModel appliImplModel = docService.getDefaultAppliImpl(session);
-    	DocumentModel apiModel = docService.createServiceAPI(session, appliImplModel.getPathAsString(), apiUrl);
-    	
-    	// Create Service
+    	// Create API (if not done by previous test)
+    	DocumentModel apiModel = docService.findServiceApi(session, apiUrl);
+    	if (apiModel == null) {
+        	DocumentModel appliImplModel = docService.getDefaultAppliImpl(session);
+    		apiModel = docService.createServiceAPI(session, appliImplModel.getPathAsString(), apiUrl);
+    	}
+
+    	// Create Service with WSDL adress only
     	DocumentModel model = docService.createService(session, apiModel.getPathAsString(), serviceUrl);
-    	model.setProperty(Service.SCHEMA_COMMON, Service.PROP_FILEURL, wsdlUrl);
+    	model.setProperty(Service.SCHEMA, Service.PROP_FILEURL, wsdlUrl);
     	session.saveDocument(model);
     	session.save();
     	
     	// Find Service
-    	assertNotNull("Failed to fetch document by fileUrl",
-    			docService.findService(session, wsdlUrl));
+    	model = docService.findService(session, wsdlUrl);
+    	assertNotNull("Failed to fetch document by fileUrl", model);
     	
     }
     

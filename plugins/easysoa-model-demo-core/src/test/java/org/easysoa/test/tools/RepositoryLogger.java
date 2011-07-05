@@ -1,5 +1,8 @@
 package org.easysoa.test.tools;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -20,6 +23,11 @@ public class RepositoryLogger {
 
 	private CoreSession session;
 	private String title;
+	private RepositoryLoggerMatcher matcher = new RepositoryLoggerMatcher() {
+		public boolean matches(DocumentModel model) {
+			return false;
+		}
+	};
 
 	public RepositoryLogger(CoreSession session) {
 		this(session, "Repository contents");
@@ -28,6 +36,15 @@ public class RepositoryLogger {
 	public RepositoryLogger(CoreSession session, String title) {
 		this.session = session;
 		this.title = title;
+	}
+	
+	/**
+	 * Allows to define a matcher to set which documents
+	 * need to be logged in details.
+	 */
+	public RepositoryLogger setDetailedLoggingFor(RepositoryLoggerMatcher matcher) {
+		this.matcher = matcher;
+		return this;
 	}
 
 	public void logAllRepository() {
@@ -42,9 +59,9 @@ public class RepositoryLogger {
 		try {
 			// Header
 			String separator = getDashes(title.length());
-			log.info(separator);
-			log.info(title);
-			log.info(separator);
+			log.debug(separator);
+			log.debug(title);
+			log.debug(separator);
 			
 			// Contents
 			logDocumentAndChilds(model, 0);
@@ -56,13 +73,46 @@ public class RepositoryLogger {
 	private void logDocumentAndChilds(DocumentModel model, int indent) throws ClientException {
 		
 		// Log document
-		String line = getSpaces(indent) + "* ["+model.getType()+"] "+model.getTitle();
-		log.info(line);
+		if (matcher.matches(model)) {
+			logDetailed(indent, model);
+		}
+		else {
+			logBasic(indent, model);
+		}
 		
 		// Recursive calls
 		DocumentModelList list = session.getChildren(model.getRef());
 		for (DocumentModel childModel : list) {
 			logDocumentAndChilds(childModel, indent+INDENT_STEP);
+		}
+	}
+
+	private void logBasic(int indent, DocumentModel model) {
+		String line = getSpaces(indent) + "* ["+model.getType()+"] ";
+		try {
+			line += model.getTitle();
+		} catch (ClientException e) {
+			line += "!!(title unknown)!!";
+		}
+		log.debug(line);
+	}
+
+	private void logDetailed(int indent, DocumentModel model) {
+		logBasic(indent, model);
+		String spaces = getSpaces(indent);
+		try {
+			for (String schema : model.getDeclaredSchemas()) {
+				String line = spaces + "    | " + schema + "> ";
+				Map<String, Object> schemaProperties = model.getProperties(schema);
+				for (String property : schemaProperties.keySet()) {
+					Serializable value = (Serializable) schemaProperties.get(property);
+					line += property + "=" + value + " ";
+				}
+				log.debug(line);
+			}
+		}
+		catch(Exception e) {
+			log.debug(spaces + "(Failed to get more information: " + e.getMessage() + ")");
 		}
 	}
 	

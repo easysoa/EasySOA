@@ -24,6 +24,7 @@
 	  <schema name="uid"/>
 	  <schema name="note"/>
 	  <schema name="dublincore"/>
+      <schema name="file"/>
       <schema name="soacommon" />
       <schema name="servicedef" />
       <facet name="Commentable" />

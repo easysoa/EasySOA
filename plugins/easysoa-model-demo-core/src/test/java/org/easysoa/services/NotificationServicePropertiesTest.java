@@ -107,7 +107,7 @@ public class NotificationServicePropertiesTest {
     	DocumentModel doc = docService.findService(session, serviceUrl);
     	assertNotNull("The WSDL hasn't been parsed", doc);
     	doc = docService.findService(session, wsdlUrl);
-    	assertNotNull("(DocumentService failure)", doc); // TODO: DocumentServiceTest test case
+    	assertNotNull(doc);
     	DocumentModelList list = session.query(query);
     	assertEquals(1, list.size());
     	

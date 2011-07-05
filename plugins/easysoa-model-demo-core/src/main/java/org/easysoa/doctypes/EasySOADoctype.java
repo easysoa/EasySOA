@@ -19,7 +19,6 @@ public class EasySOADoctype {
 	public static final String PROP_DTIMPORT = "discoveryTypeImport";
 	public static final String PROP_ARCHIPATH = "archiPath";
 	public static final String PROP_ARCHILOCALNAME = "archiLocalName";
-	public static final String PROP_FILEURL = "fileUrl";
 
 	private static Map<String, String> commonPropertyList = null;
 	private static Map<String, String> dublinCorePropertyList = null;
@@ -32,7 +31,6 @@ public class EasySOADoctype {
 			commonPropertyList.put(PROP_DTIMPORT, "Notes about import-specific notifications. Informs the document of the notification source.");
 			commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known.");
 			commonPropertyList.put(PROP_ARCHILOCALNAME, "Reference local name in architecture if known.");
-			commonPropertyList.put(PROP_FILEURL, "The URL of a file to attach to the document.");
 		}
 		return commonPropertyList;
 	}

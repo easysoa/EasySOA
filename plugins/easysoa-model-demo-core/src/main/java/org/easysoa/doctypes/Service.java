@@ -16,6 +16,7 @@ public class Service extends EasySOADoctype {
 	public static final String PROP_HTTPMETHOD = "httpMethod";
 	public static final String PROP_CONTENTTYPEIN = "contentTypeIn";
 	public static final String PROP_CONTENTTYPEOUT = "contentTypeOut";
+	public static final String PROP_FILEURL = "fileUrl"; // TODO: Switch to EasySOADoctype
 	
 	public static final String PROP_PARENTURL = "parentUrl";
 
@@ -30,6 +31,7 @@ public class Service extends EasySOADoctype {
 			propertyList.put(PROP_HTTPMETHOD, "POST, GET...");
 			propertyList.put(PROP_CONTENTTYPEIN, "HTTP content type of the request body");
 			propertyList.put(PROP_CONTENTTYPEOUT, "HTTP content type of the result body");
+			propertyList.put(PROP_FILEURL, "The URL of a file to attach to the document");
 			propertyList.put(PROP_PARENTURL, "(mandatory) Service API URL");
 		}
 		return propertyList;

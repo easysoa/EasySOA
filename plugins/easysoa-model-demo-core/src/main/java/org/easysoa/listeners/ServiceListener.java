@@ -1,8 +1,7 @@
 package org.easysoa.listeners;
 
-import static org.easysoa.doctypes.EasySOADoctype.PROP_FILEURL;
-import static org.easysoa.doctypes.EasySOADoctype.SCHEMA_COMMON;
 import static org.easysoa.doctypes.Service.DOCTYPE;
+import static org.easysoa.doctypes.Service.PROP_FILEURL;
 import static org.easysoa.doctypes.Service.PROP_LIGHTURL;
 import static org.easysoa.doctypes.Service.PROP_URL;
 import static org.easysoa.doctypes.Service.SCHEMA;
@@ -60,7 +59,7 @@ public class ServiceListener implements EventListener {
 			// Extract data from specified document
 			String title = (String) doc.getProperty("dublincore", "title");
 			String url = (String) doc.getProperty(SCHEMA, PROP_URL);
-			String fileUrl = (String) doc.getProperty(SCHEMA_COMMON, PROP_FILEURL);
+			String fileUrl = (String) doc.getProperty(SCHEMA, PROP_FILEURL);
 			
 			// Extract data from WSDL
 			if (fileUrl != null) {
@@ -75,8 +74,12 @@ public class ServiceListener implements EventListener {
 				}
 				
 				if (blob != null) {
-				
-					// Extract file to system 
+					
+					// Save blob
+					doc.setProperty("file", "content", blob);
+					doc.setProperty("file", "filename", fileUrl);
+					
+					// Extract file to system for analysis
 					File tmpFile = File.createTempFile(doc.getId(), null);
 					blob.transferTo(tmpFile);
 					
@@ -96,8 +99,9 @@ public class ServiceListener implements EventListener {
 						doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
 						
 						// Service name extraction
-						if (title == null || title.isEmpty() || title.equals(url)) {
-							doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
+						if (title == null || title.isEmpty() || title.equals(url) || title.equals(fileUrl)) {
+							title = firstService.getQName().getLocalPart();
+							doc.setProperty("dublincore", "title", title);
 						}
 						
 						// EasySOA Light 
@@ -114,18 +118,23 @@ public class ServiceListener implements EventListener {
 						if (doc.getParentRef() != null) {
 							
 							DocumentModel apiModel = session.getDocument(doc.getParentRef());
-							String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
-									.getBinding()).getTransportProtocol();
 							String storedProtocol = (String) apiModel.getProperty(
 									ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
-							if (storedProtocol == null || !storedProtocol.contains(protocol)) {
-								if (storedProtocol == null || storedProtocol.isEmpty()) {
-									apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
+							try {
+								String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
+										.getBinding()).getTransportProtocol();
+								if (storedProtocol == null || !storedProtocol.contains(protocol)) {
+									if (storedProtocol == null || storedProtocol.isEmpty()) {
+										apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
+									}
+									else {
+										apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
+												storedProtocol + ", " + protocol);
+									}
 								}
-								else {
-									apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
-											storedProtocol + ", " + protocol);
-								}
+							}
+							catch (Exception e) {
+								log.warn("Failed to extract protocol from WSDL: "+e.getMessage());
 							}
 	
 							if (apiModel.getParentRef() != null) {

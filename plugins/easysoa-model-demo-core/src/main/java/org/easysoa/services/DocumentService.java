@@ -91,6 +91,9 @@ public class DocumentService extends DefaultComponent {
 			url = PropertyNormalizer.normalizeUrl(url);
 			DocumentModel serviceModel = session.createDocumentModel(Service.DOCTYPE);
 			serviceModel.setProperty(Service.SCHEMA, Service.PROP_URL, url);
+			if (url.toLowerCase().contains("wsdl")) {
+				serviceModel.setProperty(Service.SCHEMA, Service.PROP_FILEURL, url);
+			}
 			serviceModel.setProperty("dublincore", "title", url);
 			serviceModel.setPathInfo(parentPath, generateDocumentID(serviceModel));
 			return session.createDocument(serviceModel);
@@ -155,7 +158,7 @@ public class DocumentService extends DefaultComponent {
 		if (result == null) {
 			// Match either service url or WSDL url
 			return findFirstDocument(session, Service.DOCTYPE,
-					Service.SCHEMA_COMMON_PREFIX+Service.PROP_FILEURL, url);
+					Service.SCHEMA_PREFIX+Service.PROP_FILEURL, url);
 		}
 		else {
 			return result;

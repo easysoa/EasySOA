@@ -75,6 +75,9 @@
 	      <fields>
 	        <field>app:url</field>
 	      </fields>
+        <properties mode="any">
+		  <property name="required">true</property>
+		</properties>
 	  </widget>
       <widget name="appliimpldef_uiUrl" type="text">
 	      <labels>
@@ -218,28 +221,15 @@
       </templates>
       <rows>
         <row>
-          <widget>apidef_application</widget>
+          <widget>apidef_url</widget>
         </row>
         <row>
-          <widget>apidef_url</widget>
+          <widget>apidef_application</widget>
         </row>
         <row>
           <widget>apidef_protocols</widget>
         </row>
       </rows>
-	  <widget name="apidef_application" type="selectOneDirectory">
-	    <labels>
-	        <label mode="any">label.easysoa.apidef.application</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	        <field>api:application</field>
-	    </fields>
-	    <properties mode="any">
-	        <property name="directoryName">application</property>
-	        <property name="localize">true</property>
-	    </properties>
-	  </widget>
       <widget name="apidef_url" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.apidef.url</label>
@@ -252,6 +242,22 @@
             <mode value="create">hidden</mode>
             <mode value="edit">hidden</mode>
           </widgetModes>
+          <properties mode="any">
+		    <property name="required">true</property>
+		  </properties>
+	  </widget>
+	  <widget name="apidef_application" type="selectOneDirectory">
+	    <labels>
+	        <label mode="any">label.easysoa.apidef.application</label>
+	    </labels>
+	    <translated>true</translated>
+	    <fields>
+	        <field>api:application</field>
+	    </fields>
+	    <properties mode="any">
+	        <property name="directoryName">application</property>
+	        <property name="localize">true</property>
+	    </properties>
 	  </widget>
       <widget name="apidef_protocols" type="text">
 	      <labels>
@@ -305,6 +311,9 @@
 	      <fields>
 	        <field>serv:url</field>
 	      </fields>
+          <properties mode="any">
+		    <property name="required">true</property>
+		  </properties>
 	  </widget>
       <widget name="servicedef_fileUrl" type="text">
 	      <labels>
