@@ -149,8 +149,8 @@ public class HttpProxyImpl extends HttpServlet {
 	    		respOut.print(this.buildSoapFault(ex.getMessage()));
 	    	} else {
 	    		// Returns HTML response
-                        response.setContentType("text/html");
-                        logger.debug("returns an html response");
+				response.setContentType("text/html");
+				logger.debug("returns an html response");
 	    		respOut.println("<html><body>httpProxy : unknown error in proxy, doPost :<br/>");
 	    		respOut.println(ex.getMessage());
 	    		ex.printStackTrace(respOut);

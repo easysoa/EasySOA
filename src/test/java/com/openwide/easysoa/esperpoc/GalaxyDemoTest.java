@@ -100,7 +100,8 @@ public class GalaxyDemoTest {
         Service jaxwsService = Service.create(new URL(serviceUrl), serviceName);
 	    Dispatch<SOAPMessage> disp = jaxwsService.createDispatch(portName, SOAPMessage.class, Service.Mode.MESSAGE);
 	    
-	    InputStream is = getClass().getClassLoader().getResourceAsStream("galaxyDemoTestMessage.xml");
+	    InputStream is = getClass().getClassLoader().getSystemResourceAsStream("galaxyDemoTestMessage.xml");
+	    //.getResourceAsStream("galaxyDemoTestMessage.xml");
 	    SOAPMessage reqMsg = MessageFactory.newInstance().createMessage(null, is);
 	    assertNotNull(reqMsg);
 		SOAPMessage response = disp.invoke(reqMsg);
