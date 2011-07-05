@@ -36,7 +36,7 @@ public class HttpFile {
 		
 		this.connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
 		this.file = File.createTempFile("tmp", "tmp");
-		connection.setReadTimeout(DOWNLOAD_TIMEOUT); // TODO: Doesn't work?
+		connection.setReadTimeout(DOWNLOAD_TIMEOUT);
 		InputStream is = this.connection.getInputStream();
 		FileOutputStream fos = new FileOutputStream(this.file);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,

@@ -172,10 +172,21 @@ public class NotificationService extends DefaultComponent {
 
 			// Exctract main fields
 			String url = properties.get(Service.PROP_URL),
-				parentUrl = properties.get(Service.PROP_PARENTURL);
+				parentUrl = properties.get(Service.PROP_PARENTURL),
+				title = properties.get(Service.PROP_TITLE);
+			
+			// Store URL as file in case of a WSDL
+			if (url.toLowerCase().contains("wsdl")) {
+				properties.put(Service.PROP_FILEURL, url);
+			}
 			
 			if (parentUrl == null) {
 				parentUrl = computeApiUrl(url);
+			}
+			if (title == null) {
+				String lastUrlPart = url.substring(url.lastIndexOf('/')+1);
+				title = lastUrlPart.replaceAll("(wsdl|WSDL|[^\\w.-])", "");
+				properties.put(Service.PROP_TITLE, title);
 			}
 		
 			// Find or create document and parent
@@ -183,10 +194,7 @@ public class NotificationService extends DefaultComponent {
 			DocumentModel apiModel = docService.findServiceApi(session, parentUrl);
 			if (apiModel == null) {
 				apiModel = docService.createServiceAPI(session, null, parentUrl); // TODO "by default", or even fail
-				String serviceTitle = properties.get(Service.PROP_URL);
-				if (serviceTitle != null) {
-					apiModel.setProperty("dublincore", "title", serviceTitle+" API");
-				}
+				apiModel.setProperty("dublincore", "title", title+" API");
 				session.saveDocument(apiModel);
 				session.save();
 			}
@@ -243,7 +251,7 @@ public class NotificationService extends DefaultComponent {
 			}
 			
 			// Find reference, then enrich or create
-			DocumentModel referenceModel = docService.findReference(session, archiPath);
+			DocumentModel referenceModel = docService.findServiceReference(session, archiPath);
 			if (referenceModel == null){
 				referenceModel = docService.createReference(session, 
 						appliImplModel.getPathAsString(), archiPath);
@@ -303,7 +311,7 @@ public class NotificationService extends DefaultComponent {
 				serviceUrlPath.substring(0, serviceUrlPath.lastIndexOf('/')),
 				ERROR_API_URL_API); 
 	}
-
+	
 	private String getNewCallcount(DocumentModel serviceModel, String newCalls) {
 		Long previousCallcount, newCallsLong;
 		try {

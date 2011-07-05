@@ -1,4 +1,4 @@
-package org.easysoa.test;
+package org.easysoa.test.tools;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

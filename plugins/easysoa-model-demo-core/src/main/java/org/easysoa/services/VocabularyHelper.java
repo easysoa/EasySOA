@@ -45,6 +45,11 @@ public class VocabularyHelper extends DefaultComponent {
 	public boolean entryExists(CoreSession session,
 			String vocabularyName, String entryId) throws DirectoryException,
 			ClientException {
+		
+		if (entryId == null || entryId.isEmpty()) {
+			return true;
+		}
+		
 		Session dirSession = dirService.open(vocabularyName);
 
 		for (DocumentModel model : dirSession.getEntries()) {
@@ -80,6 +85,9 @@ public class VocabularyHelper extends DefaultComponent {
 	 */
 	public void addEntry(CoreSession session, String vocabularyName,
 			String entryId, String entryName, String parentId) {
+		if (entryId == null || entryId.isEmpty()) {
+			return;
+		}
 		try {
 			if (entryExists(session, vocabularyName, entryId)) {
 				return;
@@ -135,6 +143,9 @@ public class VocabularyHelper extends DefaultComponent {
 	 */
 	public void removeEntry(CoreSession session, String vocabularyName,
 			String entryId) {
+		if (entryId == null || entryId.isEmpty()) {
+			return;
+		}
 		try {
 			Session dirSession = dirService.open(vocabularyName);
 			DocumentModel model = dirSession.getEntry(entryId);

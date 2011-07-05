@@ -19,6 +19,10 @@
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
     </listener>
+    <listener name="servicereferencelistener" class="org.easysoa.listeners.ServiceReferenceListener" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+    </listener>
     
   </extension>
   

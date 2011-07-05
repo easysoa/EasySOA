@@ -66,105 +66,110 @@ public class ServiceListener implements EventListener {
 			if (fileUrl != null) {
 				
 				// Download file
-				Blob blob = new HttpFile(fileUrl).download().getBlob();
-				if (blob == null) {
-					return;
+				Blob blob = null;
+				try {
+					blob = new HttpFile(fileUrl).download().getBlob();
+				}
+				catch (Exception e) {
+					log.info("Failed to download attached file: "+e.getMessage());
 				}
 				
-				// Extract file to system 
-				File tmpFile = File.createTempFile(doc.getId(), null);
-				blob.transferTo(tmpFile);
+				if (blob != null) {
 				
-				// Analyze WSDL
-				try {
-	
-					WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
-					Description desc = reader.read(tmpFile.toURI().toURL());
-	
-					// Initialization
-					org.ow2.easywsdl.wsdl.api.Service firstService = 
-						(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
+					// Extract file to system 
+					File tmpFile = File.createTempFile(doc.getId(), null);
+					blob.transferTo(tmpFile);
 					
-					// URL extraction
-					Endpoint firstEndpoint = firstService.getEndpoints().get(0);
-					url = firstEndpoint.getAddress();
-					doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
-					
-					// Service name extraction
-					if (title == null || title.isEmpty() || title.equals(url)) {
-						doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
-					}
-					
-					// EasySOA Light 
-					// XXX: Hard-coded PureAirFlowers Light URL
-					if (url.contains("PureAirFlowers Orders")) { 
-						doc.setProperty(SCHEMA, PROP_LIGHTURL,
-								"http://localhost:8083/easysoa/light/paf.html");
-					}
-					
-					//// Update parent's properties
-					
-					// Supported protocols
-					
-					if (doc.getParentRef() != null) {
+					// Analyze WSDL
+					try {
+		
+						WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
+						Description desc = reader.read(tmpFile.toURI().toURL());
+		
+						// Initialization
+						org.ow2.easywsdl.wsdl.api.Service firstService = 
+							(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
 						
-						DocumentModel apiModel = session.getDocument(doc.getParentRef());
-						String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
-								.getBinding()).getTransportProtocol();
-						String storedProtocol = (String) apiModel.getProperty(
-								ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
-						if (storedProtocol == null || !storedProtocol.contains(protocol)) {
-							if (storedProtocol == null || storedProtocol.isEmpty()) {
-								apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
-							}
-							else {
-								apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
-										storedProtocol + ", " + protocol);
-							}
+						// URL extraction
+						Endpoint firstEndpoint = firstService.getEndpoints().get(0);
+						url = firstEndpoint.getAddress();
+						doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
+						
+						// Service name extraction
+						if (title == null || title.isEmpty() || title.equals(url)) {
+							doc.setProperty("dublincore", "title", firstService.getQName().getLocalPart());
 						}
-
-						if (apiModel.getParentRef() != null) {
-								
-							DocumentModel appliImplModel = session.getDocument(apiModel.getParentRef());
+						
+						// EasySOA Light 
+						// XXX: Hard-coded PureAirFlowers Light URL
+						if (url.contains("PureAirFlowers Orders")) { 
+							doc.setProperty(SCHEMA, PROP_LIGHTURL,
+									"http://localhost:8083/easysoa/light/paf.html");
+						}
+						
+						//// Update parent's properties
+						
+						// Supported protocols
+						
+						if (doc.getParentRef() != null) {
 							
-							// Server
-							String existingServer = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
-							String newServer = InetAddress.getByName(
-										new URL(firstEndpoint.getAddress()).getHost())
-										.getHostAddress();
-							if (existingServer == null || !newServer.equals(existingServer)) {
-								appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
-							}
-							
-							// Provider
-							try {
-								String provider = new URL(((Endpoint) firstService.getEndpoints().get(0)).getAddress()).getAuthority();
-								String existingProvider = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
-								if (existingProvider == null || !provider.equals(existingProvider)) {
-									appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER, provider);
+							DocumentModel apiModel = session.getDocument(doc.getParentRef());
+							String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
+									.getBinding()).getTransportProtocol();
+							String storedProtocol = (String) apiModel.getProperty(
+									ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
+							if (storedProtocol == null || !storedProtocol.contains(protocol)) {
+								if (storedProtocol == null || storedProtocol.isEmpty()) {
+									apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
+								}
+								else {
+									apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
+											storedProtocol + ", " + protocol);
 								}
 							}
-							catch(Exception e) {
-								// Nothing (authority extraction failed)
+	
+							if (apiModel.getParentRef() != null) {
+									
+								DocumentModel appliImplModel = session.getDocument(apiModel.getParentRef());
+								
+								// Server
+								String existingServer = (String) appliImplModel.
+										getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
+								String newServer = InetAddress.getByName(
+											new URL(firstEndpoint.getAddress()).getHost())
+											.getHostAddress();
+								if (existingServer == null || !newServer.equals(existingServer)) {
+									appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
+								}
+								
+								// Provider
+								try {
+									String provider = new URL(((Endpoint) firstService.getEndpoints().get(0))
+											.getAddress()).getAuthority();
+									String existingProvider = (String) appliImplModel
+											.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
+									if (existingProvider == null || !provider.equals(existingProvider)) {
+										appliImplModel.setProperty(AppliImpl.SCHEMA,
+												AppliImpl.PROP_PROVIDER, provider);
+									}
+								}
+								catch(Exception e) {
+									// Nothing (authority extraction failed)
+								}
+								
+								session.saveDocument(appliImplModel);
 							}
 							
-							session.saveDocument(appliImplModel);
+							session.saveDocument(apiModel);
 						}
-						
-						session.saveDocument(apiModel);
+		
+					} catch (Exception e) {
+						log.error("WSDL parsing failed", e);
+					} finally {
+						tmpFile.delete();
 					}
-	
-				} catch (Exception e) {
-					log.error("WSDL parsing failed", e);
-				} finally {
-					tmpFile.delete();
 				}
 	
-			}
-			
-			// Default properties
-			if (title == null || title.isEmpty() || title.equals(url)) {
-				doc.setProperty("dublincore", "title", url.substring(title.lastIndexOf('/')+1));
 			}
 			
 			session.save();

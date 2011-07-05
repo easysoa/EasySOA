@@ -278,6 +278,9 @@
           <widget>servicedef_url</widget>
         </row>
         <row>
+          <widget>servicedef_fileUrl</widget>
+        </row>
+        <row>
           <widget>servicedef_callcount</widget>
         </row>
         <row>
@@ -302,9 +305,15 @@
 	      <fields>
 	        <field>serv:url</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-          </widgetModes>
+	  </widget>
+      <widget name="servicedef_fileUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.fileUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:fileUrl</field>
+	      </fields>
 	  </widget>
       <widget name="servicedef_callcount" type="int">
 	      <labels>
@@ -326,9 +335,6 @@
 	      <fields>
 	        <field>serv:relatedUsers</field>
 	      </fields>
-          <widgetModes>
-            <mode value="create">hidden</mode>
-          </widgetModes>
 	  </widget>
       <widget name="servicedef_httpMethod" type="text">
 	      <labels>

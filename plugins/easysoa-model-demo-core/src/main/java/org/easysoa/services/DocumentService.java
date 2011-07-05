@@ -162,7 +162,7 @@ public class DocumentService extends DefaultComponent {
 		}
 	}
 
-	public DocumentModel findReference(CoreSession session,
+	public DocumentModel findServiceReference(CoreSession session,
 			String referenceArchiPath) throws ClientException {
 		if (referenceArchiPath == null) {
 			return null;
