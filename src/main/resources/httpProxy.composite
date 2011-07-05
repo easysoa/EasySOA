@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpProxy" targetNamespace="http://eclipse.org/esper-frascati-poc/src/main/resources/httpProxy">
+<!--<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpProxy" targetNamespace="http://eclipse.org/esper-frascati-poc/src/main/resources/httpProxy">-->
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpProxy">
   <!-- HTTP Proxy -->
   <sca:component name="httpProxyService">
     <sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyImpl"/>

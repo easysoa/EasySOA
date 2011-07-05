@@ -43,6 +43,9 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 @SuppressWarnings("serial")
 public class HttpProxyImpl extends HttpServlet {
 
+	//TODO : remove this constant and find a way to get the proxy port configured in frascati composite file
+	private final static int PROXY_PORT = 8082; 
+	
 	/**
 	 * Logger
 	 */
@@ -74,11 +77,13 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
+	    	//infiniteLoopDetection();
 	    	Message message = forward(request, response);
     	    MonitorService.getMonitorService().listen(message);
 	    }
 	    catch(Throwable ex){
 	    	ex.printStackTrace();
+    		response.setContentType("text/html");
 	    	logger.error("An error occurs in doGet method.", ex);
 	    	respOut.println("<html><body>httpProxy, doGet : An errror occurs :<br/>");
 	    	respOut.println(ex.getMessage() + "</body></html>");
@@ -104,6 +109,7 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
+	    	//infiniteLoopDetection();
 	    	Message message = forward(request, response);
     	    MonitorService.getMonitorService().listen(message);
 	    }
@@ -127,7 +133,6 @@ public class HttpProxyImpl extends HttpServlet {
 		}
 	    catch(Throwable ex){
 	    	// error in the internals of the httpProxy : building & returning it
-	    	
 	    	ex.printStackTrace();
 	    	logger.error("An error occurs in doPost method." , ex);
 
@@ -138,11 +143,15 @@ public class HttpProxyImpl extends HttpServlet {
 	    	// filling response
 	    	HashMap<String, Object> headers = new HashMap<String, Object>();
 	    	if(headers.containsKey("SOAPAction")){
+	    		response.setContentType("text/xml");
 	    		// Returns SOAP Fault
+	    		logger.debug("Returns a SOAP Fault");
 	    		respOut.print(this.buildSoapFault(ex.getMessage()));
 	    	} else {
 	    		// Returns HTML response
-	    		respOut.println("<html><body>httpProxy : unknown error in proxy, doPost : An errror occurs :<br/>");
+                        response.setContentType("text/html");
+                        logger.debug("returns an html response");
+	    		respOut.println("<html><body>httpProxy : unknown error in proxy, doPost :<br/>");
 	    		respOut.println(ex.getMessage());
 	    		ex.printStackTrace(respOut);
 	    		respOut.println("</body></html>");
@@ -158,6 +167,7 @@ public class HttpProxyImpl extends HttpServlet {
 	 * 
 	 */
 	@SuppressWarnings("unused")
+	@Deprecated
 	private void printUrlTree(){
 		logger.debug("[printUrlTree()] Printing tree node index ***");
 		logger.debug("[printUrlTree()] Total url count : " + MonitorService.getMonitorService().getUrlTree().getTotalUrlCount());
@@ -176,10 +186,12 @@ public class HttpProxyImpl extends HttpServlet {
 
 	/**
 	 * Send back the request to the original recipient and get the response
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	private Message forward(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private Message forward(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PrintWriter respOut = response.getWriter();
+		
+		infiniteLoopDetection(request);
 		
 		// Header
 		Enumeration<String> enum1 = request.getHeaderNames();
@@ -204,15 +216,6 @@ public class HttpProxyImpl extends HttpServlet {
 	    String requestUrlString = requestUrlBuffer.toString();
 	    
 	    // Body
-	    /*BufferedReader requestBufferedReader = request.getReader();
-	    StringBuffer bodyContent = new StringBuffer();
-		if(requestBufferedReader != null){
-		   	String line;
-		   	while((line = requestBufferedReader.readLine()) != null){
-		   		bodyContent.append(line);
-		   	}
-		}
-		String requestBodyString = bodyContent.toString();*/
 		Message message = new Message(request);
 		logger.debug("Request URL String : " +  requestUrlString);
 		logger.debug("Request Body String : " + message.getBody());
@@ -222,10 +225,11 @@ public class HttpProxyImpl extends HttpServlet {
 		    	in = resource.get().getStream();
 		    } else {
 		    	Representation representation = new org.restlet.representation.StringRepresentation(message.getBody());
+		    	// This test is required because the header received with the request is not sufficient. 
+		    	// It contains mediatype and character encoding. eg :  Header name = Content-Type, Header value = text/xml; charset=UTF-8
 		    	if(message.getBody().contains("soap:Envelope")){
 		    		logger.debug("Setting mediatype to text/xml");		
 		    		representation.setMediaType(MediaType.TEXT_XML);
-		    		
 		    	}
 		    	resource.getRequest().setAttributes(headers);
 		    	resource.setRetryOnError(true);
@@ -272,7 +276,7 @@ public class HttpProxyImpl extends HttpServlet {
 		fault.append("<?xml version=\"1.0\"?>");
 		fault.append("<SOAP-ENV:Envelope SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\">");
 		fault.append("<SOAP-ENV:Body><SOAP-ENV:Fault>");		
-		fault.append("<faultcode>SOAP-ENV:Client</faultcode>"); 
+		fault.append("<faultcode>SOAP-ENV:Client</faultcode>");
 		fault.append("<faultstring>");
 		fault.append(error.replace("\"", "\\\""));
 		fault.append("</faultstring>");
@@ -280,5 +284,23 @@ public class HttpProxyImpl extends HttpServlet {
 		return fault.toString();
 	}
 
+	/**
+	 * Detect if the request call directly the proxy, if true, an exception is throw
+	 */
+	private void infiniteLoopDetection(HttpServletRequest request) throws Exception{
+		if(PROXY_PORT == request.getServerPort()){
+			throw new Exception("Request on proxy itself detected on port " + PROXY_PORT + " !");
+		}
+		
+		/*Enumeration<String> enum1 = this.getServletContext().getInitParameterNames();
+		while(enum1.hasMoreElements()){
+			logger.debug("InitParametersName : " + enum1.nextElement());
+		}*/
+		
+		//throw new Exception("TEST");
+		
+		// Get the localhost and port to detect the loop
+	}
+	
 }
 
