@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+	<parent>
+		<artifactId>nuxeo-features-parent</artifactId>
+		<groupId>org.nuxeo.ecm.platform</groupId>
+		<version>5.4.1</version>
+	</parent>
+	
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.easysoa</groupId>
+  <artifactId>easysoa-model-demo-parent</artifactId>
+  <version>0.1.2-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>easysoa-model-demo-parent</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+  </dependencies>
+
+
+	<!-- ============= -->
+	<!-- Repositories -->
+	<!-- ============= -->
+
+	<repositories>
+		<repository>
+			<id>Nuxeo</id>
+			<name>Nuxeo Public Releases Repository</name>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
+</project>
