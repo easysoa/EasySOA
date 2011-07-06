@@ -25,6 +25,7 @@
 	</dependencies>
 
 	<modules>
+		<module>easysoa-model-demo-parent</module>
 		<module>easysoa-model-demo-core</module>
 		<module>easysoa-model-demo-web</module>
 		<module>easysoa-model-demo-rest</module>

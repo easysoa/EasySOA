@@ -44,6 +44,13 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.easysoa</groupId>
+			<artifactId>easysoa-model-demo-core</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type> <!-- Use bundle's test code -->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.nuxeo.ecm.webengine</groupId>
 			<artifactId>nuxeo-webengine-core</artifactId>
 			<version>5.4.1</version>

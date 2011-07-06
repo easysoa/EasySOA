@@ -14,7 +14,7 @@
   <version>0.1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>easysoa-model-demo-parent</name>
+	<name>EasySOA Model Parent</name>
   <url>http://maven.apache.org</url>
 
   <properties>
