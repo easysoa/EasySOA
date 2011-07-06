@@ -1,7 +1,5 @@
 package org.easysoa.rest;
 
-import static org.junit.Assert.assertFalse;
-
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
@@ -18,7 +16,7 @@ import org.junit.Test;
 public class DocumentCreationTest extends AbstractNotificationTest {
 	
 	public DocumentCreationTest() throws Exception {
-		super();
+		super(null); // TODO Inject
 	}
 
 	/**
@@ -36,7 +34,7 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 		notification.setProperty(AppliImpl.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
 		
-		assertFalse(automation.findDocumentByUrl(AppliImpl.DOCTYPE, url).isEmpty());
+		nuxeoAssert.assertDocumentExists(AppliImpl.DOCTYPE, url);
 	}
 	
 	/**
@@ -54,8 +52,8 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 				.setProperty(ServiceAPI.PROP_PARENTURL, parentUrl)
 				.setProperty(ServiceAPI.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
-		
-		assertFalse(automation.findDocumentByUrl(ServiceAPI.DOCTYPE, url).isEmpty());
+
+		nuxeoAssert.assertDocumentExists(ServiceAPI.DOCTYPE, url);
 	}
 	
 	/**
@@ -74,6 +72,6 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 				.setProperty(Service.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
 
-		assertFalse(automation.findDocumentByUrl(Service.DOCTYPE, url).isEmpty());
+		nuxeoAssert.assertDocumentExists(Service.DOCTYPE, url);
 	}
 }

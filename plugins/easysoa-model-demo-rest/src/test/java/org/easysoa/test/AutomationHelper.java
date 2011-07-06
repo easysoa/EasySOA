@@ -15,7 +15,6 @@ import org.nuxeo.ecm.automation.core.operations.document.Query;
 public class AutomationHelper {
 
 	private HttpAutomationClient client;
-
 	private Session session;
 	
 	public AutomationHelper(String nuxeoUrl) throws Exception {

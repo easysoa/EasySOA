@@ -1,13 +1,13 @@
 package org.easysoa.rest;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.test.AutomationHelper;
+import org.easysoa.test.NuxeoAssertionHelper;
 import org.easysoa.test.RestNotificationFactory;
+import org.nuxeo.ecm.core.api.CoreSession;
 
 /**
  * Class to be extended for the creation of notification test cases.
@@ -18,12 +18,12 @@ public abstract class AbstractNotificationTest {
 	
 	private static final Log log = LogFactory.getLog(AbstractNotificationTest.class);
 
+	protected NuxeoAssertionHelper nuxeoAssert = null;
 	protected RestNotificationFactory notificationFactory = null;
-	protected AutomationHelper automation = null;
 
 	private String nuxeoUrl = null;
 	
-	public AbstractNotificationTest() throws Exception {
+	public AbstractNotificationTest(CoreSession session) throws Exception {
 		
 		// Load properties
 		FileInputStream isProps = new FileInputStream("src/test/resources/targetednuxeo.properties");
@@ -32,10 +32,9 @@ public abstract class AbstractNotificationTest {
 		isProps.close();
 		
 		// Read properties
-		if (Boolean.parseBoolean(props.getProperty("useFakeNuxeo")))
-			throw new UnsupportedOperationException("Not implemented yet!"); // TODO
 		String nuxeoHost = props.getProperty("nuxeoHost");
 		String nuxeoPort = props.getProperty("nuxeoPort");
+		boolean useExistingNuxeo = props.getProperty("useExistingNuxeo").equals("true");
 		
 		// Build URL
 		if (nuxeoHost == null || nuxeoPort == null) {
@@ -49,21 +48,12 @@ public abstract class AbstractNotificationTest {
 		
 		// Create testing objects
 		notificationFactory = new RestNotificationFactory(nuxeoUrl);
-		try {
-			automation = new AutomationHelper(nuxeoUrl);
+		if (useExistingNuxeo) {
+			nuxeoAssert = new NuxeoAssertionHelper(nuxeoUrl);
 		}
-		catch (Exception e) {
-			automation = null;
+		else {
+			nuxeoAssert = new NuxeoAssertionHelper(session);
 		}
 	}
-	
-	public AutomationHelper getAutomationHelper() throws IOException {
-		return automation;
-	}
-	
-	public RestNotificationFactory getRestNotificationFactory() throws IOException {
-		return notificationFactory;
-	}
-	
 
 }
