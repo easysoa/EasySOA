@@ -8,7 +8,7 @@ It is build to run with Frascati (1.4 or more).
 This proxy accept HTTP "GET" and HTTP SOAP POST requests.
 The SCA component name to launch is "httpProxy". 
 
-## Execution
+## Execution (OUTDATED)
 
 To run this proxy :
 
