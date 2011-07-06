@@ -5,8 +5,8 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.test.NuxeoAssertionHelper;
-import org.easysoa.test.RestNotificationFactory;
+import org.easysoa.test.rest.RestNotificationFactory;
+import org.easysoa.test.tools.NuxeoAssertionHelper;
 import org.nuxeo.ecm.core.api.CoreSession;
 
 /**
@@ -18,12 +18,13 @@ public abstract class AbstractNotificationTest {
 	
 	private static final Log log = LogFactory.getLog(AbstractNotificationTest.class);
 
+	protected CoreSession session = null;
 	protected NuxeoAssertionHelper nuxeoAssert = null;
 	protected RestNotificationFactory notificationFactory = null;
 
 	private String nuxeoUrl = null;
 	
-	public AbstractNotificationTest(CoreSession session) throws Exception {
+	public AbstractNotificationTest() throws Exception {
 		
 		// Load properties
 		FileInputStream isProps = new FileInputStream("src/test/resources/targetednuxeo.properties");
@@ -55,5 +56,5 @@ public abstract class AbstractNotificationTest {
 			nuxeoAssert = new NuxeoAssertionHelper(session);
 		}
 	}
-
+	
 }

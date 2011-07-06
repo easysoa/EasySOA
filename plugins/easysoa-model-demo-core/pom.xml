@@ -2,15 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-	  <groupId>org.easysoa</groupId>
-	  <artifactId>easysoa-model-demo-parent</artifactId>
+		<groupId>org.easysoa</groupId>
+		<artifactId>easysoa-model-demo-parent</artifactId>
 		<version>0.1.2-SNAPSHOT</version>
 	</parent>
+	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.easysoa</groupId>
 	<artifactId>easysoa-model-demo-core</artifactId>
 	<name>EasySOA Model Core (Demo)</name>
 	<version>0.1.2-SNAPSHOT</version>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.ow2.easywsdl</groupId>
@@ -56,7 +58,7 @@
 		<dependency>
 			<groupId>org.nuxeo.ecm.core</groupId>
 			<artifactId>nuxeo-core-api</artifactId>
-			<version>5.4.1</version><!--$NO-MVN-MAN-VER$-->
+			<version>5.4.1</version><!--$NO-MVN-MAN-VER$ -->
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -82,7 +84,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- for EasySOAServerFeature tests -->
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
@@ -91,53 +93,56 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- for VocabulariesTest (directory) -->
+		<!-- For test framework -->
 		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<scope>test</scope>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-test</artifactId>
+			<version>5.4.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
-			<artifactId>nuxeo-runtime-datasource</artifactId>
-			<scope>test</scope>
+			<artifactId>nuxeo-runtime-test</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.nuxeo.ecm.platform</groupId>
-			<artifactId>nuxeo-platform-directory-types-contrib</artifactId>
+			<groupId>org.nuxeo.ecm.automation</groupId>
+			<artifactId>nuxeo-automation-client</artifactId>
 			<version>5.4.1</version>
-			<scope>test</scope>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>2.1</version>
-			<scope>test</scope>
+			<groupId>org.nuxeo.ecm.automation</groupId>
+			<artifactId>nuxeo-automation-core</artifactId>
+			<version>5.4.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
-		
-	<!-- TODO eclipse m2 -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- TODO eclipse m2 -->
 	</dependencies>
-	
+
 	<build>
-		<!-- Allows to share test code with other EasySOA bundles -->
-		<plugins>
-	     <plugin>
-	       <groupId>org.apache.maven.plugins</groupId>
-	       <artifactId>maven-jar-plugin</artifactId>
-	       <version>2.2</version>
-	       <executions>
-	         <execution>
-	           <goals>
-	             <goal>test-jar</goal>
-	           </goals>
-	         </execution>
-	       </executions>
-	     </plugin>
-	    </plugins>
-	
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

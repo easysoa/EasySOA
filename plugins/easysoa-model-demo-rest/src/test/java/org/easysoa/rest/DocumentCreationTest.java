@@ -3,17 +3,20 @@ package org.easysoa.rest;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.test.RestNotificationFactory.RestNotificationAPI;
+import org.easysoa.test.rest.RestNotificationRequest;
+import org.easysoa.test.rest.RestNotificationFactory.RestNotificationAPI;
 import org.easysoa.test.EasySOAFeature;
 import org.easysoa.test.EasySOARepositoryInit;
-import org.easysoa.test.RestNotificationRequest;
 import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+
+import com.google.inject.Inject;
 
 /**
  * Basic document creation tests.
@@ -24,9 +27,11 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 @Features(EasySOAFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class DocumentCreationTest extends AbstractNotificationTest {
-	
-	public DocumentCreationTest() throws Exception {
-		super(null); // TODO Inject
+
+	@Inject CoreSession session;
+
+    public DocumentCreationTest() throws Exception {
+		super();
 	}
 
 	/**
@@ -34,12 +39,12 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void createAppliImpl() throws Exception {
+	public void testCreateAppliImpl() throws Exception {
 		
 		String url = "http://myApp.com/", title = "myApp";
 		
 		RestNotificationRequest notification = notificationFactory.createNotification(RestNotificationAPI.APPLIIMPL);
-		Assume.assumeNotNull(notification); // TODO: Assumes are a bit random atm, improve them
+		Assume.assumeNotNull(notification); // Assumes are a bit random ATM, TODO improve them
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
 		notification.setProperty(AppliImpl.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
@@ -52,7 +57,7 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void createServiceAPI() throws Exception {
+	public void testCreateServiceAPI() throws Exception {
 		
 		String url = "api/", parentUrl = "http://myApp.com/", title = "myApi";
 		
@@ -71,7 +76,7 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void createService() throws Exception {
+	public void testCreateService() throws Exception {
 		
 		String url = "service", parentUrl = "api/", title = "myService";
 		
