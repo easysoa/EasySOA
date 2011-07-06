@@ -129,11 +129,11 @@ public class OrchestrationImpl implements Trip {
 				"FR", "EN");
 		System.err.println("Translated phrase: " + translatedPhrase);
 		// compute summary
-		/*String summary = summaryService.summarize(city, country, meteo,
+		String summary = summaryService.summarize(city, country, meteo,
 				exchangeRate, chosenPhrase, translatedPhrase);
-		System.err.println("[OrchestrationImpl] Summary: \n" + summary);*/
-		//return summary;
-		return "" + exchangeRate;
+		System.err.println("[OrchestrationImpl] Summary: \n" + summary);
+		return summary;
+		//return "" + exchangeRate;
 
 	}
 }
