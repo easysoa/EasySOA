@@ -23,7 +23,7 @@ Remark : This software is a prototype and will be improved ! No warranty and no 
 
 ----------------------------------
 
-## For developpers
+## For developpers (OUTDATED)
 
 To build and run this project, the requirements are :
 
