@@ -32,8 +32,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  *
  */
 @Deploy({
-	"org.nuxeo.runtime.jetty",
-	"org.mortbay.jetty.plus"
+	"org.nuxeo.runtime.jetty"
 })
 @Features(EasySOAFeature.class)
 public class EasySOAServerFeature extends SimpleFeature implements WorkingDirectoryConfigurator {
