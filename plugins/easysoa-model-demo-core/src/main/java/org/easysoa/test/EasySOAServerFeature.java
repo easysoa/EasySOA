@@ -34,7 +34,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
 @Deploy({
 	"org.nuxeo.runtime.jetty"
 })
-@Features(EasySOAFeature.class)
+@Features(EasySOAFeatureBase.class)
 public class EasySOAServerFeature extends SimpleFeature implements WorkingDirectoryConfigurator {
 
     @Override

@@ -37,24 +37,23 @@ public abstract class AbstractNotificationTest {
 		String nuxeoPort = props.getProperty("nuxeoPort");
 		boolean useExistingNuxeo = props.getProperty("useExistingNuxeo").equals("true");
 		
-		// Build URL
-		if (nuxeoHost == null || nuxeoPort == null) {
-			log.warn("Invalid Nuxeo location, using default: "+
-					RestNotificationFactory.NUXEO_URL_LOCALHOST);
-			nuxeoUrl = RestNotificationFactory.NUXEO_URL_LOCALHOST;
-		}
-		else {
-			nuxeoUrl = "http://"+nuxeoHost+":"+nuxeoPort+"/nuxeo";
-		}
-		
 		// Create testing objects
-		notificationFactory = new RestNotificationFactory(nuxeoUrl);
 		if (useExistingNuxeo) {
+			if (nuxeoHost == null || nuxeoPort == null) {
+				log.warn("Invalid Nuxeo location, using default: "+
+						RestNotificationFactory.NUXEO_URL_LOCALHOST);
+				nuxeoUrl = RestNotificationFactory.NUXEO_URL_LOCALHOST;
+			}
+			else {
+				nuxeoUrl = "http://"+nuxeoHost+":"+nuxeoPort+"/nuxeo";
+			}
 			nuxeoAssert = new NuxeoAssertionHelper(nuxeoUrl);
 		}
 		else {
+			nuxeoUrl = "http://localhost:9980/nuxeo";
 			nuxeoAssert = new NuxeoAssertionHelper(session);
 		}
+		notificationFactory = new RestNotificationFactory(nuxeoUrl);
 	}
 	
 }

@@ -3,18 +3,18 @@ package org.easysoa.rest;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.test.rest.RestNotificationRequest;
+import org.easysoa.test.EasySOAServerFeature;
 import org.easysoa.test.rest.RestNotificationFactory.RestNotificationAPI;
-import org.easysoa.test.EasySOAFeature;
-import org.easysoa.test.EasySOARepositoryInit;
+import org.easysoa.test.rest.RestNotificationRequest;
 import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.test.annotations.BackendType;
-import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
+import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.Jetty;
+import org.nuxeo.runtime.test.runner.JettyFeature;
 
 import com.google.inject.Inject;
 
@@ -24,10 +24,25 @@ import com.google.inject.Inject;
  *
  */
 @RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
+@Features({JettyFeature.class, EasySOAServerFeature.class})
+@Deploy({ // source: org.nuxeo.ecm.webengine.test.WebEngineFeature 
+        "org.nuxeo.ecm.platform.login",
+        "org.nuxeo.ecm.platform.web.common",
+        "org.nuxeo.ecm.platform.login.default",
+        "org.nuxeo.ecm.webengine.admin",
+        "org.nuxeo.ecm.webengine.base",
+        "org.nuxeo.ecm.webengine.core",
+        "org.nuxeo.ecm.webengine.ui",
+        "org.nuxeo.ecm.webengine.gwt",
+        "org.easysoa.demo.rest",
+        "org.easysoa.demo.rest:OSGI-INF/rights-contrib.xml", // REST rights mgmt
+      /*  "org.nuxeo.ecm.platform.test:test-usermanagerimpl/userservice-config.xml",
+        "org.nuxeo.ecm.webengine.test:login-anonymous-config.xml",
+        "org.nuxeo.ecm.webengine.test:login-config.xml",
+        "org.nuxeo.ecm.webengine.test:runtimeserver-contrib.xml" */})
+@Jetty(port=9980)
 public class DocumentCreationTest extends AbstractNotificationTest {
-
+	
 	@Inject CoreSession session;
 
     public DocumentCreationTest() throws Exception {
