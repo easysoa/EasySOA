@@ -1,11 +1,18 @@
 package com.openwide.easysoa.monitoring;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-import org.restlet.resource.ClientResource;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
 
+/**
+ * 
+ * @author jguillemotte
+ *
+ */
 public class SoapMessageHandler implements MessageHandler {
 
 	/**
@@ -56,9 +63,11 @@ public class SoapMessageHandler implements MessageHandler {
 		boolean result = false;
 		logger.debug("Checking wsdl for url : " + url + "?wsdl");
 		try{
-			ClientResource resource = new ClientResource(url + "?wsdl");
-			resource.get();
-			logger.debug("WSDL found !");
+			DefaultHttpClient httpClient = new DefaultHttpClient(); 
+	    	HttpGet httpGet = new HttpGet(url + "?wsdl");
+	    	HttpResponse resp = httpClient.execute(httpGet);			
+			//TODO Maybe good to improve the check of WSDL
+	    	logger.debug("WSDL found !");
 			result = true;
 		}
 		catch(Exception ex){

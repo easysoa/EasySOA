@@ -17,11 +17,6 @@
 
 	<repositories>
 		<repository>
-			<id>maven-restlet</id>
-			<name>Public online Restlet repository</name>
-			<url>http://maven.restlet.org</url>
-		</repository>
-		<repository>
 			<id>Frascati</id>
 			<name>Frascati repository</name>
 			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
@@ -97,16 +92,6 @@
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>1.8-ea02</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restlet.jse</groupId>
-			<artifactId>org.restlet</artifactId>
-			<version>2.1-M3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restlet.jse</groupId>
-			<artifactId>org.restlet.ext.simple</artifactId>
-			<version>2.1-M3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.jonas.osgi</groupId>
