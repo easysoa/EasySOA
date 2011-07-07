@@ -1,6 +1,5 @@
 package com.openwide.easysoa.esperpoc;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,20 +7,25 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpMessage;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
-import org.restlet.Client;
-import org.restlet.data.Form;
-import org.restlet.data.MediaType;
-import org.restlet.representation.Representation;
-import org.restlet.resource.ClientResource;
-import org.restlet.resource.ResourceException;
 
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
@@ -45,6 +49,8 @@ public class HttpProxyImpl extends HttpServlet {
 
 	//TODO : remove this constant and find a way to get the proxy port configured in frascati composite file
 	private final static int PROXY_PORT = 8082; 
+	private final static int HTTP_CONNEXION_TIMEOUT_MS = 10000; 
+	private final static int HTTP_SOCKET_TIMEOUT_MS = 10000;
 	
 	/**
 	 * Logger
@@ -77,7 +83,6 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	//infiniteLoopDetection();
 	    	Message message = forward(request, response);
     	    MonitorService.getMonitorService().listen(message);
 	    }
@@ -109,16 +114,15 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	//infiniteLoopDetection();
 	    	Message message = forward(request, response);
     	    MonitorService.getMonitorService().listen(message);
 	    }
-	    catch (ResourceException rex) {
+	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client
 
 			// attempting to reset response
 			response.reset();
-			response.setStatus(rex.getStatus().getCode());
+			response.setStatus(rex.getStatusCode());
 
 			// filling response :
 			// TODO get expected content type from request
@@ -129,7 +133,7 @@ public class HttpProxyImpl extends HttpServlet {
 
 			// debugging
 			logger.debug("httpProxy : error in proxied server : "
-					+ rex.getStatus() + " - " + rex.getMessage());
+					+ rex.getStatusCode() + " - " + rex.getMessage());
 		}
 	    catch(Throwable ex){
 	    	// error in the internals of the httpProxy : building & returning it
@@ -190,21 +194,16 @@ public class HttpProxyImpl extends HttpServlet {
 	 */
 	private Message forward(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PrintWriter respOut = response.getWriter();
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		// set the retry handler
+		httpClient.setHttpRequestRetryHandler(new HttpRetryHandler());
+		// set the connection timeout
+		HttpParams httpParams = httpClient.getParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, HTTP_CONNEXION_TIMEOUT_MS);
+		HttpConnectionParams.setSoTimeout(httpParams, HTTP_SOCKET_TIMEOUT_MS);
 		
-		infiniteLoopDetection(request);
-		
-		// Header
-		Enumeration<String> enum1 = request.getHeaderNames();
-		HashMap<String, Object> headers = new HashMap<String, Object>();
-		Form headersForm = new Form();
-		logger.debug("Requests Headers");
-		while(enum1.hasMoreElements()){
-			String headerName = enum1.nextElement();
-			String headerValue = request.getHeader(headerName);
-			headersForm.add(headerName, headerValue);
-			logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
-		}
-		headers.put("org.restlet.http.headers", headersForm);
+		// TODO Enable infinite loop detection
+		//infiniteLoopDetection(request);
 		
 		// URL
 		StringBuffer requestUrlBuffer = new StringBuffer();
@@ -217,45 +216,54 @@ public class HttpProxyImpl extends HttpServlet {
 	    
 	    // Body
 		Message message = new Message(request);
+    	HttpEntity httpEntity = new StringEntity(message.getBody());
 		logger.debug("Request URL String : " +  requestUrlString);
 		logger.debug("Request Body String : " + message.getBody());
-	    ClientResource resource = new ClientResource(requestUrlString);
-	    InputStream in = null;
-		    if("GET".equalsIgnoreCase(request.getMethod())){
-		    	in = resource.get().getStream();
-		    } else {
-		    	Representation representation = new org.restlet.representation.StringRepresentation(message.getBody());
-		    	// This test is required because the header received with the request is not sufficient. 
-		    	// It contains mediatype and character encoding. eg :  Header name = Content-Type, Header value = text/xml; charset=UTF-8
-		    	if(message.getBody().contains("soap:Envelope")){
-		    		logger.debug("Setting mediatype to text/xml");		
-		    		representation.setMediaType(MediaType.TEXT_XML);
-		    	}
-		    	resource.getRequest().setAttributes(headers);
-		    	resource.setRetryOnError(true);
-		    	resource.setRetryAttempts(3);
-		    	in = resource.post(representation).getStream();
-		    }
-		    byte[] byteArray = new byte[8192];
-		    String responseBuffer;
-		    if(in != null){
-		    	logger.debug("Sending response to original recipient ...");
-	    	   	while((in.read(byteArray)) != -1){
-	    	   		responseBuffer = new String(byteArray);
-	    	   		logger.debug("ResponseBuffer : " + responseBuffer);
-	    	   		respOut.write(responseBuffer);
-	    	   	}
-	    	}
+		
+		String resp;
+		ResponseHandler<String> responseHandler = new BasicResponseHandler(); 
+	    if("GET".equalsIgnoreCase(request.getMethod())){
+	    	HttpGet httpGet = new HttpGet(requestUrlString);
+	    	setHeaders(request, httpGet);
+	    	resp = httpClient.execute(httpGet, responseHandler);
+	    } else {
+	    	HttpPost httpPost = new HttpPost(requestUrlString);
+	    	setHeaders(request, httpPost);
+	    	httpPost.setEntity(httpEntity);
+	    	resp = httpClient.execute(httpPost, responseHandler);
+	    }
+	    respOut.write(resp);
     	respOut.close();
-	    return message;
+    	return message;
 	}
 
+	/**
+	 * Set headers in the httpMessage
+	 * @param request The request where to get headers
+	 * @param httpMessage The http message to set
+	 */
+	private void setHeaders(HttpServletRequest request, HttpMessage httpMessage){
+		Enumeration<String> enum1 = request.getHeaderNames();
+		logger.debug("Requests Headers");
+		while(enum1.hasMoreElements()){
+			String headerName = enum1.nextElement();
+			String headerValue = request.getHeader(headerName);
+			// to avoid an exception when the Content-length header is set twice
+			if(!"Content-Length".equals(headerName)){
+				httpMessage.setHeader(headerName, headerValue);
+			}
+			logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
+		}		
+	}
+	
 	/**
 	 * 
 	 * @param authhead
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	private String decodePassword(String authhead) throws Exception {
 		ByteArrayInputStream bais = new ByteArrayInputStream(authhead.getBytes());
         InputStream b64is = MimeUtility.decode(bais, "base64");
@@ -291,14 +299,11 @@ public class HttpProxyImpl extends HttpServlet {
 		if(PROXY_PORT == request.getServerPort()){
 			throw new Exception("Request on proxy itself detected on port " + PROXY_PORT + " !");
 		}
-		
 		/*Enumeration<String> enum1 = this.getServletContext().getInitParameterNames();
 		while(enum1.hasMoreElements()){
 			logger.debug("InitParametersName : " + enum1.nextElement());
 		}*/
-		
 		//throw new Exception("TEST");
-		
 		// Get the localhost and port to detect the loop
 	}
 	

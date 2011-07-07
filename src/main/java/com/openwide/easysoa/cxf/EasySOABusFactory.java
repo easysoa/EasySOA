@@ -73,6 +73,9 @@ public class EasySOABusFactory extends SpringBusFactory {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IllegalMonitorStateException e) {
+			// TODO ??!!
+			e.printStackTrace();
 		}
 
         possiblySetDefaultBus(bus);

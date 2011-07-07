@@ -5,6 +5,7 @@ import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.esperpoc.PropertyManager;
 import com.openwide.easysoa.monitoring.Message.MessageType;
+import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.monitoring.soa.WSDLService;
 
 public class WSDLMessageHandler implements MessageHandler {
@@ -35,7 +36,12 @@ public class WSDLMessageHandler implements MessageHandler {
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		nuxeoRS.registerWSDLService(new WSDLService(message.getHost(), serviceName, message.getCompleteMessage(), message.getMethod()));
+		Service service = new Service(message.getUrl(), message.getUrl() + "?wsdl");
+		service.setCallCount(1);
+		service.setTitle(message.getPathName());
+		service.setDescription(message.getPathName());
+		service.setHttpMethod(message.getMethod());
+		nuxeoRS.registerRestService(service);		
 		return true;
 	}
 
