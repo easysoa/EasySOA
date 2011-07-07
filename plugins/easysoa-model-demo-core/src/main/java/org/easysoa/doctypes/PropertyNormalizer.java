@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Tools to allow for an uniform format of EasySOA specific properties.
- * @author mkalam-alami
+ * @author mdutoo, mkalam-alami
  *
  */
 public class PropertyNormalizer extends EasySOADoctype {
