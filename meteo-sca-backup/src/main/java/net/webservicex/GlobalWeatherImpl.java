@@ -31,9 +31,10 @@ public class GlobalWeatherImpl implements IGlobalWeather {
 	public GlobalWeatherImpl() {
 		rnd = new Random();
 		InputStream in = this.getClass().getClassLoader().getResourceAsStream("/cities-fr.txt");
+
 		cities_fr = convertStreamToString(in);
 		cities_other = "<string></string>";
-
+		
 		in = this.getClass().getClassLoader().getResourceAsStream("/weather-format.txt");
 		weather_format = convertStreamToString(in);
 	}

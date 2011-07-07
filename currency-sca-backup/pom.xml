@@ -28,16 +28,27 @@
     	<dependency>
       		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-servlet-cxf</artifactId>
-			<version>1.3</version>
+			<version>1.4</version>
     	</dependency>
 
     	<!-- Include in the war the FraSCAti Runtime Factory. -->
     	<dependency>
       		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-runtime-factory</artifactId>
-			<version>1.3</version>
+			<version>1.4</version>
       		<scope>runtime</scope>
     	</dependency>
+        <dependency>
+        	<groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-factory</artifactId>
+            <version>1.4</version>
+        </dependency>
+            	
+        <dependency>
+        	<groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-ws</artifactId>
+            <version>1.4</version>
+        </dependency>    	
 
 	</dependencies>
 
@@ -65,12 +76,11 @@
 			</plugin>
 
 			<!-- type 'mvn jetty:run' to launch this war with Jetty. -->
-			<!-- 
+			<!-- type 'mvn -Djetty.port=9021 jetty:run' to launch this war with Jetty. -->			
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
 			</plugin>
-			-->
 		</plugins>
 	</build>
 

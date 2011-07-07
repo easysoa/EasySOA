@@ -42,7 +42,12 @@
             <artifactId>frascati-binding-factory</artifactId>
             <version>1.4</version>
         </dependency>
-
+        <dependency>
+        	<groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-ws</artifactId>
+            <version>1.4</version>
+        </dependency>
+       
 	</dependencies>
 
 	<!-- ======= -->
@@ -68,7 +73,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 			</plugin>
 
-			<!-- type 'mvn -Djetty.port=8089 jetty:run' to launch this war with Jetty. -->
+			<!-- type 'mvn -Djetty.port=9020 jetty:run' to launch this war with Jetty. -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>

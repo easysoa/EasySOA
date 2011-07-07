@@ -224,20 +224,16 @@
     </wsdl:binding>
     <wsdl:service name="GlobalWeather">
         <wsdl:port name="GlobalWeatherSoap" binding="tns:GlobalWeatherSoap">
-            <soap:address
-                location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
+            <soap:address location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
         </wsdl:port>
         <wsdl:port name="GlobalWeatherSoap12" binding="tns:GlobalWeatherSoap12">
-            <soap12:address
-                location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
+            <soap12:address location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
         </wsdl:port>
         <wsdl:port name="GlobalWeatherHttpGet" binding="tns:GlobalWeatherHttpGet">
-            <http:address
-                location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
+            <http:address location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
         </wsdl:port>
         <wsdl:port name="GlobalWeatherHttpPost" binding="tns:GlobalWeatherHttpPost">
-            <http:address
-                location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
+            <http:address location="https://java2.inrialpes.fr/meteo-backup/services/GlobalWeather" />
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

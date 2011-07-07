@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<composite name="meteo" xmlns="http://www.osoa.org/xmlns/sca/1.0"
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" targetNamespace="http://frascati.ow2.org/meteo">
+
+	<component name="meteo-server">
+		<implementation.java class="net.webservicex.GlobalWeatherImpl" />
+
+		<service name="meteo-service">
+			<!-- binding.ws uri="/WeatherService" / -->
+			<binding.ws uri="http://localhost:9020/WeatherService" />
+		</service>
+	</component>
+
+</composite>
