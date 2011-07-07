@@ -376,13 +376,10 @@
           <widget>serviceref_refPath</widget>
         </row>
         <row>
+          <widget>serviceref_refPathLink</widget>
+        </row>
+        <row>
           <widget>serviceref_refUrl</widget>
-        </row>
-        <row>
-          <widget>serviceref_archiPath</widget>
-        </row>
-        <row>
-          <widget>serviceref_archiLocalName</widget>
         </row>
        </rows>
       <widget name="serviceref_refPath" type="text">
@@ -393,6 +390,18 @@
 	      <fields>
 	        <field>sref:refPath</field>
 	      </fields>
+	  </widget>
+      <widget name="serviceref_refPathLink" type="template"><!-- listing_big_icon_type_link -->
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.refPathLink</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>sref:refPath</field>
+	      </fields>
+	      <properties widgetMode="any">
+	        <property name="template">/widgets/document_path_link_template.xhtml</property>
+	      </properties>
 	  </widget>
       <widget name="serviceref_refUrl" type="text">
 	      <labels>
