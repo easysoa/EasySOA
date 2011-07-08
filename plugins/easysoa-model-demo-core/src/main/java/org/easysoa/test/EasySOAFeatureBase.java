@@ -17,8 +17,8 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.easysoa.demo.core",
     "org.nuxeo.ecm.directory.types.contrib:OSGI-INF/DirectoryTypes.xml", // required, else no vocabulary schema in database
     "org.nuxeo.ecm.directory",
-    "org.nuxeo.ecm.directory.api",
     "org.nuxeo.ecm.directory.sql", // all required, else no dirService
+    "org.nuxeo.ecm.directory.api",
     "org.easysoa.demo.core:OSGI-INF/nxdirectories-contrib.xml", // required, else no custom easysoa vocabularies
     "org.easysoa.demo.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
 	"org.easysoa.demo.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class

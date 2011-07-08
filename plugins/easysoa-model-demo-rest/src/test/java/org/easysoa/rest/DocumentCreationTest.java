@@ -5,8 +5,10 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.test.EasySOAFeatureBase;
 import org.easysoa.test.rest.RestNotificationFactory.RestNotificationAPI;
+import org.easysoa.test.rest.AbstractRestTest;
 import org.easysoa.test.rest.RestNotificationRequest;
 import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -30,25 +32,21 @@ import com.google.inject.Inject;
 @Deploy({"org.nuxeo.runtime.jtajca",
 		"org.nuxeo.runtime.management",
 		"org.nuxeo.ecm.platform.login",
-		"org.nuxeo.ecm.automation.core",
-		"org.nuxeo.ecm.automation.features",
-		"org.nuxeo.ecm.automation.server",
 		"org.nuxeo.ecm.platform.query.api",
 		"org.easysoa.demo.rest"
 	})
-@Jetty(port = 9980, config= "src/test/resources/jetty.xml")
-//@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-@LocalDeploy({"org.easysoa.demo.rest:org/easysoa/tests/login-contrib.xml"/*,
-	"org.easysoa.demo.rest:org/easysoa/tests/datasource-contrib.xml"*/})
-public class DocumentCreationTest extends AbstractNotificationTest {
+@Jetty(config= "src/test/resources/jetty.xml", port=9980)
+@LocalDeploy({"org.easysoa.demo.rest:OSGI-INF/DirectoryTypes.xml",
+		"org.easysoa.demo.rest:OSGI-INF/login-contrib.xml"})
+public class DocumentCreationTest extends AbstractRestTest {
 
-	@Inject
-	CoreSession session;
+	@Inject CoreSession session;
 
-	public DocumentCreationTest() throws Exception {
-		super();
+	@Before
+	public void setUp() throws Exception {
+		setUp(session, "src/test/resources/targetednuxeo.properties");
 	}
-
+	
 	/**
 	 * Creates an Appli Impl.
 	 * 
@@ -67,7 +65,7 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 		notification.setProperty(AppliImpl.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
 
-		nuxeoAssert.assertDocumentExists(AppliImpl.DOCTYPE, url);
+		assertDocumentExists(AppliImpl.DOCTYPE, url);
 	}
 
 	/**
@@ -88,7 +86,7 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 				.setProperty(ServiceAPI.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
 
-		nuxeoAssert.assertDocumentExists(ServiceAPI.DOCTYPE, url);
+		assertDocumentExists(ServiceAPI.DOCTYPE, url);
 	}
 
 	/**
@@ -109,6 +107,6 @@ public class DocumentCreationTest extends AbstractNotificationTest {
 				.setProperty(Service.PROP_URL, url);
 		Assume.assumeTrue(notification.send());
 
-		nuxeoAssert.assertDocumentExists(Service.DOCTYPE, url);
+		assertDocumentExists(Service.DOCTYPE, url);
 	}
 }

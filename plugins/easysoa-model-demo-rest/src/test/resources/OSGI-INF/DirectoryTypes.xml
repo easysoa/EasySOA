@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<component name="org.nuxeo.ecm.directory.types.test">
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="vocabulary" src="schemas/vocabulary.xsd" />
+    <schema name="xvocabulary" src="schemas/xvocabulary.xsd" />
+  </extension>
+
+</component>

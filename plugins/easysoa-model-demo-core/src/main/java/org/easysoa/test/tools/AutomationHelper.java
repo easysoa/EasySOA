@@ -24,13 +24,13 @@ public class AutomationHelper {
 	private Session session = null;
 	
 	public AutomationHelper(String nuxeoUrl) throws Exception {
-        client = new HttpAutomationClient(nuxeoUrl+"/site/automation");
+        client = new HttpAutomationClient(nuxeoUrl+"/automation");
         try {
         	// XXX: Hardcoded auth to external Nuxeo instance
         	session = client.getSession("Administrator", "Administrator"); 
         }
         catch (Exception e) {
-        	log.warn(e.getMessage());
+        	log.warn("Failed to create automation session: " + e.getMessage());
         }
 	}
 

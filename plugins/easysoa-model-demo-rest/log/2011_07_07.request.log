@@ -1,2 +1,0 @@
-127.0.0.1 -  -  [07/juil./2011:16:02:50 +0000] "GET http://post.audioscrobbler.com/?hs=true&p=1.2&c=rbx&v=0.13.1&u=warman06&t=1310054570&a=7fbe067e6414facbd9de6d9f7a0663a7 HTTP/1.1" 200 0 "-" "Rhythmbox/0.13.1"
-127.0.0.1 -  -  [07/juil./2011:16:05:05 +0000] "GET http://post.audioscrobbler.com/?hs=true&p=1.2&c=rbx&v=0.13.1&u=warman06&t=1310054705&a=4b4e8b7a675d204dff6f76f4e7081b83 HTTP/1.1" 200 0 "-" "Rhythmbox/0.13.1"

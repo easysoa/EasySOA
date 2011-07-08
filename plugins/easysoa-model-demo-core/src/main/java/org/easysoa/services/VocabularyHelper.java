@@ -103,9 +103,10 @@ public class VocabularyHelper extends DefaultComponent {
 			if (parentId != null) {
 				fieldMap.put("parent", parentId);
 			}
+			
 			dirSession.createEntry(fieldMap);
-
 			dirSession.close();
+			
 		} catch (Exception e1) {
 			log.error("Error while creating vocabulary entry", e1);
 		}
