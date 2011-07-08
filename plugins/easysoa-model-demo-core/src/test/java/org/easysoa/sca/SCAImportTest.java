@@ -55,7 +55,7 @@ public class SCAImportTest {
     public void setUp() throws ClientException, MalformedURLException {
 
     	// Find or create appli
-    	String appliUrl = "http://test/appli/";
+    	String appliUrl = "http://localhost";
 		parentAppliImplModel = docService.findAppliImpl(session, appliUrl);
 		assertEquals(parentAppliImplModel, null);
 		
@@ -64,14 +64,6 @@ public class SCAImportTest {
 		parentAppliImplModel.setProperty("dublincore", "title", title);
 		session.saveDocument(parentAppliImplModel);
 		session.save();
-		// Update optional properties
-		//setPropertiesIfNotNull(parentAppliImplModel, SCHEMA, AppliImpl.getPropertyList(), params);
-		// Save
-		//if (!errorFound) {
-		//	session.saveDocument(parentAppliImplModel);
-		//	session.save();
-		//}
-		
 		// NB. created documents are auto deleted at the end, so no need for :
 		// session.removeDocument(parentAppliImplModel.getRef());
     }
@@ -111,7 +103,6 @@ public class SCAImportTest {
 		resDoc = resDocList.get(0);
 		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
 
-		
 		// references :
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
@@ -125,5 +116,11 @@ public class SCAImportTest {
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
 				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(1, resDocList.size());
+		
+		// api :
+		
+		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
+		assertEquals("PureAirFlowers API", apiModel.getTitle());
+		
     }
 }

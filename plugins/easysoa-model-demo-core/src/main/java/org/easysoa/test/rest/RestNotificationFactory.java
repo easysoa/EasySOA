@@ -19,7 +19,7 @@ public class RestNotificationFactory {
 
 	private static final Log log = LogFactory.getLog(RestNotificationFactory.class);
 	
-	private final static String API_PATH = "/site/easysoa/notification/";
+	private final static String API_PATH = "/easysoa/notification/";
 	private final static String SERVICE_APPLIIMPL = "appliimpl";
 	private final static String SERVICE_SERVICEAPI = "api";
 	private final static String SERVICE_SERVICE = "service";
@@ -34,7 +34,7 @@ public class RestNotificationFactory {
 	public RestNotificationFactory(String nuxeoUrl) throws IOException {
 		
 		// Test connection
-		new URL(nuxeoUrl+"/site").openConnection();
+		new URL(nuxeoUrl).openConnection();
 		
 		// Store API services URLs
 		String notificationApiUrl = nuxeoUrl + API_PATH;

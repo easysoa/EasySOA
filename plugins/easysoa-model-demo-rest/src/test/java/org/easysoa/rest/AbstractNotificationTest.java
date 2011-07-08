@@ -45,12 +45,12 @@ public abstract class AbstractNotificationTest {
 				nuxeoUrl = RestNotificationFactory.NUXEO_URL_LOCALHOST;
 			}
 			else {
-				nuxeoUrl = "http://"+nuxeoHost+":"+nuxeoPort+"/nuxeo";
+				nuxeoUrl = "http://"+nuxeoHost+":"+nuxeoPort+"/nuxeo/site";
 			}
 			nuxeoAssert = new NuxeoAssertionHelper(nuxeoUrl);
 		}
 		else {
-			nuxeoUrl = "http://localhost:9980/nuxeo";
+			nuxeoUrl = "http://localhost:9980";
 			nuxeoAssert = new NuxeoAssertionHelper(session);
 		}
 		notificationFactory = new RestNotificationFactory(nuxeoUrl);

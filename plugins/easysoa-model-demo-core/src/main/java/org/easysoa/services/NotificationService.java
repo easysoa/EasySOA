@@ -184,7 +184,8 @@ public class NotificationService extends DefaultComponent {
 				parentUrl = computeApiUrl(url);
 			}
 			if (title == null) {
-				properties.put(Service.PROP_TITLE, computeServiceTitle(url));
+				title = computeServiceTitle(url);
+				properties.put(Service.PROP_TITLE, title);
 			}
 		
 			// Find or create document and parent

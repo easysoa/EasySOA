@@ -42,7 +42,7 @@ public class RepositoryLogger {
 	 * Allows to define a matcher to set which documents
 	 * need to be logged in details.
 	 */
-	public RepositoryLogger setDetailedLoggingFor(RepositoryLoggerMatcher matcher) {
+	public RepositoryLogger enableDetailedLoggingFor(RepositoryLoggerMatcher matcher) {
 		this.matcher = matcher;
 		return this;
 	}

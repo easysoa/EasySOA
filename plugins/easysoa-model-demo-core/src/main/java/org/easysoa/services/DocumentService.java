@@ -229,6 +229,8 @@ public class DocumentService extends DefaultComponent {
 				try {
 					appliImpl = createAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);
 					appliImpl.setProperty("dublincore", "title", AppliImpl.DEFAULT_APPLIIMPL_TITLE);
+					appliImpl.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT,
+							AppliImpl.DEFAULT_ENVIRONMENT);
 					session.saveDocument(appliImpl);
 					session.save();
 					defaultAppliImpl = appliImpl;

@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-	  <groupId>org.easysoa</groupId>
-	  <artifactId>easysoa-model-demo-parent</artifactId>
+		<groupId>org.easysoa</groupId>
+		<artifactId>easysoa-model-demo-parent</artifactId>
 		<version>0.1.2-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -47,7 +47,7 @@
 			<artifactId>nuxeo-webengine-base</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- WSDL Scraper specific -->
 		<dependency>
 			<groupId>net.sourceforge.htmlcleaner</groupId>
@@ -55,7 +55,7 @@
 			<version>2.2</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- JSON -->
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
@@ -68,7 +68,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Tests -->
 		<dependency>
 			<groupId>org.nuxeo.ecm.platform</groupId>
@@ -94,151 +94,224 @@
 			<scope>compile</scope>
 		</dependency>
 		<!-- Nuxeo features framework -->
-		
-    <dependency>
-      <groupId>org.nuxeo.ecm.core</groupId>
-      <artifactId>nuxeo-core-test</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.platform</groupId>
-      <artifactId>nuxeo-platform-test</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-test</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-jetty-adapter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.webengine</groupId>
-      <artifactId>nuxeo-webengine-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.webengine</groupId>
-      <artifactId>nuxeo-webengine-ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.webengine</groupId>
-      <artifactId>nuxeo-webengine-base</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.webengine</groupId>
-      <artifactId>nuxeo-webengine-gwt</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.webengine</groupId>
-      <artifactId>nuxeo-webengine-admin</artifactId>
-    </dependency>
-    <!--  Nuxeo Theme -->
-    <dependency>
-      <groupId>org.nuxeo.theme</groupId>
-      <artifactId>nuxeo-theme-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.theme</groupId>
-      <artifactId>nuxeo-theme-fragments</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.webengine</groupId>
-      <artifactId>nuxeo-theme-webengine</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.platform</groupId>
-      <artifactId>nuxeo-platform-usermanager-core</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.platform</groupId>
-      <artifactId>nuxeo-platform-directory-sql</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.platform</groupId>
-      <artifactId>nuxeo-platform-directory-ldap</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.platform</groupId>
-      <artifactId>nuxeo-platform-login</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.platform</groupId>
-      <artifactId>nuxeo-platform-login-default</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.ecm.platform</groupId>
-      <artifactId>nuxeo-platform-api-test</artifactId>
-      <scope>compile</scope>
-    </dependency>
 
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.freemarker</groupId>
-      <artifactId>freemarker</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.script</groupId>
-      <artifactId>script-api</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty-plus</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty-annotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty-naming</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.ejb</groupId>
-      <artifactId>ejb-api</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-scripting
-      </artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>rhino</groupId>
-          <artifactId>js</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-test</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-test</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime-test</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime-jetty-adapter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.webengine</groupId>
+			<artifactId>nuxeo-webengine-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.webengine</groupId>
+			<artifactId>nuxeo-webengine-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.webengine</groupId>
+			<artifactId>nuxeo-webengine-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.webengine</groupId>
+			<artifactId>nuxeo-webengine-gwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.webengine</groupId>
+			<artifactId>nuxeo-webengine-admin</artifactId>
+		</dependency>
+		<!-- Nuxeo Theme -->
+		<dependency>
+			<groupId>org.nuxeo.theme</groupId>
+			<artifactId>nuxeo-theme-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.theme</groupId>
+			<artifactId>nuxeo-theme-fragments</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.webengine</groupId>
+			<artifactId>nuxeo-theme-webengine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-usermanager-core</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-directory-sql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-directory-ldap</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-login</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-login-default</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-api-test</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.script</groupId>
+			<artifactId>script-api</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-plus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-naming</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb-api</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime-scripting</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>rhino</groupId>
+					<artifactId>js</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.automation</groupId>
+			<artifactId>nuxeo-automation-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.easywsdl</groupId>
+			<artifactId>easywsdl-wsdl</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-directory-sql</artifactId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-relations-core</artifactId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.automation</groupId>
+			<artifactId>nuxeo-automation-core</artifactId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-relations-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-ui-web</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-webapp-base</artifactId>
+			</dependency>
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-seam</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-login</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime-management </artifactId>
+		</dependency>
 		
 	</dependencies>
 

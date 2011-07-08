@@ -55,152 +55,168 @@ public class ServiceListener implements EventListener {
 		if (!type.equals(DOCTYPE)) {
 			return;
 		}
-		
+
 		try {
-			// Extract data from specified document
+			
+			// Extract data from document
 			String title = (String) doc.getProperty("dublincore", "title");
 			String url = (String) doc.getProperty(SCHEMA, PROP_URL);
 			String fileUrl = (String) doc.getProperty(SCHEMA, PROP_FILEURL);
-			
+
 			// Extract data from WSDL
 			if (fileUrl != null) {
 				
-				// Download file
-				Blob blob = null;
-				try {
-					blob = new HttpFile(fileUrl).download().getBlob();
-				}
-				catch (Exception e) {
-					log.info("Failed to download attached file: "+e.getMessage());
-				}
-				
-				if (blob != null) {
+				try {	
 					
-					// Save WSDLblob
-					NotificationService notifService = Framework.getService(NotificationService.class);
-					doc.setProperty("file", "content", blob);
-					doc.setProperty("file", "filename", notifService.computeServiceTitle(fileUrl)+".wsdl");
-					
-					// Extract file to system for analysis
-					File tmpFile = File.createTempFile(doc.getId(), null);
-					blob.transferTo(tmpFile);
-					
-					// Analyze WSDL
+					// Download file
+					Blob blob = null;
 					try {
-		
-						WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
-						Description desc = reader.read(tmpFile.toURI().toURL());
-		
-						// Initialization
-						org.ow2.easywsdl.wsdl.api.Service firstService = 
-							(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
-						
-						// URL extraction
-						Endpoint firstEndpoint = firstService.getEndpoints().get(0);
-						url = PropertyNormalizer.normalizeUrl(firstEndpoint.getAddress());
-						doc.setProperty(SCHEMA, PROP_URL, url);
-						
-						// Service name extraction
-						if (title == null || title.isEmpty() || title.equals(url) || title.equals(fileUrl)) {
-							title = firstService.getQName().getLocalPart();
-							doc.setProperty("dublincore", "title", title);
-						}
-						
-						// EasySOA Light 
-						// XXX: Hard-coded PureAirFlowers Light URL
-						if (url.contains("PureAirFlowers Orders")) { 
-							doc.setProperty(SCHEMA, PROP_LIGHTURL,
-									"http://localhost:8083/easysoa/light/paf.html");
-						}
-						
-						//// Update parent's properties
-						
-						// Supported protocols
-						
-						if (doc.getParentRef() != null) {
-							
-							DocumentModel apiModel = session.getDocument(doc.getParentRef());
-							String storedProtocol = (String) apiModel.getProperty(
-									ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
-							try {
-								String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
-										.getBinding()).getTransportProtocol();
-								if (storedProtocol == null || !storedProtocol.contains(protocol)) {
-									if (storedProtocol == null || storedProtocol.isEmpty()) {
-										apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
-									}
-									else {
-										apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
-												storedProtocol + ", " + protocol);
-									}
-								}
-							}
-							catch (Exception e) {
-								log.warn("Failed to extract protocol from WSDL: "+e.getMessage());
-							}
-	
-							if (apiModel.getParentRef() != null) {
-									
-								DocumentModel appliImplModel = session.getDocument(apiModel.getParentRef());
-								
-								// Server
-								String existingServer = (String) appliImplModel.
-										getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
-								String newServer = InetAddress.getByName(
-											new URL(firstEndpoint.getAddress()).getHost())
-											.getHostAddress();
-								if (existingServer == null || !newServer.equals(existingServer)) {
-									appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
-								}
-								
-								// Provider
-								try {
-									String provider = new URL(((Endpoint) firstService.getEndpoints().get(0))
-											.getAddress()).getAuthority();
-									String existingProvider = (String) appliImplModel
-											.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
-									if (existingProvider == null || !provider.equals(existingProvider)) {
-										appliImplModel.setProperty(AppliImpl.SCHEMA,
-												AppliImpl.PROP_PROVIDER, provider);
-									}
-								}
-								catch(Exception e) {
-									// Nothing (authority extraction failed)
-								}
-								
-								session.saveDocument(appliImplModel);
-							}
-							
-							session.saveDocument(apiModel);
-						}
-		
-					} catch (Exception e) {
-						log.error("WSDL parsing failed", e);
-					} finally {
-						tmpFile.delete();
+						blob = new HttpFile(fileUrl).download().getBlob();
 					}
+					catch (Exception e) {
+						log.info("Failed to download attached file: "+e.getMessage());
+					}
+					
+					if (blob != null) {
+						
+						// Save WSDLblob
+						NotificationService notifService = Framework.getService(NotificationService.class);
+						doc.setProperty("file", "content", blob);
+						doc.setProperty("file", "filename", notifService.computeServiceTitle(fileUrl)+".wsdl");
+						
+						// Extract file to system for analysis
+						File tmpFile = File.createTempFile(doc.getId(), null);
+						blob.transferTo(tmpFile);
+						
+						// Analyze WSDL
+						try {
+			
+							WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
+							Description desc = reader.read(tmpFile.toURI().toURL());
+			
+							// Initialization
+							org.ow2.easywsdl.wsdl.api.Service firstService = 
+								(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
+							
+							// URL extraction
+							Endpoint firstEndpoint = firstService.getEndpoints().get(0);
+							url = PropertyNormalizer.normalizeUrl(firstEndpoint.getAddress());
+							doc.setProperty(SCHEMA, PROP_URL, url);
+							
+							// Service name extraction
+							if (title == null || title.isEmpty() || title.equals(fileUrl)) {
+								title = firstService.getQName().getLocalPart();
+								doc.setProperty("dublincore", "title", title);
+							}
+							
+							// EasySOA Light 
+							// XXX: Hard-coded PureAirFlowers Light URL
+							if (url.contains("PureAirFlowers Orders")) { 
+								doc.setProperty(SCHEMA, PROP_LIGHTURL,
+										"http://localhost:8083/easysoa/light/paf.html");
+							}
+							
+							//// Update parent's properties
+							
+							// Supported protocols
+							
+							if (doc.getParentRef() != null) {
+								
+								DocumentModel apiModel = session.getDocument(doc.getParentRef());
+								String storedProtocol = (String) apiModel.getProperty(
+										ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
+								try {
+									String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
+											.getBinding()).getTransportProtocol();
+									if (storedProtocol == null || !storedProtocol.contains(protocol)) {
+										if (storedProtocol == null || storedProtocol.isEmpty()) {
+											apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
+										}
+										else {
+											apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
+													storedProtocol + ", " + protocol);
+										}
+									}
+								}
+								catch (Exception e) {
+									log.warn("Failed to extract protocol from WSDL: "+e.getMessage());
+								}
+		
+								if (apiModel.getParentRef() != null) {
+										
+									DocumentModel appliImplModel = session.getDocument(apiModel.getParentRef());
+									
+									// Server
+									String existingServer = (String) appliImplModel.
+											getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
+									String newServer = InetAddress.getByName(
+												new URL(firstEndpoint.getAddress()).getHost())
+												.getHostAddress();
+									if (existingServer == null || !newServer.equals(existingServer)) {
+										appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
+									}
+									
+									// Provider
+									try {
+										String provider = new URL(((Endpoint) firstService.getEndpoints().get(0))
+												.getAddress()).getAuthority();
+										String existingProvider = (String) appliImplModel
+												.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
+										if (existingProvider == null || !provider.equals(existingProvider)) {
+											appliImplModel.setProperty(AppliImpl.SCHEMA,
+													AppliImpl.PROP_PROVIDER, provider);
+										}
+									}
+									catch(Exception e) {
+										// Nothing (authority extraction failed)
+									}
+									
+									session.saveDocument(appliImplModel);
+								}
+								
+								session.saveDocument(apiModel);
+							}
+			
+						} catch (Exception e) {
+							log.error("WSDL parsing failed", e);
+						} finally {
+							tmpFile.delete();
+						}
+					}
+			
+				} catch (Exception e) {
+					log.error("Error while parsing WSDL", e);
 				}
-	
+			}
+			
+			// Maintain properties
+			try {
+				if (url != null) {
+					doc.setProperty(SCHEMA, PROP_URL,
+							PropertyNormalizer.normalizeUrl(url));
+				}
+			} catch (Exception e) {
+				log.error("Failed to normalize URL", e);
 			}
 			
 			session.save();
 			
-		} catch (Exception e) {
-			log.error("Error while parsing WSDL", e);
-		}
-		
-		// Test if the service already exists, delete the other one(s) if necessary
-		try {
-			DocumentService docService = Framework.getService(DocumentService.class);
-			DocumentModelList existingServiceModels = session.query(
-					"SELECT * FROM Service WHERE serv:url = '" + doc.getProperty(SCHEMA, PROP_URL) + "'");
-			for (DocumentModel existingServiceModel : existingServiceModels) {
-				if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
-					docService.mergeDocument(session, existingServiceModel, doc, false);
+			// Test if the service already exists, delete the other one(s) if necessary
+			try {
+				DocumentService docService = Framework.getService(DocumentService.class);
+				DocumentModelList existingServiceModels = session.query(
+						"SELECT * FROM Service WHERE serv:url = '" + url + "'");
+				for (DocumentModel existingServiceModel : existingServiceModels) {
+					if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
+						docService.mergeDocument(session, existingServiceModel, doc, false);
+					}
 				}
+			} catch (Exception e) {
+				log.error("Error while trying to merge documents", e);
 			}
+
 		} catch (Exception e) {
-			log.error("Error while trying to merge documents", e);
+			log.error(e);
 		}
 
 	}

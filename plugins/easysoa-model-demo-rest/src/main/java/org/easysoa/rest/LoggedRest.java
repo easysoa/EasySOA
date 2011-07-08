@@ -25,6 +25,12 @@ public abstract class LoggedRest {
 	protected void login() throws LoginException {
 		// XXX: As the REST API is (for now) anonymously available, we need to explicitly log in
 		loginContext = Framework.login("Administrator", "Administrator");
+		if (loginContext == null) { // XXX: Probably useless (added for unit testing)
+			loginContext = Framework.login("sa", "");
+		}
+		if (loginContext == null) {
+			throw new LoginException("Failed to login");
+		}
 		session = WebEngine.getActiveContext().getUserSession().getCoreSession(null);
 	}
 	
@@ -32,7 +38,7 @@ public abstract class LoggedRest {
 		try {
 			loginContext.logout();
 		} catch (LoginException e) {
-			log.warn("Failed to logout: "+e.getMessage());
+			log.warn("Failed to logout");
 		}
 	}
 	

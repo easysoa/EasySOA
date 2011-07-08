@@ -14,7 +14,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  *
  */
 @Deploy({
-    "org.nuxeo.runtime.datasource", // required, else errors : [DataSourceHelper] Unknown JNDI Context class: null , [SQLDirectory] dataSource lookup failed , "javax.naming.NoInitialContextException: Need to specify class name...
+    "org.nuxeo.runtime.datasource"
 })
 @Features(EasySOAFeatureBase.class)
 @LocalDeploy("org.easysoa.demo.core:org/easysoa/tests/datasource-contrib.xml")

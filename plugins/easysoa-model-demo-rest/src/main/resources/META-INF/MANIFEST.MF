@@ -1,15 +1,12 @@
 Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven
+Bundle-ManifestVersion: 2
 Built-By: mkalam-alami
-Build-Jdk: 1.6.0_24
-Bundle-ManifestVersion: 1
 Bundle-Version: 0.0.1
 Bundle-Name: easysoa-model-demo-rest
 Bundle-SymbolicName: org.easysoa.demo.rest;singleton:=true
 Bundle-Vendor: EasySOA Consortium
-Bundle-Category: web,stateless
-Require-Bundle: org.nuxeo.ecm.platform.webengine.sites.api;visibility:=reexport
+Export-Package: org.easysoa.demo.rest
+Eclipse-LazyStart: true
 Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
 Nuxeo-Require: org.easysoa.demo.core
 Nuxeo-Component: OSGI-INF/rights-contrib.xml

@@ -1,10 +1,10 @@
 package org.easysoa.listeners;
 
+import static org.easysoa.doctypes.AppliImpl.PROP_URL;
+import static org.easysoa.doctypes.AppliImpl.SCHEMA;
 import static org.easysoa.doctypes.ServiceAPI.DOCTYPE;
 import static org.easysoa.doctypes.ServiceAPI.PROP_APPLICATION;
 import static org.easysoa.doctypes.ServiceAPI.PROP_PROTOCOLS;
-import static org.easysoa.doctypes.ServiceAPI.PROP_URL;
-import static org.easysoa.doctypes.ServiceAPI.SCHEMA;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -13,6 +13,7 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.VocabularyHelper;
@@ -61,6 +62,8 @@ public class ServiceAPIListener implements EventListener {
 		// If the file contains a WSDL file, parse it
 		try {
 			
+			String url = (String) doc.getProperty(SCHEMA, PROP_URL);
+			
 			Blob blob = (Blob) doc.getProperty("file", "content");
 			
 			// Check that the API contains a file
@@ -83,7 +86,6 @@ public class ServiceAPIListener implements EventListener {
 						(org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
 					
 					// Default URL
-					String url = (String) doc.getProperty(SCHEMA, PROP_URL);
 					if (url == null) {
 						Endpoint firstEndpoint = firstService.getEndpoints().get(0);
 						if (server == null) {
@@ -168,15 +170,26 @@ public class ServiceAPIListener implements EventListener {
 				} finally {
 					tmpFile.delete();
 				}
-	
-				// Save
-				session.save();
 			
 			}
+			
+			// Maintain properties
+			try {
+				if (url != null) {
+					doc.setProperty(SCHEMA, PROP_URL,
+							PropertyNormalizer.normalizeUrl(url));
+				}
+			} catch (Exception e) {
+				log.error("Failed to normalize URL", e);
+			}
+
+			// Save
+			session.save();
 
 		} catch (Exception e) {
 			log.error("Error while parsing WSDL", e);
 		}
+		
 		
 		// Update vocabulary
 		// TODO: Update on document deletion

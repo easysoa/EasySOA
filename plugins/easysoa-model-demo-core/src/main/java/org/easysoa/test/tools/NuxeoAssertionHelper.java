@@ -15,7 +15,7 @@ import org.nuxeo.runtime.api.Framework;
  * @author mkalam-alami
  *
  */
-public class NuxeoAssertionHelper { // TODO: When tested and stable, move the framework to specific project
+public class NuxeoAssertionHelper {
 
 	// Used in the case of an existing Nuxeo
 	private AutomationHelper automation = null;

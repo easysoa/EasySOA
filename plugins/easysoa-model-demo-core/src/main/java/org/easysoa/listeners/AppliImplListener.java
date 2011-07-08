@@ -12,6 +12,7 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.services.VocabularyHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -72,8 +73,12 @@ public class AppliImplListener implements EventListener {
 			// Maintain internal properties
 			doc.setProperty(SCHEMA, PROP_SERVERENTRY,
 					doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
-
-		} catch (ClientException e) {
+			if (url != null) {
+				doc.setProperty(SCHEMA, PROP_URL,
+						PropertyNormalizer.normalizeUrl(url));
+			}
+			
+		} catch (Exception e) {
 			log.error("Failed to maintain internal property", e);
 		}
 

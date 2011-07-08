@@ -5,9 +5,11 @@ import static org.junit.Assert.assertNotNull;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.test.EasySOAFeature;
 import org.easysoa.test.EasySOARepositoryInit;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +70,7 @@ public class DocumentServiceTest {
     	model2.setProperty(Service.SCHEMA_DUBLINCORE, Service.PROP_DESCRIPTION, description);
     	session.saveDocument(model2);
     	session.save();
-
+    	
     	// Fetch service
     	DocumentModelList list = session.query("SELECT * FROM Service");
     	assertEquals(1, list.size());
@@ -137,6 +139,25 @@ public class DocumentServiceTest {
     	model = docService.findService(session, wsdlUrl);
     	assertNotNull("Failed to fetch document by fileUrl", model);
     	
+    }
+
+    /**
+     * Test that the default application is rebuilt if deleted
+     * @throws Exception
+     */
+    @Test
+    public void testDefaultAppRegen() throws Exception {
+    	
+    	// Remove default appli impl.
+    	DocumentModel appliImplModel = docService.findAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);
+    	session.removeDocument(appliImplModel.getRef());
+    	Assume.assumeTrue(docService.findAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL) == null);
+    	
+    	// Create random API
+    	docService.createServiceAPI(session, null, "http://www.random-api.com");
+    	appliImplModel = docService.findAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);
+    	assertNotNull(appliImplModel);
+    	assertEquals(appliImplModel.getTitle(), AppliImpl.DEFAULT_APPLIIMPL_TITLE);
     }
     
 }
