@@ -28,16 +28,10 @@ import com.google.inject.Inject;
  * 
  */
 @RunWith(FeaturesRunner.class)
-@Features({WebEngineFeature.class, EasySOAFeatureBase.class})
-@Deploy({"org.nuxeo.runtime.jtajca",
-		"org.nuxeo.runtime.management",
-		"org.nuxeo.ecm.platform.login",
-		"org.nuxeo.ecm.platform.query.api",
-		"org.easysoa.demo.rest"
-	})
-@Jetty(config= "src/test/resources/jetty.xml", port=9980)
-@LocalDeploy({"org.easysoa.demo.rest:OSGI-INF/DirectoryTypes.xml",
-		"org.easysoa.demo.rest:OSGI-INF/login-contrib.xml"})
+@Features({EasySOAFeatureBase.class, WebEngineFeature.class})
+@Deploy("org.easysoa.demo.rest")
+@Jetty(config="src/test/resources/jetty.xml", port=9980)
+@LocalDeploy({"org.easysoa.demo.rest:OSGI-INF/login-contrib.xml"})
 public class DocumentCreationTest extends AbstractRestTest {
 
 	@Inject CoreSession session;
