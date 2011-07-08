@@ -55,7 +55,8 @@
        <module>demo-ui-servlet</module>
        <module>create-summary-proactive</module>
        <module>currency-sca-backup</module>
-       <module>meteo-sca-backup</module>
+       <!--<module>meteo-sca-backup</module>-->
+       <module>easysoa-meteo-sca-backup</module>
     <module>translate-backup</module>
   </modules>
 

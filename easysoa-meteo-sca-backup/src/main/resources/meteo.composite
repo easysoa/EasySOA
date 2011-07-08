@@ -3,10 +3,12 @@
 	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" targetNamespace="http://frascati.ow2.org/meteo">
 
 	<component name="meteo-server">
-		<implementation.java class="net.webservicex.GlobalWeatherImpl" />
+		<!--<implementation.java class="net.webservicex.GlobalWeatherSoapImpl1" />-->
+		<implementation.java class="net.webservicex.GlobalWeather" />
 
 		<service name="meteo-service">
 			<!-- binding.ws uri="/WeatherService" / -->
+			<interface.java interface="net.webservicex.GlobalWeatherSoap"/>
 			<binding.ws uri="http://localhost:9020/WeatherService" />
 		</service>
 	</component>

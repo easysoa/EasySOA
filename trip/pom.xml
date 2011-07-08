@@ -101,12 +101,7 @@
                     </plugin>
                 </plugins>
             </build>-->
-            
-            
-            
-            
-            
-            
+
             <build>                                             
 			  <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal>
 			  <plugins>                                                                                    
@@ -126,13 +121,8 @@
 					<arguments>
                       	<argument>-Dcxf.config.file.url=/home/jguillemotte/frascati-runtime-1.4/conf/configurationCXF.xml</argument>
 			      	</arguments>
-			        <!--<loggingConfFile>${logging.conf.file}</loggingConfFile>-->
-			        <!--<composite>${composite.file}</composite>-->
-			        <!--<service>${service.name}</service>-->
-			        <!--<method>${method.name}</method>-->
-			        <!--<methodParams>${method.params}</methodParams>-->
 			            <composite>smart-travel</composite>
-			    		<!-- useFscript>true</useFscript -->
+			            <!--<composite>smart-travel-mock-services</composite>-->
 			    		<useFscript>false</useFscript>
 			    	</configuration>
 					<dependencies>
@@ -144,6 +134,11 @@
                             <dependency>
                                 <groupId>fr.inria.galaxy.j1</groupId>
                                 <artifactId>meteo-model</artifactId>
+                                <version>1.0-SNAPSHOT</version>
+                            </dependency>
+                            <dependency><!-- to get the backup model -->
+                                <groupId>fr.inria.galaxy.j1</groupId>
+                                <artifactId>easysoa-meteo-sca-backup</artifactId>
                                 <version>1.0-SNAPSHOT</version>
                             </dependency>
                             <dependency>

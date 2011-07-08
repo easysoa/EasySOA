@@ -58,6 +58,7 @@
         <sca:binding.ws
             wsdlElement="http://www.webserviceX.NET#wsdl.port(GlobalWeather/GlobalWeatherSoap12)"
             wsdli:wsdlLocation="http://192.168.211.10:8080/meteo-backup/services/GlobalWeather?wsdl" />
+            <!-- wsdli:wsdlLocation="http://192.168.211.10:8080/meteo-backup/services/GlobalWeather?wsdl" />-->
             <!-- wsdli:wsdlLocation="http://java5.inrialpes.fr/meteo-backup/services/GlobalWeather?wsdl" /> -->
             <!-- wsdli:wsdlLocation="http://www.webservicex.net/globalweather.asmx?WSDL" /> -->
     </sca:reference>
