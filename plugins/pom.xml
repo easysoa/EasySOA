@@ -53,8 +53,8 @@
 							  	<mkdir dir="target" />
 							  	<copy todir="target" flatten="true">
 								  	<fileset dir=".">
-								  		<filename name="**/*.jar" />
-								  		<exclude name="**/*-sources.jar" />
+								  		<filename name="*/target/*.jar" />
+								  		<exclude name="*/target/*-sources.jar" />
 								  	</fileset>
 							 	</copy>
 							</tasks>
