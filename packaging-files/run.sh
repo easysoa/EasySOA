@@ -42,11 +42,11 @@ webservicesproxy()
   ./start_frascati_proxy.sh > ../log/webservicesproxy.log 2>&1
 }
 
-travel()
+trip()
 {
-  touch log/travel.log
-  cd travel/trip
-  mvn -Prun > ../../log/travel.log 2>&1
+  touch log/trip.log
+  cd travel/trip/galaxyDemoTest
+  #mvn -Prun > ../../../log/trip.log 2>&1 #TODO
 }
 
 # Start processes
@@ -58,7 +58,7 @@ sleep 5 # Give time to read the msg & let the webproxy launch
 web &
 webservices &
 webservicesproxy &
-#travel & # Automatically shuts down
+trip &
 firefox "http://localhost:8083/easysoa" &
 
 echo "Press any key to stop."

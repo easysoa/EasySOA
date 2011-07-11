@@ -54,7 +54,8 @@ PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-Release'
 PAF_BUILD = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-BinaryBuildComponents'
 PAF_LOGINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-logIntent'
 PAF_FUSINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-autoRearmFuseIntent'
-TRAVEL = 'easysoa:EasySOADemoTravel'
+TRIP = 'easysoa:galaxyDemoTest'
+TRIP_TEST = 'easysoa:EasySOADemoTravel'
 ESPER = 'easysoa:esper-frascati-poc'
 
 define 'easysoa', :base_dir => '../' do
@@ -105,15 +106,20 @@ define 'easysoa', :base_dir => '../' do
     
   end
   
+  define 'galaxyDemoTest' do
+    task :mvn do
+      maven(['clean', 'install'], project)
+    end
+  end
   define 'EasySOADemoTravel' do
     task :mvn do
-      maven(['clean', 'install'], project)  # TODO Enable tests
+      maven(['clean', 'install'], project)
     end
   end
   
   define 'esper-frascati-poc' do
     task :mvn do
-      maven(['clean', 'install', '-DskipTests'], project)
+      maven(['clean', 'install', '-DskipTests'], project) # TODO Enable tests
     end
   end
   
@@ -141,10 +147,10 @@ task :paf_mvn => [PAF_RELEASE+':mvn']
 
 task :esper => [ESPER+':mvn']
 
-task :travel => [TRAVEL+':mvn']
+task :trip => [TRIP+':mvn', TRIP_TEST+':mvn']
 
 desc "Builds all needed projects"
-task :buildall => ['paf_mvn', 'nx_mvn', 'esper', 'travel']
+task :buildall => ['paf_mvn', 'nx_mvn', 'esper', 'trip']
 
 desc "Creates the EasySOA package"
 task :packageall => ['nx_dist'] do
@@ -206,9 +212,10 @@ task :packageall => ['nx_dist'] do
   mkdir PACKAGING_PATH+'/esper'
   cp_r FileList[project(ESPER).base_dir+"/*"], PACKAGING_PATH+'/esper'
   
-  puts "Copying Travel demo..."
-  mkdir PACKAGING_PATH+'/travel'
-  cp_r FileList[project(TRAVEL).base_dir+"/*"], PACKAGING_PATH+'/travel'
+  puts "Copying Trip demo..."
+  mkdir PACKAGING_PATH+'/trip'
+  cp_r FileList[project(TRIP).base_dir], PACKAGING_PATH+'/trip'
+  cp_r FileList[project(TRIP_TEST).base_dir], PACKAGING_PATH+'/trip'
   
   cp FileList["packaging-files/*"], PACKAGING_PATH
   
