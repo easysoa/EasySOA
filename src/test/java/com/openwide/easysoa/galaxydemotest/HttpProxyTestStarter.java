@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -80,8 +81,8 @@ public class HttpProxyTestStarter {
 	 * @throws FrascatiException
 	 */
 	private static void startHttpProxy() throws FrascatiException{
-		//TODO Change this hardcoded URI
-		frascati.processComposite("/home/jguillemotte/workspace/esper-frascati-poc/src/main/resources/httpProxy", new ProcessingContextImpl());		
+		URL compositeUrl = ClassLoader.getSystemResource("httpProxy.composite") ;
+		frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());
 	}
     
 }

@@ -51,7 +51,6 @@ public class GalaxyDemoTestStarter {
 		serviceName = new QName(TNS, "Trip");
 		portName = new QName(TNS, "TripPort");
 		System.setProperty("org.ow2.frascati.bootstrap", "org.ow2.frascati.bootstrap.FraSCAti");
-		//System.setProperty("cxf.config.file", "/home/jguillemotte/frascati-runtime-1.4/conf/configurationCXF.xml");
 		System.setProperty("cxf.config.file", "src/test/resources/configurationCXF.xml");
 	}
 	
@@ -86,10 +85,8 @@ public class GalaxyDemoTestStarter {
 	 * @throws FrascatiException 
 	 */
 	private static void startGalaxyDemo() throws FrascatiException{
-		//TODO How to get the composite directly in the JAR ???
-		// Or put this in a configuration file
-		//frascati.processComposite("/home/jguillemotte/Workspace_Galaxy_demo/EasySOADemoTravel/trip/target/trip-1.0-SNAPSHOT.jar:smart-travel", new ProcessingContextImpl());
-		frascati.processComposite("/home/jguillemotte/Workspace_Galaxy_demo/EasySOADemoTravel/trip/src/main/resources/smart-travel-mock-services", new ProcessingContextImpl());
+		URL compositeUrl = ClassLoader.getSystemResource("smart-travel-mock-services.composite") ;
+		frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());
 	}	
 	
 	/**
