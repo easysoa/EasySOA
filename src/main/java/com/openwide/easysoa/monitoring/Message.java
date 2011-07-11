@@ -1,7 +1,10 @@
 package com.openwide.easysoa.monitoring;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.Logger;
 
 public class Message {
 
@@ -12,6 +15,11 @@ public class Message {
 	    WSDL, REST, SOAP 
 	}
 
+	/**
+	 * Logger
+	 */
+	static Logger logger = Logger.getLogger(Message.class.getName());	
+	
 	private String protocol;
 	private String host;
 	private int port;
@@ -39,7 +47,26 @@ public class Message {
 		}
 		this.method = request.getMethod();
 		this.content = "";
-		this.body = "";
+	    char[] charArray = new char[8192];
+	    StringBuffer requestBody = new StringBuffer();
+	    BufferedReader requestBodyReader = null;
+		try {
+			requestBodyReader = request.getReader();
+		    while((requestBodyReader.read(charArray)) != -1){
+		    	requestBody = requestBody.append(new String(charArray));
+		    }
+			this.body = requestBody.toString();
+		} catch (IOException ex) {
+			logger.error("Error while reading request body !", ex);
+			ex.printStackTrace();
+		} finally {	    
+			try {
+				requestBodyReader.close();
+			} catch (IOException ex) {
+				logger.warn("Error while closing the requestBodyReader !", ex);
+				ex.printStackTrace();
+			}
+		}
 		this.url = request.getRequestURL().toString();
 	}
 	

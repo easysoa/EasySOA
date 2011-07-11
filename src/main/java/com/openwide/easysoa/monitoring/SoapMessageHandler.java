@@ -1,12 +1,18 @@
 package com.openwide.easysoa.monitoring;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-import org.restlet.resource.ClientResource;
-import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
-import com.openwide.easysoa.monitoring.soa.WSDLService;
+import com.openwide.easysoa.monitoring.soa.Service;
 
+/**
+ * 
+ * @author jguillemotte
+ *
+ */
 public class SoapMessageHandler implements MessageHandler {
 
 	/**
@@ -16,9 +22,14 @@ public class SoapMessageHandler implements MessageHandler {
 	
 	@Override
 	public boolean isOkFor(Message message) {
-		if(message != null && message.getBody().toLowerCase().contains("schemas.xmlsoap.org") && message.getBody().toLowerCase().startsWith("<?xml") && checkWsdl(message.getUrl())){
+		if(message != null){
+			logger.debug("Message body : " + message.getBody());
+		}
+		if(message != null && message.getBody().toLowerCase().contains("<soap:envelope") && checkWsdl(message.getUrl())){
+			logger.debug("Returns true");
 			return true;
 		} else {
+			logger.debug("Returns false");
 			return false;
 		}
 	}
@@ -34,7 +45,12 @@ public class SoapMessageHandler implements MessageHandler {
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		nuxeoRS.registerWSDLService(new WSDLService(message.getHost(), serviceName, message.getCompleteMessage(), message.getMethod()));
+		Service service = new Service(message.getUrl(), message.getUrl() + "?wsdl");
+		service.setCallCount(1);
+		service.setTitle(message.getPathName());
+		service.setDescription(message.getPathName());
+		service.setHttpMethod(message.getMethod());
+		nuxeoRS.registerRestService(service);
 		return true;
 	}
 	
@@ -45,13 +61,17 @@ public class SoapMessageHandler implements MessageHandler {
 	 */
 	private boolean checkWsdl(String url){
 		boolean result = false;
+		logger.debug("Checking wsdl for url : " + url + "?wsdl");
 		try{
-			ClientResource resource = new ClientResource(url + "/?wsdl");
-			resource.get();
+			DefaultHttpClient httpClient = new DefaultHttpClient(); 
+	    	HttpGet httpGet = new HttpGet(url + "?wsdl");
+	    	HttpResponse resp = httpClient.execute(httpGet);			
+			//TODO Maybe good to improve the check of WSDL
+	    	logger.debug("WSDL found !");
 			result = true;
 		}
 		catch(Exception ex){
-			logger.debug("Unable to get a correct response from " + url + "/?wsdl");
+			logger.debug("Unable to get a correct response from " + url + "?wsdl");
 		}
 		return result;
 	}	
