@@ -25,6 +25,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.params.HttpParams;
+
 import org.apache.log4j.Logger;
 
 import com.openwide.easysoa.monitoring.Message;
@@ -244,7 +245,7 @@ public class HttpProxyImpl extends HttpServlet {
 	 */
 	private void setHeaders(HttpServletRequest request, HttpMessage httpMessage){
 		Enumeration<String> enum1 = request.getHeaderNames();
-		logger.debug("Requests Headers");
+		logger.debug("Requests Headers :");
 		while(enum1.hasMoreElements()){
 			String headerName = enum1.nextElement();
 			String headerValue = request.getHeader(headerName);
@@ -252,8 +253,9 @@ public class HttpProxyImpl extends HttpServlet {
 			if(!"Content-Length".equals(headerName)){
 				httpMessage.setHeader(headerName, headerValue);
 			}
-			logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
-		}		
+			//logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
+			logger.debug(headerName + ": " + headerValue);
+		}
 	}
 	
 	/**

@@ -69,7 +69,8 @@ public class EasySOABusFactory extends SpringBusFactory {
         //XXX deadlock hack
         //TODO better : rewrite possiblySetDefaultBus without synchronized, or even add an additional custom lock
         try {
-			wait(1000);
+			Thread.sleep(1000);
+        	//wait(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
