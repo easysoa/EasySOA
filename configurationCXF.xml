@@ -52,6 +52,7 @@
 	</http-conf:conduit>
 
 	<!--<http-conf:conduit name="{http://api.microsofttranslator.com/v1/soap.svc}SoapService.http-conduit">-->
+	<!--<http-conf:conduit name="{http://api.microsofttranslator.com/v1/soap.svc}BasicHttpBinding_LanguageService.http-conduit">-->
 	<http-conf:conduit name="{http://api.microsofttranslator.com/v1/soap.svc}BasicHttpBindingLanguageService.http-conduit">
 		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP"/>
 	</http-conf:conduit>
