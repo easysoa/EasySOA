@@ -57,7 +57,8 @@ public class EasySOABusFactory extends SpringBusFactory {
     }
         
     /**
-     * Does the same thing as SpringBusFactory.finishCreatingBus(), with an added an anti-deadlock wait
+     * Does the same thing as SpringBusFactory.finishCreatingBus(),
+     * but calls a custom myPossiblySetDefaultBus() that doesn't synchronize on threadbusses
      * @param bac
      * @return
      */
@@ -65,27 +66,33 @@ public class EasySOABusFactory extends SpringBusFactory {
         final Bus bus = (Bus)bac.getBean(Bus.DEFAULT_BUS_ID);
 
         bus.setExtension(bac, BusApplicationContext.class);
-        
-        //XXX deadlock hack
-        //TODO better : rewrite possiblySetDefaultBus without synchronized, or even add an additional custom lock
-        try {
-			Thread.sleep(1000);
-        	//wait(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalMonitorStateException e) {
-			// TODO ??!!
-			e.printStackTrace();
-		}
 
-        possiblySetDefaultBus(bus);
+    	myPossiblySetDefaultBus(bus);
         
         initializeBus(bus);        
         
         registerApplicationContextLifeCycleListener(bus, bac);
         return bus;
     }  
+
+    /**
+     * Does the same thing as SpringBusFactory.finishCreatingBus(),but doesn't synchronize on threadbusses
+     */
+    public static synchronized boolean myPossiblySetDefaultBus(Bus bus) {
+        //XXX deadlock hack : no synchronized on threadBusses
+        //TODO LATER better : add an additional custom lock...
+        // TODO tell CXF guys about it
+        //synchronized (threadBusses) {
+        if (threadBusses.get(Thread.currentThread()) == null) {
+            threadBusses.put(Thread.currentThread(), bus);
+        }
+        //}
+        if (defaultBus == null) {
+            defaultBus = bus;
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Does the same thing as in SpringBusFactory.finishCreatingBus(),

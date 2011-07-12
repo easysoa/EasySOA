@@ -15,11 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpMessage;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -196,6 +202,7 @@ public class HttpProxyImpl extends HttpServlet {
 	private Message forward(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PrintWriter respOut = response.getWriter();
 		DefaultHttpClient httpClient = new DefaultHttpClient();
+        
 		// set the retry handler
 		httpClient.setHttpRequestRetryHandler(new HttpRetryHandler());
 		// set the connection timeout
@@ -221,18 +228,37 @@ public class HttpProxyImpl extends HttpServlet {
 		logger.debug("Request URL String : " +  requestUrlString);
 		logger.debug("Request Body String : " + message.getBody());
 		
-		String resp;
 		ResponseHandler<String> responseHandler = new BasicResponseHandler(); 
-	    if("GET".equalsIgnoreCase(request.getMethod())){
-	    	HttpGet httpGet = new HttpGet(requestUrlString);
-	    	setHeaders(request, httpGet);
-	    	resp = httpClient.execute(httpGet, responseHandler);
-	    } else {
+		HttpUriRequest httpUriRequest;
+		// TODO later use a pattern to create them (builder found in a map method -> builder...)
+		if("GET".equalsIgnoreCase(request.getMethod())){
+	    	httpUriRequest = new HttpGet(requestUrlString);
+	    } else if("PUT".equalsIgnoreCase(request.getMethod())){
+	    	HttpPut httpPut = new HttpPut(requestUrlString);
+	    	httpPut.setEntity(httpEntity);
+	    	httpUriRequest = httpPut;
+	    } else if("DELETE".equalsIgnoreCase(request.getMethod())){
+	    	httpUriRequest = new HttpDelete(requestUrlString);
+	    } else if("OPTIONS".equalsIgnoreCase(request.getMethod())){
+	    	httpUriRequest = new HttpOptions(requestUrlString);
+	    } else if("HEAD".equalsIgnoreCase(request.getMethod())){
+	    	httpUriRequest = new HttpOptions(requestUrlString);
+	    } else if("TRACE".equalsIgnoreCase(request.getMethod())){
+	    	httpUriRequest = new HttpOptions(requestUrlString);
+	    } else { // POST
 	    	HttpPost httpPost = new HttpPost(requestUrlString);
-	    	setHeaders(request, httpPost);
 	    	httpPost.setEntity(httpEntity);
-	    	resp = httpClient.execute(httpPost, responseHandler);
+	    	httpUriRequest = httpPost;
 	    }
+    	setHeaders(request, httpUriRequest);
+	    
+    	// TODO proxy for outgoing messages : allow to conf it, with a ProxyStrategy interface & a few impl (proxy all, by host, LATER or possibly driven by easysoa ui...) injected in frascati
+	    /*if (requestUrlString.contains("microsoft")) {
+	        HttpHost myProxy = new HttpHost("localhost", 8084, "http");
+	        httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
+	    }*/
+    	String resp = httpClient.execute(httpUriRequest, responseHandler);
+	    
 	    respOut.write(resp);
     	respOut.close();
     	return message;
@@ -250,6 +276,9 @@ public class HttpProxyImpl extends HttpServlet {
 			String headerName = enum1.nextElement();
 			String headerValue = request.getHeader(headerName);
 			// to avoid an exception when the Content-length header is set twice
+			//if("Host".equals(headerName) && headerValue.contains("microsoft")){////
+			//	httpMessage.setHeader("Host", "localhost:8084");////
+			//} else/////
 			if(!"Content-Length".equals(headerName)){
 				httpMessage.setHeader(headerName, headerValue);
 			}
