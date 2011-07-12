@@ -1,8 +1,5 @@
 # Prerequisites
 
-* Sun's 1.6 Java JDK
-* [Node.js][2]
-
 If you are using a virtual machine, make sure its RAM is 1GB+.
 
 # Install
@@ -11,7 +8,6 @@ Use either of these scripts to install EasySOA:
 
 ## Linux
 
-* `dependencies.sh` : Installs Node.js + a Java JDK
 * `install_from_scp.sh` : For VMs. Downloads the archive through SCP (the script needs to be edited to suit your configuration)
 * `install_from_tgz.sh` : Installs from any EasySOA archive in the same directory
 * `install_from_sources.sh` : Downloads and build the sources. Git and [Buildr][1] are needed.
