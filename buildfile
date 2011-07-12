@@ -10,18 +10,19 @@ repositories.remote << 'http://www.ibiblio.org/maven2'
 ############### PREREQUISITES & COMMANDS
 
 # See README.md
-# (Command list: buildall, packageall, tgz, nx_mvn, nx_dist, nx_git, nx_clean, paf_mvn)
+# (Command list: buildall, packageall, tgz, nx_mvn, nx_dist, nx_clean, paf_mvn, trip, esper)
 
-############### CONFIG
+############### CONFIG LOADING
 
 NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat' #|| Buildr.settings.user['nuxeo']['path']
+FRASCATI_PATH = Buildr.settings.build['frascati']['path'] || './frascati'
 
 THIS_VERSION = Buildr.settings.build['release']['version']
 MODEL_VERSION = Buildr.settings.build['model']['version']
 PAF_VERSION = Buildr.settings.build['paf']['version']
 
-PACKAGING_PATH = 'easysoa'
-PACKAGING_FILE = 'easysoa-demo-'+THIS_VERSION+'.tar.gz';
+PACKAGING_OUTPUT_PATH = 'easysoa'
+PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+THIS_VERSION+'.tar.gz';
 
 # Generated
 NUXEO_PLUGINS_PATH = NUXEO_PATH+'/nxserver/plugins/'
@@ -157,67 +158,82 @@ task :packageall => ['nx_dist'] do
 
   puts "", "Starting to build EasySOA package"
   
-  # Prepare environment
-  rm_rf PACKAGING_PATH
+  # Preparie EasySOA environment
+  puts "Preparing EasySOA environment..."
+  rm_rf PACKAGING_OUTPUT_PATH
+  mkdir_p PACKAGING_OUTPUT_PATH
+  cp_r FileList['packaging-files/*'], PACKAGING_OUTPUT_PATH
   
-  # Copy all needed files
-  PATH_NUXEO = 'nuxeo-dm'
-  mkdir_p PACKAGING_PATH
-  
-  puts "Copying web services (Apache CXF + FraSCAti)..."
-  cp_r project(PAF_BUILD).base_dir+'/distrib/', PACKAGING_PATH
-  rm PACKAGING_PATH+'/distrib/cxf-server/readme'
-  rm PACKAGING_PATH+'/distrib/frascati-proxy/readme'
-  
-  begin
-    cp FileList[project(PAF_CXF).base_dir+'/target/*dep.jar'].to_s, PACKAGING_PATH+'/distrib/cxf-server/'
-  rescue Exception
-    raise "CXF server JAR seems missing"
+  # Download/extract FraSCAti if necessary
+  puts 'FraSCAti path not defined in `build.yaml`, using default one.'
+  if !File.exist?(FRASCATI_PATH) 
+    if !File.exist?('frascati-1.4-bin.zip')
+      puts 'FraSCAti not found, downloading it...'
+      system 'wget', 'http://download.forge.objectweb.org/frascati/frascati-1.4-bin.zip' # TODO Linux-dependent
+    end
+      puts 'Extracting FraSCAti...'
+    system 'unzip', '-q', '-o', 'frascati-1.4-bin.zip' # TODO Linux-dependent
+    FileUtils.mv 'frascati-runtime-1.4', 'frascati'
   end
-  cp project(PAF_CXF).base_dir+'/readme.txt', PACKAGING_PATH+'/distrib/cxf-server/'
+
+  # Deploy FraSCAti
+  puts 'Copying FraSCAti...'
+  FileUtils.cp_r FRASCATI_PATH, PACKAGING_OUTPUT_PATH
+  
+  # Copy web services and proxies
+  puts "Copying web services and proxies..."
+  mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
+  begin
+    cp FileList[project(PAF_CXF).base_dir+'/target/*dep.jar'].to_s, PACKAGING_OUTPUT_PATH+'/pafServices/'
+  rescue Exception
+    raise "PureAirFlowers CXF server JAR seems missing"
+  end
+  
+  return ########################
+  
+
+  cp project(PAF_CXF).base_dir+'/readme.txt', PACKAGING_OUTPUT_PATH+'/distrib/cxf-server/'
   
   system 'unzip -q ' + project(PAF_BUILD).base_dir+'/Frascati_binary_runtime/*.zip -d ' + PACKAGING_PATH + '/distrib/frascati-proxy'
-  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/sca-apps'
-  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/sca-apps'
-  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/sca-apps'
-  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/lib'
-  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_PATH+'/distrib/frascati-proxy/lib'
-  system 'chmod +x ' + PACKAGING_PATH+'/distrib/frascati-proxy/bin/frascati'
-  system 'chmod +x ' + PACKAGING_PATH+'/distrib/start_frascati_proxy.sh'
-  system 'chmod +x ' + PACKAGING_PATH+'/distrib/start_cxf_server.sh'
-  mv PACKAGING_PATH+'/distrib', PACKAGING_PATH+'/webservices'
+  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/distrib/frascati-proxy/sca-apps'
+  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/distrib/frascati-proxy/lib'
+  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/distrib/frascati-proxy/lib'
+  system 'chmod +x ' + PACKAGING_OUTPUT_PATH+'/distrib/frascati-proxy/bin/frascati'
+  system 'chmod +x ' + PACKAGING_OUTPUT_PATH+'/distrib/start_frascati_proxy.sh'
+  system 'chmod +x ' + PACKAGING_OUTPUT_PATH+'/distrib/start_cxf_server.sh'
+  mv PACKAGING_OUTPUT_PATH+'/distrib', PACKAGING_OUTPUT_PATH+'/webservices'
   
   puts "Copying web server (node.js + antinode)..."
-  mkdir PACKAGING_PATH+'/web'
-  cp_r FileList[project(DBBROWSING).base_dir+"/webserver"], PACKAGING_PATH+'/web'
-  cp_r FileList[project(DBBROWSING).base_dir+"/start-web.*"], PACKAGING_PATH+'/web'
+  mkdir PACKAGING_OUTPUT_PATH+'/web'
+  cp_r FileList[project(DBBROWSING).base_dir+"/webserver"], PACKAGING_OUTPUT_PATH+'/web'
+  cp_r FileList[project(DBBROWSING).base_dir+"/start-web.*"], PACKAGING_OUTPUT_PATH+'/web'
   
   puts "Copying web proxy (node.js)..."
-  mkdir PACKAGING_PATH+'/webproxy'
-  cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], PACKAGING_PATH+'/webproxy'
-  cp_r FileList[project(DBBROWSING).base_dir+"/start-proxy.*"], PACKAGING_PATH+'/webproxy'
+  mkdir PACKAGING_OUTPUT_PATH+'/webproxy'
+  cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], PACKAGING_OUTPUT_PATH+'/webproxy'
+  cp_r FileList[project(DBBROWSING).base_dir+"/start-proxy.*"], PACKAGING_OUTPUT_PATH+'/webproxy'
   
   puts "Copying service registry (Nuxeo)..."
   begin
-    cp_r NUXEO_PATH, PACKAGING_PATH
+    cp_r NUXEO_PATH, PACKAGING_OUTPUT_PATH
   rescue Exception
     raise "Files copy failed: Nuxeo is probably running. Could you please stop it?"
   end
-  system 'mv', '-T', FileList[PACKAGING_PATH+'/nuxeo-dm*'].to_s, PACKAGING_PATH+'/serviceregistry'
-  cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/lib/*.jar'], PACKAGING_PATH+'/serviceregistry/lib'
-  rm_rf PACKAGING_PATH+'/serviceregistry/tmp/'
-  rm_rf PACKAGING_PATH+'/serviceregistry/nxserver/data/'
+  system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceregistry'
+  cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/lib/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceregistry/lib'
+  rm_rf PACKAGING_OUTPUT_PATH+'/serviceregistry/tmp/'
+  rm_rf PACKAGING_OUTPUT_PATH+'/serviceregistry/nxserver/data/'
   
   puts "Copying Esper POC..."
-  mkdir PACKAGING_PATH+'/esper'
-  cp_r FileList[project(ESPER).base_dir+"/*"], PACKAGING_PATH+'/esper'
+  mkdir PACKAGING_OUTPUT_PATH+'/esper'
+  cp_r FileList[project(ESPER).base_dir+"/*"], PACKAGING_OUTPUT_PATH+'/esper'
   
   puts "Copying Trip demo..."
-  mkdir PACKAGING_PATH+'/trip'
-  cp_r FileList[project(TRIP).base_dir], PACKAGING_PATH+'/trip'
-  cp_r FileList[project(TRIP_TEST).base_dir], PACKAGING_PATH+'/trip'
-  
-  cp FileList["packaging-files/*"], PACKAGING_PATH
+  mkdir PACKAGING_OUTPUT_PATH+'/trip'
+  cp_r FileList[project(TRIP).base_dir], PACKAGING_OUTPUT_PATH+'/trip'
+  cp_r FileList[project(TRIP_TEST).base_dir], PACKAGING_OUTPUT_PATH+'/trip'
   
   puts "Packaging done."
   
@@ -230,10 +246,10 @@ task :tgz do
   
   # Tar
   puts "Compressing..."
-  system 'tar -zcf ' + PACKAGING_FILE + ' -C ' + PACKAGING_PATH + \
+  system 'tar -zcf ' + PACKAGING_OUTPUT_ARCHIVE + ' -C ' + PACKAGING_OUTPUT_PATH + \
     ' serviceregistry web webproxy webservices ' + \
     FileList["packaging-files/*"].sub('packaging-files/', '').to_s
   
-  puts "EasySOA successfully compressed in "+PACKAGING_FILE
+  puts "EasySOA successfully compressed in "+PACKAGING_OUTPUT_ARCHIVE
   
 end
