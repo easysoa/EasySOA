@@ -36,10 +36,6 @@
 			<url>http://www.openarchitectureware.org/m2</url>
 		</repository>
 		<repository>
-			<id>frascati mirror</id>
-			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
-		</repository>
-		<repository>
 			<id>apache.incubator</id>
 			<url>http://people.apache.org/repo/m2-incubating-repository</url>
 		</repository>
@@ -54,20 +50,37 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>INRIA gforge</id>
+			<url>http://maven-repo.gforge.inria.fr/releases/</url>
+		</repository>		
 	</repositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+	    
+	    <!-- frascati -->
+		<dependency><!-- base frascati -->
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>1.4</version>
+		</dependency>	
+		<dependency><!-- else no frascati class generation -->
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- dependency> auto imported by frascati runtime factory
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.0_771</version>
+			<version>3.5.0</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.espertech</groupId>
-			<artifactId>esper</artifactId>
-			<version>4.2.0</version>
-		</dependency>
+		</dependency -->
+		<!-- dependency> sometimes requires by frascati internals or tools
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-fractal</artifactId>
+			<version>1.4</version>
+		</dependency -->		
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-ws</artifactId>
@@ -83,20 +96,30 @@
 			<artifactId>frascati-binding-rest</artifactId>
 			<version>1.4</version>
 		</dependency>
+		<!-- to run it with mvn -Prun -->
+		<dependency>
+        	<groupId>org.ow2.frascati.mojo</groupId>
+        	<artifactId>frascati-launcher-plugin</artifactId>
+        	<version>1.4</version>
+        	<type>maven-plugin</type>
+        </dependency>
+		
+	    <!-- esper -->
+		<dependency>
+			<groupId>com.espertech</groupId>
+			<artifactId>esper</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<dependency>
+		<dependency><!-- for obsolete code -->
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>1.8-ea02</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.jonas.osgi</groupId>
-			<artifactId>monolog</artifactId>
-			<version>5.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -112,6 +135,14 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.1.1</version>
+		</dependency>
+
+		<!-- TEST -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
