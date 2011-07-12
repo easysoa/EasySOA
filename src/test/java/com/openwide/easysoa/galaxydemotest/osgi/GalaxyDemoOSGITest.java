@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest;
+package com.openwide.easysoa.galaxydemotest.osgi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,6 +17,7 @@ import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 
 import org.apache.log4j.Logger;
+import org.easysoa.test.EasySOAFeature;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,17 +34,18 @@ import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 import com.google.inject.Inject;
+import com.openwide.easysoa.galaxydemotest.EasySOARepositoryInit;
 
 /**
- * Unit test for Galaxy Demo. Nuxeo and Frascati not launched in an OSGI container.
+ * Unit test for Galaxy Demo. Frascati runs in Nuxeo with OSGI mechanism.
  */
-//@RunWith(FeaturesRunner.class)
-//@Features(EasySOAFeature.class)
-//@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class FraSCAtiCompositeDemoTestStarter {
+@RunWith(FeaturesRunner.class)
+@Features(EasySOAFeature.class)
+@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
+public class GalaxyDemoOSGITest {
 
-    //@Inject CoreSession session;
-    //@Inject ResourceService resourceService;
+    @Inject CoreSession session;
+    @Inject ResourceService resourceService;
 	
 	/**
 	 * Logger
@@ -86,9 +88,12 @@ public class FraSCAtiCompositeDemoTestStarter {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start HTTP Proxy
+		// TODO Problem here to start httpProxy : 
+		// TODO : Probleme here, frascati error : NoSuchMethodErrororg.ow2.frascati.tinfi.TinfiRuntimeException: java.lang.NoSuchMethodError: org.eclipse.jdt.internal.compiler.Compiler.<init>(Lorg/eclipse/jdt/internal/compiler/env/INameEnvironment;Lorg/eclipse/jdt/internal/compiler/IErrorHandlingPolicy;Lorg/eclipse/jdt/internal/compiler/impl/CompilerOptions;Lorg/eclipse/jdt/internal/compiler/ICompilerRequestor;Lorg/eclipse/jdt/internal/compiler/IProblemFactory;)V		
 		startHttpProxy();
 		// Possible deadlock during proxy init
 		// TODO : Send a feedback to FraSCAti dev team about the deadlock that appends when 2 composites are started simultaneously
+		// TODO : Probleme here, frascati error : NoSuchMethodErrororg.ow2.frascati.tinfi.TinfiRuntimeException: java.lang.NoSuchMethodError: org.eclipse.jdt.internal.compiler.Compiler.<init>(Lorg/eclipse/jdt/internal/compiler/env/INameEnvironment;Lorg/eclipse/jdt/internal/compiler/IErrorHandlingPolicy;Lorg/eclipse/jdt/internal/compiler/impl/CompilerOptions;Lorg/eclipse/jdt/internal/compiler/ICompilerRequestor;Lorg/eclipse/jdt/internal/compiler/IProblemFactory;)V
 		// Start Galaxy Demo
 		startGalaxyDemo();
 		// Wait for the services are completely started
@@ -96,9 +101,9 @@ public class FraSCAtiCompositeDemoTestStarter {
 	}
     
 	/**
-	 * @throws ClientException
-	 * @throws SOAPException
-	 * @throws IOException
+	 * @throws ClientException 
+	 * @throws SOAPException 
+	 * @throws IOException 
 	 * 
 	 */
 	@Test
@@ -111,8 +116,9 @@ public class FraSCAtiCompositeDemoTestStarter {
         Service jaxwsService = Service.create(new URL(serviceUrl), serviceName);
 	    Dispatch<SOAPMessage> disp = jaxwsService.createDispatch(portName, SOAPMessage.class, Service.Mode.MESSAGE);
 	    
-	    InputStream is = getClass().getClassLoader().getResourceAsStream("galaxyDemoTestMessage.xml");
-	    //InputStream is = new FileInputStream("src/test/resources/galaxyDemoTestMessage.xml");
+	    //InputStream is = getClass().getClassLoader().getSystemResourceAsStream("galaxyDemoTestMessage.xml");
+	    InputStream is = new FileInputStream("src/test/resources/galaxyDemoTestMessage.xml");
+	    //.getResourceAsStream("galaxyDemoTestMessage.xml");
 	    SOAPMessage reqMsg = MessageFactory.newInstance().createMessage(null, is);
 	    assertNotNull(reqMsg);
 		SOAPMessage response = disp.invoke(reqMsg);
@@ -122,8 +128,6 @@ public class FraSCAtiCompositeDemoTestStarter {
 		// Checks that service informations are registered in Nuxeo
 		/*resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");*/
 		//resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = 'Service'");
-		
-		/*
 		resDocList = session.query("SELECT * FROM Document");
 		Iterator<DocumentModel> iter = resDocList.iterator();
 		while(iter.hasNext()){
@@ -131,7 +135,18 @@ public class FraSCAtiCompositeDemoTestStarter {
 			System.out.println("Doc name : " + doc.getName());
 		}
 		assertEquals(resDocList.size(), 0);
+		/*resDoc = resDocList.get(0);
+		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
+		
+		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		assertEquals(resDocList.size(), 1);
+		resDoc = resDocList.get(0);
+		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;		
 		*/
+		// Check API's
+		
+		// Check Services
 	}
 
 	/**

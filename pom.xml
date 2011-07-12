@@ -139,7 +139,6 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>jetty</groupId>
 			<artifactId>org.mortbay.jetty.plus</artifactId>
@@ -147,6 +146,27 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
+		
+	    <!-- Spring deps required to have cxf config file -->
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-core</artifactId>
+	      <version>3.0.4.RELEASE</version>
+	      <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-beans</artifactId>
+	      <version>3.0.4.RELEASE</version>
+	      <scope>test</scope>      
+	    </dependency>
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-context</artifactId>
+	      <version>3.0.4.RELEASE</version>
+	      <scope>test</scope>      
+	    </dependency>
+    		
 	</dependencies>
 
 	<build>

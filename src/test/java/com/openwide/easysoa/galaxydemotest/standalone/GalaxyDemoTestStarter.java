@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest;
+package com.openwide.easysoa.galaxydemotest.standalone;
 
 import static org.junit.Assert.assertNotNull;
 
