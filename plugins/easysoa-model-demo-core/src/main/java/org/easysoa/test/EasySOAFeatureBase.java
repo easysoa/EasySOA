@@ -15,17 +15,11 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  */
 @Deploy({
     "org.easysoa.demo.core",
-    "org.nuxeo.ecm.directory.types.contrib:OSGI-INF/DirectoryTypes.xml", // required, else no vocabulary schema in database
+    "org.nuxeo.ecm.directory.types.contrib", // required, else no vocabulary schema in database
     "org.nuxeo.ecm.directory",
-    "org.nuxeo.ecm.directory.sql", // all required, else no dirService
-    "org.nuxeo.ecm.directory.api",
-    "org.easysoa.demo.core:OSGI-INF/nxdirectories-contrib.xml", // required, else no custom easysoa vocabularies
-    "org.easysoa.demo.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-	"org.easysoa.demo.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-	"org.easysoa.demo.core:OSGI-INF/NotificationServiceComponent.xml", // idem
-	"org.easysoa.demo.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
-	"org.easysoa.demo.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-	"org.easysoa.demo.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
+    "org.nuxeo.ecm.directory.sql",
+    "org.nuxeo.ecm.directory.api", // all required, else no dirService
+    "org.nuxeo.ecm.platform.types.core"
 })
 @Features(CoreFeature.class)
 public class EasySOAFeatureBase extends SimpleFeature {

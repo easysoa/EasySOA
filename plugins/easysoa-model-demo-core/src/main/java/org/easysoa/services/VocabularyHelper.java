@@ -10,7 +10,6 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.directory.DirectoryException;
-import org.nuxeo.ecm.directory.DirectoryServiceImpl;
 import org.nuxeo.ecm.directory.Session;
 import org.nuxeo.ecm.directory.api.DirectoryService;
 import org.nuxeo.runtime.api.Framework;
@@ -30,10 +29,6 @@ public class VocabularyHelper extends DefaultComponent {
 	
 	private static final Log log = LogFactory.getLog(VocabularyHelper.class);
 	
-	private final DirectoryServiceImpl dirService = (DirectoryServiceImpl) Framework
-			.getRuntime().getComponent(DirectoryService.NAME);
-
-	
 	/**
 	 * Checks if entry ID exists in a vocabulary.
 	 * @param session
@@ -50,6 +45,8 @@ public class VocabularyHelper extends DefaultComponent {
 			return true;
 		}
 		
+		DirectoryService dirService = (DirectoryService) 
+				Framework.getRuntime().getComponent(DirectoryService.NAME);
 		Session dirSession = dirService.open(vocabularyName);
 
 		for (DocumentModel model : dirSession.getEntries()) {
@@ -95,6 +92,8 @@ public class VocabularyHelper extends DefaultComponent {
 			log.info("New " + vocabularyName + " vocabulary entry: "
 					+ entryName);
 
+			DirectoryService dirService = (DirectoryService) 
+					Framework.getRuntime().getComponent(DirectoryService.NAME);
 			Session dirSession = dirService.open(vocabularyName);
 
 			Map<String, Object> fieldMap = new HashMap<String, Object>();
@@ -121,6 +120,8 @@ public class VocabularyHelper extends DefaultComponent {
 	public void addEntries(CoreSession session, String vocabularyName,
 			List<String> entryNames) {
 		try {
+			DirectoryService dirService = (DirectoryService) 
+					Framework.getRuntime().getComponent(DirectoryService.NAME);
 			Session dirSession = dirService.open(vocabularyName);
 
 			for (String entryName : entryNames) {
@@ -148,6 +149,8 @@ public class VocabularyHelper extends DefaultComponent {
 			return;
 		}
 		try {
+			DirectoryService dirService = (DirectoryService) 
+					Framework.getRuntime().getComponent(DirectoryService.NAME);
 			Session dirSession = dirService.open(vocabularyName);
 			DocumentModel model = dirSession.getEntry(entryId);
 			if (model != null)
@@ -166,6 +169,8 @@ public class VocabularyHelper extends DefaultComponent {
 	public void removeAllEntries(CoreSession session,
 			String vocabularyName) {
 		try {
+			DirectoryService dirService = (DirectoryService) 
+					Framework.getRuntime().getComponent(DirectoryService.NAME);
 			Session dirSession = dirService.open(vocabularyName);
 			for (DocumentModel model : dirSession.getEntries())
 				dirSession.deleteEntry(model);
