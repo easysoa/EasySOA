@@ -8,8 +8,30 @@ mkdir -p log
 
 serviceregistry()
 {
-  touch log/serviceregistry.log
-  ./serviceregistry/bin/nuxeoctl console > log/serviceregistry.log 2>&1
+  touch log/serviceRegistry.log
+  ./serviceRegistry/bin/nuxeoctl console > log/serviceRegistry.log 2>&1
+}
+
+webproxy()
+{
+  touch log/webProxy.log
+  cd webProxy
+  chmod +x ./start-proxy.sh
+  ./start-proxy.sh > ../log/webProxy.log 2>&1
+}
+
+esperproxy()
+{
+  touch log/esperProxy.log
+  cd frascati
+  ./start-esperProxy.sh > ../log/esperProxy.log 2>&1
+}
+
+lightproxy()
+{
+  touch log/lightProxy.log
+  cd frascati
+  ./start-lightProxy.sh > ../log/lightProxy.log 2>&1
 }
 
 web()
@@ -20,45 +42,44 @@ web()
   ./start-web.sh > ../log/web.log 2>&1
 }
 
-webproxy()
+pafservices()
 {
-  touch log/webproxy.log
-  cd webproxy
-  chmod +x ./start-proxy.sh
-  ./start-proxy.sh > ../log/webproxy.log 2>&1
+  touch log/pafServices.log
+  cd pafServices
+  ./start-pafServices.sh > ../log/pafServices.log 2>&1
 }
 
-webservices()
+meteobackup()
 {
-  touch log/webservices.log
-  cd webservices
-  ./start_cxf_server.sh > ../log/webservices.log 2>&1
+  touch log/meteoBackup.log
+  cd frascati
+  ./start-meteoBackup.sh > ../log/meteoBackup.log 2>&1
 }
 
-webservicesproxy()
+traveldemo()
 {
-  touch log/webservicesproxy.log
-  cd webservices
-  ./start_frascati_proxy.sh > ../log/webservicesproxy.log 2>&1
-}
-
-trip()
-{
-  touch log/trip.log
-  cd travel/trip/galaxyDemoTest
-  #mvn -Prun > ../../../log/trip.log 2>&1 #TODO
+  touch log/travelDemo.log
+  cd frascati
+  ./start-travelDemo.sh > ../log/travelDemo.log 2>&1
 }
 
 # Start processes
 echo "Starting EasySOA Demo. A browser page will be opened in a few seconds."
 echo "Note that the service registry will take between 30s and 2mn to launch."
+
+# FIXME The script uses delays to solve dependencies issues,
+# it might not be enough on lower-end computers
+
 serviceregistry &
 webproxy &
-sleep 5 # Give time to read the msg & let the webproxy launch
+esperproxy &
+pafservices &
+sleep 5 # Let the servers start
 web &
-webservices &
-webservicesproxy &
-trip &
+lightproxy &
+meteobackup &
+sleep 2 # Let the web server launch
+traveldemo &
 firefox "http://localhost:8083/easysoa" &
 
 echo "Press any key to stop."
