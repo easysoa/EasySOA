@@ -102,13 +102,13 @@ public class OrchestrationImpl implements Trip {
 
 		// get temperature and conditions
 		try {
-			meteo = meteoService.getWeather(city, country);
+			meteo = meteoService.getWeather(city, country); // WS call 1 ///////////////////////
 		} catch (ServiceUnavailableException e) {
 			meteo = e.getMessage();
 		}
 		System.err.println("Meteo: " + meteo);
 		// isExpensive ?
-		exchangeRate = exchangeService.getCurrencyValue("3", "EUR", "USD");
+		exchangeRate = exchangeService.getCurrencyValue("3", "EUR", "USD"); // WS call 2 ///////////////////////
 		//FIXME Hack because currency service returns always NaN
 		exchangeRate = 10.85;
 		System.err.println("Exchange rate: " + exchangeRate);
@@ -124,13 +124,13 @@ public class OrchestrationImpl implements Trip {
 		// translate business sentence
 		if (userSentence != null) {
 		    translatedPhrase = userSentence + " => " + translationService.translate(appID, userSentence,
-		        "EN", "FR");
+		        "EN", "FR"); // WS call 3.1 ///////////////////////
 		}
-		//chosenPhrase += " => " + translationService.translate(appID, chosenPhrase, "FR", "EN");
+		//chosenPhrase += " => " + translationService.translate(appID, chosenPhrase, "FR", "EN"); // WS call 3.2 ///////////////////////
 		System.err.println("Translated phrase: " + translatedPhrase);
 		// compute summary
 		//String summary = summaryService.summarize(city, country, meteo, exchangeRate, chosenPhrase, translatedPhrase);
-		String summary = summaryService.summarize(city, country, meteo, exchangeRate, "Aller manger au Mc Donald => Go eat to the Mc Donald", translatedPhrase);
+		String summary = summaryService.summarize(city, country, meteo, exchangeRate, "Aller manger au Mc Donald => Go eat to the Mc Donald", translatedPhrase); // WS call 4 ///////////////////////
 		System.err.println("[OrchestrationImpl] Summary: \n" + summary);
 		return summary;
 		//return "" + exchangeRate;
