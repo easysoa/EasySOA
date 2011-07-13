@@ -1,5 +1,7 @@
-@echo off
+rem TODO
+echo WARNING: This script is outdated 
 
+@echo off
 
 IF NOT EXIST log mkdir log
 
