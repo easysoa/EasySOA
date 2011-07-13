@@ -16,14 +16,14 @@
 	</parent>
 
 	<!-- packaging>jar</packaging -->
-	<packaging>jar</packaging>
+	<!--<packaging>jar</packaging>-->
 
 	<dependencies>
-		<dependency>
+		<!--<dependency>
 			<groupId>fr.inria.galaxy.j1</groupId>
 			<artifactId>meteo-model</artifactId>
 			<version>1.0-SNAPSHOT</version>
-		</dependency>
+		</dependency>-->
 
 		<!-- Include in the war the FraSCAti Servlet CXF. -->
 		<!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-servlet-cxf</artifactId> 
@@ -47,7 +47,7 @@
 		</dependency>
 
 		<!-- to run this example with mvn -Prun -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.ow2.frascati.factory
             </groupId>
 			<artifactId>frascati-factory-tools
@@ -59,81 +59,70 @@
 			<artifactId>frascati-launcher-plugin</artifactId>
 			<version>1.4</version>
 			<type>maven-plugin</type>
-		</dependency>
+		</dependency>-->
 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>stax2-api</artifactId>
+			<version>3.1.1</version>
+		</dependency>
 	</dependencies>
 
 	<!-- ======= -->
 	<!-- Build -->
 	<!-- ======= -->
 
-	<build>
-		<defaultGoal>war:war</defaultGoal>
-		<plugins>
+  <build>
+	  <plugins>
+	  	<plugin>
+	    	<groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <configuration>
+	        	<source>1.6</source>
+	            <target>1.6</target>
+	        </configuration>
+	    </plugin>
+			<!-- The configuration of maven-assembly-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<inherited>true</inherited>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2.1</version><!--$NO-MVN-MAN-VER$ -->
+				<!-- The configuration of the plugin -->
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<!-- Specifies the configuration file of the assembly plugin -->
+					<descriptors>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>	    
+			<!-- The configuration of maven-jar-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<!-- The configuration of the plugin -->
+				<configuration>
+					<!-- Configuration of the archiver -->
+					<archive>
+						<!-- Manifest specific configuration -->
+						<manifest>
+							<!-- Classpath is added to the manifest of the created jar file. -->
+							<addClasspath>true</addClasspath>
+							<!-- Configures the classpath prefix. This configuration option is 
+								used to specify that all needed libraries are found under lib/ directory. -->
+							<classpathPrefix>../lib/</classpathPrefix>
+							<!-- Specifies the main class of the application -->
+							<mainClass>net.server.Server</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
-
-			<!-- Build the Web Application aRchive. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-			</plugin>
-
-			<!-- type 'mvn -Djetty.port=9020 jetty:run' to launch this war with Jetty. -->
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
-
-	<profiles>
-		<!--<profile> <id>run</id> <build> <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal> 
-			<plugins> <plugin> <groupId>org.ow2.frascati.mojo</groupId> <artifactId>frascati-launcher-plugin</artifactId> 
-			<executions> <execution> <phase>package</phase> <goals> <goal>exec</goal> 
-			</goals> </execution> </executions> <configuration> <executable>java</executable> 
-			<composite>meteo</composite> <useFscript>false</useFscript> </configuration> 
-			<dependencies> <dependency> <groupId>fr.inria.galaxy.j1</groupId> <artifactId>meteo-model</artifactId> 
-			<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>org.ow2.frascati</groupId> 
-			<artifactId>frascati-binding-factory</artifactId> <version>1.4</version> 
-			</dependency> <dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-implementation-fractal</artifactId> 
-			<version>1.4</version> </dependency> </dependencies> </plugin> </plugins> 
-			</build> </profile> -->
-
-		<profile>
-			<id>run</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.1.1</version>
-						<executions>
-							<execution>
-								<phase>test</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<configuration>
-									<mainClass>net.server.Server</mainClass>
-									<arguments>
-										<argument>http://localhost:9020/WeatherService</argument>
-									</arguments>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+     </plugins>
+  </build>
 
 </project>

@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
                       serviceName = "GlobalWeather",
                       portName = "GlobalWeatherHttpPost",
                       targetNamespace = "http://www.webserviceX.NET",
-                      wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
+                      //wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
                       endpointInterface = "net.webservicex.GlobalWeatherHttpPost")
                       
 public class GlobalWeatherHttpPostImpl implements GlobalWeatherHttpPost {

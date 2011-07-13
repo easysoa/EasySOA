@@ -22,7 +22,7 @@ import javax.xml.ws.Service;
 
 
 @WebServiceClient(name = "GlobalWeather", 
-                  //wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
+                  wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
                   targetNamespace = "http://www.webserviceX.NET") 
 public class GlobalWeather extends Service {
 

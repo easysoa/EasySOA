@@ -2,7 +2,6 @@ package net.server;
 
 import javax.xml.ws.Endpoint;
 
-import net.webservicex.GlobalWeather;
 import net.webservicex.GlobalWeatherSoapImpl1;
 
 public class Server {
@@ -15,6 +14,7 @@ public class Server {
     }
 
     public static void main(String args[]) throws Exception {
+
     	new Server(args[0]);
     	if(args == null || args[0] == null || "".equals(args[0])){
     		throw new IllegalArgumentException("The deployment address must be specified in arg0 !");

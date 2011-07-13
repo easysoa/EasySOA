@@ -26,7 +26,7 @@ import javax.xml.ws.ResponseWrapper;
                       serviceName = "GlobalWeather",
                       portName = "GlobalWeatherSoap12",
                       targetNamespace = "http://www.webserviceX.NET",
-                      wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
+                      //wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
                       endpointInterface = "net.webservicex.GlobalWeatherSoap")
                       
 public class GlobalWeatherSoapImpl implements GlobalWeatherSoap {
