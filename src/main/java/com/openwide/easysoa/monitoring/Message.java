@@ -52,19 +52,18 @@ public class Message {
 	    BufferedReader requestBodyReader = null;
 		try {
 			requestBodyReader = request.getReader();
-		    while((requestBodyReader.read(charArray)) != -1){
-		    	requestBody = requestBody.append(new String(charArray));
+			int nbCharRead;
+		    while((nbCharRead = requestBodyReader.read(charArray)) != -1){
+		    	requestBody = requestBody.append(new String(charArray), 0, nbCharRead);
 		    }
 			this.body = requestBody.toString();
 		} catch (IOException ex) {
 			logger.error("Error while reading request body !", ex);
-			ex.printStackTrace();
 		} finally {	    
 			try {
 				requestBodyReader.close();
 			} catch (IOException ex) {
 				logger.warn("Error while closing the requestBodyReader !", ex);
-				ex.printStackTrace();
 			}
 		}
 		this.url = request.getRequestURL().toString();
