@@ -10,13 +10,12 @@ No database is required. The number of orders returned by the service is hard co
 
 To run the server : "java -jar target/server-0.0.1-SNAPSHOT-with-dep.jar". The server listen on the port 9001.
 
-***************************
+-----------------
 
-FOR DEVELOPERS
+## FOR DEVELOPERS
 
 To build the project, you need :
 
 A working Maven 2 installed on your computer.
 
-Use the following command to build the project : "mvn clean install". An executable jar is generated in the project target folder.
-
+Use the following command to build the project: `mvn clean install`. An executable jar is generated in the project's "target" folder, and configured to use the Esper proxy.
