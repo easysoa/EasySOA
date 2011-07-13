@@ -122,15 +122,15 @@ public class OrchestrationImpl implements Trip {
 		/* appID: BD061A8446F9FA67F9CD39B278237C98599FAFEA */
 		String appID = "BD061A8446F9FA67F9CD39B278237C98599FAFEA";
 		// translate business sentence
-		if (userSentence != null)
-	    translatedPhrase = userSentence + " => " + translationService.translate(appID, userSentence,
-	        "EN", "FR");
-		chosenPhrase += " => " + translationService.translate(appID, chosenPhrase,
-				"FR", "EN");
+		if (userSentence != null) {
+		    translatedPhrase = userSentence + " => " + translationService.translate(appID, userSentence,
+		        "EN", "FR");
+		}
+		//chosenPhrase += " => " + translationService.translate(appID, chosenPhrase, "FR", "EN");
 		System.err.println("Translated phrase: " + translatedPhrase);
 		// compute summary
-		String summary = summaryService.summarize(city, country, meteo,
-				exchangeRate, chosenPhrase, translatedPhrase);
+		//String summary = summaryService.summarize(city, country, meteo, exchangeRate, chosenPhrase, translatedPhrase);
+		String summary = summaryService.summarize(city, country, meteo, exchangeRate, "Aller manger au Mc Donald => Go eat to the Mc Donald", translatedPhrase);
 		System.err.println("[OrchestrationImpl] Summary: \n" + summary);
 		return summary;
 		//return "" + exchangeRate;
