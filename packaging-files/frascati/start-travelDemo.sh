@@ -7,4 +7,4 @@ echo "(Deployed on http://localhost:9000)"
 echo "DEPENDENCY: Running meteo backup"
 echo $LINE
 
-./bin/frascati run smart-travel-mock-services.composite -libpath ./sca-apps/trip-1.0-SNAPSHOT.jar
+./bin/frascati-proxied run smart-travel-mock-services.composite -libpath ./sca-apps/trip-1.0-SNAPSHOT.jar
