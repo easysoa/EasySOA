@@ -55,7 +55,7 @@ PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-Release'
 PAF_LOGINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-logIntent'
 PAF_FUSINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-autoRearmFuseIntent'
 TRIP = 'easysoa:EasySOADemoTravel'
-#TRIP_TEST = 'easysoa:galaxyDemoTest'
+TRIP_METEO_BACKUP = 'easysoa:EasySOADemoTravel:easysoa-meteo-sca-backup'
 ESPER = 'easysoa:esper-frascati-poc'
 
 define 'easysoa', :base_dir => '../' do
@@ -110,6 +110,11 @@ define 'easysoa', :base_dir => '../' do
     task :mvn do
       maven(['clean', 'install'], project)
     end
+    define 'easysoa-meteo-sca-backup' do
+      task :mvn do
+        maven(['clean', 'assembly:assembly'], project)
+      end
+    end
   end
   
   define 'esper-frascati-poc' do
@@ -142,7 +147,7 @@ task :paf_mvn => [PAF_RELEASE+':mvn']
 
 task :esper => [ESPER+':mvn']
 
-task :trip => [TRIP+':mvn']
+task :trip => [TRIP+':mvn', TRIP_METEO_BACKUP+':mvn']
 
 desc "Builds all needed projects"
 task :buildall => ['paf_mvn', 'nx_mvn', 'esper', 'trip']
@@ -187,11 +192,10 @@ task :packageall do
   cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(ESPER).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(TRIP).base_dir+"/trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(TRIP).base_dir+"/easysoa-meteo-sca-backup/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   puts "  * Meteo backup service..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/meteoBackup'
   system 'unzip', '-q', '-o', FileList[project(TRIP).base_dir+'/easysoa-meteo-sca-backup/target/*-bin.zip'].to_s # XXX Linux-dependent
-  cp_r FileList[project(TRIP).base_dir+'/easysoa-meteo-sca-backup/target/easysoa-meteo-sca-backup*/*'], PACKAGING_OUTPUT_PATH+'/meteoBackup/'
+  cp_r FileList['easysoa-meteo-sca-backup*/*'], PACKAGING_OUTPUT_PATH+'/meteoBackup/'
   rm_rf FileList['easysoa-meteo-sca-backup*']
   puts "  * PureAirFlowers services..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
@@ -200,7 +204,6 @@ task :packageall do
   rescue Exception
     raise "PureAirFlowers CXF server JAR seems missing"
   end
-  #cp project(PAF_CXF).base_dir+'/readme.txt', PACKAGING_OUTPUT_PATH+'/distrib/cxf-server/'
   
   
   # Copying Nuxeo
@@ -213,6 +216,7 @@ task :packageall do
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux-dependent
   cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/lib/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib'
   cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/plugins/target/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/plugins' # TODO Check that bundles exist
+  cp_r FileList[project('easysoa:easysoa-model-demo').base_dir+'/exemples'], PACKAGING_OUTPUT_PATH+'/serviceRegistry'
   rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/'
   rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/'
   
@@ -221,10 +225,10 @@ task :packageall do
   cp_r FileList[project(DBBROWSING).base_dir+"/webserver"], PACKAGING_OUTPUT_PATH+'/web'
   cp_r FileList[project(DBBROWSING).base_dir+"/start-web.*"], PACKAGING_OUTPUT_PATH+'/web'
   
-  puts "Copying web proxy (node.js)..."
-  mkdir PACKAGING_OUTPUT_PATH+'/webProxy'
-  cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], PACKAGING_OUTPUT_PATH+'/webProxy'
-  cp_r FileList[project(DBBROWSING).base_dir+"/start-proxy.*"], PACKAGING_OUTPUT_PATH+'/webProxy'
+  puts "Copying discovery by browsing proxy (node.js)..."
+  mkdir PACKAGING_OUTPUT_PATH+'/dbbProxy'
+  cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
+  cp_r FileList[project(DBBROWSING).base_dir+"/start-proxy.*"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
