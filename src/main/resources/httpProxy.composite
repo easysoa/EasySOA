@@ -16,7 +16,7 @@
     <sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyDriverImpl"/>
     <sca:service name="httpServiceDriver">
       <sca:interface.java interface="com.openwide.easysoa.esperpoc.HttpProxyDriver"/>
-      <frascati:binding.rest uri="http://localhost:8083/"/>
+      <frascati:binding.rest uri="http://localhost:8084/"/>
     </sca:service>
     </sca:component>
 </sca:composite>

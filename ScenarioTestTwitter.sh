@@ -3,10 +3,10 @@
 # This script launch curl with twitter REST API URL. To test the proxy.
 
 #Set monitoring mode
-curl http://localhost:8083/setMonitoringMode/VALIDATED
+curl http://localhost:8084/setMonitoringMode/VALIDATED
 
 # Start a run
-curl http://localhost:8083/startNewRun/test
+curl http://localhost:8084/startNewRun/test
 
 # Send WSDL test url via the proxy
 #curl -x localhost:8082 http://localhost:9010/PureAirFlowers?wsdl
@@ -44,7 +44,7 @@ curl -x localhost:8082 http://api.twitter.com/1/statuses/followers/FR3Bourgogne.
 curl -x localhost:8082 http://api.twitter.com/1/statuses/followers/EasySoaTest.xml?cursor=-1
 
 # Stop the run and register the discovered services
-curl http://localhost:8083/stopCurrentRun
+curl http://localhost:8084/stopCurrentRun
 
 
 # Command set to control the proxy
