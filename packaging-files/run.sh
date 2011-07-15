@@ -52,7 +52,7 @@ pafservices()
 meteobackup()
 {
   touch log/meteoBackup.log
-  cd frascati
+  cd meteoBackup
   ./start-meteoBackup.sh > ../log/meteoBackup.log 2>&1
 }
 

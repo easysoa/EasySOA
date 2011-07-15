@@ -176,23 +176,32 @@ task :packageall do
   
   # Copy web services and proxies
   puts "Copying web services and proxies..."
-  mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
-  begin
-    cp FileList[project(PAF_CXF).base_dir+'/target/*with-dependencies.jar'].to_s, PACKAGING_OUTPUT_PATH+'/pafServices/'
-  rescue Exception
-    raise "PureAirFlowers CXF server JAR seems missing"
-  end
-  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(ESPER).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(TRIP).base_dir+"/trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(TRIP).base_dir+"/easysoa-meteo-sca-backup/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  puts "  * Needed libraries..."
   cp FileList[project(TRIP).base_dir+"/currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(TRIP).base_dir+"/meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(TRIP).base_dir+"/summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(TRIP).base_dir+"/translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  puts "  * FraSCAti applications..."
+  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(ESPER).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(TRIP).base_dir+"/trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(TRIP).base_dir+"/easysoa-meteo-sca-backup/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  puts "  * Meteo backup service..."
+  mkdir_p PACKAGING_OUTPUT_PATH+'/meteoBackup'
+  system 'unzip', '-q', '-o', FileList[project(TRIP).base_dir+'/easysoa-meteo-sca-backup/target/*-bin.zip'].to_s # XXX Linux-dependent
+  cp_r FileList[project(TRIP).base_dir+'/easysoa-meteo-sca-backup/target/easysoa-meteo-sca-backup*/*'], PACKAGING_OUTPUT_PATH+'/meteoBackup/'
+  rm_rf FileList['easysoa-meteo-sca-backup*']
+  puts "  * PureAirFlowers services..."
+  mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
+  begin
+    cp FileList[project(PAF_CXF).base_dir+'/target/*with-dependencies.jar'].to_s, PACKAGING_OUTPUT_PATH+'/pafServices/'
+  rescue Exception
+    raise "PureAirFlowers CXF server JAR seems missing"
+  end
   #cp project(PAF_CXF).base_dir+'/readme.txt', PACKAGING_OUTPUT_PATH+'/distrib/cxf-server/'
+  
   
   # Copying Nuxeo
   puts "Copying service registry (Nuxeo)..."
