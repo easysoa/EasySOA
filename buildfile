@@ -227,6 +227,7 @@ task :packageall do
   cp_r FileList[project(DBBROWSING).base_dir+"/start-proxy.*"], PACKAGING_OUTPUT_PATH+'/webProxy'
   
   puts "Packaging done."
+  puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
   
 end
 
