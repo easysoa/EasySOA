@@ -45,7 +45,8 @@ public class SoapMessageHandler implements MessageHandler {
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		Service service = new Service(message.getUrl(), message.getUrl() + "?wsdl");
+		Service service = new Service(message.getUrl());
+		service.setFileUrl(message.getUrl()+"?wsdl");
 		service.setCallCount(1);
 		service.setTitle(message.getPathName());
 		service.setDescription(message.getPathName());

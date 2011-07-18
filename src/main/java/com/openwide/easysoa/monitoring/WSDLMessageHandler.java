@@ -1,12 +1,11 @@
 package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
-import com.openwide.easysoa.esperpoc.EsperEngineSingleton;
+
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
 import com.openwide.easysoa.esperpoc.PropertyManager;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
-import com.openwide.easysoa.monitoring.soa.WSDLService;
 
 public class WSDLMessageHandler implements MessageHandler {
 
@@ -36,7 +35,7 @@ public class WSDLMessageHandler implements MessageHandler {
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		Service service = new Service(message.getUrl(), message.getUrl() + "?wsdl");
+		Service service = new Service(message.getUrl());
 		service.setCallCount(1);
 		service.setTitle(message.getPathName());
 		service.setDescription(message.getPathName());
