@@ -253,7 +253,7 @@ task :packageall do # TODO Less messy code
   puts "Copying discovery by browsing proxy (node.js)..."
   mkdir PACKAGING_OUTPUT_PATH+'/dbbProxy'
   cp_r FileList[project(DBBROWSING).base_dir+"/proxyserver"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
-  cp_r FileList[project(DBBROWSING).base_dir+"/start-proxy.*"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
+  cp_r FileList[project(DBBROWSING).base_dir+"/start-dbbProxy.*"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
