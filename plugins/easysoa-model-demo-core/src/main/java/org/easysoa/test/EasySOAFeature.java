@@ -14,14 +14,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  *
  */
 @Deploy({
-    "org.nuxeo.runtime.datasource",
-	"org.easysoa.demo.core:OSGI-INF/nxdirectories-contrib.xml", // required, else no custom easysoa vocabularies
-    "org.easysoa.demo.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-	"org.easysoa.demo.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-	"org.easysoa.demo.core:OSGI-INF/NotificationServiceComponent.xml", // idem
-	"org.easysoa.demo.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
-	"org.easysoa.demo.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-	"org.easysoa.demo.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
+    "org.nuxeo.runtime.datasource"
 })
 @Features(EasySOAFeatureBase.class)
 @LocalDeploy("org.easysoa.demo.core:org/easysoa/tests/datasource-contrib.xml")

@@ -58,14 +58,15 @@ public class NotificationService extends DefaultComponent {
 			throws ClientException, MalformedURLException {
 		
 		// Check mandatory field
-		if (properties.get(AppliImpl.PROP_URL) != null) {
-
+		String url = properties.get(Service.PROP_URL);
+		if (url != null && !url.isEmpty()) {
+			
 			// Find or create document
 			DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
-			DocumentModel appliImplModel = docService.findAppliImpl(session, properties.get(AppliImpl.PROP_URL));
+			DocumentModel appliImplModel = docService.findAppliImpl(session, url);
 			if (appliImplModel == null) {
 				String title = (properties.get("title") != null) ? properties.get("title") : properties.get(AppliImpl.PROP_URL);
-				appliImplModel = docService.createAppliImpl(session, properties.get(AppliImpl.PROP_URL));
+				appliImplModel = docService.createAppliImpl(session, url);
 				appliImplModel.setProperty("dublincore", "title", title);
 				session.saveDocument(appliImplModel);
 			}
@@ -99,14 +100,14 @@ public class NotificationService extends DefaultComponent {
 			throws ClientException, MalformedURLException {
 		
 		// Check mandatory fields
-		if (properties.get(ServiceAPI.PROP_URL) != null) {
+		String url = properties.get(Service.PROP_URL);
+		if (url != null && !url.isEmpty()) {
 			
 			// Exctract main fields
-			String url = properties.get(ServiceAPI.PROP_URL),
-				parentUrl = properties.get(ServiceAPI.PROP_PARENTURL),
+			String parentUrl = properties.get(ServiceAPI.PROP_PARENTURL),
 				title = properties.get("title");
 			
-			if (title == null)
+			if (title == null || title.isEmpty())
 				title = url;
 			
 			// Find or create document and parent
@@ -168,11 +169,11 @@ public class NotificationService extends DefaultComponent {
 			Map<String, String> properties) throws ClientException, MalformedURLException {
 		
 		// Check mandatory fields
-		if (properties.get(Service.PROP_URL) != null) {
+		String url = properties.get(Service.PROP_URL);
+		if (url != null && !url.isEmpty()) {
 
 			// Exctract main fields
-			String url = properties.get(Service.PROP_URL),
-				parentUrl = properties.get(Service.PROP_PARENTURL),
+			String parentUrl = properties.get(Service.PROP_PARENTURL),
 				title = properties.get(Service.PROP_TITLE);
 			
 			// Store URL as file in case of a WSDL
@@ -180,10 +181,10 @@ public class NotificationService extends DefaultComponent {
 				properties.put(Service.PROP_FILEURL, url);
 			}
 			
-			if (parentUrl == null) {
+			if (parentUrl == null || parentUrl.isEmpty()) {
 				parentUrl = computeApiUrl(url);
 			}
-			if (title == null) {
+			if (title == null || title.isEmpty()) {
 				title = computeServiceTitle(url);
 				properties.put(Service.PROP_TITLE, title);
 			}
@@ -206,7 +207,6 @@ public class NotificationService extends DefaultComponent {
 					getNewCallcount(serviceModel, properties.get(Service.PROP_CALLCOUNT))
 				);
 			setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
-			
 			
 			// Update location
 			if (!apiModel.getRef().equals(serviceModel.getParentRef())) {
