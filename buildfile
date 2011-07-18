@@ -15,7 +15,8 @@ repositories.remote << 'http://www.ibiblio.org/maven2'
 ############### CONFIG LOADING
 
 NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat' #|| Buildr.settings.user['nuxeo']['path']
-FRASCATI_PATH = Buildr.settings.build['frascati']['path'] || './frascati'
+NODE_PATH = Buildr.settings.build['node']['path'] || ENV['HOME']+'/node'
+FRASCATI_PATH = Buildr.settings.build['frascati']['path'] || './deps/frascati'
 
 THIS_VERSION = Buildr.settings.build['release']['version']
 MODEL_VERSION = Buildr.settings.build['model']['version']
@@ -153,26 +154,51 @@ desc "Builds all needed projects"
 task :buildall => ['paf_mvn', 'nx_mvn', 'esper', 'trip']
 
 desc "Creates the EasySOA package"
-task :packageall do
+task :packageall do # TODO Less messy code
 
   puts "", "Starting to build EasySOA package"
   
-  # Preparie EasySOA environment
+  # Check dependencies
+  if !File.exist?(NUXEO_PATH)
+    raise "Files copy failed: Nuxeo not found. You need to provide a distribution of Nuxeo DM 5.4.1 in `build.yaml`."
+  end
+  if !File.exist?(NODE_PATH+'/node')
+    raise "Files copy failed: Node not found. You need to provide a built Node path in `build.yaml` (download sources from: http://nodejs.org/#download)."
+  end
+  
+  # Prepare EasySOA environment
   puts "Preparing EasySOA environment..."
   rm_rf PACKAGING_OUTPUT_PATH
   mkdir_p PACKAGING_OUTPUT_PATH
+  mkdir_p './deps'
   cp_r FileList['packaging-files/*'], PACKAGING_OUTPUT_PATH
   
+  # Download/extract node.js if necessary
+  if !File.exist?('./deps/node.exe')
+    puts 'Downloading node.js for Windows...'
+    system 'wget', 'http://nodejs.org/dist/v0.5.1/node.exe' # XXX Linux-dependent
+    mv 'node.exe', './deps'
+  end
+  puts 'Copying node.js...'
+  mkdir_p PACKAGING_OUTPUT_PATH+'/node'
+  cp './deps/node.exe', PACKAGING_OUTPUT_PATH+'/node'
+  begin
+    cp NODE_PATH+'/node', PACKAGING_OUTPUT_PATH+'/node'
+  rescue Exception
+    raise "Files copy failed: Node location seems invalid (binary not found)"
+  end
+  
   # Download/extract FraSCAti if necessary
-  puts 'FraSCAti path not defined in `build.yaml`, using default one.'
   if !File.exist?(FRASCATI_PATH) 
-    if !File.exist?('frascati-1.4-bin.zip')
+    if !File.exist?('deps/frascati-1.4-bin.zip')
       puts 'FraSCAti not found, downloading it...'
       system 'wget', 'http://download.forge.objectweb.org/frascati/frascati-1.4-bin.zip' # XXX Linux-dependent
+      mv 'frascati-1.4-bin.zip','./deps'
     end
-      puts 'Extracting FraSCAti...'
-    system 'unzip', '-q', '-o', 'frascati-1.4-bin.zip' # XXX Linux-dependent
-    FileUtils.mv 'frascati-runtime-1.4', 'frascati'
+    puts 'Extracting FraSCAti...'
+    system 'unzip', '-q', '-o', './deps/frascati-1.4-bin.zip' # XXX Linux-dependent
+    mv 'frascati-runtime-1.4', './deps/frascati'
+    rm_rf FileList['./deps/frascati/doc', './deps/frascati/examples', './deps/frascati/README', './deps/frascati/RELEASE_NOTES']
   end
 
   # Deploy FraSCAti
@@ -204,7 +230,6 @@ task :packageall do
   rescue Exception
     raise "PureAirFlowers CXF server JAR seems missing"
   end
-  
   
   # Copying Nuxeo
   puts "Copying service registry (Nuxeo)..."
@@ -243,7 +268,7 @@ task :tgz do
   # Tar
   puts "Compressing..."
   system 'tar -zcf ' + PACKAGING_OUTPUT_ARCHIVE + ' -C ' + PACKAGING_OUTPUT_PATH + \
-    ' serviceregistry web webproxy webservices ' + \
+    ' dbbProxy frascati meteoBackup serviceRegistry web ' + \
     FileList["packaging-files/*"].sub('packaging-files/', '').to_s  # XXX Linux-dependent
   
   puts "EasySOA successfully compressed in "+PACKAGING_OUTPUT_ARCHIVE

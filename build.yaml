@@ -9,6 +9,11 @@ nuxeo:
   # to use for packaging. By default $HOME/nuxeo-dm-5.4.1-tomcat
   # specify the path either absolute or relative to the buildfile.
   
+node:
+  path: '/usr/local/bin/node-v0.4.5'
+  # to use for packaging. By default $HOME/node
+  # specify the path either absolute or relative to the buildfile.
+  
 frascati:
   path: 
   # to use for packaging. By default ./frascati
