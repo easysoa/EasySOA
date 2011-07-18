@@ -17,8 +17,8 @@ dbbProxy()
 {
   touch log/dbbProxy.log
   cd dbbProxy
-  chmod +x ./start-proxy.sh
-  ./start-proxy.sh > ../log/dbbProxy.log 2>&1
+  chmod +x ./start-dbbProxy.sh
+  ./start-dbbProxy.sh > ../log/dbbProxy.log 2>&1
 }
 
 esperproxy()

@@ -185,14 +185,8 @@ case "$1" in
   run)
 	check_config
 	shift
-	
-	# EasySOA
-	echo "Running OW2 FraSCAti through the Esper proxy..."
-	
-	# EasySOA : Use esper as a proxy
-	$JAVA -Dcxf.config.file=cxfEsperProxy.xml -Djava.security.policy=$FRASCATI_HOME/conf/java.policy -Djava.util.logging.config.file=$LOGGING -Dlog4j.configuration=logging.properties -cp $FRASCATI_HOME/conf:$LAUNCHER_LIB $LAUNCHER_MAIN $FRASCATI_MAIN -lib $FRASCATI_LIB $* 
-	
-	# $JAVA -Djava.security.policy=$FRASCATI_HOME/conf/java.policy -Djava.util.logging.config.file=$LOGGING -Dlog4j.configuration=logging.properties -cp $FRASCATI_HOME/conf:$LAUNCHER_LIB $LAUNCHER_MAIN $FRASCATI_MAIN -lib $FRASCATI_LIB $*
+	echo "Running OW2 FraSCAti ..."
+	$JAVA $CUSTOM_JAVA_OPTS -Djava.security.policy=$FRASCATI_HOME/conf/java.policy -Djava.util.logging.config.file=$LOGGING -Dlog4j.configuration=logging.properties -cp $FRASCATI_HOME/conf:$LAUNCHER_LIB $LAUNCHER_MAIN $FRASCATI_MAIN -lib $FRASCATI_LIB $*
 	echo "Exiting OW2 FraSCAti ..."
 	;;
   explorer)
