@@ -7,6 +7,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+/**
+ * An interface to start/stop runs
+ * Run is a set of recorded messages
+ * 
+ * @author jguillemotte
+ *
+ */
 @Remotable
 public interface HttpProxyDriver {
 

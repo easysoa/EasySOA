@@ -18,6 +18,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
+/**
+ * This class regroups all the method required to send requests to Nuxeo.
+ * @author jguillemotte
+ *
+ */
 public class NuxeoRegistrationService {
 
 	private final static String NUXEO_WSDL_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/wsdlscraper/";
@@ -51,6 +56,11 @@ public class NuxeoRegistrationService {
 		return textEntity;
 	}
 	
+	/**
+	 * Register a WSDL SOAP service in Nuxeo
+	 * @param service The service to register
+	 * @return The response send back by Nuxeo
+	 */
 	public String registerWSDLService(Service service){
 		/*
 		{

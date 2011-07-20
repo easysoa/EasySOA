@@ -6,6 +6,11 @@ import java.util.Deque;
 import org.apache.log4j.Logger;
 import com.openwide.easysoa.monitoring.Message;
 
+/**
+ * Run is a set of recorded messages
+ * @author jguillemotte
+ *
+ */
 public class Run {
 
 	/**
@@ -69,7 +74,7 @@ public class Run {
 	}
 	
 	/**
-	 * 
+	 * The date the run was started
 	 * @param startDate
 	 */
 	public void setStartDate(Date startDate){
@@ -77,7 +82,7 @@ public class Run {
 	}
 
 	/**
-	 * 
+	 * The date the run was stopped
 	 * @param stopDate
 	 */
 	public void setStopDate(Date stopDate){
@@ -109,7 +114,7 @@ public class Run {
 	}
 
 	/**
-	 * 
+	 * The run name
 	 * @param name
 	 */
 	public void setName(String name) throws IllegalArgumentException {

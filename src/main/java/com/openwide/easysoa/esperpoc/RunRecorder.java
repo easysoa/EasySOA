@@ -3,6 +3,11 @@ package com.openwide.easysoa.esperpoc;
 import org.apache.log4j.Logger;
 import com.openwide.easysoa.monitoring.Message;
 
+/**
+ * Run recorder, only to record messages in the current run
+ * @author jguillemotte
+ *
+ */
 public class RunRecorder {
 
 	/**

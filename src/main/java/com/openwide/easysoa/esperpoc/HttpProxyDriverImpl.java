@@ -6,6 +6,11 @@ import org.apache.log4j.Logger;
 import com.openwide.easysoa.monitoring.MonitorService;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 
+/**
+ * HttpProxyDriver implementation
+ * @author jguillemotte
+ *
+ */
 public class HttpProxyDriverImpl implements HttpProxyDriver {
 
 	/**

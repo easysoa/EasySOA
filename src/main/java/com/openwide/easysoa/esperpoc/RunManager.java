@@ -5,6 +5,11 @@ import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 
+/**
+ * A manager for run's
+ * @author jguillemotte
+ *
+ */
 public class RunManager {
 	
 	/**
