@@ -8,6 +8,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.services.CacheHelper;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
@@ -48,6 +49,7 @@ public class ScaImportBean {
 	
 	@Create
 	public void init() throws ClientException {
+        CacheHelper.invalidateVcsCache();
 		compositeFile = null;
 		documentManager = navigationContext.getOrCreateDocumentManager();
 		appliImpls = getAllAppliImplsAsSelectItems(documentManager);

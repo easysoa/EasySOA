@@ -25,7 +25,6 @@ public class NotificationService extends DefaultComponent {
     public static final ComponentName NAME = new ComponentName(
     		"org.easysoa.notification.NotificationServiceComponent");
 
-    @SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(NotificationService.class);
 
 	private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
@@ -288,14 +287,19 @@ public class NotificationService extends DefaultComponent {
 		
 		int apiPathEndIndex = -1;
 		
-		if (appliImplUrl.length() != 0) {
-			// appliImplUrl has to be well-formed
-			appliImplUrl = PropertyNormalizer.normalizeUrl(appliImplUrl, ERROR_API_URL_APPLIIMPL);
-			String defaultApiUrl = PropertyNormalizer.concatUrlPath(appliImplUrl, apiUrlPath);
-			if (serviceUrlPath.contains(defaultApiUrl)) {
-				apiPathEndIndex = serviceUrlPath.indexOf(defaultApiUrl) + defaultApiUrl.length();
-			} // else default appliImplUrl does not apply
-		} // else empty appliImplUrl means no default appliImplUrl for apis
+		try {
+    		if (appliImplUrl.length() != 0) {
+    			// appliImplUrl has to be well-formed
+    			appliImplUrl = PropertyNormalizer.normalizeUrl(appliImplUrl, ERROR_API_URL_APPLIIMPL);
+    			String defaultApiUrl = PropertyNormalizer.concatUrlPath(appliImplUrl, apiUrlPath);
+    			if (serviceUrlPath.contains(defaultApiUrl)) {
+    				apiPathEndIndex = serviceUrlPath.indexOf(defaultApiUrl) + defaultApiUrl.length();
+    			} // else default appliImplUrl does not apply
+    		} // else empty appliImplUrl means no default appliImplUrl for apis
+		}
+		catch (Exception e) {
+		    log.warn("Failed to compute API url from appli URL & API URL path, using default ("+e.getMessage()+")");
+		}
 		
 		if (apiPathEndIndex == -1) {
 			return computeApiUrl(serviceUrlPath);

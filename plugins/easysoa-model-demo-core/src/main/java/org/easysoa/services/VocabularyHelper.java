@@ -40,7 +40,7 @@ public class VocabularyHelper extends DefaultComponent {
 	public boolean entryExists(CoreSession session,
 			String vocabularyName, String entryId) throws DirectoryException,
 			ClientException {
-		
+	    
 		if (entryId == null || entryId.isEmpty()) {
 			return true;
 		}
