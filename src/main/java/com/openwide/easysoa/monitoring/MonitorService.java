@@ -4,9 +4,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.log4j.Logger;
+
 import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
-import com.openwide.easysoa.esperpoc.RunManager;
 import com.openwide.easysoa.esperpoc.RunRecorder;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
@@ -257,9 +258,11 @@ public class MonitorService {
 				// Message lastMessage = childNode.getMessages().getLast(); // Pas sur une feuille donc ArrayDeque message pas rempli ...
 				// TODO Revoir le systeme de remplissage des messages, mise en place d'un système pour detecter des patterns dans les url
 				logger.debug("[registerChildren] --- new Service to register !!!!");
-				Service service = new Service(childNode.getPartialUrl(), node.getPartialUrl());
-				logger.debug("Messages size : " + childNode.getMessages().size());
-				service.setCallCount(childNode.getMessages().size());
+				int callcount = childNode.getMessages().size();
+				logger.debug("Messages size : " + callcount);
+				Service service = new Service(childNode.getPartialUrl());
+				service.setCallCount(callcount);
+				service.setParentUrl(node.getPartialUrl());
 				service.setTitle(childNode.getNodeName());
 				service.setDescription(childNode.getNodeName());
 				service.setHttpMethod(childNode.getMessages().getLast().getMethod());

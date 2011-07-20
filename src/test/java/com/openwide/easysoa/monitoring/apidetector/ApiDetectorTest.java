@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
+import org.junit.Assume;
+
 import com.openwide.easysoa.esperpoc.RunManager;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 import com.openwide.easysoa.monitoring.MonitorService;
+import com.sun.jersey.api.client.ClientHandlerException;
 
 /**
  * Unit test for simple App.
@@ -51,8 +54,14 @@ public class ApiDetectorTest extends TestCase {
 		MonitorService.getMonitorService(MonitoringMode.DISCOVERY);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
 		//urlDetectionSimulate(new UrlMock().getIMediaUrlData());
-		urlDetectionCompute();
-		urlDetectionDebugResults();
+		try {
+			urlDetectionCompute();
+			urlDetectionDebugResults();
+		}
+		catch (ClientHandlerException e) {
+			logger.warn("Failed to connect to Nuxeo, aborting test: "+e.getMessage());
+			Assume.assumeNoException(e); 
+		}
 
 		// JUnit automatic tests
 		// Get regsitered data form Nuxeo and compare them to expected data's		
@@ -69,8 +78,14 @@ public class ApiDetectorTest extends TestCase {
 	public void testUrlValidatedMode(){
 		// NB. in validation mode, no concept or pre or post run
 		// TODO LATER cache it
-		MonitorService.getMonitorService(MonitoringMode.VALIDATED);
-		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+		try {
+			MonitorService.getMonitorService(MonitoringMode.VALIDATED);
+			urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+		}
+		catch (ClientHandlerException e) {
+			logger.warn("Failed to connect to Nuxeo, aborting test: "+e.getMessage());
+			Assume.assumeNoException(e);
+		}
 		
 		// TODO LATER mixed mode : do compute and debugResults BUT ONLY on unknown messages ?!
 	}

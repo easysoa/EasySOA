@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
@@ -55,7 +56,7 @@ public class ProxyTestStarter {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	@Test @Ignore
 	public final void testWaitUntilRead() throws Exception{
 		logger.info("Http Proxy started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test
@@ -78,7 +79,7 @@ public class ProxyTestStarter {
 	private static void startHttpProxy() throws FrascatiException{
 		//URL compositeUrl = ClassLoader.getSystemResource("httpProxy.composite") ;
 		//frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());
-		frascati.processComposite("/data/home/jguillemotte/workspace/esper-frascati-poc/src/main/resources/httpProxy.composite", new ProcessingContextImpl());		
+		frascati.processComposite("src/main/resources/httpProxy.composite", new ProcessingContextImpl());		
 	}
     
 }

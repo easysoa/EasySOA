@@ -15,28 +15,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpMessage;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-
 import org.apache.log4j.Logger;
 
 import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 import com.openwide.easysoa.monitoring.MonitorService;
+import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 
 /**

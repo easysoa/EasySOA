@@ -24,6 +24,7 @@ public class Service extends Node {
 	private String contentTypeIn;
 	private String httpMethod;
 	private String parentUrl;
+	private String fileUrl;
 	private int callCount;
 	
 	/**
@@ -31,17 +32,14 @@ public class Service extends Node {
 	 * @param url
 	 * @param parentUrl
 	 */
-	public Service(String url, String parentUrl) throws IllegalArgumentException {
+	public Service(String url) throws IllegalArgumentException {
 		super(url);
-		if(parentUrl == null || "".equals(parentUrl)){
-			throw new IllegalArgumentException("parentUrl must not be null or empty");
-		}
-		this.parentUrl = parentUrl;
 		this.callCount = 0;
 		this.contentTypeIn = "";
 		this.contentTypeOut = "";
 		this.httpMethod = "";
 		this.relatedUsers = "";
+		this.parentUrl = "";
 	}
 	
 	/**
@@ -111,6 +109,24 @@ public class Service extends Node {
 	 */
 	public String getParentUrl() {
 		return parentUrl;
+	}
+	/**
+	 * @param parentUrl the parentUrl to set
+	 */
+	public void setParentUrl(String parentUrl) {
+		this.parentUrl = parentUrl;
+	}
+	/**
+	 * @return the fileUrl
+	 */
+	public String getFileUrl() {
+		return fileUrl;
+	}
+	/**
+	 * @param fileUrl the fileUrl to set
+	 */
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
 	}
 	
 }

@@ -41,14 +41,7 @@ public class SoaNodesJsonMapper implements JsonMapper {
 		}
 		else if("Service".equals(child.get("type"))){
 			String serviceUrl = child.getJSONObject("properties").getString("serv:url");
-			int lastSlashIndex = serviceUrl.lastIndexOf('/');
-			String parentUrl;
-			if (lastSlashIndex != -1) {
-				parentUrl = serviceUrl.substring(0, lastSlashIndex);
-			} else {
-				parentUrl = "http:"; // HACK TODO BETTER in nuxeo soa model
-			}
-			Service service = new Service(serviceUrl, parentUrl);
+			Service service = new Service(serviceUrl);
 			service.setTitle(child.getString("title"));
 			service.setDescription(child.getJSONObject("properties").getString("dc:title"));
 			service.setCallCount(child.getJSONObject("properties").getInt("serv:callcount"));

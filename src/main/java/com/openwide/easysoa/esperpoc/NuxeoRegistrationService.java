@@ -89,7 +89,7 @@ public class NuxeoRegistrationService {
 		body.append("&parentUrl=");
 		body.append(service.getUrl().substring(0, service.getUrl().lastIndexOf('/'))); // ex. 	http://localhost:9080
 		body.append("&fileUrl=");
-		body.append(service.getParentUrl());		
+		body.append(service.getFileUrl());		
 		body.append("&callcount=");
 		body.append(service.getCallCount());
 		body.append("&title=");
