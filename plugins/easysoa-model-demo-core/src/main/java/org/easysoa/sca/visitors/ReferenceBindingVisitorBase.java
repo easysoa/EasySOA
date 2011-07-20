@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.ScaImporter;
 import org.easysoa.services.DocumentService;
@@ -48,14 +49,26 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
 	
 	public void visit() throws ClientException {
 
+		// Notify service reference
 		Map<String, String> properties = new HashMap<String, String>();
-		properties.put(ServiceReference.PROP_REFURL, getBindingUrl()); // getting referenced service url
+		String refUrl = getBindingUrl();
+		properties.put(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
 		properties.put(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
 		properties.put(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
 		properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
 		properties.put(ServiceReference.PROP_PARENTURL, 
 				(String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
 		referenceModel = notificationService.notifyServiceReference(documentManager, properties);
+		
+		// Notify referenced service
+		properties = new HashMap<String, String>();
+		properties.put(Service.PROP_URL, refUrl);
+		properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
+		try {
+			notificationService.notifyService(documentManager, properties);
+		} catch (MalformedURLException e) {
+			log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
+		}
 		
 	}
 	
