@@ -14,6 +14,11 @@ import com.openwide.easysoa.esperpoc.esper.MessageCounter;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
 
+/**
+ * 
+ * @author jguillemotte
+ *
+ */
 public class EsperEngineSingleton {
 
 	/**
