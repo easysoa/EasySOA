@@ -3,7 +3,7 @@
 clear
 
 mkdir -p log
-export PATH="$PATH;$PWD/node"
+export PATH="$PATH:$PWD/node"
 
 # Start functions
 
