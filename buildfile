@@ -242,6 +242,7 @@ task :packageall do # TODO Less messy code
   cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/lib/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib'
   cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/plugins/target/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/plugins' # TODO Check that bundles exist
   cp_r FileList[project('easysoa:easysoa-model-demo').base_dir+'/exemples'], PACKAGING_OUTPUT_PATH+'/serviceRegistry'
+  rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/'
   rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/'
   rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/'
   
