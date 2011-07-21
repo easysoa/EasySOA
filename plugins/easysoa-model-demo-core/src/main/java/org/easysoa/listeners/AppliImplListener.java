@@ -8,6 +8,7 @@ import static org.easysoa.doctypes.AppliImpl.PROP_SERVERENTRY;
 import static org.easysoa.doctypes.AppliImpl.PROP_URL;
 import static org.easysoa.doctypes.AppliImpl.SCHEMA;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
@@ -74,8 +75,11 @@ public class AppliImplListener implements EventListener {
 			doc.setProperty(SCHEMA, PROP_SERVERENTRY,
 					doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
 			if (url != null) {
-				doc.setProperty(SCHEMA, PROP_URL,
-						PropertyNormalizer.normalizeUrl(url));
+			    try {
+			        doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
+			    } catch (MalformedURLException e) {
+	                log.error("Failed to normalize URL", e);
+			    }
 			}
 			
 		} catch (Exception e) {

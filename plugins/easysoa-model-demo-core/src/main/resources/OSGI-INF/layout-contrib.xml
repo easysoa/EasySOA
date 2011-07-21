@@ -77,6 +77,7 @@
 	      </fields>
         <properties mode="any">
 		  <property name="required">true</property>
+		  <property name="validator">#{easysoaValidator.validateUrl}</property>
 		</properties>
 	  </widget>
       <widget name="appliimpldef_uiUrl" type="text">
@@ -87,6 +88,9 @@
 	      <fields>
 	        <field>app:uiUrl</field>
 	      </fields>
+	      <properties mode="any">
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
+		  </properties>
 	  </widget>
       <widget name="appliimpldef_sourcesUrl" type="text">
 	      <labels>
@@ -96,6 +100,9 @@
 	      <fields>
 	        <field>app:sourcesUrl</field>
 	      </fields>
+	      <properties mode="any">
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
+		  </properties>
 	  </widget>
       <widget name="appliimpldef_server" type="text">
 	      <labels>
@@ -240,6 +247,7 @@
 	      </fields>
           <properties mode="any">
 		    <property name="required">true</property>
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
 		  </properties>
 	  </widget>
 	  <widget name="apidef_application" type="selectOneDirectory">
@@ -305,6 +313,7 @@
 	      </fields>
           <properties mode="any">
 		    <property name="required">true</property>
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
 		  </properties>
 	  </widget>
       <widget name="servicedef_callcount" type="int">
@@ -363,6 +372,9 @@
 	      <fields>
 	        <field>serv:fileUrl</field>
 	      </fields>
+	      <properties mode="any">
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
+		  </properties>
 	  </widget>
     </layout>
     

@@ -20,28 +20,37 @@ public class PropertyNormalizer extends EasySOADoctype {
 
 	/**
 	 * Normalizes the given URL :
-	 * ensures all pathElements are separated by a single /
-	 * AND IF IT CONTAINS "://" that it is OK according to java.net.URL
+	 * Ensures that all pathElements are separated by a single slash,
+	 * and checks that the URL is parsable and contain the protocol part.
 	 * @param stringUrl
 	 * @param errMsg
-	 * @return
-	 * @throws MalformedURLException
+	 * @return The normalized URL
+     * @throws MalformedURLException
 	 */
-	public static final String normalizeUrl(String stringUrl, String errMsg) throws MalformedURLException {
-		if (stringUrl == null) {
-			throw new MalformedURLException(errMsg + " : " + stringUrl);
-		}
-		if (stringUrl.indexOf("://") != -1) {
-			URL url = new URL(stringUrl);
-			stringUrl = url.toString();
-			return normalizeUrlPath(url.toString(), errMsg);
-		}
-		return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
-	}
 
-	public static final String normalizeUrl(String stringUrl) throws MalformedURLException {
-		return normalizeUrl(stringUrl, DEFAULT_NORMALIZE_ERROR);
-	}
+    public static final String normalizeUrl(String stringUrl, String errMsg) throws MalformedURLException {
+        if (stringUrl == null) {
+            throw new MalformedURLException(errMsg + " : " + stringUrl);
+        }
+        if (stringUrl.indexOf("://") != -1) {
+            URL url = new URL(stringUrl);
+            stringUrl = url.toString();
+            return normalizeUrlPath(url.toString(), errMsg);
+        }
+        return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
+    }
+
+    /**
+     * Normalizes the given URL :
+     * Ensures that all pathElements are separated by a single slash,
+     * and checks that the URL is parsable and contain the protocol part.
+     * @param stringUrl
+     * @return The normalized URL
+     * @throws MalformedURLException
+     */
+    public static final String normalizeUrl(String stringUrl) throws MalformedURLException {
+        return normalizeUrl(stringUrl, DEFAULT_NORMALIZE_ERROR);
+    }
 
 	/**
 	 * Normalizes the given URL path : ensures all pathElements are separated by a single /

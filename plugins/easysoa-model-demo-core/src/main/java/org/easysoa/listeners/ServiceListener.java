@@ -7,6 +7,7 @@ import static org.easysoa.doctypes.Service.PROP_URL;
 import static org.easysoa.doctypes.Service.SCHEMA;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 
@@ -66,15 +67,18 @@ public class ServiceListener implements EventListener {
             // Extract data from WSDL
             if (fileUrl != null) {
                 
-                try {    
+                try {
                     
                     // Download file
                     Blob blob = null;
                     try {
                         blob = new HttpFile(fileUrl).download().getBlob();
                     }
+                    catch (IOException e) {
+                        log.info("I/O Error while downloading attached WSDL '" + fileUrl + "': " + e.getMessage());
+                    }
                     catch (Exception e) {
-                        log.info("Failed to download attached file: "+e.getMessage());
+                        log.info("Failed to download attached WSDL '" + fileUrl + "': " + e.getMessage());
                     }
                     
                     if (blob != null) {
@@ -107,13 +111,6 @@ public class ServiceListener implements EventListener {
                             if (title == null || title.isEmpty() || title.equals(fileUrl)) {
                                 title = firstService.getQName().getLocalPart();
                                 doc.setProperty("dublincore", "title", title);
-                            }
-                            
-                            // EasySOA Light 
-                            // XXX: Hard-coded PureAirFlowers Light URL
-                            if (url.contains("PureAirFlowers Orders")) { 
-                                doc.setProperty(SCHEMA, PROP_LIGHTURL,
-                                        "http://localhost:8083/easysoa/light/paf.html");
                             }
                             
                             //// Update parent's properties
@@ -197,6 +194,15 @@ public class ServiceListener implements EventListener {
                 }
             } catch (Exception e) {
                 log.error("Failed to normalize URL", e);
+            }
+            if (fileUrl != null) {
+                doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
+            }
+            // EasySOA Light 
+            // XXX: Hard-coded PureAirFlowers Light URL
+            if (url.contains("PureAirFlowers")) { 
+                doc.setProperty(SCHEMA, PROP_LIGHTURL,
+                        "http://localhost:8083/easysoa/light/paf.html");
             }
             
             session.save();

@@ -21,7 +21,7 @@ import org.restlet.data.CharacterSet;
  */
 public class HttpFile {
 	
-	private static final int DOWNLOAD_TIMEOUT = 3000;
+	private static final int DOWNLOAD_TIMEOUT = 15000;
 	
 	private String url;
 	private HttpURLConnection connection;

@@ -19,7 +19,6 @@ public class CacheHelper {
      * Empties the "Visible Content Store" cache.
      * Source: https://doc.nuxeo.com/display/KB/How+to+invalidate+the+VCS+cache+programmatically
      * More on the VCS: https://doc.nuxeo.com/display/NXDOC/VCS+Architecture
-     * @throws Exception
      */
     public static void invalidateVcsCache() {
         ObjectName poolName;
