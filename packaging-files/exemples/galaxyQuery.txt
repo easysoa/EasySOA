@@ -1,6 +1,12 @@
+## How to
+
+This is an exemple query to send from any SOAP-enabled client.
+
+## Query contents
+
 URL: http://127.0.0.1:9000/GalaxyTrip
 
-CONTENT:
+BODY:
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
