@@ -37,7 +37,7 @@ var server = http.createServer(function(request, response) {
 
 	var request_url = url.parse(request.url, true);
 
-  // Don't allow exceptions
+    // Don't let it proxy itself
 	if (request.headers['host'] == "localhost:"+config.proxy_port
         || request.headers['host'] == "127.0.0.1:"+config.proxy_port) {
 		response.writeHead(200, {
@@ -50,9 +50,6 @@ var server = http.createServer(function(request, response) {
   //// Proxying
   
 	// Create request to wanted server
-	if (!request_url.port)
-		request_url.port = 80;
-	
 	var proxy_options = {
 		port : request_url.port,
 		method : request.method,
@@ -60,6 +57,14 @@ var server = http.createServer(function(request, response) {
 		path : request_url.href,
 		headers : request.headers
 	};
+	
+	// clean request
+	if (!proxy_options.port) {
+		proxy_options.port = 80; // default
+	}
+	if (proxy_options.host == "localhost") {
+		proxy_options.host = "127.0.0.1"; // else node.js raises "ENOTFOUND, Domain name not found" error
+	}
   
 	// Send request
 	var proxy_request = http.request(proxy_options,
