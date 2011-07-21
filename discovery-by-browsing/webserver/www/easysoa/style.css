@@ -54,7 +54,6 @@ li {
 #headerLight {
   width: 100%;
   padding-top: 10px;
-  padding-left: 280px;
   font-size: 14pt;
   height: 60px;
   background: url('img/Light50.png') white;
@@ -62,11 +61,14 @@ li {
   background-position: 20px 10px;
   border-bottom: 2px solid #444;
 }
+#headerLightContents {
+  padding-left: 280px;
+}
+
 
 #headerWelcome {
   width: 100%;
   padding-top: 23px;
-  padding-left: 220px;
   font-size: 14pt;
   font-weight: bold;
   height: 47px;
@@ -74,6 +76,9 @@ li {
   background-repeat: no-repeat;
   background-position: 20px 15px;
   border-bottom: 2px solid #444;
+}
+#headerWelcomeContents {
+  padding-left: 220px;
 }
 
 #headerBreadcrumbs {
@@ -141,4 +146,20 @@ p {
 
 a img {
   border: 0;
+}
+
+.more {
+  width: 100px;
+  text-align: right;
+  float: right;
+  border: 1px solid #373;
+  background: url('img/more.png') #EFE;
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  padding: 2px;
+  padding-right: 20px;
+  margin: 2px;
+  margin-left: 5px;
+  margin-bottom: 0;
+  font-size: 8pt;
 }

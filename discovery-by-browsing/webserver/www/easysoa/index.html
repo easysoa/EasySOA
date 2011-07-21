@@ -3,6 +3,20 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>EasySOA - Welcome Page</title>
+	<script type="text/javascript" src="js/coda-slider/javascripts/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="js/coda-slider/javascripts/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="js/coda-slider/javascripts/jquery.coda-slider-2.0.js"></script>
+	<script type="text/javascript">
+	 $().ready(function() {
+		  $('#slider-tour').codaSlider({
+    		dynamicArrows: false,
+    		dynamicTabsPosition: "left",
+		    autoHeightEaseDuration: 400,
+		    slideEaseDuration: 500
+		  });
+	 });
+	</script>
+	<link rel="stylesheet" href="js/coda-slider/stylesheets/coda-slider-2.0.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="style.css">
   <style type="text/css">
     #shortcuts {
@@ -63,7 +77,11 @@
 </head>
 <body>
 
-<div id="headerWelcome">Welcome Page</div>
+<div id="headerWelcome">
+  <div id="headerWelcomeContents">
+    Welcome Page
+  </div>
+</div>
 
 <div id="container" style="width: 100%">
   
@@ -104,26 +122,68 @@
     
     <h1><b>First time user</b>? Take the tour!</h1>
     
-    <p><b>Note:</b> Before using this demo, please set your browser's proxy to <b>localhost:8081</b> and remove any proxy exceptions (unnecessary if you're using our virtual machine). If you're asked for a user/password, just type <b>Administrator</b> for both.</p>
-     
-    <h2><div>Step 1</div> Discover services in your intranet</h2>
-    
-    <p>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Aire Flowers</i>. Let's
-browse it using the <a href="core/index.html">Service discovery</a>. From there, as you browse, you may see a service appearing in the left menu, meaning that EasySOA just found it. You're then two clicks away to register this service : just select it, then click "Save Service", and your done!</p>
+   <div class="coda-slider-wrapper">
+	  <div class="coda-slider preload" id="slider-tour">
+		  <div class="panel">
+			  <div class="panel-wrapper">
+				  <h2 class="title">For the Business user</h2>
+          
+          <p><b>Note:</b> Before using this demo, please set your browser's proxy to <b>localhost:8081</b> and remove any proxy exceptions (unnecessary if you're using our virtual machine). If you're asked for a user/password, just type <b>Administrator</b> for both.</p>
+           
+          <h2><div>Step 1</div> Discover services in your intranet</h2>
+          
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/index.html">Service discovery</a>. From there, as you visit pages, you may see a service appearing in the left menu, meaning that EasySOA just found it. You're then two clicks away to register this service: just select "PureAirFlowers Orders", then click "Save Service", and you're done!</p>
 
-    <h2><div>Step 2</div> Explore all services</h2>
+          <h2><div>Step 2</div> Explore all services</h2>
 
-    <p>Now, let's have a look to our registered service, that you will find in the <a href="http://127.0.0.1:8080/nuxeo">Service registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will fond here the service you just registered. If you click on it, all metadata are now here, business and technical (look for a link on the right to see "WSDL" details). You may override most of these metadata, and fill new ones if you want to document your service.</p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/The-service-registry">More on the service registry</a>Now, let's have a look to our registered service, that you will find in the <a href="http://127.0.0.1:8080/nuxeo">Service registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will find here the service you just registered. If you click on it, all metadata are now here, business and technical (look for a link on the right to see "WSDL" details). You may override most of these metadata, and fill new ones if you want to document your service.</p>
+          
+          <p>There are various ways to browse your services: other than the default navigation tree, there is of course a search form, but also what is called "virtual navigations". These can be accessed from <u>TODO</u></p>
 
-    <h2><div>Step 3</div> Call a service</h2>
-    
-    <p>Now you can use this service to get business data or do a business operation! While you're on the service registry, notice the "Call it!" button on your service page. Click it. The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
-    
-    <p>This call is actually made through a proxy layer that prevents from excessive use. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
+          <h2><div>Step 3</div> Call a service</h2>
+          
+          <p>Now you can use this service to get business data or do a business operation! While you're on the service registry, notice the "Call it!" button on your service page. Click it. The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
+          
+          <p>This call is actually made through a proxy layer that prevents from excessive use. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
 
-    <h2>Conclusion</h2>
+          <h2>Conclusion</h2>
 
-    <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from true proxy generation to an all-in-one architecture. Our next goals also include REST services compatibility, a cloud-based solution, services monitoring...</p>
+          <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from true proxy generation to an all-in-one architecture. Our next goals also include REST services compatibility, a cloud-based solution, services monitoring...</p>
+
+        </div>
+      </div>
+		  <div class="panel">
+			  <div class="panel-wrapper">
+				  <h2 class="title">For Developers & the IT staff</h2>
+				  
+          <p>This scenario is based on another demo SOA, called "Smart Travel". This time, we will take the role of a developer who wants to map the SOA contents.</p>
+          
+          <h2><div>Step 1</div> Import the SOA architecture</h2>
+          
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SCA architecture into the service registry. In order to do that, there is a feature called "<i>SCA import</i>" that is able to analyze the contents of the SOA components definition. From the service registry, create a new application by going to the "<i>Service registry</i>" document, choosing "<i>New Application Implementation</i>", and create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), select the newly created application for the import, and go!</p>
+          
+          <h2><div>Step 2</div> Explore the services</h2>
+          
+          <p>You can now browse through various services in the left menu. Only two of them are in the "Smart Travel" application, since others are external services only referenced from your application. All the imported data can be useful to help developers and architecte, even more once documentation files are attached to the services for example (you can do it by editing any document).</p>
+          
+          <p>Now, what if a member of the IT staff wants to monitor these services?</p>
+          
+          <h2><div>Step 3</div> SOA Monitoring</h2>
+          
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, monitoring can be used both to discover new services, and simply to monitor the information system. In order to test this feature, you will have to send a request to any of the Smart Travel services: this request will then by intercepted by a specific proxy, that will then send information about this service to Nuxeo. <u>TODO: How?</u></p>
+          
+          <h2><div>Step 4</div> Explore the service Pt. 2: data correlation</h2>
+          
+          <p>Notice that thanks to monitoring and SCA import, we discovered in two different ways the sames services, gathering complementary information. If you add the discovery by browsing tool (see demo scenario #1), they form an interesting way to gather transversal data regarding the information system. The correlation between these discovery methods is represented by three icons shown on every document page: <img src="img/dtBrowsing.png" style="height: 12px" /> <img src="img/dtMonitoring.png" style="height: 12px" /> <img src="img/dtImport.png" style="height: 12px" />. Browse to the "Create Summary" service to see how these icons are enabled for the browsing and monitoring discovery. There, you will also see that the "call count" property has been increased!</p>
+          
+          <h2><div>Step 5</div> The dashboard</h2>
+          
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Services-dashboard">More on the dashboard</a>Since we are storing in EasySOA how many time each service has been called, why not make a dashboard to provide all these information on a synthetic page? The dashboard, available from the top menu, allows you to organize various widgets on the same page. One of those widgets is called "EasySOA Stats", add it to see a list of services showing how many called has been made on each one.</p>
+          
+        </div>
+      </div>
+    </div>
+  </div>
 
   </div>
 </div>
