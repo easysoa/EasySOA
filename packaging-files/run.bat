@@ -51,4 +51,4 @@ cd frascati
 start "EasySOA Demo - Travel" start-travelDemo.bat > ..\log\travelDemo.log 2>&1
 cd ..
 
-call explorer "http://localhost:8083/easysoa"
+call explorer "http://127.0.0.1:8083/easysoa"

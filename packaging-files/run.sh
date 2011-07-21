@@ -81,7 +81,7 @@ lightproxy &
 meteobackup &
 sleep 2 # Let the web server launch
 traveldemo &
-firefox "http://localhost:8083/easysoa" &
+firefox "http://127.0.0.1:8083/easysoa" &
 
 echo "Press any key to stop."
 
