@@ -147,7 +147,7 @@ public class NuxeoRegistrationService {
 		body.append("&callcount=");
 		body.append(service.getCallCount());
 		body.append("&title=");
-		body.append(service.getTitle());
+		body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash
 		body.append("&contentTypeOut=");
 		body.append(service.getContentTypeOut());
 		body.append("&contentTypeIn=");
@@ -248,7 +248,7 @@ public class NuxeoRegistrationService {
 		body.append("&parentUrl=");
 		body.append(api.getParentUrl());
 		body.append("&title=");
-		body.append(api.getTitle());
+		body.append(api.getTitle().replaceFirst("/", "")); // Remove the leading slash
 		body.append("&application=");
 		body.append(api.getApplication());
 		body.append("&description=");
