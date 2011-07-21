@@ -8,12 +8,15 @@
 			<head>
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>EasySOA Core - <xsl:value-of select="@name"/> Service</title>
-        <link rel="stylesheet" href="style.css"/>    
+        <link rel="stylesheet" href="../style.css"/>    
 			</head>
 			<body>
 
 	  	<!-- Web service name -->
-      <div id="header"><b><xsl:value-of select="@name"/></b> Service</div>
+      <div id="headerLight">
+        <div id="headerBreadcrumbs"><a href="../index.html">EasySOA</a> > <a href="index.html">Light</a> > <b><xsl:value-of select="@name"/></b></div>
+        <b><xsl:value-of select="@name"/></b> Service
+      </div>
       
       <div id="container">
 
