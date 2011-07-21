@@ -15,7 +15,7 @@ The SCA component name to launch is "httpProxy". This component describe the htt
 
 ### Execution (OUTDATED)
 
-By default, the proxy works on the port 8080.
+By default, the proxy works on the port 8082.
 
 To run this proxy :
 
