@@ -34,9 +34,14 @@ cd web
 start "EasySOA Demo - Web" start-web.bat > ..\log\web.log 2>&1
 cd ..
 
-rem lightProxy
+rem lightProxyPaf
 cd frascati
-start "EasySOA Demo - EasySOA Light Proxy" start-lightProxy.bat > ..\log\lightProxy.log 2>&1
+start "EasySOA Demo - EasySOA Light Proxy (PAF)" start-lightProxyPaf.bat > ..\log\lightProxyPaf.log 2>&1
+cd ..
+
+rem lightProxyTravel
+cd frascati
+start "EasySOA Demo - EasySOA Light Proxy (Travel)" start-lightProxyTravel.bat > ..\log\lightProxyTravel.log 2>&1
 cd ..
 
 rem meteoBackup

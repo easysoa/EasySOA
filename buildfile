@@ -201,7 +201,7 @@ task :packageall do # TODO Less messy code
   puts "  * FraSCAti applications & PAF services..."
   cp_r FileList[project(PAF).base_dir+'/distrib/*'], PACKAGING_OUTPUT_PATH
   cp FileList[project(ESPER).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(TRIP).base_dir+"/trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(TRIP).base_dir+"/trip*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   puts "  * Meteo backup service..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/meteoBackup'
   system 'unzip', '-q', '-o', FileList[project(TRIP).base_dir+'/easysoa-meteo-sca-backup/target/*-bin.zip'].to_s # XXX Linux-dependent

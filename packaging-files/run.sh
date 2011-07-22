@@ -28,12 +28,20 @@ esperproxy()
   ./start-esperProxy.sh > ../log/esperProxy.log 2>&1
 }
 
-lightproxy()
+lightproxypaf()
 {
-  touch log/lightProxy.log
+  touch log/lightProxyPaf.log
   cd frascati
-  ./start-lightProxy.sh > ../log/lightProxy.log 2>&1
+  ./start-lightProxyPaf.sh > ../log/lightProxyPaf.log 2>&1
 }
+
+lightproxytravel()
+{
+  touch log/lightProxyTravel.log
+  cd frascati
+  ./start-lightProxyTravel.sh > ../log/lightProxyTravel.log 2>&1
+}
+
 
 web()
 {
@@ -77,7 +85,8 @@ esperproxy &
 pafservices &
 sleep 5 # Let the servers start
 web &
-lightproxy &
+lightproxypaf &
+lightproxytravel &
 meteobackup &
 sleep 2 # Let the web server launch
 traveldemo &
