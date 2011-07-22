@@ -27,7 +27,19 @@ cd pafServices
 start "EasySOA Demo - Web Services" start-pafServices.bat > ..\log\pafServices.log 2>&1
 cd ..
 
-sleep 5
+rem meteoBackup
+cd meteoBackup
+start "EasySOA Demo - Meteo Service Backup" start-meteoBackup.bat > ..\log\meteoBackup.log 2>&1
+cd ..
+
+sleep 3
+
+rem travel
+cd frascati
+start "EasySOA Demo - Travel" start-travelDemo.bat > ..\log\travelDemo.log 2>&1
+cd ..
+
+sleep 6
 
 rem web
 cd web
@@ -44,16 +56,6 @@ cd frascati
 start "EasySOA Demo - EasySOA Light Proxy (Travel)" start-lightProxyTravel.bat > ..\log\lightProxyTravel.log 2>&1
 cd ..
 
-rem meteoBackup
-cd meteoBackup
-start "EasySOA Demo - Meteo Service Backup" start-meteoBackup.bat > ..\log\meteoBackup.log 2>&1
-cd ..
-
 sleep 2
-
-rem travel
-cd frascati
-start "EasySOA Demo - Travel" start-travelDemo.bat > ..\log\travelDemo.log 2>&1
-cd ..
 
 call explorer "http://127.0.0.1:8083/easysoa"

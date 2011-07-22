@@ -83,13 +83,14 @@ serviceregistry &
 dbbProxy &
 esperproxy &
 pafservices &
-sleep 5 # Let the servers start
+meteobackup &
+sleep 3 # Let the servers start
+traveldemo &
+sleep 6 # Let the web server launch
 web &
 lightproxypaf &
 lightproxytravel &
-meteobackup &
-sleep 2 # Let the web server launch
-traveldemo &
+sleep 2
 firefox "http://127.0.0.1:8083/easysoa" &
 
 echo "Press any key to stop."
