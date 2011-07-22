@@ -2,15 +2,32 @@ package net.server;
 
 import javax.xml.ws.Endpoint;
 
+import com.microsofttranslator.api.v1.soap_svc.LanguageService;
+import com.microsofttranslator.api.v1.soap_svc.LanguageServiceImpl;
+import de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoapImpl1;
+
 import net.webservicex.GlobalWeatherSoapImpl1;
 
 public class Server {
 
-    protected Server(String address) throws Exception {
+    protected Server(String addressBase) throws Exception {
         System.out.println("Starting Server");
-        GlobalWeatherSoapImpl1 implementor = new GlobalWeatherSoapImpl1();
-        //String address = "http://localhost:9020/WeatherService";
-        Endpoint.publish(address, implementor);
+        //String addressBase = "http://localhost:9020/";
+
+        // Meteo backup
+        GlobalWeatherSoapImpl1 meteoImplementor = new GlobalWeatherSoapImpl1();
+        //Endpoint.publish(address, implementor);
+        Endpoint.publish(addressBase + "WeatherService", meteoImplementor);
+        
+        // Currency Backup
+        CurrencyServerWebServiceSoapImpl1 currencyImplementor = new CurrencyServerWebServiceSoapImpl1();
+        Endpoint.publish(addressBase + "CurrencyServerWebService", currencyImplementor);
+        
+        // Translator backup
+        LanguageService translateImplementor = new LanguageServiceImpl();
+        //Endpoint.publish(address, translateImplementor);
+        Endpoint.publish(addressBase + "SoapService", translateImplementor);
+
     }
 
     public static void main(String args[]) throws Exception {

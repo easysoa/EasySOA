@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.daenet.de/webservices/CurrencyServer" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.daenet.de/webservices/CurrencyServer" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.daenet.de/webservices/CurrencyServer">
+      <s:element name="getDataSet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="provider" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDataSetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDataSetResult">
+              <s:complexType>
+                <s:sequence>
+                  <!--<s:element ref="s:schema" />-->
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getXmlStream">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="provider" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getXmlStreamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getXmlStreamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCurrencyValue">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="provider" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="srcCurrency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dstCurrency" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCurrencyValueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="getCurrencyValueResult" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDollarValue">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="provider" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDollarValueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="getDollarValueResult" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getProviderDescription">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="provider" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getProviderDescriptionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getProviderDescriptionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getProviderTimestamp">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="providerId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="provider" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getProviderTimestampResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getProviderTimestampResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getProviderList">
+        <s:complexType />
+      </s:element>
+      <s:element name="getProviderListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getProviderListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataSet" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <!--<s:element ref="s:schema" />-->
+            <s:any />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="double" type="s:double" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getDataSetSoapIn">
+    <wsdl:part name="parameters" element="tns:getDataSet" />
+  </wsdl:message>
+  <wsdl:message name="getDataSetSoapOut">
+    <wsdl:part name="parameters" element="tns:getDataSetResponse" />
+  </wsdl:message>
+  <wsdl:message name="getXmlStreamSoapIn">
+    <wsdl:part name="parameters" element="tns:getXmlStream" />
+  </wsdl:message>
+  <wsdl:message name="getXmlStreamSoapOut">
+    <wsdl:part name="parameters" element="tns:getXmlStreamResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCurrencyValueSoapIn">
+    <wsdl:part name="parameters" element="tns:getCurrencyValue" />
+  </wsdl:message>
+  <wsdl:message name="getCurrencyValueSoapOut">
+    <wsdl:part name="parameters" element="tns:getCurrencyValueResponse" />
+  </wsdl:message>
+  <wsdl:message name="getDollarValueSoapIn">
+    <wsdl:part name="parameters" element="tns:getDollarValue" />
+  </wsdl:message>
+  <wsdl:message name="getDollarValueSoapOut">
+    <wsdl:part name="parameters" element="tns:getDollarValueResponse" />
+  </wsdl:message>
+  <wsdl:message name="getProviderDescriptionSoapIn">
+    <wsdl:part name="parameters" element="tns:getProviderDescription" />
+  </wsdl:message>
+  <wsdl:message name="getProviderDescriptionSoapOut">
+    <wsdl:part name="parameters" element="tns:getProviderDescriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="getProviderTimestampSoapIn">
+    <wsdl:part name="parameters" element="tns:getProviderTimestamp" />
+  </wsdl:message>
+  <wsdl:message name="getProviderTimestampSoapOut">
+    <wsdl:part name="parameters" element="tns:getProviderTimestampResponse" />
+  </wsdl:message>
+  <wsdl:message name="getProviderListSoapIn">
+    <wsdl:part name="parameters" element="tns:getProviderList" />
+  </wsdl:message>
+  <wsdl:message name="getProviderListSoapOut">
+    <wsdl:part name="parameters" element="tns:getProviderListResponse" />
+  </wsdl:message>
+  <wsdl:message name="getDataSetHttpGetIn">
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getDataSetHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="getXmlStreamHttpGetIn">
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getXmlStreamHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getCurrencyValueHttpGetIn">
+    <wsdl:part name="provider" type="s:string" />
+    <wsdl:part name="srcCurrency" type="s:string" />
+    <wsdl:part name="dstCurrency" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getCurrencyValueHttpGetOut">
+    <wsdl:part name="Body" element="tns:double" />
+  </wsdl:message>
+  <wsdl:message name="getDollarValueHttpGetIn">
+    <wsdl:part name="provider" type="s:string" />
+    <wsdl:part name="currency" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getDollarValueHttpGetOut">
+    <wsdl:part name="Body" element="tns:double" />
+  </wsdl:message>
+  <wsdl:message name="getProviderDescriptionHttpGetIn">
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderDescriptionHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderTimestampHttpGetIn">
+    <wsdl:part name="providerId" type="s:string" />
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderTimestampHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderListHttpGetIn" />
+  <wsdl:message name="getProviderListHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getDataSetHttpPostIn">
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getDataSetHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="getXmlStreamHttpPostIn">
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getXmlStreamHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getCurrencyValueHttpPostIn">
+    <wsdl:part name="provider" type="s:string" />
+    <wsdl:part name="srcCurrency" type="s:string" />
+    <wsdl:part name="dstCurrency" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getCurrencyValueHttpPostOut">
+    <wsdl:part name="Body" element="tns:double" />
+  </wsdl:message>
+  <wsdl:message name="getDollarValueHttpPostIn">
+    <wsdl:part name="provider" type="s:string" />
+    <wsdl:part name="currency" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getDollarValueHttpPostOut">
+    <wsdl:part name="Body" element="tns:double" />
+  </wsdl:message>
+  <wsdl:message name="getProviderDescriptionHttpPostIn">
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderDescriptionHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderTimestampHttpPostIn">
+    <wsdl:part name="providerId" type="s:string" />
+    <wsdl:part name="provider" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderTimestampHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getProviderListHttpPostIn" />
+  <wsdl:message name="getProviderListHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="CurrencyServerWebServiceSoap">
+    <wsdl:operation name="getDataSet">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the currencies in a Dataset for the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getDataSetSoapIn" />
+      <wsdl:output message="tns:getDataSetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getXmlStream">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the currencies in the XML format for the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getXmlStreamSoapIn" />
+      <wsdl:output message="tns:getXmlStreamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCurrencyValue">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Calculates the currency factor for specified currencies. Example: dstCurrency = f * srcCurrency</wsdl:documentation>
+      <wsdl:input message="tns:getCurrencyValueSoapIn" />
+      <wsdl:output message="tns:getCurrencyValueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getDollarValue">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the dollar value of the specified currency.</wsdl:documentation>
+      <wsdl:input message="tns:getDollarValueSoapIn" />
+      <wsdl:output message="tns:getDollarValueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderDescription">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the description of the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderDescriptionSoapIn" />
+      <wsdl:output message="tns:getProviderDescriptionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderTimestamp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the timestamp of the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderTimestampSoapIn" />
+      <wsdl:output message="tns:getProviderTimestampSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the list of all supported currency providers.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderListSoapIn" />
+      <wsdl:output message="tns:getProviderListSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="CurrencyServerWebServiceHttpGet">
+    <wsdl:operation name="getDataSet">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the currencies in a Dataset for the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getDataSetHttpGetIn" />
+      <wsdl:output message="tns:getDataSetHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getXmlStream">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the currencies in the XML format for the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getXmlStreamHttpGetIn" />
+      <wsdl:output message="tns:getXmlStreamHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCurrencyValue">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Calculates the currency factor for specified currencies. Example: dstCurrency = f * srcCurrency</wsdl:documentation>
+      <wsdl:input message="tns:getCurrencyValueHttpGetIn" />
+      <wsdl:output message="tns:getCurrencyValueHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getDollarValue">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the dollar value of the specified currency.</wsdl:documentation>
+      <wsdl:input message="tns:getDollarValueHttpGetIn" />
+      <wsdl:output message="tns:getDollarValueHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderDescription">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the description of the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderDescriptionHttpGetIn" />
+      <wsdl:output message="tns:getProviderDescriptionHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderTimestamp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the timestamp of the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderTimestampHttpGetIn" />
+      <wsdl:output message="tns:getProviderTimestampHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the list of all supported currency providers.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderListHttpGetIn" />
+      <wsdl:output message="tns:getProviderListHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="CurrencyServerWebServiceHttpPost">
+    <wsdl:operation name="getDataSet">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the currencies in a Dataset for the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getDataSetHttpPostIn" />
+      <wsdl:output message="tns:getDataSetHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getXmlStream">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the currencies in the XML format for the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getXmlStreamHttpPostIn" />
+      <wsdl:output message="tns:getXmlStreamHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCurrencyValue">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Calculates the currency factor for specified currencies. Example: dstCurrency = f * srcCurrency</wsdl:documentation>
+      <wsdl:input message="tns:getCurrencyValueHttpPostIn" />
+      <wsdl:output message="tns:getCurrencyValueHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getDollarValue">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the dollar value of the specified currency.</wsdl:documentation>
+      <wsdl:input message="tns:getDollarValueHttpPostIn" />
+      <wsdl:output message="tns:getDollarValueHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderDescription">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the description of the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderDescriptionHttpPostIn" />
+      <wsdl:output message="tns:getProviderDescriptionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderTimestamp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the timestamp of the specified provider.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderTimestampHttpPostIn" />
+      <wsdl:output message="tns:getProviderTimestampHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProviderList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves the list of all supported currency providers.</wsdl:documentation>
+      <wsdl:input message="tns:getProviderListHttpPostIn" />
+      <wsdl:output message="tns:getProviderListHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CurrencyServerWebServiceSoap" type="tns:CurrencyServerWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getDataSet">
+      <soap:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getDataSet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getXmlStream">
+      <soap:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getXmlStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrencyValue">
+      <soap:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getCurrencyValue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDollarValue">
+      <soap:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getDollarValue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderDescription">
+      <soap:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getProviderDescription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderTimestamp">
+      <soap:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getProviderTimestamp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderList">
+      <soap:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getProviderList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CurrencyServerWebServiceSoap12" type="tns:CurrencyServerWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getDataSet">
+      <soap12:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getDataSet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getXmlStream">
+      <soap12:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getXmlStream" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrencyValue">
+      <soap12:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getCurrencyValue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDollarValue">
+      <soap12:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getDollarValue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderDescription">
+      <soap12:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getProviderDescription" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderTimestamp">
+      <soap12:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getProviderTimestamp" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderList">
+      <soap12:operation soapAction="http://www.daenet.de/webservices/CurrencyServer/getProviderList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CurrencyServerWebServiceHttpGet" type="tns:CurrencyServerWebServiceHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="getDataSet">
+      <http:operation location="/getDataSet" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getXmlStream">
+      <http:operation location="/getXmlStream" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrencyValue">
+      <http:operation location="/getCurrencyValue" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDollarValue">
+      <http:operation location="/getDollarValue" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderDescription">
+      <http:operation location="/getProviderDescription" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderTimestamp">
+      <http:operation location="/getProviderTimestamp" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderList">
+      <http:operation location="/getProviderList" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CurrencyServerWebServiceHttpPost" type="tns:CurrencyServerWebServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="getDataSet">
+      <http:operation location="/getDataSet" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getXmlStream">
+      <http:operation location="/getXmlStream" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrencyValue">
+      <http:operation location="/getCurrencyValue" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDollarValue">
+      <http:operation location="/getDollarValue" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderDescription">
+      <http:operation location="/getProviderDescription" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderTimestamp">
+      <http:operation location="/getProviderTimestamp" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProviderList">
+      <http:operation location="/getProviderList" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CurrencyServerWebService">
+    <wsdl:port name="CurrencyServerWebServiceSoap" binding="tns:CurrencyServerWebServiceSoap">
+      <soap:address location="http://www.currencyserver.de/webservice/currencyserverwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CurrencyServerWebServiceSoap12" binding="tns:CurrencyServerWebServiceSoap12">
+      <soap12:address location="http://www.currencyserver.de/webservice/currencyserverwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CurrencyServerWebServiceHttpGet" binding="tns:CurrencyServerWebServiceHttpGet">
+      <http:address location="http://www.currencyserver.de/webservice/currencyserverwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CurrencyServerWebServiceHttpPost" binding="tns:CurrencyServerWebServiceHttpPost">
+      <http:address location="http://www.currencyserver.de/webservice/currencyserverwebservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

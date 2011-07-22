@@ -47,13 +47,15 @@
     <sca:binding.ws wsdlElement="http://webservicex.net/#wsdl.port(GlobalWeather/GlobalWeatherSoap)" wsdli:wsdlLocation="http://localhost:9020/WeatherService?wsdl"/>
   </sca:reference>
   <sca:reference name="Get_Exchange_Rate_ref" promote="Galaxy_System_orchestrationComponent/Get_Exchange_Rate_genService_ref">
-    <sca:binding.ws wsdlElement="http://www.daenet.de/webservices/CurrencyServer#wsdl.port(CurrencyServerWebService/CurrencyServerWebServiceSoap)" wsdli:wsdlLocation="http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?WSDL"/>
+    <!--<sca:binding.ws wsdlElement="http://www.daenet.de/webservices/CurrencyServer#wsdl.port(CurrencyServerWebService/CurrencyServerWebServiceSoap)" wsdli:wsdlLocation="http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?WSDL"/>-->
+    <sca:binding.ws wsdlElement="http://www.daenet.de/webservices/CurrencyServer#wsdl.port(CurrencyServerWebService/CurrencyServerWebServiceSoap)" wsdli:wsdlLocation="http://localhost:9020/CurrencyServerWebService?wsdl"/>
   </sca:reference>
   <!-- sca:reference name="Translate_Phrase_ref" promote="Galaxy_System_orchestrationComponent/Translate_Phrase_genService_ref">
     <sca:binding.ws wsdlElement="hhttp://api.microsofttranslator.com/v1/soap.svc#wsdl.port(Soap/BasicHttpBindingLanguageService)" wsdli:wsdlLocation="http://api.microsofttranslator.com/V1/Soap.svc?WSDL"/>
   </sca:reference -->
-  <sca:reference name="Translate_Phrase_ref" promote="Galaxy_System_orchestrationComponent/Translate_Phrase_genService_ref"><!-- pb ?? -->
-    <sca:binding.ws wsdlElement="http://api.microsofttranslator.com/v1/soap.svc#wsdl.port(SoapService/BasicHttpBindingLanguageService)" wsdli:wsdlLocation="http://api.microsofttranslator.com/V1/Soap.svc?WSDL"/>
+  <sca:reference name="Translate_Phrase_ref" promote="Galaxy_System_orchestrationComponent/Translate_Phrase_genService_ref">
+    <!--<sca:binding.ws wsdlElement="http://api.microsofttranslator.com/v1/soap.svc#wsdl.port(SoapService/BasicHttpBindingLanguageService)" wsdli:wsdlLocation="http://api.microsofttranslator.com/V1/Soap.svc?WSDL"/>-->
+    <sca:binding.ws wsdlElement="http://api.microsofttranslator.com/v1/soap.svc#wsdl.port(SoapService/BasicHttpBindingLanguageService)" wsdli:wsdlLocation="http://localhost:9020/SoapService?wsdl"/>
   </sca:reference>
   <!-- sca:reference name="Translate_Phrase_ref" promote="Galaxy_System_orchestrationComponent/Translate_Phrase_genService_ref">
     <sca:binding.ws uri="http://api.microsofttranslator.com/v1/soap.svc/LanguageService"/>
