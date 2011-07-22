@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0">
 	<!-- Base server URL -->
-	<xsl:variable name="baseServerUrl">http://localhost:7001/?</xsl:variable>
+	<xsl:variable name="baseServerUrl">http://localhost:7001/?</xsl:variable>-->
 	<!-- For Galaxy demo travel -->	
 	<!--<xsl:variable name="baseServerUrl">http://localhost:7002/?</xsl:variable>-->
 	
@@ -10,17 +10,21 @@
 			<head>
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         		<title>EasySOA Core - <xsl:value-of select="@name"/> Service</title>
-		        <link rel="stylesheet" href="../style.css"/>    
+		        <link rel="stylesheet" href="../style.css"></link>    
 			</head>
 			<body>
 	  			<!-- Web service name -->
 		      	<div id="headerLight">
-			        <div id="headerBreadcrumbs"><a href="../index.html">EasySOA</a> > <a href="index.html">Light</a> > <b><xsl:value-of select="@name"/></b></div>
-			        <b><xsl:value-of select="@name"/></b> Service
+		      		<div id="headerLightContents">
+				        <div id="headerBreadcrumbs"><a href="../index.html">EasySOA</a> > <a href="index.html">Light</a> > <b><xsl:value-of select="@name"/></b></div>
+				        <b><xsl:value-of select="@name"/></b> Service
+			        </div>
 		      </div>
             	<div id="container">
 		        	<h1>Service location</h1>
-	        		<p><xsl:call-template name="service-address" mode="header"/></p>
+	        		<p><xsl:call-template name="serviceAddress">
+	        			<xsl:with-param name="address" select="wsdl:service/wsdl:port/soap:address/@location" />
+	        		</xsl:call-template></p>
 					<!-- Web service endpoint-->
 					<xsl:key name="baseElements" match="xsd:element" use="@type"/>
 					<xsl:key name="complexTypes" match="xsd:complexType" use="@name"/>
@@ -31,8 +35,9 @@
   	</xsl:template>
 
 	<!-- Header  -->
-  	<xsl:template name="service-address" mode="header">
-  		<xsl:value-of select="wsdl:service/wsdl:port/soap:address/@location"/>
+  	<xsl:template name="serviceAddress">
+		<xsl:param name="address"/>
+  		<a href="{$address}"><xsl:value-of select="$address" /></a>
   	</xsl:template>
 
   	<!-- Form fields -->  	
@@ -185,8 +190,8 @@
 				  <xsl:with-param name="messageName" select="$outMessName"/>
 				  <xsl:with-param name="readOnly" select="true()"/>
 			  </xsl:call-template>
-			  
-  		</form>
+			
+  		</form><br />
 		<input type="button" value="Submit" OnClick="submit{$operationName}Form('{$operationName}');"/>		
   	</xsl:template>
 

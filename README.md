@@ -30,7 +30,7 @@ You can build the whole repository by typing this command line from the root:
 
 `mvn clean install`
 
-Launch `distrib/pafServices/start-pafServices.sh` then `distrib/frascati/start-lightProxy.sh`, and you will be able to use the demo from the generated HTML page `PureAirFlowers.out.xml.html` in the `serviceUiScaffolder` folder. 
+Launch `distrib/pafServices/start-pafServices.sh` then `distrib/frascati/start-lightProxy.sh`, and you will be able to use the demo from the pre-generated HTML page `serviceUiScaffolder/html/PureAirFlowers.html`. 
 
 The CXF server exposes a SOAP web service available at "http://localhost:9010/PureAirFlowers?wsdl". The proxy talks with the cxf server and expose a rest service at "http://localhost:7001/". The CXF server must be launched before the Frascati proxy.
 

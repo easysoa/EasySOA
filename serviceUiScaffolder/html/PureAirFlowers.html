@@ -3,14 +3,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>EasySOA Core - PureAirFlowers Service</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<div id="header">
-<b>PureAirFlowers</b> Service</div>
+<div id="headerLight">
+<div id="headerLightContents">
+<div id="headerBreadcrumbs">
+<a href="../index.html">EasySOA</a> &gt; <a href="index.html">Light</a> &gt; <b>PureAirFlowers</b>
+</div>
+<b>PureAirFlowers</b> Service
+			        </div>
+</div>
 <div id="container">
 <h1>Service location</h1>
-<p>http://192.168.2.157:9010/PureAirFlowers</p>
+<p>
+<a href="http://192.168.2.157:9010/PureAirFlowers">http://192.168.2.157:9010/PureAirFlowers</a>
+</p>
   
 
 
@@ -40,10 +48,31 @@
 <h1>Operation <b>getOrdersNumber</b>
 </h1>
 <script type="text/javascript">
+					function getElementsByClass(searchClass,node,tag) {
+						var classElements = new Array();
+						if ( node == null )
+							node = document;
+						if ( tag == null )
+							tag = '*';
+						var els = node.getElementsByTagName(tag);
+						var elsLen = els.length;
+						var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+						
+						for (i = 0, j = 0; i < elsLen; i++) {
+							if ( pattern.test(els[i].className) ) {
+								classElements[j] = els[i];
+								j++;
+							}
+						}
+						
+						return classElements;
+					}
+
 					function submitgetOrdersNumberForm(form){ 
     					var xhr;
     					var op = "getOrdersNumber"; 
-    					document.getOrdersNumber.ordersNumber.value = "Sending request ...";
+    					//document.getOrdersNumber.ordersNumber.value = "Sending request ...";
+						getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Sending request ...";
 						if(window.XMLHttpRequest) // Firefox and others
 						   xhr = new XMLHttpRequest(); 
 						else if(window.ActiveXObject){ // Internet Explorer 
@@ -57,15 +86,18 @@
 						   alert("Your browser does not support XMLHTTPRequest objects ..."); 
 						   xhr = false; 
 						}
-						document.getOrdersNumber.ordersNumber.value = "Getting response ...";
+						//document.getOrdersNumber.ordersNumber.value = "Getting response ...";
+						getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Getting response ...";
  					    xhr.onreadystatechange  = function(){ 
          					//alert("xhr.readyState : " + xhr.readyState);
          					if(xhr.readyState  == 4){
          						//alert("xhr.status : " + xhr.status + " ; xhr.responseText : " + xhr.responseText);
               					if(xhr.status == 200){ 
-                 					document.getOrdersNumber.ordersNumber.value = xhr.responseText; 
+                 					//document.getOrdersNumber.ordersNumber.value = xhr.responseText;
+									getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = xhr.responseText;
               					} else { 
-                 					document.getOrdersNumber.ordersNumber.value = "Error code " + xhr.status;
+                 					//document.getOrdersNumber.ordersNumber.value = "Error code " + xhr.status;
+									getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Error code " + xhr.status;
          						}
          					}
     					};
@@ -102,7 +134,7 @@
 <th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 </tr>
 <tr>
-<td>xs:string</td><td>ClientId</td><td><input type="text" name="ClientId"></td>
+<td>xs:string</td><td>ClientId</td><td><input type="text" name="ClientId" class="inputField"></td>
 </tr>
 </table>
 <h2>Output fields</h2>
@@ -112,10 +144,11 @@
 <th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 </tr>
 <tr>
-<td>xs:int</td><td>ordersNumber</td><td><input type="text" name="ordersNumber" disabled=""></td>
+<td>xs:int</td><td>ordersNumber</td><td><input type="text" name="ordersNumber" disabled="" id="return_ordersNumber" class="outputField"></td>
 </tr>
 </table>
 </form>
+<br>
 <input type="button" value="Submit" OnClick="submitgetOrdersNumberForm('getOrdersNumber');">
   
   
