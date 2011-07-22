@@ -14,22 +14,34 @@ This demo works with several technologies :
 
 *NOTE: This demo code is neither fully functional nor stable.*
 
+## Prerequisites
+
+In order to launch the REST/SOAP proxy, you will need to get a 1.4 version of FraSCAti, and extract it in the `distrib/frascati` folder.
+
 ## Execution
 
 There are three main part to launch separately :
 
- * SOAP CXF server (first)
- * ServiceUiScaffolder proxy (second)
- * HTML form (third)
+ * `pureAirFlowers`: SOAP CXF server (first)
+ * `frascatiProxy`: ServiceUiScaffolder proxy (second)
+ * `serviceUiScaffolder`: HTML form (third)
 
-Check the readme's for each project to get installation and execution instructions.
+You can build the whole repository by typing this command line from the root:
+
+`mvn clean install`
+
+Launch `distrib/pafServices/start-pafServices.sh` then `distrib/frascati/start-lightProxy.sh`, and you will be able to use the demo from the generated HTML page `PureAirFlowers.out.xml.html` in the `serviceUiScaffolder` folder. 
+
+The CXF server exposes a SOAP web service available at "http://localhost:9010/PureAirFlowers?wsdl". The proxy talks with the cxf server and expose a rest service at "http://localhost:7001/". The CXF server must be launched before the Frascati proxy.
+
+Check the readmes for each project to get more details on installation and execution instructions.
 
 ## About the sources
 
 The code is split into 3 main projects and 2 optional projects :
 
- * `pureAirFlowers-easysoa-demo-cxf-server`: The SOAP CXF server.
- * `pureAirFlowers-ServiceUiScaffolderProxy`: The ServiceUiScaffolder proxy project.
- * `pureAirFlowers-ServiceUiScaffolder`: The WSDL2HTML xslt transformation project.
- * `pureAirFlowers-autoRearmFuseIntent`: The autorearm intent project.
- * `pureAirFlowers-logIntent`: The log intent project.
+ * `pureAirFlowers`: The SOAP CXF server.
+ * `serviceUiScaffolder`: The WSDL2HTML xslt transformation project.
+ * `frascatiProxy/proxy`: The ServiceUiScaffolder proxy project.
+ * `frascatiProxy/autoRearmFuseIntent` (optional): The autorearm intent project.
+ * `frascatiProxy/logIntent` (optional): The log intent project.
