@@ -12,6 +12,6 @@
   </component>
   <service name="ProxyService" promote="Proxy/restInterface">
     <interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/>
-    <frascati:binding.rest uri="http://localhost:7001/"/>
+    <frascati:binding.rest uri="http://localhost:7002/"/>
   </service>
 </composite>
