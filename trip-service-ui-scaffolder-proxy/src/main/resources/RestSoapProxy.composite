@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" name="RestSoapProxy">
+  <component name="Proxy">
+    <implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl"/>
+    <service name="restInterface">
+      <interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/>
+    </service>
+    <reference name="ws">
+      <interface.java interface="fr.inria.galaxy.j1.scenario1.TripPortType"/>
+      <binding.ws instance:wsdlLocation="http://localhost:9000/GalaxyTrip?wsdl" name="webService" wsdlElement="http://scenario1.j1.galaxy.inria.fr/#wsdl.port(Trip/TripPort)"/>
+    </reference>
+  </component>
+  <service name="ProxyService" promote="Proxy/restInterface">
+    <interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/>
+    <frascati:binding.rest uri="http://localhost:7001/"/>
+  </service>
+</composite>

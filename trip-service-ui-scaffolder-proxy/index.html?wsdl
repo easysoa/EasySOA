@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="RestSoapProxy" targetNamespace="http://proxy.sca.openwide.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://proxy.sca.openwide.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://cxf.apache.org/arrays" xmlns:tns="http://cxf.apache.org/arrays" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="ArrayOfAnyType">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="anyType" nillable="true" type="xsd:anyType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
+<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://core.rs.ws.javax" xmlns:ns0="http://proxy.sca.openwide.com/" xmlns:ns1="http://cxf.apache.org/arrays" xmlns:tns="http://core.rs.ws.javax" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import namespace="http://proxy.sca.openwide.com/"/>
+  <xsd:import namespace="http://cxf.apache.org/arrays"/>
+  <xsd:complexType name="PathSegment">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="matrixParameters" nillable="true" type="ns0:string2stringMap"/>
+      <xsd:element minOccurs="0" name="path" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType abstract="true" name="UriBuilder">
+    <xsd:sequence/>
+  </xsd:complexType>
+  <xsd:complexType name="UriInfo">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="absolutePath" nillable="true" type="xsd:anyURI"/>
+      <xsd:element minOccurs="0" name="absolutePathBuilder" nillable="true" type="tns:UriBuilder"/>
+      <xsd:element minOccurs="0" name="baseUri" nillable="true" type="xsd:anyURI"/>
+      <xsd:element minOccurs="0" name="baseUriBuilder" nillable="true" type="tns:UriBuilder"/>
+      <xsd:element minOccurs="0" name="matchedResources" nillable="true" type="ns1:ArrayOfAnyType"/>
+      <xsd:element minOccurs="0" name="matchedURIs" nillable="true" type="ns0:ArrayOfString"/>
+      <xsd:element minOccurs="0" name="path" nillable="true" type="xsd:string"/>
+      <xsd:element minOccurs="0" name="pathParameters" nillable="true" type="ns0:string2stringMap"/>
+      <xsd:element minOccurs="0" name="pathSegments" nillable="true" type="tns:ArrayOfPathSegment"/>
+      <xsd:element minOccurs="0" name="queryParameters" nillable="true" type="ns0:string2stringMap"/>
+      <xsd:element minOccurs="0" name="requestUri" nillable="true" type="xsd:anyURI"/>
+      <xsd:element minOccurs="0" name="requestUriBuilder" nillable="true" type="tns:UriBuilder"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType abstract="true" name="Response">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="entity" nillable="true" type="xsd:anyType"/>
+      <xsd:element minOccurs="0" name="metadata" nillable="true" type="ns0:string2anyTypeMap"/>
+      <xsd:element minOccurs="0" name="status" type="xsd:int"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ArrayOfPathSegment">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="PathSegment" nillable="true" type="tns:PathSegment"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Request">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="method" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
+<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://proxy.sca.openwide.com/" xmlns:ns0="http://core.rs.ws.javax" xmlns:tns="http://proxy.sca.openwide.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import namespace="http://core.rs.ws.javax"/>
+  <xsd:complexType name="string2stringMap">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="entry">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="key" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="value" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ArrayOfString">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="string" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="string2anyTypeMap">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="entry">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="key" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="value" type="xsd:anyType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="redirectRequests" type="tns:redirectRequests"/>
+  <xsd:complexType name="redirectRequests">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="arg0" type="ns0:UriInfo"/>
+      <xsd:element minOccurs="0" name="arg1" type="ns0:Request"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="redirectRequestsResponse" type="tns:redirectRequestsResponse"/>
+  <xsd:complexType name="redirectRequestsResponse">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="return" type="ns0:Response"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="redirectRequests">
+    <wsdl:part element="tns:redirectRequests" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="redirectRequestsResponse">
+    <wsdl:part element="tns:redirectRequestsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="RestSoapProxyPortType">
+    <wsdl:operation name="redirectRequests">
+      <wsdl:input message="tns:redirectRequests" name="redirectRequests">
+    </wsdl:input>
+      <wsdl:output message="tns:redirectRequestsResponse" name="redirectRequestsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RestSoapProxySoapBinding" type="tns:RestSoapProxyPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="redirectRequests">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="redirectRequests">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="redirectRequestsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RestSoapProxy">
+    <wsdl:port binding="tns:RestSoapProxySoapBinding" name="RestSoapProxyPort">
+      <soap:address location="http://localhost:7001/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

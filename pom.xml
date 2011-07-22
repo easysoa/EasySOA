@@ -58,6 +58,8 @@
        <!--<module>meteo-sca-backup</module>-->
        <module>easysoa-meteo-sca-backup</module>
        <!--<module>translate-backup</module>-->
+       <module>trip</module>
+       <module>trip-service-ui-scaffolder-proxy</module>
   </modules>
 
 </project>
