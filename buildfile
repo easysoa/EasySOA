@@ -196,7 +196,7 @@ task :packageall do # TODO Less messy code
   puts "  * Needed libraries..."
   cp FileList[project(TRIP).base_dir+"/currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(TRIP).base_dir+"/meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(TRIP).base_dir+"/summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(TRIP).base_dir+"/summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps' # Conflicting with the Light trip proxy if put in lib/
   cp FileList[project(TRIP).base_dir+"/translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   puts "  * FraSCAti applications & PAF services..."
   cp_r FileList[project(PAF).base_dir+'/distrib/*'], PACKAGING_OUTPUT_PATH
