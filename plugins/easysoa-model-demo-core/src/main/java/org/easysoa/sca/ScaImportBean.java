@@ -49,7 +49,7 @@ public class ScaImportBean {
 	
 	@Create
 	public void init() throws ClientException {
-        CacheHelper.invalidateVcsCache();
+        CacheHelper.invalidateVcsCache(); // FIXME: Doesn't work?
 		compositeFile = null;
 		documentManager = navigationContext.getOrCreateDocumentManager();
 		appliImpls = getAllAppliImplsAsSelectItems(documentManager);

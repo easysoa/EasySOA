@@ -128,7 +128,7 @@
 			  <div class="panel-wrapper">
 				  <h2 class="title">For the Business user</h2>
           
-          <p><b>Note:</b> Before using this demo, please set your browser's proxy to <b>localhost:8081</b> and remove any proxy exceptions (unnecessary if you're using our virtual machine). If you're asked for a user/password, just type <b>Administrator</b> for both.</p>
+          <p><b>Note:</b> Before using this demo, please set your browser's proxy to <b>localhost:8081</b> and remove any proxy exceptions (unless you're using our virtual machine). If you're asked for a user/password, just type <b>Administrator</b> for both.</p>
            
           <h2><div>Step 1</div> Discover services in your intranet</h2>
           
@@ -145,10 +145,12 @@
           <p>Now you can use this service to get business data or do a business operation! While you're on the service registry, notice the "Call it!" button on your service page. Click it. The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
           
           <p>This call is actually made through a proxy layer that prevents from excessive use. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
+          
+          <p>This call is actually made in an SOA sandbox that proxies, monitors and protects actual services. For instance, it prevents them from excessive use. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
 
           <h2>Conclusion</h2>
 
-          <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from true proxy generation to an all-in-one architecture. Our next goals also include REST services compatibility, a cloud-based solution, services monitoring...</p>
+          <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from true proxy generation to an all-in-one architecture. For more advanced features, including services monitoring and architecture files import, please see the second demo scenario.</p>
 
         </div>
       </div>
@@ -160,13 +162,13 @@
           
           <h2><div>Step 1</div> Import the SOA architecture</h2>
           
-          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SCA architecture into the service registry. In order to do that, there is a feature called "<i>SCA import</i>" that is able to analyze the contents of the SOA components definition. From the service registry, create a new application by going to the "<i>Service registry</i>" document, choosing "<i>New Application Implementation</i>", and create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), select the newly created application for the import, and go!</p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, there is a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" that is able to analyze the contents of the SOA components definition. From the service registry, create a new application by going to the "<i>Service registry</i>" document, choosing "<i>New Application Implementation</i>", and create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), select the newly created application for the import, and go!</p>
           
           <h2><div>Step 2</div> Explore the services</h2>
           
           <p>You can now browse through various services in the left menu. Only two of them are in the "Smart Travel" application, since others are external services only referenced from your application. All the imported data can be useful to help developers and architecte, even more once documentation files are attached to the services for example (you can do it by editing any document).</p>
           
-          <p>Now, what if a member of the IT staff wants to monitor these services?</p>
+          <p>Now, what if a member of the IT staff wants to know what really happens on the network?</p>
           
           <h2><div>Step 3</div> SOA Monitoring</h2>
           

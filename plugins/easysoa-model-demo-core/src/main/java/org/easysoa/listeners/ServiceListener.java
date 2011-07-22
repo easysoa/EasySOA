@@ -198,11 +198,17 @@ public class ServiceListener implements EventListener {
             if (fileUrl != null) {
                 doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
             }
+            
             // EasySOA Light 
             // XXX: Hard-coded PureAirFlowers Light URL
             if (url.contains("PureAirFlowers")) { 
                 doc.setProperty(SCHEMA, PROP_LIGHTURL,
-                        "http://localhost:8083/easysoa/light/paf.html");
+                        "http://localhost:8083/easysoa/light/PureAirFlowers.html");
+            }
+            // XXX: Hard-coded Smart Travel Light URL
+            else if (url.contains("GalaxyTrip")) {
+                doc.setProperty(SCHEMA, PROP_LIGHTURL,
+                        "http://localhost:8083/easysoa/light/GalaxyTrip.html");
             }
             
             session.save();

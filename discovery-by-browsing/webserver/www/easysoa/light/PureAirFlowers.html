@@ -2,32 +2,38 @@
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>EasySOA Core - Trip Service</title>
-<link rel="stylesheet" href="style.css">
+<title>EasySOA Core - PureAirFlowers Service</title>
+<link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<div id="header">
-<b>Trip</b> Service</div>
+<div id="headerLight">
+<div id="headerLightContents">
+<div id="headerBreadcrumbs">
+<a href="../index.html">EasySOA</a> &gt; <a href="index.html">Light</a> &gt; <b>PureAirFlowers</b>
+</div>
+<b>PureAirFlowers</b> Service
+			        </div>
+</div>
 <div id="container">
 <h1>Service location</h1>
-<p>http://localhost:9000/GalaxyTrip</p>
+<p>
+<a href="http://192.168.2.157:9010/PureAirFlowers">http://192.168.2.157:9010/PureAirFlowers</a>
+</p>
   
 
-  
-  
-    
-      
-      
-      
-    
-  
-  
-  
+
+
+
     
       
     
   
 
+    
+      
+    
+  
+
   
   
     
@@ -39,7 +45,7 @@
   
   
     
-<h1>Operation <b>process</b>
+<h1>Operation <b>getOrdersNumber</b>
 </h1>
 <script type="text/javascript">
 					function getElementsByClass(searchClass,node,tag) {
@@ -61,13 +67,12 @@
 						
 						return classElements;
 					}
-					
-					function submitprocessForm(form){ 
+
+					function submitgetOrdersNumberForm(form){ 
     					var xhr;
-    					var op = "process"; 
-    					//document.process.ordersNumber.value = "Sending request ...";
-						getElementsByClass('outputField', document.process, '*')[0].value = "Sending request ...";    					
-    					
+    					var op = "getOrdersNumber"; 
+    					//document.getOrdersNumber.ordersNumber.value = "Sending request ...";
+						getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Sending request ...";
 						if(window.XMLHttpRequest) // Firefox and others
 						   xhr = new XMLHttpRequest(); 
 						else if(window.ActiveXObject){ // Internet Explorer 
@@ -81,19 +86,18 @@
 						   alert("Your browser does not support XMLHTTPRequest objects ..."); 
 						   xhr = false; 
 						}
-						//document.process.ordersNumber.value = "Getting response ...";
-						getElementsByClass('outputField', document.process, '*')[0].value = "Getting response ...";
-						
+						//document.getOrdersNumber.ordersNumber.value = "Getting response ...";
+						getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Getting response ...";
  					    xhr.onreadystatechange  = function(){ 
          					//alert("xhr.readyState : " + xhr.readyState);
          					if(xhr.readyState  == 4){
          						//alert("xhr.status : " + xhr.status + " ; xhr.responseText : " + xhr.responseText);
               					if(xhr.status == 200){ 
-                 					//document.process.ordersNumber.value = xhr.responseText;
-                 					getElementsByClass('outputField', document.process, '*')[0].value = xhr.responseText;
+                 					//document.getOrdersNumber.ordersNumber.value = xhr.responseText;
+									getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = xhr.responseText;
               					} else { 
-                 					//document.process.ordersNumber.value = "Error code " + xhr.status;
-                 					getElementsByClass('outputField', document.process, '*')[0].value = "Error code " + xhr.status;
+                 					//document.getOrdersNumber.ordersNumber.value = "Error code " + xhr.status;
+									getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Error code " + xhr.status;
          						}
          					}
     					};
@@ -115,14 +119,14 @@
 							}
 						}
 						params = params + "&operation=" + op;						
-						//alert("url = " + url + params);
 						
+						//alert("url = " + url + params);
 					   	xhr.open("GET", url + params, true); 
    						xhr.send(null); 
 					}
 				
 				</script>
-<form name="process" method="get" action="" enctype="text/plain">
+<form name="getOrdersNumber" method="get" action="" enctype="text/plain">
 <h2>Input fields</h2>
     
 <table>
@@ -130,13 +134,7 @@
 <th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 </tr>
 <tr>
-<td>xsd:string</td><td>arg0</td><td><input type="text" name="arg0" id="arg0" class="inputField"></td>
-</tr>
-<tr>
-<td>xsd:string</td><td>arg1</td><td><input type="text" name="arg1" id="arg1" class="inputField"></td>
-</tr>
-<tr>
-<td>xsd:double</td><td>arg2</td><td><input type="text" name="arg2" id="arg2" class="inputField"></td>
+<td>xs:string</td><td>ClientId</td><td><input type="text" name="ClientId" class="inputField"></td>
 </tr>
 </table>
 <h2>Output fields</h2>
@@ -146,11 +144,12 @@
 <th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 </tr>
 <tr>
-<td>xsd:string</td><td>return</td><td><input type="text" name="return" disabled="" id="return_return" class="outputField"></td>
+<td>xs:int</td><td>ordersNumber</td><td><input type="text" name="ordersNumber" disabled="" id="return_ordersNumber" class="outputField"></td>
 </tr>
 </table>
 </form>
-<input type="button" value="Submit" OnClick="submitprocessForm('process');">
+<br>
+<input type="button" value="Submit" OnClick="submitgetOrdersNumberForm('getOrdersNumber');">
   
   
     
