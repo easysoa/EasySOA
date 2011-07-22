@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>easysoa-pureAirFlowers</groupId>
+	<artifactId>pureAirFlowers-proxy</artifactId>
+	<name>PureAirFlowers Proxy</name>
+	<version>0.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>autoRearmFuseIntent</module>
+		<module>logIntent</module>
+		<module>proxy</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+								<mkdir dir="../distrib/frascati-proxy/lib" />
+								<copy todir="../distrib/frascati-proxy/lib" flatten="true" overwrite="true">
+									<fileset dir=".">
+										<filename name="*/target/*.jar" />
+										<exclude name="proxy/target/*.jar" />
+									</fileset>
+								</copy>
+								<mkdir dir="../distrib/frascati-proxy/sca-apps" />
+								<copy todir="../distrib/frascati-proxy/sca-apps" flatten="true" overwrite="true">
+									<fileset dir=".">
+										<filename name="proxy/target/*.jar" />
+									</fileset>
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
