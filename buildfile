@@ -50,11 +50,7 @@ end
 
 DBBROWSING = 'easysoa:easysoa-model-demo:discovery-by-browsing'
 MODEL = 'easysoa:easysoa-model-demo:plugins'
-PAF_CXF = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-easysoa-demo-cxf-server'
-PAF_PROXY = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-ServiceUiScaffolderProxy'
-PAF_RELEASE = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-Release'
-PAF_LOGINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-logIntent'
-PAF_FUSINTENT = 'easysoa:easysoa-demo-pureAirFlowers-proxy:pureAirFlowers-autoRearmFuseIntent'
+PAF = 'easysoa:easysoa-demo-pureAirFlowers-proxy'
 TRIP = 'easysoa:EasySOADemoTravel'
 TRIP_METEO_BACKUP = 'easysoa:EasySOADemoTravel:easysoa-meteo-sca-backup'
 ESPER = 'easysoa:esper-frascati-poc'
@@ -92,19 +88,9 @@ define 'easysoa', :base_dir => '../' do
   end
   
   define 'easysoa-demo-pureAirFlowers-proxy' do
-  
-    define 'pureAirFlowers-Release' do
-      task :mvn do
-        maven(['clean', 'install'], project)
-      end
+    task :mvn do
+      maven(['clean', 'install'], project)
     end
-    
-    define 'pureAirFlowers-easysoa-demo-cxf-server'
-    define 'pureAirFlowers-ServiceUiScaffolderProxy'
-    define 'pureAirFlowers-BinaryBuildComponents'
-    define 'pureAirFlowers-logIntent'
-    define 'pureAirFlowers-autoRearmFuseIntent'
-    
   end
   
   define 'EasySOADemoTravel' do
@@ -144,7 +130,7 @@ desc "Cleans all Nuxeo plugins"
 task :nx_clean => [MODEL+':clean']
              
 desc "Builds PAF CXF server and service proxy"
-task :paf_mvn => [PAF_RELEASE+':mvn']
+task :paf_mvn => [PAF+':mvn']
 
 task :esper => [ESPER+':mvn']
 
@@ -212,10 +198,8 @@ task :packageall do # TODO Less messy code
   cp FileList[project(TRIP).base_dir+"/meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(TRIP).base_dir+"/summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(TRIP).base_dir+"/translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(PAF_LOGINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(PAF_FUSINTENT).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  puts "  * FraSCAti applications..."
-  cp FileList[project(PAF_PROXY).base_dir+'/target/*.jar'].to_s, PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  puts "  * FraSCAti applications & PAF services..."
+  cp_r FileList[project(PAF).base_dir+'/distrib/*'], PACKAGING_OUTPUT_PATH
   cp FileList[project(ESPER).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(TRIP).base_dir+"/trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   puts "  * Meteo backup service..."
@@ -223,13 +207,6 @@ task :packageall do # TODO Less messy code
   system 'unzip', '-q', '-o', FileList[project(TRIP).base_dir+'/easysoa-meteo-sca-backup/target/*-bin.zip'].to_s # XXX Linux-dependent
   cp_r FileList['easysoa-meteo-sca-backup*/*'], PACKAGING_OUTPUT_PATH+'/meteoBackup/'
   rm_rf FileList['easysoa-meteo-sca-backup*']
-  puts "  * PureAirFlowers services..."
-  mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
-  begin
-    cp FileList[project(PAF_CXF).base_dir+'/target/*with-dependencies.jar'].to_s, PACKAGING_OUTPUT_PATH+'/pafServices/'
-  rescue Exception
-    raise "PureAirFlowers CXF server JAR seems missing"
-  end
   
   # Copying Nuxeo
   puts "Copying service registry (Nuxeo)..."
