@@ -58,8 +58,8 @@
 						<phase>install</phase>
 						<configuration>
 							<tasks>
-								<mkdir dir="../distrib/cxf-server" />
-								<copy todir="../distrib/cxf-server" flatten="true" overwrite="true">
+								<mkdir dir="../distrib/pafServices" />
+								<copy todir="../distrib/pafServices" flatten="true" overwrite="true">
 									<fileset dir=".">
 										<filename name="target/*-jar-with-dependencies.jar" />
 									</fileset>

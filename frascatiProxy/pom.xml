@@ -27,15 +27,15 @@
 						<phase>install</phase>
 						<configuration>
 							<tasks>
-								<mkdir dir="../distrib/frascati-proxy/lib" />
-								<copy todir="../distrib/frascati-proxy/lib" flatten="true" overwrite="true">
+								<mkdir dir="../distrib/frascati/lib" />
+								<copy todir="../distrib/frascati/lib" flatten="true" overwrite="true">
 									<fileset dir=".">
 										<filename name="*/target/*.jar" />
 										<exclude name="proxy/target/*.jar" />
 									</fileset>
 								</copy>
-								<mkdir dir="../distrib/frascati-proxy/sca-apps" />
-								<copy todir="../distrib/frascati-proxy/sca-apps" flatten="true" overwrite="true">
+								<mkdir dir="../distrib/frascati/sca-apps" />
+								<copy todir="../distrib/frascati/sca-apps" flatten="true" overwrite="true">
 									<fileset dir=".">
 										<filename name="proxy/target/*.jar" />
 									</fileset>
