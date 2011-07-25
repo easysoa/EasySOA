@@ -45,7 +45,6 @@
     <!-- ======= -->
 
     <modules>
-       <module>trip</module>
        <module>meteo-model</module>
        <module>summary-model</module>
        <module>translate-model</module>
@@ -56,7 +55,7 @@
        <module>create-summary-proactive</module>
        <module>currency-sca-backup</module>
        <!--<module>meteo-sca-backup</module>-->
-       <module>easysoa-meteo-sca-backup</module>
+       <module>travel-services-backup</module>
        <!--<module>translate-backup</module>-->
        <module>trip</module>
        <module>trip-service-ui-scaffolder-proxy</module>
