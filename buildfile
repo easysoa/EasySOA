@@ -223,7 +223,7 @@ task :packageall do # TODO Less messy code
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux-dependent
   cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/lib/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib'
   cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/plugins/target/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/plugins' # TODO Check that bundles exist
-  cp_r FileList[project('easysoa:easysoa-model-demo').base_dir+'/exemples/*'], PACKAGING_OUTPUT_PATH+'/exemples'
+  cp_r FileList[project('easysoa:easysoa-model-demo').base_dir+'/examples/*'], PACKAGING_OUTPUT_PATH+'/examples'
   rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/'
   rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/'
   rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/'
@@ -251,7 +251,7 @@ task :tgz do
   # Tar
   puts "Compressing..."
   system 'tar -zcf ' + PACKAGING_OUTPUT_ARCHIVE + ' -C ' + PACKAGING_OUTPUT_PATH + \
-    ' dbbProxy frascati travelBackup serviceRegistry web ' + \
+    ' dbbProxy examples frascati node pafServices serviceRegistry travelBackup web ' + \
     FileList["packaging-files/*"].sub('packaging-files/', '').to_s  # XXX Linux-dependent
   
   puts "EasySOA successfully compressed in "+PACKAGING_OUTPUT_ARCHIVE
