@@ -103,11 +103,11 @@
     </p>
     
     <p>
-      <a href="http://127.0.0.1:8080/nuxeo">
+      <a href="http://localhost:8080/nuxeo">
         <img src="img/Core100.png" height="50" style="vertical-align: middle; margin-top: -4px" alt="" />
          &nbsp; Service registry
       </a><br />
-      <div>Based on Nuxeo, the registry gathers all valuable information on your services.</div>
+      <div>Based on Nuxeo DM, the registry gathers all valuable information on your services.</div>
     </p>
     
     <p>
@@ -121,10 +121,9 @@
     
     <h1>External links</h1>
     
-    <h3><a href="http://www.github.com/easysoa" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Github organization <img src="img/link.png" /></a></h3>
-    <h3><a href="https://github.com/easysoa/easysoa-model-demo/wiki" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Wiki on Github <img src="img/link.png" /></a></h3>
-    <h3><a href="http://www.slideshare.net/mdutoo" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Slideshare presentations <img src="img/link.png" /></a></h3>
-    <h3><a href="http://www.systematic-paris-region.org/en/projets/easysoa" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">The project on System@tic Paris <img src="img/link.png" /></a></h3>
+    <h3><a href="http://www.easysoa.org" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Website <img src="img/link.png" /></a></h3>
+    <h3><a href="https://github.com/easysoa/easysoa-model-demo/wiki" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Documentation <img src="img/link.png" /></a></h3>
+    <h3><a href="http://www.github.com/easysoa" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Github<img src="img/link.png" /></a></h3>
     
   </div>
   <div id="presentation">
@@ -145,19 +144,19 @@
            
           <h2><div>Step 1</div> Discover services in your intranet</h2>
           
-          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/index.html">Service discovery</a>. From there, as you visit pages, you may see a service appearing in the left menu, meaning that EasySOA just found it. You're then two clicks away to register this service: just select "PureAirFlowers Orders", then click "Save Service", and you're done!</p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/index.html">Service Discovery</a>. From there, as you visit pages, you may see a service appearing in the left menu, meaning that EasySOA has just found it. You're then two clicks away to register this service: just select "PureAirFlowers Orders", then click "Save Service", and you're done!</p>
 
           <h2><div>Step 2</div> Explore all services</h2>
 
-          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/The-service-registry">More on the service registry</a>Now, let's have a look to our registered service, that you will find in the <a href="http://127.0.0.1:8080/nuxeo">Service registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will find here the service you just registered. If you click on it, all metadata are now here, business and technical. You may override most of these metadata, and fill new ones if you want to document your service.</p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/The-service-registry">More on the service registry</a>Now, let's have a look to our registered service, that you will find in the <a href="http://localhost:8080/nuxeo">Service Registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will find here the service you've just registered. If you click on it, all metadata are now here, business and technical. You may override most of these metadata, and fill new ones if you want to document your service.</p>
           
-          <p>There are various ways to browse your services: other than the default navigation tree, there is of course a search form, but also what is called "virtual navigations". These can be accessed from the 3 last tabs on the left menu: you can use them to browse through the services in various fashions, each one being more appropriate for a specific user profile (business user, developer, administrator). In the long term, we plan on making the interface fully adapted to each type of user, hiding for exemple the technical metadata from the business users.</p>
+          <p>There are various ways to browse services: other than the default navigation tree, there is of course a search form, but also what is called "virtual navigations". These can be accessed from the 3 last tabs on the left menu: you can use them to browse through services in various fashions, each one being more appropriate for a specific user profile (business user, developer, IT admin). In the long term, we plan on making the interface fully adapted to each type of user, hiding for exemple the technical metadata from business users.</p>
 
           <h2><div>Step 3</div> Call a service</h2>
           
-          <p>Now, thanks to EasySOA, the service you just found can be easily called. While you're on the service registry, notice the "Call it!" button <img src="img/callIt.png" style="height: 16px" /> on your service page. Click it! The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
+          <p>Now, thanks to EasySOA, the service you've just found can be easily called. While you're on the service registry, notice the "Call it!" button <img src="img/callIt.png" style="height: 16px" /> on your service page. Click on it! The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
           
-          <p>This call is actually made in an SOA sandbox that proxies, monitors and protects actual services. In this case, it prevents the user from using them excessively. You can test it by calling the service repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. The calls are the blocked for about 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
+          <p>This call is actually made in an SOA sandbox that proxies, monitors and protects actual services. In this case, it prevents the user from using them excessively. You can test it by calling the service repeatedly : an error comes once you've called the service more than 10 times in 2 minutes. The calls are then blocked for about 2 minutes! And if you call a service more than 10 times a second, EasySOA electrocutes you - just kidding.</p>
 
           <h2>Conclusion</h2>
 
@@ -183,19 +182,19 @@
           
           <h2><div>Step 3</div> SOA Monitoring</h2>
           
-          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, monitoring can be used both to discover new services, and simply to monitor the information system. You will eventually have the possibility to set up monitoring anywhere, by configuring clients to use a specific proxy. For now, you can test this feature by using EasySOA Light, since monitoring is configured on it by default. From Nuxeo, find the "trip" service (somewhere in the "Smart Travel" app), and click the "Call It!" button: all requests you will send from there will be intercepted by our proxy, that will then send information about this service to Nuxeo. (Note: make you to type a number in the third argument)</p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, HTTP monitoring can be used both to discover new services, and simply to monitor the information system. You will eventually have the possibility to set up monitoring probes anywhere. For now, EasySOA embeds a simple HTTP monitoring proxy. You can test this feature by using EasySOA Light, since monitoring is enabled on it by default. From the Service Registry, find the "trip" service (somewhere in the "Smart Travel" app), and click the "Call It!" button: all requests you will send from there will be intercepted by the embedded proxy, that will then send information about this service to the Service Registry. (Note: make sure you type a number in the third argument)</p>
           
           <h2><div>Step 4</div> Explore the service Pt. 2: data correlation</h2>
           
-          <p>Notice that thanks to monitoring and SCA import, we get two different ways to find the same services, gathering complementary information. If you add to this the discovery by browsing tool (see demo scenario #1), they all turn into an interesting way to gather transversal data regarding the information system. In the service registry, the correlation between these discovery methods is represented by three icons shown on every document page: <img src="img/dtBrowsing.png" style="height: 12px" /> <img src="img/dtMonitoring.png" style="height: 12px" /> <img src="img/dtImport.png" style="height: 12px" />. For exemple, browse to the "Create Summary" service to see how these icons are enabled for the browsing and monitoring discovery. There, you will also see that the "call count" property has been increased!</p>
+          <p>Notice that thanks to monitoring and SCA import, we get two different ways to find the same services, allowing to gathering complementary information. If you add to them the discovery by browsing tool (see demo scenario #1), they all turn into an interesting way to gather crss-cutting data regarding the information system. In the service registry, the correlation between these discovery methods is represented by three icons shown on every document page: <img src="img/dtBrowsing.png" style="height: 12px" /> <img src="img/dtMonitoring.png" style="height: 12px" /> <img src="img/dtImport.png" style="height: 12px" />. For exemple, browse to the "Create Summary" service to see how these icons are enabled for the browsing and monitoring discovery. There, you will also see that the "call count" property has been increased!</p>
           
           <h2><div>Step 5</div> The dashboard</h2>
           
-          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Services-dashboard">More on the dashboard</a>Since we are storing in EasySOA how many time each service has been called, why not have a way to provide all these information on a synthetic page? The dashboard, available from the top menu, allows you to organize various widgets on the same page. One of those widgets is called "EasySOA Stats", add it to see a list of services showing how many called has been made on each one.</p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Services-dashboard">More on the dashboard</a>Since we are storing in EasySOA how many times each service has been called, why not have a way to provide all these information on a synthetic page? The dashboard, available from the top menu, allows you to organize various widgets on the same page. One of those widgets is called "EasySOA Stats". Add it to see a list of services showing how many called has been made on each one.</p>
           
           <h2>Conclusion</h2>
 
-          <p>These two demos show you various ways to use and interact with EasySOA and its transversal model. Some facets of the solutions has not been shown yet tough: since users of various profiles will be able to use the solution, why not make them work together, thanks to collaborative features? What if the business user could directly send requests to the developers by "commenting" a service? The ambitions of EasySOA go further that what you just saw. For more information, see the <a href="https://github.com/easysoa/easysoa-model-demo/wiki">temporary EasySOA website</a>. Thanks for testing EasySOA!</p>
+          <p>These two demos show you various ways to use and interact with EasySOA and its cross-cutting model. Some facets of the solutions have not been shown yet though: since users of various profiles will be able to use the solution, why not make them work together, thanks to collaborative features? What if the business user could directly send requests to the developers by "commenting" a service? The ambitions of EasySOA go further that what you just saw, so stay tuned. Thanks for testing EasySOA!</p>
           
         </div>
       </div>
