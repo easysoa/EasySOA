@@ -12,13 +12,13 @@ repositories.remote << 'http://www.ibiblio.org/maven2'
 
 ############### CONFIG LOADING
 
-NUXEO_PATH = Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat' #|| Buildr.settings.user['nuxeo']['path']
-NODE_PATH = Buildr.settings.build['node']['path'] || ENV['HOME']+'/node'
-FRASCATI_PATH = Buildr.settings.build['frascati']['path'] || './deps/frascati'
+NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.1-tomcat'
+NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || Buildr.settings.build['node']['path'] || ENV['HOME']+'/node'
+FRASCATI_PATH = (Buildr.settings.user['frascati'] != nil ? Buildr.settings.user['frascati']['path'] : nil) || Buildr.settings.build['frascati']['path'] || './deps/frascati'
 
-THIS_VERSION = Buildr.settings.build['release']['version']
-MODEL_VERSION = Buildr.settings.build['model']['version']
-PAF_VERSION = Buildr.settings.build['paf']['version']
+THIS_VERSION = (Buildr.settings.user['release'] != nil ? Buildr.settings.user['release']['version'] : nil) || Buildr.settings.build['release']['version']
+MODEL_VERSION = (Buildr.settings.user['model'] != nil ? Buildr.settings.user['model']['version'] : nil) || Buildr.settings.build['model']['version']
+PAF_VERSION = (Buildr.settings.user['paf'] != nil ? Buildr.settings.user['paf']['version'] : nil) || Buildr.settings.build['paf']['version']
 
 PACKAGING_OUTPUT_PATH = 'easysoa'
 PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+THIS_VERSION+'.tar.gz';
