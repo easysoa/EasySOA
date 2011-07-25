@@ -10,9 +10,18 @@ import net.webservicex.GlobalWeatherSoapImpl1;
 
 public class Server {
 
+	public final static String ADDRESS_BASE = "http://localhost:9020/";
+	
+	/**
+	 * 
+	 * @param addressBase
+	 * @throws Exception
+	 */
     protected Server(String addressBase) throws Exception {
         System.out.println("Starting Server");
-        //String addressBase = "http://localhost:9020/";
+        if(addressBase == null || "".equals(addressBase)){
+        	addressBase = ADDRESS_BASE;
+        }
 
         // Meteo backup
         GlobalWeatherSoapImpl1 meteoImplementor = new GlobalWeatherSoapImpl1();
@@ -30,8 +39,12 @@ public class Server {
 
     }
 
+    /**
+     * 
+     * @param args
+     * @throws Exception
+     */
     public static void main(String args[]) throws Exception {
-
     	new Server(args[0]);
     	if(args == null || args[0] == null || "".equals(args[0])){
     		throw new IllegalArgumentException("The deployment address must be specified in arg0 !");
