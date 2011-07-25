@@ -144,13 +144,11 @@
           
           <p>Now you can use this service to get business data or do a business operation! While you're on the service registry, notice the "Call it!" button on your service page. Click it. The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
           
-          <p>This call is actually made through a proxy layer that prevents from excessive use. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
-          
-          <p>This call is actually made in an SOA sandbox that proxies, monitors and protects actual services. For instance, it prevents them from excessive use. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
+          <p>This call is actually made in an SOA sandbox that proxies, monitors and protects actual services. In this case, it prevents the user from using them excessively. You can test it by calling it repeatedly : the error comes once you've called the service more than 10 times in 2 minutes. Now our calls are blocked for the remaining 2 minutes! We are even planning to improve this, so that if you call a service more than 10 times a second, EasySOA electrocutes you.</p>
 
           <h2>Conclusion</h2>
 
-          <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from true proxy generation to an all-in-one architecture. For more advanced features, including services monitoring and architecture files import, please see the second demo scenario.</p>
+          <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from collaborative feature and true proxy generation to an all-in-one architecture. For more advanced features, including services monitoring and architecture files import, please see the second demo scenario.</p>
 
         </div>
       </div>
@@ -162,25 +160,29 @@
           
           <h2><div>Step 1</div> Import the SOA architecture</h2>
           
-          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, there is a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" that is able to analyze the contents of the SOA components definition. From the service registry, create a new application by going to the "<i>Service registry</i>" document, choosing "<i>New Application Implementation</i>", and create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), select the newly created application for the import, and go!</p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" is able to analyze the definition of the SOA components. From the service registry, create a new application by going to the "<i>Service registry</i>" document and choosing "<i>New Application Implementation</i>" ; create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), then select the newly created application for the import, and go!</p>
           
           <h2><div>Step 2</div> Explore the services</h2>
           
-          <p>You can now browse through various services in the left menu. Only two of them are in the "Smart Travel" application, since others are external services only referenced from your application. All the imported data can be useful to help developers and architecte, even more once documentation files are attached to the services for example (you can do it by editing any document).</p>
+          <p>You can now browse through various services in the left menu. Only two of them are in the "Smart Travel" application, since others are external services, which are only referenced from your application. All the imported data can be useful to help developers and architects, even more once documentation files are attached to the services (you can do it by editing any document).</p>
           
           <p>Now, what if a member of the IT staff wants to know what really happens on the network?</p>
           
           <h2><div>Step 3</div> SOA Monitoring</h2>
           
-          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, monitoring can be used both to discover new services, and simply to monitor the information system. In order to test this feature, you will have to send a request to any of the Smart Travel services: this request will then by intercepted by a specific proxy, that will then send information about this service to Nuxeo. <u>TODO: How?</u></p>
+          <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, monitoring can be used both to discover new services, and simply to monitor the information system. You will eventually have the possibility to set up monitoring anywhere, by configuring clients to use a specific proxy. For now, you can test this feature by using EasySOA Light, since monitoring is configured on it by default. From Nuxeo, browse to the "Create Summary" service, and click the "Call It!" button: all requests you will send from there will be intercepted by our proxy, that will then send information about this service to Nuxeo.</p>
           
           <h2><div>Step 4</div> Explore the service Pt. 2: data correlation</h2>
           
-          <p>Notice that thanks to monitoring and SCA import, we discovered in two different ways the sames services, gathering complementary information. If you add the discovery by browsing tool (see demo scenario #1), they form an interesting way to gather transversal data regarding the information system. The correlation between these discovery methods is represented by three icons shown on every document page: <img src="img/dtBrowsing.png" style="height: 12px" /> <img src="img/dtMonitoring.png" style="height: 12px" /> <img src="img/dtImport.png" style="height: 12px" />. Browse to the "Create Summary" service to see how these icons are enabled for the browsing and monitoring discovery. There, you will also see that the "call count" property has been increased!</p>
+          <p>Notice that thanks to monitoring and SCA import, we get two different ways to find the same services, gathering complementary information. If you add the discovery by browsing tool (see demo scenario #1), they form an interesting way to gather transversal data regarding the information system. The correlation between these discovery methods is represented by three icons shown on every document page: <img src="img/dtBrowsing.png" style="height: 12px" /> <img src="img/dtMonitoring.png" style="height: 12px" /> <img src="img/dtImport.png" style="height: 12px" />. Browse to the "Create Summary" service to see how these icons are enabled for the browsing and monitoring discovery. There, you will also see that the "call count" property has been increased!</p>
           
           <h2><div>Step 5</div> The dashboard</h2>
           
           <p><a class="more" href="https://github.com/easysoa/easysoa-model-demo/wiki/Services-dashboard">More on the dashboard</a>Since we are storing in EasySOA how many time each service has been called, why not make a dashboard to provide all these information on a synthetic page? The dashboard, available from the top menu, allows you to organize various widgets on the same page. One of those widgets is called "EasySOA Stats", add it to see a list of services showing how many called has been made on each one.</p>
+          
+          <h2>Conclusion</h2>
+
+          <p>These two demos show you various ways to use and interact with EasySOA and its transverse model. Since users of various profiles will be able to use the solution, why not make them work together, thanks to collaborative features? What if the business user could directly send requests to the developers by "commenting" a service? The ambitions of EasySOA go even further that what you just saw. Thanks for testing EasySOA!</p>
           
         </div>
       </div>
