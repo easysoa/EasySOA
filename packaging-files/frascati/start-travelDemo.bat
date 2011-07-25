@@ -4,7 +4,7 @@ set LINE=----------------------------------------------------
 echo %LINE%
 echo Trip demo SOA
 echo (Deployed on http://localhost:9000)
-echo DEPENDENCY: Running meteo backup
+echo DEPENDENCY: Running services backup
 echo %LINE%
 
 set CUSTOM_JAVA_OPTS=-Dcxf.config.file=cxfEsperProxy.xml

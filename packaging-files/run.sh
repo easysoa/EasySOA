@@ -58,11 +58,11 @@ pafservices()
   ./start-pafServices.sh > ../log/pafServices.log 2>&1
 }
 
-meteobackup()
+travelbackup()
 {
-  touch log/meteoBackup.log
-  cd meteoBackup
-  ./start-meteoBackup.sh > ../log/meteoBackup.log 2>&1
+  touch log/travelBackup.log
+  cd travelBackup
+  ./start-travelBackup.sh > ../log/travelBackup.log 2>&1
 }
 
 traveldemo()
@@ -83,7 +83,7 @@ serviceregistry &
 dbbProxy &
 esperproxy &
 pafservices &
-meteobackup &
+travelbackup &
 sleep 3 # Let the servers start
 traveldemo &
 sleep 6 # Let the web server launch

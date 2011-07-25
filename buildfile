@@ -1,16 +1,14 @@
 require 'shellwords'
 
 repositories.remote << 'http://www.ibiblio.org/maven2'
-#repositories.remote << 'http://maven.nuxeo.org/nexus/content/groups/public'
 
 # ----------------------
 # EasySOA Demo Buildfile
 # ----------------------
 
-############### PREREQUISITES & COMMANDS
+############### HOWTO
 
-# See README.md
-# (Command list: buildall, packageall, tgz, nx_mvn, nx_dist, nx_clean, paf_mvn, trip, esper)
+# Type "buildr help" for a list of available tasks
 
 ############### CONFIG LOADING
 
@@ -51,15 +49,16 @@ end
 DBBROWSING = 'easysoa:easysoa-model-demo:discovery-by-browsing'
 MODEL = 'easysoa:easysoa-model-demo:plugins'
 PAF = 'easysoa:easysoa-demo-pureAirFlowers-proxy'
-TRIP = 'easysoa:EasySOADemoTravel'
-TRIP_METEO_BACKUP = 'easysoa:EasySOADemoTravel:easysoa-meteo-sca-backup'
+TRAVEL = 'easysoa:EasySOADemoTravel'
+TRAVEL_BACKUP = 'easysoa:EasySOADemoTravel:travel-services-backup'
 ESPER = 'easysoa:esper-frascati-poc'
 
 define 'easysoa', :base_dir => '../' do
   
+  desc 'Service registry and discovery by browsing project'
   define 'easysoa-model-demo' do
     
-    desc 'Nuxeo plugins'
+    desc 'Nuxeo plugins project'
     define 'plugins' do
     
       project.version = MODEL_VERSION
@@ -80,30 +79,34 @@ define 'easysoa', :base_dir => '../' do
       
     end
     
-    desc 'Discovery by browsing'
+    desc 'Discovery by browsing project'
     define 'discovery-by-browsing' do
       # Nothing
     end
     
   end
   
+  desc 'EasySOA Light proxy project'
   define 'easysoa-demo-pureAirFlowers-proxy' do
     task :mvn do
       maven(['clean', 'install'], project)
     end
   end
   
+  desc 'Smart travel demo project'
   define 'EasySOADemoTravel' do
     task :mvn do
       maven(['clean', 'install'], project)
     end
-    define 'easysoa-meteo-sca-backup' do
+    desc 'Smart travel backup services project'
+    define 'travel-services-backup' do
       task :mvn do
         maven(['clean', 'assembly:assembly'], project)
       end
     end
   end
   
+  desc 'Esper monitoring proxy project'
   define 'esper-frascati-poc' do
     task :mvn do
       maven(['clean', 'install', '-DskipTests=true'], project) # TODO Make tests pass
@@ -130,14 +133,16 @@ desc "Cleans all Nuxeo plugins"
 task :nx_clean => [MODEL+':clean']
              
 desc "Builds PAF CXF server and service proxy"
-task :paf_mvn => [PAF+':mvn']
+task :paf => [PAF+':mvn']
 
+desc "Builds the Esper proxy"
 task :esper => [ESPER+':mvn']
 
-task :trip => [TRIP+':mvn', TRIP_METEO_BACKUP+':mvn']
+desc "Builds the Smart Travel demo and its backup services"
+task :travel => [TRAVEL+':mvn', TRAVEL_BACKUP+':mvn']
 
 desc "Builds all needed projects"
-task :buildall => ['paf_mvn', 'nx_mvn', 'esper', 'trip']
+task :buildall => ['paf', 'nx_mvn', 'esper', 'travel']
 
 desc "Creates the EasySOA package"
 task :packageall do # TODO Less messy code
@@ -194,19 +199,19 @@ task :packageall do # TODO Less messy code
   # Copy web services and proxies
   puts "Copying web services and proxies..."
   puts "  * Needed libraries..."
-  cp FileList[project(TRIP).base_dir+"/currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(TRIP).base_dir+"/meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(TRIP).base_dir+"/summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps' # Conflicting with the Light trip proxy if put in lib/
-  cp FileList[project(TRIP).base_dir+"/translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(TRAVEL).base_dir+"/currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(TRAVEL).base_dir+"/meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(TRAVEL).base_dir+"/summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps' # Conflicting with the Light trip proxy if put in lib/
+  cp FileList[project(TRAVEL).base_dir+"/translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   puts "  * FraSCAti applications & PAF services..."
   cp_r FileList[project(PAF).base_dir+'/distrib/*'], PACKAGING_OUTPUT_PATH
   cp FileList[project(ESPER).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(TRIP).base_dir+"/trip*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  puts "  * Meteo backup service..."
-  mkdir_p PACKAGING_OUTPUT_PATH+'/meteoBackup'
-  system 'unzip', '-q', '-o', FileList[project(TRIP).base_dir+'/easysoa-meteo-sca-backup/target/*-bin.zip'].to_s # XXX Linux-dependent
-  cp_r FileList['easysoa-meteo-sca-backup*/*'], PACKAGING_OUTPUT_PATH+'/meteoBackup/'
-  rm_rf FileList['easysoa-meteo-sca-backup*']
+  cp FileList[project(TRAVEL).base_dir+"/trip*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  puts "  * Travel backup services..."
+  mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'
+  system 'unzip', '-q', '-o', FileList[project(TRAVEL_BACKUP).base_dir+'/target/*-bin.zip'].to_s # XXX Linux-dependent
+  cp_r FileList['travel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
+  rm_rf FileList['travel-services-backup*']
   
   # Copying Nuxeo
   puts "Copying service registry (Nuxeo)..."
@@ -246,7 +251,7 @@ task :tgz do
   # Tar
   puts "Compressing..."
   system 'tar -zcf ' + PACKAGING_OUTPUT_ARCHIVE + ' -C ' + PACKAGING_OUTPUT_PATH + \
-    ' dbbProxy frascati meteoBackup serviceRegistry web ' + \
+    ' dbbProxy frascati travelBackup serviceRegistry web ' + \
     FileList["packaging-files/*"].sub('packaging-files/', '').to_s  # XXX Linux-dependent
   
   puts "EasySOA successfully compressed in "+PACKAGING_OUTPUT_ARCHIVE

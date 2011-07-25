@@ -27,9 +27,9 @@ cd pafServices
 start "EasySOA Demo - Web Services" start-pafServices.bat > ..\log\pafServices.log 2>&1
 cd ..
 
-rem meteoBackup
-cd meteoBackup
-start "EasySOA Demo - Meteo Service Backup" start-meteoBackup.bat > ..\log\meteoBackup.log 2>&1
+rem travelBackup
+cd travelBackup
+start "EasySOA Demo - Travel Services Backup" start-travelBackup.bat > ..\log\travelBackup.log 2>&1
 cd ..
 
 sleep 3
