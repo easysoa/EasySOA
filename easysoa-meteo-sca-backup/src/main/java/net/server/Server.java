@@ -36,7 +36,6 @@ public class Server {
         LanguageService translateImplementor = new LanguageServiceImpl();
         //Endpoint.publish(address, translateImplementor);
         Endpoint.publish(addressBase + "SoapService", translateImplementor);
-
     }
 
     /**
