@@ -69,5 +69,5 @@ function renderStats(data, tag) {
 		htmlResult += formatRow(data.services[i], i);
 	}
 	htmlResult += formatEnd();
-	tag.html(htmlResult);
+	_gel("documentList").innerHTML = htmlResult;
 }

@@ -19,10 +19,10 @@
     <script type="text/javascript" language="javascript" src="servicestats.js"></script>
     <script type="text/javascript">
       function handleJSONResponse(response) {
-        renderStats(response.data, jQuery("#documentList"));
+        renderStats(response.data);
       }
       jQuery(document).ready(function(){
-      	var params = { 'disableCache' : Math.random() }; //XXX
+      	var params = new Array();
 		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
         gadgets.io.makeRequest("http://localhost:8080/nuxeo/site/easysoa/stats",
         	handleJSONResponse, params, 1);
