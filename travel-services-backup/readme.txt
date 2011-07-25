@@ -2,9 +2,9 @@
 To build this mock : mvn assembly:assembly
 
 To launch the mock : 
-- Unzip the generated zip "easysoa-meteo-sca-backup-1.0-SNAPSHOT-bin.zip" un a folder and unzip it.
+- Unzip the generated zip "travel-services-backup-1.0-SNAPSHOT-bin.zip" un a folder and unzip it.
 - Go to the bin directory
-- Execute the following command : java -jar easysoa-meteo-sca-backup-1.0-SNAPSHOT.jar http://localhost:9020/
+- Execute the following command : java -jar travel-services-backup-1.0-SNAPSHOT.jar http://localhost:9020/
 
 -------
 
