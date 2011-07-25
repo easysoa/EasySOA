@@ -250,9 +250,7 @@ task :tgz do
   
   # Tar
   puts "Compressing..."
-  system 'tar -zcf ' + PACKAGING_OUTPUT_ARCHIVE + ' -C ' + PACKAGING_OUTPUT_PATH + \
-    ' dbbProxy examples frascati node pafServices serviceRegistry travelBackup web ' + \
-    FileList["packaging-files/*"].sub('packaging-files/', '').to_s  # XXX Linux-dependent
+  system 'tar', '-zcf', PACKAGING_OUTPUT_ARCHIVE, 'easysoa/'  # XXX Linux-dependent
   
   puts "EasySOA successfully compressed in "+PACKAGING_OUTPUT_ARCHIVE
   
