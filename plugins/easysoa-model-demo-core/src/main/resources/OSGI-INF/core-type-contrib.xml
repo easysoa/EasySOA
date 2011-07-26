@@ -40,6 +40,7 @@
       <schema name="files"/>
       <facet name="Folderish" />
       <facet name="Commentable"/>
+      <facet name="Indexable" />
       <subtypes>
         <type>ServiceAPI</type>
         <type>Service</type>

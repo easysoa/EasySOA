@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.services.CacheHelper;
+import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
@@ -22,6 +23,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * SCA Import form
@@ -105,9 +107,27 @@ public class ScaImportBean {
 	}
 	
 	private static List<SelectItem> getAllAppliImplsAsSelectItems(CoreSession documentManager) throws ClientException {
+	    
+	    // Gather information
+	    String wsRootId = null;
+	    try {
+	        DocumentService docService = Framework.getService(DocumentService.class);
+	        wsRootId = documentManager.getDocument(docService.getDefaultAppliImpl(documentManager).getParentRef()).getId();
+        } catch (Exception e) {
+            log.error("Failed to retrieve workspace root", e);
+        }
+
+        // Compute query
+        String query = "SELECT * FROM " + AppliImpl.DOCTYPE + " WHERE ecm:currentLifeCycleState <> 'deleted'";
+        if (wsRootId != null) {
+            query += " AND ecm:parentId = '" + wsRootId + "'";
+        }
+        
+        // Send query
 		List<SelectItem> appliImplItems = new ArrayList<SelectItem>();
-		DocumentModelList appliImplList = documentManager.query("SELECT * FROM " + AppliImpl.DOCTYPE
-				+ " WHERE ecm:currentLifeCycleState <> 'deleted'");
+		DocumentModelList appliImplList = documentManager.query(query);
+		
+		// Transform into wanted format
 		for (DocumentModel appliImpl : appliImplList) {
 			try {
 				appliImplItems.add(new SelectItem(appliImpl.getId(), appliImpl.getTitle()));
