@@ -86,7 +86,7 @@ pafservices &
 travelbackup &
 sleep 3 # Let the servers start
 traveldemo &
-sleep 6 # Let the web server launch
+sleep 7 # Let the demo start
 web &
 lightproxypaf &
 lightproxytravel &

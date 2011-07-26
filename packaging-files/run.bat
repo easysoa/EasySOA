@@ -39,7 +39,7 @@ cd frascati
 start "EasySOA Demo - Travel" start-travelDemo.bat > ..\log\travelDemo.log 2>&1
 cd ..
 
-sleep 6
+sleep 7
 
 rem web
 cd web
