@@ -3,20 +3,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>EasySOA - Welcome Page</title>
-	<script type="text/javascript" src="js/coda-slider/javascripts/jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" src="js/coda-slider/javascripts/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" src="js/coda-slider/javascripts/jquery.coda-slider-2.0.js"></script>
-	<script type="text/javascript">
-	 $().ready(function() {
-		  $('#slider-tour').codaSlider({
-    		dynamicArrows: false,
-    		dynamicTabsPosition: "left",
-		    autoHeightEaseDuration: 400,
-		    slideEaseDuration: 500
-		  });
-	 });
-	</script>
-	<link rel="stylesheet" href="js/coda-slider/stylesheets/coda-slider-2.0.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="js/tabber/tabber-minimized.js"></script>
+	<link rel="stylesheet" href="js/tabber/tabber-easysoa.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="style.css">
   <style type="text/css">
     #shortcuts {
@@ -133,12 +121,10 @@
     Welcome to <b>EasySOA</b> Core & Light!
     
     <h1><b>First time user</b>? Take the tour!</h1>
-    
-   <div class="coda-slider-wrapper">
-	  <div class="coda-slider preload" id="slider-tour">
-		  <div class="panel">
-			  <div class="panel-wrapper">
-				  <h2 class="title">For the Business user</h2>
+   
+   <div class="tabber">
+
+      <div class="tabbertab" title="For the Business user">
           
           <p><b>Note:</b> Before using this demo, please set your browser's proxy to <b>localhost:8081</b> and remove any proxy exceptions (unless you're using our virtual machine). If you're asked for a user/password, just type <b>Administrator</b> for both.</p>
            
@@ -162,11 +148,8 @@
 
           <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from collaborative features and true proxy generation to an all-in-one architecture. For more advanced features, including services monitoring and architecture files import, please see the second demo scenario.</p>
 
-        </div>
       </div>
-		  <div class="panel">
-			  <div class="panel-wrapper">
-				  <h2 class="title">For Developers & IT staff</h2>
+      <div class="tabbertab" title="For Developers & IT staff">
 				  
           <p>This scenario is based on another demo SOA, called "Smart Travel". This time, we will take the role of a developer who wants to map the SOA contents.</p>
           
@@ -196,9 +179,7 @@
 
           <p>These two demos show you various ways to use and interact with EasySOA and its cross-cutting model. Some facets of the solutions have not been shown yet though: since users of various profiles will be able to use the solution, why not make them work together, thanks to collaborative features? What if the business user could directly send requests to the developers by "commenting" a service? The ambitions of EasySOA go further than what you just saw, so stay tuned. Thanks for testing EasySOA!</p>
           
-        </div>
       </div>
-    </div>
   </div>
 
   </div>
