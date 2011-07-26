@@ -3,6 +3,13 @@ package org.easysoa.doctypes;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mirror of the properties defined in the XML contributions.
+ * Defines all the Appli Impl. related data.
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class AppliImpl extends EasySOADoctype {
 
 	public static final String DOCTYPE = "Workspace";
@@ -26,6 +33,11 @@ public class AppliImpl extends EasySOADoctype {
 	
 	private static Map<String, String> propertyList = null;
 	
+	/**
+     * Returns a map containing all properties from the AppliImpl.SCHEMA schema,
+     * with a short description.
+     * @return
+     */
 	public static Map<String, String> getPropertyList() {
 		if (propertyList == null) {
 			propertyList = new HashMap<String, String>(); 

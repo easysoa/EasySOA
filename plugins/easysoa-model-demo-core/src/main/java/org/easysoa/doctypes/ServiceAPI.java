@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ServiceAPI specific constants
+ * Mirror of the properties defined in the XML contributions.
+ * Defines all the Service API related data.
+ * 
  * @author mkalam-alami
  *
  */
@@ -22,6 +24,10 @@ public class ServiceAPI extends EasySOADoctype {
 
 	private static Map<String, String> propertyList = null;
 	
+	/**
+     * Returns a map containing all properties from the ServiceAPI schema,
+     * with a short description.
+     */
 	public static Map<String, String> getPropertyList() {
 		if (propertyList == null) {
 			propertyList = new HashMap<String, String>(); 

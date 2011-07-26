@@ -9,6 +9,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * Component loaded on Nuxeo startup
+ * 
  * @author mkalam-alami
  *
  */
