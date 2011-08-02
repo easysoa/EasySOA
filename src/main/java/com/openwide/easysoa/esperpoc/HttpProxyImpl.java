@@ -71,36 +71,14 @@ public class HttpProxyImpl extends HttpServlet {
 			MonitorService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
 		}
 	}
-	
+
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */
 	@Override
 	public final void doGet(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
-		logger.debug("------------------");
-		logger.debug("--- Method: " + request.getMethod());
-		logger.debug("--- RequestURI : " + request.getRequestURI());
-		logger.debug("--- Query : " + request.getQueryString());
-		logger.debug("--- server: " + request.getServerName());
-		logger.debug("--- port: " + request.getServerPort());
-		logger.debug("--- request URL: " + request.getRequestURL());
-		PrintWriter respOut = response.getWriter();
-		// re-route request to the provider and send the response to the consumer
-	    try{
-	    	Message message = forward(request, response);
-    	    MonitorService.getMonitorService().listen(message);
-	    }
-	    catch(Throwable ex){
-	    	ex.printStackTrace();
-    		response.setContentType("text/html");
-	    	logger.error("An error occurs in doGet method.", ex);
-	    	respOut.println("<html><body>httpProxy, doGet : An errror occurs :<br/>");
-	    	respOut.println(ex.getMessage() + "</body></html>");
-	    }
-	    finally {
-	    	logger.debug("--- Closing response flow");
-	    	respOut.close();
-	    }
+		doHttpMethod(request, response);
 	}
 
 	/**
@@ -108,6 +86,55 @@ public class HttpProxyImpl extends HttpServlet {
 	 */	
 	@Override
 	public final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doHttpMethod(request, response);
+	}
+	
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doHead(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doHead(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doHttpMethod(request, response);
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doPut(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doHttpMethod(request, response);
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doDelete(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doHttpMethod(request, response);
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doOptions(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doHttpMethod(request, response);
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doTrace(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doTrace(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doHttpMethod(request, response);
+	}
+
+	public final void doHttpMethod(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.debug("------------------");
 		logger.debug("Method: " + request.getMethod());
 		logger.debug("RequestURI : " + request.getRequestURI());
@@ -276,7 +303,7 @@ public class HttpProxyImpl extends HttpServlet {
 			//if("Host".equals(headerName) && headerValue.contains("microsoft")){////
 			//	httpMessage.setHeader("Host", "localhost:8084");////
 			//} else/////
-			if(!"Content-Length".equals(headerName)){
+			if(!"Content-Length".equals(headerName) && !"Transfer-Encoding".equals(headerName)){
 				httpMessage.setHeader(headerName, headerValue);
 			}
 			//logger.debug("Header name = " + headerName + ", Header value = " + headerValue);

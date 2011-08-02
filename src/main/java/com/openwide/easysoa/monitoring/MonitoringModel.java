@@ -3,7 +3,8 @@ package com.openwide.easysoa.monitoring;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
+
+import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;

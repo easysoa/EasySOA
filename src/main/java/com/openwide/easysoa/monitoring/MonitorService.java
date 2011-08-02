@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
-import com.openwide.easysoa.esperpoc.RunRecorder;
+import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
+import com.openwide.easysoa.esperpoc.run.RunRecorder;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.soa.Api;
@@ -104,11 +104,14 @@ public class MonitorService {
 			monitoringModel = new MonitoringModel();
 			monitoringModel.fetchFromNuxeo();
 			logger.debug("Validated mode : Printing monitoring model keyset");
-			Iterator<String> iter = monitoringModel.getSoaModelUrlToTypeMap().keySet().iterator();
-			String key;
-			while(iter.hasNext()){
-				key = iter.next();
-				logger.debug("key = " + key + ", value = " + monitoringModel.getSoaModelUrlToTypeMap().get(key));
+			for (String url : monitoringModel.getSoaModelUrlToTypeMap().keySet()) {
+				logger.debug("url = " + url + ", value = " + monitoringModel.getSoaModelUrlToTypeMap().get(url));
+			}
+			Iterator<String> urlIter = monitoringModel.getSoaModelUrlToTypeMap().keySet().iterator();
+			String url;
+			while(urlIter.hasNext()){
+				url = urlIter.next();
+				logger.debug("url = " + url + ", value = " + monitoringModel.getSoaModelUrlToTypeMap().get(url));
 			}
 			urlTree = null;
 		}

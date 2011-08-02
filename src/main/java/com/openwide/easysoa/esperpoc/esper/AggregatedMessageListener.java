@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
-import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
+import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitorService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
@@ -23,9 +23,11 @@ import com.openwide.easysoa.monitoring.soa.WSDLService;
  * Aggregated message listener
  * only able to use aggregated msg props
  * 
+ * 
  * @author jguillemotte
  *
  */
+@Deprecated
 public class AggregatedMessageListener implements UpdateListener {
 
 	/**
@@ -51,21 +53,27 @@ public class AggregatedMessageListener implements UpdateListener {
 		logger.debug("[AggregatedMessageListener] --- " + newData.getUnderlying().getClass().getName());
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		HashMap<String, Object> aggregatedProps = (HashMap) (newData.getUnderlying());
+		for(String property : aggregatedProps.keySet()){
+			logger.debug("Property : " + property);
+			logger.debug("Value : " + aggregatedProps.get(property));
+			logger.debug("Clazz value : " + aggregatedProps.get(property).getClass().getName());			
+		}
+		/*
 		Iterator<String> iter = aggregatedProps.keySet().iterator();
 		while(iter.hasNext()){
 			String key = iter.next();
 			logger.debug("Key : " + key);
 			logger.debug("Value : " + aggregatedProps.get(key));
 			logger.debug("Clazz value : " + aggregatedProps.get(key).getClass().getName());
-		}
-/*		
+		}*/
+		/*		
 		BeanEventBean beb = (BeanEventBean)(aggregatedProps.get("s"));
 		Message msg = (Message)(beb.getUnderlying());		
 		// Service construction + send Esper event
 		long count = (Long) aggregatedProps.get("count");
 		String serviceUrl = (String) aggregatedProps.get("url");
 		MessageType messageType = (MessageType) aggregatedProps.get("messageType");
-*/
+		 */
 		//if(MessageType.WSDL.compareTo(messageType) == 0){
 			WSDLService service;
 			URL url;

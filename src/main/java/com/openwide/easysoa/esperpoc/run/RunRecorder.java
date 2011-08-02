@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.esperpoc.run;
 
 import org.apache.log4j.Logger;
 import com.openwide.easysoa.monitoring.Message;

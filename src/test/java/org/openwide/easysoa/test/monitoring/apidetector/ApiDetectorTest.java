@@ -1,4 +1,4 @@
-package com.openwide.easysoa.monitoring.apidetector;
+package org.openwide.easysoa.test.monitoring.apidetector;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,10 +8,12 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.Assume;
 
-import com.openwide.easysoa.esperpoc.RunManager;
+import com.openwide.easysoa.esperpoc.run.RunManager;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
+import com.openwide.easysoa.monitoring.apidetector.UrlTree;
+import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.MonitorService;
 import com.sun.jersey.api.client.ClientHandlerException;
 
@@ -52,7 +54,7 @@ public class ApiDetectorTest extends TestCase {
     //TODO : add assert to automatically check the result of the test
 	public void testUrlDiscoveryMode(){
 		MonitorService.getMonitorService(MonitoringMode.DISCOVERY);
-		urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+		urlDetectionSimulate(new UrlMock().getTwitterUrlData("api.twitter.com"));
 		//urlDetectionSimulate(new UrlMock().getIMediaUrlData());
 		try {
 			urlDetectionCompute();
@@ -80,7 +82,7 @@ public class ApiDetectorTest extends TestCase {
 		// TODO LATER cache it
 		try {
 			MonitorService.getMonitorService(MonitoringMode.VALIDATED);
-			urlDetectionSimulate(new UrlMock().getTwitterUrlData());
+			urlDetectionSimulate(new UrlMock().getTwitterUrlData("api.twitter.com"));
 		}
 		catch (ClientHandlerException e) {
 			logger.warn("Failed to connect to Nuxeo, aborting test: "+e.getMessage());

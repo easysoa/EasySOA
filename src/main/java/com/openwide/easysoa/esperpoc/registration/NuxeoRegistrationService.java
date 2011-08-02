@@ -1,5 +1,5 @@
 
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.esperpoc.registration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.openwide.easysoa.esperpoc.PropertyManager;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
@@ -27,7 +29,7 @@ public class NuxeoRegistrationService {
 
 	private final static String NUXEO_WSDL_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/wsdlscraper/";
 	private final static String NUXEO_REST_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/notification/";
-	private final static String NUXEO_AUTOMATION_DEFAULT_URL = "http://localhost:8080/nuxeo/site/automation";
+	private final static String NUXEO_AUTOMATION_DEFAULT_URL = "http://localhost:8080/nuxeo/site/automation/";
 	/**
 	 * Logger
 	 */
@@ -262,17 +264,6 @@ public class NuxeoRegistrationService {
 		return sendRequest(url.toString(), body.toString());
 	}
 	
-	/*public JSONObject getAllSoaNodes() {
-		String query = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
-		String res =  sendQuery(query);
-		try {
-			return new JSONObject(res);
-		} catch (JSONException e) {
-			logger.error(e);
-			return null;
-		}
-	}*/
-	
 	/**
 	 * return all soa node registred in Nuxeo
 	 * @return A <code>List</code> of soa <code>Node</code> 
@@ -323,7 +314,7 @@ public class NuxeoRegistrationService {
 	 * @param body Message to send
 	 * @return The response send back by Nuxeo
 	 */
-	private String sendQuery(String query){
+	public String sendQuery(String query){
 		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_AUTOMATION_DEFAULT_URL));
 		//urlBuf.append("/");
 	    urlBuf.append("Document.Query"); // operation name

@@ -4,7 +4,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-import com.openwide.easysoa.esperpoc.NuxeoRegistrationService;
+
+import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
 
@@ -25,7 +26,8 @@ public class SoapMessageHandler implements MessageHandler {
 		if(message != null){
 			logger.debug("Message body : " + message.getBody());
 		}
-		if(message != null && message.getBody().toLowerCase().contains("<soap:envelope") && checkWsdl(message.getUrl())){
+		//TODO : Refine the way that a WSDl message is discovered
+		if(message != null && (message.getBody().toLowerCase().contains("<soap:envelope") || message.getBody().toLowerCase().contains("http://schemas.xmlsoap.org/soap/envelope/"))  && checkWsdl(message.getUrl())){
 			logger.debug("Returns true");
 			return true;
 		} else {
@@ -47,6 +49,7 @@ public class SoapMessageHandler implements MessageHandler {
 		serviceName = serviceName.replace('/', '_');
 		Service service = new Service(message.getUrl());
 		service.setFileUrl(message.getUrl()+"?wsdl");
+		service.setParentUrl(message.getUrl());
 		service.setCallCount(1);
 		service.setTitle(message.getPathName());
 		service.setDescription(message.getPathName());

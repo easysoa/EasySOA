@@ -6,8 +6,17 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
+/**
+ * 
+ * @author jguillemotte
+ *
+ *
+ */
 public class Message {
 
+	// TODO A message is composed of a request AND a response.
+	// TODO Add the response to the message 
+	
 	/**
 	 *	Message types 
 	 */

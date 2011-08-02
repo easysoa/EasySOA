@@ -3,6 +3,7 @@ package com.openwide.easysoa.esperpoc;
 import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;
 
+import com.openwide.easysoa.esperpoc.run.RunManager;
 import com.openwide.easysoa.monitoring.MonitorService;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 

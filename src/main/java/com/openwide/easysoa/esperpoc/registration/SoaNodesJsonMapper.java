@@ -1,8 +1,9 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.esperpoc.registration;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;

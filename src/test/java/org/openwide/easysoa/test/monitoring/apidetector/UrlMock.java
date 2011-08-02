@@ -1,6 +1,8 @@
-package com.openwide.easysoa.monitoring.apidetector;
+package org.openwide.easysoa.test.monitoring.apidetector;
 
 import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
 
 /**
  * URL mock storage to test the detection of API/Services
@@ -10,6 +12,11 @@ import java.util.ArrayList;
  */
 public class UrlMock {
 
+	/**
+	 * Logger
+	 */
+	private static Logger logger = Logger.getLogger(UrlMock.class.getName());	
+	
 	/**
 	 *  
 	 */
@@ -22,6 +29,8 @@ public class UrlMock {
 	 * 
 	 */
 	private ArrayList<String> twitterTestSet;
+	
+	//private ArrayList<String> mockTwitterTestSet;
 	
 	/**
 	 * Variables used by the iMedia data set at init
@@ -72,33 +81,6 @@ public class UrlMock {
 		iMediaTestSet.add(generateRandomIDs("http://www.imedia.com/shop/getDvd/{dvdId}"));
 		iMediaTestSet.add(generateRandomIDs("http://www.imedia.com/shop/getDvd/{dvdId}"));
 		iMediaTestSet.add(generateRandomIDs("http://www.imedia.com/shop/addDvdToBasket/{prevDvdId}"));
-	
-		// Twitter data test set
-		twitterTestSet = new ArrayList<String>();
-		twitterTestSet.add("http://api.twitter.com/1/users/show/FR3Aquitaine.xml");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/EasySoaTest.xml");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/FR3Aquitaine.json");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/FR3Bourgone.xml");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/FR3Bourgogne.json");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/truckblogfr.xml");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/OliverTweett.xml");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/Developpez.xml");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/europe_camions.xml");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/OliverTweett.json");
-		twitterTestSet.add("http://api.twitter.com/1/users/show/FR3Aquitaine.xml");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/friends/oliverTweett.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/friends/FR3Aquitaine.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/friends/europe_camions.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/friends/Developpez.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/friends/FR3Bourgone.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/friends/EasySoaTest.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/followers/europe_camions.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/followers/Developpez.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/followers/FR3Aquitaine.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/followers/oliverTweett.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/followers/Developpez.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/followers/FR3Bourgone.xml?cursor=-1");
-		twitterTestSet.add("http://api.twitter.com/1/statuses/followers/EasySoaTest.xml?cursor=-1");
 	}
 
 	/**
@@ -121,9 +103,47 @@ public class UrlMock {
 	 * To get the Twitter URL data set
 	 * @return The Twitter URL data set
 	 */
-	public ArrayList<String> getTwitterUrlData(){
+	public ArrayList<String> getTwitterUrlData(String baseUrl){
+		if(baseUrl == null || "".equals(baseUrl)){
+			logger.warn("Invalid baseUrl, using default baseUrl : api.twitter.com");
+			baseUrl = "api.twitter.com";
+		}
+		// Twitter data test set
+		twitterTestSet = new ArrayList<String>();
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/FR3Aquitaine.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/EasySoaTest.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/FR3Aquitaine.json");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/FR3franchecomte.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/FR3franchecomte.json");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/truckblogfr.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/OliverTweett.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/Developpez.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/europe_camions.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/OliverTweett.json");
+		twitterTestSet.add("http://" + baseUrl + "/1/users/show/FR3Aquitaine.xml");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/oliverTweett.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/FR3Aquitaine.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/europe_camions.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/Developpez.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/FR3Bourgone.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/EasySoaTest.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/europe_camions.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/Developpez.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/FR3Aquitaine.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/oliverTweett.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/Developpez.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/FR3Bourgone.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/EasySoaTest.xml?cursor=-1");	
 		return twitterTestSet;
 	}
+
+	/**
+	 * To get the Twitter URL data set
+	 * @return The Twitter URL data set
+	 */
+	/*public ArrayList<String> getMockTwitterUrlData(){
+		return mockTwitterTestSet;
+	}*/	
 	
 	/**
 	 * Replace template with random numbers

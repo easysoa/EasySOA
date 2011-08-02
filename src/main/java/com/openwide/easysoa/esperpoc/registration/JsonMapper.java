@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.esperpoc.registration;
 
 import org.json.JSONException;
 import org.json.JSONObject;

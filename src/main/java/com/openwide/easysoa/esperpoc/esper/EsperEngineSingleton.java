@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.esperpoc.esper;
 
 import org.apache.log4j.Logger;
 
@@ -8,7 +8,7 @@ import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
-import com.openwide.easysoa.esperpoc.esper.MessageListener;
+import com.openwide.easysoa.esperpoc.PropertyManager;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
 
