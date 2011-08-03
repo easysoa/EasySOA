@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.openwide.easysoa.esperpoc.esper.EsperEngineSingleton;
 import com.openwide.easysoa.monitoring.Message.MessageType;
-import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
+//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
 
 public class RestMessageHandler implements MessageHandler {
 
@@ -21,17 +21,21 @@ public class RestMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public boolean handle(Message message) {
+	public boolean handle(Message message, MonitoringService monitoringService) {
 		// Add the url in the url tree structure
 		logger.debug("REST message found");
 		message.setType(MessageType.REST);
-		if(MonitoringMode.DISCOVERY.compareTo(MonitorService.getMonitorService().getMode()) == 0){
+		//if(MonitoringMode.DISCOVERY.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
+		if(monitoringService instanceof DiscoveryMonitoringService){
 			logger.debug("Discovery mode, message added in tree");
-			MonitorService.getMonitorService().getUrlTree().addUrlNode(message);
+			//DiscoveryMonitoringService.getMonitorService().getUrlTree().addUrlNode(message);
+			monitoringService.getUrlTree().addUrlNode(message);
 		}
-		else if(MonitoringMode.VALIDATED.compareTo(MonitorService.getMonitorService().getMode()) == 0){
+		//else if(MonitoringMode.VALIDATED.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
+		else if(monitoringService instanceof ValidatedMonitoringService){
 			logger.debug("Validated mode, checking if message exists in urlSoaModel");
-			MonitoringModel monitoringModel =  MonitorService.getMonitorService().getModel();
+			//MonitoringModel monitoringModel =  DiscoveryMonitoringService.getMonitorService().getModel();
+			MonitoringModel monitoringModel = monitoringService.getModel();
 			logger.debug("searched key : " + message.getUrl());
 			//TODO change this to match with partial url
 			String urlSoaModelType =  monitoringModel.getSoaModelUrlToTypeMap().get(message.getUrl());
@@ -50,7 +54,8 @@ public class RestMessageHandler implements MessageHandler {
 				EsperEngineSingleton.getEsperRuntime().sendEvent(message);
 			} else {
 				// Unknown message
-				MonitorService.getMonitorService().getUnknownMessagesList().add(message);
+				//DiscoveryMonitoringService.getMonitorService().getUnknownMessagesList().add(message);
+				monitoringService.getUnknownMessagesList().add(message);
 			}			
 		}
 		return true;

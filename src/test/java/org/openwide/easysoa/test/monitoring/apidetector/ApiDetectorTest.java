@@ -11,15 +11,17 @@ import org.junit.Assume;
 import com.openwide.easysoa.esperpoc.run.RunManagerImpl;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
-import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
+//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
-import com.openwide.easysoa.monitoring.MonitorService;
+import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
 import com.sun.jersey.api.client.ClientHandlerException;
 
 /**
  * Unit test for simple App.
+ * @Deprecated : Use MockedHttpDiscoveryProxyTest instead
  */
+@Deprecated
 public class ApiDetectorTest extends TestCase {
 	
 	public final static String SOA_MODEL_TYPE_APPLIIMPL = "appliimpl";
@@ -53,7 +55,8 @@ public class ApiDetectorTest extends TestCase {
      */
     //TODO : add assert to automatically check the result of the test
 	public void testUrlDiscoveryMode(){
-		MonitorService.getMonitorService(MonitoringMode.DISCOVERY);
+		// Not a singleton ....
+		//DiscoveryMonitoringService.getMonitorService(MonitoringMode.DISCOVERY);
 		urlDetectionSimulate(new UrlMock().getTwitterUrlData("api.twitter.com"));
 		//urlDetectionSimulate(new UrlMock().getIMediaUrlData());
 		try {
@@ -81,7 +84,8 @@ public class ApiDetectorTest extends TestCase {
 		// NB. in validation mode, no concept or pre or post run
 		// TODO LATER cache it
 		try {
-			MonitorService.getMonitorService(MonitoringMode.VALIDATED);
+			// Not a singleton ...
+			//DiscoveryMonitoringService.getMonitorService(MonitoringMode.VALIDATED);
 			urlDetectionSimulate(new UrlMock().getTwitterUrlData("api.twitter.com"));
 		}
 		catch (ClientHandlerException e) {
@@ -104,7 +108,8 @@ public class ApiDetectorTest extends TestCase {
 		String urlString;
 		// Start the RunManager
 		try{
-			RunManagerImpl.getInstance().start("Test run");
+			// Not a singleton ...			
+			//RunManagerImpl.getInstance().start("Test run");
 			//for(int i=0; i<1000;i++){
 			for(int i=0; i<1;i++){
 				while(iter.hasNext()){
@@ -114,7 +119,8 @@ public class ApiDetectorTest extends TestCase {
 						URL url = new URL(urlString);
 						Message msg = new Message(url, MessageType.REST);
 						// listen message
-						MonitorService.getMonitorService().listen(msg);
+						// Not a singleton ...
+						//DiscoveryMonitoringService.getMonitorService().listen(msg);
 					}
 					catch(Exception ex){
 						logger.error("**** problem spotted ! ", ex);
@@ -122,7 +128,8 @@ public class ApiDetectorTest extends TestCase {
 				}
 			}
 			// Stop the RunManager
-			RunManagerImpl.getInstance().stop();			
+			// Not a singleton ...
+			//RunManagerImpl.getInstance().stop();			
 		}
 		catch(Exception ex){
 			logger.error("An error occurs when trying to start a new run", ex);
@@ -136,11 +143,12 @@ public class ApiDetectorTest extends TestCase {
 	//TODO Stay here ? Remove this method ?	
 	public void urlDetectionCompute(){
 		// compute additional, non-local indicators :
-		if(MonitoringMode.DISCOVERY.compareTo(MonitorService.getMonitorService().getMode()) == 0){
-			MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
+		// Not a singleton ...
+		/*if(MonitoringMode.DISCOVERY.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
+			DiscoveryMonitoringService.getMonitorService().registerDetectedServicesToNuxeo();
 		} else {
-			MonitorService.getMonitorService().registerUnknownMessagesToNuxeo();
-		}
+			DiscoveryMonitoringService.getMonitorService().registerUnknownMessagesToNuxeo();
+		}*/
 	}
 
 	/**
@@ -149,7 +157,9 @@ public class ApiDetectorTest extends TestCase {
 	//TODO Stay here ? Remove this method ?
 	public void urlDetectionDebugResults(){
 		// debug / print them only in discovery mode :
-		UrlTree urlTree = MonitorService.getMonitorService().getUrlTree();
+		// Not a singleton ...
+		//UrlTree urlTree = DiscoveryMonitoringService.getMonitorService().getUrlTree();
+		UrlTree urlTree = null;
 		if(urlTree != null){
 			logger.debug("Printing tree node index ***");
 			logger.debug("Total url count : " + urlTree.getTotalUrlCount());

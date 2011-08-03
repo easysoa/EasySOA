@@ -1,6 +1,7 @@
 package com.openwide.easysoa.esperpoc.esper;
 
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Scope;
 
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPAdministrator;
@@ -17,6 +18,7 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class EsperEngineSingleton {
 
 	/**

@@ -37,7 +37,7 @@ public class SoapMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public boolean handle(Message message) {
+	public boolean handle(Message message, MonitoringService monitoringService) {
 		// enrich the message
 		message.setType(MessageType.SOAP);
 		logger.debug("WSDL found");

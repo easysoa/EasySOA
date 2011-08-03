@@ -13,6 +13,7 @@ public interface MessageHandler {
 	 * Handle the message
 	 * @param message The message to handle
 	 */
-	public boolean handle(Message message);
+	// TODO : Monitoring service as parameter here is not a good solution, find an other way ...
+	public boolean handle(Message message, MonitoringService monitoringService);
 
 }

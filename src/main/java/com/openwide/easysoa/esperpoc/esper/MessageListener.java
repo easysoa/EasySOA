@@ -8,7 +8,7 @@ import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
 import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.MonitorService;
+import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
@@ -60,7 +60,9 @@ public class MessageListener implements UpdateListener {
 			service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
 			nrs.registerWSDLService(service);
 		} else {
-			List<Node> soaNodes = MonitorService.getMonitorService().getModel().getSoaNodes();
+			//TODO Refactoring the ESPER section, no acces to the monitor service here .... 
+			/*
+			List<Node> soaNodes = DiscoveryMonitoringService.getMonitorService().getModel().getSoaNodes();
 			Node soaNode = null;
 			for(Node node : soaNodes){
 				if(node.getUrl().equals(msg.getUrl())){
@@ -76,7 +78,7 @@ public class MessageListener implements UpdateListener {
 				// Nothing to do, no counter to increase for API
 			} else if(soaNode instanceof Appli){
 				// Nothing to do, no counter to increase for Appli
-			}
+			}*/
 		}
 	}
 	

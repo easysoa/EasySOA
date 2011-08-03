@@ -1,5 +1,7 @@
 package com.openwide.easysoa.esperpoc.run;
 
+import com.openwide.easysoa.monitoring.Message;
+
 public interface RunManager {
 
 	/**
@@ -26,4 +28,10 @@ public interface RunManager {
 	 */
 	public abstract Run getLastRun();
 
+	/**
+	 * Record a message in the current run
+	 * @param message The <code>Message</code> to record
+	 */
+	public abstract void record(Message message);
+	
 }

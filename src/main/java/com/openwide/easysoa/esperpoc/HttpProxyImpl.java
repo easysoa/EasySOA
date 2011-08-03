@@ -31,11 +31,13 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.esperpoc.run.RunManager;
 import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.MonitorService;
-import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
+//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
+//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
+import com.openwide.easysoa.monitoring.MonitoringService;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 
 /**
@@ -51,10 +53,12 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
  * @author jguillemotte
  */
 @SuppressWarnings("serial")
+@Scope("composite")
 public class HttpProxyImpl extends HttpServlet {
-
+	
+	// Reference on monitoring service
 	@Reference
-	RunManager runManager;
+	MonitoringService monitoringService;
 	
 	//TODO : remove this constant and find a way to get the proxy port configured in frascati composite file
 	private final static int PROXY_PORT = 8082; 
@@ -72,9 +76,9 @@ public class HttpProxyImpl extends HttpServlet {
 	static {
 		ProxyConfigurator.configure();
 		// If MonitorService is not set, set with the default monitoring mode
-		if(MonitorService.getMode() == null){
-			MonitorService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
-		}
+		/*if(DiscoveryMonitoringService.getMode() == null){
+			DiscoveryMonitoringService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
+		}*/
 	}
 
 	/**
@@ -82,13 +86,6 @@ public class HttpProxyImpl extends HttpServlet {
 	 */
 	@Override
 	public final void doGet(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
-		if(runManager != null){
-			logger.debug("runManager : " + runManager.toString());			
-		} else {
-			logger.debug("runManager is null ....");
-		}
-
-		
 		doHttpMethod(request, response);
 	}
 
@@ -145,6 +142,13 @@ public class HttpProxyImpl extends HttpServlet {
 		doHttpMethod(request, response);
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public final void doHttpMethod(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.debug("------------------");
 		logger.debug("Method: " + request.getMethod());
@@ -156,8 +160,13 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
+	    	// Remove that if block
+	    	/*if(monitoringService.getRunManager() == null){
+	    		monitoringService.setRunManager(runManager);
+	    	}*/
 	    	Message message = forward(request, response);
-    	    MonitorService.getMonitorService().listen(message);
+	    	monitoringService.listen(message);
+	    	//DiscoveryMonitoringService.getMonitorService().listen(message);
 	    }
 	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client
@@ -212,23 +221,23 @@ public class HttpProxyImpl extends HttpServlet {
 	/**
 	 * 
 	 */
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void printUrlTree(){
+	//@SuppressWarnings("unused")
+	//@Deprecated
+	/*private void printUrlTree(){
 		logger.debug("[printUrlTree()] Printing tree node index ***");
-		logger.debug("[printUrlTree()] Total url count : " + MonitorService.getMonitorService().getUrlTree().getTotalUrlCount());
+		logger.debug("[printUrlTree()] Total url count : " + DiscoveryMonitoringService.getMonitorService().getUrlTree().getTotalUrlCount());
 		String key;
-		HashMap<String, UrlTreeNode> index = MonitorService.getMonitorService().getUrlTree().getNodeIndex();
+		HashMap<String, UrlTreeNode> index = DiscoveryMonitoringService.getMonitorService().getUrlTree().getNodeIndex();
 		Iterator<String> iter2 = index.keySet().iterator();
 		UrlTreeNode parentNode;
 		float ratio;
 		while(iter2.hasNext()){
 			key = iter2.next();
 			parentNode = (UrlTreeNode)(index.get(key).getParent());
-			ratio = (float)index.get(key).getPartialUrlcallCount() / MonitorService.getMonitorService().getUrlTree().getTotalUrlCount();
+			ratio = (float)index.get(key).getPartialUrlcallCount() / DiscoveryMonitoringService.getMonitorService().getUrlTree().getTotalUrlCount();
 			logger.debug("[printUrlTree()] " + key + " -- " + index.get(key).toString() + ", parent node => " + parentNode.getNodeName() + ", Depth => " + index.get(key).getDepth() + ", node childs => " + index.get(key).getChildCount() + ", ratio => " + ratio);
 		}
-	}
+	}*/
 
 	/**
 	 * Send back the request to the original recipient and get the response

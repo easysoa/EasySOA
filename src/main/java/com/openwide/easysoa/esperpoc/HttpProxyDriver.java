@@ -52,5 +52,4 @@ public interface HttpProxyDriver {
 	@GET
 	@Path("/setMonitoringMode/{mode}")
 	public String setMonitoringMode(@PathParam("mode") String mode);
-	
 }

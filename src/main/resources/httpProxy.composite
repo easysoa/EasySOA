@@ -1,31 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpProxy">
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
+	name="httpProxy">
 
-  <!-- HTTP Proxy -->
-  <sca:component name="httpProxyService">
-    <sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyImpl"/>
-    <!--<sca:service name="httpServiceInput" requires="esperIntent">-->
-    <sca:service name="httpServiceInput">
-      <sca:interface.java interface="javax.servlet.Servlet"/>
-      <tuscany:binding.http uri="http://localhost:8082/"/>
-    </sca:service>
-    <sca:reference name="runManager" target="runManagerComponent" />
-  </sca:component>    
-    
-  <!-- Run Manager -->    
-  <sca:component name="runManagerComponent">
-    <sca:service name="runManagerService">
-      <sca:interface.java interface="com.openwide.easysoa.esperpoc.run.RunManager"/>
-    </sca:service>
-    <sca:implementation.java class="com.openwide.easysoa.esperpoc.run.RunManagerImpl" />
-  </sca:component>
-  
-  <!-- HTTP Client to drive the proxy -->
-  <sca:component name="httpProxyDriver">
-    <sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyDriverImpl"/>
-    <sca:service name="httpServiceDriver">
-      <sca:interface.java interface="com.openwide.easysoa.esperpoc.HttpProxyDriver"/>
-      <frascati:binding.rest uri="http://localhost:8084/"/>
-    </sca:service>
-    </sca:component>
+	<!-- HTTP Proxy -->
+	<sca:component name="httpProxyService">
+		<sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyImpl" />
+		<!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
+		<sca:service name="httpServiceInput">
+			<sca:interface.java interface="javax.servlet.Servlet" />
+			<tuscany:binding.http uri="http://localhost:8082/" />
+		</sca:service>
+		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
+	</sca:component>
+
+	<!-- HTTP Client to drive the proxy -->
+	<sca:component name="httpProxyDriver">
+		<sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyDriverImpl" />
+		<sca:service name="httpServiceDriver">
+			<sca:interface.java interface="com.openwide.easysoa.esperpoc.HttpProxyDriver" />
+			<frascati:binding.rest uri="http://localhost:8084/" />
+		</sca:service>
+		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
+	</sca:component>
+
+	<!-- Monitoring service -->
+	<sca:component name="monitoringServiceComponent">
+		<sca:service name="monitoringServiceService">
+			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.monitoring.DiscoveryMonitoringService" />
+		<sca:reference name="runManager" target="runManagerComponent" />
+		<!--<sca:reference name="esperEngine" target="esperEngineComponent" />-->		
+	</sca:component>
+
+	<!-- Run Manager -->
+	<sca:component name="runManagerComponent">
+		<sca:service name="runManagerService">
+			<sca:interface.java interface="com.openwide.easysoa.esperpoc.run.RunManager" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.esperpoc.run.RunManagerImpl" />
+	</sca:component>
+	
+	<!-- Esper Engine -->
+	<!--<sca:component name="esperEngineComponent">
+		<sca:service name="esperEngineService">
+			<sca:interface.java interface="com.openwide.easysoa.esperpoc.esper.EsperEngine" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.esperpoc.esper.EsperEngineImpl" />
+	</sca:component>-->
+
 </sca:composite>

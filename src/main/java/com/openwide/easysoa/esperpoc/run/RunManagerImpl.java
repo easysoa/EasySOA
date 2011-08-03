@@ -4,6 +4,9 @@ import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Scope;
+
+import com.openwide.easysoa.monitoring.Message;
 
 /**
  * A manager for run's
@@ -14,22 +17,22 @@ import org.apache.log4j.Logger;
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class RunManagerImpl implements RunManager {
 	
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(RunManagerImpl.class.getName());	
+	private Logger logger = Logger.getLogger(RunManagerImpl.class.getName());	
 
 	/**
 	 * 
 	 */
-	private static boolean autoStart = true;
-	
+	private boolean autoStart = true;	
 	/**
 	 * 
 	 */
-	private static RunManager runManager = null;
+	//private RunManager runManager = null;
 
 	/**
 	 * The current run
@@ -46,25 +49,28 @@ public class RunManagerImpl implements RunManager {
 	 */
 	public RunManagerImpl(){
 		runList = new ArrayDeque<Run>();
+		logger.debug("Init RunManagerImpl ...");
 	}
 	
 	/**
 	 * Return an instance of RunManager
 	 * @return An instance of <code>RunManager</code>
 	 */
+	/*
 	public static RunManager getInstance(){
 		if(runManager == null){
 			runManager = new RunManagerImpl();
 		}
 		return runManager;
-	}
+	}*/
 	
 	/**
 	 * Set the auto start. The auto start feature create a new <code>Run</code> automatically even if the start method was not called before.
 	 * @param autoStart true if a new run should be created automatically when the method getCurrentRun is called, false otherwise
 	 */
-	public static void setAutoStart(boolean autoStart){
-		RunManagerImpl.autoStart = autoStart;
+	public void setAutoStart(boolean autoStart){
+		this.autoStart = autoStart;
+		//RunManagerImpl.autoStart = autoStart;
 	}
 	
 	/* (non-Javadoc)
@@ -81,7 +87,6 @@ public class RunManagerImpl implements RunManager {
 		} else if(currentRun==null && !autoStart){
 			throw new Exception("Autostart is set to false, unable to start a new run automatically !");
 		}
-		
 		return this.currentRun;
 	}
 	
@@ -124,6 +129,21 @@ public class RunManagerImpl implements RunManager {
 	@Override
 	public Run getLastRun(){
 		return this.runList.getLast();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.openwide.easysoa.esperpoc.run.RunManager#record()
+	 */	
+	@Override
+	public void record(Message message) {
+		// Get the current run and add a message
+		logger.debug("Recording message : " + message);
+		try{
+			this.getCurrentRun().addMessage(message);
+		}
+		catch(Exception ex){
+			logger.error("Unable to record message !", ex);
+		}
 	}
 	
 	/**
