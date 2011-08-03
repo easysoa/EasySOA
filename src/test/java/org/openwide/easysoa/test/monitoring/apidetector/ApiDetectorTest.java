@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.Assume;
 
-import com.openwide.easysoa.esperpoc.run.RunManager;
+import com.openwide.easysoa.esperpoc.run.RunManagerImpl;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
@@ -104,7 +104,7 @@ public class ApiDetectorTest extends TestCase {
 		String urlString;
 		// Start the RunManager
 		try{
-			RunManager.getInstance().start("Test run");
+			RunManagerImpl.getInstance().start("Test run");
 			//for(int i=0; i<1000;i++){
 			for(int i=0; i<1;i++){
 				while(iter.hasNext()){
@@ -122,7 +122,7 @@ public class ApiDetectorTest extends TestCase {
 				}
 			}
 			// Stop the RunManager
-			RunManager.getInstance().stop();			
+			RunManagerImpl.getInstance().stop();			
 		}
 		catch(Exception ex){
 			logger.error("An error occurs when trying to start a new run", ex);

@@ -3,7 +3,7 @@ package com.openwide.easysoa.esperpoc;
 import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;
 
-import com.openwide.easysoa.esperpoc.run.RunManager;
+import com.openwide.easysoa.esperpoc.run.RunManagerImpl;
 import com.openwide.easysoa.monitoring.MonitorService;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
 
@@ -43,7 +43,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	public String startNewRun(String runName) {
 		logger.debug("Starting a new run !");
 		try{
-			RunManager.getInstance().start(runName);
+			RunManagerImpl.getInstance().start(runName);
 		} catch(Exception ex){
 			logger.error("Unable to start a new run", ex);
 			return ex.getMessage();			
@@ -54,7 +54,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	@Override
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
-		RunManager.getInstance().stop();
+		RunManagerImpl.getInstance().stop();
 		MonitorService.getMonitorService().registerDetectedServicesToNuxeo();
 		return "Current run stopped !";
 	}

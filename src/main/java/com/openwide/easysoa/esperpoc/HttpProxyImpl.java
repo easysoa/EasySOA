@@ -30,7 +30,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Reference;
 
+import com.openwide.easysoa.esperpoc.run.RunManager;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitorService;
 import com.openwide.easysoa.monitoring.MonitorService.MonitoringMode;
@@ -51,6 +53,9 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 @SuppressWarnings("serial")
 public class HttpProxyImpl extends HttpServlet {
 
+	@Reference
+	RunManager runManager;
+	
 	//TODO : remove this constant and find a way to get the proxy port configured in frascati composite file
 	private final static int PROXY_PORT = 8082; 
 	private final static int HTTP_CONNEXION_TIMEOUT_MS = 10000; 
@@ -72,12 +77,18 @@ public class HttpProxyImpl extends HttpServlet {
 		}
 	}
 
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */
 	@Override
 	public final void doGet(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
+		if(runManager != null){
+			logger.debug("runManager : " + runManager.toString());			
+		} else {
+			logger.debug("runManager is null ....");
+		}
+
+		
 		doHttpMethod(request, response);
 	}
 
@@ -169,7 +180,7 @@ public class HttpProxyImpl extends HttpServlet {
 	    catch(Throwable ex){
 	    	// error in the internals of the httpProxy : building & returning it
 	    	ex.printStackTrace();
-	    	logger.error("An error occurs in doPost method." , ex);
+	    	logger.error("An error occurs in doPost method.", ex);
 
 	    	// attempting to reset response
 	    	response.reset();
