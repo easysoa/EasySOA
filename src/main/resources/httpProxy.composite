@@ -12,6 +12,7 @@
 			<tuscany:binding.http uri="http://localhost:8082/" />
 		</sca:service>
 		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
+    	<sca:property name="proxyPort">8082</sca:property>		
 	</sca:component>
 
 	<!-- HTTP Client to drive the proxy -->

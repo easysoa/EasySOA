@@ -133,7 +133,7 @@ public class UrlMock {
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/oliverTweett.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/Developpez.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/FR3Bourgone.xml?cursor=-1");
-		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/EasySoaTest.xml?cursor=-1");	
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/EasySoaTest.xml?cursor=-1");
 		return twitterTestSet;
 	}
 

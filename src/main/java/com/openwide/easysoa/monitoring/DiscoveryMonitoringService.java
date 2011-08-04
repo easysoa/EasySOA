@@ -30,11 +30,6 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 		monitoringModel = null;
 		urlTree = new UrlTree(new UrlTreeNode("root", ""));
 		unknownMessagesList = null;
-		if(runManager == null){
-			logger.debug("runManager is null");
-		} else {
-			logger.debug(runManager.toString());
-		}
 	}
 
 	/**

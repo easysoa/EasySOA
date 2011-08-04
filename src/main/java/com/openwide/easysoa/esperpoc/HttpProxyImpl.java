@@ -4,16 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
-
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
 import org.apache.http.client.HttpResponseException;
@@ -30,15 +28,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
-import com.openwide.easysoa.esperpoc.run.RunManager;
 import com.openwide.easysoa.monitoring.Message;
-//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
-//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
 import com.openwide.easysoa.monitoring.MonitoringService;
-import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 
 /**
  * HTTP Proxy 
@@ -60,8 +54,11 @@ public class HttpProxyImpl extends HttpServlet {
 	@Reference
 	MonitoringService monitoringService;
 	
-	//TODO : remove this constant and find a way to get the proxy port configured in frascati composite file
-	private final static int PROXY_PORT = 8082; 
+	// Port the proxy use.
+	@Property
+	public int proxyPort;
+
+	// Timeouts
 	private final static int HTTP_CONNEXION_TIMEOUT_MS = 10000; 
 	private final static int HTTP_SOCKET_TIMEOUT_MS = 10000;
 	
@@ -75,10 +72,6 @@ public class HttpProxyImpl extends HttpServlet {
 	 */
 	static {
 		ProxyConfigurator.configure();
-		// If MonitorService is not set, set with the default monitoring mode
-		/*if(DiscoveryMonitoringService.getMode() == null){
-			DiscoveryMonitoringService.getMonitorService(MonitoringMode.valueOf(PropertyManager.getProperty("proxy.default.monitoring.mode").toUpperCase()));
-		}*/
 	}
 
 	/**
@@ -160,13 +153,11 @@ public class HttpProxyImpl extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	// Remove that if block
-	    	/*if(monitoringService.getRunManager() == null){
-	    		monitoringService.setRunManager(runManager);
-	    	}*/
+	    	// Detect infinite request loop (proxy send a request to itself)
+	    	infiniteLoopDetection(request);	    	
+	    	// Listening the message
 	    	Message message = forward(request, response);
 	    	monitoringService.listen(message);
-	    	//DiscoveryMonitoringService.getMonitorService().listen(message);
 	    }
 	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client
@@ -253,9 +244,6 @@ public class HttpProxyImpl extends HttpServlet {
 		HttpParams httpParams = httpClient.getParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, HTTP_CONNEXION_TIMEOUT_MS);
 		HttpConnectionParams.setSoTimeout(httpParams, HTTP_SOCKET_TIMEOUT_MS);
-		
-		// TODO Enable infinite loop detection
-		//infiniteLoopDetection(request);
 		
 		// URL
 		StringBuffer requestUrlBuffer = new StringBuffer();
@@ -371,15 +359,13 @@ public class HttpProxyImpl extends HttpServlet {
 	 * Detect if the request call directly the proxy, if true, an exception is throw
 	 */
 	private void infiniteLoopDetection(HttpServletRequest request) throws Exception{
-		if(PROXY_PORT == request.getServerPort()){
-			throw new Exception("Request on proxy itself detected on port " + PROXY_PORT + " !");
+		// Get the server name and port to detect the loop
+		if(proxyPort == request.getServerPort() 
+				&& ("localhost".equalsIgnoreCase(request.getServerName()) 
+						|| "127.0.0.1".equals(request.getServerName()) 
+						|| InetAddress.getLocalHost().getHostName().equals(request.getServerName()) )){
+			throw new Exception("Request on proxy itself detected on port " + proxyPort + " ! Infinite loop aborted !");
 		}
-		/*Enumeration<String> enum1 = this.getServletContext().getInitParameterNames();
-		while(enum1.hasMoreElements()){
-			logger.debug("InitParametersName : " + enum1.nextElement());
-		}*/
-		//throw new Exception("TEST");
-		// Get the localhost and port to detect the loop
 	}
 	
 }
