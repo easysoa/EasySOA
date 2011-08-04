@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
  */
 public class PropertyManager {
 	
-	public static final String PROPERTY_FILE_NAME = "httpProxy.properties";
+	public static final String PROPERTY_FILE_NAME = "httpDiscoveryProxy.properties";
 	
 	/**
 	 * Logger

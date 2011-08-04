@@ -52,7 +52,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	
 	// Reference on monitoring service
 	@Reference
-	MonitoringService monitoringService;
+	public MonitoringService monitoringService;
 	
 	// Port the proxy use.
 	@Property
