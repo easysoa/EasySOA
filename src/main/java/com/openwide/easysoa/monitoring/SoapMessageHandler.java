@@ -5,9 +5,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 
-import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
+import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 /**
  * 

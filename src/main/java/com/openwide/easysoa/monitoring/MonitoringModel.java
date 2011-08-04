@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
+import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 public class MonitoringModel {
 

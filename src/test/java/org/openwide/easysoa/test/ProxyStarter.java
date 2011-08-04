@@ -22,10 +22,10 @@ public class ProxyStarter extends AbstractProxyTestStarter {
 	 */
 	@Test
 	public final void testWaitUntilRead() throws Exception {
-		logger.info("Http Proxy started, wait for user action to stop !");
+		logger.info("Http Discovery Proxy started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test
 		System.in.read();
-		logger.info("Http Proxy stopped !");
+		logger.info("Http Discovery Proxy stopped !");
 	}
     
 }

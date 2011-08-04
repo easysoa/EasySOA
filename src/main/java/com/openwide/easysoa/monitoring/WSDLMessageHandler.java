@@ -2,10 +2,10 @@ package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
 
-import com.openwide.easysoa.esperpoc.PropertyManager;
-import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
+import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
+import com.openwide.easysoa.proxy.PropertyManager;
 
 public class WSDLMessageHandler implements MessageHandler {
 

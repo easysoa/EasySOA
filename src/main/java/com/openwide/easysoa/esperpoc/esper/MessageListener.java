@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
-import com.openwide.easysoa.esperpoc.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
 import com.openwide.easysoa.monitoring.Message.MessageType;
@@ -15,6 +14,7 @@ import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.monitoring.soa.WSDLService;
+import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 /**
  * Sync message listener

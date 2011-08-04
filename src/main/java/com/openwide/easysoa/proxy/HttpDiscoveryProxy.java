@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.proxy;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -48,7 +48,7 @@ import com.openwide.easysoa.monitoring.MonitoringService;
  */
 @SuppressWarnings("serial")
 @Scope("composite")
-public class HttpProxyImpl extends HttpServlet {
+public class HttpDiscoveryProxy extends HttpServlet {
 	
 	// Reference on monitoring service
 	@Reference
@@ -65,7 +65,7 @@ public class HttpProxyImpl extends HttpServlet {
 	/**
 	 * Logger
 	 */
-	static Logger logger = Logger.getLogger(HttpProxyImpl.class.getName());
+	static Logger logger = Logger.getLogger(HttpDiscoveryProxy.class.getName());
 	
 	/**
 	 * Log system initialization
@@ -290,7 +290,6 @@ public class HttpProxyImpl extends HttpServlet {
 	        httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
 	    }*/
     	String resp = httpClient.execute(httpUriRequest, responseHandler);
-	    
 	    respOut.write(resp);
     	respOut.close();
     	return message;

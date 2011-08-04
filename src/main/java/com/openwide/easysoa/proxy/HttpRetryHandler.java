@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.proxy;
 
 import java.io.IOException;
 import org.apache.http.HttpRequest;

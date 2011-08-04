@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.proxy;
 
 import org.osoa.sca.annotations.Remotable;
 import javax.ws.rs.GET;

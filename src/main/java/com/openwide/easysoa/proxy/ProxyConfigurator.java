@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.proxy;
 
 import org.apache.log4j.PropertyConfigurator;
 
@@ -17,7 +17,7 @@ public class ProxyConfigurator {
 	 */
 	public static void configure(){
 		if(!configuratorAlreadyCalled){
-			PropertyConfigurator.configure(HttpProxyImpl.class.getClassLoader().getResource("log4j.properties"));
+			PropertyConfigurator.configure(HttpDiscoveryProxy.class.getClassLoader().getResource("log4j.properties"));
 			configuratorAlreadyCalled = true;
 		}
 	}

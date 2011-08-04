@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc.registration;
+package com.openwide.easysoa.nuxeo.registration;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
 	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
-	name="httpProxy">
+	name="httpDiscoveryProxy">
 
 	<!-- HTTP Proxy -->
 	<sca:component name="httpProxyService">
-		<sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyImpl" />
+		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
 		<!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
 		<sca:service name="httpServiceInput">
 			<sca:interface.java interface="javax.servlet.Servlet" />
@@ -17,9 +17,9 @@
 
 	<!-- HTTP Client to drive the proxy -->
 	<sca:component name="httpProxyDriver">
-		<sca:implementation.java class="com.openwide.easysoa.esperpoc.HttpProxyDriverImpl" />
+		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpProxyDriverImpl" />
 		<sca:service name="httpServiceDriver">
-			<sca:interface.java interface="com.openwide.easysoa.esperpoc.HttpProxyDriver" />
+			<sca:interface.java interface="com.openwide.easysoa.proxy.HttpProxyDriver" />
 			<frascati:binding.rest uri="http://localhost:8084/" />
 		</sca:service>
 		<sca:reference name="monitoringService" target="monitoringServiceComponent" />

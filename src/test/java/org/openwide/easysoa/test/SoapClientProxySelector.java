@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+@Deprecated
 public class SoapClientProxySelector extends ProxySelector {
 
 	/**

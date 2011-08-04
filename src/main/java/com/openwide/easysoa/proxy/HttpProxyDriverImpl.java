@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc;
+package com.openwide.easysoa.proxy;
 
 import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;

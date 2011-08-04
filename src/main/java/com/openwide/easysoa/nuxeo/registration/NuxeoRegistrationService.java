@@ -1,5 +1,5 @@
 
-package com.openwide.easysoa.esperpoc.registration;
+package com.openwide.easysoa.nuxeo.registration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.openwide.easysoa.esperpoc.PropertyManager;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.monitoring.soa.WSDLService;
+import com.openwide.easysoa.proxy.PropertyManager;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
