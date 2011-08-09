@@ -1,0 +1,174 @@
+<html xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>EasySOA Core - PureAirFlowers Service</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div id="headerLight">
+<div id="headerLightContents">
+<div id="headerBreadcrumbs">
+<a href="../index.html">EasySOA</a> &gt; <a href="index.html">Light</a> &gt; <b>PureAirFlowers</b>
+</div>
+<b>PureAirFlowers</b> Service
+			        </div>
+</div>
+<div id="container">
+<h1>Service location</h1>
+<p>
+<a href="http://192.168.2.157:9010/PureAirFlowers">http://192.168.2.157:9010/PureAirFlowers</a>
+</p>
+  
+
+
+
+
+    
+      
+    
+  
+
+    
+      
+    
+  
+
+  
+  
+    
+    
+  
+  
+    
+    
+  
+  
+    
+<h1>Operation <b>getOrdersNumber</b>
+</h1>
+<script type="text/javascript">
+					function getElementsByClass(searchClass,node,tag) {
+						var classElements = new Array();
+						if ( node == null )
+							node = document;
+						if ( tag == null )
+							tag = '*';
+						var els = node.getElementsByTagName(tag);
+						var elsLen = els.length;
+						var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+						
+						for (i = 0, j = 0; i < elsLen; i++) {
+							if ( pattern.test(els[i].className) ) {
+								classElements[j] = els[i];
+								j++;
+							}
+						}
+						
+						return classElements;
+					}
+
+					function submitgetOrdersNumberForm(form){ 
+    					var xhr;
+    					var op = "getOrdersNumber"; 
+    					//document.getOrdersNumber.ordersNumber.value = "Sending request ...";
+						getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Sending request ...";
+						if(window.XMLHttpRequest) // Firefox and others
+						   xhr = new XMLHttpRequest(); 
+						else if(window.ActiveXObject){ // Internet Explorer 
+						   try {
+					                xhr = new ActiveXObject("Msxml2.XMLHTTP");
+					            } catch (e) {
+					                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+					            }
+						}
+						else { // XMLHttpRequest not supported by browser
+						   alert("Your browser does not support XMLHTTPRequest objects ..."); 
+						   xhr = false; 
+						}
+						//document.getOrdersNumber.ordersNumber.value = "Getting response ...";
+						getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Getting response ...";
+ 					    xhr.onreadystatechange  = function(){ 
+         					//alert("xhr.readyState : " + xhr.readyState);
+         					if(xhr.readyState  == 4){
+         						//alert("xhr.status : " + xhr.status + " ; xhr.responseText : " + xhr.responseText);
+              					if(xhr.status == 200){ 
+                 					//document.getOrdersNumber.ordersNumber.value = xhr.responseText;
+									getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = xhr.responseText;
+              					} else { 
+                 					//document.getOrdersNumber.ordersNumber.value = "Error code " + xhr.status;
+									getElementsByClass('outputField', document.getOrdersNumber, '*')[0].value = "Error code " + xhr.status;
+         						}
+         					}
+    					};
+    					// Hard coded URL for demo purpose
+    					//var url = "http://localhost:7001/?";
+    					var url = "http://localhost:7001/?"
+    					var params = "";
+						// For each form field : add it in the url
+    					
+    					for(i=0; i<document.forms[form].elements.length; i++){
+							// on ne prend que les champs enabled ou en lecture / ecriture
+							if(document.forms[form].elements[i].disabled == false){
+								//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
+								if(params == ""){
+									params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
+								} else {
+									params = params + "&" + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;							
+								}
+							}
+						}
+						params = params + "&operation=" + op;						
+						
+						//alert("url = " + url + params);
+					   	xhr.open("GET", url + params, true); 
+   						xhr.send(null); 
+					}
+				
+				</script>
+<form name="getOrdersNumber" method="get" action="" enctype="text/plain">
+<h2>Input fields</h2>
+    
+<table>
+<tr>
+<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
+</tr>
+<tr>
+<td>xs:string</td><td>ClientId</td><td><input type="text" name="ClientId" class="inputField"></td>
+</tr>
+</table>
+<h2>Output fields</h2>
+    
+<table>
+<tr>
+<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
+</tr>
+<tr>
+<td>xs:int</td><td>ordersNumber</td><td><input type="text" name="ordersNumber" disabled="" id="return_ordersNumber" class="outputField"></td>
+</tr>
+</table>
+</form>
+<br>
+<input type="button" value="Submit" OnClick="submitgetOrdersNumberForm('getOrdersNumber');">
+  
+  
+    
+    
+      
+      
+        
+      
+      
+        
+      
+    
+  
+  
+    
+      
+    
+  
+
+</div>
+</body>
+</html>
