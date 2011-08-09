@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:met="http://meteomock.mock.test.easysoa.openwide.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <met:getTomorrowForecast>
+         <!--Optional:-->
+         <met:arg0>Lyon</met:arg0>
+      </met:getTomorrowForecast>
+   </soapenv:Body>
+</soapenv:Envelope>

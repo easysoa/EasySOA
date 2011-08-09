@@ -1,0 +1,14 @@
+// TODO ok .monitoring.MessageHandler : isOKFor(Message ? Request ?) handle(Message)
+// TODO ok in all methods (doGet, doPost), for (mh in List<>Message Handler ) { boolean isOKFor(); handle() return stopHandling; }
+// TODO ok GetWSDLMessageHandler, SoapMessageHandler, RestMessageHandler
+
+// TODO ok MonitorService : mode, soaModel, listen() -> "for (mh..." called here
+// TODO ok refactor the test with MonitorService.listen()
+// TODO ok move doGet() code in forward() to finish 
+
+// TODO ok at the start (end ?!) of MonitorService.listen(), RunRecorder.record(Message)
+// TODO ok RunRecorder (NB. not a RunRepository, yet) : record(Message)
+// TODO ok Run : startDate, stopDate...
+// TODO ok RunManager : runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run) -> for (run... MonitorService.listen(...
+
+// TODO Add a unknow message datastructure to store unknow messages and analyse / register them later
