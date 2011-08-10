@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance" name="tripWsClient" targetNamespace="j1.galaxy.inria.fr">
+  <sca:service name="r" promote="SimpleClient/r"/>
+  <sca:component name="SimpleClient">
+    <sca:implementation.java class="fr.inria.galaxy.j1.scenario1.SimpleClient"/>
+    <sca:service name="r">
+      <sca:interface.java interface="java.lang.Runnable"/>
+    </sca:service>
+    <sca:reference name="trip">
+      <sca:interface.java interface="fr.inria.galaxy.j1.scenario1.Trip"/>
+      <sca:binding.ws uri="http://localhost:9000/GalaxyTrip"/>
+    </sca:reference>
+  </sca:component>
+</sca:composite>

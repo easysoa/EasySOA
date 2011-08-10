@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>easysoa-samples-pureairflowers</module>
+		<module>easysoa-samples-smarttravel</module>
 	</modules>
 	
 </project>

@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>fr.inria.galaxy.j1</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<artifactId>trip</artifactId>
+	<name>J1: Trip</name>
+
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>fr.inria.galaxy.j1</groupId>
+		<artifactId>scenario1</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<repositories>
+		<repository>
+			<id>ow2-snapshot</id>
+			<url>http://maven.ow2.org//maven2-snapshot</url>
+		</repository>
+		<!-- Ajout EasySOA -->
+		<repository>
+			<id>eclipse mirror</id>
+			<name>Eclipse EMF Mirror</name>
+			<url>http://www.openarchitectureware.org/m2</url>
+		</repository>
+		<repository>
+			<id>frascati mirror</id>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>
+		<repository>
+			<id>apache.incubator</id>
+			<url>http://people.apache.org/repo/m2-incubating-repository</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins
+                </groupId>
+				<artifactId>maven-compiler-plugin
+                </artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>run</id>
+			<!--<build> <defaultGoal>org.ow2.frascati.factory:frascati-factory-plugin:1.2:exec</defaultGoal> 
+				<plugins> <plugin> <groupId>org.ow2.frascati.factory</groupId> <artifactId>frascati-factory-plugin</artifactId> 
+				<version>1.2</version> <executions> <execution> <phase>package</phase> <goals> 
+				<goal>exec</goal> </goals> </execution> </executions> <configuration> <composite>smart-travel</composite> 
+				<useFscript>true</useFscript> </configuration> <dependencies> <dependency> 
+				<groupId>fr.inria.galaxy.j1</groupId> <artifactId>currency-model</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>fr.inria.galaxy.j1</groupId> 
+				<artifactId>meteo-model</artifactId> <version>1.0-SNAPSHOT</version> </dependency> 
+				<dependency> <groupId>fr.inria.galaxy.j1</groupId> <artifactId>translate-model</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>fr.inria.galaxy.j1</groupId> 
+				<artifactId>summary-model</artifactId> <version>1.0-SNAPSHOT</version> </dependency> 
+				</dependencies> </plugin> </plugins> </build> -->
+
+			<build>
+				<defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.ow2.frascati.mojo</groupId>
+						<artifactId>frascati-launcher-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+								<argument>-Dcxf.config.file.url=/home/jguillemotte/frascati-runtime-1.4/conf/configurationCXF.xml</argument>
+							</arguments>
+							<!--<composite>smart-travel</composite> -->
+							<composite>smart-travel-mock-services</composite>
+							<useFscript>false</useFscript>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>fr.inria.galaxy.j1</groupId>
+								<artifactId>currency-model</artifactId>
+								<version>1.0-SNAPSHOT</version>
+							</dependency>
+							<dependency>
+								<groupId>fr.inria.galaxy.j1</groupId>
+								<artifactId>meteo-model</artifactId>
+								<version>1.0-SNAPSHOT</version>
+							</dependency>
+							<dependency><!-- to get the backup model -->
+								<groupId>fr.inria.galaxy.j1</groupId>
+								<artifactId>easysoa-meteo-sca-backup</artifactId>
+								<version>1.0-SNAPSHOT</version>
+							</dependency>
+							<dependency>
+								<groupId>fr.inria.galaxy.j1</groupId>
+								<artifactId>translate-model</artifactId>
+								<version>1.0-SNAPSHOT</version>
+							</dependency>
+							<dependency>
+								<groupId>fr.inria.galaxy.j1</groupId>
+								<artifactId>summary-model</artifactId>
+								<version>1.0-SNAPSHOT</version>
+							</dependency>
+							<dependency>
+								<groupId>org.ow2.frascati</groupId>
+								<artifactId>frascati-binding-factory</artifactId>
+								<version>1.4</version>
+							</dependency>
+							<dependency>
+								<groupId>org.ow2.frascati</groupId>
+								<artifactId>frascati-implementation-fractal</artifactId>
+								<version>1.4</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- To execute an SCA composite with FraSCAti Explorer type 'mvn -Pexplorer'. -->
+		<profile>
+			<id>explorer</id>
+			<build>
+				<defaultGoal>exec:exec</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+								<argument>-Dfractal.provider=org.objectweb.fractal.julia.Julia</argument>
+								<argument>-cp</argument>
+								<classpath />
+								<argument>org.ow2.frascati.explorer.fscript.FrascatiScriptExplorerLauncher</argument>
+								<!--<argument>smart-travel-qos</argument> -->
+								<argument>smart-travel</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+
+		<!-- Package this application and its dependencies in a single executable 
+			jar. -->
+		<profile>
+			<id>pack</id>
+			<build>
+				<defaultGoal>package</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>1.2.2</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+								<configuration>
+									<!-- It is required to exclude jar-signing related files from the 
+										shaded jar to avoid SecurityException errors -->
+									<filters>
+										<filter>
+											<artifact>org.eclipse.core:contenttype</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.core:jobs</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.core:runtime</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse:osgi</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>
+												org.eclipse.jdt:core</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+
+										<filter>
+											<artifact>org.eclipse.emf:ecore</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.emf.ecore:xmi</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.emf:common</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.equinox:app</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.equinox:common</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.equinox:preferences</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+										<filter>
+											<artifact>org.eclipse.equinox:registry</artifact>
+											<excludes>
+												<exclude>META-INF/ECLIPSE.SF</exclude>
+												<exclude>META-INF/ECLIPSE.RSA</exclude>
+												<exclude>META-INF/ECLIPSE.INF</exclude>
+											</excludes>
+										</filter>
+									</filters>
+									<shadedArtifactAttached>true</shadedArtifactAttached>
+									<shadedClassifierName>shaded</shadedClassifierName>
+									<transformers>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+											<resource>META-INF/spring.handlers</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+											<resource>META-INF/services/com.sun.tools.xjc.Plugin</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+											<resource>META-INF/spring.schemas</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+											<resource>META-INF/cxf/cxf.extension</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+											<resource>META-INF/extensions.xml</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+											<resource>META-INF/cxf/extensions.xml</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+											<resource>META-INF/bus-extensions.xml</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+											<resource>META-INF/cxf/bus-extensions.xml</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+											<resource>META-INF/wsdl.plugin.xml</resource>
+										</transformer>
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+											<resource>META-INF/tools.service.validator.xml</resource>
+										</transformer>
+										<transformer implementation="org.apache.cxf.maven.PluginTransformer">
+											<resource>META-INF/tools-plugin.xml</resource>
+										</transformer>
+										<transformer implementation="org.apache.cxf.maven.CXFAllTransformer" />
+										<transformer
+											implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+											<manifestEntries>
+												<Manifest-Version>1.0</Manifest-Version>
+												<Build-Jdk>1.6.0_13</Build-Jdk>
+												<Built-By>Galaxy</Built-By>
+												<Created-By>Apache Maven</Created-By>
+												<Archiver-Version>Plexus Archiver</Archiver-Version>
+												<Main-Class>org.ow2.frascati.factory.ManifestLauncher</Main-Class>
+												<!--<mainComposite>smart-travel-qos</mainComposite> -->
+												<mainComposite>smart-travel</mainComposite>
+											</manifestEntries>
+										</transformer>
+									</transformers>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.apache.cxf</groupId>
+								<artifactId>cxf-buildtools</artifactId>
+								<version>2.2.3</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<dependencyManagement>
+		<!-- Force the antlr version to 3.0 as version 3.1 used by wildcat is not 
+			backward compatible -->
+		<dependencies>
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr-runtime</artifactId>
+				<version>3.2</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>currency-model</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>meteo-model</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>translate-model</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>summary-model</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tuscany.sca
+            </groupId>
+			<artifactId>sca-api</artifactId>
+			<version>0.90-incubating</version>
+		</dependency>
+		<!--<dependency> <groupId>fr.inria.galaxy.j1</groupId> <artifactId>qos-wc</artifactId> 
+			<version>2.0-SNAPSHOT</version> </dependency> -->
+		<!-- to run this example with mvn -Prun -->
+		<dependency>
+			<groupId>org.ow2.frascati.factory
+            </groupId>
+			<artifactId>frascati-factory-tools
+            </artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- to run this example with mvn -Pexplorer -->
+		<!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-explorer-fscript-plugin</artifactId> 
+			<version>1.4</version> </dependency -->
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-assembly-factory</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-fractal</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>oro</groupId>
+			<artifactId>oro</artifactId>
+			<version>2.0.8</version>
+		</dependency>
+		<!--<dependency> <groupId>org.ow2.frascati.factory</groupId> <artifactId>frascati-factory-plugin</artifactId> 
+			<version>1.2</version> <type>maven-plugin</type> </dependency> -->
+		<dependency>
+			<groupId>org.ow2.frascati.mojo</groupId>
+			<artifactId>frascati-launcher-plugin</artifactId>
+			<version>1.4</version>
+			<type>maven-plugin</type>
+		</dependency>
+
+		<!-- OW2 FraSCAti SCA Bindings -->
+
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-binding-http</artifactId> 
+			<version>1.4</version> </dependency> <dependency> <groupId>org.ow2.frascati</groupId> 
+			<artifactId>frascati-binding-jms</artifactId> <version>1.4</version> </dependency> 
+			<dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-binding-jsonrpc</artifactId> 
+			<version>1.4</version> </dependency> <dependency> <groupId>org.ow2.frascati</groupId> 
+			<artifactId>frascati-binding-rest</artifactId> <version>1.4</version> </dependency> 
+			<dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-binding-rmi</artifactId> 
+			<version>1.4</version> </dependency> <dependency> <groupId>org.ow2.frascati.native</groupId> 
+			<artifactId>frascati-binding-jna</artifactId> <version>1.4</version> </dependency> 
+			<dependency> <groupId>org.ow2.frascati.upnp</groupId> <artifactId>frascati-binding-upnp</artifactId> 
+			<version>1.4</version> </dependency -->
+
+
+		<!-- OW2 FraSCAti SCA Interfaces -->
+
+		<!-- dependency> <groupId>org.ow2.frascati.native</groupId> <artifactId>frascati-interface-native</artifactId> 
+			<version>1.4</version> </dependency> <dependency> <groupId>org.ow2.frascati</groupId> 
+			<artifactId>frascati-interface-wsdl</artifactId> <version>1.4</version> </dependency -->
+
+
+		<!-- Spring deps required to have cxf config file -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<!-- TEST -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+</project>

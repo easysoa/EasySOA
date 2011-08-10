@@ -1,0 +1,78 @@
+# ====================================================================
+#
+# ObjectWeb Fractal Deployment Framework
+# Copyright (C) 2006-2009 INRIA & LIFL (UMR USTL-CNRS 8022)
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+# USA
+#
+# Contact: fdf-users@gforge.inria.fr
+#
+# Author: Nicolas Dolet, Christophe Demarey
+#
+# Contributor(s): 
+#
+# ====================================================================
+# $Id$
+# ====================================================================
+
+GalaxyProActive
+{
+  # Description of hosts
+  Hosts = INTERNET.NETWORK {
+
+    host1 = INTERNET.HOST {
+      hostname = INTERNET.HOSTNAME(localhost);
+      user     = INTERNET.USER(chris,,/home/chris/.ssh/id_rsa);
+      transfer = TRANSFER.SCP;
+      protocol = PROTOCOL.OpenSSH;
+      shell    = SHELL.SH;
+      software {
+        java = JAVA.JRE {
+          archive = JAVA.ARCHIVE(/home/chris/adam/fdf/jdk1.6.0_12.tar.gz);
+      #    home    = JAVA.HOME(/opt/java/jdk1.6.0_12);
+          home    = JAVA.HOME(/home/chris/adam/galaxy/proactive/test/jdk1.6.0_12);
+        }
+      }
+    }
+  }
+    
+
+  # Description of the ProActive Framework
+
+  ProActive-Framework {
+
+    proactive-host1 = PROACTIVE.FRAMEWORK {
+      archive    = PROACTIVE.ARCHIVE(/home/chris/adam/galaxy/proactive/proactive_axis2_exportation_fdf.tar.gz);
+#      home       = PROACTIVE.HOME(/home/chris/adam/proactive_axis2_exportation);
+      home       = PROACTIVE.HOME(/home/chris/adam/galaxy/proactive/test/proactive_axis2_exportation);
+      host       = Hosts/host1;
+    }
+  }
+
+  ProActive-App {
+    PA-App1 = PROACTIVE.APPLICATION {
+      app-archive = PROACTIVE.APPLICATION.ARCHIVE(/home/chris/adam/galaxy/proactive/FDFProActive/proactive-sample.jar);
+      app-home = PROACTIVE.APPLICATION.HOME(/home/chris/adam/galaxy/proactive/test/fdf-proactive);
+      proactive = ProActive-Framework/proactive-host1;
+      properties {
+	nodes-properties-file-source = software.Parameter(nodes-files,/home/chris/adam/galaxy/proactive/FDFProActive/nodes.properties);
+#        java-home    = software.Parameter(java-home,/opt/java/jdk1.6.0_12);
+        java-home    = software.Parameter(java-home,/home/chris/adam/galaxy/proactive/test/jdk1.6.0_12);
+	app-main-class = software.Parameter(app-main-class,fr.inria.galaxy.fdfproactive.helloworld.Execute);
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:cxf="http://cxf.apache.org/core"
+      xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+      xsi:schemaLocation="
+          http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+          http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+    <bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+    <bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+
+    <cxf:bus>
+        <cxf:inInterceptors>
+            <ref bean="logInbound"/>
+        </cxf:inInterceptors>
+        <cxf:outInterceptors>
+            <ref bean="logOutbound"/>
+        </cxf:outInterceptors>
+        <cxf:outFaultInterceptors>
+            <ref bean="logOutbound"/>
+        </cxf:outFaultInterceptors>
+        <cxf:inFaultInterceptors>
+            <ref bean="logInbound"/>
+        </cxf:inFaultInterceptors>
+    </cxf:bus>
+
+	<!-- Works !! -->
+	<http-conf:conduit name="*.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP"/>
+	</http-conf:conduit>
+
+	<!-- For the JUnit tests or when the Galaxy Demo and  the HTTP Proxy are started in the same FraSCAti instance -->
+	<!--<http-conf:conduit name="{http://scenario1.j1.galaxy.inria.fr/}TripPort.http-conduit">-->
+	<!--<http-conf:conduit name="{http://scenario1.j1.galaxy.inria.fr/}TripPort.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP"/>
+	</http-conf:conduit>-->
+
+	<!--<http-conf:conduit name="{http://scenario1.j1.galaxy.inria.fr/}ISummaryService.http-conduit">-->
+	<!--<http-conf:conduit name="{http://scenario1.j1.galaxy.inria.fr/}ISummaryService.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP"/>
+	</http-conf:conduit>-->
+
+	<!--<http-conf:conduit name="{http://www.webserviceX.NET}GlobalWeather.http-conduit">-->
+	<!--<http-conf:conduit name="{http://www.webserviceX.NET}GlobalWeatherSoap.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP"/>
+	</http-conf:conduit>-->
+
+	<!--<http-conf:conduit name="{http://www.daenet.de/webservices/CurrencyServer}CurrencyServerWebService.http-conduit">-->
+	<!--<http-conf:conduit name="{http://www.daenet.de/webservices/CurrencyServer}CurrencyServerWebServiceSoap.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP"/>
+	</http-conf:conduit>-->
+
+	<!--<http-conf:conduit name="{http://api.microsofttranslator.com/v1/soap.svc}SoapService.http-conduit">-->
+	<!--<http-conf:conduit name="{http://api.microsofttranslator.com/v1/soap.svc}BasicHttpBindingLanguageService.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP"/>
+	</http-conf:conduit>-->
+
+</beans>

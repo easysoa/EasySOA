@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
+    xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance" name="trip"
+    targetNamespace="j1.galaxy.inria.fr">
+    
+<sca:service name="trip" promote="Galaxy_System_orchestrationComponent/Galaxy_System">
+        <sca:interface.java interface="fr.inria.galaxy.j1.scenario1.Trip" />
+        <sca:binding.ws uri="http://192.168.211.11:9000/GalaxyTrip" />
+    </sca:service>
+    
+<sca:service name="r" promote="SimpleClient/r" />
+    
+<sca:service name="Galaxy_System"
+        promote="Galaxy_System_orchestrationComponent/Galaxy_System" />
+    
+<sca:component name="SimpleClient">
+        <sca:implementation.java
+            class="fr.inria.galaxy.j1.scenario1.SimpleClient" />
+        <sca:service name="r">
+            <sca:interface.java interface="java.lang.Runnable" />
+        </sca:service>
+        <sca:reference name="trip"
+            target="Galaxy_System_orchestrationComponent/Galaxy_System">
+            <sca:interface.java interface="fr.inria.galaxy.j1.scenario1.Trip" />
+        </sca:reference>
+    </sca:component>
+    
+<!--<sca:component name="Galaxy_System_orchestrationComponent" requires="qosMonitor">-->
+<sca:component name="Galaxy_System_orchestrationComponent">
+        <sca:implementation.java
+            class="fr.inria.galaxy.j1.scenario1.OrchestrationImpl" />
+        <sca:service name="Galaxy_System">
+            <sca:interface.java interface="fr.inria.galaxy.j1.scenario1.Trip" />
+        </sca:service>
+        <!--<sca:reference name="Check_Meteo_genService_ref" requires="availability-3s">-->
+        <sca:reference name="Check_Meteo_genService_ref">
+            <sca:interface.java interface="net.webservicex.GlobalWeatherSoap" />
+        </sca:reference> 
+        <sca:reference name="Get_Exchange_Rate_genService_ref">
+            <sca:interface.java
+                interface="de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoap" />
+        </sca:reference>
+        <sca:reference name="Translate_Phrase_genService_ref">
+            <sca:interface.java
+                interface="com.microsofttranslator.api.v1.soap.LanguageService" />
+        </sca:reference>
+        <sca:reference name="Create_Summary_genService_ref">
+            <sca:interface.java
+                interface="fr.inria.galaxy.j1.scenario1.ISummaryServicePortType" />
+            <sca:binding.ws
+                wsdlElement="http://scenario1.j1.galaxy.inria.fr#wsdl.port(ISummaryServiceFactory/ISummaryServicePort)"
+                wsdli:wsdlLocation="http://localhost:8080/CreateSummaryBad?wsdl" />
+        </sca:reference>
+    </sca:component>
+    
+<sca:reference name="Check_Meteo_ref"
+        promote="Galaxy_System_orchestrationComponent/Check_Meteo_genService_ref">
+        <sca:binding.ws
+            wsdlElement="http://www.webserviceX.NET#wsdl.port(GlobalWeather/GlobalWeatherSoap12)"
+            wsdli:wsdlLocation="http://192.168.211.10:8080/meteo-backup/services/GlobalWeather?wsdl" />
+            <!-- wsdli:wsdlLocation="http://192.168.211.10:8080/meteo-backup/services/GlobalWeather?wsdl" />-->
+            <!-- wsdli:wsdlLocation="http://java5.inrialpes.fr/meteo-backup/services/GlobalWeather?wsdl" /> -->
+            <!-- wsdli:wsdlLocation="http://www.webservicex.net/globalweather.asmx?WSDL" /> -->
+    </sca:reference>
+<sca:reference name="Get_Exchange_Rate_ref"
+        promote="Galaxy_System_orchestrationComponent/Get_Exchange_Rate_genService_ref">
+        <sca:binding.ws
+            wsdlElement="http://www.daenet.de/webservices/CurrencyServer#wsdl.port(CurrencyServerWebService/CurrencyServerWebServiceSoap12)"
+            wsdli:wsdlLocation="http://192.168.211.10:8080/currency-backup/services/CurrencyServer?wsdl" />
+            <!-- wsdli:wsdlLocation="http://java5.inrialpes.fr/currency-backup/services/CurrencyServer?wsdl" /> -->
+            <!-- wsdli:wsdlLocation="http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?WSDL" /> -->
+    </sca:reference>
+    
+<sca:reference name="Translate_Phrase_ref"
+        promote="Galaxy_System_orchestrationComponent/Translate_Phrase_genService_ref">
+        <sca:binding.ws
+            wsdlElement="http://tempuri.org#wsdl.port(Soap/BasicHttpBindingLanguageService)"
+            wsdli:wsdlLocation="http://api.microsofttranslator.com/V1/Soap.svc?WSDL" />
+    </sca:reference>
+    
+<sca:component name="Create_Summary_Good">
+        <sca:implementation.java
+            class="fr.inria.galaxy.j1.scenario1.SummaryServiceImpl" />
+        <!--<sca:service name="SummaryService" requires="qosMonitor">-->
+        <sca:service name="SummaryService">
+            <sca:binding.ws uri="http://localhost:8080/CreateSummaryGood" />
+        </sca:service>
+    </sca:component>
+    
+<sca:component name="Create_Summary_Bad">
+        <sca:implementation.java
+            class="fr.inria.galaxy.j1.scenario1.SummaryServiceBadQoS" />
+        <!--<sca:service name="SummaryService" requires="alertMonitor">-->
+        <sca:service name="SummaryService">
+            <sca:binding.ws uri="http://localhost:8080/CreateSummaryBad" />
+        </sca:service>
+    </sca:component>
+
+</sca:composite>

@@ -1,0 +1,40 @@
+GalaxyFrascati
+{
+
+  # Description of hosts
+
+  Hosts {
+
+    host-1 = INTERNET.HOST {
+      hostname = INTERNET.HOSTNAME(192.168.211.11);
+      user     = INTERNET.USER(galaxy,,/home/galaxy/.ssh/id_rsa);
+      transfer = TRANSFER.SCP;
+      protocol = PROTOCOL.OpenSSH;
+      shell    = SHELL.SH;
+      software {
+        java = JAVA.JRE {
+          archive = JAVA.ARCHIVE(/home/galaxy/jdk1.6.0_12.tar.gz);
+          home    = JAVA.HOME(/opt/java/jdk1.6.0_12/);
+        }
+      }
+    }
+
+  }
+
+  # Description of Frascati servers
+
+  frascati-1 = FRASCATI.SERVER, software.AlreadyStarted(FraSCAti, frascati) {
+    archive = FRASCATI.ARCHIVE(/home/galaxy/dev/frascati-runtime-1.0-SNAPSHOT-bin.zip);
+    home    = FRASCATI.HOME(/home/galaxy/dev/frascati-runtime-1.1-SNAPSHOT);
+    host    = Hosts/host-1;
+  }
+
+  # Description of SCA composites
+
+  # example for the hello-world example provided with FraSCAti distribution
+  galaxy-demo = FRASCATI.EXPLORER {
+    frascati = /frascati-1;
+    archive = FRASCATI.COMPOSITE.ARCHIVE(/home/galaxy/j1.zip);
+  }
+}
+

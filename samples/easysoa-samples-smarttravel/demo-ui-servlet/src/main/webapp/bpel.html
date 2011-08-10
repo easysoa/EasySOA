@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<TITLE>Galaxy DEMO</TITLE>
+<link rel="stylesheet" type="text/css" href="css/style.css" /> 
+</HEAD>
+
+<BODY>
+<div id="center">
+  <div id="header"></div>
+  <div id="content">
+  <FORM ACTION="/servlet-bpel/BPELServlet" METHOD="POST">
+    Demo: #2<br/>
+  	<INPUT TYPE=HIDDEN NAME="engine" value="bpel">
+  	
+    Select your destination in France:<br/>
+    <select name="city">
+      <option value="MOUNTAIN">Grenoble</option>
+      <option value="SEA">Nice</option>
+      <option value="ART">Lille</option>
+    </select><br/><br/>
+    
+    Good exchange rate:<br/>
+    <input type="text" name="exancheRateOK" value="0.8" size="3" /><br/><br/>
+    
+    Free sentence (US -> FR):<br/>
+    <textarea rows="2" cols="20" name="freeSentence"></textarea>
+    <br/><br/>
+
+    <INPUT type="submit" name="mysubmit" value="Go"><br/>
+  </FORM>
+  
+  <div id="footer">
+    <img id="left" src="img/inria.gif"/>
+    <img id="right" src="img/j1.png" />
+  </div>
+  </div>
+</div>
+</BODY>
+</HTML>

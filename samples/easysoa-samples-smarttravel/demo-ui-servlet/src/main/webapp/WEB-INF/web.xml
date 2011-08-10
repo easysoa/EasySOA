@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>SCOrWare_config</display-name>
+	
+
+  <servlet>
+    <servlet-name>BPELServlet</servlet-name>
+    <servlet-class>fr.inria.galaxy.demo.BPELServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>BPELServlet</servlet-name>
+    <url-pattern>/BPELServlet</url-pattern>
+  </servlet-mapping>
+</web-app>
