@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.openwide.easysoa.samples.pureairflowers</groupId>
-	<artifactId>pureairalowers</artifactId>
-	<name>PureAirFlowers</name>
+	<groupId>org.openwide.easysoa</groupId>
+	<artifactId>easysoa-samples-paf-parent</artifactId>
+	<name>easysoa-samples-paf-parent</name>
 	<version>0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
