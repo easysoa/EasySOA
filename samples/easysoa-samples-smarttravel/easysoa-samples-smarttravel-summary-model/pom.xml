@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.inria.galaxy.j1</groupId>
-    <artifactId>summary-model</artifactId>
+    <artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>J1: Summary model</name>
