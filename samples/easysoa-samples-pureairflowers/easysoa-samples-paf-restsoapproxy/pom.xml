@@ -21,7 +21,7 @@
     <groupId>org.ow2.frascati.examples</groupId>
     <artifactId>parent</artifactId>
     <version>1.4-SNAPSHOT</version>
-  </parent>--> 
+  </parent>-->
  
   <!-- MVN -Prun Build -->
   <properties>

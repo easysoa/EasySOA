@@ -45,20 +45,20 @@
     <!-- ======= -->
 
     <modules>
-       <module>meteo-model</module>
-       <module>summary-model</module>
-       <module>translate-model</module>
-       <module>currency-model</module>
+       <module>easysoa-samples-smarttravel-meteo-model</module>
+       <module>easysoa-samples-smarttravel-summary-model</module>
+       <module>easysoa-samples-smarttravel-translate-model</module>
+       <module>easysoa-samples-smarttravel-currency-model</module>
        <module>meteo-backup</module>
         <!--<module>currency-backup</module>-->
        <module>demo-ui-servlet</module>
        <module>create-summary-proactive</module>
        <module>currency-sca-backup</module>
        <!--<module>meteo-sca-backup</module>-->
-       <module>travel-services-backup</module>
+       <module>easysoa-samples-smarttravel-services-backup</module>
        <!--<module>translate-backup</module>-->
        <module>trip</module>
-       <module>trip-service-ui-scaffolder-proxy</module>
+       <module>easysoa-samples-smarttravel-service-ui-scaffolder-proxy</module>
   </modules>
 
 </project>
