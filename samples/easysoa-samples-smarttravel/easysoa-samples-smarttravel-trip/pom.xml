@@ -11,11 +11,11 @@
 
 	<packaging>jar</packaging>
 
-	<parent>
+	<!--<parent>
 		<groupId>fr.inria.galaxy.j1</groupId>
 		<artifactId>scenario1</artifactId>
 		<version>1.0-SNAPSHOT</version>
-	</parent>
+	</parent>-->
 
 	<repositories>
 		<repository>
@@ -96,27 +96,27 @@
 						<dependencies>
 							<dependency>
 								<groupId>fr.inria.galaxy.j1</groupId>
-								<artifactId>currency-model</artifactId>
+								<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
 								<version>1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>fr.inria.galaxy.j1</groupId>
-								<artifactId>meteo-model</artifactId>
+								<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
 								<version>1.0-SNAPSHOT</version>
 							</dependency>
-							<dependency><!-- to get the backup model -->
+							<!--<dependency>
 								<groupId>fr.inria.galaxy.j1</groupId>
 								<artifactId>easysoa-meteo-sca-backup</artifactId>
 								<version>1.0-SNAPSHOT</version>
-							</dependency>
+							</dependency>-->
 							<dependency>
 								<groupId>fr.inria.galaxy.j1</groupId>
-								<artifactId>translate-model</artifactId>
+								<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
 								<version>1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>fr.inria.galaxy.j1</groupId>
-								<artifactId>summary-model</artifactId>
+								<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
 								<version>1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
@@ -375,22 +375,22 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.inria.galaxy.j1</groupId>
-			<artifactId>currency-model</artifactId>
+			<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.inria.galaxy.j1</groupId>
-			<artifactId>meteo-model</artifactId>
+			<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.inria.galaxy.j1</groupId>
-			<artifactId>translate-model</artifactId>
+			<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.inria.galaxy.j1</groupId>
-			<artifactId>summary-model</artifactId>
+			<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
