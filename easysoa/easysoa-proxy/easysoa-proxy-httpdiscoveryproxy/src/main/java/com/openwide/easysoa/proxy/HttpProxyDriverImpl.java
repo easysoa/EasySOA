@@ -83,4 +83,28 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Monitoring mode set";
 	}
 
+	@Override
+	public String getOrderedRunNames() {
+		StringBuffer result = new StringBuffer();
+		int i = 1;
+		for(String runName: monitoringService.getRunManager().getOrderedRunNames()){
+			result.append("Run number " + i + ": ");
+			result.append(runName);
+			result.append("; ");
+			i++;
+		}
+		return result.toString();
+	}
+
+	@Override
+	public String reRun(String runName) {
+		monitoringService.
+		// TODO Auto-generated method stub
+		// Get the run message list.
+		// For each message, 2 solutions : resend the request to the original recipient and get the response, record the service call in Nuxeo
+		// Or don't resend the request, just record services in Nuxeo.
+		// actually, the monitoring service contains a RunManager. Maybe the best is to invert : A runManager contains a monitoring service
+		return "Not yet implemented";
+	}
+
 }

@@ -1,7 +1,9 @@
 package com.openwide.easysoa.esperpoc.run;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Scope;
@@ -144,6 +146,16 @@ public class RunManagerImpl implements RunManager {
 		catch(Exception ex){
 			logger.error("Unable to record message !", ex);
 		}
+	}
+
+	@Override
+	public List<String> getOrderedRunNames() {
+		ArrayList<String> runsNameList = new ArrayList<String>();
+		Iterator<Run> runIterator = runList.descendingIterator();
+		while(runIterator.hasNext()){
+			runsNameList.add(runIterator.next().getName());
+		}
+		return runsNameList;
 	}
 	
 	/**

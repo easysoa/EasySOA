@@ -1,5 +1,7 @@
 package com.openwide.easysoa.esperpoc.run;
 
+import java.util.List;
+
 import com.openwide.easysoa.monitoring.Message;
 
 public interface RunManager {
@@ -33,5 +35,11 @@ public interface RunManager {
 	 * @param message The <code>Message</code> to record
 	 */
 	public abstract void record(Message message);
+	
+	/**
+	 * Returns the list of all recorded runs in their record order
+	 * @return Return the names of all recorded runs
+	 */
+	public abstract List<String> getOrderedRunNames();
 	
 }

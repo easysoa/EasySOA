@@ -39,7 +39,9 @@ public class Message {
 	private MessageType type;
 	private String url;
 	private String body;
-
+	// Response info
+	private Object response;
+	
 	/**
 	 * Initialize a new message
 	 * @param request The HttpServletRequest
@@ -232,6 +234,14 @@ public class Message {
 			body = "";
 		}
 		return this.body;
+	}
+	
+	public void setResponse(Object response){
+		this.response = response;
+	}
+	
+	public Object getResponse(){
+		return response;
 	}
 	
 	/**

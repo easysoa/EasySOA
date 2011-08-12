@@ -52,4 +52,22 @@ public interface HttpProxyDriver {
 	@GET
 	@Path("/setMonitoringMode/{mode}")
 	public String setMonitoringMode(@PathParam("mode") String mode);
+	
+	/**
+	 * Returns the names of all recorded runs in their record order
+	 * @return The name of all recorded runs
+	 */
+	@GET
+	@Path("/getOrderedRunNames")
+	public String getOrderedRunNames();
+	
+	/**
+	 * Re-run the specified run
+	 * @param runName The run name to re-run
+	 * @return a <code>String</code> to indicate if the command succeed 
+	 */
+	@GET
+	@Path("/reRun/{runName}")
+	public String reRun(@PathParam("runName") String runName);
+		
 }

@@ -289,8 +289,9 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	        HttpHost myProxy = new HttpHost("localhost", 8084, "http");
 	        httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
 	    }*/
-    	String resp = httpClient.execute(httpUriRequest, responseHandler);
-	    respOut.write(resp);
+    	String clientResponse = httpClient.execute(httpUriRequest, responseHandler);
+    	message.setResponse(clientResponse);
+	    respOut.write(clientResponse);
     	respOut.close();
     	return message;
 	}
