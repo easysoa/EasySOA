@@ -32,14 +32,16 @@ cd travelBackup
 start "EasySOA Demo - Travel Services Backup" start-travelBackup.bat > ..\log\travelBackup.log 2>&1
 cd ..
 
-sleep 3
+rem sleep 3 (let the servers start, see http://stackoverflow.com/questions/1672338/how-to-sleep-for-5-seconds-in-windowss-command-prompt-or-dos)
+ping -n 4 127.0.0.1 > nul
 
 rem travel
 cd frascati
 start "EasySOA Demo - Travel" start-travelDemo.bat > ..\log\travelDemo.log 2>&1
 cd ..
 
-sleep 7
+rem sleep 7 (let the demo start)
+ping -n 8 127.0.0.1 > nul
 
 rem web
 cd web
@@ -56,6 +58,7 @@ cd frascati
 start "EasySOA Demo - EasySOA Light Proxy (Travel)" start-lightProxyTravel.bat > ..\log\lightProxyTravel.log 2>&1
 cd ..
 
-sleep 2
+rem sleep 2
+ping -n 3 127.0.0.1 > nul
 
 call explorer "http://127.0.0.1:8083/easysoa"
