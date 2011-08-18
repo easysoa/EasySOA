@@ -2,7 +2,7 @@ package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
 
-import com.openwide.easysoa.esperpoc.esper.EsperEngineSingleton;
+import com.openwide.easysoa.esper.EsperEngineSingleton;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 //import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
 

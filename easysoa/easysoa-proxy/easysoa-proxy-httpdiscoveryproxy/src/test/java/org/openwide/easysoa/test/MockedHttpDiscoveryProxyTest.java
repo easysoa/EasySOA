@@ -17,8 +17,10 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.ow2.frascati.util.FrascatiException;
@@ -28,6 +30,7 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 /**
  * Complete test suite of HTTP Discovery Proxy
  * - Starts FraSCATi and the HTTP Discovery Proxy
+ * - Test the infinite loop detection feature (OK)
  * - Test the Discovery mode for REST requests (OK)
  * - Test the Discovery mode for SOAP requests (OK)
  * - Test the Validated mode for REST requests (TODO)
@@ -47,12 +50,13 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 	 * Initialize one time the remote systems for the test
 	 * FraSCAti and HTTP discovery Proxy ...
 	 * @throws FrascatiException, InterruptedException 
+	 * @throws JSONException 
 	 */
     @BeforeClass
-	public final static void setUp() throws FrascatiException, InterruptedException {
+	public final static void setUp() throws FrascatiException, InterruptedException, JSONException {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   // Clean Nuxeo registery
-	   //cleanNuxeoRegistery();
+	   cleanNuxeoRegistery();
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
@@ -61,8 +65,35 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 	   startMockServices();
     }
 	
+    /**
+     * Test the infinite loop detection feature
+     * @throws Exception
+     */
+    @Test
+    public final void testInfiniteLoopDetection() throws Exception {
+		logger.info("Test Infinite loop detection started !");
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		
+		// HTTP proxy Client
+		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
+		
+		// Set client to use the HTTP Discovery Proxy
+		HttpHost proxy = new HttpHost("localhost", 8082);
+		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);				
+		
+		// Send a request to the proxy itself 
+		try{
+			httpProxyClient.execute(new HttpGet("http://localhost:8082/"), responseHandler);
+		} 
+		catch(HttpResponseException ex){
+			assertEquals(500, ex.getStatusCode());
+			logger.debug(ex);
+		}
+		logger.info("Test Infinite loop detection end !");
+    }
+    
 	/**
-	 * 
+	 * Test the discovery mode for REST requests
 	 * @throws ClientException
 	 * @throws SOAPException
 	 * @throws IOException
@@ -85,9 +116,9 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		//logger.info("mode setting : " + resp);
 		
 		// Start a new run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/discoveryTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/RESTDiscoveryTestRun"), responseHandler);
 		logger.info("start run : " + resp);
-		assertEquals("Run 'discoveryTestRun' started !", resp);
+		assertEquals("Run 'RESTDiscoveryTestRun' started !", resp);
 		
 		// Set client to use the HTTP Discovery Proxy
 		HttpHost proxy = new HttpHost("localhost", 8082);
@@ -126,18 +157,18 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
 		logger.debug("Nuxeo response : " + nuxeoResponse);
-		try{
+		//try{
 			// Get the property JSON Object
 			String entries = new JSONObject(nuxeoResponse).getString("entries");
 			String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 			JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
 			// Do to same thing but less readable
-			//JSONObject jsonObject = new JSONObject(new JSONObject(new JSONArray(new JSONObject(nuxeoResponse).getString("entries")).getJSONObject(0).toString()).getString("properties"));
+			// JSONObject jsonObject = new JSONObject(new JSONObject(new JSONArray(new JSONObject(nuxeoResponse).getString("entries")).getJSONObject(0).toString()).getString("properties"));
 			assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));			
-		}
+		/*}
 		catch(Exception ex){
 			logger.info("An error occurs while reading the nuxeo response", ex);
-		}
+		}*/
 
 		logger.info("Test REST Discovery mode ended successfully !");
 	}
@@ -147,7 +178,7 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 	// Send http rest requests
 	
 	/**
-	 * 
+	 * Test the discovery mode for SOAP requests
 	 * @throws ClientException
 	 * @throws SOAPException
 	 * @throws IOException
@@ -195,9 +226,9 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		//logger.info("mode setting : " + resp);
 		
 		// Start a new run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/discoveryTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/SOAPDiscoveryTestRun"), responseHandler);
 		logger.info("start run : " + resp);
-		assertEquals("Run 'discoveryTestRun' started !", resp);		
+		assertEquals("Run 'SOAPDiscoveryTestRun' started !", resp);		
 		
 		FileInputStream fis = new FileInputStream(new File("src/test/resources/meteoMockMessages/meteoMockRequest.xml"));
 		BasicHttpEntity soapRequest = new BasicHttpEntity();
@@ -232,31 +263,18 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
 		logger.info("Nuxeo response : " + nuxeoResponse);
 		
-		try{
+		//try{
 			// Get the property JSON Object
 			String entries = new JSONObject(nuxeoResponse).getString("entries");
 			String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 			JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
 			assertEquals("http://localhost:8085/meteo", jsonObject.get("serv:url"));			
-		}
+		/*}
 		catch(Exception ex){
 			logger.info("An error occurs while reading the nuxeo response", ex);
-		}		
+		}*/		
 
 		logger.info("Test SOAP Discovery mode ended successfully !");
 	}
-	
-	/**
-	 * Clean Nuxeo registery before to launch the tests
-	 * TODO Find an other method to clean because it is not possible with using only NXQL 
-	 */
-	private static void cleanNuxeoRegistery(){
-		String nuxeoQuery = "DELETE * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:primaryType = 'Service' AND ecm:primaryType = 'ServiceAPI'";
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
-		logger.info("Delete response : " + nuxeoResponse);
-	}
-	
-	
 	
 }

@@ -4,7 +4,9 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.monitoring.MonitoringService;
+import com.openwide.easysoa.run.RunManager;
 
 /**
  * HttpProxyDriver implementation
@@ -23,7 +25,8 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	 * 	Reference on monitoring service 
 	 */
 	@Reference
-	MonitoringService monitoringService;
+	RunManager runManager;
+	//MonitoringService monitoringService;
 	
 	static {
 		ProxyConfigurator.configure();
@@ -41,6 +44,8 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		help.append("<P><UL>");
 		help.append("<LI>To start a new proxy run : /startNewRun/{runName}</LI>");
 		help.append("<LI>To stop the current proxy run : /stopCurrentRun</LI>");
+		help.append("<LI>To get the run list : /getOrderedRunNames</LI>");
+		help.append("<LI>To re-run a run : /reRun/{runName}</LI>");
 		help.append("</UL></P></BODY></HTML>");
 		return help.toString();
 	}
@@ -49,10 +54,10 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	public String startNewRun(String runName) {
 		logger.debug("Starting a new run !");
 		try{
-			monitoringService.getRunManager().start(runName);
+			runManager.start(runName);
 		} catch(Exception ex){
 			logger.error("Unable to start a new run", ex);
-			return ex.getMessage();			
+			return ex.getMessage();
 		}
 		return "Run '" + runName + "' started !";
 	}
@@ -60,13 +65,13 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	@Override
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
-		monitoringService.getRunManager().stop();
-		monitoringService.registerDetectedServicesToNuxeo();
+		runManager.stop();
+		runManager.getMonitoringService().registerDetectedServicesToNuxeo();
 		return "Current run stopped !";
 	}
 
 	@Override
-	@Deprecated 
+	@Deprecated
 	// TODO Modify this method to change the monitoring mode
 	public String setMonitoringMode(String mode) {
 		logger.debug("Set monitoring mode !");
@@ -74,12 +79,11 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 			if(mode == null || "".equals(mode)){
 				throw new IllegalArgumentException("Monitoring mode must not be null or empty");
 			}
-			//DiscoveryMonitoringService.getMonitorService(MonitoringMode.valueOf(mode.toUpperCase()));
 			// Best method is to stop the http Proxy with FraSCAti, and then restart with the good composite file
 		} catch(Exception ex){
 			logger.error("Unable to set monitoring mode", ex);
-			return ex.getMessage();			
-		}		
+			return ex.getMessage();
+		}
 		return "Monitoring mode set";
 	}
 
@@ -87,7 +91,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	public String getOrderedRunNames() {
 		StringBuffer result = new StringBuffer();
 		int i = 1;
-		for(String runName: monitoringService.getRunManager().getOrderedRunNames()){
+		for(String runName: runManager.getOrderedRunNames()){
 			result.append("Run number " + i + ": ");
 			result.append(runName);
 			result.append("; ");
@@ -98,13 +102,26 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 
 	@Override
 	public String reRun(String runName) {
-		monitoringService.
-		// TODO Auto-generated method stub
-		// Get the run message list.
-		// For each message, 2 solutions : resend the request to the original recipient and get the response, record the service call in Nuxeo
-		// Or don't resend the request, just record services in Nuxeo.
-		// actually, the monitoring service contains a RunManager. Maybe the best is to invert : A runManager contains a monitoring service
-		return "Not yet implemented";
+		try{
+			runManager.reRun(runName);
+		}
+		catch(Exception ex){
+			logger.error("Unable to re-run the run '" + runName + "'", ex);
+			return ex.getMessage();	
+		}
+		return "Re-run done";
+	}
+
+	@Override
+	public String deleteRun(String runName) {
+		try {
+			runManager.deleteRun(runName);
+		}
+		catch(Exception ex){
+			logger.error("Unable to delete the run '" + runName + "'", ex);
+			return ex.getMessage();			
+		}
+		return "Run deleted ";		
 	}
 
 }

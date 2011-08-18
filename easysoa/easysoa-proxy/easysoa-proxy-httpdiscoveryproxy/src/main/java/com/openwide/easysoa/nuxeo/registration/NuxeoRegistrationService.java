@@ -310,8 +310,7 @@ public class NuxeoRegistrationService {
 		
 	/**
 	 * Queries nuxeo docs
-	 * @param url Nuxeo url
-	 * @param body Message to send
+	 * @param query Query to send
 	 * @return The response send back by Nuxeo
 	 */
 	public String sendQuery(String query){
@@ -340,15 +339,54 @@ public class NuxeoRegistrationService {
 				.post(ClientResponse.class);
 			
 		   	int status = response.getStatus();
-		   	logger.debug("[sendQuery()] --- Registration request response status = " + status);
+		   	logger.debug("[sendQuery()] --- sendQuery response status = " + status);
 			String textEntity = response.getEntity(String.class);
-			logger.debug("[sendQuery()] --- Registration request response = " + textEntity);	
+			logger.debug("[sendQuery()] --- sendQuery response = " + textEntity);	
 			return textEntity;		
 		} catch (JSONException e) {
 			logger.error("Failed to create request body", e);
 			return null;
 		}
 	}
+
+	/**
+	 * Delete nuxeo docs
+	 * @param url Nuxeo url
+	 * @param body Message to send
+	 * @return The response send back by Nuxeo
+	 */
+	public boolean deleteQuery(String uid){
+		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_AUTOMATION_DEFAULT_URL));
+	    urlBuf.append("Document.Delete"); // operation name
+
+	    try {
+		    JSONObject bodyBuf = new JSONObject();
+		    bodyBuf.put("input", "doc:"+uid);
+		    
+			logger.debug("[deleteQuery()] --- Request URL = " + urlBuf.toString());
+			// Send request get registered services
+			Client client = Client.create();
+			client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
+			
+			WebResource webResource = client.resource(urlBuf.toString());
+			GenericEntity<String> entity = new GenericEntity<String>(bodyBuf.toString()) {};
+			ClientResponse response = webResource
+				.entity(entity)
+				.type("application/json+nxrequest; charset=UTF-8")
+				.accept("application/json+nxentity")
+				.header("X-NXDocumentProperties", "*")
+				.post(ClientResponse.class);
+
+			if(response.getStatus() == 204){
+				return true;
+			} else {
+				return false;
+			}
+		} catch (JSONException e) {
+			logger.error("Failed to create request body", e);
+			return false;
+		}
+	}	
 	
 	/**
 	 * Send a request to Nuxeo to register or to update an application / api / service

@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc.esper;
+package com.openwide.easysoa.esper;
 
 import java.net.MalformedURLException;
 import java.net.URL;

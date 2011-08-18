@@ -59,6 +59,7 @@ public class HttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 	 * @throws SOAPException
 	 * @throws IOException
 	 */
+    @Ignore
 	@Test
 	public final void testRestDiscoveryMode() throws Exception {
 		logger.info("Test REST Discovery mode started !");

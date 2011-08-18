@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc.esper;
+package com.openwide.easysoa.esper;
 
 import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;

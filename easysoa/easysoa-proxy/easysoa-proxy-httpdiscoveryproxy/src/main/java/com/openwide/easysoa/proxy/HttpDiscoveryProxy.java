@@ -31,8 +31,10 @@ import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitoringService;
+import com.openwide.easysoa.run.RunManager;
 
 /**
  * HTTP Proxy 
@@ -52,7 +54,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	
 	// Reference on monitoring service
 	@Reference
-	public MonitoringService monitoringService;
+	public RunManager runManager;
+	//public MonitoringService monitoringService;
 	
 	// Port the proxy use.
 	@Property
@@ -157,7 +160,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	infiniteLoopDetection(request);	    	
 	    	// Listening the message
 	    	Message message = forward(request, response);
-	    	monitoringService.listen(message);
+	    	//monitoringService.listen(message);
+	    	runManager.record(message);
 	    }
 	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client
@@ -180,7 +184,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    catch(Throwable ex){
 	    	// error in the internals of the httpProxy : building & returning it
 	    	ex.printStackTrace();
-	    	logger.error("An error occurs in doPost method.", ex);
+	    	logger.error("An error occurs in doHttpMethod method.", ex);
 
 	    	// attempting to reset response
 	    	response.reset();
@@ -197,7 +201,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    		// Returns HTML response
 				response.setContentType("text/html");
 				logger.debug("returns an html response");
-	    		respOut.println("<html><body>httpProxy : unknown error in proxy, doPost :<br/>");
+	    		respOut.println("<html><body>HTTP Discovery Proxy : unknown error in proxy, doHttpMethod :<br/>");
 	    		respOut.println(ex.getMessage());
 	    		ex.printStackTrace(respOut);
 	    		respOut.println("</body></html>");

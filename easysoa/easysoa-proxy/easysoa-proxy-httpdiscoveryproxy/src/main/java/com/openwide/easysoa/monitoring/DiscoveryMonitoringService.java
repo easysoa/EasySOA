@@ -2,12 +2,14 @@ package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
+import com.openwide.easysoa.run.RunManager;
 
 /**
  * Monitoring service for Discovery mode

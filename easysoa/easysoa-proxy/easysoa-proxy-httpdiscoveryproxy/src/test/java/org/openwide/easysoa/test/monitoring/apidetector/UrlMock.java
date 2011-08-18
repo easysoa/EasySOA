@@ -125,14 +125,14 @@ public class UrlMock {
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/FR3Aquitaine.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/europe_camions.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/Developpez.xml?cursor=-1");
-		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/FR3Bourgone.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/FR3franchecomte.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/friends/EasySoaTest.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/europe_camions.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/Developpez.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/FR3Aquitaine.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/oliverTweett.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/Developpez.xml?cursor=-1");
-		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/FR3Bourgone.xml?cursor=-1");
+		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/FR3franchecomte.xml?cursor=-1");
 		twitterTestSet.add("http://" + baseUrl + "/1/statuses/followers/EasySoaTest.xml?cursor=-1");
 		return twitterTestSet;
 	}

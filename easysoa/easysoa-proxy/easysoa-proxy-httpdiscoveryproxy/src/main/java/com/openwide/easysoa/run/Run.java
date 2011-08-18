@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc.run;
+package com.openwide.easysoa.run;
 
 import java.util.ArrayDeque;
 import java.util.Date;

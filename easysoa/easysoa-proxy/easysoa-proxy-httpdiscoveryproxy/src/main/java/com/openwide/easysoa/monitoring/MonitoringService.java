@@ -2,8 +2,8 @@ package com.openwide.easysoa.monitoring;
 
 import java.util.ArrayDeque;
 
-import com.openwide.easysoa.esperpoc.run.RunManager;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
+import com.openwide.easysoa.run.RunManager;
 
 public interface MonitoringService {
 
@@ -18,7 +18,7 @@ public interface MonitoringService {
 	 * Return the run manager
 	 * @return Return the run manager used
 	 */
-	public RunManager getRunManager();
+	//public RunManager getRunManager();
 	
 	/**
 	 * Listen a message
@@ -54,6 +54,4 @@ public interface MonitoringService {
 	 */
 	public void registerDetectedServicesToNuxeo();
 
-	
-	
 }

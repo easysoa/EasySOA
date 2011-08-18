@@ -8,13 +8,13 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.Assume;
 
-import com.openwide.easysoa.esperpoc.run.RunManagerImpl;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 //import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
+import com.openwide.easysoa.run.RunManagerImpl;
 import com.sun.jersey.api.client.ClientHandlerException;
 
 /**

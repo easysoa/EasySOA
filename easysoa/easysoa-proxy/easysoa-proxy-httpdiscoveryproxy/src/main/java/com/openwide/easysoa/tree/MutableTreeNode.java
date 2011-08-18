@@ -1,4 +1,4 @@
-package com.openwide.easysoa.esperpoc.tree;
+package com.openwide.easysoa.tree;
 
 public interface MutableTreeNode extends TreeNode {
     /**
