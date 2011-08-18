@@ -26,14 +26,14 @@ import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.ow2.frascati.util.FrascatiException;
 
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
-import com.openwide.easysoa.run.RunManager;
 
 /**
  * Complete test suite of HTTP Discovery Proxy
  * - Starts FraSCATi and the HTTP Discovery Proxy
  * - Test the infinite loop detection feature (OK)
- * - Test the Discovery mode for REST requests (OK)
- * - Test the Discovery mode for SOAP requests (OK)
+ * - Test the clean Nuxeo registry (OK)
+ * - Test the Discovery mode for REST requests (OK) includes re-run test 
+ * - Test the Discovery mode for SOAP requests (OK) no re-run test
  * - Test the Validated mode for REST requests (TODO)
  * - Test the validated mode for SOAP requests (TODO)
  *
