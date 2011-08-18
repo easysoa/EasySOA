@@ -8,6 +8,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+
+import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitoringService;
 
@@ -73,12 +75,9 @@ public class RunManagerImpl implements RunManager {
 	@Override
 	public Run getCurrentRun() throws Exception{
 		if(currentRun == null && autoStart){
-			try {
-				// TODO add a unique id
-				start("Auto started run");
-			} catch (Exception e) {
-				// Nothing to do here
-			}
+			// TODO add a better unique id
+			Date startDate = new Date();
+			start("Auto started run - " + startDate);
 		} else if(currentRun==null && !autoStart){
 			throw new Exception("Autostart is set to false, unable to start a new run automatically !");
 		}
@@ -168,14 +167,18 @@ public class RunManagerImpl implements RunManager {
 	@Override
 	public void reRun(String runName) throws Exception {
 		Run run = getRun(runName);
+		// TODO remove this and find a way to re-init the monitoringService (especially the tree)
+		monitoringService = new DiscoveryMonitoringService();
 		// call directly the listen method, with all the run messages as parameters
 		// Pb the listen method is in the monitoringService class .... 
 		// 2 solutions :
 		// 1st : add a reference to monitoring service in runManager. The same Monitoring service is used for all the run in a same run manager
 		// 2nd : Each run can have a different run manager, defined when the run is created. We can give a monitoringServiceFactory as reference to the runManager.
 		for(Message message : run.getMessageList()){
+			logger.debug("Listening message : " + message);
 			monitoringService.listen(message);
 		}
+		monitoringService.registerDetectedServicesToNuxeo();		
 	}
 
 	/* (non-Javadoc)

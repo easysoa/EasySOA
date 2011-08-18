@@ -71,7 +71,7 @@ public abstract class AbstractProxyTestStarter {
 	 * TODO Find an other method to clean because it is not possible with using only NXQL 
 	 * @throws JSONException 
 	 */
-	public final static void cleanNuxeoRegistery() throws JSONException  {
+	public final static String cleanNuxeoRegistery() throws JSONException  {
 		// Not possible NXQL to select only one field, only select * is available ... Strange
 		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' AND (ecm:primaryType = 'Service' OR ecm:primaryType = 'ServiceAPI' OR ecm:primaryType = 'Workspace')";
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
@@ -92,7 +92,7 @@ public abstract class AbstractProxyTestStarter {
 		}
 		
 		// check that docs are well deleted
-		//nuxeoResponse = nrs.sendQuery(nuxeoQuery);
+		return nuxeoResponse = nrs.sendQuery(nuxeoQuery);
 		//assertEquals("{\n  \"entity-type\": \"documents\",\n  \"entries\": []\n}", nuxeoResponse);		
 	}	
 	

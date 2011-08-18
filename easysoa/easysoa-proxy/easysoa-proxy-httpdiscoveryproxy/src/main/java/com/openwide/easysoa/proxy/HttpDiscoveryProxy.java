@@ -160,7 +160,6 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	infiniteLoopDetection(request);	    	
 	    	// Listening the message
 	    	Message message = forward(request, response);
-	    	//monitoringService.listen(message);
 	    	runManager.record(message);
 	    }
 	    catch (HttpResponseException rex) {

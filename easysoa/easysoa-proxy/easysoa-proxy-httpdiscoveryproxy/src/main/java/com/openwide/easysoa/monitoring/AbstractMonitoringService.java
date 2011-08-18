@@ -3,10 +3,7 @@ package com.openwide.easysoa.monitoring;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-//import org.osoa.sca.annotations.Reference;
-//import com.openwide.easysoa.esperpoc.run.RunManager;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 
 /**
@@ -41,10 +38,6 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	 */
 	protected UrlTree urlTree;	
 	
-	// Reference on run manager
-	//@Reference
-	//public RunManager runManager;
-	
     /**
      * Message handler list initialization
      * Order is important, more specific first 
@@ -60,20 +53,13 @@ public abstract class AbstractMonitoringService implements MonitoringService {
      * Constructor
      */
     public AbstractMonitoringService(){}
-    
-	/*@Override
-	public RunManager getRunManager() {
-		return this.runManager;
-	}*/
-    
+        
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.monitoring.MonitoringService#listen(com.openwide.easysoa.monitoring.Message)
 	 */
-	// TODO : remove this method, think it is better to call the record method from runManager and then the record method call listen method 
 	@Override
 	public void listen(Message message){
 	    logger.debug("Listenning message : " + message);
-	    //runManager.record(message);
 		for(MessageHandler mh : messageHandlers){
 	    	// Call each messageHandler, when the good message handler is found, stop the loop
 	    	if(mh.isOkFor(message)){

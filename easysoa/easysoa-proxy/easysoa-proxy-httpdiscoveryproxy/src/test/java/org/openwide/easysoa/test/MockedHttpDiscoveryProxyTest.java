@@ -26,6 +26,7 @@ import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.ow2.frascati.util.FrascatiException;
 
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
+import com.openwide.easysoa.run.RunManager;
 
 /**
  * Complete test suite of HTTP Discovery Proxy
@@ -92,11 +93,30 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		logger.info("Test Infinite loop detection end !");
     }
     
+    /**
+     * Test the clean registry Nuxeo feature to be sure that Nuxeo is empty before to launch the tests
+     * @throws JSONException
+     */
+    @Test
+    public final void testCleanNuxeoRegistery() throws JSONException{
+    	String nuxeoResponse = cleanNuxeoRegistery();
+    	assertEquals("{\n  \"entity-type\": \"documents\",\n  \"entries\": []\n}", nuxeoResponse);
+    }
+    
 	/**
 	 * Test the discovery mode for REST requests
-	 * @throws ClientException
-	 * @throws SOAPException
-	 * @throws IOException
+	 * 
+	 * - Set the monitoring service to Discovery mode
+	 * - Start a new Run
+	 * - Set the client to use HTTP Discovery proxy
+	 * - Send the request form the twitter mock
+	 * - Stop the run
+	 * - Check that api's and services are well detected and registered
+	 * - Delete api's and services registered in Nuxeo
+	 * - Rerun the recorded run
+	 * - Check that api's and services are well detected and registered
+	 * 
+	 * @throws ClientException, SOAPException, IOException in case of error
 	 */
 	@Test
 	public final void testRestDiscoveryMode() throws Exception {
@@ -113,7 +133,6 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		logger.info("Set proxy mode to Discovery");
 		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/setMonitoringMode/discovery"), responseHandler);
 		assertEquals("Monitoring mode set", resp);
-		//logger.info("mode setting : " + resp);
 		
 		// Start a new run
 		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/RESTDiscoveryTestRun"), responseHandler);
@@ -157,19 +176,31 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
 		logger.debug("Nuxeo response : " + nuxeoResponse);
-		//try{
-			// Get the property JSON Object
-			String entries = new JSONObject(nuxeoResponse).getString("entries");
-			String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
-			JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-			// Do to same thing but less readable
-			// JSONObject jsonObject = new JSONObject(new JSONObject(new JSONArray(new JSONObject(nuxeoResponse).getString("entries")).getJSONObject(0).toString()).getString("properties"));
-			assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));			
-		/*}
-		catch(Exception ex){
-			logger.info("An error occurs while reading the nuxeo response", ex);
-		}*/
 
+		// Get the property JSON Object
+		String entries = new JSONObject(nuxeoResponse).getString("entries");
+		String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
+		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
+		// Do to same thing but less readable
+		// JSONObject jsonObject = new JSONObject(new JSONObject(new JSONArray(new JSONObject(nuxeoResponse).getString("entries")).getJSONObject(0).toString()).getString("properties"));
+		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));			
+
+		// Delete the registered stuff in Nuxeo, then re-run the recorded Twitter test run
+		cleanNuxeoRegistery();
+		
+		//Re-run
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/reRun/RESTDiscoveryTestRun"), responseHandler);
+		assertEquals("Re-run done", resp);
+
+		// Check registered api's in Nuxeo
+		nuxeoResponse = nrs.sendQuery(nuxeoQuery);		
+		// Get the property JSON Object
+		entries = new JSONObject(nuxeoResponse).getString("entries");
+		firstEntry = new JSONArray(entries).getJSONObject(0).toString();
+		jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
+		// Do to same thing but less readable
+		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));		
+		
 		logger.info("Test REST Discovery mode ended successfully !");
 	}
 
@@ -263,16 +294,11 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
 		logger.info("Nuxeo response : " + nuxeoResponse);
 		
-		//try{
-			// Get the property JSON Object
-			String entries = new JSONObject(nuxeoResponse).getString("entries");
-			String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
-			JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-			assertEquals("http://localhost:8085/meteo", jsonObject.get("serv:url"));			
-		/*}
-		catch(Exception ex){
-			logger.info("An error occurs while reading the nuxeo response", ex);
-		}*/		
+		// Get the property JSON Object
+		String entries = new JSONObject(nuxeoResponse).getString("entries");
+		String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
+		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
+		assertEquals("http://localhost:8085/meteo", jsonObject.get("serv:url"));			
 
 		logger.info("Test SOAP Discovery mode ended successfully !");
 	}

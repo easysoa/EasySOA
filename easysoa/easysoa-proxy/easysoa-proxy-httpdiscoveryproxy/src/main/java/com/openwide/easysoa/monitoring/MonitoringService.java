@@ -3,7 +3,6 @@ package com.openwide.easysoa.monitoring;
 import java.util.ArrayDeque;
 
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
-import com.openwide.easysoa.run.RunManager;
 
 public interface MonitoringService {
 
@@ -13,12 +12,6 @@ public interface MonitoringService {
 	public enum MonitoringMode {
 		DISCOVERY, VALIDATED
 	}	
-	
-	/**
-	 * Return the run manager
-	 * @return Return the run manager used
-	 */
-	//public RunManager getRunManager();
 	
 	/**
 	 * Listen a message
