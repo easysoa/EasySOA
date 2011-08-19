@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="scaffoldingProxy">
+
+  <!-- Velocity component -->
+  <component name="scaffoldingProxyComponent">
+    <implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="form.html" location="contents"/>
+    <service name="Velocity">
+      <binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/scaffoldingProxy"/>
+    </service>
+    <!-- HTML Form generator Reference -->
+	<reference name="formGenerator" target="formGeneratorComponent/formGeneratorService" />    
+  </component>
+
+  <!-- Form generator component -->
+  <component name="formGeneratorComponent">
+    <service name="formGeneratorService">
+      <interface.java interface="org.openwide.easysoa.scaffolding.FormGenerator"/>
+    </service>
+    <implementation.java class="org.openwide.easysoa.scaffolding.FormGeneratorImpl"/>    
+  </component>
+
+</composite>

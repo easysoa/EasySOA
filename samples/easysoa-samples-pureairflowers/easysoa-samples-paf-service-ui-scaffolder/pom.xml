@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.openwide.easysoa.samples.paf</groupId>
+  <artifactId>easysoa-samples-paf-service-ui-scaffolder</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>easysoa-samples-paf-service-ui-scaffolder</name>
+  <url>http://maven.apache.org</url>
+  
+	<build>
+		  <plugins>
+		  	<plugin>
+		    	<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-compiler-plugin</artifactId>
+		        <configuration>
+		        	<source>1.6</source>
+		            <target>1.6</target>
+		        </configuration>
+		    </plugin>
+	    </plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+		</dependency>
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>
+			<version>2.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-velocity</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-fractal</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+	</dependencies>
+</project>

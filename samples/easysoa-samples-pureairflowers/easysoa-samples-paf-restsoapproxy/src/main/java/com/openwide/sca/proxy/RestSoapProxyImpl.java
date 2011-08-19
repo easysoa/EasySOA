@@ -61,7 +61,7 @@ public class RestSoapProxyImpl implements RestSoapProxy {
 			if(clientIdParams != null && clientIdParams.size() > 0){
 				text = textParams.get(0);
 				System.out.println("[SCA PROXY REST/SOAP TEST] clientId : " + text);
-			}			
+			}
 			// iteration param
 			List<String> iterationsParams = queryParams.get("iterations");
 			int iterations = 5;
