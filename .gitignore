@@ -1,3 +1,8 @@
-/target
+*.class
+*.project
 *.log
-CreateSummary_*
+.classpath
+.settings/
+target/
+bin/
+reports/
