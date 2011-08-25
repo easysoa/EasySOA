@@ -27,7 +27,7 @@ public class FormGeneratorImpl implements FormGenerator {
 	 * @see org.openwide.easysoa.scaffolding.FormGenerator#generateHtmlFormFromWsdl(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public String generateHtmlFormFromWsdl(String xml, String xsl, String html) /*throws Exception*/ {
+	public String generateHtmlFormFromWsdl(String xmlSource, String xslt, String htmlOutput) /*throws Exception*/ {
 		// WSDL source
 		// DOM is old, need to add a call to setNamespacesAware(true) to avoid a problem of unrecognized namespace
 		// Use SAX instead
@@ -40,30 +40,39 @@ public class FormGeneratorImpl implements FormGenerator {
 		Source source = new DOMSource(document);
 		*/
 		//TODO rename variables .... in english
-		logger.debug("xml : " + xml);
-		logger.debug("xsl : " + xsl);
-		logger.debug("html : " + html);
+		logger.debug("xml : " + xmlSource);
+		logger.debug("xsl : " + xslt);
+		logger.debug("html : " + htmlOutput);
 				
 		try{
-			URL xmlUrl = new URL(xml);
+			if(xmlSource == null || "".equals(xmlSource)){
+				throw new IllegalArgumentException("The parameter xmlSource cannot be null or empty !");
+			} 
+			else if(xslt == null || "".equals(xslt)){
+				throw new IllegalArgumentException("The parameter xslt cannot be null or empty !");
+			}
+			else if(htmlOutput == null || "".equals(htmlOutput)){
+				throw new IllegalArgumentException("The parameter html cannot be null or empty !");
+			}			
+			URL xmlUrl = new URL(xmlSource);
 			
 			//SAXSource source = new SAXSource(new InputSource(new FileInputStream( new File(xml))));
 			SAXSource source = new SAXSource(new InputSource(new InputStreamReader(xmlUrl.openStream())));
 		
 			// Output HTML file
-			File fileHtml = new File(html);
+			File fileHtml = new File(htmlOutput);
 			Result result = new StreamResult(fileHtml);
 			
 			// Transformer configuration
 			TransformerFactory factory = TransformerFactory.newInstance();
-			StreamSource stylesource = new StreamSource(new File(xsl));
+			StreamSource stylesource = new StreamSource(new File(xslt));
 			Transformer transformer = factory.newTransformer(stylesource);
 			
 			// Transformation
 			transformer.transform(source, result);
 			
 			// Return the form
-			return readForm(fileHtml);
+			return readResultFile(fileHtml);
 		}
 		catch(Exception ex){
 			logger.error(ex);
@@ -77,9 +86,10 @@ public class FormGeneratorImpl implements FormGenerator {
 	 * @return
 	 * @throws java.io.IOException
 	 */
-	private static String readForm(File formFile) throws java.io.IOException {
-	    byte[] buffer = new byte[(int) formFile.length()];
-	    BufferedInputStream f = new BufferedInputStream(new FileInputStream(formFile));
+	//TODO move this method in XSLTTransformer class
+	private static String readResultFile(File resultFile) throws java.io.IOException {
+	    byte[] buffer = new byte[(int) resultFile.length()];
+	    BufferedInputStream f = new BufferedInputStream(new FileInputStream(resultFile));
 	    f.read(buffer);
 	    return new String(buffer);
 	}	
