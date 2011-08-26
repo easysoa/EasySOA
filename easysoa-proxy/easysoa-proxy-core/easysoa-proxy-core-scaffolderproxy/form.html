@@ -91,9 +91,6 @@
 								
 								for(j=0; j<outputFields.length; j++){
 									var fieldName = outputFields[j].name;
-									alert(fieldName);
-									// How to get the corresponding data without remove namespaces ??
-									//alert("responseData.Body." + responseMessage + "." + fieldName);
 									outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
 								}
 								
@@ -104,8 +101,8 @@
 					};
 					
 					// Hard coded URL for demo purpose
-					//var url = "http://localhost:7001/?";
-					var url = "http://localhost:7001/";				
+					var url = "http://localhost:7001/";
+					var wsdlUrl = "http://localhost:9010/PureAirFlowers";				
 					var params = "";
 					// For each form field : add it in the url
 	    			
@@ -120,10 +117,10 @@
 							}
 						}
 					}
-					//params = params + "&operation=" + operation + "&binding=" + binding;
+					params = params + "&wsdlUrl=" + wsdlUrl; 
 					url = url + "callService/" + binding + "/" + operation + "/";
 					
-					alert("url = " + url + "?" + params);
+					//alert("url = " + url + "?" + params);
 					xhr.open("GET", url + "?" + params, true);
 					xhr.send(null);
 				}

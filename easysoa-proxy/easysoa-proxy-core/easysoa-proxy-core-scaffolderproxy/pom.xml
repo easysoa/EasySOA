@@ -2,12 +2,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.openwide.easysoa.samples.paf</groupId>
-  <artifactId>easysoa-samples-paf-service-ui-scaffolder</artifactId>
+  <groupId>org.openwide.easysoa.proxy</groupId>
+  <artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>easysoa-samples-paf-service-ui-scaffolder</name>
+  <name>easysoa-proxy-core-scaffolderproxy</name>
   <url>http://maven.apache.org</url>
 
   <repositories>
