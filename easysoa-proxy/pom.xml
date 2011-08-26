@@ -3,15 +3,16 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openwide.easysoa</groupId>
-	<artifactId>easysoa-samples</artifactId>
+	<artifactId>easysoa-proxy</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>easysoa-samples</name>
+	<name>easysoa-proxy</name>
 
 	<modules>
-		<module>easysoa-samples-pureairflowers</module>
-		<module>easysoa-samples-smarttravel</module>
-		<module>easysoa-samples-smarttravel-test</module>
+		<module>easysoa-proxy-parent</module>
+		<module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
+		<module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
+		<module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
 	</modules>
 	
 </project>

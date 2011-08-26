@@ -1,0 +1,185 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!--<parent>
+		<groupId>org.easysoa</groupId>
+		<artifactId>easysoa-model-demo-parent</artifactId>
+		<version>0.1.2-SNAPSHOT</version>
+	</parent>-->
+
+	<groupId>org.openwide.easysoa</groupId>
+	<artifactId>easysoa-samples-smarttravel-test</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>easysoa-samples-smarttravel-test</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+		<repository>
+			<id>Frascati</id>
+			<name>Frascati repository</name>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>
+		<repository>
+			<id>Download.java.net</id>
+			<name>Download.java.net repository</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+		<repository>
+			<id>ow2-snapshot</id>
+			<url>http://maven.ow2.org//maven2-snapshot</url>
+		</repository>
+		<repository>
+			<id>eclipse mirror</id>
+			<name>Eclipse EMF Mirror</name>
+			<url>http://www.openarchitectureware.org/m2</url>
+		</repository>
+		<repository>
+			<id>frascati mirror</id>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>
+		<repository>
+			<id>apache.incubator</id>
+			<url>http://people.apache.org/repo/m2-incubating-repository</url>
+		</repository>
+		<repository>
+			<id>Nuxeo</id>
+			<name>Nuxeo Public Releases Repository</name>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>INRIA gforge</id>
+			<url>http://maven-repo.gforge.inria.fr/releases/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-fractal</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.0.771</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa</groupId>
+			<artifactId>easysoa-model-demo-core</artifactId>
+			<version>0.1.2-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa</groupId>
+			<artifactId>easysoa-model-demo-rest</artifactId>
+			<version>0.1.2-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.openwide.easysoa</groupId>
+			<artifactId>esperfrascatipoc</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.galaxy.j1</groupId>
+			<artifactId>trip</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>jetty</groupId>
+			<artifactId>org.mortbay.jetty.plus</artifactId>
+			<version>5.1.10</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		
+	    <!-- Spring deps required to have cxf config file -->
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-core</artifactId>
+	      <version>3.0.4.RELEASE</version>
+	      <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-beans</artifactId>
+	      <version>3.0.4.RELEASE</version>
+	      <scope>test</scope>      
+	    </dependency>
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-context</artifactId>
+	      <version>3.0.4.RELEASE</version>
+	      <scope>test</scope>      
+	    </dependency>
+    		
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+				</plugin>
+		</plugins>
+	</build>
+
+</project>
