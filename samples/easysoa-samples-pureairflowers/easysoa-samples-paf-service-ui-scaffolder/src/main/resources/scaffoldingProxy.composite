@@ -24,12 +24,22 @@
     <implementation.java class="org.openwide.easysoa.scaffolding.ScaffoldingProxyImpl"/>
     <service name="restInterface">
       <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
-    </service>  
+    </service>
+    <!-- WSDL service helper reference -->
+	<reference name="wsdlServiceHelper" target="wsdlServiceHelperComponent/wsdlServiceHelperService" />      
   </component>
-  
+  <!-- Rest binding for Rest / Soap proxy -->
   <service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">
     <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
     <frascati:binding.rest uri="http://localhost:7001/"/>
-  </service>  
-
+  </service>
+  
+  <!-- WSDL Service helper component -->
+  <component name="wsdlServiceHelperComponent">
+    <service name="wsdlServiceHelperService">
+      <interface.java interface="org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper"/>
+    </service>
+    <implementation.java class="org.openwide.easysoa.scaffolding.wsdlhelper.soapui.SoapUIServiceHelper"/>    
+  </component>  
+  
 </composite>

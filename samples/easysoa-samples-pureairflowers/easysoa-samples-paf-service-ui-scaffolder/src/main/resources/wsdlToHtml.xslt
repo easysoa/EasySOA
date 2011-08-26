@@ -81,7 +81,9 @@
 						</xsl:call-template>
 					</p>
 					<!-- Call the binding template -->
-					<xsl:call-template name="porttypes"/>
+					<xsl:call-template name="porttypes">
+						<xsl:with-param name="wsdlUrl" select="wsdl:service/wsdl:port/soap:address/@location" />
+					</xsl:call-template>					
 				</div>
 			</body>
 		</html>
@@ -91,9 +93,6 @@
 	<xsl:template name="formFields">
 		<xsl:param name="messageName" />
 		<xsl:param name="readOnly" />
-		<!--parametre : <xsl:value-of select="$messageName"/><br/> -->
-		<!--element name : <xsl:value-of select="key('baseElements', $messageName)/@name"/>, 
-			type : <xsl:value-of select="key('baseElements', $messageName)/@type"/> <br/> -->
 		<xsl:call-template name="fields">
 			<xsl:with-param name="elementName">
 				<xsl:value-of select="key('baseElements', $messageName)/@name" />
@@ -106,8 +105,6 @@
 	<xsl:template name="fields">
 		<xsl:param name="elementName" />
 		<xsl:param name="readOnly" />
-		<!--param : <xsl:value-of select="$elementName"/><br/> -->
-		<!--complextype name : <xsl:value-of select="key('complexTypes', $elementName)/@name"/> -->
 		<table>
 			<tr>
 				<th style="width: 20%">Field type</th>
@@ -143,6 +140,7 @@
 
 	<!-- Porttype template -->
 	<xsl:template name="porttypes">
+		<xsl:param name="wsdlUrl" />
 		<xsl:for-each select="wsdl:portType">
 			<!-- Get the binding name -->
 			<xsl:variable name="bindingName">
@@ -156,16 +154,17 @@
 			</h2>
 			<xsl:call-template name="operation">
 				<xsl:with-param name="bindingName" select="$bindingName" />
+				<xsl:with-param name="wsdlUrl" select="$wsdlUrl" />
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 
 	<!-- Operation template -->
 	<!-- for each operation, create an HTML form -->
-	<!--<xsl:template match="wsdl:portType/wsdl:operation">-->
 	<xsl:template name="operation">	
 		<!-- Add the binding name as parameter -->	
 		<xsl:param name="bindingName" />
+		<xsl:param name="wsdlUrl" />
 		<xsl:for-each select="wsdl:operation">			
 			<xsl:variable name="operationName">
 				<xsl:value-of select="@name" />
@@ -176,12 +175,7 @@
 					<xsl:value-of select="$operationName" />
 				</b>
 			</h3>
-			<!-- TODO : Nom du(des) champ(s) de retour en dur dans le code javascript 
-				!!! -->
-			<!-- A modifier pour rendre la génération du formulaire dynamique -->
-			<!-- OK mais ne fonctionne seulement pour un seul champs de retour !!!!! -->
-			
-			<!-- Operation name pas usffisnat, ajouter le nom du binding -->
+			<!-- Javascript code engine for the form -->
 			<script type="text/javascript">
 				function submit_<xsl:value-of select="$operationName" />_<xsl:value-of select="$bindingName" />_form(form){
 					var xhr;
@@ -216,7 +210,6 @@
 								<![CDATA[
 								for(j=0; j<outputFields.length; j++){
 									var fieldName = outputFields[j].name;
-									// How to get the corresponding data without remove namespaces ??
 									outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
 								}
 								]]>
@@ -227,8 +220,8 @@
 					};
 					
 					// Hard coded URL for demo purpose
-					//var url = "http://localhost:7001/?";
-					var url = "<xsl:value-of select="$baseServerUrl" />";				
+					var url = "<xsl:value-of select="$baseServerUrl" />";
+					var wsdlUrl = "<xsl:value-of select="$wsdlUrl" />";				
 					var params = "";
 					// For each form field : add it in the url
 	    			<![CDATA[
@@ -243,7 +236,7 @@
 							}
 						}
 					}
-					//params = params + "&operation=" + operation + "&binding=" + binding;
+					params = params + "&wsdlUrl=" + wsdlUrl; 
 					url = url + "callService/" + binding + "/" + operation + "/";
 					]]>
 					//alert("url = " + url + "?" + params);
@@ -261,7 +254,6 @@
 				<xsl:variable name="inMessName">
 					<xsl:apply-templates select="wsdl:input/@message" />
 				</xsl:variable>
-				<!--input message name : <xsl:value-of select="$inMessName"/><br/> -->
 				<xsl:call-template name="formFields">
 					<xsl:with-param name="messageName" select="$inMessName" />
 					<xsl:with-param name="readOnly" select="false()" />
@@ -273,7 +265,6 @@
 				<xsl:variable name="outMessName">
 					<xsl:apply-templates select="wsdl:output/@message" />
 				</xsl:variable>
-				<!--output message name : <xsl:value-of select="$outMessName"/><br/> -->
 				<xsl:call-template name="formFields">
 					<xsl:with-param name="messageName" select="$outMessName" />
 					<xsl:with-param name="readOnly" select="true()" />
