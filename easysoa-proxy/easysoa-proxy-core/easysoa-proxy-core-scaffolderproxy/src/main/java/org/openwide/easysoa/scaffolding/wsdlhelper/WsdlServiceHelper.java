@@ -18,6 +18,6 @@ public interface WsdlServiceHelper {
 	 * @return The response of the service
 	 * @throws Exception If a problem occurs
 	 */
-	public String callService(String wsdlUrl, String wsldOperation, HashMap<String, List<String>> paramList) throws Exception;
+	public String callService(String wsdlUrl, String binding, String wsldOperation, HashMap<String, List<String>> paramList) throws Exception;
 	
 }

@@ -10,6 +10,7 @@
 	<!-- Web service endpoint -->
 	<xsl:key name="baseElements" match="xsd:element" use="@type" />
 	<xsl:key name="complexTypes" match="xsd:complexType" use="@name" />
+	<xsl:key name="bindings" match="wsdl:binding" use="@type" />
 
 	<!-- Header -->
 	<xsl:template name="serviceAddress">
@@ -142,9 +143,12 @@
 	<xsl:template name="porttypes">
 		<xsl:param name="wsdlUrl" />
 		<xsl:for-each select="wsdl:portType">
-			<!-- Get the binding name -->
+			<xsl:variable name="portTypeName">
+				<xsl:value-of select="@name" />		
+			</xsl:variable>
+			<!-- Get the binding name -->				
 			<xsl:variable name="bindingName">
-				<xsl:value-of select="@name" />
+				<xsl:value-of select="key('bindings', concat('tns:', $portTypeName))/@name" />		
 			</xsl:variable>	
 			<h2>
 				Binding

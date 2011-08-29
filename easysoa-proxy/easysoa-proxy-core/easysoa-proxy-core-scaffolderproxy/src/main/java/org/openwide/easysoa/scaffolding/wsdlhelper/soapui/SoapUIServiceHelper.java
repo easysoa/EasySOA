@@ -42,12 +42,24 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 	 * @throws SubmitException
 	 * @throws JSONException 
 	 */
-	public String callService(String wsdlUrl, String wsldOperation, HashMap<String, List<String>> paramList) throws SoapUIException, XmlException, IOException, SubmitException, JSONException {
-		
+	public String callService(String wsdlUrl, String binding, String wsldOperation, HashMap<String, List<String>> paramList) throws SoapUIException, XmlException, IOException, SubmitException, JSONException {
 		// create new project
 		WsdlProject project = new WsdlProject();
-		// import amazon wsdl
-		WsdlInterface iface = WsdlInterfaceFactory.importWsdl(project, wsdlUrl, true )[0];
+		// import wsdl
+		WsdlInterface iface = null;
+		WsdlInterface[] ifaceArray = WsdlInterfaceFactory.importWsdl(project, wsdlUrl, true);
+		// Get the corresponding binding
+		for(WsdlInterface i : ifaceArray){
+			if(i.getName().equals(binding)){
+				iface = i;
+			}
+		}
+		// If iface still null, binding not found => error
+		if(iface == null){
+			throw new IllegalArgumentException("Binding '" + binding + "' not found in the specified WSDL");
+		}
+		//WsdlInterface iface = ifaceArray[0];
+
 		// get desired operation
 		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(wsldOperation);
 		// create a new empty request for that operation
@@ -70,6 +82,12 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param xmlRequest
+	 * @param params
+	 * @return
+	 */
 	private String mapInputParams(String xmlRequest, HashMap<String, List<String>> params){
 		// For each param key, replace the '?' in the xml request by the param value 
 		logger.debug("XML request before mapping : " + xmlRequest);

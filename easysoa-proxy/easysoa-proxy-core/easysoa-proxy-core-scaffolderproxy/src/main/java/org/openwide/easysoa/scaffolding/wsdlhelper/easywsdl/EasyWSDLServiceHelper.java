@@ -20,7 +20,7 @@ public class EasyWSDLServiceHelper implements WsdlServiceHelper {
 	
 	//TODO Finish this alternative solution with EasyWSDL
 	@Override
-	public String callService(String wsdlUrl, String wsldOperation, HashMap<String, List<String>> paramList) throws Exception {
+	public String callService(String wsdlUrl, String binding, String wsldOperation, HashMap<String, List<String>> paramList) throws Exception {
 		WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
 		Description desc = reader.read(new URL(wsdlUrl));
 		for(Service service : desc.getServices()){
