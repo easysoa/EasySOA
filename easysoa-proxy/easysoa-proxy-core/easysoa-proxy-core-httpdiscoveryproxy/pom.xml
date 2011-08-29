@@ -7,80 +7,36 @@
 	<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
 	<name>easysoa-proxy-core-httpdiscoveryproxy</name>
-	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>org.openwide.easysoa</groupId>
+		<artifactId>easysoa-proxy-parent</artifactId>
+		<version>0.3-SNAPSHOT</version>
+	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>Frascati</id>
-			<name>Frascati repository</name>
-			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
-		</repository>
-		<repository>
-			<id>Download.java.net</id>
-			<name>Download.java.net repository</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-		<repository>
-			<id>ow2-snapshot</id>
-			<url>http://maven.ow2.org//maven2-snapshot</url>
-		</repository>
-		<repository>
-			<id>eclipse mirror</id>
-			<name>Eclipse EMF Mirror</name>
-			<url>http://www.openarchitectureware.org/m2</url>
-		</repository>
-		<repository>
-			<id>apache.incubator</id>
-			<url>http://people.apache.org/repo/m2-incubating-repository</url>
-		</repository>
-		<repository>
-			<id>Nuxeo</id>
-			<name>Nuxeo Public Releases Repository</name>
-			<url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>INRIA gforge</id>
-			<url>http://maven-repo.gforge.inria.fr/releases/</url>
-		</repository>		
-	</repositories>
-
 	<dependencies>
-	    
-	    <!-- frascati -->
+		<!-- frascati -->
 		<dependency><!-- base frascati -->
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-factory</artifactId>
 			<version>1.4</version>
-		</dependency>	
+		</dependency>
 		<dependency><!-- else no frascati class generation -->
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-runtime-factory</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<!-- dependency> auto imported by frascati runtime factory
-			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>core</artifactId>
-			<version>3.3.0_771</version>
-			<version>3.5.0</version>
-			<scope>test</scope>
-		</dependency -->
-		<!-- dependency> sometimes requires by frascati internals or tools
-			<groupId>org.ow2.frascati</groupId>
-			<artifactId>frascati-implementation-fractal</artifactId>
-			<version>1.4</version>
-		</dependency -->		
+		<!-- dependency> auto imported by frascati runtime factory <groupId>org.eclipse.jdt</groupId> 
+			<artifactId>core</artifactId> <version>3.3.0_771</version> <version>3.5.0</version> 
+			<scope>test</scope> </dependency -->
+		<!-- dependency> sometimes requires by frascati internals or tools <groupId>org.ow2.frascati</groupId> 
+			<artifactId>frascati-implementation-fractal</artifactId> <version>1.4</version> 
+			</dependency -->
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-ws</artifactId>
@@ -98,19 +54,19 @@
 		</dependency>
 		<!-- to run it with mvn -Prun -->
 		<dependency>
-        	<groupId>org.ow2.frascati.mojo</groupId>
-        	<artifactId>frascati-launcher-plugin</artifactId>
-        	<version>1.4</version>
-        	<type>maven-plugin</type>
-        </dependency>
-		
-	    <!-- esper -->
+			<groupId>org.ow2.frascati.mojo</groupId>
+			<artifactId>frascati-launcher-plugin</artifactId>
+			<version>1.4</version>
+			<type>maven-plugin</type>
+		</dependency>
+
+		<!-- esper -->
 		<dependency>
 			<groupId>com.espertech</groupId>
 			<artifactId>esper</artifactId>
 			<version>4.2.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>

@@ -1,34 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.openwide.easysoa.proxy</groupId>
-  <artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+	<groupId>org.openwide.easysoa.proxy</groupId>
+	<artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>easysoa-proxy-core-scaffolderproxy</name>
 
-  <name>easysoa-proxy-core-scaffolderproxy</name>
-  <url>http://maven.apache.org</url>
+	<parent>
+		<groupId>org.openwide.easysoa</groupId>
+		<artifactId>easysoa-proxy-parent</artifactId>
+		<version>0.3-SNAPSHOT</version>
+	</parent>
 
-  <repositories>
-    <repository>
-      <id>soapui repo</id>
-      <name>Soap ui repo</name>
-      <url>http://www.eviware.com/repository/maven2/</url>
-    </repository>
-  </repositories>
-  
 	<build>
-		  <plugins>
-		  	<plugin>
-		    	<groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-compiler-plugin</artifactId>
-		        <configuration>
-		        	<source>1.6</source>
-		            <target>1.6</target>
-		        </configuration>
-		    </plugin>
-	    </plugins>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
@@ -56,7 +52,7 @@
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-implementation-fractal</artifactId>
 			<version>1.5-SNAPSHOT</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-http</artifactId>
@@ -66,7 +62,7 @@
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-rest</artifactId>
 			<version>1.5-SNAPSHOT</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-runtime-factory</artifactId>
@@ -79,15 +75,15 @@
 		</dependency>
 		<!-- EasyWSDL -->
 		<dependency>
-		  <groupId>org.ow2.easywsdl</groupId>
-		  <artifactId>easywsdl-wsdl</artifactId>
-		  <version>2.1</version>
+			<groupId>org.ow2.easywsdl</groupId>
+			<artifactId>easywsdl-wsdl</artifactId>
+			<version>2.1</version>
 		</dependency>
-		<!-- SOAPUI and dependencies -->		
+		<!-- SOAPUI and dependencies -->
 		<dependency>
-		    <groupId>eviware</groupId>
-		    <artifactId>soapui</artifactId>
-		    <version>4.5.0-SNAPSHOT</version>
+			<groupId>eviware</groupId>
+			<artifactId>soapui</artifactId>
+			<version>4.5.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>eviware</groupId>
@@ -99,11 +95,8 @@
 			<artifactId>xmlbeans</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1.1</version>
-		</dependency>-->
+		<!--<dependency> <groupId>org.apache.httpcomponents</groupId> <artifactId>httpclient</artifactId> 
+			<version>4.1.1</version> </dependency> -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
