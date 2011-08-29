@@ -2,13 +2,19 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.openwide.easysoa</groupId>
+	<groupId>org.openwide.easysoa.samples.paf</groupId>
 	<artifactId>easysoa-samples-paf-server</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>easysoa-samples-paf-server</name>
 	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>org.openwide.easysoa.samples</groupId>
+		<artifactId>easysoa-samples-parent</artifactId>
+		<version>0.3-SNAPSHOT</version>
+	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,7 +65,8 @@
 						<configuration>
 							<tasks>
 								<mkdir dir="../distrib/pafServices" />
-								<copy todir="../distrib/pafServices" flatten="true" overwrite="true">
+								<copy todir="../distrib/pafServices" flatten="true"
+									overwrite="true">
 									<fileset dir=".">
 										<filename name="target/*-jar-with-dependencies.jar" />
 									</fileset>

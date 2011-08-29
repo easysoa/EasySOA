@@ -1,31 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.openwide.easysoa.proxy</groupId>
-	<artifactId>easysoa-proxy-parent</artifactId>
+
+	<groupId>org.openwide.easysoa.samples</groupId>
+	<artifactId>easysoa-samples-parent</artifactId>
 	<version>0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>easysoa-proxy-parent</name>
+
+	<name>easysoa-samples-parent</name>
+	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<repositories>
-		<!-- For Frascati -->
+		<!-- For ?? -->	
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+		<!-- For FraSCAti -->
 		<repository>
 			<id>Frascati</id>
 			<name>Frascati repository</name>
 			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
 		</repository>
-		<!-- For ?? -->
+		<!-- For ?? -->		
 		<repository>
 			<id>Download.java.net</id>
 			<name>Download.java.net repository</name>
 			<url>http://download.java.net/maven/2/</url>
 		</repository>
-		<!-- For ?? -->		
+		<!-- Ajout EasySOA -->		
 		<repository>
 			<id>ow2-snapshot</id>
 			<url>http://maven.ow2.org//maven2-snapshot</url>
@@ -38,44 +46,40 @@
 		</repository>
 		<!-- For ?? -->		
 		<repository>
+			<id>frascati mirror</id>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>
+		<!-- For ?? -->		
+		<repository>
 			<id>apache.incubator</id>
 			<url>http://people.apache.org/repo/m2-incubating-repository</url>
 		</repository>
-		<!-- For ?? -->		
-		<!--<repository>
+		<!-- For ?? -->
+		<repository>
 			<id>Nuxeo</id>
 			<name>Nuxeo Public Releases Repository</name>
 			<url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
-		</repository>-->
-		<!-- For ?? -->		
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!-- For ?? -->
 		<repository>
 			<id>INRIA gforge</id>
 			<url>http://maven-repo.gforge.inria.fr/releases/</url>
 		</repository>
-        <!-- For SOAPUI -->
-        <repository>
-            <id>soapui repo</id>
-            <name>Soap ui repo</name>
-            <url>http://www.eviware.com/repository/maven2/</url>
-        </repository>
 	</repositories>
-	
+
 	<!-- Common dependencies -->
 	<dependencies>
-		<!-- Log -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency>		
-		
-		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>	
-
+	</dependencies>
 </project>

@@ -9,6 +9,7 @@
 	<name>easysoa-samples</name>
 
 	<modules>
+		<module>easysoa-samples-parent</module>
 		<module>easysoa-samples-pureairflowers</module>
 		<module>easysoa-samples-smarttravel</module>
 		<module>easysoa-samples-smarttravel-test</module>

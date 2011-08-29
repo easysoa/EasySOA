@@ -9,7 +9,7 @@
   <name>easysoa-proxy-intents-fuseintent</name>
 
   <parent>
-  	<groupId>org.openwide.easysoa</groupId>
+  	<groupId>org.openwide.easysoa.proxy</groupId>
   	<artifactId>easysoa-proxy-parent</artifactId>
   	<version>0.3-SNAPSHOT</version>
   </parent>
