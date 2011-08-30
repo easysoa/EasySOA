@@ -10,4 +10,4 @@ echo (Default configuration: Host=127.0.0.1, Port=8081)
 echo %LINE%
 
 rem Default port: 8081
-%NODE% ./easysoa-web-proxy/httpproxy.js
+%NODE% ./httpproxy.js
