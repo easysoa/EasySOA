@@ -8,13 +8,14 @@ Turns Nuxeo into a simple service registry. Contains also a "Discovery by browsi
 
 ## Repository structure
 
-The code is split into 5 projects:
+The code is mainly split into 5 projects:
 
- * `plugins/easysoa-demo-model-core`: The Nuxeo core contributions.
- * `plugins/easysoa-demo-model-web`: The Nuxeo web contributions, tightly linked to the `core` project.
- * `plugins/easysoa-demo-rest`: The REST API used by the service finder.
- * `plugins/easysoa-demo-dashboard`: A basic dashboard "gadget".
- * `discovery-by-browsing`: The service discovery tool (a web proxy + a web server).
+ * `easysoa-demo-model-core`: The Nuxeo core contributions.
+ * `easysoa-demo-model-web`: The Nuxeo web contributions, tightly linked to the `core` project.
+ * `easysoa-demo-rest`: The REST API used by the service finder.
+ * `easysoa-demo-dashboard`: A basic dashboard "gadget".
+ 
+ You can build these bundles by typing `mvn clean install` from this folder.
 
 ## Use and development
 

@@ -9,4 +9,4 @@ echo Service Finder Client + Intranet Web Server
 echo (Access from http://127.0.0.1:8083 by default)
 echo %LINE%
 
-%NODE% ./webserver/server.js
+%NODE% ./easysoa-web-server/server.js
