@@ -61,7 +61,6 @@
     <modules>
         <module>easysoa-proxy</module>
         <module>easysoa-registry</module>
-        <module>easysoa-distribution</module>
         <module>samples</module>
      </modules>
 

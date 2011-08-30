@@ -4,10 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openwide.easysoa.proxy</groupId>
 	<artifactId>easysoa-proxy-parent</artifactId>
-	<version>0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>easysoa-proxy-parent</name>
 
+  <parent>
+    <groupId>org.openwide.easysoa</groupId>
+    <artifactId>parent</artifactId>
+  	<version>0.3-SNAPSHOT</version>
+  </parent>
+    
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -67,14 +72,6 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
-		</dependency>		
-		
-		<!-- Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>	
 
