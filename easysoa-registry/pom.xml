@@ -27,10 +27,10 @@
 	<modules>
 		<module>easysoa-registry-parent</module>
 		<module>easysoa-registry-core</module>
-	<!-- <module>easysoa-registry-web</module>
+	  <module>easysoa-registry-web</module>
 		<module>easysoa-registry-rest</module>
 		<module>easysoa-registry-dashboard</module>
-		<module>easysoa-registry-dependencies</module> -->	
+		<module>easysoa-registry-dependencies</module>
 	</modules>
 
 	<!-- ============= -->
