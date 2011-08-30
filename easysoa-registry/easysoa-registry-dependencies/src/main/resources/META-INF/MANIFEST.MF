@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: Marwane Kalam-Alami
+Build-Jdk: 1.6.0_24
+Bundle-ManifestVersion: 1
+Bundle-Version: 0.0.1
+Bundle-Name: easysoa-registry-dependencies
+Bundle-SymbolicName: org.easysoa.registry.dependencies;singleton:=true
+Bundle-Vendor: Open Wide

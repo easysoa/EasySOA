@@ -8,9 +8,9 @@
     <version>5.4.1</version>
   </parent>
 
-  <artifactId>easysoa-model-demo-dashboard</artifactId>
-  <name>EasySOA Dashboard (Demo)</name>
-  <version>0.1.2-SNAPSHOT</version>
+  <artifactId>easysoa-registry-dashboard</artifactId>
+  <name>EasySOA Registry Dashboard</name>
+  <version>0.1.3-SNAPSHOT</version>
   <description>EasySOA Gadgets</description>
 
   <dependencies>

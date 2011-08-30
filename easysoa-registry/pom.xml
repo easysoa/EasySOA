@@ -10,10 +10,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.easysoa</groupId>
-	<artifactId>easysoa-model-demo</artifactId>
-	<name>EasySOA Model (Demo)</name>
+	<artifactId>easysoa-registry</artifactId>
+	<name>EasySOA Registry</name>
 	<packaging>pom</packaging>
-	<version>0.1.2-SNAPSHOT</version>
+	<version>0.1.3-SNAPSHOT</version>
 
 	<dependencies>
 		<!-- Testing with Nuxeo, see http://doc.nuxeo.com/display/CORG/Unit+Testing -->
@@ -25,11 +25,12 @@
 	</dependencies>
 
 	<modules>
-		<module>easysoa-model-demo-parent</module>
-		<module>easysoa-model-demo-core</module>
-		<module>easysoa-model-demo-web</module>
-		<module>easysoa-model-demo-rest</module>
-		<module>easysoa-model-demo-dashboard</module>
+		<module>easysoa-registry-parent</module>
+		<module>easysoa-registry-core</module>
+	<!-- <module>easysoa-registry-web</module>
+		<module>easysoa-registry-rest</module>
+		<module>easysoa-registry-dashboard</module>
+		<module>easysoa-registry-dependencies</module> -->	
 	</modules>
 
 	<!-- ============= -->
@@ -49,14 +50,21 @@
 						<configuration>
 							<tasks>
 								<echo>Copying jars to the 'plugins/target' folder</echo>
-								<delete dir="target" />
-							  	<mkdir dir="target" />
-							  	<copy todir="target" flatten="true">
-								  	<fileset dir=".">
-								  		<filename name="*/target/*.jar" />
-								  		<exclude name="*/target/*-sources.jar" />
-								  	</fileset>
-							 	</copy>
+								<mkdir dir="target" />
+								<mkdir dir="target/plugins" />
+								<copy todir="target/plugins" flatten="true">
+									<fileset dir=".">
+										<filename name="*/target/*.jar" />
+										<exclude name="*/target/*-sources.jar" />
+										<exclude name="easysoa-registry-dependencies/target/*.jar" />
+									</fileset>
+								</copy>
+								<mkdir dir="target/lib" />
+								<copy todir="target/lib" flatten="true">
+									<fileset dir=".">
+										<filename name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
+									</fileset>
+								</copy>
 							</tasks>
 						</configuration>
 					</execution>
@@ -65,11 +73,9 @@
 		</plugins>
 	</build>
 
-
 	<!-- ============= -->
 	<!-- Repositories -->
 	<!-- ============= -->
-
 	<repositories>
 		<repository>
 			<id>Nuxeo</id>

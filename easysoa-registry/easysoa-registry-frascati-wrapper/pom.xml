@@ -29,12 +29,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.easysoa</groupId>
-		<artifactId>easysoa-model-demo-parent</artifactId>
+		<artifactId>easysoa-registry-parent</artifactId>
 		<version>0.1.2-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>easysoa-frascati-nuxeo</artifactId>
+	<artifactId>easysoa-registry-frascati-wrapper</artifactId>
 	<name>EasySOA: OW2 FraSCAti in Nuxeo</name>
 	
 	<dependencies>

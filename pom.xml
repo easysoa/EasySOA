@@ -60,18 +60,14 @@
     <!-- ======= -->
     <modules>
         <module>easysoa-proxy</module>
+        <module>easysoa-registry</module>
+        <module>easysoa-distribution</module>
         <module>samples</module>
      </modules>
 
     <!-- ======================= -->
     <!-- Dependencies management -->
     <!-- ======================= -->
-    <!--
-        specify which versions are used across all modules. single
-        modules are still required to declare their dependency, but not
-        the version, which is handled globally by the
-        dependencyManagement section.
-    -->
     <dependencyManagement>
       <dependencies>
         <!-- Test -->
