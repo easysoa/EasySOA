@@ -4,7 +4,7 @@ var url = require('url');
 var base64 = require('./tools/base64.js');
 var io = require('./tools/socket.io');
 
-eval(fs.readFileSync('proxyserver/httpproxy-config.js', 'ASCII'));
+eval(fs.readFileSync('easysoa-web-proxy/httpproxy-config.js', 'ASCII'));
 
 var wsdlList = new Array();
 var clients = null;

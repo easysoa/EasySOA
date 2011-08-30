@@ -7,7 +7,7 @@ var fs = require('fs'),
 antinode = require('./lib/antinode'),
 sys = require('sys');
 
-fs.readFile(process.argv[2] || './webserver/settings.json', function(err, data) {
+fs.readFile(process.argv[2] || './easysoa-web-server/settings.json', function(err, data) {
     var settings = {};
     if (err) {
         sys.puts('No settings.json found ('+err+'). Using default settings');

@@ -2,7 +2,7 @@
     "port" : 8083,
 
     "default_host" : {
-        "root" : "./webserver/www/"
+        "root" : "./easysoa-web-server/www/"
     }
 
 }
