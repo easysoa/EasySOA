@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: Philippe Merle
+Build-Jdk: 1.6.0_24
+Bundle-ManifestVersion: 1
+Bundle-Version: 0.0.1
+Bundle-Name: easysoa-frascati-nuxeo
+Bundle-SymbolicName: org.easysoa.frascati.nuxeo;singleton:=true
+Bundle-Vendor: INRIA
+Nuxeo-Require: org.nuxeo.ecm.core.api,
+ org.nuxeo.ecm.core
+Nuxeo-Component: OSGI-INF/frascati-service.xml

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.web.theme.contrib">
+
+	<require>org.nuxeo.theme.nuxeo.default</require>
+
+	<extension target="org.nuxeo.theme.services.ThemeService" point="themes">
+	    <theme>
+	      <src>themes/theme-easysoa.xml</src>
+	    </theme>
+    </extension>
+    
+    <extension target="org.nuxeo.theme.services.ThemeService" point="banks">
+    	<bank name="easysoa" url="${org.nuxeo.runtime.loopback.url}/site/theme-banks/easysoa" />
+  	</extension>
+  	
+    <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
+	    <import src="themes/collections/easysoa.zip" bank="nuxeo" collection="easysoa" />
+  	</extension>
+  	
+    <extension target="org.nuxeo.theme.services.ThemeService" point="presets">
+	    <palette name="EasySOA borders"
+	      src="themes/palettes/easysoa-borders.properties" category="border" />
+	    <palette name="EasySOA backgrounds"
+	      src="themes/palettes/easysoa-backgrounds.properties" category="background" />
+	    <palette name="EasySOA fonts" src="themes/palettes/easysoa-fonts.properties"
+	      category="font" />
+	    <palette name="EasySOA colors" src="themes/palettes/easysoa-colors.properties"
+	      category="color" />
+  	</extension>
+    
+    <extension target="org.nuxeo.theme.services.ThemeService"
+        point="applications">
+        
+        <application root="/nuxeo" template-engine="jsf-facelets">
+	      <negotiation>
+	        <strategy>nuxeo5</strategy>
+	        <default-engine>default</default-engine>
+	        <default-theme>easysoa/default</default-theme>
+	        <default-perspective>default</default-perspective>
+	      </negotiation>
+	
+	      <!-- Cache control for theme resources (/nxthemes-lib/) -->
+	      <resource-caching>
+	        <lifetime>36000</lifetime>
+	      </resource-caching>
+	
+	      <!-- Cache control for theme styles (/nxthemes-css/) -->
+	      <style-caching>
+	        <lifetime>10</lifetime> <!-- 900 -->
+	      </style-caching>
+	
+	      <view id="/create_relation_search_document_popup.xhtml">
+	        <theme>galaxy/popup</theme>
+	      </view>
+	      <view id="/user_dashboard.xhtml">
+	        <theme>galaxy/user_dashboard</theme>
+	      </view>
+	      <view id="/view_calendar.xhtml">
+	        <perspective>view_calendar</perspective>
+	      </view>
+	      <view id="/print.xhtml">
+	        <perspective>print</perspective>
+	      </view>
+	      <view id="/editor_link_search_document.xhtml">
+	        <theme>galaxy/popup</theme>
+	      </view>
+	      <view id="/editor_image_upload.xhtml">
+	        <theme>galaxy/popup</theme>
+	      </view>
+	      <view id="/search/choose_searchscope_popup.xhtml">
+	        <theme>galaxy/popup</theme>
+	      </view>
+	    </application>
+        
+    </extension>
+</component>

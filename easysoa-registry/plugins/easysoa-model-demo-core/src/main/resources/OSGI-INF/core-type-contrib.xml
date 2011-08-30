@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.contrib.coretypes">
+
+  <!-- Schema declarations -->
+  
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="soacommon" src="schemas/soacommon.xsd" prefix="soa" />
+    <schema name="servicedef" src="schemas/servicedef.xsd" prefix="serv" />
+    <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
+    <schema name="serviceref" src="schemas/serviceref.xsd" prefix="sref" />
+    <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
+    <schema name="feature" src="schemas/feature.xsd" prefix="feat" />
+    <schema name="querynav2" src="schemas/querynav2.xsd" />
+  </extension>
+  
+  <!-- Doctypes registration -->
+  
+  <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewContribution/org.nuxeo.ecm.core.CoreExtensions--doctype</documentation>
+  
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+    
+    <doctype extends="Document" name="Service">
+	  <schema name="common"/>
+	  <schema name="uid"/>
+	  <schema name="note"/>
+	  <schema name="dublincore"/>
+      <schema name="file"/>
+      <schema name="soacommon" />
+      <schema name="servicedef" />
+      <facet name="Commentable" />
+      <facet name="Versionable" />
+      <facet name="Indexable" />
+    </doctype>
+    
+    <doctype extends="Folder" name="ServiceAPI">
+      <schema name="dublincore"/>
+      <schema name="soacommon" />
+      <schema name="serviceapidef"/>
+      <schema name="file"/>
+      <schema name="files"/>
+      <facet name="Folderish" />
+      <facet name="Commentable"/>
+      <facet name="Indexable" />
+      <subtypes>
+        <type>ServiceAPI</type>
+        <type>Service</type>
+      </subtypes>
+    </doctype>
+    
+    <doctype extends="Document" name="ServiceReference">
+	  <schema name="common"/>
+	  <schema name="uid"/>
+	  <schema name="note"/>
+	  <schema name="dublincore"/>
+      <schema name="soacommon" />
+      <schema name="serviceref" />
+      <facet name="Commentable" />
+      <facet name="Versionable" />
+      <facet name="Indexable" />
+    </doctype>
+    
+    <doctype extends="Folder" name="Workspace">
+      <schema name="dublincore"/>
+      <schema name="soacommon" />
+      <schema name="feature" />
+      <schema name="appliimpldef"/>
+      <schema name="webcontainer"/>
+      <facet name="Folderish" />
+      <facet name="Commentable"/>
+      <subtypes>
+        <type>ServiceAPI</type>
+        <type>ServiceReference</type>
+      </subtypes>
+    </doctype>
+    
+    <!-- (Only used for virtual navigation) -->
+    <doctype name="QueryNav2" extends="Document">
+      <schema name="querynav2" />
+    </doctype>
+    
+  </extension>
+    
+</component>

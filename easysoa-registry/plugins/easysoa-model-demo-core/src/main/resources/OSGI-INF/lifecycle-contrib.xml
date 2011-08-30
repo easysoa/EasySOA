@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.core.contrib.lifecycle">
+
+	<extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
+		<types>
+		  <type name="Service">default</type>
+		</types>
+	</extension>
+	
+</component>

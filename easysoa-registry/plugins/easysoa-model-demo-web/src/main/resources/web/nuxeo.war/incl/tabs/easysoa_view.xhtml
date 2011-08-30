@@ -1,0 +1,60 @@
+<div class="summary" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- Empty cache (XXX: Doesn't work) -->
+	<h:outputText value="#{relationActions.resetStatements()}"
+		rendered="true" />
+
+	<c:if test="${currentDocument.hasSchema('soacommon')}">
+		<div style="float: left; width: 100%">
+			<!-- Notification icons -->
+			<div style="float: left; margin-top: 20px; margin-right: 50px">
+				<div style="float: left">
+					<ui:include src="easysoa_view_icon.xhtml">
+					  <ui:param name="image" value="dtBrowsing"/>
+					  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeBrowsing')}"/>
+					  <ui:param name="type" value="Browsing"/>
+					</ui:include>
+				</div>
+				<div style="float: left">
+					<ui:include src="easysoa_view_icon.xhtml">
+					  <ui:param name="image" value="dtMonitoring"/>
+					  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeMonitoring')}"/>
+					  <ui:param name="type" value="Monitoring"/>
+					</ui:include>
+				</div>
+				<div style="float: left">
+					<ui:include src="easysoa_view_icon.xhtml">
+					  <ui:param name="image" value="dtImport"/>
+					  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeImport')}"/>
+					  <ui:param name="type" value="Import"/>
+					</ui:include>
+				</div>
+			</div>
+
+			<!-- Call it button -->
+			<c:if test="${currentDocument.getType() == 'Service'}">
+				<div style="float: left; margin-top: 20px">
+					<c:choose>
+						<c:when
+							test="${currentDocument.getProperty('servicedef', 'lightUrl') != null}">
+							<a href="${currentDocument.getProperty('servicedef', 'lightUrl')}"
+								target="_blank"> <img src="img/callIt.png"
+								title="Call the service using EasySOA Light" alt="Call it!" />
+							</a>
+						</c:when>
+						<c:otherwise>
+							<img src="img/callItOff.png"
+								title="Call the service using EasySOA Light (unavailable for this service)"
+								alt="Call it! (Unavailable)" />
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</c:if>
+
+		</div>
+	</c:if>
+
+</div>

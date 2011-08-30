@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.component.notification">
+
+  <implementation class="org.easysoa.services.NotificationService" />
+
+  <service>
+    <provide interface="org.easysoa.services.NotificationService" />
+  </service>
+
+</component>

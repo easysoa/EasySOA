@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.component.vocabulary">
+
+  <implementation class="org.easysoa.services.VocabularyHelper" />
+
+  <service>
+    <provide interface="org.easysoa.services.VocabularyHelper" />
+  </service>
+  
+</component>

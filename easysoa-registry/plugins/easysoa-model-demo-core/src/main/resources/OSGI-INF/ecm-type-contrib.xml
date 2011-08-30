@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<component name="org.easysoa.core.contrib.ecmtypes">
+
+  <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewExtensionPoint/org.nuxeo.ecm.platform.types.TypeService--types</documentation>
+
+  <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
+    
+    <type id="Service" coretype="Service">
+      <label>Service</label>
+      <icon>/icons/text.png</icon>
+      <bigIcon>/icons/note_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>servicedef</layout>
+        <layout>file</layout>
+        <layout>soacommon_archi</layout>
+        <layout>soacommon_author</layout>
+      </layouts>
+    </type>
+    
+    <type id="ServiceAPI" coretype="ServiceAPI">
+      <label>Service API</label>
+      <icon>/icons/folder.gif</icon>
+      <bigIcon>/icons/folder_100.png</bigIcon>
+      <icon-expanded>/icons/folder_open.gif</icon-expanded>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>file</layout>
+        <layout>serviceapidef</layout>
+        <layout>soacommon_author</layout>
+      </layouts>
+      <subtypes>
+        <type>ServiceAPI</type>
+        <type>Service</type>
+      </subtypes>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+    </type>
+    
+    <type id="ServiceReference" coretype="ServiceReference">
+      <label>Service Ref.</label>
+      <icon>/icons/contextuallink.png</icon>
+      <bigIcon>/icons/contextuallink_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>serviceref</layout>
+        <layout>soacommon_archi</layout>
+        <layout>soacommon_author</layout>
+      </layouts>
+    </type>
+    
+    <type id="Workspace" coretype="Workspace">
+      <label>Application Impl.</label>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>appliimpldef</layout>
+        <layout>feature</layout>
+        <layout>soacommon_author</layout>
+      </layouts>
+      <layouts mode="edit">
+        <layout>heading</layout>
+        <layout>appliimpldef</layout>
+        <layout>feature</layout>
+        <layout>soacommon_author</layout>
+      </layouts>
+      <subtypes>
+        <type>ServiceAPI</type>
+        <type>ServiceReference</type>
+      </subtypes>
+    </type>
+    
+  </extension>
+  
+</component>

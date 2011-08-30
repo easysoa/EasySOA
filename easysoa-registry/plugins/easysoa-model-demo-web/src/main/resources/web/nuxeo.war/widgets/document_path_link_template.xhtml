@@ -1,0 +1,35 @@
+<f:subview xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:nxh="http://nuxeo.org/nxweb/html"
+  xmlns:c="http://java.sun.com/jstl/core"
+  id="#{widget.id}">
+
+  <div>
+  
+  	<c:set var="targetDocumentQuery" value="select * from Document where ecm:path = '${field}'"/>
+  	<nxu:methodResult name="targetDocument" value="#{documentManager.query(targetDocumentQuery).get(0)}">
+	  	<nxu:graphicImage
+	          value="#{nxd:iconPath(targetDocument)}" alt="#{targetDocument.type}">
+       </nxu:graphicImage>
+  		<!-- nxd:documentLink document="#{targetDocument}"
+  			title="#{nxd:titleOrId(targetDocument)}" / --><!-- "transaction failed ?!" -->
+  		
+  		<nxd:restDocumentLink document="#{targetDocument}" >
+  			<nxh:outputText value="#{nxd:titleOrId(targetDocument)}"/>
+  		</nxd:restDocumentLink>
+  		
+  	  <nxd:restDocumentLink document="#{targetDocument}"
+	    newConversation="true" target="_tab">
+	    <nxu:graphicImage value="/icons/external.gif"
+	      style="vertical-align:middle"
+	      alt="#{messages['permalink.newTab']}"
+	      title="#{messages['permalink.newTab']}" />
+	  </nxd:restDocumentLink>
+  	</nxu:methodResult>
+  	
+  </div>
+
+</f:subview>

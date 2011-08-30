@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<fragment version="1">
+
+  <require>org.nuxeo.ecm.webapp.core</require>
+  <require>org.nuxeo.ecm.platform.lang</require>
+
+  <!--  Enregistrement du module -->
+  <extension target="application#MODULE">
+    <module>
+      <ejb>${bundle.fileName}</ejb>
+    </module>
+  </extension>
+  
+  <install>
+  
+    <!--  Copie du contenu web -->
+    <unzip from="${bundle.fileName}" to="/" prefix="web">
+      <include>web/nuxeo.war/**</include>
+    </unzip>
+    
+    <unzip from="${bundle.fileName}" to="/">
+      <include>themes/**</include>
+      <exclude>collections/**</exclude>
+    </unzip>
+    
+    <!-- Copie des traductions -->
+    <delete path="nuxeo.war/easysoa-l10n.tmp"/>
+    <mkdir path="nuxeo.war/easysoa-l10n.tmp"/>
+    <unzip from="${bundle.fileName}" to="nuxeo.war/easysoa-l10n.tmp">
+      <include>**/*.properties</include>
+    </unzip>
+    <append 
+      from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages.properties"
+      to="nuxeo.war/WEB-INF/classes/messages.properties"
+      addNewLine="true"/>
+    <append 
+      from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages_fr.properties"
+      to="nuxeo.war/WEB-INF/classes/messages_fr.properties"
+      addNewLine="true"/>
+    <remove dir="nuxeo.war/easysoa-l10n.tmp" />
+    
+  </install>
+  
+  <!-- Pages spécifiques au nouveau mode de navigation virtuelle -->
+  <extension target="faces-config#NAVIGATION">
+    <navigation-case>
+      <from-outcome>application_virtual_navigation</from-outcome>
+      <to-view-id>/application_virtual_navigation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>location_virtual_navigation</from-outcome>
+      <to-view-id>/location_virtual_navigation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>feature_virtual_navigation</from-outcome>
+      <to-view-id>/feature_virtual_navigation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>sca_import_form</from-outcome>
+      <to-view-id>/sca_import_form.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </extension>
+  
+  <extension target="pages#PAGES">
+    <page view-id="/application_virtual_navigation.xhtml">
+      breadcrumb=label.virtualnavigation.application
+    </page>
+    <page view-id="/location_virtual_navigation.xhtml">
+      breadcrumb=label.virtualnavigation.location
+    </page>
+    <page view-id="/feature_virtual_navigation.xhtml">
+      breadcrumb=label.virtualnavigation.feature
+    </page>
+    <page view-id="/sca_import_form.xhtml">
+      breadcrumb=label.easysoa.import.link
+    </page>
+  </extension>
+  
+</fragment>

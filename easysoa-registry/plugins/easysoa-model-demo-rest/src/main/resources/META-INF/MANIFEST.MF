@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Built-By: mkalam-alami
+Bundle-Version: 0.0.1
+Bundle-Name: easysoa-model-demo-rest
+Bundle-SymbolicName: org.easysoa.demo.rest;singleton:=true
+Bundle-Vendor: EasySOA Consortium
+Export-Package: org.easysoa.demo.rest
+Eclipse-LazyStart: true
+Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
+Nuxeo-Require: org.easysoa.demo.core
+Nuxeo-Component: OSGI-INF/rights-contrib.xml

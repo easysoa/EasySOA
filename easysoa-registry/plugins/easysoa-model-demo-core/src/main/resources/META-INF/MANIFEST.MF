@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: mkalam-alami
+Build-Jdk: 1.6.0_24
+Bundle-ManifestVersion: 1
+Bundle-Version: 0.0.1
+Bundle-Name: easysoa-model-demo-core
+Bundle-SymbolicName: org.easysoa.demo.core;singleton:=true
+Bundle-Vendor: Open Wide
+Nuxeo-Require: org.nuxeo.ecm.core.api,
+ org.nuxeo.ecm.core,
+ org.nuxeo.ecm.core.schema,
+ org.nuxeo.ecm.directory.api
+Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
+ OSGI-INF/layout-contrib.xml,
+ OSGI-INF/ecm-type-contrib.xml,
+ OSGI-INF/nxdirectories-contrib.xml,
+ OSGI-INF/eventlistener-contrib.xml,
+ OSGI-INF/actions-contrib.xml,
+ OSGI-INF/lifecycle-contrib.xml,
+ OSGI-INF/DocumentServiceComponent.xml,
+ OSGI-INF/EasySOAInitComponent.xml,
+ OSGI-INF/VocabularyHelperComponent.xml,
+ OSGI-INF/NotificationServiceComponent.xml,
+ OSGI-INF/ImplementationRelationServiceComponent.xml

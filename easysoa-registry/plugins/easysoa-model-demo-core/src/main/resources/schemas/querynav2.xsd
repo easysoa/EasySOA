@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://project.nuxeo.org/easysoa/schemas/querynav2/"
+  xmlns:smp="http://project.nuxeo.org/easysoa/schemas/querynav2/">
+
+  <xs:element name="application" type="xs:string"/>
+  <xs:element name="location" type="xs:string"/>
+  <xs:element name="environment" type="xs:string"/>
+
+</xs:schema>

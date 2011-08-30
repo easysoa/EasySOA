@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.contrib.eventlistener">
+
+  <require>org.easysoa.core.component.init</require>
+
+  <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+  
+    <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+      <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries-->
+    </listener>
+    <listener name="serviceapilistener" class="org.easysoa.listeners.ServiceAPIListener" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+      <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries-->
+    </listener>
+    <listener name="servicelistener" class="org.easysoa.listeners.ServiceListener" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+    </listener>
+    <listener name="servicereferencelistener" class="org.easysoa.listeners.ServiceReferenceListener" order="120">
+      <event>documentCreated</event>
+      <event>beforeDocumentModification</event>
+    </listener>
+    
+  </extension>
+  
+</component>

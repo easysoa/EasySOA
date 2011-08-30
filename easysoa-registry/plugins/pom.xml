@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>nuxeo-features-parent</artifactId>
+		<groupId>org.nuxeo.ecm.platform</groupId>
+		<version>5.4.1</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.easysoa</groupId>
+	<artifactId>easysoa-model-demo</artifactId>
+	<name>EasySOA Model (Demo)</name>
+	<packaging>pom</packaging>
+	<version>0.1.2-SNAPSHOT</version>
+
+	<dependencies>
+		<!-- Testing with Nuxeo, see http://doc.nuxeo.com/display/CORG/Unit+Testing -->
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<modules>
+		<module>easysoa-model-demo-parent</module>
+		<module>easysoa-model-demo-core</module>
+		<module>easysoa-model-demo-web</module>
+		<module>easysoa-model-demo-rest</module>
+		<module>easysoa-model-demo-dashboard</module>
+	</modules>
+
+	<!-- ============= -->
+	<!-- Custom tasks -->
+	<!-- ============= -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<echo>Copying jars to the 'plugins/target' folder</echo>
+								<delete dir="target" />
+							  	<mkdir dir="target" />
+							  	<copy todir="target" flatten="true">
+								  	<fileset dir=".">
+								  		<filename name="*/target/*.jar" />
+								  		<exclude name="*/target/*-sources.jar" />
+								  	</fileset>
+							 	</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<!-- ============= -->
+	<!-- Repositories -->
+	<!-- ============= -->
+
+	<repositories>
+		<repository>
+			<id>Nuxeo</id>
+			<name>Nuxeo Public Releases Repository</name>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+</project>
