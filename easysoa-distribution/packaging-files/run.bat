@@ -14,7 +14,7 @@ cd ..\..
 
 rem dbbPproxy
 cd dbbProxy
-start "EasySOA Demo - Web Proxy" start-dbbProxy.bat > ..\log\dbbProxy.log 2>&1
+start "EasySOA Demo - Web Proxy" start-web-proxy.bat > ..\log\dbbProxy.log 2>&1
 cd ..
 
 rem esper
@@ -45,7 +45,7 @@ ping -n 8 127.0.0.1 > nul
 
 rem web
 cd web
-start "EasySOA Demo - Web" start-web.bat > ..\log\web.log 2>&1
+start "EasySOA Demo - Web" start-web-server.bat > ..\log\web.log 2>&1
 cd ..
 
 rem lightProxyPaf

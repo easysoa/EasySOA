@@ -17,8 +17,8 @@ dbbProxy()
 {
   touch log/dbbProxy.log
   cd dbbProxy
-  chmod +x ./start-dbbProxy.sh
-  ./start-dbbProxy.sh > ../log/dbbProxy.log 2>&1
+  chmod +x ./start-web-proxy.sh
+  ./start-web-proxy.sh > ../log/dbbProxy.log 2>&1
 }
 
 esperproxy()
@@ -47,8 +47,8 @@ web()
 {
   touch log/web.log
   cd web
-  chmod +x ./start-web.sh
-  ./start-web.sh > ../log/web.log 2>&1
+  chmod +x ./start-web-server.sh
+  ./start-web-server.sh > ../log/web.log 2>&1
 }
 
 pafservices()
