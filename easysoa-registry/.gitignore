@@ -1,9 +1,0 @@
-*.class
-*.project
-*.log
-.classpath
-.settings/
-target/
-bin/
-reports/
-nxsqldirectory/

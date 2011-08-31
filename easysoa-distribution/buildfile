@@ -199,19 +199,24 @@ task :packageall do # TODO Less messy code
   # Copy web services and proxies
   puts "Copying web services and proxies..."
   puts "  * Needed libraries..."
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps' # Conflicting with the Light trip proxy if put in lib/
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-intents/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps' # Conflicting with the Light trip proxy if put in lib/
+  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  
   puts "  * FraSCAti applications & PAF services..."
   cp_r FileList[project(EASYSOA_PAF).base_dir+'/distrib/*'], PACKAGING_OUTPUT_PATH
-  cp FileList[project(EASYSOA_PROXY).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/trip*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-service-ui-scaffolder-proxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(EASYSOA_PAF).base_dir+"/easysoa-samples-paf-restsoapproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  
   puts "  * Travel backup services..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'
   system 'unzip', '-q', '-o', FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+'/target/*-bin.zip'].to_s # XXX Linux/Cygwin-dependent
-  cp_r FileList['travel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
-  rm_rf FileList['travel-services-backup*']
+  cp_r FileList['easysoa-samples-smarttravel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
+  rm_rf FileList['easysoa-samples-smarttravel-services-backup*']
   
   # Copying Nuxeo
   puts "Copying service registry (Nuxeo)..."
@@ -221,20 +226,18 @@ task :packageall do # TODO Less messy code
     raise "Files copy failed: Nuxeo is probably running. Could you please stop it?"
   end
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
-  cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/lib/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib'
-  cp FileList[project('easysoa:easysoa-model-demo').base_dir+'/plugins/target/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/plugins' # TODO Check that bundles exist
-  cp_r FileList[project('easysoa:easysoa-model-demo').base_dir+'/examples/*'], PACKAGING_OUTPUT_PATH+'/examples'
-  rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/'
-  rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/'
-  rm_rf PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/'
+  cp FileList[project(EASYSOA_REGISTRY).base_dir+'/target/lib/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib'
+  cp FileList[project(EASYSOA_REGISTRY).base_dir+'/target/plugins/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/plugins' # TODO Check that bundles exist
+  cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
+  rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
   
   puts "Copying web server (node.js + antinode)..."
   mkdir PACKAGING_OUTPUT_PATH+'/web'
-  cp_r FileList[project(EASYSOA_WEB).base_dir+"/easysoa-web-server"], PACKAGING_OUTPUT_PATH+'/web'
+  cp_r FileList[project(EASYSOA_WEB).base_dir+"/easysoa-web-server/*"], PACKAGING_OUTPUT_PATH+'/web'
   
   puts "Copying discovery by browsing proxy (node.js)..."
   mkdir PACKAGING_OUTPUT_PATH+'/dbbProxy'
-  cp_r FileList[project(EASYSOA_WEB).base_dir+"/easysoa-web-proxy"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
+  cp_r FileList[project(EASYSOA_WEB).base_dir+"/easysoa-web-proxy/*"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
