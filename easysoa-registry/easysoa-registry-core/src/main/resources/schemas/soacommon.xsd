@@ -20,7 +20,4 @@
   <!-- local name in archi -->
   <xs:element name="archiLocalName" type="xs:string" />
   
-  <!-- The URL of a file to download and store in file:content (used for notifications only)-->
-  <xs:element name="fileUrl" type="xs:string" />
-  
 </xs:schema>
