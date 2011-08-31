@@ -34,9 +34,9 @@
 
     <distributionManagement>
         <repository>
-            <id>inria-galaxy-repository</id>
-            <name>INRIA Galaxy Maven repository</name>
-            <url>scp://scm.gforge.inria.fr/home/groups/galaxy/htdocs/repository/maven2/</url>
+            <id>easysoa</id>
+            <name>EasySOA Maven repository</name>
+            <url>TODO</url>
         </repository>
     </distributionManagement>
     
