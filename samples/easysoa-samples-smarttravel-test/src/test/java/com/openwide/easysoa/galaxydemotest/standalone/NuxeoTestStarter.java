@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.easysoa.test.EasySOAServerFeature;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -65,9 +66,10 @@ public class NuxeoTestStarter {
 			DocumentModel doc = iter.next();
 			logger.debug("Doc name : " + doc.getName());
 		}
-		assertEquals(resDocList.size(), 3);			
-		logger.debug("Nuxeo started, wait for user action to stop !");
-		// Just push a key in the console window to stop the test
-		System.in.read();
+		assertEquals(resDocList.size(), 3);
+        // Just push a key in the console window to stop the test
+		// (commented to allow to run automatic tests)
+		//logger.debug("Nuxeo started, wait for user action to stop !");
+		//System.in.read();
 	}	
 }
