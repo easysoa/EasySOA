@@ -2,12 +2,6 @@ package pureairflowers.clients;
 
 import javax.xml.ws.Endpoint;
 
-import org.apache.cxf.Bus;
-import org.apache.cxf.bus.spring.SpringBusFactory;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
-
 public class PureAirFlowersServer {
 
     protected PureAirFlowersServer() throws Exception {

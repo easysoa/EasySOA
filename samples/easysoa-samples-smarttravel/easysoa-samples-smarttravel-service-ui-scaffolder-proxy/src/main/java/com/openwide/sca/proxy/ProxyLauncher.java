@@ -1,13 +1,9 @@
 package com.openwide.sca.proxy;
 
-import java.util.Map;
-
-import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.assembly.factory.Launcher;
 
 public class ProxyLauncher {
 
-	private Map<String, String> systemProperties;
+	//private Map<String, String> systemProperties;
 
 	/**
 	 * @param args
@@ -32,8 +28,8 @@ public class ProxyLauncher {
 	    //}  
 		try{
 			System.out.println("Frascati is starting...");
-			FraSCAti frascati = FraSCAti.newFraSCAti();
-			Launcher launcher = new Launcher(composite, frascati);
+			//FraSCAti frascati = FraSCAti.newFraSCAti();
+			//Launcher launcher = new Launcher(composite, frascati);
 			//launcher.launch();
 		    System.out.println("FraSCAti is running in a server mode...");
 		    System.out.println("Press Ctrl+C to quit...");

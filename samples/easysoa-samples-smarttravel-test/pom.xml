@@ -60,26 +60,26 @@
 		</dependency>
 		<dependency>
 			<groupId>org.easysoa</groupId>
-			<artifactId>easysoa-model-demo-core</artifactId>
-			<version>0.1.2-SNAPSHOT</version>
+			<artifactId>easysoa-registry-core</artifactId>
+			<version>0.1.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.easysoa</groupId>
-			<artifactId>easysoa-model-demo-rest</artifactId>
-			<version>0.1.2-SNAPSHOT</version>
+			<artifactId>easysoa-registry-rest</artifactId>
+			<version>0.1.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.openwide.easysoa</groupId>
-			<artifactId>esperfrascatipoc</artifactId>
+			<groupId>org.openwide.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>fr.inria.galaxy.j1</groupId>
-			<artifactId>trip</artifactId>
+			<artifactId>easysoa-samples-smarttravel-trip</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>test</scope>
