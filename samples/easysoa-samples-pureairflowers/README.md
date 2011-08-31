@@ -35,13 +35,3 @@ Launch `distrib/pafServices/start-pafServices.sh` then `distrib/frascati/start-l
 The CXF server exposes a SOAP web service available at "http://localhost:9010/PureAirFlowers?wsdl". The proxy talks with the cxf server and expose a rest service at "http://localhost:7001/". The CXF server must be launched before the Frascati proxy.
 
 Check the readmes for each project to get more details on installation and execution instructions.
-
-## About the sources
-
-The code is split into 3 main projects and 2 optional projects :
-
- * `pureAirFlowers`: The SOAP CXF server.
- * `serviceUiScaffolder`: The WSDL2HTML xslt transformation project.
- * `frascatiProxy/proxy`: The ServiceUiScaffolder proxy project.
- * `frascatiProxy/autoRearmFuseIntent` (optional): The autorearm intent project.
- * `frascatiProxy/logIntent` (optional): The log intent project.
