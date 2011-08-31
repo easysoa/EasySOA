@@ -65,13 +65,14 @@
 			<artifactId>esper</artifactId>
 			<version>4.2.0</version>
 		</dependency>
-
+		<!-- java rest webservices -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<dependency><!-- for obsolete code -->
+		<!-- for obsolete code in NuxeoRegistrationService -->
+		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>1.8-ea02</version>
@@ -96,7 +97,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>4.8.2</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -110,8 +111,16 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
-				<version>2.3.2</version>
 			</plugin>
+      		<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-surefire-plugin</artifactId>
+        		<configuration>
+          			<excludes>
+            			<exclude>**/PartiallyMockedHttpDiscoveryProxyTest.java</exclude>
+          			</excludes>
+        		</configuration>
+      		</plugin>				
 		</plugins>
 	</build>
 
@@ -141,7 +150,7 @@
 							<!--<service>${service.name}</service> -->
 							<!--<method>${method.name}</method> -->
 							<!--<methodParams>${method.params}</methodParams> -->
-							<composite>httpProxy</composite>
+							<composite>src/main/resources/httpDiscoveryProxy</composite>
 							<!-- useFscript>true</useFscript -->
 							<useFscript>false</useFscript>
 						</configuration>
@@ -155,6 +164,29 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+	    	<id>night-test</id>
+	      	<build>
+	        	<plugins>
+	          		<plugin>
+	            		<artifactId>maven-surefire-plugin</artifactId>
+	            		<executions>
+	              			<execution>
+	                			<id>surefire-night-test</id>
+	                			<phase>integration-test</phase>
+	                			<goals>
+	                  				<goal>test</goal>
+	                			</goals>
+	                			<configuration>
+	                  				<excludes>
+		                    			<exclude>none</exclude>
+		                  			</excludes>
+	    	            		</configuration>
+	        	      		</execution>
+	            		</executions>
+	          		</plugin>
+	        	</plugins>
+	      	</build>			
+		</profile>		
 	</profiles>
-
 </project>

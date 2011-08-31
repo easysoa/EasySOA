@@ -40,7 +40,7 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
  * @author jguillemotte
  *
  */
-public class PartiallyHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
+public class PartiallyMockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Logger
