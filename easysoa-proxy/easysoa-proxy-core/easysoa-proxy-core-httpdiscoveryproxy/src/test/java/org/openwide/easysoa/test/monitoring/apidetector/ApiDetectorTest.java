@@ -1,20 +1,13 @@
 package org.openwide.easysoa.test.monitoring.apidetector;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+
 import junit.framework.TestCase;
+
 import org.apache.log4j.Logger;
 import org.junit.Assume;
 
-import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.Message.MessageType;
-//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
-import com.openwide.easysoa.monitoring.apidetector.UrlTree;
-import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
-import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
-import com.openwide.easysoa.run.RunManagerImpl;
 import com.sun.jersey.api.client.ClientHandlerException;
 
 /**
@@ -116,8 +109,8 @@ public class ApiDetectorTest extends TestCase {
 					urlString = iter.next();
 					logger.debug("**** New URL :" + urlString);
 					try{
-						URL url = new URL(urlString);
-						Message msg = new Message(url, MessageType.REST);
+						//URL url = new URL(urlString);
+						//Message msg = new Message(url, MessageType.REST);
 						// listen message
 						// Not a singleton ...
 						//DiscoveryMonitoringService.getMonitorService().listen(msg);
@@ -159,7 +152,8 @@ public class ApiDetectorTest extends TestCase {
 		// debug / print them only in discovery mode :
 		// Not a singleton ...
 		//UrlTree urlTree = DiscoveryMonitoringService.getMonitorService().getUrlTree();
-		UrlTree urlTree = null;
+	    
+	    /*//UrlTree urlTree = null;
 		if(urlTree != null){
 			logger.debug("Printing tree node index ***");
 			logger.debug("Total url count : " + urlTree.getTotalUrlCount());
@@ -179,7 +173,7 @@ public class ApiDetectorTest extends TestCase {
 					logger.debug(", ratioPartial => " + node.getRatioPartial(urlTree) + "%, ratioComplete => " + node.getRatioComplete(urlTree) + "%" + ", Ratio childs => " + node.getRatioChilds() + "%" + ", Ratio childs to ancestor => " + node.getRatioChildsToAncestor() + "%");
 				}
 			}
-		}
+		}*/
 	}
 
 }

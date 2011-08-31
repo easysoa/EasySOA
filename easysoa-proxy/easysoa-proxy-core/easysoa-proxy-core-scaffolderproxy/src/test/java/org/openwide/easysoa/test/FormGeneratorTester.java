@@ -1,8 +1,9 @@
 package org.openwide.easysoa.test;
 
-import static org.junit.Assert.*;
-
+import java.io.IOException;
 import java.net.URL;
+
+import javax.xml.soap.SOAPException;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;

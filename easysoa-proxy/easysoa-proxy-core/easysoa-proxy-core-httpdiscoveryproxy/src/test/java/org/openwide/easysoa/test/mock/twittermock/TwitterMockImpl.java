@@ -1,10 +1,5 @@
 package org.openwide.easysoa.test.mock.twittermock;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-
 import org.openwide.easysoa.test.Utilities;
 
 /**

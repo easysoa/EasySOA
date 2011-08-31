@@ -156,7 +156,7 @@ public class DefaultUrlTree implements Serializable, UrlTreeModel {
 
 	// Serialization support.
 	private void writeObject(ObjectOutputStream s) throws IOException {
-		Vector values = new Vector();
+		Vector<Object> values = new Vector<Object>();
 
 		s.defaultWriteObject();
 		// Save the root, if its Serializable.
@@ -171,7 +171,8 @@ public class DefaultUrlTree implements Serializable, UrlTreeModel {
 			ClassNotFoundException {
 		s.defaultReadObject();
 
-		Vector values = (Vector) s.readObject();
+		@SuppressWarnings("unchecked")
+        Vector<Object> values = (Vector<Object>) s.readObject();
 		int indexCounter = 0;
 		int maxCounter = values.size();
 

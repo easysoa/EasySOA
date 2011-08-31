@@ -2,10 +2,9 @@ package com.openwide.easysoa.monitoring;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
+
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Scope;
-
-import com.openwide.easysoa.run.RunManager;
 
 /**
  * Monitoring service for Validated mode

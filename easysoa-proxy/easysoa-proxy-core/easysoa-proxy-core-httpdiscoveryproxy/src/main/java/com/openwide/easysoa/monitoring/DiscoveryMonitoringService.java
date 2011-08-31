@@ -9,7 +9,6 @@ import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
-import com.openwide.easysoa.run.RunManager;
 
 /**
  * Monitoring service for Discovery mode

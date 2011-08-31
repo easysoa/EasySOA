@@ -10,7 +10,8 @@ public class NuxeoMockImpl implements NuxeoMock {
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(NuxeoMockImpl.class.getName());
+	@SuppressWarnings("unused")
+    private static Logger logger = Logger.getLogger(NuxeoMockImpl.class.getName());
 	
 	@Override
 	public String processNotificationRequest(String type) {

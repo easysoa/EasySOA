@@ -1,10 +1,13 @@
 package org.openwide.easysoa.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.xml.soap.SOAPException;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;

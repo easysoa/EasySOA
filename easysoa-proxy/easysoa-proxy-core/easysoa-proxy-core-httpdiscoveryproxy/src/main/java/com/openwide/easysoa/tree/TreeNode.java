@@ -36,5 +36,5 @@ public interface TreeNode {
     /**
      * 
      */
-    Enumeration children();
+    Enumeration<?> children();
 }

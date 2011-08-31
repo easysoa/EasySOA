@@ -1,22 +1,11 @@
 package com.openwide.easysoa.esper;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
-import com.espertech.esper.event.bean.BeanEventBean;
-import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
-import com.openwide.easysoa.monitoring.Message.MessageType;
-import com.openwide.easysoa.monitoring.soa.Node;
-import com.openwide.easysoa.monitoring.soa.Service;
-import com.openwide.easysoa.monitoring.soa.WSDLService;
-import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 
 /**
@@ -51,8 +40,10 @@ public class AggregatedMessageListener implements UpdateListener {
 	public void update(EventBean newData) {
 		logger.debug("[AggregatedMessageListener] --- Event received: " + newData.getUnderlying());
 		logger.debug("[AggregatedMessageListener] --- " + newData.getUnderlying().getClass().getName());
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		HashMap<String, Object> aggregatedProps = (HashMap) (newData.getUnderlying());
+		//NuxeoRegistrationService nrs = new NuxeoRegistrationService();
+		
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> aggregatedProps = (HashMap<String, Object>) (newData.getUnderlying());
 		for(String property : aggregatedProps.keySet()){
 			logger.debug("Property : " + property);
 			logger.debug("Value : " + aggregatedProps.get(property));
@@ -75,8 +66,8 @@ public class AggregatedMessageListener implements UpdateListener {
 		MessageType messageType = (MessageType) aggregatedProps.get("messageType");
 		 */
 		//if(MessageType.WSDL.compareTo(messageType) == 0){
-			WSDLService service;
-			URL url;
+		/*	WSDLService service;
+			URL url;*/
 			/*try {
 				String servicePath = (String) aggregatedProps.get("url");
 				if(servicePath.startsWith("/")){

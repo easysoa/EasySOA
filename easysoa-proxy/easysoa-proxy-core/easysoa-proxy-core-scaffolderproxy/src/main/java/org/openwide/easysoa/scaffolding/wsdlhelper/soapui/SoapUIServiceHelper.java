@@ -67,7 +67,7 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 		// generate the xml request schema and map the parameter values		
 		request.setRequestContent(mapInputParams(operation.createRequest(true), paramList));
 		// submit the request
-		WsdlSubmit wsdlSubmit = (WsdlSubmit) request.submit(new WsdlSubmitContext(request), false);
+		WsdlSubmit<?> wsdlSubmit = (WsdlSubmit<?>) request.submit(new WsdlSubmitContext(request), false);
 		// Send the request and wait for the response
 		WsdlResponse wsdlResponse = (WsdlResponse) wsdlSubmit.getResponse();
 		System.out.println("Submit status : " + wsdlSubmit.getStatus());

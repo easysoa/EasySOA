@@ -1,11 +1,11 @@
 package com.openwide.easysoa.proxy;
 
 import javax.ws.rs.core.UriInfo;
+
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.monitoring.MonitoringService;
 import com.openwide.easysoa.run.RunManager;
 
 /**

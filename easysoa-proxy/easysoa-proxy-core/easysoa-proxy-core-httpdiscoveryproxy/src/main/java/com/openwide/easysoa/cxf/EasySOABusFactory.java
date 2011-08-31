@@ -71,7 +71,11 @@ public class EasySOABusFactory extends SpringBusFactory {
         
         initializeBus(bus);        
         
-        registerApplicationContextLifeCycleListener(bus, bac);
+        BusLifeCycleManager lm = bus.getExtension(BusLifeCycleManager.class);
+        if (null != lm) {
+            lm.registerLifeCycleListener(new BusApplicationContextLifeCycleListener(bac));
+        }
+        
         return bus;
     }  
 
@@ -140,18 +144,6 @@ public class EasySOABusFactory extends SpringBusFactory {
             }
         }
     }
-
-    /**
-     * Package private in extended class, so has to be rewritten
-     * @author jguillemotte
-     *
-     */
-    protected void registerApplicationContextLifeCycleListener(Bus bus, BusApplicationContext bac) {
-        BusLifeCycleManager lm = bus.getExtension(BusLifeCycleManager.class);
-        if (null != lm) {
-            lm.registerLifeCycleListener(new BusApplicationContextLifeCycleListener(bac));
-        }
-    } 
 
     /**
      * Package private in extended class, so has to be rewritten

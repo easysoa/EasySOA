@@ -1,6 +1,5 @@
 package com.openwide.easysoa.monitoring;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
@@ -69,7 +68,7 @@ public class SoapMessageHandler implements MessageHandler {
 		try{
 			DefaultHttpClient httpClient = new DefaultHttpClient(); 
 	    	HttpGet httpGet = new HttpGet(url + "?wsdl");
-	    	HttpResponse resp = httpClient.execute(httpGet);			
+	    	httpClient.execute(httpGet);			
 			//TODO Maybe good to improve the check of WSDL
 	    	logger.debug("WSDL found !");
 			result = true;

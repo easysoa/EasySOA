@@ -19,7 +19,8 @@ import com.openwide.easysoa.monitoring.soa.Service;
  */
 public class SoaNodesJsonMapper implements JsonMapper {
 	
-	private static Logger logger = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
+	@SuppressWarnings("unused")
+    private static Logger logger = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
 	@Override
 	public Object mapTo(JSONObject child) throws JSONException {

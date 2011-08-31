@@ -7,11 +7,13 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.HashMap;
+
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
 import org.apache.http.client.HttpResponseException;
@@ -33,7 +35,6 @@ import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.MonitoringService;
 import com.openwide.easysoa.run.RunManager;
 
 /**
