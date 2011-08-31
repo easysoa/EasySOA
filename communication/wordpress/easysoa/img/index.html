@@ -1,0 +1,115 @@
+<html>
+
+<head>
+  <script src="dropdown/dropdown.js" type="text/javascript"></script>
+  <style type="text/css">
+  <!--
+  
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body { background-color: #DCF1FA; font-family: Verdana, Arial, sans-serif; font-size: 14px; color: #023; }
+  h1 { background-color: #555; color: #FFF; font-size: 16px; padding: 5px }
+  a { text-decoration: none; color: #145; }
+  
+  #top { font-size: 13px; width: 100%; height: 68px; background: url('menuTopBg.png'); overflow: hidden; }
+  #top .link { font-size: 13px; float: left; color: #123; background-color: #7D6; margin-top: 18px; padding-top: 6px; padding-left: 20px;
+    padding-right: 20px; text-align: center; height: 24px; display: block; border: 1px solid #496; margin-left: -1px; }
+  #top .link:hover { background-color: #8E5; }
+  #topLogo { float: right; text-align: right; padding-top: 10px; margin-right: 30px; }
+  #topLinks { float: right; width: 55%; min-width: 500px; }
+  
+  #bottom { width: 100%; height: 250px; border-top: 2px solid #555; }
+  #bottomContent { margin: auto; width: 900px; }
+  #bottomContent ul { list-style-type: none; float: left; width: 250px; height: 150px; border-left: 1px solid #555; margin: 15px; }
+  #bottomContent ul:first-child { border: 0; }
+  #bottomContent li { margin: 15px; margin-bottom: 0; }
+  #bottomContent li:first-child { margin-top: 0; }
+  #bottomContent div a { width: 100%; display: block }
+  
+  #center { background: url('contentBg.png') #A4D3DA; background-repeat: repeat-x; min-height: 500px;  }
+  #content { min-width: 600px; max-width: 930px; margin: auto; }
+  #left { width: 63%; background-color: #FFF; min-height: 470px; border: 1px solid #666; border-top: 0; float: left;
+    border-bottom-left-radius: 20px; -moz-border-bottom-left-radius: 20px; -webkit-border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px; -moz-border-bottom-right-radius: 20px; -webkit-border-bottom-right-radius: 20px;  } 
+  #right { width: 35%; background-color: #FFF; min-height: 470px; border: 1px solid #666; border-top: 0; float: left; margin-left: 10px;
+    border-bottom-left-radius: 20px; -moz-border-bottom-left-radius: 20px; -webkit-border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px; -moz-border-bottom-right-radius: 20px; -webkit-border-bottom-right-radius: 20px; }
+  
+  .dropdown { float:left; margin-top: 18px; }
+  .dropdown dt { color: #123; background-color: #7D6; padding-top: 6px; padding-left: 20px; padding-right: 20px; height: 24px; cursor:pointer; border: 1px solid #496; margin-left: -1px; }
+  .dropdown dt:hover { background-color: #8E5; }
+  .dropdown dd { position:absolute; overflow:hidden; width:208px; display:none; background:#fff; z-index:200; opacity:0; background-color: #F5F5FF; margin-top: 5px;}
+  .dropdown ul { width:204px; border:1px solid #9ac1c9; list-style:none; }
+  .dropdown li { display:inline }
+  .dropdown a, .dropdown a:active, .dropdown a:visited {display:block; padding:5px; color: #145; text-decoration:none; background:#eaf0f2; width:194px}
+  .dropdown a:hover {background:#d9e1e4; color:#000}
+  .dropdown .underline {border-bottom:1px solid #b9d6dc}
+  
+  -->
+  </style>
+</head>
+
+<body>
+  <div id="top">
+    <div id="topLinks">
+     <dl class="dropdown">
+        <dt onmouseout="ddMenu('one',-1)" onmouseover="ddMenu('one',1)" id="one-ddheader">About</dt>
+        <dd onmouseout="ddMenu('one',-1)" onmouseover="cancelHide('one')" id="one-ddcontent" style="display: block; height: 4px; opacity: 0.0294118;">
+          <ul>
+            <li><a class="underline" href="#">Features</a></li>
+            <li><a class="underline" href="#">EasySOA Consortium</a></li>
+            <li><a class="underline" href="#">About the project</a></li>
+          </ul>
+        </dd>
+      </dl>
+      <a class="link" href="#">Download</a>
+      <dl class="dropdown">
+          <dt onmouseout="ddMenu('two',-1)" onmouseover="ddMenu('two',1)" id="two-ddheader">Documentation</dt>
+          <dd onmouseout="ddMenu('two',-1)" onmouseover="cancelHide('two')" id="two-ddcontent" style="display: block; height: 4px; opacity: 0.0294118;">
+            <ul>
+              <li><a class="underline" href="#">Quickstart</a></li>
+              <li><a class="underline" href="#">Wiki on Github</a></li>
+            </ul>
+          </dd>
+      </dl>
+      <a class="link" href="#">Blog</a>
+    </div>
+    <div id="topLogo">
+      <img src="EasySOA-50px.png" />
+    </div>
+  </div>
+  <div id="center">
+    <div id="content">
+      <div id="left">
+       <h1>Why EasySOA?</h1>
+     </div>
+      <div id="right">
+       <h1>News</h1>
+       </div>
+    </div>
+  </div>
+  <div id="bottom">
+    <div id="bottomContent">
+      <ul>
+        <li><b>EasySOA</b> is blablabla</li>
+        <li>Contact us at: easysoa@easysoa.org</li>
+      </ul>
+      <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+        <li><a href="#">Link 4</a></li>
+        <li><a href="#">Link 5</a></li>
+      </ul>
+      <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+
+</html>
