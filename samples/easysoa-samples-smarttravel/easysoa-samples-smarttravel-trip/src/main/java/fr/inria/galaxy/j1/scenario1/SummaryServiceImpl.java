@@ -19,10 +19,10 @@ public class SummaryServiceImpl implements ISummaryService {
 
 		boolean sunOK = meteo.contains("sun") | meteo.contains("clear");
 
-		// Ne connaissant pas le seuil du taux de change pour être considéré
+		// Ne connaissant pas le seuil du taux de change pour Ãªtre considÃ©rÃ©
 		// comme OK.
 		// On deduit si le taux de change est OK en fonction des phrases de
-		// réponses
+		// rÃ©ponses
 		String[] cheapSentences = { 
 				"Go to the altitude terrace restaurant and eating a fondue", 
 				"Eat a fondue in a chalet.",
@@ -31,7 +31,7 @@ public class SummaryServiceImpl implements ISummaryService {
 				"Go to the restaurant at the Museum",
 				"Go eat at MC Donald",
 				
-				"Aller au restaurant du Musée",
+				"Aller au restaurant du MusÃ©e",
 				"Aller manger au Mc Donald",
 				"Aller manger des coquillages de mer au restaurant de la plage",
 				"Aller manger des coquillages de mer au restaurant du Casino",

@@ -154,12 +154,12 @@
     <!-- Intents -->
     <dependency>
     	<groupId>org.openwide.easysoa.intents</groupId>
-    	<artifactId>easysoa-intent-fuseintent</artifactId>
+    	<artifactId>easysoa-proxy-intents-fuseintent</artifactId>
     	<version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.openwide.easysoa.intents</groupId>
-    	<artifactId>easysoa-intent-logintent</artifactId>
+    	<artifactId>easysoa-proxy-intents-logintent</artifactId>
     	<version>1.0-SNAPSHOT</version>
     </dependency>    
     <dependency>
