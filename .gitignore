@@ -1,9 +1,16 @@
 *.class
 *.project
 *.log
+*.swp
+*.tar.gz
+.DS_Store
+.tmp*~
 .classpath
 .settings/
 target/
 bin/
 reports/
 distrib/
+easysoa-distribution/easysoa/
+easysoa-distribution/deps/
+nxsqldirectory/
