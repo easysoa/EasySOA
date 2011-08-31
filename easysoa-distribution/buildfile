@@ -16,12 +16,10 @@ NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo
 NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || Buildr.settings.build['node']['path'] || ENV['HOME']+'/node'
 FRASCATI_PATH = (Buildr.settings.user['frascati'] != nil ? Buildr.settings.user['frascati']['path'] : nil) || Buildr.settings.build['frascati']['path'] || './deps/frascati'
 
-THIS_VERSION = (Buildr.settings.user['release'] != nil ? Buildr.settings.user['release']['version'] : nil) || Buildr.settings.build['release']['version']
-MODEL_VERSION = (Buildr.settings.user['model'] != nil ? Buildr.settings.user['model']['version'] : nil) || Buildr.settings.build['model']['version']
-PAF_VERSION = (Buildr.settings.user['paf'] != nil ? Buildr.settings.user['paf']['version'] : nil) || Buildr.settings.build['paf']['version']
+RELEASE_VERSION = (Buildr.settings.user['release'] != nil ? Buildr.settings.user['release']['version'] : nil) || Buildr.settings.build['release']['version']
 
 PACKAGING_OUTPUT_PATH = 'easysoa'
-PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+THIS_VERSION+'.tar.gz';
+PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+RELEASE_VERSION+'.tar.gz';
 
 # Generated
 NUXEO_PLUGINS_PATH = NUXEO_PATH+'/nxserver/plugins/'
@@ -59,7 +57,6 @@ define 'easysoa', :base_dir => '../' do
   desc 'Service registry project'
   define 'easysoa-registry' do
     
-      project.version = MODEL_VERSION
       task :mvn do
         maven(['clean', 'install'], project)
       end

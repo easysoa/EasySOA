@@ -144,12 +144,12 @@
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
-	  <version>1.4-SNAPSHOT</version>      
+	  <version>1.4</version>      
     </dependency>
     <dependency>
     	<groupId>org.ow2.frascati</groupId>
     	<artifactId>frascati-binding-rest</artifactId>
-    	<version>1.4-SNAPSHOT</version>
+    	<version>1.4</version>
     </dependency>
     <!-- Intents -->
     <dependency>
@@ -170,7 +170,7 @@
     <dependency>
     	<groupId>org.ow2.frascati</groupId>
     	<artifactId>frascati-assembly-factory</artifactId>
-    	<version>1.4-SNAPSHOT</version>
+    	<version>1.4</version>
     </dependency>
     <dependency>
     	<groupId>org.ow2.frascati</groupId>
