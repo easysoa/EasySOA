@@ -71,15 +71,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.openwide.easysoa</groupId>
-			<artifactId>esperfrascatipoc</artifactId>
+			<groupId>org.openwide.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>fr.inria.galaxy.j1</groupId>
-			<artifactId>trip</artifactId>
+			<artifactId>easysoa-samples-smarttravel-trip</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>test</scope>
