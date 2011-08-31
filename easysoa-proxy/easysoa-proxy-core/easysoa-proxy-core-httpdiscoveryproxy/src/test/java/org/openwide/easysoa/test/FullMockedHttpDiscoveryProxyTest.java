@@ -40,12 +40,12 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
  * @author jguillemotte
  *
  */
-public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
+public class FullMockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(MockedHttpDiscoveryProxyTest.class.getName());    
+	private static Logger logger = Logger.getLogger(FullMockedHttpDiscoveryProxyTest.class.getName());    
     
 	/**
 	 * Initialize one time the remote systems for the test
@@ -57,13 +57,14 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 	public final static void setUp() throws FrascatiException, InterruptedException, JSONException {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   // Clean Nuxeo registery
-	   cleanNuxeoRegistery();
+	   // Mocked so don't need to clean
+	   //cleanNuxeoRegistery();
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
 	   startHttpDiscoveryProxy();
 	   // Start services mock
-	   startMockServices();
+	   startMockServices(true);
     }
 	
     /**
@@ -95,9 +96,11 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
     
     /**
      * Test the clean registry Nuxeo feature to be sure that Nuxeo is empty before to launch the tests
+     * Not needed in full mocked mode
      * @throws JSONException
      */
     @Test
+    @Ignore
     public final void testCleanNuxeoRegistery() throws JSONException{
     	String nuxeoResponse = cleanNuxeoRegistery();
     	assertEquals("{\n  \"entity-type\": \"documents\",\n  \"entries\": []\n}", nuxeoResponse);
@@ -167,7 +170,7 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		
 		// Wait for the proxy register the discovered services in Nuxeo
 		logger.info("Wait for the proxy finish to register services ...");
-		Thread.sleep(5000);
+		//Thread.sleep(5000);
 		
 		// Check discovery results
 		// Send a request to Nuxeo to check that services are well registered
@@ -186,7 +189,8 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));			
 
 		// Delete the registered stuff in Nuxeo, then re-run the recorded Twitter test run
-		cleanNuxeoRegistery();
+		// Nuxeo mocked : no need to clean
+		//cleanNuxeoRegistery();
 		
 		//Re-run
 		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/reRun/RESTDiscoveryTestRun"), responseHandler);
@@ -287,7 +291,7 @@ public class MockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		logger.info("stop run : " + resp);		
 		
 		logger.info("Wait for the proxy finish to register WSDL service ...");
-		Thread.sleep(1000);		
+		//Thread.sleep(1000);		
 		logger.info("Check that registration is correct in Nuxeo");
 		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:primaryType = 'Service' AND dc:title = 'meteo'";
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();

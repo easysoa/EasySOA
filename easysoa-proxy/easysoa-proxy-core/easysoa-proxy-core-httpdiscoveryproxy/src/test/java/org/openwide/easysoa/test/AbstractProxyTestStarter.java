@@ -57,13 +57,18 @@ public abstract class AbstractProxyTestStarter {
 	}
 	
 	/**
-	 * Start the services mock for tests
-	 * @throws FrascatiException
+	 * Start the services mock for tests (Meteo mock, twitter mock ...)
+	 * @param withNuxeoMock If true, the Nuxeo mock is started
+	 * @throws FrascatiException if a problem occurs during the start of composites
 	 */
-	protected static void startMockServices() throws FrascatiException {
+	protected static void startMockServices(boolean withNuxeoMock) throws FrascatiException {
 		logger.info("Services Mock Starting");
 		frascati.processComposite("src/test/resources/twitterMockRest.composite", new ProcessingContextImpl());
 		frascati.processComposite("src/test/resources/meteoMockSoap.composite", new ProcessingContextImpl());
+		// start Nuxeo mock
+		if(withNuxeoMock){
+			frascati.processComposite("src/test/resources/nuxeoMockRest.composite", new ProcessingContextImpl());
+		}
 	}
  
 	/**
