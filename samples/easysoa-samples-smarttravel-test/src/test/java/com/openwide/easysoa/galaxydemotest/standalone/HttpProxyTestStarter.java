@@ -1,10 +1,9 @@
 package com.openwide.easysoa.galaxydemotest.standalone;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 import java.net.URL;
+
+import javax.xml.soap.SOAPException;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;

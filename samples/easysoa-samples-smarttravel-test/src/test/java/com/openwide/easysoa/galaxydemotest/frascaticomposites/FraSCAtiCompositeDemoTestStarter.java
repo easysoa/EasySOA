@@ -1,13 +1,11 @@
 package com.openwide.easysoa.galaxydemotest.frascaticomposites;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
@@ -17,23 +15,13 @@ import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.After;
-import org.junit.runner.RunWith;
-import org.nuxeo.ecm.core.test.annotations.BackendType;
-import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.services.resource.ResourceService;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
-import com.google.inject.Inject;
 
 /**
  * Unit test for Galaxy Demo. Nuxeo and Frascati not launched in an OSGI container.
