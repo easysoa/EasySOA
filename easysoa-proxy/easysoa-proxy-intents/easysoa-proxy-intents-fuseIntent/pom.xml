@@ -12,13 +12,13 @@
 		<groupId>org.openwide.easysoa.proxy</groupId>
 		<artifactId>easysoa-proxy-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
+		<relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>		
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>aopalliance</groupId>
@@ -30,15 +30,21 @@
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		<!-- Version 1.5-SNAPSHOT not found ... -->
 		<dependency>
 			<groupId>org.ow2.frascati.tinfi</groupId>
-			<artifactId>frascati-tinfi-runtime</artifactId>
+			<artifactId>frascati-tinfi-runtime-api</artifactId>
 			<version>1.4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati.tinfi</groupId>
 			<artifactId>frascati-tinfi-oo</artifactId>
 			<version>1.4.4</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
 		</dependency>
 	</dependencies>
 

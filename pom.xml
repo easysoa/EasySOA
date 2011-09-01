@@ -18,7 +18,7 @@
     <description>
 		EasySOA is a software for discovering, registering and organizing SOA services.
     </description>
-  
+
     <developers>
         <developer>
             <id>dutoo</id>
@@ -55,15 +55,16 @@
         </developer>
     </developers>
     
-    <!-- ======= -->
-    <!-- Modules -->
-    <!-- ======= -->
-    <modules>
-        <module>easysoa-proxy</module>
-        <module>easysoa-registry</module>
-        <module>samples</module>
-     </modules>
-
+    <!-- ============= -->
+    <!-- Properties    -->
+    <!-- ============= -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      	<!-- FraSCAti must be in version 1.5-SNAPSHOT because Velocity feature is only available in this version at the moment -->
+      	<frascati.version>1.5-SNAPSHOT</frascati.version>
+      	<log4j.version>1.2.16</log4j.version>
+    </properties>    
+    
     <!-- ======================= -->
     <!-- Dependencies management -->
     <!-- ======================= -->
@@ -77,8 +78,17 @@
           <scope>test</scope>
         </dependency>
       </dependencies>
-    </dependencyManagement>
+    </dependencyManagement>    
     
+    <!-- ======= -->
+    <!-- Modules -->
+    <!-- ======= -->
+    <modules>
+        <module>easysoa-proxy</module>
+        <module>easysoa-registry</module>
+        <module>samples</module>
+     </modules>
+   
     <!-- ================= -->
     <!-- Plugin management -->
     <!-- ================= -->

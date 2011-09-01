@@ -2,18 +2,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.openwide.easysoa</groupId>
 	<artifactId>easysoa-proxy</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>easysoa-proxy</name>
-
+	
+	<parent>
+		<groupId>org.openwide.easysoa</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.3-SNAPSHOT</version>
+		
+	</parent>
+	
 	<modules>
 		<module>easysoa-proxy-parent</module>
 		<module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
 		<module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
 		<module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
 		<module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
-	</modules>
+	</modules>	
 	
 </project>

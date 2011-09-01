@@ -11,72 +11,59 @@
 		<groupId>org.openwide.easysoa.proxy</groupId>
 		<artifactId>easysoa-proxy-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
+		<relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>	
 	</parent>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>
 			<version>2.7.1</version>
 		</dependency>
-		<!-- FraSCAti Velocity is REQUIRED in  this project and only exists in version 1.5-SNAPSHOT at the moment !!! -->
+		<!-- FraSCAti Velocity is REQUIRED in this project and only exists in version 1.5-SNAPSHOT at the moment !!! -->
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-implementation-velocity</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>${frascati.version}</version>
 		</dependency>		
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-factory</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>${frascati.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-implementation-fractal</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>${frascati.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-ws</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>${frascati.version}</version>
 		</dependency>		
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-http</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>${frascati.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-rest</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>${frascati.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-runtime-factory</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>${frascati.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
+			<version>${log4j.version}</version>
 		</dependency>
 		<!-- EasyWSDL -->
 		<dependency>
