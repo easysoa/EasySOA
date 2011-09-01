@@ -3,6 +3,7 @@
 *.log
 *.swp
 *.tar.gz
+*.orig
 .DS_Store
 .tmp*~
 .classpath
