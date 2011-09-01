@@ -30,36 +30,48 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>
 			<version>2.7.1</version>
 		</dependency>
+		<!-- FraSCAti Velocity is REQUIRED in  this project and only exists in version 1.5-SNAPSHOT at the moment !!! -->
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-velocity</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>		
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-factory</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-implementation-fractal</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>1.5-SNAPSHOT</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-http</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-rest</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-runtime-factory</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -72,7 +84,7 @@
 			<artifactId>easywsdl-wsdl</artifactId>
 			<version>2.1</version>
 		</dependency>
-		<!-- SOAPUI and dependencies -->
+		<!-- SOAPUI and required SOAPUI dependencies -->
 		<dependency>
 			<groupId>eviware</groupId>
 			<artifactId>soapui</artifactId>
@@ -88,8 +100,6 @@
 			<artifactId>xmlbeans</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-		<!--<dependency> <groupId>org.apache.httpcomponents</groupId> <artifactId>httpclient</artifactId> 
-			<version>4.1.1</version> </dependency> -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -141,5 +151,18 @@
 			<artifactId>xom</artifactId>
 			<version>1.2.5</version>
 		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+		<!-- End of required SOAPUI dependencies -->
+		<!-- Apache HTTP client for test -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+
 	</dependencies>
 </project>

@@ -4,7 +4,7 @@
   <!-- Velocity component for HTML form generator -->
   <component name="scaffoldingProxyComponent">
     <implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="formGenerator.html" location="contents"/>
-    <service name="Velocity">
+    <service name="velocity">
       <binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/scaffoldingProxy"/>
     </service>
     <!-- HTML Form generator Reference -->

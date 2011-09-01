@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance" name="soapServiceMock">
+
+	<!-- Soap service mock -->
+	<component name="soapServiceMock">
+    	<implementation.java class="org.openwide.easysoa.test.mock.SoapServiceMockImpl"/>
+    	<service name="serviceMock">
+			<interface.java interface="org.openwide.easysoa.test.mock.SoapServiceMock" />     		
+      		<binding.ws uri="http://localhost:8086/soapServiceMock"/>
+    	</service>	
+	</component>
+
+</composite>
