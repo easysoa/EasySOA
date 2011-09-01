@@ -7,7 +7,7 @@ Bundle-ManifestVersion: 1
 Bundle-Version: 0.0.1
 Bundle-Name: easysoa-registry-core
 Bundle-SymbolicName: org.easysoa.registry.core;singleton:=true
-Bundle-Vendor: Open Wide
+Bundle-Vendor: EasySOA Consortium
 Nuxeo-Require: org.nuxeo.ecm.core.api,
  org.nuxeo.ecm.core,
  org.nuxeo.ecm.core.schema,
