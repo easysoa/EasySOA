@@ -18,6 +18,7 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<easysoa.nuxeo.version>5.4.2</easysoa.nuxeo.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -62,4 +63,13 @@
 		</repository>
 	</repositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.easysoa</groupId>
+				<artifactId>easysoa-registry-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
