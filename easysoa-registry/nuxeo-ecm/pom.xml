@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.nuxeo</groupId>
   <artifactId>nuxeo-ecm</artifactId>
-  <version>5.4.1</version>
+  <version>5.4.2</version>
   <packaging>pom</packaging>
   <name>Nuxeo ECM Projects</name>
   <description>Nuxeo ECM Platform and related components.</description>
@@ -72,12 +72,14 @@
   </issueManagement>
 
   <ciManagement>
-    <system>Hudson</system>
-    <url>http://qa.nuxeo.org/hudson/</url>
+    <system>Jenkins</system>
+    <url>http://qa.nuxeo.org/jenkins/</url>
     <notifiers>
       <notifier>
         <type>mail</type>
-        <address>ecm-qa@lists.nuxeo.com</address>
+        <configuration>
+          <address>ecm-qa@lists.nuxeo.com</address>
+        </configuration>
       </notifier>
     </notifiers>
   </ciManagement>
@@ -97,22 +99,23 @@
   </modules>
 
   <properties>
-    <webdriver.version>0.9.7376</webdriver.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <apacheds.version>1.5.1</apacheds.version>
     <apachedshared.version>0.9.7</apachedshared.version>
-    <gwt.version>1.5.3</gwt.version>
+    <gwt.version>2.0.4</gwt.version>
     <jersey.version>1.1.5</jersey.version>
     <jetty.mortbay.version>6.1.14</jetty.mortbay.version>
     <shindig.version>1.1-BETA5-incubating</shindig.version>
-    <apache.chemistry.version>0.5-NX</apache.chemistry.version>
     <apache.abdera.version>0.4.0-incubating</apache.abdera.version>
     <apache.axiom.version>1.2.5</apache.axiom.version>
     <!-- JBoss properties -->
     <version.org.jboss.deployers>2.0.7.GA</version.org.jboss.deployers>
     <version.org.jboss.vfs>2.1.2.GA</version.org.jboss.vfs>
     <version.org.jboss.cache.pojo>3.0.0.GA</version.org.jboss.cache.pojo>
-    <version.org.jboss.microcontainer>2.0.6.GA</version.org.jboss.microcontainer>
+    <version.org.jboss.microcontainer>
+      2.0.6.GA
+    </version.org.jboss.microcontainer>
     <version.org.jboss.integration>5.1.0.GA</version.org.jboss.integration>
     <!-- should use same property name as JBoss to ease upgrades -->
     <jboss.ejb.version>3.0-RC8</jboss.ejb.version>
@@ -124,7 +127,14 @@
       <dependency>
         <groupId>org.nuxeo.build</groupId>
         <artifactId>nuxeo-distribution-tools</artifactId>
-        <version>1.3</version>
+        <version>1.8.0</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo</groupId>
+        <artifactId>nuxeo-ftest</artifactId>
+        <version>1.4</version>
+        <type>zip</type>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -203,6 +213,11 @@
         <artifactId>persistence</artifactId>
         <version>3.0</version>
         <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>javax.persistence</groupId>
+        <artifactId>persistence-api</artifactId>
+        <version>1.0</version>
       </dependency>
       <dependency>
         <groupId>javax.servlet.jsp</groupId>
@@ -447,13 +462,11 @@
           </exclusion>
         </exclusions>
       </dependency>
-      <!-- xercesImpl 2.9.1 uses xml-apis 1.3.04 -->
-      <!-- Other libraries use xml-apis 2.0.2 relocated to 1.0.b2 -->
       <dependency>
         <groupId>xml-apis</groupId>
         <artifactId>xml-apis</artifactId>
         <scope>provided</scope>
-        <version>1.0.b2</version>
+        <version>1.3.04</version>
       </dependency>
       <dependency>
         <groupId>jmimemagic</groupId>
@@ -461,6 +474,10 @@
         <version>0.1.2</version>
         <exclusions>
           <!-- jmimemagic has a dependency on an old xercesImpl -->
+          <exclusion>
+            <groupId>xerces</groupId>
+            <artifactId>xerces</artifactId>
+          </exclusion>
           <exclusion>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
@@ -521,22 +538,11 @@
         <version>1.0.2</version>
         <classifier>client</classifier>
       </dependency>
-      <!-- <dependency> -->
-      <!-- <groupId>org.jboss.osgi.runtime</groupId> -->
-      <!-- <artifactId>jboss-osgi-framework</artifactId> -->
-      <!-- <version>1.0.0.Alpha3</version> -->
-      <!-- <classifier>all</classifier> -->
-      <!-- </dependency> -->
       <dependency>
         <groupId>org.jboss.logging</groupId>
         <artifactId>jboss-logging-log4j</artifactId>
         <version>2.1.0.GA</version>
       </dependency>
-      <!-- <dependency> -->
-      <!-- <groupId>jboss</groupId> -->
-      <!-- <artifactId>jbosssx-client</artifactId> -->
-      <!-- <version>4.2.3.GA</version> -->
-      <!-- </dependency> -->
 
       <!-- jboss (+ hibernate, richfaces...) -->
       <dependency>
@@ -625,13 +631,6 @@
         <scope>provided</scope>
       </dependency>
 
-      <!-- JBoss dependencies to check, upgrade or remove -->
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>ejb3</artifactId>
-        <version>${jboss.ejb.version}</version>
-        <scope>provided</scope>
-      </dependency>
       <dependency>
         <groupId>org.jbpm.jbpm3</groupId>
         <artifactId>jbpm-jpdl</artifactId>
@@ -649,69 +648,20 @@
         <version>2.2</version>
       </dependency>
       <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss</artifactId>
-        <version>4.2.3.GA</version>
+        <groupId>org.jboss.ejb3</groupId>
+        <artifactId>jboss-ejb3-ext-api</artifactId>
+        <version>1.0.0</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-annotations-ejb3</artifactId>
-        <version>${jboss.ejb.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-aop-jdk50</artifactId>
-        <version>1.4.0.SP1</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-cache</artifactId>
-        <version>1.4.0.BETA2</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-cache-jdk50</artifactId>
-        <version>1.4.0.SP1</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>cglib-jboss</artifactId>
-        <version>2.1.2</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-common</artifactId>
-        <version>4.2.3.GA</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-j2ee</artifactId>
-        <version>4.2.3.GA</version>
-        <scope>provided</scope>
+        <groupId>org.jboss.remoting</groupId>
+        <artifactId>jboss-remoting</artifactId>
+        <version>2.5.1</version>
       </dependency>
       <dependency>
         <groupId>javassist</groupId>
         <artifactId>javassist</artifactId>
         <version>3.9.0.GA</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-jmx</artifactId>
-        <version>4.2.3.GA</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-remoting</artifactId>
-        <version>2.2.2.SP1</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -740,6 +690,32 @@
       </dependency>
       <dependency>
         <groupId>org.jboss.seam</groupId>
+        <artifactId>jboss-seam-pdf</artifactId>
+        <version>2.1.0.SP1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.seam</groupId>
+        <artifactId>jboss-seam-rss</artifactId>
+        <version>2.1.0.SP1</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sourceforge.yarfraw</groupId>
+        <artifactId>yarfraw</artifactId>
+        <version>0.92</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.xml</groupId>
+            <artifactId>jaxb-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.seam</groupId>
+        <artifactId>jboss-seam-excel</artifactId>
+        <version>2.1.0.SP1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.seam</groupId>
         <artifactId>jboss-seam-debug</artifactId>
         <version>2.1.0.SP1</version>
         <scope>provided</scope>
@@ -757,9 +733,9 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-system</artifactId>
-        <version>4.2.3.GA</version>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-system</artifactId>
+        <version>5.1.0.GA</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -775,15 +751,26 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>org.jboss.security</groupId>
+        <artifactId>jbosssx-client</artifactId>
+        <version>2.0.3.SP1</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>org.jboss.jbossas</groupId>
         <artifactId>jboss-as-security</artifactId>
         <version>${version.org.jboss.integration}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-server</artifactId>
+        <version>5.1.0.GA</version>
+      </dependency>
+      <dependency>
         <groupId>jboss</groupId>
         <artifactId>jgroups</artifactId>
-        <version>2.2.9</version>
+        <version>4.2.2.GA</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -812,20 +799,23 @@
         <classifier>light</classifier>
       </dependency>
       <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-aspect-jdk50-client</artifactId>
-        <version>1.5</version>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-aspects</artifactId>
+        <version>5.1.0.GA</version>
+        <classifier>jboss-aspects-jdk50-client</classifier>
       </dependency>
       <dependency>
-        <groupId>org.jboss.client</groupId>
-        <artifactId>jbossall-client</artifactId>
-        <version>5.0.0.GA</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.services</groupId>
-        <artifactId>logging-monitor</artifactId>
-        <version>4.2.3.GA</version>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-varia</artifactId>
+        <version>5.1.0.GA</version>
+        <classifier>logging-monitor</classifier>
         <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-client</artifactId>
+        <version>5.1.0.GA</version>
+        <type>pom</type>
       </dependency>
 
       <!-- Jetty mortbay -->
@@ -954,7 +944,7 @@
       <dependency>
         <groupId>org.artofsolving.jodconverter</groupId>
         <artifactId>jodconverter-core</artifactId>
-        <version>3.0-beta-3</version>
+        <version>3.0-NX3</version>
         <scope>provided</scope>
       </dependency>
       <!-- others -->
@@ -964,10 +954,23 @@
         <version>1.1.114-nx</version>
         <scope>provided</scope>
       </dependency>
+
       <dependency>
-        <groupId>net.sourceforge.cssparser</groupId>
-        <artifactId>cssparser</artifactId>
-        <version>0.9.5-NXP-4018</version>
+        <groupId>org.milyn</groupId>
+        <artifactId>milyn-magger</artifactId>
+        <version>1.3.1</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.milyn</groupId>
+        <artifactId>milyn-commons</artifactId>
+        <version>1.3.1</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.milyn</groupId>
+        <artifactId>flute</artifactId>
+        <version>1.3</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -991,6 +994,16 @@
         <groupId>com.sun.xml</groupId>
         <artifactId>relaxngDatatype</artifactId>
         <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.2.3</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.2.2</version>
       </dependency>
       <dependency>
         <groupId>org.freemarker</groupId>
@@ -1041,6 +1054,12 @@
         <artifactId>junit</artifactId>
         <version>4.8.1</version>
         <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-all</artifactId>
+        <scope>test</scope>
+        <version>1.1</version>
       </dependency>
       <dependency>
         <groupId>opensymphony</groupId>
@@ -1103,6 +1122,14 @@
         <version>4.1</version>
         <scope>provided</scope>
       </dependency>
+      <!-- OSGI compendium - do not change to org.osgi group since it is not containing
+        all needed classes -->
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.compendium</artifactId>
+        <version>4.2.0</version>
+        <scope>provided</scope>
+      </dependency>
       <dependency>
         <groupId>oro</groupId>
         <artifactId>oro</artifactId>
@@ -1159,15 +1186,21 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>net.sourceforge.jtds</groupId>
+        <artifactId>jtds</artifactId>
+        <version>1.2.4</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>jmock</groupId>
         <artifactId>jmock</artifactId>
         <version>1.2.0</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>pdfbox</groupId>
+        <groupId>org.apache.pdfbox</groupId>
         <artifactId>pdfbox</artifactId>
-        <version>0.7.3</version>
+        <version>1.5.0</version>
       </dependency>
       <dependency>
         <groupId>org.bouncycastle</groupId>
@@ -1373,7 +1406,7 @@
       <dependency>
         <groupId>org.apache.geronimo.components</groupId>
         <artifactId>geronimo-connector</artifactId>
-        <version>2.1.3</version>
+        <version>2.1.3-NX1</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -1404,52 +1437,23 @@
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt-dev</artifactId>
         <version>${gwt.version}</version>
-        <scope>provided</scope>
-        <classifier>windows</classifier>
-      </dependency>
-      <dependency>
-        <groupId>com.google.gwt</groupId>
-        <artifactId>gwt-dev</artifactId>
-        <version>${gwt.version}</version>
-        <classifier>windows-libs</classifier>
-        <type>zip</type>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.google.gwt</groupId>
-        <artifactId>gwt-dev</artifactId>
-        <version>${gwt.version}</version>
-        <scope>provided</scope>
-        <classifier>mac</classifier>
-      </dependency>
-      <dependency>
-        <groupId>com.google.gwt</groupId>
-        <artifactId>gwt-dev</artifactId>
-        <version>${gwt.version}</version>
-        <classifier>mac-libs</classifier>
-        <type>zip</type>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.google.gwt</groupId>
-        <artifactId>gwt-dev</artifactId>
-        <version>${gwt.version}</version>
-        <scope>provided</scope>
-        <classifier>linux</classifier>
-      </dependency>
-      <dependency>
-        <groupId>com.google.gwt</groupId>
-        <artifactId>gwt-dev</artifactId>
-        <version>${gwt.version}</version>
-        <classifier>linux-libs</classifier>
-        <type>zip</type>
-        <scope>provided</scope>
+        <scope>runtime</scope>
       </dependency>
       <dependency>
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt-servlet</artifactId>
         <version>${gwt.version}</version>
         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.restlet</groupId>
+        <artifactId>org.restlet.gwt</artifactId>
+        <version>1.1.10</version>
       </dependency>
       <dependency>
         <groupId>com.google.gwt.google-apis</groupId>
@@ -1465,6 +1469,41 @@
         <groupId>com.allen_sauer.gwt.log</groupId>
         <artifactId>gwt-log</artifactId>
         <version>2.5.2</version>
+      </dependency>
+      <dependency>
+        <groupId>net.customware.gwt.presenter</groupId>
+        <artifactId>gwt-presenter</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>net.customware.gwt.dispatch</groupId>
+        <artifactId>gwt-dispatch</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code</groupId>
+        <artifactId>gwt-dnd</artifactId>
+        <version>3.0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.gwt</groupId>
+        <artifactId>gwt-gadgets</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.googlecode.gwt.inject</groupId>
+        <artifactId>gin</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.inject.extensions</groupId>
+        <artifactId>guice-servlet</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>gwt.habyt</groupId>
+        <artifactId>gwt-habyt-upload</artifactId>
+        <version>0.1</version>
       </dependency>
 
       <dependency>
@@ -1581,7 +1620,7 @@
       <dependency>
         <groupId>com.hp.hpl.jena</groupId>
         <artifactId>jena</artifactId>
-        <version>2.5.4</version>
+        <version>2.6.4</version>
         <exclusions>
           <exclusion>
             <groupId>com.hp.hpl.jena</groupId>
@@ -1592,7 +1631,7 @@
       <dependency>
         <groupId>com.hp.hpl.jena</groupId>
         <artifactId>arq</artifactId>
-        <version>2.1</version>
+        <version>2.8.8</version>
         <exclusions>
           <exclusion>
             <groupId>com.hp.hpl.jena</groupId>
@@ -1603,7 +1642,7 @@
       <dependency>
         <groupId>com.hp.hpl.jena</groupId>
         <artifactId>iri</artifactId>
-        <version>0.5</version>
+        <version>0.8</version>
       </dependency>
       <dependency>
         <groupId>com.ibm.icu</groupId>
@@ -1667,11 +1706,17 @@
         <groupId>net.sourceforge.nekohtml</groupId>
         <artifactId>nekohtml</artifactId>
         <version>1.9.9</version>
+        <exclusions>
+          <exclusion>
+            <groupId>xerces</groupId>
+            <artifactId>xerces</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>net.sourceforge.htmlunit</groupId>
         <artifactId>htmlunit</artifactId>
-        <version>2.4</version>
+        <version>2.8</version>
         <exclusions>
           <exclusion>
             <groupId>xml-apis</groupId>
@@ -1770,19 +1815,54 @@
         <version>2.0.5</version>
       </dependency>
       <dependency>
-        <groupId>org.openqa.selenium.webdriver</groupId>
-        <artifactId>webdriver-htmlunit</artifactId>
-        <version>0.6.964</version>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-api</artifactId>
+        <version>2.0b3</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.openqa.selenium.webdriver</groupId>
-        <artifactId>webdriver-ie</artifactId>
-        <version>0.6.964</version>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-server</artifactId>
+        <version>2.0b3</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.openqa.selenium.webdriver</groupId>
-        <artifactId>webdriver-firefox</artifactId>
-        <version>0.6.964</version>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-remote-control</artifactId>
+        <version>2.0b3</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-support</artifactId>
+        <version>2.0b3</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-server</artifactId>
+        <version>2.0b3</version>
+        <classifier>standalone</classifier>
       </dependency>
       <dependency>
         <groupId>net.oauth.core</groupId>
@@ -1864,47 +1944,6 @@
         <groupId>org.concordion</groupId>
         <artifactId>concordion</artifactId>
         <version>1.3.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-api</artifactId>
-        <version>${apache.chemistry.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-commons</artifactId>
-        <version>${apache.chemistry.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-atompub</artifactId>
-        <version>${apache.chemistry.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-atompub-server</artifactId>
-        <version>${apache.chemistry.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-atompub-client</artifactId>
-        <version>${apache.chemistry.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-ws</artifactId>
-        <version>${apache.chemistry.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-soap-server</artifactId>
-        <version>${apache.chemistry.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.chemistry</groupId>
-        <artifactId>chemistry-tests</artifactId>
-        <version>${apache.chemistry.version}</version>
       </dependency>
 
       <dependency>
@@ -1999,72 +2038,22 @@
       <dependency>
         <groupId>org.javasimon</groupId>
         <artifactId>javasimon-core</artifactId>
-        <version>2.3.0</version>
+        <version>2.5.0</version>
       </dependency>
       <dependency>
         <groupId>org.javasimon</groupId>
         <artifactId>javasimon-jmx</artifactId>
-        <version>2.3.0</version>
+        <version>2.5.0</version>
       </dependency>
       <dependency>
         <groupId>org.javasimon</groupId>
         <artifactId>javasimon-jdbc3</artifactId>
-        <version>2.3.0</version>
+        <version>2.5.0</version>
       </dependency>
-
-      <!-- runtime test dependencies -->
-      <dependency>
-        <groupId>org.seleniumhq.webdriver
-        </groupId>
-        <artifactId>webdriver-htmlunit</artifactId>
-        <version>${webdriver.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>asm</groupId>
         <artifactId>asm</artifactId>
         <version>3.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>net.sourceforge.htmlunit</groupId>
-        <artifactId>htmlunit-core-js</artifactId>
-        <version>2.6</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.seleniumhq.webdriver
-        </groupId>
-        <artifactId>webdriver-ie</artifactId>
-        <version>${webdriver.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.seleniumhq.webdriver
-        </groupId>
-        <artifactId>webdriver-firefox</artifactId>
-        <version>${webdriver.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.seleniumhq.webdriver
-        </groupId>
-        <artifactId>webdriver-chrome</artifactId>
-        <version>${webdriver.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.seleniumhq.webdriver
-        </groupId>
-        <artifactId>webdriver-support</artifactId>
-        <version>${webdriver.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.seleniumhq.webdriver
-        </groupId>
-        <artifactId>webdriver-common</artifactId>
-        <version>${webdriver.version}</version>
       </dependency>
 
       <dependency>
@@ -2147,18 +2136,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <!-- <dependencies> -->
         <!-- <dependency> -->
@@ -2179,7 +2156,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-       <!--  <version>2.0</version> EasySOA: This caused an Eclipse warning --> 
         <configuration>
           <preparationGoals>clean install</preparationGoals>
         </configuration>
@@ -2205,10 +2181,8 @@
           <doUpdate>false</doUpdate>
         </configuration>
       </plugin>
-     <!-- EasySOA: "Plugin execution not covered by lifecycle configuration: 
-     	org.apache.maven.plugins:maven-nuxeo-plugin:1.0.14:eclipse-version 
-     	(execution: eclipsize-version, phase: process-sources)" 
-     	<plugin>
+      <!-- EasySOA: m2e compatibility -->
+<!--       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-nuxeo-plugin</artifactId>
         <executions>
@@ -2220,7 +2194,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin> --> 
+      </plugin>--> 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jboss-packaging-maven-plugin</artifactId>
@@ -2234,8 +2208,9 @@
           <linkJavadoc>true</linkJavadoc>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.jvnet.maven.incrementalbuild</groupId>
+     <!-- EasySOA: m2e compatibility -->
+    <!--    <plugin>
+        <groupId>net.java.maven-incremental-build</groupId>
         <artifactId>incremental-build-plugin</artifactId>
         <executions>
           <execution>
@@ -2244,7 +2219,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
     </plugins>
 
     <pluginManagement>
@@ -2336,10 +2311,11 @@
           <artifactId>maven-clean-plugin</artifactId>
           <version>2.4</version>
         </plugin>
+        <!-- MECLIPSE-576 fixed in 2.9 -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.6</version><!-- MECLIPSE-576 fixed in 2.9 -->
+          <version>2.6</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -2348,7 +2324,9 @@
           <executions>
             <execution>
               <configuration>
-                <extraJvmArgs>-Xmx512M -Xms128M -XX:MaxPermSize=384m</extraJvmArgs>
+                <extraJvmArgs>
+                  -Xmx512M -Xms128M -XX:MaxPermSize=384m
+                </extraJvmArgs>
               </configuration>
               <goals>
                 <goal>compile</goal>
@@ -2433,8 +2411,18 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
           <version>2.5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>2.7.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.myfaces.tobago</groupId>
@@ -2450,11 +2438,6 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>1.5</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.5</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -2484,7 +2467,7 @@
         <plugin>
           <groupId>org.nuxeo.build</groupId>
           <artifactId>nuxeo-distribution-tools</artifactId>
-          <version>1.3</version>
+          <version>1.8</version>
           <extensions>true</extensions>
         </plugin>
         <!-- Cannot upgrade after 2.2-beta-1 because of MASSEMBLY-285 -->
@@ -2551,51 +2534,26 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4</version> <!--  <version>2.3</version> EasySOA : m2e not compatible with 2.3 -->
+          <version>2.4</version><!-- EasySOA: m2e compatibility -->
         </plugin>
         <plugin>
           <groupId>net.sf.alchim</groupId>
           <artifactId>yuicompressor-maven-plugin</artifactId>
           <version>0.7.1</version>
         </plugin>
-        <plugin>
-          <groupId>org.jvnet.maven.incrementalbuild</groupId>
+        <!-- <plugin>
+          <groupId>net.java.maven-incremental-build</groupId>
           <artifactId>incremental-build-plugin</artifactId>
-          <version>1.3</version>
+          <version>1.4</version>
+        </plugin> --><!-- EasySOA: m2e compatibility -->
+        <plugin>
+          <artifactId>maven-jarsigner-plugin</artifactId>
+          <version>1.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
           <version>2.1.1</version>
-        </plugin>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        <plugin>
-        	<groupId>org.eclipse.m2e</groupId>
-        	<artifactId>lifecycle-mapping</artifactId>
-        	<version>1.0.0</version>
-        	<configuration>
-        		<lifecycleMappingMetadata>
-        			<pluginExecutions>
-        				<pluginExecution>
-        					<pluginExecutionFilter>
-        						<groupId>
-        							org.jvnet.maven.incrementalbuild
-        						</groupId>
-        						<artifactId>
-        							incremental-build-plugin
-        						</artifactId>
-        						<versionRange>[1.3,)</versionRange>
-        						<goals>
-        							<goal>incremental-build</goal>
-        						</goals>
-        					</pluginExecutionFilter>
-        					<action>
-        						<ignore></ignore>
-        					</action>
-        				</pluginExecution>
-        			</pluginExecutions>
-        		</lifecycleMappingMetadata>
-        	</configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -2646,8 +2604,8 @@
   </reporting>
 
   <profiles>
-    <!-- NXP-5660 - temporary rollback because of Hudson issue <profile> <id>no-osgi</id> 
-      <activation> <file> <exists>pom.xml</exists> </file> </activation> <modules> <module>nuxeo-dm</module> 
+    <!-- NXP-5660 - temporary rollback because of Hudson issue <profile> <id>no-osgi</id>
+      <activation> <file> <exists>pom.xml</exists> </file> </activation> <modules> <module>nuxeo-dm</module>
       <module>nuxeo-gwt</module> </modules> </profile> -->
     <profile>
       <id>pde</id>
@@ -2659,48 +2617,20 @@
             <version>2.9-NXP-4</version>
             <configuration>
               <additionalProjectnatures>
-                <projectnature>org.nuxeo.ide.builders.BundleNature</projectnature>
+                <projectnature>
+                  org.nuxeo.ide.builders.BundleNature
+                </projectnature>
               </additionalProjectnatures>
               <additionalBuildcommands>
-                <buildcommand>org.nuxeo.ide.builders.BundleBuilder</buildcommand>
+                <buildcommand>
+                  org.nuxeo.ide.builders.BundleBuilder
+                </buildcommand>
               </additionalBuildcommands>
               <downloadSources>false</downloadSources>
               <pde>true</pde>
               <osgideps>true</osgideps>
               <notests>true</notests>
               <osgify>false</osgify>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>tycho</id>
-      <properties>
-        <tycho-version>0.9.0</tycho-version>
-      </properties>
-      <repositories>
-        <repository>
-          <id>ganymede</id>
-          <layout>p2</layout>
-          <url>http://download.eclipse.org/releases/ganymede</url>
-        </repository>
-      </repositories>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.sonatype.tycho</groupId>
-            <artifactId>tycho-maven-plugin</artifactId>
-            <version>${tycho-version}</version>
-            <extensions>true</extensions>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.tycho</groupId>
-            <artifactId>target-platform-configuration</artifactId>
-            <version>${tycho-version}</version>
-            <configuration>
-              <resolver>p2</resolver>
             </configuration>
           </plugin>
         </plugins>
@@ -2728,12 +2658,46 @@
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
             <executions>
               <execution>
                 <id>enforce-plugin-versions</id>
                 <goals>
                   <goal>enforce</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>nightly</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -2780,8 +2744,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <maxmemory>512m</maxmemory>
-              <!-- stylesheetfile> ${basedir}/src/site/resources/css/jdstyle.css 
-                </stylesheetfile -->
+              <!-- stylesheetfile>${basedir}/src/site/resources/css/jdstyle.css </stylesheetfile -->
               <windowtitle>
                 Nuxeo Enterprise Platform 5.4 API Documentation
               </windowtitle>
@@ -2934,6 +2897,7 @@
         </snapshotRepository>
       </distributionManagement>
     </profile>
+
     <profile>
       <id>qapriv</id>
       <activation>
@@ -3011,6 +2975,7 @@
         </snapshotRepository>
       </distributionManagement>
     </profile>
+
     <profile>
       <id>apiviz</id>
       <reporting>
