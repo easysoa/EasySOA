@@ -1,14 +1,11 @@
 package com.openwide.easysoa.proxy;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -322,25 +319,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 			logger.debug(headerName + ": " + headerValue);
 		}
 	}
-	
-	/**
-	 * 
-	 * @param authhead
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unused")
-	@Deprecated
-	private String decodePassword(String authhead) throws Exception {
-		ByteArrayInputStream bais = new ByteArrayInputStream(authhead.getBytes());
-        InputStream b64is = MimeUtility.decode(bais, "base64");
-        byte[] tmp = new byte[authhead.getBytes().length];
-        int n = b64is.read(tmp);
-        byte[] res = new byte[n];
-        System.arraycopy(tmp, 0, res, 0, n);
-        return new String(res);
-    }
-	
+		
 	/**
 	 * 
 	 * @param error
