@@ -7,7 +7,6 @@ import static org.easysoa.doctypes.ServiceAPI.PROP_APPLICATION;
 import static org.easysoa.doctypes.ServiceAPI.PROP_PROTOCOLS;
 
 import java.io.File;
-import java.net.InetAddress;
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
@@ -57,8 +56,6 @@ public class ServiceAPIListener implements EventListener {
             return;
         }
 
-        String server = null;
-
         // If the file contains a WSDL file, parse it
         try {
 
@@ -90,11 +87,6 @@ public class ServiceAPIListener implements EventListener {
                     if (url == null) {
                         Endpoint firstEndpoint = firstService.getEndpoints()
                                 .get(0);
-                        if (server == null) {
-                            server = InetAddress.getByName(
-                                    new URL(firstEndpoint.getAddress())
-                                            .getHost()).getHostAddress();
-                        }
                         url = firstEndpoint.getAddress();
                     }
 
@@ -116,14 +108,7 @@ public class ServiceAPIListener implements EventListener {
                     // Update parent's properties
                     DocumentModel parentModel = session.getDocument(doc
                             .getParentRef());
-                    /*
-                     * String existingServer = (String)
-                     * parentModel.getProperty(AppliImpl.SCHEMA,
-                     * AppliImpl.PROP_SERVER); if (existingServer == null ||
-                     * !server.equals(existingServer)) {
-                     * parentModel.setProperty(AppliImpl.SCHEMA,
-                     * AppliImpl.PROP_SERVER, server); }
-                     */
+                    
                     try {
                         String provider = new URL(((Endpoint) firstService
                                 .getEndpoints().get(0)).getAddress())
@@ -139,15 +124,7 @@ public class ServiceAPIListener implements EventListener {
                     } catch (Exception e) {
                         // Nothing (authority extraction failed)
                     }
-                    /*
-                     * environment = (String) doc.getProperty(AppliImpl.SCHEMA,
-                     * AppliImpl.PROP_ENVIRONMENT); if (environment == null ||
-                     * environment.isEmpty()) {
-                     * parentModel.setProperty(AppliImpl.SCHEMA,
-                     * AppliImpl.PROP_ENVIRONMENT,
-                     * AppliImpl.DEFAULT_ENVIRONMENT); environment =
-                     * AppliImpl.DEFAULT_ENVIRONMENT; }
-                     */
+                    
                     session.saveDocument(parentModel);
 
                     DocumentService docService = Framework.getRuntime()
@@ -168,19 +145,10 @@ public class ServiceAPIListener implements EventListener {
                                                     doc.getPathAsString(),
                                                     serviceUrl);
                                     if (serviceModel != null) {
-                                        serviceModel.setProperty("dublincore",
-                                                "title", serviceName);
-                                        if (serviceUrl
-                                                .contains("PureAirFlowers")) { // XXX:
-                                                                               // Hard-coded
-                                                                               // PureAirFlowers
-                                                                               // Light
-                                                                               // URL
-                                            serviceModel
-                                                    .setProperty(
-                                                            Service.SCHEMA,
-                                                            Service.PROP_LIGHTURL,
-                                                            "http://localhost:8083/easysoa/light/paf.html");
+                                        serviceModel.setProperty("dublincore", "title", serviceName);
+                                        if (serviceUrl.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
+                                            serviceModel.setProperty(Service.SCHEMA, Service.PROP_LIGHTURL,
+                                                   "http://localhost:8083/easysoa/light/paf.html");
                                         }
                                         session.saveDocument(serviceModel);
                                     } else {
