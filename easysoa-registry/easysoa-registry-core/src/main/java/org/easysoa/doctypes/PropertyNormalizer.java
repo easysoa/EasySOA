@@ -35,7 +35,7 @@ public class PropertyNormalizer extends EasySOADoctype {
         if (stringUrl.indexOf("://") != -1) {
             URL url = new URL(stringUrl);
             stringUrl = url.toString();
-            return normalizeUrlPath(url.toString(), errMsg);
+            return normalizeUrlPath(stringUrl, errMsg);
         }
         return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
     }

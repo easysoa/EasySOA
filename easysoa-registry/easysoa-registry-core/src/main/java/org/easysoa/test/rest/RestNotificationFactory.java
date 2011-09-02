@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class RestNotificationFactory {
 
-	public final static String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo";
+	public static final String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo";
 	
 	public enum RestNotificationService {
 		APPLIIMPL, SERVICEAPI, SERVICE;
@@ -19,10 +19,10 @@ public class RestNotificationFactory {
 
 	private static final Log log = LogFactory.getLog(RestNotificationFactory.class);
 	
-	private final static String API_PATH = "/easysoa/notification/";
-	private final static String SERVICE_APPLIIMPL = "appliimpl";
-	private final static String SERVICE_SERVICEAPI = "api";
-	private final static String SERVICE_SERVICE = "service";
+	private static final String API_PATH = "/easysoa/notification/";
+	private static final String SERVICE_APPLIIMPL = "appliimpl";
+	private static final String SERVICE_SERVICEAPI = "api";
+	private static final String SERVICE_SERVICE = "service";
 	
 	private Map<RestNotificationService, URL> apiUrls;
 	

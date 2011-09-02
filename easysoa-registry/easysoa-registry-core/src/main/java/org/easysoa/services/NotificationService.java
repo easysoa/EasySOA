@@ -107,8 +107,10 @@ public class NotificationService extends DefaultComponent {
 			String parentUrl = properties.get(ServiceAPI.PROP_PARENTURL),
 				title = properties.get("title");
 			
-			if (title == null || title.isEmpty())
+			if (title == null || title.isEmpty()) {
 				title = url;
+				properties.put("title", title);
+			}
 			
 			// Find or create document and parent
 			DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 

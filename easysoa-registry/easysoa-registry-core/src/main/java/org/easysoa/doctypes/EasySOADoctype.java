@@ -35,18 +35,20 @@ public class EasySOADoctype {
      * with a short description.
      */
     public static Map<String, String> getCommonPropertyList() {
-        if (commonPropertyList == null) {
-            commonPropertyList = new HashMap<String, String>();
-            commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known.");
-            commonPropertyList.put(PROP_ARCHILOCALNAME, "Reference local name in architecture if known.");
-            commonPropertyList.put(PROP_DTBROWSING, "Notes about browsing-specific notifications." +
-                    " Informs the document of the notification source.");
-            commonPropertyList.put(PROP_DTMONITORING, "Notes about monitoring-specific notifications." +
-                    " Informs the document of the notification source.");
-            commonPropertyList.put(PROP_DTIMPORT, "Notes about import-specific notifications." +
-                    " Informs the document of the notification source.");
+        synchronized (SCHEMA_COMMON) { // Ensures initialization ended before accessing the list
+            if (commonPropertyList == null) {
+                commonPropertyList = new HashMap<String, String>();
+                commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known.");
+                commonPropertyList.put(PROP_ARCHILOCALNAME, "Reference local name in architecture if known.");
+                commonPropertyList.put(PROP_DTBROWSING, "Notes about browsing-specific notifications." +
+                        " Informs the document of the notification source.");
+                commonPropertyList.put(PROP_DTMONITORING, "Notes about monitoring-specific notifications." +
+                        " Informs the document of the notification source.");
+                commonPropertyList.put(PROP_DTIMPORT, "Notes about import-specific notifications." +
+                        " Informs the document of the notification source.");
+            }
+            return commonPropertyList;
         }
-        return commonPropertyList;
     }
 
     /**
@@ -56,12 +58,14 @@ public class EasySOADoctype {
      * @return
      */
     public static Map<String, String> getDublinCorePropertyList() {
-        if (dublinCorePropertyList == null) {
-            dublinCorePropertyList = new HashMap<String, String>();
-            dublinCorePropertyList.put(PROP_TITLE, "The name of the document.");
-            dublinCorePropertyList.put(PROP_DESCRIPTION, "A short description.");
+        synchronized (SCHEMA_DUBLINCORE) {
+            if (dublinCorePropertyList == null) {
+                dublinCorePropertyList = new HashMap<String, String>();
+                dublinCorePropertyList.put(PROP_TITLE, "The name of the document.");
+                dublinCorePropertyList.put(PROP_DESCRIPTION, "A short description.");
+            }
+            return dublinCorePropertyList;
         }
-        return dublinCorePropertyList;
     }
 
     // TODO: Put url (+parentUrl ?) in a common schema, so that these

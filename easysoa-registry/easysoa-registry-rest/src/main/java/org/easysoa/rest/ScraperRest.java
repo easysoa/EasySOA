@@ -142,10 +142,10 @@ public class ScraperRest {
 		}
 		
 		// If everything else fails, show errors in plain text
-		String html = "";
+		StringBuffer html = new StringBuffer();
 		for (String error : errors)
-			html += error;
-		return html;
+			html.append(error);
+		return html.toString();
 	}
 	
 	private static void changeToAbsolutePath(Object[] tagNodes,

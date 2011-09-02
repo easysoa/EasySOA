@@ -60,6 +60,8 @@ public class DocumentCreationTest extends AbstractRestTest {
 		Assume.assumeNotNull(notification.send());
 
 		assertDocumentExists(AppliImpl.DOCTYPE, url);
+		
+		System.out.println("ça marche pourtant");
 	}
 
 	/**

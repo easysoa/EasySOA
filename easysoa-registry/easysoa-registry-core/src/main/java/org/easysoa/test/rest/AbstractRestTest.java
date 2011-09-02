@@ -32,9 +32,13 @@ public abstract class AbstractRestTest {
 	protected static AutomationHelper automation = null;
 	protected static RestNotificationFactory notificationFactory = null;
 	protected static boolean useEmbeddedNuxeo;
+	
+	private static Object notificationFactorySync = new Object();
 
 	protected static void setUp(CoreSession session, String targetedNuxeoPropsPath) throws Exception {
 		
+	    synchronized (notificationFactorySync) {
+	    
 		// Run only once
 		if (notificationFactory != null)
 			return;
@@ -88,6 +92,8 @@ public abstract class AbstractRestTest {
 			automation = new AutomationHelper(nuxeoUrl);
 		}
 		notificationFactory = new RestNotificationFactory(nuxeoUrl);
+
+        }
 	}
 
 	protected void assertDocumentExists(String doctype, String url) throws Exception {

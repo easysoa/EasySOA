@@ -28,12 +28,14 @@ public class ServiceReference extends EasySOADoctype {
      * schema, with a short description.
      */
     public static Map<String, String> getPropertyList() {
-        if (propertyList == null) {
-            propertyList = new HashMap<String, String>();
-            propertyList.put(PROP_REFURL, "Referenced Service URL");
-            propertyList.put(PROP_REFPATH, "Path of Referenced Service in registry if known");
-            propertyList.put(PROP_PARENTURL, "(mandatory) The parent application URL.");
+        synchronized (DOCTYPE) { // Ensures initialization ended before accessing the list
+            if (propertyList == null) {
+                propertyList = new HashMap<String, String>();
+                propertyList.put(PROP_REFURL, "Referenced Service URL");
+                propertyList.put(PROP_REFPATH, "Path of Referenced Service in registry if known");
+                propertyList.put(PROP_PARENTURL, "(mandatory) The parent application URL.");
+            }
+            return propertyList;
         }
-        return propertyList;
     }
 }

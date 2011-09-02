@@ -103,13 +103,13 @@ public class RepositoryLogger {
 		String spaces = getSpaces(indent);
 		try {
 			for (String schema : model.getDeclaredSchemas()) {
-				String line = spaces + "    | " + schema + "> ";
+				StringBuffer line = new StringBuffer(spaces + "    | " + schema + "> ");
 				Map<String, Object> schemaProperties = model.getProperties(schema);
 				for (Entry<String, Object> entry : schemaProperties.entrySet()) {
 					Serializable value = (Serializable) schemaProperties.get(entry.getValue());
-					line += entry.getKey() + "=" + value + " ";
+					line.append(entry.getKey() + "=" + value + " ");
 				}
-				log.debug(line);
+				log.debug(line.toString());
 			}
 		}
 		catch(Exception e) {
@@ -126,11 +126,11 @@ public class RepositoryLogger {
 	}
 	
 	private String getCharSuite(char c, int length) {
-		String line = "";
+		StringBuffer line = new StringBuffer();
 		for (int i = 0; i< length; i++) {
-			line += c;
+			line.append(c);
 		}
-		return line;
+		return line.toString();
 	}
 	
 }
