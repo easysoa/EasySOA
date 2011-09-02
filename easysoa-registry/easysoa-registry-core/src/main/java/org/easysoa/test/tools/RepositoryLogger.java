@@ -2,6 +2,7 @@ package org.easysoa.test.tools;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -104,9 +105,9 @@ public class RepositoryLogger {
 			for (String schema : model.getDeclaredSchemas()) {
 				String line = spaces + "    | " + schema + "> ";
 				Map<String, Object> schemaProperties = model.getProperties(schema);
-				for (String property : schemaProperties.keySet()) {
-					Serializable value = (Serializable) schemaProperties.get(property);
-					line += property + "=" + value + " ";
+				for (Entry<String, Object> entry : schemaProperties.entrySet()) {
+					Serializable value = (Serializable) schemaProperties.get(entry.getValue());
+					line += entry.getKey() + "=" + value + " ";
 				}
 				log.debug(line);
 			}

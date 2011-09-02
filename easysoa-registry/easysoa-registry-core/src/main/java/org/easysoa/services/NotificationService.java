@@ -3,6 +3,7 @@ package org.easysoa.services;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -366,8 +367,11 @@ public class NotificationService extends DefaultComponent {
 		properties.putAll(propertyFilter);
 		
 		// Update optional properties
-		for (String key : properties.keySet()) {
-			String value = properties.get(key);
+		for (Entry<String, String> entry : properties.entrySet()) {
+		    
+		    String key = entry.getKey();
+			String value = entry.getValue();
+			
 			if (value != null && !value.isEmpty()) {
 				// Given schema specific properties
 				if (schemaDef.containsKey(key)) {
