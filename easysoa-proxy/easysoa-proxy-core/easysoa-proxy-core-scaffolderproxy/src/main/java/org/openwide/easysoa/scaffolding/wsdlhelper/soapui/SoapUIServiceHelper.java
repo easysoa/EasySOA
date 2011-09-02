@@ -58,8 +58,6 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 		if(iface == null){
 			throw new IllegalArgumentException("Binding '" + binding + "' not found in the specified WSDL");
 		}
-		//WsdlInterface iface = ifaceArray[0];
-
 		// get desired operation
 		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(wsldOperation);
 		// create a new empty request for that operation
@@ -73,20 +71,18 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 		System.out.println("Submit status : " + wsdlSubmit.getStatus());
 		if(wsdlResponse != null){
 			logger.debug("Soap Response" + wsdlResponse.getContentAsString());
-			System.out.println("Soap Response" + wsdlResponse.getContentAsString());
 			return wsdlResponse.getContentAsString();
 		} else {
 			logger.debug("Soap Response is null");
-			System.out.println("Soap Response is null");
 			return null;
 		}
 	}
 	
 	/**
-	 * 
-	 * @param xmlRequest
-	 * @param params
-	 * @return
+	 * Map REST input params to the XML SOAP request
+	 * @param xmlRequest The XML SOAP request
+	 * @param params The params to map
+	 * @return A mapped XML request for SOAP
 	 */
 	private String mapInputParams(String xmlRequest, HashMap<String, List<String>> params){
 		// For each param key, replace the '?' in the xml request by the param value 
