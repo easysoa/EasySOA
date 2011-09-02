@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
@@ -18,6 +20,11 @@ public class MonitoringModel {
 	
 	private HashMap<String, String> soaModelUrlToTypeMap; // scope : global
 	private List<Node> soaNodes;
+	
+	/**
+	 * Logger
+	 */
+	private Logger logger = Logger.getLogger(MonitoringModel.class.getName());	
 	
 	/**
 	 * Constructor
@@ -39,6 +46,7 @@ public class MonitoringModel {
 	 */
 	public void fetchFromNuxeo() {
 		soaNodes = new NuxeoRegistrationService().getAllSoaNodes();
+		logger.debug("soaNodes size : " + soaNodes.size());
 		for (Node soaNode : soaNodes) {
 			soaModelUrlToTypeMap.put(soaNode.getUrl(), getNodeType(soaNode));
 		}

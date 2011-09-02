@@ -4,7 +4,7 @@
 	name="httpDiscoveryProxy">
 
 	<!-- HTTP Proxy -->
-	<!-- Run with default mode : Discovery -->
+	<!-- Run with mode : Validated -->
 	<sca:component name="httpProxyService">
 		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
 		<!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
@@ -33,7 +33,7 @@
 		<sca:service name="monitoringServiceService">
 			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
 		</sca:service>
-		<sca:implementation.java class="com.openwide.easysoa.monitoring.DiscoveryMonitoringService" />
+		<sca:implementation.java class="com.openwide.easysoa.monitoring.ValidatedMonitoringService" />
 		<!--<sca:reference name="runManager" target="runManagerComponent" />-->
 		<!--<sca:reference name="esperEngine" target="esperEngineComponent" />-->		
 	</sca:component>

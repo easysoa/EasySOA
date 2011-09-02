@@ -41,7 +41,7 @@ public class RestMessageHandler implements MessageHandler {
 			String urlSoaModelType =  monitoringModel.getSoaModelUrlToTypeMap().get(message.getUrl());
 			// if none, maybe it is a resource :
 			if (urlSoaModelType == null) {
-				logger.debug("urlSoaModelType null .....");
+				logger.debug("urlSoaModelType is null, searched key not found ..");
 				int lastSlashIndex = message.getUrl().lastIndexOf('/'); // TODO BETTER regexp or finite automat OR ESPER OR SHARED MODEL WITH TREE OR ABSTRACT TREE ??!!
 				String serviceUrlOfResource = message.getUrl().substring(0, lastSlashIndex);
 				message.setUrl(serviceUrlOfResource); // HACK TODO rather add a field
@@ -51,8 +51,9 @@ public class RestMessageHandler implements MessageHandler {
 				logger.debug("Validated mode, message send to esper");
 				// if there, feed it to esper
 				// TODO write listener that group by serviceUrl and register to nuxeo every minute
-				EsperEngineSingleton.getEsperRuntime().sendEvent(message);
+				EsperEngineSingleton.getEsperRuntime(monitoringService.getModel().getSoaNodes()).sendEvent(message);
 			} else {
+				logger.debug("Validated mode, Adding message to unknwown message list");
 				// Unknown message
 				//DiscoveryMonitoringService.getMonitorService().getUnknownMessagesList().add(message);
 				monitoringService.getUnknownMessagesList().add(message);

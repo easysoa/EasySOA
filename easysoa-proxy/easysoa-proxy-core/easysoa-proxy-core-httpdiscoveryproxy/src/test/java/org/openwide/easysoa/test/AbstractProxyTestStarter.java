@@ -48,9 +48,9 @@ public abstract class AbstractProxyTestStarter {
 	 * Start HTTP Proxy
 	 * @throws FrascatiException
 	 */
-	protected static void startHttpDiscoveryProxy() throws FrascatiException {
+	protected static void startHttpDiscoveryProxy(String composite) throws FrascatiException {
 		logger.info("HTTP Discovery Proxy Starting");
-		frascati.processComposite("src/main/resources/httpDiscoveryProxy.composite", new ProcessingContextImpl());		
+		frascati.processComposite(composite, new ProcessingContextImpl());		
 	}
 	
 	/**
