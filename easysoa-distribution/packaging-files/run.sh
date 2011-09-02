@@ -74,7 +74,8 @@ traveldemo()
 
 # Start processes
 echo "Starting EasySOA Demo. A browser page will be opened in a few seconds."
-echo "Note that the service registry will take between 30s and 2mn to launch."
+echo "If not, please open this page in a browser: http://127.0.0.1:8083/easysoa/."
+echo "NB: The service registry will take between 30s and 2mn to launch."
 
 # FIXME The script uses delays to solve dependencies issues,
 # it might not be enough on lower-end computers
