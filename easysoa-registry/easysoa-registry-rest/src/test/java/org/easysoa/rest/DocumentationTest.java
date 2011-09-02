@@ -43,7 +43,6 @@ public class DocumentationTest extends AbstractRestTest {
 	
 	@Test
 	public void testNotificationDocumentation() throws Exception {
-
 		// Create request
 		RestNotificationRequest request = notificationFactory.createNotification(RestNotificationService.SERVICE, "GET");
 		JSONObject doc = request.send();
@@ -53,7 +52,6 @@ public class DocumentationTest extends AbstractRestTest {
 		JSONObject parameters = (JSONObject) doc.get("parameters");
         Assert.assertTrue(parameters.has(Service.PROP_URL));
         Assert.assertTrue(parameters.has(EasySOADoctype.PROP_TITLE));
-		
 	}
 
 }

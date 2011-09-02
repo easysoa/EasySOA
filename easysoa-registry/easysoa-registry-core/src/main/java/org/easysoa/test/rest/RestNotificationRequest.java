@@ -20,7 +20,8 @@ public interface RestNotificationRequest {
 	 * @throws IOException When the request failed.
 	 * @throws ProtocolException When the request returned an error.
 	 * @return The result if the notification was successfully sent, else null. 
+	 * @throws Exception 
 	 */
-	public JSONObject send() throws IOException, ProtocolException;
+	public JSONObject send() throws Exception;
 	
 }

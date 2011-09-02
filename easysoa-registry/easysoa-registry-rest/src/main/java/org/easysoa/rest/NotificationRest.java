@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,6 +24,8 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.services.NotificationService;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.webengine.session.UserSession;
 import org.nuxeo.runtime.api.Framework;
 
 import com.sun.jersey.api.core.HttpContext;
@@ -30,7 +33,7 @@ import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.spi.container.ContainerRequest;
 
 @Path("easysoa/notification")
-public class NotificationRest extends LoggedRest {
+public class NotificationRest {
 
 	private static final Log log = LogFactory.getLog(NotificationRest.class);
 	
@@ -54,8 +57,9 @@ public class NotificationRest extends LoggedRest {
 	@Path("/appliimpl")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object doPostAppliImpl(@Context HttpContext httpContext) throws JSONException, LoginException {
-		login();
+	public Object doPostAppliImpl(@Context HttpContext httpContext,
+	        @Context HttpServletRequest request) throws JSONException {
+		CoreSession session = UserSession.getCurrentSession(request).getCoreSession();
 		Map<String, String> params = getFormValues(httpContext);
 		try {
 			notifService.notifyAppliImpl(session, params);
@@ -63,7 +67,6 @@ public class NotificationRest extends LoggedRest {
 		catch (Exception e) {
 			appendError(e.getMessage());
 		}
-		logout();
 		return getFormattedResult();
 	}
 
@@ -76,7 +79,6 @@ public class NotificationRest extends LoggedRest {
 	@Path("/appliimpl")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doGetAppliImpl() throws JSONException {
-		
 		result = new JSONObject();
 		JSONObject params = new JSONObject();
 		Map<String, String> commonDef = getCommonPropertiesDocumentation();
@@ -97,8 +99,9 @@ public class NotificationRest extends LoggedRest {
 	@Path("/api")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object doPostApi(@Context HttpContext httpContext) throws JSONException, LoginException {
-		login();
+	public Object doPostApi(@Context HttpContext httpContext,
+            @Context HttpServletRequest request) throws JSONException {
+        CoreSession session = UserSession.getCurrentSession(request).getCoreSession();
 		Map<String, String> params = getFormValues(httpContext);
 		try {
 			notifService.notifyServiceApi(session, params);
@@ -106,7 +109,6 @@ public class NotificationRest extends LoggedRest {
 		catch (Exception e) {
 			appendError(e.getMessage());
 		}
-		logout();
 		return getFormattedResult();
 	}
 	
@@ -138,8 +140,9 @@ public class NotificationRest extends LoggedRest {
 	@Path("/service")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object doPostService(@Context HttpContext httpContext) throws JSONException, LoginException {
-		login();
+	public Object doPostService(@Context HttpContext httpContext,
+            @Context HttpServletRequest request) throws JSONException {
+        CoreSession session = UserSession.getCurrentSession(request).getCoreSession();
 		Map<String, String> params = getFormValues(httpContext);
 		try {
 			notifService.notifyService(session, params);
@@ -147,7 +150,6 @@ public class NotificationRest extends LoggedRest {
 		catch (Exception e) {
 			appendError(e.getMessage());
 		}
-		logout();
 		return getFormattedResult();
 	}
 

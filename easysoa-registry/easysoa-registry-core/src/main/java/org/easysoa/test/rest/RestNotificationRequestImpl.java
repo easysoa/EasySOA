@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,16 +14,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nuxeo.common.utils.Base64;
 
-public class RestNotificationImpl implements RestNotificationRequest {
+public class RestNotificationRequestImpl implements RestNotificationRequest {
 
-	private static final Log log = LogFactory.getLog(RestNotificationImpl.class);
+	private static final Log log = LogFactory.getLog(RestNotificationRequestImpl.class);
+	
+	private static final String LOGIN = "Administrator";
+    private static final String PASSWORD = "Administrator";
 	
 	private URL requestUrl;
 	private Map<String, String> requestProperties; 
 	private String method;
 	
-	public RestNotificationImpl(URL requestUrl, String method) throws MalformedURLException {
+	public RestNotificationRequestImpl(URL requestUrl, String method) throws MalformedURLException {
 		this.requestUrl = requestUrl;
 		this.requestProperties = new HashMap<String, String>();
 		this.method = method;
@@ -35,7 +38,7 @@ public class RestNotificationImpl implements RestNotificationRequest {
 		return this;
 	}
 	
-	public JSONObject send() throws IOException, ProtocolException {
+	public JSONObject send() throws Exception {
 		
 		// Prepare request
 		String body = method.equals("POST") ? computeRequestBody() : null;
@@ -58,7 +61,7 @@ public class RestNotificationImpl implements RestNotificationRequest {
 			if (!result.has("parameters") // Notification doc 
 			        && (!result.has("result") || !result.getString("result").equals("ok"))) { // Notification result
 				log.warn("Failure: "+logString);
-				throw new ProtocolException(result.getString("result"));
+				throw new Exception("Request result is not as expected: '"+result.getString("result")+"'");
 			}
 			log.info("OK: "+logString);
 			return result;
@@ -82,8 +85,10 @@ public class RestNotificationImpl implements RestNotificationRequest {
 		
 		// Open connection
 		HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
-		connection.setRequestMethod(method);
-		connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+        connection.setRequestMethod(method);
+        connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Authorization", "Basic " +
+                Base64.encodeBytes((LOGIN + ":" + PASSWORD).getBytes()));
         connection.setDoOutput(true);
         
         // Write request

@@ -48,20 +48,16 @@ public class DocumentCreationTest extends AbstractRestTest {
 	 */
 	@Test
 	public void testCreateAppliImpl() throws Exception {
-
 		String url = "http://myApp.com/", title = "myApp";
 
 		RestNotificationRequest notification = notificationFactory
 				.createNotification(RestNotificationService.APPLIIMPL);
-		Assume.assumeNotNull(notification); // Assumes are a bit random ATM,
-											// TODO improve them
+		Assume.assumeNotNull(notification); // TODO Assumes are a bit random ATM, improve them
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
 		notification.setProperty(AppliImpl.PROP_URL, url);
 		Assume.assumeNotNull(notification.send());
 
-		assertDocumentExists(AppliImpl.DOCTYPE, url);
-		
-		System.out.println("ça marche pourtant");
+		assertDocumentExists(session, AppliImpl.DOCTYPE, url);
 	}
 
 	/**
@@ -71,7 +67,6 @@ public class DocumentCreationTest extends AbstractRestTest {
 	 */
 	@Test
 	public void testCreateServiceAPI() throws Exception {
-
 		String url = "api/", parentUrl = "http://myApp.com/", title = "myApi";
 
 		RestNotificationRequest notification = notificationFactory
@@ -82,7 +77,7 @@ public class DocumentCreationTest extends AbstractRestTest {
 				.setProperty(ServiceAPI.PROP_URL, url);
 		Assume.assumeNotNull(notification.send());
 
-		assertDocumentExists(ServiceAPI.DOCTYPE, url);
+		assertDocumentExists(session, ServiceAPI.DOCTYPE, url);
 	}
 
 	/**
@@ -92,7 +87,6 @@ public class DocumentCreationTest extends AbstractRestTest {
 	 */
 	@Test
 	public void testCreateService() throws Exception {
-
 		String url = "service", parentUrl = "api/", title = "myService";
 
 		RestNotificationRequest notification = notificationFactory
@@ -103,6 +97,6 @@ public class DocumentCreationTest extends AbstractRestTest {
 				.setProperty(Service.PROP_URL, url);
 		Assume.assumeNotNull(notification.send());
 
-		assertDocumentExists(Service.DOCTYPE, url);
+		assertDocumentExists(session, Service.DOCTYPE, url);
 	}
 }

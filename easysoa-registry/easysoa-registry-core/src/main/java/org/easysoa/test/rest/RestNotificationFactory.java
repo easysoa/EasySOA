@@ -63,8 +63,7 @@ public class RestNotificationFactory {
 	 */
     public RestNotificationRequest createNotification(RestNotificationService api, String method) {
 		try {
-			RestNotificationImpl notif = new RestNotificationImpl(apiUrls.get(api), method);
-			return notif;
+			return new RestNotificationRequestImpl(apiUrls.get(api), method);
 		} catch (MalformedURLException e) {
 			log.error(e);
 			return null;
