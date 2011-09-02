@@ -3,6 +3,8 @@ package org.easysoa.test.rest;
 import java.io.IOException;
 import java.net.ProtocolException;
 
+import org.json.JSONObject;
+
 public interface RestNotificationRequest {
 
 	/**
@@ -17,8 +19,8 @@ public interface RestNotificationRequest {
 	 * Sends the notification.
 	 * @throws IOException When the request failed.
 	 * @throws ProtocolException When the request returned an error.
-	 * @return If the notification was successfully send
+	 * @return The result if the notification was successfully sent, else null. 
 	 */
-	public boolean send() throws IOException, ProtocolException;
+	public JSONObject send() throws IOException, ProtocolException;
 	
 }

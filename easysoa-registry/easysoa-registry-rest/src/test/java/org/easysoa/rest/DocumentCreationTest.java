@@ -4,7 +4,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.test.EasySOAFeatureBase;
-import org.easysoa.test.rest.RestNotificationFactory.RestNotificationAPI;
+import org.easysoa.test.rest.RestNotificationFactory.RestNotificationService;
 import org.easysoa.test.rest.AbstractRestTest;
 import org.easysoa.test.rest.RestNotificationRequest;
 import org.junit.Assume;
@@ -29,9 +29,9 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Features({EasySOAFeatureBase.class, WebEngineFeature.class})
-@Deploy("org.easysoa.demo.rest")
+@Deploy("org.easysoa.registry.rest")
 @Jetty(config="src/test/resources/jetty.xml", port=9980)
-@LocalDeploy({"org.easysoa.demo.rest:OSGI-INF/login-contrib.xml"})
+@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
 public class DocumentCreationTest extends AbstractRestTest {
 
 	@Inject CoreSession session;
@@ -52,12 +52,12 @@ public class DocumentCreationTest extends AbstractRestTest {
 		String url = "http://myApp.com/", title = "myApp";
 
 		RestNotificationRequest notification = notificationFactory
-				.createNotification(RestNotificationAPI.APPLIIMPL);
+				.createNotification(RestNotificationService.APPLIIMPL);
 		Assume.assumeNotNull(notification); // Assumes are a bit random ATM,
 											// TODO improve them
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
 		notification.setProperty(AppliImpl.PROP_URL, url);
-		Assume.assumeTrue(notification.send());
+		Assume.assumeNotNull(notification.send());
 
 		assertDocumentExists(AppliImpl.DOCTYPE, url);
 	}
@@ -73,12 +73,12 @@ public class DocumentCreationTest extends AbstractRestTest {
 		String url = "api/", parentUrl = "http://myApp.com/", title = "myApi";
 
 		RestNotificationRequest notification = notificationFactory
-				.createNotification(RestNotificationAPI.SERVICEAPI);
+				.createNotification(RestNotificationService.SERVICEAPI);
 		Assume.assumeNotNull(notification);
 		notification.setProperty(ServiceAPI.PROP_TITLE, title)
 				.setProperty(ServiceAPI.PROP_PARENTURL, parentUrl)
 				.setProperty(ServiceAPI.PROP_URL, url);
-		Assume.assumeTrue(notification.send());
+		Assume.assumeNotNull(notification.send());
 
 		assertDocumentExists(ServiceAPI.DOCTYPE, url);
 	}
@@ -94,12 +94,12 @@ public class DocumentCreationTest extends AbstractRestTest {
 		String url = "service", parentUrl = "api/", title = "myService";
 
 		RestNotificationRequest notification = notificationFactory
-				.createNotification(RestNotificationAPI.SERVICE);
+				.createNotification(RestNotificationService.SERVICE);
 		Assume.assumeNotNull(notification);
 		notification.setProperty(Service.PROP_TITLE, title)
 				.setProperty(Service.PROP_PARENTURL, parentUrl)
 				.setProperty(Service.PROP_URL, url);
-		Assume.assumeTrue(notification.send());
+		Assume.assumeNotNull(notification.send());
 
 		assertDocumentExists(Service.DOCTYPE, url);
 	}

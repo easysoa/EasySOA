@@ -28,15 +28,17 @@ public abstract class LoggedRest {
 		if (loginContext == null) { // XXX: Probably useless (added for unit testing)
 			loginContext = Framework.login("sa", "");
 		}
-		if (loginContext == null) {
-			throw new LoginException("Failed to login");
-		}
 		session = WebEngine.getActiveContext().getUserSession().getCoreSession(null);
+        if (session == null) {
+            throw new LoginException("Failed to login");
+        }
 	}
 	
 	protected void logout() {
 		try {
-			loginContext.logout();
+		    if (loginContext != null) {
+		        loginContext.logout();
+		    }
 		} catch (LoginException e) {
 			log.warn("Failed to logout");
 		}

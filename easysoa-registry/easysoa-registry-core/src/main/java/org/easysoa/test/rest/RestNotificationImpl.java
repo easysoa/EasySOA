@@ -22,10 +22,12 @@ public class RestNotificationImpl implements RestNotificationRequest {
 	
 	private URL requestUrl;
 	private Map<String, String> requestProperties; 
+	private String method;
 	
-	public RestNotificationImpl(String requestUrlString) throws MalformedURLException {
-		requestUrl = new URL(requestUrlString);
-		requestProperties = new HashMap<String, String>();
+	public RestNotificationImpl(URL requestUrl, String method) throws MalformedURLException {
+		this.requestUrl = requestUrl;
+		this.requestProperties = new HashMap<String, String>();
+		this.method = method;
 	}
 	
 	public RestNotificationRequest setProperty(String property, String value) {
@@ -33,10 +35,10 @@ public class RestNotificationImpl implements RestNotificationRequest {
 		return this;
 	}
 	
-	public boolean send() throws IOException, ProtocolException {
+	public JSONObject send() throws IOException, ProtocolException {
 		
 		// Prepare request
-		String body = computeRequestBody();
+		String body = method.equals("POST") ? computeRequestBody() : null;
 		String logString = "url= "+requestUrl+", body: "+body;
 		
 		// Send
@@ -48,17 +50,18 @@ public class RestNotificationImpl implements RestNotificationRequest {
 		}
 		catch (Exception e) {
 			log.warn("Failed to send the notification due to an external problem (Nuxeo not started?)");
-			return false;
+			return null;
 		}
 		
 		try {
 			// Check result, throw error if necessary
-			if (!result.getString("result").equals("ok")) {
+			if (!result.has("parameters") // Notification doc 
+			        && (!result.has("result") || !result.getString("result").equals("ok"))) { // Notification result
 				log.warn("Failure: "+logString);
 				throw new ProtocolException(result.getString("result"));
 			}
 			log.info("OK: "+logString);
-			return true;
+			return result;
 			
 		} catch (JSONException e) {
 			log.warn("Failure: "+logString);
@@ -79,14 +82,17 @@ public class RestNotificationImpl implements RestNotificationRequest {
 		
 		// Open connection
 		HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
-		connection.setRequestMethod("POST");
+		connection.setRequestMethod(method);
 		connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
         connection.setDoOutput(true);
         
         // Write request
-        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-        writer.write(requestBody);
-        writer.flush();
+        OutputStreamWriter writer = null;
+        if (requestBody != null) {
+            writer = new OutputStreamWriter(connection.getOutputStream());
+            writer.write(requestBody);
+            writer.flush();
+        }
         
         // Read response
         StringBuffer answer = new StringBuffer();
@@ -95,7 +101,9 @@ public class RestNotificationImpl implements RestNotificationRequest {
         while ((line = reader.readLine()) != null) {
             answer.append(line);
         }
-        writer.close();
+        if (writer != null) {
+            writer.close();
+        }
         reader.close();
         
 		try {
