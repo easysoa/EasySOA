@@ -26,7 +26,8 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.nuxeo.ecm.directory",
     "org.nuxeo.ecm.directory.sql",
     "org.nuxeo.ecm.directory.api", // all required, else no dirService
-    "org.nuxeo.ecm.platform.types.core"
+    "org.nuxeo.ecm.platform.types.core",
+    "org.nuxeo.ecm.core.convert.plugins"
 })
 @Features(CoreFeature.class)
 public class EasySOAFeatureBase extends SimpleFeature {

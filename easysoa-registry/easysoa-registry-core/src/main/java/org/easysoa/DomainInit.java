@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.LifeCycleConstants;
 import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
 import org.nuxeo.runtime.api.Framework;
 
@@ -40,16 +41,18 @@ public class DomainInit extends UnrestrictedSessionRunner {
         }
 
         for (DocumentModel rootChild : session.getChildren(root.getRef())) {
-            // Remove unnecessary documents (sections root, templates root)
-            if (!rootChild.getType().equals("WorkspaceRoot")) {
-                session.removeDocument(rootChild.getRef());
-            } 
             // Change workspace root title
-            else {
+            if (rootChild.getType().equals("WorkspaceRoot")) {
                 rootChild.setProperty("dublincore", "title",
                         WORKSPACE_ROOT_TITLE);
                 session.saveDocument(rootChild);
                 session.save();
+            } 
+            // Remove unnecessary documents: sections root, templates root.
+            // Put them in the trash rather than deleting them since they are needed by Nuxeo.
+            else {
+                rootChild.followTransition(LifeCycleConstants.DELETE_TRANSITION);
+                session.saveDocument(rootChild);
             }
         }
      

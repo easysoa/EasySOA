@@ -18,4 +18,5 @@ Nuxeo-Require: org.nuxeo.runtime,
 Nuxeo-Component: OSGI-INF/layout-contrib.xml,
  OSGI-INF/contentviews-contrib.xml,
  OSGI-INF/directorytreemanager-contrib.xml,
- OSGI-INF/directory-ui-contrib.xml
+ OSGI-INF/directory-ui-contrib.xml,
+ OSGI-INF/theme-contrib.xml
