@@ -23,7 +23,8 @@ import com.openwide.easysoa.proxy.PropertyManager;
  */
 @Scope("composite")
 
-// TODO Huge refactoring of this class is needed !!
+// TODO Huge refactoring of this class needed : remove it and replace it by an EsperEngine class instantiated by FraSCAti !!
+@Deprecated
 public class EsperEngineSingleton {
 
 	/**
@@ -69,7 +70,7 @@ public class EsperEngineSingleton {
 	    	//EPStatement cepStatementMessage = cepAdm.createEPL("select * from Message");
 	    	//EPStatement cepStatementMessage = cepAdm.createEPL("select * from pattern[every-distinct(s.completeMessage) s=Message]");
 	    	EPStatement cepStatementMessage = cepAdm.createEPL(PropertyManager.getProperty("esper.message.listener.statement"));
-	    	cepStatementMessage.addListener(new MessageListener(soaNodes));
+	    	//cepStatementMessage.addListener(new MessageListener(soaNodes));
 	    	/*
 	    	// Message counter statement
 	    	//EPStatement cepStatementWindowCounter = cepAdm.createEPL("create window countWindow.win:keepall() as select count(*) as count, completeMessage as service from Message group by completeMessage"); 

@@ -2,6 +2,7 @@ package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
 
+import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
@@ -24,7 +25,7 @@ public class WSDLMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public boolean handle(Message message, MonitoringService monitoringService) {
+	public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// enrich the message
 		message.setType(MessageType.WSDL);
 		logger.debug("WSDL found");

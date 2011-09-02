@@ -4,7 +4,10 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+
+import com.openwide.easysoa.esper.EsperEngine;
 
 /**
  * Monitoring service for Validated mode
@@ -19,6 +22,15 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	 */
 	private Logger logger = Logger.getLogger(ValidatedMonitoringService.class.getName());	
 	
+	/**
+	 * Reference to Esper engine 
+	 */
+	@Reference
+	EsperEngine esperEngine; 	
+	
+	/**
+	 * 
+	 */
 	public ValidatedMonitoringService(){
 		// init & fill it from Nuxeo
 		logger.debug("Mode = VALIDATED !!");
@@ -55,6 +67,11 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	@Override
 	public void registerDetectedServicesToNuxeo() {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void listen(Message message) {
+		listen(message, esperEngine);
 	}
 
 }

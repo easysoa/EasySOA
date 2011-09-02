@@ -1,8 +1,10 @@
 package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
+import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
 import com.openwide.easysoa.monitoring.soa.Api;
@@ -23,6 +25,12 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	 */
 	private Logger logger = Logger.getLogger(DiscoveryMonitoringService.class.getName());	
 
+	/**
+	 * Reference to Esper engine 
+	 */
+	@Reference
+	EsperEngine esperEngine;  	
+	
 	/**
 	 * Constructor
 	 */
@@ -118,6 +126,11 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 			}
 			registerChildren(childNode);
 		}
+	}
+
+	@Override
+	public void listen(Message message) {
+		listen(message, esperEngine);
 	}
 	
 }

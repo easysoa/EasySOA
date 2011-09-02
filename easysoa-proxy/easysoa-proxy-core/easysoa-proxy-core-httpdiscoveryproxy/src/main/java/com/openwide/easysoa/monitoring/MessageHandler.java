@@ -1,5 +1,7 @@
 package com.openwide.easysoa.monitoring;
 
+import com.openwide.easysoa.esper.EsperEngine;
+
 public interface MessageHandler {
 	
 	/**
@@ -14,6 +16,6 @@ public interface MessageHandler {
 	 * @param message The message to handle
 	 */
 	// TODO : Monitoring service as parameter here is not a good solution, find an other way ...
-	public boolean handle(Message message, MonitoringService monitoringService);
+	public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine);
 
 }
