@@ -17,6 +17,6 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.nuxeo.runtime.datasource"
 })
 @Features(EasySOAFeatureBase.class)
-@LocalDeploy("org.easysoa.demo.core:org/easysoa/tests/datasource-contrib.xml")
+@LocalDeploy("org.easysoa.registry.core:org/easysoa/tests/datasource-contrib.xml")
 public class EasySOAFeature extends SimpleFeature {
 }

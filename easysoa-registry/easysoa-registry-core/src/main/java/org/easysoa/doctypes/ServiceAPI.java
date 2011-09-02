@@ -29,14 +29,16 @@ public class ServiceAPI extends EasySOADoctype {
      * with a short description.
      */
 	public static Map<String, String> getPropertyList() {
-		if (propertyList == null) {
-			propertyList = new HashMap<String, String>(); 
-			propertyList.put(PROP_URL, "(mandatory) Service API url (WSDL address, parent path...).");
-			propertyList.put(PROP_APPLICATION, "The related business application.");
-			propertyList.put(PROP_PROTOCOLS, "The supported protocols.");
-			propertyList.put(PROP_PARENTURL, "The parent URL, which is either another service API, or the service root.");
-		}
-		return propertyList;
+        synchronized (DOCTYPE) { // Ensures initialization ended before accessing the list
+    		if (propertyList == null) {
+    			propertyList = new HashMap<String, String>(); 
+    			propertyList.put(PROP_URL, "(mandatory) Service API url (WSDL address, parent path...).");
+    			propertyList.put(PROP_APPLICATION, "The related business application.");
+    			propertyList.put(PROP_PROTOCOLS, "The supported protocols.");
+    			propertyList.put(PROP_PARENTURL, "The parent URL, which is either another service API, or the service root.");
+    		}
+    		return propertyList;
+        }
 	}
 	
 }

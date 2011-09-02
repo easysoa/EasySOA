@@ -34,17 +34,19 @@ public class Service extends EasySOADoctype {
      * with a short description.
      */
     public static Map<String, String> getPropertyList() {
-        if (propertyList == null) {
-            propertyList = new HashMap<String, String>();
-            propertyList.put(PROP_URL, "(mandatory) Service URL.");
-            propertyList.put(PROP_CALLCOUNT, "Times the service has been called since last notification");
-            propertyList.put(PROP_RELATEDUSERS, "Users that have been using the service");
-            propertyList.put(PROP_HTTPMETHOD, "POST, GET...");
-            propertyList.put(PROP_CONTENTTYPEIN, "HTTP content type of the request body");
-            propertyList.put(PROP_CONTENTTYPEOUT, "HTTP content type of the result body");
-            propertyList.put(PROP_FILEURL, "The URL of a file to attach to the document");
-            propertyList.put(PROP_PARENTURL, "(mandatory) Service API URL");
+        synchronized (DOCTYPE) { // Ensures initialization ended before accessing the list
+            if (propertyList == null) {
+                propertyList = new HashMap<String, String>();
+                propertyList.put(PROP_URL, "(mandatory) Service URL.");
+                propertyList.put(PROP_CALLCOUNT, "Times the service has been called since last notification");
+                propertyList.put(PROP_RELATEDUSERS, "Users that have been using the service");
+                propertyList.put(PROP_HTTPMETHOD, "POST, GET...");
+                propertyList.put(PROP_CONTENTTYPEIN, "HTTP content type of the request body");
+                propertyList.put(PROP_CONTENTTYPEOUT, "HTTP content type of the result body");
+                propertyList.put(PROP_FILEURL, "The URL of a file to attach to the document");
+                propertyList.put(PROP_PARENTURL, "(mandatory) Service API URL");
+            }
+            return propertyList;
         }
-        return propertyList;
     }
 }

@@ -2,6 +2,7 @@ package org.easysoa.test.tools;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -102,13 +103,13 @@ public class RepositoryLogger {
 		String spaces = getSpaces(indent);
 		try {
 			for (String schema : model.getDeclaredSchemas()) {
-				String line = spaces + "    | " + schema + "> ";
+				StringBuffer line = new StringBuffer(spaces + "    | " + schema + "> ");
 				Map<String, Object> schemaProperties = model.getProperties(schema);
-				for (String property : schemaProperties.keySet()) {
-					Serializable value = (Serializable) schemaProperties.get(property);
-					line += property + "=" + value + " ";
+				for (Entry<String, Object> entry : schemaProperties.entrySet()) {
+					Serializable value = (Serializable) schemaProperties.get(entry.getValue());
+					line.append(entry.getKey() + "=" + value + " ");
 				}
-				log.debug(line);
+				log.debug(line.toString());
 			}
 		}
 		catch(Exception e) {
@@ -125,11 +126,11 @@ public class RepositoryLogger {
 	}
 	
 	private String getCharSuite(char c, int length) {
-		String line = "";
+		StringBuffer line = new StringBuffer();
 		for (int i = 0; i< length; i++) {
-			line += c;
+			line.append(c);
 		}
-		return line;
+		return line.toString();
 	}
 	
 }

@@ -11,20 +11,20 @@ import org.apache.commons.logging.LogFactory;
 
 public class RestNotificationFactory {
 
-	public final static String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo";
+	public static final String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo";
 	
-	public enum RestNotificationAPI {
+	public enum RestNotificationService {
 		APPLIIMPL, SERVICEAPI, SERVICE;
 	}
 
 	private static final Log log = LogFactory.getLog(RestNotificationFactory.class);
 	
-	private final static String API_PATH = "/easysoa/notification/";
-	private final static String SERVICE_APPLIIMPL = "appliimpl";
-	private final static String SERVICE_SERVICEAPI = "api";
-	private final static String SERVICE_SERVICE = "service";
+	private static final String API_PATH = "/easysoa/notification/";
+	private static final String SERVICE_APPLIIMPL = "appliimpl";
+	private static final String SERVICE_SERVICEAPI = "api";
+	private static final String SERVICE_SERVICE = "service";
 	
-	private Map<RestNotificationAPI, String> apiUrls;
+	private Map<RestNotificationService, URL> apiUrls;
 	
 	/**
 	 * Creates a new notification factory.
@@ -38,17 +38,32 @@ public class RestNotificationFactory {
 		
 		// Store API services URLs
 		String notificationApiUrl = nuxeoUrl + API_PATH;
-		apiUrls = new HashMap<RestNotificationAPI, String>();
-		apiUrls.put(RestNotificationAPI.APPLIIMPL, notificationApiUrl + SERVICE_APPLIIMPL);
-		apiUrls.put(RestNotificationAPI.SERVICEAPI, notificationApiUrl + SERVICE_SERVICEAPI);
-		apiUrls.put(RestNotificationAPI.SERVICE, notificationApiUrl + SERVICE_SERVICE);
+		apiUrls = new HashMap<RestNotificationService, URL>();
+		apiUrls.put(RestNotificationService.APPLIIMPL, new URL(notificationApiUrl + SERVICE_APPLIIMPL));
+		apiUrls.put(RestNotificationService.SERVICEAPI, new URL(notificationApiUrl + SERVICE_SERVICEAPI));
+		apiUrls.put(RestNotificationService.SERVICE, new URL(notificationApiUrl + SERVICE_SERVICE));
 		
 	}
 	
-	public RestNotificationRequest createNotification(RestNotificationAPI api) {
+	/**
+	 * Creates a notification for the wanted document type.
+	 * @param api
+	 * @return
+	 */
+	public RestNotificationRequest createNotification(RestNotificationService api) {
+	    return createNotification(api, "POST");
+	}
+	
+	/**
+	 * Makes a request to the wanted notification service, allowing to choose the request method.
+	 * ("POST" for a notification, "GET" for the documentation)
+	 * @param api
+	 * @param method
+	 * @return
+	 */
+    public RestNotificationRequest createNotification(RestNotificationService api, String method) {
 		try {
-			RestNotificationImpl notif = new RestNotificationImpl(apiUrls.get(api));
-			return notif;
+			return new RestNotificationRequestImpl(apiUrls.get(api), method);
 		} catch (MalformedURLException e) {
 			log.error(e);
 			return null;

@@ -3,6 +3,7 @@ package org.easysoa.services;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -190,8 +191,9 @@ public class DocumentService extends DefaultComponent {
             for (String schema : from.getDeclaredSchemas()) {
                 Map<String, Object> schemaPropertiesFrom = from.getProperties(schema);
                 Map<String, Object> schemaPropertiesTo = to.getProperties(schema);
-                for (String property : schemaPropertiesFrom.keySet()) {
-                    Serializable fromValue = (Serializable) schemaPropertiesFrom.get(property);
+                for (Entry<String, Object> entry : schemaPropertiesFrom.entrySet()) {
+                    String property = entry.getKey();
+                    Serializable fromValue = (Serializable) entry.getValue();
                     if (fromValue != null && (schemaPropertiesTo.get(property) == null || overwrite)) {
                         to.setPropertyValue(property, fromValue);
                     }

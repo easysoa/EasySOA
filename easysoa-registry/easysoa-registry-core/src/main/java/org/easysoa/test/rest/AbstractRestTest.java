@@ -28,19 +28,20 @@ public abstract class AbstractRestTest {
 	
 	private static final Log log = LogFactory.getLog(AbstractRestTest.class);
 
-	protected static CoreSession session = null;
 	protected static AutomationHelper automation = null;
 	protected static RestNotificationFactory notificationFactory = null;
 	protected static boolean useEmbeddedNuxeo;
+	
+	private static Object notificationFactorySync = new Object();
 
 	protected static void setUp(CoreSession session, String targetedNuxeoPropsPath) throws Exception {
 		
+	    synchronized (notificationFactorySync) {
+	    
 		// Run only once
 		if (notificationFactory != null)
 			return;
 		
-		AbstractRestTest.session = session;
-
 		// Load properties
 		/**
 		 * Nuxeo props file exemple:
@@ -88,9 +89,11 @@ public abstract class AbstractRestTest {
 			automation = new AutomationHelper(nuxeoUrl);
 		}
 		notificationFactory = new RestNotificationFactory(nuxeoUrl);
+
+        }
 	}
 
-	protected void assertDocumentExists(String doctype, String url) throws Exception {
+	protected void assertDocumentExists(CoreSession session, String doctype, String url) throws Exception {
 		if (useEmbeddedNuxeo && session != null) {
 			DocumentService docService = Framework.getService(DocumentService.class);
 			DocumentModel model = null;
