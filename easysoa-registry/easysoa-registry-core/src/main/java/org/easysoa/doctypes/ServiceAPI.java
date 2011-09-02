@@ -23,13 +23,14 @@ public class ServiceAPI extends EasySOADoctype {
 	public static final String PROP_PARENTURL = "parentUrl";
 
 	private static Map<String, String> propertyList = null;
+    private static Object propertyListSync = new Object();
 	
 	/**
      * Returns a map containing all properties from the ServiceAPI schema,
      * with a short description.
      */
 	public static Map<String, String> getPropertyList() {
-        synchronized (DOCTYPE) { // Ensures initialization ended before accessing the list
+        synchronized (propertyListSync) { // Ensures initialization ended before accessing the list
     		if (propertyList == null) {
     			propertyList = new HashMap<String, String>(); 
     			propertyList.put(PROP_URL, "(mandatory) Service API url (WSDL address, parent path...).");

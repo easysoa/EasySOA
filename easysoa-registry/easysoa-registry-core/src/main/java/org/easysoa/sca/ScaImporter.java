@@ -115,13 +115,13 @@ public class ScaImporter {
 					// component !
 					getArchiNameStack().push(name);
 
-				} else if (compositeReader.getLocalName().startsWith("implementation.")) {
+				/*} else if (compositeReader.getLocalName().startsWith("implementation.")) {
 					// implementation !
 					if (compositeReader.getLocalName().equals("implementation.composite")) {
 						//String compositeName = compositeReader.getAttributeValue(null, "name"); // rather than "" ?! // TODO SCA_URI
 						//TODO visitComposite BUT CAN'T SINCE ONLY ONE SCA FILE HAS BEEN UPLOADED
 						// so TODO alts : upload zip, use scm connector, export button from eclipse... 
-					}
+					}*/
 
 				} else if (elementName.equals(SCA_SERVICE_QNAME)) {
 					// service !

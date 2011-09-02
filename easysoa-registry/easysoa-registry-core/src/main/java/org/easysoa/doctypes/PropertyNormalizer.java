@@ -30,7 +30,7 @@ public class PropertyNormalizer extends EasySOADoctype {
 
     public static final String normalizeUrl(String stringUrl, String errMsg) throws MalformedURLException {
         if (stringUrl == null) {
-            throw new MalformedURLException(errMsg + " : " + stringUrl);
+            throw new MalformedURLException(errMsg + ": null");
         }
         if (stringUrl.indexOf("://") != -1) {
             URL url = new URL(stringUrl);
@@ -61,7 +61,7 @@ public class PropertyNormalizer extends EasySOADoctype {
 	 */
 	public static final String normalizeUrlPath(String stringUrl, String errMsg) throws MalformedURLException {
 		if (stringUrl == null) {
-			throw new MalformedURLException(errMsg + " : " + stringUrl);
+			throw new MalformedURLException(errMsg + ": null");
 		}
 		if (stringUrl.contains("localhost")) {
 			stringUrl = stringUrl.replaceFirst("localhost", "127.0.0.1");
@@ -82,10 +82,8 @@ public class PropertyNormalizer extends EasySOADoctype {
 	public static final String concatUrlPath(String... urlPath) {
 		StringBuffer sbuf = new StringBuffer();
 		for (String urlPathElement : urlPath) {
-			if (urlPath != null && urlPath.length != 0) {
-				sbuf.append(urlPathElement);
-				sbuf.append('/');
-			}
+			sbuf.append(urlPathElement);
+			sbuf.append('/');
 		}
 		if (sbuf.length() != 0) {
 			sbuf.deleteCharAt(sbuf.length() - 1);

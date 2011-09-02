@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,11 +75,11 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
 	}
 	
 	private String computeRequestBody() {
-		String body = "";
-		for (String key : requestProperties.keySet()) {
-			body += key + "=" + requestProperties.get(key) + "&";
+		StringBuffer body = new StringBuffer();
+		for (Entry<String, String> entry : requestProperties.entrySet()) {
+			body.append(entry.getKey() + "=" + entry.getValue() + "&");
 		}
-		return body;
+		return body.toString();
 	}
 
 	private JSONObject send(String requestBody) throws IOException {
@@ -94,22 +95,28 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
         // Write request
         OutputStreamWriter writer = null;
         if (requestBody != null) {
-            writer = new OutputStreamWriter(connection.getOutputStream());
-            writer.write(requestBody);
-            writer.flush();
+            try {
+                writer = new OutputStreamWriter(connection.getOutputStream());
+                writer.write(requestBody);
+                writer.flush();
+            }
+            finally {
+                writer.close();
+            }
         }
         
         // Read response
         StringBuffer answer = new StringBuffer();
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String line;
-        while ((line = reader.readLine()) != null) {
-            answer.append(line);
+        try  {
+            while ((line = reader.readLine()) != null) {
+                answer.append(line);
+            }
         }
-        if (writer != null) {
-            writer.close();
+        finally {
+            reader.close();
         }
-        reader.close();
         
 		try {
 			return new JSONObject(answer.toString());

@@ -9,6 +9,7 @@ import static org.easysoa.doctypes.Service.SCHEMA;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
@@ -187,13 +188,12 @@ public class ServiceListener implements EventListener {
             }
             
             // Maintain properties
-            try {
-                if (url != null) {
-                    doc.setProperty(SCHEMA, PROP_URL,
-                            PropertyNormalizer.normalizeUrl(url));
+            if (url != null) {
+                try {
+                    doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
+                } catch (MalformedURLException e) {
+                    log.error("Failed to normalize URL", e);
                 }
-            } catch (Exception e) {
-                log.error("Failed to normalize URL", e);
             }
             if (fileUrl != null) {
                 doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));

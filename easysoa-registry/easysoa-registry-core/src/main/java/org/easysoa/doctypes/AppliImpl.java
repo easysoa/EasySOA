@@ -32,6 +32,7 @@ public class AppliImpl extends EasySOADoctype {
 	public static final String PROP_SERVERENTRY = "serverEntry"; // Internal
 	
 	private static Map<String, String> propertyList = null;
+    private static Object propertyListSync = new Object();
 	
 	/**
      * Returns a map containing all properties from the AppliImpl.SCHEMA schema,
@@ -39,7 +40,7 @@ public class AppliImpl extends EasySOADoctype {
      * @return
      */
 	public static Map<String, String> getPropertyList() {
-		if (propertyList == null) {
+		synchronized (propertyListSync) {
 			propertyList = new HashMap<String, String>(); 
 			propertyList.put(PROP_URL, "(mandatory) Services root.");
 			propertyList.put(PROP_UIURL, "Application GUI entry point.");

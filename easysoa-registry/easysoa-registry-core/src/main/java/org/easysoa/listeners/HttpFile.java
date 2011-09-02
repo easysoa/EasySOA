@@ -42,11 +42,15 @@ public class HttpFile {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,
 				CharacterSet.UTF_8.getName()));
 		int c;
-		while ((c = is.read()) != -1) {
-			bw.write((char) c);
+		try {
+    		while ((c = is.read()) != -1) {
+    			bw.write((char) c);
+    		}
+    		bw.flush();
 		}
-		bw.flush();
-		bw.close();
+		finally {
+		    bw.close();
+		}
 		return this;
 	}
 

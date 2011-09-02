@@ -328,15 +328,15 @@ public class NotificationService extends DefaultComponent {
 		try {
 			previousCallcount = (Long) serviceModel.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT);
 		} catch (Exception e) {
-			previousCallcount = new Long(0);
+			previousCallcount = 0L;
 		}
 		if (previousCallcount == null) {
-			previousCallcount = new Long(0);
+			previousCallcount = 0L;
 		}
 		try {
 			newCallsLong = Long.parseLong(newCalls);
 		} catch (Exception e) {
-			newCallsLong = new Long(0);
+			newCallsLong = 0L;
 		}
 		return ((Long) (newCallsLong + previousCallcount)).toString();
 	}

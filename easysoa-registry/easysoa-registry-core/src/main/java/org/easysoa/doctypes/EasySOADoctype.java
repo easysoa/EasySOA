@@ -30,12 +30,15 @@ public class EasySOADoctype {
     private static Map<String, String> commonPropertyList = null;
     private static Map<String, String> dublinCorePropertyList = null;
 
+    private static Object commonPropertySync = new Object();
+    private static Object dublinCorePropertySync = new Object();
+    
     /**
      * Returns a map containing all properties from the SCHEMA_COMMON schema,
      * with a short description.
      */
     public static Map<String, String> getCommonPropertyList() {
-        synchronized (SCHEMA_COMMON) { // Ensures initialization ended before accessing the list
+        synchronized (commonPropertySync) { // Ensures initialization ended before accessing the list
             if (commonPropertyList == null) {
                 commonPropertyList = new HashMap<String, String>();
                 commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known.");
@@ -58,7 +61,7 @@ public class EasySOADoctype {
      * @return
      */
     public static Map<String, String> getDublinCorePropertyList() {
-        synchronized (SCHEMA_DUBLINCORE) {
+        synchronized (dublinCorePropertySync) {
             if (dublinCorePropertyList == null) {
                 dublinCorePropertyList = new HashMap<String, String>();
                 dublinCorePropertyList.put(PROP_TITLE, "The name of the document.");

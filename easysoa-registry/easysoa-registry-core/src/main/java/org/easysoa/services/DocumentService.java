@@ -30,7 +30,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 // TODO: Switch to real Nuxeo service instead of static access
 public class DocumentService extends DefaultComponent {
     
-    private static final Log log = LogFactory.getLog(DocumentService.class);
+    private static Log log = LogFactory.getLog(DocumentService.class);
 
     // Must not be directly accessed, use getters
     private DocumentModel defaultAppliImpl = null;
@@ -188,7 +188,7 @@ public class DocumentService extends DefaultComponent {
     public boolean mergeDocument(CoreSession session, DocumentModel from,
             DocumentModel to, boolean overwrite) throws ClientException {
         if (to.getType().equals(to.getType())) {
-            for (String schema : from.getDeclaredSchemas()) {
+            for (String schema : from.getDocumentType().getSchemaNames()) {
                 Map<String, Object> schemaPropertiesFrom = from.getProperties(schema);
                 Map<String, Object> schemaPropertiesTo = to.getProperties(schema);
                 for (Entry<String, Object> entry : schemaPropertiesFrom.entrySet()) {

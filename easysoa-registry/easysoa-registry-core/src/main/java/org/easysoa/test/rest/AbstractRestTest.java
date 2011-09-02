@@ -52,8 +52,12 @@ public abstract class AbstractRestTest {
 		 */
 		FileInputStream isProps = new FileInputStream(targetedNuxeoPropsPath);
 		Properties props = new Properties();
-		props.load(isProps);
-		isProps.close();
+		try {
+		    props.load(isProps);
+		}
+		finally {
+		    isProps.close();
+		}
 		
 		// Read properties
 		String externalNuxeoHost = props.getProperty("externalNuxeoHost");
