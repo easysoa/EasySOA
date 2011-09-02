@@ -19,7 +19,7 @@ public class DomainInit extends UnrestrictedSessionRunner {
     public static final String DOMAIN_TITLE = "EasySOA";
     public static final String WORKSPACE_ROOT_TITLE = "Service Registry";
 
-    private static final Log log = LogFactory.getLog(DomainInit.class);
+    private static Log log = LogFactory.getLog(DomainInit.class);
 
     public DomainInit(String repositoryName) {
         super(repositoryName);

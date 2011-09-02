@@ -13,7 +13,7 @@ public class CacheHelper {
     
     public static final String VCS_POOL_JMX_NAME = "jboss.jca:name=NXRepository/default,service=ManagedConnectionPool";
 
-    private static final Log log = LogFactory.getLog(VocabularyHelper.class);
+    private static Log log = LogFactory.getLog(VocabularyHelper.class);
     
     /**
      * Empties the "Visible Content Store" cache.

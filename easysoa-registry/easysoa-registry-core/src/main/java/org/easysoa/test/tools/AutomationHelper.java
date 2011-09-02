@@ -18,7 +18,7 @@ import org.nuxeo.ecm.automation.core.operations.document.Query;
  */
 public class AutomationHelper {
 
-	private static final Log log = LogFactory.getLog(AutomationHelper.class);
+	private static Log log = LogFactory.getLog(AutomationHelper.class);
 	
 	private HttpAutomationClient client = null;
 	private Session session = null;

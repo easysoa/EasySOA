@@ -35,7 +35,7 @@ import org.nuxeo.runtime.api.Framework;
 @Install(precedence = Install.FRAMEWORK)
 public class ScaImportBean {
 
-	private static final Log log = LogFactory.getLog(ScaImportBean.class);
+	private static Log log = LogFactory.getLog(ScaImportBean.class);
 
     @In(create = true, required = false)
 	CoreSession documentManager;

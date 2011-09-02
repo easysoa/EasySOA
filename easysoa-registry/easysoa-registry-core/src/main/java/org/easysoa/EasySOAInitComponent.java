@@ -16,7 +16,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class EasySOAInitComponent extends DefaultComponent {
 
-	private static final Log log = LogFactory.getLog(EasySOAInitComponent.class);
+	private static Log log = LogFactory.getLog(EasySOAInitComponent.class);
 	
 	public void activate(ComponentContext context) throws Exception {
 		

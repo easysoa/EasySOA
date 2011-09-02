@@ -18,11 +18,11 @@ import org.json.JSONObject;
 import org.nuxeo.common.utils.Base64;
 
 public class RestNotificationRequestImpl implements RestNotificationRequest {
-
-	private static final Log log = LogFactory.getLog(RestNotificationRequestImpl.class);
 	
 	private static final String LOGIN = "Administrator";
     private static final String PASSWORD = "Administrator";
+
+    private static Log log = LogFactory.getLog(RestNotificationRequestImpl.class);
 	
 	private URL requestUrl;
 	private Map<String, String> requestProperties; 

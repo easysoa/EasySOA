@@ -8,8 +8,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
@@ -19,9 +17,6 @@ import org.jboss.seam.annotations.Scope;
 @Scope(ScopeType.EVENT)
 @Install(precedence = Install.FRAMEWORK)
 public class PropertyValidatorBean extends EasySOADoctype {
-
-	@SuppressWarnings("unused")
-	private static final Log log = LogFactory.getLog(PropertyValidatorBean.class);
 
 	public void validateUrl(FacesContext context,
 	        UIComponent component, Object value) {

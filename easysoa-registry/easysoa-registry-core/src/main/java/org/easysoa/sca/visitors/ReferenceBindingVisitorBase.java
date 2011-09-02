@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
@@ -21,7 +23,9 @@ import org.nuxeo.runtime.api.Framework;
  */
 // TODO: Refactor visitor implementations
 public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
-	
+
+    private static Log log = LogFactory.getLog(ReferenceBindingVisitorBase.class);
+    
 	protected DocumentModel referenceModel;
 
 	public ReferenceBindingVisitorBase(ScaImporter scaImporter) {

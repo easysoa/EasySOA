@@ -16,13 +16,13 @@ public class RestNotificationFactory {
 	public enum RestNotificationService {
 		APPLIIMPL, SERVICEAPI, SERVICE;
 	}
-
-	private static final Log log = LogFactory.getLog(RestNotificationFactory.class);
 	
 	private static final String API_PATH = "/easysoa/notification/";
 	private static final String SERVICE_APPLIIMPL = "appliimpl";
 	private static final String SERVICE_SERVICEAPI = "api";
 	private static final String SERVICE_SERVICE = "service";
+
+    private static Log log = LogFactory.getLog(RestNotificationFactory.class);
 	
 	private Map<RestNotificationService, URL> apiUrls;
 	

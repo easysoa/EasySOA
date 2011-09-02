@@ -19,9 +19,10 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
  */
 public class RepositoryLogger {
 
-    private static final Log log = LogFactory.getLog(RepositoryLogger.class);
 	private static final int INDENT_STEP = 2; // in spaces
 
+    private static Log log = LogFactory.getLog(RepositoryLogger.class);
+    
 	private CoreSession session;
 	private String title;
 	private RepositoryLoggerMatcher matcher = new RepositoryLoggerMatcher() {

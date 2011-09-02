@@ -39,7 +39,7 @@ public class FraSCAtiService extends DefaultComponent
     public static final ComponentName NAME = new ComponentName(
     		"org.easysoa.frascati.nuxeo.FraSCAtiServiceComponent");
 
-	private static final Log log = LogFactory.getLog(FraSCAtiService.class);
+	private static Log log = LogFactory.getLog(FraSCAtiService.class);
 
 	private FraSCAti frascati;
 

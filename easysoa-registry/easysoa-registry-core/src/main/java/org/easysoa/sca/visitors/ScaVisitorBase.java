@@ -2,8 +2,6 @@ package org.easysoa.sca.visitors;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.ScaImporter;
 import org.easysoa.services.NotificationService;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -17,8 +15,6 @@ import org.nuxeo.runtime.api.Framework;
  */
 // TODO: Refactor visitor implementations
 public abstract class ScaVisitorBase implements ScaVisitor {
-	
-	protected static final Log log = LogFactory.getLog(ScaImporter.class);
 
 	protected CoreSession documentManager;
 	protected ScaImporter scaImporter;

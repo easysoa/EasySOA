@@ -30,10 +30,10 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class ImplementationRelationService extends DefaultComponent {
 	
-	private static final Log log = LogFactory.getLog(ImplementationRelationService.class);
-	
 	public static final String DEFAULT_PREDICATE = "Est rattaché à";
 	public static final String DEFAULT_PREDICATE_INVERSE = "Est implémenté par";
+    
+    private static Log log = LogFactory.getLog(ImplementationRelationService.class);
 
 	/**
 	* Returns all document related to specified document.

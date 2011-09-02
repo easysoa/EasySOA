@@ -49,7 +49,7 @@ public class ScaImporter {
 	public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
 	public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
 	
-	private static final Log log = LogFactory.getLog(ScaImporter.class);
+	private static Log log = LogFactory.getLog(ScaImporter.class);
 
 	private CoreSession documentManager;
 	private Blob compositeFile;

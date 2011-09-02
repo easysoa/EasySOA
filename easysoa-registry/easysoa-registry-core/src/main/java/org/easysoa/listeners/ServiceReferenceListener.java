@@ -22,7 +22,7 @@ import org.nuxeo.runtime.api.Framework;
 
 public class ServiceReferenceListener implements EventListener {
 	
-	private static final Log log = LogFactory.getLog(ServiceReferenceListener.class);
+	private static Log log = LogFactory.getLog(ServiceReferenceListener.class);
 
 	public void handleEvent(Event event) {
 		

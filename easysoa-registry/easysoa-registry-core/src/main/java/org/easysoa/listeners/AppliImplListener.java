@@ -26,7 +26,7 @@ import org.nuxeo.runtime.api.Framework;
 
 public class AppliImplListener implements EventListener {
 
-	private static final Log log = LogFactory.getLog(AppliImplListener.class);
+	private static Log log = LogFactory.getLog(AppliImplListener.class);
 
 	public void handleEvent(Event event) {
 

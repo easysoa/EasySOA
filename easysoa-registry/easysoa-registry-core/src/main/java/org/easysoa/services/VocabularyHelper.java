@@ -27,7 +27,7 @@ public class VocabularyHelper extends DefaultComponent {
 	public static final String VOCABULARY_ENVIRONMENT = "environment";
 	public static final String VOCABULARY_SERVER = "server"; 
 	
-	private static final Log log = LogFactory.getLog(VocabularyHelper.class);
+	private static Log log = LogFactory.getLog(VocabularyHelper.class);
 	
 	/**
 	 * Checks if entry ID exists in a vocabulary.

@@ -26,14 +26,14 @@ public class NotificationService extends DefaultComponent {
     public static final ComponentName NAME = new ComponentName(
     		"org.easysoa.notification.NotificationServiceComponent");
 
-	private static final Log log = LogFactory.getLog(NotificationService.class);
-
 	private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
 	private static final String ERROR_API_URL_APPLIIMPL = ERROR_API_URL_BASE + "bad appliimpl URL";
 	private static final String ERROR_API_URL_API = ERROR_API_URL_BASE + "bad api URL";
 	private static final String ERROR_API_URL_SERVICE = ERROR_API_URL_BASE + "bad service URL";
 	
 	private static final Map<String, String> propertyFilter = new HashMap<String, String>();
+
+    private static Log log = LogFactory.getLog(NotificationService.class);
 	
 	public NotificationService() {
 		propertyFilter.put(AppliImpl.PROP_URL, null);

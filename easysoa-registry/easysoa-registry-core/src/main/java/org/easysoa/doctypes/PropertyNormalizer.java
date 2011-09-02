@@ -13,11 +13,11 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PropertyNormalizer extends EasySOADoctype {
 
-	@SuppressWarnings("unused")
-	private static final Log log = LogFactory.getLog(PropertyNormalizer.class);
-
 	private static final String DEFAULT_NORMALIZE_ERROR = "Failed to normalize property";
 
+    @SuppressWarnings("unused")
+    private static Log log = LogFactory.getLog(PropertyNormalizer.class);
+    
 	/**
 	 * Normalizes the given URL :
 	 * Ensures that all pathElements are separated by a single slash,

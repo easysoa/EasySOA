@@ -26,12 +26,11 @@ import org.nuxeo.runtime.api.Framework;
  */
 public abstract class AbstractRestTest {
 	
-	private static final Log log = LogFactory.getLog(AbstractRestTest.class);
-
 	protected static AutomationHelper automation = null;
 	protected static RestNotificationFactory notificationFactory = null;
 	protected static boolean useEmbeddedNuxeo;
-	
+
+    private static Log log = LogFactory.getLog(AbstractRestTest.class);
 	private static Object notificationFactorySync = new Object();
 
 	protected static void setUp(CoreSession session, String targetedNuxeoPropsPath) throws Exception {
