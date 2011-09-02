@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.ow2.frascati.util.FrascatiException;
@@ -47,7 +48,7 @@ public class PartiallyMockedHttpDiscoveryProxyTest extends AbstractProxyTestStar
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(FullMockedHttpDiscoveryProxyTest.class.getName());    
+	private static Logger logger = Logger.getLogger(FullMockedDiscoveryModeProxyTest.class.getName());    
     
 	/**
 	 * Initialize one time the remote systems for the test
@@ -63,7 +64,7 @@ public class PartiallyMockedHttpDiscoveryProxyTest extends AbstractProxyTestStar
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
-	   startHttpDiscoveryProxy();
+	   startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
 	   // Start services mock
 	   startMockServices(false);
     }
@@ -304,6 +305,18 @@ public class PartiallyMockedHttpDiscoveryProxyTest extends AbstractProxyTestStar
 		assertEquals("http://localhost:8085/meteo", jsonObject.get("serv:url"));			
 
 		logger.info("Test SOAP Discovery mode ended successfully !");
+	}
+
+	@Test
+	@Ignore
+	public final void testRestValidatedMode() throws Exception {
+		// TODO To complete with the test code for REST validated mode
+	}	
+	
+	@Test
+	@Ignore
+	public final void testSoapValidatedMode() throws Exception {
+		// TODO To complete with the test code for SOAP validated mode		
 	}
 	
 }

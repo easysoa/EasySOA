@@ -1,6 +1,7 @@
 package com.openwide.easysoa.esper;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -9,6 +10,10 @@ import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
+import com.openwide.easysoa.monitoring.soa.Api;
+import com.openwide.easysoa.monitoring.soa.Appli;
+import com.openwide.easysoa.monitoring.soa.Node;
+import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.monitoring.soa.WSDLService;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
@@ -24,6 +29,12 @@ public class MessageListener implements UpdateListener {
 	 * Logger
 	 */
 	static Logger logger = Logger.getLogger(MessageListener.class.getName());
+	
+	private List<Node> soaNodes;
+	
+	public MessageListener(List<Node> soaNodes){
+		this.soaNodes = soaNodes;
+	}
 	
 	/**
 	 * Update
@@ -56,14 +67,15 @@ public class MessageListener implements UpdateListener {
 			service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
 			nrs.registerWSDLService(service);
 		} else {
-			//TODO Refactoring the ESPER section, no acces to the monitor service here .... 
-			/*
-			List<Node> soaNodes = DiscoveryMonitoringService.getMonitorService().getModel().getSoaNodes();
+			//TODO Refactoring the ESPER section, no acces to the monitor service here ....
+
+			//List<Node> soaNodes = DiscoveryMonitoringService.getMonitorService().getModel().getSoaNodes();
 			Node soaNode = null;
-			for(Node node : soaNodes){
+			for(Node node : this.soaNodes){
 				if(node.getUrl().equals(msg.getUrl())){
 					soaNode = node;
-					logger.debug("Node found ! " + soaNode.getTitle());					
+					logger.debug("Node found ! " + soaNode.getTitle());
+					break;
 				}
 			}
 			if(soaNode instanceof Service){
@@ -74,7 +86,7 @@ public class MessageListener implements UpdateListener {
 				// Nothing to do, no counter to increase for API
 			} else if(soaNode instanceof Appli){
 				// Nothing to do, no counter to increase for Appli
-			}*/
+			}
 		}
 	}
 	

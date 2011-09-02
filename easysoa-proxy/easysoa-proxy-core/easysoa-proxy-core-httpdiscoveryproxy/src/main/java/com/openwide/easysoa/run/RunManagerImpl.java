@@ -39,6 +39,7 @@ public class RunManagerImpl implements RunManager {
 	 * Reference to monitoring service : only one monitoring service for the runManager 
 	 */
 	// TODO One monitoring service for each run.
+	// TODO A discoveryMonitoringService is hard configured in the composite file.
 	@Reference
 	MonitoringService monitoringService;
 

@@ -43,12 +43,12 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
  * @author jguillemotte
  *
  */
-public class FullMockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
+public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(FullMockedHttpDiscoveryProxyTest.class.getName());    
+	private static Logger logger = Logger.getLogger(FullMockedDiscoveryModeProxyTest.class.getName());    
     
 	/**
 	 * Initialize one time the remote systems for the test
@@ -65,7 +65,7 @@ public class FullMockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
-	   startHttpDiscoveryProxy();
+	   startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
 	   // Start services mock
 	   startMockServices(true);
     }
@@ -136,23 +136,22 @@ public class FullMockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		DefaultHttpClient httpProxyDriverClient = new DefaultHttpClient();
 		
 		// Set Discovery mode
-		logger.info("Set proxy mode to Discovery");
-		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/setMonitoringMode/discovery"), responseHandler);
-		assertEquals("Monitoring mode set", resp);
+		// Useless, the mode is set directly in the composite file
+		// In future versions, it will be possible to change the mode with the proxy driver
+		//logger.info("Set proxy mode to Discovery");
+		//String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/setMonitoringMode/discovery"), responseHandler);
+		//assertEquals("Monitoring mode set", resp);
 		
 		// Start a new run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/RESTDiscoveryTestRun"), responseHandler);
+		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/RESTDiscoveryTestRun"), responseHandler);
 		logger.info("start run : " + resp);
 		assertEquals("Run 'RESTDiscoveryTestRun' started !", resp);
 		
 		// Set client to use the HTTP Discovery Proxy
 		HttpHost proxy = new HttpHost("localhost", 8082);
-		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);		
+		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 		
 		// Send Http Rest requests
-		// TODO 2 Separated tests : one with real services, one with mock services
-		// TODO : A twitter mock service because requests on Twitter api are limited to 150 per hour
-		// TODO : A Nuxeo mock to avoid to have a started Nuxeo to launch the test
 		UrlMock urlMock = new UrlMock();
 		for(String url : urlMock.getTwitterUrlData("localhost:8081")){
 			logger.info("Request send : " + url);			
@@ -210,10 +209,6 @@ public class FullMockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 		
 		logger.info("Test REST Discovery mode ended successfully !");
 	}
-
-	// TODO tests for validated mode
-	// Set Validated mode
-	// Send http rest requests
 	
 	/**
 	 * Test the discovery mode for SOAP requests
@@ -309,5 +304,5 @@ public class FullMockedHttpDiscoveryProxyTest extends AbstractProxyTestStarter {
 
 		logger.info("Test SOAP Discovery mode ended successfully !");
 	}
-	
+
 }

@@ -7,6 +7,8 @@ import org.openwide.easysoa.test.Utilities;
 
 public class NuxeoMockImpl implements NuxeoMock {
 
+	private final static String REGISTRY_REQUEST = "{\"params\":{\"query\":\"SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path\"}}";
+	
 	/**
 	 * Logger
 	 */
@@ -21,9 +23,17 @@ public class NuxeoMockImpl implements NuxeoMock {
 
 	@Override
 	public String processAutomationRequest(UriInfo ui, Request request, String body) {
-		if(body.contains("dc:title = 'meteo'")){
+		System.out.println("Body request : " + body);
+		// Registry content request
+		if(REGISTRY_REQUEST.equals(body)) {
+			return Utilities.readResponseFile("src/test/resources/nuxeoMockMessages/nuxeoRegistryContent.json");
+		}
+		// SOAP test request
+		else if(body.contains("dc:title = 'meteo'")){
 			return Utilities.readResponseFile("src/test/resources/nuxeoMockMessages/nuxeoResponseTestSoap.json");
-		} else {
+		} 
+		// REST test request
+		else {
 			return Utilities.readResponseFile("src/test/resources/nuxeoMockMessages/nuxeoResponseTestRest.json");
 		}
 	}

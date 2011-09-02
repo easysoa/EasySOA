@@ -54,7 +54,7 @@ public class SoaNodesJsonMapper implements JsonMapper {
 			res = service;
 		}
 		else if ("Workspace".equals(child.get("type"))){
-			Appli appli = new Appli(child.getJSONObject("properties").getString("webc:name"), child.getJSONObject("properties").getString("app:rootServicesUrl"));
+			Appli appli = new Appli(child.getJSONObject("properties").getString("webc:name"), child.getJSONObject("properties").getString("app:url"));
 			appli.setTitle(child.getJSONObject("properties").getString("dc:title"));
 			appli.setDescription(child.getJSONObject("properties").getString("dc:description"));
 			appli.setServer(child.getJSONObject("properties").getString("app:server"));

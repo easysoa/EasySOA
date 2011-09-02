@@ -1,5 +1,7 @@
 package com.openwide.easysoa.esper;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Scope;
 
@@ -11,6 +13,7 @@ import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
+import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.proxy.PropertyManager;
 
 /**
@@ -19,6 +22,8 @@ import com.openwide.easysoa.proxy.PropertyManager;
  *
  */
 @Scope("composite")
+
+// TODO Huge refactoring of this class is needed !!
 public class EsperEngineSingleton {
 
 	/**
@@ -44,7 +49,9 @@ public class EsperEngineSingleton {
 	/**
 	 * Constructor
 	 */
-	private EsperEngineSingleton(){
+	//TODO Refactor : remove the esper singleton, init the engine with FraSCAti !!!
+	// Remove the param soaNodes form the constructor !
+	private EsperEngineSingleton(List<Node> soaNodes){
 		// get current context classloader                                                                                                                                  
 		ClassLoader contextClassloader = Thread.currentThread().getContextClassLoader();
 		// then alter the classloader
@@ -62,7 +69,7 @@ public class EsperEngineSingleton {
 	    	//EPStatement cepStatementMessage = cepAdm.createEPL("select * from Message");
 	    	//EPStatement cepStatementMessage = cepAdm.createEPL("select * from pattern[every-distinct(s.completeMessage) s=Message]");
 	    	EPStatement cepStatementMessage = cepAdm.createEPL(PropertyManager.getProperty("esper.message.listener.statement"));
-	    	cepStatementMessage.addListener(new MessageListener());
+	    	cepStatementMessage.addListener(new MessageListener(soaNodes));
 	    	/*
 	    	// Message counter statement
 	    	//EPStatement cepStatementWindowCounter = cepAdm.createEPL("create window countWindow.win:keepall() as select count(*) as count, completeMessage as service from Message group by completeMessage"); 
@@ -93,9 +100,9 @@ public class EsperEngineSingleton {
 	 * Returns the Esper Runtime
 	 * @return Esper Runtime
 	 */
-	public static EPRuntime getEsperRuntime(){
+	public static EPRuntime getEsperRuntime(List<Node> soaNodes){
 		if(cepRT == null || esperEngine == null){
-			esperEngine = new EsperEngineSingleton(); 
+			esperEngine = new EsperEngineSingleton(soaNodes); 
 		}
 		return cepRT;
 	}
@@ -104,9 +111,9 @@ public class EsperEngineSingleton {
 	 * Returns the Esper Runtime
 	 * @return Esper Administrator
 	 */
-	public static EPAdministrator getEsperAdmin(){
+	public static EPAdministrator getEsperAdmin(List<Node> soaNodes){
 		if(cepRT == null || esperEngine == null){
-			esperEngine = new EsperEngineSingleton(); 
+			esperEngine = new EsperEngineSingleton(soaNodes); 
 		}
 		return cepAdm;
 	}
