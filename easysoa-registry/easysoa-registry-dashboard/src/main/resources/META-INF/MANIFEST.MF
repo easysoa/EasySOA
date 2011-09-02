@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 1
-Bundle-Name: easysoa-model-demo-dashboard
-Bundle-SymbolicName: org.easysoa.demo.dashboard;singleton:=true
+Bundle-Name: easysoa-registry-dashboard
+Bundle-SymbolicName: org.easysoa.registry.dashboard;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: EasySOA
 Require-Bundle: org.nuxeo.opensocial.gadgets.core
