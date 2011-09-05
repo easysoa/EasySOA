@@ -8,4 +8,4 @@ echo "DEPENDENCY: Running Travel demo"
 echo $LINE
 
 CUSTOM_JAVA_OPTS=-Dcxf.config.file=cxfEsperProxy.xml
-./bin/frascati-easysoa run RestSoapProxy.composite -libpath sca-apps/easysoa-samples-smarttravel-scaffolder-proxy-0.3-SNAPSHOT.jar
+./bin/frascati-easysoa run RestSoapProxy.composite -libpath ./sca-apps/easysoa-samples-smarttravel-scaffolder-proxy-0.3-SNAPSHOT.jar
