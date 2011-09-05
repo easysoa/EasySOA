@@ -74,6 +74,7 @@ public class UrlTreeEventListener implements UpdateListener {
 				}
 			}
 			// Service detection
+			// TODO Add an efficient service detection system
 			//Comment faire la distinction entre service et api ????
 			// identification d'un service atomique : ratio du noeud aux messages vu > 
 			// 1 à 10 (?) et ratio du noeud à ses enfants (s'il en a) > 1 à 10 (?)

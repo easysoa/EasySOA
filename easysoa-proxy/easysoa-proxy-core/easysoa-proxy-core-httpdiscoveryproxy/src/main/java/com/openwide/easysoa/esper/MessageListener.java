@@ -7,7 +7,7 @@ import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.Message.MessageType;
-import com.openwide.easysoa.monitoring.soa.WSDLService;
+import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 /**
@@ -50,8 +50,13 @@ public class MessageListener implements UpdateListener {
 		}
 		serviceName = serviceName.replace('/', '_');
 		if(MessageType.WSDL.compareTo(msg.getType()) == 0){
-			WSDLService service;
-			service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
+			Service service;
+			//WSDLService service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
+			service = new Service(msg.getUrl());
+			service.setTitle(serviceName);
+			service.setHttpMethod(msg.getMethod());
+			service.setCallCount(1);
+			//nrs.registerWSDLService(service);
 			nrs.registerWSDLService(service);
 		}
 		/*else {

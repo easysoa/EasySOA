@@ -13,7 +13,6 @@ import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
-import com.openwide.easysoa.monitoring.soa.WSDLService;
 import com.openwide.easysoa.proxy.PropertyManager;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -27,7 +26,7 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  */
 public class NuxeoRegistrationService {
 
-	private final static String NUXEO_WSDL_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/wsdlscraper/";
+	//private final static String NUXEO_WSDL_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/wsdlscraper/";
 	private final static String NUXEO_REST_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/notification/";
 	private final static String NUXEO_AUTOMATION_DEFAULT_URL = "http://localhost:8080/nuxeo/site/automation/";
 	/**
@@ -40,7 +39,7 @@ public class NuxeoRegistrationService {
 	 * @param service The service to register
 	 * @return The response send back by Nuxeo
 	 */
-	@Deprecated
+	/*@Deprecated
 	public String registerWSDLService(WSDLService service){
 		//TODO Change this method to register correctly WSDl in Nuxeo
 		StringBuffer sb = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.wsdl.url", NUXEO_WSDL_DEFAULT_URL));
@@ -56,7 +55,7 @@ public class NuxeoRegistrationService {
 		String textEntity = response.getEntity(String.class);
 		logger.debug("[registerWSDLService()] --- Registration request response = " + textEntity);	
 		return textEntity;
-	}
+	}*/
 	
 	/**
 	 * Register a WSDL SOAP service in Nuxeo
