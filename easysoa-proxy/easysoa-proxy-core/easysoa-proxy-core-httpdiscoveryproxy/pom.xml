@@ -147,7 +147,7 @@
 			</build>
 		</profile>
 		<profile>
-	    	<id>night-test</id>
+	    	<id>integration-tests</id>
 	      	<build>
 				<defaultGoal>install</defaultGoal>	      	
 	        	<plugins>

@@ -15,14 +15,18 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
  */
 public abstract class AbstractProxyTestStarter {
 	
+	public final static int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8084;
+	public final static int HTTP_DISCOVERY_PROXY_PORT = 8082;
+	public final static int SERVICES_MOCK_PORT = 8081;
+	
 	/**
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(getInvokingClassName());    
-    
+
 	/** The FraSCAti platform */
     protected static FraSCAti frascati;
-   
+
 	static {
 		System.setProperty("org.ow2.frascati.bootstrap", "org.ow2.frascati.bootstrap.FraSCAti");
 	}
@@ -33,7 +37,7 @@ public abstract class AbstractProxyTestStarter {
      */
     public static String getInvokingClassName() {
     	return Thread.currentThread().getStackTrace()[1].getClassName();
-    }	
+    }
 	
 	/**
 	 * Start FraSCAti
@@ -73,7 +77,7 @@ public abstract class AbstractProxyTestStarter {
 	 * @throws JSONException 
 	 */
 	public final static String cleanNuxeoRegistery() throws JSONException  {
-		// Not possible NXQL to select only one field, only select * is available ... Strange
+		// Not possible NXQL to select only one field, only select * is available ..
 		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' AND (ecm:primaryType = 'Service' OR ecm:primaryType = 'ServiceAPI' OR ecm:primaryType = 'Workspace')";
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
@@ -94,7 +98,6 @@ public abstract class AbstractProxyTestStarter {
 		
 		// check that docs are well deleted
 		return nuxeoResponse = nrs.sendQuery(nuxeoQuery);
-		//assertEquals("{\n  \"entity-type\": \"documents\",\n  \"entries\": []\n}", nuxeoResponse);		
 	}	
 	
 }

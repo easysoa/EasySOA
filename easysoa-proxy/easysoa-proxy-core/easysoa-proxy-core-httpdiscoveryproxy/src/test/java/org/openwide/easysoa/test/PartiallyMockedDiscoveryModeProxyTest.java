@@ -82,12 +82,12 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
 		
 		// Set client to use the HTTP Discovery Proxy
-		HttpHost proxy = new HttpHost("localhost", 8082);
+		HttpHost proxy = new HttpHost("localhost", HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);				
 		
 		// Send a request to the proxy itself 
 		try{
-			httpProxyClient.execute(new HttpGet("http://localhost:8082/"), responseHandler);
+			httpProxyClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_PORT + "/"), responseHandler);
 		} 
 		catch(HttpResponseException ex){
 			assertEquals(500, ex.getStatusCode());
@@ -135,21 +135,21 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		
 		// Set Discovery mode
 		logger.info("Set proxy mode to Discovery");
-		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/setMonitoringMode/discovery"), responseHandler);
+		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/setMonitoringMode/discovery"), responseHandler);
 		assertEquals("Monitoring mode set", resp);
 		
 		// Start a new run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/RESTDiscoveryTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/RESTDiscoveryTestRun"), responseHandler);
 		logger.info("start run : " + resp);
 		assertEquals("Run 'RESTDiscoveryTestRun' started !", resp);
 		
 		// Set client to use the HTTP Discovery Proxy
-		HttpHost proxy = new HttpHost("localhost", 8082);
+		HttpHost proxy = new HttpHost("localhost", HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);		
 		
 		// Send Http Rest requests
 		UrlMock urlMock = new UrlMock();
-		for(String url : urlMock.getTwitterUrlData("localhost:8081")){
+		for(String url : urlMock.getTwitterUrlData("localhost:" + SERVICES_MOCK_PORT)){
 			logger.info("Request send : " + url);			
 			HttpUriRequest httpUriRequest = new HttpGet(url);
 			try {
@@ -162,7 +162,7 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		}
 
 		// Stop the run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/stopCurrentRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
 		assertEquals("Current run stopped !", resp);
 		logger.info("stop run : " + resp);
 		
@@ -184,13 +184,13 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
 		// Do to same thing but less readable
 		// JSONObject jsonObject = new JSONObject(new JSONObject(new JSONArray(new JSONObject(nuxeoResponse).getString("entries")).getJSONObject(0).toString()).getString("properties"));
-		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));			
+		assertEquals("http://localhost:" + SERVICES_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));			
 
 		// Delete the registered stuff in Nuxeo, then re-run the recorded Twitter test run
 		cleanNuxeoRegistery();
 		
 		//Re-run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/reRun/RESTDiscoveryTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/reRun/RESTDiscoveryTestRun"), responseHandler);
 		assertEquals("Re-run done", resp);
 
 		// Check registered api's in Nuxeo
@@ -200,7 +200,7 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 		jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
 		// Do to same thing but less readable
-		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));		
+		assertEquals("http://localhost:" + SERVICES_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));		
 		
 		logger.info("Test REST Discovery mode ended successfully !");
 	}
@@ -253,12 +253,12 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		
 		// Set Discovery mode
 		logger.info("Set proxy mode to Discovery");
-		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/setMonitoringMode/discovery"), responseHandler);
+		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/setMonitoringMode/discovery"), responseHandler);
 		assertEquals("Monitoring mode set", resp);
 		//logger.info("mode setting : " + resp);
 		
 		// Start a new run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/startNewRun/SOAPDiscoveryTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/SOAPDiscoveryTestRun"), responseHandler);
 		logger.info("start run : " + resp);
 		assertEquals("Run 'SOAPDiscoveryTestRun' started !", resp);		
 		
@@ -268,7 +268,7 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		// HTTP proxy Client
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();		
 		// Set client to use the HTTP Discovery Proxy
-		HttpHost proxy = new HttpHost("localhost", 8082);
+		HttpHost proxy = new HttpHost("localhost", HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);		
 		
 		HttpPost httpPost = new HttpPost("http://localhost:8085/meteo");
@@ -283,7 +283,7 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 		}
 		
 		// Stop the run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/stopCurrentRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
 		assertEquals("Current run stopped !", resp);
 		logger.info("stop run : " + resp);		
 		
