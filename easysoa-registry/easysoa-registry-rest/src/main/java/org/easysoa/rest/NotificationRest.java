@@ -25,7 +25,7 @@ import org.easysoa.services.NotificationService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.webengine.session.UserSession;
+import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.runtime.api.Framework;
 
 import com.sun.jersey.api.core.HttpContext;
@@ -59,7 +59,7 @@ public class NotificationRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doPostAppliImpl(@Context HttpContext httpContext,
 	        @Context HttpServletRequest request) throws JSONException {
-		CoreSession session = UserSession.getCurrentSession(request).getCoreSession();
+        CoreSession session = SessionFactory.getSession(request);
 		Map<String, String> params = getFormValues(httpContext);
 		try {
 			notifService.notifyAppliImpl(session, params);
@@ -101,7 +101,7 @@ public class NotificationRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doPostApi(@Context HttpContext httpContext,
             @Context HttpServletRequest request) throws JSONException {
-        CoreSession session = UserSession.getCurrentSession(request).getCoreSession();
+        CoreSession session = SessionFactory.getSession(request);
 		Map<String, String> params = getFormValues(httpContext);
 		try {
 			notifService.notifyServiceApi(session, params);
@@ -142,7 +142,7 @@ public class NotificationRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object doPostService(@Context HttpContext httpContext,
             @Context HttpServletRequest request) throws JSONException {
-        CoreSession session = UserSession.getCurrentSession(request).getCoreSession();
+        CoreSession session = SessionFactory.getSession(request);
 		Map<String, String> params = getFormValues(httpContext);
 		try {
 			notifService.notifyService(session, params);

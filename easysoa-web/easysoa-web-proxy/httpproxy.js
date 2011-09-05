@@ -9,6 +9,7 @@ eval(fs.readFileSync('httpproxy-config.js', 'ASCII'));
 var wsdlList = new Array();
 var clients = null;
 var nuxeo_notification = url.parse(config.nuxeo_notification);
+var authorizationValue = "Basic " + base64.encode('Administrator:Administrator');
 
 function responseError(request, response, msg) {
 	console.error("[ERROR] " + msg + " (on request for "+request.url+")");
@@ -290,7 +291,8 @@ io.on('connection', function(client){
 			  path : nuxeo_notification.href+"service",
 			  headers : {
 			    'Content-Type': 'application/x-www-form-urlencoded',
-			    'Content-Length': body.length
+			    'Content-Length': body.length,
+			    'Authorization': authorizationValue
 			  }
 		  };
       sendRestRequest(client, nuxeo_upload_options, body);
