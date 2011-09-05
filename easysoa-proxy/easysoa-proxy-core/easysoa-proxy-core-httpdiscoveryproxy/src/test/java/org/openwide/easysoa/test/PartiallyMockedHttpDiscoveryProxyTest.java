@@ -148,9 +148,6 @@ public class PartiallyMockedHttpDiscoveryProxyTest extends AbstractProxyTestStar
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);		
 		
 		// Send Http Rest requests
-		// TODO 2 Separated tests : one with real services, one with mock services
-		// TODO : A twitter mock service because requests on Twitter api are limited to 150 per hour
-		// TODO : A Nuxeo mock to avoid to have a started Nuxeo to launch the test
 		UrlMock urlMock = new UrlMock();
 		for(String url : urlMock.getTwitterUrlData("localhost:8081")){
 			logger.info("Request send : " + url);			

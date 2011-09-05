@@ -70,7 +70,6 @@ public abstract class AbstractProxyTestStarter {
  
 	/**
 	 * Clean Nuxeo registery before to launch the tests
-	 * TODO Find an other method to clean because it is not possible with using only NXQL 
 	 * @throws JSONException 
 	 */
 	public final static String cleanNuxeoRegistery() throws JSONException  {

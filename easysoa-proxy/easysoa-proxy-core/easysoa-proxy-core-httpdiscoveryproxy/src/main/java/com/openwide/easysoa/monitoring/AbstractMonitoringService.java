@@ -4,8 +4,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.osoa.sca.annotations.Reference;
-
 import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 

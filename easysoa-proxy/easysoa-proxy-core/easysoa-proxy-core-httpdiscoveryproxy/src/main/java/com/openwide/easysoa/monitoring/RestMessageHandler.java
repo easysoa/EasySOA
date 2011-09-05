@@ -49,7 +49,6 @@ public class RestMessageHandler implements MessageHandler {
 				logger.debug("Validated mode, message send to esper");
 				// if there, feed it to esper
 				// TODO write listener that group by serviceUrl and register to nuxeo every minute
-				// TODO why send a message here and not a soaNode ???
 				Node soaNode = null;
 				for(Node node : monitoringService.getModel().getSoaNodes()){
 					if(node.getUrl().equals(message.getUrl())){

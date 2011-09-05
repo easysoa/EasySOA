@@ -55,8 +55,6 @@ public class MessageListener implements UpdateListener {
 			nrs.registerWSDLService(service);
 		}
 		/*else {
-			//TODO Refactoring the ESPER section, no acces to the monitor service here ....
-
 			//List<Node> soaNodes = DiscoveryMonitoringService.getMonitorService().getModel().getSoaNodes();
 			Node soaNode = null;
 			for(Node node : this.soaNodes){
