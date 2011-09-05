@@ -22,7 +22,7 @@ import org.ow2.frascati.util.FrascatiException;
 
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
-public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
+public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Logger
@@ -38,19 +38,19 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
     @BeforeClass
 	public final static void setUp() throws FrascatiException, InterruptedException, JSONException {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
-	   // Clean Nuxeo registery
-	   // Mocked so don't need to clean
+	   // Clean Nuxeo registery, No clean here, validated mode require a filled registry to work ! Run the PartiallyMockedDiscoveryModeProxy test first !
 	   //cleanNuxeoRegistery();
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
 	   startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy_validatedMode.composite");
 	   // Start services mock
-	   startMockServices(true);
+	   startMockServices(false);
     }	
 	
 	@Test
 	public final void testRestValidatedMode() throws Exception {
+		// TODO To complete with the test code for REST validated mode
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// HTTP proxy Client
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
@@ -108,6 +108,18 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
 		String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
 		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));			
+		
+		//Re-run, no need to clean Nuxeo registry here : validated mode
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:8084/reRun/RESTValidatedTestRun"), responseHandler);
+		assertEquals("Re-run done", resp);
+
+		// Check registered api's in Nuxeo
+		nuxeoResponse = nrs.sendQuery(nuxeoQuery);		
+		// Get the property JSON Object
+		entries = new JSONObject(nuxeoResponse).getString("entries");
+		firstEntry = new JSONArray(entries).getJSONObject(0).toString();
+		jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
+		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));
 		
 		logger.info("Test REST Validated mode ended successfully !");		
 	}

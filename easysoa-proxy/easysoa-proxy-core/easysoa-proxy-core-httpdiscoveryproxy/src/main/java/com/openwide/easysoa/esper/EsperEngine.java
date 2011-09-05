@@ -15,6 +15,6 @@ public interface EsperEngine {
 	 * Send a event to the Esper engine 
 	 * @param soaNode The <code>Message</code> contained in the event
 	 */
-	public void sendEvent(Message message);	
+	public void sendEvent(Message message);
 	
 }

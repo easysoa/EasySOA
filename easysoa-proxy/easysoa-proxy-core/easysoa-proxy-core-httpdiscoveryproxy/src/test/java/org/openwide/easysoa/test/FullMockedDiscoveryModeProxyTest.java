@@ -204,7 +204,6 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		entries = new JSONObject(nuxeoResponse).getString("entries");
 		firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 		jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-		// Do to same thing but less readable
 		assertEquals("http://localhost:8081/1/users/show", jsonObject.get("serv:url"));		
 		
 		logger.info("Test REST Discovery mode ended successfully !");

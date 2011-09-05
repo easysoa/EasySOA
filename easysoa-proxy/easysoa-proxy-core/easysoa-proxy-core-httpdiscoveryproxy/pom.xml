@@ -98,7 +98,8 @@
         		<artifactId>maven-surefire-plugin</artifactId>
         		<configuration>
           			<excludes>
-            			<exclude>**/PartiallyMockedHttpDiscoveryProxyTest.java</exclude>
+            			<exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
+            			<exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
           			</excludes>
         		</configuration>
       		</plugin>				
