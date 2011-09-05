@@ -88,7 +88,7 @@ define 'easysoa', :base_dir => '../' do
   desc 'Esper & Light proxies'
   define 'easysoa-proxy' do
     task :mvn do
-      maven(['clean', 'install'], project)
+      maven(['clean', 'install', '-DskipTests=true'], project)
     end
   end
   
