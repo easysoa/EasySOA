@@ -1,6 +1,5 @@
 .themeSectionFrame {
-	background: url('/nuxeo/img/theme_galaxy/small_gray_bar.png');
-	background-repeat: repeat-y;
+	background: url('/nuxeo/img/theme_galaxy/small_gray_bar.png') !important;
 }
 
 .tooltip {
