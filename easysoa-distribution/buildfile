@@ -23,7 +23,7 @@ PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+RELEASE_VERSION+'.tar.gz';
 
 # Generated
 NUXEO_PLUGINS_PATH = NUXEO_PATH+'/nxserver/plugins/'
-NUXEO_LIBS_PATH = NUXEO_PATH+'/nxserver/lib/'
+NUXEO_LIBS_PATH = NUXEO_PATH+'/lib/'
 MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
 
 ############### CUSTOM FUNCTIONS
@@ -65,16 +65,17 @@ define 'easysoa', :base_dir => '../' do
       task :dist do
       
         PLUGINS_DELETE = FileList[_(NUXEO_PLUGINS_PATH+'*.jar')]
-        puts "Nuxeo plugins - Deleting : ", PLUGINS_DELETE
+        puts "===== Nuxeo plugins - Deleting =====", PLUGINS_DELETE
         rm PLUGINS_DELETE
         
         PLUGINS_TO_COPY = FileList[_(project(EASYSOA_REGISTRY).base_dir+'/target/plugins/*')]
-        puts "Nuxeo plugins - Deploying : ", PLUGINS_TO_COPY
+        puts "===== Nuxeo plugins - Deploying to '" + NUXEO_PLUGINS_PATH + "' =====", PLUGINS_TO_COPY
         mkdir_p NUXEO_PLUGINS_PATH
-        cp PLUGINS_TO_COPY, NUXEO_LIBS_PATH
+        cp PLUGINS_TO_COPY, NUXEO_PLUGINS_PATH
         
         LIBS_TO_COPY = FileList[_(project(EASYSOA_REGISTRY).base_dir+'/target/lib/*')]
-        puts "Nuxeo libraries - Deploying : ", LIBS_TO_COPY
+        puts "===== Nuxeo libraries - Deploying to '" + NUXEO_LIBS_PATH + "' =====", LIBS_TO_COPY
+        cp LIBS_TO_COPY, NUXEO_LIBS_PATH
         
       end
     
