@@ -8,7 +8,7 @@
 
 nuxeo:
   path: 
-  # to use for packaging. By default $HOME/nuxeo-dm-5.4.1-tomcat
+  # to use for packaging. By default $HOME/nuxeo-dm-5.4.2-tomcat
   # specify the path either absolute or relative to the buildfile.
   
 node:
