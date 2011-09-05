@@ -64,9 +64,9 @@ define 'easysoa', :base_dir => '../' do
       desc 'Send plugins to Nuxeo'
       task :dist do
       
-        PLUGINS_DELETE = FileList[_(NUXEO_PLUGINS_PATH+'*.jar')]
-        puts "===== Nuxeo plugins - Deleting =====", PLUGINS_DELETE
-        rm PLUGINS_DELETE
+        PLUGINS_TO_DELETE = FileList[_(NUXEO_PLUGINS_PATH+'*.jar')]
+        puts "===== Nuxeo plugins - Deleting =====", PLUGINS_TO_DELETE
+        rm PLUGINS_TO_DELETE
         
         PLUGINS_TO_COPY = FileList[_(project(EASYSOA_REGISTRY).base_dir+'/target/plugins/*')]
         puts "===== Nuxeo plugins - Deploying to '" + NUXEO_PLUGINS_PATH + "' =====", PLUGINS_TO_COPY

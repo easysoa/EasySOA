@@ -1,11 +1,52 @@
+.themeCellFrame {
+	background-color: #BBB;
+}
+
+div+table .themeCellFrame {
+	background: url('/nuxeo/img/easysoa/HeaderBG.png') !important;
+	border-bottom: 1px solid #BBB;
+}
+
+.mainTabs .selected {
+	border-color: #BBB;
+	border-style: solid;
+	border-width: 1px 1px 0;
+}
+
 .themeSectionFrame {
-	background: url('/nuxeo/img/theme_galaxy/small_gray_bar.png') !important;
+	border-bottom: 0 !important;
 }
 
-.tooltip {
+.siteLogo img {
+	width: 211px;
+	height: 50px;
+}
+
+.userClipboard .tabsBar {
+	background-color: #BBB;
+	margin-top: 0 !important;
+}
+
+.userServicesBlock {
+     margin-top: 12px;
+}
+
+.userActions {
+	color: #002233 !important;
+}
+
+.userActions a {
+	color: #002233 !important;
+}
+
+.searchService {
+	padding-top: 10px !important;
+}
+
+.searchService a {
+	color: #002233 !important;
+}
+
+.studioButton {
 	display: none;
-}
-
-.syndicationContainer {
-	display: none;	
 }

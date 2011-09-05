@@ -50,7 +50,8 @@ public class DomainInit extends UnrestrictedSessionRunner {
             } 
             // Remove unnecessary documents: sections root, templates root.
             // Put them in the trash rather than deleting them since they are needed by Nuxeo.
-            else {
+            else if (!rootChild.getCurrentLifeCycleState()
+                    .equals(LifeCycleConstants.DELETED_STATE)) {
                 rootChild.followTransition(LifeCycleConstants.DELETE_TRANSITION);
                 session.saveDocument(rootChild);
             }
