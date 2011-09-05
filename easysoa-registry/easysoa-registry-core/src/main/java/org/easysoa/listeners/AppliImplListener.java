@@ -55,14 +55,18 @@ public class AppliImplListener implements EventListener {
 			server = (String) doc.getProperty(SCHEMA, PROP_SERVER);
 			environment = (String) doc.getProperty(SCHEMA, PROP_ENVIRONMENT);
 
-			// Default server value
+            // Maintain internal properties
 			if (url != null && !url.isEmpty()
 					&& (server == null || server.isEmpty())) {
 				try {
+				    url = PropertyNormalizer.normalizeUrl(url);
+                    doc.setProperty(SCHEMA, PROP_URL, url);
 					server = new URL(url).getHost();
-					doc.setProperty(SCHEMA, PROP_SERVER, server);
-				} catch (Exception e) {
-					log.warn("Failed to parse application URL.");
+                    doc.setProperty(SCHEMA, PROP_SERVER, server);
+                    doc.setProperty(SCHEMA, PROP_SERVERENTRY, // Internal (for virtual navigation)
+                            doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
+                } catch (MalformedURLException e) {
+                    log.error("Failed to normalize URL '" + url + "'");
 				}
 			}
 
@@ -71,17 +75,6 @@ public class AppliImplListener implements EventListener {
 				doc.setProperty(SCHEMA, PROP_ENVIRONMENT, DEFAULT_ENVIRONMENT);
 			}
 
-			// Maintain internal properties
-			doc.setProperty(SCHEMA, PROP_SERVERENTRY,
-					doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
-			if (url != null) {
-			    try {
-			        doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
-			    } catch (MalformedURLException e) {
-	                log.error("Failed to normalize URL", e);
-			    }
-			}
-			
 		} catch (Exception e) {
 			log.error("Failed to maintain internal property", e);
 		}
@@ -93,22 +86,19 @@ public class AppliImplListener implements EventListener {
 			if (environment == null)
 				environment = DEFAULT_ENVIRONMENT;
 
-			VocabularyHelper vocService = Framework.getRuntime().getService(
-					VocabularyHelper.class);
+			VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
 
 			if (!vocService.entryExists(session,
 					VocabularyHelper.VOCABULARY_ENVIRONMENT, environment)) {
 				vocService.addEntry(session,
-						VocabularyHelper.VOCABULARY_ENVIRONMENT, environment,
-						environment);
+						VocabularyHelper.VOCABULARY_ENVIRONMENT, environment, environment);
 			}
 			if (server != null
 					&& !server.isEmpty()
-					&& !vocService.entryExists(session,
-							VocabularyHelper.VOCABULARY_SERVER, server)) {
+					&& !vocService.entryExists(session, 
+					        VocabularyHelper.VOCABULARY_SERVER, server)) {
 				vocService.addEntry(session,
-						VocabularyHelper.VOCABULARY_SERVER, server, server,
-						environment);
+						VocabularyHelper.VOCABULARY_SERVER, server, server, environment);
 			}
 		} catch (ClientException e) {
 			log.error("Error while updating vocabularies", e);
