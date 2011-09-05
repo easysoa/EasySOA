@@ -1,10 +1,9 @@
 package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
-
-import com.openwide.easysoa.esper.EsperEngineSingleton;
+import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.Message.MessageType;
-//import com.openwide.easysoa.monitoring.DiscoveryMonitoringService.MonitoringMode;
+import com.openwide.easysoa.monitoring.soa.Node;
 
 public class RestMessageHandler implements MessageHandler {
 
@@ -21,14 +20,13 @@ public class RestMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public boolean handle(Message message, MonitoringService monitoringService) {
+	public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// Add the url in the url tree structure
 		logger.debug("REST message found");
 		message.setType(MessageType.REST);
 		//if(MonitoringMode.DISCOVERY.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
 		if(monitoringService instanceof DiscoveryMonitoringService){
 			logger.debug("Discovery mode, message added in tree");
-			//DiscoveryMonitoringService.getMonitorService().getUrlTree().addUrlNode(message);
 			monitoringService.getUrlTree().addUrlNode(message);
 		}
 		//else if(MonitoringMode.VALIDATED.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
@@ -51,11 +49,19 @@ public class RestMessageHandler implements MessageHandler {
 				logger.debug("Validated mode, message send to esper");
 				// if there, feed it to esper
 				// TODO write listener that group by serviceUrl and register to nuxeo every minute
-				EsperEngineSingleton.getEsperRuntime(monitoringService.getModel().getSoaNodes()).sendEvent(message);
+				// TODO why send a message here and not a soaNode ???
+				Node soaNode = null;
+				for(Node node : monitoringService.getModel().getSoaNodes()){
+					if(node.getUrl().equals(message.getUrl())){
+						soaNode = node;
+						logger.debug("Node found ! " + soaNode.getTitle());
+						break;
+					}
+				}
+				esperEngine.sendEvent(soaNode);
 			} else {
 				logger.debug("Validated mode, Adding message to unknwown message list");
 				// Unknown message
-				//DiscoveryMonitoringService.getMonitorService().getUnknownMessagesList().add(message);
 				monitoringService.getUnknownMessagesList().add(message);
 			}			
 		}

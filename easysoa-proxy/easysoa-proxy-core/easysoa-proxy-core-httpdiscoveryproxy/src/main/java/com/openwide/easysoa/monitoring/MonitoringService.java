@@ -2,6 +2,7 @@ package com.openwide.easysoa.monitoring;
 
 import java.util.ArrayDeque;
 
+import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 
 public interface MonitoringService {

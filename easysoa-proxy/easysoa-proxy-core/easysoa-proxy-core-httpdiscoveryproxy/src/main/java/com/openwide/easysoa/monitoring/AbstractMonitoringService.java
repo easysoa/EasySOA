@@ -4,6 +4,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Reference;
+
+import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 
 /**
@@ -48,23 +51,24 @@ public abstract class AbstractMonitoringService implements MonitoringService {
     	messageHandlers.add(new SoapMessageHandler());    	
     	messageHandlers.add(new RestMessageHandler());    	
     }	
-	
+	  
     /**
      * Constructor
      */
     public AbstractMonitoringService(){}
         
-	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.monitoring.MonitoringService#listen(com.openwide.easysoa.monitoring.Message)
-	 */
-	@Override
-	public void listen(Message message){
+    /**
+     * 
+     * @param message 
+     * @param esperEngine 
+     */
+	public void listen(Message message, EsperEngine esperEngine){
 	    logger.debug("Listenning message : " + message);
 		for(MessageHandler mh : messageHandlers){
 	    	// Call each messageHandler, when the good message handler is found, stop the loop
 	    	if(mh.isOkFor(message)){
 	    		logger.debug("MessageHandler found : " + mh.getClass().getName());
-	    		if(mh.handle(message, this)){
+	    		if(mh.handle(message, this, esperEngine)){
 	    			break;
 	    		}
 	    	}

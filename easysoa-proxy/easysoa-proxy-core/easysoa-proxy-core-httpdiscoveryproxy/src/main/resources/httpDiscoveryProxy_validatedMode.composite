@@ -12,7 +12,6 @@
 			<sca:interface.java interface="javax.servlet.Servlet" />
 			<tuscany:binding.http uri="http://localhost:8082/" />
 		</sca:service>
-		<!--<sca:reference name="monitoringService" target="monitoringServiceComponent" />-->
     	<sca:reference name="runManager" target="runManagerComponent" />
     	<sca:property name="proxyPort">8082</sca:property>		
 	</sca:component>
@@ -24,7 +23,6 @@
 			<sca:interface.java interface="com.openwide.easysoa.proxy.HttpProxyDriver" />
 			<frascati:binding.rest uri="http://localhost:8084/" />
 		</sca:service>
-		<!--<sca:reference name="monitoringService" target="monitoringServiceComponent" />-->
 		<sca:reference name="runManager" target="runManagerComponent" />
 	</sca:component>
 
@@ -34,8 +32,7 @@
 			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.monitoring.ValidatedMonitoringService" />
-		<!--<sca:reference name="runManager" target="runManagerComponent" />-->
-		<!--<sca:reference name="esperEngine" target="esperEngineComponent" />-->		
+		<sca:reference name="esperEngine" target="esperEngineComponent" />		
 	</sca:component>
 
 	<!-- Run Manager -->
@@ -48,11 +45,11 @@
 	</sca:component>
 	
 	<!-- Esper Engine -->
-	<!--<sca:component name="esperEngineComponent">
+	<sca:component name="esperEngineComponent">
 		<sca:service name="esperEngineService">
-			<sca:interface.java interface="com.openwide.easysoa.esperpoc.esper.EsperEngine" />
+			<sca:interface.java interface="com.openwide.easysoa.esper.EsperEngine" />
 		</sca:service>
-		<sca:implementation.java class="com.openwide.easysoa.esperpoc.esper.EsperEngineImpl" />
-	</sca:component>-->
+		<sca:implementation.java class="com.openwide.easysoa.esper.EsperEngineImpl" />
+	</sca:component>
 
 </sca:composite>
