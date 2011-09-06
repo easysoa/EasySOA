@@ -39,12 +39,12 @@
 			<url>http://maven.ow2.org//maven2-snapshot</url>
 		</repository>
 		<!-- For ?? -->		
-		<repository>
+	<!-- 	<repository>
 			<id>eclipse mirror</id>
 			<name>Eclipse EMF Mirror</name>
 			<url>http://www.openarchitectureware.org/m2</url>
-		</repository>
-		<!-- For ?? -->		
+		</repository> --><!-- Seems unavailable -->
+		<!-- For ??	-->
 		<repository>
 			<id>frascati mirror</id>
 			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
@@ -71,6 +71,11 @@
 			<id>INRIA gforge</id>
 			<url>http://maven-repo.gforge.inria.fr/releases/</url>
 		</repository>
+		<!-- For JBoss components -->
+  	<repository>
+  		<id>Sonatype JBoss</id>
+  		<url>https://oss.sonatype.org/content/repositories/jboss</url>
+  	</repository>
 	</repositories>
 
 	<!-- Common dependencies -->
