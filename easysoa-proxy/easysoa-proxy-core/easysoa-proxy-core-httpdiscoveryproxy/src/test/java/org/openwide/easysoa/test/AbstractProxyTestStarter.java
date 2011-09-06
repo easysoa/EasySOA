@@ -1,9 +1,12 @@
 package org.openwide.easysoa.test;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
@@ -23,6 +26,8 @@ public abstract class AbstractProxyTestStarter {
 	/** The FraSCAti platform */
     protected static FraSCAti frascati;
 
+    protected static ArrayList<Component> componentList;
+    
 	static {
 		System.setProperty("org.ow2.frascati.bootstrap", "org.ow2.frascati.bootstrap.FraSCAti");
 	}
@@ -41,7 +46,17 @@ public abstract class AbstractProxyTestStarter {
 	 */
 	protected static void startFraSCAti() throws FrascatiException {
 		logger.info("FraSCATI Starting");
+		componentList =  new ArrayList<Component>();
 		frascati = FraSCAti.newFraSCAti();
+	}
+	
+	protected static void stopFraSCAti() throws FrascatiException{
+		logger.info("FraSCATI Stopping");
+		if(componentList != null){
+			for(Component component : componentList){
+				frascati.close(component);
+			}
+		}
 	}
 	
 	/**
@@ -50,7 +65,7 @@ public abstract class AbstractProxyTestStarter {
 	 */
 	protected static void startHttpDiscoveryProxy(String composite) throws FrascatiException {
 		logger.info("HTTP Discovery Proxy Starting");
-		frascati.processComposite(composite, new ProcessingContextImpl());		
+		componentList.add(frascati.processComposite(composite, new ProcessingContextImpl()));
 	}
 	
 	/**
@@ -60,11 +75,11 @@ public abstract class AbstractProxyTestStarter {
 	 */
 	protected static void startMockServices(boolean withNuxeoMock) throws FrascatiException {
 		logger.info("Services Mock Starting");
-		frascati.processComposite("src/test/resources/twitterMockRest.composite", new ProcessingContextImpl());
-		frascati.processComposite("src/test/resources/meteoMockSoap.composite", new ProcessingContextImpl());
+		componentList.add(frascati.processComposite("src/test/resources/twitterMockRest.composite", new ProcessingContextImpl()));
+		componentList.add(frascati.processComposite("src/test/resources/meteoMockSoap.composite", new ProcessingContextImpl()));
 		// start Nuxeo mock
 		if(withNuxeoMock){
-			frascati.processComposite("src/test/resources/nuxeoMockRest.composite", new ProcessingContextImpl());
+			componentList.add(frascati.processComposite("src/test/resources/nuxeoMockRest.composite", new ProcessingContextImpl()));
 		}
 	}
  

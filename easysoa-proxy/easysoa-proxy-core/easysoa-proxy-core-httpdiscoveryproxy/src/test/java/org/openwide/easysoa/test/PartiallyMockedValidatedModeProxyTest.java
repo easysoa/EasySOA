@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,6 +50,16 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 	   startMockServices(false);
     }	
 	
+    /**
+     * Stop FraSCAti components
+     * @throws FrascatiException
+     */
+    @AfterClass
+    public final static void cleanUp() throws FrascatiException{
+    	logger.info("Stopping FraSCAti...");
+    	stopFraSCAti();
+    }    
+    
 	@Test
 	public final void testRestValidatedMode() throws Exception {
 		// TODO To complete with the test code for REST validated mode

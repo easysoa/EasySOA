@@ -23,6 +23,7 @@ import org.easysoa.EasySOAConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -71,6 +72,16 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 	   startMockServices(true);
     }
 	
+    /**
+     * Stop FraSCAti components
+     * @throws FrascatiException
+     */
+    @AfterClass
+    public final static void cleanUp() throws FrascatiException{
+    	logger.info("Stopping FraSCAti...");
+    	stopFraSCAti();
+    }
+    
     /**
      * Test the infinite loop detection feature
      * @throws Exception

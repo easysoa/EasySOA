@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -69,6 +70,16 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 	   startMockServices(false);
     }
 	
+    /**
+     * Stop FraSCAti components
+     * @throws FrascatiException
+     */
+    @AfterClass
+    public final static void cleanUp() throws FrascatiException{
+    	logger.info("Stopping FraSCAti...");
+    	stopFraSCAti();
+    }    
+    
     /**
      * Test the infinite loop detection feature
      * @throws Exception
@@ -219,34 +230,6 @@ public class PartiallyMockedDiscoveryModeProxyTest extends AbstractProxyTestStar
 	public final void testSoapDiscoveryMode() throws Exception {
 		logger.info("Test SOAP Discovery mode started !");
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();		
-		
-		/*
-		// Need to use the proxy
-		// Doesn't work because an infinite loop is triggered in the proxy
-		ProxySelector.setDefault(new SoapClientProxySelector());		
-		// Set the WSDL references
-		String serviceUrl = "http://localhost:8085/meteo?wsdl";
-		String TNS = "http://meteomock.mock.test.easysoa.openwide.org/";		
-		QName serviceName = new QName(TNS, "MeteoMock");
-		QName portName = new QName(TNS, "MeteoMockPort");
-		Service jaxwsService = Service.create(new URL(serviceUrl), serviceName);
-		Dispatch<SOAPMessage> disp = jaxwsService.createDispatch(portName, SOAPMessage.class, Service.Mode.MESSAGE);
-		// Get the XML request to send
-		FileInputStream fis = new FileInputStream(new File("src/test/resources/meteoMockMessages/meteoMockRequest.xml"));
-	    // Send the message
-		SOAPMessage reqMsg = MessageFactory.newInstance().createMessage(null, fis);
-	    assertNotNull(reqMsg);
-		SOAPMessage response = disp.invoke(reqMsg);
-		logger.debug("Response : " + response.getSOAPBody().getTextContent().trim());		
-		// Wait for the proxy finish to register services
-		logger.info("Wait for the proxy finish to register services ...");
-		Thread.sleep(5000);
-		// Send a request to Nuxeo to check the registration
-		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);		
-		logger.debug("Nuxeo response : " + nuxeoResponse);
-		*/
 		
 		// Http client for proxy driver
 		DefaultHttpClient httpProxyDriverClient = new DefaultHttpClient();

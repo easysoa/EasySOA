@@ -15,6 +15,7 @@ import org.easysoa.EasySOAConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,6 +50,16 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
 	   startMockServices(true);
     }	
 	
+    /**
+     * Stop FraSCAti components
+     * @throws FrascatiException
+     */
+    @AfterClass
+    public final static void cleanUp() throws FrascatiException{
+    	logger.info("Stopping FraSCAti...");
+    	stopFraSCAti();
+    }    
+    
 	@Test
 	public final void testRestValidatedMode() throws Exception {
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
