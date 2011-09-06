@@ -84,6 +84,13 @@
 			<version>4.1.1</version>
 		</dependency>
 
+		<!-- Configuration constants -->
+		<dependency>
+			<groupId>org.openwide.easysoa</groupId>
+			<artifactId>easysoa-common</artifactId>
+			<version>0.3-SNAPSHOT</version>
+		</dependency>
+
 		<!-- TEST -->
 		<dependency>
 			<groupId>junit</groupId>

@@ -14,11 +14,7 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
  * Abstract Proxy Test Starter. Launch FraSCAti and the HTTP Discovery Proxy.
  */
 public abstract class AbstractProxyTestStarter {
-	
-	public final static int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8084;
-	public final static int HTTP_DISCOVERY_PROXY_PORT = 8082;
-	public final static int SERVICES_MOCK_PORT = 8081;
-	
+
 	/**
 	 * Logger
 	 */

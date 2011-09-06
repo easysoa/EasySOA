@@ -19,6 +19,7 @@ import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,12 +84,12 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
 		
 		// Set client to use the HTTP Discovery Proxy
-		HttpHost proxy = new HttpHost("localhost", HTTP_DISCOVERY_PROXY_PORT);
+		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);				
 		
 		// Send a request to the proxy itself 
 		try{
-			httpProxyClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_PORT+ "/"), responseHandler);
+			httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT+ "/"), responseHandler);
 		} 
 		catch(HttpResponseException ex){
 			assertEquals(500, ex.getStatusCode());
@@ -143,17 +144,17 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		//assertEquals("Monitoring mode set", resp);
 		
 		// Start a new run
-		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/RESTDiscoveryTestRun"), responseHandler);
+		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/RESTDiscoveryTestRun"), responseHandler);
 		logger.info("start run : " + resp);
 		assertEquals("Run 'RESTDiscoveryTestRun' started !", resp);
 		
 		// Set client to use the HTTP Discovery Proxy
-		HttpHost proxy = new HttpHost("localhost", HTTP_DISCOVERY_PROXY_PORT);
+		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 		
 		// Send Http Rest requests
 		UrlMock urlMock = new UrlMock();
-		for(String url : urlMock.getTwitterUrlData("localhost:" + SERVICES_MOCK_PORT)){
+		for(String url : urlMock.getTwitterUrlData("localhost:" + EasySOAConstants.TWITTER_MOCK_PORT)){
 			logger.info("Request send : " + url);			
 			HttpUriRequest httpUriRequest = new HttpGet(url);
 			try {
@@ -166,7 +167,7 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		}
 
 		// Stop the run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
 		assertEquals("Current run stopped !", resp);
 		logger.info("stop run : " + resp);
 		
@@ -188,14 +189,14 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
 		// Do to same thing but less readable
 		// JSONObject jsonObject = new JSONObject(new JSONObject(new JSONArray(new JSONObject(nuxeoResponse).getString("entries")).getJSONObject(0).toString()).getString("properties"));
-		assertEquals("http://localhost:" + SERVICES_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));			
+		assertEquals("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));			
 
 		// Delete the registered stuff in Nuxeo, then re-run the recorded Twitter test run
 		// Nuxeo mocked : no need to clean
 		//cleanNuxeoRegistery();
 		
 		//Re-run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/reRun/RESTDiscoveryTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/reRun/RESTDiscoveryTestRun"), responseHandler);
 		assertEquals("Re-run done", resp);
 
 		// Check registered api's in Nuxeo
@@ -204,7 +205,7 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		entries = new JSONObject(nuxeoResponse).getString("entries");
 		firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 		jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-		assertEquals("http://localhost:" + SERVICES_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));		
+		assertEquals("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));		
 		
 		logger.info("Test REST Discovery mode ended successfully !");
 	}
@@ -220,45 +221,16 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		logger.info("Test SOAP Discovery mode started !");
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();		
 		
-		/*
-		// Need to use the proxy
-		// Doesn't work because an infinite loop is triggered in the proxy
-		ProxySelector.setDefault(new SoapClientProxySelector());		
-		// Set the WSDL references
-		String serviceUrl = "http://localhost:8085/meteo?wsdl";
-		String TNS = "http://meteomock.mock.test.easysoa.openwide.org/";		
-		QName serviceName = new QName(TNS, "MeteoMock");
-		QName portName = new QName(TNS, "MeteoMockPort");
-		Service jaxwsService = Service.create(new URL(serviceUrl), serviceName);
-		Dispatch<SOAPMessage> disp = jaxwsService.createDispatch(portName, SOAPMessage.class, Service.Mode.MESSAGE);
-		// Get the XML request to send
-		FileInputStream fis = new FileInputStream(new File("src/test/resources/meteoMockMessages/meteoMockRequest.xml"));
-	    // Send the message
-		SOAPMessage reqMsg = MessageFactory.newInstance().createMessage(null, fis);
-	    assertNotNull(reqMsg);
-		SOAPMessage response = disp.invoke(reqMsg);
-		logger.debug("Response : " + response.getSOAPBody().getTextContent().trim());		
-		// Wait for the proxy finish to register services
-		logger.info("Wait for the proxy finish to register services ...");
-		Thread.sleep(5000);
-		// Send a request to Nuxeo to check the registration
-		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);		
-		logger.debug("Nuxeo response : " + nuxeoResponse);
-		*/
-		
 		// Http client for proxy driver
 		DefaultHttpClient httpProxyDriverClient = new DefaultHttpClient();
 		
 		// Set Discovery mode
 		logger.info("Set proxy mode to Discovery");
-		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/setMonitoringMode/discovery"), responseHandler);
+		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/setMonitoringMode/discovery"), responseHandler);
 		assertEquals("Monitoring mode set", resp);
-		//logger.info("mode setting : " + resp);
 		
 		// Start a new run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/SOAPDiscoveryTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/SOAPDiscoveryTestRun"), responseHandler);
 		logger.info("start run : " + resp);
 		assertEquals("Run 'SOAPDiscoveryTestRun' started !", resp);		
 		
@@ -268,10 +240,10 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		// HTTP proxy Client
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();		
 		// Set client to use the HTTP Discovery Proxy
-		HttpHost proxy = new HttpHost("localhost", HTTP_DISCOVERY_PROXY_PORT);
+		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);		
 		
-		HttpPost httpPost = new HttpPost("http://localhost:8085/meteo");
+		HttpPost httpPost = new HttpPost("http://localhost:" + EasySOAConstants.METEO_MOCK_PORT + "/meteo");
 		httpPost.setEntity(soapRequest);
 		//httpPost.setHeader("Content-Type", "text/xml");
 		try {
@@ -283,7 +255,7 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		}
 		
 		// Stop the run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
 		assertEquals("Current run stopped !", resp);
 		logger.info("stop run : " + resp);		
 		
@@ -299,7 +271,7 @@ public class FullMockedDiscoveryModeProxyTest extends AbstractProxyTestStarter {
 		String entries = new JSONObject(nuxeoResponse).getString("entries");
 		String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-		assertEquals("http://localhost:8085/meteo", jsonObject.get("serv:url"));			
+		assertEquals("http://localhost:" + EasySOAConstants.METEO_MOCK_PORT + "/meteo", jsonObject.get("serv:url"));			
 
 		logger.info("Test SOAP Discovery mode ended successfully !");
 	}

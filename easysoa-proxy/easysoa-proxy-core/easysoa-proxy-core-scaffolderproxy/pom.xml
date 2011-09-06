@@ -19,6 +19,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		<!-- Configuration constants -->
+		<dependency>
+			<groupId>org.openwide.easysoa</groupId>
+			<artifactId>easysoa-common</artifactId>
+			<version>0.3-SNAPSHOT</version>
+		</dependency>		
 		<dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>

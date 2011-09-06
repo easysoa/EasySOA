@@ -5,7 +5,7 @@
 		<sca:implementation.java class="org.openwide.easysoa.test.mock.nuxeomock.NuxeoMockImpl"/>
 		<sca:service name="nuxeoServiceMock">
 			<sca:interface.java interface="org.openwide.easysoa.test.mock.nuxeomock.NuxeoMock"/>
-			<frascati:binding.rest uri="http://localhost:8080/"/>
+			<frascati:binding.rest uri="http://localhost:6088/"/>
 		</sca:service>
 	</sca:component>
 </sca:composite>	

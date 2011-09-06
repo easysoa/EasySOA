@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
+import org.easysoa.EasySOAConstants;
 
 public class FormGeneratorTester {
 
@@ -61,7 +62,7 @@ public class FormGeneratorTester {
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// Send a request to generate the HTML form
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
-		String resp = httpProxyClient.execute(new HttpGet("http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8086/soapServiceMock?wsdl"), responseHandler);
+		String resp = httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/scaffoldingProxy/?wsdlUrl=http://localhost:8086/soapServiceMock?wsdl"), responseHandler);
 		logger.debug("response = " + resp);
 		// Compare it to a registered one
 		assertEquals(readResponseFile("src/test/resources/testFiles/testForm.html"), resp.replace("\n", ""));
@@ -72,7 +73,7 @@ public class FormGeneratorTester {
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// Send a request to test the rest/soap proxy
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
-		String resp = httpProxyClient.execute(new HttpGet("http://localhost:7001/callService/SoapServiceMockSoapBinding/getPrice/?arg0=patatoes&arg1=25&wsdlUrl=http://localhost:8086/soapServiceMock"), responseHandler);
+		String resp = httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.REST_SOAP_PROXY_PORT +"/callService/SoapServiceMockSoapBinding/getPrice/?arg0=patatoes&arg1=25&wsdlUrl=http://localhost:8086/soapServiceMock"), responseHandler);
 		logger.debug("response = " + resp);		
 		// Compare the result with the expected one
 		assertEquals("{\"Body\":{\"getPriceResponse\":{\"return\":\"250.0\"}}}", resp);

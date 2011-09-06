@@ -286,10 +286,10 @@ public class HttpDiscoveryProxy extends HttpServlet {
     	setHeaders(request, httpUriRequest);
 	    
     	// TODO proxy for outgoing messages : allow to conf it, with a ProxyStrategy interface & a few impl (proxy all, by host, LATER or possibly driven by easysoa ui...) injected in frascati
-	    /*if (requestUrlString.contains("microsoft")) {
-	        HttpHost myProxy = new HttpHost("localhost", 8084, "http");
-	        httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
-	    }*/
+	    //if (requestUrlString.contains("microsoft")) {
+	    //    HttpHost myProxy = new HttpHost("localhost", 8084, "http");
+	    //    httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
+	    //}
     	String clientResponse = httpClient.execute(httpUriRequest, responseHandler);
     	message.setResponse(clientResponse);
 	    respOut.write(clientResponse);

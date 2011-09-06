@@ -19,8 +19,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.ow2.frascati.util.FrascatiException;
-
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
+import org.easysoa.EasySOAConstants;
+
 
 public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
 
@@ -66,19 +67,19 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 		//assertEquals("Monitoring mode set", resp);
 				
 		// Start a new run
-		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/RESTValidatedTestRun"), responseHandler);
+		String resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/startNewRun/RESTValidatedTestRun"), responseHandler);
 		logger.info("start run : " + resp);
 		assertEquals("Run 'RESTValidatedTestRun' started !", resp);
 		
 		// Set client to use the HTTP Discovery Proxy
-		HttpHost proxy = new HttpHost("localhost", HTTP_DISCOVERY_PROXY_PORT);
+		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 		
 		// Load registry data form nuxeo : Automatically done during the ValidatedMonitoringService
 		
 		// Send Http Rest requests
 		UrlMock urlMock = new UrlMock();
-		for(String url : urlMock.getTwitterUrlData("localhost:" + SERVICES_MOCK_PORT)){
+		for(String url : urlMock.getTwitterUrlData("localhost:" + EasySOAConstants.TWITTER_MOCK_PORT)){
 			logger.info("Request send : " + url);			
 			HttpUriRequest httpUriRequest = new HttpGet(url);
 			try {
@@ -91,7 +92,7 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 		}
 
 		// Stop the run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
 		assertEquals("Current run stopped !", resp);
 		logger.info("stop run : " + resp);
 		
@@ -107,10 +108,10 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 		String entries = new JSONObject(nuxeoResponse).getString("entries");
 		String firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-		assertEquals("http://localhost:" + SERVICES_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));			
+		assertEquals("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));			
 		
 		//Re-run, no need to clean Nuxeo registry here : validated mode
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/reRun/RESTValidatedTestRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/reRun/RESTValidatedTestRun"), responseHandler);
 		assertEquals("Re-run done", resp);
 
 		// Check registered api's in Nuxeo
@@ -119,7 +120,7 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 		entries = new JSONObject(nuxeoResponse).getString("entries");
 		firstEntry = new JSONArray(entries).getJSONObject(0).toString();
 		jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-		assertEquals("http://localhost:" + SERVICES_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));
+		assertEquals("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));
 		
 		logger.info("Test REST Validated mode ended successfully !");		
 	}

@@ -25,37 +25,11 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  *
  */
 public class NuxeoRegistrationService {
-
-	//private final static String NUXEO_WSDL_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/wsdlscraper/";
-	private final static String NUXEO_REST_DEFAULT_URL = "http://localhost:8080/nuxeo/site/easysoa/notification/";
-	private final static String NUXEO_AUTOMATION_DEFAULT_URL = "http://localhost:8080/nuxeo/site/automation/";
+	
 	/**
 	 * Logger
 	 */
 	static Logger logger = Logger.getLogger(NuxeoRegistrationService.class.getName());
-	
-	/**
-	 * Register a WSDL service in Nuxeo
-	 * @param service The service to register
-	 * @return The response send back by Nuxeo
-	 */
-	/*@Deprecated
-	public String registerWSDLService(WSDLService service){
-		//TODO Change this method to register correctly WSDl in Nuxeo
-		StringBuffer sb = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.wsdl.url", NUXEO_WSDL_DEFAULT_URL));
-		sb.append(service.getUrl());
-		logger.debug("[resgisterWSDLService()] --- Request URL = " + sb.toString());
-		// Send request to register the service
-		Client client = Client.create();
-		client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
-		WebResource webResource = client.resource(sb.toString());
-		ClientResponse response = webResource.accept("text/plain").get(ClientResponse.class);
-	   	int status = response.getStatus();
-	   	logger.debug("[registerWSDLService()] --- Registration request response status = " + status);
-		String textEntity = response.getEntity(String.class);
-		logger.debug("[registerWSDLService()] --- Registration request response = " + textEntity);	
-		return textEntity;
-	}*/
 	
 	/**
 	 * Register a WSDL SOAP service in Nuxeo
@@ -82,7 +56,7 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		*/
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
 		url.append("service");
 		StringBuffer body = new StringBuffer();
 		body.append("url=");
@@ -138,7 +112,7 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		*/
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
 		url.append("service");
 		StringBuffer body = new StringBuffer();
 		body.append("url=");
@@ -193,7 +167,7 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		*/	
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
 		url.append("appliimpl");
 		StringBuffer body = new StringBuffer();
 		body.append("url=");
@@ -241,7 +215,7 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		 */
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.registration.rest.url", NUXEO_REST_DEFAULT_URL));
+		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
 		url.append("api");
 		StringBuffer body = new StringBuffer();
 		body.append("url=");
@@ -313,7 +287,7 @@ public class NuxeoRegistrationService {
 	 * @return The response send back by Nuxeo
 	 */
 	public String sendQuery(String query){
-		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_AUTOMATION_DEFAULT_URL));
+		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.service"));
 		//urlBuf.append("/");
 	    urlBuf.append("Document.Query"); // operation name
 
@@ -355,7 +329,7 @@ public class NuxeoRegistrationService {
 	 * @return The response send back by Nuxeo
 	 */
 	public boolean deleteQuery(String uid){
-		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.url", NUXEO_AUTOMATION_DEFAULT_URL));
+		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.service"));
 	    urlBuf.append("Document.Delete"); // operation name
 
 	    try {

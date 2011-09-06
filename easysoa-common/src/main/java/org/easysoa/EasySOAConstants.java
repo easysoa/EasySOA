@@ -13,4 +13,15 @@ public class EasySOAConstants {
 
     public final static int NUXEO_TEST_PORT = 6088;
     
+    // HTTP discovery proxy
+    public final static int HTTP_DISCOVERY_PROXY_PORT = 8082;
+    public final static int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8084;
+	public final static int TWITTER_MOCK_PORT = 8081;
+	public final static int METEO_MOCK_PORT = 8085;
+	//public final static int NUXEO_MOCK_PORT = 8087;
+	
+	// Scaffolding proxy
+	public final static int REST_SOAP_PROXY_PORT = 7001;
+	public final static int HTML_FORM_GENERATOR_PORT = 8090;
+    
 }
