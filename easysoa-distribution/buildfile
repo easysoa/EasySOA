@@ -1,7 +1,5 @@
 require 'shellwords'
 
-repositories.remote << 'http://www.ibiblio.org/maven2'
-
 # ----------------------
 # EasySOA Demo Buildfile
 # ----------------------
@@ -214,8 +212,9 @@ task :packageall do # TODO Less messy code
   cp FileList[project(EASYSOA_PAF).base_dir+"/easysoa-samples-paf-restsoapproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   
   puts "  * Travel backup services..."
-  mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'
-  cp FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/travelBackup'
+  mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'  
+  system 'unzip', '-q', '-o', FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+'/target/*-bin.zip'].to_s # XXX Linux-dependent
+  cp_r FileList['easysoa-samples-smarttravel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
   rm_rf FileList['easysoa-samples-smarttravel-services-backup*']
   
   # Copying Nuxeo
