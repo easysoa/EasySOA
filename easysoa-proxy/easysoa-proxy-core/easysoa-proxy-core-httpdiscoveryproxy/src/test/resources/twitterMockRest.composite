@@ -4,38 +4,8 @@
 		<sca:implementation.java class="org.openwide.easysoa.test.mock.twittermock.TwitterMockImpl"/>
 		<sca:service name="twitterServiceMock">
 			<sca:interface.java interface="org.openwide.easysoa.test.mock.twittermock.TwitterMock"/>
-			<frascati:binding.rest uri="http://localhost:8081/"/>
+			<frascati:binding.rest uri="http://localhost:8088/"/>
 		</sca:service>
 	</sca:component>
-
-	<!-- Nuxeo Mock -->
-	<!--<sca:component name="nuxeoMock">
-		<sca:implementation.java class="org.openwide.easysoa.test.mock.nuxeomock.NuxeoMockImpl"/> 
-		<sca:service name="httpServiceDriver">
-			<sca:interface.java interface="org.openwide.easysoa.test.mock.nuxeomock.NuxeoMock"/> 
-			<frascati:binding.rest uri="http://localhost:8080/"/>
-		</sca:service>
-	</sca:component>-->
-	
-	<!--
-  	<sca:service name="s" promote="meteoMock/meteoServiceMock">
-    	<sca:interface.java interface="org.openwide.easysoa.test.mock.meteomock.MeteoMock" />
-    	<frascati:binding.ws uri="http://localhost:8085/meteo"/>
-  	</sca:service>
-
-  	<sca:component name="meteoMock">
-    	<sca:implementation.java class="org.openwide.easysoa.test.mock.meteomock.MeteoMockImpl" />
-    	<sca:service name="meteoServiceMock">
-      		<sca:interface.java interface="org.openwide.easysoa.test.mock.meteomock.MeteoMock" />
-    	</sca:service>
-  	</sca:component>
-	-->
-  	<!--<sca:component name="soapMock">
-    	<sca:implementation.java class="org.openwide.easysoa.test.mock.meteomock.MeteoMockImpl" />
-    	<sca:service name="meteoServiceMock">
-			<sca:interface.java interface="org.openwide.easysoa.test.mock.meteomock.MeteoMock" />      		
-      		<frascati:binding.ws uri="http://localhost:8085/meteo" />
-    	</sca:service>	
-	</sca:component>-->
 
 </sca:composite>
