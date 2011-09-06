@@ -22,8 +22,6 @@ PACKAGING_OUTPUT_PATH = 'easysoa'
 PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+RELEASE_VERSION+'.tar.gz';
 
 # Generated
-NUXEO_PLUGINS_PATH = NUXEO_PATH+'/nxserver/plugins/'
-NUXEO_LIBS_PATH = NUXEO_PATH+'/lib/'
 MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
 ESPER_DEP_PATH = './deps/frascati/lib/esper-4.3.0.jar'
 
@@ -70,18 +68,12 @@ define 'easysoa', :base_dir => '../' do
       desc 'Send plugins to Nuxeo'
       task :dist do
       
-        PLUGINS_TO_DELETE = FileList[_(NUXEO_PLUGINS_PATH+'*.jar')]
+        PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar')]
         puts "===== Nuxeo plugins - Deleting =====", PLUGINS_TO_DELETE
         rm PLUGINS_TO_DELETE
         
-        PLUGINS_TO_COPY = FileList[_(project(EASYSOA_REGISTRY).base_dir+'/target/plugins/*')]
-        puts "===== Nuxeo plugins - Deploying to '" + NUXEO_PLUGINS_PATH + "' =====", PLUGINS_TO_COPY
-        mkdir_p NUXEO_PLUGINS_PATH
-        cp PLUGINS_TO_COPY, NUXEO_PLUGINS_PATH
-        
-        LIBS_TO_COPY = FileList[_(project(EASYSOA_REGISTRY).base_dir+'/target/lib/*')]
-        puts "===== Nuxeo libraries - Deploying to '" + NUXEO_LIBS_PATH + "' =====", LIBS_TO_COPY
-        cp LIBS_TO_COPY, NUXEO_LIBS_PATH
+        puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' =====", FileList[project(EASYSOA_REGISTRY).base_dir+'/target/**/*.jar']
+        cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], NUXEO_PATH
         
       end
     
@@ -234,8 +226,7 @@ task :packageall do # TODO Less messy code
     raise "Files copy failed: Nuxeo is probably running. Could you please stop it?"
   end
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
-  cp FileList[project(EASYSOA_REGISTRY).base_dir+'/target/lib/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib'
-  cp FileList[project(EASYSOA_REGISTRY).base_dir+'/target/plugins/*.jar'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/plugins' # TODO Check that bundles exist
+  cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
   cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
   

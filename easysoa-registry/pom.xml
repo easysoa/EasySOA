@@ -50,9 +50,8 @@
 						<configuration>
 							<tasks>
 								<echo>Copying jars to the 'plugins/target' folder</echo>
-								<mkdir dir="target" />
-								<mkdir dir="target/plugins" />
-								<copy todir="target/plugins" flatten="true">
+								<mkdir dir="target/nxserver/plugins" />
+								<copy todir="target/nxserver/plugins" flatten="true">
 									<fileset dir=".">
 										<filename name="*/target/*.jar" />
 										<exclude name="*/target/*-sources.jar" />
