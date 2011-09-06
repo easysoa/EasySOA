@@ -36,7 +36,7 @@
 			<id>ow2-snapshot</id>
 			<url>http://maven.ow2.org//maven2-snapshot</url>
 		</repository>
-		<!-- For ?? -->		
+		<!-- For EMF used in FraSCAti -->
 		<repository>
 			<id>eclipse mirror</id>
 			<name>Eclipse EMF Mirror</name>
@@ -58,12 +58,12 @@
 			<id>INRIA gforge</id>
 			<url>http://maven-repo.gforge.inria.fr/releases/</url>
 		</repository>
-        <!-- For SOAPUI -->
-        <repository>
-            <id>soapui repo</id>
-            <name>Soap ui repo</name>
-            <url>http://www.eviware.com/repository/maven2/</url>
-        </repository>
+    <!-- For SOAPUI -->
+    <repository>
+        <id>soapui repo</id>
+        <name>Soap ui repo</name>
+        <url>http://www.eviware.com/repository/maven2/</url>
+    </repository>
 	</repositories>
 	
 	<!-- Common dependencies -->

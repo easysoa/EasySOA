@@ -38,12 +38,12 @@
 			<id>ow2-snapshot</id>
 			<url>http://maven.ow2.org//maven2-snapshot</url>
 		</repository>
-		<!-- For ?? -->		
-	<!-- 	<repository>
+		<!-- For EMF used in FraSCAti -->		
+	 	<repository>
 			<id>eclipse mirror</id>
 			<name>Eclipse EMF Mirror</name>
 			<url>http://www.openarchitectureware.org/m2</url>
-		</repository> --><!-- Seems unavailable -->
+		</repository>
 		<!-- For ??	-->
 		<repository>
 			<id>frascati mirror</id>
