@@ -6,7 +6,7 @@
 	<groupId>org.easysoa</groupId>
 	<artifactId>easysoa-registry-dependencies</artifactId>
 	<name>EasySOA Registry Dependencies</name>
-	<version>0.1.3-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 
 	<!-- ============= -->
 	<!-- Build plugins -->

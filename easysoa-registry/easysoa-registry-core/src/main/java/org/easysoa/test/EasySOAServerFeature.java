@@ -13,7 +13,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  * 
  * @RunWith(FeaturesRunner.class)
  * @Features(EasySOAServerFeature.class)
- * @Jetty(port=9980)
+ * @Jetty(port=EasySOAConstants.NUXEO_TEST_PORT)
  * //@Jetty(config="/home/mdutoo/dev/easysoa/nuxeo-dm-5.3.2-jetty/config/jetty.xml") //,port=9980
  * 
  * @author mdutoo

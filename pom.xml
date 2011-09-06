@@ -70,6 +70,7 @@
     <!-- Modules -->
     <!-- ======= -->
     <modules>
+        <module>easysoa-common</module>
         <module>easysoa-proxy</module>
         <module>easysoa-registry</module>
         <module>samples</module>

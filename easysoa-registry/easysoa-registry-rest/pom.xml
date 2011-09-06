@@ -7,15 +7,15 @@
 	<name>EasySOA Registry REST</name>
 	
 	<parent>
-		<groupId>org.easysoa</groupId>
+		<groupId>org.openwide.easysoa</groupId>
 		<artifactId>easysoa-registry-parent</artifactId>
-		<version>0.1.3-SNAPSHOT</version>
+		<version>0.3-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
 		<!-- REST services -->
 		<dependency>
-			<groupId>org.easysoa</groupId>
+			<groupId>org.openwide.easysoa</groupId>
 			<artifactId>easysoa-registry-core</artifactId>
 			<scope>compile</scope>
 		</dependency>
