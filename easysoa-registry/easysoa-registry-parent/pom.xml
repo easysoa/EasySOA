@@ -9,9 +9,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.easysoa</groupId>
+	<groupId>org.openwide.easysoa</groupId>
 	<artifactId>easysoa-registry-parent</artifactId>
-	<version>0.1.3-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>EasySOA Registry Parent</name>
@@ -23,6 +23,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.openwide.easysoa</groupId>
+			<artifactId>easysoa-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- Testing framework dependencies-->
 		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
@@ -66,7 +72,7 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.easysoa</groupId>
+				<groupId>org.openwide.easysoa</groupId>
 				<artifactId>easysoa-registry-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>

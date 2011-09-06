@@ -1,5 +1,6 @@
 package org.easysoa.rest;
 
+import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.test.EasySOAFeatureBase;
@@ -30,7 +31,7 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features({EasySOAFeatureBase.class, WebEngineFeature.class})
 @Deploy("org.easysoa.registry.rest")
-@Jetty(config="src/test/resources/jetty.xml", port=9980)
+@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
 public class DocumentationTest extends AbstractRestTest {
 
