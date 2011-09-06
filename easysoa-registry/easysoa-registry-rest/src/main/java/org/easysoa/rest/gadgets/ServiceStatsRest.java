@@ -16,7 +16,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.webengine.session.UserSession;
+import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 
 /***
  * Returns service callcounts (for the servicestats gadget)
@@ -29,8 +29,7 @@ public class ServiceStatsRest {
 
 	@GET
 	public Object doGet(@Context HttpServletRequest request) throws JSONException, ClientException {
-    
-	    CoreSession session = UserSession.getCurrentSession(request).getCoreSession();
+	    CoreSession session = SessionFactory.getSession(request);
 		JSONObject result = new JSONObject();
 		DocumentModelList serviceList = session.query("SELECT * FROM Service WHERE serv:callcount > 0");
 		for (DocumentModel serviceModel : serviceList) {
@@ -40,9 +39,7 @@ public class ServiceStatsRest {
 			serviceInfo.put("callcount", serviceModel.getProperty(SCHEMA, PROP_CALLCOUNT)); 
 			result.append("services", serviceInfo);
 		}
-		
 		return result.toString(2);
-		
 	}
 	
 }

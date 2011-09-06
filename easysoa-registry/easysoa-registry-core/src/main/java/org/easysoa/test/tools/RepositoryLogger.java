@@ -103,7 +103,7 @@ public class RepositoryLogger {
 		logBasic(indent, model);
 		String spaces = getSpaces(indent);
 		try {
-			for (String schema : model.getDeclaredSchemas()) {
+			for (String schema : model.getDocumentType().getSchemaNames()) {
 				StringBuffer line = new StringBuffer(spaces + "    | " + schema + "> ");
 				Map<String, Object> schemaProperties = model.getProperties(schema);
 				for (Entry<String, Object> entry : schemaProperties.entrySet()) {
