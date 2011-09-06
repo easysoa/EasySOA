@@ -25,6 +25,7 @@ PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+RELEASE_VERSION+'.tar.gz';
 NUXEO_PLUGINS_PATH = NUXEO_PATH+'/nxserver/plugins/'
 NUXEO_LIBS_PATH = NUXEO_PATH+'/lib/'
 MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
+ESPER_DEP_PATH = './deps/frascati/lib/esper-4.3.0.jar'
 
 ############### CUSTOM FUNCTIONS
 
@@ -45,15 +46,20 @@ end
  
 ############### PROJECT DEFINITIONS
 
-EASYSOA_WEB = 'easysoa:easysoa-web'
-EASYSOA_REGISTRY = 'easysoa:easysoa-registry'
-EASYSOA_PROXY = 'easysoa:easysoa-proxy'
-EASYSOA_PAF = 'easysoa:samples:easysoa-samples-pureairflowers'
-EASYSOA_TRAVEL = 'easysoa:samples:easysoa-samples-smarttravel'
-EASYSOA_TRAVEL_BACKUP = 'easysoa:samples:easysoa-samples-smarttravel:easysoa-samples-smarttravel-services-backup'
+EASYSOA = 'easysoa'
+EASYSOA_WEB = EASYSOA+':easysoa-web'
+EASYSOA_REGISTRY = EASYSOA+':easysoa-registry'
+EASYSOA_PROXY = EASYSOA+':easysoa-proxy'
+EASYSOA_PAF = EASYSOA+':samples:easysoa-samples-pureairflowers'
+EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
+EASYSOA_TRAVEL_BACKUP = EASYSOA+':samples:easysoa-samples-smarttravel:easysoa-samples-smarttravel-services-backup'
 
 define 'easysoa', :base_dir => '../' do
   
+  task :mvn do
+    maven(['clean', 'install'], project)
+  end
+      
   desc 'Service registry project'
   define 'easysoa-registry' do
     
@@ -140,7 +146,7 @@ desc "Builds the Smart Travel demo and its backup services"
 task :travel => [EASYSOA_TRAVEL+':mvn', EASYSOA_TRAVEL_BACKUP+':mvn']
 
 desc "Builds all needed projects"
-task :buildall => ['paf', 'nx_mvn', 'proxy', 'travel']
+task :buildall => [EASYSOA+':mvn']
 
 desc "Creates the EasySOA package"
 task :packageall do # TODO Less messy code
@@ -189,6 +195,11 @@ task :packageall do # TODO Less messy code
     mv 'frascati-runtime-1.4', './deps/frascati'
     rm_rf FileList['./deps/frascati/doc', './deps/frascati/examples', './deps/frascati/README', './deps/frascati/RELEASE_NOTES']
   end
+  if !File.exist?(ESPER_DEP_PATH)
+    puts 'Esper not found, downloading it...'
+    system 'wget', 'http://mirrors.ibiblio.org/pub/mirrors/maven2/com/espertech/esper/4.3.0/esper-4.3.0.jar' # XXX Linux/Cygwin-dependent
+    mv './esper-4.3.0.jar', ESPER_DEP_PATH
+  end
 
   # Deploy FraSCAti
   puts 'Copying FraSCAti...'
@@ -212,8 +223,7 @@ task :packageall do # TODO Less messy code
   
   puts "  * Travel backup services..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'
-  system 'unzip', '-q', '-o', FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+'/target/*-bin.zip'].to_s # XXX Linux/Cygwin-dependent
-  cp_r FileList['easysoa-samples-smarttravel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
+  cp FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+"/target/*.jar"], PACKAGING_OUTPUT_PATH+'/travelBackup'
   rm_rf FileList['easysoa-samples-smarttravel-services-backup*']
   
   # Copying Nuxeo
