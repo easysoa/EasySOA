@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Turns Nuxeo into a simple service registry. Contains also a "Discovery by browsing" web client, that allows to scrape web pages during navigation and send found WSDLs to Nuxeo through a custom REST API.
+Turns Nuxeo 5.4.2 into a simple service registry.
 
 *NOTE: This demo code is neither fully functional nor stable.*
 
@@ -10,13 +10,15 @@ Turns Nuxeo into a simple service registry. Contains also a "Discovery by browsi
 
 The code is mainly split into 5 projects:
 
- * `easysoa-demo-model-core`: The Nuxeo core contributions.
- * `easysoa-demo-model-web`: The Nuxeo web contributions, tightly linked to the `core` project.
- * `easysoa-demo-rest`: The REST API used by the service finder.
- * `easysoa-demo-dashboard`: A basic dashboard "gadget".
- 
- You can build these bundles by typing `mvn clean install` from this folder.
+ * `easysoa-registry-core`: The Nuxeo core contributions.
+ * `easysoa-registry-web`: The Nuxeo web contributions, tightly linked to the `core` project.
+ * `easysoa-registry-rest`: The REST API used by other EasySOA components to fill the model.
+ * `easysoa-registry-dashboard`: A basic dashboard "gadget".
+ * `easysoa-registry-dependencies`: A package of all libraries needed for the service registry.
 
-## Use and development
+## Building
+
+You can build these bundles by typing `mvn clean install` from this folder. You can then deploy the files by
+either copying the `target` folder contents to your Nuxeo setup, or [by using Buildr](https://github.com/easysoa/EasySOA/wiki/Releasing-EasySOA).
 
 Please see [this repository's wiki](https://github.com/easysoa/EasySOA/wiki) for further information.
