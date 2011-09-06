@@ -19,4 +19,4 @@ The code is mainly split into 5 projects:
 
 ## Use and development
 
-Please see [this repository's wiki](https://github.com/easysoa/easysoa-model-demo/wiki) for further information.
+Please see [this repository's wiki](https://github.com/easysoa/EasySOA/wiki) for further information.
