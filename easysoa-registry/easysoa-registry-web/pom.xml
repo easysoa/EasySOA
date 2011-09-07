@@ -10,6 +10,7 @@
 	  <groupId>org.openwide.easysoa</groupId>
 	  <artifactId>easysoa-registry-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
+		<relativePath>../easysoa-registry-parent/pom.xml</relativePath>
 	</parent>
 	
 </project>
