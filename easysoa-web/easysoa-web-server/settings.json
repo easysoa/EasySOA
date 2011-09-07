@@ -1,8 +1,0 @@
-{
-    "port" : 8083,
-
-    "default_host" : {
-        "root" : "./www/"
-    }
-
-}
