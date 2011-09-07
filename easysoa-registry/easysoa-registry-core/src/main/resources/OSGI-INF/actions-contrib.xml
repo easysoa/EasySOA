@@ -4,11 +4,11 @@
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
   
  	<!-- Disable unused tabs -->
-    <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" />
+   <!-- <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" />
     <action id="view_comments" enabled="false" />
     <action id="TAB_CONTENT_HISTORY" enabled="false" />
     <action id="TAB_PREVIEW" enabled="false" />
-    <!--<action id="TAB_MANAGE" enabled="false" />-->
+    <action id="TAB_MANAGE" enabled="false" />-->
     
  	<!-- SCA Import page -->
     <action id="easysoaImport" link="sca_import_form" label="label.easysoa.import.link">
