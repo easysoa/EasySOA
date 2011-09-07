@@ -21,7 +21,7 @@ public abstract class AbstractProxyTestStarter {
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(getInvokingClassName());    
+	private static final Logger logger = Logger.getLogger(getInvokingClassName());    
 
 	/** The FraSCAti platform */
     protected static FraSCAti frascati;
@@ -50,6 +50,10 @@ public abstract class AbstractProxyTestStarter {
 		frascati = FraSCAti.newFraSCAti();
 	}
 	
+	/**
+	 * 
+	 * @throws FrascatiException
+	 */
 	protected static void stopFraSCAti() throws FrascatiException{
 		logger.info("FraSCATI Stopping");
 		if(componentList != null){
@@ -87,7 +91,7 @@ public abstract class AbstractProxyTestStarter {
 	 * Clean Nuxeo registery before to launch the tests
 	 * @throws JSONException 
 	 */
-	public final static String cleanNuxeoRegistery() throws JSONException  {
+	public static String cleanNuxeoRegistery() throws JSONException  {
 		// Not possible NXQL to select only one field, only select * is available ..
 		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' AND (ecm:primaryType = 'Service' OR ecm:primaryType = 'ServiceAPI' OR ecm:primaryType = 'Workspace')";
 		NuxeoRegistrationService nrs = new NuxeoRegistrationService();

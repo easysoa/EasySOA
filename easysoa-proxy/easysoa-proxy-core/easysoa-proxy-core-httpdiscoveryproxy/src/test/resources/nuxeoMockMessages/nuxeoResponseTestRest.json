@@ -10,7 +10,7 @@
     "title": "show",
     "lastModified": "2011-08-31T12:46:10Z",
     "properties":     {
-      "serv:url": "http://localhost:8081/1/users/show",
+      "serv:url": "http://localhost:8088/1/users/show",
       "serv:relatedUsers": "",
       "serv:contentTypeOut": "",
       "serv:httpMethod": "GET",
@@ -64,7 +64,7 @@
       "path": "/default-domain/workspaces/5620642463555702666",
       "type": "Workspace",
       "state": "project",
-      "title": "localhost:8081",
+      "title": "localhost:8088",
       "lastModified": "2011-08-31T12:46:10Z",
       "properties":       {
         "dc:creator": "Administrator",
@@ -72,7 +72,7 @@
         "dc:nature": null,
         "dc:source": null,
         "dc:created": "2011-08-31T12:46:10Z",
-        "dc:description": "localhost:8081",
+        "dc:description": "localhost:8088",
         "dc:rights": null,
         "dc:subjects": [],
         "dc:valid": null,
@@ -82,7 +82,7 @@
         "dc:coverage": null,
         "dc:expired": null,
         "dc:language": null,
-        "dc:title": "localhost:8081",
+        "dc:title": "localhost:8088",
         "soa:authorInformation": null,
         "soa:discoveryTypeBrowsing": null,
         "soa:archiPath": null,
@@ -98,9 +98,9 @@
         "app:environment": null,
         "app:serverEntry": "null/",
         "app:standard": "",
-        "app:uiUrl": "http://localhost:8081",
+        "app:uiUrl": "http://localhost:8088",
         "app:sourcesUrl": "",
-        "app:url": "http://localhost:8081",
+        "app:url": "http://localhost:8088",
         "app:technology": "",
         "app:provider": null,
         "webc:useCaptcha": null,
@@ -113,7 +113,7 @@
         "webc:logo": null,
         "webc:themePerspective": null,
         "webc:themePage": "workspace",
-        "webc:name": "localhost:8081",
+        "webc:name": "localhost:8088",
         "webc:moderationType": "aposteriori",
         "webc:url": "5620642463555702666",
         "webc:email": null,
@@ -166,7 +166,7 @@
         "file:filename": null,
         "api:application": "",
         "api:protocols": null,
-        "api:url": "http://localhost:8081/1"
+        "api:url": "http://localhost:8088/1"
       }
     },
         {
@@ -179,7 +179,7 @@
       "title": "friends",
       "lastModified": "2011-08-31T12:46:10Z",
       "properties":       {
-        "serv:url": "http://localhost:8081/1/statuses/friends",
+        "serv:url": "http://localhost:8088/1/statuses/friends",
         "serv:relatedUsers": "",
         "serv:contentTypeOut": "",
         "serv:httpMethod": "GET",
@@ -262,7 +262,7 @@
         "file:filename": null,
         "api:application": "",
         "api:protocols": null,
-        "api:url": "http://localhost:8081/1/users"
+        "api:url": "http://localhost:8088/1/users"
       }
     },
         {
@@ -307,7 +307,7 @@
         "file:filename": null,
         "api:application": "",
         "api:protocols": null,
-        "api:url": "http://localhost:8081/1/statuses"
+        "api:url": "http://localhost:8088/1/statuses"
       }
     },
         {
@@ -320,7 +320,7 @@
       "title": "followers",
       "lastModified": "2011-08-31T12:46:11Z",
       "properties":       {
-        "serv:url": "http://localhost:8081/1/statuses/followers",
+        "serv:url": "http://localhost:8088/1/statuses/followers",
         "serv:relatedUsers": "",
         "serv:contentTypeOut": "",
         "serv:httpMethod": "GET",
@@ -371,7 +371,7 @@
       "title": "show",
       "lastModified": "2011-08-31T12:46:10Z",
       "properties":       {
-        "serv:url": "http://localhost:8081/1/users/show",
+        "serv:url": "http://localhost:8088/1/users/show",
         "serv:relatedUsers": "",
         "serv:contentTypeOut": "",
         "serv:httpMethod": "GET",
