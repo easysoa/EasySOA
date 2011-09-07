@@ -7,6 +7,7 @@ require 'shellwords'
 ############### HOWTO
 
 # Type "buildr help" for a list of available tasks
+# Available options: "test=no", "offline=yes"
 
 ############### CONFIG LOADING
 
@@ -25,18 +26,34 @@ ESPER_DEP_PATH = './deps/frascati/lib/esper-4.3.0.jar'
 
 ############### CUSTOM FUNCTIONS
 
+# Builds a maven command line according to the given goals, project and the current environment
 def maven(goals, project)
   command = 'mvn '
+  
+  # Goals
   if !goals.is_a?(Array)
     goals = [goals]
   end
   for goal in goals
     command += goal+' '
   end
+  
+  # Options (from environment)
+  if ENV['offline'] == 'yes'
+      command += '-o '
+  end
+  if ENV['test'] == 'no'
+      command += '-DskipTests=true '
+  end
+  
+  # Project location
   command += '-f ' + project.base_dir + '/pom.xml'
+  
+  # Execute
   puts command
   system command
   puts "", ""
+  
 end
  # 
  
