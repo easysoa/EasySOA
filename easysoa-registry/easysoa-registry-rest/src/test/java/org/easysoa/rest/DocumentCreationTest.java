@@ -4,7 +4,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.test.EasySOAFeatureBase;
+import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.rest.RestNotificationFactory.RestNotificationService;
 import org.easysoa.test.rest.AbstractRestTest;
 import org.easysoa.test.rest.RestNotificationRequest;
@@ -29,7 +29,7 @@ import com.google.inject.Inject;
  * 
  */
 @RunWith(FeaturesRunner.class)
-@Features({EasySOAFeatureBase.class, WebEngineFeature.class})
+@Features({EasySOACoreFeature.class, WebEngineFeature.class})
 @Deploy("org.easysoa.registry.rest")
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
