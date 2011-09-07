@@ -1,8 +1,8 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var base64 = require('./tools/base64.js');
-var io = require('./tools/socket.io');
+var base64 = require('base64');
+var io = require('socket.io');
 
 eval(fs.readFileSync('httpproxy-config.js', 'ASCII'));
 
