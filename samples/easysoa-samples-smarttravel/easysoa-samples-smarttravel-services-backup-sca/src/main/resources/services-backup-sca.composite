@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<composite name="serviceBackup" xmlns="http://www.osoa.org/xmlns/sca/1.0"
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" targetNamespace="http://frascati.ow2.org/meteo">
+
+	<component name="meteoComponentBackup">
+		<implementation.java class="net.webservicex.GlobalWeatherSoapImpl1" />
+		<service name="meteoServiceBackup">
+			<interface.java interface="net.webservicex.GlobalWeatherSoap"/>
+			<binding.ws uri="http://localhost:9020/WeatherService" />
+		</service>
+	</component>
+
+	<component name="currencyComponentBackup">
+		<implementation.java class="de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoapImpl1" />
+		<service name="currencyServiceBackup">
+			<interface.java interface="de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoap"/>
+			<binding.ws uri="http://localhost:9020/CurrencyService" />
+		</service>
+	</component>
+	
+	<component name="translateComponentBackup">
+		<implementation.java class="com.microsofttranslator.api.v1.soap_svc.LanguageServiceImpl" />
+		<service name="translateServiceBackup">
+			<interface.java interface="com.microsofttranslator.api.v1.soap_svc.LanguageService"/>
+			<binding.ws uri="http://localhost:9020/TranslateService" />
+		</service>
+	</component>
+
+</composite>

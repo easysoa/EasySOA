@@ -6,9 +6,15 @@
 	<artifactId>easysoa-samples-parent</artifactId>
 	<version>0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>easysoa-samples-parent</name>
 	<url>http://maven.apache.org</url>
+
+	<parent>
+    	<groupId>org.openwide.easysoa</groupId>
+    	<artifactId>parent</artifactId>
+  		<version>0.3-SNAPSHOT</version>
+  		<relativePath>../../pom.xml</relativePath>
+  	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

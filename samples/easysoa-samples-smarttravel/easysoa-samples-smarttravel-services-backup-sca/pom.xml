@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.inria.galaxy.j1</groupId>
+	<artifactId>easysoa-samples-smarttravel-services-backup-sca</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>Services Backup using SCA</name>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.openwide.easysoa.samples</groupId>
+		<artifactId>easysoa-samples-parent</artifactId>
+		<version>0.3-SNAPSHOT</version>
+		<relativePath>../easysoa-samples-parent/pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<!--<dependency> <groupId>fr.inria.galaxy.j1</groupId> <artifactId>meteo-model</artifactId> 
+			<version>1.0-SNAPSHOT</version> </dependency> -->
+
+		<!-- Include in the war the FraSCAti Servlet CXF. -->
+		<!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-servlet-cxf</artifactId> 
+			<version>1.4</version> </dependency -->
+
+		<!-- Include in the war the FraSCAti Runtime Factory. -->
+		<!--<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-assembly-factory</artifactId>
+			<version>1.4</version>
+		</dependency>-->
+		<!-- <dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>1.4</version>
+		</dependency>-->
+		<!-- <dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>1.4</version>
+		</dependency>-->
+
+		<dependency><!-- base frascati -->
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency><!-- else no frascati class generation -->
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>-->
+		<!--><dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>-->
+
+		<!-- to run this example with mvn -Prun -->
+		<!--<dependency> <groupId>org.ow2.frascati.factory </groupId> <artifactId>frascati-factory-tools 
+			</artifactId> <version>1.4</version> </dependency> <dependency> <groupId>org.ow2.frascati.mojo</groupId> 
+			<artifactId>frascati-launcher-plugin</artifactId> <version>1.4</version> 
+			<type>maven-plugin</type> </dependency> -->
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>stax2-api</artifactId>
+			<version>3.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<!-- TEST -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+		</dependency>		
+	</dependencies>
+
+	<!-- ======= -->
+	<!-- Build -->
+	<!-- ======= -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<!-- The configuration of maven-assembly-plugin -->
+			<!-- No needed since mocks are started with FraSCAti -->
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+			-->
+			<!-- The configuration of maven-jar-plugin -->
+			<!-- No needed since mocks are started with FraSCAti -->			
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>../lib/</classpathPrefix>
+							<mainClass>net.server.Server</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>-->
+		</plugins>
+	</build>
+
+</project>
