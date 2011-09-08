@@ -14,7 +14,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.test.EasySOAFeature;
+import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.tools.RepositoryLogger;
 import org.junit.AfterClass;
@@ -38,7 +38,7 @@ import com.google.inject.Inject;
  *
  */
 @RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
+@Features(EasySOACoreTestFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class NotificationServiceTreeTest {
 

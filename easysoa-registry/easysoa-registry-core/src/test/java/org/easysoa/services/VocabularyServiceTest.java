@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.test.EasySOAFeature;
+import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import com.google.inject.Inject;
  *
  */
 @RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
+@Features(EasySOACoreTestFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class VocabularyServiceTest {
 

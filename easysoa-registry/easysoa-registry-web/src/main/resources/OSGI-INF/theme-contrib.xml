@@ -15,7 +15,7 @@
 	      <path>css/easysoa.css</path>
 	    </resource>
 	 </extension>
-	    
+	    <!-- 
   	 <extension target="org.nuxeo.theme.services.ThemeService"
         point="applications">
         
@@ -27,14 +27,12 @@
 	        <default-perspective>default</default-perspective>
 	      </negotiation>
 	
-	       Cache control for theme resources (/nxthemes-lib/)
 	      <resource-caching>
 	        <lifetime>36000</lifetime>
 	      </resource-caching>
 	
-	      Cache control for theme styles (/nxthemes-css/)
 	      <style-caching>
-	        <lifetime>1</lifetime><!-- 900 -->
+	        <lifetime>900</lifetime>
 	      </style-caching>
 	
 	      <view id="/create_relation_search_document_popup.xhtml">
@@ -59,6 +57,6 @@
 	        <theme>galaxy/popup</theme>
 	      </view>
 	    </application>
-    </extension>
+    </extension> -->
     
 </component>

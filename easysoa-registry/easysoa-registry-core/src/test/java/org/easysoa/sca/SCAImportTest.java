@@ -10,7 +10,7 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.DocumentService;
-import org.easysoa.test.EasySOAFeature;
+import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.tools.RepositoryLogger;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import com.google.inject.Inject;
  *
  */
 @RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
+@Features(EasySOACoreTestFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class SCAImportTest {
 
