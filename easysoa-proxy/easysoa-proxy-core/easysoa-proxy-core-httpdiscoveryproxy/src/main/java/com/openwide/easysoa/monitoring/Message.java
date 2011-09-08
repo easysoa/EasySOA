@@ -7,15 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 /**
- * 
+ * A class to store message seen in the proxy
  * @author jguillemotte
- *
  *
  */
 public class Message {
-
-	// TODO A message is composed of a request AND a response.
-	// TODO Add the response to the message 
 	
 	/**
 	 *	Message types 
@@ -29,6 +25,7 @@ public class Message {
 	 */
 	static Logger logger = Logger.getLogger(Message.class.getName());	
 	
+	// Message data
 	private String protocol;
 	private String host;
 	private int port;
@@ -40,7 +37,7 @@ public class Message {
 	private String url;
 	private String body;
 	// Response info
-	private Object response;
+	private String response;
 	
 	/**
 	 * Initialize a new message
@@ -236,11 +233,19 @@ public class Message {
 		return this.body;
 	}
 	
-	public void setResponse(Object response){
+	/**
+	 * 
+	 * @param response
+	 */
+	public void setResponse(String response){
 		this.response = response;
 	}
 	
-	public Object getResponse(){
+	/**
+	 * Returns the response
+	 * @return
+	 */
+	public String getResponse(){
 		return response;
 	}
 	
