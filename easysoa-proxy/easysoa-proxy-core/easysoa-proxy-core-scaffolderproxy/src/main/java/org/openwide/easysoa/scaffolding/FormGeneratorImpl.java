@@ -82,6 +82,7 @@ public class FormGeneratorImpl implements FormGenerator {
 	    byte[] buffer = new byte[(int) resultFile.length()];
 	    BufferedInputStream f = new BufferedInputStream(new FileInputStream(resultFile));
 	    f.read(buffer);
+	    f.close();
 	    return new String(buffer);
 	}	
 

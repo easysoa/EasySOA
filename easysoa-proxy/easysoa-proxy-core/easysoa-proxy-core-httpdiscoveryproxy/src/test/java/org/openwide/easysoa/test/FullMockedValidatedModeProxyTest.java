@@ -2,6 +2,10 @@ package org.openwide.easysoa.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+
+import javax.xml.soap.SOAPException;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -127,6 +131,21 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
 	@Ignore
 	public final void testSoapValidatedMode() throws Exception {
 		// TODO To complete with the test code for SOAP validated mode		
+	}	
+	
+	/**
+	 * Wait for an user action to stop the test 
+	 * @throws ClientException
+	 * @throws SOAPException
+	 * @throws IOException
+	 */
+	@Test
+	@Ignore
+	public final void testWaitUntilRead() throws Exception{
+		logger.info("Test waiting for user action to stop !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		logger.info("Test stopped !");
 	}	
 	
 }

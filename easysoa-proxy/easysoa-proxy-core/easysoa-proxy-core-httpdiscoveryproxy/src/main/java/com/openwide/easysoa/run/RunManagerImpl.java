@@ -120,8 +120,8 @@ public class RunManagerImpl implements RunManager {
 	 * Returns the run list
 	 * @return A <code>List</code> of <code>Run</code>
 	 */
-	public List<Run> listRuns(){
-		return this.listRuns();
+	public ArrayDeque<Run> listRuns(){
+		return this.runList;
 	}
 	
 	/* (non-Javadoc)

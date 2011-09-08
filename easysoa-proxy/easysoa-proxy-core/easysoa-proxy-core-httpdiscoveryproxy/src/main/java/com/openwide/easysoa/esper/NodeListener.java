@@ -23,8 +23,12 @@ public class NodeListener implements UpdateListener {
 	
 	@Override
 	public void update(EventBean[] newEvents, EventBean[] oldEvents) {
-		for (EventBean newEvent : newEvents) {
-			update(newEvent);
+		logger.debug("***************************************************************");
+		logger.debug("receiving event !");	
+		if(newEvents != null){
+			for (EventBean newEvent : newEvents) {
+				update(newEvent);
+			}
 		}
 	}
 
