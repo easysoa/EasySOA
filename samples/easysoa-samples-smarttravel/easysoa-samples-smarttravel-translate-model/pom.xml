@@ -13,6 +13,7 @@
 		<groupId>org.openwide.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
+		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
 	</parent>
 
 	<build>
