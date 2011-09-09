@@ -112,9 +112,13 @@
           				<!-- We have a problem when we try to execute the 2 full mocked test in the same time -->
           				<!-- so temporary solution is to deactivate the full mocked test for validated mode  -->
           				<exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
+          				
             			<!-- These tests require an externel nuxeo to work ! -->
             			<exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
             			<exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
+            			
+            			<!-- these tests should only work when the corresponding bugs are patched : -->
+            			<exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
           			</excludes>
         		</configuration>
       		</plugin>				
