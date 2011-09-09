@@ -108,25 +108,29 @@
 			<scope>compile</scope>
 		</dependency>
 		
+		<!-- other embedded test dependencies : -->
 		<dependency>
 			<groupId>org.nuxeo.ecm.platform</groupId>
 			<artifactId>nuxeo-platform-types-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-convert-plugins</artifactId>
+		</dependency>
+		
+		<!-- for external tests using EasySOACoreFeature : -->
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-forms-layout-client</artifactId>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.nuxeo.ecm.automation</groupId>
 			<artifactId>nuxeo-automation-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.nuxeo.ecm.automation</groupId>
-			<artifactId>nuxeo-automation-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.nuxeo.ecm.webengine</groupId>
 			<artifactId>nuxeo-webengine-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.nuxeo.ecm.core</groupId>
-			<artifactId>nuxeo-core-convert-plugins</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>

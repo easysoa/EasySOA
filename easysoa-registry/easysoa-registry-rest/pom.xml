@@ -64,15 +64,6 @@
 			
 		<!-- ?? -->
 		<dependency>
-			<groupId>org.nuxeo.ecm.platform</groupId>
-			<artifactId>nuxeo-features-test</artifactId>
-			<version>${easysoa.nuxeo.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nuxeo.ecm.platform</groupId>
-			<artifactId>nuxeo-platform-directory-api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.nuxeo.ecm.automation</groupId>
 			<artifactId>nuxeo-automation-client</artifactId>
 			<type>jar</type>
@@ -82,11 +73,6 @@
 			<groupId>org.nuxeo.ecm.automation</groupId>
 			<artifactId>nuxeo-automation-core</artifactId>
 			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.nuxeo.ecm.core</groupId>
-			<artifactId>nuxeo-core-test</artifactId>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -101,21 +87,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
-			<artifactId>nuxeo-runtime-test</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.nuxeo.runtime</groupId>
 			<artifactId>nuxeo-runtime-jetty-adapter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.nuxeo.ecm.platform</groupId>
 			<artifactId>nuxeo-platform-usermanager-core</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.nuxeo.ecm.platform</groupId>
-			<artifactId>nuxeo-platform-directory-sql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
