@@ -6,18 +6,25 @@ import javax.xml.soap.SOAPException;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 import org.ow2.frascati.FraSCAti;
 
-public class ServicesBackupTest {
+
+/**
+ * Used to test issue #23 FraSCAti can't mock a specific WSDL (because no JAXWS annotations support)
+ * https://github.com/easysoa/easysoa-model-demo/issues/23 .
+ * 
+ * @author mdutoo
+ *
+ */
+public class ServicesBackupTestStarter {
 
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(ServicesBackupTest.class.getClass());	
+	private static Logger logger = Logger.getLogger(ServicesBackupTestStarter.class.getClass());	
 
 	/** The FraSCAti platform */
     private static FraSCAti frascati;
