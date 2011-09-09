@@ -11,6 +11,7 @@
 		<groupId>org.openwide.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
+		<relativePath>../easysoa-samples-parent/pom.xml</relativePath>
 	</parent>
 
 	<dependencies>
@@ -23,7 +24,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -63,15 +63,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.easysoa</groupId>
+			<groupId>org.openwide.easysoa</groupId>
 			<artifactId>easysoa-registry-core</artifactId>
-			<version>0.1.3-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.easysoa</groupId>
+			<groupId>org.openwide.easysoa</groupId>
 			<artifactId>easysoa-registry-rest</artifactId>
-			<version>0.1.3-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

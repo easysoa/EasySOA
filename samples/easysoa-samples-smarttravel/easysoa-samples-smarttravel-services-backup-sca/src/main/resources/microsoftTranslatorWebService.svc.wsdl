@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="SoapService"
+	targetNamespace="http://api.microsofttranslator.com/v1/soap.svc"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy"
+	xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract"
+	xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"
+	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:tns="http://api.microsofttranslator.com/v1/soap.svc" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns="http://api.microsofttranslator.com/v1/soap.svc">
+
+	<wsdl:types>
+        <xs:schema elementFormDefault="qualified"
+            targetNamespace="http://api.microsofttranslator.com/v1/soap.svc">
+			<xs:element name="GetLanguages">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="appId" nillable="true"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetLanguagesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetLanguagesResult"
+							nillable="true" type="ArrayOfstring"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetLanguageNames">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="appId" nillable="true"
+							type="xs:string" />
+						<xs:element minOccurs="0" name="locale" nillable="true"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetLanguageNamesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetLanguageNamesResult"
+							nillable="true" type="ArrayOfstring"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Detect">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="appId" nillable="true"
+							type="xs:string" />
+						<xs:element minOccurs="0" name="text" nillable="true"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DetectResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="DetectResult" nillable="true"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Translate">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="appId" nillable="true"
+							type="xs:string" />
+						<xs:element minOccurs="0" name="text" nillable="true"
+							type="xs:string" />
+						<xs:element minOccurs="0" name="from" nillable="true"
+							type="xs:string" />
+						<xs:element minOccurs="0" name="to" nillable="true"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TranslateResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="TranslateResult"
+							nillable="true" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="anyType" nillable="true" type="xs:anyType" />
+			<xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+			<xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+			<xs:element name="boolean" nillable="true" type="xs:boolean" />
+			<xs:element name="byte" nillable="true" type="xs:byte" />
+			<xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+			<xs:element name="decimal" nillable="true" type="xs:decimal" />
+			<xs:element name="double" nillable="true" type="xs:double" />
+			<xs:element name="float" nillable="true" type="xs:float" />
+			<xs:element name="int" nillable="true" type="xs:int" />
+			<xs:element name="long" nillable="true" type="xs:long" />
+			<xs:element name="QName" nillable="true" type="xs:QName" />
+			<xs:element name="short" nillable="true" type="xs:short" />
+			<xs:element name="string" nillable="true" type="xs:string" />
+			<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+			<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+			<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+			<xs:element name="unsignedShort" nillable="true"
+				type="xs:unsignedShort" />
+			<xs:element name="char" nillable="true" type="tns:char" />
+			<xs:simpleType name="char">
+				<xs:restriction base="xs:int" />
+			</xs:simpleType>
+			<xs:element name="duration" nillable="true" type="tns:duration" />
+			<xs:simpleType name="duration">
+				<xs:restriction base="xs:duration">
+					<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+					<xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+					<xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="guid" nillable="true" type="tns:guid" />
+			<xs:simpleType name="guid">
+				<xs:restriction base="xs:string">
+					<xs:pattern
+						value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:attribute name="FactoryType" type="xs:QName" />
+			<xs:attribute name="Id" type="xs:ID" />
+			<xs:attribute name="Ref" type="xs:IDREF" />
+			<!-- <xs:complexType name="ArrayOfstring">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="string"
+						nillable="true" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>-->
+			<!--<xs:element name="ArrayOfstring" nillable="true"
+				type="tns:ArrayOfstring" />-->
+				
+				
+				
+				<!-- ************ -->
+				
+  <!--<xs:element name="anyType" nillable="true" type="xs:anyType" />
+  <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+  <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+  <xs:element name="boolean" nillable="true" type="xs:boolean" />
+  <xs:element name="byte" nillable="true" type="xs:byte" />
+  <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+  <xs:element name="decimal" nillable="true" type="xs:decimal" />
+  <xs:element name="double" nillable="true" type="xs:double" />
+  <xs:element name="float" nillable="true" type="xs:float" />
+  <xs:element name="int" nillable="true" type="xs:int" />
+  <xs:element name="long" nillable="true" type="xs:long" />
+  <xs:element name="QName" nillable="true" type="xs:QName" />
+  <xs:element name="short" nillable="true" type="xs:short" />
+  <xs:element name="string" nillable="true" type="xs:string" />
+  <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+  <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+  <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+  <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+  <xs:element name="char" nillable="true" type="tns:char" />-->
+  <!--<xs:simpleType name="char">
+    <xs:restriction base="xs:int" />
+  </xs:simpleType>-->
+  <!--<xs:element name="duration" nillable="true" type="tns:duration" />-->
+  <!--<xs:simpleType name="duration">
+    <xs:restriction base="xs:duration">
+      <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+      <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+      <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+    </xs:restriction>
+  </xs:simpleType>-->
+  <!--<xs:element name="guid" nillable="true" type="tns:guid" />
+  <xs:simpleType name="guid">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+    </xs:restriction>
+  </xs:simpleType>-->
+  <!--<xs:attribute name="FactoryType" type="xs:QName" />
+  <xs:attribute name="Id" type="xs:ID" />
+  <xs:attribute name="Ref" type="xs:IDREF" />-->
+
+  <!--<xs:simpleType name="guid">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="char">
+    <xs:restriction base="xs:unsignedShort" />
+  </xs:simpleType>-->
+
+  <xs:complexType name="DateTimeOffset">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="DateTime" type="xs:dateTime" />
+      <xs:element name="OffsetMinutes" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DateTimeOffset" nillable="true" type="tns:DateTimeOffset" />
+  <xs:complexType name="DBNull">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="DBNull" nillable="true" type="tns:DBNull" />
+
+  <xs:complexType name="ArrayOfboolean">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="boolean" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfboolean" nillable="true" type="tns:ArrayOfboolean" />
+  <xs:complexType name="ArrayOfchar">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="char" type="char" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfchar" nillable="true" type="tns:ArrayOfchar" />
+  <xs:complexType name="ArrayOfdateTime">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="dateTime" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdateTime" nillable="true" type="tns:ArrayOfdateTime" />
+  <xs:complexType name="ArrayOfdecimal">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="decimal" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdecimal" nillable="true" type="tns:ArrayOfdecimal" />
+  <xs:complexType name="ArrayOfdouble">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="double" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdouble" nillable="true" type="tns:ArrayOfdouble" />
+  <xs:complexType name="ArrayOffloat">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="float" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOffloat" nillable="true" type="tns:ArrayOffloat" />
+  <xs:complexType name="ArrayOfguid">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="guid" type="guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfguid" nillable="true" type="tns:ArrayOfguid" />
+  <xs:complexType name="ArrayOfint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="int" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfint" nillable="true" type="tns:ArrayOfint" />
+  <xs:complexType name="ArrayOflong">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="long" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOflong" nillable="true" type="tns:ArrayOflong" />
+  <xs:complexType name="ArrayOfshort">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="short" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfshort" nillable="true" type="tns:ArrayOfshort" />
+  <xs:complexType name="ArrayOfstring">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+  <xs:complexType name="ArrayOfduration">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="duration" type="duration" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfduration" nillable="true" type="tns:ArrayOfduration" />
+  <xs:complexType name="ArrayOfunsignedInt">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="unsignedInt" type="xs:unsignedInt" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfunsignedInt" nillable="true" type="tns:ArrayOfunsignedInt" />
+  <xs:complexType name="ArrayOfunsignedLong">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="unsignedLong" type="xs:unsignedLong" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfunsignedLong" nillable="true" type="tns:ArrayOfunsignedLong" />
+  <xs:complexType name="ArrayOfunsignedShort">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="unsignedShort" type="xs:unsignedShort" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfunsignedShort" nillable="true" type="tns:ArrayOfunsignedShort" />
+  <xs:complexType name="ArrayOfQName">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="QName" nillable="true" type="xs:QName" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfQName" nillable="true" type="tns:ArrayOfQName" />
+
+	<!-- ************ -->
+				
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="LanguageService_GetLanguages_InputMessage">
+		<wsdl:part name="parameters" element="GetLanguages" />
+	</wsdl:message>
+	<wsdl:message name="LanguageService_GetLanguages_OutputMessage">
+		<wsdl:part name="parameters" element="GetLanguagesResponse" />
+	</wsdl:message>
+	<wsdl:message name="LanguageService_GetLanguageNames_InputMessage">
+		<wsdl:part name="parameters" element="GetLanguageNames" />
+	</wsdl:message>
+	<wsdl:message name="LanguageService_GetLanguageNames_OutputMessage">
+		<wsdl:part name="parameters" element="GetLanguageNamesResponse" />
+	</wsdl:message>
+	<wsdl:message name="LanguageService_Detect_InputMessage">
+		<wsdl:part name="parameters" element="Detect" />
+	</wsdl:message>
+	<wsdl:message name="LanguageService_Detect_OutputMessage">
+		<wsdl:part name="parameters" element="DetectResponse" />
+	</wsdl:message>
+	<wsdl:message name="LanguageService_Translate_InputMessage">
+		<wsdl:part name="parameters" element="Translate" />
+	</wsdl:message>
+	<wsdl:message name="LanguageService_Translate_OutputMessage">
+		<wsdl:part name="parameters" element="TranslateResponse" />
+	</wsdl:message>
+	
+	<wsdl:portType name="LanguageService">
+		<wsdl:operation name="GetLanguages">
+			<wsdl:input
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages"
+				message="tns:LanguageService_GetLanguages_InputMessage" />
+			<wsdl:output
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguagesResponse"
+				message="tns:LanguageService_GetLanguages_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="GetLanguageNames">
+			<wsdl:input
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames"
+				message="tns:LanguageService_GetLanguageNames_InputMessage" />
+			<wsdl:output
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNamesResponse"
+				message="tns:LanguageService_GetLanguageNames_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="Detect">
+			<wsdl:input
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect"
+				message="tns:LanguageService_Detect_InputMessage" />
+			<wsdl:output
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/DetectResponse"
+				message="tns:LanguageService_Detect_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="Translate">
+			<wsdl:input
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate"
+				message="tns:LanguageService_Translate_InputMessage" />
+			<wsdl:output
+				wsaw:Action="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/TranslateResponse"
+				message="tns:LanguageService_Translate_OutputMessage" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
+
+	<wsdl:binding name="BasicHttpBinding_LanguageService" type="LanguageService">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetLanguages">
+			<soap:operation
+				soapAction="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetLanguageNames">
+			<soap:operation
+				soapAction="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Detect">
+			<soap:operation
+				soapAction="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Translate">
+			<soap:operation
+				soapAction="http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="SoapService">
+		<wsdl:port name="BasicHttpBindingLanguageService" binding="BasicHttpBinding_LanguageService">
+			<soap:address location="http://api.microsofttranslator.com/V1/soap.svc" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

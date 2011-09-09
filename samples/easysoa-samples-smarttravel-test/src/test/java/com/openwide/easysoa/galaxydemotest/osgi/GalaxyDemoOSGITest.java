@@ -17,7 +17,7 @@ import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 
 import org.apache.log4j.Logger;
-import org.easysoa.test.EasySOAFeature;
+import org.easysoa.test.EasySOACoreFeature;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ import com.openwide.easysoa.galaxydemotest.EasySOARepositoryInit;
  * Unit test for Galaxy Demo. Frascati runs in Nuxeo with OSGI mechanism.
  */
 @RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
+@Features(EasySOACoreFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class GalaxyDemoOSGITest {
 

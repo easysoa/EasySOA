@@ -1,0 +1,28 @@
+<assembly>
+    <id>bin</id>
+    <!-- Generates a zip package containing the needed files -->
+    <formats>
+        <format>zip</format>
+    </formats>
+    <!-- Adds dependencies to zip package under lib directory -->
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <excludes>
+        		<exclude>net.server:*</exclude>
+        		<exclude>net.webservicex:*</exclude>
+        	</excludes>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <!-- adds jar package in the bin folder of zip package -->
+        <fileSet>
+            <directory>target</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>	

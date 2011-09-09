@@ -9,6 +9,7 @@
 		<groupId>org.openwide.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
+		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
 	</parent>
 
 	<!-- MVN -Prun Build -->
@@ -99,7 +100,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
