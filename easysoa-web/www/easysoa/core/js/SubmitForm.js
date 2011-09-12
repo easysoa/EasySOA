@@ -27,13 +27,33 @@ $(function() {
 		
 		submit: function() {
 			if (this.getURL() != '') {
-			  data = {
+			    jQuery.ajax({
+			        url: '/send',
+			        data: {
+			            'url': this.getURL(),
+			            'servicename': $('#submitService').attr('value'),
+			            'applicationname': $('#submitApp').attr('value')
+			          },
+			        success: function (data) {
+			            if (data == 'ok') {
+                           SubmitForm.success();
+                        }
+                        else {
+                           SubmitForm.failure(data);
+                        }
+                      },
+                    error: function (data) {
+                        SubmitForm.failure(data);
+                      }
+			      });
+			    // Couldn't make it work through the proxy
+			  /*window.socket.send(JSON.stringify({
 			    'url': this.getURL(),
 			    'servicename': $('#submitService').attr('value'),
-			    'applicationname': $('#submitApp').attr('value') 
-			  }
-			  socket.send(JSON.stringify(data));
-			 }
+			    'applicationname': $('#submitApp').attr('value'),
+			    'authToken': window.authToken
+			  }));*/
+			}
 		},
 		
 		select: function(descriptor) {

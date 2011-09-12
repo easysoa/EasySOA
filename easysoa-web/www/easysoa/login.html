@@ -18,10 +18,11 @@
    
    $(window).load(function () {
         if (getURLParameter('error') == 'true') {
-                console.log('yeah');
-                $('#error').show();//('style', 'display: block');
+            $('#error').show();
         }
-        
+        if (getURLParameter('nuxeoNotReady') == 'true') {
+           $('#nuxeoNotReady').show();
+        }
         $('#prev').attr('value', getURLParameter('prev'));
     });
     
@@ -52,6 +53,7 @@
         <p><input type="submit" /></p>
         
         <div id="error" style="display: none; border: 2px solid red; float: left; color: darkred; background-color: #FDD; padding: 5px">Invalid username or password.</div>
+        <div id="nuxeoNotReady" style="display: none; border: 2px solid grey; float: left; color: #333; background-color: #EEE; padding: 5px">The <a href="http://localhost:8080">service registry</a> is not ready yet. Please wait a few seconds and retry.</div>
         
     </form>
     

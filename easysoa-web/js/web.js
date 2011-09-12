@@ -52,7 +52,7 @@ function fixUrl(request, result, next) {
 var webServer = express.createServer();
 
 webServer.configure(function(){
-    webServer.use(express.logger({ format: ':method :url' }));
+  //  webServer.use(express.logger({ format: ':method :url' }));
     webServer.use(express.cookieParser());
     webServer.use(express.session({ secret: "easysoa-web" }));
     webServer.use(express.bodyParser());
@@ -64,9 +64,41 @@ webServer.configure(function(){
     webServer.use(express.directory(__dirname + '/' + settings.webRoot));
 });
 
-webServer.get('*', function(request, result, next) {
+webServer.get('/login', function(request, response, next) {
+    response.redirect('/easysoa/login.html');
+});
+      
+webServer.get('/send', function(request, response, next) {
+      // Send notifications to Nuxeo on client request
+      /**
+       * Message from the client should have the following JSON format:
+       * {
+       *  'url': 'The URL',
+       *  'applicationname': 'The applicationname',
+       *  'servicename': 'The service name'
+       * }
+       */
+       request.query.session = request.session;
+       easysoaNuxeo.registerWsdl(request.query, function(json) {
+           if (json.result) {
+               try {
+                  response.write(json.result);
+               }
+               catch (error) {
+                  response.write('Request failed');
+               }
+           }
+           else {
+              response.write('Unexpected response');
+           }
+           response.end();
+       });
+});
+
+
+webServer.get('*', function(request, response, next) {
     // Socket.io compatibility
-    if (request.url.indexOf('socket.io') != -1) { 
+    if (request.url.indexOf('socket.io') != -1) {
         easysoaDbb.forceSocketIOHandling(request, response);
     }
     else {
@@ -83,10 +115,17 @@ easysoaDbb.startDiscoveryByBrowsingHandler(webServer);
 
 var proxy = new httpProxy.HttpProxy();
 
+proxy.on('proxyError', function(error, request, result) {
+    result.write("<h1>Error "+error.errno+"</h1>");
+    result.write("<p>"+error.message+"</p>");
+    result.end();
+});
+
 var proxyServer = http.createServer(function(request, response) {
 
         // Proxying
         if (!isRequestToProxy(request)) {
+
             request_url = url.parse(request.url);
             proxy.proxyRequest(request, response, {
                 host: request_url.hostname,

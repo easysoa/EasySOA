@@ -45,6 +45,21 @@ li {
 	font-size: 10pt;
 }
 
+#headerUserBar {
+    position: absolute;
+    left: 650px;
+    top: 25px;
+    font-size: 11pt;
+    color: #444;
+    display: none;
+    width: 200px;
+}
+
+#username {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
 /* Navigation bar 
    -------------- */
 

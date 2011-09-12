@@ -12,6 +12,7 @@ var base64 = require('base64');
 eval(fs.readFileSync('./settings.js', 'ASCII'));
 
 var nuxeoReady = false;
+var nuxeoNotification = url.parse(settings.nuxeoNotification);
 var nuxeoAutomation = url.parse(settings.nuxeoAutomation);
 
 // INTERNAL FUNCTIONS
@@ -25,27 +26,34 @@ computeAuthorization = function(username, password) {
     }
 }
 
-sendNotification = function(nuxeo_upload_options, body, callback) {
+sendNotification = function(nuxeoUploadOptions, body, callback) {
 
-      rest_request = http.request(nuxeo_upload_options, function(rest_response) {
+    console.log(nuxeoUploadOptions);
+
+      restRequest = http.request(nuxeoUploadOptions, function(restResponse) {
 	
           // Nuxeo response handling
           var data = "";
-          rest_response.on('data', function(chunk) {
+          restResponse.on('data', function(chunk) {
             data += chunk.toString("ascii");
           });
-          rest_response.on('end', function() {
-            callback(data);
+          restResponse.on('end', function() {
+            try {
+                callback(JSON.parse(data));
+            }
+            catch (error) {
+                callback({result: error});
+            }
           });
           
       });
       
-      rest_request.addListener('error', function(error) {
+      restRequest.addListener('error', function(error) {
         console.log("[WARN] Failure while sending REST request to Nuxeo "+error);
-        callback(error);
+        callback({result: error});
       });
-      rest_request.write(body);
-      rest_request.end();
+      restRequest.write(body);
+      restRequest.end();
     
 };
 
@@ -54,7 +62,15 @@ sendNotification = function(nuxeo_upload_options, body, callback) {
 /*
  *
  */
-exports.checkNuxeo = function(username, password, callback) { /* TODO Rename function */
+exports.isNuxeoReady = function() {
+    return nuxeoReady;
+}
+
+/*
+ *
+ */
+exports.checkNuxeo = function(username, password, callback) {
+
 
   var requestOptions = {
 	  port : nuxeoAutomation.port,
@@ -81,6 +97,10 @@ exports.checkNuxeo = function(username, password, callback) { /* TODO Rename fun
 			callback(responseData);
 		});
   });
+  
+  nxRequest.on('error', function(data) {
+    callback('Nuxeo doesn\'t answer');
+  });
 	
   nxRequest.end();
 	
@@ -97,7 +117,7 @@ exports.checkNuxeo = function(username, password, callback) { /* TODO Rename fun
 /*
  *
  */
-exports.registerWsdl = function(data, session, callback) {
+exports.registerWsdl = function(data, callback) {
 
     try {
     
@@ -109,7 +129,7 @@ exports.registerWsdl = function(data, session, callback) {
           '&fileUrl='+data.url+
           '&title='+data.servicename+
           '&discoveryTypeBrowsing=Discovered by browsing';
-      var nuxeo_upload_options = {
+      var nuxeoUploadOptions = {
 	          port : nuxeoNotification.port,
 	          method : 'POST',
 	          host : nuxeoNotification.hostname,
@@ -117,11 +137,11 @@ exports.registerWsdl = function(data, session, callback) {
 	          headers : {
 	            'Content-Type': 'application/x-www-form-urlencoded',
 	            'Content-Length': body.length,
-	            'Authorization': computeAuthorization(session.username, session.password)
+	            'Authorization': computeAuthorization(data.session.username, data.session.password)
 	          }
           };
           
-      sendNotification(nuxeo_upload_options, body, callback);
+      sendNotification(nuxeoUploadOptions, body, callback);
         
     }
     catch (error) {

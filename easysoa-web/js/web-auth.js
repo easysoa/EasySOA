@@ -5,6 +5,7 @@
  */
 
 var url = require('url');
+var base64 = require('base64');
 var easysoaNuxeo = require('./web-nuxeo.js');
 
 // INTERNAL FUNCTIONS
@@ -14,11 +15,14 @@ redirectTo = function(result, url) {
 }
 
 isLoginValid = function(username, password, callback) {
-    easysoaNuxeo.checkNuxeo(username, password, function(data) {
-        var res = data[0] == "{";
-        console.log('easysoaNuxeo.checkNuxeo='+res);
-        callback(data[0] == "{"); // If login succeeded, we get the automation doc
-    });
+    if (easysoaNuxeo.isNuxeoReady()) {
+        easysoaNuxeo.checkNuxeo(username, password, function(data) {
+            callback(data[0] == "{"); // If login succeeded, we get the automation doc
+        });
+    }
+    else {
+        throw "Nuxeo is not ready";
+    }
 }
 
 isAnonymouslyAvailable = function(url) {
@@ -36,12 +40,37 @@ exports.authFilter = function (request, result, next) {
       request.session.destroy();
       return;
     }
+    
+    // User data
+    if (reqUrl.pathname == "/userdata") {
+        if (request.session && request.session.username) {
+            var responseData = new Object();
+            responseData.username = request.session.username;
+            result.write(JSON.stringify(responseData));
+        }
+        else {
+            result.writeHead(403);
+        }
+        result.end();
+        return;
+    }
 
     // Handle already logged user
-    if (request.session && request.session.auth == true) {
-      console.log('Already logged: '+request.session.username);
-      next();
-      return;
+    if (request.session && request.session.username != undefined) {
+        if (request.url == '/login') {
+            if (request.body && request.body.prev) {
+               result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
+               return;
+            }
+            else {
+               result.redirect('/easysoa');
+               return;
+            }
+        }
+        else {
+            next();
+            return;
+        }
     }
 
     // Authentication
@@ -49,23 +78,27 @@ exports.authFilter = function (request, result, next) {
         next();
         return;
     }
-    else if (reqUrl.pathname == "/login") {
-        isLoginValid(request.body.username, request.body.password, function (callbackResult) {
-          // Logged successfully
-          if (callbackResult) {
-                request.session.auth = true;
-                request.session.username = request.body.username;
-                request.session.password = request.body.password;
-              console.log('Login successful for ' + request.body.username);
-              console.log("Redirecting to : "+request.body.prev);
-              result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
-              return;
-          // Unauthorized
-          } else {
-            result.redirect('/easysoa/login.html?error=true');
+    else if (reqUrl.pathname == "/login" && request.body) {
+        try {
+            isLoginValid(request.body.username, request.body.password, function (callbackResult) {
+              // Logged successfully
+              if (callbackResult) {
+                    request.session.username = request.body.username;
+                    request.session.password = request.body.password;
+                  console.log('[INFO] User `' + request.body.username + '` just logged in');
+                  result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
+                  return;
+              // Unauthorized
+              } else {
+                result.redirect('/easysoa/login.html?error=true');
+                return;
+              }
+           });
+         }
+         catch (error) {
+            result.redirect('/easysoa/login.html?nuxeoNotReady=true');
             return;
-          }
-       });
+         }
     }
     else if (isAnonymouslyAvailable(reqUrl)) {
         next();
@@ -80,7 +113,6 @@ exports.handleLogin = function(request, result) {
     if (request.body != undefined) {
         exports.isLoginValid(request.body.username, request.body.password, function(isValid) {
             if (isValid) {
-                request.session.auth = true;////
                 request.session.username = request.body.username;
                 request.session.password = request.body.password;
                 console.log("[INFO] Session created for: "+request.body.username);

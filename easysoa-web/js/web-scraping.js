@@ -7,11 +7,13 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
+var easysoaDbb = require('./web-dbb.js');
+
 
 eval(fs.readFileSync('./settings.js', 'ASCII'));
 
 exports.sendUrlToScrapers = function(request_url, callback) {
-
+    
     for (scraper in settings.scrapers) {
     
 	    var scraperURL = url.parse(settings.scrapers[scraper]);
@@ -59,9 +61,7 @@ exports.sendUrlToScrapers = function(request_url, callback) {
             
         scraperRequest.addListener('error', function(error) {
             msg = "Scraper unavailable: "+settings.scrapers[scraper];
-            if (clients != null) {
-      		  clients.broadcast("ERROR: "+msg);
-      		}
+            easysoaDbb.broadcastemit('error', "ERROR: "+msg);
       		console.log("[WARN] "+msg);
         });
 	     

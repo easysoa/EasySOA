@@ -14,6 +14,16 @@ $(function() {
 		 */
 		initialize: function() {
 		
+    		// Get user name
+		    jQuery.ajax({
+		        url: '/userdata',
+		        success: function(data, textStatus, jqXHR) {
+		            var data = jQuery.parseJSON(jqXHR.responseText);
+                    $("#username").html(data.username);
+                    $("#headerUserBar").show();
+                }
+            });
+		
 			this.descriptorsView = new DescriptorsView;
 			this.frameView = new FrameView;
 			this.navBarView = new NavbarView;
@@ -25,7 +35,6 @@ $(function() {
                   this.error(data.substring(7, data.length-1));
             });
             socket.on('wsdl', function(data) {
-                 //console.log('wsdl:'+data);
                   try {
                       data = jQuery.parseJSON(data);
                       if (!Descriptors.contains(data)) {
@@ -36,8 +45,7 @@ $(function() {
                     this.error("Error while handling 'wsdl' message: "+error);
                   }
             });
-            socket.on('upload', function(data) {
-                  console.log('upload: '+data);
+           /* socket.on('upload', function(data) {
                   try {
                       if (data == 'ok') {
                         SubmitForm.success();
@@ -49,9 +57,8 @@ $(function() {
                   catch (error) {
                     this.error("Error while handling 'upload' message: "+error);
                   }
-            });
+            });*/
             socket.on('ready', function(data) {
-                  //console.log('ready');
                   try {
                     $('#messageSuccess').html('Ready.');
                     $('#message').fadeOut(200, function() {
