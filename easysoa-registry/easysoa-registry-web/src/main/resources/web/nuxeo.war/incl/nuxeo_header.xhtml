@@ -19,26 +19,26 @@
              <nxd:restDocumentLink document="#{mainTabsActions.getDocumentFor(mainTab.id)}"
                view="#{mainTabsActions.getViewFor(mainTab)}" addTabInfo="false"
                tabs="MAIN_TABS:#{mainTab.id}">
-               Services management
-               <!-- TODO <h:outputText value="#{messages[mainTab.label]}" /> -->
+               <h:outputText value="#{messages[mainTab.label]}" />
              </nxd:restDocumentLink>
+
          </li>
        </nxu:dataList>
      </ul>
    </div>
 
-	<c:if test="#{currentNuxeoPrincipal!=null and currentNuxeoPrincipal.isAdministrator()}">
-	     <div style="float:left; color:white" class="studioButton">
-	     <c:choose>
-	      <c:when test="#{connectUpdateStatusInfo.registered}">
-	        <a target="studio" href="https://connect.nuxeo.com/nuxeo/site/studio/ide">Studio</a>
-	      </c:when>
-	      <c:otherwise>
-	        <a href="https://connect.nuxeo.com/nuxeo/site/connect/trial/form?source=studioButton&#38;product=#{connectUpdateStatusInfo.distributionLabel}" target="studio">Studio</a>
-	      </c:otherwise>
-	     </c:choose>
-	     </div>
-	</c:if>
+<c:if test="#{currentNuxeoPrincipal!=null and currentNuxeoPrincipal.isAdministrator()}">
+     <div style="float:left; color:white" class="studioButton">
+     <c:choose>
+      <c:when test="#{connectUpdateStatusInfo.registered}">
+        <a target="studio" href="https://connect.nuxeo.com/nuxeo/site/studio/ide">Studio</a>
+      </c:when>
+      <c:otherwise>
+        <a href="https://connect.nuxeo.com/nuxeo/site/connect/trial/form?source=studioButton&#38;product=#{connectUpdateStatusInfo.distributionLabel}" target="studio">Studio</a>
+      </c:otherwise>
+     </c:choose>
+     </div>
+</c:if>
 
 
    <div class="userMenuActions">
@@ -73,14 +73,16 @@
          </nxu:set>
        </li>
      </ul>
+
    </div>
 
-	<!-- EasySOA : Put user actions in a dropdown list -->
+	<!-- EasySOA : Puts user actions in a dropdown list -->
    <div class="userMenuActions">
      <ul class="userMenuList">
        <li><a class="userButton" 
        		style="background-image: url('/nuxeo/img/serviceMgmt.png')">
-       		<h:outputText value="#{messages[label.easysoa.servicesmanagement]}" />
+       		EasySOA
+       		<!-- <h:outputText value="#{messages[label.easysoa.servicesmanagement]}" /> -->
        		</a>
          <nxu:set var="actions"
            value="#{webActions.getActionsList('EASYSOA_SERVICES_MGMT')}"
@@ -108,7 +110,8 @@
      </ul>
    </div>
    
-   <!-- <div class="userActions">
+   
+   <div class="userActions">
 
      <nxu:set var="actions"
        value="#{webActions.getActionsList('USER_SERVICES')}"
@@ -155,7 +158,7 @@
        </nxu:dataList>
      </nxu:set>
 
-   </div> -->
+   </div>
 
    <div class="searchService">
 
