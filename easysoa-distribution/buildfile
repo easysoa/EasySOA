@@ -67,6 +67,7 @@ EASYSOA_PAF = EASYSOA+':samples:easysoa-samples-pureairflowers'
 EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
 EASYSOA_TRAVEL_BACKUP = EASYSOA+':samples:easysoa-samples-smarttravel:easysoa-samples-smarttravel-services-backup'
 
+desc 'EasySOA project - Available options for all EasySOA tasks: "test=no" to skip tests, "offline=yes" to build in offline mode'
 define 'easysoa', :base_dir => '../' do
   
   task :mvn do
