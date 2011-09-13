@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- EasySOA - Authentication form -->
+<html>
+
+<head>
+	<title>Service discovery by browsing</title>
+	<meta charset="utf-8" />
+	<link href="/easysoa/style.css" type="text/css" media="all" rel="stylesheet" />
+	<script type="text/javascript" src="js/jquery-1.5.2.js"></script>
+	<script type="text/javascript">
+	<!--
+	
+	function getURLParameter(name) {
+        return decodeURI(
+            (RegExp('[?|&]'+ name + '=' + '(.+?)(&|$)').exec(location.search)||[,''])[1]
+        );
+    }
+   
+   $(window).load(function () {
+        if (getURLParameter('error') == 'true') {
+            $('#error').show();
+        }
+        if (getURLParameter('nuxeoNotReady') == 'true') {
+           $('#nuxeoNotReady').show();
+        }
+        $('#prev').attr('value', getURLParameter('prev'));
+    });
+    
+
+	-->
+	</script>
+</head>
+	
+<body>
+
+<div id="headerCore">
+    <div id="headerBreadcrumbs"><a href="/easysoa/index.html">EasySOA</a> > <b>Authentication</b></div>
+    Authentication form
+</div>
+
+<div id="container" style="width: 100%">
+    
+    <form method="post" action="/login">
+    
+        <input type="hidden" id="prev" name="prev" value="" />
+        
+        <p>User name<br />
+        <input type="text" name="username" value="" style="width: 300px" /></p>
+        
+        <p>Password<br />
+        <input type="password" name="password" value="" style="width: 300px" /></p>
+        
+        <p><input type="submit" /></p>
+        
+        <div id="error" style="display: none; border: 2px solid red; float: left; color: darkred; background-color: #FDD; padding: 5px">Invalid username or password.</div>
+        <div id="nuxeoNotReady" style="display: none; border: 2px solid grey; float: left; color: #333; background-color: #EEE; padding: 5px">The <a href="http://localhost:8080">service registry</a> is not ready yet. Please wait a few seconds and retry.</div>
+        
+    </form>
+    
+</div>
+  
+</body>
+
+</html>

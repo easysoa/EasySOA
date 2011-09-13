@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- EasySOA - Service Browser Demo -->
+<html>
+
+<head>
+	<title>Service discovery by browsing</title>
+	<meta charset="utf-8" />
+	<link href="../style.css" type="text/css" media="all" rel="stylesheet" />
+	<link href="style.css" type="text/css" media="all" rel="stylesheet" />
+	<script type="text/javascript" src="lib/jquery-1.5.2.js"></script>
+	<script type="text/javascript" src="lib/json2.js"></script>
+	<script type="text/javascript" src="lib/underscore.js"></script>
+	<script type="text/javascript" src="lib/backbone.js"></script>
+	<script type="text/javascript" src="lib/base64.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	
+	<script type="text/javascript" src="js/Frame.js"></script>
+	<script type="text/javascript" src="js/Navbar.js"></script>
+	<script type="text/javascript" src="js/SubmitForm.js"></script>
+	<script type="text/javascript" src="js/Descriptors.js"></script>
+	<script type="text/javascript" src="js/App.js"></script>
+</head>
+	
+<body>
+
+  <div id="main">
+  
+    <div id="headerCore">
+    <div id="headerUserBar"><img src="img/user.png" /> Logged as <span id="username"></span></div>
+    <div id="headerBreadcrumbs"><a href="../index.html">EasySOA</a> > <b>Core</b> > <b>Discovery by browsing</b></div>
+    Service discovery by browsing
+    </div>
+    
+  	<div id="header">Service discovery by browsing</div>
+  	
+  	<div id="content">
+	  	<div id="navBar">
+    			<div id="messages">
+    				<div id="message"><img src="img/loading.gif" /> Connecting...</div>
+    				<div id="messageSuccess" style="display: none"></div>
+    				<div id="messageFailure" style="display: none"></div>
+    			</div>
+	  			<input id="navUrl" type="text" />
+	  			<input id="navButtonGo" type="image" src="img/go.png" width="24" />
+	  			<input id="navButtonClear" type="image" src="img/clear.png" width="24" />
+	  	</div>
+  		<div id="menu">
+  			<div id="menuSubmitForm">
+  				<h2>Export WSDL to the Service Registry</h2>
+  				<div id="submitForm">
+  					<!-- Fake form -->
+  					<h3>Selected WSDL</h3>
+  					<p id="submitSelectedWSDL">None.</p>
+  					
+  					<h3>Service details</h3>
+  					<div class="inputLabel">Service Name:</div>
+  					<input id="submitService" type="text" /><br />
+  					<div class="inputLabel">Application:</div>
+  					<input id="submitApp" type="text" /><br />
+  					<input id="submit" type="submit" value="Save service" />
+  				</div>
+  			</div>
+  			<div id="menuFoundList">
+  				<h2>Found descriptors</h2>
+  				<div id="foundList"></div>
+  			</div>
+  		</div>
+  		<div id="frameContainer">
+	  			<iframe id="frame" src="default.html"></iframe>
+	  	</div>
+  	</div>
+  </div>
+  
+  <!-- Templates -->
+  <script type="text/template" id="descriptorEntry">
+	  <input id="<%= url %>" type="radio" name="descriptor" value="<%= url %>" /> <b><label for="<%= url %>"><%= serviceName %></label></b><br />
+	  <a href="<%= url %>" target="_blank"><%= url %></a>
+  </script>
+
+</body>
+
+</html>
