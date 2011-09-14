@@ -127,8 +127,9 @@ public class ScraperRest {
 			errors.add("Scraping failed: (" + e.getClass().getSimpleName() + ") " + e.getMessage());
 		}
 
-		if (f != null)
+		if (f != null) {
 			f.delete();
+		}
 		
 		// Format & send result
 		try {

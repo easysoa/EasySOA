@@ -55,8 +55,9 @@ public class HttpFile {
 	}
 
 	public void delete() {
-		if (isDownloaded())
+		if (isDownloaded()) {
 			this.file.delete();
+		}
 	}
 
 	public File getFile() {

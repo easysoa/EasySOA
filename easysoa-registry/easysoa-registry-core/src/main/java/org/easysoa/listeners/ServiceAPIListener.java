@@ -36,7 +36,8 @@ public class ServiceAPIListener implements EventListener {
     private static Log log = LogFactory.getLog(ServiceAPIListener.class);
 
     public void handleEvent(Event event) {
-
+        // TODO Rework exception handling
+        
         // Check event type
         EventContext ctx = event.getContext();
         if (!(ctx instanceof DocumentEventContext)) {
@@ -121,7 +122,7 @@ public class ServiceAPIListener implements EventListener {
                             parentModel.setProperty(AppliImpl.SCHEMA,
                                     AppliImpl.PROP_PROVIDER, provider);
                         }
-                    } catch (Exception e) {
+                    } catch (NullPointerException e) {
                         // Nothing (authority extraction failed)
                     }
                     
@@ -140,10 +141,8 @@ public class ServiceAPIListener implements EventListener {
                                 try {
                                     String serviceUrl = service.getEndpoints()
                                             .get(0).getAddress();
-                                    DocumentModel serviceModel = docService
-                                            .createService(session,
-                                                    doc.getPathAsString(),
-                                                    serviceUrl);
+                                    DocumentModel serviceModel = docService.createService(session,
+                                                    doc.getPathAsString(), serviceUrl);
                                     if (serviceModel != null) {
                                         serviceModel.setProperty("dublincore", "title", serviceName);
                                         if (serviceUrl.contains("PureAirFlowers")) { // XXX: Hard-coded PureAirFlowers Light URL
@@ -155,8 +154,8 @@ public class ServiceAPIListener implements EventListener {
                                         throw new NullPointerException(
                                                 "Cannot find Service API for child service creation.");
                                     }
-                                } catch (Exception e) {
-                                    log.warn("Cannot set extracted service url : "
+                                } catch (NullPointerException e) {
+                                    log.warn("Cannot set extracted service url: "
                                             + e.getMessage());
                                 }
                             }

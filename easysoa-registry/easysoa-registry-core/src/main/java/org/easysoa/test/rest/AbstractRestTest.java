@@ -38,8 +38,9 @@ public abstract class AbstractRestTest {
 	    synchronized (notificationFactorySync) {
 	    
 		// Run only once
-		if (notificationFactory != null)
+		if (notificationFactory != null) {
 			return;
+		}
 		
 		// Load properties
 		/**
@@ -101,14 +102,18 @@ public abstract class AbstractRestTest {
 			DocumentService docService = Framework.getService(DocumentService.class);
 			DocumentModel model = null;
 			// TODO DocumentService refactoring
-			if (AppliImpl.DOCTYPE.equals(doctype))
+			if (AppliImpl.DOCTYPE.equals(doctype)) {
 				model = docService.findAppliImpl(session, url);
-			else if (ServiceAPI.DOCTYPE.equals(doctype))
+			}
+			else if (ServiceAPI.DOCTYPE.equals(doctype)) {
 				model = docService.findServiceApi(session, url);
-			else if (Service.DOCTYPE.equals(doctype))
+			}
+			else if (Service.DOCTYPE.equals(doctype)) {
 				model = docService.findService(session, url);
-			else if (ServiceReference.DOCTYPE.equals(doctype))
+			}
+			else if (ServiceReference.DOCTYPE.equals(doctype)) {
 				model = docService.findServiceReference(session, url);
+			}
 			assertNotNull(model);
 		}
 		else if (automation != null) {

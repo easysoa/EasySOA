@@ -128,8 +128,9 @@ public class NotificationService extends DefaultComponent {
 			}
 			
 			DocumentModel apiModel = docService.findServiceApi(session, url);
-			if (apiModel == null)
+			if (apiModel == null) {
 				apiModel = docService.createServiceAPI(session, parentModel.getPathAsString(), url);
+			}
 			if (!parentModel.getRef().equals(apiModel.getParentRef())) {
 				apiModel = session.move(apiModel.getRef(), parentModel.getRef(), null);
 			}
@@ -201,8 +202,9 @@ public class NotificationService extends DefaultComponent {
 				session.save();
 			}
 			DocumentModel serviceModel = docService.findService(session, url);
-			if (serviceModel == null)
+			if (serviceModel == null) {
 				serviceModel = docService.createService(session, apiModel.getPathAsString(), url);
+			}
 
 			// Update optional properties
 			properties.put(Service.PROP_CALLCOUNT, 

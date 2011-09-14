@@ -78,12 +78,15 @@ public class EasySOADoctype {
      * Returns the name of the specific schema of a document given its type.
      */
     public static String getSchema(String doctype) {
-        if (doctype.equals(AppliImpl.DOCTYPE))
+        if (doctype.equals(AppliImpl.DOCTYPE)) {
             return AppliImpl.SCHEMA;
-        if (doctype.equals(ServiceAPI.DOCTYPE))
+        }
+        if (doctype.equals(ServiceAPI.DOCTYPE)) {
             return ServiceAPI.SCHEMA;
-        if (doctype.equals(Service.DOCTYPE))
+        }
+        if (doctype.equals(Service.DOCTYPE)) {
             return Service.SCHEMA;
+        }
         return null;
     }
 
@@ -92,12 +95,15 @@ public class EasySOADoctype {
      * the form of a property prefix (ex: "app:")
      */
     public static String getSchemaPrefix(String doctype) {
-        if (doctype.equals(AppliImpl.DOCTYPE))
+        if (doctype.equals(AppliImpl.DOCTYPE)) {
             return AppliImpl.SCHEMA_PREFIX;
-        if (doctype.equals(ServiceAPI.DOCTYPE))
+        }
+        if (doctype.equals(ServiceAPI.DOCTYPE)) {
             return ServiceAPI.SCHEMA_PREFIX;
-        if (doctype.equals(Service.DOCTYPE))
+        }
+        if (doctype.equals(Service.DOCTYPE)) {
             return Service.SCHEMA_PREFIX;
+        }
         return null;
     }
 

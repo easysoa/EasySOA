@@ -37,10 +37,10 @@ public class DocumentService extends DefaultComponent {
     private DocumentModel wsRoot = null; 
     
     public final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException, MalformedURLException {
-        url = PropertyNormalizer.normalizeUrl(url);
+        String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
         DocumentModel appliImplModel = session.createDocumentModel(AppliImpl.DOCTYPE);
-        appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, url);
-        appliImplModel.setProperty("dublincore", "title", url);
+        appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, normalizedUrl);
+        appliImplModel.setProperty("dublincore", "title", normalizedUrl);
         appliImplModel.setPathInfo(getWSRoot(session).getPathAsString(), generateDocumentID(appliImplModel));
         return session.createDocument(appliImplModel);
     }
@@ -56,7 +56,7 @@ public class DocumentService extends DefaultComponent {
      */
     public final DocumentModel createServiceAPI(CoreSession session,
             String parentPath, String url) throws ClientException, MalformedURLException {
-        url = PropertyNormalizer.normalizeUrl(url);
+        String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
         boolean invalidParent = false;
         if (parentPath == null) {
             invalidParent = true;
@@ -70,8 +70,8 @@ public class DocumentService extends DefaultComponent {
         }
 
         DocumentModel apiModel = session.createDocumentModel(ServiceAPI.DOCTYPE);
-        apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_URL, url);
-        apiModel.setProperty("dublincore", "title", url);
+        apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_URL, normalizedUrl);
+        apiModel.setProperty("dublincore", "title", normalizedUrl);
         apiModel.setPathInfo(parentPath, generateDocumentID(apiModel));
         return session.createDocument(apiModel);
     }
@@ -89,13 +89,13 @@ public class DocumentService extends DefaultComponent {
     public final DocumentModel createService(CoreSession session,
             String parentPath, String url) throws ClientException, MalformedURLException {
         if (parentPath != null) {
-            url = PropertyNormalizer.normalizeUrl(url);
+            String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
             DocumentModel serviceModel = session.createDocumentModel(Service.DOCTYPE);
-            serviceModel.setProperty(Service.SCHEMA, Service.PROP_URL, url);
-            if (url.toLowerCase().contains("wsdl")) {
-                serviceModel.setProperty(Service.SCHEMA, Service.PROP_FILEURL, url);
+            serviceModel.setProperty(Service.SCHEMA, Service.PROP_URL, normalizedUrl);
+            if (normalizedUrl.toLowerCase().contains("wsdl")) {
+                serviceModel.setProperty(Service.SCHEMA, Service.PROP_FILEURL, normalizedUrl);
             }
-            serviceModel.setProperty("dublincore", "title", url);
+            serviceModel.setProperty("dublincore", "title", normalizedUrl);
             serviceModel.setPathInfo(parentPath, generateDocumentID(serviceModel));
             return session.createDocument(serviceModel);
         }
@@ -115,7 +115,6 @@ public class DocumentService extends DefaultComponent {
      */
     public final DocumentModel createReference(CoreSession session,
             String parentPath, String title) throws ClientException {
-        
         if (parentPath != null) {
             DocumentModel referenceModel = session.createDocumentModel(ServiceReference.DOCTYPE);
             referenceModel.setProperty("dublincore", "title", title);
@@ -128,41 +127,48 @@ public class DocumentService extends DefaultComponent {
     }
     
     public DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
-        if (appliUrl == null)
-            return null;
-        try {
-            return findFirstDocument(session, AppliImpl.DOCTYPE, 
-                    AppliImpl.SCHEMA_PREFIX+AppliImpl.PROP_URL,
-                    PropertyNormalizer.normalizeUrl(appliUrl));
-        } catch (MalformedURLException e) {
+        if (appliUrl != null) {
+            try {
+                return findFirstDocument(session, AppliImpl.DOCTYPE, 
+                        AppliImpl.SCHEMA_PREFIX+AppliImpl.PROP_URL,
+                        PropertyNormalizer.normalizeUrl(appliUrl));
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        else {
             return null;
         }
     }
     
     public DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
-        if (apiUrl == null)
-            return null;
-        try {
-            return findFirstDocument(session, ServiceAPI.DOCTYPE, 
-                    ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL,
-                    PropertyNormalizer.normalizeUrl(apiUrl));
-        } catch (MalformedURLException e) {
+        if (apiUrl != null) {
+            try {
+                return findFirstDocument(session, ServiceAPI.DOCTYPE, 
+                        ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL,
+                        PropertyNormalizer.normalizeUrl(apiUrl));
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        else {
             return null;
         }
     }
     
     public DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException {
-        if (url == null)
-            return null;
-        DocumentModel result = findFirstDocument(session, Service.DOCTYPE,
-                Service.SCHEMA_PREFIX+Service.PROP_URL, PropertyNormalizer.normalizeUrl(url));
-        if (result == null) {
-            // Match either service url or WSDL url
-            return findFirstDocument(session, Service.DOCTYPE,
-                    Service.SCHEMA_PREFIX+Service.PROP_FILEURL, url);
+        if (url != null) {
+            DocumentModel result = findFirstDocument(session, Service.DOCTYPE,
+                    Service.SCHEMA_PREFIX+Service.PROP_URL, PropertyNormalizer.normalizeUrl(url));
+            if (result == null) {
+                // Match either service url or WSDL url
+                result = findFirstDocument(session, Service.DOCTYPE,
+                        Service.SCHEMA_PREFIX+Service.PROP_FILEURL, url);
+            }
+            return result;
         }
         else {
-            return result;
+            return null;
         }
     }
 
@@ -223,7 +229,6 @@ public class DocumentService extends DefaultComponent {
      * @throws ClientException
      */
     public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
-        
         if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
             DocumentModel appliimpl = getChild(session, getWSRoot(session).getRef(), AppliImpl.DEFAULT_APPLIIMPL_TITLE);
             if (appliimpl == null) {

@@ -83,8 +83,9 @@ public class AppliImplListener implements EventListener {
 		// TODO: Update on document deletion
 		try {
 
-			if (environment == null)
+			if (environment == null) {
 				environment = DEFAULT_ENVIRONMENT;
+			}
 
 			VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
 
