@@ -94,6 +94,11 @@
              rowCountVar="rowCount"
              id="easysoaServicesMgmtTable">
              <nxh:commandLink action="#{action.getLink()}"
+	           id="userServicesActionCommandLink"
+	           immediate="#{action.immediate}">
+	           <h:outputText value="#{messages[action.label]}" />
+	         </nxh:commandLink>
+         <!-- <nxh:commandLink action="#{action.getLink()}"
                rendered="#{fn:startsWith(action.link,'#')}"
                immediate="#{action.immediate}"
                id="easysoaServicesMgmtActionCommandLink">
@@ -103,7 +108,7 @@
                rendered="#{!(fn:startsWith(action.link,'#'))}"
                id="easysoaServicesMgmtActionLink">
                <h:outputText value="#{messages[action.label]}" />
-             </h:outputLink>
+             </h:outputLink> -->
            </nxu:dataList>
          </nxu:set>
        </li>
@@ -113,7 +118,7 @@
    
    <div class="userActions">
 
-  <!--    <nxu:set var="actions"
+   <!--   <nxu:set var="actions"
        value="#{webActions.getActionsList('USER_SERVICES')}"
        cache="true">
        <nxu:dataList layout="simple"
