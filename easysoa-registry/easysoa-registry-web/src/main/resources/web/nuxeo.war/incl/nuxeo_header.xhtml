@@ -85,7 +85,7 @@
        		<!-- <h:outputText value="#{messages[label.easysoa.servicesmanagement]}" /> -->
        		</a>
          <nxu:set var="actions"
-           value="#{webActions.getActionsList('EASYSOA_SERVICES_MGMT')}"
+           value="#{webActions.getActionsList('USER_SERVICES')}"
            cache="true">
            <nxu:dataList layout="unorderedList"
              var="action"
@@ -113,7 +113,7 @@
    
    <div class="userActions">
 
-     <nxu:set var="actions"
+  <!--    <nxu:set var="actions"
        value="#{webActions.getActionsList('USER_SERVICES')}"
        cache="true">
        <nxu:dataList layout="simple"
@@ -129,7 +129,7 @@
            <h:outputText value="#{messages[action.label]}" />
          </nxh:commandLink>
        </nxu:dataList>
-     </nxu:set>
+     </nxu:set> -->
 
      <nxu:set var="actions"
        value="#{webActions.getActionsList('USER_SERVICES_BOTTOM')}"
