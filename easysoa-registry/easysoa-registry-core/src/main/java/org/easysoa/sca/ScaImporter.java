@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -60,9 +59,9 @@ public class ScaImporter {
 	private XMLStreamReader compositeReader;
 	//private List<ScaVisitor> serviceBindingVisitors;
 	//private List<ScaVisitor> referenceBindingVisitors;
-	private HashMap<QName, ScaVisitor> elementQnameToScaVisitor;
+	//private Map<QName, ScaVisitor> elementQnameToScaVisitor;
 	private Stack<String> archiNameStack = new Stack<String>();
-	private ArrayList<ScaVisitor> scaVisitorsToPostCheck = new ArrayList<ScaVisitor>();
+	private List<ScaVisitor> scaVisitorsToPostCheck = new ArrayList<ScaVisitor>();
 	
 	
 	public ScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
@@ -174,9 +173,9 @@ public class ScaImporter {
 	}
 
 	private void init() {
-		elementQnameToScaVisitor = new HashMap<QName, ScaVisitor>();
+		/*elementQnameToScaVisitor = new HashMap<QName, ScaVisitor>();
 		elementQnameToScaVisitor.put(SCA_SERVICE_QNAME, null);
-		elementQnameToScaVisitor.put(SCA_REFERENCE_QNAME, null);
+		elementQnameToScaVisitor.put(SCA_REFERENCE_QNAME, null);*/
 	}
 
 	private void acceptBindingParentVisitors(XMLStreamReader compositeReader,

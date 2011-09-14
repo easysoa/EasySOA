@@ -43,7 +43,6 @@ public class ScraperRest {
 	@Path("/{url:.*}")
 	public Object doGet(@Context UriInfo uriInfo) {
 
-		
 		List<String> errors = new ArrayList<String>();
 		JSONObject result = new JSONObject();
 		HttpFile f = null;
@@ -144,8 +143,9 @@ public class ScraperRest {
 		
 		// If everything else fails, show errors in plain text
 		StringBuffer html = new StringBuffer();
-		for (String error : errors)
+		for (String error : errors) {
 			html.append(error);
+		}
 		return html.toString();
 	}
 	

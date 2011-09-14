@@ -24,7 +24,6 @@ public class HttpFile {
 	private static final int DOWNLOAD_TIMEOUT = 15000;
 	
 	private String url;
-	private HttpURLConnection connection;
 	private File file = null;
 
 	public HttpFile(String url) {
@@ -34,10 +33,10 @@ public class HttpFile {
 	public HttpFile download() throws MalformedURLException, IOException,
 			URISyntaxException {
 		
-		this.connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
+	    HttpURLConnection connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
 		this.file = File.createTempFile("tmp", "tmp");
 		connection.setReadTimeout(DOWNLOAD_TIMEOUT);
-		InputStream is = this.connection.getInputStream();
+		InputStream is = connection.getInputStream();
 		FileOutputStream fos = new FileOutputStream(this.file);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,
 				CharacterSet.UTF_8.getName()));

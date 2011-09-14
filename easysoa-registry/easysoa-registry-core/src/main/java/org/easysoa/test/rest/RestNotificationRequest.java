@@ -1,8 +1,5 @@
 package org.easysoa.test.rest;
 
-import java.io.IOException;
-import java.net.ProtocolException;
-
 import org.json.JSONObject;
 
 public interface RestNotificationRequest {
@@ -13,7 +10,7 @@ public interface RestNotificationRequest {
 	 * @param value
 	 * @return
 	 */
-	public RestNotificationRequest setProperty(String property, String value);
+	RestNotificationRequest setProperty(String property, String value);
 	
 	/**
 	 * Sends the notification.
@@ -22,6 +19,6 @@ public interface RestNotificationRequest {
 	 * @return The result if the notification was successfully sent, else null. 
 	 * @throws Exception 
 	 */
-	public JSONObject send() throws Exception;
+	JSONObject send() throws Exception;
 	
 }

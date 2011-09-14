@@ -153,8 +153,9 @@ public class VocabularyHelper extends DefaultComponent {
 					Framework.getRuntime().getComponent(DirectoryService.NAME);
 			Session dirSession = dirService.open(vocabularyName);
 			DocumentModel model = dirSession.getEntry(entryId);
-			if (model != null)
+			if (model != null) {
 				dirSession.deleteEntry(dirSession.getEntry(entryId));
+			}
 		} catch (Exception e1) {
 			log.error("Error while removing '" + entryId + "' from vocabulary "
 					+ vocabularyName, e1);
@@ -172,8 +173,9 @@ public class VocabularyHelper extends DefaultComponent {
 			DirectoryService dirService = (DirectoryService) 
 					Framework.getRuntime().getComponent(DirectoryService.NAME);
 			Session dirSession = dirService.open(vocabularyName);
-			for (DocumentModel model : dirSession.getEntries())
+			for (DocumentModel model : dirSession.getEntries()) {
 				dirSession.deleteEntry(model);
+			}
 		} catch (Exception e1) {
 			log.error("Error while clearing vocabulary " + vocabularyName, e1);
 		}

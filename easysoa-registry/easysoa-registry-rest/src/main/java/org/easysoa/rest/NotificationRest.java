@@ -49,7 +49,7 @@ public class NotificationRest {
 		try {
 			result.put("result", "ok");
 		} catch (JSONException e) {
-			log.error(e);
+			log.error("JSON init failure", e);
 		}
 	}
 
@@ -191,7 +191,7 @@ public class NotificationRest {
 	 * @param msg
 	 * @throws JSONException
 	 */
-	private final void appendError(String msg) {
+	private void appendError(String msg) {
 		try {
 			String formattedMsg = ERROR+msg;
 			Object existingResult;
@@ -252,7 +252,7 @@ public class NotificationRest {
 	 * @param result
 	 * @return
 	 */
-	private final String getFormattedResult() {
+	private String getFormattedResult() {
 		try {
 			return result.toString(2);
 		}

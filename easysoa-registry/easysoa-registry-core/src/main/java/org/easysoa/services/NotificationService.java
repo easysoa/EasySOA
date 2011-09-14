@@ -142,7 +142,7 @@ public class NotificationService extends DefaultComponent {
 					f.download();
 					apiModel.setProperty("file", "content", f.getBlob());
 				} catch (Exception e) {
-					throw new ClientException("Failed to download attached file");
+					throw new ClientException("Failed to download attached file", e);
 				}
 			}
 			setPropertiesIfNotNull(apiModel, ServiceAPI.SCHEMA, ServiceAPI.getPropertyList(), properties);
@@ -350,7 +350,7 @@ public class NotificationService extends DefaultComponent {
 	 * @return
 	 * @throws ClientException 
 	 */
-	private final void setPropertyIfNotNull(DocumentModel model, String schema, 
+	private void setPropertyIfNotNull(DocumentModel model, String schema, 
 			String property, Object value) throws ClientException {
 		if (value != null && !propertyFilter.containsKey(property)) {
 			model.setProperty(schema, property, value);
@@ -365,7 +365,7 @@ public class NotificationService extends DefaultComponent {
 	 * @return
 	 * @throws ClientException 
 	 */
-	private final void setPropertiesIfNotNull(DocumentModel model, String schema, 
+	private void setPropertiesIfNotNull(DocumentModel model, String schema, 
 			Map<String, String> schemaDef, Map<String, String> properties) throws ClientException {
 		
 		properties.putAll(propertyFilter);

@@ -24,7 +24,7 @@ public class PropertyValidatorBean extends EasySOADoctype {
 	        new URL((String) value);
 	    }
 	    catch (MalformedURLException e) {
-	        throw new ValidatorException(new FacesMessage("Invalid URL"));
+	        throw new ValidatorException(new FacesMessage("Invalid URL"), e);
 	    }
 	}
 	

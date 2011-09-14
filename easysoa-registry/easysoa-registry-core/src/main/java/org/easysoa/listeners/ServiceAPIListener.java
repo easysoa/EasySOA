@@ -151,10 +151,9 @@ public class ServiceAPIListener implements EventListener {
                                         }
                                         session.saveDocument(serviceModel);
                                     } else {
-                                        throw new NullPointerException(
-                                                "Cannot find Service API for child service creation.");
+                                        throw new Exception("Cannot find Service API for child service creation.");
                                     }
-                                } catch (NullPointerException e) {
+                                } catch (Exception e) {
                                     log.warn("Cannot set extracted service url: "
                                             + e.getMessage());
                                 }
