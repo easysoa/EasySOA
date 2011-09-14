@@ -194,23 +194,20 @@ public class ServiceListener implements EventListener {
                 } catch (MalformedURLException e) {
                     log.error("Failed to normalize URL", e);
                 }
+                // XXX: Hard-coded PAF Light URL
+                if (url.contains("PureAirFlowers")) { 
+                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
+                            "http://localhost:8083/easysoa/light/PureAirFlowers.html");
+                }
+                // XXX: Hard-coded Smart Travel Light URL
+                else if (url.contains("GalaxyTrip")) {
+                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
+                            "http://localhost:8083/easysoa/light/GalaxyTrip.html");
+                }
             }
             if (fileUrl != null) {
                 doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
             }
-            
-            // EasySOA Light 
-            // XXX: Hard-coded PureAirFlowers Light URL
-            if (url.contains("PureAirFlowers")) { 
-                doc.setProperty(SCHEMA, PROP_LIGHTURL,
-                        "http://localhost:8083/easysoa/light/PureAirFlowers.html");
-            }
-            // XXX: Hard-coded Smart Travel Light URL
-            else if (url.contains("GalaxyTrip")) {
-                doc.setProperty(SCHEMA, PROP_LIGHTURL,
-                        "http://localhost:8083/easysoa/light/GalaxyTrip.html");
-            }
-            
             session.save();
             
             // Test if the service already exists, delete the other one(s) if necessary

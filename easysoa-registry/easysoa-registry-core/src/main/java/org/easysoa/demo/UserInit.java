@@ -8,8 +8,6 @@ import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
-import org.nuxeo.ecm.core.schema.types.Field;
-import org.nuxeo.ecm.core.schema.types.Schema;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.platform.usermanager.exceptions.GroupAlreadyExistsException;
 import org.nuxeo.runtime.api.Framework;
@@ -29,10 +27,10 @@ public class UserInit extends UnrestrictedSessionRunner {
     private static final String GROUP_DEVELOPER = "Developer";
     private static final String GROUP_IT_STAFF = "IT Staff";
     
-    private static final String USER_SOPHIE = "Sophie";
-    private static final String USER_TED = "Ted";
-    private static final String USER_GEORGE = "George";
-    private static final String USER_ARNOLD = "Arnold";
+    private static final String USER_SOPHIE = "Sophie M.";
+    private static final String USER_TED = "Ted M.";
+    private static final String USER_GEORGE = "George C.";
+    private static final String USER_ARNOLD = "Arnold S.";
     
     private static Log log = LogFactory.getLog(UserInit.class);
     
@@ -139,21 +137,32 @@ public class UserInit extends UnrestrictedSessionRunner {
         DocumentModel existingUser = userManager.getUserModel(name);
         if (existingUser == null) {
             
-            // Set user name
+            String[] nameParts = name.split(" "); 
+
+            // Set login name
             DocumentModel userModel = userManager.getBareUserModel();
             userModel.setProperty(
                     userManager.getUserSchemaName(),
                     userManager.getUserIdField(),
-                    name);
+                    nameParts[0]);
             
-            // Set user password
-            for (Schema schema : userModel.getDocumentType().getSchemas()) {
-                log.info(schema.getName());
-                for (Field field : schema.getFields()) {
-                    log.info(">"+field.getName());
-                }
+            // Set name
+            userModel.setProperty(
+                    userManager.getUserSchemaName(),
+                    "firstName",
+                    nameParts[0]);
+            if (nameParts.length > 1) {
+                userModel.setProperty(
+                        userManager.getUserSchemaName(),
+                        "lastName",
+                        nameParts[1]);
             }
-            // TODO (How?)
+
+            // Set password
+            userModel.setProperty(
+                    userManager.getUserSchemaName(),
+                    "password",
+                    nameParts[0]);
             
             return userManager.createUser(userModel);
         }

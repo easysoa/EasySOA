@@ -12,7 +12,7 @@
     
  	<!-- SCA Import page -->
     <action id="easysoaImport" link="sca_import_form" label="label.easysoa.import.link">
-        <category>EASYSOA_SERVICES_MGMT</category>
+        <category>USER_SERVICES</category>
     </action>
     <action id="easysoaImportSubmit" link="#{easysoaImport.importSCA}" label="label.easysoa.import.button">
         <category>EASYSOA_IMPORT</category>
