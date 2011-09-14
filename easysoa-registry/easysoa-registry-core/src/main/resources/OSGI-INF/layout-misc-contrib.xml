@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.core.contrib.layout.misc">
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
+    
+    <!-- soacommon archi layout -->
+    <layout name="soacommon_archi">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>soacommon_archi_archiPath</widget>
+        </row>
+        <row>
+          <widget>soacommon_archi_archiLocalName</widget>
+        </row>
+       </rows>
+      <widget name="soacommon_archi_archiPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiPath</field>
+	      </fields>
+	  </widget>
+      <widget name="soacommon_archi_archiLocalName" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiLocalName</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiLocalName</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <!-- Common author information -->
+    <layout name="soacommon_author">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>common_author</widget>
+        </row>
+        <row>
+          <widget>common_authorInformation</widget>
+        </row>
+      </rows>
+      <widget name="common_author" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.author</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:author</field>
+	      </fields>
+	  </widget>
+      <widget name="common_authorInformation" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.authorInformation</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:authorInformation</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+	<!-- Override default Dublin Core layout -->
+	<layout name="dublincore">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>created</widget>
+        </row>
+        <row>
+          <widget>modified</widget>
+        </row>
+        <row>
+          <widget>author</widget>
+        </row>
+        <row>
+          <widget>contributors</widget>
+        </row>
+      </rows>
+    </layout>
+    
+    <!-- Alternative file layout that makes the file field mandatory. -->
+    <layout name="fileRequired">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>fileRequired</widget>
+        </row>
+      </rows>
+      <widget name="fileRequired" type="template">
+        <labels>
+          <label mode="any">label.file.content</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>file:content</field>
+          <field>file:filename</field>
+        </fields>
+        <widgetModes>
+          <mode value="full_edit">edit</mode>
+          <mode value="edit">edit</mode>
+          <mode value="view">view</mode>
+          <mode value="view">preview</mode>
+        </widgetModes>
+        <properties mode="any">
+		  <property name="required">true</property>
+          <property name="template">
+            /widgets/extended_file_widget.xhtml
+          </property>
+        </properties>
+      </widget>
+    </layout>
+  </extension>
+</component>

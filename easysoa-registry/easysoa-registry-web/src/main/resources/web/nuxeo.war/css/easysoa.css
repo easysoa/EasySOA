@@ -54,3 +54,11 @@ div+table .themeCellFrame {
 .bannerBottom {
 	display: none;
 }
+
+.foldableLightBox { /* Document filter */
+    display: none;
+}
+
+.syndicationButton {
+	display: none;
+}

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.core.contrib.layout.service">
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
+    
+    <!-- Service definition layout -->
+    <layout name="service_common">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>servicedef_relatedUsers</widget>
+        </row>
+   	  </rows>
+      <widget name="servicedef_relatedUsers" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.relatedUsers</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:relatedUsers</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <layout name="service_spec">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <properties mode="any">
+		<property name="title">Service metadata (specs)</property>
+	  </properties>
+      <rows>
+        <!-- TODO: Custom widget to display signature -->
+        <row>
+          <widget>servicedef_httpMethod</widget>
+        </row>
+        <row>
+          <widget>servicedef_contentTypeIn</widget>
+        </row>
+        <row>
+          <widget>servicedef_contentTypeOut</widget>
+        </row>
+        <row>
+          <widget>servicedef_fileUrl</widget>
+        </row>
+      </rows>
+      <widget name="servicedef_httpMethod" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.httpMethod</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:httpMethod</field>
+	      </fields>
+	  </widget>
+      <widget name="servicedef_contentTypeIn" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.contentTypeIn</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:contentTypeIn</field>
+	      </fields>
+	  </widget>
+      <widget name="servicedef_contentTypeOut" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.contentTypeOut</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:contentTypeOut</field>
+	      </fields>
+	  </widget>
+      <widget name="servicedef_fileUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.fileUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:fileUrl</field>
+	      </fields>
+	      <properties mode="any">
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
+		  </properties>
+	  </widget>
+    </layout>
+    
+    <layout name="service_tech">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <properties mode="any">
+		<property name="title">Service metadata (tech)</property>
+	  </properties>
+      <rows>
+        <row>
+          <widget>servicedef_url</widget>
+        </row>
+        <row>
+          <widget>servicedef_callcount</widget>
+        </row>
+       </rows>
+      <widget name="servicedef_url" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.url</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:url</field>
+	      </fields>
+          <properties mode="any">
+		    <property name="required">true</property>
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
+		  </properties>
+	  </widget>
+      <widget name="servicedef_callcount" type="int">
+	      <labels>
+	        <label mode="any">label.easysoa.servicedef.callcount</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>serv:callcount</field>
+	      </fields>
+          <widgetModes>
+            <mode value="create">hidden</mode>
+          </widgetModes>
+	  </widget>
+    </layout>
+    
+  </extension>
+</component>

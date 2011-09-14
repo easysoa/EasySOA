@@ -12,10 +12,12 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
-        <layout>servicedef</layout>
-        <layout>file</layout>
+        <layout>service_common</layout>
         <layout>soacommon_archi</layout>
         <layout>soacommon_author</layout>
+        <layout>service_spec</layout>
+        <layout>service_tech</layout>
+        <layout>file</layout>
       </layouts>
     </type>
     
@@ -27,9 +29,9 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
+        <layout>soacommon_author</layout>
         <layout>file</layout>
         <layout>serviceapidef</layout>
-        <layout>soacommon_author</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
@@ -47,9 +49,9 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
-        <layout>serviceref</layout>
         <layout>soacommon_archi</layout>
         <layout>soacommon_author</layout>
+        <layout>serviceref</layout>
       </layouts>
     </type>
     
@@ -63,9 +65,9 @@
       </layouts>
       <layouts mode="edit">
         <layout>heading</layout>
+        <layout>soacommon_author</layout>
         <layout>appliimpldef</layout>
         <layout>feature</layout>
-        <layout>soacommon_author</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
