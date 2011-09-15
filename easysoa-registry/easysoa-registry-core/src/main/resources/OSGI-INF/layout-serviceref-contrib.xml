@@ -2,20 +2,42 @@
 <component name="org.easysoa.core.contrib.layout.serviceref">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
     
-    <!-- Service reference layout -->
-    <layout name="serviceref">
+    <layout name="serviceref_tech">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
+      <properties mode="any">
+      	<property name="title">Technical information</property>
+      </properties>
+      <rows>
+        <row>
+          <widget>serviceref_refUrl</widget>
+        </row>
+       </rows>
+      <widget name="serviceref_refUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.serviceref.refUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>sref:refUrl</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <layout name="serviceref_spec">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <properties mode="any">
+      	<property name="title">Specifications</property>
+      </properties>
       <rows>
         <row>
           <widget>serviceref_refPath</widget>
         </row>
         <row>
           <widget>serviceref_refPathLink</widget>
-        </row>
-        <row>
-          <widget>serviceref_refUrl</widget>
         </row>
        </rows>
       <widget name="serviceref_refPath" type="text">
@@ -39,16 +61,7 @@
 	        <property name="template">/widgets/document_path_link_template.xhtml</property>
 	      </properties>
 	  </widget>
-      <widget name="serviceref_refUrl" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.serviceref.refUrl</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>sref:refUrl</field>
-	      </fields>
-	  </widget>
-    </layout>
-    
+	</layout>
+	  
   </extension>
 </component>
