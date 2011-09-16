@@ -54,7 +54,7 @@ public class SoapMessageHandler implements MessageHandler {
 		service.setTitle(message.getPathName());
 		service.setDescription(message.getPathName());
 		service.setHttpMethod(message.getMethod());
-		nuxeoRS.registerRestService(service);
+		nuxeoRS.registerWSDLService(service);
 		return true;
 	}
 	

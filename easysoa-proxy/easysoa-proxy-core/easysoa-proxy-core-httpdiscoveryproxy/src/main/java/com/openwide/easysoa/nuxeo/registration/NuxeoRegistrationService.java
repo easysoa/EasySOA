@@ -68,7 +68,7 @@ public class NuxeoRegistrationService {
 		body.append("&callcount=");
 		body.append(service.getCallCount());
 		body.append("&title=");
-		body.append(service.getTitle());
+		body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash // TODO MDU better
 		body.append("&contentTypeOut=");
 		body.append(service.getContentTypeOut());
 		body.append("&contentTypeIn=");
@@ -82,8 +82,8 @@ public class NuxeoRegistrationService {
 		//TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications. Informs the document of the notification source." Replace localhost with other details		
 		body.append("&discoveryTypeMonitoring=");
 		body.append("localhost");
-		logger.debug("[registerRESTService()] --- Message url : " + url.toString());
-		logger.debug("[registerRESTService()] --- Message body : " + body.toString());
+		logger.debug("[registerWSDLService()] --- Message url : " + url.toString());
+		logger.debug("[registerWSDLService()] --- Message body : " + body.toString());
 		return sendRequest(url.toString(), body.toString());
 	}
 	
