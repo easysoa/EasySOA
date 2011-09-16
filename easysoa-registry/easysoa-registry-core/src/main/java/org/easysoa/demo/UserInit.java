@@ -5,20 +5,27 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
+import org.nuxeo.ecm.core.api.security.ACE;
+import org.nuxeo.ecm.core.api.security.ACL;
+import org.nuxeo.ecm.core.api.security.ACP;
+import org.nuxeo.ecm.core.api.security.SecurityConstants;
+import org.nuxeo.ecm.core.api.security.impl.ACLImpl;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.platform.usermanager.exceptions.GroupAlreadyExistsException;
+import org.nuxeo.ecm.platform.usermanager.exceptions.UserAlreadyExistsException;
 import org.nuxeo.runtime.api.Framework;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
- * TODO Test & Debug
+ * Users & groups initialisation for the EasySOA demo.
  * 
  * @author mkalam-alami
- *
+ * 
  */
 public class UserInit extends UnrestrictedSessionRunner {
 
@@ -26,174 +33,195 @@ public class UserInit extends UnrestrictedSessionRunner {
     private static final String GROUP_ARCHITECT = "Architect";
     private static final String GROUP_DEVELOPER = "Developer";
     private static final String GROUP_IT_STAFF = "IT Staff";
-    
+    private static final String GROUP_MEMBERS = "members";
+
     private static final String USER_SOPHIE = "Sophie M.";
     private static final String USER_TED = "Ted M.";
     private static final String USER_GEORGE = "George C.";
     private static final String USER_ARNOLD = "Arnold S.";
-    
+
     private static Log log = LogFactory.getLog(UserInit.class);
-    
+
     private UserManager userManager;
-    
+    private DocumentService docService;
+
     public UserInit(String repositoryName) {
         super(repositoryName);
     }
-    
+
     /**
-     * Creates sample users and groups for the EasySOA Demo.
+     * Creates sample users and groups for the EasySOA Demo. NOTE: Most of the
+     * work could actually be done through CSV files + contributions.
      */
     @Override
     public void run() throws ClientException {
-        
-        try {
-            userManager = Framework.getService(UserManager.class);
-            
-            resetUsersAndGroups(); // TODO Remove
-            
-            // Create users & groups
-             createGroup(GROUP_BUSINESS_USER, new String[]{ USER_SOPHIE });
-             createGroup(GROUP_DEVELOPER, new String[]{ USER_TED });
-             createGroup(GROUP_ARCHITECT, new String[]{ USER_GEORGE }, new String[]{ GROUP_DEVELOPER });
-             createGroup(GROUP_IT_STAFF, new String[]{ USER_ARNOLD });
 
-             log.info("Successfully reated demo groups and users.");
-             
+        try {
+
+            userManager = Framework.getService(UserManager.class);
+            docService = Framework.getService(DocumentService.class);
+
+            resetUsersAndGroups(); // TODO Remove
+
+            // Create users & groups
+            defineGroup(GROUP_BUSINESS_USER, new String[] { USER_SOPHIE });
+            defineGroup(GROUP_DEVELOPER, new String[] { USER_TED });
+            defineGroup(GROUP_ARCHITECT, new String[] { USER_GEORGE },
+                    new String[] { GROUP_DEVELOPER });
+            defineGroup(GROUP_IT_STAFF, new String[] { USER_ARNOLD });
+
+            // Set new groups as childs of the default "members" group
+            defineGroup(GROUP_MEMBERS, new String[] {}, new String[] {
+                    GROUP_BUSINESS_USER, GROUP_DEVELOPER, GROUP_ARCHITECT,
+                    GROUP_IT_STAFF });
+
+            // Set write rights for all "members" members
+            DocumentModel wsRootModel = docService.getWorkspaceRoot(session);
+            ACP acp = wsRootModel.getACP();
+            ACL acl = new ACLImpl("easysoa-demo-rights");
+            acl.add(new ACE(GROUP_MEMBERS, SecurityConstants.EVERYTHING, true));
+            acp.addACL(acl);
+            wsRootModel.setACP(acp, true);
+            session.saveDocument(wsRootModel);
+            session.save();
+
+            log.info("Successfully reated demo groups and users.");
+
         } catch (Exception e) {
             log.error("Cannot acces user manager", e);
         }
-        
-        
+
     }
 
     /**
-     * Creates a new user group.
-     * @param groupName The new group name/ID
-     * @return The new group, or the previously created one if it already exists.
+     * Creates a new user group or updates an existing one.
+     * 
+     * @param groupName
+     *            The new group name/ID
+     * @return The new group, or the previously created one if it already
+     *         exists.
      * @throws ClientException
      */
-    private DocumentModel createGroup(String groupName, String[] userNames) throws ClientException {
-        return createGroup(groupName, userNames, new String[]{});
+    private DocumentModel defineGroup(String groupName, String[] userNames)
+            throws ClientException {
+        return defineGroup(groupName, userNames, new String[] {});
     }
-    
+
     /**
-     * Creates a new user group with subgroups.
-     * @param groupName The new group name/ID
-     * @param subGroups The subgroups names
-     * @return The new group, or the previously created one if it already exists.
+     * Creates a new user group or updates an existing one.
+     * 
+     * @param groupName
+     *            The new group name/ID
+     * @param subGroups
+     *            The subgroups names
+     * @return The new group, or the previously created one if it already
+     *         exists.
      * @throws ClientException
      */
-    private DocumentModel createGroup(String groupName, String[] userNames, String[] subGroups) throws ClientException {
-        DocumentModel existingGroup = userManager.getGroupModel(groupName);
-        if (existingGroup == null) {
-            try {
-                
-                // Create users
-                List<String> userList = new ArrayList<String>();
-                for (String userName : userNames) {
-                    createUser(userName);
-                    userList.add(userName);
-                }
-                
-                // Set group ID/name
-                DocumentModel groupModel = userManager.getBareGroupModel();
-                groupModel.setProperty(
-                        userManager.getGroupSchemaName(),
-                        userManager.getGroupIdField(),
-                        groupName);
-                
-                // Set subgroups
-                List<String> subGroupsList = new ArrayList<String>();
-                Collections.addAll(subGroupsList, subGroups);
-                groupModel.setProperty(
-                        userManager.getGroupSchemaName(),
-                        userManager.getGroupSubGroupsField(),
-                        subGroupsList);
-                
-                // Set users
-                groupModel.setProperty(
-                        userManager.getGroupSchemaName(),
-                        userManager.getGroupMembersField(),
-                        userList);
-                
-                return userManager.createGroup(groupModel);
-            }
-            catch (GroupAlreadyExistsException e) {
-                return userManager.getGroupModel(groupName);
-            }
+    private DocumentModel defineGroup(String groupName, String[] userNames,
+            String[] subGroups) throws ClientException {
+
+        // Create or get group
+        DocumentModel groupModel = null;
+        try {
+            groupModel = userManager.getBareGroupModel();
+            groupModel.setProperty(userManager.getGroupSchemaName(),
+                    userManager.getGroupIdField(), groupName);
+            groupModel = userManager.createGroup(groupModel);
+        } catch (GroupAlreadyExistsException e) {
+            groupModel = userManager.getGroupModel(groupName);
         }
-        else {
-            return existingGroup;
+
+        // Set subgroups
+        List<String> subGroupsList = new ArrayList<String>();
+        Collections.addAll(subGroupsList, subGroups);
+        groupModel.setProperty(userManager.getGroupSchemaName(),
+                userManager.getGroupSubGroupsField(), subGroupsList);
+
+        // Create users
+        List<String> userList = new ArrayList<String>();
+        for (String userName : userNames) {
+            defineUser(userName, groupName);
+            userList.add(userName);
         }
+        
+        // Add users
+        groupModel.setProperty(userManager.getGroupSchemaName(),
+                userManager.getGroupMembersField(),
+                userList);
+
+        // Save changes
+        userManager.updateGroup(groupModel);
+
+        return groupModel;
+
     }
 
     /**
      * Creates a new user.
-     * @param name The user name (also used as password)
+     * 
+     * @param name
+     *            The user name (also used as password)
      * @return The new user, or the previously created one if it already exists.
      * @throws ClientException
      */
-    private DocumentModel createUser(String name) throws ClientException {
-        DocumentModel existingUser = userManager.getUserModel(name);
-        if (existingUser == null) {
-            
-            String[] nameParts = name.split(" "); 
+    private DocumentModel defineUser(String name, String groupName)
+            throws ClientException {
 
-            // Set login name
-            DocumentModel userModel = userManager.getBareUserModel();
-            userModel.setProperty(
-                    userManager.getUserSchemaName(),
-                    userManager.getUserIdField(),
-                    nameParts[0]);
-            
-            // Set name
-            userModel.setProperty(
-                    userManager.getUserSchemaName(),
-                    "firstName",
-                    nameParts[0]);
-            if (nameParts.length > 1) {
-                userModel.setProperty(
-                        userManager.getUserSchemaName(),
-                        "lastName",
-                        nameParts[1]);
-            }
+        // Create or get user
+        DocumentModel userModel = null;
+        String[] nameParts = name.split(" ");
+        try {
+            userModel = userManager.getBareUserModel();
+            userModel.setProperty(userManager.getUserSchemaName(),
+                    userManager.getUserIdField(), nameParts[0]);
+            userModel = userManager.createUser(userModel);
+        } catch (UserAlreadyExistsException e) {
+            userModel = userManager.getUserModel(name);
+        }
 
-            // Set password
-            userModel.setProperty(
-                    userManager.getUserSchemaName(),
-                    "password",
-                    nameParts[0]);
-            
-            return userManager.createUser(userModel);
+        // Set name
+        userModel.setProperty(userManager.getUserSchemaName(), "firstName", nameParts[0]);
+        if (nameParts.length > 1) {
+            userModel.setProperty(userManager.getUserSchemaName(), "lastName", nameParts[1]);
         }
-        else {
-            return existingUser;
-        }
+
+        // Set groups
+        ArrayList<String> groups = new ArrayList<String>();
+        groups.add(groupName);
+        userModel.setProperty(userManager.getUserSchemaName(), "groups", groups);
+
+        // Set password
+        userModel.setProperty(userManager.getUserSchemaName(), "password", nameParts[0]);
+
+        // Save changes
+        userManager.updateUser(userModel);
+
+        return userModel;
     }
 
     /**
-     * Resets all demo users and groups.
-     * For test purposes.
+     * Resets all demo users and groups. For test purposes.
      */
     private void resetUsersAndGroups() {
         try {
             // Delete custom groups
-            String[] customGroups =  new String[]{GROUP_BUSINESS_USER, GROUP_DEVELOPER, GROUP_ARCHITECT, GROUP_IT_STAFF};
+            String[] customGroups = new String[] { GROUP_BUSINESS_USER,
+                    GROUP_DEVELOPER, GROUP_ARCHITECT, GROUP_IT_STAFF };
             for (String groupName : customGroups) {
                 DocumentModel groupModel = userManager.getGroupModel(groupName);
                 if (groupModel != null) {
                     userManager.deleteGroup(groupModel);
                 }
             }
-            
+
             // Delete all users except Administrator
             for (String userName : userManager.getUserIds()) {
                 if (!userName.equals("Administrator")) {
                     userManager.deleteUser(userName);
                 }
             }
-        }
-        catch (ClientException e) {
+        } catch (ClientException e) {
             log.error("Failed to reset users and groups", e);
         }
     }

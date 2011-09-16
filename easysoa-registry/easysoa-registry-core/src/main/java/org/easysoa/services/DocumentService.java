@@ -41,7 +41,7 @@ public class DocumentService extends DefaultComponent {
         DocumentModel appliImplModel = session.createDocumentModel(AppliImpl.DOCTYPE);
         appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, normalizedUrl);
         appliImplModel.setProperty("dublincore", "title", normalizedUrl);
-        appliImplModel.setPathInfo(getWSRoot(session).getPathAsString(), generateDocumentID(appliImplModel));
+        appliImplModel.setPathInfo(getWorkspaceRoot(session).getPathAsString(), generateDocumentID(appliImplModel));
         return session.createDocument(appliImplModel);
     }
 
@@ -230,7 +230,7 @@ public class DocumentService extends DefaultComponent {
      */
     public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
         if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
-            DocumentModel appliimpl = getChild(session, getWSRoot(session).getRef(), AppliImpl.DEFAULT_APPLIIMPL_TITLE);
+            DocumentModel appliimpl = getChild(session, getWorkspaceRoot(session).getRef(), AppliImpl.DEFAULT_APPLIIMPL_TITLE);
             if (appliimpl == null) {
                 DocumentModel appliImpl;
                 try {
@@ -253,13 +253,7 @@ public class DocumentService extends DefaultComponent {
         return defaultAppliImpl;
     }
 
-    private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
-        DocumentModelList apis = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-                type + "' AND " + field + " = '" +  value + "' AND ecm:currentLifeCycleState <> 'deleted'");
-        return (apis != null && apis.size() > 0) ? apis.get(0) : null;
-    }
-
-    private DocumentModel getWSRoot(CoreSession session) throws ClientException {
+    public DocumentModel getWorkspaceRoot(CoreSession session) throws ClientException {
         if (wsRoot == null || !session.exists(wsRoot.getRef())) {
             DocumentModel defaultDomain = session.getChildren(session.getRootDocument().getRef()).get(0);
             DocumentModelList domainChildren =  session.getChildren(defaultDomain.getRef());
@@ -270,6 +264,12 @@ public class DocumentService extends DefaultComponent {
             }
         }
         return wsRoot;
+    }
+
+    private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
+        DocumentModelList apis = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+                type + "' AND " + field + " = '" +  value + "' AND ecm:currentLifeCycleState <> 'deleted'");
+        return (apis != null && apis.size() > 0) ? apis.get(0) : null;
     }
 
     private DocumentModel getChild(CoreSession session, DocumentRef parent, String childTitle) throws ClientException { 

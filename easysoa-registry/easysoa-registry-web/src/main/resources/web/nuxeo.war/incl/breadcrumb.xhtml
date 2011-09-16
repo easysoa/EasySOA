@@ -6,8 +6,10 @@
   xmlns:nxd="http://nuxeo.org/nxweb/document"
   xmlns:nxh="http://nuxeo.org/nxweb/html"
   xmlns:nxu="http://nuxeo.org/nxweb/util"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
-  >
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+  
+  	<!-- TODO: Test -->
+  	
 <!-- 
   <div class="printButton">
     <ui:include src="/incl/document_actions_upperbuttons.xhtml"/>
@@ -41,11 +43,9 @@
            	</c:otherwise>
            </c:choose>
       
-            <h:outputText value="#{backendPath.size()}"/>
         <nxu:dataList var="pathElement"
           value="#{backendPath}" first="2"> <!-- EasySOA : do not display the first elements -->
           <f:verbatim>&amp;gt;&amp;nbsp;</f:verbatim>
-      	test
       	
           <nxd:restDocumentLink document="#{pathElement.documentModel}"
             rendered="#{pathElement.link}">

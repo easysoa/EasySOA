@@ -10,10 +10,18 @@
   <!-- EasySOA: Template based on layout_default_template.xhtml,
   	which allows for an adapted view according to the user profile. -->
 
+	  <c:if test="#{userSession.currentNuxeoPrincipal.getGroups().contains('Administrators')}">
+	  	HELLO MISTER ADMIN
+	  </c:if>
+	
+
+
   <c:set var="isEditMode" value="#{nxl:isBoundToEditMode(layout.mode)}" />
 
   <table class="dataInput">
   	<tbody>
+  	
+  	  <!-- Layout title -->
 	  <c:if test="#{!empty layout.properties['title']}">
 		  <tr><td colspan="3">
 			<h3>
@@ -21,6 +29,7 @@
 		    </h3>
 	      </td></tr>
 	  </c:if>
+	  
       <nxl:layoutRow>
         <tr>
           <nxl:layoutRowWidget>

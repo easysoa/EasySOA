@@ -91,7 +91,7 @@
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
       <properties mode="any">
-		<property name="title">Technical information</property>
+		<property name="title">Technical informations</property>
 	  </properties>
       <rows>
         <row>
