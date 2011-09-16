@@ -68,11 +68,8 @@ div+table .themeCellFrame {
 }
 
 .commentAuthor {
-    background: none;
+    background: none !important;
     padding-left: 0 !important;
-}
-
-.commentAuthor {
 	border: 1px solid #555 !important;
 	border-bottom: 1px solid #AAA !important;
 }

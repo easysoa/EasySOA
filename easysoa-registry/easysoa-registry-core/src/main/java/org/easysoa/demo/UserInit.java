@@ -33,8 +33,12 @@ public class UserInit extends UnrestrictedSessionRunner {
     private static final String GROUP_ARCHITECT = "Architect";
     private static final String GROUP_DEVELOPER = "Developer";
     private static final String GROUP_IT_STAFF = "IT Staff";
-    private static final String GROUP_MEMBERS = "members";
+    private static final String GROUP_ADMINISTRATOR = "Administrator";
+    
+    private static final String GROUP_DEFAULT_MEMBERS = "members";
+    private static final String GROUP_DEFAULT_ADMINISTRATORS = "administrators";
 
+    private static final String USER_ADMINISTRATOR = "Administrator";
     private static final String USER_SOPHIE = "Sophie M.";
     private static final String USER_TED = "Ted M.";
     private static final String USER_GEORGE = "George C.";
@@ -69,17 +73,20 @@ public class UserInit extends UnrestrictedSessionRunner {
             defineGroup(GROUP_ARCHITECT, new String[] { USER_GEORGE },
                     new String[] { GROUP_DEVELOPER });
             defineGroup(GROUP_IT_STAFF, new String[] { USER_ARNOLD });
+            defineGroup(GROUP_ADMINISTRATOR, new String[] { USER_ADMINISTRATOR });
 
             // Set new groups as childs of the default "members" group
-            defineGroup(GROUP_MEMBERS, new String[] {}, new String[] {
+            defineGroup(GROUP_DEFAULT_MEMBERS, new String[] {}, new String[] {
                     GROUP_BUSINESS_USER, GROUP_DEVELOPER, GROUP_ARCHITECT,
                     GROUP_IT_STAFF });
+            defineGroup(GROUP_DEFAULT_ADMINISTRATORS, new String[] {}, new String[] {
+                    GROUP_ADMINISTRATOR });
 
             // Set write rights for all "members" members
             DocumentModel wsRootModel = docService.getWorkspaceRoot(session);
             ACP acp = wsRootModel.getACP();
             ACL acl = new ACLImpl("easysoa-demo-rights");
-            acl.add(new ACE(GROUP_MEMBERS, SecurityConstants.EVERYTHING, true));
+            acl.add(new ACE(GROUP_DEFAULT_MEMBERS, SecurityConstants.EVERYTHING, true));
             acp.addACL(acl);
             wsRootModel.setACP(acp, true);
             session.saveDocument(wsRootModel);
@@ -207,7 +214,7 @@ public class UserInit extends UnrestrictedSessionRunner {
         try {
             // Delete custom groups
             String[] customGroups = new String[] { GROUP_BUSINESS_USER,
-                    GROUP_DEVELOPER, GROUP_ARCHITECT, GROUP_IT_STAFF };
+                    GROUP_DEVELOPER, GROUP_ARCHITECT, GROUP_IT_STAFF, GROUP_ADMINISTRATOR };
             for (String groupName : customGroups) {
                 DocumentModel groupModel = userManager.getGroupModel(groupName);
                 if (groupModel != null) {
@@ -217,7 +224,7 @@ public class UserInit extends UnrestrictedSessionRunner {
 
             // Delete all users except Administrator
             for (String userName : userManager.getUserIds()) {
-                if (!userName.equals("Administrator")) {
+                if (!userName.equals(USER_ADMINISTRATOR)) {
                     userManager.deleteUser(userName);
                 }
             }
