@@ -1,0 +1,69 @@
+<div class="comments_block"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:c="http://java.sun.com/jstl/core">
+
+<c:if test="#{currentDocument.hasFacet('Commentable') and (documentThreadedComments.size > 0)}">
+
+  <!-- EasySOA: Fetch user group -->
+  <c:set var="userGroup" value="#{userManager.getUserModel(threadEntry.comment.comment.author).getProperty('user', 'groups')}" />
+
+  <h3 class="summaryTitle">
+    <h:outputFormat value="#{messages['label.summary.comments']}" >
+      <f:param value="#{documentThreadedComments.size}"/>
+    </h:outputFormat>
+  </h3>
+
+  <h:outputText class="boldLabel" value="#{messages['label.summary.lastComments']}" />
+  <nxu:dataList var="threadEntry" value="#{documentThreadedComments}"
+    styleClass="commentsOutput" rowIndexVar="rowIndex" rows="5" first="0">
+
+    <h:panelGroup layout="block"
+      style="margin-left:#{threadEntry.depth*25}px;"
+      styleClass="#{nxu:test(rowIndex % 2 == 1, 'dataRowOdd commentBlock', 'dataRowEven commentBlock')}">
+
+      <div class="commentAuthor">
+      
+			<!-- EasySOA: Display group-related icon -->
+			<c:choose>
+				<c:when test="{userGroup[0] != null && userGroup['0'].equals('Business user')}">
+					<h:graphicImage value="/img/users/bu.png" />
+				</c:when>
+				<c:when test="{userGroup[0] != null && userGroup['0'].equals('Architect')}">
+					<h:graphicImage value="/img/users/architect.png" />
+				</c:when>
+				<c:when test="{userGroup[0] != null && userGroup['0'].equals('Developer')}">
+					<h:graphicImage value="/img/users/developer.png" />
+				</c:when>
+				<c:when test="{userGroup[0] != null && userGroup['0'].equals('IT Staff')}">
+					<h:graphicImage value="/img/users/itstaff.png" />
+				</c:when>
+				<c:otherwise>
+					<h:graphicImage value="/img/users/default.png" />
+				</c:otherwise>
+			</c:choose>
+	
+	        <h:outputText value="#{nxu:userFullName(threadEntry.comment.comment.author)}"/>
+	
+			<!-- EasySOA: Display user group -->
+		    <span style="font-weight: normal">(<h:outputText value="#{(userGroup[0] != null) ? userGroup[0] : '???'}"/>)</span>
+	
+	        <h:outputText value=" "/>
+	        <span class="commentCreationDate">
+	          <h:outputText value="#{threadEntry.comment.comment.creationDate}" >
+	            <f:convertDateTime pattern="#{nxu:basicDateAndTimeFormater()}"
+	              timeZone="#{timeZone}" />
+	          </h:outputText>
+	        </span>
+	        
+      </div>
+      <div class="commentQuote">
+        <h:outputText value="#{threadEntry.comment.comment.text}" escape="false" />
+      </div>
+    </h:panelGroup>
+  </nxu:dataList>
+
+</c:if>
+
+</div>

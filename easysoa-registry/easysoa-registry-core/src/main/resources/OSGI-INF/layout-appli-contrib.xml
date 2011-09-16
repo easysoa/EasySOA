@@ -2,53 +2,18 @@
 <component name="org.easysoa.core.contrib.layout.appli">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
     
-    <!-- Application Implementation definition layout -->
-    <layout name="appliimpldef">
+    <layout name="appliimpldef_common">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
-      <properties>
-      	<property name="title">Appli Impl. properties</property>
-      </properties>
       <rows>
-        <row>
-          <widget>appliimpldef_url</widget>
-        </row>
         <row>
           <widget>appliimpldef_uiUrl</widget>
         </row>
         <row>
-          <widget>appliimpldef_sourcesUrl</widget>
-        </row>
-        <row>
-          <widget>appliimpldef_server</widget>
-        </row>
-        <row>
           <widget>appliimpldef_provider</widget>
         </row>
-        <row>
-          <widget>appliimpldef_technology</widget>
-        </row>
-        <row>
-          <widget>appliimpldef_standard</widget>
-        </row>
-        <row>
-          <widget>appliimpldef_environment</widget>
-        </row>
       </rows>
-      <widget name="appliimpldef_url" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.url</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:url</field>
-	      </fields>
-        <properties mode="any">
-		  <property name="required">true</property>
-		  <property name="validator">#{easysoaValidator.validateUrl}</property>
-		</properties>
-	  </widget>
       <widget name="appliimpldef_uiUrl" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.appliimpldef.uiUrl</label>
@@ -57,30 +22,10 @@
 	      <fields>
 	        <field>app:uiUrl</field>
 	      </fields>
-	      <properties mode="any">
-			<property name="validator">#{easysoaValidator.validateUrl}</property>
-		  </properties>
-	  </widget>
-      <widget name="appliimpldef_sourcesUrl" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:sourcesUrl</field>
-	      </fields>
-	      <properties mode="any">
-			<property name="validator">#{easysoaValidator.validateUrl}</property>
-		  </properties>
-	  </widget>
-      <widget name="appliimpldef_server" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.server</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:server</field>
-	      </fields>
+        <properties mode="any">
+		  <property name="required">true</property>
+		  <property name="validator">#{easysoaValidator.validateUrl}</property>
+		</properties>
 	  </widget>
       <widget name="appliimpldef_provider" type="text">
 	      <labels>
@@ -91,40 +36,16 @@
 	        <field>app:provider</field>
 	      </fields>
 	  </widget>
-      <widget name="appliimpldef_technology" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.technology</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:technology</field>
-	      </fields>
-	  </widget>
-      <widget name="appliimpldef_standard" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.standard</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:standard</field>
-	      </fields>
-	  </widget>
-	  <widget name="appliimpldef_environment" type="text">
-	      <labels>
-	        <label mode="any">label.easysoa.appliimpldef.environment</label>
-	      </labels>
-	      <translated>true</translated>
-	      <fields>
-	        <field>app:environment</field>
-	      </fields>
-	  </widget>
     </layout>
     
-    <!-- Feature definition layout -->
-    <layout name="feature">
+    
+    <layout name="appliimpldef_spec">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
+      <properties mode="any">
+      	<property name="title">Feature specifications</property>
+      </properties>
       <rows>
         <row>
           <widget>feature_domain</widget>
@@ -138,7 +59,19 @@
         <row>
           <widget>feature_designDocumentSource</widget>
         </row>
+        <row>
+          <widget>appliimpldef_standard</widget>
+        </row>
       </rows>
+      <widget name="appliimpldef_standard" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.standard</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:standard</field>
+	      </fields>
+	  </widget>
 	  <widget name="feature_domain" type="text">
 	      <labels>
 	        <label mode="any">label.easysoa.feature.domain</label>
@@ -186,6 +119,84 @@
 	      <translated>true</translated>
 	      <fields>
 	        <field>feat:designDocumentSource</field>
+	      </fields>
+	  </widget>
+    </layout>
+    
+    <layout name="appliimpldef_tech">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <properties mode="any">
+      	<property name="title">Technical informations</property>
+      </properties>
+      <rows>
+        <row>
+          <widget>appliimpldef_url</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_sourcesUrl</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_server</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_technology</widget>
+        </row>
+        <row>
+          <widget>appliimpldef_environment</widget>
+        </row>
+      </rows>
+      <widget name="appliimpldef_url" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.url</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:url</field>
+	      </fields>
+        <properties mode="any">
+		  <property name="required">true</property>
+		  <property name="validator">#{easysoaValidator.validateUrl}</property>
+		</properties>
+	  </widget>
+      <widget name="appliimpldef_sourcesUrl" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:sourcesUrl</field>
+	      </fields>
+	      <properties mode="any">
+			<property name="validator">#{easysoaValidator.validateUrl}</property>
+		  </properties>
+	  </widget>
+      <widget name="appliimpldef_server" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.server</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:server</field>
+	      </fields>
+	  </widget>
+      <widget name="appliimpldef_technology" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.technology</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:technology</field>
+	      </fields>
+	  </widget>
+	  <widget name="appliimpldef_environment" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.appliimpldef.environment</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>app:environment</field>
 	      </fields>
 	  </widget>
     </layout>

@@ -28,7 +28,7 @@
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
       <properties mode="any">
-		<property name="title">Service metadata (specs)</property>
+		<property name="title">Specifications</property>
 	  </properties>
       <rows>
         <!-- TODO: Custom widget to display signature -->
@@ -91,7 +91,7 @@
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
       <properties mode="any">
-		<property name="title">Service metadata (tech)</property>
+		<property name="title">Technical informations</property>
 	  </properties>
       <rows>
         <row>

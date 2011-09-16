@@ -62,3 +62,25 @@ div+table .themeCellFrame {
 .syndicationButton {
 	display: none;
 }
+
+.breadcrumbs {
+    font-size: 11pt !important;
+}
+
+.commentAuthor {
+    background: none;
+    padding-left: 0 !important;
+}
+
+.commentAuthor {
+	border: 1px solid #555 !important;
+	border-bottom: 1px solid #AAA !important;
+}
+
+.commentQuote {
+	border: 1px solid #555 !important;
+	border-top: 0 !important;
+    margin: 0pt ! important;
+    padding: 10px ! important;
+    background-color: #EEFAFE ! important;
+}

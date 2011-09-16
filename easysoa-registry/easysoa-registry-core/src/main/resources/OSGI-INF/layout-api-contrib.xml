@@ -2,20 +2,16 @@
 <component name="org.easysoa.core.contrib.layout.api">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
     
-    <!-- Service API definition layout -->
-    <layout name="serviceapidef">
+    <layout name="serviceapi_tech">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
+      <properties mode="any">
+      	<property name="title">Technical informations</property>
+      </properties>
       <rows>
         <row>
           <widget>apidef_url</widget>
-        </row>
-        <row>
-          <widget>apidef_application</widget>
-        </row>
-        <row>
-          <widget>apidef_protocols</widget>
         </row>
       </rows>
       <widget name="apidef_url" type="text">
@@ -31,6 +27,23 @@
 			<property name="validator">#{easysoaValidator.validateUrl}</property>
 		  </properties>
 	  </widget>
+    </layout>
+    
+    <layout name="serviceapi_spec">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <properties mode="any">
+      	<property name="title">Specifications</property>
+      </properties>
+      <rows>
+        <row>
+          <widget>apidef_application</widget>
+        </row>
+        <row>
+          <widget>apidef_protocols</widget>
+        </row>
+      </rows>
 	  <widget name="apidef_application" type="selectOneDirectory">
 	    <labels>
 	        <label mode="any">label.easysoa.apidef.application</label>
