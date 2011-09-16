@@ -92,7 +92,7 @@ public class UserInit extends UnrestrictedSessionRunner {
             session.saveDocument(wsRootModel);
             session.save();
 
-            log.info("Successfully reated demo groups and users.");
+            log.info("Successfully created demo groups and users.");
 
         } catch (Exception e) {
             log.error("Cannot acces user manager", e);

@@ -4,6 +4,7 @@
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
   
  	<!-- Disable unused tabs -->
+ 	<action id="TAB_RELATIONS" enabled="false" />
    <!-- <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" />
     <action id="view_comments" enabled="false" />
     <action id="TAB_CONTENT_HISTORY" enabled="false" />

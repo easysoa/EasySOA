@@ -39,6 +39,12 @@
         <row>
           <widget>serviceref_refPathLink</widget>
         </row>
+        <row>
+          <widget>soacommon_archi_archiPath</widget>
+        </row>
+        <row>
+          <widget>soacommon_archi_archiLocalName</widget>
+        </row>
        </rows>
       <widget name="serviceref_refPath" type="text">
 	      <labels>
@@ -60,6 +66,24 @@
 	      <properties widgetMode="any">
 	        <property name="template">/widgets/document_path_link_template.xhtml</property>
 	      </properties>
+	  </widget>
+      <widget name="soacommon_archi_archiPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiPath</field>
+	      </fields>
+	  </widget>
+      <widget name="soacommon_archi_archiLocalName" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiLocalName</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiLocalName</field>
+	      </fields>
 	  </widget>
 	</layout>
 	  

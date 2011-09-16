@@ -44,6 +44,12 @@
         <row>
           <widget>servicedef_fileUrl</widget>
         </row>
+        <row>
+          <widget>soacommon_archi_archiPath</widget>
+        </row>
+        <row>
+          <widget>soacommon_archi_archiLocalName</widget>
+        </row>
       </rows>
       <widget name="servicedef_httpMethod" type="text">
 	      <labels>
@@ -83,6 +89,24 @@
 	      <properties mode="any">
 			<property name="validator">#{easysoaValidator.validateUrl}</property>
 		  </properties>
+	  </widget>
+      <widget name="soacommon_archi_archiPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiPath</field>
+	      </fields>
+	  </widget>
+      <widget name="soacommon_archi_archiLocalName" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiLocalName</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiLocalName</field>
+	      </fields>
 	  </widget>
     </layout>
     

@@ -62,6 +62,12 @@
         <row>
           <widget>appliimpldef_standard</widget>
         </row>
+        <row>
+          <widget>soacommon_archi_archiPath</widget>
+        </row>
+        <row>
+          <widget>soacommon_archi_archiLocalName</widget>
+        </row>
       </rows>
       <widget name="appliimpldef_standard" type="text">
 	      <labels>
@@ -119,6 +125,24 @@
 	      <translated>true</translated>
 	      <fields>
 	        <field>feat:designDocumentSource</field>
+	      </fields>
+	  </widget>
+      <widget name="soacommon_archi_archiPath" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiPath</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiPath</field>
+	      </fields>
+	  </widget>
+      <widget name="soacommon_archi_archiLocalName" type="text">
+	      <labels>
+	        <label mode="any">label.easysoa.soacommon.archiLocalName</label>
+	      </labels>
+	      <translated>true</translated>
+	      <fields>
+	        <field>soa:archiLocalName</field>
 	      </fields>
 	  </widget>
     </layout>

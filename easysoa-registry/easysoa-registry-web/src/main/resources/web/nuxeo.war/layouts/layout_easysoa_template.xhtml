@@ -5,71 +5,48 @@
   xmlns:nxl="http://nuxeo.org/nxforms/layout"
   xmlns:nxu="http://nuxeo.org/nxweb/util"
   xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
   id="#{layout.id}">
   
   <!-- EasySOA: Template based on layout_default_template.xhtml,
   	which allows for an adapted view according to the user profile. -->
 
-	  <c:if test="#{userSession.currentNuxeoPrincipal.getGroups().contains('Administrators')}">
-	  	HELLO MISTER ADMIN
-	  </c:if>
-	
-
 
   <c:set var="isEditMode" value="#{nxl:isBoundToEditMode(layout.mode)}" />
 
-  <table class="dataInput">
-  	<tbody>
-  	
-  	  <!-- Layout title -->
-	  <c:if test="#{!empty layout.properties['title']}">
-		  <tr><td colspan="3">
-			<h3>
+  <!-- EasySOA: Fetch user group -->
+  <c:set var="userGroup" value="#{userManager.getUserModel(threadEntry.comment.comment.author).getProperty('user', 'groups')}" />
+
+  <c:choose>
+	  <c:when test="#{layout.properties['title'] == null 
+	|| (layout.name.contains('spec') and (userGroup.equals('Developer') or userGroup.equals('Architect')) 
+	|| (layout.name.contains('tech') and userGroup.equals('IT Staff')))}">
+	  	  <!-- Layout title -->
+		  <c:if test="#{!empty layout.properties['title']}">
+		    <h3>
 		      <h:outputText value="#{layout.properties['title']}" />
 		    </h3>
-	      </td></tr>
-	  </c:if>
-	  
-      <nxl:layoutRow>
-        <tr>
-          <nxl:layoutRowWidget>
-            <c:choose>
-              <c:when test="#{widget.translated}">
-                <td class="iconColumn" style="vertical-align:top;">
-                  <c:if test="#{!empty widget.helpLabel}">
-                    <h:graphicImage value="/icons/lightbulb.png"
-                      styleClass="layoutHelpLabel"
-                      title="#{messages[widget.helpLabel]}" />
-                  </c:if>
-                </td>
-                <td class="labelColumn">
-                  <h:outputText value="#{messages[widget.label]}"
-                    styleClass="#{nxu:test(widget.required and isEditMode, 'required', '')}" />
-                </td>
-              </c:when>
-              <c:otherwise>
-                <td class="iconColumn" style="vertical-align:top;">
-                  <c:if test="#{!empty widget.helpLabel}">
-                    <h:graphicImage value="/icons/lightbulb.png"
-                      styleClass="layoutHelpLabel"
-                      title="#{widget.helpLabel}" />
-                  </c:if>
-                </td>
-                <td class="labelColumn">
-                  <h:outputText value="#{widget.label}"
-                    styleClass="#{nxu:test(widget.required and isEditMode, 'required', '')}" />
-                </td>
-              </c:otherwise>
-            </c:choose>
-            <td class="fieldColumn" colspan="#{nxu:test(layoutRow.size==1, 3*layout.columns-2, 1)}">
-              <nxl:widget widget="#{widget}" value="#{value}" />
-            </td>
-          </nxl:layoutRowWidget>
-        </tr>
-      </nxl:layoutRow>
+		  </c:if>
+		  
+		 <ui:include src="layout_easysoa_fields_template.xhtml" />
+	  </c:when>
+	  <c:otherwise>
 
-    </tbody>
-  </table>
+		<div class="foldableLightBox">
+
+		      <div class="foldableLightBoxHeader folded" style="margin-top: 8px">
+			<a href="#nologo" onclick="return toggleBox(this)" style="font-size: 10pt">
+			  <h:outputText value="#{layout.properties['title']}"/>
+			</a>
+		      </div>
+		    <div class="boxBody" style="#{nxu:test(openBox, '', 'overflow: visible; display: none;')}">
+			 <ui:include src="layout_easysoa_fields_template.xhtml" />
+		    </div>
+
+		</div>
+
+	  </c:otherwise>
+  </c:choose>
 
 <script>
   jQuery(document).ready(function() {
