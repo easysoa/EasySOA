@@ -22,14 +22,15 @@
 	  
  	  <!--  Foldable schema (by default folded or unfolded according to the user group) -->
 	  <c:otherwise>
- 		<c:set var="userGroup" value="#{userManager.getUserModel(threadEntry.comment.comment.author).getProperty('user', 'groups')}" />
+ 		<c:set var="userGroup" value="#{userManager.getUserModel(messages['label.loggedAsUser']).getProperty('user', 'groups')}" />
+ 		<c:set var="foldingStatus" value="${(layout.properties['groups'] != null) and (layout.properties['groups'].contains(userGroup[0]))}" />
 		<div class="foldableLightBox">
-		      <div class="foldableLightBoxHeader ${((layout.properties['groups'] != null and layout.properties['groups'].contains(userGroup)) ? 'unfolded' : 'folded')}" style="margin-top: 8px">
+		      <div class="foldableLightBoxHeader ${((foldingStatus) ? 'unfolded' : 'folded')}" style="margin-top: 8px">
 			<a href="#nologo" onclick="return toggleBox(this)" style="font-size: 10pt">
 			  <h:outputText value="#{layout.properties['title']}"/>
 			</a>
 		      </div>
-		    <div class="boxBody" style="#{nxu:test(openBox, '', 'overflow: visible; display: none;')}">
+		    <div class="boxBody" style="#{nxu:test(foldingStatus, '', 'overflow: visible; display: none;')}">
 			 <ui:include src="layout_easysoa_fields_template.xhtml" />
 		    </div>
 		</div>

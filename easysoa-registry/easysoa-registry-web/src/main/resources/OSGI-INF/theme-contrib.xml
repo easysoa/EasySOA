@@ -4,10 +4,24 @@
 	<require>org.nuxeo.theme.nuxeo.default</require>
 
   	<extension target="org.nuxeo.theme.services.ThemeService" point="views">
+  		<!-- EasySOA CSS -->
 	    <view name="nuxeo5 includes" template-engine="jsf-facelets" merge="true">
 	      <format-type>widget</format-type>
 	      <resource>easysoa.css</resource>
 	    </view>
+	    
+	    <!-- Overwrite widgets to disable caching (XXX: doesn't work?) -->
+	     <view name="nuxeo5 tree explorer" template-engine="jsf-facelets">
+	      <format-type>widget</format-type>
+	      <template>incl/easysoa_tree_explorer_with_virtual_nav.xhtml</template>
+      	  <mode>no-cache</mode><!-- EasySOA -->
+	    </view>
+	    <view name="nuxeo5 breadcrumbs" template-engine="jsf-facelets">
+	      <format-type>widget</format-type>
+	      <template>incl/easysoa_breadcrumb_vn.xhtml</template>
+      	  <mode>no-cache</mode><!-- EasySOA -->
+	    </view>
+	    
 	 </extension>
 	 
 	 <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
@@ -15,48 +29,7 @@
 	      <path>css/easysoa.css</path>
 	    </resource>
 	 </extension>
-	    <!-- 
-  	 <extension target="org.nuxeo.theme.services.ThemeService"
-        point="applications">
-        
-        <application root="/nuxeo" template-engine="jsf-facelets">
-	      <negotiation>
-	        <strategy>nuxeo5</strategy>
-	        <default-engine>default</default-engine>
-	        <default-theme>easysoa/default</default-theme>
-	        <default-perspective>default</default-perspective>
-	      </negotiation>
-	
-	      <resource-caching>
-	        <lifetime>36000</lifetime>
-	      </resource-caching>
-	
-	      <style-caching>
-	        <lifetime>900</lifetime>
-	      </style-caching>
-	
-	      <view id="/create_relation_search_document_popup.xhtml">
-	        <theme>galaxy/popup</theme>
-	      </view>
-	      <view id="/user_dashboard.xhtml">
-	        <theme>galaxy/user_dashboard</theme>
-	      </view>
-	      <view id="/view_calendar.xhtml">
-	        <perspective>view_calendar</perspective>
-	      </view>
-	      <view id="/print.xhtml">
-	        <perspective>print</perspective>
-	      </view>
-	      <view id="/editor_link_search_document.xhtml">
-	        <theme>galaxy/popup</theme>
-	      </view>
-	      <view id="/editor_image_upload.xhtml">
-	        <theme>galaxy/popup</theme>
-	      </view>
-	      <view id="/search/choose_searchscope_popup.xhtml">
-	        <theme>galaxy/popup</theme>
-	      </view>
-	    </application>
-    </extension> -->
+	 
+	 
     
 </component>
