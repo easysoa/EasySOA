@@ -43,8 +43,7 @@ public class DomainInit extends UnrestrictedSessionRunner {
         for (DocumentModel rootChild : session.getChildren(root.getRef())) {
             // Change workspace root title
             if (rootChild.getType().equals("WorkspaceRoot")) {
-                rootChild.setProperty("dublincore", "title",
-                        WORKSPACE_ROOT_TITLE);
+                rootChild.setProperty("dublincore", "title", WORKSPACE_ROOT_TITLE);
                 session.saveDocument(rootChild);
                 session.save();
             } 
