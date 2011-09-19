@@ -2,6 +2,8 @@
 <component name="org.easysoa.core.contrib.layout.service">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
     
+	<require>org.nuxeo.ecm.platform.forms.layout.WebLayoutManager</require>
+    
     <!-- Service definition layout -->
     <layout name="service_common">
       <templates>
@@ -29,8 +31,12 @@
       </templates>
       <properties mode="any">
 		<property name="title">Specifications</property>
+      	<property name="groups">Architect, Developer</property>
 	  </properties>
       <rows>
+        <row>
+          <widget>file</widget>
+        </row>
         <!-- TODO: Custom widget to display signature -->
         <row>
           <widget>servicedef_httpMethod</widget>
@@ -116,6 +122,7 @@
       </templates>
       <properties mode="any">
 		<property name="title">Technical informations</property>
+      	<property name="groups">IT Staff</property>
 	  </properties>
       <rows>
         <row>

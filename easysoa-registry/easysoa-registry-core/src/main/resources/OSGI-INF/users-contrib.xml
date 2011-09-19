@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.contrib.users">
+
+  <require>org.nuxeo.ecm.directory.sql.SQLDirectoryFactory</require>
+  
+  <extension target="org.nuxeo.ecm.directory.sql.SQLDirectoryFactory" point="directories">
+
+
+    <directory name="userDirectory">
+      <schema>user</schema>
+      <!-- Do not use the regular datasource but a in memory setup instead
+        <dataSource>java:/nxsqldirectory</dataSource>
+      -->
+      <dbDriver>org.hsqldb.jdbcDriver</dbDriver>
+      <dbUrl>jdbc:hsqldb:mem:memid</dbUrl>
+      <dbUser>sa</dbUser>
+      <dbPassword></dbPassword>
+
+      <table>users</table>
+      <idField>username</idField>
+      <passwordField>password</passwordField>
+      <substringMatchType>subany</substringMatchType>
+      <autoincrementIdField>false</autoincrementIdField>
+      <dataFile>users/users.csv</dataFile>
+      <createTablePolicy>always</createTablePolicy>
+      <references>
+        <tableReference field="groups" directory="groupDirectory"
+          table="user2group" sourceColumn="userId"
+          targetColumn="groupId" dataFile="users/usergroups.csv" />
+      </references>
+    </directory>
+
+
+    <directory name="groupDirectory">
+      <schema>group</schema>
+      <dbDriver>org.hsqldb.jdbcDriver</dbDriver>
+      <dbUrl>jdbc:hsqldb:mem:memid</dbUrl>
+      <dbUser>sa</dbUser>
+      <dbPassword></dbPassword>
+
+      <table>groups</table>
+      <idField>groupname</idField>
+      <autoincrementIdField>false</autoincrementIdField>
+      <dataFile>users/groups.csv</dataFile>
+      <createTablePolicy>always</createTablePolicy>
+
+      <references>
+        <inverseReference field="members" directory="userDirectory"
+          dualReferenceField="groups" />
+        <tableReference field="subGroups" directory="groupDirectory"
+          table="group2group" sourceColumn="childGroupId"
+          targetColumn="parentGroupId" />
+        <inverseReference field="parentGroups"
+          directory="groupDirectory" dualReferenceField="subGroups" />
+      </references>
+    </directory>
+    
+  </extension>
+
+</component>

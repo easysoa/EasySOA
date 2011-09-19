@@ -19,7 +19,6 @@
         <layout>service_tech</layout>
         <!-- Specifications -->
         <layout>service_spec</layout>
-        <layout>file</layout>
       </layouts>
     </type>
     
@@ -37,7 +36,6 @@
         <layout>serviceapi_tech</layout>
         <!-- Specifications -->
         <layout>serviceapi_spec</layout>
-        <layout>file</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
@@ -75,8 +73,6 @@
         <layout>appliimpldef_tech</layout>
         <!-- Specifications -->
         <layout>appliimpldef_spec</layout>
-        <layout>soacommon_archi</layout>
-        <layout>file</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>

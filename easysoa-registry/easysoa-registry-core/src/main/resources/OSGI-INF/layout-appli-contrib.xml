@@ -2,6 +2,8 @@
 <component name="org.easysoa.core.contrib.layout.appli">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
     
+	<require>org.nuxeo.ecm.platform.forms.layout.WebLayoutManager</require>
+    
     <layout name="appliimpldef_common">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
@@ -45,6 +47,7 @@
       </templates>
       <properties mode="any">
       	<property name="title">Feature specifications</property>
+      	<property name="groups">Architect, Developer</property>
       </properties>
       <rows>
         <row>
@@ -67,6 +70,9 @@
         </row>
         <row>
           <widget>soacommon_archi_archiLocalName</widget>
+        </row>
+        <row>
+          <widget>file</widget>
         </row>
       </rows>
       <widget name="appliimpldef_standard" type="text">
@@ -153,6 +159,7 @@
       </templates>
       <properties mode="any">
       	<property name="title">Technical informations</property>
+      	<property name="groups">IT Staff</property>
       </properties>
       <rows>
         <row>

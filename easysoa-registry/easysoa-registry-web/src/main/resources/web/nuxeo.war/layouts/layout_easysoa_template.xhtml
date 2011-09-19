@@ -11,30 +11,20 @@
   <!-- EasySOA: Template based on layout_default_template.xhtml,
   	which allows for an adapted view according to the user profile. -->
 
-
   <c:set var="isEditMode" value="#{nxl:isBoundToEditMode(layout.mode)}" />
 
-  <!-- EasySOA: Fetch user group -->
-  <c:set var="userGroup" value="#{userManager.getUserModel(threadEntry.comment.comment.author).getProperty('user', 'groups')}" />
-
   <c:choose>
-	  <c:when test="#{layout.properties['title'] == null 
-	|| (layout.name.contains('spec') and (userGroup.equals('Developer') or userGroup.equals('Architect')) 
-	|| (layout.name.contains('tech') and userGroup.equals('IT Staff')))}">
-	  	  <!-- Layout title -->
-		  <c:if test="#{!empty layout.properties['title']}">
-		    <h3>
-		      <h:outputText value="#{layout.properties['title']}" />
-		    </h3>
-		  </c:if>
-		  
+  
+ 	  <!--  Standard schema -->
+	  <c:when test="#{layout.properties['title'] == null}">
 		 <ui:include src="layout_easysoa_fields_template.xhtml" />
 	  </c:when>
+	  
+ 	  <!--  Foldable schema (by default folded or unfolded according to the user group) -->
 	  <c:otherwise>
-
+ 		<c:set var="userGroup" value="#{userManager.getUserModel(threadEntry.comment.comment.author).getProperty('user', 'groups')}" />
 		<div class="foldableLightBox">
-
-		      <div class="foldableLightBoxHeader folded" style="margin-top: 8px">
+		      <div class="foldableLightBoxHeader ${((layout.properties['groups'] != null and layout.properties['groups'].contains(userGroup)) ? 'unfolded' : 'folded')}" style="margin-top: 8px">
 			<a href="#nologo" onclick="return toggleBox(this)" style="font-size: 10pt">
 			  <h:outputText value="#{layout.properties['title']}"/>
 			</a>
@@ -42,7 +32,6 @@
 		    <div class="boxBody" style="#{nxu:test(openBox, '', 'overflow: visible; display: none;')}">
 			 <ui:include src="layout_easysoa_fields_template.xhtml" />
 		    </div>
-
 		</div>
 
 	  </c:otherwise>

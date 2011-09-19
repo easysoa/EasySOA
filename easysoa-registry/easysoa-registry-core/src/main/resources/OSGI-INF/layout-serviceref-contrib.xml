@@ -2,12 +2,15 @@
 <component name="org.easysoa.core.contrib.layout.serviceref">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
     
+	<require>org.nuxeo.ecm.platform.forms.layout.WebLayoutManager</require>
+    
     <layout name="serviceref_tech">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
       <properties mode="any">
       	<property name="title">Technical informations</property>
+      	<property name="groups">IT Staff</property>
       </properties>
       <rows>
         <row>
@@ -31,8 +34,12 @@
       </templates>
       <properties mode="any">
       	<property name="title">Specifications</property>
+      	<property name="groups">Architect, Developer</property>
       </properties>
       <rows>
+        <row>
+          <widget>file</widget>
+        </row>
         <row>
           <widget>serviceref_refPath</widget>
         </row>

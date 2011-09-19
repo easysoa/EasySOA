@@ -17,7 +17,9 @@
       <a4j:outputPanel id="documentViewPanel">
       
       	 <!-- EasySOA hook -->
-         <ui:include src="/incl/tabs/easysoa_view.xhtml" />
+		 <c:if test="#{currentDocument.getType().equals('Workspace') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceRef')}">
+ 			<ui:include src="/incl/tabs/easysoa_view.xhtml" />
+         </c:if>
           
 	     <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
 	     

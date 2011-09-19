@@ -8,7 +8,6 @@
   xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
 <ui:insert name="user">
-
   <div class="userServicesBlock">
   <h:form id="userServicesForm">
 
@@ -48,6 +47,11 @@
            view="#{mainTabsActions.getViewFor('home')}" addTabInfo="false"
            tabs="MAIN_TABS:home">
            <h:outputText value="#{messages['label.loggedAsUser']}" />
+
+	  <!-- EasySOA: Display user group -->
+	  <c:set var="userGroup" value="#{userManager.getUserModel(messages['label.loggedAsUser']).getProperty('user', 'groups')}" />
+          <i>(<h:outputText value="#{userGroup[0]}" />)</i>
+
          </nxd:restDocumentLink>
          <nxu:set var="actions"
            value="#{webActions.getActionsList('USER_MENU_ACTIONS')}"

@@ -1,6 +1,7 @@
 package org.easysoa.demo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -8,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
 import org.nuxeo.ecm.core.api.security.ACE;
 import org.nuxeo.ecm.core.api.security.ACL;
@@ -18,8 +20,6 @@ import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.platform.usermanager.exceptions.GroupAlreadyExistsException;
 import org.nuxeo.ecm.platform.usermanager.exceptions.UserAlreadyExistsException;
 import org.nuxeo.runtime.api.Framework;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * Users & groups initialisation for the EasySOA demo.
@@ -47,6 +47,7 @@ public class UserInit extends UnrestrictedSessionRunner {
     private static Log log = LogFactory.getLog(UserInit.class);
 
     private UserManager userManager;
+    
     private DocumentService docService;
 
     public UserInit(String repositoryName) {
@@ -65,15 +66,19 @@ public class UserInit extends UnrestrictedSessionRunner {
             userManager = Framework.getService(UserManager.class);
             docService = Framework.getService(DocumentService.class);
 
-            resetUsersAndGroups(); // TODO Remove
+            //resetUsersAndGroups(); 
+            
+            for (String group : userManager.getGroupIds()) { // XXX
+                log.error(group);
+            }
 
             // Create users & groups
-            defineGroup(GROUP_BUSINESS_USER, new String[] { USER_SOPHIE });
+            /*defineGroup(GROUP_BUSINESS_USER, new String[] { USER_SOPHIE });
             defineGroup(GROUP_DEVELOPER, new String[] { USER_TED });
             defineGroup(GROUP_ARCHITECT, new String[] { USER_GEORGE },
                     new String[] { GROUP_DEVELOPER });
             defineGroup(GROUP_IT_STAFF, new String[] { USER_ARNOLD });
-            defineGroup(GROUP_ADMINISTRATOR, new String[] { USER_ADMINISTRATOR });
+            defineGroup(GROUP_ADMINISTRATOR, new String[] { USER_ADMINISTRATOR });*/
 
             // Set new groups as childs of the default "members" group
             defineGroup(GROUP_DEFAULT_MEMBERS, new String[] {}, new String[] {
@@ -92,7 +97,7 @@ public class UserInit extends UnrestrictedSessionRunner {
             session.saveDocument(wsRootModel);
             session.save();
 
-            log.info("Successfully created demo groups and users.");
+            log.info("Successfully updated demo groups.");
 
         } catch (Exception e) {
             log.error("Cannot acces user manager", e);
@@ -140,8 +145,7 @@ public class UserInit extends UnrestrictedSessionRunner {
         }
 
         // Set subgroups
-        List<String> subGroupsList = new ArrayList<String>();
-        Collections.addAll(subGroupsList, subGroups);
+        List<String> subGroupsList = Arrays.asList(subGroups);
         groupModel.setProperty(userManager.getGroupSchemaName(),
                 userManager.getGroupSubGroupsField(), subGroupsList);
 
@@ -193,18 +197,26 @@ public class UserInit extends UnrestrictedSessionRunner {
             userModel.setProperty(userManager.getUserSchemaName(), "lastName", nameParts[1]);
         }
 
-        // Set groups
-        ArrayList<String> groups = new ArrayList<String>();
-        groups.add(groupName);
-        userModel.setProperty(userManager.getUserSchemaName(), "groups", groups);
-
+        // Set mail
+        userModel.setProperty(userManager.getUserSchemaName(), 
+                userManager.getUserEmailField(), nameParts[0].toLowerCase()+"@easysoa.org");
+        
         // Set password
         userModel.setProperty(userManager.getUserSchemaName(), "password", nameParts[0]);
-
+        
+        
+        userModel.setProperty(userManager.getUserSchemaName(), "groups", Arrays.asList(groupName));
+        
         // Save changes
         userManager.updateUser(userModel);
-
-        return userModel;
+        
+        // Set groups
+        NuxeoPrincipal principal = userManager.getPrincipal(nameParts[0]);
+        principal.setGroups(Arrays.asList(groupName));
+        userManager.updateUser(principal.getModel());
+        
+        
+        return principal.getModel();
     }
 
     /**
