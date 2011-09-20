@@ -66,6 +66,14 @@
 			<artifactId>frascati-runtime-factory</artifactId>
 			<version>${frascati.version}</version>
 		</dependency>
+		<!-- to run it with mvn -Prun -->
+		<dependency>
+			<groupId>org.ow2.frascati.mojo</groupId>
+			<artifactId>frascati-launcher-plugin</artifactId>
+			<version>${frascati.version}</version>
+			<type>maven-plugin</type>
+		</dependency>
+		<!-- logs -->		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -158,4 +166,47 @@
 		</dependency>
 
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>run</id>
+			<build>
+				<defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.5-SNAPSHOT:exec</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.ow2.frascati.mojo</groupId>
+						<artifactId>frascati-launcher-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>java</executable>
+							<arguments>
+							</arguments>
+							<!--<loggingConfFile>${logging.conf.file}</loggingConfFile> -->
+							<!--<composite>${composite.file}</composite> -->
+							<!--<service>${service.name}</service> -->
+							<!--<method>${method.name}</method> -->
+							<!--<methodParams>${method.params}</methodParams> -->
+							<composite>src/main/resources/scaffoldingProxy</composite>
+							<!-- useFscript>true</useFscript -->
+							<useFscript>false</useFscript>
+						</configuration>
+						<dependencies>
+							<!-- other poc deps ? -->
+							<!-- other frascati deps ? -->
+							<!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-implementation-fractal</artifactId> 
+								<version>1.4</version> </dependency -->
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>	
+	
 </project>
