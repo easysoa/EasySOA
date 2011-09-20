@@ -149,8 +149,11 @@ var proxyServer = http.createServer(function(request, response) {
 );
 
 easysoaNuxeo.checkNuxeo(null, null, function(result) {
-    console.log('[INFO] Nuxeo is ready for scraping/upload');
-    easysoaDbb.setNuxeoReady();
+    console.log("[INFO] Checking Nuxeo status");
+    if (result) {
+        console.log('[INFO] Nuxeo is ready for scraping/upload');
+        easysoaDbb.setNuxeoReady();
+    }
 });
 
 proxyServer.listen(settings.proxyPort);

@@ -93,24 +93,23 @@ exports.checkNuxeo = function(username, password, callback) {
 		response.on('end', function() {
             if (!nuxeoReady) {
                 nuxeoReady = true;
+                callback(true);
             }
-			callback(responseData);
 		});
   });
   
   nxRequest.on('error', function(data) {
-    callback('Nuxeo doesn\'t answer');
+    callback(false);
+    if (!nuxeoReady) {
+      console.log("[INFO] Nuxeo is not ready yet...");
+      setTimeout(function() { 
+              exports.checkNuxeo(username, password, callback) 
+          }, 3000);
+    }
   });
 	
   nxRequest.end();
 	
-  if (!nuxeoReady) {
-	  console.log("[INFO] Nuxeo is not ready yet...");
-      setTimeout(function() { 
-              exports.checkNuxeo(username, password, callback) 
-          }, 3000);
-  }
-  
 };
 
 
