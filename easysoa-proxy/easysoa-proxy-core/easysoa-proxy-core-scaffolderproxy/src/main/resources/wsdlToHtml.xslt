@@ -8,8 +8,8 @@
 	<!--<xsl:variable name="baseServerUrl">http://localhost:7002/?</xsl:variable> -->
 
 	<!-- Web service endpoint -->
-	<xsl:key name="baseElements" match="xsd:element" use="@type" />
-	<xsl:key name="complexTypes" match="xsd:complexType" use="@name" />
+	<xsl:key name="baseElements" match="xsd:element | s:element" use="@type" />
+	<xsl:key name="complexTypes" match="xsd:complexType | s:complexType" use="@name" />
 	<xsl:key name="bindings" match="wsdl:binding" use="@type" />
 
 	<!-- Header -->
@@ -112,30 +112,40 @@
 				<th style="width: 20%">Name</th>
 				<th>Value</th>
 			</tr>
-			<xsl:for-each
-				select="key('complexTypes', $elementName)/xsd:sequence/xsd:element | key('complexTypes', $elementName)/s:sequence/s:element">
-				<tr>
-					<td>
-						<xsl:value-of select="@type" />
-					</td>
-					<td>
-						<xsl:value-of select="@name" />
-					</td>
-					<xsl:choose>
-						<xsl:when test="$readOnly = false">
+			<!--<xsl:choose>-->
+				<!-- Structure with sequence/elements -->			
+  				<!--<xsl:when test="expression">-->
+					<xsl:for-each
+						select="key('complexTypes', $elementName)/xsd:sequence/xsd:element | key('complexTypes', $elementName)/s:sequence/s:element" >
+						<tr>
 							<td>
-								<input type='text' name='{@name}' class='inputField' />
+								<xsl:value-of select="@type" />
 							</td>
-						</xsl:when>
-						<xsl:otherwise>
 							<td>
-								<input type='text' name='{@name}' disabled=""
-									id='return_{@name}' class='outputField' />
+								<xsl:value-of select="@name" />
 							</td>
-						</xsl:otherwise>
-					</xsl:choose>
-				</tr>
-			</xsl:for-each>
+							<xsl:choose>
+								<xsl:when test="$readOnly = false">
+									<td>
+										<input type='text' name='{@name}' class='inputField' />
+									</td>
+								</xsl:when>
+								<xsl:otherwise>
+									<td>
+										<input type='text' name='{@name}' disabled=""
+											id='return_{@name}' class='outputField' />
+									</td>
+								</xsl:otherwise>
+							</xsl:choose>
+						</tr>
+					</xsl:for-each>
+  				<!--</xsl:when>-->
+  				<!-- Only elements -->
+  				<!--<xsl:otherwise>
+    				... some output ....
+  				</xsl:otherwise>
+			</xsl:choose>-->
+
 		</table>
 	</xsl:template>
 

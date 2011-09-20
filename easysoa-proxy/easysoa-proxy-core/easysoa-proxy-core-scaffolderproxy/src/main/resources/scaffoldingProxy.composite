@@ -16,7 +16,9 @@
     <service name="formGeneratorService">
       <interface.java interface="org.openwide.easysoa.scaffolding.FormGenerator"/>
     </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.FormGeneratorImpl"/>    
+    <implementation.java class="org.openwide.easysoa.scaffolding.FormGeneratorImpl"/>
+    <!-- Defaut wsdl to use -->
+	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
   </component>
   
   <!-- Rest Soap Proxy  -->
@@ -26,7 +28,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
     </service>
     <!-- WSDL service helper reference -->
-	<reference name="wsdlServiceHelper" target="wsdlServiceHelperComponent/wsdlServiceHelperService" />      
+	<reference name="wsdlServiceHelper" target="wsdlServiceHelperComponent/wsdlServiceHelperService" />
   </component>
   <!-- Rest binding for Rest / Soap proxy -->
   <service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">

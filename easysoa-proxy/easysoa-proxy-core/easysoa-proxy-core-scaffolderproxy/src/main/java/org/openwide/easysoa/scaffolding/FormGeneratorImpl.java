@@ -3,6 +3,7 @@ package org.openwide.easysoa.scaffolding;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -14,6 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.osoa.sca.annotations.Property;
 import org.xml.sax.InputSource;
 
 public class FormGeneratorImpl implements FormGenerator {
@@ -22,7 +24,11 @@ public class FormGeneratorImpl implements FormGenerator {
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(FormGeneratorImpl.class.getClass());	
+
 	
+	@Property
+	String defaultWsdl;	
+		
 	/* (non-Javadoc)
 	 * @see org.openwide.easysoa.scaffolding.FormGenerator#generateHtmlFormFromWsdl(java.lang.String, java.lang.String, java.lang.String)
 	 */
@@ -41,19 +47,32 @@ public class FormGeneratorImpl implements FormGenerator {
 		logger.debug("xmlSource : " + xmlSource);
 		logger.debug("xsltSource : " + xsltSource);
 		logger.debug("htmlOutput : " + htmlOutput);
+		logger.debug("defautWsdl : " + defaultWsdl);
+		System.out.println("defautWsdl : " + defaultWsdl);
 		try{
+			// Deactivated for the Talend tuto Hack !!
+			/*
 			if(xmlSource == null || "".equals(xmlSource)){
 				throw new IllegalArgumentException("The parameter xmlSource cannot be null or empty !");
-			} 
-			else if(xsltSource == null || "".equals(xsltSource)){
+			}
+			else*/
+			if(xsltSource == null || "".equals(xsltSource)){
 				throw new IllegalArgumentException("The parameter xsltSource cannot be null or empty !");
 			}
 			else if(htmlOutput == null || "".equals(htmlOutput)){
 				throw new IllegalArgumentException("The parameter html cannot be null or empty !");
 			}			
 			// Parsing XML
-			URL xmlUrl = new URL(xmlSource);
-			SAXSource source = new SAXSource(new InputSource(new InputStreamReader(xmlUrl.openStream())));
+			SAXSource source;
+			if(xmlSource != null && xmlSource.startsWith("http://") ){
+				URL xmlUrl = new URL(xmlSource);
+				source = new SAXSource(new InputSource(new InputStreamReader(xmlUrl.openStream())));
+			}
+			// Hack to works with Talend tutorial !!
+			else {
+				File wsdlFile = new File(defaultWsdl);
+				source = new SAXSource(new InputSource(new FileReader(wsdlFile)));
+			}
 			// Output HTML file
 			File htmlOutputFile = new File(htmlOutput);
 			Result result = new StreamResult(htmlOutputFile);
@@ -67,7 +86,7 @@ public class FormGeneratorImpl implements FormGenerator {
 			return readResultFile(htmlOutputFile);
 		}
 		catch(Exception ex){
-			logger.error(ex);
+			logger.error(ex.getCause());
 			return "Transformation failed : " + ex.getMessage();
 		}
 	}
