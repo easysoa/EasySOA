@@ -2,7 +2,7 @@ groupname, description
 "members","Group of users with read access rights"
 "administrators","Group of users with administrative rights"
 "Administrator",""
-"Business user",""
+"Business User",""
 "Developer",""
 "Architect",""
 "IT Staff",""
