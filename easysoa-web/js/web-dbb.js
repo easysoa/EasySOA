@@ -4,7 +4,6 @@
  * Author: Marwane Kalam-Alami
  */
  
-var base64 = require('base64');
 var fs = require('fs');
 var http = require('http');
 var socketio = require('socket.io');

@@ -5,7 +5,6 @@
  */
 
 var url = require('url');
-var base64 = require('base64');
 var easysoaNuxeo = require('./web-nuxeo.js');
 
 // INTERNAL FUNCTIONS
@@ -96,6 +95,7 @@ exports.authFilter = function (request, result, next) {
            });
          }
          catch (error) {
+            console.log("[INFO] Request error, assuming Nuxeo is not started: "+error);
             result.redirect('/easysoa/login.html?nuxeoNotReady=true');
             return;
          }
