@@ -7,7 +7,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var base64 = require('./base64').base64;
+var base64 = require('./lib/base64').base64;
 
 eval(fs.readFileSync('./settings.js', 'ASCII'));
 

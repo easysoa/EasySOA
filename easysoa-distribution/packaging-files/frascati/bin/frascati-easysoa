@@ -1,0 +1,214 @@
+#! /bin/sh
+
+# OW2 FraSCAti distribution
+# Copyright (C) 2008-2009 INRIA, USTL
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+# USA
+
+### BEGIN INIT INFO
+# Provides: OW2 FraSCAti main script
+# Short-Description: OW2 FraSCAti front-end for console mode
+#
+# Using getopts
+### END INIT INFO
+
+check_config() {
+  if [ -z $JAVA_HOME ]
+  then
+    echo "The JAVA_HOME variable is not set. Please initialize it in your environment."
+    exit 1
+  else
+    JAVA=$JAVA_HOME/bin/java
+    JAVAC=$JAVA_HOME/bin/javac
+    JAR=$JAVA_HOME/bin/jar
+  fi
+
+  if [ -z $FRASCATI_HOME ]
+  then
+    cd `dirname $0`/..
+    FRASCATI_HOME=`pwd`
+    cd - > /dev/null
+    echo "The FRASCATI_HOME variable is not set. Using $FRASCATI_HOME as default value."
+  fi
+
+  FRASCATI_VERSION=1.4
+  FRASCATI_LIB=$FRASCATI_HOME/lib
+  LOGGING=$FRASCATI_HOME/conf/logging.properties
+  FRASCATI_MAIN=org.ow2.frascati.factory.FactoryCommandLine
+  FSCRIPT_CONSOLE_MAIN=org.ow2.frascati.fscript.console.Main
+  LAUNCHER_MAIN=org.ow2.frascati.Launcher
+  LAUNCHER_LIB=$FRASCATI_LIB/frascati-runtime-${FRASCATI_VERSION}.jar
+  SCA_APPS_FOLDER=$FRASCATI_HOME/sca-apps
+}
+
+# Parse command options:
+# * set flags if the option is found
+# * remove all options from arguments at the end of the parsing.
+# WARNING: Options MUST lead arguments
+parse_opts() {
+  FRASCATI_SUB_CMD=$1
+  shift
+  FRASCATI_SCRIPT_FLAG=
+  FRASCATI_REMOTE_FLAG=
+  while getopts 'sr' OPTION
+    do
+      case $OPTION in
+      s)    FRASCATI_SCRIPT_FLAG=1
+                    ;;
+      r)    FRASCATI_REMOTE_FLAG=1
+                    ;;
+      ?)    printf "Usage: %s %s [-s] [-r] args\n" $(basename $0) $FRASCATI_SUB_CMD >&2
+                    exit 2
+                    ;;
+      esac
+    done
+  shift $(($OPTIND - 1))
+}
+
+compile() {
+echo "$1"
+echo "$2"
+  if [ -z $1 ] || [ -z $2 ]
+  then
+    echo "Usage: frascati compile <src> <name>"
+    echo "  <src>  = directory of the sources to compile"
+    echo "  <name> = name of the jar to build"
+    exit 1
+  fi
+
+  OUTPUT=clsTmp
+
+  for i in `find $1 -name *.java`
+  do
+    SRC="$SRC $i"
+  done
+
+  mkdir $OUTPUT
+
+  $JAVAC -d $OUTPUT -cp $FRASCATI_LIB/osoa-java-api-2.0.1.2.jar:$FRASCATI_LIB/jaxb-api-2.1.jar:$FRASCATI_LIB/geronimo-ws-metadata_2.0_spec-1.1.2.jar:$FRASCATI_LIB/geronimo-jaxws_2.1_spec-1.0.jar:$FRASCATI_LIB/jsr311-api-1.0.jar:$FRASCATI_LIB/explorer-1.0.jar:$FRASCATI_LIB/frascati-explorer-api-${FRASCATI_VERSION}.jar $SRC
+
+  # Include composite description files in the JAR
+  for i in `find $1 -name *.composite`
+  do
+    cp $i $OUTPUT
+  done
+
+  # Include explorer description files in the JAR
+  if ! [ -d $OUTPUT/META-INF ]
+  then
+    mkdir $OUTPUT/META-INF
+  fi
+  for i in `find $1 -name FraSCAti-Explorer.xml`
+  do
+    cp $i $OUTPUT/META-INF/
+  done
+
+  cd $OUTPUT
+  $JAR cf ../$2.jar *
+  cd ..
+
+  echo "Library $2.jar created!"
+
+  rm -rf $OUTPUT
+}
+
+explorer() {
+  EXPLORER_LAUNCHER=org.ow2.frascati.explorer.FrascatiExplorerLauncher
+  EXPLORER_CLASSPATH=$FRASCATI_LIB,$FRASCATI_LIB/explorer
+  EXPLORER_BOOTSTRAP=
+  COMPOSITES=
+
+  if [ -d $SCA_APPS_FOLDER ]
+  then
+    # Update the classpath with user libraries
+    for folder in `ls $SCA_APPS_FOLDER`
+    do
+      if [ -d $SCA_APPS_FOLDER/$folder ]
+      then
+        EXPLORER_CLASSPATH=$EXPLORER_CLASSPATH,$SCA_APPS_FOLDER/$folder/
+      fi
+    done
+
+    # Search for composite files
+    for composite in `find $SCA_APPS_FOLDER -name *.composite`
+    do
+      COMPOSITE_NAME=`basename $composite`
+      COMPOSITES="$COMPOSITES $COMPOSITE_NAME"
+    done
+  fi
+
+  if [ "$FRASCATI_REMOTE_FLAG" ]
+  then
+    EXPLORER_CLASSPATH=$EXPLORER_CLASSPATH,$FRASCATI_LIB/remote,$FRASCATI_LIB/fscript
+    EXPLORER_BOOTSTRAP=-Dorg.ow2.frascati.bootstrap=org.ow2.frascati.bootstrap.FraSCAtiJDTFractalRest
+    printf -- "-\> FraSCAti Remote plugin activated\n"
+    if [ "$FRASCATI_SCRIPT_FLAG" ]
+    then
+      EXPLORER_CLASSPATH=$EXPLORER_CLASSPATH,$FRASCATI_LIB/explorer-fscript-plugin
+      printf -- "-\> FraSCAti Script plugin activated\n"
+    fi
+  else
+    if [ "$FRASCATI_SCRIPT_FLAG" ]
+    then
+      EXPLORER_CLASSPATH=$EXPLORER_CLASSPATH,$FRASCATI_LIB/fscript,$FRASCATI_LIB/explorer-fscript-plugin
+      printf -- "-\> FraSCAti Script plugin activated\n"
+    fi
+  fi
+  $JAVA $EXPLORER_BOOTSTRAP -cp $LAUNCHER_LIB $LAUNCHER_MAIN $EXPLORER_LAUNCHER -lib $EXPLORER_CLASSPATH $COMPOSITES
+}
+
+case "$1" in
+  wsdl2java)
+	check_config
+	# Override FRASCATI_MAIN
+	FRASCATI_MAIN=org.ow2.frascati.factory.WebServiceCommandLine
+	$JAVA -Djava.util.logging.config.file=$LOGGING -Dlog4j.configuration=logging.properties -cp $FRASCATI_HOME/conf:$LAUNCHER_LIB $LAUNCHER_MAIN $FRASCATI_MAIN -lib $FRASCATI_LIB $*
+	;;
+  compile)
+	check_config
+	echo "Compiling ..."
+	compile "$2" "$3"
+	;;
+  run)
+	check_config
+	shift
+	echo "Running OW2 FraSCAti ..."
+	$JAVA $CUSTOM_JAVA_OPTS -Djava.security.policy=$FRASCATI_HOME/conf/java.policy -Djava.util.logging.config.file=$LOGGING -Dlog4j.configuration=logging.properties -cp $FRASCATI_HOME/conf:$LAUNCHER_LIB $LAUNCHER_MAIN $FRASCATI_MAIN -lib $FRASCATI_LIB $*
+	echo "Exiting OW2 FraSCAti ..."
+	;;
+  explorer)
+	check_config
+	parse_opts $*
+	echo "Running the OW2 FraSCAti Explorer ..."
+	explorer
+	echo "Exiting OW2 FraSCAti Explorer ..."
+	;;
+  console)
+    check_config
+	echo "Running the OW2 FraSCAti FScript console ..."
+	$JAVA -Djava.security.policy=$FRASCATI_HOME/conf/java.policy -Djava.util.logging.config.file=$LOGGING -Dlog4j.configuration=logging.properties -cp $FRASCATI_HOME/conf:$LAUNCHER_LIB $LAUNCHER_MAIN $FSCRIPT_CONSOLE_MAIN -lib $FRASCATI_LIB,$FRASCATI_LIB/fscript $*	
+	echo "Exiting OW2 FraSCAti FScript console ..."
+	;;
+  --version)
+	check_config
+	echo "OW2 FraSCAti version $FRASCATI_VERSION"
+	;;
+  *)
+	echo "Usage: frascati {wsdl2java|compile|run|explorer|console}"
+	exit 1
+esac
+
+exit 0

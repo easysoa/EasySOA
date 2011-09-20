@@ -37,6 +37,7 @@ exports.authFilter = function (request, result, next) {
     // Logout
     if (reqUrl.pathname == "/logout") {
       request.session.destroy();
+      result.redirect('/easysoa');
       return;
     }
     
