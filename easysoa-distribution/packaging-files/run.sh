@@ -13,14 +13,6 @@ serviceregistry()
   ./serviceRegistry/bin/nuxeoctl console > log/serviceRegistry.log 2>&1
 }
 
-dbbProxy()
-{
-  touch log/dbbProxy.log
-  cd dbbProxy
-  chmod +x ./start-web-proxy.sh
-  ./start-web-proxy.sh > ../log/dbbProxy.log 2>&1
-}
-
 esperproxy()
 {
   touch log/esperProxy.log
@@ -47,8 +39,8 @@ web()
 {
   touch log/web.log
   cd web
-  chmod +x ./start-web-server.sh
-  ./start-web-server.sh > ../log/web.log 2>&1
+  chmod +x ./start-web.sh
+  ./start-web.sh > ../log/web.log 2>&1
 }
 
 pafservices()
@@ -81,7 +73,6 @@ echo "NB: The service registry will take between 30s and 2mn to launch."
 # it might not be enough on lower-end computers
 
 serviceregistry &
-dbbProxy &
 esperproxy &
 pafservices &
 travelbackup &

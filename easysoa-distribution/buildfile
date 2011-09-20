@@ -102,7 +102,7 @@ define 'easysoa', :base_dir => '../' do
   desc 'Esper & Light proxies'
   define 'easysoa-proxy' do
     task :mvn do
-      maven(['clean', 'install', '-DskipTests=true'], project)
+      maven(['clean', 'install', '-DskipTests=true'], project) # TODO: Enable tests when tests pass
     end
   end
   
@@ -247,13 +247,9 @@ task :packageall do # TODO Less messy code
   cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
   
-  puts "Copying web server (node.js + antinode)..."
+  puts "Copying web server & proxy (node.js)..."
   mkdir PACKAGING_OUTPUT_PATH+'/web'
-  cp_r FileList[project(EASYSOA_WEB).base_dir+"/easysoa-web-server/*"], PACKAGING_OUTPUT_PATH+'/web'
-  
-  puts "Copying discovery by browsing proxy (node.js)..."
-  mkdir PACKAGING_OUTPUT_PATH+'/dbbProxy'
-  cp_r FileList[project(EASYSOA_WEB).base_dir+"/easysoa-web-proxy/*"], PACKAGING_OUTPUT_PATH+'/dbbProxy'
+  cp_r FileList[project(EASYSOA_WEB).base_dir+"/*"], PACKAGING_OUTPUT_PATH+'/web'
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
