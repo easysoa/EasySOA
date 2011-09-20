@@ -1,4 +1,10 @@
+# Compilation files
 *.class
+target/
+reports/
+distrib/
+
+# Other unnecessary files
 *.project
 *.log
 *.swp
@@ -8,10 +14,8 @@
 .tmp*~
 .classpath
 .settings/
-target/
-bin/
-reports/
-distrib/
+nxsqldirectory/
+
+# Distribution files
 easysoa-distribution/easysoa/
 easysoa-distribution/deps/
-nxsqldirectory/
