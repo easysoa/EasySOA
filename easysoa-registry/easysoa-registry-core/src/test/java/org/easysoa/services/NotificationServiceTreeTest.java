@@ -3,6 +3,7 @@ package org.easysoa.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
@@ -66,7 +68,7 @@ public class NotificationServiceTreeTest {
     @Inject CoreSession session;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
   	  	assertNotNull("Cannot get notification service component", notifService);
   	  	assertNotNull("Cannot get document service component", docService);
   	  	sessionStatic = session;
@@ -77,7 +79,7 @@ public class NotificationServiceTreeTest {
      * @throws Exception
      */
     @Test
-    public void testAppliImplCreation() throws Exception {
+    public void testAppliImplCreation() throws ClientException, MalformedURLException {
     	
     	// Create Appli Impl.
     	Map<String, String> properties = new HashMap<String, String>();
@@ -98,7 +100,7 @@ public class NotificationServiceTreeTest {
      * @throws Exception
      */
     @Test
-    public void testServiceAPICreation() throws Exception {
+    public void testServiceAPICreation() throws ClientException, MalformedURLException {
 
     	Assume.assumeNotNull(docService.findAppliImpl(session, APPLIIMPL_URL));
     	
@@ -146,7 +148,7 @@ public class NotificationServiceTreeTest {
     }
 
     @Test
-    public void testServiceCreation() throws Exception {
+    public void testServiceCreation() throws ClientException, MalformedURLException {
 
     	Assume.assumeNotNull(docService.findServiceApi(session, API_URL));
     	
@@ -197,7 +199,7 @@ public class NotificationServiceTreeTest {
     
 
     @Test
-    public void testServiceReferenceCreation() throws Exception {
+    public void testServiceReferenceCreation() throws ClientException, MalformedURLException {
 
     	URL referenceUrl = new URL("http://www.webservicex.net/globalweather.asmx?WSDL");
     	String generatedServiceTitle = "globalweather.asmx";
@@ -237,7 +239,7 @@ public class NotificationServiceTreeTest {
     }
     
     @AfterClass
-    public static void tearDown() throws Exception {
+    public static void tearDown() {
     	new RepositoryLogger(sessionStatic).logAllRepository();
     }
 }

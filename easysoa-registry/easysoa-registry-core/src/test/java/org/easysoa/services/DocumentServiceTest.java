@@ -3,6 +3,8 @@ package org.easysoa.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.net.MalformedURLException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
@@ -13,6 +15,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -49,7 +52,7 @@ public class DocumentServiceTest {
      * @throws Exception
      */
     @Test
-    public void testMerge() throws Exception {
+    public void testMerge() throws ClientException, MalformedURLException {
 
     	String url = "http://www.easysoa.com/services/coffee",
     		apiUrl = "http://www.easysoa.com/services",
@@ -85,7 +88,7 @@ public class DocumentServiceTest {
      * @throws Exception
      */
     @Test
-    public void testWSDL() throws Exception {
+    public void testWSDL() throws ClientException, MalformedURLException {
 
     	String wsdlUrl = "http://www.ebi.ac.uk/Tools/webservices/wsdl/WSCensor.wsdl",
     		apiUrl = "http://www.ebi.ac.uk/Tools/es/ws-servers",
@@ -116,7 +119,7 @@ public class DocumentServiceTest {
      * @throws Exception
      */
     @Test
-    public void testFindByWSDL() throws Exception {
+    public void testFindByWSDL() throws ClientException, MalformedURLException {
 
     	String wsdlUrl = "http://soatest.parasoft.com/calculator.wsdl",
     		apiUrl = "http://soatest.parasoft.com/glue",
@@ -146,7 +149,7 @@ public class DocumentServiceTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultAppRegen() throws Exception {
+    public void testDefaultAppRegen() throws ClientException, MalformedURLException {
     	
     	// Remove default appli impl.
     	DocumentModel appliImplModel = docService.findAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);

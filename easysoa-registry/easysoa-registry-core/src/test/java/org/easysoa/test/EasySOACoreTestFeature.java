@@ -15,7 +15,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  */
 @Deploy({
     "org.easysoa.registry.core",
-	"org.easysoa.registry.core:OSGI-INF/nxdirectories-contrib.xml", // required, else no custom easysoa vocabularies,
+	"org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
 	"org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
 	"org.easysoa.registry.core:OSGI-INF/NotificationServiceComponent.xml", // idem
 	"org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
