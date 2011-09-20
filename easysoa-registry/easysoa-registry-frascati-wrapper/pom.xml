@@ -38,19 +38,26 @@
 	<artifactId>easysoa-registry-frascati-wrapper</artifactId>
 	<name>EasySOA: OW2 FraSCAti in Nuxeo</name>
 	
+	<properties>
+	    <frascati.version>1.4</frascati.version>
+	</properties>
+	
 	<dependencies>
+	    <!-- ==================================== -->
+	    <!-- BASE FRASCATI IN NUXEO DEPS          -->
+	
         <!-- Nuxeo Core API. -->
-		<dependency>
+		<!-- dependency>
 			<groupId>org.nuxeo.ecm.core</groupId>
 			<artifactId>nuxeo-core-api</artifactId>
 			<scope>compile</scope>
-		</dependency>
+		</dependency -->
 
         <!-- Minimal OW2 FraSCAti + JDT. -->
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-runtime-factory</artifactId>
-			<version>1.4</version>
+			<version>${frascati.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- Force to use the following JDT else an older is used. -->
@@ -58,38 +65,54 @@
 			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>core</artifactId>
 			<version>3.3.0.771</version>
+			<!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->
 			<scope>compile</scope>
 		</dependency>
 
-        <!-- Here other OW2 FraSCAti plugins could be added. -->
+        <!-- Other OW2 FraSCAti plugins can be added as required (see below) -->
         <!-- List available at http://frascati.ow2.org/doc/1.4/ch12s03.html -->
 
 		<!-- For test framework -->
 		<dependency>
 			<groupId>org.ow2.frascati.examples</groupId>
 			<artifactId>helloworld-pojo</artifactId>
-			<version>1.4</version>
+			<version>${frascati.version}</version>
 			<scope>test</scope>
 		</dependency>
-
+		
+		
+	    <!-- ==================================== -->
+	    <!-- ADDITIONAL EASYSOA CORE & FEATURES DEPS          -->
+		
+        <!-- EasySOA core deps -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<type>jar</type>
-			<scope>test</scope>
+			<groupId>org.openwide.easysoa</groupId>
+			<artifactId>easysoa-registry-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- add all FraSCAti extensions that can appear in parsed composites : bindings, impls -->
+		<!-- NB. binding-factory required transitively by bindings -->
+		<!-- dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>${frascati.version}</version>
+		</dependency -->
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.nuxeo.ecm.core</groupId>
-			<artifactId>nuxeo-core-test</artifactId>
-			<type>jar</type>
-			<scope>test</scope>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>${frascati.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.nuxeo.runtime</groupId>
-			<artifactId>nuxeo-runtime-test</artifactId>
-			<scope>test</scope>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>${frascati.version}</version>
 		</dependency>
-		<!-- TODO eclipse m2 -->
 	</dependencies>
 
 	<build>
