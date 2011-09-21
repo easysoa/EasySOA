@@ -125,7 +125,7 @@ exports.registerWsdl = function(data, callback) {
       var body = 'url='+data.url+
           '&fileUrl='+data.url+
           '&title='+data.servicename+
-          '&discoveryTypeBrowsing=Discovered by browsing';
+          '&discoveryTypeBrowsing=Discovered by '+data.session.username;
       var nuxeoUploadOptions = {
 	          port : nuxeoNotification.port,
 	          method : 'POST',

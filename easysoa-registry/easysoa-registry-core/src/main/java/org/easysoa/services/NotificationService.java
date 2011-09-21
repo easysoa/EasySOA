@@ -353,7 +353,22 @@ public class NotificationService extends DefaultComponent {
 	private void setPropertyIfNotNull(DocumentModel model, String schema, 
 			String property, Object value) throws ClientException {
 		if (value != null && !propertyFilter.containsKey(property)) {
-			model.setProperty(schema, property, value);
+		    // Append value if the property is a discovery field
+		    if (property.equals(EasySOADoctype.PROP_DTBROWSING)
+		            || property.equals(EasySOADoctype.PROP_DTIMPORT)
+		            || property.equals(EasySOADoctype.PROP_DTMONITORING)) {
+		        String prevValue = (String) model.getProperty(schema, property);
+		        if (prevValue == null) {
+                    model.setProperty(schema, property, value);
+		        }
+		        else if (!prevValue.contains(value.toString())) {
+		            model.setProperty(schema, property, prevValue + ", " + value);
+		        }
+		    }
+		    // Otherwise just set the property as expected
+		    else {
+		        model.setProperty(schema, property, value);
+		    }
 		}
 	}
 
