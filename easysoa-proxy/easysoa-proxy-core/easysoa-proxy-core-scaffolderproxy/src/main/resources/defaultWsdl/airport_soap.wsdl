@@ -34,12 +34,13 @@
   <wsdl:portType name="airportSoap">
     <wsdl:operation name="getAirportInformationByISOCountryCode">
       <wsdl:input message="tns:getAirportInformationByISOCountryCodeSoapIn" />
-      <wsdl:output message="tns:getAirportInformationByISOCountryCodeSoapOut" />
+      <wsdl:output message="tns:getAirportInformationByISOCountryCodeSoapOut" name="getAirportInformationByISOCountryCodeResponse"/>
     </wsdl:operation>
   </wsdl:portType>
 
   <!-- Modified binding to be compliant with talend service provider -->  
-  <wsdl:binding name="airportSoapBinding" type="tns:airportSoap">
+  <!--<wsdl:binding name="airportSoapBinding" type="tns:airportSoap">-->
+  <wsdl:binding name="airportSoap" type="tns:airportSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="getAirportInformationByISOCountryCode">
       <soap:operation soapAction="http://airportsoap.sopera.de/getAirportInformationByISOCountryCode" style="document" />
