@@ -72,7 +72,6 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 			response = xmlToJson(response).toString();
 		
 			logger.debug("final response : " + response);
-			System.out.println("final response : " + response);
 			return Response.ok(response, MediaType.TEXT_HTML).header("Access-Control-Allow-Origin", "*").build();			
 		} catch (Exception ex) {
 			ex.printStackTrace();
