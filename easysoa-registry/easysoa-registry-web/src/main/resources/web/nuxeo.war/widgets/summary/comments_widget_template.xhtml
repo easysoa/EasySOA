@@ -26,28 +26,13 @@
       <div class="commentAuthor">
       
 			<!-- EasySOA: Display group-related icon -->
-		<div style="float: left; padding-top: 4px">
-		<c:choose>
-			<c:when test="{userGroup[0] != null and userGroup['0'].equals('Business User')}">
-				<h:graphicImage value="/img/users/bu.png" />
-			</c:when>
-			<c:when test="{userGroup[0] != null and userGroup['0'].equals('Architect')}">
-				<h:graphicImage value="/img/users/architect.png" />
-			</c:when>
-			<c:when test="{userGroup[0] != null and userGroup['0'].equals('Developer')}">
-				<h:graphicImage value="/img/users/developer.png" />
-			</c:when>
-			<c:when test="{userGroup[0] != null and userGroup['0'].equals('IT Staff')}">
-				<h:graphicImage value="/img/users/itstaff.png" />
-			</c:when>
-			<c:when test="{userGroup[0] != null and userGroup['0'].equals('Administrator')}">
-				<h:graphicImage value="/img/users/administrator.png" />
-			</c:when>
-			<c:otherwise>
-				<h:graphicImage value="/img/users/default.png" />
-			</c:otherwise>
-		</c:choose>
-		</div>
+			<div style="float: left; padding-top: 4px">
+				<h:graphicImage value="/img/users/bu.png" display="#{userGroup[0] != null and userGroup['0'].equals('Business User')}" />
+				<h:graphicImage value="/img/users/developer.png" display="#{userGroup[0] != null and userGroup['0'].equals('Developer')}" />
+				<h:graphicImage value="/img/users/architect.png" display="#{userGroup[0] != null and userGroup['0'].equals('Architect')}" />
+				<h:graphicImage value="/img/users/administrator.png" display="#{userGroup[0] != null and userGroup['0'].equals('Administrator')}" />
+				<h:graphicImage value="/img/users/itstaff.png" display="#{userGroup[0] != null and userGroup['0'].equals('IT Staff')}" />
+			</div>
 	
 	        <h:outputText value="#{nxu:userFullName(threadEntry.comment.comment.author)}"/>
 	
