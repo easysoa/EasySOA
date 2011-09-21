@@ -25,7 +25,7 @@
  		<c:set var="userGroup" value="#{userManager.getUserModel(messages['label.loggedAsUser']).getProperty('user', 'groups')}" />
  		<c:set var="foldingStatus" value="${(layout.properties['groups'] != null) and (layout.properties['groups'].contains(userGroup[0]))}" />
 		<div class="foldableLightBox">
-		      <div class="foldableLightBoxHeader ${((foldingStatus) ? 'unfolded' : 'folded')}" style="margin-top: 8px">
+		      <div class="foldableLightBoxHeader ${((foldingStatus || isEditMode) ? 'unfolded' : 'folded')}" style="margin-top: 8px">
 			<a href="#nologo" onclick="return toggleBox(this)" style="font-size: 10pt">
 			  <h:outputText value="#{layout.properties['title']}"/>
 			</a>
