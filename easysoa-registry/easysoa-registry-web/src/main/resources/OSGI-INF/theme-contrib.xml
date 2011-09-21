@@ -2,6 +2,7 @@
 <component name="org.easysoa.web.theme.contrib">
 
 	<require>org.nuxeo.theme.nuxeo.default</require>
+	<require>org.nuxeo.theme.nuxeo.virtualnavigation</require>
 
   	<extension target="org.nuxeo.theme.services.ThemeService" point="views">
   		<!-- EasySOA CSS -->

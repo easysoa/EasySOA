@@ -12,7 +12,7 @@
 		<module>easysoa-samples-parent</module>
 		<module>easysoa-samples-pureairflowers</module>
 		<module>easysoa-samples-smarttravel</module>
-		<module>easysoa-samples-smarttravel-test</module>
+		<!--<module>easysoa-samples-smarttravel-test</module>-->
 	</modules>
 	
 </project>

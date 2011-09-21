@@ -41,9 +41,14 @@ function isInIgnoreList(request_url) {
     return false;
 }
 
-function fixUrl(request, result, next) {
-   request.url = request.url.replace('localhost', '127.0.0.1');
-   request.url = request.url.replace('/http://127.0.0.1:'+settings.webPort, ''); // URL fix (pb caused by Connect/Express?)
+function fixUrl(url) {
+   url = url.replace('localhost', '127.0.0.1');
+   url = url.replace('/http://127.0.0.1:'+settings.webPort, ''); // URL fix (pb caused by Connect/Express?)
+   return url;
+}
+
+function urlFixer(request, response, next) {
+   request.url = fixUrl(request.url);
    next();
 }
 
@@ -56,7 +61,7 @@ webServer.configure(function(){
     webServer.use(express.cookieParser());
     webServer.use(express.session({ secret: "easysoa-web" }));
     webServer.use(express.bodyParser());
-    webServer.use(fixUrl);
+    webServer.use(urlFixer);
     webServer.use(easysoaAuth.authFilter);
     webServer.use(webServer.router);
     webServer.use(express.favicon());
@@ -126,6 +131,7 @@ var proxyServer = http.createServer(function(request, response) {
         // Proxying
         if (!isRequestToProxy(request)) {
 
+            request.url = fixUrl(request.url);
             request_url = url.parse(request.url);
             proxy.proxyRequest(request, response, {
                 host: request_url.hostname,
@@ -150,7 +156,7 @@ var proxyServer = http.createServer(function(request, response) {
 
 easysoaNuxeo.checkNuxeo(null, null, function(result) {
     console.log("[INFO] Checking Nuxeo status");
-    if (result) {
+    if (result != false) {
         console.log('[INFO] Nuxeo is ready for scraping/upload');
         easysoaDbb.setNuxeoReady();
     }

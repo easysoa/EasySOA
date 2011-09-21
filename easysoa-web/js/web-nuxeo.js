@@ -28,8 +28,6 @@ computeAuthorization = function(username, password) {
 
 sendNotification = function(nuxeoUploadOptions, body, callback) {
 
-    console.log(nuxeoUploadOptions);
-
       restRequest = http.request(nuxeoUploadOptions, function(restResponse) {
 	
           // Nuxeo response handling
@@ -93,8 +91,8 @@ exports.checkNuxeo = function(username, password, callback) {
 		response.on('end', function() {
             if (!nuxeoReady) {
                 nuxeoReady = true;
-                callback(true);
             }
+            callback(responseData);
 		});
   });
   
