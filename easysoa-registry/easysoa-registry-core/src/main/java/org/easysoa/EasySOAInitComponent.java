@@ -3,6 +3,7 @@ package org.easysoa;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.demo.UserInit;
+import org.nuxeo.ecm.core.api.repository.Repository;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentContext;
@@ -22,19 +23,16 @@ public class EasySOAInitComponent extends DefaultComponent {
 		
 		RepositoryManager repoService = Framework.getService(RepositoryManager.class);
 		
-        String defaultRepository = repoService.getDefaultRepository().getName();
+        Repository defaultRepository = repoService.getDefaultRepository();
 
 		// Init default domain
-	    if (defaultRepository != null) {
-	        new DomainInit(defaultRepository).runUnrestricted();
+        try {
+	        new DomainInit(defaultRepository.toString()).runUnrestricted();
+	        new UserInit(defaultRepository.toString()).runUnrestricted(); // Demo: Init users
+        }
+        catch (Exception e) {
+	        log.warn("Failed to access default repository for initialization: "+e.getMessage());
 	    }
-	    else {
-	        log.warn("Failed to access default repository for initialization: no default repository");
-	    }
-	    
-	    // Demo: Init users
-        new UserInit(defaultRepository).runUnrestricted();
-	    
 		
 	}
 

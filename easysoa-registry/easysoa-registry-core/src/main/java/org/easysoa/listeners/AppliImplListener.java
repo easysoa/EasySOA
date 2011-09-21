@@ -66,7 +66,7 @@ public class AppliImplListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_SERVERENTRY, // Internal (for virtual navigation)
                             doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
                 } catch (MalformedURLException e) {
-                    log.error("Failed to normalize URL '" + url + "'");
+                    log.warn("Failed to normalize URL '" + url + "'");
 				}
 			}
 

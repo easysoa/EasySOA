@@ -192,7 +192,7 @@ public class ServiceListener implements EventListener {
                 try {
                     doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
                 } catch (MalformedURLException e) {
-                    log.error("Failed to normalize URL", e);
+                    log.warn("Failed to normalize URL", e);
                 }
                 // XXX: Hard-coded PAF Light URL
                 if (url.contains("PureAirFlowers")) { 
