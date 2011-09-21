@@ -20,20 +20,18 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class UserInit extends UnrestrictedSessionRunner {
 
-    private static final String GROUP_BUSINESS_USER = "Business user";
-    private static final String GROUP_ARCHITECT = "Architect";
-    private static final String GROUP_DEVELOPER = "Developer";
-    private static final String GROUP_IT_STAFF = "IT Staff";
-    private static final String GROUP_ADMINISTRATOR = "Administrator";
-    
-    private static final String GROUP_DEFAULT_MEMBERS = "members";
-    private static final String GROUP_DEFAULT_ADMINISTRATORS = "administrators";
+    public static final String GROUP_BUSINESS_USER = "Business User";
+    public static final String GROUP_ARCHITECT = "Architect";
+    public static final String GROUP_DEVELOPER = "Developer";
+    public static final String GROUP_IT_STAFF = "IT Staff";
+    public static final String GROUP_ADMINISTRATOR = "Administrator";
+
+    public static final String GROUP_DEFAULT_MEMBERS = "members";
+    public static final String GROUP_DEFAULT_ADMINISTRATORS = "administrators";
     
     private static Log log = LogFactory.getLog(UserInit.class);
 
     private UserManager userManager;
-    
-   // private DocumentService docService;
 
     public UserInit(String repositoryName) {
         super(repositoryName);
@@ -48,14 +46,15 @@ public class UserInit extends UnrestrictedSessionRunner {
 
         try {
             userManager = Framework.getService(UserManager.class);
-          //docService = Framework.getService(DocumentService.class);
             
             // Set new groups as childs of the default "members" group
+            // (XXX: had to make them administrator subgroups, see below)
             //setSubgroups(GROUP_DEFAULT_MEMBERS, new String[] { });
             setSubgroups(GROUP_DEFAULT_ADMINISTRATORS, new String[] { GROUP_ADMINISTRATOR, GROUP_BUSINESS_USER, GROUP_DEVELOPER,
             GROUP_ARCHITECT, GROUP_IT_STAFF });
 
             // Set write rights for all "members" members
+            // FIXME: Rights are not granted through the REST services
             /*DocumentModel wsRootModel = docService.getWorkspaceRoot(session);
             ACP acp = wsRootModel.getACP();
             ACL acl = new ACLImpl("easysoa-demo-rights");
