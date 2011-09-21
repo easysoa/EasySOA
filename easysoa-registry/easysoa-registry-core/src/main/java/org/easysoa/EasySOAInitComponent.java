@@ -27,12 +27,19 @@ public class EasySOAInitComponent extends DefaultComponent {
 
 		// Init default domain
         try {
-	        new DomainInit(defaultRepository.toString()).runUnrestricted();
-	        new UserInit(defaultRepository.toString()).runUnrestricted(); // Demo: Init users
+	        new DomainInit(defaultRepository.getName()).runUnrestricted();
         }
         catch (Exception e) {
 	        log.warn("Failed to access default repository for initialization: "+e.getMessage());
 	    }
+
+        try {
+            new UserInit(defaultRepository.getName()).runUnrestricted(); // Demo: Init users
+        }
+        catch (Exception e) {
+            log.warn("Failed to initialize groups: "+e.getMessage());
+        }
+
 		
 	}
 
