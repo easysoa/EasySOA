@@ -68,6 +68,18 @@
       	<!-- Business -->
         <layout>heading</layout>
         <layout>soacommon_author</layout>
+        <layout>files</layout>
+        <layout>appliimpldef_common</layout>
+        <!-- Technical -->
+        <layout>appliimpldef_tech</layout>
+        <!-- Specifications -->
+        <layout>appliimpldef_spec</layout>
+      </layouts>
+      <layouts mode="edit"><!--  ??????K? -->
+      	<!-- Business -->
+        <layout>heading</layout>
+        <layout>soacommon_author</layout>
+        <layout>files</layout>
         <layout>appliimpldef_common</layout>
         <!-- Technical -->
         <layout>appliimpldef_tech</layout>

@@ -70,10 +70,14 @@ div+table .themeCellFrame {
 	border-bottom: 1px solid #AAA !important;
 }
 
+.dataRowOdd {
+    background-color: white !important;
+}
+
 .commentQuote {
 	border: 1px solid #555 !important;
 	border-top: 0 !important;
-    margin: 0pt ! important;
-    padding: 10px ! important;
-    background-color: #EEFAFE ! important;
+    margin: 0pt !important;
+    padding: 10px !important;
+    background-color: #EEFAFE !important;
 }
