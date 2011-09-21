@@ -9,6 +9,6 @@ public interface FormGenerator {
 	 * @param html Output HTML file name
 	 * @throws Exception
 	 */
-	public String generateHtmlFormFromWsdl(String xml, String xsl, String html) /*throws Exception*/;
+	public String generateHtmlFormFromWsdl(String wsdlXmlSource, String formWsdlXmlSource, String xsl, String html) /*throws Exception*/;
 
 }

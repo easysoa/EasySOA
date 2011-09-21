@@ -33,7 +33,7 @@ public class FormGeneratorImpl implements FormGenerator {
 	 * @see org.openwide.easysoa.scaffolding.FormGenerator#generateHtmlFormFromWsdl(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public String generateHtmlFormFromWsdl(String xmlSource, String xsltSource, String htmlOutput) /*throws Exception*/ {
+	public String generateHtmlFormFromWsdl(String wsdlXmlSource, String formWsdlXmlSource, String xsltSource, String htmlOutput) /*throws Exception*/ {
 		// DOM is old, need to add a call to setNamespacesAware(true) to avoid a problem of unrecognized namespace
 		// Use SAX instead
 		/*
@@ -44,11 +44,11 @@ public class FormGeneratorImpl implements FormGenerator {
 		Document document = constructeur.parse(fileXml);
 		Source source = new DOMSource(document);
 		*/
-		logger.debug("xmlSource : " + xmlSource);
+		logger.debug("wsdlXmlSource : " + wsdlXmlSource);
+		logger.debug("formWsdlXmlSource : " + formWsdlXmlSource);
 		logger.debug("xsltSource : " + xsltSource);
 		logger.debug("htmlOutput : " + htmlOutput);
 		logger.debug("defautWsdl : " + defaultWsdl);
-		System.out.println("defautWsdl : " + defaultWsdl);
 		try{
 			// Deactivated for the Talend tuto Hack !!
 			/*
@@ -56,6 +56,9 @@ public class FormGeneratorImpl implements FormGenerator {
 				throw new IllegalArgumentException("The parameter xmlSource cannot be null or empty !");
 			}
 			else*/
+			if(formWsdlXmlSource == null || "".equals(formWsdlXmlSource)){
+				formWsdlXmlSource = wsdlXmlSource;
+			}
 			if(xsltSource == null || "".equals(xsltSource)){
 				throw new IllegalArgumentException("The parameter xsltSource cannot be null or empty !");
 			}
@@ -64,9 +67,9 @@ public class FormGeneratorImpl implements FormGenerator {
 			}			
 			// Parsing XML
 			SAXSource source;
-			if(xmlSource != null && xmlSource.startsWith("http://") ){
-				URL xmlUrl = new URL(xmlSource);
-				source = new SAXSource(new InputSource(new InputStreamReader(xmlUrl.openStream())));
+			if(formWsdlXmlSource != null && formWsdlXmlSource.startsWith("http://") ){
+				URL formWsdlXmlUrl = new URL(formWsdlXmlSource);
+				source = new SAXSource(new InputSource(new InputStreamReader(formWsdlXmlUrl.openStream())));
 			}
 			// Hack to works with Talend tutorial !!
 			else {
@@ -80,13 +83,15 @@ public class FormGeneratorImpl implements FormGenerator {
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			StreamSource xsltSourceStream = new StreamSource(new File(xsltSource));
 			Transformer transformer = tFactory.newTransformer(xsltSourceStream);
+			// set transfo context params in engine
+			transformer.setParameter("wsdlUrl", wsdlXmlSource);
 			// Transformation
 			transformer.transform(source, result);
 			// Return the form
 			return readResultFile(htmlOutputFile);
 		}
 		catch(Exception ex){
-			logger.error(ex.getCause());
+			logger.error(ex);
 			return "Transformation failed : " + ex.getMessage();
 		}
 	}

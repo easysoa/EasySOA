@@ -7,7 +7,7 @@
       <xsd:element name="getAirportInformationByISOCountryCode" type="tns:getAirportInformationByISOCountryCodeSoapIn">
         <xsd:complexType name="getAirportInformationByISOCountryCode">
           <xsd:sequence>
-            <xsd:element minOccurs="0" maxOccurs="1" name="CountryAbbrviation" type="s:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="CountryAbbrviation" type="xsd:string" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -16,11 +16,11 @@
       <xsd:element name="getAirportInformationByISOCountryCodeResponse" type="tns:getAirportInformationByISOCountryCodeSoapOut">
         <xsd:complexType name="getAirportInformationByISOCountryCodeResponse">
           <xsd:sequence>
-            <xsd:element minOccurs="0" maxOccurs="1" name="getAirportInformationByISOCountryCodeResult" type="s:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="getAirportInformationByISOCountryCodeResult" type="xsd:string" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="string" nillable="true" type="s:string" />
+      <xsd:element name="string" nillable="true" type="xsd:string" />
     </xsd:schema>
   </wsdl:types>
   

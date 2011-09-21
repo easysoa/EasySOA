@@ -2,4 +2,8 @@
 <!-- call the generateHtmlFormFromWsdl to return the HTLM form corresponding to the given WSDL -->
 <!-- Use this syntax to call the service : http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8086/soapServiceMock?wsdl -->
 
-$formGenerator.generateHtmlFormFromWsdl($wsdlUrl, "src/main/resources/wsdlToHtml.xslt", "form.html")
+#if ( !$wsdlUrl || $wsdlUrl.endsWith("airport_soap.wsdl") )
+   #set( $wsdlUrl = "file:///data/home/jguillemotte/EasySOA-Workspace/easysoa/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/src/main/resources/defaultWsdl/server_airport_soap.wsdl" )
+   #set( $formWsdlUrl = "file:///data/home/jguillemotte/EasySOA-Workspace/easysoa/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/src/main/resources/defaultWsdl/airport_soap.wsdl" )
+#end
+$formGenerator.generateHtmlFormFromWsdl($wsdlUrl, $formWsdlUrl, "src/main/resources/wsdlToHtml.xslt", "form.html")

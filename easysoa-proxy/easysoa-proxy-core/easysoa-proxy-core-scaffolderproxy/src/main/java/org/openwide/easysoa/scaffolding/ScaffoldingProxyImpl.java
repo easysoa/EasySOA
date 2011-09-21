@@ -67,10 +67,18 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 		try {
 			//response = callService("http://localhost:9010/PureAirFlowers?wsdl", operation, paramList);
 			//response = callService(wsdlUrl + "?wsdl", operation, paramList);
-			response = wsdlServiceHelper.callService(wsdlUrl + "?wsdl", binding, operation, paramList);
+			String url;
+			if(wsdlUrl.endsWith("?wsdl")){
+				url = wsdlUrl;
+			} else {
+				url = wsdlUrl + "?wsdl";
+			}
+			
+			//response = wsdlServiceHelper.callService(wsdlUrl + "?wsdl", binding, operation, paramList);
+			response = wsdlServiceHelper.callService(url, binding, operation, paramList);
 			// Call a method to transform xml to json
 			response = xmlToJson(response).toString();
-		
+			
 			logger.debug("final response : " + response);
 			return Response.ok(response, MediaType.TEXT_HTML).header("Access-Control-Allow-Origin", "*").build();			
 		} catch (Exception ex) {

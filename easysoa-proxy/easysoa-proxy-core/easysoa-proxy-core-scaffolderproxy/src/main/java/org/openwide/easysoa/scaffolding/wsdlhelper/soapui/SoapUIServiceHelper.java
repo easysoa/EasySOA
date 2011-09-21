@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlException;
+import org.eclipse.jetty.util.log.Log;
 import org.json.JSONException;
 import org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper;
 import com.eviware.soapui.impl.WsdlInterfaceFactory;
@@ -68,7 +69,7 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 		WsdlSubmit<?> wsdlSubmit = (WsdlSubmit<?>) request.submit(new WsdlSubmitContext(request), false);
 		// Send the request and wait for the response
 		WsdlResponse wsdlResponse = (WsdlResponse) wsdlSubmit.getResponse();
-		System.out.println("Submit status : " + wsdlSubmit.getStatus());
+		Log.info("Submit status : " + wsdlSubmit.getStatus());
 		if(wsdlResponse != null){
 			logger.debug("Soap Response" + wsdlResponse.getContentAsString());
 			return wsdlResponse.getContentAsString();

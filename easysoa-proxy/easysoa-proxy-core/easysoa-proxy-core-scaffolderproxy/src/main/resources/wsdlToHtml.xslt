@@ -2,6 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:s="http://www.w3.org/2001/XMLSchema" version="1.0">
+	<!-- URL of WSDL of service to call -->
+	<xsl:param name="wsdlUrl"/>
 	<!-- Base server URL -->
 	<xsl:variable name="baseServerUrl">http://localhost:7001/</xsl:variable>
 	<!-- For Galaxy demo travel -->
@@ -83,7 +85,8 @@
 					</p>
 					<!-- Call the binding template -->
 					<xsl:call-template name="porttypes">
-						<xsl:with-param name="wsdlUrl" select="wsdl:service/wsdl:port/soap:address/@location" />
+						<!-- xsl:with-param name="wsdlUrl" select="wsdl:service/wsdl:port/soap:address/@location" / -->
+						<xsl:with-param name="wsdlUrl" select="$wsdlUrl" />
 					</xsl:call-template>					
 				</div>
 			</body>

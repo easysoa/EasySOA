@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance" name="soapServiceMock">
 
-	<!-- Soap service mock -->
+	<!-- Soap service mock for test -->
 	<component name="soapServiceMock">
     	<implementation.java class="org.openwide.easysoa.test.mock.SoapServiceMockImpl"/>
     	<service name="serviceMock">
@@ -9,5 +9,15 @@
       		<binding.ws uri="http://localhost:8086/soapServiceMock"/>
     	</service>	
 	</component>
+
+	<!--  -->
+	<!--  for test -->
+	<!--<component name="talendTutoServiceMock">
+    	<implementation.java class="org.openwide.easysoa.test.mock.TalendTutoServiceMockImpl"/>
+    	<service name="serviceMock">
+			<interface.java interface="org.openwide.easysoa.test.mock.TalendTutoServiceMock" />     		
+      		<binding.ws uri="http://localhost:8200/esb/AirportService"/>
+    	</service>	
+	</component>-->
 
 </composite>

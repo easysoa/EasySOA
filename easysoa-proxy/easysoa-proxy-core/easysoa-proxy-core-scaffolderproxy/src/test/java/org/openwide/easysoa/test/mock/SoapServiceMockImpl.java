@@ -7,5 +7,5 @@ public class SoapServiceMockImpl implements SoapServiceMock {
 		float price = 10 * quantity;
 		return "" + price;
 	}
-
+	
 }

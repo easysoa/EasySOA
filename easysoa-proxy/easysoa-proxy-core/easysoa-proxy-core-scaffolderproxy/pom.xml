@@ -158,6 +158,8 @@
 			<version>1.4.4</version>
 		</dependency>
 		<!-- End of required SOAPUI dependencies -->
+		<!-- Apache CXF for Talend tuto mock  -->
+
 		<!-- Apache HTTP client for test -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -165,6 +167,11 @@
 			<version>4.1.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-api</artifactId>
+			<version>2.4.2</version>
+		</dependency>
 	</dependencies>
 	
 	<profiles>
