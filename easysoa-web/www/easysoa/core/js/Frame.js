@@ -10,6 +10,7 @@ $(function() {
 		
 		setSource: function(newSource) {
 			this.set({"source": newSource});
+			this.view.render();
 		},
 	
 		getSource: function() {

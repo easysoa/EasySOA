@@ -1,0 +1,189 @@
+<doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>EasySOA - Welcome Page</title>
+	<script type="text/javascript" src="js/tabber/tabber-minimized.js"></script>
+	<link rel="stylesheet" href="js/tabber/tabber-easysoa.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="style.css">
+  <style type="text/css">
+    #shortcuts {
+      width: 35%;
+      padding: 20px;
+      padding-left: 0;
+      margin-left: 8%;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    #shortcuts a {
+      font-size: 18pt;
+    }
+
+    #shortcuts p {
+      width: 100%;
+      float: right;
+      margin-bottom: 10px;
+    }
+
+    #shortcuts div {
+      width: 50%;
+      float: right;
+      font-size: 10pt;
+      margin-top: -15px;
+    }
+    
+    #presentation {
+      width: 40%;
+      padding: 20px;
+      border-left: 1px solid #024;
+    } 
+    
+    #presentation p { 
+      font-size: 11pt;
+      background-color: white;
+      border: 1px solid #248;
+      padding: 5px;
+      text-align: justify;
+    }
+    
+    h2 div {
+      border: 1px solid #248;
+      color: white;
+      background-color: #248;
+      padding: 0 3px 0 3px;
+      margin-top: -1px;
+      margin-right: 8px;
+    }
+    
+    .exp {
+      font-size: 9pt;
+      vertical-align: sup;
+    }
+    
+    .external {
+	    font-size: 13pt !important;
+    }
+    
+  </style>
+</head>
+<body>
+
+<div id="headerWelcome">
+  <div id="headerWelcomeContents">
+    Welcome Page
+  </div>
+</div>
+
+<div id="container" style="width: 100%">
+  
+  <div id="shortcuts">
+  
+    <h1>Direct access</h1>
+    
+    <div style="width: 100%; padding-top: 20px; padding-bottom: 20px"> 
+    <p>
+      <a href="core/index.html">
+        <img src="img/Core100.png" height="50" style="vertical-align: middle; margin-top: -4px" alt="" />
+         &nbsp; Service discovery
+      </a><br />
+      <div>Find any useful service from your intranet, or even the web: as you browse pages, informations on services are collected and sent the registry.</div>
+    </p>
+    
+    <p>
+      <a href="http://localhost:8080/nuxeo">
+        <img src="img/Core100.png" height="50" style="vertical-align: middle; margin-top: -4px" alt="" />
+         &nbsp; Service registry
+      </a><br />
+      <div>Based on Nuxeo DM, the registry gathers all valuable information on your services.</div>
+    </p>
+    
+    <p>
+      <a href="light/index.html">
+        <img src="img/Light100.png" height="50" style="vertical-align: middle; margin-top: -4px" alt="" />
+         &nbsp; Service scaffolder
+      </a><br />
+      <div>Take advantage of the services you find, by using them in this secured service scaffolder.</div>
+    </p>
+    </div>
+    
+    <h1>External links</h1>
+    
+    <h3><a href="http://www.easysoa.org" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Website <img src="img/link.png" /></a></h3>
+    <h3><a href="http://github.com/easysoa/easysoa-model-demo/wiki" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Documentation <img src="img/link.png" /></a></h3>
+    <h3><a href="http://www.github.com/easysoa" onclick="window.open(this.getAttribute('href'), '_blank'); return false" class="external">Github <img src="img/link.png" /></a></h3>
+    
+  </div>
+  <div id="presentation">
+  
+    <h1>Introduction</h1>
+    
+    Welcome to <b>EasySOA</b> Core & Light!
+    
+    <h1><b>First time user</b>? Take the tour!</h1>
+   
+   <div class="tabber">
+
+      <div class="tabbertab" title="For the Business user">
+          
+          <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (disable the proxy for other protocols) and remove any proxy exceptions. If you're asked for a user/password, just type <b>Administrator</b> for both. In case something goes wrong during the demo, you can check the <a href="http://github.com/easysoa/easysoa-model-demo/wiki/Demo-troubleshooting">troubleshooting page</a>.</p>
+           
+          <h2><div>Step 1</div> Discover services in your intranet</h2>
+          
+          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/index.html">Service Discovery</a>. From there, as you visit pages, you may see a service appearing in the left menu, meaning that EasySOA has just found it. You're then two clicks away to register this service: just select "PureAirFlowers Orders", then click "Save Service", and you're done!</p>
+
+          <h2><div>Step 2</div> Explore all services</h2>
+
+          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/The-service-registry">More on the service registry</a>Now, let's have a look to our registered service, that you will find in the <a href="http://localhost:8080/nuxeo">Service Registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will find here the service you've just registered. If you click on it, all metadata are now here, business and technical. You may override most of these metadata, and fill new ones if you want to document your service.</p>
+          
+          <p>There are various ways to browse services: other than the default navigation tree, there is of course a search form, but also what is called "virtual navigations". These can be accessed from the 3 last tabs on the left menu: you can use them to browse through services in various fashions, each one being more appropriate for a specific user profile (business user, developer, IT admin). In the long term, we plan on making the interface fully adapted to each type of user, hiding for exemple the technical metadata from business users.</p>
+
+          <h2><div>Step 3</div> Call a service</h2>
+          
+          <p>Now, thanks to EasySOA, the service you've just found can be easily called. While you're on the service registry, notice the "Call it!" button <img src="img/callIt.png" style="height: 16px" /> on your service page. Click on it! The interface you now see has been generated from the registered definition of the service. Here you can enter the input parameters, and start a request. Is the service answering "10"? It's working!</p>
+          
+          <p>This call is actually made in an SOA sandbox that proxies, monitors and protects actual services. In this case, it prevents the user from using them excessively. You can test it by calling the service repeatedly : an error comes once you've called the service more than 10 times in 2 minutes. The calls are then blocked for about 2 minutes! And if you call a service more than 10 times a second, EasySOA electrocutes you - just kidding.</p>
+
+          <h2>Conclusion</h2>
+
+          <p>For now, EasySOA is a demo provided with all imaginable disclaimers... But later, lots of features will be added, from collaborative features and true proxy generation to an all-in-one architecture. For more advanced features, including services monitoring and architecture files import, please see the second demo scenario.</p>
+
+      </div>
+      <div class="tabbertab" title="For Developers & IT staff">
+				  
+          <p>This scenario is based on another demo SOA, called "Smart Travel". This time, we will take the role of a developer who wants to map the SOA contents.</p>
+          
+          <h2><div>Step 1</div> Import the SOA architecture</h2>
+          
+          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" is able to analyze the definition of the SOA components. From the service registry, create a new application by going to the "<i>Service registry</i>" document and choosing "<i>New Application Implementation</i>" ; create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), then select the newly created application for the import, and go!</p>
+          
+          <h2><div>Step 2</div> Explore the services</h2>
+          
+          <p>You can now browse through various services in the left menu. Only two of them are in the "Smart Travel" application, since others are external services, which are only referenced from your application. All the imported data can be useful to help developers and architects, even more once documentation files are attached to the services (you can do it by editing any document).</p>
+          
+          <p>Now, what if a member of the IT staff wants to know what really happens on the network?</p>
+          
+          <h2><div>Step 3</div> SOA Monitoring</h2>
+          
+          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, HTTP monitoring can be used both to discover new services, and simply to monitor the information system. You will eventually have the possibility to set up monitoring probes anywhere. For now, EasySOA embeds a simple HTTP monitoring proxy. You can test this feature by using EasySOA Light, since monitoring is enabled on it by default. From the Service Registry, find the "trip" service (somewhere in the "Smart Travel" app), and click the "Call It!" button: all requests you will send from there will be intercepted by the embedded proxy, that will then send information about this service to the Service Registry. (Note: make sure you type a number in the third argument)</p>
+          
+          <h2><div>Step 4</div> Explore the service Pt. 2: data correlation</h2>
+          
+          <p>Notice that thanks to monitoring and SCA import, we get two different ways to find the same services, allowing to gathering complementary information. If you add to them the discovery by browsing tool (see demo scenario #1), they all turn into an interesting way to gather crss-cutting data regarding the information system. In the service registry, the correlation between these discovery methods is represented by three icons shown on every document page: <img src="img/dtBrowsing.png" style="height: 12px" /> <img src="img/dtMonitoring.png" style="height: 12px" /> <img src="img/dtImport.png" style="height: 12px" />. For exemple, browse to the "Create Summary" service to see how these icons are enabled for the browsing and monitoring discovery. There, you will also see that the "call count" property has been increased!</p>
+          
+          <h2><div>Step 5</div> The dashboard</h2>
+          
+          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Services-dashboard">More on the dashboard</a>Since we are storing in EasySOA how many times each service has been called, why not have a way to provide all these information on a synthetic page? The dashboard, available from the top menu, allows you to organize various widgets on the same page. One of those widgets is called "EasySOA Stats". Add it to see a list of services showing how many called has been made on each one.</p>
+          
+          <h2>Conclusion</h2>
+
+          <p>These two demos show you various ways to use and interact with EasySOA and its cross-cutting model. Some facets of the solutions have not been shown yet though: since users of various profiles will be able to use the solution, why not make them work together, thanks to collaborative features? What if the business user could directly send requests to the developers by "commenting" a service? The ambitions of EasySOA go further than what you just saw, so stay tuned. Thanks for testing EasySOA!</p>
+          
+      </div>
+  </div>
+
+  </div>
+</div>
+
+</body>
+</html>

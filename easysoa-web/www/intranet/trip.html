@@ -1,0 +1,50 @@
+<html>
+<head>
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0"> 
+  <title>Pure Air Flowers ~ Intranet</title>
+  <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+</head>
+<body>
+
+  <div id="container">
+    <div id="header">Pure Air Flowers ~ Intranet</div>
+    <div id="menu">
+        <a href="index.html">Main page</a>
+        <a href="crm.html">CRM Application</a>
+        <a href="trip.html"><span style="color: black">Trip services</span></a>
+    </div>
+    <div id="content" style="height: 550px">
+      <div id="title">Smart Travel</div>
+                
+      <h1>> Trip advisor</h1>
+      
+      <form method="post">
+        <fieldset>
+        <p>Your destination country<br /><input type="text" /></p>
+        <p>Phrase to translate<br /><textarea></textarea></p>
+        <p>Amount of money in your budget<br/><input type="text" /></p>
+        <p><input type="submit" value="Submit" /></p>
+        </fieldset>
+      </form>
+      <!-- Allow the service to be found (TODO: Replace by URL-matching -->
+      <a href="http://localhost:9080/CreateSummary?wsdl" style="display: none">Create Summary</a>
+
+      <h1>> Airport information</h1>
+      
+      <form method="post">
+        <fieldset>
+        <p>Airport name<br /><input type="text" /></p>
+        <p><input type="submit" value="Submit" /></p>
+        </fieldset>
+      </form>
+      
+      <!-- Allow the service to be found (TODO: Replace by URL-matching -->
+      <a href="http://localhost:8200/esb/AirportService?wsdl" style="display: none">Airport information</a>
+      
+    </div>
+  </div>
+  
+</body>
+</html>
