@@ -49,6 +49,15 @@ public class FormGeneratorImpl implements FormGenerator {
 		logger.debug("xsltSource : " + xsltSource);
 		logger.debug("htmlOutput : " + htmlOutput);
 		logger.debug("defautWsdl : " + defaultWsdl);
+		
+		/****/
+		System.out.println("wsdlXmlSource : " + wsdlXmlSource);
+		System.out.println("formWsdlXmlSource : " + formWsdlXmlSource);
+		System.out.println("xsltSource : " + xsltSource);
+		System.out.println("htmlOutput : " + htmlOutput);
+		System.out.println("defautWsdl : " + defaultWsdl);		
+		/****/
+		
 		try{
 			// Deactivated for the Talend tuto Hack !!
 			/*
@@ -66,8 +75,9 @@ public class FormGeneratorImpl implements FormGenerator {
 				throw new IllegalArgumentException("The parameter html cannot be null or empty !");
 			}			
 			// Parsing XML
+			// Can works with HTTP protocol (http://...) or FILE protocol (file://...)
 			SAXSource source;
-			if(formWsdlXmlSource != null && formWsdlXmlSource.startsWith("http://") ){
+			if(formWsdlXmlSource != null){
 				URL formWsdlXmlUrl = new URL(formWsdlXmlSource);
 				source = new SAXSource(new InputSource(new InputStreamReader(formWsdlXmlUrl.openStream())));
 			}

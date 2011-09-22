@@ -130,13 +130,13 @@
 							<xsl:choose>
 								<xsl:when test="$readOnly = false">
 									<td>
-										<input type='text' name='{@name}' class='inputField' size='75'/>
+										<input type='text' name='{@name}' class='inputField' />
 									</td>
 								</xsl:when>
 								<xsl:otherwise>
 									<td>
 										<input type='text' name='{@name}' disabled=""
-											id='return_{@name}' class='outputField' size='75' />
+											id='return_{@name}' class='outputField' />
 									</td>
 								</xsl:otherwise>
 							</xsl:choose>
