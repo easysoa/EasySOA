@@ -63,23 +63,17 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 		// 1. Generate xml request for SOAP service, need to have the WSDL File
 		// SOAPUI can be used ... Check if it the good solution ....
 		// Lot of dependencies to add manually to use SOAPUI
-		String response = "Test working !";
+		String response = "";
 		try {
-			//response = callService("http://localhost:9010/PureAirFlowers?wsdl", operation, paramList);
-			//response = callService(wsdlUrl + "?wsdl", operation, paramList);
 			String url;
-			System.out.print("wsdlURL = " + wsdlUrl);
 			if(wsdlUrl.endsWith("?wsdl") || wsdlUrl.endsWith(".wsdl")){
 				url = wsdlUrl;
 			} else {
 				url = wsdlUrl + "?wsdl";
 			}
-			System.out.print("URL = " + url);
-			//response = wsdlServiceHelper.callService(wsdlUrl + "?wsdl", binding, operation, paramList);
 			response = wsdlServiceHelper.callService(url, binding, operation, paramList);
 			// Call a method to transform xml to json
 			response = xmlToJson(response).toString();
-			
 			logger.debug("final response : " + response);
 			return Response.ok(response, MediaType.TEXT_HTML).header("Access-Control-Allow-Origin", "*").build();			
 		} catch (Exception ex) {

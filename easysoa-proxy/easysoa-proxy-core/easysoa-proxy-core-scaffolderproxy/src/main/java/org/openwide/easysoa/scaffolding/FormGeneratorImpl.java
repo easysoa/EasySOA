@@ -25,7 +25,6 @@ public class FormGeneratorImpl implements FormGenerator {
 	 */
 	private static Logger logger = Logger.getLogger(FormGeneratorImpl.class.getClass());	
 
-	
 	@Property
 	String defaultWsdl;	
 		
@@ -66,8 +65,9 @@ public class FormGeneratorImpl implements FormGenerator {
 				throw new IllegalArgumentException("The parameter html cannot be null or empty !");
 			}			
 			// Parsing XML
+			// Can works with HTTP protocol (http://...) or FILE protocol (file://...)
 			SAXSource source;
-			if(formWsdlXmlSource != null && formWsdlXmlSource.startsWith("http://") ){
+			if(formWsdlXmlSource != null){
 				URL formWsdlXmlUrl = new URL(formWsdlXmlSource);
 				source = new SAXSource(new InputSource(new InputStreamReader(formWsdlXmlUrl.openStream())));
 			}

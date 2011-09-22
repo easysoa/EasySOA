@@ -1,0 +1,13 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="null=>" expression="row2.CountryCode == row4.CountryCode">
+    <variables name="row2.CountryCode" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row4.CountryCode" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row4.AirportsInformations" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+  <expression:EMFExpression id="null=>row4=>CountryCode" expression="">
+    <variables name="row2.CountryCode" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row4.CountryCode" value="null" talendType="id_String" nullable="true"/>
+    <variables name="row4.AirportsInformations" value="null" talendType="id_String" nullable="true"/>
+  </expression:EMFExpression>
+</xmi:XMI>

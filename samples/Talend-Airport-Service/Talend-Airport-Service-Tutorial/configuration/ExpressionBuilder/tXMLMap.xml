@@ -1,0 +1,6 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:expression="http:///expression.ecore">
+  <expression:EMFExpression id="[row2.payload:/air:getAirportInformationByISOCountryCode/air:CountryAbbrviation] row4.airportsInformations" expression="row4.airportsInformations"/>
+  <expression:EMFExpression id="row4.airportsInformations  row5.airportsInformations" expression="row5.airportsInformations"/>
+  <expression:EMFExpression id="row5.airportsInformations " expression="row5.airportsInformations"/>
+</xmi:XMI>
