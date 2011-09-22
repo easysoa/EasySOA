@@ -1,0 +1,4 @@
+<air:getAirportInformationByISOCountryCodeResponse xmlns:air="http://airportsoap.sopera.de">
+         <!--Optional:-->
+         <air:getAirportInformationByISOCountryCodeResult>?</air:getAirportInformationByISOCountryCodeResult>
+      </air:getAirportInformationByISOCountryCodeResponse>

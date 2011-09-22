@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:air="http://airportsoap.sopera.de">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <air:getAirportInformationByISOCountryCode>
+         <!--Optional:-->
+         <air:CountryAbbrviation>?</air:CountryAbbrviation>
+      </air:getAirportInformationByISOCountryCode>
+   </soapenv:Body>
+</soapenv:Envelope>
