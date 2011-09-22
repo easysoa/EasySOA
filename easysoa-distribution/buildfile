@@ -163,7 +163,7 @@ task :packageall do # TODO Less messy code
   
   # Check dependencies
   if !File.exist?(NUXEO_PATH)
-    raise "Files copy failed: Nuxeo not found. You need to provide a distribution of Nuxeo DM 5.4.1 in `build.yaml`."
+    raise "Files copy failed: Nuxeo not found. You need to provide a distribution of Nuxeo DM 5.4.2 in `build.yaml`."
   end
   if !File.exist?(NODE_PATH+'/node')
     raise "Files copy failed: Node not found. You need to provide a built Node path in `build.yaml` (download sources from: http://nodejs.org/#download)."
@@ -179,7 +179,7 @@ task :packageall do # TODO Less messy code
   # Download/extract node.js if necessary
   if !File.exist?('./deps/node.exe')
     puts 'Downloading node.js for Windows...'
-    system 'wget', 'http://nodejs.org/dist/v0.5.1/node.exe' # XXX Linux/Cygwin-dependent
+    system 'wget', 'http://nodejs.org/dist/v0.5.7/node.exe' # XXX Linux/Cygwin-dependent
     mv 'node.exe', './deps'
   end
   puts 'Copying node.js...'
