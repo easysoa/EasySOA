@@ -25,7 +25,6 @@ public class FormGeneratorImpl implements FormGenerator {
 	 */
 	private static Logger logger = Logger.getLogger(FormGeneratorImpl.class.getClass());	
 
-	
 	@Property
 	String defaultWsdl;	
 		
@@ -49,15 +48,6 @@ public class FormGeneratorImpl implements FormGenerator {
 		logger.debug("xsltSource : " + xsltSource);
 		logger.debug("htmlOutput : " + htmlOutput);
 		logger.debug("defautWsdl : " + defaultWsdl);
-		
-		/****/
-		System.out.println("wsdlXmlSource : " + wsdlXmlSource);
-		System.out.println("formWsdlXmlSource : " + formWsdlXmlSource);
-		System.out.println("xsltSource : " + xsltSource);
-		System.out.println("htmlOutput : " + htmlOutput);
-		System.out.println("defautWsdl : " + defaultWsdl);		
-		/****/
-		
 		try{
 			// Deactivated for the Talend tuto Hack !!
 			/*
