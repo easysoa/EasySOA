@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.core.contrib.actions">
   
+  <!--  Rights by groups (XXX: Doesn't work) -->
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
+    <filter id="not_for_business_users">
+      <rule grant="true">
+        <condition>#{!userSession.getCurrentNuxeoPrincipal().getGroups().contains("Business User")}</condition>
+      </rule>
+    </filter>
+  </extension>
+  
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
   
  	<!-- Disable unused tabs -->
@@ -14,7 +23,10 @@
  	<!-- SCA Import page -->
     <action id="easysoaImport" link="sca_import_form" label="label.easysoa.import.link">
         <category>USER_SERVICES</category>
+        <filter-id>not_for_business_users"</filter-id>
     </action>
+    
+ 	<!-- SCA Import button -->
     <action id="easysoaImportSubmit" link="#{easysoaImport.importSCA}" label="label.easysoa.import.button">
         <category>EASYSOA_IMPORT</category>
     </action>

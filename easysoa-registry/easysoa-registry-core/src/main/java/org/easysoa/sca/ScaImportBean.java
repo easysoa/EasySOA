@@ -43,9 +43,13 @@ public class ScaImportBean {
 	NavigationContext navigationContext;
 
 	List<SelectItem> appliImpls;
+	
 	private Blob compositeFile;
+	
 	private String parentAppliImpl;
+	
 	private String serviceStackType;
+	
 	private String serviceStackUrl;
 	
 	@Create
@@ -61,27 +65,31 @@ public class ScaImportBean {
 	
 	public void importSCA() {
 
-		if (compositeFile == null)
-			return;
+		if (compositeFile != null) {
+    		
+    		ScaImporter importer;
+    		try {
+    			importer = new ScaImporter(documentManager, compositeFile);
+    			DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
+    			if (parentAppliImpl != null) {
+    				importer.setParentAppliImpl(appliImplModel);
+    			}
+    			if (serviceStackType != null) {
+    				importer.setServiceStackType(serviceStackType);
+    			}
+    			if (serviceStackUrl != null) {
+    				importer.setServiceStackUrl(serviceStackUrl);
+    			}
+    			
+    			importer.importSCA();
+    			
+                navigationContext.navigateToRef(appliImplModel.getRef());
+                
+    		} catch (Exception e) {
+    			log.error("Failed to import SCA", e);
+    		}
 		
-		ScaImporter importer;
-		try {
-			importer = new ScaImporter(documentManager, compositeFile);
-			if (parentAppliImpl != null) {
-				importer.setParentAppliImpl(documentManager.getDocument(new IdRef(parentAppliImpl)));
-			}
-			if (serviceStackType != null) {
-				importer.setServiceStackType(serviceStackType);
-			}
-			if (serviceStackUrl != null) {
-				importer.setServiceStackUrl(serviceStackUrl);
-			}
-			importer.importSCA();
-		} catch (Exception e) {
-			log.error("Failed to import SCA", e);
 		}
-		
-		navigationContext.goHome(); // XXX Doesn't work
 	}
 	
 	public List<SelectItem> getAppliImpls() {
