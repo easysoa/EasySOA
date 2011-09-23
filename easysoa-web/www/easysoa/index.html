@@ -14,6 +14,7 @@
       margin-left: 8%;
       text-align: right;
       font-weight: bold;
+      float: left;
     }
 
     #shortcuts a {
@@ -37,6 +38,7 @@
       width: 40%;
       padding: 20px;
       border-left: 1px solid #024;
+      float: left;
     } 
     
     #presentation p { 
@@ -48,6 +50,7 @@
     }
     
     h2 div {
+      float: left;
       border: 1px solid #248;
       color: white;
       background-color: #248;
@@ -126,9 +129,12 @@
 
       <div class="tabbertab" title="For the Business user">
           
-          <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (disable the proxy for other protocols) and remove any proxy exceptions. If you're asked for a user/password, just type <b>Administrator</b> for both. In case something goes wrong during the demo, you can check the <a href="http://github.com/easysoa/easysoa-model-demo/wiki/Demo-troubleshooting">troubleshooting page</a>.</p>
+          <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (disable the proxy for other protocols) and remove any proxy exceptions. In case something goes wrong during the demo, you can check the <a href="http://github.com/easysoa/easysoa-model-demo/wiki/Demo-troubleshooting">troubleshooting page</a>.</p>
            
           <h2><div>Step 1</div> Discover services in your intranet</h2>
+          
+          <div class="loginInfoBox"><img src="img/users/bu.png" style="vertical-align: middle" />
+          In order to login as a <b>Business User</b>, type <b>Sophie</b> as username/password.</div>
           
           <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/index.html">Service Discovery</a>. From there, as you visit pages, you may see a service appearing in the left menu, meaning that EasySOA has just found it. You're then two clicks away to register this service: just select "PureAirFlowers Orders", then click "Save Service", and you're done!</p>
 
@@ -155,6 +161,9 @@
           
           <h2><div>Step 1</div> Import the SOA architecture</h2>
           
+          <div class="loginInfoBox"><img src="img/users/architect.png" style="vertical-align: middle" />
+          In order to login as a <b>Software architect</b>, type <b>Ted</b> as username/password.</div>
+          
           <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" is able to analyze the definition of the SOA components. From the service registry, create a new application by going to the "<i>Service registry</i>" document and choosing "<i>New Application Implementation</i>" ; create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), then select the newly created application for the import, and go!</p>
           
           <h2><div>Step 2</div> Explore the services</h2>
@@ -164,6 +173,9 @@
           <p>Now, what if a member of the IT staff wants to know what really happens on the network?</p>
           
           <h2><div>Step 3</div> SOA Monitoring</h2>
+          
+          <div class="loginInfoBox"><img src="img/users/itstaff.png" style="vertical-align: middle" />
+          In order to login as a member of the <b>IT Staff</b>, type <b>Arnold</b> as username/password.</div>
           
           <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, HTTP monitoring can be used both to discover new services, and simply to monitor the information system. You will eventually have the possibility to set up monitoring probes anywhere. For now, EasySOA embeds a simple HTTP monitoring proxy. You can test this feature by using EasySOA Light, since monitoring is enabled on it by default. From the Service Registry, find the "trip" service (somewhere in the "Smart Travel" app), and click the "Call It!" button: all requests you will send from there will be intercepted by the embedded proxy, that will then send information about this service to the Service Registry. (Note: make sure you type a number in the third argument)</p>
           

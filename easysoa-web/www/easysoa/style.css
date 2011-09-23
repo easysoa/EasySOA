@@ -27,10 +27,6 @@ h2 {
 	padding-top: 10px;
 	padding-bottom: 5px;
 	color: #248;
-}	
-
-div {
-	float: left;
 }
 
 li {
@@ -88,7 +84,7 @@ li {
 }
 
 #container { 
-	padding: 15px;
+  padding: 15px;
 }
 
 p {
@@ -168,4 +164,14 @@ a img {
   margin-left: 5px;
   margin-bottom: 0;
   font-size: 8pt;
+}
+
+.loginInfoBox {
+  font-size: 11pt;
+  width: 100%;
+  background-color: #D5FFDA;
+  border: 1px solid green;
+  margin: 5px;
+  margin-bottom: 15px;
+  padding: 4px;
 }
