@@ -9,4 +9,5 @@ Export-Package: org.easysoa.registry.rest
 Eclipse-LazyStart: true
 Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
 Nuxeo-Require: org.easysoa.registry.core
-Nuxeo-Component: OSGI-INF/rights-contrib.xml
+Nuxeo-Component: OSGI-INF/rights-contrib.xml,
+ OSGI-INF/operations-contrib.xml

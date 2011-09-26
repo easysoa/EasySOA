@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import org.easysoa.rest.gadgets.ServiceStatsRest;
+import org.easysoa.automation.ServiceStats;
 
 public class EasySOAApp extends Application {
 
@@ -15,7 +15,7 @@ public class EasySOAApp extends Application {
 		result.add(EasySOAAppRoot.class);
 		result.add(ScraperRest.class);
 		result.add(NotificationRest.class);
-		result.add(ServiceStatsRest.class);
+		result.add(ServiceStats.class);
 		return result;
     }
 	

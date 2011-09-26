@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="__MSG_servicestats__" height="95" scrolling="true"
-    scaling="true" directory_title="__MSG_servicestats__"
-    description="__MSG_description__" author="EasySOA">
-    <Locale messages="ALL_ALL.xml"/>
-    <Locale lang="fr" messages="fr_ALL.xml"/>
+  <ModulePrefs title="Services stats" description="Service usage stats"
+	  	author="EasySOA Consortium" category="tools"
+	  	height="95" scrolling="true" scaling="true">
+    <Require feature="nuxeo" />
     <Require feature="opensocial-0.8" />
     <Require feature="dynamic-height" />
     <Require feature="settitle" />
+    <Require feature="setprefs"/>
     <Require feature="jquery" />
-    <Require feature="nuxeo" />
+    <#include "default-oauth-prefs.ftl"/>
   </ModulePrefs>
 
-  <!--  XXX: Rest url hardcoded -->
   <Content type="html">
   <![CDATA[
   
-    <script type="text/javascript" language="javascript" src="servicestats.js"></script>
-    <script type="text/javascript">
-      function handleJSONResponse(response) {
-        renderStats(response.data);
-      }
-      jQuery(document).ready(function(){
-      	var params = new Array();
-		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-        gadgets.io.makeRequest("http://localhost:8080/nuxeo/site/easysoa/stats",
-        	handleJSONResponse, params, 1);
-      });
-    </script>
-
-    <link rel="stylesheet" type="text/css" href="documentlists.css"/>
-    <div id="documentList">
-       <img src="${org.nuxeo.ecm.contextPath}/img/standart_waiter.gif">
-    </div>
+  	<html>
+  	<head>
+	    <link rel="stylesheet" type="text/css" href="${specDirectoryUrl}gadget-common.css"/>
+	    <link rel="stylesheet" type="text/css" href="${specDirectoryUrl}documentlists.css"/>
+	    ${jsContext} <!-- insert JS Context -->
+	    <script src="${specDirectoryUrl}default-automation-request.js"></script>
+	    <script src="${specDirectoryUrl}default-documentlist-display.js"></script>
+	    <script src="${specDirectoryUrl}context-management.js"></script>
+	    <script type="text/javascript" language="javascript" src="servicestats.js"></script>
+	    <script type="text/javascript">
+  			  var prefs = new gadgets.Prefs();
+ 			  var requestScope = getTargetContextPath();
+ 
+		      jQuery(document).ready(function(){
+		      	showServiceStats();
+		      });
+	    </script>
+	</head>
+	<body>
+	    <div id="content">
+	     <#include "default-documentlist-layout.ftl"/>
+	     <#include "default-request-controls.ftl"/>
+	    </div>
+    </body>
+    </html>
 
   ]]>
   </Content>
