@@ -34,6 +34,11 @@ import org.ow2.easywsdl.wsdl.api.Description;
 import org.ow2.easywsdl.wsdl.api.Endpoint;
 import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class ServiceListener implements EventListener {
     
     private static Log log = LogFactory.getLog(ServiceListener.class);

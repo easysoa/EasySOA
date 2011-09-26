@@ -28,4 +28,5 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/EasySOAInitComponent.xml,
  OSGI-INF/VocabularyHelperComponent.xml,
  OSGI-INF/NotificationServiceComponent.xml,
- OSGI-INF/ImplementationRelationServiceComponent.xml
+ OSGI-INF/ImplementationRelationServiceComponent.xml,
+ OSGI-INF/workflow-contrib.xml
