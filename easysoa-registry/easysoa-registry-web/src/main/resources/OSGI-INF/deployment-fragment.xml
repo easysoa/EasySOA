@@ -2,6 +2,9 @@
 <fragment version="1">
 
   <require>org.nuxeo.ecm.webapp.core</require>
+  <require>org.nuxeo.ecm.webapp.ui</require>
+  <require>org.nuxeo.admin.center</require>
+  <require>org.nuxeo.ecm.user.center</require>
   <require>org.nuxeo.ecm.platform.lang</require>
 
   <!--  Enregistrement du module -->
