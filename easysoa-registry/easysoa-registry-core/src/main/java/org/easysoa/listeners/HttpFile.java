@@ -15,7 +15,7 @@ import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.restlet.data.CharacterSet;
 
 /**
- * Encapsulation for downloading a file from an HTTP url
+ * Basic file downloading tool, given an HTTP url.
  * @author mkalam-alami
  *
  */
@@ -30,9 +30,7 @@ public class HttpFile {
 		this.url = url;
 	}
 
-	public HttpFile download() throws MalformedURLException, IOException,
-			URISyntaxException {
-		
+	public HttpFile download() throws MalformedURLException, IOException, URISyntaxException {
 	    HttpURLConnection connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
 		this.file = File.createTempFile("tmp", "tmp");
 		connection.setReadTimeout(DOWNLOAD_TIMEOUT);
