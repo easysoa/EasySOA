@@ -209,6 +209,11 @@ public class ServiceListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_LIGHTURL,
                             "http://localhost:8083/easysoa/light/GalaxyTrip.html");
                 }
+                // XXX: Hard-coded Airport Light URL
+                else if (url.contains("irport")) {
+                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
+                            "http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8200/esb/AirportService?wsdl");
+                }
             }
             if (fileUrl != null) {
                 doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
