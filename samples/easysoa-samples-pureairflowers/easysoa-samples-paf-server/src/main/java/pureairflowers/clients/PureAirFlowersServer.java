@@ -5,15 +5,11 @@ import javax.xml.ws.Endpoint;
 public class PureAirFlowersServer {
 
     protected PureAirFlowersServer() throws Exception {
-        // START SNIPPET: publish
         System.out.println("Starting Server");
         PureAirFlowersClientsImpl implementor = new PureAirFlowersClientsImpl();
-        //String address = "http://192.168.2.157:9010/PureAirFlowers";
         String address = "http://localhost:9010/PureAirFlowers";
         Endpoint.publish(address, implementor);
         System.out.println("Server started");        
-        // END SNIPPET: publish
-    	
     	// ALTERNATIVE CODE
     	//HelloWorldImpl implementor = new HelloWorldImpl();
     	//JaxWsServerFactoryBean svrFactory = new JaxWsServerFactoryBean();
