@@ -74,6 +74,7 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 			response = wsdlServiceHelper.callService(url, binding, operation, paramList);
 			// Call a method to transform xml to json
 			response = xmlToJson(response).toString();
+			System.out.println(response);
 			logger.debug("final response : " + response);
 			return Response.ok(response, MediaType.TEXT_HTML).header("Access-Control-Allow-Origin", "*").build();			
 		} catch (Exception ex) {

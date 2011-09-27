@@ -34,6 +34,11 @@ import org.ow2.easywsdl.wsdl.api.Description;
 import org.ow2.easywsdl.wsdl.api.Endpoint;
 import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class ServiceListener implements EventListener {
     
     private static Log log = LogFactory.getLog(ServiceListener.class);
@@ -203,6 +208,11 @@ public class ServiceListener implements EventListener {
                 else if (url.contains("GalaxyTrip")) {
                     doc.setProperty(SCHEMA, PROP_LIGHTURL,
                             "http://localhost:8083/easysoa/light/GalaxyTrip.html");
+                }
+                // XXX: Hard-coded Airport Light URL
+                else if (url.contains("irport")) {
+                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
+                            "http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8200/esb/AirportService?wsdl");
                 }
             }
             if (fileUrl != null) {

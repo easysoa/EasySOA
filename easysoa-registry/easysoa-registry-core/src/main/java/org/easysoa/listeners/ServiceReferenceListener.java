@@ -20,6 +20,11 @@ import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.runtime.api.Framework;
 
+/**
+ * 
+ * @author mdutoo
+ *
+ */
 public class ServiceReferenceListener implements EventListener {
 	
 	private static Log log = LogFactory.getLog(ServiceReferenceListener.class);

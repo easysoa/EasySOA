@@ -64,3 +64,20 @@ h1 {
   font-size: 13pt;
   padding-top: 15px;
 }
+
+h2 {
+  font-size: 12pt;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  font-style: italic;
+}
+
+p {
+  padding: 3px;
+  margin-bottom: 10px;
+}
+
+fieldset {
+ background-color: #F7F7F7;
+ padding: 10px;
+}

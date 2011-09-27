@@ -80,7 +80,9 @@
 
    </div>
 
-	<!-- EasySOA : Puts user actions in a dropdown list -->
+   <!-- EasySOA : Puts user actions in a dropdown list -->
+   <!-- XXX: Temporary solution to hide actions from business users -->
+   <c:if test="#{userManager.getUserModel(messages['label.loggedAsUser']).getProperty('user', 'groups')[0] != 'Business User'}">
    <div class="userMenuActions">
      <ul class="userMenuList">
        <li><a class="userButton" 
@@ -118,6 +120,7 @@
        </li>
      </ul>
    </div>
+   </c:if>
    
    
    <div class="userActions">

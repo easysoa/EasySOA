@@ -13,6 +13,7 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.services.VocabularyHelper;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -24,87 +25,134 @@ import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.runtime.api.Framework;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class AppliImplListener implements EventListener {
 
-	private static Log log = LogFactory.getLog(AppliImplListener.class);
+    private static Log log = LogFactory.getLog(AppliImplListener.class);
 
-	public void handleEvent(Event event) {
+    public void handleEvent(Event event) {
 
-		// Check event type
-		EventContext ctx = event.getContext();
-		if (!(ctx instanceof DocumentEventContext)) {
-			return;
-		}
-		CoreSession session = ctx.getCoreSession();
-		DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
+        // Check event and retrieve data
+        EventContext ctx = event.getContext();
+        if (!(ctx instanceof DocumentEventContext)) {
+            return;
+        }
+        CoreSession session = ctx.getCoreSession();
+        DocumentModel appliImplModel = ((DocumentEventContext) ctx).getSourceDocument();
 
-		// Check document type
-		if (doc == null) {
-			return;
-		}
-		String type = doc.getType();
-		if (!type.equals(DOCTYPE)) {
-			return;
-		}
+        if (appliImplModel == null) {
+            return;
+        }
+        String type = appliImplModel.getType();
+        if (!type.equals(DOCTYPE)) {
+            return;
+        }
+        
+        // Initialize workflow
+        if (hasNoWorkflow(session, appliImplModel)) {
+            initWorkflow(session, appliImplModel);
+        }
 
-		String url = null, server = null, environment = null;
+        // Update properties
+        if (maintainInternalProperties(session, appliImplModel)) {
+            setDefaultPropertyValues(session, appliImplModel);
+        }
 
-		try {
+        // Update vocabulary
+        try {
+            updateVocabulary(session,
+                    (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER),
+                    (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT));
+        } catch (ClientException e) {
+            log.error("Failed to fetch Appli. Impl. properties", e);
+        }
 
-			url = (String) doc.getProperty(SCHEMA, PROP_URL);
-			server = (String) doc.getProperty(SCHEMA, PROP_SERVER);
-			environment = (String) doc.getProperty(SCHEMA, PROP_ENVIRONMENT);
+    }
+
+    private boolean hasNoWorkflow(CoreSession session, DocumentModel appliImplModel) {
+        return true; // TODO
+    }
+    
+    private boolean initWorkflow(CoreSession session, DocumentModel appliImplModel) {
+        try {
+            // TODO
+        }
+        catch (Exception e) {
+            log.error("Failed to init Appli. Impl. workflow", e);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel) {
+        try {
+            String url = (String) appliImplModel.getProperty(SCHEMA, PROP_URL);
+            String server = (String) appliImplModel.getProperty(SCHEMA,
+                    PROP_SERVER);
 
             // Maintain internal properties
-			if (url != null && !url.isEmpty()
-					&& (server == null || server.isEmpty())) {
-				try {
-				    url = PropertyNormalizer.normalizeUrl(url);
-                    doc.setProperty(SCHEMA, PROP_URL, url);
-					server = new URL(url).getHost();
-                    doc.setProperty(SCHEMA, PROP_SERVER, server);
-                    doc.setProperty(SCHEMA, PROP_SERVERENTRY, // Internal (for virtual navigation)
-                            doc.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
+            if (url != null && !url.isEmpty() && (server == null || server.isEmpty())) {
+                try {
+                    url = PropertyNormalizer.normalizeUrl(url);
+                    appliImplModel.setProperty(SCHEMA, PROP_URL, url);
+                    server = new URL(url).getHost();
+                    appliImplModel.setProperty(SCHEMA, PROP_SERVER, server);
+                    appliImplModel.setProperty(
+                            SCHEMA, PROP_SERVERENTRY, // Internal (for virtual navigation)
+                            appliImplModel.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
                 } catch (MalformedURLException e) {
                     log.warn("Failed to normalize URL '" + url + "'");
-				}
-			}
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to maintain internal properties", e);
+            return false;
+        }
+        return true;
 
-			// Default environment
-			if (environment == null || environment.isEmpty()) {
-				doc.setProperty(SCHEMA, PROP_ENVIRONMENT, DEFAULT_ENVIRONMENT);
-			}
+    }
 
-		} catch (Exception e) {
-			log.error("Failed to maintain internal property", e);
-		}
+    private boolean setDefaultPropertyValues(CoreSession session, DocumentModel appliImplModel) {
+        try { // Default environment
+            String environment = (String) appliImplModel.getProperty(SCHEMA, PROP_ENVIRONMENT);
+            if (environment == null || environment.isEmpty()) {
+                appliImplModel.setProperty(SCHEMA, PROP_ENVIRONMENT, DEFAULT_ENVIRONMENT);
+            }
+        } catch (Exception e) {
+            log.error("Failed to set default environment value", e);
+            return false;
+        }
+        return true;
+    }
 
-		// Update vocabulary
-		// TODO: Update on document deletion
-		try {
+    private boolean updateVocabulary(CoreSession session, String server, String environment) {
+        try {
+            // TODO: Update on document deletion
+            if (environment == null) {
+                environment = DEFAULT_ENVIRONMENT;
+            }
 
-			if (environment == null) {
-				environment = DEFAULT_ENVIRONMENT;
-			}
+            VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
 
-			VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
-
-			if (!vocService.entryExists(session,
-					VocabularyHelper.VOCABULARY_ENVIRONMENT, environment)) {
-				vocService.addEntry(session,
-						VocabularyHelper.VOCABULARY_ENVIRONMENT, environment, environment);
-			}
-			if (server != null
-					&& !server.isEmpty()
-					&& !vocService.entryExists(session, 
-					        VocabularyHelper.VOCABULARY_SERVER, server)) {
-				vocService.addEntry(session,
-						VocabularyHelper.VOCABULARY_SERVER, server, server, environment);
-			}
-		} catch (ClientException e) {
-			log.error("Error while updating vocabularies", e);
-		}
-
-	}
+            if (!vocService.entryExists(session,
+                    VocabularyHelper.VOCABULARY_ENVIRONMENT, environment)) {
+                vocService.addEntry(session, VocabularyHelper.VOCABULARY_ENVIRONMENT, 
+                        environment, environment);
+            }
+            if (server != null && !server.isEmpty()
+                    && !vocService.entryExists(session, VocabularyHelper.VOCABULARY_SERVER, server)) {
+                vocService.addEntry(session, VocabularyHelper.VOCABULARY_SERVER,
+                        server, server, environment);
+            }
+        } catch (ClientException e) {
+            log.error("Failed to update vocabulary", e);
+            return false;
+        }
+        return true;
+    }
 
 }

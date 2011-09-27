@@ -79,10 +79,9 @@ public class ScraperRest {
 					String name = (link.getText() != null) ? link.getText()
 							.toString() : ref;
 
-					// Truncate if name is an URL (serviceName cannot contain
-					// slashes)
+					// Truncate if name is an URL (serviceName cannot contain slashes)
 					if (name.contains("/")) {
-						String[] nameParts = name.split("/");
+						String[] nameParts = name.split("/}");
 						name = nameParts[nameParts.length - 1].replaceAll(
 								"(\\?|\\.|wsdl)", "");
 					}

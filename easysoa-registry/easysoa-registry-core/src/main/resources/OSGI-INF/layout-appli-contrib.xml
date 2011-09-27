@@ -25,7 +25,6 @@
 	        <field>app:uiUrl</field>
 	      </fields>
         <properties mode="any">
-		  <property name="required">true</property>
 		  <property name="validator">#{easysoaValidator.validateUrl}</property>
 		</properties>
 	  </widget>
