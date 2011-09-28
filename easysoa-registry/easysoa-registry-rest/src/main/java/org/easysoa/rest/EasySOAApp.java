@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 import org.easysoa.rest.gadgets.ServiceStatsRest;
+import org.easysoa.rest.scraping.ScraperRest;
 
 public class EasySOAApp extends Application {
 

@@ -8,8 +8,9 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.restlet.data.CharacterSet;
@@ -23,15 +24,15 @@ public class HttpFile {
     
     private static final int DOWNLOAD_TIMEOUT = 15000;
     
-    private String url;
+    private URL url;
     private File file = null;
 
-    public HttpFile(String url) {
+    public HttpFile(URL url) {
         this.url = url;
     }
 
     public HttpFile download() throws MalformedURLException, IOException, URISyntaxException {
-        HttpURLConnection connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
+        HttpURLConnection connection = ((HttpURLConnection) this.url.openConnection());
         this.file = File.createTempFile("tmp", "tmp");
         connection.setReadTimeout(DOWNLOAD_TIMEOUT);
         InputStream is = connection.getInputStream();

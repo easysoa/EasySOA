@@ -10,6 +10,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.rest.scraping.ScraperRest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;

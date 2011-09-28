@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.rest.scraping" version="1.0">
+
+  <documentation>
+    The service scraper tool allows to find services from a given URL.
+    This component provides a way to register new scrapers to find services in various ways.
+    @author Marwane Kalam-Alami
+  </documentation>
+
+  <implementation class="org.easysoa.rest.scraping.ServiceScraperComponent" />
+
+  <extension-point name="scrapers">
+    <object class="org.easysoa.rest.scraping.ServiceScraperDescriptor" />
+  </extension-point>
+
+</component>
