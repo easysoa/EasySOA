@@ -18,7 +18,7 @@
  *    }
  *  ]}
  */
-
+/*
 // HTML formatting
 function formatStart() {
 	var html = "";
@@ -72,13 +72,30 @@ function renderStats(response) {
 	}
 	_gel("content").innerHTML = htmlResult;
 }
-
+*/
 // Entry point
 
 function showServiceStats() {
   var NXRequestParams = {
-      operationId: 'ServiceStats',
-      displayMethod: renderStats
-    };
+	        operationId: 'ServiceStats',
+	        operationParams: {
+	          providerName: 'servicestats',
+	          pageSize: 5//,
+	          //queryParams: requestScope + '/, ' + requestScope + '/templates/'
+	        },
+	        operationContext: {},
+	        operationDocumentProperties: "common,dublincore,servicedef",
+	        entityType: 'documents',
+	        usePagination: true,
+	        displayMethod: displayDocumentList,
+	        displayColumns: [
+	          {type: 'builtin', field: 'icon'},
+	          {type: 'builtin', field: 'titleWithLink', label: '__MSG_label.dublincore.title__'},
+	          {type: 'date', field: 'dc:modified', label: '__MSG_label.dublincore.modified__'},
+	          {type: 'text', field: 'serv:callcount', label: '__MSG_label.easysoa.servicedef.callcount__'}
+	        ],
+	        noEntryLabel: '__MSG_label.gadget.no.document__'
+	      };
+
   doAutomationRequest(NXRequestParams);
 }
