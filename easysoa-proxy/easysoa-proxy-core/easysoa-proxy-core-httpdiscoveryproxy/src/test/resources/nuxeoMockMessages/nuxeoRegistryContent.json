@@ -75,7 +75,7 @@
       "path": "/default-domain/workspaces/2084345772380641689/8781875953360896140",
       "type": "ServiceAPI",
       "state": "undefined",
-      "title": "http://localhost:8085/meteo",
+      "title": "http://127.0.0.1:8085/meteo",
       "lastModified": "2011-08-31T13:52:05Z",
       "properties":       {
         "dc:creator": "Administrator",
@@ -93,7 +93,7 @@
         "dc:coverage": null,
         "dc:expired": null,
         "dc:language": null,
-        "dc:title": "http://localhost:8085/meteo",
+        "dc:title": "http://127.0.0.1:8085/meteo",
         "files:files": [],
         "soa:authorInformation": null,
         "soa:discoveryTypeBrowsing": null,
@@ -110,7 +110,7 @@
         "file:filename": null,
         "api:application": null,
         "api:protocols": null,
-        "api:url": "http://localhost:8085/meteo"
+        "api:url": "http://127.0.0.1:8085/meteo"
       }
     },
         {
@@ -123,7 +123,7 @@
       "title": "meteo",
       "lastModified": "2011-08-31T13:52:05Z",
       "properties":       {
-        "serv:url": "http://localhost:8085/meteo",
+        "serv:url": "http://127.0.0.1:8085/meteo",
         "serv:relatedUsers": "",
         "serv:contentTypeOut": "",
         "serv:httpMethod": "POST",
@@ -154,7 +154,7 @@
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/text.png",
@@ -171,7 +171,7 @@
       "path": "/default-domain/workspaces/6561152035885192939",
       "type": "Workspace",
       "state": "project",
-      "title": "localhost:8088",
+      "title": "127.0.0.1:8088",
       "lastModified": "2011-08-31T13:52:04Z",
       "properties":       {
         "dc:creator": "Administrator",
@@ -179,7 +179,7 @@
         "dc:nature": null,
         "dc:source": null,
         "dc:created": "2011-08-31T13:52:04Z",
-        "dc:description": "localhost:8088",
+        "dc:description": "127.0.0.1:8088",
         "dc:rights": null,
         "dc:subjects": [],
         "dc:valid": null,
@@ -189,13 +189,13 @@
         "dc:coverage": null,
         "dc:expired": null,
         "dc:language": null,
-        "dc:title": "localhost:8088",
+        "dc:title": "127.0.0.1:8088",
         "soa:authorInformation": null,
         "soa:discoveryTypeBrowsing": null,
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/workspace.gif",
@@ -205,9 +205,9 @@
         "app:environment": null,
         "app:serverEntry": "null/",
         "app:standard": "",
-        "app:uiUrl": "http://localhost:8088",
+        "app:uiUrl": "http://127.0.0.1:8088",
         "app:sourcesUrl": "",
-        "app:url": "http://localhost:8088",
+        "app:url": "http://127.0.0.1:8088",
         "app:technology": "",
         "app:provider": null,
         "webc:useCaptcha": null,
@@ -220,7 +220,7 @@
         "webc:logo": null,
         "webc:themePerspective": null,
         "webc:themePage": "workspace",
-        "webc:name": "localhost:8088",
+        "webc:name": "127.0.0.1:8088",
         "webc:moderationType": "aposteriori",
         "webc:url": "6561152035885192939",
         "webc:email": null,
@@ -263,7 +263,7 @@
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/folder.gif",
@@ -273,7 +273,7 @@
         "file:filename": null,
         "api:application": "",
         "api:protocols": null,
-        "api:url": "http://localhost:8088/1"
+        "api:url": "http://127.0.0.1:8088/1"
       }
     },
         {
@@ -308,7 +308,7 @@
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/folder.gif",
@@ -318,7 +318,7 @@
         "file:filename": null,
         "api:application": "",
         "api:protocols": null,
-        "api:url": "http://localhost:8088/1/users"
+        "api:url": "http://127.0.0.1:8088/1/users"
       }
     },
         {
@@ -331,7 +331,7 @@
       "title": "show",
       "lastModified": "2011-08-31T13:52:04Z",
       "properties":       {
-        "serv:url": "http://localhost:8088/1/users/show",
+        "serv:url": "http://127.0.0.1:8088/1/users/show",
         "serv:relatedUsers": "",
         "serv:contentTypeOut": "",
         "serv:httpMethod": "GET",
@@ -362,7 +362,7 @@
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/text.png",
@@ -404,7 +404,7 @@
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/folder.gif",
@@ -414,7 +414,7 @@
         "file:filename": null,
         "api:application": "",
         "api:protocols": null,
-        "api:url": "http://localhost:8088/1/statuses"
+        "api:url": "http://127.0.0.1:8088/1/statuses"
       }
     },
         {
@@ -427,7 +427,7 @@
       "title": "friends",
       "lastModified": "2011-08-31T13:52:04Z",
       "properties":       {
-        "serv:url": "http://localhost:8088/1/statuses/friends",
+        "serv:url": "http://127.0.0.1:8088/1/statuses/friends",
         "serv:relatedUsers": "",
         "serv:contentTypeOut": "",
         "serv:httpMethod": "GET",
@@ -458,7 +458,7 @@
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/text.png",
@@ -478,7 +478,7 @@
       "title": "followers",
       "lastModified": "2011-08-31T13:52:04Z",
       "properties":       {
-        "serv:url": "http://localhost:8088/1/statuses/followers",
+        "serv:url": "http://127.0.0.1:8088/1/statuses/followers",
         "serv:relatedUsers": "",
         "serv:contentTypeOut": "",
         "serv:httpMethod": "GET",
@@ -509,7 +509,7 @@
         "soa:archiPath": null,
         "soa:archiLocalName": null,
         "soa:fileUrl": null,
-        "soa:discoveryTypeMonitoring": "localhost",
+        "soa:discoveryTypeMonitoring": "127.0.0.1",
         "soa:author": null,
         "soa:discoveryTypeImport": null,
         "common:icon": "/icons/text.png",

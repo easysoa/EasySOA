@@ -10,7 +10,7 @@
     "title": "meteo",
     "lastModified": "2011-08-31T09:47:32Z",
     "properties":     {
-      "serv:url": "http://localhost:8085/meteo",
+      "serv:url": "http://127.0.0.1:8085/meteo",
       "serv:relatedUsers": "",
       "serv:contentTypeOut": "",
       "serv:httpMethod": "POST",
@@ -41,7 +41,7 @@
       "soa:archiPath": null,
       "soa:archiLocalName": null,
       "soa:fileUrl": null,
-      "soa:discoveryTypeMonitoring": "localhost",
+      "soa:discoveryTypeMonitoring": "127.0.0.1",
       "soa:author": null,
       "soa:discoveryTypeImport": null,
       "common:icon": "/icons/text.png",
