@@ -48,7 +48,7 @@ public class FormGeneratorTester {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start the soap service mock
-		startSoapServiceMockComposite();
+		//startSoapServiceMockComposite();
 		// Start Scaffolding Proxy test
 		startScaffoldingProxyComposite();
 	}	
@@ -58,6 +58,7 @@ public class FormGeneratorTester {
 	 * @throws Exception If a problem occurs
 	 */
 	@Test
+	@Ignore
 	public void testFormGenerator() throws Exception {
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// Send a request to generate the HTML form
@@ -69,6 +70,7 @@ public class FormGeneratorTester {
 	}
 	
 	@Test
+	@Ignore
 	public final void testRestSoapProxy() throws ClientProtocolException, IOException{
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// Send a request to test the rest/soap proxy
@@ -86,7 +88,6 @@ public class FormGeneratorTester {
 	 * @throws IOException
 	 */
 	@Test
-	//@Ignore
 	public final void testWaitUntilRead() throws Exception{
 		logger.info("Scaffolding proxy test started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test

@@ -40,9 +40,11 @@ li {
 }
 
 #menu {
+	border: 1px solid gray;
 	width: 20%;
 	height: 100%;
 	font-size: 10pt;
+	margin-top: -1px;
 }
 
 #headerUserBar {
@@ -68,7 +70,7 @@ li {
 	padding: 5px;
 	background-color: #DDDDEE;
 	border: 1px solid gray;
-	margin-bottom: -1px;
+	margin-bottom: 0px;
 }
 #navBar input[type=text] {
 	width: 70%;
@@ -119,11 +121,10 @@ li {
    ---------- */
 
 #frameContainer {
-	width: 78%;
+	width: 77%;
 	height: 100%;
-	border: 1px solid gray;
 	float: left;
-	margin-left: 21px;
+	margin-left: 2%;
 }
 
 #frame {

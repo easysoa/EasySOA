@@ -14,6 +14,21 @@
 		<relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>	
 	</parent>
 
+	<!-- Required for EasyWSDL V3, not used in EasySOA for the moment -->
+	<!--<repositories>
+		<repository>
+			<id>ebm</id>
+			<url>http://maven.petalslink.com/public/</url>
+		</repository>
+	</repositories>-->
+
+	<repositories>
+		<repository>
+			<id>apache</id>
+			<url>https://repository.apache.org/content/groups/public/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -79,12 +94,40 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
+		
 		<!-- EasyWSDL -->
+		<!-- For parsing WSDL and generate HTML form -->
 		<dependency>
 			<groupId>org.ow2.easywsdl</groupId>
 			<artifactId>easywsdl-wsdl</artifactId>
 			<version>2.1</version>
 		</dependency>
+
+		<!-- Apache Woden -->
+		<!-- Alternative solution for parsing WSDL and generate HTML form -->		
+		<dependency>
+    		<groupId>org.apache.woden</groupId>
+    		<artifactId>woden-api</artifactId>
+    		<version>1.0M9</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.apache.woden</groupId>
+    		<artifactId>woden-impl-dom</artifactId>
+    		<version>1.0M9</version>
+		</dependency>		
+		
+		<!-- Don't use this version : no support for WSDL 2 yet -->
+		<!--<dependency>
+			<artifactId>easywsdl11-api</artifactId>
+			<groupId>com.ebmwebsourcing.easywsdl</groupId>
+			<version>3.0_40M1</version>
+		</dependency>
+		<dependency>
+			<artifactId>easywsdl11-impl</artifactId>
+			<groupId>com.ebmwebsourcing.easywsdl</groupId>
+			<version>3.0_40M1</version>
+		</dependency>-->
+		
 		<!-- SOAPUI and required SOAPUI dependencies -->
 		<dependency>
 			<groupId>eviware</groupId>

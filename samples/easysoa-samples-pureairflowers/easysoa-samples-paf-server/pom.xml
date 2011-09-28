@@ -32,51 +32,39 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>create-executable-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<mainClass>pureairflowers.clients.PureAirFlowersServer</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<phase>install</phase>
-						<configuration>
-							<tasks>
-								<mkdir dir="../distrib/pafServices" />
-								<copy todir="../distrib/pafServices" flatten="true"
-									overwrite="true">
-									<fileset dir=".">
-										<filename name="target/*-jar-with-dependencies.jar" />
-									</fileset>
-								</copy>
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- Configuration of maven-assembly-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version><!--$NO-MVN-MAN-VER$ -->
+                <configuration>
+                    <!-- Specifies the configuration file of the assembly plugin -->
+                    <descriptors>
+                        <descriptor>src/main/resources/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+            <!-- Configuration of maven-jar-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+					<!-- Configuration of the archiver -->
+                    <archive>
+						<!-- Manifest specific configuration -->
+		                <manifest>
+							<!-- Classpath is added to the manifest of the created jar file. -->
+                            <addClasspath>true</addClasspath>
+                            <!-- Configures the classpath prefix. This configuration option is 
+                            used to specify that all needed libraries are found under lib/ directory. -->
+                            <classpathPrefix>../lib/</classpathPrefix>
+			    			<!-- Specifies the main class of the application -->
+                            <mainClass>pureairflowers.clients.PureAirFlowersServer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
