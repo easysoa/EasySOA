@@ -34,134 +34,134 @@ import org.json.JSONObject;
 @Produces("application/x-javascript")
 public class ScraperRest {
 
-	@GET
-	public Object doGet() {
-		return "Invalid use.";
-	}
+    @GET
+    public Object doGet() {
+        return "Invalid use.";
+    }
 
-	@GET
-	@Path("/{url:.*}")
-	public Object doGet(@Context UriInfo uriInfo) {
+    @GET
+    @Path("/{url:.*}")
+    public Object doGet(@Context UriInfo uriInfo) {
 
-		List<String> errors = new ArrayList<String>();
-		JSONObject result = new JSONObject();
-		HttpFile f = null;
-		
-		try {
-			
-			// Initialization
-			String url = uriInfo.getRequestUri().toString().substring(uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length()); // TODO remove callback
-			result.put("foundLinks", "");
+        List<String> errors = new ArrayList<String>();
+        JSONObject result = new JSONObject();
+        HttpFile f = null;
+        
+        try {
+            
+            // Initialization
+            String url = uriInfo.getRequestUri().toString().substring(uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length()); // TODO remove callback
+            result.put("foundLinks", "");
 
-			// Web page download
-			f = new HttpFile(url);
-			f.download();
+            // Web page download
+            f = new HttpFile(url);
+            f.download();
 
-			// Web page parsing
-			JSONObject foundLinks = new JSONObject();
-			URL context = new URL(url);
-			HtmlCleaner cleaner = new HtmlCleaner();
-			TagNode cleanHtml = cleaner.clean(f.getFile());
+            // Web page parsing
+            JSONObject foundLinks = new JSONObject();
+            URL context = new URL(url);
+            HtmlCleaner cleaner = new HtmlCleaner();
+            TagNode cleanHtml = cleaner.clean(f.getFile());
 
-			// Find app name / service name
-			TagNode[] titles = cleanHtml.getElementsByName("title", true);
-			if (titles.length > 0) {
-				result.put("applicationName", titles[0].getText().toString());
-			}
+            // Find app name / service name
+            TagNode[] titles = cleanHtml.getElementsByName("title", true);
+            if (titles.length > 0) {
+                result.put("applicationName", titles[0].getText().toString());
+            }
 
-			// Find links
-			Object[] links = cleanHtml.evaluateXPath("//a");
-			for (Object o : links) {
-				TagNode link = (TagNode) o;
-				try {
-					String ref = new URL(context, link
-							.getAttributeByName("href")).toString();
-					String name = (link.getText() != null) ? link.getText()
-							.toString() : ref;
+            // Find links
+            Object[] links = cleanHtml.evaluateXPath("//a");
+            for (Object o : links) {
+                TagNode link = (TagNode) o;
+                try {
+                    String ref = new URL(context, link
+                            .getAttributeByName("href")).toString();
+                    String name = (link.getText() != null) ? link.getText()
+                            .toString() : ref;
 
-					// Truncate if name is an URL (serviceName cannot contain slashes)
-					if (name.contains("/")) {
-						String[] nameParts = name.split("/}");
-						name = nameParts[nameParts.length - 1].replaceAll(
-								"(\\?|\\.|wsdl)", "");
-					}
+                    // Truncate if name is an URL (serviceName cannot contain slashes)
+                    if (name.contains("/")) {
+                        String[] nameParts = name.split("/}");
+                        name = nameParts[nameParts.length - 1].replaceAll(
+                                "(\\?|\\.|wsdl)", "");
+                    }
 
-					// Append digits to the link name if it already exists
-					int i = 1;
-					if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
-						while (foundLinks.has(name)) {
-							name = (i == 1 ? name + i++ : name.substring(0,
-									name.length() - 1))
-									+ i++;
-						}
-						foundLinks.put(name.replaceAll("([\n\r]|[ ]*WSDL|[ ]*wsdl)", "").trim(), ref);
-					}
+                    // Append digits to the link name if it already exists
+                    int i = 1;
+                    if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
+                        while (foundLinks.has(name)) {
+                            name = (i == 1 ? name + i++ : name.substring(0,
+                                    name.length() - 1))
+                                    + i++;
+                        }
+                        foundLinks.put(name.replaceAll("([\n\r]|[ ]*WSDL|[ ]*wsdl)", "").trim(), ref);
+                    }
 
-				} catch (MalformedURLException e) {
-					// Nothing (link parsing failure)
-				}
-			}
-			result.put("foundLinks", foundLinks);
+                } catch (MalformedURLException e) {
+                    // Nothing (link parsing failure)
+                }
+            }
+            result.put("foundLinks", foundLinks);
 
-			changeToAbsolutePath(links, "href", context);
-			changeToAbsolutePath(cleanHtml.evaluateXPath("//script"), "href",
-					context);
-			changeToAbsolutePath(cleanHtml.evaluateXPath("//link"), "href",
-					context);
+            changeToAbsolutePath(links, "href", context);
+            changeToAbsolutePath(cleanHtml.evaluateXPath("//script"), "href",
+                    context);
+            changeToAbsolutePath(cleanHtml.evaluateXPath("//link"), "href",
+                    context);
 
-		} catch (NullPointerException e) {
-			errors.add("Web page parsing failure: "+ e.getMessage());
-		} catch (JSONException e) {
-			errors.add("Cannot append data to JSON object: " + e.getMessage());
-		} catch (XPatherException e) {
-			errors.add("Failed to extract links: " + e.getMessage());
-		} catch (UnsupportedEncodingException e) {
-			 errors.add("Cannot parse url: "+e.getMessage());
-		} catch (MalformedURLException e) {
-			errors.add("Web page download problem: " + e.getMessage());
-		} catch (URISyntaxException e) {
-			errors.add("Invalid URL: " + e.getMessage());
-		} catch (Exception e) {
-			errors.add("Scraping failed: (" + e.getClass().getSimpleName() + ") " + e.getMessage());
-		}
+        } catch (NullPointerException e) {
+            errors.add("Web page parsing failure: "+ e.getMessage());
+        } catch (JSONException e) {
+            errors.add("Cannot append data to JSON object: " + e.getMessage());
+        } catch (XPatherException e) {
+            errors.add("Failed to extract links: " + e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+             errors.add("Cannot parse url: "+e.getMessage());
+        } catch (MalformedURLException e) {
+            errors.add("Web page download problem: " + e.getMessage());
+        } catch (URISyntaxException e) {
+            errors.add("Invalid URL: " + e.getMessage());
+        } catch (Exception e) {
+            errors.add("Scraping failed: (" + e.getClass().getSimpleName() + ") " + e.getMessage());
+        }
 
-		if (f != null) {
-			f.delete();
-		}
-		
-		// Format & send result
-		try {
-			if (!errors.isEmpty()) {
-				for (String error : errors)
-					result.append("error", error);
-			}			
-			return result.toString(2) ;
-		} catch (JSONException e) {
-			errors.add("Cannot format anwser: " + e.getMessage());
-		}
-		
-		// If everything else fails, show errors in plain text
-		StringBuffer html = new StringBuffer();
-		for (String error : errors) {
-			html.append(error);
-		}
-		return html.toString();
-	}
-	
-	private static void changeToAbsolutePath(Object[] tagNodes,
-			String attribute, URL context) {
-		for (Object o : tagNodes) {
-			TagNode tag = (TagNode) o;
-			String attrValue = tag.getAttributeByName(attribute);
-			if ((attrValue != null) && (!attrValue.startsWith("http://"))) {
-				try {
-					tag.setAttribute(attribute, new URL(context, attrValue)
-							.toString());
-				} catch (Exception e) {
-					// Nothing (Could not set attrValue to absolute path)
-				}
-			}
-		}
-	}
+        if (f != null) {
+            f.delete();
+        }
+        
+        // Format & send result
+        try {
+            if (!errors.isEmpty()) {
+                for (String error : errors)
+                    result.append("error", error);
+            }            
+            return result.toString(2) ;
+        } catch (JSONException e) {
+            errors.add("Cannot format anwser: " + e.getMessage());
+        }
+        
+        // If everything else fails, show errors in plain text
+        StringBuffer html = new StringBuffer();
+        for (String error : errors) {
+            html.append(error);
+        }
+        return html.toString();
+    }
+    
+    private static void changeToAbsolutePath(Object[] tagNodes,
+            String attribute, URL context) {
+        for (Object o : tagNodes) {
+            TagNode tag = (TagNode) o;
+            String attrValue = tag.getAttributeByName(attribute);
+            if ((attrValue != null) && (!attrValue.startsWith("http://"))) {
+                try {
+                    tag.setAttribute(attribute, new URL(context, attrValue)
+                            .toString());
+                } catch (Exception e) {
+                    // Nothing (Could not set attrValue to absolute path)
+                }
+            }
+        }
+    }
 
 }

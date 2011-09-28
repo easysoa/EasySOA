@@ -3,11 +3,11 @@
 
   <install>
 
-    <!--  Copie du contenu web -->
+    <!-- Copie du contenu web -->
     <unzip from="${bundle.fileName}" to="/" prefix="web">
       <include>web/nuxeo.war/**</include>
     </unzip>
-    
+
   </install>
-  
+
 </fragment>

@@ -11,12 +11,12 @@ public class EasySOAApp extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-		Set<Class<?>> result = new HashSet<Class<?>>();
-		result.add(EasySOAAppRoot.class);
-		result.add(ScraperRest.class);
-		result.add(NotificationRest.class);
-		result.add(ServiceStatsRest.class);
-		return result;
+        Set<Class<?>> result = new HashSet<Class<?>>();
+        result.add(EasySOAAppRoot.class);
+        result.add(ScraperRest.class);
+        result.add(NotificationRest.class);
+        result.add(ServiceStatsRest.class);
+        return result;
     }
-	
+    
 }

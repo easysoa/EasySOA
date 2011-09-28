@@ -18,74 +18,74 @@ import org.json.JSONObject;
 import org.nuxeo.common.utils.Base64;
 
 public class RestNotificationRequestImpl implements RestNotificationRequest {
-	
-	private static final String LOGIN = "Administrator";
+    
+    private static final String LOGIN = "Administrator";
     private static final String PASSWORD = "Administrator";
 
     private static Log log = LogFactory.getLog(RestNotificationRequestImpl.class);
-	
-	private URL requestUrl;
-	private Map<String, String> requestProperties; 
-	private String method;
-	
-	public RestNotificationRequestImpl(URL requestUrl, String method) throws MalformedURLException {
-		this.requestUrl = requestUrl;
-		this.requestProperties = new HashMap<String, String>();
-		this.method = method;
-	}
-	
-	public RestNotificationRequest setProperty(String property, String value) {
-		requestProperties.put(property, value);
-		return this;
-	}
-	
-	public JSONObject send() throws Exception {
-		
-		// Prepare request
-		String body = method.equals("POST") ? computeRequestBody() : null;
-		String logString = "url= "+requestUrl+", body: "+body;
-		
-		// Send
-		JSONObject result = null;
-		try {
-			result = send(body);
-			if (result == null)
-				throw new Exception();
-		}
-		catch (Exception e) {
-			log.warn("Failed to send the notification due to an external problem (Nuxeo not started?)");
-			return null;
-		}
-		
-		try {
-			// Check result, throw error if necessary
-			if (!result.has("parameters") // Notification doc 
-			        && (!result.has("result") || !result.getString("result").equals("ok"))) { // Notification result
-				log.warn("Failure: "+logString);
-				throw new Exception("Request result is not as expected: '"+result.getString("result")+"'");
-			}
-			log.info("OK: "+logString);
-			return result;
-			
-		} catch (JSONException e) {
-			log.warn("Failure: "+logString);
-			throw new IOException("Response is not formatted as expected", e);
-		}
-		
-	}
-	
-	private String computeRequestBody() {
-		StringBuffer body = new StringBuffer();
-		for (Entry<String, String> entry : requestProperties.entrySet()) {
-			body.append(entry.getKey() + "=" + entry.getValue() + "&");
-		}
-		return body.toString();
-	}
+    
+    private URL requestUrl;
+    private Map<String, String> requestProperties; 
+    private String method;
+    
+    public RestNotificationRequestImpl(URL requestUrl, String method) throws MalformedURLException {
+        this.requestUrl = requestUrl;
+        this.requestProperties = new HashMap<String, String>();
+        this.method = method;
+    }
+    
+    public RestNotificationRequest setProperty(String property, String value) {
+        requestProperties.put(property, value);
+        return this;
+    }
+    
+    public JSONObject send() throws Exception {
+        
+        // Prepare request
+        String body = method.equals("POST") ? computeRequestBody() : null;
+        String logString = "url= "+requestUrl+", body: "+body;
+        
+        // Send
+        JSONObject result = null;
+        try {
+            result = send(body);
+            if (result == null)
+                throw new Exception();
+        }
+        catch (Exception e) {
+            log.warn("Failed to send the notification due to an external problem (Nuxeo not started?)");
+            return null;
+        }
+        
+        try {
+            // Check result, throw error if necessary
+            if (!result.has("parameters") // Notification doc 
+                    && (!result.has("result") || !result.getString("result").equals("ok"))) { // Notification result
+                log.warn("Failure: "+logString);
+                throw new Exception("Request result is not as expected: '"+result.getString("result")+"'");
+            }
+            log.info("OK: "+logString);
+            return result;
+            
+        } catch (JSONException e) {
+            log.warn("Failure: "+logString);
+            throw new IOException("Response is not formatted as expected", e);
+        }
+        
+    }
+    
+    private String computeRequestBody() {
+        StringBuffer body = new StringBuffer();
+        for (Entry<String, String> entry : requestProperties.entrySet()) {
+            body.append(entry.getKey() + "=" + entry.getValue() + "&");
+        }
+        return body.toString();
+    }
 
-	private JSONObject send(String requestBody) throws IOException {
-		
-		// Open connection
-		HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
+    private JSONObject send(String requestBody) throws IOException {
+        
+        // Open connection
+        HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
         connection.setRequestMethod(method);
         connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
         connection.setRequestProperty("Authorization", "Basic " +
@@ -118,12 +118,12 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
             reader.close();
         }
         
-		try {
-			return new JSONObject(answer.toString());
-		} catch (JSONException e) {
-			log.error("Failed to convert response to expected JSON object", e);
-			return null;
-		}
-	}
+        try {
+            return new JSONObject(answer.toString());
+        } catch (JSONException e) {
+            log.error("Failed to convert response to expected JSON object", e);
+            return null;
+        }
+    }
 
 }

@@ -7,43 +7,39 @@
   <require>org.nuxeo.ecm.user.center</require>
   <require>org.nuxeo.ecm.platform.lang</require>
 
-  <!--  Enregistrement du module -->
+  <!-- Enregistrement du module -->
   <extension target="application#MODULE">
     <module>
       <ejb>${bundle.fileName}</ejb>
     </module>
   </extension>
-  
+
   <install>
-  
-    <!--  Copie du contenu web -->
+
+    <!-- Copie du contenu web -->
     <unzip from="${bundle.fileName}" to="/" prefix="web">
       <include>web/nuxeo.war/**</include>
     </unzip>
-    
+
     <unzip from="${bundle.fileName}" to="/">
       <include>themes/**</include>
       <exclude>collections/**</exclude>
     </unzip>
-    
+
     <!-- Copie des traductions -->
-    <delete path="nuxeo.war/easysoa-l10n.tmp"/>
-    <mkdir path="nuxeo.war/easysoa-l10n.tmp"/>
+    <delete path="nuxeo.war/easysoa-l10n.tmp" />
+    <mkdir path="nuxeo.war/easysoa-l10n.tmp" />
     <unzip from="${bundle.fileName}" to="nuxeo.war/easysoa-l10n.tmp">
       <include>**/*.properties</include>
     </unzip>
-    <append 
-      from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages.properties"
-      to="nuxeo.war/WEB-INF/classes/messages.properties"
-      addNewLine="true"/>
-    <append 
-      from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages_fr.properties"
-      to="nuxeo.war/WEB-INF/classes/messages_fr.properties"
-      addNewLine="true"/>
+    <append from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages.properties" to="nuxeo.war/WEB-INF/classes/messages.properties"
+      addNewLine="true" />
+    <append from="nuxeo.war/easysoa-l10n.tmp/OSGI-INF/l10n/messages_fr.properties" to="nuxeo.war/WEB-INF/classes/messages_fr.properties"
+      addNewLine="true" />
     <remove dir="nuxeo.war/easysoa-l10n.tmp" />
-    
+
   </install>
-  
+
   <!-- Pages spécifiques au nouveau mode de navigation virtuelle -->
   <extension target="faces-config#NAVIGATION">
     <navigation-case>
@@ -67,7 +63,7 @@
       <redirect />
     </navigation-case>
   </extension>
-  
+
   <extension target="pages#PAGES">
     <page view-id="/application_virtual_navigation.xhtml">
       breadcrumb=label.virtualnavigation.application
@@ -82,5 +78,5 @@
       breadcrumb=label.easysoa.import.link
     </page>
   </extension>
-  
+
 </fragment>

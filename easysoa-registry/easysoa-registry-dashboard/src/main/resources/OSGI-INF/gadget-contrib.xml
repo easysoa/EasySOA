@@ -2,14 +2,14 @@
 <component name="org.easysoa.gadgets.contrib" version="1.0">
 
   <extension target="org.nuxeo.opensocial.gadgets.service" point="gadget">
-  
+
     <internalGadget name="servicestats">
       <mountPoint>/servicestats</mountPoint>
       <entryPoint>servicestats.xml</entryPoint>
       <category>gadget.category.utilities</category>
       <icon>stats_icon.png</icon>
     </internalGadget>
-    
+
   </extension>
-  
+
 </component>

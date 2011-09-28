@@ -20,52 +20,52 @@ import org.restlet.data.CharacterSet;
  *
  */
 public class HttpFile {
-	
-	private static final int DOWNLOAD_TIMEOUT = 15000;
-	
-	private String url;
-	private File file = null;
+    
+    private static final int DOWNLOAD_TIMEOUT = 15000;
+    
+    private String url;
+    private File file = null;
 
-	public HttpFile(String url) {
-		this.url = url;
-	}
+    public HttpFile(String url) {
+        this.url = url;
+    }
 
-	public HttpFile download() throws MalformedURLException, IOException, URISyntaxException {
-	    HttpURLConnection connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
-		this.file = File.createTempFile("tmp", "tmp");
-		connection.setReadTimeout(DOWNLOAD_TIMEOUT);
-		InputStream is = connection.getInputStream();
-		FileOutputStream fos = new FileOutputStream(this.file);
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,
-				CharacterSet.UTF_8.getName()));
-		int c;
-		try {
-    		while ((c = is.read()) != -1) {
-    			bw.write((char) c);
-    		}
-    		bw.flush();
-		}
-		finally {
-		    bw.close();
-		}
-		return this;
-	}
+    public HttpFile download() throws MalformedURLException, IOException, URISyntaxException {
+        HttpURLConnection connection = ((HttpURLConnection) new URI(this.url).toURL().openConnection());
+        this.file = File.createTempFile("tmp", "tmp");
+        connection.setReadTimeout(DOWNLOAD_TIMEOUT);
+        InputStream is = connection.getInputStream();
+        FileOutputStream fos = new FileOutputStream(this.file);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,
+                CharacterSet.UTF_8.getName()));
+        int c;
+        try {
+            while ((c = is.read()) != -1) {
+                bw.write((char) c);
+            }
+            bw.flush();
+        }
+        finally {
+            bw.close();
+        }
+        return this;
+    }
 
-	public void delete() {
-		if (isDownloaded()) {
-			this.file.delete();
-		}
-	}
+    public void delete() {
+        if (isDownloaded()) {
+            this.file.delete();
+        }
+    }
 
-	public File getFile() {
-		return this.file;
-	}
+    public File getFile() {
+        return this.file;
+    }
 
-	public Blob getBlob() {
-		return isDownloaded() ? new FileBlob(this.file) : null;
-	}
+    public Blob getBlob() {
+        return isDownloaded() ? new FileBlob(this.file) : null;
+    }
 
-	public boolean isDownloaded() {
-		return (this.file != null) && (this.file.exists());
-	}
+    public boolean isDownloaded() {
+        return (this.file != null) && (this.file.exists());
+    }
 }

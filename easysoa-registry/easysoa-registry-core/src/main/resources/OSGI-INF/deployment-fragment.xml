@@ -6,5 +6,5 @@
       <ejb>${bundle.fileName}</ejb>
     </module>
   </extension>
-  
+
 </fragment>

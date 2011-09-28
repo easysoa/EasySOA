@@ -13,34 +13,32 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * Component loaded on Nuxeo startup
  * 
  * @author mkalam-alami
- *
+ * 
  */
 public class EasySOAInitComponent extends DefaultComponent {
 
-	private static Log log = LogFactory.getLog(EasySOAInitComponent.class);
-	
-	public void activate(ComponentContext context) throws Exception {
-		
-		RepositoryManager repoService = Framework.getService(RepositoryManager.class);
-		
+    private static Log log = LogFactory.getLog(EasySOAInitComponent.class);
+
+    public void activate(ComponentContext context) throws Exception {
+
+        RepositoryManager repoService = Framework
+                .getService(RepositoryManager.class);
+
         Repository defaultRepository = repoService.getDefaultRepository();
 
-		// Init default domain
+        // Init default domain
         try {
-	        new DomainInit(defaultRepository.getName()).runUnrestricted();
+            new DomainInit(defaultRepository.getName()).runUnrestricted();
+        } catch (Exception e) {
+            log.warn("Failed to access default repository for initialization: " + e.getMessage());
         }
-        catch (Exception e) {
-	        log.warn("Failed to access default repository for initialization: "+e.getMessage());
-	    }
 
         try {
             new UserInit(defaultRepository.getName()).runUnrestricted(); // Demo: Init users
-        }
-        catch (Exception e) {
-            log.warn("Failed to initialize groups: "+e.getMessage());
+        } catch (Exception e) {
+            log.warn("Failed to initialize groups: " + e.getMessage());
         }
 
-		
-	}
+    }
 
 }

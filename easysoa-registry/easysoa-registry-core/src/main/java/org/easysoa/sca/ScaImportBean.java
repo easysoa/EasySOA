@@ -34,91 +34,91 @@ import org.nuxeo.runtime.api.Framework;
 @Install(precedence = Install.FRAMEWORK)
 public class ScaImportBean {
 
-	private static Log log = LogFactory.getLog(ScaImportBean.class);
+    private static Log log = LogFactory.getLog(ScaImportBean.class);
 
     @In(create = true, required = false)
-	CoreSession documentManager;
+    CoreSession documentManager;
 
-	@In(create = true)
-	NavigationContext navigationContext;
+    @In(create = true)
+    NavigationContext navigationContext;
 
-	List<SelectItem> appliImpls;
-	
-	private Blob compositeFile;
-	
-	private String parentAppliImpl;
-	
-	private String serviceStackType;
-	
-	private String serviceStackUrl;
-	
-	@Create
-	public void init() throws ClientException {
-		compositeFile = null;
-		documentManager = navigationContext.getOrCreateDocumentManager();
-		appliImpls = getAllAppliImplsAsSelectItems(documentManager);
-		serviceStackType = "FraSCAti"; // TODO get it from wizard
-		serviceStackUrl = "/"; // TODO get it from wizard
-		// by choosing a stack (api server) type (frascati...)
-		// (possibly initialized using composite info), then customizing it
-	}
-	
-	public void importSCA() {
+    List<SelectItem> appliImpls;
+    
+    private Blob compositeFile;
+    
+    private String parentAppliImpl;
+    
+    private String serviceStackType;
+    
+    private String serviceStackUrl;
+    
+    @Create
+    public void init() throws ClientException {
+        compositeFile = null;
+        documentManager = navigationContext.getOrCreateDocumentManager();
+        appliImpls = getAllAppliImplsAsSelectItems(documentManager);
+        serviceStackType = "FraSCAti"; // TODO get it from wizard
+        serviceStackUrl = "/"; // TODO get it from wizard
+        // by choosing a stack (api server) type (frascati...)
+        // (possibly initialized using composite info), then customizing it
+    }
+    
+    public void importSCA() {
 
-		if (compositeFile != null) {
-    		
-    		ScaImporter importer;
-    		try {
-    			importer = new ScaImporter(documentManager, compositeFile);
-    			DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
-    			if (parentAppliImpl != null) {
-    				importer.setParentAppliImpl(appliImplModel);
-    			}
-    			if (serviceStackType != null) {
-    				importer.setServiceStackType(serviceStackType);
-    			}
-    			if (serviceStackUrl != null) {
-    				importer.setServiceStackUrl(serviceStackUrl);
-    			}
-    			
-    			importer.importSCA();
-    			
+        if (compositeFile != null) {
+            
+            ScaImporter importer;
+            try {
+                importer = new ScaImporter(documentManager, compositeFile);
+                DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
+                if (parentAppliImpl != null) {
+                    importer.setParentAppliImpl(appliImplModel);
+                }
+                if (serviceStackType != null) {
+                    importer.setServiceStackType(serviceStackType);
+                }
+                if (serviceStackUrl != null) {
+                    importer.setServiceStackUrl(serviceStackUrl);
+                }
+                
+                importer.importSCA();
+                
                 navigationContext.navigateToRef(appliImplModel.getRef());
                 
-    		} catch (Exception e) {
-    			log.error("Failed to import SCA", e);
-    		}
-		
-		}
-	}
-	
-	public List<SelectItem> getAppliImpls() {
-		return appliImpls;
-	}
+            } catch (Exception e) {
+                log.error("Failed to import SCA", e);
+            }
+        
+        }
+    }
+    
+    public List<SelectItem> getAppliImpls() {
+        return appliImpls;
+    }
 
-	public Blob getCompositeFile() {
-		return compositeFile;
-	}
+    public Blob getCompositeFile() {
+        return compositeFile;
+    }
 
-	public void setCompositeFile(Blob compositeFile) {
-		this.compositeFile = compositeFile;
-	}
+    public void setCompositeFile(Blob compositeFile) {
+        this.compositeFile = compositeFile;
+    }
 
-	public String getParentAppliImpl() {
-		return parentAppliImpl;
-	}
+    public String getParentAppliImpl() {
+        return parentAppliImpl;
+    }
 
-	public void setParentAppliImpl(String parentAppliImpl) {
-		this.parentAppliImpl = parentAppliImpl;
-	}
-	
-	private static List<SelectItem> getAllAppliImplsAsSelectItems(CoreSession documentManager) throws ClientException {
-	    
-	    // Gather information
-	    String wsRootId = null;
-	    try {
-	        DocumentService docService = Framework.getService(DocumentService.class);
-	        wsRootId = documentManager.getDocument(docService.getDefaultAppliImpl(documentManager).getParentRef()).getId();
+    public void setParentAppliImpl(String parentAppliImpl) {
+        this.parentAppliImpl = parentAppliImpl;
+    }
+    
+    private static List<SelectItem> getAllAppliImplsAsSelectItems(CoreSession documentManager) throws ClientException {
+        
+        // Gather information
+        String wsRootId = null;
+        try {
+            DocumentService docService = Framework.getService(DocumentService.class);
+            wsRootId = documentManager.getDocument(docService.getDefaultAppliImpl(documentManager).getParentRef()).getId();
         } catch (Exception e) {
             log.error("Failed to retrieve workspace root", e);
         }
@@ -130,19 +130,19 @@ public class ScaImportBean {
         }
         
         // Send query
-		List<SelectItem> appliImplItems = new ArrayList<SelectItem>();
-		DocumentModelList appliImplList = documentManager.query(query);
-		
-		// Transform into wanted format
-		for (DocumentModel appliImpl : appliImplList) {
-			try {
-				appliImplItems.add(new SelectItem(appliImpl.getId(), appliImpl.getTitle()));
-			}
-			catch (Exception e) { 
-				log.warn("Failed to extract data from an AppliImpl");
-			}
-		}
-		return appliImplItems;
-	}
+        List<SelectItem> appliImplItems = new ArrayList<SelectItem>();
+        DocumentModelList appliImplList = documentManager.query(query);
+        
+        // Transform into wanted format
+        for (DocumentModel appliImpl : appliImplList) {
+            try {
+                appliImplItems.add(new SelectItem(appliImpl.getId(), appliImpl.getTitle()));
+            }
+            catch (Exception e) { 
+                log.warn("Failed to extract data from an AppliImpl");
+            }
+        }
+        return appliImplItems;
+    }
 
 }

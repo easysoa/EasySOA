@@ -16,15 +16,15 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  */
 public interface IScaImporter {
 
-	public CoreSession getDocumentManager();
-	/** TODO alas still a tight coupling with the original XML-based importer */
-	public XMLStreamReader getCompositeReader();
+    public CoreSession getDocumentManager();
+    /** TODO alas still a tight coupling with the original XML-based importer */
+    public XMLStreamReader getCompositeReader();
 
-	public Blob getCompositeFile();
-	public String getServiceStackType();
-	public String getServiceStackUrl();
-	public DocumentModel getParentAppliImplModel();
+    public Blob getCompositeFile();
+    public String getServiceStackType();
+    public String getServiceStackUrl();
+    public DocumentModel getParentAppliImplModel();
 
-	public String getCurrentArchiName();
-	public String toCurrentArchiPath();
+    public String getCurrentArchiName();
+    public String toCurrentArchiPath();
 }

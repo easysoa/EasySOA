@@ -3,24 +3,21 @@
 
   <require>org.nuxeo.ecm.webapp.directory.directoryUI</require>
 
-
   <extension target="org.nuxeo.ecm.directory.ui.DirectoryUIManager" point="directories">
-    
+
     <directory name="application" layout="vocabulary" sortField="label" />
     <directory name="environment" layout="vocabulary" sortField="label">
-      <deleteConstraint
-        class="org.nuxeo.ecm.directory.api.ui.HierarchicalDirectoryUIDeleteConstraint">
+      <deleteConstraint class="org.nuxeo.ecm.directory.api.ui.HierarchicalDirectoryUIDeleteConstraint">
         <property name="targetDirectory">server</property>
         <property name="targetDirectoryField">parent</property>
       </deleteConstraint>
     </directory>
     <directory name="server" layout="server_vocabulary" sortField="label" />
-    
+
   </extension>
-  
-  
-  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
-    point="layouts">
+
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
 
     <layout name="server_vocabulary">
       <templates>
@@ -62,7 +59,7 @@
         </properties>
       </widget>
     </layout>
-    
+
   </extension>
 
 </component>

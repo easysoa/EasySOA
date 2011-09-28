@@ -18,14 +18,14 @@ import org.jboss.seam.annotations.Scope;
 @Install(precedence = Install.FRAMEWORK)
 public class PropertyValidatorBean extends EasySOADoctype {
 
-	public void validateUrl(FacesContext context,
-	        UIComponent component, Object value) {
-	    try {
-	        new URL((String) value);
-	    }
-	    catch (MalformedURLException e) {
-	        throw new ValidatorException(new FacesMessage("Invalid URL"), e);
-	    }
-	}
-	
+    public void validateUrl(FacesContext context,
+            UIComponent component, Object value) {
+        try {
+            new URL((String) value);
+        }
+        catch (MalformedURLException e) {
+            throw new ValidatorException(new FacesMessage("Invalid URL"), e);
+        }
+    }
+    
 }

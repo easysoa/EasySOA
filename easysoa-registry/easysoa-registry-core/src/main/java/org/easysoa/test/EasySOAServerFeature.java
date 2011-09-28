@@ -21,7 +21,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  */
 @Deploy({
     "org.easysoa.registry.core",
-	"org.nuxeo.runtime.jetty"
+    "org.nuxeo.runtime.jetty"
 })
 @Features(/*webenginefeature TODO move in -rest and rename *Rest* */ NuxeoFeatureBase.class)
 public class EasySOAServerFeature extends SimpleFeature {

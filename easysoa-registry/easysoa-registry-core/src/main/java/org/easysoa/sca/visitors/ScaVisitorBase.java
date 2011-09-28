@@ -16,21 +16,21 @@ import org.nuxeo.runtime.api.Framework;
 // TODO: Refactor visitor implementations
 public abstract class ScaVisitorBase implements ScaVisitor {
 
-	protected CoreSession documentManager;
-	protected ScaImporter scaImporter;
-	protected XMLStreamReader compositeReader;
-	protected NotificationService notificationService;
-	
-	public ScaVisitorBase(ScaImporter scaImporter) {
-		this.documentManager = scaImporter.getDocumentManager();
-		this.scaImporter = scaImporter;
-		this.compositeReader = scaImporter.getCompositeReader();
-		this.notificationService = Framework.getRuntime().getService(NotificationService.class);
-	}
-	
-	@Override
-	public String getDescription() {
-		return this.toString();
-	}
+    protected CoreSession documentManager;
+    protected ScaImporter scaImporter;
+    protected XMLStreamReader compositeReader;
+    protected NotificationService notificationService;
+    
+    public ScaVisitorBase(ScaImporter scaImporter) {
+        this.documentManager = scaImporter.getDocumentManager();
+        this.scaImporter = scaImporter;
+        this.compositeReader = scaImporter.getCompositeReader();
+        this.notificationService = Framework.getRuntime().getService(NotificationService.class);
+    }
+    
+    @Override
+    public String getDescription() {
+        return this.toString();
+    }
 
 }

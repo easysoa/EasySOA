@@ -22,10 +22,10 @@
         renderStats(response.data);
       }
       jQuery(document).ready(function(){
-      	var params = new Array();
-		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+        var params = new Array();
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
         gadgets.io.makeRequest("http://localhost:8080/nuxeo/site/easysoa/stats",
-        	handleJSONResponse, params, 1);
+          handleJSONResponse, params, 1);
       });
     </script>
 

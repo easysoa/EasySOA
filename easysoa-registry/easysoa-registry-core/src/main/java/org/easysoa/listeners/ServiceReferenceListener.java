@@ -26,51 +26,51 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public class ServiceReferenceListener implements EventListener {
-	
-	private static Log log = LogFactory.getLog(ServiceReferenceListener.class);
+    
+    private static Log log = LogFactory.getLog(ServiceReferenceListener.class);
 
-	public void handleEvent(Event event) {
-		
-		// Check event type
-		EventContext ctx = event.getContext();
-		if (!(ctx instanceof DocumentEventContext)) {
-			return;
-		}
-		
-		CoreSession session = ctx.getCoreSession();
-		DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
-		
-		// Check document type
-		if (doc == null) {
-			return;
-		}
-		String type = doc.getType();
-		if (!type.equals(DOCTYPE)) {
-			return;
-		}
-		
-		try {
+    public void handleEvent(Event event) {
+        
+        // Check event type
+        EventContext ctx = event.getContext();
+        if (!(ctx instanceof DocumentEventContext)) {
+            return;
+        }
+        
+        CoreSession session = ctx.getCoreSession();
+        DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
+        
+        // Check document type
+        if (doc == null) {
+            return;
+        }
+        String type = doc.getType();
+        if (!type.equals(DOCTYPE)) {
+            return;
+        }
+        
+        try {
 
-			DocumentService docService = Framework.getService(DocumentService.class);
-			NotificationService notifService = Framework.getService(NotificationService.class);
-			
-			// Create service from WSDL if it doesn't exist
-			String refUrl = (String) doc.getProperty(SCHEMA, PROP_REFURL);
-			if (refUrl != null && !refUrl.isEmpty()) {
-				DocumentModel referenceService = docService.findService(session, refUrl);
-				if (referenceService == null) {
-					Map<String, String> properties = new HashMap<String, String>();
-					properties.put(Service.PROP_URL, refUrl);
-					notifService.notifyService(session, properties);
-				}
-			}
-			
-			session.save();
-			
-		} catch (Exception e) {
-			log.error("Error while parsing WSDL", e);
-		}
-		
-	}
-	
+            DocumentService docService = Framework.getService(DocumentService.class);
+            NotificationService notifService = Framework.getService(NotificationService.class);
+            
+            // Create service from WSDL if it doesn't exist
+            String refUrl = (String) doc.getProperty(SCHEMA, PROP_REFURL);
+            if (refUrl != null && !refUrl.isEmpty()) {
+                DocumentModel referenceService = docService.findService(session, refUrl);
+                if (referenceService == null) {
+                    Map<String, String> properties = new HashMap<String, String>();
+                    properties.put(Service.PROP_URL, refUrl);
+                    notifService.notifyService(session, properties);
+                }
+            }
+            
+            session.save();
+            
+        } catch (Exception e) {
+            log.error("Error while parsing WSDL", e);
+        }
+        
+    }
+    
 }

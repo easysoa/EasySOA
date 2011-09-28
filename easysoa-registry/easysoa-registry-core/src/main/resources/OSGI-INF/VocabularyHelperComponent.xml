@@ -6,5 +6,5 @@
   <service>
     <provide interface="org.easysoa.services.VocabularyHelper" />
   </service>
-  
+
 </component>

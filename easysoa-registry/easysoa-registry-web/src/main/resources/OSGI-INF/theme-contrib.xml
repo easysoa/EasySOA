@@ -1,36 +1,36 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.web.theme.contrib">
 
-	<require>org.nuxeo.theme.nuxeo.default</require>
-	<require>org.nuxeo.theme.nuxeo.virtualnavigation</require>
+  <require>org.nuxeo.theme.nuxeo.default</require>
+  <require>org.nuxeo.theme.nuxeo.virtualnavigation</require>
 
-  	<extension target="org.nuxeo.theme.services.ThemeService" point="views">
-  		<!-- EasySOA CSS -->
-	    <view name="nuxeo5 includes" template-engine="jsf-facelets" merge="true">
-	      <format-type>widget</format-type>
-	      <resource>easysoa.css</resource>
-	    </view>
-	    
-	    <!-- Overwrite widgets to disable caching (XXX: doesn't work?) -->
-	     <view name="nuxeo5 tree explorer" template-engine="jsf-facelets">
-	      <format-type>widget</format-type>
-	      <template>incl/easysoa_tree_explorer_with_virtual_nav.xhtml</template>
-      	  <mode>no-cache</mode><!-- EasySOA -->
-	    </view>
-	    <view name="nuxeo5 breadcrumbs" template-engine="jsf-facelets">
-	      <format-type>widget</format-type>
-	      <template>incl/easysoa_breadcrumb_vn.xhtml</template>
-      	  <mode>no-cache</mode><!-- EasySOA -->
-	    </view>
-	    
-	 </extension>
-	 
-	 <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
-	    <resource name="easysoa.css">
-	      <path>css/easysoa.css</path>
-	    </resource>
-	 </extension>
-	 
-	 
-    
+  <extension target="org.nuxeo.theme.services.ThemeService" point="views">
+    <!-- EasySOA CSS -->
+    <view name="nuxeo5 includes" template-engine="jsf-facelets" merge="true">
+      <format-type>widget</format-type>
+      <resource>easysoa.css</resource>
+    </view>
+
+    <!-- Overwrite widgets to disable caching (XXX: doesn't work?) -->
+    <view name="nuxeo5 tree explorer" template-engine="jsf-facelets">
+      <format-type>widget</format-type>
+      <template>incl/easysoa_tree_explorer_with_virtual_nav.xhtml</template>
+      <mode>no-cache</mode><!-- EasySOA -->
+    </view>
+    <view name="nuxeo5 breadcrumbs" template-engine="jsf-facelets">
+      <format-type>widget</format-type>
+      <template>incl/easysoa_breadcrumb_vn.xhtml</template>
+      <mode>no-cache</mode><!-- EasySOA -->
+    </view>
+
+  </extension>
+
+  <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
+    <resource name="easysoa.css">
+      <path>css/easysoa.css</path>
+    </resource>
+  </extension>
+
+
+
 </component>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.core.contrib.actions">
-  
-  <!--  Rights by groups (XXX: Doesn't work) -->
+
+  <!-- Rights by groups (XXX: Doesn't work) -->
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
     <filter id="not_for_business_users">
       <rule grant="true">
@@ -9,37 +9,37 @@
       </rule>
     </filter>
   </extension>
-  
+
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
-  
- 	<!-- Disable unused tabs -->
- 	<action id="TAB_RELATIONS" enabled="false" />
+
+    <!-- Disable unused tabs -->
+    <action id="TAB_RELATIONS" enabled="false" />
    <!-- <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" />
     <action id="view_comments" enabled="false" />
     <action id="TAB_CONTENT_HISTORY" enabled="false" />
     <action id="TAB_PREVIEW" enabled="false" />
     <action id="TAB_MANAGE" enabled="false" />-->
-    
- 	<!-- SCA Import page -->
+
+    <!-- SCA Import page -->
     <action id="easysoaImport" link="sca_import_form" label="label.easysoa.import.link">
-        <category>USER_SERVICES</category>
-        <filter-id>not_for_business_users"</filter-id>
+      <category>USER_SERVICES</category>
+      <filter-id>not_for_business_users"</filter-id>
     </action>
-    
- 	<!-- SCA Import button -->
+
+    <!-- SCA Import button -->
     <action id="easysoaImportSubmit" link="#{easysoaImport.importSCA}" label="label.easysoa.import.button">
-        <category>EASYSOA_IMPORT</category>
+      <category>EASYSOA_IMPORT</category>
     </action>
-    
+
   </extension>
-  
+
   <!-- Enable "new" button for custom folder types -->
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
-  	<filter id="create">
-        <rule grant="true">
-            <type>ServiceAPI</type>
-            <type>Workspace</type>
-        </rule>
+    <filter id="create">
+      <rule grant="true">
+        <type>ServiceAPI</type>
+        <type>Workspace</type>
+      </rule>
     </filter>
   </extension>
 

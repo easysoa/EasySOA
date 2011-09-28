@@ -25,102 +25,102 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public abstract class AbstractRestTest {
-	
-	protected static AutomationHelper automation = null;
-	protected static RestNotificationFactory notificationFactory = null;
-	protected static boolean useEmbeddedNuxeo;
+    
+    protected static AutomationHelper automation = null;
+    protected static RestNotificationFactory notificationFactory = null;
+    protected static boolean useEmbeddedNuxeo;
 
     private static Log log = LogFactory.getLog(AbstractRestTest.class);
-	private static Object notificationFactorySync = new Object();
+    private static Object notificationFactorySync = new Object();
 
-	protected static void setUp(CoreSession session, String targetedNuxeoPropsPath) throws Exception {
-		
-	    synchronized (notificationFactorySync) {
-	    
-		// Run only once
-		if (notificationFactory != null) {
-			return;
-		}
-		
-		// Load properties
-		/**
-		 * Nuxeo props file exemple:
-			"useExistingNuxeo = true
-			existingNuxeoHost = localhost
-			existingNuxeoPort = 8080
-			embeddedNuxeoPort = 9980" 
-		 */
-		FileInputStream isProps = new FileInputStream(targetedNuxeoPropsPath);
-		Properties props = new Properties();
-		try {
-		    props.load(isProps);
-		}
-		finally {
-		    isProps.close();
-		}
-		
-		// Read properties
-		String externalNuxeoHost = props.getProperty("externalNuxeoHost");
-		String externalNuxeoPort = props.getProperty("externalNuxeoPort");
-		String embeddedNuxeoPort = props.getProperty("embeddedNuxeoPort");
-		
-		String useEmbeddedNuxeoString = props.getProperty("useEmbeddedNuxeo");
-		if (useEmbeddedNuxeoString != null && useEmbeddedNuxeoString.equals("false")) {
-			log.info("Running test on external Nuxeo");
-			useEmbeddedNuxeo = false;
-		}
-		else {
-			log.info("Running test on embedded Nuxeo");
-			useEmbeddedNuxeo = true;
-		}
-		
-		// Create testing objects
-		String nuxeoUrl = null;
-		if (useEmbeddedNuxeo) {
-			nuxeoUrl = "http://localhost:"+embeddedNuxeoPort;
-		}
-		else {
-			if (externalNuxeoHost == null || externalNuxeoPort == null) {
-				log.warn("Invalid Nuxeo location, using default: "+
-						RestNotificationFactory.NUXEO_URL_LOCALHOST);
-				nuxeoUrl = RestNotificationFactory.NUXEO_URL_LOCALHOST;
-			}
-			else {
-				nuxeoUrl = "http://"+externalNuxeoHost+":"+externalNuxeoPort+"/nuxeo/site";
-			}
-			// Could also be deployed with the existing Nuxeo,
-			// if the automation bundles were correctly deployed & configured.
-			automation = new AutomationHelper(nuxeoUrl);
-		}
-		notificationFactory = new RestNotificationFactory(nuxeoUrl);
+    protected static void setUp(CoreSession session, String targetedNuxeoPropsPath) throws Exception {
+        
+        synchronized (notificationFactorySync) {
+        
+        // Run only once
+        if (notificationFactory != null) {
+            return;
+        }
+        
+        // Load properties
+        /**
+         * Nuxeo props file exemple:
+            "useExistingNuxeo = true
+            existingNuxeoHost = localhost
+            existingNuxeoPort = 8080
+            embeddedNuxeoPort = 9980" 
+         */
+        FileInputStream isProps = new FileInputStream(targetedNuxeoPropsPath);
+        Properties props = new Properties();
+        try {
+            props.load(isProps);
+        }
+        finally {
+            isProps.close();
+        }
+        
+        // Read properties
+        String externalNuxeoHost = props.getProperty("externalNuxeoHost");
+        String externalNuxeoPort = props.getProperty("externalNuxeoPort");
+        String embeddedNuxeoPort = props.getProperty("embeddedNuxeoPort");
+        
+        String useEmbeddedNuxeoString = props.getProperty("useEmbeddedNuxeo");
+        if (useEmbeddedNuxeoString != null && useEmbeddedNuxeoString.equals("false")) {
+            log.info("Running test on external Nuxeo");
+            useEmbeddedNuxeo = false;
+        }
+        else {
+            log.info("Running test on embedded Nuxeo");
+            useEmbeddedNuxeo = true;
+        }
+        
+        // Create testing objects
+        String nuxeoUrl = null;
+        if (useEmbeddedNuxeo) {
+            nuxeoUrl = "http://localhost:"+embeddedNuxeoPort;
+        }
+        else {
+            if (externalNuxeoHost == null || externalNuxeoPort == null) {
+                log.warn("Invalid Nuxeo location, using default: "+
+                        RestNotificationFactory.NUXEO_URL_LOCALHOST);
+                nuxeoUrl = RestNotificationFactory.NUXEO_URL_LOCALHOST;
+            }
+            else {
+                nuxeoUrl = "http://"+externalNuxeoHost+":"+externalNuxeoPort+"/nuxeo/site";
+            }
+            // Could also be deployed with the existing Nuxeo,
+            // if the automation bundles were correctly deployed & configured.
+            automation = new AutomationHelper(nuxeoUrl);
+        }
+        notificationFactory = new RestNotificationFactory(nuxeoUrl);
 
         }
-	}
+    }
 
-	protected void assertDocumentExists(CoreSession session, String doctype, String url) throws Exception {
-		if (useEmbeddedNuxeo && session != null) {
-			DocumentService docService = Framework.getService(DocumentService.class);
-			DocumentModel model = null;
-			// TODO DocumentService refactoring
-			if (AppliImpl.DOCTYPE.equals(doctype)) {
-				model = docService.findAppliImpl(session, url);
-			}
-			else if (ServiceAPI.DOCTYPE.equals(doctype)) {
-				model = docService.findServiceApi(session, url);
-			}
-			else if (Service.DOCTYPE.equals(doctype)) {
-				model = docService.findService(session, url);
-			}
-			else if (ServiceReference.DOCTYPE.equals(doctype)) {
-				model = docService.findServiceReference(session, url);
-			}
-			assertNotNull(model);
-		}
-		else if (automation != null) {
-			assertFalse(automation.findDocumentByUrl(doctype, url).isEmpty());
-		}
-		else {
-			fail("Cannot access repository");
-		}
-	}
+    protected void assertDocumentExists(CoreSession session, String doctype, String url) throws Exception {
+        if (useEmbeddedNuxeo && session != null) {
+            DocumentService docService = Framework.getService(DocumentService.class);
+            DocumentModel model = null;
+            // TODO DocumentService refactoring
+            if (AppliImpl.DOCTYPE.equals(doctype)) {
+                model = docService.findAppliImpl(session, url);
+            }
+            else if (ServiceAPI.DOCTYPE.equals(doctype)) {
+                model = docService.findServiceApi(session, url);
+            }
+            else if (Service.DOCTYPE.equals(doctype)) {
+                model = docService.findService(session, url);
+            }
+            else if (ServiceReference.DOCTYPE.equals(doctype)) {
+                model = docService.findServiceReference(session, url);
+            }
+            assertNotNull(model);
+        }
+        else if (automation != null) {
+            assertFalse(automation.findDocumentByUrl(doctype, url).isEmpty());
+        }
+        else {
+            fail("Cannot access repository");
+        }
+    }
 }

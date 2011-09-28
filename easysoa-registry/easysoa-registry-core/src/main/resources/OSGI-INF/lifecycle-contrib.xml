@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.core.contrib.lifecycle">
 
-	<!-- Create EasySOA-specific lifecycle -->
-	<extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="lifecycle">
-		 <lifecycle name="easysoa" defaultInitial="found">
-	      <transitions>
-	        <transition destinationState="approved" name="approve">
-	          <description>Approve the content</description>
-	        </transition>
-	        <transition destinationState="obsolete" name="obsolete">
-	          <description>Content becomes obsolete</description>
-	        </transition>
-	        <transition destinationState="deleted" name="delete">
-	          <description>Move document to trash (temporary delete)</description>
-	        </transition>
-	      </transitions>
-	      <states>
-	        <state name="found" description="Automatically or unverified found information" initial="true">
-	          <transitions>
-	            <transition>approve</transition>
-	            <transition>obsolete</transition>
-	            <transition>delete</transition>
-	          </transitions>
-	        </state>
-	        <state name="approved" description="Content has been user-validated">
-	          <transitions>
-	            <transition>delete</transition>
-	            <transition>backToProject</transition>
-	          </transitions>
-	        </state>
-	        <state name="obsolete" description="Content is obsolete">
-	          <transitions>
-	            <transition>delete</transition>
-	            <transition>approve</transition>
-	          </transitions>
-	        </state>
-	        <state name="deleted" description="Document is deleted">
-	          <transitions>
-	            <transition>undelete</transition>
-	          </transitions>
-	        </state>
-	      </states>
-	    </lifecycle>
-	</extension>
-	
-	<!-- Assign custom document types to the EasySOA lifecycle -->
-	<extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
-		<types>
-		  <type name="Service">easysoa</type>
-		  <type name="ServiceAPI">easysoa</type>
-		  <type name="ServiceReference">easysoa</type>
-		  <type name="Workspace">easysoa</type>
-		</types>
-	</extension>
-	
+  <!-- Create EasySOA-specific lifecycle -->
+  <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="lifecycle">
+    <lifecycle name="easysoa" defaultInitial="found">
+      <transitions>
+        <transition destinationState="approved" name="approve">
+          <description>Approve the content</description>
+        </transition>
+        <transition destinationState="obsolete" name="obsolete">
+          <description>Content becomes obsolete</description>
+        </transition>
+        <transition destinationState="deleted" name="delete">
+          <description>Move document to trash (temporary delete)</description>
+        </transition>
+      </transitions>
+      <states>
+        <state name="found" description="Automatically or unverified found information" initial="true">
+          <transitions>
+            <transition>approve</transition>
+            <transition>obsolete</transition>
+            <transition>delete</transition>
+          </transitions>
+        </state>
+        <state name="approved" description="Content has been user-validated">
+          <transitions>
+            <transition>delete</transition>
+            <transition>backToProject</transition>
+          </transitions>
+        </state>
+        <state name="obsolete" description="Content is obsolete">
+          <transitions>
+            <transition>delete</transition>
+            <transition>approve</transition>
+          </transitions>
+        </state>
+        <state name="deleted" description="Document is deleted">
+          <transitions>
+            <transition>undelete</transition>
+          </transitions>
+        </state>
+      </states>
+    </lifecycle>
+  </extension>
+
+  <!-- Assign custom document types to the EasySOA lifecycle -->
+  <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
+    <types>
+      <type name="Service">easysoa</type>
+      <type name="ServiceAPI">easysoa</type>
+      <type name="ServiceReference">easysoa</type>
+      <type name="Workspace">easysoa</type>
+    </types>
+  </extension>
+
 </component>
