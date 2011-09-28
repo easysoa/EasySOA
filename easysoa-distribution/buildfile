@@ -222,18 +222,24 @@ task :packageall do # TODO Less messy code
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps' # Conflicting with the Light trip proxy if put in lib/
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   
-  puts "  * FraSCAti applications & PAF services..."
-  cp_r FileList[project(EASYSOA_PAF).base_dir+'/distrib/*'], PACKAGING_OUTPUT_PATH
+  puts "  * FraSCAti applications..."
   cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-service-ui-scaffolder-proxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_PAF).base_dir+"/easysoa-samples-paf-restsoapproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   
+  puts "  * PAF services..."
+  mkdir_p 'tmp'
+  mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
+  system 'unzip', '-q', '-o', FileList[project(EASYSOA_PAF).base_dir+'/easysoa-samples-paf-server/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
+  mv FileList['tmp/easysoa-*/*'], PACKAGING_OUTPUT_PATH+'/pafServices'
+  
   puts "  * Travel backup services..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'  
-  system 'unzip', '-q', '-o', FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+'/target/*-bin.zip'].to_s # XXX Linux-dependent
-  cp_r FileList['easysoa-samples-smarttravel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
-  rm_rf FileList['easysoa-samples-smarttravel-services-backup*']
+  system 'unzip', '-q', '-o', FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+'/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
+  cp_r FileList['tmp/easysoa-samples-smarttravel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
+  rm_rf FileList['tmp/easysoa-samples-smarttravel-services-backup*']
+  rm_rf 'tmp'
   
   # Copying Nuxeo
   puts "Copying service registry (Nuxeo)..."
