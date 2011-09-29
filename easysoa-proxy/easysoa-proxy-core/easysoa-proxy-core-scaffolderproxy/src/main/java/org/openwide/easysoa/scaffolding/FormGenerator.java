@@ -10,8 +10,5 @@ public interface FormGenerator {
 	 * @throws Exception
 	 */
 	public String generateHtmlFormFromWsdl(String wsdlXmlSource, String formWsdlXmlSource, String xsl, String html) /*throws Exception*/;
-
-	
-	
 	
 }

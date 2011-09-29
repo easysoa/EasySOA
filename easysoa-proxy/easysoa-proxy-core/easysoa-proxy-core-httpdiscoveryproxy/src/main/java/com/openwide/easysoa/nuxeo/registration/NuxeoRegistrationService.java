@@ -68,7 +68,7 @@ public class NuxeoRegistrationService {
 		body.append("&callcount=");
 		body.append(service.getCallCount());
 		body.append("&title=");
-		body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash // TODO MDU better
+		body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash TODO MDU better i.e. when getting title
 		body.append("&contentTypeOut=");
 		body.append(service.getContentTypeOut());
 		body.append("&contentTypeIn=");
