@@ -15,29 +15,29 @@
   <!-- Form generator component -->
   <!--<component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.FormGenerator"/>
+      <interface.java interface="org.openwide.easysoa.scaffolding.TransformationFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.XsltFormGenerator"/>
 	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
   </component>-->
   
   <!-- Form generator for test with EasyWSDL -->
-  <!--<component name="formGeneratorComponent">
+  <component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.FormGeneratorItf"/>
+      <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.EasyWsdlFormGenerator"/>
 	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
-  </component>-->
+  </component>
 
   <!-- Form generator for test with apache Woden -->
-  <component name="formGeneratorComponent">
+  <!--<component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.FormGeneratorGenericInterface"/>
+      <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.WodenFormGenerator"/>
 	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
-  </component>
+  </component>-->
   
   <!-- Rest Soap Proxy  -->
   <component name="restSoapProxyComponent">

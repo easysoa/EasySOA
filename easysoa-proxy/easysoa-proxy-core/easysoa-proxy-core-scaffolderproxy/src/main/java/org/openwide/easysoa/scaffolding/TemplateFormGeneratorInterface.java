@@ -1,11 +1,10 @@
 package org.openwide.easysoa.scaffolding;
 
 import java.util.List;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
 
-import org.apache.woden.wsdl20.BindingOperation;
-import org.apache.woden.wsdl20.Endpoint;
-
-public interface FormGeneratorGenericInterface {
+public interface TemplateFormGeneratorInterface {
 
 	/**
 	 * Set the WSDl to parse : First thing to do before to call the other methods
@@ -23,48 +22,48 @@ public interface FormGeneratorGenericInterface {
 	 * Returns the list of endpoints (or ports)
 	 * @return
 	 */
-	public List<Endpoint> getEndpoints();
+	public List<WSEndpoint> getEndpoints();
 	
 	/**
 	 * 
 	 * @param endpoint
 	 * @return
 	 */
-	public String getBindingName(Endpoint endpoint);
+	public String getBindingName(WSEndpoint wsEndpoint);
 	
 	/**
 	 * 
 	 * @param endpoint
 	 * @return
 	 */
-	public List<BindingOperation> getOperations(Endpoint endpoint);
+	public List<WSOperation> getOperations(WSEndpoint wsEndpoint);
 	
 	/**
 	 * 
 	 * @param operation
 	 * @return
 	 */
-	public String getOperationName(BindingOperation operation);
+	public String getOperationName(WSOperation wsOperation);
 
 	/**
 	 * 
 	 * @param bindingOperation
 	 * @return
 	 */
-	public String getOutputMessageName(BindingOperation bindingOperation);	
+	public String getOutputMessageName(WSEndpoint wsEndpoint, WSOperation wsOperation);	
 	
 	/**
 	 * 
 	 * @param bindingOperation
 	 * @return
 	 */
-	public List<String> getInputFields(BindingOperation bindingOperation);
+	public List<String> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation);
 	
 	/**
 	 * 
 	 * @param bindingOperation
 	 * @return
 	 */
-	public List<String> getOutputFields(BindingOperation bindingOperation);	
+	public List<String> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation);	
 	
 }

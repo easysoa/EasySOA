@@ -1,11 +1,14 @@
 package org.openwide.easysoa.scaffolding;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Scope;
 import org.ow2.easywsdl.schema.api.ComplexType;
@@ -32,7 +35,7 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
 // TODO return all the bindings contained in the WSDL, not only the first
 // TODO return the field type for the HTML form, for now all the fiels are tagged as String (Hardcoded in the velocity template) 
 @Scope("COMPOSITE")
-public class EasyWsdlFormGenerator implements FormGeneratorItf {
+public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormGeneratorInterface  {
 
 	/**
 	 * Logger
@@ -45,7 +48,7 @@ public class EasyWsdlFormGenerator implements FormGeneratorItf {
 	//TODO : Only for the Airport Talend Tuto Hack
 	@Property
 	String defaultWsdl;	
-
+	
 	@Override
 	public void setWsdl(String wsdlSource) throws Exception {
 		// Read a WSDL 1.1 or 2.0
@@ -71,50 +74,83 @@ public class EasyWsdlFormGenerator implements FormGeneratorItf {
 	}
 	
 	@Override
-	public List<Endpoint> getEndpoints(){
+	public List<WSEndpoint> getEndpoints(){
 		logger.debug("Entering in getEndpoints method");
-		List<Endpoint> endpointList = wsdlDescription.getServices().get(0).getEndpoints();
+		ArrayList<WSEndpoint> endpointList = new ArrayList<WSEndpoint>();
+		//List<Endpoint> endpointList = wsdlDescription.getServices().get(0).getEndpoints();
+		for(Endpoint endpoint : wsdlDescription.getServices().get(0).getEndpoints()){
+			try {
+				endpointList.add(new WSEndpoint(endpoint.getName(), new URI(endpoint.getAddress())));
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
 		return endpointList;
 	}
 	
 	@Override
-	public String getBindingName(Endpoint endpoint){
+	public String getBindingName(WSEndpoint wsEndpoint){
 		logger.debug("Entering in getBindingName method");				
-		return endpoint.getBinding().getQName().getLocalPart();
+		return wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getQName().getLocalPart();
+		//return endpoint.getBinding().getQName().getLocalPart();
 	}
 	
 	@Override
-	public List<BindingOperation> getOperations(Endpoint endpoint){
+	public List<WSOperation> getOperations(WSEndpoint wsEndpoint){
 		logger.debug("Entering in getOperations method");
-		return endpoint.getBinding().getBindingOperations();
+		ArrayList<WSOperation> wsOperationList = new ArrayList<WSOperation>();
+		/*return endpoint.getBinding().getBindingOperations();*/
+		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
+			wsOperationList.add(new WSOperation(bindingOperation.getQName()));
+		}
+		return wsOperationList;
 	}
 	
 	@Override
-	public String getOperationName(BindingOperation bindingOperation) {
+	public String getOperationName(WSOperation wsOperation) {
 		logger.debug("Entering in getOperatioName method");
-		return bindingOperation.getQName().getLocalPart();
-	}
-	
-	@Override
-	public List<String> getInputFields(BindingOperation bindingOperation) {
-		logger.debug("Entering in getInputFields method");
-		logger.debug("BindingOperation : " + bindingOperation);
-		logger.debug("Input : " + bindingOperation.getOperation().getInput().getName());
-		List<Part> partList = bindingOperation.getOperation().getInput().getParts();
-		return getFields(partList);
-	}
-	
-	@Override
-	public List<String> getOutputFields(BindingOperation bindingOperation) {
-		logger.debug("Entering in getOutputFields method");	
-		List<Part> partList = bindingOperation.getOperation().getOutput().getParts();
-		return getFields(partList);
+		/*return bindingOperation.getQName().getLocalPart();*/
+		return wsOperation.getName();
 	}
 
 	@Override
-	public String getOutputMessageName(BindingOperation bindingOperation) {
+	public String getOutputMessageName(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName method");
-		return bindingOperation.getOperation().getOutput().getName();
+		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
+			if(bindingOperation.getQName().equals(wsOperation.getQName())){
+				return bindingOperation.getOperation().getOutput().getName();
+			}
+		}
+		/*return bindingOperation.getOperation().getOutput().getName();*/
+		return "";
+	}	
+	
+	@Override
+	public List<String> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
+		logger.debug("Entering in getInputFields method");
+		List<Part> partList = new ArrayList<Part>();
+		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
+			if(bindingOperation.getQName().equals(wsOperation.getQName())){
+				partList = bindingOperation.getOperation().getInput().getParts();
+			}
+		}
+		//logger.debug("Input : " + bindingOperation.getOperation().getInput().getName());
+		//List<Part> partList = bindingOperation.getOperation().getInput().getParts();
+		return getFields(partList);
+	}
+	
+	@Override
+	public List<String> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
+		logger.debug("Entering in getOutputFields method");	
+		List<Part> partList = new ArrayList<Part>();
+		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
+			if(bindingOperation.getQName().equals(wsOperation.getQName())){
+				partList = bindingOperation.getOperation().getOutput().getParts();
+			}
+		}
+		//List<Part> partList = bindingOperation.getOperation().getOutput().getParts();
+		return getFields(partList);
 	}
 	
 	/**
@@ -143,37 +179,12 @@ public class EasyWsdlFormGenerator implements FormGeneratorItf {
 								List<Element> elementList = typ.getSequence().getElements();
 								for(Element element : elementList){
 									logger.debug("element found : " + element.getQName().getLocalPart());
-		
-									// To find attribute list, only for dev !!
-									/*
-									try {
-										Map<QName, String> attributes = element.getOtherAttributes();
-										for(QName key : attributes.keySet()){
-											System.out.println("attribute : (" + key + "," + attributes.get(key) + ")");								
-										}
-									} catch (XmlException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}*/
-									
 									elementNameList.add(element.getQName().getLocalPart());
 								}
 							}
 						} else if(elementType instanceof SimpleType) {
 							//logger.debug("SimpleType found ...");
 							SimpleType typ = (SimpleType) elementType;
-		
-							// To find attribute list, only for dev !!
-							/*try {
-								Map<QName, String> attributes = typ.getOtherAttributes();
-								for(QName key : attributes.keySet()){
-									System.out.println("attribute : (" + key + "," + attributes.get(key) + ")");								
-								}
-							} catch (XmlException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}*/
-							
 							logger.debug("element found : " + typ.getQName().getLocalPart());
 							elementNameList.add(typ.getQName().getLocalPart());
 						}

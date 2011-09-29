@@ -1,6 +1,6 @@
 package org.openwide.easysoa.scaffolding;
 
-public interface FormGenerator {
+public interface TransformationFormGeneratorInterface {
 
 	/**
 	 * Generate an HTML form from a WSDL file
@@ -10,5 +10,6 @@ public interface FormGenerator {
 	 * @throws Exception
 	 */
 	public String generateHtmlFormFromWsdl(String wsdlXmlSource, String formWsdlXmlSource, String xsl, String html) /*throws Exception*/;
+	
 	
 }
