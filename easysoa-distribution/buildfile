@@ -60,6 +60,7 @@ end
 ############### PROJECT DEFINITIONS
 
 EASYSOA = 'easysoa'
+EASYSOA_COMMON = EASYSOA+':easysoa-common'
 EASYSOA_WEB = EASYSOA+':easysoa-web'
 EASYSOA_REGISTRY = EASYSOA+':easysoa-registry'
 EASYSOA_PROXY = EASYSOA+':easysoa-proxy'
@@ -74,6 +75,12 @@ define 'easysoa', :base_dir => '../' do
     maven(['clean', 'install'], project)
   end
       
+  define 'easysoa-common' do
+	  task :mvn do
+		maven(['clean', 'install'], project)
+	  end
+  end
+  
   desc 'Service registry project'
   define 'easysoa-registry' do
     
@@ -136,7 +143,10 @@ end
 ############### TASKS DEFINITIONS
                  
 desc "Builds registry components using Maven"
-task :nx_mvn => [EASYSOA_REGISTRY+':mvn']
+task :common => [EASYSOA_COMMON+':mvn']
+
+desc "Builds registry components using Maven"
+task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn']
                  
 desc "Deploys registry components"
 task :nx_dist => [EASYSOA_REGISTRY+':dist']
