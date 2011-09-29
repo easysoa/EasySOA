@@ -6,7 +6,7 @@ package org.easysoa;
  * 
  * TODO: Change for a real configuration file.
  * 
- * @author mkalam-alami
+ * @author mkalam-alami, jguillemotte
  *
  */
 public class EasySOAConstants {
@@ -23,5 +23,8 @@ public class EasySOAConstants {
 	// Scaffolding proxy
 	public final static int REST_SOAP_PROXY_PORT = 7001;
 	public final static int HTML_FORM_GENERATOR_PORT = 8090;
+	
+    // Pure Air Flowers demo
+    public final static int PAF_SERVICES_PORT = 9010;
     
 }

@@ -1,6 +1,7 @@
 package org.easysoa.services;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -138,7 +139,7 @@ public class NotificationService extends DefaultComponent {
             // Update optional properties
             if (url.toLowerCase().contains("wsdl")) {
                 try {
-                    HttpFile f = new HttpFile(url);
+                    HttpFile f = new HttpFile(new URL(url));
                     f.download();
                     apiModel.setProperty("file", "content", f.getBlob());
                 } catch (Exception e) {

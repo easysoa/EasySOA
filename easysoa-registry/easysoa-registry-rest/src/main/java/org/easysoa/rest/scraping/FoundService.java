@@ -8,7 +8,7 @@ public class FoundService {
     
     private String applicationName;
 
-    public FoundService(String applicationName, String name, String url) {
+    public FoundService(String name, String url, String applicationName) {
         this(name, url);
         this.applicationName = applicationName;
     }

@@ -1,7 +1,8 @@
 package org.easysoa.rest.scraping;
 
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -10,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nuxeo.runtime.api.Framework;
 
@@ -36,17 +38,42 @@ public class ScraperRest {
     @Path("/{url:.*}")
     public Object doGet(@Context UriInfo uriInfo) throws Exception {
 
-        List<String> errors = new ArrayList<String>(); // TODO
         JSONObject result = new JSONObject();
+        JSONArray errors = new JSONArray();
         
         // Initialization
-        String url = uriInfo.getRequestUri().toString().substring(
-                uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length()); // TODO remove callback
-        
+        URL url = null;
+        try {
+            url = new URL(uriInfo.getRequestUri().toString().substring(
+                    uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length())); // TODO remove callback
+        }
+        catch (MalformedURLException e) {
+            errors.put(formatError(e));
+        }
+
         // Run scrapers
-        ServiceScraperComponent serviceScraper = Framework.getService(ServiceScraperComponent.class);
-        List<FoundService> foundServices = serviceScraper.runScrapers(new URL(url));
+        List<FoundService> foundServices = new LinkedList<FoundService>();
+        if (url != null) {
+            ServiceScraperComponent serviceScraper = (ServiceScraperComponent) Framework
+                    .getRuntime().getComponent(ServiceScraperComponent.NAME);
+            List<ServiceScraper> scrapers = serviceScraper.getScrapers();
+
+            for (ServiceScraper scraper : scrapers) {
+                List<FoundService> scraperResult = null;
+                try {
+                    scraperResult = scraper.scrapeURL(url);
+                }
+                catch (Exception e) {
+                    errors.put(formatError(e, "Failed to run scraper "+scraper.getClass().getName()));
+                }
+                if (scraperResult != null) {
+                    foundServices.addAll(scraperResult);
+                }
+            }
+        }
         
+        // TODO: Filter duplicates
+
         // Format response
         JSONObject foundLinks = new JSONObject();
         for (FoundService foundService : foundServices) {
@@ -56,10 +83,23 @@ public class ScraperRest {
             }
             foundLinks.put(foundService.getName(), foundService.getURL());
         }
-        result.put("foundLinks", foundLinks);
+        if (foundLinks.keys().hasNext()) {
+            result.put("foundLinks", foundLinks);
+        }
+        if (errors.length() > 0) {
+            result.put("errors", errors);
+        }
         
-        return result.toString(); // TODO Handle errors
+        return result.toString();
          
+    }
+
+    private String formatError(Exception e, String message) {
+        return e.getClass().getSimpleName()+": "+message+" (cause: "+e.getMessage()+")";
+    }
+    
+    private String formatError(Exception e) {
+        return e.getClass().getSimpleName()+": "+e.getMessage();
     }
     
 

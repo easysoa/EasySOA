@@ -11,7 +11,14 @@ import org.easysoa.rest.scraping.ServiceScraper;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 
-public class LinkParsingScraper implements ServiceScraper {
+/**
+ * 
+ * Service scraper based on parsing all hypertext links from a web page to find WSDLs.
+ * 
+ * @author mkalam-alami
+ *
+ */
+public class LinkParsingScraper extends DefaultAbstractScraper implements ServiceScraper {
 
     @Override
     public List<FoundService> scrapeURL(URL url) throws Exception {
@@ -26,14 +33,11 @@ public class LinkParsingScraper implements ServiceScraper {
         HtmlCleaner cleaner = new HtmlCleaner();
         TagNode cleanHtml = cleaner.clean(f.getFile());
 
-        // Find app name / service name
-        /*
-         * TagNode[] titles = cleanHtml.getElementsByName("title", true); if
-         * (titles.length > 0) { result.put("applicationName",
-         * titles[0].getText().toString()); }
-         */ // TODO
-
+        // Find app name
+        String applicationName = guessApplicationName(url);
+        
         // Find links
+        List<String> foundServicesNames = new LinkedList<String>();
         Object[] links = cleanHtml.evaluateXPath("//a");
         changeToAbsolutePath(links, "href", url);
 
@@ -45,8 +49,7 @@ public class LinkParsingScraper implements ServiceScraper {
                 String name = (link.getText() != null) ? link.getText()
                         .toString() : ref;
 
-                // Truncate if name is an URL (serviceName cannot contain
-                // slashes)
+                // Truncate if name is an URL (serviceName cannot contain slashes)
                 if (name.contains("/")) {
                     String[] nameParts = name.split("/}");
                     name = nameParts[nameParts.length - 1].replaceAll(
@@ -56,12 +59,14 @@ public class LinkParsingScraper implements ServiceScraper {
                 // Append digits to the link name if it already exists
                 int i = 1;
                 if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
-                    /*
-                     * while (foundServices.has(name)) { name = (i == 1 ? name +
-                     * i++ : name.substring(0, name.length() - 1)) + i++; }
-                     */// TODO
-                    foundServices.add(new FoundService(name.replaceAll(
-                            "([\n\r]|[ ]*WSDL|[ ]*wsdl)", "").trim(), ref));
+                    while (foundServicesNames.contains(name)) {
+                        name = (i == 1 ? name + i++ : name.substring(0,
+                                name.length() - 1))
+                                + i++;
+                    }
+                    name = name.replaceAll("([\n\r]|[ ]*WSDL|[ ]*wsdl)", "").trim();
+                    foundServices.add(new FoundService(name, ref, applicationName));
+                    foundServicesNames.add(name);
                 }
 
             } catch (MalformedURLException e) {
@@ -75,6 +80,7 @@ public class LinkParsingScraper implements ServiceScraper {
         return foundServices;
 
     }
+    
 
     private static void changeToAbsolutePath(Object[] tagNodes,
             String attribute, URL context) {

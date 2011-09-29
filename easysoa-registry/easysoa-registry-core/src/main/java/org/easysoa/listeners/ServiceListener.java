@@ -78,7 +78,7 @@ public class ServiceListener implements EventListener {
                     // Download file
                     Blob blob = null;
                     try {
-                        blob = new HttpFile(fileUrl).download().getBlob();
+                        blob = new HttpFile(new URL(fileUrl)).download().getBlob();
                     }
                     catch (IOException e) {
                         log.info("I/O Error while downloading attached WSDL '" + fileUrl + "': " + e.getMessage());

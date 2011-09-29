@@ -1,5 +1,6 @@
 package org.easysoa.rest.scraping;
 
+import org.nuxeo.common.xmap.annotation.XContent;
 import org.nuxeo.common.xmap.annotation.XNode;
 import org.nuxeo.common.xmap.annotation.XObject;
 
@@ -11,7 +12,7 @@ import org.nuxeo.common.xmap.annotation.XObject;
 @XObject("serviceScraper")
 public class ServiceScraperDescriptor {
 
-    @XNode("implementation")
+    @XContent
     protected String implementation;
 
     @XNode("@enabled")
