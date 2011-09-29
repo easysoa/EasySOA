@@ -24,7 +24,7 @@ import org.xml.sax.InputSource;
  * @author jguillemotte
  *
  */
-public class XsltFormGenerator implements FormGenerator {
+public class XsltFormGenerator implements TransformationFormGeneratorInterface {
 
 	/**
 	 * Logger

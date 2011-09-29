@@ -1,4 +1,3 @@
-
 <!-- Velocity template for HTML form generation -->
 $formGenerator.setWsdl($wsdlUrl)
 
@@ -63,7 +62,7 @@ $formGenerator.setWsdl($wsdlUrl)
 					var xhr;
 					var operation = "$formGenerator.getOperationName($operation)";
 					var binding = "$formGenerator.getBindingName($endpoint)";
-					var responseMessage = "$formGenerator.getOutputMessageName($operation)";
+					var responseMessage = "$formGenerator.getOutputMessageName($endpoint, $operation)";
 					getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Sending request ...";
 					if(window.XMLHttpRequest) // Firefox and others
 						xhr = new XMLHttpRequest();
@@ -128,7 +127,7 @@ $formGenerator.setWsdl($wsdlUrl)
 						<tr>
 							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 						</tr>
-						#foreach( $inputField in $formGenerator.getInputFields($operation) )
+						#foreach( $inputField in $formGenerator.getInputFields($endpoint, $operation) )
 						<tr>
 							<td>xsd:string</td><td>$inputField</td><td><input class="inputField" name="$inputField" type="text"></td>
 						</tr>
@@ -139,7 +138,7 @@ $formGenerator.setWsdl($wsdlUrl)
 						<tr>
 							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 						</tr>
-						#foreach( $outputField in $formGenerator.getOutputFields($operation) )
+						#foreach( $outputField in $formGenerator.getOutputFields($endpoint, $operation) )
 						<tr>
 							<td>xsd:string</td><td>$outputField</td><td><input class="outputField" id="return_$outputField" disabled name="$outputField" type="text"></td>
 						</tr>
