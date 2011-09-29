@@ -13,9 +13,11 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
+import org.ow2.frascati.util.FrascatiException;
 
 /**
  * The goal of this test class is to make individuals tests for several different WSDl files and to check compatibility with the scaffolding proxy,
@@ -23,12 +25,26 @@ import org.junit.matchers.JUnitMatchers;
  *  
  * @author jguillemotte
  */
-public class WsdlFileTester {
+public class WsdlFileTester extends AbstractTest {
 
 	/**
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(WsdlFileTester.class.getName());	
+	
+	/**
+	 * Init the remote systems for the test
+	 * Frascati and HTTP Proxy
+	 * Instantiate FraSCAti and retrieve services.
+	 * @throws InterruptedException 
+	 */
+	@BeforeClass
+	public static void setUp() throws FrascatiException, InterruptedException {
+		// Start fraSCAti
+		startFraSCAti();
+		// Start Scaffolding Proxy test
+		startScaffoldingProxyComposite();
+	}	
 	
 	/**
 	 * Pure Air Flowers sample
@@ -39,7 +55,9 @@ public class WsdlFileTester {
 	public void testPureAirFlowersWsdl() throws ClientProtocolException, IOException{
 		String form = SendWsdlToFormGenerator("PureAirFlowers.wsdl");
 		// Check if form contains all the necessary stuff 
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>getOrdersNumber</b>"));		
+		assertThat(form, JUnitMatchers.containsString("Service : PureAirFlowers"));		
+		assertThat(form, JUnitMatchers.containsString("Binding : <b>PureAirFlowersSoapBinding"));
+		assertThat(form, JUnitMatchers.containsString("<h3>Operations :</h3><br/>\n								<u>getOrdersNumber</u>"));
 		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"ClientId\" type=\"text\">"));
 		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_ordersNumber\" disabled name=\"ordersNumber\" type=\"text\">"));
 	}
@@ -53,10 +71,11 @@ public class WsdlFileTester {
 	public void testSmartTravelWsdl() throws ClientProtocolException, IOException{
 		String form = SendWsdlToFormGenerator("GalaxyTrip.wsdl");
 		// Check if form contains all the necessary stuff
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>process</b>"));		
-		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"arg0\" type=\"text\">"));
-		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"arg1\" type=\"text\">"));
-		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_return\" disabled name=\"return\" type=\"text\">"));		
+		assertThat(form, JUnitMatchers.containsString("Service : Trip"));		
+		assertThat(form, JUnitMatchers.containsString("Binding : <b>TripSoapBinding"));
+		assertThat(form, JUnitMatchers.containsString("Operations :</h3><br/>\n								<u>process"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"arg2\" type=\"text\">"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_return\" disabled name=\"return\" type=\"text\">"));
 	}
 	
 	/**
@@ -68,7 +87,9 @@ public class WsdlFileTester {
 	public void testAiportServiceWsdl() throws ClientProtocolException, IOException{
 		String form = SendWsdlToFormGenerator("airport_soap.wsdl");
 		// Check if form contains all the necessary stuff
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>getAirportInformationByISOCountryCode</b>"));		
+		assertThat(form, JUnitMatchers.containsString("Service : airport"));
+		assertThat(form, JUnitMatchers.containsString("Binding : <b>airportSoap"));
+		assertThat(form, JUnitMatchers.containsString("Operations :</h3><br/>\n								<u>getAirportInformationByISOCountryCode"));		
 		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"CountryAbbrviation\" type=\"text\">"));
 		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_getAirportInformationByISOCountryCodeResult\" disabled name=\"getAirportInformationByISOCountryCodeResult\" type=\"text\">"));
 	}
@@ -76,35 +97,37 @@ public class WsdlFileTester {
 	// This test fails because complex types are not yet supported in the XSLT transformation
 	// It is here for future tests	
 	@Test
-	@Ignore
 	public void testMicrosoftTranslatorWsdl() throws ClientProtocolException, IOException{
 		String form = SendWsdlToFormGenerator("microsoftTranslatorWebService.svc.wsdl");
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>GetLanguages</b>"));
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>Translate</b>"));
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>Detect</b>"));
-		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_TranslateResult\" disabled name=\"TranslateResult\" type=\"text\">"));		
+		assertThat(form, JUnitMatchers.containsString("Service : SoapService"));
+		assertThat(form, JUnitMatchers.containsString("Binding : <b>BasicHttpBinding_LanguageService"));
+		assertThat(form, JUnitMatchers.containsString("Operations :</h3><br/>\n								<u>GetLanguages"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"text\" type=\"text\">"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_DetectResult\" disabled name=\"DetectResult\" type=\"text\">"));		
 	}
 
 	// This test fails because complex types are not yet supported in the XSLT transformation
 	// It is here for future tests	
 	@Test
-	@Ignore
 	public void testCurrencyServiceWsdl() throws ClientProtocolException, IOException{
 		String form = SendWsdlToFormGenerator("currencyserverwebservice.asmx.wsdl");
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>getCurrencyValue</b>"));
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>getProviderList</b>"));		
-		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_getCurrencyValueResult\" disabled name=\"getCurrencyValueResult\" type=\"text\">"));		
+		assertThat(form, JUnitMatchers.containsString("Service : CurrencyServerWebService"));
+		assertThat(form, JUnitMatchers.containsString("Binding : <b>CurrencyServerWebServiceSoap"));
+		assertThat(form, JUnitMatchers.containsString("Operations :</h3><br/>\n								<u>getDataSet"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"provider\" type=\"text\">"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_getDataSetResult\" disabled name=\"getDataSetResult\" type=\"text\">"));		
 	}
 	
 	// This test fails because complex types are not yet supported in the XSLT transformation
 	// It is here for future tests
 	@Test
-	@Ignore
 	public void testGlobalWeatherWsdl() throws ClientProtocolException, IOException{
 		String form = SendWsdlToFormGenerator("globalweather.asmx.wsdl");
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>GetWeather</b>"));
-		assertThat(form, JUnitMatchers.containsString("Operation\n\t\t\t\t<b>GetCitiesByCountry</b>"));		
-		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_GetCitiesByCountryResult\" disabled name=\"GetCitiesByCountryResult\" type=\"text\">"));		
+		assertThat(form, JUnitMatchers.containsString("Service : GlobalWeather"));
+		assertThat(form, JUnitMatchers.containsString("Binding : <b>GlobalWeatherSoap"));
+		assertThat(form, JUnitMatchers.containsString("Operations :</h3><br/>\n								<u>GetWeather"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"inputField\" name=\"CountryName\" type=\"text\">"));
+		assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_GetWeatherResult\" disabled name=\"GetWeatherResult\" type=\"text\">"));		
 	}
 	
 	/**

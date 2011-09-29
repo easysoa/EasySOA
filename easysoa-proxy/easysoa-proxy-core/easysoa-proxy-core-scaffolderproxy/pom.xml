@@ -114,7 +114,18 @@
     		<groupId>org.apache.woden</groupId>
     		<artifactId>woden-impl-dom</artifactId>
     		<version>1.0M9</version>
-		</dependency>		
+		</dependency>
+		<dependency>
+    		<groupId>org.apache.woden</groupId>
+    		<artifactId>woden-tool</artifactId>
+    		<version>1.0M9</version>
+		</dependency>
+		<!--org/apache/ws/commons/schema/XmlSchema
+		<dependency>
+    		<groupId>org.apache.ws.commons.schema</groupId>
+    		<artifactId>woden-tool</artifactId>
+    		<version>1.0M9</version>
+		</dependency>-->
 		
 		<!-- Don't use this version : no support for WSDL 2 yet -->
 		<!--<dependency>

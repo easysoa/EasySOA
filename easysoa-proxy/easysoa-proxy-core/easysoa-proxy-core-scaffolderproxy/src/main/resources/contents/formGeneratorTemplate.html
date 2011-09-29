@@ -1,5 +1,6 @@
-<!-- Velocity template for HTML form generation -->
 
+<!-- Velocity template for HTML form generation -->
+$formGenerator.setWsdl($wsdlUrl)
 
 <html>
 	<head>
@@ -8,7 +9,6 @@
 		<title>EasySOA Core - Service</title>
 		<link href="../style.css" rel="stylesheet">
 	</head>
-
 	<body>
 		<!-- Common javascript stuff -->
 		<script type="text/javascript">
@@ -35,7 +35,6 @@
 				<div id="headerBreadcrumbs">
 					<a href="../index.html">EasySOA</a>
 					&gt;
-
 					<a href="index.html">Light</a>
 					&gt;
 					<b></b>
@@ -45,27 +44,27 @@
 			</div>
 		</div>
 		<div id="container">
-
-			<h1>Service : SoapServiceMock</h1>
+			<h1>Service : $formGenerator.getServiceName()</h1>
 			<h2>End points :</h2>
-			    		<p>
-    			SoapServiceMockPort : <a href="http://localhost:8086/soapServiceMock">http://localhost:8086/soapServiceMock</a>
+			#foreach( $endpoint in $formGenerator.getEndpoints() )
+    		<p>
+    			$endpoint.Name : <a href="$endpoint.address">$endpoint.address</a>
 				<h3>
-					Binding : <b>SoapServiceMockSoapBinding</b>
-
+					Binding : <b>$formGenerator.getBindingName($endpoint)</b>
 				</h3>
 				<h3>Operations :</h3><br/>
-								<u>getPrice</u>
+				#foreach( $operation in $formGenerator.getOperations($endpoint) )		
+				<u>$formGenerator.getOperationName($operation)</u>
 				
 				
 				<!-- Javascript code engine for the form -->
 				<script type="text/javascript">
-				function submit_getPrice_SoapServiceMockSoapBinding_form(form){
+				function submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form(form){
 					var xhr;
-					var operation = "getPrice";
-					var binding = "SoapServiceMockSoapBinding";
-					var responseMessage = "getPriceResponse";
-					getElementsByClass('outputField', document.getPrice_SoapServiceMockSoapBinding, '*')[0].value = "Sending request ...";
+					var operation = "$formGenerator.getOperationName($operation)";
+					var binding = "$formGenerator.getBindingName($endpoint)";
+					var responseMessage = "$formGenerator.getOutputMessageName($operation)";
+					getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Sending request ...";
 					if(window.XMLHttpRequest) // Firefox and others
 						xhr = new XMLHttpRequest();
 					else if(window.ActiveXObject){ // Internet Explorer
@@ -79,7 +78,7 @@
 						alert("Your browser does not support XMLHTTPRequest objects ...");
 						xhr = false;
 					}
-					getElementsByClass('outputField', document.getPrice_SoapServiceMockSoapBinding, '*')[0].value = "Getting response ...";
+					getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Getting response ...";
 					xhr.onreadystatechange = function(){
 						//alert("xhr.readyState : " + xhr.readyState);
 						if(xhr.readyState == 4){
@@ -88,13 +87,13 @@
 								// receive now json structure
 								var responseData = JSON.parse(xhr.responseText);
 								//for each elements 'outputField'
-								var outputFields = getElementsByClass('outputField', document.getPrice_SoapServiceMockSoapBinding, '*');
+								var outputFields = getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*');
 								for(j=0; j<outputFields.length; j++){
 									var fieldName = outputFields[j].name;
 									outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
 								}
 							} else {
-								getElementsByClass('outputField', document.getPrice_SoapServiceMockSoapBinding, '*')[0].value = "Error code " + xhr.status;
+								getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Error code " + xhr.status;
 							}
 						}
 					};
@@ -102,13 +101,13 @@
 					// Hard coded URL for demo purpose
 					//var url = "<xsl:value-of select="$baseServerUrl" />";
 					var url = "http://localhost:7001/";
-					var wsdlUrl = "http://localhost:8086/soapServiceMock?wsdl";
+					var wsdlUrl = "$wsdlUrl";
 					var params = "";
 					// For each form field : add it in the url
 	    			for(i=0; i<document.forms[form].elements.length; i++){
 						// on ne prend que les champs enabled ou en lecture / ecriture
 						if(document.forms[form].elements[i].disabled == false){
-							//alert("The field name is: " + document.forms[form].elements[i].name + " and itâs value is: " + document.forms[form].elements[i].value + ".<br />");							
+							//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
 							if(params == ""){
 								params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
 							} else {
@@ -123,37 +122,36 @@
 					xhr.send(null);
 				}
 				</script>				
-				<form enctype="text/plain" action="" method="get" name="getPrice_SoapServiceMockSoapBinding">
+				<form enctype="text/plain" action="" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">
 					<h4>Input fields</h4>
-
 					<table>
 						<tr>
 							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 						</tr>
-												<tr>
-							<td>xsd:string</td><td>arg0</td><td><input class="inputField" name="arg0" type="text"></td>
-
+						#foreach( $inputField in $formGenerator.getInputFields($operation) )
+						<tr>
+							<td>xsd:string</td><td>$inputField</td><td><input class="inputField" name="$inputField" type="text"></td>
 						</tr>
-												<tr>
-							<td>xsd:string</td><td>arg1</td><td><input class="inputField" name="arg1" type="text"></td>
-						</tr>
-											</table>
+						#end
+					</table>
 					<h4>Output fields</h4>
 					<table>
-
 						<tr>
 							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
 						</tr>
-												<tr>
-							<td>xsd:string</td><td>return</td><td><input class="outputField" id="return_return" disabled name="return" type="text"></td>
+						#foreach( $outputField in $formGenerator.getOutputFields($operation) )
+						<tr>
+							<td>xsd:string</td><td>$outputField</td><td><input class="outputField" id="return_$outputField" disabled name="$outputField" type="text"></td>
 						</tr>
-
-											</table>
+						#end
+					</table>
 				</form>
 				<br/>
-				<input OnClick="submit_getPrice_SoapServiceMockSoapBinding_form('getPrice_SoapServiceMockSoapBinding');" value="Submit" type="button">
+				<input OnClick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');" value="Submit" type="button">
 				<br/>
-							</p>
-					</div>			
+				#end
+			</p>
+			#end
+		</div>			
 	</body>
 </html>
