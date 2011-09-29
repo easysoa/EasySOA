@@ -109,6 +109,12 @@
     		<groupId>org.apache.woden</groupId>
     		<artifactId>woden-api</artifactId>
     		<version>1.0M9</version>
+    		<exclusions>
+    		  <exclusion>
+    		    <artifactId>XmlSchema</artifactId>
+    		    <groupId>org.apache.ws.commons.schema</groupId>
+    		  </exclusion>
+    		</exclusions>
 		</dependency>
 		<dependency>
     		<groupId>org.apache.woden</groupId>

@@ -3,7 +3,7 @@ package org.openwide.easysoa.scaffolding;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.woden.WSDLException;
+
 import org.apache.woden.WSDLFactory;
 import org.apache.woden.WSDLReader;
 import org.apache.woden.tool.converter.Convert;
@@ -13,14 +13,14 @@ import org.apache.woden.wsdl20.Description;
 import org.apache.woden.wsdl20.Endpoint;
 import org.apache.woden.wsdl20.InterfaceMessageReference;
 import org.apache.woden.wsdl20.enumeration.Direction;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Scope;
-import org.apache.ws.commons.schema.XmlSchemaComplexType;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.apache.ws.commons.schema.XmlSchemaSequence;
 
 @Scope("COMPOSITE")
 public class WodenFormGenerator implements TemplateFormGeneratorInterface {
@@ -159,8 +159,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 						XmlSchemaElement elem = (XmlSchemaElement) (wsdlDescription.getElementDeclaration(schemaElement.getSchemaType().getQName()).getContent());
 						XmlSchemaComplexType elemComplexType = (XmlSchemaComplexType)elem.getSchemaType();
 						XmlSchemaSequence sequence = (XmlSchemaSequence)(elemComplexType.getParticle());
-						@SuppressWarnings("unchecked")
-						Iterator<Object> iter = sequence.getItems().getIterator();
+						Iterator<XmlSchemaSequenceMember> iter = sequence.getItems().iterator();
 						while(iter.hasNext()){
 							Object obj = iter.next();
 							if(obj instanceof XmlSchemaElement){
@@ -197,9 +196,8 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 					 	//System.out.println(".... " + wsdlDescription.getElementDeclaration(schemaElement.getSchemaType().getQName()).getContent());
 						XmlSchemaElement elem = (XmlSchemaElement) (wsdlDescription.getElementDeclaration(schemaElement.getSchemaType().getQName()).getContent());
 						XmlSchemaComplexType elemComplexType = (XmlSchemaComplexType)elem.getSchemaType();
-						XmlSchemaSequence sequence = (XmlSchemaSequence)(elemComplexType.getParticle());			 	
-						@SuppressWarnings("unchecked")
-						Iterator<Object> iter = sequence.getItems().getIterator();
+						XmlSchemaSequence sequence = (XmlSchemaSequence)(elemComplexType.getParticle());
+						Iterator<XmlSchemaSequenceMember> iter = sequence.getItems().iterator();
 						while(iter.hasNext()){
 							Object obj = iter.next();
 							if(obj instanceof XmlSchemaElement){
