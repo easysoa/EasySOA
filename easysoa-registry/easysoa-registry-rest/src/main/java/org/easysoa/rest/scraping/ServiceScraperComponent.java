@@ -52,7 +52,7 @@ public class ServiceScraperComponent extends DefaultComponent {
         if (extensionPoint.equals("scrapers")) {
             ServiceScraperDescriptor scraperDescriptor = (ServiceScraperDescriptor) contribution;
             if (scraperDescriptor.enabled) {
-                Class<?> scraperClass = Class.forName(scraperDescriptor.implementation);
+                Class<?> scraperClass = Class.forName(scraperDescriptor.implementation.trim());
                 for (ServiceScraper scraper : scrapers) {
                     if (scraper.getClass().equals(scraperClass)) {
                         scrapers.remove(scraper);

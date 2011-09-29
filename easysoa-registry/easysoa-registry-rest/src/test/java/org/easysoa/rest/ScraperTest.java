@@ -10,11 +10,29 @@ import junit.framework.Assert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.EasySOAConstants;
 import org.easysoa.rest.scraping.ScraperRest;
+import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.nuxeo.ecm.webengine.test.WebEngineFeature;
+import org.nuxeo.runtime.test.runner.Deploy;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.Jetty;
+import org.nuxeo.runtime.test.runner.LocalDeploy;
 
+@RunWith(FeaturesRunner.class)
+@Features({EasySOACoreFeature.class, WebEngineFeature.class})
+@Deploy({
+    "org.easysoa.registry.rest"
+})
+@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
+@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
+    "org.easysoa.registry.rest:OSGI-INF/ServiceScraperComponent.xml",
+    "org.easysoa.registry.rest:OSGI-INF/scraping-contrib.xml"})
 public class ScraperTest {
 
     static final Log log = LogFactory.getLog(ScraperTest.class);

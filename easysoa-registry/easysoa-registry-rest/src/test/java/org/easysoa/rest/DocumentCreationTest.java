@@ -32,7 +32,9 @@ import com.google.inject.Inject;
 @Features({EasySOACoreFeature.class, WebEngineFeature.class})
 @Deploy("org.easysoa.registry.rest")
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
-@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
+@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
+ "org.easysoa.registry.rest:OSGI-INF/ServiceScraperComponent.xml",
+ "org.easysoa.registry.rest:OSGI-INF/scraping-contrib.xml"})
 public class DocumentCreationTest extends AbstractRestTest {
 
 	@Inject CoreSession session;
