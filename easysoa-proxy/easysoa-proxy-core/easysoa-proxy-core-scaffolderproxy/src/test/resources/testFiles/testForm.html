@@ -1,67 +1,65 @@
-<!-- formGenerator is a Velocity reference automatically instantiated by FraSCAti, see scaffoldingProxy.composite  -->
-<!-- call the generateHtmlFormFromWsdl to return the HTLM form corresponding to the given WSDL -->
-<!-- Use this syntax to call the service : http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8086/soapServiceMock?wsdl -->
+<!-- Velocity template for HTML form generation -->
 
-<html xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
-<head>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<title>
-					EasySOA Core -
-					SoapServiceMock
-					Service
-				</title>
-<link href="../style.css" rel="stylesheet">
-</head>
-<body>
-<script type="text/javascript">
-					function getElementsByClass(searchClass,node,tag) {
-						var classElements = new Array();
-						if ( node == null )
-							node = document;
-						if ( tag == null )
-							tag = '*';
-						var els = node.getElementsByTagName(tag);
-						var elsLen = els.length;
-						var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-						
-						for (i = 0, j = 0; i < elsLen; i++) {
-							if ( pattern.test(els[i].className) ) {
-								classElements[j] = els[i];
-								j++;
-							}
-						}
-						
-						return classElements;
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+		<title>EasySOA Core - Service</title>
+		<link href="../style.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<!-- Common javascript stuff -->
+		<script type="text/javascript">
+			function getElementsByClass(searchClass,node,tag) {
+				var classElements = new Array();
+				if ( node == null )
+					node = document;
+				if ( tag == null )
+					tag = '*';
+				var els = node.getElementsByTagName(tag);
+				var elsLen = els.length;
+				var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+				for (i = 0, j = 0; i < elsLen; i++) {
+					if ( pattern.test(els[i].className) ) {
+						classElements[j] = els[i];
+						j++;
 					}
-				</script>
-<div id="headerLight">
-<div id="headerLightContents">
-<div id="headerBreadcrumbs">
-<a href="../index.html">EasySOA</a>
-							&gt;
-							<a href="index.html">Light</a>
-							&gt;
-							<b>SoapServiceMock</b>
-</div>
-<b>SoapServiceMock</b>
-						Service
-					</div>
-</div>
-<div id="container">
-<h1>Service location</h1>
-<p>
-<a href="http://localhost:8086/soapServiceMock">http://localhost:8086/soapServiceMock</a>
-</p>
-<h2>
-				Binding
-				<b>SoapServiceMockSoapBinding</b>
-</h2>
-<h3>
-				Operation
-				<b>getPrice</b>
-</h3>
-<script type="text/javascript">
+				}
+				return classElements;
+			}
+		</script>
+		<div id="headerLight">
+			<div id="headerLightContents">
+				<div id="headerBreadcrumbs">
+					<a href="../index.html">EasySOA</a>
+					&gt;
+
+					<a href="index.html">Light</a>
+					&gt;
+					<b></b>
+				</div>
+				<b></b>
+				Service
+			</div>
+		</div>
+		<div id="container">
+
+			<h1>Service : SoapServiceMock</h1>
+			<h2>End points :</h2>
+			    		<p>
+    			SoapServiceMockPort : <a href="http://localhost:8086/soapServiceMock">http://localhost:8086/soapServiceMock</a>
+				<h3>
+					Binding : <b>SoapServiceMockSoapBinding</b>
+
+				</h3>
+				<h3>Operations :</h3><br/>
+								<u>getPrice</u>
+				
+				
+				<!-- Javascript code engine for the form -->
+				<script type="text/javascript">
 				function submit_getPrice_SoapServiceMockSoapBinding_form(form){
 					var xhr;
 					var operation = "getPrice";
@@ -88,16 +86,13 @@
 							//alert("xhr.status : " + xhr.status + " ; xhr.responseText : " + xhr.responseText);
 							if(xhr.status == 200){
 								// receive now json structure
-								//getElementsByClass('outputField', document.getPrice_SoapServiceMockSoapBinding, '*')[0].value = xhr.responseText;
 								var responseData = JSON.parse(xhr.responseText);
 								//for each elements 'outputField'
 								var outputFields = getElementsByClass('outputField', document.getPrice_SoapServiceMockSoapBinding, '*');
-								
 								for(j=0; j<outputFields.length; j++){
 									var fieldName = outputFields[j].name;
 									outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
 								}
-								
 							} else {
 								getElementsByClass('outputField', document.getPrice_SoapServiceMockSoapBinding, '*')[0].value = "Error code " + xhr.status;
 							}
@@ -105,11 +100,11 @@
 					};
 					
 					// Hard coded URL for demo purpose
+					//var url = "<xsl:value-of select="$baseServerUrl" />";
 					var url = "http://localhost:7001/";
-					var wsdlUrl = "http://localhost:8086/soapServiceMock?wsdl";				
+					var wsdlUrl = "http://localhost:8086/soapServiceMock?wsdl";
 					var params = "";
 					// For each form field : add it in the url
-	    			
 	    			for(i=0; i<document.forms[form].elements.length; i++){
 						// on ne prend que les champs enabled ou en lecture / ecriture
 						if(document.forms[form].elements[i].disabled == false){
@@ -123,47 +118,42 @@
 					}
 					params = params + "&wsdlUrl=" + wsdlUrl; 
 					url = url + "callService/" + binding + "/" + operation + "/";
-					
 					//alert("url = " + url + "?" + params);
 					xhr.open("GET", url + "?" + params, true);
 					xhr.send(null);
 				}
-				
-			</script>
-<form enctype="text/plain" action="" method="get" name="getPrice_SoapServiceMockSoapBinding">
-<h4>Input fields</h4>
-    
-<table>
-<tr>
-<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
-</tr>
-<tr>
-<td>xsd:string</td><td>arg0</td><td><input class="inputField" name="arg0" type="text"></td>
-</tr>
-<tr>
-<td>xsd:int</td><td>arg1</td><td><input class="inputField" name="arg1" type="text"></td>
-</tr>
-</table>
-<h4>Output fields</h4>
-    
-<table>
-<tr>
-<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
-</tr>
-<tr>
-<td>xsd:string</td><td>return</td><td><input class="outputField" id="return_return" disabled name="return" type="text"></td>
-</tr>
-</table>
-</form>
-<br>
-<input OnClick="submit_getPrice_SoapServiceMockSoapBinding_form('getPrice_SoapServiceMockSoapBinding');" value="Submit" type="button">
-</div>
-</body>
+				</script>				
+				<form enctype="text/plain" action="" method="get" name="getPrice_SoapServiceMockSoapBinding">
+					<h4>Input fields</h4>
+
+					<table>
+						<tr>
+							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
+						</tr>
+												<tr>
+							<td>xsd:string</td><td>arg0</td><td><input class="inputField" name="arg0" type="text"></td>
+
+						</tr>
+												<tr>
+							<td>xsd:string</td><td>arg1</td><td><input class="inputField" name="arg1" type="text"></td>
+						</tr>
+											</table>
+					<h4>Output fields</h4>
+					<table>
+
+						<tr>
+							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
+						</tr>
+												<tr>
+							<td>xsd:string</td><td>return</td><td><input class="outputField" id="return_return" disabled name="return" type="text"></td>
+						</tr>
+
+											</table>
+				</form>
+				<br/>
+				<input OnClick="submit_getPrice_SoapServiceMockSoapBinding_form('getPrice_SoapServiceMockSoapBinding');" value="Submit" type="button">
+				<br/>
+							</p>
+					</div>			
+	</body>
 </html>
-
-
-
-
-
-
-

@@ -1,13 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Built-By: mkalam-alami
-Bundle-Version: 0.0.1
+Bundle-Version: 0.3-SNAPSHOT
 Bundle-Name: easysoa-registry-rest
 Bundle-SymbolicName: org.easysoa.registry.rest;singleton:=true
 Bundle-Vendor: EasySOA Consortium
-Export-Package: org.easysoa.registry.rest
+Export-Package: org.easysoa.rest.scraping
 Eclipse-LazyStart: true
 Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
 Nuxeo-Require: org.easysoa.registry.core
-Nuxeo-Component: OSGI-INF/rights-contrib.xml,
+Nuxeo-Component: OSGI-INF/ServiceScraperComponent.xml,
+ OSGI-INF/rights-contrib.xml,
+ OSGI-INF/scraping-contrib.xml,
  OSGI-INF/operations-contrib.xml

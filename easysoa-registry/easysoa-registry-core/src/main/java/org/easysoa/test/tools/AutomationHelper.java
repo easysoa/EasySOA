@@ -18,33 +18,33 @@ import org.nuxeo.ecm.automation.core.operations.document.Query;
  */
 public class AutomationHelper {
 
-	private static Log log = LogFactory.getLog(AutomationHelper.class);
-	
-	private HttpAutomationClient client = null;
-	private Session session = null;
-	
-	public AutomationHelper(String nuxeoUrl) throws Exception {
+    private static Log log = LogFactory.getLog(AutomationHelper.class);
+    
+    private HttpAutomationClient client = null;
+    private Session session = null;
+    
+    public AutomationHelper(String nuxeoUrl) throws Exception {
         client = new HttpAutomationClient(nuxeoUrl+"/automation");
         try {
-        	// XXX: Hardcoded auth to external Nuxeo instance
-        	session = client.getSession("Administrator", "Administrator"); 
+            // XXX: Hardcoded auth to external Nuxeo instance
+            session = client.getSession("Administrator", "Administrator"); 
         }
         catch (Exception e) {
-        	log.warn("Failed to create automation session: " + e.getMessage());
+            log.warn("Failed to create automation session: " + e.getMessage());
         }
-	}
+    }
 
-	public Documents findDocumentByUrl(String doctype, String url) throws Exception {
-		return query("SELECT * FROM " + doctype + " WHERE " + 
-			EasySOADoctype.getSchemaPrefix(doctype) + "url = '" + PropertyNormalizer.normalizeUrl(url) + "'");
-	}
-	
-	public Documents query(String query) throws Exception {
+    public Documents findDocumentByUrl(String doctype, String url) throws Exception {
+        return query("SELECT * FROM " + doctype + " WHERE " + 
+            EasySOADoctype.getSchemaPrefix(doctype) + "url = '" + PropertyNormalizer.normalizeUrl(url) + "'");
+    }
+    
+    public Documents query(String query) throws Exception {
         Assume.assumeNotNull(session);
-		OperationRequest request = session.newRequest(Query.ID);
-		request.setHeader("X-NXDocumentProperties", "*");
-		request.set("query", query);
-		return (Documents) request.execute();
-	}
-	
+        OperationRequest request = session.newRequest(Query.ID);
+        request.setHeader("X-NXDocumentProperties", "*");
+        request.set("query", query);
+        return (Documents) request.execute();
+    }
+    
 }

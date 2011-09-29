@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.web.contrib.layout">
 
-   <documentation>
-   Documentation and contribution examples:
-   org.nuxeo.ecm.platform.forms.layouts.webapp.listing--layouts
-   org.nuxeo.ecm.platform.forms.layouts.webapp.listing--widgets 
+  <documentation>
+    Documentation and contribution examples:
+    org.nuxeo.ecm.platform.forms.layouts.webapp.listing--layouts
+    org.nuxeo.ecm.platform.forms.layouts.webapp.listing--widgets 
    </documentation>
 
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
 
-	 <layout name="document_virtual_navigation_listing_ajax_application">
+    <layout name="document_virtual_navigation_listing_ajax_application">
       <templates>
         <template mode="any">
           /layouts/layout_listing_ajax_template.xhtml
@@ -44,7 +44,7 @@
           </properties>
           <widget>listing_icon_type</widget>
         </column>
-        
+
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
@@ -68,7 +68,7 @@
           </properties>
           <widget>listing_lock_icon</widget>
         </column>
-        
+
         <column>
           <properties mode="any">
             <property name="columnStyleClass">iconColumn</property>
@@ -77,8 +77,8 @@
         </column>
       </columns>
     </layout>
-    
-	 <layout name="document_virtual_navigation_listing_ajax_location">
+
+    <layout name="document_virtual_navigation_listing_ajax_location">
       <templates>
         <template mode="any">
           /layouts/layout_listing_ajax_template.xhtml
@@ -113,7 +113,7 @@
           </properties>
           <widget>listing_icon_type</widget>
         </column>
-        
+
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
@@ -151,7 +151,7 @@
           </properties>
           <widget>listing_lock_icon</widget>
         </column>
-        
+
         <column>
           <properties mode="any">
             <property name="columnStyleClass">iconColumn</property>
@@ -160,8 +160,8 @@
         </column>
       </columns>
     </layout>
-    
-	 <layout name="document_virtual_navigation_listing_ajax_feature">
+
+    <layout name="document_virtual_navigation_listing_ajax_feature">
       <templates>
         <template mode="any">
           /layouts/layout_listing_ajax_template.xhtml
@@ -196,7 +196,7 @@
           </properties>
           <widget>listing_icon_type</widget>
         </column>
-        
+
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
@@ -234,7 +234,7 @@
           </properties>
           <widget>listing_lock_icon</widget>
         </column>
-        
+
         <column>
           <properties mode="any">
             <property name="columnStyleClass">iconColumn</property>
@@ -243,73 +243,73 @@
         </column>
       </columns>
     </layout>
-    
+
   </extension>
-    
+
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
-	  <widget name="listing_description" type="text">
-	    <labels>
-	      <label mode="any">label.dublincore.description</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.dc.description</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_technology" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.appliimpldef.technology</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.app.technology</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_url" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.appliimpldef.url</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.app.url</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_uiUrl" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.appliimpldef.uiUrl</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.app.uiUrl</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_domain" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.feature.domain</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.feat.domain</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_lifeCycleStatus" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.feature.lifeCycleStatus</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.feat.lifeCycleStatus</field>
-	    </fields>
-	  </widget>
-	  <widget name="listing_sourcesUrl" type="text">
-	    <labels>
-	      <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
-	    </labels>
-	    <translated>true</translated>
-	    <fields>
-	      <field>data.app.sourcesUrl</field>
-	    </fields>
-	  </widget>
+    <widget name="listing_description" type="text">
+      <labels>
+        <label mode="any">label.dublincore.description</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.dc.description</field>
+      </fields>
+    </widget>
+    <widget name="listing_technology" type="text">
+      <labels>
+        <label mode="any">label.easysoa.appliimpldef.technology</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.app.technology</field>
+      </fields>
+    </widget>
+    <widget name="listing_url" type="text">
+      <labels>
+        <label mode="any">label.easysoa.appliimpldef.url</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.app.url</field>
+      </fields>
+    </widget>
+    <widget name="listing_uiUrl" type="text">
+      <labels>
+        <label mode="any">label.easysoa.appliimpldef.uiUrl</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.app.uiUrl</field>
+      </fields>
+    </widget>
+    <widget name="listing_domain" type="text">
+      <labels>
+        <label mode="any">label.easysoa.feature.domain</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.feat.domain</field>
+      </fields>
+    </widget>
+    <widget name="listing_lifeCycleStatus" type="text">
+      <labels>
+        <label mode="any">label.easysoa.feature.lifeCycleStatus</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.feat.lifeCycleStatus</field>
+      </fields>
+    </widget>
+    <widget name="listing_sourcesUrl" type="text">
+      <labels>
+        <label mode="any">label.easysoa.appliimpldef.sourcesUrl</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.app.sourcesUrl</field>
+      </fields>
+    </widget>
   </extension>
-  
+
 </component>

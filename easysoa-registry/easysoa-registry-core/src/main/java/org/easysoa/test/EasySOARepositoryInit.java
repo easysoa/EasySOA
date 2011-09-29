@@ -11,9 +11,9 @@ import org.nuxeo.ecm.core.test.annotations.RepositoryInit;
  * Default repository initializer that create the default DM doc hierarchy.
  */
 public class EasySOARepositoryInit implements RepositoryInit {
-	
+    
     public void populate(CoreSession session) throws ClientException {
-    	
+        
         DocumentModel doc = session.createDocumentModel("/", "default-domain",
                 "Domain");
         doc.setProperty("dublincore", "title", DomainInit.DOMAIN_TITLE);

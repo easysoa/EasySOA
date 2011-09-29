@@ -29,92 +29,92 @@ import org.nuxeo.runtime.model.DefaultComponent;
  *
  */
 public class ImplementationRelationService extends DefaultComponent {
-	
-	public static final String DEFAULT_PREDICATE = "Est rattaché à";
-	public static final String DEFAULT_PREDICATE_INVERSE = "Est implémenté par";
+    
+    public static final String DEFAULT_PREDICATE = "Est rattaché à";
+    public static final String DEFAULT_PREDICATE_INVERSE = "Est implémenté par";
     
     private static Log log = LogFactory.getLog(ImplementationRelationService.class);
 
-	/**
-	* Returns all document related to specified document.
-	* @param session
-	* @param doc
-	* @return
-	*/
-	public final DocumentModelList getRelations(CoreSession session,
-			DocumentModel doc) {
-		DocumentModelList relations = null;
-		try {
-			
-			// Uses content automations
-			AutomationService automationService = (AutomationService) Framework
-					.getService(AutomationService.class);
-			OperationContext opCtxt = new OperationContext(session);
-			opCtxt.setInput(doc);
+    /**
+    * Returns all document related to specified document.
+    * @param session
+    * @param doc
+    * @return
+    */
+    public final DocumentModelList getRelations(CoreSession session,
+            DocumentModel doc) {
+        DocumentModelList relations = null;
+        try {
+            
+            // Uses content automations
+            AutomationService automationService = (AutomationService) Framework
+                    .getService(AutomationService.class);
+            OperationContext opCtxt = new OperationContext(session);
+            opCtxt.setInput(doc);
 
-			OperationChain chain = new OperationChain(null);
-			chain.add("Context.FetchDocument");
-			chain.add("Relations.GetRelations").set("predicate",
-					DEFAULT_PREDICATE);
+            OperationChain chain = new OperationChain(null);
+            chain.add("Context.FetchDocument");
+            chain.add("Relations.GetRelations").set("predicate",
+                    DEFAULT_PREDICATE);
 
-			relations = (DocumentModelList) automationService
-					.run(opCtxt, chain);
-		} catch (Exception e) {
-			log.error("Failed to get document relations", e);
-		}
+            relations = (DocumentModelList) automationService
+                    .run(opCtxt, chain);
+        } catch (Exception e) {
+            log.error("Failed to get document relations", e);
+        }
 
-		return relations;
-	}
+        return relations;
+    }
 
-	/**
-	* Creates a relation between two documents.
-	* @param from
-	* @param to
-	*/
-	public final void createRelation(CoreSession session,
-			DocumentModel from, DocumentModel to) {
-		
-		try {
-			// Relation creation
-			// Could also have used automations (see Relations.CreateRelation)
-			RelationManager service = RelationHelper.getRelationManager();
-			QNameResource fromResource = RelationHelper
-					.getDocumentResource(from);
-			QNameResource toResource = RelationHelper.getDocumentResource(to);
-			Resource predicate = new ResourceImpl(DEFAULT_PREDICATE);
+    /**
+    * Creates a relation between two documents.
+    * @param from
+    * @param to
+    */
+    public final void createRelation(CoreSession session,
+            DocumentModel from, DocumentModel to) {
+        
+        try {
+            // Relation creation
+            // Could also have used automations (see Relations.CreateRelation)
+            RelationManager service = RelationHelper.getRelationManager();
+            QNameResource fromResource = RelationHelper
+                    .getDocumentResource(from);
+            QNameResource toResource = RelationHelper.getDocumentResource(to);
+            Resource predicate = new ResourceImpl(DEFAULT_PREDICATE);
 
-			List<Statement> stmts = new ArrayList<Statement>();
-			Statement stmt = new StatementImpl(fromResource, predicate,
-					toResource);
-			stmts.add(stmt);
-			if (!service.hasStatement("default", stmt)) {
-				service.add("default", stmts);
-				log.info("Relation creation : " + from.getTitle()
-						+ " -> " + to.getTitle());
-			} else {
-				log.info("Relation " + from.getTitle() + " -> " + to.getTitle()
-						+ " already exists.");
-			}
-			
-		} catch (Exception e) {
-			log.error("Relation creation failed", e);
-		}
-	}
+            List<Statement> stmts = new ArrayList<Statement>();
+            Statement stmt = new StatementImpl(fromResource, predicate,
+                    toResource);
+            stmts.add(stmt);
+            if (!service.hasStatement("default", stmt)) {
+                service.add("default", stmts);
+                log.info("Relation creation : " + from.getTitle()
+                        + " -> " + to.getTitle());
+            } else {
+                log.info("Relation " + from.getTitle() + " -> " + to.getTitle()
+                        + " already exists.");
+            }
+            
+        } catch (Exception e) {
+            log.error("Relation creation failed", e);
+        }
+    }
 
-	/**
-	* Clears all relations from specified document.
-	* @param doc
-	*/
-	public final void clearRelations(CoreSession session, DocumentModel doc) {
-		try {			
-			Resource predicate = new ResourceImpl(DEFAULT_PREDICATE);
-			List<Statement> stmts = RelationHelper.getStatements(doc, predicate);
-			log.info("Deleting all " + stmts.size() + " relations of document " + doc.getTitle());
-			RelationHelper.getRelationManager().remove("default", stmts);
-			
-		} catch (Exception e) {
-			log.error("Relations reset failed", e);
-		}
-	}
+    /**
+    * Clears all relations from specified document.
+    * @param doc
+    */
+    public final void clearRelations(CoreSession session, DocumentModel doc) {
+        try {            
+            Resource predicate = new ResourceImpl(DEFAULT_PREDICATE);
+            List<Statement> stmts = RelationHelper.getStatements(doc, predicate);
+            log.info("Deleting all " + stmts.size() + " relations of document " + doc.getTitle());
+            RelationHelper.getRelationManager().remove("default", stmts);
+            
+        } catch (Exception e) {
+            log.error("Relations reset failed", e);
+        }
+    }
 
 }

@@ -11,19 +11,19 @@ import org.easysoa.sca.ScaImporter;
  *
  */
 public class RestBindingScaVisitor extends ServiceBindingVisitorBase {
-	
-	public RestBindingScaVisitor(ScaImporter scaImporter) {
-		super(scaImporter);
-	}
-	
-	public boolean isOkFor(QName bindingQName) {
-		return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.rest"));
-	}
+    
+    public RestBindingScaVisitor(ScaImporter scaImporter) {
+        super(scaImporter);
+    }
+    
+    public boolean isOkFor(QName bindingQName) {
+        return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.rest"));
+    }
 
-	@Override
-	protected String getBindingUrl() {
-		String serviceUrl = compositeReader.getAttributeValue(ScaImporter.FRASCATI_URI, "uri");
-		return serviceUrl;
-	}
+    @Override
+    protected String getBindingUrl() {
+        String serviceUrl = compositeReader.getAttributeValue(ScaImporter.FRASCATI_URI, "uri");
+        return serviceUrl;
+    }
 
 }

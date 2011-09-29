@@ -18,21 +18,27 @@ import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Property;
 import org.xml.sax.InputSource;
 
-public class FormGeneratorImpl implements FormGenerator {
+/**
+ * Transform a WSDL into an HTML form with an XSLT transformation
+ * 
+ * @author jguillemotte
+ *
+ */
+public class XsltFormGenerator implements FormGenerator {
 
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(FormGeneratorImpl.class.getClass());	
+	private static Logger logger = Logger.getLogger(XsltFormGenerator.class.getClass());	
 
 	@Property
-	String defaultWsdl;	
+	String defaultWsdl;
 		
 	/* (non-Javadoc)
 	 * @see org.openwide.easysoa.scaffolding.FormGenerator#generateHtmlFormFromWsdl(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public String generateHtmlFormFromWsdl(String wsdlXmlSource, String formWsdlXmlSource, String xsltSource, String htmlOutput) /*throws Exception*/ {
+	public String generateHtmlFormFromWsdl(String wsdlXmlSource, String formWsdlXmlSource, String xsltSource, String htmlOutput) {
 		// DOM is old, need to add a call to setNamespacesAware(true) to avoid a problem of unrecognized namespace
 		// Use SAX instead
 		/*
@@ -97,7 +103,7 @@ public class FormGeneratorImpl implements FormGenerator {
 	}
 	
 	/**
-	 * 
+	 * Read the result file
 	 * @param filePath
 	 * @return
 	 * @throws java.io.IOException

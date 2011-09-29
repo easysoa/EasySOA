@@ -8,7 +8,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  *
  */
 public interface RepositoryLoggerMatcher {
-	
-	boolean matches(DocumentModel model);
-	
+    
+    boolean matches(DocumentModel model);
+    
 }

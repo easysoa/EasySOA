@@ -17,9 +17,9 @@ import org.nuxeo.ecm.webengine.model.view.TemplateView;
 @Produces(MediaType.TEXT_HTML)
 public class EasySOAAppRoot {
 
-	@GET
-	public Object doGet() {
-		return new TemplateView(this, "index.ftl");
-	}
+    @GET
+    public Object doGet() {
+        return new TemplateView(this, "index.ftl");
+    }
 
 }

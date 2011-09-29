@@ -10,7 +10,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONException;
+import org.easysoa.rest.scraping.ScraperRest;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,7 +20,7 @@ public class ScraperTest {
     static final Log log = LogFactory.getLog(ScraperTest.class);
     
     @Test
-    public void testScraper() throws URISyntaxException, JSONException {
+    public void testScraper() throws Exception {
         
         // Make request
         ScraperRest scraper = new ScraperRest();

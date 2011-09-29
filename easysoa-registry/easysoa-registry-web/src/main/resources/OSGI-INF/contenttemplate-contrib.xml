@@ -3,15 +3,11 @@
 
   <require>org.nuxeo.ecm.platform.content.template.service.ContentTemplateService.defaultContrib</require>
 
-  <extension
-    target="org.nuxeo.ecm.platform.content.template.service.ContentTemplateService"
-    point="factoryBinding">
+  <extension target="org.nuxeo.ecm.platform.content.template.service.ContentTemplateService" point="factoryBinding">
 
-    <factoryBinding name="DomainFactory" factoryName="SimpleTemplateFactory"
-      targetType="Domain">
+    <factoryBinding name="DomainFactory" factoryName="SimpleTemplateFactory" targetType="Domain">
       <template>
-        <templateItem typeName="WorkspaceRoot" id="workspaces"
-          title="Workspaces" description="Workspaces" />
+        <templateItem typeName="WorkspaceRoot" id="workspaces" title="Workspaces" description="Workspaces" />
       </template>
     </factoryBinding>
 

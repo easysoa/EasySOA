@@ -4,14 +4,14 @@
   <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewExtensionPoint/org.nuxeo.ecm.platform.types.TypeService--types</documentation>
 
   <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
-    
+
     <type id="Service" coretype="Service">
       <label>Service</label>
       <icon>/icons/text.png</icon>
       <bigIcon>/icons/note_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-      	<!-- Business -->
+        <!-- Business -->
         <layout>heading</layout>
         <layout>soacommon_author</layout>
         <layout>service_common</layout>
@@ -22,7 +22,7 @@
         <layout>files</layout>
       </layouts>
     </type>
-    
+
     <type id="ServiceAPI" coretype="ServiceAPI">
       <label>Service API</label>
       <icon>/icons/folder.gif</icon>
@@ -30,7 +30,7 @@
       <icon-expanded>/icons/folder_open.gif</icon-expanded>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-      	<!-- Business -->
+        <!-- Business -->
         <layout>heading</layout>
         <layout>soacommon_author</layout>
         <!-- Technical -->
@@ -47,14 +47,14 @@
         <contentView>document_content</contentView>
       </contentViews>
     </type>
-    
+
     <type id="ServiceReference" coretype="ServiceReference">
       <label>Service Ref.</label>
       <icon>/icons/contextuallink.png</icon>
       <bigIcon>/icons/contextuallink_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-      	<!-- Business -->
+        <!-- Business -->
         <layout>heading</layout>
         <layout>soacommon_author</layout>
         <!-- Technical -->
@@ -64,11 +64,11 @@
         <layout>serviceref_spec</layout>
       </layouts>
     </type>
-    
+
     <type id="Workspace" coretype="Workspace">
       <label>Application Impl.</label>
       <layouts mode="any">
-      	<!-- Business -->
+        <!-- Business -->
         <layout>heading</layout>
         <layout>soacommon_author</layout>
         <layout>appliimpldef_common</layout>
@@ -79,7 +79,7 @@
         <layout>files</layout>
       </layouts>
       <layouts mode="edit"> <!-- Necessary to override edit mode-specific contributions -->
-      	<!-- Business -->
+        <!-- Business -->
         <layout>heading</layout>
         <layout>soacommon_author</layout>
         <layout>appliimpldef_common</layout>
@@ -94,7 +94,7 @@
         <type>ServiceReference</type>
       </subtypes>
     </type>
-    
+
   </extension>
-  
+
 </component>

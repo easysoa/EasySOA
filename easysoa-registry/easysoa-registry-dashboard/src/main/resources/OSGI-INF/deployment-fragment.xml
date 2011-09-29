@@ -6,5 +6,5 @@
       <include>web/nuxeo.war/**</include>
     </unzip>
   </install>
-  
+
 </fragment>

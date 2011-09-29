@@ -61,6 +61,7 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 		}
 		// get desired operation
 		WsdlOperation operation = (WsdlOperation) iface.getOperationByName(wsldOperation);
+		
 		// create a new empty request for that operation
 		WsdlRequest request = operation.addNewRequest("myRequest");
 		// generate the xml request schema and map the parameter values		

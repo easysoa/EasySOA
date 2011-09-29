@@ -8,7 +8,7 @@ One operation is available :
 
 No database is required. The number of orders returned by the service is hard coded. You can fill the client id parameter with any value. 
 
-To run the server : "java -jar target/server-0.0.1-SNAPSHOT-with-dep.jar". The server listen on the port 9001.
+To run the server : "java -jar bin\easysoa-samples-paf-server-1.0-SNAPSHOT.jar". The server listen on the port 9001.
 
 -----------------
 
@@ -16,6 +16,8 @@ To run the server : "java -jar target/server-0.0.1-SNAPSHOT-with-dep.jar". The s
 
 To build the project, you need :
 
-A working Maven 2 installed on your computer.
+A working Maven 3 installed on your computer.
 
-Use the following command to build the project: `mvn clean install`. An executable jar is generated in the project's "target" folder, and configured to use the Esper proxy.
+To build the project, use the following command : `mvn clean install`.
+To package the project, use the following command : mvn assembly:assembly. A zip archive is generated in the target directory. It contains all required jar libraries in the lib folder, the main jar in the bin directory and a script (sh or bat) to laucnh the server.
+

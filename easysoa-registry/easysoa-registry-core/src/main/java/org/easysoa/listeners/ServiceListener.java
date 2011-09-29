@@ -78,7 +78,7 @@ public class ServiceListener implements EventListener {
                     // Download file
                     Blob blob = null;
                     try {
-                        blob = new HttpFile(fileUrl).download().getBlob();
+                        blob = new HttpFile(new URL(fileUrl)).download().getBlob();
                     }
                     catch (IOException e) {
                         log.info("I/O Error while downloading attached WSDL '" + fileUrl + "': " + e.getMessage());
@@ -208,6 +208,11 @@ public class ServiceListener implements EventListener {
                 else if (url.contains("GalaxyTrip")) {
                     doc.setProperty(SCHEMA, PROP_LIGHTURL,
                             "http://localhost:8083/easysoa/light/GalaxyTrip.html");
+                }
+                // XXX: Hard-coded Airport Light URL
+                else if (url.contains("irport")) {
+                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
+                            "http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8200/esb/AirportService?wsdl");
                 }
             }
             if (fileUrl != null) {

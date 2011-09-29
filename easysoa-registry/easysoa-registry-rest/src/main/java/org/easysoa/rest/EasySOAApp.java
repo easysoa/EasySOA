@@ -5,18 +5,19 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import org.easysoa.automation.ServiceStats;
+import org.easysoa.rest.gadgets.ServiceStatsRest;
+import org.easysoa.rest.scraping.ScraperRest;
 
 public class EasySOAApp extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-		Set<Class<?>> result = new HashSet<Class<?>>();
-		result.add(EasySOAAppRoot.class);
-		result.add(ScraperRest.class);
-		result.add(NotificationRest.class);
-		result.add(ServiceStats.class);
-		return result;
+        Set<Class<?>> result = new HashSet<Class<?>>();
+        result.add(EasySOAAppRoot.class);
+        result.add(ScraperRest.class);
+        result.add(NotificationRest.class);
+        result.add(ServiceStatsRest.class);
+        return result;
     }
-	
+    
 }
