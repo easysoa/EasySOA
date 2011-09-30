@@ -23,7 +23,7 @@
             <directory>etc</directory>
             <outputDirectory></outputDirectory>
             <includes>
-                <include>start_paf_server.*</include>
+                <include>start-pafServices.*</include>
             </includes>
         </fileSet>
         <!-- add jar package in the bin folder of zip package -->
