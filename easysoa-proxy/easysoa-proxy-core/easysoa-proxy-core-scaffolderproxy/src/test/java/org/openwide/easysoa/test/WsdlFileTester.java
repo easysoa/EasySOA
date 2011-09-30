@@ -85,7 +85,7 @@ public class WsdlFileTester extends AbstractTest {
 	 */
 	@Test
 	public void testAiportServiceWsdl() throws ClientProtocolException, IOException{
-		String form = SendWsdlToFormGenerator("airport_soap.wsdl");
+		String form = SendWsdlToFormGenerator("modified_airport_soap.wsdl");
 		// Check if form contains all the necessary stuff
 		assertThat(form, JUnitMatchers.containsString("Service : airport"));
 		assertThat(form, JUnitMatchers.containsString("Binding : <b>airportSoap"));

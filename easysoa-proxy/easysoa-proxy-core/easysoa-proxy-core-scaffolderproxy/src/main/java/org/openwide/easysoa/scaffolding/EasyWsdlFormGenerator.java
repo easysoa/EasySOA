@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -15,7 +14,6 @@ import org.ow2.easywsdl.schema.api.ComplexType;
 import org.ow2.easywsdl.schema.api.Element;
 import org.ow2.easywsdl.schema.api.SimpleType;
 import org.ow2.easywsdl.schema.api.Type;
-import org.ow2.easywsdl.schema.api.XmlException;
 import org.ow2.easywsdl.wsdl.WSDLFactory;
 import org.ow2.easywsdl.wsdl.api.BindingOperation;
 import org.ow2.easywsdl.wsdl.api.Description;
@@ -35,7 +33,7 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
 // TODO return all the bindings contained in the WSDL, not only the first
 // TODO return the field type for the HTML form, for now all the fiels are tagged as String (Hardcoded in the velocity template) 
 @Scope("COMPOSITE")
-public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormGeneratorInterface  {
+public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 
 	/**
 	 * Logger
@@ -51,7 +49,7 @@ public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormG
 	
 	@Override
 	public void setWsdl(String wsdlSource) throws Exception {
-		// Read a WSDL 1.1 or 2.0
+		// Read WSDL version 1.1 or 2.0
 		WSDLReader reader;
 		logger.debug("WSDl source to parse : " + wsdlSource);
 		try {
@@ -74,16 +72,15 @@ public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormG
 	}
 	
 	@Override
-	public List<WSEndpoint> getEndpoints(){
+	public List<WSEndpoint> getEndpoints() {
 		logger.debug("Entering in getEndpoints method");
 		ArrayList<WSEndpoint> endpointList = new ArrayList<WSEndpoint>();
-		//List<Endpoint> endpointList = wsdlDescription.getServices().get(0).getEndpoints();
 		for(Endpoint endpoint : wsdlDescription.getServices().get(0).getEndpoints()){
 			try {
 				endpointList.add(new WSEndpoint(endpoint.getName(), new URI(endpoint.getAddress())));
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (URISyntaxException ex) {
+				logger.error(ex);
+				ex.printStackTrace();
 			} 
 		}
 		return endpointList;
@@ -93,14 +90,12 @@ public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormG
 	public String getBindingName(WSEndpoint wsEndpoint){
 		logger.debug("Entering in getBindingName method");				
 		return wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getQName().getLocalPart();
-		//return endpoint.getBinding().getQName().getLocalPart();
 	}
 	
 	@Override
 	public List<WSOperation> getOperations(WSEndpoint wsEndpoint){
 		logger.debug("Entering in getOperations method");
 		ArrayList<WSOperation> wsOperationList = new ArrayList<WSOperation>();
-		/*return endpoint.getBinding().getBindingOperations();*/
 		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
 			wsOperationList.add(new WSOperation(bindingOperation.getQName()));
 		}
@@ -110,7 +105,6 @@ public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormG
 	@Override
 	public String getOperationName(WSOperation wsOperation) {
 		logger.debug("Entering in getOperatioName method");
-		/*return bindingOperation.getQName().getLocalPart();*/
 		return wsOperation.getName();
 	}
 
@@ -122,7 +116,6 @@ public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormG
 				return bindingOperation.getOperation().getOutput().getName();
 			}
 		}
-		/*return bindingOperation.getOperation().getOutput().getName();*/
 		return "";
 	}	
 	
@@ -135,8 +128,6 @@ public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormG
 				partList = bindingOperation.getOperation().getInput().getParts();
 			}
 		}
-		//logger.debug("Input : " + bindingOperation.getOperation().getInput().getName());
-		//List<Part> partList = bindingOperation.getOperation().getInput().getParts();
 		return getFields(partList);
 	}
 	
@@ -149,7 +140,6 @@ public class EasyWsdlFormGenerator implements /*FormGeneratorItf*/ TemplateFormG
 				partList = bindingOperation.getOperation().getOutput().getParts();
 			}
 		}
-		//List<Part> partList = bindingOperation.getOperation().getOutput().getParts();
 		return getFields(partList);
 	}
 	

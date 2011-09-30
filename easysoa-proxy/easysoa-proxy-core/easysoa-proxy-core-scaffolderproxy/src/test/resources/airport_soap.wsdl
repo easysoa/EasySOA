@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://airportsoap.sopera.de" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://airportsoap.sopera.de" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://airportsoap.sopera.de" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://airportsoap.sopera.de" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <xsd:schema elementFormDefault="qualified" targetNamespace="http://airportsoap.sopera.de">
-      <!-- Need to add type attribute otherwise doesn't works with original WSDL -->
-      <!-- And need to add name attribute for complex type ... -->
-      <xsd:element name="getAirportInformationByISOCountryCode" type="tns:getAirportInformationByISOCountryCodeSoapIn">
-        <xsd:complexType name="getAirportInformationByISOCountryCode">
-          <xsd:sequence>
-            <xsd:element minOccurs="0" maxOccurs="1" name="CountryAbbrviation" type="xsd:string" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <!-- Need to add type attribute otherwise doesn't works with original WSDL -->
-      <!-- And need to add name attribute for complex type ... -->      
-      <xsd:element name="getAirportInformationByISOCountryCodeResponse" type="tns:getAirportInformationByISOCountryCodeSoapOut">
-        <xsd:complexType name="getAirportInformationByISOCountryCodeResponse">
-          <xsd:sequence>
-            <xsd:element minOccurs="0" maxOccurs="1" name="getAirportInformationByISOCountryCodeResult" type="xsd:string" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="string" nillable="true" type="xsd:string" />
-    </xsd:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://airportsoap.sopera.de">
+      <s:element name="getAirportInformationByISOCountryCode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CountryAbbrviation" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getAirportInformationByISOCountryCodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getAirportInformationByISOCountryCodeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
   </wsdl:types>
   
   <wsdl:message name="getAirportInformationByISOCountryCodeSoapIn">
@@ -34,12 +30,10 @@
   <wsdl:portType name="airportSoap">
     <wsdl:operation name="getAirportInformationByISOCountryCode">
       <wsdl:input message="tns:getAirportInformationByISOCountryCodeSoapIn" />
-      <wsdl:output message="tns:getAirportInformationByISOCountryCodeSoapOut" name="getAirportInformationByISOCountryCodeResponse"/>
+      <wsdl:output message="tns:getAirportInformationByISOCountryCodeSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
-
-  <!-- Modified binding to be compliant with talend service provider -->  
-  <!--<wsdl:binding name="airportSoapBinding" type="tns:airportSoap">-->
+  
   <wsdl:binding name="airportSoap" type="tns:airportSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="getAirportInformationByISOCountryCode">
