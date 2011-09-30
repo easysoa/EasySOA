@@ -13,7 +13,7 @@ nuxeo:
   
 node:
   path:
-  # to use for packaging. By default $HOME/node
+  # to use for packaging. By default /usr/local/bin/
   # specify the path either absolute or relative to the buildfile.
   
 frascati:

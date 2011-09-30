@@ -12,7 +12,7 @@ require 'shellwords'
 ############### CONFIG LOADING
 
 NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.2-tomcat'
-NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || Buildr.settings.build['node']['path'] || ENV['HOME']+'/node'
+NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || '/usr/local/bin/'
 FRASCATI_PATH = (Buildr.settings.user['frascati'] != nil ? Buildr.settings.user['frascati']['path'] : nil) || Buildr.settings.build['frascati']['path'] || './deps/frascati'
 
 RELEASE_VERSION = (Buildr.settings.user['release'] != nil ? Buildr.settings.user['release']['version'] : nil) || Buildr.settings.build['release']['version']
@@ -250,6 +250,9 @@ task :packageall do # TODO Less messy code
   rm_rf FileList['tmp/easysoa-samples-smarttravel-services-backup*']
   rm_rf 'tmp'
   
+  mkdir PACKAGING_OUTPUT_PATH+'/examples'
+  cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
+  
   # Copy Nuxeo
   puts "Copying service registry (Nuxeo)..."
   begin
@@ -259,7 +262,6 @@ task :packageall do # TODO Less messy code
   end
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
-  cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
   
   # Copy Node.js server
