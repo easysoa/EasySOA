@@ -70,7 +70,7 @@
         <fields>
           <field>sref:refPath</field>
         </fields>
-        <properties widgetMode="any">
+        <properties widgetMode="view">
           <property name="template">/widgets/document_path_link_template.xhtml</property>
         </properties>
       </widget>
