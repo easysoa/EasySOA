@@ -102,9 +102,20 @@
 			<artifactId>easywsdl-wsdl</artifactId>
 			<version>2.1</version>
 		</dependency>
+		<!-- Don't use this version of EasyWSDL : no support for WSDL 2 yet -->
+		<!--<dependency>
+			<artifactId>easywsdl11-api</artifactId>
+			<groupId>com.ebmwebsourcing.easywsdl</groupId>
+			<version>3.0_40M1</version>
+		</dependency>
+		<dependency>
+			<artifactId>easywsdl11-impl</artifactId>
+			<groupId>com.ebmwebsourcing.easywsdl</groupId>
+			<version>3.0_40M1</version>
+		</dependency>-->		
 
 		<!-- Apache Woden -->
-		<!-- Alternative solution for parsing WSDL and generate HTML form -->		
+		<!-- Alternative solution for parsing WSDL and generate HTML form -->	
 		<dependency>
     		<groupId>org.apache.woden</groupId>
     		<artifactId>woden-api</artifactId>
@@ -126,24 +137,6 @@
     		<artifactId>woden-tool</artifactId>
     		<version>1.0M9</version>
 		</dependency>
-		<!--org/apache/ws/commons/schema/XmlSchema
-		<dependency>
-    		<groupId>org.apache.ws.commons.schema</groupId>
-    		<artifactId>woden-tool</artifactId>
-    		<version>1.0M9</version>
-		</dependency>-->
-		
-		<!-- Don't use this version : no support for WSDL 2 yet -->
-		<!--<dependency>
-			<artifactId>easywsdl11-api</artifactId>
-			<groupId>com.ebmwebsourcing.easywsdl</groupId>
-			<version>3.0_40M1</version>
-		</dependency>
-		<dependency>
-			<artifactId>easywsdl11-impl</artifactId>
-			<groupId>com.ebmwebsourcing.easywsdl</groupId>
-			<version>3.0_40M1</version>
-		</dependency>-->
 		
 		<!-- SOAPUI and required SOAPUI dependencies -->
 		<dependency>
