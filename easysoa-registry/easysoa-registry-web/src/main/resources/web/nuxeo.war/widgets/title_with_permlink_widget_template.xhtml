@@ -27,14 +27,15 @@
 		<span class="doctype"><h:outputText value=" (#{field_0.getType().replaceFirst('Workspace', 'Appli. Impl.')})"/></span>
 	</c:if>
         
-        <span title="uid: #{field_0.id}">
+	<!-- EasySOA: Hide permalink -->
+       <!--  <span title="uid: #{field_0.id}">
           <nxd:restDocumentLink document="#{field_0}" pattern="id">
             <nxu:graphicImage value="/icons/permalink.png"
               style="vertical-align:middle"
               alt="#{messages['label.permalink']}"
               title="#{messages['label.permalink']}"/>
           </nxd:restDocumentLink>
-       </span>
+       </span> -->
       </h1>
 
 	<!-- EasySOA: Display url -->

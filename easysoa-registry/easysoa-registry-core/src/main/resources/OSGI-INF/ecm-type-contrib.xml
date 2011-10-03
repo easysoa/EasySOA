@@ -57,11 +57,12 @@
         <!-- Business -->
         <layout>heading</layout>
         <layout>soacommon_author</layout>
+        <layout>serviceref_common</layout>
         <!-- Technical -->
         <layout>serviceref_tech</layout>
         <!-- Specifications -->
-        <layout>files</layout>
         <layout>serviceref_spec</layout>
+        <layout>files</layout>
       </layouts>
     </type>
 
