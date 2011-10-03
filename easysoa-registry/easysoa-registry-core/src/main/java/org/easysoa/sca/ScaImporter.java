@@ -36,7 +36,7 @@ import org.nuxeo.runtime.api.Framework;
  * 
  * TODO support inclusion (implementation.composite, or even other impls). NB. not possible without other files
  * TODO support advanced linking : promote (for service & reference), wire
- * @author mkalam-alami, jguillemotte, mdutoo
+ * @author mdutoo, mkalam-alami, jguillemotte
  *
  */
 public class ScaImporter {
