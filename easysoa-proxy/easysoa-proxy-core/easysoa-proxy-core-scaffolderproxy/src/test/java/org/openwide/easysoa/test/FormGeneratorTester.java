@@ -2,12 +2,7 @@ package org.openwide.easysoa.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import javax.xml.soap.SOAPException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -40,7 +35,7 @@ public class FormGeneratorTester extends AbstractTest {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start the soap service mock
-		//startSoapServiceMockComposite();
+		startSoapServiceMockComposite();
 		// Start Scaffolding Proxy test
 		startScaffoldingProxyComposite();
 	}	
@@ -58,13 +53,11 @@ public class FormGeneratorTester extends AbstractTest {
 		String form = httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/scaffoldingProxy/?wsdlUrl=http://localhost:8086/soapServiceMock?wsdl"), responseHandler);
 		logger.debug("response = " + form);
 		// Compare it to a registered one
-		// Old solution, too much constraints to keep updated
-		//assertEquals(readResponseFile("src/test/resources/testFiles/testForm.html"), resp.replace("\n", ""));
 		assertThat(form, JUnitMatchers.containsString("Service : SoapServiceMock"));		
 		assertThat(form, JUnitMatchers.containsString("<h3>Operations :</h3><br/>\n								<u>getPrice</u>"));
 		//assertThat(form, JUnitMatchers.containsString("<input class=\"outputField\" id=\"return_ordersNumber\" disabled name=\"ordersNumber\" type=\"text\">"));		
 	}
-	
+
 	@Test
 	@Ignore
 	public final void testRestSoapProxy() throws ClientProtocolException, IOException{
@@ -90,27 +83,5 @@ public class FormGeneratorTester extends AbstractTest {
 		System.in.read();
 		logger.info("Scaffolding proxy test stopped !");
 	}
-	
-	/**
-	 * Read a response file and returns the content 
-	 * @return The content of the response file, an error message otherwise
-	 * @throws Exception 
-	 */
-	/*private String readResponseFile(String responseFileUri) throws Exception{
-		try {
-			File responseFile;
-			responseFile = new File(responseFileUri);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(responseFile)));
-			StringBuffer response = new StringBuffer();
-			while(reader.ready()){
-				response.append(reader.readLine());
-			}
-			return response.toString();	
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-			throw ex;
-		}
-	}*/	
 	
 }
