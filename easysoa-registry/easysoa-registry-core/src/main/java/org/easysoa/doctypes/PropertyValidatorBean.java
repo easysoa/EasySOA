@@ -18,14 +18,23 @@ import org.jboss.seam.annotations.Scope;
 @Install(precedence = Install.FRAMEWORK)
 public class PropertyValidatorBean extends EasySOADoctype {
 
+    private final static FacesMessage ERROR_MESSAGE = new FacesMessage("Invalid URL");
+    
     public void validateUrl(FacesContext context,
             UIComponent component, Object value) {
-        try {
-            new URL((String) value);
+        String urlString = (String) value;
+        if (urlString.equals(urlString.trim())) {
+            try {
+                new URL((String) value);
+            }
+            catch (MalformedURLException e) {
+                throw new ValidatorException(ERROR_MESSAGE, e);
+            }
         }
-        catch (MalformedURLException e) {
-            throw new ValidatorException(new FacesMessage("Invalid URL"), e);
+        else {
+            throw new ValidatorException(ERROR_MESSAGE);
         }
+        
     }
     
 }

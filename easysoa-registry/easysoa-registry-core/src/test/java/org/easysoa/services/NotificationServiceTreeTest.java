@@ -173,7 +173,7 @@ public class NotificationServiceTreeTest {
     	
     	//// Default behaviour: a new application is created with given URLs
 
-    	String newApiUrl = "http://www.i-dont-exist.com/api";
+    	String newApiUrl = "http://www.i-dont-exist-too.com/api";
     	
     	// Create service
     	properties = new HashMap<String, String>();

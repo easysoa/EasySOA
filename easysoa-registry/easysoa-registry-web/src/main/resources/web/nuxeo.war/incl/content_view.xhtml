@@ -200,24 +200,23 @@
 </nxu:set>
 </c:if>
 
-<!-- EasySOA : Bypass this during virtual navigation -->
+<!-- EasySOA : Show discovery icons and other document info -->
 <c:if test="#{currentDocument.getType().equals('Workspace') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceRef')}">
- 
-  <!-- EasySOA : Icons -->
-  <ui:include src="/incl/tabs/easysoa_view.xhtml" />
   
-  <c:if test="#{currentDocument.getType().equals('Workspace') || currentDocument.getType().equals('ServiceAPI')}">
-  <!-- EasySOA : Metadata-->
-  <h:form id="document_view">
-    <a4j:region id="documentViewRegion">
-      <a4j:outputPanel id="documentViewPanel">
-      <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
-    </a4j:outputPanel>
-    </a4j:region>
-  </h:form>
-  </c:if>
-  
+    <ui:include src="/incl/tabs/easysoa_view.xhtml" />
+
+	<!-- EasySOA : Show folderish documents metadata-->
+	<c:if test="#{currentDocument.getType().equals('Workspace') || currentDocument.getType().equals('ServiceAPI')}">
+	  <h:form id="document_view">
+	    <a4j:region id="documentViewRegion">
+	      <a4j:outputPanel id="documentViewPanel">
+	      <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
+	    </a4j:outputPanel>
+	    </a4j:region>
+	  </h:form>
+	</c:if>
 </c:if>
+  
 
 </nxu:set>
 </nxu:set>

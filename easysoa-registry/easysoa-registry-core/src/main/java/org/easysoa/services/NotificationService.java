@@ -115,9 +115,10 @@ public class NotificationService extends DefaultComponent {
             
             // Find or create document and parent
             DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
-            DocumentModel parentModel = docService.findServiceApi(session, parentUrl);
-            if (parentModel == null)
-                parentModel = docService.findAppliImpl(session, parentUrl);
+            DocumentModel parentModel = docService.findAppliImpl(session, parentUrl);
+            if (parentModel == null) {
+                parentModel = docService.findServiceApi(session, parentUrl);
+            }
             if (parentModel == null) {
                 if (parentUrl == null) {
                     parentModel = docService.getDefaultAppliImpl(session);

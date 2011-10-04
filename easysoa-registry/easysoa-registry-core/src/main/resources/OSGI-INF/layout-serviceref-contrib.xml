@@ -4,6 +4,29 @@
 
     <require>org.nuxeo.ecm.platform.forms.layout.WebLayoutManager</require>
 
+    <layout name="serviceref_common">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>serviceref_refPathLink</widget>
+        </row>
+      </rows>
+      <widget name="serviceref_refPathLink" type="template"><!-- listing_big_icon_type_link -->
+        <labels>
+          <label mode="any">label.easysoa.serviceref.refPathLink</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>sref:refPath</field>
+        </fields>
+        <properties widgetMode="view">
+          <property name="template">/widgets/document_path_link_template.xhtml</property>
+        </properties>
+      </widget>
+    </layout>
+
     <layout name="serviceref_tech">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
@@ -44,9 +67,6 @@
           <widget>serviceref_refPath</widget>
         </row>
         <row>
-          <widget>serviceref_refPathLink</widget>
-        </row>
-        <row>
           <widget>soacommon_archi_archiPath</widget>
         </row>
         <row>
@@ -61,18 +81,6 @@
         <fields>
           <field>sref:refPath</field>
         </fields>
-      </widget>
-      <widget name="serviceref_refPathLink" type="template"><!-- listing_big_icon_type_link -->
-        <labels>
-          <label mode="any">label.easysoa.serviceref.refPathLink</label>
-        </labels>
-        <translated>true</translated>
-        <fields>
-          <field>sref:refPath</field>
-        </fields>
-        <properties widgetMode="view">
-          <property name="template">/widgets/document_path_link_template.xhtml</property>
-        </properties>
       </widget>
       <widget name="soacommon_archi_archiPath" type="text">
         <labels>

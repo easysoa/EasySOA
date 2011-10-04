@@ -37,7 +37,7 @@ public class PropertyNormalizer extends EasySOADoctype {
             stringUrl = url.toString();
             return normalizeUrlPath(stringUrl, errMsg);
         }
-        return concatUrlPath(stringUrl.split("/")); // if URL OK, remove the end '/' if any
+        return concatUrlPath(stringUrl.trim().split("/")); // if URL OK, remove the end '/' if any
     }
 
     /**
@@ -66,7 +66,7 @@ public class PropertyNormalizer extends EasySOADoctype {
         if (stringUrl.contains("localhost")) {
             stringUrl = stringUrl.replaceFirst("localhost", "127.0.0.1");
         }
-        return concatUrlPath(stringUrl.split("/"));
+        return concatUrlPath(stringUrl.trim().split("/"));
     }
 
     public static final String normalizeUrlPath(String stringUrl) throws MalformedURLException {
