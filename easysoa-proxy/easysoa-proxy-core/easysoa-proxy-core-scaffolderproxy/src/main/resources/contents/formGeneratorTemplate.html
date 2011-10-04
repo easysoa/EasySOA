@@ -43,112 +43,114 @@ $formGenerator.setWsdl($wsdlUrl)
 			</div>
 		</div>
 		<div id="container">
-			<h1>Service : $formGenerator.getServiceName()</h1>
-			<h2>End points :</h2>
-			#foreach( $endpoint in $formGenerator.getEndpoints() )
-    		<p>
-    			$endpoint.Name : <a href="$endpoint.address">$endpoint.address</a>
-				<h3>
-					Binding : <b>$formGenerator.getBindingName($endpoint)</b>
-				</h3>
-				<h3>Operations :</h3><br/>
-				#foreach( $operation in $formGenerator.getOperations($endpoint) )		
-				<u>$formGenerator.getOperationName($operation)</u>
-				
-				<!-- Javascript code engine for the form -->
-				<script type="text/javascript">
-				function submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form(form){
-					var xhr;
-					var operation = "$formGenerator.getOperationName($operation)";
-					var binding = "$formGenerator.getBindingName($endpoint)";
-					var responseMessage = "$formGenerator.getOutputMessageName($endpoint, $operation)";
-					getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Sending request ...";
-					if(window.XMLHttpRequest) // Firefox and others
-						xhr = new XMLHttpRequest();
-					else if(window.ActiveXObject){ // Internet Explorer
-						try {
-							xhr = new ActiveXObject("Msxml2.XMLHTTP");
-						} catch (e) {
-							xhr = new ActiveXObject("Microsoft.XMLHTTP");
-						}
-					}
-					else { // XMLHttpRequest not supported by browser
-						alert("Your browser does not support XMLHTTPRequest objects ...");
-						xhr = false;
-					}
-					getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Getting response ...";
-					xhr.onreadystatechange = function(){
-						//alert("xhr.readyState : " + xhr.readyState);
-						if(xhr.readyState == 4){
-							//alert("xhr.status : " + xhr.status + " ; xhr.responseText : " + xhr.responseText);
-							if(xhr.status == 200){
-								// receive now json structure
-								var responseData = JSON.parse(xhr.responseText);
-								//for each elements 'outputField'
-								var outputFields = getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*');
-								for(j=0; j<outputFields.length; j++){
-									var fieldName = outputFields[j].name;
-									outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
-								}
-							} else {
-								getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Error code " + xhr.status;
-							}
-						}
-					};
+			#foreach( $service in $formGenerator.getServices() )
+				<h1>Service : $service.getName()</h1>
+				<h2>End points :</h2>
+				#foreach( $endpoint in $formGenerator.getEndpoints($service) )
+	    		<p>
+	    			$endpoint.Name : <a href="$endpoint.address">$endpoint.address</a>
+					<h3>
+						Binding : <b>$formGenerator.getBindingName($endpoint)</b>
+					</h3>
+					<h3>Operations :</h3><br/>
+					#foreach( $operation in $formGenerator.getOperations($endpoint) )		
+					<u>$formGenerator.getOperationName($operation)</u>
 					
-					// Hard coded URL for demo purpose
-					//var url = "<xsl:value-of select="$baseServerUrl" />";
-					var url = "http://localhost:7001/";
-					var wsdlUrl = "$wsdlUrl";
-					var params = "";
-					// For each form field : add it in the url
-	    			for(i=0; i<document.forms[form].elements.length; i++){
-						// on ne prend que les champs enabled ou en lecture / ecriture
-						if(document.forms[form].elements[i].disabled == false){
-							//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
-							if(params == ""){
-								params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
-							} else {
-								params = params + "&" + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;							
+					<!-- Javascript code engine for the form -->
+					<script type="text/javascript">
+					function submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form(form){
+						var xhr;
+						var operation = "$formGenerator.getOperationName($operation)";
+						var binding = "$formGenerator.getBindingName($endpoint)";
+						var responseMessage = "$formGenerator.getOutputMessageName($endpoint, $operation)";
+						getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Sending request ...";
+						if(window.XMLHttpRequest) // Firefox and others
+							xhr = new XMLHttpRequest();
+						else if(window.ActiveXObject){ // Internet Explorer
+							try {
+								xhr = new ActiveXObject("Msxml2.XMLHTTP");
+							} catch (e) {
+								xhr = new ActiveXObject("Microsoft.XMLHTTP");
 							}
 						}
+						else { // XMLHttpRequest not supported by browser
+							alert("Your browser does not support XMLHTTPRequest objects ...");
+							xhr = false;
+						}
+						getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Getting response ...";
+						xhr.onreadystatechange = function(){
+							//alert("xhr.readyState : " + xhr.readyState);
+							if(xhr.readyState == 4){
+								//alert("xhr.status : " + xhr.status + " ; xhr.responseText : " + xhr.responseText);
+								if(xhr.status == 200){
+									// receive now json structure
+									var responseData = JSON.parse(xhr.responseText);
+									//for each elements 'outputField'
+									var outputFields = getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*');
+									for(j=0; j<outputFields.length; j++){
+										var fieldName = outputFields[j].name;
+										outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
+									}
+								} else {
+									getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Error code " + xhr.status;
+								}
+							}
+						};
+						
+						// Hard coded URL for demo purpose
+						//var url = "<xsl:value-of select="$baseServerUrl" />";
+						var url = "http://localhost:7001/";
+						var wsdlUrl = "$wsdlUrl";
+						var params = "";
+						// For each form field : add it in the url
+		    			for(i=0; i<document.forms[form].elements.length; i++){
+							// on ne prend que les champs enabled ou en lecture / ecriture
+							if(document.forms[form].elements[i].disabled == false){
+								//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
+								if(params == ""){
+									params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
+								} else {
+									params = params + "&" + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;							
+								}
+							}
+						}
+						params = params + "&wsdlUrl=" + wsdlUrl; 
+						url = url + "callService/" + binding + "/" + operation + "/";
+						//alert("url = " + url + "?" + params);
+						xhr.open("GET", url + "?" + params, true);
+						xhr.send(null);
 					}
-					params = params + "&wsdlUrl=" + wsdlUrl; 
-					url = url + "callService/" + binding + "/" + operation + "/";
-					//alert("url = " + url + "?" + params);
-					xhr.open("GET", url + "?" + params, true);
-					xhr.send(null);
-				}
-				</script>				
-				<form enctype="text/plain" action="" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">
-					<h4>Input fields</h4>
-					<table>
-						<tr>
-							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
-						</tr>
-						#foreach( $inputField in $formGenerator.getInputFields($endpoint, $operation) )
-						<tr>
-							<td>xsd:string</td><td>$inputField</td><td><input class="inputField" name="$inputField" type="text"></td>
-						</tr>
-						#end
-					</table>
-					<h4>Output fields</h4>
-					<table>
-						<tr>
-							<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
-						</tr>
-						#foreach( $outputField in $formGenerator.getOutputFields($endpoint, $operation) )
-						<tr>
-							<td>xsd:string</td><td>$outputField</td><td><input class="outputField" id="return_$outputField" disabled name="$outputField" type="text"></td>
-						</tr>
-						#end
-					</table>
-				</form>
-				<br/>
-				<input OnClick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');" value="Submit" type="button">
-				<br/>
+					</script>				
+					<form enctype="text/plain" action="" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">
+						<h4>Input fields</h4>
+						<table>
+							<tr>
+								<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
+							</tr>
+							#foreach( $inputField in $formGenerator.getInputFields($endpoint, $operation) )
+							<tr>
+								<td>$inputField.getType()</td><td>$inputField.getName()</td><td><input class="inputField" name="$inputField.getName()" type="text"></td>
+							</tr>
+							#end
+						</table>
+						<h4>Output fields</h4>
+						<table>
+							<tr>
+								<th style="width: 20%">Field type</th><th style="width: 20%">Name</th><th>Value</th>
+							</tr>
+							#foreach( $outputField in $formGenerator.getOutputFields($endpoint, $operation) )
+							<tr>
+								<td>$outputField.getType()</td><td>$outputField.getName()</td><td><input class="outputField" id="return_$outputField.getName()" disabled name="$outputField" type="text"></td>
+							</tr>
+							#end
+						</table>
+					</form>
+					<br/>
+					<input OnClick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');" value="Submit" type="button">
+					<br/>
+					#end
+				</p>
 				#end
-			</p>
 			#end
 		</div>			
 	</body>
