@@ -64,6 +64,20 @@ traveldemo()
   ./start-travelDemo.sh > ../log/travelDemo.log 2>&1
 }
 
+uiscaffolder()
+{
+  touch log/uiScaffolder.log
+  cd frascati
+  ./start-uiScaffolder.sh > ../log/uiScaffolder.log 2>&1
+}
+
+airportservice()
+{
+  touch log/airportService.log
+  cd talend/airportService/SimpleProvider
+  ./SimpleProvider_run.sh > ../../../log/airportService.log 2>&1
+}
+
 # Start processes
 echo "Starting EasySOA Demo. A browser page will be opened in a few seconds."
 echo "If not, please open this page in a browser: http://127.0.0.1:8083/easysoa/."
@@ -78,10 +92,12 @@ pafservices &
 travelbackup &
 sleep 3 # Let the servers start
 traveldemo &
+airportservice &
 sleep 7 # Let the demo start
 web &
 lightproxypaf &
 lightproxytravel &
+uiscaffolder &
 sleep 2
 firefox "http://127.0.0.1:8083/easysoa" &
 

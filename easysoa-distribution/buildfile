@@ -7,11 +7,12 @@ require 'shellwords'
 ############### HOWTO
 
 # Type "buildr help" for a list of available tasks
-# Available options: "test=no", "offline=yes"
+# Available options: "test=no", "offline=yes", "withtalend=yes"
 
 ############### CONFIG LOADING
 
 NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.2-tomcat'
+TALEND_ESB_PATH = (Buildr.settings.user['talend-esb'] != nil ? Buildr.settings.user['talend-esb']['path'] : nil) || Buildr.settings.build['talend-esb']['path'] || ENV['HOME']+'/talend-esb'
 NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || '/usr/local/bin/'
 FRASCATI_PATH = (Buildr.settings.user['frascati'] != nil ? Buildr.settings.user['frascati']['path'] : nil) || Buildr.settings.build['frascati']['path'] || './deps/frascati'
 
@@ -66,6 +67,7 @@ EASYSOA_REGISTRY = EASYSOA+':easysoa-registry'
 EASYSOA_PROXY = EASYSOA+':easysoa-proxy'
 EASYSOA_PAF = EASYSOA+':samples:easysoa-samples-pureairflowers'
 EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
+EASYSOA_TALEND = EASYSOA+':samples:Talend-Airport-Service'
 EASYSOA_TRAVEL_BACKUP = EASYSOA+':samples:easysoa-samples-smarttravel:easysoa-samples-smarttravel-services-backup'
 
 desc 'EasySOA project - Available options for all EasySOA tasks: "test=no" to skip tests, "offline=yes" to build in offline mode'
@@ -133,6 +135,11 @@ define 'easysoa', :base_dir => '../' do
           maven(['clean', 'assembly:assembly'], project)
         end
       end
+    end
+    
+    desc 'Talend Airport service project'
+    define 'Talend-Airport-Service' do
+    	# Nothing
     end
     
   end
@@ -232,7 +239,7 @@ task :packageall do # TODO Less messy code
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   
   puts "  * FraSCAti applications..."
-  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-service-ui-scaffolder-proxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_PAF).base_dir+"/easysoa-samples-paf-restsoapproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
@@ -257,8 +264,9 @@ task :packageall do # TODO Less messy code
   puts "Copying service registry (Nuxeo)..."
   begin
     cp_r NUXEO_PATH, PACKAGING_OUTPUT_PATH
-  rescue Exception
-    raise "Files copy failed: Nuxeo is probably running. Could you please stop it?"
+  rescue Exception => e
+    puts "Files copy failed: Nuxeo is probably running. Could you please stop it?"
+    raise e
   end
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
@@ -268,6 +276,17 @@ task :packageall do # TODO Less messy code
   puts "Copying web server & proxy (node.js)..."
   mkdir PACKAGING_OUTPUT_PATH+'/web'
   cp_r FileList[project(EASYSOA_WEB).base_dir+"/*"], PACKAGING_OUTPUT_PATH+'/web'
+  
+  # Copy Talend ESB and Talend service
+  mkdir PACKAGING_OUTPUT_PATH+'/talend'
+  puts "Copying Talend components..."
+  if ENV['withtalend'] == 'yes'
+	  puts "  * Talend ESB..."
+	  cp_r TALEND_ESB_PATH, PACKAGING_OUTPUT_PATH+"/talend"
+  end
+  puts "  * Talend Airport service..."
+  mkdir PACKAGING_OUTPUT_PATH+'/talend/airportService'
+  cp_r FileList[project(EASYSOA_TALEND).base_dir+'/SimpleProvider*/*'], PACKAGING_OUTPUT_PATH+"/talend/airportService"
   
   # Copy packaging files
   puts "Copying packaging files..."

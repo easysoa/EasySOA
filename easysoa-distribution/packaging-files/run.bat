@@ -40,6 +40,11 @@ cd frascati
 start "EasySOA Demo - Travel" start-travelDemo.bat 2>&1 ^| "../tee.exe" ..\log\travelDemo.log
 cd ..
 
+rem airportService
+cd talend/airportService/SimpleProvider
+start "EasySOA Demo - Talend Airport Service" SimpleProvider_run.bat 2>&1 ^| "../tee.exe" ..\log\airportService.log
+cd ../../..
+
 rem sleep 7 (let the demo start)
 ping -n 8 127.0.0.1 > nul
 
@@ -56,6 +61,11 @@ cd ..
 rem lightProxyTravel
 cd frascati
 start "EasySOA Demo - EasySOA Light Proxy (Smart Travel)" start-lightProxyTravel.bat 2>&1 ^| "../tee.exe" ..\log\lightProxyTravel.log
+cd ..
+
+rem uiScaffolder
+cd frascati
+start "EasySOA Demo - UI Scaffolder Proxy" start-uiScaffolder.bat 2>&1 ^| "../tee.exe" ..\log\uiScaffolder.log
 cd ..
 
 rem sleep 2
