@@ -31,7 +31,7 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
 // TODO Composite is like singleton, not sure that it it the best scope to use here ...
 // TODO Check compatibility with WSDL 2.0 
 // TODO return all the bindings contained in the WSDL, not only the first
-// TODO return the field type for the HTML form, for now all the fiels are tagged as String (Hardcoded in the velocity template) 
+// TODO return the field type for the HTML form, for now all the fields are tagged as String (Hardcoded in the velocity template) 
 @Scope("COMPOSITE")
 public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 
@@ -39,7 +39,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(EasyWsdlFormGenerator.class.getClass());	
-	
+
 	// Description of the WSDL file to parse
 	private Description wsdlDescription;
 	
@@ -49,6 +49,10 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	
 	@Override
 	public void setWsdl(String wsdlSource) throws Exception {
+		// Hack for Talend airport sample
+		if(wsdlSource == null || "".equals(wsdlSource)){
+			wsdlSource = defaultWsdl;
+		}
 		// Read WSDL version 1.1 or 2.0
 		WSDLReader reader;
 		logger.debug("WSDl source to parse : " + wsdlSource);
@@ -157,7 +161,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 					Type elementType = wsdlDescription.getTypes().getSchemas().get(0).getType(part.getElement().getQName());
 					// In case of complexType tag inside element tag
 					if(elementType == null){
-						elementType = wsdlDescription.getTypes().getSchemas().get(0).getElement(part.getElement().getQName()).getType();			
+						elementType = wsdlDescription.getTypes().getSchemas().get(0).getElement(part.getElement().getQName()).getType();
 					}
 					// Casting and adding the element in the list
 					if(elementType != null){

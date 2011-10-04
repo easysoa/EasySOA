@@ -28,7 +28,7 @@ public class FormGeneratorTester extends AbstractTest {
 	 * Init the remote systems for the test
 	 * Frascati and HTTP Proxy
 	 * Instantiate FraSCAti and retrieve services.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	@BeforeClass
 	public static void setUp() throws FrascatiException, InterruptedException {

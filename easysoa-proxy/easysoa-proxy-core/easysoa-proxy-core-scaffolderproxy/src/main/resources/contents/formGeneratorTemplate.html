@@ -55,7 +55,6 @@ $formGenerator.setWsdl($wsdlUrl)
 				#foreach( $operation in $formGenerator.getOperations($endpoint) )		
 				<u>$formGenerator.getOperationName($operation)</u>
 				
-				
 				<!-- Javascript code engine for the form -->
 				<script type="text/javascript">
 				function submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form(form){
