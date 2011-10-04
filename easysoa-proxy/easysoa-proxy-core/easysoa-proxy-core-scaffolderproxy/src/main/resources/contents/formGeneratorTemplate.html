@@ -129,7 +129,7 @@ $formGenerator.setWsdl($wsdlUrl)
 							</tr>
 							#foreach( $inputField in $formGenerator.getInputFields($endpoint, $operation) )
 							<tr>
-								<td>$inputField()</td><td>$inputField.getName()</td><td><input class="inputField" name="$inputField.getName()" type="text"></td>
+								<td>$inputField.getType()</td><td>$inputField.getName()</td><td><input class="inputField" name="$inputField.getName()" type="text"></td>
 							</tr>
 							#end
 						</table>
