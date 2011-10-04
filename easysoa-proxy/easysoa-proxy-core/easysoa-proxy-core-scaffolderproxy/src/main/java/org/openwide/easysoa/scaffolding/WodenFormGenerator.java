@@ -16,17 +16,22 @@ import org.apache.woden.wsdl20.BindingOperation;
 import org.apache.woden.wsdl20.Description;
 import org.apache.woden.wsdl20.Endpoint;
 import org.apache.woden.wsdl20.InterfaceMessageReference;
+import org.apache.woden.wsdl20.Service;
 import org.apache.woden.wsdl20.enumeration.Direction;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSService;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Scope;
 import org.w3c.dom.Document;
 
+//TODO Composite is like singleton, to change for a multi-user use
+//TODO return the field type for the HTML form, for now all the fields are tagged as String (Hardcoded in the velocity template)
 @Scope("COMPOSITE")
 public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 
@@ -84,18 +89,28 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	}
 
 	@Override
-	public String getServiceName() {
+	public List<WSService> getServices() {
 		logger.debug("Entering in getServiceName method");
+		ArrayList<WSService> serviceList = new ArrayList<WSService>();		
 		String serviceName = wsdlDescription.getServices()[0].getName().getLocalPart();
+		for(int i=0; i< wsdlDescription.getServices().length; i++){
+			serviceList.add(new WSService(wsdlDescription.getServices()[i].getName()));
+			logger.debug("Service name : " + wsdlDescription.getServices()[i].getName());
+		}		
 		logger.debug("Service name : " + serviceName);
-		return serviceName;
+		return serviceList;
 	}
 
 	@Override
-	public List<WSEndpoint> getEndpoints() {
+	public List<WSEndpoint> getEndpoints(WSService wsService) {
 		ArrayList<WSEndpoint> endpointsList = new ArrayList<WSEndpoint>();
-		for(Endpoint endpoint : wsdlDescription.getServices()[0].getEndpoints()){
-			endpointsList.add(new WSEndpoint(endpoint.getName().toString() , endpoint.getAddress()));
+		for(int i=0; i< wsdlDescription.getServices().length; i++){
+			Service service = wsdlDescription.getServices()[i];
+			if(service.getName().getLocalPart().equals(wsService.getName())){		
+				for(Endpoint endpoint : wsdlDescription.getServices()[0].getEndpoints()){
+					endpointsList.add(new WSEndpoint(endpoint.getName().toString() , endpoint.getAddress()));
+				}
+			}
 		}
 		return endpointsList;
 	}
@@ -139,14 +154,14 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	}
 
 	@Override
-	public List<String> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
+	public List<WSField> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName");
 		BindingOperation operation = getBindingOperation(wsEndpoint, wsOperation);
 		return getFields(operation, Direction.IN);
 	}
 
 	@Override
-	public List<String> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
+	public List<WSField> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName");
 		BindingOperation operation = getBindingOperation(wsEndpoint, wsOperation);				
 		return getFields(operation, Direction.OUT);
@@ -174,8 +189,8 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	 * @param direction The message direction
 	 * @return A string list of fields 
 	 */
-	private List<String> getFields(BindingOperation operation, Direction direction){
-		ArrayList<String> outputFields = new ArrayList<String>();
+	private List<WSField> getFields(BindingOperation operation, Direction direction){
+		ArrayList<WSField> outputFields = new ArrayList<WSField>();
 		InterfaceMessageReference[] messages = operation.getInterfaceOperation().getInterfaceMessageReferences();		
 		logger.debug("messages : " + messages.length);
 		for(int i = 0; i <messages.length; i++){
@@ -185,13 +200,15 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 				XmlSchemaComplexType elemComplexType = (XmlSchemaComplexType)elem.getSchemaType();
 				XmlSchemaSequence sequence = (XmlSchemaSequence)(elemComplexType.getParticle());			 	
 				Iterator<XmlSchemaSequenceMember> iter = sequence.getItems().iterator();
+				// Only compatible with XML Schema version 2.x
 				//Iterator<Object> iter = sequence.getItems().getIterator();
 				while(iter.hasNext()){
 					Object obj = iter.next();
 					if(obj instanceof XmlSchemaElement){
 						XmlSchemaElement field = (XmlSchemaElement) obj;
 						logger.debug("Field found = " + field.getName());
-						outputFields.add(field.getName());
+						//System.out.println(field.getSchemaType().getName());
+						outputFields.add(new WSField(field.getName(), "String"));
 					}
 				}
 			}

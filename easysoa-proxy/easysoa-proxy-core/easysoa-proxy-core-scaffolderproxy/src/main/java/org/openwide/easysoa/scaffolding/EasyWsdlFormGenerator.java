@@ -7,18 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSService;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Scope;
 import org.ow2.easywsdl.schema.api.ComplexType;
 import org.ow2.easywsdl.schema.api.Element;
 import org.ow2.easywsdl.schema.api.SimpleType;
 import org.ow2.easywsdl.schema.api.Type;
+import org.ow2.easywsdl.schema.api.XmlException;
 import org.ow2.easywsdl.wsdl.WSDLFactory;
 import org.ow2.easywsdl.wsdl.api.BindingOperation;
 import org.ow2.easywsdl.wsdl.api.Description;
 import org.ow2.easywsdl.wsdl.api.Endpoint;
 import org.ow2.easywsdl.wsdl.api.Part;
+import org.ow2.easywsdl.wsdl.api.Service;
 import org.ow2.easywsdl.wsdl.api.WSDLException;
 import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
@@ -28,10 +32,8 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
  * @author jguillemotte
  *
  */
-// TODO Composite is like singleton, not sure that it it the best scope to use here ...
-// TODO Check compatibility with WSDL 2.0 
-// TODO return all the bindings contained in the WSDL, not only the first
-// TODO return the field type for the HTML form, for now all the fields are tagged as String (Hardcoded in the velocity template) 
+// TODO Composite is like singleton, to change for a multi-user use
+// TODO Check compatibility with WSDL 2.0
 @Scope("COMPOSITE")
 public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 
@@ -67,25 +69,32 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	}
 	
 	@Override
-	public String getServiceName(){
+	public List<WSService> getServices(){
 		logger.debug("Entering in getServiceName method");
+		ArrayList<WSService> serviceList = new ArrayList<WSService>();
 		logger.debug("Number of services : " + wsdlDescription.getServices().size());
-		String serviceName = wsdlDescription.getServices().get(0).getQName().getLocalPart();
-		logger.debug("Service name : " + serviceName);
-		return serviceName;
+		for(Service service : wsdlDescription.getServices()){
+			serviceList.add(new WSService(service.getQName()));
+			logger.debug("Service name : " + service.getQName().getLocalPart());
+		}
+		return serviceList;
 	}
 	
 	@Override
-	public List<WSEndpoint> getEndpoints() {
+	public List<WSEndpoint> getEndpoints(WSService wsService) {
 		logger.debug("Entering in getEndpoints method");
 		ArrayList<WSEndpoint> endpointList = new ArrayList<WSEndpoint>();
-		for(Endpoint endpoint : wsdlDescription.getServices().get(0).getEndpoints()){
-			try {
-				endpointList.add(new WSEndpoint(endpoint.getName(), new URI(endpoint.getAddress())));
-			} catch (URISyntaxException ex) {
-				logger.error(ex);
-				ex.printStackTrace();
-			} 
+		for(Service service : wsdlDescription.getServices()){
+			if(service.getQName().getLocalPart().equals(wsService.getName())){
+				for(Endpoint endpoint : service.getEndpoints()){
+					try {
+						endpointList.add(new WSEndpoint(endpoint.getName(), new URI(endpoint.getAddress())));
+					} catch (URISyntaxException ex) {
+						logger.error(ex);
+						ex.printStackTrace();
+					}
+				}
+			}
 		}
 		return endpointList;
 	}
@@ -124,7 +133,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	}	
 	
 	@Override
-	public List<String> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
+	public List<WSField> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) throws XmlException {
 		logger.debug("Entering in getInputFields method");
 		List<Part> partList = new ArrayList<Part>();
 		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
@@ -136,7 +145,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	}
 	
 	@Override
-	public List<String> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
+	public List<WSField> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) throws XmlException {
 		logger.debug("Entering in getOutputFields method");	
 		List<Part> partList = new ArrayList<Part>();
 		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
@@ -151,9 +160,10 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	 * Return the field list for the given message or partType
 	 * @param partList The Part list to parse to retrieve the fields
 	 * @return A list of fields
+	 * @throws XmlException 
 	 */
-	private List<String> getFields(List<Part> partList) {
-		List<String> elementNameList = new ArrayList<String>();
+	private List<WSField> getFields(List<Part> partList) throws XmlException {
+		List<WSField> elementNameList = new ArrayList<WSField>();
 		if(partList != null){
 			for(Part part : partList){
 				if(part.getElement() != null){
@@ -173,14 +183,14 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 								List<Element> elementList = typ.getSequence().getElements();
 								for(Element element : elementList){
 									logger.debug("element found : " + element.getQName().getLocalPart());
-									elementNameList.add(element.getQName().getLocalPart());
+									elementNameList.add(new WSField(element.getQName().getLocalPart(), element.getType().getQName().getLocalPart()));
 								}
 							}
 						} else if(elementType instanceof SimpleType) {
 							//logger.debug("SimpleType found ...");
 							SimpleType typ = (SimpleType) elementType;
 							logger.debug("element found : " + typ.getQName().getLocalPart());
-							elementNameList.add(typ.getQName().getLocalPart());
+							elementNameList.add(new WSField(typ.getQName().getLocalPart(), typ.getOtherAttributes().get("type")));
 						}
 					}
 				}

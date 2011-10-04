@@ -2,7 +2,10 @@ package org.openwide.easysoa.scaffolding;
 
 import java.util.List;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
+import org.openwide.easysoa.scaffolding.wsdltemplate.WSService;
+import org.ow2.easywsdl.schema.api.XmlException;
 
 public interface TemplateFormGeneratorInterface {
 
@@ -13,16 +16,16 @@ public interface TemplateFormGeneratorInterface {
 	public void setWsdl(String wsdlXmlSource) throws Exception;
 	
 	/**
-	 * Returns the service name
+	 * Returns the service list
 	 * @return
 	 */
-	public String getServiceName();
+	public List<WSService> getServices();
 	
 	/**
-	 * Returns the list of endpoints (or ports)
+	 * Returns the list of endpoints (or ports) for the service
 	 * @return
 	 */
-	public List<WSEndpoint> getEndpoints();
+	public List<WSEndpoint> getEndpoints(WSService wsService);
 	
 	/**
 	 * 
@@ -57,13 +60,13 @@ public interface TemplateFormGeneratorInterface {
 	 * @param bindingOperation
 	 * @return
 	 */
-	public List<String> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation);
+	public List<WSField> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) throws XmlException;
 	
 	/**
 	 * 
 	 * @param bindingOperation
 	 * @return
 	 */
-	public List<String> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation);	
+	public List<WSField> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) throws XmlException;	
 	
 }
