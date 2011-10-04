@@ -13,10 +13,11 @@
 	<c:if test="${currentDocument.getType() == 'Service'}">
 		<td style="padding-right: 20px">
 			<c:choose>
-				<c:when test="${currentDocument.getProperty('servicedef', 'lightUrl') != null}">
+				<c:when test="${currentDocument.getProperty('servicedef', 'fileUrl') != null}">
 					<div style="float: left; padding: 10px; margin-top: -5px; border: 1px solid #AAF; 
 					       font-size: 13pt; background-color: #EEFAFF; margin-right: 10px">
-					<a href="${currentDocument.getProperty('servicedef', 'lightUrl')}" target="_blank">
+					<!-- TODO: Get URL from a parameter -->
+					<a href="http://localhost:8090/scaffoldingProxy/?wsdlUrl=${currentDocument.getProperty('servicedef', 'fileUrl')}" target="_blank">
 					Call it!
 					</a>
 					</div>
