@@ -38,3 +38,10 @@ To generate a WSDL form :
     - Go to 'http://localhost:8090/scaffoldingProxy/?wsdlUrl=wsdlFile' where wsdlFile is the address of the WSDL to transform in a HTML Form. For instance : "http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8086/soapServiceMock?wsdl".
     - When the HTML Form is displayed, fill the input fields with some values and click on the "send" button. The SOAP service is requested and the response is displayed in the output field.
 
+
+#About Talend Airport sample :
+
+There are in the project 2 WSDL files concerning the Talend airport sample : aiport_soap.wsdl and modified airport_soap.wsdl. The orginal WSDL is the one named airport_soap.wsdl. The modified one is the other.
+To make this sample works with the form generator, we have to made a different version of the WSDL because when the service is published by Talend, some naming differences appears in the generated WSDL. WHen this problem will be solved, only one WSDL will be necessary.
+
+

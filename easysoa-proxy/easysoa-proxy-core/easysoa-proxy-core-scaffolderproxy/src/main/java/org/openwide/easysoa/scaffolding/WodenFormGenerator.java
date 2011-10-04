@@ -43,8 +43,12 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	String defaultWsdl;		
 	
 	@Override
-	public void setWsdl(String wsdlXmlSource) throws Exception {
-		logger.debug("Entering in setWsdl method : " + wsdlXmlSource);
+	public void setWsdl(String wsdlSource) throws Exception {
+		// Hack for Talend airport sample
+		if(wsdlSource == null || "".equals(wsdlSource)){
+			wsdlSource = defaultWsdl;
+		}		
+		logger.debug("Entering in setWsdl method : " + wsdlSource);
 		try{
 			// Factory and reader
 			WSDLFactory factory = WSDLFactory.newInstance();
@@ -55,13 +59,13 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 			
 			// Converter
 			// Check the WSDl version : if version 1.0 or 1.1 => transformation to WSDL 2.0 is required
-			if(!isWsdl2(wsdlXmlSource)){
+			if(!isWsdl2(wsdlSource)){
 				Convert convert = new Convert();
 				String newTargetNS = null;
 				String targetDir = System.getProperty("user.dir");
 				boolean verbose = true;
 				boolean overwrite = true; 
-				String convertFile = convert.convertFile(newTargetNS,wsdlXmlSource,targetDir,verbose,overwrite);
+				String convertFile = convert.convertFile(newTargetNS,wsdlSource,targetDir,verbose,overwrite);
 				logger.debug(convertFile);
 				logger.debug(targetDir + "/" + convertFile);
 				String wsdl2read = targetDir + "/" + convertFile;
@@ -69,7 +73,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 				System.out.println("Bug : " + wsdlDescription);
 			}
 			else {
-				wsdlDescription = reader.readWSDL(wsdlXmlSource);
+				wsdlDescription = reader.readWSDL(wsdlSource);
 			}
 		}
 		catch(Exception ex){

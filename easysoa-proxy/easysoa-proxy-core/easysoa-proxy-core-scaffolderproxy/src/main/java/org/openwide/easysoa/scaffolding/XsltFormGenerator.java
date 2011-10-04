@@ -69,7 +69,7 @@ public class XsltFormGenerator implements TransformationFormGeneratorInterface {
 			}
 			else if(htmlOutput == null || "".equals(htmlOutput)){
 				throw new IllegalArgumentException("The parameter html cannot be null or empty !");
-			}			
+			}
 			// Parsing XML
 			// Can works with HTTP protocol (http://...) or FILE protocol (file://...)
 			SAXSource source;
