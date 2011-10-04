@@ -17,13 +17,14 @@ import org.nuxeo.ecm.automation.core.operations.document.Query;
  *
  */
 public class AutomationHelper {
-
+    
     private static Log log = LogFactory.getLog(AutomationHelper.class);
     
     private HttpAutomationClient client = null;
     private Session session = null;
     
-    public AutomationHelper(String nuxeoUrl) throws Exception {
+    // TODO Better constructor arguments 
+    public AutomationHelper(String nuxeoUrl) throws Exception { 
         client = new HttpAutomationClient(nuxeoUrl+"/automation");
         try {
             // XXX: Hardcoded auth to external Nuxeo instance

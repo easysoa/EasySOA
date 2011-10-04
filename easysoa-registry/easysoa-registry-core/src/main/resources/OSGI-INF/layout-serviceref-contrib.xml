@@ -33,7 +33,6 @@
       </templates>
       <properties mode="any">
         <property name="title">Technical informations</property>
-        <property name="groups">IT Staff</property>
       </properties>
       <rows>
         <row>

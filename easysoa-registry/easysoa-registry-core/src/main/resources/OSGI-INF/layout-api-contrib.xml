@@ -11,8 +11,7 @@
 				</template>
       </templates>
       <properties mode="any">
-        <property name="title">Technical informations</property>
-        <property name="groups">IT Staff</property>
+        <property name="title">Technical information</property>
       </properties>
       <rows>
         <row>

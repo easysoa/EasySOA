@@ -31,6 +31,22 @@ public class HttpFile {
         this.url = url;
     }
 
+    public boolean isFileAvailable() {
+        boolean result = true;
+        HttpURLConnection connection = null;
+        try {
+            connection = ((HttpURLConnection) this.url.openConnection());
+        } catch (IOException e) {
+            result = false;
+        }
+        finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return result;
+    }
+    
     public HttpFile download() throws MalformedURLException, IOException, URISyntaxException {
         HttpURLConnection connection = ((HttpURLConnection) this.url.openConnection());
         this.file = File.createTempFile("tmp", "tmp");
@@ -69,4 +85,5 @@ public class HttpFile {
     public boolean isDownloaded() {
         return (this.file != null) && (this.file.exists());
     }
+
 }
