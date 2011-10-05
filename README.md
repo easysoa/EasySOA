@@ -9,3 +9,4 @@ The goal is to add a light, agile layer on top of the « traditional » SOA, tha
 ## Documentation
 
 To learn how to use EasySOA and get started with development, see the [wiki](https://github.com/easysoa/EasySOA/wiki).
+
