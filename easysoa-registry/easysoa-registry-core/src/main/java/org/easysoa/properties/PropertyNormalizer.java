@@ -1,10 +1,11 @@
-package org.easysoa.doctypes;
+package org.easysoa.properties;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.EasySOADoctype;
 
 /**
  * Tools to allow for an uniform format of EasySOA specific properties.

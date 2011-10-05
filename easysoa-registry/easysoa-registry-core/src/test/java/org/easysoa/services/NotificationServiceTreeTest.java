@@ -17,7 +17,7 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
-import org.easysoa.test.tools.RepositoryLogger;
+import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;

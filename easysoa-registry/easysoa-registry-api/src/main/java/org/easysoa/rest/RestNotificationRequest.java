@@ -1,4 +1,4 @@
-package org.easysoa.test.rest;
+package org.easysoa.rest;
 
 import org.json.JSONObject;
 

@@ -1,4 +1,4 @@
-package org.easysoa.test.tools;
+package org.easysoa.test.rest;
 
 import java.io.Serializable;
 import java.util.Map;

@@ -26,6 +26,7 @@
 
 	<modules>
 		<module>easysoa-registry-parent</module>
+		<module>easysoa-registry-api</module>
 		<module>easysoa-registry-core</module>
 	    <module>easysoa-registry-web</module>
 		<module>easysoa-registry-rest</module>

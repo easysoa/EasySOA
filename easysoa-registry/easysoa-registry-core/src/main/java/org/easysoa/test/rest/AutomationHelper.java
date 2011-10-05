@@ -1,9 +1,9 @@
-package org.easysoa.test.tools;
+package org.easysoa.test.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
-import org.easysoa.doctypes.PropertyNormalizer;
+import org.easysoa.properties.PropertyNormalizer;
 import org.junit.Assume;
 import org.nuxeo.ecm.automation.client.jaxrs.OperationRequest;
 import org.nuxeo.ecm.automation.client.jaxrs.Session;

@@ -1,4 +1,4 @@
-package org.easysoa.doctypes;
+package org.easysoa.properties;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,6 +8,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import org.easysoa.doctypes.EasySOADoctype;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;

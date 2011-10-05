@@ -1,4 +1,4 @@
-package org.easysoa.test.rest;
+package org.easysoa.rest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.utils.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.nuxeo.common.utils.Base64;
 
 public class RestNotificationRequestImpl implements RestNotificationRequest {
     

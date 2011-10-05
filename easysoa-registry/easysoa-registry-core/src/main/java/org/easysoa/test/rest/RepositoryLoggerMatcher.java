@@ -1,4 +1,4 @@
-package org.easysoa.test.tools;
+package org.easysoa.test.rest;
 
 import org.nuxeo.ecm.core.api.DocumentModel;
 

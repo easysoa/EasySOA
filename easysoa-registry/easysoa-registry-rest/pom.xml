@@ -20,6 +20,11 @@
       <artifactId>easysoa-registry-core</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.openwide.easysoa</groupId>
+      <artifactId>easysoa-registry-api</artifactId>
+      <version>0.3-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
     </dependency>

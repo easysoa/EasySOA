@@ -1,4 +1,4 @@
-package org.easysoa.test.rest;
+package org.easysoa.rest;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -9,9 +9,16 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Temporary basic REST client to simplify the use of the Discovery API
+ * 
+ * @author mkalam-alami
+ *
+ */
+// XXX: Does not handle authentication at the moment
 public class RestNotificationFactory {
 
-    public static final String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo";
+    public static final String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo/site";
     
     public enum RestNotificationService {
         APPLIIMPL, SERVICEAPI, SERVICE;
@@ -25,19 +32,27 @@ public class RestNotificationFactory {
     private static Log log = LogFactory.getLog(RestNotificationFactory.class);
     
     private Map<RestNotificationService, URL> apiUrls;
+
+    /**
+     * Creates a new notification factory.
+     * @throws IOException 
+     */
+    public RestNotificationFactory() throws IOException {
+        this(NUXEO_URL_LOCALHOST);
+    }
     
     /**
      * Creates a new notification factory.
      * @param server (ex: RestNotificationFactory.NUXEO_URL_LOCALHOST)
      * @throws IOException 
      */
-    public RestNotificationFactory(String nuxeoUrl) throws IOException {
+    public RestNotificationFactory(String nuxeoApisUrl) throws IOException {
         
         // Test connection
-        new URL(nuxeoUrl).openConnection();
+        new URL(nuxeoApisUrl).openConnection();
         
         // Store API services URLs
-        String notificationApiUrl = nuxeoUrl + API_PATH;
+        String notificationApiUrl = nuxeoApisUrl + API_PATH;
         apiUrls = new HashMap<RestNotificationService, URL>();
         apiUrls.put(RestNotificationService.APPLIIMPL, new URL(notificationApiUrl + SERVICE_APPLIIMPL));
         apiUrls.put(RestNotificationService.SERVICEAPI, new URL(notificationApiUrl + SERVICE_SERVICEAPI));
