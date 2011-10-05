@@ -53,9 +53,9 @@ public class AppliImplListener implements EventListener {
         }
         
         // Initialize workflow
-        if (hasNoWorkflow(session, appliImplModel)) {
+        /*if (hasNoWorkflow(session, appliImplModel)) {
             initWorkflow(session, appliImplModel);
-        }
+        }*/
 
         // Update properties
         if (maintainInternalProperties(session, appliImplModel)) {
@@ -73,7 +73,7 @@ public class AppliImplListener implements EventListener {
 
     }
 
-    private boolean hasNoWorkflow(CoreSession session, DocumentModel appliImplModel) {
+    /*private boolean hasNoWorkflow(CoreSession session, DocumentModel appliImplModel) {
         return true; // TODO
     }
     
@@ -86,7 +86,7 @@ public class AppliImplListener implements EventListener {
             return false;
         }
         return true;
-    }
+    }*/
 
     private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel) {
         try {

@@ -1,8 +1,11 @@
 var settings = {
     
-    // The port of the HTTP web & proxy servers
+    // Port of the HTTP web & proxy servers
     webPort: "8083",
     proxyPort: "8081",
+    
+    // Port of the EasySOA Light UI scaffolding server
+    scaffoldingServer: "http://localhost:8090",
     
     // Web root folder
     webRoot : "../www",

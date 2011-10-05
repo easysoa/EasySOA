@@ -54,6 +54,8 @@ function urlFixer(request, response, next) {
 
 /* Web server */
 
+var proxy = new httpProxy.HttpProxy();
+
 var webServer = express.createServer();
 
 webServer.configure(function(){
@@ -83,23 +85,35 @@ webServer.get('/send', function(request, response, next) {
        *  'servicename': 'The service name'
        * }
        */
-       request.query.session = request.session;
-       easysoaNuxeo.registerWsdl(request.query, function(json) {
-           if (json.result) {
-               try {
-                  response.write(json.result);
-               }
-               catch (error) {
-                  response.write('Request failed');
-               }
-           }
-           else {
-              response.write('Unexpected response');
-           }
-           response.end();
-       });
+       if (request.session.username != undefined) {
+		   request.query.session = request.session;
+		   easysoaNuxeo.registerWsdl(request.query, function(json) {
+		       if (json.result) {
+		           try {
+		              response.write(json.result);
+		           }
+		           catch (error) {
+		              response.write('Request failed');
+		           }
+		       }
+		       else {
+		          response.write('Unexpected response');
+		       }
+		       response.end();
+		   });
+       }
 });
 
+webServer.get('/scaffoldingProxy', function(request, response, next) {
+
+	request.url = settings.scaffoldingServer + request.url;
+    request_url = url.parse(request.url);
+    console.log(request.url);
+    proxy.proxyRequest(request, response, {
+        host: request_url.hostname,
+        port: request_url.port
+    });
+});
 
 webServer.get('*', function(request, response, next) {
     // Socket.io compatibility
@@ -117,8 +131,6 @@ easysoaDbb.startDiscoveryByBrowsingHandler(webServer);
 
       
 /* Proxy server */
-
-var proxy = new httpProxy.HttpProxy();
 
 proxy.on('proxyError', function(error, request, result) {
     result.write("<h1>Error "+error.errno+"</h1>");
