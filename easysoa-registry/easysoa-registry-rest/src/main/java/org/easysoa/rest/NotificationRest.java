@@ -37,7 +37,6 @@ public class NotificationRest {
 
     private static final Log log = LogFactory.getLog(NotificationRest.class);
     
-    //private static final String REGISTRY_ROOT = "/default-domain/workspaces/";
     private static final String ERROR = "[ERROR] ";
 
     private NotificationService notifService = Framework.getRuntime().getService(NotificationService.class);
