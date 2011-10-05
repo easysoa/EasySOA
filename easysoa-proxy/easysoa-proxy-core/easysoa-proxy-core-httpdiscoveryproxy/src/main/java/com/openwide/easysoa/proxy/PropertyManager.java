@@ -5,7 +5,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * Property manager. Works with a property file named httpProxy.properties
+ * Property manager. Works with a property file named httpDiscoveryProxy.properties
  * @author jguillemotte
  *
  */
