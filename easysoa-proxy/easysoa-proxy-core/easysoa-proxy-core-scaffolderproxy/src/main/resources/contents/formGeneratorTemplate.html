@@ -140,7 +140,7 @@ $formGenerator.setWsdl($wsdlUrl)
 							</tr>
 							#foreach( $outputField in $formGenerator.getOutputFields($endpoint, $operation) )
 							<tr>
-								<td>$outputField.getType()</td><td>$outputField.getName()</td><td><input class="outputField" id="return_$outputField.getName()" disabled name="$outputField" type="text"></td>
+								<td>$outputField.getType()</td><td>$outputField.getName()</td><td><input class="outputField" id="return_$outputField.getName()" disabled name="$outputField.getName()" type="text"></td>
 							</tr>
 							#end
 						</table>
