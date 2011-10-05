@@ -241,8 +241,7 @@ task :packageall do # TODO Less messy code
   puts "  * FraSCAti applications..."
   cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-service-ui-scaffolder-proxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(EASYSOA_PAF).base_dir+"/easysoa-samples-paf-restsoapproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  # TODO 0.3: UI Scaffolder
   
   puts "  * PAF services..."
   mkdir_p 'tmp'
