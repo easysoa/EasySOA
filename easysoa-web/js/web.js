@@ -83,21 +83,23 @@ webServer.get('/send', function(request, response, next) {
        *  'servicename': 'The service name'
        * }
        */
-       request.query.session = request.session;
-       easysoaNuxeo.registerWsdl(request.query, function(json) {
-           if (json.result) {
-               try {
-                  response.write(json.result);
-               }
-               catch (error) {
-                  response.write('Request failed');
-               }
-           }
-           else {
-              response.write('Unexpected response');
-           }
-           response.end();
-       });
+       if (request.session.username != undefined) {
+		   request.query.session = request.session;
+		   easysoaNuxeo.registerWsdl(request.query, function(json) {
+		       if (json.result) {
+		           try {
+		              response.write(json.result);
+		           }
+		           catch (error) {
+		              response.write('Request failed');
+		           }
+		       }
+		       else {
+		          response.write('Unexpected response');
+		       }
+		       response.end();
+		   });
+       }
 });
 
 
