@@ -10,10 +10,10 @@
     <!-- Add dependencies to zip package under lib directory -->
     <dependencySets>
         <dependencySet>
-       <!--     <outputDirectory>lib</outputDirectory>
+       	<outputDirectory>lib</outputDirectory>
             <excludes>
-        	<exclude>pureairflowers.clients:*</exclude>
-            </excludes>-->
+        		<exclude>org.openwide.easysoa.proxy:easysoa-proxy-core-scaffolderproxy</exclude>
+            </excludes>
             <unpack>false</unpack>
         </dependencySet>
     </dependencySets>
