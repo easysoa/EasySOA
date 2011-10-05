@@ -13,6 +13,6 @@ Note that the REST client is very basic, and will eventually be changed for some
 
 To build the API as a reusable JAR, type:
 
-`mvn package`
+`mvn clean package`
 
 Then pick **easysoa-registry-api-SOMEVERSION-jar-with-dependencies.jar** and include it in your project.
