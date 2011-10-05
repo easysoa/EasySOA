@@ -27,4 +27,7 @@ public class EasySOAConstants {
     // Pure Air Flowers demo
     public final static int PAF_SERVICES_PORT = 9010;
     
+    // Web
+    public final static int WEB_PORT = 8083;
+    
 }
