@@ -4,8 +4,6 @@
 
 Turns Nuxeo 5.4.2 into a simple service registry.
 
-*NOTE: This demo code is neither fully functional nor stable.*
-
 ## Repository structure
 
 The code is mainly split into 6 projects:
@@ -19,7 +17,6 @@ The code is mainly split into 6 projects:
 
 ## Building
 
-You can build these bundles by typing `mvn clean install` from this folder. You can then deploy the files by
-either copying the `target` folder contents to your Nuxeo setup, or [by using Buildr](https://github.com/easysoa/EasySOA/wiki/Releasing-EasySOA).
+You can build these bundles by typing `mvn clean install` from this folder. Then deploy the files by either copying the `target` folder contents to your Nuxeo setup, or [by using Buildr](https://github.com/easysoa/EasySOA/wiki/Releasing-EasySOA).
 
-Please see [this repository's wiki](https://github.com/easysoa/EasySOA/wiki) for further information.
+See [this repository's wiki](https://github.com/easysoa/EasySOA/wiki) for further information.

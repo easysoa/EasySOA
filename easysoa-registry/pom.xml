@@ -63,8 +63,8 @@
 								<mkdir dir="target/lib" />
 								<copy todir="target/lib" flatten="true">
 									<fileset dir=".">
-										<filename name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
-										<filename name="easysoa-registry-api/target/*-jar-with-dependencies.jar" />
+										<include name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
+										<include name="easysoa-registry-api/target/*-jar-with-dependencies.jar" />
 									</fileset>
 								</copy>
 							</tasks>

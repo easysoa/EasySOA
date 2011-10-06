@@ -27,7 +27,6 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * @author mkalam-alami
  *
  */
-// TODO: Switch to real Nuxeo service instead of static access
 public class DocumentService extends DefaultComponent {
     
     private static Log log = LogFactory.getLog(DocumentService.class);

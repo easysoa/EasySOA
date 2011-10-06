@@ -165,7 +165,7 @@ public class ServiceAPIListener implements EventListener {
                             }
                         }
                     } else {
-                        // Service creation fails on API creation (TODO: why?)
+                        // Service creation fails on API creation TODO: why?
                         session.saveDocument(doc);
                     }
 
