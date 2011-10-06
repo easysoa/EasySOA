@@ -242,6 +242,7 @@ task :packageall do # TODO Less messy code
   cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   system 'unzip', '-q', '-o', FileList[project(EASYSOA_PROXY).base_dir+'/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
+  rm FileList['tmp/easysoa-proxy-core-scaffolderproxy*/lib/frascati*'] # Filter FraSCAti dependencies (already provided in the distribution)
   mv FileList['tmp/easysoa-proxy-core-scaffolderproxy*/lib/*'], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   mv FileList['tmp/easysoa-proxy-core-scaffolderproxy*/bin/*'], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   
