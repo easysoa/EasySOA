@@ -6,10 +6,10 @@
 	<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>easysoa-proxy-core-httpdiscoveryproxy</name>
+	<name>EasySOA HTTP Discovery Proxy</name>
 
 	<parent>
-		<groupId>org.openwide.easysoa.proxy</groupId>
+		<groupId>org.easysoa.proxy</groupId>
 		<artifactId>easysoa-proxy-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
 		<relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>
@@ -86,7 +86,7 @@
 
 		<!-- Configuration constants -->
 		<dependency>
-			<groupId>org.openwide.easysoa</groupId>
+			<groupId>org.easysoa</groupId>
 			<artifactId>easysoa-common</artifactId>
 			<version>0.3-SNAPSHOT</version>
 		</dependency>

@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.openwide.easysoa</groupId>
+	<groupId>org.easysoa.samples.smarttravel</groupId>
 	<artifactId>easysoa-samples-smarttravel-test</artifactId>
-	<name>easysoa-samples-smarttravel-test</name>
+	<name>EasySOA Sample Smart Travel Tests</name>
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>org.openwide.easysoa.samples</groupId>
+		<groupId>org.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
 		<relativePath>../easysoa-samples-parent/pom.xml</relativePath>
@@ -16,7 +16,7 @@
 
 	<dependencies>
 	    <dependency>
-	    	<groupId>org.openwide.easysoa</groupId>
+	    	<groupId>org.easysoa</groupId>
 	    	<artifactId>easysoa-common</artifactId>
 	    	<version>${project.version}</version>
 			<scope>test</scope>
@@ -63,28 +63,28 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.openwide.easysoa</groupId>
+			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-core</artifactId>
 			<version>0.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.openwide.easysoa</groupId>
+			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-rest</artifactId>
 			<version>0.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.openwide.easysoa.proxy</groupId>
+			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>fr.inria.galaxy.j1</groupId>
+			<groupId>org.easysoa.samples.smarttravel</groupId>
 			<artifactId>easysoa-samples-smarttravel-trip</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>

@@ -2,16 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>fr.inria.galaxy.j1</groupId>
-	<version>1.0-SNAPSHOT</version>
-	<artifactId>easysoa-samples-smarttravel-trip</artifactId>
-	<name>J1: Trip</name>
-	<packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.easysoa.samples.smarttravel</groupId>
+    <artifactId>easysoa-samples-smarttravel-trip</artifactId>
+    <name>EasySOA Sample Smart Travel Trip</name>
+    <packaging>jar</packaging>
 	
 	<parent>
-		<groupId>org.openwide.easysoa.samples</groupId>
+		<groupId>org.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
 		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
@@ -41,11 +39,11 @@
 				<version>1.2</version> <executions> <execution> <phase>package</phase> <goals> 
 				<goal>exec</goal> </goals> </execution> </executions> <configuration> <composite>smart-travel</composite> 
 				<useFscript>true</useFscript> </configuration> <dependencies> <dependency> 
-				<groupId>fr.inria.galaxy.j1</groupId> <artifactId>currency-model</artifactId> 
-				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>fr.inria.galaxy.j1</groupId> 
+				<groupId>org.easysoa.samples.smarttravel</groupId> <artifactId>currency-model</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>org.easysoa.samples.smarttravel</groupId> 
 				<artifactId>meteo-model</artifactId> <version>1.0-SNAPSHOT</version> </dependency> 
-				<dependency> <groupId>fr.inria.galaxy.j1</groupId> <artifactId>translate-model</artifactId> 
-				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>fr.inria.galaxy.j1</groupId> 
+				<dependency> <groupId>org.easysoa.samples.smarttravel</groupId> <artifactId>translate-model</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>org.easysoa.samples.smarttravel</groupId> 
 				<artifactId>summary-model</artifactId> <version>1.0-SNAPSHOT</version> </dependency> 
 				</dependencies> </plugin> </plugins> </build> -->
 
@@ -74,29 +72,29 @@
 						</configuration>
 						<dependencies>
 							<dependency>
-								<groupId>fr.inria.galaxy.j1</groupId>
+								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
-								<version>1.0-SNAPSHOT</version>
+								<version>0.3-SNAPSHOT</version>
 							</dependency>
 							<dependency>
-								<groupId>fr.inria.galaxy.j1</groupId>
+								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
-								<version>1.0-SNAPSHOT</version>
+								<version>0.3-SNAPSHOT</version>
 							</dependency>
 							<!--<dependency>
-								<groupId>fr.inria.galaxy.j1</groupId>
+								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-meteo-sca-backup</artifactId>
-								<version>1.0-SNAPSHOT</version>
+								<version>0.3-SNAPSHOT</version>
 							</dependency>-->
 							<dependency>
-								<groupId>fr.inria.galaxy.j1</groupId>
+								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
-								<version>1.0-SNAPSHOT</version>
+								<version>0.3-SNAPSHOT</version>
 							</dependency>
 							<dependency>
-								<groupId>fr.inria.galaxy.j1</groupId>
+								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
-								<version>1.0-SNAPSHOT</version>
+								<version>0.3-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>org.ow2.frascati</groupId>
@@ -353,24 +351,24 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>fr.inria.galaxy.j1</groupId>
+			<groupId>org.easysoa.samples.smarttravel</groupId>
 			<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>fr.inria.galaxy.j1</groupId>
+			<groupId>org.easysoa.samples.smarttravel</groupId>
 			<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>fr.inria.galaxy.j1</groupId>
+			<groupId>org.easysoa.samples.smarttravel</groupId>
 			<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>fr.inria.galaxy.j1</groupId>
+			<groupId>org.easysoa.samples.smarttravel</groupId>
 			<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tuscany.sca
@@ -378,7 +376,7 @@
 			<artifactId>sca-api</artifactId>
 			<version>0.90-incubating</version>
 		</dependency>
-		<!--<dependency> <groupId>fr.inria.galaxy.j1</groupId> <artifactId>qos-wc</artifactId> 
+		<!--<dependency> <groupId>org.easysoa.samples.smarttravel</groupId> <artifactId>qos-wc</artifactId> 
 			<version>2.0-SNAPSHOT</version> </dependency> -->
 		<!-- to run this example with mvn -Prun -->
 		<dependency>

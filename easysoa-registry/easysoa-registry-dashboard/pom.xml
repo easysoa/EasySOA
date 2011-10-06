@@ -8,7 +8,7 @@
     <version>5.4.2</version>
   </parent>
 
-  <groupId>org.openwide.easysoa</groupId>
+  <groupId>org.easysoa.registry</groupId>
   <artifactId>easysoa-registry-dashboard</artifactId>
   <name>EasySOA Registry Dashboard</name>
   <version>0.3-SNAPSHOT</version>
