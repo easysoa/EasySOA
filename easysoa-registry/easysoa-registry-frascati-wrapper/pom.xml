@@ -28,7 +28,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>org.openwide.easysoa</groupId>
+		<groupId>org.easysoa.registry</groupId>
 		<artifactId>easysoa-registry-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
 		<relativePath>../easysoa-registry-parent/pom.xml</relativePath>
@@ -86,7 +86,7 @@
 		
         <!-- EasySOA core deps -->
 		<dependency>
-			<groupId>org.openwide.easysoa</groupId>
+			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-core</artifactId>
 			<scope>compile</scope>
 		</dependency>

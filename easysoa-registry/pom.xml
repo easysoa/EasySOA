@@ -9,9 +9,9 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.easysoa</groupId>
+	<groupId>org.easysoa.registry</groupId>
 	<artifactId>easysoa-registry</artifactId>
-	<name>EasySOA Registry</name>
+	<name>EasySOA Registry Project</name>
 	<packaging>pom</packaging>
 	<version>0.1.3-SNAPSHOT</version>
 

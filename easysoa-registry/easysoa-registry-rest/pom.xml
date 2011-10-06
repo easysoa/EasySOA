@@ -7,7 +7,7 @@
   <name>EasySOA Registry REST</name>
 
   <parent>
-    <groupId>org.openwide.easysoa</groupId>
+    <groupId>org.easysoa.registry</groupId>
     <artifactId>easysoa-registry-parent</artifactId>
     <version>0.3-SNAPSHOT</version>
     <relativePath>../easysoa-registry-parent/pom.xml</relativePath>
@@ -16,11 +16,11 @@
   <dependencies>
     <!-- Common deps -->
     <dependency>
-      <groupId>org.openwide.easysoa</groupId>
+      <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.openwide.easysoa</groupId>
+      <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-api</artifactId>
     </dependency>
     <dependency>
