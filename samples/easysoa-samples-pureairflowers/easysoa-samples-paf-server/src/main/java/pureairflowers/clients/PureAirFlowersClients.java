@@ -7,7 +7,7 @@ import javax.jws.WebResult;
 @WebService
 public interface PureAirFlowersClients {
 
-	@WebResult(name="ordersNumber")int getOrdersNumber(@WebParam(name="ClientId") String text);
+	@WebResult(name="ordersNumber")int getOrdersNumber(@WebParam(name="ClientName") String text);
 
     //String repeatAfterMe(@WebParam(name="text") String text, @WebParam(name="iterations") int iterations);
 }

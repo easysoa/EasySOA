@@ -5,9 +5,9 @@ import javax.jws.WebService;
 @WebService(endpointInterface = "pureairflowers.clients.PureAirFlowersClients", serviceName = "PureAirFlowers")
 public class PureAirFlowersClientsImpl implements PureAirFlowersClients {
 
-	public int getOrdersNumber(String clientId) {
+	public int getOrdersNumber(String clientName) {
         System.out.println("getOrdersNumber called");
-        return 10;
+        return Math.abs(clientName.hashCode() % 50);
     }
 
 	/*public String repeatAfterMe(String text, int iterations) {
