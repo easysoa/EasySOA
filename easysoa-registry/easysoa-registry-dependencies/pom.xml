@@ -1,104 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.easysoa.registry</groupId>
-	<artifactId>easysoa-registry-dependencies</artifactId>
-	<name>EasySOA Registry Dependencies</name>
-	<version>0.3-SNAPSHOT</version>
+  <groupId>org.easysoa.registry</groupId>
+  <artifactId>easysoa-registry-dependencies</artifactId>
+  <name>EasySOA Registry Dependencies</name>
+  <version>0.3-SNAPSHOT</version>
 
-	<!-- ============= -->
-	<!-- Build plugins -->
-	<!-- ============= -->
-	<build>
-		<plugins>
-			<plugin>
-				<!-- Package dependencies -->
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>create-executable-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!-- Compile with Java 1.6 -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-	<!-- ============= -->
-	<!-- Dependencies -->
-	<!-- ============= -->
-	<dependencies>
-		<!-- WSDL Parsing -->
-		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-schema</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-wsdl</artifactId>
-			<version>2.1</version>
-		</dependency>
-		
-		<!-- HTML parsing -->
-		<dependency>
-			<groupId>net.sourceforge.htmlcleaner</groupId>
-			<artifactId>htmlcleaner</artifactId>
-			<version>2.2</version>
-		</dependency>
-		
-		<!-- JSON -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20070829</version>
-		</dependency>
-		
-		<!-- Other needed packages -->
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>2.1.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jvnet.jaxb2_commons</groupId>
-			<artifactId>runtime</artifactId>
-			<version>0.2.GA</version>
-		</dependency>
-	</dependencies>
+  <!-- ============= -->
+  <!-- Build plugins -->
+  <!-- ============= -->
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Package dependencies -->
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-executable-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!-- Compile with Java 1.6 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
-	<!-- ============= -->
-	<!-- Repositories -->
-	<!-- ============= -->
-	<repositories>
-		<repository>
-			<id>Java Repository</id>
-			<url>http://download.java.net/maven/2</url>
-			<!-- Needed for JAXB -->
-		</repository>
-	</repositories>
+  <!-- ============= -->
+  <!-- Dependencies -->
+  <!-- ============= -->
+  <dependencies>
+    <!-- WSDL Parsing -->
+    <dependency>
+      <groupId>org.ow2.easywsdl</groupId>
+      <artifactId>easywsdl-schema</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.easywsdl</groupId>
+      <artifactId>easywsdl-wsdl</artifactId>
+      <version>2.1</version>
+    </dependency>
+
+    <!-- HTML parsing -->
+    <dependency>
+      <groupId>net.sourceforge.htmlcleaner</groupId>
+      <artifactId>htmlcleaner</artifactId>
+      <version>2.2</version>
+    </dependency>
+
+    <!-- JSON -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20070829</version>
+    </dependency>
+
+    <!-- Other needed packages -->
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.1.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jvnet.jaxb2_commons</groupId>
+      <artifactId>runtime</artifactId>
+      <version>0.2.GA</version>
+    </dependency>
+  </dependencies>
+
+  <!-- ============= -->
+  <!-- Repositories -->
+  <!-- ============= -->
+  <repositories>
+    <repository>
+      <id>Java Repository</id>
+      <url>http://download.java.net/maven/2</url>
+      <!-- Needed for JAXB -->
+    </repository>
+  </repositories>
 
 </project>

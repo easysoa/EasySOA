@@ -53,16 +53,6 @@ cd web
 start "EasySOA Demo - Web Server" start-web.bat 2>&1 ^| "../tee.exe" ..\log\web.log
 cd ..
 
-rem lightProxyPaf
-cd frascati
-start "EasySOA Demo - EasySOA Light Proxy (PAF)" start-lightProxyPaf.bat 2>&1 ^| "../tee.exe" ..\log\lightProxyPaf.log
-cd ..
-
-rem lightProxyTravel
-cd frascati
-start "EasySOA Demo - EasySOA Light Proxy (Smart Travel)" start-lightProxyTravel.bat 2>&1 ^| "../tee.exe" ..\log\lightProxyTravel.log
-cd ..
-
 rem uiScaffolder
 cd frascati
 start "EasySOA Demo - UI Scaffolder Proxy" start-uiScaffolder.bat 2>&1 ^| "../tee.exe" ..\log\uiScaffolder.log

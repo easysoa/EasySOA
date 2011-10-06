@@ -12,7 +12,7 @@
         <dependencySet>
        	<outputDirectory>lib</outputDirectory>
             <excludes>
-        		<exclude>org.openwide.easysoa.proxy:easysoa-proxy-core-scaffolderproxy</exclude>
+        		<exclude>org.easysoa.proxy:easysoa-proxy-core-scaffolderproxy</exclude>
             </excludes>
             <unpack>false</unpack>
         </dependencySet>
