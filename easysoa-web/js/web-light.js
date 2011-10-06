@@ -18,7 +18,7 @@ exports.fetchServiceList = function(session, callback) {
     	if (session.username != null) {
 			var operation = "Document.Query";
 			var params = {
-				"query": "SELECT * FROM Service"
+				"query": "SELECT * FROM Service WHERE ecm:currentLifeCycleState <> 'deleted'"
 			};
 			var headers = {
 				'X-NXDocumentProperties': 'dublincore, servicedef'
@@ -27,15 +27,13 @@ exports.fetchServiceList = function(session, callback) {
 				if (data) {
 					data = JSON.parse(data);
 					result = new Array();
-					for(var documentIndex in data.entries)
-					{
+					for (var documentIndex in data.entries) {
 						document = data.entries[documentIndex];
 						entry = new Object();
 						entry.title = document.properties['dc:title'];
 						entry.url = document.properties['serv:url'];
 						entry.lightUrl = '/scaffoldingProxy/?wsdlUrl='+document.properties['serv:fileUrl'];
 						result.push(entry);
-						console.log(entry);
 					}
 					callback(result);
 				}

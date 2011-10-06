@@ -47,21 +47,6 @@ li {
 	margin-top: -1px;
 }
 
-#headerUserBar {
-    position: absolute;
-    left: 650px;
-    top: 25px;
-    font-size: 11pt;
-    color: #444;
-    display: none;
-    width: 250px;
-}
-
-#username {
-    text-decoration: underline;
-    font-weight: bold;
-}
-
 /* Navigation bar 
    -------------- */
 

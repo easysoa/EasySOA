@@ -14,16 +14,6 @@ $(function() {
 		 */
 		initialize: function() {
 		
-    		// Get user name
-		    jQuery.ajax({
-		        url: '/userdata',
-		        success: function(data, textStatus, jqXHR) {
-		            var data = jQuery.parseJSON(jqXHR.responseText);
-                    $("#username").html(data.username);
-                    $("#headerUserBar").show();
-                }
-            });
-		
 			this.descriptorsView = new DescriptorsView;
 			this.frameView = new FrameView;
 			this.navBarView = new NavbarView;

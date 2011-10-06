@@ -118,7 +118,7 @@ webServer.get('/scaffoldingProxy', function(request, response, next) {
 webServer.get('/light/serviceList', function(request, response, next) {
 	easysoaLight.fetchServiceList(request.session, function(data) {
 		var responseData = new Object();
-		responseData.success = (data != false);
+		responseData.success = (data !== false);
 		responseData.data = data;
 		response.write(JSON.stringify(responseData));
 		response.end();
