@@ -6,6 +6,7 @@ package org.openwide.easysoa.test;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -14,7 +15,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
 import org.ow2.frascati.util.FrascatiException;
