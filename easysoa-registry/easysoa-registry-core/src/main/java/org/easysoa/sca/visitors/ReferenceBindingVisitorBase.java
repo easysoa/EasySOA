@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.sca.ScaImporter;
+import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -28,7 +28,7 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
     
     protected DocumentModel referenceModel;
 
-    public ReferenceBindingVisitorBase(ScaImporter scaImporter) {
+    public ReferenceBindingVisitorBase(IScaImporter scaImporter) {
         super(scaImporter);
     }
     

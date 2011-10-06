@@ -9,6 +9,7 @@ import javax.xml.namespace.QName;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.ScaImporter;
 import org.nuxeo.ecm.core.api.ClientException;
 
@@ -21,7 +22,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 // TODO: Refactor visitor implementations
 public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
     
-    public ServiceBindingVisitorBase(ScaImporter scaImporter) {
+    public ServiceBindingVisitorBase(IScaImporter scaImporter) {
         super(scaImporter);
     }
 
