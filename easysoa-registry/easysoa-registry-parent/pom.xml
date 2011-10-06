@@ -76,6 +76,11 @@
 				<artifactId>easysoa-registry-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+            <dependency>
+              <groupId>org.openwide.easysoa</groupId>
+              <artifactId>easysoa-registry-api</artifactId>
+              <version>${project.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>
