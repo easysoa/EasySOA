@@ -1,6 +1,8 @@
 package org.openwide.easysoa.scaffolding;
 
 import java.util.List;
+
+import org.easysoa.EasySOAConstants;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -8,6 +10,12 @@ import org.openwide.easysoa.scaffolding.wsdltemplate.WSService;
 import org.ow2.easywsdl.schema.api.XmlException;
 
 public interface TemplateFormGeneratorInterface {
+
+	/**
+	 * Return the web server port
+	 * @return The web server port
+	 */
+	public Object getConstant(String constantName);
 
 	/**
 	 * Set the WSDl to parse : First thing to do before to call the other methods

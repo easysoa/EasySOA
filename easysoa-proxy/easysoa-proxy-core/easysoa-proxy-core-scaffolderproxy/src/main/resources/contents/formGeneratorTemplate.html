@@ -6,7 +6,7 @@ $formGenerator.setWsdl($wsdlUrl)
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 		<title>EasySOA Core - Service</title>
-		<link href="http://localhost:8083/easysoa/style.css" rel="stylesheet">
+		<link href='http://localhost:$formGenerator.getConstant("WEB_PORT")/easysoa/style.css' rel='stylesheet'>
 	</head>
 	<body>
 		<!-- Common javascript stuff -->
@@ -32,9 +32,9 @@ $formGenerator.setWsdl($wsdlUrl)
 		<div id="headerLight">
 			<div id="headerLightContents">
 				<div id="headerBreadcrumbs">
-					<a href="http://localhost:8083/easysoa/index.html">EasySOA</a>
+					<a href='http://localhost:$formGenerator.getConstant("WEB_PORT")/easysoa/index.html'>EasySOA</a>
 					&gt;
-					<a href="http://localhost:8083/easysoa/light/index.html">Light</a>
+					<a href='http://localhost:$formGenerator.getConstant("WEB_PORT")/easysoa/light/index.html'>Light</a>
 					&gt;
 					<b></b>
 				</div>
@@ -98,8 +98,8 @@ $formGenerator.setWsdl($wsdlUrl)
 						};
 						
 						// Hard coded URL for demo purpose
-						//var url = "<xsl:value-of select="$baseServerUrl" />";
-						var url = "http://localhost:7001/";
+						var port = $formGenerator.getConstant("REST_SOAP_PROXY_PORT");
+						var url = "http://localhost:" + port + "/"; 
 						var wsdlUrl = "$wsdlUrl";
 						var params = "";
 						// For each form field : add it in the url
