@@ -97,8 +97,9 @@ public class XsltFormGenerator implements TransformationFormGeneratorInterface {
 			return readResultFile(htmlOutputFile);
 		}
 		catch(Exception ex){
-			logger.error(ex);
-			return "Transformation failed : " + ex.getMessage();
+			String msg = "Transformation failed";
+			logger.error(msg, ex);
+			return msg + " : " + ex.getMessage();
 		}
 	}
 	

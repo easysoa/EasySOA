@@ -28,7 +28,7 @@ public abstract class AbstractTest {
 	 */
 	protected static void startScaffoldingProxyComposite() throws FrascatiException{
 		frascati.processComposite("src/main/resources/scaffoldingProxy.composite", new ProcessingContextImpl());
-	}	
+	}
 
 	/**
 	 * Start Soap service mock
@@ -36,6 +36,6 @@ public abstract class AbstractTest {
 	 */
 	protected static void startSoapServiceMockComposite() throws FrascatiException{
 		frascati.processComposite("src/test/resources/soapServiceMock.composite", new ProcessingContextImpl());
-	}	
+	}
 	
 }
