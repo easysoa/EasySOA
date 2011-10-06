@@ -29,7 +29,7 @@ public class WSDLMessageHandler implements MessageHandler {
 		// enrich the message
 		message.setType(MessageType.WSDL);
 		logger.debug("WSDL found");
-		NuxeoRegistrationService nuxeoRS = new NuxeoRegistrationService();
+		
 		// Service construction
 		String serviceName = message.getPathName();
 		if(serviceName.startsWith("/")){
@@ -41,7 +41,13 @@ public class WSDLMessageHandler implements MessageHandler {
 		service.setTitle(message.getPathName());
 		service.setDescription(message.getPathName());
 		service.setHttpMethod(message.getMethod());
-		nuxeoRS.registerRestService(service);		
+		
+        try {
+            new NuxeoRegistrationService().registerRestService(service);  
+        } catch (Exception e) {
+            logger.error("Failed to register REST service", e);
+        }
+        
 		return true;
 	}
 

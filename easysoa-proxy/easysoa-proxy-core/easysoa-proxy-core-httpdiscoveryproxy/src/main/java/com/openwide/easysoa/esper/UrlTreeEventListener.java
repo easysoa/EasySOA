@@ -1,5 +1,7 @@
 package com.openwide.easysoa.esper;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
@@ -36,7 +38,6 @@ public class UrlTreeEventListener implements UpdateListener {
 		logger.debug("[MessageListener] --- NewData length : " + newData.length);
 		for(int i=0; i<newData.length; i++){
 			logger.debug("[MessageListener] --- Event received : " + newData[i].getUnderlying());
-			NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 			UrlTreeNodeEvent event = (UrlTreeNodeEvent)(newData[i].getUnderlying());
 			UrlTreeNode node = event.getEventSource();
 			
@@ -50,29 +51,36 @@ public class UrlTreeEventListener implements UpdateListener {
 			logger.debug("[MessageListener] --- node partial url count " + node.getPartialUrlcallCount());
 			logger.debug("[MessageListener] --- node parent registered "  + parentNode.isRegistered());
 
-			if(node.getLevel() == 1){
-				// Application detected
-				logger.debug("[MessageListener] --- new Appli to register !!!!");
-				if(!node.isRegistered() && node.getPartialUrlcallCount() > 5 && node.getCompleteUrlcallCount() == 0){
-					Appli appli = new Appli(node.getNodeName(), node.getNodeName());
-					appli.setUiUrl(node.getNodeName());
-					appli.setDescription(node.getNodeName());
-					appli.setTitle(node.getNodeName());
-					if(!"ok".equals(nrs.registerRestAppli(appli))){
-						node.setRegistered();
-					}
-				}
-			}
-			// API detection
-			else if(node.getChildCount() > 0 && node.getRatioComplete(event.getUrlTree()) == 0 && node.getLevel() >= 2  && node.getPartialUrlcallCount() > 5 && !node.isRegistered() && parentNode.isRegistered()){
-				logger.debug("[MessageListener] --- new Api to register !!!!");
-				Api api = new Api(node.getNodeName(), parentNode.getNodeName());
-				api.setTitle(node.getNodeName());
-				api.setDescription(node.getNodeName());
-				if(!"ok".equals(nrs.registerRestApi(api))){
-					node.setRegistered();
-				}
-			}
+            try {
+                NuxeoRegistrationService nrs = new NuxeoRegistrationService();
+                
+                if(node.getLevel() == 1){
+                    // Application detected
+                    logger.debug("[MessageListener] --- new Appli to register !!!!");
+                    if(!node.isRegistered() && node.getPartialUrlcallCount() > 5 && node.getCompleteUrlcallCount() == 0){
+                        Appli appli = new Appli(node.getNodeName(), node.getNodeName());
+                        appli.setUiUrl(node.getNodeName());
+                        appli.setDescription(node.getNodeName());
+                        appli.setTitle(node.getNodeName());
+                        if(!"ok".equals(nrs.registerRestAppli(appli))){
+                            node.setRegistered();
+                        }
+                    }
+                }
+                // API detection
+                else if(node.getChildCount() > 0 && node.getRatioComplete(event.getUrlTree()) == 0 && node.getLevel() >= 2  && node.getPartialUrlcallCount() > 5 && !node.isRegistered() && parentNode.isRegistered()){
+                    logger.debug("[MessageListener] --- new Api to register !!!!");
+                    Api api = new Api(node.getNodeName(), parentNode.getNodeName());
+                    api.setTitle(node.getNodeName());
+                    api.setDescription(node.getNodeName());
+                    if(!"ok".equals(nrs.registerRestApi(api))){
+                        node.setRegistered();
+                    }
+                }
+            } catch (IOException e) {
+                logger.error("Failed to register node", e);
+            }
+            
 			// Service detection
 			// TODO Add an efficient service detection system
 			//Comment faire la distinction entre service et api ????

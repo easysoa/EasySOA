@@ -41,7 +41,6 @@ public class SoapMessageHandler implements MessageHandler {
 		// enrich the message
 		message.setType(MessageType.SOAP);
 		logger.debug("WSDL found");
-		NuxeoRegistrationService nuxeoRS = new NuxeoRegistrationService();
 		String serviceName = message.getPathName();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
@@ -54,8 +53,14 @@ public class SoapMessageHandler implements MessageHandler {
 		service.setTitle(message.getPathName());
 		service.setDescription(message.getPathName());
 		service.setHttpMethod(message.getMethod());
-		nuxeoRS.registerWSDLService(service);
-		return true;
+
+        try {
+            new NuxeoRegistrationService().registerWSDLService(service);
+        } catch (Exception e) {
+            logger.error("Failed to register WSDL", e);
+        }
+        
+        return true;
 	}
 	
 	/**

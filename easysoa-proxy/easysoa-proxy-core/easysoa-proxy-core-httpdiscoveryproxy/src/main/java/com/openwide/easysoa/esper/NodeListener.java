@@ -37,7 +37,6 @@ public class NodeListener implements UpdateListener {
 	public void update(EventBean newEvent) {
 		logger.debug("[NodeListener] --- Event received: " + newEvent.getUnderlying());
 		logger.debug("[NodeListener] --- " + newEvent.getUnderlying().getClass().getName());
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
 		//@SuppressWarnings("unchecked")
 		/*HashMap<String,Object> hm = (HashMap<String,Object>)(newEvent.getUnderlying());
 		BeanEventBean beb = (BeanEventBean)(hm.get("n"));
@@ -46,7 +45,11 @@ public class NodeListener implements UpdateListener {
 		if(soaNode instanceof Service){
 			Service service = (Service) soaNode;
 			service.setCallCount(service.getCallCount() + 1);
-			nrs.registerRestService(service);
+            try {
+                new NuxeoRegistrationService().registerRestService(service);
+            } catch (Exception e) {
+                logger.error("Failed to register REST service", e);
+            }
 		} else if(soaNode instanceof Api){
 			// Nothing to do, no counter to increase for API in Nuxeo model
 		} else if(soaNode instanceof Appli){

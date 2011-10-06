@@ -1,5 +1,7 @@
 package com.openwide.easysoa.monitoring;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -75,7 +77,15 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	 */
 	//TODO Method used in class UrlTreeEventListener !!!
 	private void registerChildren(UrlTreeNode node) {
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
+	    
+		NuxeoRegistrationService nrs = null;
+        try {
+            nrs = new NuxeoRegistrationService();
+        } catch (IOException e) {
+            logger.error("Failed to create Nuxeo registration service", e);
+            return;
+        }
+		
 		for (int i = 0; i < node.getChildCount(); i++) {
 			UrlTreeNode childNode = (UrlTreeNode) node.getChildAt(i);
 			node = (UrlTreeNode) childNode.getParent();

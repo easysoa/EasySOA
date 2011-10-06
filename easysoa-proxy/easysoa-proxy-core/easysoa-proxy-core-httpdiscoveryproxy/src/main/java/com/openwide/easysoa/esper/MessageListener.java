@@ -1,7 +1,9 @@
 package com.openwide.easysoa.esper;
 
 import java.util.HashMap;
+
 import org.apache.log4j.Logger;
+
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
@@ -39,7 +41,7 @@ public class MessageListener implements UpdateListener {
 	public void update(EventBean newData) {
 		logger.debug("[MessageListener] --- Event received: " + newData.getUnderlying());
 		logger.debug("[MessageListener] --- " + newData.getUnderlying().getClass().getName());
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
+       
 		@SuppressWarnings("unchecked")
 		HashMap<String,Object> hm = (HashMap<String,Object>)(newData.getUnderlying());
 		BeanEventBean beb = (BeanEventBean)(hm.get("s"));
@@ -56,8 +58,11 @@ public class MessageListener implements UpdateListener {
 			service.setTitle(serviceName);
 			service.setHttpMethod(msg.getMethod());
 			service.setCallCount(1);
-			//nrs.registerWSDLService(service);
-			nrs.registerWSDLService(service);
+			try {
+			    new NuxeoRegistrationService().registerWSDLService(service);
+	        } catch (Exception e) {
+	            logger.error("Failed to register WSDL service", e);
+	        }
 		}
 		/*else {
 			//List<Node> soaNodes = DiscoveryMonitoringService.getMonitorService().getModel().getSoaNodes();
