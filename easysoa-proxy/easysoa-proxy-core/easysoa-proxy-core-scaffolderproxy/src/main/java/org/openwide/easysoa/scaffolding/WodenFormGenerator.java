@@ -22,6 +22,7 @@ import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
+import org.easysoa.EasySOAConstants;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -234,6 +235,11 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 		else {
 			return true;
 		}
+	}
+
+	@Override
+	public Object getConstant(String constantName){
+		return EasySOAConstants.get(constantName);
 	}
 
 }

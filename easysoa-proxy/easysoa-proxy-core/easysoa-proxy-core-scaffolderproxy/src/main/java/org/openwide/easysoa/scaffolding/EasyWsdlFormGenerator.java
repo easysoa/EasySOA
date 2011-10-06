@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -47,7 +48,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	
 	//TODO : Only for the Airport Talend Tuto Hack
 	@Property
-	String defaultWsdl;	
+	String defaultWsdl;
 	
 	@Override
 	public void setWsdl(String wsdlSource) throws Exception {
@@ -197,6 +198,11 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 			}
 		}
 		return elementNameList;
+	}
+
+	@Override
+	public Object getConstant(String constantName){
+		return EasySOAConstants.get(constantName);
 	}
 
 }
