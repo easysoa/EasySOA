@@ -39,7 +39,7 @@ import org.nuxeo.runtime.api.Framework;
  * @author mdutoo, mkalam-alami, jguillemotte
  *
  */
-public class ScaImporter {
+public class ScaImporter implements IScaImporter {
 
     public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
     public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
