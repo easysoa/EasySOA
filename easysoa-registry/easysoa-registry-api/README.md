@@ -2,7 +2,7 @@
 
 ## Description
 
-This bundle contains common resources used by the service registry, but is also intended to be used as a Java library for remote clients. It contains:
+This project contains common resources used by the service registry, but is also intended to be used as a Java library for remote clients. It contains:
 
 * The definition of all custom document types ;
 * A basic way to access the EasySOA Discovery API, in order to register applications (_Appli Impl._), api (_ServiceAPI_) & services (_Service_ doctype).

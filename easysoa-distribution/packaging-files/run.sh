@@ -20,21 +20,6 @@ esperproxy()
   ./start-esperProxy.sh > ../log/esperProxy.log 2>&1
 }
 
-lightproxypaf()
-{
-  touch log/lightProxyPaf.log
-  cd frascati
-  ./start-lightProxyPaf.sh > ../log/lightProxyPaf.log 2>&1
-}
-
-lightproxytravel()
-{
-  touch log/lightProxyTravel.log
-  cd frascati
-  ./start-lightProxyTravel.sh > ../log/lightProxyTravel.log 2>&1
-}
-
-
 web()
 {
   touch log/web.log
@@ -95,8 +80,6 @@ traveldemo &
 airportservice &
 sleep 7 # Let the demo start
 web &
-lightproxypaf &
-lightproxytravel &
 uiscaffolder &
 sleep 2
 firefox "http://127.0.0.1:8083/easysoa" &

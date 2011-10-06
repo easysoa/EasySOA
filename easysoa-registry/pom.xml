@@ -57,12 +57,14 @@
 										<filename name="*/target/*.jar" />
 										<exclude name="*/target/*-sources.jar" />
 										<exclude name="easysoa-registry-dependencies/target/*.jar" />
+										<exclude name="easysoa-registry-api/target/*.jar" />
 									</fileset>
 								</copy>
 								<mkdir dir="target/lib" />
 								<copy todir="target/lib" flatten="true">
 									<fileset dir=".">
 										<filename name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
+										<filename name="easysoa-registry-api/target/*-jar-with-dependencies.jar" />
 									</fileset>
 								</copy>
 							</tasks>
