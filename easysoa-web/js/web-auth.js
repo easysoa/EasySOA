@@ -85,7 +85,7 @@ exports.authFilter = function (request, result, next) {
               // Logged successfully
               if (callbackResult) {
                     request.session.username = request.body.username;
-                    request.session.password = request.body.password;
+                    request.session.password = request.body.password; // XXX: Could store the Base64 hash instead
                   console.log('[INFO] User `' + request.body.username + '` just logged in');
                   result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
                   return;

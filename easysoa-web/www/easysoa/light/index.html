@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- EasySOA - Authentication form -->
+<html>
+
+<head>
+	<title>Service discovery by browsing</title>
+	<meta charset="utf-8" />
+	<link href="/easysoa/style.css" type="text/css" media="all" rel="stylesheet" />
+	<script type="text/javascript" src="/easysoa/js/Base64.js"></script>
+	<script type="text/javascript" src="/easysoa/js/jquery-1.5.2.js"></script>
+	<script type="text/javascript">
+	<!--
+	
+		$(document).ready(function() {
+					
+			var serviceList = $("#serviceList");
+			
+			displayError = function(data) {
+				data = "Error: "+JSON.stringify(data);
+				serviceList.append('<tr><td style="color: darkred">'+data+'</td></tr>');
+				$("#loading").hide();
+			};
+			
+			makeRow = function(content) {
+				return '<tr><td>'+content+'</td></tr>';
+			}
+			
+			makeLink = function(title, url) {
+				return '<a href="'+url+'">'+title+'</a>';
+			}
+			
+			jQuery.ajax({
+				url: '/light/serviceList',
+				success: function (data, textStatus, jqXHR) {
+					$("#loading").hide();
+					var result = JSON.parse(jqXHR.responseText);
+					if (result.success) {
+						for (service in result.data) {
+							rowContent = makeLink(result.data[service].title, result.data[service].lightUrl);
+							rowContent += ' <span style="font-size: 10pt; color: #555">('+result.data[service].url+')</span>';
+							serviceList.append(makeRow(rowContent));
+						}
+					}
+					else {
+						displayError(result.data);
+					}
+				},
+				error: displayError
+			});
+		
+		});
+	
+	-->	
+	</script>
+	
+</head>
+	
+<body>
+
+<div id="headerLight">
+	<div id="headerLightContents">
+		<div id="headerBreadcrumbs"><a href="/easysoa/index.html">EasySOA</a> > <b>Light</b></div>
+		EasySOA Light summary
+    </div>
+</div>
+
+<div id="container" style="width: 100%">
+    
+    <table id="serviceList">
+    <tr><th>Scaffolded service clients</th></tr>
+    <tr id="loading"><td style="text-align: center"><img src="/easysoa/img/loading.gif" /></td></tr>
+    </table>
+    
+</div>
+  
+</body>
+
+</html>

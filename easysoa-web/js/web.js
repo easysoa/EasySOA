@@ -15,6 +15,7 @@ var easysoaAuth = require('./web-auth.js');
 var easysoaNuxeo = require('./web-nuxeo.js');
 var easysoaDbb = require('./web-dbb.js');
 var easysoaScraping = require('./web-scraping.js');
+var easysoaLight = require('./web-light.js');
 
 eval(fs.readFileSync('settings.js', 'ASCII'));
 
@@ -105,7 +106,6 @@ webServer.get('/send', function(request, response, next) {
 });
 
 webServer.get('/scaffoldingProxy', function(request, response, next) {
-
 	request.url = settings.scaffoldingServer + request.url;
     request_url = url.parse(request.url);
     console.log(request.url);
@@ -113,6 +113,16 @@ webServer.get('/scaffoldingProxy', function(request, response, next) {
         host: request_url.hostname,
         port: request_url.port
     });
+});
+
+webServer.get('/light/serviceList', function(request, response, next) {
+	easysoaLight.fetchServiceList(request.session, function(data) {
+		var responseData = new Object();
+		responseData.success = (data != false);
+		responseData.data = data;
+		response.write(JSON.stringify(responseData));
+		response.end();
+	});
 });
 
 webServer.get('*', function(request, response, next) {
