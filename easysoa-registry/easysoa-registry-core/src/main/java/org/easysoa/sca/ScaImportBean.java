@@ -26,7 +26,7 @@ import org.nuxeo.runtime.api.Framework;
 
 /**
  * SCA Import form
- * @author mkalam-alami
+ * @author mkalam-alami, mdutoo
  *
  */
 @Name("easysoaImport")

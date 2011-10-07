@@ -3,14 +3,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>fr.inria.galaxy.j1</groupId>
+    <groupId>org.easysoa.samples.smarttravel</groupId>
     <artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>J1: Currency model</name>
+    <name>EasySOA Sample Smart Travel Currency Model</name>
     <packaging>jar</packaging>
 
 	<parent>
-		<groupId>org.openwide.easysoa.samples</groupId>
+		<groupId>org.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
 		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>

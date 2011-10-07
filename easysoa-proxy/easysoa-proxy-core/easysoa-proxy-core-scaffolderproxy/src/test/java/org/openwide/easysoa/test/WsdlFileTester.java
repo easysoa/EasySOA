@@ -6,6 +6,7 @@ package org.openwide.easysoa.test;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -14,7 +15,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
 import org.ow2.frascati.util.FrascatiException;
@@ -85,7 +85,7 @@ public class WsdlFileTester extends AbstractTest {
 	 */
 	@Test
 	public void testAiportServiceWsdl() throws ClientProtocolException, IOException{
-		String form = SendWsdlToFormGenerator("airport_soap.wsdl");
+		String form = SendWsdlToFormGenerator("modified_airport_soap.wsdl");
 		// Check if form contains all the necessary stuff
 		assertThat(form, JUnitMatchers.containsString("Service : airport"));
 		assertThat(form, JUnitMatchers.containsString("Binding : <b>airportSoap"));

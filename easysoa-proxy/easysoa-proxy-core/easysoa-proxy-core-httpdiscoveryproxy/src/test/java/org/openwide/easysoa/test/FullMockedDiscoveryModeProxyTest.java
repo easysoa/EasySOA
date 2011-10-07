@@ -1,36 +1,10 @@
 package org.openwide.easysoa.test;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import javax.xml.soap.SOAPException;
-
-import org.apache.http.HttpHost;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.entity.BasicHttpEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-import org.easysoa.EasySOAConstants;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.ow2.frascati.util.FrascatiException;
-
-import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 /**
  * Complete test suite of HTTP Discovery Proxy

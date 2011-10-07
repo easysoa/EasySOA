@@ -7,13 +7,14 @@ require 'shellwords'
 ############### HOWTO
 
 # Type "buildr help" for a list of available tasks
-# Available options: "test=no", "offline=yes"
+# Available options: "test=no", "offline=yes", "withtalend=yes"
 
 ############### CONFIG LOADING
 
 NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.2-tomcat'
-NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || Buildr.settings.build['node']['path'] || ENV['HOME']+'/node'
-FRASCATI_PATH = (Buildr.settings.user['frascati'] != nil ? Buildr.settings.user['frascati']['path'] : nil) || Buildr.settings.build['frascati']['path'] || './deps/frascati'
+TALEND_ESB_PATH = (Buildr.settings.user['talend-esb'] != nil ? Buildr.settings.user['talend-esb']['path'] : nil) || Buildr.settings.build['talend-esb']['path'] || ENV['HOME']+'/talend-esb'
+NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || '/usr/local/bin/'
+FRASCATI_PATH = './deps/frascati'
 
 RELEASE_VERSION = (Buildr.settings.user['release'] != nil ? Buildr.settings.user['release']['version'] : nil) || Buildr.settings.build['release']['version']
 
@@ -60,11 +61,13 @@ end
 ############### PROJECT DEFINITIONS
 
 EASYSOA = 'easysoa'
+EASYSOA_COMMON = EASYSOA+':easysoa-common'
 EASYSOA_WEB = EASYSOA+':easysoa-web'
 EASYSOA_REGISTRY = EASYSOA+':easysoa-registry'
 EASYSOA_PROXY = EASYSOA+':easysoa-proxy'
 EASYSOA_PAF = EASYSOA+':samples:easysoa-samples-pureairflowers'
 EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
+EASYSOA_TALEND = EASYSOA+':samples:Talend-Airport-Service'
 EASYSOA_TRAVEL_BACKUP = EASYSOA+':samples:easysoa-samples-smarttravel:easysoa-samples-smarttravel-services-backup'
 
 desc 'EasySOA project - Available options for all EasySOA tasks: "test=no" to skip tests, "offline=yes" to build in offline mode'
@@ -74,6 +77,12 @@ define 'easysoa', :base_dir => '../' do
     maven(['clean', 'install'], project)
   end
       
+  define 'easysoa-common' do
+	  task :mvn do
+		maven(['clean', 'install'], project)
+	  end
+  end
+  
   desc 'Service registry project'
   define 'easysoa-registry' do
     
@@ -128,6 +137,11 @@ define 'easysoa', :base_dir => '../' do
       end
     end
     
+    desc 'Talend Airport service project'
+    define 'Talend-Airport-Service' do
+    	# Nothing
+    end
+    
   end
   
 end
@@ -136,7 +150,10 @@ end
 ############### TASKS DEFINITIONS
                  
 desc "Builds registry components using Maven"
-task :nx_mvn => [EASYSOA_REGISTRY+':mvn']
+task :common => [EASYSOA_COMMON+':mvn']
+
+desc "Builds registry components using Maven"
+task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn']
                  
 desc "Deploys registry components"
 task :nx_dist => [EASYSOA_REGISTRY+':dist']
@@ -174,7 +191,6 @@ task :packageall do # TODO Less messy code
   rm_rf PACKAGING_OUTPUT_PATH
   mkdir_p PACKAGING_OUTPUT_PATH
   mkdir_p './deps'
-  cp_r FileList['packaging-files/*'], PACKAGING_OUTPUT_PATH
   
   # Download/extract node.js if necessary
   if !File.exist?('./deps/node.exe')
@@ -193,14 +209,14 @@ task :packageall do # TODO Less messy code
   
   # Download/extract FraSCAti if necessary
   if !File.exist?(FRASCATI_PATH) 
-    if !File.exist?('deps/frascati-1.4-bin.zip')
+    if !File.exist?('deps/frascati-runtime-1.5-SNAPSHOT-bin.zip')
       puts 'FraSCAti not found, downloading it...'
-      system 'wget', 'http://download.forge.objectweb.org/frascati/frascati-1.4-bin.zip' # XXX Linux/Cygwin-dependent
-      mv 'frascati-1.4-bin.zip','./deps'
+      system 'wget', 'http://www.easysoa.org/download/dev/frascati-runtime-1.5-SNAPSHOT-bin.zip' # XXX Linux/Cygwin-dependent
+      mv 'frascati-runtime-1.5-SNAPSHOT-bin.zip','./deps'
     end
     puts 'Extracting FraSCAti...'
-    system 'unzip', '-q', '-o', './deps/frascati-1.4-bin.zip' # XXX Linux/Cygwin-dependent
-    mv 'frascati-runtime-1.4', './deps/frascati'
+    system 'unzip', '-q', '-o', './deps/frascati-runtime-1.5-SNAPSHOT-bin.zip' # XXX Linux/Cygwin-dependent
+    mv 'frascati-runtime-1.5-SNAPSHOT', './deps/frascati'
     rm_rf FileList['./deps/frascati/doc', './deps/frascati/examples', './deps/frascati/README', './deps/frascati/RELEASE_NOTES']
   end
   if !File.exist?(ESPER_DEP_PATH)
@@ -223,16 +239,19 @@ task :packageall do # TODO Less messy code
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   
   puts "  * FraSCAti applications..."
-  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-service-ui-scaffolder-proxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(EASYSOA_PAF).base_dir+"/easysoa-samples-paf-restsoapproxy/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
+  system 'unzip', '-q', '-o', FileList[project(EASYSOA_PROXY).base_dir+'/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
+  rm FileList['tmp/easysoa-proxy-core-scaffolderproxy*/lib/frascati*'] # Filter FraSCAti dependencies (already provided in the distribution)
+  mv FileList['tmp/easysoa-proxy-core-scaffolderproxy*/lib/*'], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  mv FileList['tmp/easysoa-proxy-core-scaffolderproxy*/bin/*'], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
   
   puts "  * PAF services..."
+  rm_rf 'tmp'
   mkdir_p 'tmp'
   mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
   system 'unzip', '-q', '-o', FileList[project(EASYSOA_PAF).base_dir+'/easysoa-samples-paf-server/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
-  mv FileList['tmp/easysoa-*/*'], PACKAGING_OUTPUT_PATH+'/pafServices'
+  mv FileList['tmp/easysoa-samples-paf-server*/*'], PACKAGING_OUTPUT_PATH+'/pafServices'
   
   puts "  * Travel backup services..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'  
@@ -241,21 +260,40 @@ task :packageall do # TODO Less messy code
   rm_rf FileList['tmp/easysoa-samples-smarttravel-services-backup*']
   rm_rf 'tmp'
   
-  # Copying Nuxeo
+  mkdir PACKAGING_OUTPUT_PATH+'/examples'
+  cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
+  
+  # Copy Nuxeo
   puts "Copying service registry (Nuxeo)..."
   begin
     cp_r NUXEO_PATH, PACKAGING_OUTPUT_PATH
-  rescue Exception
-    raise "Files copy failed: Nuxeo is probably running. Could you please stop it?"
+  rescue Exception => e
+    puts "Files copy failed: Nuxeo is probably running. Could you please stop it?"
+    raise e
   end
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
-  cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
   
+  # Copy Node.js server
   puts "Copying web server & proxy (node.js)..."
   mkdir PACKAGING_OUTPUT_PATH+'/web'
   cp_r FileList[project(EASYSOA_WEB).base_dir+"/*"], PACKAGING_OUTPUT_PATH+'/web'
+  
+  # Copy Talend ESB and Talend service
+  mkdir PACKAGING_OUTPUT_PATH+'/talend'
+  puts "Copying Talend components..."
+  if ENV['withtalend'] == 'yes'
+	  puts "  * Talend ESB..."
+	  cp_r TALEND_ESB_PATH, PACKAGING_OUTPUT_PATH+"/talend"
+  end
+  puts "  * Talend Airport service..."
+  mkdir PACKAGING_OUTPUT_PATH+'/talend/airportService'
+  cp_r FileList[project(EASYSOA_TALEND).base_dir+'/SimpleProvider*/*'], PACKAGING_OUTPUT_PATH+"/talend/airportService"
+  
+  # Copy packaging files
+  puts "Copying packaging files..."
+  cp_r FileList['packaging-files/*'], PACKAGING_OUTPUT_PATH
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."

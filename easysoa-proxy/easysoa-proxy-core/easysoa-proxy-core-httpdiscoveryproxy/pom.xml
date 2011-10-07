@@ -1,194 +1,218 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>easysoa-proxy-core-httpdiscoveryproxy</name>
+  <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+  <name>EasySOA HTTP Discovery Proxy</name>
+  <packaging>jar</packaging>
 
-	<parent>
-		<groupId>org.openwide.easysoa.proxy</groupId>
-		<artifactId>easysoa-proxy-parent</artifactId>
-		<version>0.3-SNAPSHOT</version>
-		<relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>
-	</parent>
+  <parent>
+    <groupId>org.easysoa.proxy</groupId>
+    <artifactId>easysoa-proxy-parent</artifactId>
+    <version>0.3-SNAPSHOT</version>
+    <relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>
+  </parent>
 
-	<dependencies>
-		<!-- frascati -->
-		<dependency><!-- base frascati -->
-			<groupId>org.ow2.frascati</groupId>
-			<artifactId>frascati-binding-factory</artifactId>
-			<version>${frascati.version}</version>
-		</dependency>
-		<dependency><!-- else no frascati class generation -->
-			<groupId>org.ow2.frascati</groupId>
-			<artifactId>frascati-runtime-factory</artifactId>
-			<version>${frascati.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.frascati</groupId>
-			<artifactId>frascati-binding-ws</artifactId>
-			<version>${frascati.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.frascati</groupId>
-			<artifactId>frascati-binding-http</artifactId>
-			<version>${frascati.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.frascati</groupId>
-			<artifactId>frascati-binding-rest</artifactId>
-			<version>${frascati.version}</version>
-		</dependency>
-		<!-- to run it with mvn -Prun -->
-		<dependency>
-			<groupId>org.ow2.frascati.mojo</groupId>
-			<artifactId>frascati-launcher-plugin</artifactId>
-			<version>${frascati.version}</version>
-			<type>maven-plugin</type>
-		</dependency>
+  <dependencies>
+    <!-- frascati -->
+    <dependency><!-- base frascati -->
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-factory</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <dependency><!-- else no frascati class generation -->
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-runtime-factory</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-ws</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-http</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-rest</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <!-- to run it with mvn -Prun -->
+    <dependency>
+      <groupId>org.ow2.frascati.mojo</groupId>
+      <artifactId>frascati-launcher-plugin</artifactId>
+      <version>${frascati.version}</version>
+      <type>maven-plugin</type>
+    </dependency>
 
-		<!-- esper -->
-		<dependency>
-			<groupId>com.espertech</groupId>
-			<artifactId>esper</artifactId>
-			<version>4.2.0</version>
-		</dependency>
-		<!-- java rest webservices -->
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<!-- for obsolete code in NuxeoRegistrationService -->
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>1.8-ea02</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20090211</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1.1</version>
-		</dependency>
+    <!-- esper -->
+    <dependency>
+      <groupId>com.espertech</groupId>
+      <artifactId>esper</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+    <!-- java rest webservices -->
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>jsr311-api</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <!-- for obsolete code in NuxeoRegistrationService -->
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>1.8-ea02</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20090211</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+    
+    <!-- Discovery API -->
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-api</artifactId>
+      <version>0.3-SNAPSHOT</version>
+    </dependency>
 
-		<!-- Configuration constants -->
-		<dependency>
-			<groupId>org.openwide.easysoa</groupId>
-			<artifactId>easysoa-common</artifactId>
-			<version>0.3-SNAPSHOT</version>
-		</dependency>
+    <!-- Configuration constants -->
+    <dependency>
+      <groupId>org.easysoa</groupId>
+      <artifactId>easysoa-common</artifactId>
+      <version>0.3-SNAPSHOT</version>
+    </dependency>
 
-		<!-- TEST -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-	</dependencies>
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-core</artifactId>
+      <version>0.3-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-rest</artifactId>
+      <version>0.3-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.osgi</groupId>
+      <artifactId>org.eclipse.osgi.services</artifactId>
+      <version>3.2.100.v20100503</version>
+    </dependency>
+  </dependencies>
 
-	<build>
-		<plugins>
-      		<plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-surefire-plugin</artifactId>
-        		<version>2.9</version>
-        		<configuration>
-        			<runOrder>alphabetical</runOrder>
-	        		<!--<forkMode>always</forkMode>-->
-	        		<!--<childDelegation>true</childDelegation>-->
-          			<excludes>
-          				<!-- We have a problem when we try to execute the 2 full mocked test in the same time -->
-          				<!-- so temporary solution is to deactivate the full mocked test for validated mode  -->
-          				<exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
-          				
-            			<!-- These tests require an externel nuxeo to work ! -->
-            			<exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
-            			<exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
-            			
-            			<!-- these tests should only work when the corresponding bugs are patched : -->
-            			<exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
-          			</excludes>
-        		</configuration>
-      		</plugin>				
-		</plugins>
-	</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <runOrder>alphabetical</runOrder>
+          <!--<forkMode>always</forkMode> -->
+          <!--<childDelegation>true</childDelegation> -->
+          <excludes>
+            <!-- We have a problem when we try to execute the 2 full mocked test in the same time -->
+            <!-- so temporary solution is to deactivate the full mocked test for validated mode -->
+            <exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
 
-	<profiles>
-		<profile>
-			<id>run</id>
-			<build>
-				<defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal>
-				<plugins>
-					<plugin>
-						<groupId>org.ow2.frascati.mojo</groupId>
-						<artifactId>frascati-launcher-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<executable>java</executable>
-							<arguments>
-							</arguments>
-							<!--<loggingConfFile>${logging.conf.file}</loggingConfFile> -->
-							<!--<composite>${composite.file}</composite> -->
-							<!--<service>${service.name}</service> -->
-							<!--<method>${method.name}</method> -->
-							<!--<methodParams>${method.params}</methodParams> -->
-							<composite>src/main/resources/httpDiscoveryProxy</composite>
-							<!-- useFscript>true</useFscript -->
-							<useFscript>false</useFscript>
-						</configuration>
-						<dependencies>
-							<!-- other poc deps ? -->
-							<!-- other frascati deps ? -->
-							<!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-implementation-fractal</artifactId> 
-								<version>1.4</version> </dependency -->
-						</dependencies>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-	    	<id>integration-tests</id>
-	      	<build>
-				<defaultGoal>install</defaultGoal>	      	
-	        	<plugins>
-	          		<plugin>
-	            		<artifactId>maven-surefire-plugin</artifactId>
-	            		<executions>
-	              			<execution>
-	                			<id>surefire-night-test</id>
-	                			<phase>integration-test</phase>
-	                			<goals>
-	                  				<goal>test</goal>
-	                			</goals>
-	                			<configuration>
-	                  				<excludes>
-		                    			<exclude>none</exclude>
-		                  			</excludes>
-	    	            		</configuration>
-	        	      		</execution>
-	            		</executions>
-	          		</plugin>
-	        	</plugins>
-	      	</build>			
-		</profile>		
-	</profiles>
+            <!-- These tests require an externel nuxeo to work ! -->
+            <exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
+            <exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
+
+            <!-- these tests should only work when the corresponding bugs are patched : -->
+            <exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>run</id>
+      <build>
+        <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.ow2.frascati.mojo</groupId>
+            <artifactId>frascati-launcher-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>java</executable>
+              <arguments>
+              </arguments>
+              <!--<loggingConfFile>${logging.conf.file}</loggingConfFile> -->
+              <!--<composite>${composite.file}</composite> -->
+              <!--<service>${service.name}</service> -->
+              <!--<method>${method.name}</method> -->
+              <!--<methodParams>${method.params}</methodParams> -->
+              <composite>src/main/resources/httpDiscoveryProxy</composite>
+              <!-- useFscript>true</useFscript -->
+              <useFscript>false</useFscript>
+            </configuration>
+            <dependencies>
+              <!-- other poc deps ? -->
+              <!-- other frascati deps ? -->
+              <!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-implementation-fractal</artifactId> 
+                <version>1.4</version> </dependency -->
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>integration-tests</id>
+      <build>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>surefire-night-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <excludes>
+                    <exclude>none</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

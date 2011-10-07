@@ -8,21 +8,21 @@
 
 nuxeo:
   path: 
-  # to use for packaging. By default $HOME/nuxeo-dm-5.4.2-tomcat
-  # specify the path either absolute or relative to the buildfile.
+  # To use for packaging. By default $HOME/nuxeo-dm-5.4.2-tomcat
+  # Specify the path either absolute or relative to the buildfile.
+  
+talend-esb:
+  path: 
+  # To use for packaging, if you package EasySOA with the "withtalend" option.
+  # By default $HOME/talend-esb. Specify the path either absolute or relative to the buildfile.
   
 node:
   path:
-  # to use for packaging. By default $HOME/node
-  # specify the path either absolute or relative to the buildfile.
+  # To use for packaging (Linux version). By default /usr/local/bin/
+  # Specify the path either absolute or relative to the buildfile.
+  # TODO Download automatically
   
-frascati:
-  path: 
-  # to use for packaging. By default ./frascati
-  # specify the path either absolute or relative to the buildfile.
-  # If not found FraSCAti 1.4 is downloaded (internet connection required).
-
-# release configuration
+# Release configuration
 
 release:
   version: '0.3-SNAPSHOT'

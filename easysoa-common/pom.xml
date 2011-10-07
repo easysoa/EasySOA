@@ -3,12 +3,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <groupId>org.openwide.easysoa</groupId>
+      <groupId>org.easysoa</groupId>
       <artifactId>parent</artifactId>
       <version>0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>easysoa-common</artifactId>
     <name>EasySOA Common Resources</name> 
+
+	<dependencies>
+	    <!-- logs -->
+	    <dependency>
+	      <groupId>log4j</groupId>
+	      <artifactId>log4j</artifactId>
+	      <version>${log4j.version}</version>
+	    </dependency>
+	</dependencies>    
+
     
 </project>

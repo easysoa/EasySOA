@@ -12,7 +12,7 @@ import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
-import org.easysoa.test.tools.RepositoryLogger;
+import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

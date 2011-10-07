@@ -10,11 +10,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
-import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.listeners.HttpFile;
+import org.easysoa.properties.PropertyNormalizer;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -115,9 +115,10 @@ public class NotificationService extends DefaultComponent {
             
             // Find or create document and parent
             DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
-            DocumentModel parentModel = docService.findServiceApi(session, parentUrl);
-            if (parentModel == null)
-                parentModel = docService.findAppliImpl(session, parentUrl);
+            DocumentModel parentModel = docService.findAppliImpl(session, parentUrl);
+            if (parentModel == null) {
+                parentModel = docService.findServiceApi(session, parentUrl);
+            }
             if (parentModel == null) {
                 if (parentUrl == null) {
                     parentModel = docService.getDefaultAppliImpl(session);
@@ -197,7 +198,15 @@ public class NotificationService extends DefaultComponent {
             DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
             DocumentModel apiModel = docService.findServiceApi(session, parentUrl);
             if (apiModel == null) {
-                apiModel = docService.createServiceAPI(session, null, parentUrl); // TODO "by default", or even fail
+                // Guess Appli. Impl.
+                String appliImplUrl = computeAppliImplUrl(parentUrl);
+                DocumentModel appliImplModel = docService.findAppliImpl(session, appliImplUrl.toString());
+                if (appliImplModel == null) {
+                    appliImplModel = docService.findAppliImpl(session, computeAppliImplUrl(appliImplUrl));
+                }
+                // Create API
+                apiModel = docService.createServiceAPI(session, 
+                        (appliImplModel != null) ? appliImplModel.getPathAsString() : null, parentUrl);
                 apiModel.setProperty("dublincore", "title", title+" API");
                 session.saveDocument(apiModel);
                 session.save();
@@ -319,6 +328,18 @@ public class NotificationService extends DefaultComponent {
         return PropertyNormalizer.normalizeUrl(
                 serviceUrlPath.substring(0, serviceUrlPath.lastIndexOf('/')),
                 ERROR_API_URL_API); 
+    }
+    
+    public String computeAppliImplUrl(String apiUrlPath) throws MalformedURLException {
+        if (apiUrlPath.replace("://", "").lastIndexOf('/') != -1) {
+            return PropertyNormalizer.normalizeUrl(
+                    apiUrlPath.substring(0, apiUrlPath.lastIndexOf('/')),
+                    ERROR_API_URL_APPLIIMPL); 
+        }
+        else {
+            URL url = new URL(apiUrlPath);
+            return PropertyNormalizer.normalizeUrl(url.getProtocol()+"://"+url.getHost());
+        }
     }
 
     public String computeServiceTitle(String serviceUrlPath) throws MalformedURLException {

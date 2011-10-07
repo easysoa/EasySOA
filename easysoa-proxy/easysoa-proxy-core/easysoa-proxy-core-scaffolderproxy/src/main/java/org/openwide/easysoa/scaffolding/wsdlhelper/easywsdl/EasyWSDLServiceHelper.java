@@ -1,24 +1,16 @@
 package org.openwide.easysoa.scaffolding.wsdlhelper.easywsdl;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper;
-/*
-import org.ow2.easywsdl.wsdl.WSDLFactory;
-import org.ow2.easywsdl.wsdl.api.Description;
-import org.ow2.easywsdl.wsdl.api.Service;
-import org.ow2.easywsdl.wsdl.api.WSDLReader;
-*/
 
 public class EasyWSDLServiceHelper implements WsdlServiceHelper {
 
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(EasyWSDLServiceHelper.class.getClass());	
+	//private static Logger logger = Logger.getLogger(EasyWSDLServiceHelper.class.getClass());	
 	
 	//TODO Finish this alternative solution with EasyWSDL
 	@Override

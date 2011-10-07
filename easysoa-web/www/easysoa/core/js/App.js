@@ -14,16 +14,6 @@ $(function() {
 		 */
 		initialize: function() {
 		
-    		// Get user name
-		    jQuery.ajax({
-		        url: '/userdata',
-		        success: function(data, textStatus, jqXHR) {
-		            var data = jQuery.parseJSON(jqXHR.responseText);
-                    $("#username").html(data.username);
-                    $("#headerUserBar").show();
-                }
-            });
-		
 			this.descriptorsView = new DescriptorsView;
 			this.frameView = new FrameView;
 			this.navBarView = new NavbarView;
@@ -31,8 +21,19 @@ $(function() {
         
 	        socket = io.connect();
 	        
+	        // Show proxy warning after a delay
+            setTimeout(function() {
+            	nothingProxiedDiv = $('#nothingProxied');
+            	if (nothingProxiedDiv != null) {
+            		nothingProxiedDiv.show(300);
+            	}
+            }, 1000);
+	        
+            socket.on('proxyack', function(data) {
+                  $('#nothingProxied').remove();
+            });
             socket.on('error', function(data) {
-                  this.error(data.substring(7, data.length-1));
+                  App.error(data.substring(7, data.length-1));
             });
             socket.on('wsdl', function(data) {
                   try {
@@ -42,22 +43,9 @@ $(function() {
                       }
                   }
                   catch (error) {
-                    this.error("Error while handling 'wsdl' message: "+error);
+                    App.error("Error while handling 'wsdl' message: "+error);
                   }
             });
-           /* socket.on('upload', function(data) {
-                  try {
-                      if (data == 'ok') {
-                        SubmitForm.success();
-                      }
-                      else {
-                        SubmitForm.failure(data);
-                      }
-                  }
-                  catch (error) {
-                    this.error("Error while handling 'upload' message: "+error);
-                  }
-            });*/
             socket.on('ready', function(data) {
                   try {
                     $('#messageSuccess').html('Ready.');
@@ -70,7 +58,7 @@ $(function() {
                     });
                   }
                   catch (error) {
-                    this.error("Error while handling 'ready' message: "+error);
+                    App.error("Error while handling 'ready' message: "+error);
                   }
             });
              

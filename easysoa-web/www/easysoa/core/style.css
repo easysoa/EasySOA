@@ -47,19 +47,14 @@ li {
 	margin-top: -1px;
 }
 
-#headerUserBar {
-    position: absolute;
-    left: 650px;
-    top: 25px;
-    font-size: 11pt;
-    color: #444;
-    display: none;
-    width: 250px;
-}
-
-#username {
-    text-decoration: underline;
-    font-weight: bold;
+#nothingProxied {
+	display: none;
+	width: 100%;
+	padding: 5px;
+	background-color: #FDD;
+	font-size: 10pt;
+	color: red;
+	text-align: center;
 }
 
 /* Navigation bar 

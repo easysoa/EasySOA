@@ -1,5 +1,7 @@
 package org.openwide.easysoa.test;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,25 +60,34 @@ public abstract class ServiceTestHelperBase {
 		}
 		String nuxeoQuery = nuxeoQueryBuf.toString();
 		
-		NuxeoRegistrationService nrs = new NuxeoRegistrationService();
-		String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
-		// For each documents returned by the query, call the delete method
-		// Need to parse the complete JSON response to find all the document uid to delete
-		String entries = new JSONObject(nuxeoResponse).getString("entries");
-		JSONArray entriesArray = new JSONArray(entries);
-		for(int i =0; i < entriesArray.length(); i++){
-			JSONObject entry = entriesArray.getJSONObject(i);
-			String uid = entry.getString("uid");
-			logger.info("Deleting document with uid = " + uid);
-			if(nrs.deleteQuery(uid)){
-				logger.info("Document doc:" + uid + " deleted successfully");
-			} else {
-				logger.info("Unable to delete document doc:" + uid);
-			}
-		}
+        try {
+            NuxeoRegistrationService nrs = new NuxeoRegistrationService();
+
+            String nuxeoResponse = nrs.sendQuery(nuxeoQuery);
+            // For each documents returned by the query, call the delete method
+            // Need to parse the complete JSON response to find all the document uid to delete
+            String entries = new JSONObject(nuxeoResponse).getString("entries");
+            JSONArray entriesArray = new JSONArray(entries);
+            for(int i =0; i < entriesArray.length(); i++){
+                JSONObject entry = entriesArray.getJSONObject(i);
+                String uid = entry.getString("uid");
+                logger.info("Deleting document with uid = " + uid);
+                if(nrs.deleteQuery(uid)){
+                    logger.info("Document doc:" + uid + " deleted successfully");
+                } else {
+                    logger.info("Unable to delete document doc:" + uid);
+                }
+            }
+            
+            // check that docs are well deleted
+            return nuxeoResponse = nrs.sendQuery(nuxeoQuery);
+            
+        } catch (IOException e) {
+            String errMsg = "Failed to delete documents";
+            logger.error(errMsg, e);
+            return errMsg;
+        }
 		
-		// check that docs are well deleted
-		return nuxeoResponse = nrs.sendQuery(nuxeoQuery);
 	}
 	
 }

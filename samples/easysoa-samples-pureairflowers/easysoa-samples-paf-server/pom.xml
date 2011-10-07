@@ -2,16 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.openwide.easysoa.samples.paf</groupId>
+	<groupId>org.easysoa.samples.paf</groupId>
 	<artifactId>easysoa-samples-paf-server</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<name>EasySOA Sample Pure Air Flowers Server</name>
 	<packaging>jar</packaging>
 
-	<name>easysoa-samples-paf-server</name>
-	<url>http://maven.apache.org</url>
-
 	<parent>
-		<groupId>org.openwide.easysoa.samples</groupId>
+		<groupId>org.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
 		<version>0.3-SNAPSHOT</version>
 		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
@@ -48,7 +45,7 @@
 				    <id>make-assembly</id>
 				    <phase>package</phase>
 				    <goals>
-				      <goal>assembly</goal>
+				      <goal>single</goal>
 				    </goals>
 				  </execution>
 				</executions>

@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="lib/underscore.js"></script>
 	<script type="text/javascript" src="lib/backbone.js"></script>
 	<script type="text/javascript" src="lib/base64.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	
 	<script type="text/javascript" src="js/Frame.js"></script>
@@ -26,7 +27,7 @@
   <div id="main">
   
     <div id="headerCore">
-    <div id="headerUserBar"><img src="img/user.png" /> Logged as <span id="username"></span> (<a href="/logout">logout</a>)</div>
+    <div id="headerUserBar"></div>
     <div id="headerBreadcrumbs"><a href="../index.html">EasySOA</a> > <b>Core</b> > <b>Discovery by browsing</b></div>
     Service discovery by browsing
     </div>
@@ -34,6 +35,7 @@
   	<div id="header">Service discovery by browsing</div>
   	
   	<div id="content">
+  		<div id="nothingProxied"><u>Warning</u>: Are you sure you have enabled your browser's proxy? Please make sure it is set to <b>http://127.0.0.1:8081</b>.</div>
 	  	<div id="navBar">
     			<div id="messages">
     				<div id="message"><img src="img/loading.gif" /> Connecting...</div>
@@ -74,7 +76,7 @@
   <!-- Templates -->
   <script type="text/template" id="descriptorEntry">
 	  <input id="<%= url %>" type="radio" name="descriptor" value="<%= url %>" /> <b><label for="<%= url %>"><%= serviceName %></label></b><br />
-	  <a href="<%= url %>" target="_blank"><%= url %></a>
+	  <a href="/scaffoldingProxy/?wsdlUrl=<%= url %>" target="_blank"><%= url %></a>
   </script>
 
 </body>

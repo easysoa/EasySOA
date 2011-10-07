@@ -2,8 +2,8 @@ package org.easysoa.sca.visitors;
 
 import javax.xml.namespace.QName;
 
+import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.ScaImporter;
-import org.nuxeo.ecm.core.api.ClientException;
 
 /**
  * Visitor for WS bindings.
@@ -13,7 +13,7 @@ import org.nuxeo.ecm.core.api.ClientException;
  */
 public class WSBindingScaVisitor extends ServiceBindingVisitorBase {
     
-    public WSBindingScaVisitor(ScaImporter scaImporter) {
+    public WSBindingScaVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
     
@@ -31,12 +31,6 @@ public class WSBindingScaVisitor extends ServiceBindingVisitorBase {
             }
         }
         return serviceUrl;
-    }
-
-    @Override
-    public void postCheck() throws ClientException {
-        // TODO Auto-generated method stub
-        
     }
 
 }

@@ -26,7 +26,8 @@ isLoginValid = function(username, password, callback) {
 
 isAnonymouslyAvailable = function(url) {
     return url.pathname.indexOf('easysoa/core') == -1 
-        && url.pathname.indexOf('easysoa/light') == -1;
+        && url.pathname.indexOf('easysoa/light') == -1
+        && url.pathname.indexOf('scaffoldingProxy') == -1;
 }
 
 // EXPORTS
@@ -84,20 +85,20 @@ exports.authFilter = function (request, result, next) {
               // Logged successfully
               if (callbackResult) {
                     request.session.username = request.body.username;
-                    request.session.password = request.body.password;
+                    request.session.password = request.body.password; // XXX: Could store the Base64 hash instead
                   console.log('[INFO] User `' + request.body.username + '` just logged in');
                   result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
                   return;
               // Unauthorized
               } else {
-                result.redirect('/easysoa/login.html?error=true');
+                result.redirect('/easysoa/login.html?error=true&prev='+request.body.prev);
                 return;
               }
            });
          }
          catch (error) {
             console.log("[INFO] Request error, assuming Nuxeo is not started: "+error);
-            result.redirect('/easysoa/login.html?nuxeoNotReady=true');
+            result.redirect('/easysoa/login.html?nuxeoNotReady=true&prev='+request.body.prev);
             return;
          }
     }

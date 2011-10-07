@@ -24,7 +24,7 @@ import org.xml.sax.InputSource;
  * @author jguillemotte
  *
  */
-public class XsltFormGenerator implements FormGenerator {
+public class XsltFormGenerator implements TransformationFormGeneratorInterface {
 
 	/**
 	 * Logger
@@ -69,7 +69,7 @@ public class XsltFormGenerator implements FormGenerator {
 			}
 			else if(htmlOutput == null || "".equals(htmlOutput)){
 				throw new IllegalArgumentException("The parameter html cannot be null or empty !");
-			}			
+			}
 			// Parsing XML
 			// Can works with HTTP protocol (http://...) or FILE protocol (file://...)
 			SAXSource source;
@@ -97,8 +97,9 @@ public class XsltFormGenerator implements FormGenerator {
 			return readResultFile(htmlOutputFile);
 		}
 		catch(Exception ex){
-			logger.error(ex);
-			return "Transformation failed : " + ex.getMessage();
+			String msg = "Transformation failed";
+			logger.error(msg, ex);
+			return msg + " : " + ex.getMessage();
 		}
 	}
 	

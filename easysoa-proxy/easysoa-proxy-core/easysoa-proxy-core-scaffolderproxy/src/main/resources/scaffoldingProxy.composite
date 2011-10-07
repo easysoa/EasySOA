@@ -12,32 +12,34 @@
 	<reference name="formGenerator" target="formGeneratorComponent/formGeneratorService" />    
   </component>
 
-  <!-- Form generator component -->
+  <!--XSLT Form generator component -->
   <!--<component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.FormGenerator"/>
+      <interface.java interface="org.openwide.easysoa.scaffolding.TransformationFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.XsltFormGenerator"/>
 	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
   </component>-->
   
-  <!-- Form generator for test with EasyWSDL -->
-  <!--<component name="formGeneratorComponent">
-    <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.FormGeneratorItf"/>
-    </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.EasyWsdlFormGenerator"/>
-	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
-  </component>-->
-
-  <!-- Form generator for test with apache Woden -->
+  <!-- EasyWSDL Form generator component -->
   <component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.FormGeneratorGenericInterface"/>
+      <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
+    </service>
+    <implementation.java class="org.openwide.easysoa.scaffolding.EasyWsdlFormGenerator"/>
+	<property name="defaultWsdl">src/main/resources/defaultWsdl/modified_airport_soap.wsdl</property>
+  </component>
+
+  <!-- Apache Woden Form generator component  -->
+  <!-- There is a problem of dependencies with the lib Apache xmlSchema, Woden use the version 1.4.7 and FraSCAti and CXF the version 2.0 -->
+  <!-- Woden version 1.0M9 is not compatible with version 2.0 so this component is deactivated for the moment, waiting for a new compatible version -->
+  <!--<component name="formGeneratorComponent">
+    <service name="formGeneratorService">
+      <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.WodenFormGenerator"/>
 	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
-  </component>
+  </component>-->
   
   <!-- Rest Soap Proxy  -->
   <component name="restSoapProxyComponent">

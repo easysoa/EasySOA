@@ -9,10 +9,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
-import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.properties.PropertyNormalizer;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -27,7 +27,6 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * @author mkalam-alami
  *
  */
-// TODO: Switch to real Nuxeo service instead of static access
 public class DocumentService extends DefaultComponent {
     
     private static Log log = LogFactory.getLog(DocumentService.class);

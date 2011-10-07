@@ -14,7 +14,7 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.PropertyNormalizer;
+import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.VocabularyHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -53,9 +53,9 @@ public class AppliImplListener implements EventListener {
         }
         
         // Initialize workflow
-        if (hasNoWorkflow(session, appliImplModel)) {
+        /*if (hasNoWorkflow(session, appliImplModel)) {
             initWorkflow(session, appliImplModel);
-        }
+        }*/
 
         // Update properties
         if (maintainInternalProperties(session, appliImplModel)) {
@@ -73,7 +73,7 @@ public class AppliImplListener implements EventListener {
 
     }
 
-    private boolean hasNoWorkflow(CoreSession session, DocumentModel appliImplModel) {
+    /*private boolean hasNoWorkflow(CoreSession session, DocumentModel appliImplModel) {
         return true; // TODO
     }
     
@@ -86,7 +86,7 @@ public class AppliImplListener implements EventListener {
             return false;
         }
         return true;
-    }
+    }*/
 
     private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel) {
         try {

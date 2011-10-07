@@ -9,7 +9,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.openwide.easysoa</groupId>
+	<groupId>org.easysoa.registry</groupId>
 	<artifactId>easysoa-registry-parent</artifactId>
 	<version>0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -24,7 +24,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.openwide.easysoa</groupId>
+			<groupId>org.easysoa</groupId>
 			<artifactId>easysoa-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -72,10 +72,15 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.openwide.easysoa</groupId>
+				<groupId>org.easysoa.registry</groupId>
 				<artifactId>easysoa-registry-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+            <dependency>
+              <groupId>org.easysoa.registry</groupId>
+              <artifactId>easysoa-registry-api</artifactId>
+              <version>${project.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

@@ -1,10 +1,16 @@
 
 package com.openwide.easysoa.nuxeo.registration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ws.rs.core.GenericEntity;
+
 import org.apache.log4j.Logger;
+import org.easysoa.rest.RestNotificationFactory;
+import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
+import org.easysoa.rest.RestNotificationRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,19 +30,33 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  * @author jguillemotte
  *
  */
+// TODO: Continue to refactor using easysoa-registry-api
 public class NuxeoRegistrationService {
 	
 	/**
 	 * Logger
 	 */
-	static Logger logger = Logger.getLogger(NuxeoRegistrationService.class.getName());
+	private static Logger logger = Logger.getLogger(NuxeoRegistrationService.class.getName());
 	
+	private static RestNotificationFactory factory = null;
+
+    public NuxeoRegistrationService() throws IOException {
+
+        factory = new RestNotificationFactory(PropertyManager.getProperty("nuxeo.rest.service"));
+        
+        // TODO: When auth is enabled in Discovery client, configure with
+        // PropertyManager.getProperty("nuxeo.auth.login", "Administrator")
+        // PropertyManager.getProperty("nuxeo.auth.password", "Administrator")
+    }
+    
 	/**
 	 * Register a WSDL SOAP service in Nuxeo
 	 * @param service The service to register
 	 * @return The response send back by Nuxeo
+	 * @throws Exception 
 	 */
-	public String registerWSDLService(Service service){
+    // TODO Test
+	public String registerWSDLService(Service service) throws Exception{
 		/*
 		{
 		  "description": "Service-level notification.",
@@ -56,35 +76,35 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		*/
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
-		url.append("service");
-		StringBuffer body = new StringBuffer();
-		body.append("url=");
-		body.append(service.getUrl()); // ex. http://localhost:9080/CreateSummary
-		body.append("&parentUrl=");
-		body.append(service.getUrl().substring(0, service.getUrl().lastIndexOf('/'))); // ex. 	http://localhost:9080
-		body.append("&fileUrl=");
-		body.append(service.getFileUrl());		
-		body.append("&callcount=");
-		body.append(service.getCallCount());
-		body.append("&title=");
-		body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash TODO MDU better i.e. when getting title
-		body.append("&contentTypeOut=");
-		body.append(service.getContentTypeOut());
-		body.append("&contentTypeIn=");
-		body.append(service.getContentTypeIn());
-		body.append("&relatedUsers=");
-		body.append(service.getRelatedUsers());
-		body.append("&description=");
-		body.append(service.getDescription());
-		body.append("&httpMethod=");
-		body.append(service.getHttpMethod());
-		//TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications. Informs the document of the notification source." Replace localhost with other details		
-		body.append("&discoveryTypeMonitoring=");
-		body.append("localhost");
-		logger.debug("[registerWSDLService()] --- Message url : " + url.toString());
-		logger.debug("[registerWSDLService()] --- Message body : " + body.toString());
-		return sendRequest(url.toString(), body.toString());
+	    RestNotificationRequest request = factory.createNotification(RestNotificationService.SERVICE);
+	    
+	    request.setProperty(org.easysoa.doctypes.Service.PROP_URL, service.getUrl()); // ex. http://localhost:9080/CreateSummary
+        request.setProperty(org.easysoa.doctypes.Service.PROP_PARENTURL, service.getUrl().substring(0, service.getUrl().lastIndexOf('/'))); // ex.    http://localhost:9080
+        request.setProperty(org.easysoa.doctypes.Service.PROP_FILEURL, service.getFileUrl());
+        
+        if (service.getTitle() != null) {
+            // Remove the leading slash TODO MDU better i.e. when getting title
+            request.setProperty(org.easysoa.doctypes.Service.PROP_TITLE, service.getTitle().replaceFirst("/", ""));
+        }
+        else {
+            request.setProperty(org.easysoa.doctypes.Service.PROP_TITLE, service.getUrl());
+        }
+        request.setProperty(org.easysoa.doctypes.Service.PROP_DESCRIPTION, service.getDescription());
+        
+        request.setProperty(org.easysoa.doctypes.Service.PROP_CALLCOUNT, Integer.toString(service.getCallCount()));
+        request.setProperty(org.easysoa.doctypes.Service.PROP_CONTENTTYPEIN, service.getContentTypeIn());
+        request.setProperty(org.easysoa.doctypes.Service.PROP_CONTENTTYPEOUT, service.getContentTypeOut());
+        request.setProperty(org.easysoa.doctypes.Service.PROP_RELATEDUSERS, service.getRelatedUsers());
+        request.setProperty(org.easysoa.doctypes.Service.PROP_HTTPMETHOD, service.getHttpMethod());
+      
+        //TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications.
+        // Informs the document of the notification source." Replace localhost with other details        
+        request.setProperty(org.easysoa.doctypes.Service.PROP_DTMONITORING, "localhost");
+        
+		logger.debug("[registerWSDLService()] --- Message url : " + service.getUrl().toString());
+		
+		JSONObject result = request.send();	
+		return (result == null) ? null : result.toString();
 	}
 	
 	/**
@@ -122,7 +142,12 @@ public class NuxeoRegistrationService {
 		body.append("&callcount=");
 		body.append(service.getCallCount());
 		body.append("&title=");
-		body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash
+		if (service.getTitle() != null) {
+		    body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash
+		}
+		else {
+	        body.append(service.getUrl());
+		}
 		body.append("&contentTypeOut=");
 		body.append(service.getContentTypeOut());
 		body.append("&contentTypeIn=");

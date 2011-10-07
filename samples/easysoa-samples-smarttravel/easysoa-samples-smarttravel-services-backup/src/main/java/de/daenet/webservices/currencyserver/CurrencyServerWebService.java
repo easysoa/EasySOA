@@ -22,7 +22,7 @@ import javax.xml.ws.Service;
 
 
 @WebServiceClient(name = "CurrencyServerWebService", 
-                  wsdlLocation = "http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?wsdl",
+                  //wsdlLocation = "http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?wsdl",
                   targetNamespace = "http://www.daenet.de/webservices/CurrencyServer") 
 public class CurrencyServerWebService extends Service {
 

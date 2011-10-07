@@ -2,6 +2,7 @@ package org.easysoa.sca.visitors;
 
 import javax.xml.namespace.QName;
 
+import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.ScaImporter;
 
 /**
@@ -12,7 +13,7 @@ import org.easysoa.sca.ScaImporter;
  */
 public class RestBindingScaVisitor extends ServiceBindingVisitorBase {
     
-    public RestBindingScaVisitor(ScaImporter scaImporter) {
+    public RestBindingScaVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
     

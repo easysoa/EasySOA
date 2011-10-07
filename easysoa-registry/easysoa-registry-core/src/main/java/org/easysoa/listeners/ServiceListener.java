@@ -2,7 +2,6 @@ package org.easysoa.listeners;
 
 import static org.easysoa.doctypes.Service.DOCTYPE;
 import static org.easysoa.doctypes.Service.PROP_FILEURL;
-import static org.easysoa.doctypes.Service.PROP_LIGHTURL;
 import static org.easysoa.doctypes.Service.PROP_URL;
 import static org.easysoa.doctypes.Service.SCHEMA;
 
@@ -14,9 +13,10 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.PropertyNormalizer;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.NotificationService;
 import org.nuxeo.ecm.core.api.Blob;
@@ -199,24 +199,23 @@ public class ServiceListener implements EventListener {
                 } catch (MalformedURLException e) {
                     log.warn("Failed to normalize URL", e);
                 }
-                // XXX: Hard-coded PAF Light URL
-                if (url.contains("PureAirFlowers")) { 
-                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
-                            "http://localhost:8083/easysoa/light/PureAirFlowers.html");
+            }
+            if (fileUrl != null && !fileUrl.isEmpty()) {
+                // XXX: Hacked Airport Light URL
+                if (fileUrl.contains("irport")) {
+                    doc.setProperty(SCHEMA, PROP_FILEURL, 
+                            "http://localhost:"+EasySOAConstants.WEB_PORT+"/easysoa/light/modified_airport_soap.wsdl");
                 }
-                // XXX: Hard-coded Smart Travel Light URL
-                else if (url.contains("GalaxyTrip")) {
-                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
-                            "http://localhost:8083/easysoa/light/GalaxyTrip.html");
-                }
-                // XXX: Hard-coded Airport Light URL
-                else if (url.contains("irport")) {
-                    doc.setProperty(SCHEMA, PROP_LIGHTURL,
-                            "http://localhost:8090/scaffoldingProxy/?wsdlUrl=http://localhost:8200/esb/AirportService?wsdl");
+                else {
+                    doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
                 }
             }
-            if (fileUrl != null) {
-                doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
+            else {
+                String potentialWsdlUrl = url+"?wsdl";
+                HttpFile file = new HttpFile(new URL(potentialWsdlUrl));
+                if (file.isFileAvailable()) {
+                    doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(potentialWsdlUrl));
+                }
             }
             session.save();
             

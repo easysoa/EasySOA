@@ -67,8 +67,47 @@ exports.isNuxeoReady = function() {
 /*
  *
  */
-exports.checkNuxeo = function(username, password, callback) {
+// TODO Refactoring with checkNuxeo
+exports.automationQuery = function(session, operation, input, headers, callback) {
 
+  headers['Content-Type'] = 'application/json+nxrequest';
+  headers['Accept'] = 'application/json+nxentity, */*';
+  headers['Authorization'] = computeAuthorization(session.username, session.password);
+
+  var requestOptions = {
+	  'port' : nuxeoAutomation.port,
+	  'method' : 'POST',
+	  'host' : nuxeoAutomation.hostname,
+	  'path' : nuxeoAutomation.href+'/'+operation,
+	  'headers' : headers
+  };
+  
+  var body = new Object();
+  body.params = input;
+  body.context = {};
+  
+  var nxRequest = http.request(requestOptions, function(response) {
+        var responseData = '';
+        response.on('data', function(data) {
+              responseData += data;
+          });
+		response.on('end', function() {
+            callback(responseData);
+		});
+  });
+  
+  nxRequest.on('error', function(data) {
+    callback(false);
+  });
+  nxRequest.write(JSON.stringify(body));
+  nxRequest.end();
+
+};
+
+/*
+ *
+ */
+exports.checkNuxeo = function(username, password, callback) {
 
   var requestOptions = {
 	  port : nuxeoAutomation.port,

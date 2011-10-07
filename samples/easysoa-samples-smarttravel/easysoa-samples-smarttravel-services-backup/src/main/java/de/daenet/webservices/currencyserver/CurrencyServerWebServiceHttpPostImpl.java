@@ -19,7 +19,7 @@ import java.util.logging.Logger;
                       serviceName = "CurrencyServerWebService",
                       portName = "CurrencyServerWebServiceHttpPost",
                       targetNamespace = "http://www.daenet.de/webservices/CurrencyServer",
-                      wsdlLocation = "http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?wsdl",
+                      //wsdlLocation = "http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?wsdl",
                       endpointInterface = "de.daenet.webservices.currencyserver.CurrencyServerWebServiceHttpPost")
                       
 public class CurrencyServerWebServiceHttpPostImpl implements CurrencyServerWebServiceHttpPost {

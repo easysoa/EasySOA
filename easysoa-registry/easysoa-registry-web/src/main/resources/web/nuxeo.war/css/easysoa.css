@@ -83,8 +83,8 @@ div+table .themeCellFrame {
 }
 
 .doctype {
-    font-size: 12pt;
-    color: #888;
+	font-size: 12pt;
+	color: #888;
 }
 
 .urlInTitle {
@@ -98,4 +98,27 @@ div+table .themeCellFrame {
 	margin-bottom: 5px;
 	color: #666;
 	font-style: italic;
+}
+
+/* Hide document listing buttons (! hides the refresh button)
+.listingLayoutSelector {
+	display: none;
+} */
+
+/* Hide action buttons (print, etc) */
+.printButton .action_bar {
+    display: none !important;
+}
+
+/* Hide file drop zone in document display tab */
+.content_block .dropzone {
+	display: none;	
+}
+
+/* Document display layout */
+.summary_div_1 {
+    display: none;
+}
+.summary_div_0 {
+    width: 100% !important;
 }

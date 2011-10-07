@@ -60,7 +60,6 @@ li {
   padding-left: 280px;
 }
 
-
 #headerWelcome {
   width: 100%;
   padding-top: 23px;
@@ -81,6 +80,22 @@ li {
   display: block;
   width: 100%;
   margin-bottom: 3px;
+}
+
+#headerUserBar {
+    font-weight: normal;
+    position: absolute;
+    left: 650px;
+    top: 25px;
+    font-size: 11pt;
+    color: #444;
+    display: none;
+    width: 250px;
+}
+
+#username {
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 #container { 
@@ -129,10 +144,10 @@ input[disabled] {
   color: #444;
 }
 
-input[type=button] {
-  font-size: 13pt;
-  padding: 5px;
+input[type=submit] {
+  padding: 3px;
   width: 150px;
+  font-size: 12pt;
 }
 
 a {

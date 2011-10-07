@@ -3,10 +3,10 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.inria.galaxy.j1</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>org.easysoa.samples.smarttravel</groupId>
     <artifactId>easysoa-samples-smarttravel</artifactId>
-    <name>J1: Demo project</name>
+    <name>EasySOA Sample Smart Travel Project</name>
+    <version>0.3-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -52,7 +52,6 @@
        <module>easysoa-samples-smarttravel-services-backup</module>
        <module>easysoa-samples-smarttravel-services-backup-sca</module>
        <module>easysoa-samples-smarttravel-trip</module>
-       <module>easysoa-samples-smarttravel-service-ui-scaffolder-proxy</module>
   </modules>
 
 </project>

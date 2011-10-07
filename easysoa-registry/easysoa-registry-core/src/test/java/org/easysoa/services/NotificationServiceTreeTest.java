@@ -17,7 +17,7 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
-import org.easysoa.test.tools.RepositoryLogger;
+import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
@@ -173,7 +173,7 @@ public class NotificationServiceTreeTest {
     	
     	//// Default behaviour: a new application is created with given URLs
 
-    	String newApiUrl = "http://www.i-dont-exist.com/api";
+    	String newApiUrl = "http://www.i-dont-exist-too.com/api";
     	
     	// Create service
     	properties = new HashMap<String, String>();

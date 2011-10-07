@@ -12,12 +12,12 @@
 
 	<!--  -->
 	<!--  for test -->
-	<!--<component name="talendTutoServiceMock">
+	<component name="talendTutoServiceMock">
     	<implementation.java class="org.openwide.easysoa.test.mock.TalendTutoServiceMockImpl"/>
     	<service name="serviceMock">
 			<interface.java interface="org.openwide.easysoa.test.mock.TalendTutoServiceMock" />     		
       		<binding.ws uri="http://localhost:8200/esb/AirportService"/>
     	</service>	
-	</component>-->
+	</component>
 
 </composite>

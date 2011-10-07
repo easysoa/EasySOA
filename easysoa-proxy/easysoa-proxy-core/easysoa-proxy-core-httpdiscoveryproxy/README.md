@@ -20,9 +20,9 @@ By default, the proxy works on the port 8082.
 To run this proxy :
 
 Solution A (preferred)
-- run the project with the Maven command : "mvn -Prun"
+- run the project with the Maven command : "mvn -Prun", or with the JUnit starter : 'mvn -Dtest="ProxyStarter" install'
 
-Solution B
+Solution B (releaseà
 - Build the project with the following maven command : "mvn clean install".
 - Copy the generated "esperfrascatipoc-1.0-SNAPSHOT.jar" jar archive in the "sca-apps" folder of your frascati installation.
 - Run Frascati with the command "frascati run httpProxy -libpath /YOUR_FRASCATI_HOME/sca-apps/esperfrascatipoc-1.0-SNAPSHOT.jar" (Don't forget to change YOU_FRASCATI_HOME with the path of Frascati in your installation)

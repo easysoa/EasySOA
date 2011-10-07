@@ -1,5 +1,6 @@
 package com.openwide.easysoa.monitoring;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +46,15 @@ public class MonitoringModel {
 	 * Fill the object with data from Nuxeo
 	 */
 	public void fetchFromNuxeo() {
-		soaNodes = new NuxeoRegistrationService().getAllSoaNodes();
-		logger.debug("soaNodes size : " + soaNodes.size());
-		for (Node soaNode : soaNodes) {
-			soaModelUrlToTypeMap.put(soaNode.getUrl(), getNodeType(soaNode));
-		}
+		try {
+            soaNodes = new NuxeoRegistrationService().getAllSoaNodes();
+            logger.debug("soaNodes size : " + soaNodes.size());
+            for (Node soaNode : soaNodes) {
+                soaModelUrlToTypeMap.put(soaNode.getUrl(), getNodeType(soaNode));
+            }
+        } catch (IOException e) {
+            logger.error("Failed to fetch data from Nuxeo", e);
+        }
 	}
 	
 	/**

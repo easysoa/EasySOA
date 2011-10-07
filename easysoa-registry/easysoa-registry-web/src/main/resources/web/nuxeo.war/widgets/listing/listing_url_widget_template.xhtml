@@ -1,0 +1,17 @@
+<f:subview xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:nxh="http://nuxeo.org/nxweb/html"
+  xmlns:c="http://java.sun.com/jstl/core"
+  id="#{widget.id}">
+
+  <c:choose>
+    <c:when test="#{field.getType()} == 'Workspace'">#{field.app.url}</c:when>
+    <c:when test="#{field.getType()} == 'ServiceAPI'">#{field.api.url}</c:when>
+    <c:when test="#{field.getType()} == 'Service'">#{field.serv.url}</c:when>
+    <c:when test="#{field.getType()} == 'ServiceReference'">#{field.sref.url}</c:when>
+  </c:choose>
+  
+</f:subview>
