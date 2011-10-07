@@ -11,6 +11,7 @@ var easysoaNuxeo = require('./web-nuxeo.js');
 
 eval(fs.readFileSync('./settings.js', 'ASCII'));
 
+var clientWellConfigured = false;
 var nuxeoReady = false;
 var io = null;
 var wsdlList = new Array();
@@ -35,23 +36,26 @@ exports.provideWsdl = function(linkName, link) {
     exports.broadcastemit('wsdl', wsdlList[linkName]);
 }
 
+exports.setClientWellConfigured = function(request) {
+	// XXX: Emits event to everyone
+	clientWellConfigured = true;
+	exports.broadcastemit('proxyack');
+}
+
 exports.startDiscoveryByBrowsingHandler = function(server) {
   
       io = socketio.listen(server);
       io.set('log level', 2);
-      io.set('transports', [
-      //      'websocket' // Doesn't work through the proxy
-            'flashsocket'
-          , 'htmlfile'
-          , 'xhr-polling'
-          , 'jsonp-polling'
-        ]);
+      io.set('transports', ['flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']); // 'websocket' doesn't work through the proxy
         
       io.sockets.on('connection', function(socket) {
           
           // Notify that Nuxeo is ready
           if (nuxeoReady) {
             socket.emit('ready');
+          }
+          if (clientWellConfigured) {
+            socket.emit('proxyack');
           }
             
           // Send stored WSDLs

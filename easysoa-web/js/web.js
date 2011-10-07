@@ -17,7 +17,13 @@ var easysoaDbb = require('./web-dbb.js');
 var easysoaScraping = require('./web-scraping.js');
 var easysoaLight = require('./web-light.js');
 
+/* Settings */
+
 eval(fs.readFileSync('settings.js', 'ASCII'));
+settings.ignore.push('/login');
+settings.ignore.push('/send');
+settings.ignore.push('/scaffoldingProxy');
+settings.ignore.push('/light/serviceList');
 
 /* Handle errors without crashing */
 
@@ -30,6 +36,10 @@ process.on('uncaughtException', function (error) {
 function isRequestToProxy(request) {
     return request.headers['host'] == "localhost:" + settings.proxyPort
             || request.headers['host'] == "127.0.0.1:" + settings.proxyPort;
+}
+
+function isRequestToSocketIO(request) {
+    return request.url.indexOf("socket.io") != -1;
 }
 
 function isInIgnoreList(request_url) {
@@ -55,7 +65,6 @@ function urlFixer(request, response, next) {
 
 /* Web server */
 
-var proxy = new httpProxy.HttpProxy();
 var tunnelProxy = new httpProxy.HttpProxy();
 
 var webServer = express.createServer();
@@ -110,7 +119,7 @@ webServer.get('/send', function(request, response, next) {
 // TODO LATER make it generic with a loop and a table in settings
 scaffolding_server_url = url.parse(settings.scaffoldingServer);
 webServer.get('/scaffoldingProxy', function(request, response, next) {
-    console.log("http://" + scaffolding_server_url.hostname + ":" + scaffolding_server_url.port + request.url);
+    console.log("[INFO] Tunnelling scaffolder: http://" + scaffolding_server_url.hostname + ":" + scaffolding_server_url.port + request.url);
     tunnelProxy.proxyRequest(request, response, {
         host: scaffolding_server_url.hostname,
         port: scaffolding_server_url.port
@@ -143,6 +152,9 @@ easysoaDbb.startDiscoveryByBrowsingHandler(webServer);
 
       
 /* Proxy server */
+/* (TODO: Merge with web server?) */
+
+var proxy = new httpProxy.HttpProxy();
 
 proxy.on('proxyError', function(error, request, result) {
     result.write("<h1>Error "+error.errno+"</h1>");
@@ -152,31 +164,35 @@ proxy.on('proxyError', function(error, request, result) {
 
 var proxyServer = http.createServer(function(request, response) {
 
-        // Proxying
-        if (!isRequestToProxy(request)) {
+	// Allow the client to know that it's configured correctly
+	if (!isRequestToSocketIO(request)) {
+		easysoaDbb.setClientWellConfigured(request);
+	}
+	
+    // Proxying
+    if (!isRequestToProxy(request)) {
 
-            request.url = fixUrl(request.url);
-            request_url = url.parse(request.url);
-            proxy.proxyRequest(request, response, {
-                host: request_url.hostname,
-                port: request_url.port
+        request.url = fixUrl(request.url);
+        request_url = url.parse(request.url);
+        proxy.proxyRequest(request, response, {
+            host: request_url.hostname,
+            port: request_url.port
+        });
+      
+        // Scraping
+        if (!isInIgnoreList(request_url)) {
+            console.log("[INFO] Scraping: " + request.url);
+            easysoaScraping.sendUrlToScrapers(request_url, function(scraperResults) {
+              for (var linkName in scraperResults) {
+                 easysoaDbb.provideWsdl(linkName, scraperResults[linkName]);
+              }
             });
-          
-            // Scraping
-            if (!isInIgnoreList(request_url)) {
-                console.log("[INFO] Scraping: " + request.url);
-                easysoaScraping.sendUrlToScrapers(request_url, function(scraperResults) {
-                  for (var linkName in scraperResults) {
-                     easysoaDbb.provideWsdl(linkName, scraperResults[linkName]);
-                  }
-                });
-            }
-        }
-        else { 
-            request.url = request.url.replace('http://localhost:'+settings.proxyPort, '');
         }
     }
-);
+    else { 
+        request.url = request.url.replace('http://localhost:'+settings.proxyPort, '');
+    }
+});
 
 easysoaNuxeo.checkNuxeo(null, null, function(result) {
     console.log("[INFO] Checking Nuxeo status");
