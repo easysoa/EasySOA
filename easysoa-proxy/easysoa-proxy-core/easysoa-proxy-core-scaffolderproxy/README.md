@@ -32,6 +32,7 @@ A test class is avalaible : FormGeneratoTest.java. This test is fully automated,
 #How to use :
 
     - Start the light in FraSCAti with the composite : scaffoldingProxy.composite
+    - command line using Maven : 'mvn -DargLine="-Dcxf.config.file=cxfEsperProxy.xml" -Dtest="FormGeneratorTester" install'
 
 To generate a WSDL form :
 
