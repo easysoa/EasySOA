@@ -15,6 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.easysoa.proxy.common.ProxyUtil;
 import org.osoa.sca.annotations.Property;
 import org.xml.sax.InputSource;
 
@@ -70,18 +71,16 @@ public class XsltFormGenerator implements TransformationFormGeneratorInterface {
 			else if(htmlOutput == null || "".equals(htmlOutput)){
 				throw new IllegalArgumentException("The parameter html cannot be null or empty !");
 			}
+			
+			// Hack for Talend airport sample
+			if(formWsdlXmlSource == null || "".equals(formWsdlXmlSource)){
+				formWsdlXmlSource = defaultWsdl;
+			}
+			URL formWsdlXmlUrl = ProxyUtil.getUrlOrFile(formWsdlXmlSource);
 			// Parsing XML
 			// Can works with HTTP protocol (http://...) or FILE protocol (file://...)
-			SAXSource source;
-			if(formWsdlXmlSource != null){
-				URL formWsdlXmlUrl = new URL(formWsdlXmlSource);
-				source = new SAXSource(new InputSource(new InputStreamReader(formWsdlXmlUrl.openStream())));
-			}
-			// Hack to works with Talend tutorial !!
-			else {
-				File wsdlFile = new File(defaultWsdl);
-				source = new SAXSource(new InputSource(new FileReader(wsdlFile)));
-			}
+			SAXSource source = new SAXSource(new InputSource(new InputStreamReader(formWsdlXmlUrl.openStream())));
+			
 			// Output HTML file
 			File htmlOutputFile = new File(htmlOutput);
 			Result result = new StreamResult(htmlOutputFile);
