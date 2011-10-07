@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.common.ProxyUtil;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -51,24 +52,31 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	String defaultWsdl;
 	
 	@Override
-	public void setWsdl(String wsdlSource) throws Exception {
+	public String updateWsdl(String wsdlSource) throws Exception {
 		// Hack for Talend airport sample
 		if(wsdlSource == null || "".equals(wsdlSource)){
 			wsdlSource = defaultWsdl;
 		}
+
+		URL wsdlUrl = ProxyUtil.getUrlOrFile(wsdlSource);
+		
 		// Read WSDL version 1.1 or 2.0
 		WSDLReader reader;
 		logger.debug("WSDl source to parse : " + wsdlSource);
 		try {
 			reader = WSDLFactory.newInstance().newWSDLReader();
-			wsdlDescription = reader.read(new URL(wsdlSource));
+			wsdlDescription = reader.read(wsdlUrl);
 			logger.debug("WSDL Reading OK");
 		} catch (WSDLException wex) {
-			logger.error("A problem occurs during the parsing of the WSDl file !", wex);
+			logger.error("A problem occurs during the parsing of the WSDl file " + wsdlSource, wex);
 			throw wex;
+		} catch (Exception ex) {
+			logger.error("Unable to get WSDl file " + wsdlSource, ex);
+			throw ex;
 		}
+		return wsdlUrl.toString();
 	}
-	
+
 	@Override
 	public List<WSService> getServices(){
 		logger.debug("Entering in getServiceName method");

@@ -1,5 +1,5 @@
 <!-- Velocity template for HTML form generation -->
-$formGenerator.setWsdl($wsdlUrl)
+#set($wsdlUrl = $formGenerator.updateWsdl($wsdlUrl))
 
 <html>
 	<head>
