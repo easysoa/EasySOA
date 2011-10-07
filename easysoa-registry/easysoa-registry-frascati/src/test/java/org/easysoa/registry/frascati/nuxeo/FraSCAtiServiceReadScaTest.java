@@ -1,6 +1,6 @@
-package org.easysoa.frascati.nuxeo;
+package org.easysoa.registry.frascati.nuxeo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.net.MalformedURLException;

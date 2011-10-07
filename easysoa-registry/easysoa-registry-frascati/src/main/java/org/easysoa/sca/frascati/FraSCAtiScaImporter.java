@@ -20,7 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.frascati.nuxeo.FraSCAtiService;
+import org.easysoa.registry.frascati.nuxeo.FraSCAtiService;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.visitors.RestBindingScaVisitor;
 import org.easysoa.sca.visitors.RestReferenceBindingVisitor;
