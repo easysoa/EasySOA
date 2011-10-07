@@ -33,7 +33,7 @@ $(function() {
                   $('#nothingProxied').remove();
             });
             socket.on('error', function(data) {
-                  this.error(data.substring(7, data.length-1));
+                  App.error(data.substring(7, data.length-1));
             });
             socket.on('wsdl', function(data) {
                   try {
@@ -43,22 +43,9 @@ $(function() {
                       }
                   }
                   catch (error) {
-                    this.error("Error while handling 'wsdl' message: "+error);
+                    App.error("Error while handling 'wsdl' message: "+error);
                   }
             });
-           /* socket.on('upload', function(data) {
-                  try {
-                      if (data == 'ok') {
-                        SubmitForm.success();
-                      }
-                      else {
-                        SubmitForm.failure(data);
-                      }
-                  }
-                  catch (error) {
-                    this.error("Error while handling 'upload' message: "+error);
-                  }
-            });*/
             socket.on('ready', function(data) {
                   try {
                     $('#messageSuccess').html('Ready.');
@@ -71,7 +58,7 @@ $(function() {
                     });
                   }
                   catch (error) {
-                    this.error("Error while handling 'ready' message: "+error);
+                    App.error("Error while handling 'ready' message: "+error);
                   }
             });
              

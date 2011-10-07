@@ -17,7 +17,13 @@ var easysoaDbb = require('./web-dbb.js');
 var easysoaScraping = require('./web-scraping.js');
 var easysoaLight = require('./web-light.js');
 
+/* Settings */
+
 eval(fs.readFileSync('settings.js', 'ASCII'));
+settings.ignore.push('/login');
+settings.ignore.push('/send');
+settings.ignore.push('/scaffoldingProxy');
+settings.ignore.push('/light/serviceList');
 
 /* Handle errors without crashing */
 
@@ -30,6 +36,10 @@ process.on('uncaughtException', function (error) {
 function isRequestToProxy(request) {
     return request.headers['host'] == "localhost:" + settings.proxyPort
             || request.headers['host'] == "127.0.0.1:" + settings.proxyPort;
+}
+
+function isRequestToSocketIO(request) {
+    return request.url.indexOf("socket.io") != -1;
 }
 
 function isInIgnoreList(request_url) {
@@ -152,7 +162,9 @@ proxy.on('proxyError', function(error, request, result) {
 var proxyServer = http.createServer(function(request, response) {
 
 	// Allow the client to know that it's configured correctly
-	easysoaDbb.sendProxyAck(request);
+	if (!isRequestToSocketIO(request)) {
+		easysoaDbb.setClientWellConfigured(request);
+	}
 	
     // Proxying
     if (!isRequestToProxy(request)) {
