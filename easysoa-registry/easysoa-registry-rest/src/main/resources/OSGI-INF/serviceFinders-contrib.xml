@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.rest.servicefinder.contrib" version="1.0">
+
+  <extension target="org.easysoa.rest.servicefinder.ServiceFinderComponent" point="serviceFinders">
+    <serviceFinder>org.easysoa.rest.servicefinder.finders.ScrapingFinder</serviceFinder>
+    <serviceFinder>org.easysoa.rest.servicefinder.finders.ContextServiceFinder</serviceFinder>
+  </extension>
+
+</component>

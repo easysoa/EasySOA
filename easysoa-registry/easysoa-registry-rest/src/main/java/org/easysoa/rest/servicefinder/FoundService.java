@@ -1,4 +1,4 @@
-package org.easysoa.rest.scraping;
+package org.easysoa.rest.servicefinder;
 
 public class FoundService {
 

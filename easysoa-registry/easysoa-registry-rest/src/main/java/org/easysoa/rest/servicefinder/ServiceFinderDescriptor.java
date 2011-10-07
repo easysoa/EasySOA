@@ -1,4 +1,4 @@
-package org.easysoa.rest.scraping;
+package org.easysoa.rest.servicefinder;
 
 import org.nuxeo.common.xmap.annotation.XContent;
 import org.nuxeo.common.xmap.annotation.XNode;
@@ -9,8 +9,8 @@ import org.nuxeo.common.xmap.annotation.XObject;
  * @author mkalam-alami
  *
  */
-@XObject("serviceScraper")
-public class ServiceScraperDescriptor {
+@XObject("serviceFinder")
+public class ServiceFinderDescriptor {
 
     @XContent
     protected String implementation;
