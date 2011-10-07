@@ -144,7 +144,7 @@ input[disabled] {
   color: #444;
 }
 
-input[type=button] {
+input[type=submit] {
   font-size: 13pt;
   padding: 5px;
   width: 150px;

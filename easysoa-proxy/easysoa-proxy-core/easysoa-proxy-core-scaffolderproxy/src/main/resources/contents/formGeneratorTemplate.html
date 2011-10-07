@@ -105,7 +105,8 @@ $formGenerator.setWsdl($wsdlUrl)
 						// For each form field : add it in the url
 		    			for(i=0; i<document.forms[form].elements.length; i++){
 							// on ne prend que les champs enabled ou en lecture / ecriture
-							if(document.forms[form].elements[i].disabled == false){
+							if(document.forms[form].elements[i].disabled == false &&
+									document.forms[form].elements[i].type != "submit"){
 								//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
 								if(params == ""){
 									params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
@@ -144,10 +145,10 @@ $formGenerator.setWsdl($wsdlUrl)
 							</tr>
 							#end
 						</table>
+					<br/>
+					<input OnClick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');return false;" value="Submit" type="submit">
+					<br/>
 					</form>
-					<br/>
-					<input OnClick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');" value="Submit" type="button">
-					<br/>
 					#end
 				</p>
 				#end
