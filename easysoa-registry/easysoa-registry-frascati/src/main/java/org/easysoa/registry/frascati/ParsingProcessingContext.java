@@ -1,4 +1,4 @@
-package org.easysoa.registry.frascati.nuxeo;
+package org.easysoa.registry.frascati;
 
 
 import java.net.URL;

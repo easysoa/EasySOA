@@ -1,4 +1,4 @@
-package org.easysoa.registry.frascati.nuxeo;
+package org.easysoa.registry.frascati;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -15,6 +15,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ow2.frascati.assembly.factory.api.ManagerException;
 
 public class FileUtils {
 

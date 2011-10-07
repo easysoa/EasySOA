@@ -24,7 +24,7 @@
  * Contributor(s):
  *
  */
-package org.easysoa.registry.frascati.nuxeo;
+package org.easysoa.registry.frascati;
 
 import java.io.File;
 import java.net.URL;

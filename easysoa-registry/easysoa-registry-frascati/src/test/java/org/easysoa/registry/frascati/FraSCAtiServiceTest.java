@@ -25,7 +25,7 @@
  *
  */
 
-package org.easysoa.registry.frascati.nuxeo;
+package org.easysoa.registry.frascati;
 
 import static org.junit.Assert.assertNotNull;
 

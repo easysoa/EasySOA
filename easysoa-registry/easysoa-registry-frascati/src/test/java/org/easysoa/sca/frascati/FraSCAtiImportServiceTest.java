@@ -10,7 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
-import org.easysoa.registry.frascati.nuxeo.FraSCAtiService;
+import org.easysoa.registry.frascati.FraSCAtiService;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
