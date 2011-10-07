@@ -23,6 +23,7 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.common.ProxyUtil;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -49,11 +50,14 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	String defaultWsdl;		
 	
 	@Override
-	public void setWsdl(String wsdlSource) throws Exception {
+	public String updateWsdl(String wsdlSource) throws Exception {
 		// Hack for Talend airport sample
 		if(wsdlSource == null || "".equals(wsdlSource)){
 			wsdlSource = defaultWsdl;
-		}		
+		}
+
+		wsdlSource = ProxyUtil.getUrlOrFile(wsdlSource).toString();
+		
 		logger.debug("Entering in setWsdl method : " + wsdlSource);
 		try{
 			// Factory and reader
@@ -87,6 +91,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 			throw ex;
 		}
 		logger.debug("WSDL loaded !");
+		return wsdlSource;
 	}
 
 	@Override
