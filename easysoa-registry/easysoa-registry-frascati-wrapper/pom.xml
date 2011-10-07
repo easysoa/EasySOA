@@ -35,8 +35,8 @@
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>easysoa-registry-frascati-wrapper</artifactId>
-	<name>EasySOA: OW2 FraSCAti in Nuxeo</name>
+	<artifactId>easysoa-registry-frascati</artifactId>
+	<name>EasySOA Registry : Nuxeo-embedded OW2 FraSCAti</name>
 	
 	<properties>
 	    <frascati.version>1.4</frascati.version>

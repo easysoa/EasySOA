@@ -55,7 +55,7 @@ import org.ow2.frascati.util.FrascatiException;
 public class FraSCAtiService extends DefaultComponent
 {
     public static final ComponentName NAME = new ComponentName(
-    		"org.easysoa.frascati.nuxeo.FraSCAtiServiceComponent");
+    		"org.easysoa.registry.frascati.FraSCAtiServiceComponent");
 
 	private static Log log = LogFactory.getLog(FraSCAtiService.class);
 

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.frascati.nuxeo">
+<component name="org.easysoa.registry.frascati">
 
-  <implementation class="org.easysoa.frascati.nuxeo.FraSCAtiService" />
+  <implementation class="org.easysoa.registry.frascati.FraSCAtiService" />
 
   <service>
-    <provide interface="org.easysoa.frascati.nuxeo.FraSCAtiService" />
+    <provide interface="org.easysoa.registry.frascati.FraSCAtiService" />
   </service>
 
 </component>
