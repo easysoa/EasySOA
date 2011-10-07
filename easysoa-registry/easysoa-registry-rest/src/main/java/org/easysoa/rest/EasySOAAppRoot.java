@@ -19,7 +19,7 @@ public class EasySOAAppRoot {
 
     @GET
     public Object doGet() {
-        return new TemplateView(this, "index.ftl");
+        return new TemplateView(this, "index.html");
     }
 
 }

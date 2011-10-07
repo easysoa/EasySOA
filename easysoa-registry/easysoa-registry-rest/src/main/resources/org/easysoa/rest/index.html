@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EasySOA REST Services Documentation</title>
+<style type="text/css">
+<!--
+body {
+	font-family: 'Arial', sans-serif;
+}
+
+h1 {
+	width: 100%;
+	border-bottom: 4px solid black;
+}
+
+h2 {
+	width: 100%;
+	border-bottom: 2px solid black;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td {
+	border: 1px solid grey;
+	padding: 5px;
+}
+
+ul {
+	margin: 0;
+	padding-left: 20px;
+}
+
+.code {
+	font-family: monospace;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+</html>
+<body>
+
+	<h1>EasySOA REST Services Documentation</h1>
+
+	<h2>Service notification</h2>
+	<p>
+		Allows to upload any service registry-related information to the Nuxeo
+		repository. Each call allows to register data related to either: an <u>application</u>,
+		a <u>service API</u>, or a <u>service</u>.<br /> <i>Document
+			hierarchy reminder</i>: Services are always contained in Service APIs.
+		Service APIs are either contained in Applications or other APIs.
+	</p>
+
+
+	<table>
+		<tr>
+			<td>Protocol</td>
+			<td>POST (notification) or GET (view documentation)</td>
+		</tr>
+		<tr>
+			<td>Use</td>
+			<td class="code">.../nuxeo/site/easysoa/notification/(appliimpl
+				<u>or</u> api <u>or</u> service)</td>
+		</tr>
+		<tr>
+			<td>Parameters</td>
+			<td>
+				<p style="width: 500px; text-align: justify">The request body must contain the parameters in the <b>application/x-www-form-urlencoded</b> format (which is similar to the GET requests parameters).
+					For a list of all available parameters for each document type, view each service's documentation by making a GET request to it.
+				</p>
+				<p>Example request body: <span class="code">url=http://www.myapp.com/api&parentUrl=http://www.myapp.com/&title=MyApi</span></p>
+			</td>
+		</tr>
+		<tr>
+			<td>Result formatting</td>
+			<td class="code"><b>{"result": ["ok"]}</b><br>(if no error
+				was found)</td>
+		</tr>
+		<tr>
+			<td>Comments</td>
+			<td><ul>
+					<li>JSONP Support: add a "callback" query parameter to make
+						the request return a JSONP call instead of a JSON object.</li>
+				</ul></td>
+		</tr>
+	</table>
+
+
+	<h2>WSDL Scraper</h2>
+	<p>Finds WSDLs from a given URL.</p>
+	<table>
+		<tr>
+			<td>Protocol</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>Use</td>
+			<td class="code">.../nuxeo/site/easysoa/wsdlscraper/{url}</td>
+		</tr>
+		<tr>
+			<td>Parameters</td>
+			<td>
+				<ul>
+					<li><b>{url}</b> The encoded URL of the page to consider.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Result formatting</td>
+			<td class="code">{ "applicationName": "(the application name)",
+				"foundLinks": { "(link name)" : "(link url)", "(link2 name)" :
+				"(link2 url)" ... } }</td>
+		</tr>
+		<tr>
+			<td>Comments</td>
+			<td><ul>
+					<li>JSONP Support: add a "callback" query parameter to make
+						the request return a JSONP call instead of a JSON object.</li>
+					<li>Other protocols than HTTP are not supported.</li>
+				</ul></td>
+		</tr>
+	</table>
+
+</body>
