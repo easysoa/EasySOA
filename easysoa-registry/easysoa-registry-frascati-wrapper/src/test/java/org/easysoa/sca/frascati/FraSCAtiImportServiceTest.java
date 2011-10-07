@@ -43,12 +43,12 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(EasySOACoreFeature.class)
 @Deploy({
-	"org.easysoa.frascati.nuxeo",
+	"org.easysoa.registry.frascati",
 	//"org.easysoa.registry.core" // deployed auto by dep
 	"org.nuxeo.runtime.datasource"
 })
 @LocalDeploy({
-	"org.easysoa.frascati.nuxeo:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
+	"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
 	"org.easysoa.registry.core:org/easysoa/tests/datasource-contrib.xml" // required because no jetty.naming in deps
 })
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
