@@ -65,7 +65,6 @@ function urlFixer(request, response, next) {
 
 /* Web server */
 
-var proxy = new httpProxy.HttpProxy();
 var tunnelProxy = new httpProxy.HttpProxy();
 
 var webServer = express.createServer();
@@ -120,7 +119,7 @@ webServer.get('/send', function(request, response, next) {
 // TODO LATER make it generic with a loop and a table in settings
 scaffolding_server_url = url.parse(settings.scaffoldingServer);
 webServer.get('/scaffoldingProxy', function(request, response, next) {
-    console.log("http://" + scaffolding_server_url.hostname + ":" + scaffolding_server_url.port + request.url);
+    console.log("[INFO] Tunnelling scaffolder: http://" + scaffolding_server_url.hostname + ":" + scaffolding_server_url.port + request.url);
     tunnelProxy.proxyRequest(request, response, {
         host: scaffolding_server_url.hostname,
         port: scaffolding_server_url.port
@@ -154,6 +153,8 @@ easysoaDbb.startDiscoveryByBrowsingHandler(webServer);
       
 /* Proxy server */
 /* (TODO: Merge with web server?) */
+
+var proxy = new httpProxy.HttpProxy();
 
 proxy.on('proxyError', function(error, request, result) {
     result.write("<h1>Error "+error.errno+"</h1>");
