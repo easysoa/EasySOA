@@ -11,6 +11,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
@@ -37,6 +38,12 @@ public class FormGeneratorTest extends AbstractTest {
 		startSoapServiceMockComposite();
 		// Start Scaffolding Proxy test
 		startScaffoldingProxyComposite();
+	}
+	
+	@AfterClass
+	public static void tearDown() throws FrascatiException, InterruptedException {
+		logger.info("Stopping FraSCAti : " + componentList);
+		stopFraSCAti();
 	}	
 
 	/**

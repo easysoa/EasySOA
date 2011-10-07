@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -40,8 +41,14 @@ public class XsltFormGeneratorTest extends AbstractTest {
 		//frascati.processComposite("src/test/resources/talendAirportServiceMock.composite", new ProcessingContextImpl());
 		// Start Scaffolding Proxy test
 		//startScaffoldingProxyComposite();
-		frascati.processComposite("src/main/resources/xsltScaffoldingProxy.composite", new ProcessingContextImpl());
+		componentList.add(frascati.processComposite("src/main/resources/xsltScaffoldingProxy.composite", new ProcessingContextImpl()));
 	}
+	
+	@AfterClass
+	public static void tearDown() throws FrascatiException, InterruptedException {
+		logger.info("Stopping FraSCAti : " + componentList);
+		stopFraSCAti();
+	}	
 
 	/**
 	 * Test the HTML form generation
