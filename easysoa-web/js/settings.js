@@ -5,7 +5,7 @@ var settings = {
     proxyPort: "8081",
     
     // Port of the EasySOA Light UI scaffolding server
-    scaffoldingServer: "http://localhost:8090",
+    scaffoldingServer: "http://127.0.0.1:8090",
     
     // Web root folder
     webRoot : "../www",
