@@ -97,29 +97,41 @@
 							}
 						};
 						
-						// Hard coded URL for demo purpose
+						// Preparing the request
 						var port = $formGenerator.getConstant("REST_SOAP_PROXY_PORT");
 						var url = "http://localhost:" + port + "/"; 
 						var wsdlUrl = "$wsdlUrl";
-						var params = "";
+						//var params = "";
+						var jsonParams = "";
 						// For each form field : add it in the url
 		    			for(i=0; i<document.forms[form].elements.length; i++){
 							// on ne prend que les champs enabled ou en lecture / ecriture
-							if(document.forms[form].elements[i].disabled == false &&
-									document.forms[form].elements[i].type != "submit"){
+							if(document.forms[form].elements[i].disabled == false && document.forms[form].elements[i].type != "submit"){
 								//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
-								if(params == ""){
-									params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
+								if(jsonParams == ""){
+									//params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
+									jsonParams = jsonParams + "{\"paramName\":\"" + document.forms[form].elements[i].name + "\",\"paramValue\":\"" + document.forms[form].elements[i].value +"\"}";
 								} else {
-									params = params + "&" + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;							
+									//params = params + "&" + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
+									jsonParams = jsonParams + ", {\"paramName\":\"" + document.forms[form].elements[i].name + "\",\"paramValue\":\"" + document.forms[form].elements[i].value +"\"}";
 								}
 							}
 						}
 						params = params + "&wsdlUrl=" + wsdlUrl; 
 						url = url + "callService/" + binding + "/" + operation + "/";
-						//alert("url = " + url + "?" + params);
-						xhr.open("GET", url + "?" + params, true);
-						xhr.send(null);
+						// Build JSON Data structure
+						var jsonParameters = "{\"wsRequest\": {";
+						jsonParameters = jsonParameters + " \"service\": \"$service.getName()\", \"binding\": \"" + binding + "\", \"operation\": \"" + operation + "\",";
+						jsonParameters = jsonParameters + " \"wsdlUrl\": \"" + wsdlUrl + "\"";
+						jsonParameters = jsonParameters + "},";
+						jsonParameters = jsonParameters + "\"formParameters\":[";
+						jsonParameters = jsonParameters + jsonParams;
+						jsonParameters = jsonParameters + "]}";
+						//alert(jsonParameters);
+						
+						// Send the request
+						xhr.open("POST", url, true);
+						xhr.send(jsonParameters);
 					}
 					</script>				
 					<form enctype="text/plain" action="" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">

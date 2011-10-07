@@ -33,7 +33,6 @@ import org.osoa.sca.annotations.Scope;
 import org.w3c.dom.Document;
 
 //TODO Composite is like singleton, to change for a multi-user use
-//TODO return the field type for the HTML form, for now all the fields are tagged as String (Hardcoded in the velocity template)
 @Scope("COMPOSITE")
 public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 
