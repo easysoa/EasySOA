@@ -35,6 +35,11 @@ exports.provideWsdl = function(linkName, link) {
     exports.broadcastemit('wsdl', wsdlList[linkName]);
 }
 
+exports.sendProxyAck = function(request) {
+	// XXX: Emits event to everyone
+	exports.broadcastemit('proxyack');
+}
+
 exports.startDiscoveryByBrowsingHandler = function(server) {
   
       io = socketio.listen(server);

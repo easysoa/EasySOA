@@ -47,6 +47,16 @@ li {
 	margin-top: -1px;
 }
 
+#nothingProxied {
+	display: none;
+	width: 100%;
+	padding: 5px;
+	background-color: #FDD;
+	font-size: 10pt;
+	color: red;
+	text-align: center;
+}
+
 /* Navigation bar 
    -------------- */
 

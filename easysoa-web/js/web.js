@@ -141,6 +141,7 @@ easysoaDbb.startDiscoveryByBrowsingHandler(webServer);
 
       
 /* Proxy server */
+/* (TODO: Merge with web server?) */
 
 proxy.on('proxyError', function(error, request, result) {
     result.write("<h1>Error "+error.errno+"</h1>");
@@ -150,31 +151,33 @@ proxy.on('proxyError', function(error, request, result) {
 
 var proxyServer = http.createServer(function(request, response) {
 
-        // Proxying
-        if (!isRequestToProxy(request)) {
+	// Allow the client to know that it's configured correctly
+	easysoaDbb.sendProxyAck(request);
+	
+    // Proxying
+    if (!isRequestToProxy(request)) {
 
-            request.url = fixUrl(request.url);
-            request_url = url.parse(request.url);
-            proxy.proxyRequest(request, response, {
-                host: request_url.hostname,
-                port: request_url.port
+        request.url = fixUrl(request.url);
+        request_url = url.parse(request.url);
+        proxy.proxyRequest(request, response, {
+            host: request_url.hostname,
+            port: request_url.port
+        });
+      
+        // Scraping
+        if (!isInIgnoreList(request_url)) {
+            console.log("[INFO] Scraping: " + request.url);
+            easysoaScraping.sendUrlToScrapers(request_url, function(scraperResults) {
+              for (var linkName in scraperResults) {
+                 easysoaDbb.provideWsdl(linkName, scraperResults[linkName]);
+              }
             });
-          
-            // Scraping
-            if (!isInIgnoreList(request_url)) {
-                console.log("[INFO] Scraping: " + request.url);
-                easysoaScraping.sendUrlToScrapers(request_url, function(scraperResults) {
-                  for (var linkName in scraperResults) {
-                     easysoaDbb.provideWsdl(linkName, scraperResults[linkName]);
-                  }
-                });
-            }
-        }
-        else { 
-            request.url = request.url.replace('http://localhost:'+settings.proxyPort, '');
         }
     }
-);
+    else { 
+        request.url = request.url.replace('http://localhost:'+settings.proxyPort, '');
+    }
+});
 
 easysoaNuxeo.checkNuxeo(null, null, function(result) {
     console.log("[INFO] Checking Nuxeo status");

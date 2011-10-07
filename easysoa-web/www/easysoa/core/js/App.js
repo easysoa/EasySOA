@@ -21,6 +21,17 @@ $(function() {
         
 	        socket = io.connect();
 	        
+	        // Show proxy warning after a delay
+            setTimeout(function() {
+            	nothingProxiedDiv = $('#nothingProxied');
+            	if (nothingProxiedDiv != null) {
+            		nothingProxiedDiv.show(300);
+            	}
+            }, 1000);
+	        
+            socket.on('proxyack', function(data) {
+                  $('#nothingProxied').remove();
+            });
             socket.on('error', function(data) {
                   this.error(data.substring(7, data.length-1));
             });
