@@ -101,18 +101,15 @@
 						var port = $formGenerator.getConstant("REST_SOAP_PROXY_PORT");
 						var url = "http://localhost:" + port + "/"; 
 						var wsdlUrl = "$wsdlUrl";
-						//var params = "";
 						var jsonParams = "";
 						// For each form field : add it in the url
 		    			for(i=0; i<document.forms[form].elements.length; i++){
-							// on ne prend que les champs enabled ou en lecture / ecriture
+							// we only takes fields marked as enabled
 							if(document.forms[form].elements[i].disabled == false && document.forms[form].elements[i].type != "submit"){
 								//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
 								if(jsonParams == ""){
-									//params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
 									jsonParams = jsonParams + "{\"paramName\":\"" + document.forms[form].elements[i].name + "\",\"paramValue\":\"" + document.forms[form].elements[i].value +"\"}";
 								} else {
-									//params = params + "&" + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
 									jsonParams = jsonParams + ", {\"paramName\":\"" + document.forms[form].elements[i].name + "\",\"paramValue\":\"" + document.forms[form].elements[i].value +"\"}";
 								}
 							}

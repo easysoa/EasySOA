@@ -32,8 +32,9 @@ import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Scope;
 import org.w3c.dom.Document;
 
-//TODO Composite is like singleton, to change for a multi-user use
-@Scope("COMPOSITE")
+//TODO Composite is like singleton, to change for a multi-user use, test of Conversation composite
+//@Scope("COMPOSITE")
+@Scope("CONVERSATION")
 public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 
 	/**
@@ -79,7 +80,6 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 				logger.debug(targetDir + "/" + convertFile);
 				String wsdl2read = targetDir + "/" + convertFile;
 				wsdlDescription = reader.readWSDL(wsdl2read);
-				System.out.println("Bug : " + wsdlDescription);
 			}
 			else {
 				wsdlDescription = reader.readWSDL(wsdlSource);
@@ -140,7 +140,6 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	@Override
 	public String getOperationName(WSOperation wsOperation) {
 		logger.debug("Entering in getOperationName");
-		/*return operation.getInterfaceOperation().getName().getLocalPart();*/
 		return wsOperation.getName();
 	}
 
@@ -212,7 +211,6 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 					if(obj instanceof XmlSchemaElement){
 						XmlSchemaElement field = (XmlSchemaElement) obj;
 						logger.debug("Field found = " + field.getName());
-						//System.out.println(field.getSchemaType().getName());
 						outputFields.add(new WSField(field.getName(), "String"));
 					}
 				}

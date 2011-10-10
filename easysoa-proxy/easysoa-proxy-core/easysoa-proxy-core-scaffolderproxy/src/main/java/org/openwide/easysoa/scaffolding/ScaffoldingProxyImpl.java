@@ -15,13 +15,12 @@ import org.osoa.sca.annotations.Reference;
 
 /**
  * Scaffolding proxy. Started with FraSCAti and Velocity
- * TODO : Build a JSON structure to pass parameters to the proxy
  * TODO : Add a dev form mode
  * 
  * Goal is to :
  * - generate dynamically html form from a WSDL file.
- * - generate dynamically input and output xml schemas from WSDL
- * - publish a rest/soap proxy to establish a data exchange between the HTML form and the remote WSDl service. This proxy must be generic.
+ * - generate dynamically input and output xml schemas from WSDL.
+ * - publish a rest/soap proxy to establish a data exchange between the HTML form and the remote WSDl service.
  * @author jguillemotte
  *
  */
@@ -41,9 +40,8 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 	private static Logger logger = Logger.getLogger(ScaffoldingProxyImpl.class.getClass());
 	
 	@Override
-	//public Response redirectRestToSoap(UriInfo ui, Request request, String binding, String operation) throws Exception {
 	public Response redirectRestToSoap(HttpContext httpContext, HttpServletRequest servletRequest){
-		System.out.println("Entering in redirectRestToSoap method !");
+		logger.debug("Entering in redirectRestToSoap method !");
 		// Getting the JSON Data structure
 		StringBuffer jsonParameters = new StringBuffer();
 		try {
@@ -54,9 +52,7 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 				jsonParameters.append(new String(buffer));
 			}
 			logger.debug("jsonParameters : " + jsonParameters.toString());
-			System.out.println("jsonParameters : " + jsonParameters.toString());
 			WSRequest request = WSRequest.parseJSON(jsonParameters.toString());
-			System.out.println("jsonRequest : " + request.toString());
 
 			// alternatives :
 			// 1. Generate xml request for SOAP service, need to have the WSDL File
@@ -72,7 +68,6 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 			response = wsdlServiceHelper.callService(url, request.getBinding(), request.getOperation(), request.getParamList());
 			// Call a method to transform xml to json
 			response = xmlToJson(response).toString();
-			System.out.println(response);
 			logger.debug("final response : " + response);
 			return Response.ok(response, MediaType.TEXT_HTML).header("Access-Control-Allow-Origin", "*").build();			
 			
