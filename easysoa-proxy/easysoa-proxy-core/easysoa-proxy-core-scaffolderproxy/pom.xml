@@ -129,12 +129,14 @@
     <dependency>
       <groupId>eviware</groupId>
       <artifactId>soapui</artifactId>
-      <version>4.5.0-SNAPSHOT</version>
+      <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>eviware</groupId>
       <artifactId>soapui-xmlbeans</artifactId>
-      <version>4.5.0-SNAPSHOT</version>
+      <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.xmlbeans</groupId>
