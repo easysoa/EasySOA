@@ -61,7 +61,11 @@
     <service name="wsdlServiceHelperService">
       <interface.java interface="org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper"/>
     </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.wsdlhelper.soapui.SoapUIServiceHelper"/>    
+    <implementation.java class="org.openwide.easysoa.scaffolding.wsdlhelper.soapui.SoapUIServiceHelper"/>
+	<!-- property name="httpProxyHost">localhost</property>
+	<property name="httpProxyPort">8082</property -->
+	<!-- property name="httpProxyUsername">username</property>
+	<property name="httpProxyPassword">password</property -->
   </component>  
   
 </composite>
