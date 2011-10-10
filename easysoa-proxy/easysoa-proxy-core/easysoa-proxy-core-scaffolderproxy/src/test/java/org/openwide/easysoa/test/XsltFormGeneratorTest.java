@@ -1,9 +1,9 @@
 package org.openwide.easysoa.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
+
 import java.io.IOException;
-import javax.xml.soap.SOAPException;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -12,6 +12,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -19,8 +20,15 @@ import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
-import org.easysoa.EasySOAConstants;
 
+/**
+ * Has to be ignored for FormGeneratorTest to work, because only one test
+ * using binding.http can work (because binding.http's Jetty's "unregister" is not
+ * implemented, see #37)
+ * 
+ * @author mdutoo
+ */
+@Ignore
 public class XsltFormGeneratorTest extends AbstractTest {
 
 	/**
