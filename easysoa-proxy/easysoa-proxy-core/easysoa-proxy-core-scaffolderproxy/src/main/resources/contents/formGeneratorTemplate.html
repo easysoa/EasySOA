@@ -36,10 +36,12 @@
 					&gt;
 					<a href="/easysoa/light/index.html">Light</a>
 					&gt;
-					<b></b>
+					#foreach( $service in $formGenerator.getServices() )
+					<b>$service.getName()</b> 
+			        #end
 				</div>
 				<b></b>
-				Service
+				Service UI Scaffolder
 			</div>
 		</div>
 		<div id="container">
@@ -158,7 +160,7 @@
 						</table>
 					<br/>
 					</form>
-                    <input type="submit" value="Submit" onclick="return submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');">
+                    <input type="submit" value="Submit" onclick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');">
 					#end
 				</p>
 				#end
