@@ -21,8 +21,7 @@ public class EasySOAInitComponent extends DefaultComponent {
 
     public void activate(ComponentContext context) throws Exception {
 
-        RepositoryManager repoService = Framework
-                .getService(RepositoryManager.class);
+        RepositoryManager repoService = Framework.getService(RepositoryManager.class);
 
         Repository defaultRepository = repoService.getDefaultRepository();
 

@@ -5,5 +5,6 @@ Bundle-SymbolicName: org.easysoa.registry.dashboard;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: EasySOA
 Require-Bundle: org.nuxeo.opensocial.gadgets.core
-Nuxeo-Component: OSGI-INF/gadget-contrib.xml
+Nuxeo-Component: OSGI-INF/pageproviders-contrib.xml,
+ OSGI-INF/gadget-contrib.xml
 Bundle-Category: stateless

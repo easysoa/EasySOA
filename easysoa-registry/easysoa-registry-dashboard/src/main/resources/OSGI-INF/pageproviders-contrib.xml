@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.dashboard.pageproviders.contrib">
+
+  <extension target="org.nuxeo.ecm.platform.query.api.PageProviderService" point="providers">
+
+    <coreQueryPageProvider name="domain_services">
+      <pattern>
+        SELECT * FROM Document WHERE
+        serv:callcount > 0 AND
+        ecm:primaryType = 'Service' AND
+        ecm:mixinType != 'HiddenInNavigation' AND
+        ecm:currentLifeCycleState != 'deleted'
+      </pattern>
+      <sort column="dc:title" ascending="true" />
+      <pageSize>10</pageSize>
+    </coreQueryPageProvider>
+
+  </extension>
+</component>
