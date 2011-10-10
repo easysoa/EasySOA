@@ -164,9 +164,10 @@ public class SoapUIServiceHelper implements WsdlServiceHelper {
 		// For each param key, replace the '?' in the xml request by the param value 
 		logger.debug("XML request before mapping : " + xmlRequest);
 		for(String paramKey : params.keySet()){
-			//TODO make it works with multiple values
+			//TODO make it works with multiple values and not only with the first param
 			xmlRequest = xmlRequest.replace(paramKey + ">?", paramKey + ">" + params.get(paramKey).get(0));
 		}
+		logger.debug("XML request after mapping : " + xmlRequest);
 		return xmlRequest;
 	}
 	
