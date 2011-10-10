@@ -34,9 +34,10 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
  * @author jguillemotte
  *
  */
-// TODO Composite is like singleton, to change for a multi-user use
+// TODO Composite is like singleton, to change for a multi-user use, try with Conversation scope.
 // TODO Check compatibility with WSDL 2.0
-@Scope("COMPOSITE")
+//@Scope("COMPOSITE")
+@Scope("CONVERSATION")
 public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 
 	/**
