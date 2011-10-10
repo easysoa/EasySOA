@@ -7,6 +7,8 @@ import javax.xml.soap.SOAPException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
@@ -72,7 +74,10 @@ public class XsltFormGeneratorTest extends AbstractTest {
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// Send a request to test the rest/soap proxy
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
-		String resp = httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.REST_SOAP_PROXY_PORT +"/callService/SoapServiceMockSoapBinding/getPrice/?arg0=patatoes&arg1=25&wsdlUrl=http://localhost:8086/soapServiceMock"), responseHandler);
+		String jsonRequestContent = "{\"wsRequest\": { \"service\": \"SoapServiceMock\", \"binding\": \"SoapServiceMockSoapBinding\", \"operation\": \"getPrice\", \"wsdlUrl\": \"http://localhost:8086/soapServiceMock?wsdl\"},\"formParameters\":[{\"paramName\":\"arg0\",\"paramValue\":\"patatoes\"}, {\"paramName\":\"arg1\",\"paramValue\":\"25\"}]}";
+		HttpPost request = new HttpPost("http://localhost:" + EasySOAConstants.REST_SOAP_PROXY_PORT +"/callService/SoapServiceMockSoapBinding/getPrice/");
+		request.setEntity(new StringEntity(jsonRequestContent));		
+		String resp = httpProxyClient.execute(request, responseHandler);
 		logger.debug("response = " + resp);		
 		// Compare the result with the expected one
 		assertEquals("{\"Body\":{\"getPriceResponse\":{\"return\":\"250.0\"}}}", resp);
@@ -101,8 +106,11 @@ public class XsltFormGeneratorTest extends AbstractTest {
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// Send a request to test the rest/soap proxy
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
-		//String resp = httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.REST_SOAP_PROXY_PORT +"/callService/AirportServiceMockSoapBinding/getPrice/?arg0=patatoes&arg1=25&wsdlUrl=http://localhost:8200/esb/AirportService"), responseHandler);
-		String resp = httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.REST_SOAP_PROXY_PORT +"/callService/TalendTutoServiceMockFcInItfServiceSoapBinding/getAirportInformationByISOCountryCode/?CountryAbbrviation=FR&wsdlUrl=http://localhost:8200/esb/AirportService"), responseHandler); // TODO #23 FraSCAti can't mock a specific WSDL (because no JAXWS annotations support)
+		//String resp = httpProxyClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.REST_SOAP_PROXY_PORT +"/callService/TalendTutoServiceMockFcInItfServiceSoapBinding/getAirportInformationByISOCountryCode/?CountryAbbrviation=FR&wsdlUrl=http://localhost:8200/esb/AirportService"), responseHandler); // TODO #23 FraSCAti can't mock a specific WSDL (because no JAXWS annotations support)
+		String jsonRequestContent = "{\"wsRequest\": { \"service\": \"TalendTutoServiceMockFcInItfService\", \"binding\": \"TalendTutoServiceMockFcInItfServiceSoapBinding\", \"operation\": \"getAirportInformationByISOCountryCode\", \"wsdlUrl\": \"http://localhost:8200/esb/AirportService?wsdl\"},\"formParameters\":[{\"paramName\":\"CountryAbbrviation\",\"paramValue\":\"FR\"}]}";
+		HttpPost request = new HttpPost("http://localhost:" + EasySOAConstants.REST_SOAP_PROXY_PORT +"/callService/SoapServiceMockSoapBinding/getPrice/");
+		request.setEntity(new StringEntity(jsonRequestContent));		
+		String resp = httpProxyClient.execute(request, responseHandler);		
 		logger.debug("response = " + resp);		
 		// Compare the result with the expected one
 		assertEquals("{\"Body\":{\"getAirportInformationByISOCountryCodeResponse\":{\"getAirportInformationByISOCountryCodeResult\":\"No informations about his country !\"}}}", resp);

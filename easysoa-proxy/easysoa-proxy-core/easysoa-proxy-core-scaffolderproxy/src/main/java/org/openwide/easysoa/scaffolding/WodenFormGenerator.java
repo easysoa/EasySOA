@@ -23,6 +23,7 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.common.ProxyUtil;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -32,7 +33,6 @@ import org.osoa.sca.annotations.Scope;
 import org.w3c.dom.Document;
 
 //TODO Composite is like singleton, to change for a multi-user use
-//TODO return the field type for the HTML form, for now all the fields are tagged as String (Hardcoded in the velocity template)
 @Scope("COMPOSITE")
 public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 
@@ -49,11 +49,14 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	String defaultWsdl;		
 	
 	@Override
-	public void setWsdl(String wsdlSource) throws Exception {
+	public String updateWsdl(String wsdlSource) throws Exception {
 		// Hack for Talend airport sample
 		if(wsdlSource == null || "".equals(wsdlSource)){
 			wsdlSource = defaultWsdl;
-		}		
+		}
+
+		wsdlSource = ProxyUtil.getUrlOrFile(wsdlSource).toString();
+		
 		logger.debug("Entering in setWsdl method : " + wsdlSource);
 		try{
 			// Factory and reader
@@ -87,6 +90,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 			throw ex;
 		}
 		logger.debug("WSDL loaded !");
+		return wsdlSource;
 	}
 
 	@Override

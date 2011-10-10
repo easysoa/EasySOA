@@ -21,7 +21,7 @@ public interface TemplateFormGeneratorInterface {
 	 * Set the WSDl to parse : First thing to do before to call the other methods
 	 * @param wsdlXmlSource
 	 */
-	public void setWsdl(String wsdlXmlSource) throws Exception;
+	public String updateWsdl(String wsdlXmlSource) throws Exception;
 	
 	/**
 	 * Returns the service list
