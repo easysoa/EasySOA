@@ -1,6 +1,5 @@
 /* 
- * Proxy which
- * WORK IN PROGRESS
+ * EasySOA Web server + Discovery by browsing proxy
  *
  * Author: Marwane Kalam-Alami
  */
