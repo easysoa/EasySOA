@@ -26,7 +26,8 @@ isLoginValid = function(username, password, callback) {
 
 isAnonymouslyAvailable = function(url) {
     return url.pathname.indexOf('easysoa/core') == -1 
-        && url.pathname.indexOf('easysoa/light') == -1
+        && (url.pathname.indexOf('easysoa/light') == -1
+        	|| url.pathname.indexOf('wsdl') != -1)
         && url.pathname.indexOf('scaffoldingProxy') == -1;
 }
 
