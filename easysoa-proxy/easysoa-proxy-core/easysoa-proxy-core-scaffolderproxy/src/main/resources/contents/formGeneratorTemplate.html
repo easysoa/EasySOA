@@ -132,9 +132,11 @@
 						// Send the request
 						xhr.open("POST", url, true);
 						xhr.send(jsonParameters);
+						
+						return false;
 					}
 					</script>				
-					<form enctype="text/plain" action="" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">
+					<form enctype="text/plain" action="#" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">
 						<h4>Input fields</h4>
 						<table>
 							<tr>
@@ -158,9 +160,8 @@
 							#end
 						</table>
 					<br/>
-					<input OnClick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');return false;" value="Submit" type="submit">
-					<br/>
 					</form>
+                    <input type="submit" value="Submit" onclick="return submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');">
 					#end
 				</p>
 				#end
