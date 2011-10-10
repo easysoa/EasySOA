@@ -1,42 +1,73 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Module>
+
   <ModulePrefs title="Services stats" description="Service usage stats"
-	  	author="EasySOA Consortium" category="tools"
-	  	height="95" scrolling="true" scaling="true">
+    category="tools" author="EasySOA Consortium" 
+    thumbnail="${clientSideBaseUrl}site/gadgets/servicestats/stats_icon.png">
     <Require feature="nuxeo" />
-    <Require feature="opensocial-0.8" />
-    <Require feature="dynamic-height" />
-    <Require feature="settitle" />
     <Require feature="setprefs"/>
-    <Require feature="jquery" />
+    <#include "dynamic-translations.ftl"/>
+    <Require feature="dynamic-height" />
     <#include "default-oauth-prefs.ftl"/>
   </ModulePrefs>
-
+  
+  <#include "context-prefs.ftl"/>
+  
   <Content type="html">
   <![CDATA[
   
   	<html>
   	<head>
-	    <link rel="stylesheet" type="text/css" href="${specDirectoryUrl}gadget-common.css"/>
-	    <link rel="stylesheet" type="text/css" href="${specDirectoryUrl}documentlists.css"/>
-	    ${jsContext} <!-- insert JS Context -->
-	    <script src="${specDirectoryUrl}default-automation-request.js"></script>
-	    <script src="${specDirectoryUrl}default-documentlist-display.js"></script>
-	    <script src="${specDirectoryUrl}context-management.js"></script>
-	    <script type="text/javascript" language="javascript" src="servicestats.js"></script>
-	    <script type="text/javascript">
-  			  var prefs = new gadgets.Prefs();
- 			  var requestScope = getTargetContextPath();
- 
-		      jQuery(document).ready(function(){
-		      	showServiceStats();
-		      });
-	    </script>
+        
+        <link rel="stylesheet" type="text/css" href="${specDirectoryUrl}gadget-common.css"/>
+        <link rel="stylesheet" type="text/css" href="${specDirectoryUrl}documentlists.css"/>
+      
+        <!-- insert JS Context -->
+        ${jsContext}
+      
+        <script src="${specDirectoryUrl}default-automation-request.js"></script>
+        <script src="${specDirectoryUrl}default-documentlist-display.js"></script>
+        <script src="${specDirectoryUrl}context-management.js"></script>
+        
+        <script type="text/javascript">
+        
+            var prefs = new gadgets.Prefs();
+         	var requestScope = getTargetContextPath();
+          
+  	        var NXRequestParams = {
+                      operationId: 'Document.PageProvider',
+                      operationParams: {
+                        providerName: 'domain_services',
+                        pageSize: 10
+                      },
+                      operationContext: {},
+                      operationDocumentProperties: "common,dublincore,servicedef",
+                      entityType: 'documents',
+                      usePagination: true,
+                      displayMethod: displayDocumentList,
+                      displayColumns: [
+                        {type: 'builtin', field: 'icon'},
+                        {type: 'builtin', field: 'titleWithLink', label: '__MSG_label.dublincore.title__'},
+                        {type: 'date', field: 'dc:modified', label: '__MSG_label.dublincore.modified__'},
+                        {type: 'text', field: 'serv:callcount', label: 'Call count'}
+                      ],
+                      noEntryLabel: '__MSG_label.gadget.no.document__'
+                    };
+            
+            gadgets.util.registerOnLoadHandler(function() {
+              initContextPathSettingsButton();
+              doAutomationRequest(NXRequestParams);
+            });
+            
+        </script>
 	</head>
 	<body>
+        <div class="tools">
+          <#include "context-chooser-ui.ftl"/>
+        </div>
 	    <div id="content">
-	     <#include "default-documentlist-layout.ftl"/>
-	     <#include "default-request-controls.ftl"/>
+	      <#include "default-documentlist-layout.ftl"/>
+	      <#include "default-request-controls.ftl"/>
 	    </div>
     </body>
     </html>

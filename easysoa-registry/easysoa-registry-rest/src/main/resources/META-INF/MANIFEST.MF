@@ -10,5 +10,4 @@ Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
 Nuxeo-Require: org.easysoa.registry.core
 Nuxeo-Component: OSGI-INF/ServiceScraperComponent.xml,
  OSGI-INF/rights-contrib.xml,
- OSGI-INF/scraping-contrib.xml,
- OSGI-INF/operations-contrib.xml
+ OSGI-INF/scraping-contrib.xml
