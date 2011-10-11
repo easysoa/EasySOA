@@ -1,12 +1,13 @@
 package org.openwide.easysoa.scaffolding;
 
-import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import net.sf.json.JSON;
 import net.sf.json.JSONException;
 import net.sf.json.xml.XMLSerializer;
+
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 import org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper;
@@ -42,16 +43,10 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 	@Override
 	public Response redirectRestToSoap(HttpContext httpContext, HttpServletRequest servletRequest){
 		logger.debug("Entering in redirectRestToSoap method !");
-		// Getting the JSON Data structure
-		StringBuffer jsonParameters = new StringBuffer();
+		
 		try {
-			byte[] buffer = new byte[512];
-			InputStream iStream = servletRequest.getInputStream();
-			while(iStream.available() > 0 ){
-				iStream.read(buffer);
-				jsonParameters.append(new String(buffer));
-			}
-			logger.debug("jsonParameters : " + jsonParameters.toString());
+	        // Getting the JSON Data structure
+		    String jsonParameters = servletRequest.getParameter("request");
 			WSRequest request = WSRequest.parseJSON(jsonParameters.toString());
 
 			// alternatives :
@@ -68,6 +63,13 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 			response = wsdlServiceHelper.callService(url, request.getBinding(), request.getOperation(), request.getParamList());
 			// Call a method to transform xml to json
 			response = xmlToJson(response).toString();
+			
+			// JSONP compatibility
+			String callback = servletRequest.getParameter("callback");
+			if (callback != null) {
+			    response = callback + "(" + response + ");";
+			}
+			
 			logger.debug("final response : " + response);
 			return Response.ok(response, MediaType.TEXT_HTML).header("Access-Control-Allow-Origin", "*").build();			
 			

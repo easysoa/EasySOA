@@ -132,18 +132,18 @@
 
       <div class="tabbertab" title="For the Business user">
           
-          <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (disable the proxy for other protocols) and remove any proxy exceptions. In case something goes wrong during the demo, you can check the <a href="http://github.com/easysoa/easysoa-model-demo/wiki/Demo-troubleshooting">troubleshooting page</a>.</p>
+          <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (disable the proxy for other protocols) and remove any proxy exceptions. In case something goes wrong during the demo, you can check the <a href="https://github.com/easysoa/EasySOA/wiki/Demo-v0.3-doc#wiki-troubleshooting">troubleshooting page</a>.</p>
            
           <h2><div>Step 1</div> Discover services in your intranet</h2>
           
           <div class="loginInfoBox"><img src="img/users/bu.png" style="vertical-align: middle" />
           In order to login as a <b>Business User</b>, type <b>Sophie</b> as username/password.</div>
           
-          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/index.html">Service Discovery</a>. From there, as you visit pages, you may see a service appearing in the left menu, meaning that EasySOA has just found it. You're then two clicks away to register this service: just select "PureAirFlowers Orders", then click "Save Service", and you're done!</p>
+          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/index.html">Service Discovery</a>. From there, as you visit pages, you may see a service appearing in the left menu, meaning that EasySOA has just found it. You're then two clicks away to register this service: just select "PureAirFlowers Orders", then click "Save Service", and you're done!</p>
 
           <h2><div>Step 2</div> Explore all services</h2>
 
-          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/The-service-registry">More on the service registry</a>Now, let's have a look to our registered service, that you will find in the <a href="http://localhost:8080/nuxeo">Service Registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will find here the service you've just registered. If you click on it, all metadata are now here, business and technical. You may override most of these metadata, and fill new ones if you want to document your service.</p>
+          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/The-service-registry">More on the service registry</a>Now, let's have a look to our registered service, that you will find in the <a href="http://localhost:8080/nuxeo">Service Registry</a>. Once you're logged in, navigate to <i>Workspaces > Services</i>. You will find here the service you've just registered. If you click on it, all metadata are now here, business and technical. You may override most of these metadata, and fill new ones if you want to document your service.</p>
           
           <p>There are various ways to browse services: other than the default navigation tree, there is of course a search form, but also what is called "virtual navigations". These can be accessed from the 3 last tabs on the left menu: you can use them to browse through services in various fashions, each one being more appropriate for a specific user profile (business user, developer, IT admin). In the long term, we plan on making the interface fully adapted to each type of user, hiding for exemple the technical metadata from business users.</p>
 
@@ -167,7 +167,7 @@
           <div class="loginInfoBox"><img src="img/users/architect.png" style="vertical-align: middle" />
           In order to login as a <b>Software architect</b>, type <b>Ted</b> as username/password.</div>
           
-          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" is able to analyze the definition of the SOA components. From the service registry, create a new application by going to the "<i>Service registry</i>" document and choosing "<i>New Application Implementation</i>" ; create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), then select the newly created application for the import, and go!</p>
+          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" is able to analyze the definition of the SOA components. From the service registry, create a new application by going to the "<i>Service registry</i>" document and choosing "<i>New Application Implementation</i>" ; create it with "<i>Smart Travel</i>" as the title and "<i>http://localhost</i>" for the URL. Then, import the SCA file through the "SCA data import" page, available from the top menu. Choose the file located in "<i>exemples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), then select the newly created application for the import, and go!</p>
           
           <h2><div>Step 2</div> Explore the services</h2>
           
@@ -180,7 +180,7 @@
           <div class="loginInfoBox"><img src="img/users/itstaff.png" style="vertical-align: middle" />
           In order to login as a member of the <b>IT Staff</b>, type <b>Arnold</b> as username/password.</div>
           
-          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, HTTP monitoring can be used both to discover new services, and simply to monitor the information system. You will eventually have the possibility to set up monitoring probes anywhere. For now, EasySOA embeds a simple HTTP monitoring proxy. You can test this feature by using EasySOA Light, since monitoring is enabled on it by default. From the Service Registry, find the "trip" service (somewhere in the "Smart Travel" app), and click the "Call It!" button: all requests you will send from there will be intercepted by the embedded proxy, that will then send information about this service to the Service Registry. (Note: make sure you type a number in the third argument)</p>
+          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Discovery-by-monitoring">More on discovery by monitoring</a>In EasySOA, HTTP monitoring can be used both to discover new services, and simply to monitor the information system. You will eventually have the possibility to set up monitoring probes anywhere. For now, EasySOA embeds a simple HTTP monitoring proxy. You can test this feature by using EasySOA Light, since monitoring is enabled on it by default. From the Service Registry, find the "trip" service (somewhere in the "Smart Travel" app), and click the "Call It!" button: all requests you will send from there will be intercepted by the embedded proxy, that will then send information about this service to the Service Registry. (Note: make sure you type a number in the third argument)</p>
           
           <h2><div>Step 4</div> Explore the service Pt. 2: data correlation</h2>
           
@@ -188,7 +188,7 @@
           
           <h2><div>Step 5</div> The dashboard</h2>
           
-          <p><a class="more" href="http://github.com/easysoa/easysoa-model-demo/wiki/Services-dashboard">More on the dashboard</a>Since we are storing in EasySOA how many times each service has been called, why not have a way to provide all these information on a synthetic page? The dashboard, available from the top menu, allows you to organize various widgets on the same page. One of those widgets is called "EasySOA Stats". Add it to see a list of services showing how many called has been made on each one.</p>
+          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Services-dashboard">More on the dashboard</a>Since we are storing in EasySOA how many times each service has been called, why not have a way to provide all these information on a synthetic page? The dashboard, available from the top menu, allows you to organize various widgets on the same page. One of those widgets is called "EasySOA Stats". Add it to see a list of services showing how many called has been made on each one.</p>
           
           <h2>Conclusion</h2>
 
