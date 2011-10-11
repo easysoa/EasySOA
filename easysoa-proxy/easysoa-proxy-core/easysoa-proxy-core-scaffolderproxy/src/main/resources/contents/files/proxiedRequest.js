@@ -43,6 +43,12 @@ function submitForm(form, url, wsdlUrl, serviceName, binding, operation, respons
     jsonParameters = jsonParameters + jsonParams;
     jsonParameters = jsonParameters + "]}";
     
+    // Temporary message
+    for(j=0; j<outputFields.length; j++){
+         outputFields[j].value = "Sending request...";
+    }
+    
+    // Request
     jQuery.getJSON(url+'?callback=?',
         jsonParameters,
         function(responseData) {
