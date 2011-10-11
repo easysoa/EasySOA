@@ -7,8 +7,14 @@
     <artifactId>easysoa-samples-smarttravel</artifactId>
     <name>EasySOA Sample Smart Travel Project</name>
     <version>0.3-SNAPSHOT</version>
-
     <packaging>pom</packaging>
+    
+	<licenses>
+		<license>
+			<name>The GNU Lesser General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+		</license>
+	</licenses>
 
     <!-- ============= -->
     <!-- Repositories. -->
