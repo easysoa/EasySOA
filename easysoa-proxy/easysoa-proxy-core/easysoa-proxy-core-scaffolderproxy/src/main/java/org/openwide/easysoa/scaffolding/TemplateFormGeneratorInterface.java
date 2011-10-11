@@ -2,7 +2,6 @@ package org.openwide.easysoa.scaffolding;
 
 import java.util.List;
 
-import org.easysoa.EasySOAConstants;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
