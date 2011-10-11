@@ -15,7 +15,7 @@ public class FileServerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static Logger logger = Logger.getLogger(FileServerServlet.class);   
+    private static Logger logger = Logger.getLogger(FileServerServlet.class.getClass());   
 
     /**
      * A configurable property 'name'.

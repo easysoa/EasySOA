@@ -45,7 +45,7 @@ public abstract class AbstractTest {
 	 * @throws FrascatiException
 	 */
 	protected static void startScaffoldingProxyComposite() throws FrascatiException{
-		componentList.add(frascati.processComposite("src/main/resources/scaffoldingProxy.composite", new ProcessingContextImpl()));
+		componentList.add(frascati.processComposite("src/test/resources/scaffoldingProxy.composite", new ProcessingContextImpl()));
 	}
 
 	/**
