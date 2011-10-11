@@ -5,7 +5,7 @@
     <xsd:schema elementFormDefault="qualified" targetNamespace="http://airportsoap.sopera.de">
       <!-- Need to add type attribute otherwise doesn't works with original WSDL -->
       <!-- And need to add name attribute for complex type ... -->
-      <xsd:element name="getAirportInformationByISOCountryCode">
+      <xsd:element name="getAirportInformationByISOCountryCode" type="tns:getAirportInformationByISOCountryCodeSoapIn">
         <xsd:complexType name="getAirportInformationByISOCountryCode">
           <xsd:sequence>
             <xsd:element minOccurs="0" maxOccurs="1" name="CountryAbbrviation" type="xsd:string" />
@@ -14,7 +14,7 @@
       </xsd:element>
       <!-- Need to add type attribute otherwise doesn't works with original WSDL -->
       <!-- And need to add name attribute for complex type ... -->      
-      <xsd:element name="getAirportInformationByISOCountryCodeResponse">
+      <xsd:element name="getAirportInformationByISOCountryCodeResponse" type="tns:getAirportInformationByISOCountryCodeSoapOut">
         <xsd:complexType name="getAirportInformationByISOCountryCodeResponse">
           <xsd:sequence>
             <xsd:element minOccurs="0" maxOccurs="1" name="getAirportInformationByISOCountryCodeResult" type="xsd:string" />
