@@ -1,12 +1,18 @@
 #! /bin/bash
 
-FILE_PATTERN=$1
-HEADER_FILE=$2
+ROOT_PATH=$1
+FILE_PATTERN=$2
+HEADER_TEMPLATE=$3
+PROJECT_NAME=$4
+FIND_OPTIONS=$5
 
-find . -name \"$FILE_PATTERN\" -print > files
-echo find a -name \"$FILE_PATTERN\" -print
+HEADER_FILE=header_file.txt
+sed -e s/PROJECT_NAME/"$PROJECT_NAME"/ $HEADER_TEMPLATE > $HEADER_FILE
 
-echo About to apply header $HEADER_FILE to `wc -l files` like \"$FILE_PATTERN\" :
+find $ROOT_PATH -name "$FILE_PATTERN" $FIND_OPTIONS -print > files
+
+echo About to apply header to `wc -l files` like \"$FILE_PATTERN\" below $ROOT_PATH :
+cat $HEADER_FILE
 cat files
 echo If not OK, hit CTRL-C
 
@@ -23,5 +29,5 @@ for i in `cat files`; do
    rm -f "$i.tmp"
 done
 
-rm -f files
+rm -f files $HEADER_FILE
 
