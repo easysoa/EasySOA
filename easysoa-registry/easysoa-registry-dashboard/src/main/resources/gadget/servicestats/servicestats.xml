@@ -48,7 +48,7 @@
                       displayColumns: [
                         {type: 'builtin', field: 'icon'},
                         {type: 'builtin', field: 'titleWithLink', label: '__MSG_label.dublincore.title__'},
-                        {type: 'date', field: 'dc:modified', label: '__MSG_label.dublincore.modified__'},
+                        {type: 'date', field: 'serv:url', label: 'URL'},
                         {type: 'text', field: 'serv:callcount', label: 'Call count'}
                       ],
                       noEntryLabel: '__MSG_label.gadget.no.document__'
