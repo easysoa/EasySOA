@@ -48,8 +48,8 @@ public class NuxeoRegistrationService {
         // PropertyManager.getProperty("nuxeo.auth.login", "Administrator")
         // PropertyManager.getProperty("nuxeo.auth.password", "Administrator")
     }
-    
-	/**
+
+    /**
 	 * Register a WSDL SOAP service in Nuxeo
 	 * @param service The service to register
 	 * @return The response send back by Nuxeo
@@ -57,28 +57,43 @@ public class NuxeoRegistrationService {
 	 */
     // TODO Test
 	public String registerWSDLService(Service service) throws Exception{
-		/*
-		{
-		  "description": "Service-level notification.",
-		  "parameters": {
-		    "contentTypeOut": "HTTP content type of the result body",
-		    "relatedUsers": "Users that have been using the service",
-		    "contentTypeIn": "HTTP content type of the request body",
-		    "title": "The name of the document.",
-		    "discoveryTypeImport": "Notes about import-specific notifications. Informs the document of the notification source.",
-		    "discoveryTypeBrowsing": "Notes about browsing-specific notifications. Informs the document of the notification source.",
-		    "httpMethod": "POST, GET...",
-		    "description": "A short description.",
-		    "discoveryTypeMonitoring": "INotes about monitoring-specific notifications. Informs the document of the notification source.",
-		    "parentUrl": "(mandatory) Service API URL (WSDL address, parent path...)",
-		    "callcount": "Times the service has been called since last notification",
-		    "url": "(mandatory) Service URL."
-		  }
-		}
-		*/
-	    RestNotificationRequest request = factory.createNotification(RestNotificationService.SERVICE);
-	    
-	    request.setProperty(org.easysoa.doctypes.Service.PROP_URL, service.getUrl()); // ex. http://localhost:9080/CreateSummary
+        logger.debug("[registerWSDLService()] --- Message url : " + service.getUrl().toString());
+	    return registerService(service);
+	}
+	
+	/**
+	 * Register a REST service in Nuxeo
+	 * @param service The service to register
+	 * @return The response send back by Nuxeo
+	 */
+	public String registerRestService(Service service){
+        logger.debug("[registerRESTService()] --- Message url : " + service.getUrl().toString());
+        return registerService(service);
+	}
+	
+	private String registerService(Service service) {
+        /*
+        {
+          "description": "Service-level notification.",
+          "parameters": {
+            "contentTypeOut": "HTTP content type of the result body",
+            "relatedUsers": "Users that have been using the service",
+            "contentTypeIn": "HTTP content type of the request body",
+            "title": "The name of the document.",
+            "discoveryTypeImport": "Notes about import-specific notifications. Informs the document of the notification source.",
+            "discoveryTypeBrowsing": "Notes about browsing-specific notifications. Informs the document of the notification source.",
+            "httpMethod": "POST, GET...",
+            "description": "A short description.",
+            "discoveryTypeMonitoring": "INotes about monitoring-specific notifications. Informs the document of the notification source.",
+            "parentUrl": "(mandatory) Service API URL (WSDL address, parent path...)",
+            "callcount": "Times the service has been called since last notification",
+            "url": "(mandatory) Service URL."
+          }
+        }
+        */
+        RestNotificationRequest request = factory.createNotification(RestNotificationService.SERVICE);
+        
+        request.setProperty(org.easysoa.doctypes.Service.PROP_URL, service.getUrl()); // ex. http://localhost:9080/CreateSummary
         request.setProperty(org.easysoa.doctypes.Service.PROP_PARENTURL, service.getUrl().substring(0, service.getUrl().lastIndexOf('/'))); // ex.    http://localhost:9080
         request.setProperty(org.easysoa.doctypes.Service.PROP_FILEURL, service.getFileUrl());
         
@@ -96,77 +111,21 @@ public class NuxeoRegistrationService {
         request.setProperty(org.easysoa.doctypes.Service.PROP_CONTENTTYPEOUT, service.getContentTypeOut());
         request.setProperty(org.easysoa.doctypes.Service.PROP_RELATEDUSERS, service.getRelatedUsers());
         request.setProperty(org.easysoa.doctypes.Service.PROP_HTTPMETHOD, service.getHttpMethod());
-      
+    
         //TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications.
         // Informs the document of the notification source." Replace localhost with other details        
         request.setProperty(org.easysoa.doctypes.Service.PROP_DTMONITORING, "localhost");
         
-		logger.debug("[registerWSDLService()] --- Message url : " + service.getUrl().toString());
-		
-		JSONObject result = request.send();	
-		return (result == null) ? null : result.toString();
-	}
-	
-	/**
-	 * Register a REST service in Nuxeo
-	 * @param service The service to register
-	 * @return The response send back by Nuxeo
-	 */
-	public String registerRestService(Service service){
-		/*
-		{
-		  "description": "Service-level notification.",
-		  "parameters": {
-		    "contentTypeOut": "HTTP content type of the result body",
-		    "relatedUsers": "Users that have been using the service",
-		    "contentTypeIn": "HTTP content type of the request body",
-		    "title": "The name of the document.",
-		    "discoveryTypeImport": "Notes about import-specific notifications. Informs the document of the notification source.",
-		    "discoveryTypeBrowsing": "Notes about browsing-specific notifications. Informs the document of the notification source.",
-		    "httpMethod": "POST, GET...",
-		    "description": "A short description.",
-		    "discoveryTypeMonitoring": "INotes about monitoring-specific notifications. Informs the document of the notification source.",
-		    "parentUrl": "(mandatory) Service API URL (WSDL address, parent path...)",
-		    "callcount": "Times the service has been called since last notification",
-		    "url": "(mandatory) Service URL."
-		  }
-		}
-		*/
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
-		url.append("service");
-		StringBuffer body = new StringBuffer();
-		body.append("url=");
-		body.append(service.getUrl());
-		body.append("&parentUrl=");
-		body.append(service.getParentUrl());
-		body.append("&callcount=");
-		body.append(service.getCallCount());
-		body.append("&title=");
-		if (service.getTitle() != null) {
-		    body.append(service.getTitle().replaceFirst("/", "")); // Remove the leading slash
-		}
-		else {
-	        body.append(service.getUrl());
-		}
-		body.append("&contentTypeOut=");
-		body.append(service.getContentTypeOut());
-		body.append("&contentTypeIn=");
-		body.append(service.getContentTypeIn());
-		body.append("&relatedUsers=");
-		body.append(service.getRelatedUsers());
-		body.append("&description=");
-		body.append(service.getDescription());
-		body.append("&httpMethod=");
-		body.append(service.getHttpMethod());
-		//TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications. Informs the document of the notification source." Replace localhost with other details		
-		body.append("&discoveryTypeMonitoring=");
-		body.append("localhost");
-		logger.debug("[registerRESTService()] --- Message url : " + url.toString());
-		logger.debug("[registerRESTService()] --- Message body : " + body.toString());
-		return sendRequest(url.toString(), body.toString());
-	}
-	
-	/**
+        logger.debug("[registerWSDLService()] --- Message url : " + service.getUrl().toString());
+        
+        try {
+            return request.send().toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
 	 * Register a REST Application in Nuxeo
 	 * @param appli The application to register
 	 * @return The response send back by Nuxeo
@@ -192,30 +151,27 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		*/	
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
-		url.append("appliimpl");
-		StringBuffer body = new StringBuffer();
-		body.append("url=");
-		body.append(appli.getUrl());
-		body.append("&uiUrl=");
-		body.append(appli.getUiUrl());
-		body.append("&server=");
-		body.append(appli.getServer());
-		body.append("&title=");
-		body.append(appli.getTitle());
-		body.append("&technology=");
-		body.append(appli.getTechnology());
-		body.append("&standard=");
-		body.append(appli.getStandard());
-		body.append("&sourcesUrl=");
-		body.append(appli.getSourcesUrl());		
-		body.append("&description=");
-		body.append(appli.getDescription());
-		body.append("&discoveryTypeMonitoring=");
-		body.append("localhost");		
-		logger.debug("[registerRestAppli()] --- Message url : " + url.toString());
-		logger.debug("[registerRestAppli()] --- Message body : " + body.toString());
-		return sendRequest(url.toString(), body.toString());
+        RestNotificationRequest request = factory.createNotification(RestNotificationService.APPLIIMPL);
+        
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_URL, appli.getUrl());
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_UIURL, appli.getUiUrl());
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_SOURCESURL, appli.getSourcesUrl());
+        
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_TITLE, appli.getTitle());
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_DESCRIPTION, appli.getDescription());
+        
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_SERVER, appli.getServer());
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_TECHNOLOGY, appli.getTechnology());
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_STANDARD, appli.getStandard());
+        request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_DTMONITORING, "localhost");
+        
+		logger.debug("[registerRestAppli()] --- Message url : " + appli.getUrl().toString());
+		
+        try {
+            return request.send().toString();
+        } catch (Exception e) {
+            return null;
+        }
 	}
 
 	/**
@@ -240,26 +196,24 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		 */
-		StringBuffer url = new StringBuffer(PropertyManager.getProperty("nuxeo.notification.service"));
-		url.append("api");
-		StringBuffer body = new StringBuffer();
-		body.append("url=");
-		body.append(api.getUrl());
-		body.append("&parentUrl=");
-		body.append(api.getParentUrl());
-		body.append("&title=");
-		body.append(api.getTitle().replaceFirst("/", "")); // Remove the leading slash
-		body.append("&application=");
-		body.append(api.getApplication());
-		body.append("&description=");
-		body.append(api.getDescription());
-		//body.append("&sourceUrl=");
-		//body.append(api.getSourceUrl());
-		body.append("&discoveryTypeMonitoring=");
-		body.append("localhost");
-		logger.debug("[registerRestApi()] --- Message url : " + url.toString());
-		logger.debug("[registerRestApi()] --- Message body : " + body.toString());
-		return sendRequest(url.toString(), body.toString());
+        RestNotificationRequest request = factory.createNotification(RestNotificationService.APPLIIMPL);
+        
+        request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_URL, api.getUrl());
+        request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_PARENTURL, api.getParentUrl());
+        
+        request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_TITLE, api.getTitle().replaceFirst("/", ""));
+        request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_DESCRIPTION, api.getDescription());
+        
+        request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_APPLICATION, api.getApplication());
+        request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_DTMONITORING, "localhost");
+        
+		logger.debug("[registerRestApi()] --- Message url : " + api.getUrl().toString());
+
+        try {
+            return request.send().toString();
+        } catch (Exception e) {
+            return null;
+        }
 	}
 	
 	/**
@@ -386,23 +340,4 @@ public class NuxeoRegistrationService {
 		}
 	}	
 	
-	/**
-	 * Send a request to Nuxeo to register or to update an application / api / service
-	 * @param url Nuxeo url
-	 * @param body Message to send
-	 * @return The response send back by Nuxeo
-	 */
-	private String sendRequest(String url, String body){
-		Client client = Client.create();
-		client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
-		WebResource webResource = client.resource(url.toString());
-		GenericEntity<String> entity = new GenericEntity<String>(body.toString()) {};
-		ClientResponse response = webResource.entity(entity).type("application/x-www-form-urlencoded").post(ClientResponse.class);
-	   	int status = response.getStatus();
-	   	logger.debug("[sendRequest()] --- Registration request response status = " + status);
-		String textEntity = response.getEntity(String.class);
-		logger.debug("[sendRequest()] --- Registration request response = " + textEntity);	
-		return textEntity;		
-	}
-
 }
