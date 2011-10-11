@@ -21,7 +21,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.TransformationFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.XsltFormGenerator"/>
-	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
+	<property name="defaultWsdl">defaultWsdl/airport_soap.wsdl</property>
   </component>-->
   
   <!-- EasyWSDL Form generator component -->
@@ -30,7 +30,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.EasyWsdlFormGenerator"/>
-	<property name="defaultWsdl">src/main/resources/defaultWsdl/modified_airport_soap.wsdl</property>
+	<property name="defaultWsdl">defaultWsdl/modified_airport_soap.wsdl</property>
   </component>
 
   <!-- Apache Woden Form generator component  -->
@@ -41,7 +41,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.WodenFormGenerator"/>
-	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
+	<property name="defaultWsdl">defaultWsdl/airport_soap.wsdl</property>
   </component>-->
   
   <!-- Rest Soap Proxy  -->
@@ -69,16 +69,6 @@
 	<property name="httpProxyPort">8082</property -->
 	<!-- property name="httpProxyUsername">username</property>
 	<property name="httpProxyPassword">password</property -->
-  </component>  
-  
-  <!-- Basic file server (to provide the JavaScript files) -->
-  <component name="fileServerComponent">
-    <implementation.java class="org.openwide.easysoa.scaffolding.FileServerServlet"/>
-    <service name="fileServer">
-      <interface.java interface="javax.servlet.Servlet"/>
-      <tuscany:binding.http uri="http://localhost:8091/"/>
-    </service>
-    <property name="webfolder">src/main/resources/contents/files</property>
-  </component>
+  </component> 
   
 </composite>

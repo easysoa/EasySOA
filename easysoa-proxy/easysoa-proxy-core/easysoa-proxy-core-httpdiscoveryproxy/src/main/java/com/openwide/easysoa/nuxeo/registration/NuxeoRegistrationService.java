@@ -50,7 +50,6 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  * @author jguillemotte
  *
  */
-// TODO: Continue to refactor using easysoa-registry-api
 public class NuxeoRegistrationService {
 	
 	/**

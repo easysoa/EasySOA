@@ -224,8 +224,8 @@ public class ServiceListener implements EventListener {
                 // XXX: Hacked Airport Light URL
                 if (fileUrl.contains("irport")) {
                     doc.setProperty(SCHEMA, PROP_FILEURL, 
-                            "http://localhost:"+EasySOAConstants.HTML_FORM_GENERATOR_WEBSERVER_PORT
-                            +"/modified_airport_soap.wsdl");
+                            "http://localhost:"+EasySOAConstants.HTML_FORM_GENERATOR_PORT
+                            +"/scaffoldingProxy/files/modified_airport_soap.wsdl");
                 }
                 else {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));

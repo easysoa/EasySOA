@@ -71,14 +71,4 @@
 	<property name="httpProxyPassword">password</property -->
   </component>
   
-  <!-- Basic file server (to provide the JavaScript files) -->
-  <component name="fileServerComponent">
-    <implementation.java class="org.openwide.easysoa.scaffolding.FileServerServlet"/>
-    <service name="fileServer">
-      <interface.java interface="javax.servlet.Servlet"/>
-      <tuscany:binding.http uri="http://localhost:8091/"/>
-    </service>
-    <property name="webfolder">contents/files</property>
-  </component>
-  
 </composite>
