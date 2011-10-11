@@ -27,7 +27,7 @@ $(function() {
             	if (nothingProxiedDiv != null) {
             		nothingProxiedDiv.show(300);
             	}
-            }, 1000);
+            }, 2000);
 	        
             socket.on('proxyack', function(data) {
                   $('#nothingProxied').remove();
