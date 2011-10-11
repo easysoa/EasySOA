@@ -205,7 +205,7 @@ public class ServiceListener implements EventListener {
                 if (fileUrl.contains("irport")) {
                     doc.setProperty(SCHEMA, PROP_FILEURL, 
                             "http://localhost:"+EasySOAConstants.HTML_FORM_GENERATOR_PORT
-                            +"/files/modified_airport_soap.wsdl");
+                            +"/scaffoldingProxy/files/modified_airport_soap.wsdl");
                 }
                 else {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
