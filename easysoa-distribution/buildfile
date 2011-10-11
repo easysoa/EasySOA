@@ -239,6 +239,7 @@ task :packageall do # TODO Less messy code
   # Copy web services and proxies
   puts "Copying web services and proxies..."
   puts "  * Needed libraries..."
+  cp FileList[project(EASYSOA_REGISTRY).base_dir+"/target/**/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-intents/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
