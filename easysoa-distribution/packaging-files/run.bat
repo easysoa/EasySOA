@@ -56,4 +56,4 @@ cd ..
 rem sleep 2
 ping -n 3 127.0.0.1 > nul
 
-call explorer "http://127.0.0.1:8083/easysoa"
+call explorer "http://127.0.0.1:8083/easysoa/index.html"

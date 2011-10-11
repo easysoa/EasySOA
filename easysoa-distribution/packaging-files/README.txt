@@ -1,9 +1,7 @@
 # Prerequisites
 
 * Sun's 1.6 Java JDK
-* [Node.js][1]
-
-The `install-dependencies.sh` script for Debian can install them for you.
+* The `JAVA_HOME` variable set to your JDK folder
 
 NB: If you are using a virtual machine, make sure its RAM is 1GB+.
 
