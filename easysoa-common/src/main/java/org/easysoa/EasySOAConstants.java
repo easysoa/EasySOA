@@ -30,7 +30,6 @@ public class EasySOAConstants {
 	// Scaffolding proxy
 	public final static int REST_SOAP_PROXY_PORT = 7001;
 	public final static int HTML_FORM_GENERATOR_PORT = 8090;
-    public final static int HTML_FORM_GENERATOR_WEBSERVER_PORT = 8091;
 	
     // Pure Air Flowers demo
     public final static int PAF_SERVICES_PORT = 9010;
