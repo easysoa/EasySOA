@@ -46,20 +46,9 @@ $(function() {
                     App.error("Error while handling 'wsdl' message: "+error);
                   }
             });
+	        socket.submitFormView = this.submitFormView;
             socket.on('ready', function(data) {
-                  try {
-                    $('#messageSuccess').html('Ready.');
-                    $('#message').fadeOut(200, function() {
-                      $('#messageSuccess').fadeIn(500, function() {
-                          setTimeout(function() {
-                              $('#messageSuccess').fadeOut(500);
-                          }, 1000);
-                      });
-                    });
-                  }
-                  catch (error) {
-                    App.error("Error while handling 'ready' message: "+error);
-                  }
+            	this.submitFormView.info('Ready.');
             });
              
          }

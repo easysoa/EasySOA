@@ -84,8 +84,8 @@ li {
 	border-right: 1px solid grey;
 }
 
-#message {
-  position: absolute;
+#messageInfo {
+  	position: absolute;
 	width: 20%;
 	z-index: 1;
 	background-color: white;
@@ -95,7 +95,7 @@ li {
 }
 
 #messageSuccess {
-  position: absolute;
+  	position: absolute;
 	width: 20%;
 	z-index: 2;
 	background-color: white;
@@ -105,7 +105,7 @@ li {
 }
 
 #messageFailure {
-  position: absolute;
+  	position: absolute;
 	width: 20%;
 	z-index: 3;
 	background-color: white;
