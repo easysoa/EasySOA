@@ -3,22 +3,33 @@
 # Updates all Maven projects' versions
 # WARNING: Must be launched from the EasySOA/easysoa-distribution folder
 
-# Example: ./updateVersion.sh 0.3
+# - Example: ./updateVersion.sh 0.3
+# - Special command: ./updateVersion.sh clean 
+#   (removes all created .versionsBackup files)
 
-NEW_VERSION=$1
+if [ "$1" == "clean" ]; then
+	cd ..
+	find ./ -type f -name \*.versionsBackup | xargs rm
+	echo "ok"
+	cd "easysoa-distribution"
+else
 
-rm -rf easysoa/
-cd ..
-ROOT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+	NEW_VERSION=$1
 
-update_pom() {
-	pom=$1
-	cd ${pom%pom.xml}
-	mvn versions:set -DnewVersion=$NEW_VERSION
-	cd $ROOT_DIR
-}
+	rm -rf easysoa/
+	cd ..
+	ROOT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
-for pom in `find -name pom.xml`; do
-	update_pom $pom
-done
-cd "$ROOT_DIR/easysoa-distribution"
+	update_pom() {
+		pom=$1
+		cd ${pom%pom.xml}
+		mvn versions:set -DnewVersion=$NEW_VERSION
+		cd $ROOT_DIR
+	}
+
+	for pom in `find -name pom.xml`; do
+		update_pom $pom
+	done
+	cd "$ROOT_DIR/easysoa-distribution"
+
+fi
