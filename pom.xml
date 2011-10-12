@@ -23,8 +23,8 @@
     <!-- Properties    -->
     <!-- ============= -->
     <properties>
-		  <easysoa.nuxeo.version>5.4.2</easysoa.nuxeo.version>
-		  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<easysoa.nuxeo.version>5.4.2</easysoa.nuxeo.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     	<!-- FraSCAti must be in version 1.5-SNAPSHOT because Velocity feature is only available in this version at the moment -->
     	<frascati.version>1.5-SNAPSHOT</frascati.version>
     	<log4j.version>1.2.16</log4j.version>
