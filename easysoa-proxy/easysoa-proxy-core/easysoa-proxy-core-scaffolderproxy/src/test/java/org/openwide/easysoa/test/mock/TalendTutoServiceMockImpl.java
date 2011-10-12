@@ -12,9 +12,9 @@ public class TalendTutoServiceMockImpl implements TalendTutoServiceMock {
 	@Override
 	public String getAirportInformationByISOCountryCode(String countryAbbrviation) {
 		if("FR".equalsIgnoreCase(countryAbbrviation)){
-			return "No informations about his country !";
+			return "LFLL - Lyon Saint Exupery, LFPB - Paris Le Bourget, LFPO - Paris Orly, LFPG - Paris Charles de Gaulle, LFBD - Bordeaux Merignac";
 		} else if("DE".equalsIgnoreCase(countryAbbrviation)){
-			return "No informations about his country !";
+			return "EDMO - Munich Oberpfaffenhofen, EDDB - Berlin Schonefeld, EDDI - Berlin Tempelhof, EDDK - Cologne Koln Bonn";
 		} else {
 			return "Unkown country code ...";
 		}
