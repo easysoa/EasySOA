@@ -9,8 +9,6 @@
     <!-- EasySOA: Template based on layout_default_template.xhtml,
     which allows for an adapted view according to the user profile. -->
     
-    <c:set var="isEditMode" value="#{nxl:isBoundToEditMode(layout.mode)}" />
-
     <c:choose>
 
         <!--  Standard schema -->
@@ -23,7 +21,7 @@
             <c:set var="userGroup" value="#{userManager.getUserModel(messages['label.loggedAsUser']).getProperty('user', 'groups')}" />
             <div class="foldableLightBox">
                 <c:choose>
-                    <c:when test="${(layout.properties['groups'] == null) or (layout.properties['groups'].contains(userGroup[0]))}">
+                    <c:when test="${(layout.properties['groups'] == null) or (layout.properties['groups'].contains(userGroup[0])) or (nxl:isBoundToEditMode(layout.mode))}">
                         <div class="foldableLightBoxHeader unfolded" style="margin-top: 8px">
                             <a href="#nologo" onclick="return toggleBox(this)" style="font-size: 10pt">
                                <h:outputText value="#{layout.properties['title']}" />
