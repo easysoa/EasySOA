@@ -24,7 +24,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
-import org.easysoa.rest.scraping.ScraperRest;
+
+import org.easysoa.rest.servicefinder.ServiceFinderRest;
 
 public class EasySOAApp extends Application {
 
@@ -32,7 +33,7 @@ public class EasySOAApp extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> result = new HashSet<Class<?>>();
         result.add(EasySOAAppRoot.class);
-        result.add(ScraperRest.class);
+        result.add(ServiceFinderRest.class);
         result.add(NotificationRest.class);
         return result;
     }

@@ -18,15 +18,15 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.rest.scraping.scrapers;
+package org.easysoa.rest.servicefinder.finders;
 
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.easysoa.EasySOAConstants;
-import org.easysoa.rest.scraping.FoundService;
-import org.easysoa.rest.scraping.ServiceScraper;
+import org.easysoa.rest.servicefinder.FoundService;
+import org.easysoa.rest.servicefinder.ServiceFinder;
 
 /**
  * 
@@ -38,10 +38,10 @@ import org.easysoa.rest.scraping.ServiceScraper;
  * @author mkalam-alami
  *
  */
-public class ContextScraper extends DefaultAbstractScraper implements ServiceScraper {
+public class ContextServiceFinder extends DefaultAbstractServiceFinder implements ServiceFinder {
     
     @Override
-    public List<FoundService> scrapeURL(URL url) throws Exception {
+    public List<FoundService> findFromURL(URL url) throws Exception {
         
         List<FoundService> foundServices = new LinkedList<FoundService>();
         

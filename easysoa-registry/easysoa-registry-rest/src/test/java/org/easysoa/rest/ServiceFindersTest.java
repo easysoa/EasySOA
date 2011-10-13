@@ -31,7 +31,7 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.rest.scraping.ScraperRest;
+import org.easysoa.rest.servicefinder.ServiceFinderRest;
 import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -51,22 +51,24 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 })
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
-    "org.easysoa.registry.rest:OSGI-INF/ServiceScraperComponent.xml",
-    "org.easysoa.registry.rest:OSGI-INF/scraping-contrib.xml"})
-public class ScraperTest {
+    "org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
+    "org.easysoa.registry.rest:OSGI-INF/serviceFinders-contrib.xml"})
+public class ServiceFindersTest {
 
-    static final Log log = LogFactory.getLog(ScraperTest.class);
+    static final Log log = LogFactory.getLog(ServiceFindersTest.class);
     
     @Test
-    public void testScraper() throws Exception {
+    public void testServiceFinder() throws Exception {
         
         // Make request
-        ScraperRest scraper = new ScraperRest();
-        Object obj = scraper.doGet(mockUriInfo("http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/"));
+        ServiceFinderRest serviceFinder = new ServiceFinderRest();
+        Object obj = serviceFinder.doGet(mockUriInfo("http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/"));
         
         // Check result data
         Assert.assertNotNull(obj);
         JSONObject json = new JSONObject(obj.toString());
+        log.info("Service finder response: "+json.toString(2));
+        
         JSONObject foundLinks = (JSONObject) json.get("foundLinks");
         Assert.assertNotNull(foundLinks);
         Iterator<?> it = foundLinks.keys();
@@ -77,13 +79,12 @@ public class ScraperTest {
             log.info("Found service: "+linkName);
             log.info(foundLinks.getString(linkName));
         }
-        //log.info(json);
         
     }
     
     private UriInfo mockUriInfo(String uri) throws URISyntaxException {
         UriInfo uriInfo = Mockito.mock(UriInfo.class);
-        Mockito.when(uriInfo.getRequestUri()).thenReturn(new URI("http://127.0.0.1:8080/nuxeo/site/easysoa/wsdlscraper/"+uri));
+        Mockito.when(uriInfo.getRequestUri()).thenReturn(new URI("http://127.0.0.1:8080/nuxeo/site/easysoa/servicefinder/"+uri));
         Mockito.when(uriInfo.getBaseUri()).thenReturn(new URI("http://127.0.0.1:8080/nuxeo/site/"));
         return uriInfo;
     }

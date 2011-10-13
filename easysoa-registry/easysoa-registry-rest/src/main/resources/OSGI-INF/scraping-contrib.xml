@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<component name="org.easysoa.rest.scraping.contrib" version="1.0">
-
-  <extension target="org.easysoa.rest.scraping.ServiceScraperComponent" point="scrapers">
-    <serviceScraper>org.easysoa.rest.scraping.scrapers.LinkParsingScraper</serviceScraper>
-    <serviceScraper>org.easysoa.rest.scraping.scrapers.ContextScraper</serviceScraper>
-  </extension>
-
-</component>

@@ -4,10 +4,10 @@ Bundle-Version: 0.3-SNAPSHOT
 Bundle-Name: easysoa-registry-rest
 Bundle-SymbolicName: org.easysoa.registry.rest;singleton:=true
 Bundle-Vendor: EasySOA Consortium
-Export-Package: org.easysoa.rest.scraping
+Export-Package: org.easysoa.rest.servicefinder.finders
 Eclipse-LazyStart: true
 Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
 Nuxeo-Require: org.easysoa.registry.core
-Nuxeo-Component: OSGI-INF/ServiceScraperComponent.xml,
+Nuxeo-Component: OSGI-INF/ServiceFinderComponent.xml,
  OSGI-INF/rights-contrib.xml,
- OSGI-INF/scraping-contrib.xml
+ OSGI-INF/serviceFinders-contrib.xml
