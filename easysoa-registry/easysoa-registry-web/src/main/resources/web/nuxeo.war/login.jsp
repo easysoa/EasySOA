@@ -389,7 +389,7 @@ nxthemes css is not used in login.jsp */
                 </td>
               </tr>
               <tr><td colspan="2">
-              <p style="font-size: 12px; text-align: center">A list of the demo users is <a href="http://localhost:8083/easysoa/users.html">available here</a>.</p> 
+              <p style="font-size: 11px; text-align: center">A list of the demo users is <a href="http://localhost:8083/easysoa/users.html">available here</a>.</p> 
               </td></tr>
               <tr>
                 <td colspan="2">
