@@ -7,9 +7,11 @@
 # - Backups cleanup: ./updateVersion.sh clean 
 #   (removes all created .versionsBackup files)
 
-# WARNING
-# The script must be launched from the EasySOA/easysoa-distribution folder
-
+# WARNINGS
+# - The script must be launched from the EasySOA/easysoa-distribution folder
+# - Shell/Batch files still have to be manually updated. They can be found in:
+#    /easysoa-distribution/packaging-files/
+#    /samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server/etc/
 
 LINE="----------------------------------------------------"
 
