@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.rest.scraping.scrapers;
+package org.easysoa.rest.servicefinder.finders;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

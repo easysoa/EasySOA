@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.rest.scraping;
+package org.easysoa.rest.servicefinder;
 
 import org.nuxeo.common.xmap.annotation.XContent;
 import org.nuxeo.common.xmap.annotation.XNode;

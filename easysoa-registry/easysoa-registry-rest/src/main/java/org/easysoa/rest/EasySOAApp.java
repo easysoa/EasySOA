@@ -23,10 +23,8 @@ package org.easysoa.rest;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import javax.ws.rs.core.Application;
 
-import org.easysoa.rest.gadgets.ServiceStatsRest;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
 
 public class EasySOAApp extends Application {
@@ -39,5 +37,5 @@ public class EasySOAApp extends Application {
         result.add(NotificationRest.class);
         return result;
     }
-    
+
 }
