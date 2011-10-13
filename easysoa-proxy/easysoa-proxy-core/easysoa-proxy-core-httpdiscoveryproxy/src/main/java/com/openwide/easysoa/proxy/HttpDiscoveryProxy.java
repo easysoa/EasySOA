@@ -280,8 +280,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
     	HttpEntity httpEntity = new StringEntity(message.getBody());
 		logger.debug("Request URL String : " +  requestUrlString);
 		logger.debug("Request Body String : " + message.getBody());
-		
-		ResponseHandler<String> responseHandler = new BasicResponseHandler(); 
+
 		HttpUriRequest httpUriRequest;
 		// TODO later use a pattern to create them (builder found in a map method -> builder...)
 		if("GET".equalsIgnoreCase(request.getMethod())){
@@ -310,7 +309,9 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    //    HttpHost myProxy = new HttpHost("localhost", 8084, "http");
 	    //    httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
 	    //}
+    	ResponseHandler<String> responseHandler = new HttpResponseHandler();
     	String clientResponse = httpClient.execute(httpUriRequest, responseHandler);
+    	logger.debug("clientResponse : " + clientResponse);
     	message.setResponse(clientResponse);
 	    respOut.write(clientResponse);
     	respOut.close();
