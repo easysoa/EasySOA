@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.openwide.easysoa.test;
+package org.openwide.easysoa.test.testers;
 
 import java.io.IOException;
 
@@ -26,15 +26,18 @@ import javax.xml.soap.SOAPException;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.openwide.easysoa.test.AbstractTest;
+import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 
-public class FormGeneratorTester extends AbstractTest {
+public class FormGeneratorMonitoredTester extends AbstractTest {
 
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(FormGeneratorTester.class.getClass());
+	private static Logger logger = Logger.getLogger(FormGeneratorMonitoredTester.class.getClass());
     
 	/**
 	 * Init the remote systems for the test
@@ -49,7 +52,8 @@ public class FormGeneratorTester extends AbstractTest {
 		// Start the soap service mock
 		startSoapServiceMockComposite();
 		// Start Scaffolding Proxy test
-		startScaffoldingProxyComposite();
+		//startScaffoldingProxyComposite();
+		componentList.add(frascati.processComposite("src/main/resources/scaffoldingProxy_monitored.composite", new ProcessingContextImpl()));
 	}
 	
 	/**
@@ -58,7 +62,7 @@ public class FormGeneratorTester extends AbstractTest {
 	 * @throws SOAPException
 	 * @throws IOException
 	 */
-	@Test
+	@Test @Ignore
 	public final void testWaitUntilRead() throws Exception{
 		logger.info("Scaffolding proxy test started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test
