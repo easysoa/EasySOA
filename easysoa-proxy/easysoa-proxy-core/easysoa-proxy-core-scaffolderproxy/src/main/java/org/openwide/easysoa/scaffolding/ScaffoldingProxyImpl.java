@@ -1,12 +1,33 @@
+/**
+ * EasySOA Proxy
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@groups.google.com
+ */
+
 package org.openwide.easysoa.scaffolding;
 
-import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import net.sf.json.JSON;
 import net.sf.json.JSONException;
 import net.sf.json.xml.XMLSerializer;
+
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 import org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper;
@@ -15,13 +36,12 @@ import org.osoa.sca.annotations.Reference;
 
 /**
  * Scaffolding proxy. Started with FraSCAti and Velocity
- * TODO : Build a JSON structure to pass parameters to the proxy
  * TODO : Add a dev form mode
  * 
  * Goal is to :
  * - generate dynamically html form from a WSDL file.
- * - generate dynamically input and output xml schemas from WSDL
- * - publish a rest/soap proxy to establish a data exchange between the HTML form and the remote WSDl service. This proxy must be generic.
+ * - generate dynamically input and output xml schemas from WSDL.
+ * - publish a rest/soap proxy to establish a data exchange between the HTML form and the remote WSDl service.
  * @author jguillemotte
  *
  */
@@ -41,22 +61,13 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 	private static Logger logger = Logger.getLogger(ScaffoldingProxyImpl.class.getClass());
 	
 	@Override
-	//public Response redirectRestToSoap(UriInfo ui, Request request, String binding, String operation) throws Exception {
 	public Response redirectRestToSoap(HttpContext httpContext, HttpServletRequest servletRequest){
-		System.out.println("Entering in redirectRestToSoap method !");
-		// Getting the JSON Data structure
-		StringBuffer jsonParameters = new StringBuffer();
+		logger.debug("Entering in redirectRestToSoap method !");
+		
 		try {
-			byte[] buffer = new byte[512];
-			InputStream iStream = servletRequest.getInputStream();
-			while(iStream.available() > 0 ){
-				iStream.read(buffer);
-				jsonParameters.append(new String(buffer));
-			}
-			logger.debug("jsonParameters : " + jsonParameters.toString());
-			System.out.println("jsonParameters : " + jsonParameters.toString());
+	        // Getting the JSON Data structure
+		    String jsonParameters = servletRequest.getParameter("request");
 			WSRequest request = WSRequest.parseJSON(jsonParameters.toString());
-			System.out.println("jsonRequest : " + request.toString());
 
 			// alternatives :
 			// 1. Generate xml request for SOAP service, need to have the WSDL File
@@ -72,7 +83,13 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 			response = wsdlServiceHelper.callService(url, request.getBinding(), request.getOperation(), request.getParamList());
 			// Call a method to transform xml to json
 			response = xmlToJson(response).toString();
-			System.out.println(response);
+			
+			// JSONP compatibility
+			String callback = servletRequest.getParameter("callback");
+			if (callback != null) {
+			    response = callback + "(" + response + ");";
+			}
+			
 			logger.debug("final response : " + response);
 			return Response.ok(response, MediaType.TEXT_HTML).header("Access-Control-Allow-Origin", "*").build();			
 			

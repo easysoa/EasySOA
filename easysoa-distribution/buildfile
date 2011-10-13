@@ -21,6 +21,13 @@ RELEASE_VERSION = (Buildr.settings.user['release'] != nil ? Buildr.settings.user
 PACKAGING_OUTPUT_PATH = 'easysoa'
 PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+RELEASE_VERSION+'.tar.gz';
 
+# URLs
+ESPER_VERSION = "4.3.0"
+FRASCATI_VERSION = "1.5-SNAPSHOT"
+ESPER_DOWNLOAD_URL = 'http://mirrors.ibiblio.org/pub/mirrors/maven2/com/espertech/esper/' + ESPER_VERSION + '/esper-' + ESPER_VERSION + '.jar'
+NODE_WIN_DOWNLOAD_URL = 'http://nodejs.org/dist/v0.5.7/node.exe'
+FRASCATI_DOWNLOAD_URL = 'http://www.easysoa.org/download/dev/frascati-runtime-' + FRASCATI_VERSION + '-bin.zip'
+
 # Generated
 MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
 ESPER_DEP_PATH = './deps/frascati/lib/esper-4.3.0.jar'
@@ -93,7 +100,7 @@ define 'easysoa', :base_dir => '../' do
       desc 'Send plugins to Nuxeo'
       task :dist do
       
-        PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar')]
+        PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
         puts "===== Nuxeo plugins - Deleting =====", PLUGINS_TO_DELETE
         rm PLUGINS_TO_DELETE
         
@@ -195,7 +202,7 @@ task :packageall do # TODO Less messy code
   # Download/extract node.js if necessary
   if !File.exist?('./deps/node.exe')
     puts 'Downloading node.js for Windows...'
-    system 'wget', 'http://nodejs.org/dist/v0.5.7/node.exe' # XXX Linux/Cygwin-dependent
+    system 'wget', NODE_WIN_DOWNLOAD_URL # XXX Linux/Cygwin-dependent
     mv 'node.exe', './deps'
   end
   puts 'Copying node.js...'
@@ -209,20 +216,20 @@ task :packageall do # TODO Less messy code
   
   # Download/extract FraSCAti if necessary
   if !File.exist?(FRASCATI_PATH) 
-    if !File.exist?('deps/frascati-runtime-1.5-SNAPSHOT-bin.zip')
+    if !File.exist?('deps/frascati-runtime-'+FRASCATI_VERSION+'-bin.zip')
       puts 'FraSCAti not found, downloading it...'
-      system 'wget', 'http://www.easysoa.org/download/dev/frascati-runtime-1.5-SNAPSHOT-bin.zip' # XXX Linux/Cygwin-dependent
-      mv 'frascati-runtime-1.5-SNAPSHOT-bin.zip','./deps'
+      system 'wget', FRASCATI_DOWNLOAD_URL # XXX Linux/Cygwin-dependent
+      mv 'frascati-runtime-'+FRASCATI_VERSION+'-bin.zip','./deps'
     end
     puts 'Extracting FraSCAti...'
-    system 'unzip', '-q', '-o', './deps/frascati-runtime-1.5-SNAPSHOT-bin.zip' # XXX Linux/Cygwin-dependent
-    mv 'frascati-runtime-1.5-SNAPSHOT', './deps/frascati'
+    system 'unzip', '-q', '-o', './deps/frascati-runtime-'+FRASCATI_VERSION+'-bin.zip' # XXX Linux/Cygwin-dependent
+    mv 'frascati-runtime-'+FRASCATI_VERSION, './deps/frascati'
     rm_rf FileList['./deps/frascati/doc', './deps/frascati/examples', './deps/frascati/README', './deps/frascati/RELEASE_NOTES']
   end
   if !File.exist?(ESPER_DEP_PATH)
     puts 'Esper not found, downloading it...'
-    system 'wget', 'http://mirrors.ibiblio.org/pub/mirrors/maven2/com/espertech/esper/4.3.0/esper-4.3.0.jar' # XXX Linux/Cygwin-dependent
-    mv './esper-4.3.0.jar', ESPER_DEP_PATH
+    system 'wget', ESPER_DOWNLOAD_URL # XXX Linux/Cygwin-dependent
+    mv './esper-'+ESPER_VERSION+'.jar', ESPER_DEP_PATH
   end
 
   # Deploy FraSCAti
@@ -232,6 +239,7 @@ task :packageall do # TODO Less messy code
   # Copy web services and proxies
   puts "Copying web services and proxies..."
   puts "  * Needed libraries..."
+  cp FileList[project(EASYSOA_REGISTRY).base_dir+"/target/**/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-intents/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'

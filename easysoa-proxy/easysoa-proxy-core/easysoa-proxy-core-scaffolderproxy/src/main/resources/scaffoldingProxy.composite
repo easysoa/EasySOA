@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="scaffoldingProxy">
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" 
+    xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+    xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
+    name="scaffoldingProxy">
 
   <!-- Velocity component for HTML form generator -->
   <component name="scaffoldingProxyComponent">
@@ -18,7 +21,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.TransformationFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.XsltFormGenerator"/>
-	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
+	<property name="defaultWsdl">defaultWsdl/airport_soap.wsdl</property>
   </component>-->
   
   <!-- EasyWSDL Form generator component -->
@@ -27,7 +30,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.EasyWsdlFormGenerator"/>
-	<property name="defaultWsdl">src/main/resources/defaultWsdl/modified_airport_soap.wsdl</property>
+	<property name="defaultWsdl">defaultWsdl/modified_airport_soap.wsdl</property>
   </component>
 
   <!-- Apache Woden Form generator component  -->
@@ -38,7 +41,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
     <implementation.java class="org.openwide.easysoa.scaffolding.WodenFormGenerator"/>
-	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
+	<property name="defaultWsdl">defaultWsdl/airport_soap.wsdl</property>
   </component>-->
   
   <!-- Rest Soap Proxy  -->
@@ -61,7 +64,11 @@
     <service name="wsdlServiceHelperService">
       <interface.java interface="org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper"/>
     </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.wsdlhelper.soapui.SoapUIServiceHelper"/>    
-  </component>  
+    <implementation.java class="org.openwide.easysoa.scaffolding.wsdlhelper.soapui.SoapUIServiceHelper"/>
+	<!-- property name="httpProxyHost">localhost</property>
+	<property name="httpProxyPort">8082</property -->
+	<!-- property name="httpProxyUsername">username</property>
+	<property name="httpProxyPassword">password</property -->
+  </component> 
   
 </composite>

@@ -6,29 +6,11 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 		<title>EasySOA Core - Service</title>
+        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/proxiedRequest.js"></script>
 		<link href="/easysoa/style.css" rel="stylesheet">
 	</head>
 	<body>
-		<!-- Common javascript stuff -->
-		<script type="text/javascript">
-			function getElementsByClass(searchClass,node,tag) {
-				var classElements = new Array();
-				if ( node == null )
-					node = document;
-				if ( tag == null )
-					tag = '*';
-				var els = node.getElementsByTagName(tag);
-				var elsLen = els.length;
-				var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-				for (i = 0, j = 0; i < elsLen; i++) {
-					if ( pattern.test(els[i].className) ) {
-						classElements[j] = els[i];
-						j++;
-					}
-				}
-				return classElements;
-			}
-		</script>
 		<div id="headerLight">
 			<div id="headerLightContents">
 				<div id="headerBreadcrumbs">
@@ -36,10 +18,12 @@
 					&gt;
 					<a href="/easysoa/light/index.html">Light</a>
 					&gt;
-					<b></b>
+					#foreach( $service in $formGenerator.getServices() )
+					<b>$service.getName()</b> 
+			        #end
 				</div>
 				<b></b>
-				Service
+				Service UI Scaffolder
 			</div>
 		</div>
 		<div id="container">
@@ -59,82 +43,20 @@
 					<!-- Javascript code engine for the form -->
 					<script type="text/javascript">
 					function submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form(form){
-						var xhr;
 						var operation = "$formGenerator.getOperationName($operation)";
 						var binding = "$formGenerator.getBindingName($endpoint)";
-						var responseMessage = "$formGenerator.getOutputMessageName($endpoint, $operation)";
-						getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Sending request ...";
-						if(window.XMLHttpRequest) // Firefox and others
-							xhr = new XMLHttpRequest();
-						else if(window.ActiveXObject){ // Internet Explorer
-							try {
-								xhr = new ActiveXObject("Msxml2.XMLHTTP");
-							} catch (e) {
-								xhr = new ActiveXObject("Microsoft.XMLHTTP");
-							}
-						}
-						else { // XMLHttpRequest not supported by browser
-							alert("Your browser does not support XMLHTTPRequest objects ...");
-							xhr = false;
-						}
-						getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Getting response ...";
-						xhr.onreadystatechange = function(){
-							//alert("xhr.readyState : " + xhr.readyState);
-							if(xhr.readyState == 4){
-								//alert("xhr.status : " + xhr.status + " ; xhr.responseText : " + xhr.responseText);
-								if(xhr.status == 200){
-									// receive now json structure
-									var responseData = JSON.parse(xhr.responseText);
-									//for each elements 'outputField'
-									var outputFields = getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*');
-									for(j=0; j<outputFields.length; j++){
-										var fieldName = outputFields[j].name;
-										outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
-									}
-								} else {
-									getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')[0].value = "Error code " + xhr.status;
-								}
-							}
-						};
-						
-						// Preparing the request
-						var port = $formGenerator.getConstant("REST_SOAP_PROXY_PORT");
-						var url = "http://localhost:" + port + "/"; 
-						var wsdlUrl = "$wsdlUrl";
-						//var params = "";
-						var jsonParams = "";
-						// For each form field : add it in the url
-		    			for(i=0; i<document.forms[form].elements.length; i++){
-							// on ne prend que les champs enabled ou en lecture / ecriture
-							if(document.forms[form].elements[i].disabled == false && document.forms[form].elements[i].type != "submit"){
-								//alert("The field name is: " + document.forms[form].elements[i].name + " and it’s value is: " + document.forms[form].elements[i].value + ".<br />");							
-								if(jsonParams == ""){
-									//params = params + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
-									jsonParams = jsonParams + "{\"paramName\":\"" + document.forms[form].elements[i].name + "\",\"paramValue\":\"" + document.forms[form].elements[i].value +"\"}";
-								} else {
-									//params = params + "&" + document.forms[form].elements[i].name + "=" + document.forms[form].elements[i].value;
-									jsonParams = jsonParams + ", {\"paramName\":\"" + document.forms[form].elements[i].name + "\",\"paramValue\":\"" + document.forms[form].elements[i].value +"\"}";
-								}
-							}
-						}
-						params = params + "&wsdlUrl=" + wsdlUrl; 
+						var url = "http://localhost:" + $formGenerator.getConstant("REST_SOAP_PROXY_PORT") + "/";
 						url = url + "callService/" + binding + "/" + operation + "/";
-						// Build JSON Data structure
-						var jsonParameters = "{\"wsRequest\": {";
-						jsonParameters = jsonParameters + " \"service\": \"$service.getName()\", \"binding\": \"" + binding + "\", \"operation\": \"" + operation + "\",";
-						jsonParameters = jsonParameters + " \"wsdlUrl\": \"" + wsdlUrl + "\"";
-						jsonParameters = jsonParameters + "},";
-						jsonParameters = jsonParameters + "\"formParameters\":[";
-						jsonParameters = jsonParameters + jsonParams;
-						jsonParameters = jsonParameters + "]}";
-						//alert(jsonParameters);
+
+                        var wsdlUrl = "$wsdlUrl";
+						var serviceName = "$service.getName()";
+						var responseMessage = "$formGenerator.getOutputMessageName($endpoint, $operation)";
+						var outputFields = getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')
 						
-						// Send the request
-						xhr.open("POST", url, true);
-						xhr.send(jsonParameters);
+						submitForm(form, url, wsdlUrl, serviceName, binding, operation, responseMessage, outputFields);
 					}
 					</script>				
-					<form enctype="text/plain" action="" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">
+					<form enctype="text/plain" action="#" method="get" name="$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)">
 						<h4>Input fields</h4>
 						<table>
 							<tr>
@@ -157,10 +79,8 @@
 							</tr>
 							#end
 						</table>
-					<br/>
-					<input OnClick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');return false;" value="Submit" type="submit">
-					<br/>
 					</form>
+                    <p style="padding: 5px; margin-bottom: 25px"><input type="submit" value="Submit" onclick="submit_$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)_form('$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint)');"></p>
 					#end
 				</p>
 				#end

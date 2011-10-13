@@ -1,3 +1,10 @@
+// EasySOA Web
+// Copyright (c) 2011 Open Wide and others
+// 
+// MIT licensed
+// 
+// Contact : easysoa-dev@groups.google.com
+
 /* 
  * Provides functions needed for EasySOA Light
  *

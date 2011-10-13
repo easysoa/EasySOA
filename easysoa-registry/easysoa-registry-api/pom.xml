@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.easysoa.registry</groupId>
   <artifactId>easysoa-registry-api</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.4-SNAPSHOT</version>
   <name>EasySOA Registry API</name>
 
   <dependencies>

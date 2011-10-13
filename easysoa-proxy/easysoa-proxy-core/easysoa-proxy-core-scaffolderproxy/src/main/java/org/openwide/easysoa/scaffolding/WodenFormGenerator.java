@@ -1,3 +1,23 @@
+/**
+ * EasySOA Proxy
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@groups.google.com
+ */
+
 package org.openwide.easysoa.scaffolding;
 
 import java.io.File;
@@ -32,8 +52,9 @@ import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Scope;
 import org.w3c.dom.Document;
 
-//TODO Composite is like singleton, to change for a multi-user use
-@Scope("COMPOSITE")
+//TODO Composite is like singleton, to change for a multi-user use, test of Conversation composite
+//@Scope("COMPOSITE")
+@Scope("CONVERSATION")
 public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 
 	/**
@@ -79,7 +100,6 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 				logger.debug(targetDir + "/" + convertFile);
 				String wsdl2read = targetDir + "/" + convertFile;
 				wsdlDescription = reader.readWSDL(wsdl2read);
-				System.out.println("Bug : " + wsdlDescription);
 			}
 			else {
 				wsdlDescription = reader.readWSDL(wsdlSource);
@@ -140,7 +160,6 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	@Override
 	public String getOperationName(WSOperation wsOperation) {
 		logger.debug("Entering in getOperationName");
-		/*return operation.getInterfaceOperation().getName().getLocalPart();*/
 		return wsOperation.getName();
 	}
 
@@ -212,7 +231,6 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 					if(obj instanceof XmlSchemaElement){
 						XmlSchemaElement field = (XmlSchemaElement) obj;
 						logger.debug("Field found = " + field.getName());
-						//System.out.println(field.getSchemaType().getName());
 						outputFields.add(new WSField(field.getName(), "String"));
 					}
 				}

@@ -6,13 +6,13 @@
     <groupId>org.easysoa.samples.smarttravel</groupId>
     <artifactId>easysoa-samples-smarttravel-services-backup-sca</artifactId>
     <name>EasySOA Sample Smart Travel Services Backup (using SCA)</name>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     
 	<parent>
 		<groupId>org.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.4-SNAPSHOT</version>
 		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
 	</parent>
 

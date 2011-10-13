@@ -21,7 +21,9 @@ if ( function_exists('register_sidebar') ) {
   register_sidebar(array(
     'name' => 'Top right space',
     'before_widget' => '<div class="topWidget">',
-    'after_widget' => '</div>'
+    'after_widget' => '</div>',
+    'before_title' => '<span style="display: none">',
+    'after_title' => '</span>'
   ));
 
 }
