@@ -1,4 +1,4 @@
-# EasySOA Demo
+# EasySOA Demo 0.3
 
 ## Prerequisites
 

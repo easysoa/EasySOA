@@ -6,12 +6,12 @@
   xmlns:nxh="http://nuxeo.org/nxweb/html"
   xmlns:c="http://java.sun.com/jstl/core"
   id="#{widget.id}">
-
+  
   <c:choose>
-    <c:when test="#{field.getType()} == 'Workspace'">#{field.app.url}</c:when>
-    <c:when test="#{field.getType()} == 'ServiceAPI'">#{field.api.url}</c:when>
-    <c:when test="#{field.getType()} == 'Service'">#{field.serv.url}</c:when>
-    <c:when test="#{field.getType()} == 'ServiceReference'">#{field.sref.url}</c:when>
+    <c:when test="#{field.getType() == 'Workspace'}">#{field.app.url}</c:when>
+    <c:when test="#{field.getType() == 'ServiceAPI'}">#{field.api.url}</c:when>
+    <c:when test="#{field.getType() == 'Service'}">#{field.serv.url}</c:when>
+    <c:when test="#{field.getType() == 'ServiceReference'}">#{field.sref.url}</c:when>
   </c:choose>
   
 </f:subview>

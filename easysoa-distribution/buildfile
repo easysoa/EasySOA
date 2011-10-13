@@ -100,7 +100,7 @@ define 'easysoa', :base_dir => '../' do
       desc 'Send plugins to Nuxeo'
       task :dist do
       
-        PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar')]
+        PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
         puts "===== Nuxeo plugins - Deleting =====", PLUGINS_TO_DELETE
         rm PLUGINS_TO_DELETE
         
