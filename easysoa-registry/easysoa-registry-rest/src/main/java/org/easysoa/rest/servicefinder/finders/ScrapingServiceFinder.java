@@ -38,7 +38,7 @@ import org.htmlcleaner.TagNode;
  * @author mkalam-alami
  *
  */
-public class ScrapingFinder extends DefaultAbstractFinder implements ServiceFinder {
+public class ScrapingServiceFinder extends DefaultAbstractServiceFinder implements ServiceFinder {
 
     @Override
     public List<FoundService> findFromURL(URL url) throws Exception {

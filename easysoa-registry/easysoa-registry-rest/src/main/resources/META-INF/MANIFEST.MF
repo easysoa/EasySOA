@@ -4,7 +4,7 @@ Bundle-Version: 0.3-SNAPSHOT
 Bundle-Name: easysoa-registry-rest
 Bundle-SymbolicName: org.easysoa.registry.rest;singleton:=true
 Bundle-Vendor: EasySOA Consortium
-Export-Package: org.easysoa.rest.servicefinder
+Export-Package: org.easysoa.rest.servicefinder.finders
 Eclipse-LazyStart: true
 Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
 Nuxeo-Require: org.easysoa.registry.core

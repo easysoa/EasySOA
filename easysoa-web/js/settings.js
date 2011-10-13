@@ -12,7 +12,7 @@ var settings = {
     
     // Scrapers to be used to find WSDLs
     scrapers: [
-      "http://127.0.0.1:8080/nuxeo/site/easysoa/wsdlscraper/?" // Nuxeo
+      "http://127.0.0.1:8080/nuxeo/site/easysoa/servicefinder/?" // Nuxeo
     ],
     
     // Paths to ignore during scraping

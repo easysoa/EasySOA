@@ -27,6 +27,7 @@ public class ServiceFinderComponent extends DefaultComponent {
     public void registerContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor) throws Exception {
         try {
+            synchronized (finders) {
             if (extensionPoint.equals("serviceFinders")) {
                 ServiceFinderDescriptor finderDescriptor = (ServiceFinderDescriptor) contribution;
                 if (finderDescriptor.enabled) {
@@ -41,6 +42,7 @@ public class ServiceFinderComponent extends DefaultComponent {
                     }
                 }
             }
+            }
         }
         catch (Exception e) {
             throw new Exception(renderContributionError(contributor, ""), e);
@@ -49,6 +51,7 @@ public class ServiceFinderComponent extends DefaultComponent {
 
     public void unregisterContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor) throws Exception {
+        synchronized (finders) {
         if (extensionPoint.equals("serviceFinders")) {
             ServiceFinderDescriptor finderDescriptor = (ServiceFinderDescriptor) contribution;
             if (finderDescriptor.enabled) {
@@ -59,6 +62,7 @@ public class ServiceFinderComponent extends DefaultComponent {
                     }
                 }
             }
+        }
         }
     }
     

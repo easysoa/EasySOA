@@ -36,7 +36,7 @@ import org.htmlcleaner.TagNode;
  * @author mkalam-alami
  *
  */
-public abstract class DefaultAbstractFinder implements ServiceFinder {
+public abstract class DefaultAbstractServiceFinder implements ServiceFinder {
     
     private static HtmlCleaner cleaner = new HtmlCleaner();
     
