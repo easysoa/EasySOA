@@ -67,6 +67,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<!--<repository>
+			<id>eclipse mirror</id>
+			<name>Eclipse EMF Mirror</name>
+			<url>http://www.openarchitectureware.org/m2</url>
+		</repository>-->
 	</repositories>
 
 	<dependencyManagement>
