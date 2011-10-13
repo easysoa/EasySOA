@@ -28,6 +28,11 @@
 			<artifactId>easysoa-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        <dependency>
+          <groupId>org.ow2.easywsdl</groupId>
+          <artifactId>easywsdl-wsdl</artifactId>
+          <version>2.1</version>
+        </dependency>
 		
 		<!-- Testing framework dependencies-->
 		<dependency>

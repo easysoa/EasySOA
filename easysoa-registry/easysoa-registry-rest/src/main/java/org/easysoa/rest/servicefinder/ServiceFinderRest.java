@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.rest.scraping;
+package org.easysoa.rest.servicefinder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,16 +38,16 @@ import org.nuxeo.runtime.api.Framework;
 /**
  * REST service to find WSDLs from given URL.
  * 
- * Use: .../nuxeo/site/easysoa/wsdlscraper/{url}
+ * Use: .../nuxeo/site/easysoa/servicefinder/{url}
  * Params: {url} The URL of the page to consider (not encoded).
  * Other protocols than HTTP are not supported.
  * 
  * @author mkalam-alami
  * 
  */
-@Path("easysoa/wsdlscraper")
+@Path("easysoa/servicefinder")
 @Produces("application/x-javascript")
-public class ScraperRest {
+public class ServiceFinderRest {
 
     @GET
     public Object doGet() {
@@ -65,29 +65,29 @@ public class ScraperRest {
         URL url = null;
         try {
             url = new URL(uriInfo.getRequestUri().toString().substring(
-                    uriInfo.getBaseUri().toString().length()+"easysoa/wsdlscraper/".length())); // TODO remove callback
+                    uriInfo.getBaseUri().toString().length()+"easysoa/servicefinder/".length())); // TODO remove callback
         }
         catch (MalformedURLException e) {
             errors.put(formatError(e));
         }
 
-        // Run scrapers
+        // Run finders
         List<FoundService> foundServices = new LinkedList<FoundService>();
         if (url != null) {
-            ServiceScraperComponent serviceScraper = (ServiceScraperComponent) Framework
-                    .getRuntime().getComponent(ServiceScraperComponent.NAME);
-            List<ServiceScraper> scrapers = serviceScraper.getScrapers();
+            ServiceFinderComponent finderComponent = (ServiceFinderComponent) Framework
+                    .getRuntime().getComponent(ServiceFinderComponent.NAME);
+            List<ServiceFinder> serviceFinders = finderComponent.getServiceFinders();
 
-            for (ServiceScraper scraper : scrapers) {
-                List<FoundService> scraperResult = null;
+            for (ServiceFinder serviceFinder : serviceFinders) {
+                List<FoundService> finderResult = null;
                 try {
-                    scraperResult = scraper.scrapeURL(url);
+                    finderResult = serviceFinder.findFromURL(url);
                 }
                 catch (Exception e) {
-                    errors.put(formatError(e, "Failed to run scraper "+scraper.getClass().getName()));
+                    errors.put(formatError(e, "Failed to run service finder "+serviceFinder.getClass().getName()));
                 }
-                if (scraperResult != null) {
-                    foundServices.addAll(scraperResult);
+                if (finderResult != null) {
+                    foundServices.addAll(finderResult);
                 }
             }
         }

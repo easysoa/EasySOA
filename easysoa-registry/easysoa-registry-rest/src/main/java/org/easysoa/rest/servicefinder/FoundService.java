@@ -18,13 +18,36 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.rest.scraping;
+package org.easysoa.rest.servicefinder;
 
-import java.net.URL;
-import java.util.List;
+public class FoundService {
 
-public interface ServiceScraper {
-
-    List<FoundService> scrapeURL(URL url) throws Exception;
+    private String name;
     
+    private String url;
+    
+    private String applicationName;
+
+    public FoundService(String name, String url, String applicationName) {
+        this(name, url);
+        this.applicationName = applicationName;
+    }
+    
+    public FoundService(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getURL() {
+        return url;
+    }
+    
+    public String getApplicationName() {
+        return applicationName;
+    }
+
 }

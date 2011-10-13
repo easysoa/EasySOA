@@ -57,7 +57,7 @@
       <artifactId>nuxeo-automation-server</artifactId>
     </dependency>
     
-    <!-- WSDL Scraper -->
+    <!-- Service finders -->
     <dependency>
       <groupId>net.sourceforge.htmlcleaner</groupId>
       <artifactId>htmlcleaner</artifactId>
