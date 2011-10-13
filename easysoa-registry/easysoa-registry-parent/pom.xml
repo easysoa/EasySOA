@@ -72,11 +72,18 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>Frascati</id>
+			<name>Frascati repository</name>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>		
 		<!--<repository>
 			<id>eclipse mirror</id>
 			<name>Eclipse EMF Mirror</name>
 			<url>http://www.openarchitectureware.org/m2</url>
 		</repository>-->
+		
+		
 	</repositories>
 
 	<dependencyManagement>
