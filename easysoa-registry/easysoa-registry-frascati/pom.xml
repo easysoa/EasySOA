@@ -39,7 +39,7 @@
 	<name>EasySOA Registry : Nuxeo-embedded OW2 FraSCAti</name>
 	
 	<properties>
-	    <frascati.version>1.4</frascati.version>
+	    <frascati.version>1.5-SNAPSHOT</frascati.version>
 	</properties>
 	
 	<dependencies>
