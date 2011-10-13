@@ -25,7 +25,6 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import org.easysoa.rest.gadgets.ServiceStatsRest;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
 
 public class EasySOAApp extends Application {
