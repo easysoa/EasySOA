@@ -1,20 +1,36 @@
 #!/bin/bash
 
 # Updates all Maven projects' versions
-# WARNING: Must be launched from the EasySOA/easysoa-distribution folder
 
-# - Example: ./updateVersion.sh 0.3
-# - Special command: ./updateVersion.sh clean 
+# HOW TO
+# - Pom update: ./updateVersion.sh 0.4-SNAPSHOT
+# - Backups cleanup: ./updateVersion.sh clean 
 #   (removes all created .versionsBackup files)
 
+# WARNING
+# The script must be launched from the EasySOA/easysoa-distribution folder
+
+
+LINE="----------------------------------------------------"
+
+# Catch interrupt signal
+shutdown() {
+	echo ""; echo "Aborting."
+	ABORT=1
+}
+trap shutdown SIGINT SIGTERM
+
+# Backups cleanup
 if [ "$1" == "clean" ]; then
 
 	# Remove all .versionsBackup files
 	cd ..
-	find ./ -type f -name \*.versionsBackup | xargs rm
-	echo "ok"
+	echo $LINE; echo "Removing all pom backups"; echo $LINE
+	find ./ -type f -name \*.versionsBackup -print -delete
+	echo "Done."
 	cd "easysoa-distribution"
 	
+# Pom update
 else
 
 	# Clean repository
@@ -36,8 +52,15 @@ else
 	}
 
 	# Pom search and update
+	progress=1
+	total=`find -name pom.xml | wc -l`
 	for pom in `find -name pom.xml`; do
+		echo ""; echo "Updating project $progress / $total..."; echo ""
 		update_pom $pom
+		progress=$(expr $progress + 1)
+		if [ $ABORT == 1 ]; then
+			exit 0
+		fi
 	done
 	
 	# End
