@@ -8,7 +8,10 @@
 <?php foreach ($comments as $comment) : ?>
 
 <div class="comment">
-<div class="gravatarside"><?php if (function_exists('get_avatar')) { echo get_avatar($comment,$size='48'); } ?></div>
+<?php if (function_exists('get_avatar')) {  
+  $gravatar = get_avatar($comment,$size='48');
+  if ($gravatar != "") { echo "<div class='gravatarside'>".$gravatar."</div>"; }
+} ?>
 <p class="commenticon">
 <strong><?php edit_comment_link('[e] '); ?><?php comment_type('Comment','Trackback','Pingback'); ?></strong> from <strong><?php if ('' != get_comment_author_url()) { ?><a href="<?php comment_author_url(); ?>"><?php comment_author() ?></a><?php } else { comment_author(); } ?></strong><br />
 <?php comment_date() ?> at <?php comment_time(); ?></p>

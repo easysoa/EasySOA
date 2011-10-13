@@ -34,6 +34,14 @@ li {
 	margin-bottom: 10px;
 }
 
+#logoLink {
+    width: 220px;
+    height: 50px;
+    position: absolute;
+    left: 15px;
+    top: 10px;
+}
+
 #headerCore {
   width: 100%;
   padding-top: 10px;
@@ -145,9 +153,9 @@ input[disabled] {
 }
 
 input[type=submit] {
-  font-size: 13pt;
-  padding: 5px;
+  padding: 3px;
   width: 150px;
+  font-size: 12pt;
 }
 
 a {

@@ -1,3 +1,23 @@
+/**
+ * EasySOA Proxy
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@groups.google.com
+ */
+
 package org.openwide.easysoa.scaffolding;
 
 import java.net.URI;
@@ -7,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.common.ProxyUtil;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSEndpoint;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSField;
 import org.openwide.easysoa.scaffolding.wsdltemplate.WSOperation;
@@ -33,9 +54,10 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
  * @author jguillemotte
  *
  */
-// TODO Composite is like singleton, to change for a multi-user use
+// TODO Composite is like singleton, to change for a multi-user use, try with Conversation scope.
 // TODO Check compatibility with WSDL 2.0
-@Scope("COMPOSITE")
+//@Scope("COMPOSITE")
+@Scope("CONVERSATION")
 public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 
 	/**
@@ -51,24 +73,31 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	String defaultWsdl;
 	
 	@Override
-	public void setWsdl(String wsdlSource) throws Exception {
+	public String updateWsdl(String wsdlSource) throws Exception {
 		// Hack for Talend airport sample
 		if(wsdlSource == null || "".equals(wsdlSource)){
 			wsdlSource = defaultWsdl;
 		}
+
+		URL wsdlUrl = ProxyUtil.getUrlOrFile(wsdlSource);
+		
 		// Read WSDL version 1.1 or 2.0
 		WSDLReader reader;
 		logger.debug("WSDl source to parse : " + wsdlSource);
 		try {
 			reader = WSDLFactory.newInstance().newWSDLReader();
-			wsdlDescription = reader.read(new URL(wsdlSource));
+			wsdlDescription = reader.read(wsdlUrl);
 			logger.debug("WSDL Reading OK");
 		} catch (WSDLException wex) {
-			logger.error("A problem occurs during the parsing of the WSDl file !", wex);
+			logger.error("A problem occurs during the parsing of the WSDl file " + wsdlSource, wex);
 			throw wex;
+		} catch (Exception ex) {
+			logger.error("Unable to get WSDl file " + wsdlSource, ex);
+			throw ex;
 		}
+		return wsdlUrl.toString();
 	}
-	
+
 	@Override
 	public List<WSService> getServices(){
 		logger.debug("Entering in getServiceName method");

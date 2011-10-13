@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<talendfile:ContextType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" confirmationNeeded="false" name="Default">
+  <contextParameter comment="" name="resourcePath" prompt="resourcePath?" promptNeeded="false" type="id_String" value="/data/home/jguillemotte/Java-tools/TESB_SE-All-r67267-V4.2.1/workspace"/>
+</talendfile:ContextType>

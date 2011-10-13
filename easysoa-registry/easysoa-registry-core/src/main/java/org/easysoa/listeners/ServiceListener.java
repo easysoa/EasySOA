@@ -1,3 +1,23 @@
+/**
+ * EasySOA Registry
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@groups.google.com
+ */
+
 package org.easysoa.listeners;
 
 import static org.easysoa.doctypes.Service.DOCTYPE;
@@ -204,7 +224,8 @@ public class ServiceListener implements EventListener {
                 // XXX: Hacked Airport Light URL
                 if (fileUrl.contains("irport")) {
                     doc.setProperty(SCHEMA, PROP_FILEURL, 
-                            "http://localhost:"+EasySOAConstants.WEB_PORT+"/easysoa/light/modified_airport_soap.wsdl");
+                            "http://localhost:"+EasySOAConstants.HTML_FORM_GENERATOR_PORT
+                            +"/scaffoldingProxy/files/modified_airport_soap.wsdl");
                 }
                 else {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));

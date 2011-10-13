@@ -5,11 +5,18 @@
     <parent>
       <groupId>org.easysoa</groupId>
       <artifactId>parent</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>0.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>easysoa-common</artifactId>
-    <name>EasySOA Common Resources</name> 
+    <name>EasySOA Common Resources</name>
+	
+	<licenses>
+		<license>
+			<name>The GNU Lesser General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+		</license>
+	</licenses>
 
 	<dependencies>
 	    <!-- logs -->

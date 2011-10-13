@@ -1,6 +1,12 @@
+// EasySOA Web
+// Copyright (c) 2011 Open Wide and others
+// 
+// MIT licensed
+// 
+// Contact : easysoa-dev@groups.google.com
+
 /* 
- * Proxy which
- * WORK IN PROGRESS
+ * EasySOA Web server + Discovery by browsing proxy
  *
  * Author: Marwane Kalam-Alami
  */

@@ -27,6 +27,7 @@ $(function() {
 		
 		submit: function() {
 			if (this.getURL() != '') {
+                this.view.info("Sending request...");
 			    jQuery.ajax({
 			        url: '/send',
 			        data: {
@@ -36,14 +37,14 @@ $(function() {
 			          },
 			        success: function (data) {
 			            if (data == 'ok') {
-                           SubmitForm.success();
+                           SubmitForm.view.success();
                         }
                         else {
-                           SubmitForm.failure(data);
+                           SubmitForm.view.failure(data);
                         }
                       },
                     error: function (data) {
-                        SubmitForm.failure(data);
+                        SubmitForm.view.failure(data);
                       }
 			      });
 			    // Couldn't make it work through the proxy
@@ -62,14 +63,6 @@ $(function() {
 				"serviceName": descriptor.serviceName,
 				"applicationName": descriptor.applicationName
 			});
-		},
-		
-		success: function() {
-			this.view.success(); 
-		},
-		
-		failure: function(error) {
-			this.view.failure(error); 
 		}
 		
 	});
@@ -83,6 +76,7 @@ $(function() {
 		selectedWSDL: $('#submitSelectedWSDL'),
 		submitService: $('#submitService'),
 		submitApp: $('#submitApp'),
+		messageInfo: $('#messageInfo'),
 		messageSuccess: $('#messageSuccess'),
 		messageFailure: $('#messageFailure'),
 		
@@ -107,7 +101,24 @@ $(function() {
 			SubmitForm.submit();
 		},
 		
+		hideAllMessages: function() {
+			this.messageInfo.hide();
+			this.messageSuccess.hide();
+			this.messageFailure.hide();
+		},
+		
+		info: function(msg) {
+			this.hideAllMessages();
+			this.messageInfo.html(msg);
+			this.messageInfo.fadeIn(500, function() {
+					setTimeout(function() {
+						$('#messageInfo').fadeOut(500);
+					}, 3000);
+				});
+		},
+		
 		success: function() {
+			this.hideAllMessages();
 			this.messageSuccess.html('<img src="img/ok.png" height="15" /> WSDL registered');
 			this.messageSuccess.fadeIn(500, function() {
 					setTimeout(function() {
@@ -117,6 +128,7 @@ $(function() {
 		},
 		
 		failure: function(error) {
+			this.hideAllMessages();
 			this.messageFailure.html(error);
 			this.messageFailure.fadeIn(500, function() {
 					setTimeout(function() {
