@@ -30,7 +30,7 @@
 	<parent>
 		<groupId>org.easysoa.registry</groupId>
 		<artifactId>easysoa-registry-parent</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.4-SNAPSHOT</version>
 		<relativePath>../easysoa-registry-parent/pom.xml</relativePath>
 	</parent>
 	
@@ -64,7 +64,8 @@
 		<dependency>
 			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>core</artifactId>
-			<version>3.3.0.771</version>
+			<version>3.3.0-v_771</version><!--$NO-MVN-MAN-VER$-->
+			<!--<version>3.3.0.771</version>-->
 			<!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->
 			<scope>compile</scope>
 		</dependency>

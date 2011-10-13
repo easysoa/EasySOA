@@ -66,6 +66,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.automation.AutomationService;
@@ -155,6 +156,7 @@ public class EmbeddedFraSCAtiServiceTest
      * @throws Exception
      */
     @Test
+    @Ignore
     public void test() throws Exception
     {
   	  	//testGetComposite();
