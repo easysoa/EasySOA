@@ -11,7 +11,7 @@
 
 	<groupId>org.easysoa.registry</groupId>
 	<artifactId>easysoa-registry-parent</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>EasySOA Registry Parent</name>

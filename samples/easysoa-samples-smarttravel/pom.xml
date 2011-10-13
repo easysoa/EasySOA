@@ -6,7 +6,7 @@
     <groupId>org.easysoa.samples.smarttravel</groupId>
     <artifactId>easysoa-samples-smarttravel</artifactId>
     <name>EasySOA Sample Smart Travel Project</name>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     
 	<licenses>

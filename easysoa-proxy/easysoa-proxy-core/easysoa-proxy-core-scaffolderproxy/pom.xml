@@ -9,7 +9,7 @@
   <parent>
     <groupId>org.easysoa.proxy</groupId>
     <artifactId>easysoa-proxy-parent</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>
   </parent>
 
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>org.easysoa</groupId>
       <artifactId>easysoa-common</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>
