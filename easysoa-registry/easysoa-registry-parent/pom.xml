@@ -103,18 +103,16 @@
               <version>${project.version}</version>
             </dependency>
             <dependency>
-              <!-- Force org.eclipse.core.runtime version, to make sure it is fetched from a valid repository.
-              Otherwise, given our listed repositories, it uses version 3.4.0 which leads to a missing dependency
-              (org.eclipse.equinox:app:jar:[1.0.0,2.0.0)):
-                  1) org.easysoa.registry:easysoa-registry-frascati:jar:0.4-SNAPSHOT
-                  2) org.eclipse.jdt:core:jar:3.3.0-v_771
-                  3) org.eclipse.core:resources:jar:3.3.0-v20070604
-                  4) org.eclipse.core:expressions:jar:3.3.0-v20070606-0010
-                  5) org.eclipse.core:runtime:jar:3.4.0
-                   -->
+              <!-- Exclude unavailable dependency, which is not needed -->
               <groupId>org.eclipse.core</groupId>
               <artifactId>runtime</artifactId>
               <version>3.3.100-v20070530</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>org.eclipse.equinox</groupId>
+                  <artifactId>app</artifactId>
+                </exclusion>
+              </exclusions>
             </dependency>
 		</dependencies>
     

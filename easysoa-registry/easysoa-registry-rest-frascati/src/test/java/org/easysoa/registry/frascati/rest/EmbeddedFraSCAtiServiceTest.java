@@ -50,6 +50,8 @@ package org.easysoa.registry.frascati.rest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpHost;
@@ -218,9 +220,10 @@ public class EmbeddedFraSCAtiServiceTest
    	/**
    	 * Clean Nuxeo registery before to launch the tests
    	 * @throws JSONException 
+   	 * @throws IOException 
    	 */
     //@Test
-   	public static String cleanNuxeoRegistery() throws JSONException  {
+   	public static String cleanNuxeoRegistery() throws JSONException, IOException  {
 		log.info("cleanNuxeoRegistery...");
    		// Not possible NXQL to select only one field, only select * is available ..
    		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' AND (ecm:primaryType = 'Service' OR ecm:primaryType = 'ServiceAPI' OR ecm:primaryType = 'Workspace')";
