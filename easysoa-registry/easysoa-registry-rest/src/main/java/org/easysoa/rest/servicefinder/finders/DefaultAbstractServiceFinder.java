@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.easysoa.listeners.HttpFile;
+import org.easysoa.HttpFile;
 import org.easysoa.rest.servicefinder.ServiceFinder;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;

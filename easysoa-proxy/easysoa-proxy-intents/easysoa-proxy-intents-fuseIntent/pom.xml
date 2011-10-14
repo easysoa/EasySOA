@@ -4,7 +4,6 @@
 
 	<artifactId>easysoa-proxy-intents-fuseintent</artifactId>
 	<packaging>jar</packaging>
-	<version>0.4-SNAPSHOT</version>
 	<name>EasySOA Proxy Fuse Intent</name>
 
 	<parent>

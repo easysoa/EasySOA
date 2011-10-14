@@ -72,7 +72,7 @@ public class DocumentCreationTest extends AbstractRestTest {
 	public void testCreateAppliImpl() throws Exception {
 		String url = "http://myApp.com/", title = "myApp";
 
-		RestNotificationRequest notification = notificationFactory
+		RestNotificationRequest notification = getRestNotificationFactory()
 				.createNotification(RestNotificationService.APPLIIMPL);
 		Assume.assumeNotNull(notification); // TODO Assumes are a bit random ATM, improve them
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
@@ -91,7 +91,7 @@ public class DocumentCreationTest extends AbstractRestTest {
 	public void testCreateServiceAPI() throws Exception {
 		String url = "api/", parentUrl = "http://myApp.com/", title = "myApi";
 
-		RestNotificationRequest notification = notificationFactory
+		RestNotificationRequest notification = getRestNotificationFactory()
 				.createNotification(RestNotificationService.SERVICEAPI);
 		Assume.assumeNotNull(notification);
 		notification.setProperty(ServiceAPI.PROP_TITLE, title)
@@ -111,7 +111,7 @@ public class DocumentCreationTest extends AbstractRestTest {
 	public void testCreateService() throws Exception {
 		String url = "service", parentUrl = "api/", title = "myService";
 
-		RestNotificationRequest notification = notificationFactory
+		RestNotificationRequest notification = getRestNotificationFactory()
 				.createNotification(RestNotificationService.SERVICE);
 		Assume.assumeNotNull(notification);
 		notification.setProperty(Service.PROP_TITLE, title)

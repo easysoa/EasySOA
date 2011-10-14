@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.core.contrib.lifecycle">
 
-  <!-- Create EasySOA-specific lifecycle -->
-  <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="lifecycle">
+  <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
+    <types>
+      <type name="Service">default</type>
+      <type name="ServiceAPI">default</type>
+      <type name="ServiceReference">default</type>
+      <type name="Workspace">default</type>
+    </types>
+  </extension>
+
+  <!-- Create EasySOA-specific lifecycle 
+    NOTE: Seems to break default lifecycle-related features,
+    including workflows and trash management -->
+  <!-- <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="lifecycle">
     <lifecycle name="easysoa" defaultInitial="found">
       <transitions>
         <transition destinationState="approved" name="approve">
@@ -42,9 +53,9 @@
         </state>
       </states>
     </lifecycle>
-  </extension>
+  </extension>-->
 
-  <!-- Assign custom document types to the EasySOA lifecycle -->
+  <!-- Assign custom document types to the EasySOA lifecycle
   <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
     <types>
       <type name="Service">easysoa</type>
@@ -52,6 +63,6 @@
       <type name="ServiceReference">easysoa</type>
       <type name="Workspace">easysoa</type>
     </types>
-  </extension>
+  </extension> -->
 
 </component>
