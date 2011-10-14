@@ -4,7 +4,6 @@
 
 	<artifactId>easysoa-proxy-intents-logintent</artifactId>
 	<packaging>jar</packaging>
-	<version>0.4-SNAPSHOT</version>
 	<name>EasySOA Proxy Log Intent</name>
 
 	<parent>

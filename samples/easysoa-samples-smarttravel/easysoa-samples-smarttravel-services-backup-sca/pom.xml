@@ -6,7 +6,6 @@
     <groupId>org.easysoa.samples.smarttravel</groupId>
     <artifactId>easysoa-samples-smarttravel-services-backup-sca</artifactId>
     <name>EasySOA Sample Smart Travel Services Backup (using SCA)</name>
-    <version>0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     
 	<parent>
