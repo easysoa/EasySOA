@@ -31,7 +31,7 @@
 			<name>Download.java.net repository</name>
 			<url>http://download.java.net/maven/2/</url>
 		</repository>
-		<!-- For ?? -->		
+		<!-- For Frascati SNAPSHOT versions -->		
 		<repository>
 			<id>ow2-snapshot</id>
 			<url>http://maven.ow2.org//maven2-snapshot</url>
