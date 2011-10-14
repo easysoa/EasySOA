@@ -34,6 +34,7 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.HttpFile;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.properties.PropertyNormalizer;
@@ -234,7 +235,7 @@ public class ServiceListener implements EventListener {
             else {
                 String potentialWsdlUrl = url+"?wsdl";
                 HttpFile file = new HttpFile(new URL(potentialWsdlUrl));
-                if (file.isFileAvailable()) {
+                if (file.isURLAvailable()) {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(potentialWsdlUrl));
                 }
             }

@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.listeners;
+package org.easysoa;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -51,20 +53,15 @@ public class HttpFile {
         this.url = url;
     }
 
-    public boolean isFileAvailable() {
-        boolean result = true;
-        HttpURLConnection connection = null;
+    public boolean isURLAvailable() {
         try {
-            connection = ((HttpURLConnection) this.url.openConnection());
-        } catch (IOException e) {
-            result = false;
+            new Socket().connect(new InetSocketAddress(
+                    url.getHost(), (url.getPort() != -1) ? url.getPort() : 80));
+            return true;
         }
-        finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+        catch (IOException e) {
+            return false;
         }
-        return result;
     }
     
     public HttpFile download() throws MalformedURLException, IOException, URISyntaxException {

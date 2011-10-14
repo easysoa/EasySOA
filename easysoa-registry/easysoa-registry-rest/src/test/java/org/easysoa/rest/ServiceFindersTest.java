@@ -22,6 +22,7 @@ package org.easysoa.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Iterator;
 
 import javax.ws.rs.core.UriInfo;
@@ -31,9 +32,11 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.HttpFile;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
 import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONObject;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -46,13 +49,9 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 @RunWith(FeaturesRunner.class)
 @Features({EasySOACoreFeature.class, WebEngineFeature.class})
-@Deploy({
-    "org.easysoa.registry.rest"
-})
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
-@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
-    "org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
-    "org.easysoa.registry.rest:OSGI-INF/serviceFinders-contrib.xml"})
+@Deploy({"org.easysoa.registry.rest"})
+@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
 public class ServiceFindersTest {
 
     static final Log log = LogFactory.getLog(ServiceFindersTest.class);
@@ -60,9 +59,16 @@ public class ServiceFindersTest {
     @Test
     public void testServiceFinder() throws Exception {
         
+        // TODO: Embed in test a web page containing WSDLs to find
+        String onlineServiceURL = "http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/";
+       
+        // Check that the service is available
+        HttpFile onlineServiceFile = new HttpFile(new URL(onlineServiceURL));
+        Assume.assumeTrue(onlineServiceFile.isURLAvailable());
+        
         // Make request
         ServiceFinderRest serviceFinder = new ServiceFinderRest();
-        Object obj = serviceFinder.doGet(mockUriInfo("http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/"));
+        Object obj = serviceFinder.doGet(mockUriInfo(onlineServiceURL));
         
         // Check result data
         Assert.assertNotNull(obj);

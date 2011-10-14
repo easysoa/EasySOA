@@ -66,7 +66,7 @@ public class DocumentationTest extends AbstractRestTest {
 	@Test
 	public void testNotificationDocumentation() throws Exception {
 		// Create request
-		RestNotificationRequest request = notificationFactory.createNotification(RestNotificationService.SERVICE, "GET");
+		RestNotificationRequest request = getRestNotificationFactory().createNotification(RestNotificationService.SERVICE, "GET");
 		JSONObject doc = request.send();
 		
 		// Check documentation contents

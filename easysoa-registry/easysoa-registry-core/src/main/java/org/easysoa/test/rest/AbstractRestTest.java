@@ -46,13 +46,13 @@ import org.nuxeo.runtime.api.Framework;
  */
 public abstract class AbstractRestTest {
     
-    protected static AutomationHelper automation = null;
-    protected static RestNotificationFactory notificationFactory = null;
     protected static boolean useEmbeddedNuxeo;
 
     private static Log log = LogFactory.getLog(AbstractRestTest.class);
+    private static AutomationHelper automation = null;
+    private static RestNotificationFactory notificationFactory = null;
     private static Object notificationFactorySync = new Object();
-
+    
     protected static void setUp(CoreSession session, String targetedNuxeoPropsPath) throws Exception {
         
         synchronized (notificationFactorySync) {
@@ -115,6 +115,14 @@ public abstract class AbstractRestTest {
         notificationFactory = new RestNotificationFactory(nuxeoUrl);
 
         }
+    }
+    
+    protected static AutomationHelper getAutomationHelper() {
+        return automation;
+    }
+    
+    protected static RestNotificationFactory getRestNotificationFactory() {
+        return notificationFactory;
     }
 
     protected void assertDocumentExists(CoreSession session, String doctype, String url) throws Exception {
