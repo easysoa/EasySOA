@@ -69,8 +69,7 @@ public class ParsingProcessingContext implements ProcessingContext {
 	//////////////////////////////////////////////
 	// delegate enhanced methods
 
-	public <T> Class<T> loadClass(String className)
-			throws ClassNotFoundException {
+	public <T> Class<T> loadClass(String className) throws ClassNotFoundException {
 		try {
 			return delegate.loadClass(className);
 		} catch (Exception e) {

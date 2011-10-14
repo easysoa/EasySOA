@@ -23,7 +23,7 @@ package org.easysoa.sca.visitors;
 import javax.xml.namespace.QName;
 
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.ScaImporter;
+import org.easysoa.sca.XMLScaImporter;
 
 /**
  * Visitor for WS reference bindings
@@ -38,7 +38,7 @@ public class WSReferenceBindingVisitor extends ReferenceBindingVisitorBase {
     }
     
     public boolean isOkFor(QName bindingQName) {
-        return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.ws"));
+        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.ws"));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class WSReferenceBindingVisitor extends ReferenceBindingVisitorBase {
         // getting referenced service url
         String refUrl = compositeReader.getAttributeValue(null, "uri"); // rather than "" ?! // TODO SCA_URI
         if (refUrl == null) {
-            String wsdlLocation = compositeReader.getAttributeValue(ScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
+            String wsdlLocation = compositeReader.getAttributeValue(XMLScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
             if (wsdlLocation != null) {
                 refUrl = wsdlLocation.replace("?wsdl", "");
             }

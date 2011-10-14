@@ -22,8 +22,10 @@ package org.easysoa.sca.visitors;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.ScaImporter;
+import org.easysoa.sca.XMLScaImporter;
 
 /**
  * Visitor for REST bindings
@@ -33,17 +35,20 @@ import org.easysoa.sca.ScaImporter;
  */
 public class RestBindingScaVisitor extends ServiceBindingVisitorBase {
     
+	private static Log log = LogFactory.getLog(RestBindingScaVisitor.class);	
+	
     public RestBindingScaVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
     
     public boolean isOkFor(QName bindingQName) {
-        return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.rest"));
+        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.rest"));
     }
 
     @Override
-    protected String getBindingUrl() {
-        String serviceUrl = compositeReader.getAttributeValue(ScaImporter.FRASCATI_URI, "uri");
+    public String getBindingUrl() {
+    	log.debug("getBindingUrl");
+        String serviceUrl = compositeReader.getAttributeValue(XMLScaImporter.FRASCATI_URI, "uri");
         return serviceUrl;
     }
 

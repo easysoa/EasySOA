@@ -26,11 +26,13 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.ScaImporter;
+import org.easysoa.sca.XMLScaImporter;
 import org.nuxeo.ecm.core.api.ClientException;
 
 /**
@@ -42,22 +44,32 @@ import org.nuxeo.ecm.core.api.ClientException;
 // TODO: Refactor visitor implementations
 public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
     
+	private static Log log = LogFactory.getLog(ServiceBindingVisitorBase.class);	
+	
+	/**
+	 * 
+	 * @param scaImporter
+	 */
     public ServiceBindingVisitorBase(IScaImporter scaImporter) {
         super(scaImporter);
     }
 
+    @Override
     public boolean isOkFor(QName bindingQName) {
-        return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.ws"));
+        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.ws"));
     }
     
+    @Override
     public void visit() throws ClientException, MalformedURLException {
-        
+        log.debug("#### VISIT METHOD #####");
         String serviceUrl = getBindingUrl();
         if (serviceUrl == null) {
+        	log.debug("serviceUrl is null, returning !");
             // TODO error
             return;
         }
-        
+    	
+        log.debug("serviceUrl is not null, registering API's and services...");
         String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         String apiUrl = notificationService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         
@@ -78,10 +90,13 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
         properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
         properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?
         notificationService.notifyService(documentManager, properties);
-        
     }
 
-    protected abstract String getBindingUrl();
+    /**
+     * 
+     * @return
+     */
+    public abstract String getBindingUrl();
 
     @Override
     public void postCheck() throws ClientException {

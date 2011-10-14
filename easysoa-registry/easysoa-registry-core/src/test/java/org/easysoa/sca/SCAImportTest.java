@@ -97,7 +97,7 @@ public class SCAImportTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-		ScaImporter importer = new ScaImporter(session, new InputStreamBlob(new FileInputStream(scaFile)));
+		XMLScaImporter importer = new XMLScaImporter(session, new InputStreamBlob(new FileInputStream(scaFile)));
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");

@@ -22,8 +22,10 @@ package org.easysoa.sca.visitors;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.ScaImporter;
+import org.easysoa.sca.XMLScaImporter;
 
 /**
  * Visitor for WS bindings.
@@ -33,19 +35,27 @@ import org.easysoa.sca.ScaImporter;
  */
 public class WSBindingScaVisitor extends ServiceBindingVisitorBase {
     
+	private static Log log = LogFactory.getLog(WSBindingScaVisitor.class);		
+	
+	/**
+	 * 
+	 * @param scaImporter
+	 */
     public WSBindingScaVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
     
+    @Override
     public boolean isOkFor(QName bindingQName) {
-        return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.ws"));
+        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.ws"));
     }
 
     @Override
-    protected String getBindingUrl() {
+    public String getBindingUrl() {
+    	log.debug("getBindingUrl");
         String serviceUrl = compositeReader.getAttributeValue(null, "uri"); // rather than "" ?! // TODO SCA_URI
         if (serviceUrl == null) {
-            String wsdlLocation = compositeReader.getAttributeValue(ScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
+            String wsdlLocation = compositeReader.getAttributeValue(XMLScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
             if (wsdlLocation != null) {
                 serviceUrl = wsdlLocation.replace("?wsdl", "");
             }

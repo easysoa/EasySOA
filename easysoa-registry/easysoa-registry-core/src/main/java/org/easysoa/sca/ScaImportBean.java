@@ -87,9 +87,9 @@ public class ScaImportBean {
 
         if (compositeFile != null) {
             
-            ScaImporter importer;
+            XMLScaImporter importer;
             try {
-                importer = new ScaImporter(documentManager, compositeFile);
+                importer = new XMLScaImporter(documentManager, compositeFile);
                 DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
                 if (parentAppliImpl != null) {
                     importer.setParentAppliImpl(appliImplModel);

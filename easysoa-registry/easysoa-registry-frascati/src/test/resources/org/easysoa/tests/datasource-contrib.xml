@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.tests.datasources">
-  <extension target="org.nuxeo.runtime.datasource" point="datasources">
-    <datasource name="jdbc/nxsqldirectory" driverClassName="org.h2.Driver"
-      maxActive="20" maxIdle="5">
-      <property name="url">jdbc:h2:target/test-nuxeo-dir/h2/nuxeo-dir</property>
-    </datasource>
-  </extension>
+	<extension target="org.nuxeo.runtime.datasource" point="datasources">
+		<datasource name="jdbc/nxsqldirectory" driverClassName="org.h2.Driver" maxActive="20" maxIdle="5">
+			<property name="url">jdbc:h2:target/test-nuxeo-dir/h2/nuxeo-dir</property>
+		</datasource>
+	</extension>
 </component>

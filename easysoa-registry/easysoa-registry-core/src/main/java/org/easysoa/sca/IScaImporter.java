@@ -21,11 +21,9 @@
 package org.easysoa.sca;
 
 import javax.xml.stream.XMLStreamReader;
-
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-
 
 /**
  * Introduced to ease adding another (notably FraSCAti-based) SCA importer in addition to the
@@ -36,15 +34,57 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  */
 public interface IScaImporter {
 
+	/**
+	 * 
+	 * @return
+	 */
     public CoreSession getDocumentManager();
-    /** TODO alas still a tight coupling with the original XML-based importer */
+    
+    // TODO alas still a tight coupling with the original XML-based importer
+    /**
+     * 
+     */
     public XMLStreamReader getCompositeReader();
 
+    /**
+     * 
+     * @return
+     */
     public Blob getCompositeFile();
+    
+    /**
+     * 
+     * @return
+     */
     public String getServiceStackType();
+    
+    /**
+     * 
+     * @return
+     */
     public String getServiceStackUrl();
+    
+    /**
+     * 
+     * @return
+     */
     public DocumentModel getParentAppliImplModel();
 
+    /**
+     * 
+     * @return
+     */
     public String getCurrentArchiName();
+    
+    /**
+     * 
+     * @return
+     */
     public String toCurrentArchiPath();
+    
+    /**
+     * 
+     * @return
+     */
+    public String getBindingUrl();
 }

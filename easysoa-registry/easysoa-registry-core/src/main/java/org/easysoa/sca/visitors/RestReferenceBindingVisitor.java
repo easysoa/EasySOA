@@ -23,7 +23,7 @@ package org.easysoa.sca.visitors;
 import javax.xml.namespace.QName;
 
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.ScaImporter;
+import org.easysoa.sca.XMLScaImporter;
 
 /**
  * Visitor for REST reference bindings
@@ -33,18 +33,23 @@ import org.easysoa.sca.ScaImporter;
  */
 public class RestReferenceBindingVisitor extends ReferenceBindingVisitorBase {
     
-    public RestReferenceBindingVisitor(IScaImporter scaImporter) {
+    /**
+     * 
+     * @param scaImporter
+     */
+	public RestReferenceBindingVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
-    
+
+    @Override
     public boolean isOkFor(QName bindingQName) {
-        return bindingQName.equals(new QName(ScaImporter.SCA_URI, "binding.rest"));
+        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.rest"));
     }
 
     @Override
     protected String getBindingUrl() {
         // getting referenced service url
-        String refUrl = compositeReader.getAttributeValue(ScaImporter.FRASCATI_URI, "uri");
+        String refUrl = compositeReader.getAttributeValue(XMLScaImporter.FRASCATI_URI, "uri");
         return refUrl;
     }
 

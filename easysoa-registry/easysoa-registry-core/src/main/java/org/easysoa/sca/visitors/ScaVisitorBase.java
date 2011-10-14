@@ -41,6 +41,10 @@ public abstract class ScaVisitorBase implements ScaVisitor {
     protected XMLStreamReader compositeReader;
     protected NotificationService notificationService;
     
+    /**
+     * 
+     * @param scaImporter
+     */
     public ScaVisitorBase(IScaImporter scaImporter) {
         this.documentManager = scaImporter.getDocumentManager();
         this.scaImporter = scaImporter;

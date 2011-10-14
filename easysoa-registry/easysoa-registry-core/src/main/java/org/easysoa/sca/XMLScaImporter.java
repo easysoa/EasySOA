@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.visitors.RestBindingScaVisitor;
 import org.easysoa.sca.visitors.RestReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
+import org.easysoa.sca.visitors.ServiceBindingVisitorBase;
 import org.easysoa.sca.visitors.WSBindingScaVisitor;
 import org.easysoa.sca.visitors.WSReferenceBindingVisitor;
 import org.easysoa.services.DocumentService;
@@ -59,7 +60,7 @@ import org.nuxeo.runtime.api.Framework;
  * @author mdutoo, mkalam-alami, jguillemotte
  *
  */
-public class ScaImporter implements IScaImporter {
+public class XMLScaImporter implements IScaImporter {
 
     public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
     public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
@@ -68,7 +69,7 @@ public class ScaImporter implements IScaImporter {
     public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
     public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
     
-    private static Log log = LogFactory.getLog(ScaImporter.class);
+    private static Log log = LogFactory.getLog(XMLScaImporter.class);
 
     private CoreSession documentManager;
     private Blob compositeFile;
@@ -84,7 +85,7 @@ public class ScaImporter implements IScaImporter {
     private List<ScaVisitor> scaVisitorsToPostCheck = new ArrayList<ScaVisitor>();
     
     
-    public ScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
+    public XMLScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
         this.documentManager = documentManager;
         this.compositeFile = compositeFile;
         this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class)
@@ -104,6 +105,10 @@ public class ScaImporter implements IScaImporter {
         serviceBindingVisitors.add(new WSReferenceBindingVisitor(this));
         serviceBindingVisitors.add(new RestReferenceBindingVisitor(this));
         return serviceBindingVisitors;
+    }
+    
+    public String getBindingUrl() {
+    	return null; // TODO put here methods from REST & SOAP service visitors
     }
 
     public void importSCA() throws IOException, XMLStreamException, ClientException {
