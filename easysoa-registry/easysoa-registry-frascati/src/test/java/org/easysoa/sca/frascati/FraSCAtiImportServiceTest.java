@@ -66,7 +66,19 @@ import com.google.inject.Inject;
 @Deploy({
 	"org.easysoa.registry.frascati",
 	//"org.easysoa.registry.core" // deployed auto by dep
-	"org.nuxeo.runtime.datasource"
+	"org.nuxeo.runtime.datasource",
+
+	// BUG should but does not work without deploying the following deps
+	// taken from easysoa-registry-core's EasySOACoreTestFeature
+    //"org.easysoa.registry.core",
+    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
+    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
+    "org.easysoa.registry.core:OSGI-INF/NotificationServiceComponent.xml", // idem
+    "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
+    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
+    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
+    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
+    //"org.nuxeo.runtime.datasource"
 })
 @LocalDeploy({
 	"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
@@ -131,7 +143,7 @@ public class FraSCAtiImportServiceTest
 		// services :
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "/Proxy/restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(1, resDocList.size());
 		resDoc = resDocList.get(0);
 		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));

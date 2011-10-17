@@ -60,6 +60,9 @@ import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
 import org.eclipse.stp.sca.WebServiceBinding;
+import org.eclipse.stp.sca.impl.ComponentReferenceImpl;
+import org.eclipse.stp.sca.impl.ComponentServiceImpl;
+import org.eclipse.stp.sca.impl.ServiceImpl;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -262,7 +265,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * @return
 	 */
 	// TODO Complete this method for other binding like REST binding
-	protected String getBindingUrl(Binding binding) {
+	/*protected String getBindingUrl(Binding binding) {
 		// TODO merge with getBindingUrl() through Stack<EObject>
 		log.debug("Binding EObject : " +  binding.eClass());
 		String serviceUrl = binding.getUri();
@@ -276,20 +279,48 @@ public class FraSCAtiScaImporter implements IScaImporter {
 					serviceUrl = wsdlLocations.get(0).replace("?wsdl", "");
 				}
 			}
-			/*
-			eg :
-			else if (binding instanceof HttpServiceBinding) {
-				problem ... Added a rest binding in the RestSoapProxyComposite
-				...
-			}
-			*/
+			//eg :
+			//else if (binding instanceof HttpServiceBinding) {
+			//	problem ... Added a rest binding in the RestSoapProxyComposite
+			//	...
+			//}
 		}
 		log.debug("serviceUrl : " + serviceUrl);
 		return serviceUrl;
-	}
+	}*/
+	
+	@Override
     public String getBindingUrl() {
-    	log.debug("current binding : " + getCurrentBinding());
-    	return null; // TODO put here methods from REST & SOAP service visitors
+    	log.debug("$$$$ current binding : " + getCurrentBinding());
+    	String serviceUrl = null;
+    	Binding binding = null;
+    	if(getCurrentBinding() instanceof ComponentService){
+    		ComponentService componentService = (ComponentService) getCurrentBinding();
+    		binding = componentService.getBinding().get(0);
+    		serviceUrl = binding.getUri();
+    	} else if(getCurrentBinding() instanceof Service){
+    		Service service = (Service) getCurrentBinding();
+    		binding = service.getBinding().get(0);
+    		serviceUrl = binding.getUri();
+    	} else if(getCurrentBinding() instanceof ComponentReference){
+    		ComponentReference componentReference = (ComponentReference) getCurrentBinding();
+    		binding = componentReference.getBinding().get(0);
+    		log.debug("binding name => " + binding.getName());
+    		serviceUrl = binding.getUri();
+    	}
+    	if(serviceUrl == null){
+			log.debug("%%%%%% getBinding(), binding class type => " + binding);
+			if (binding instanceof WebServiceBinding) {
+				List<String> wsdlLocations = ((WebServiceBinding) binding).getWsdlLocation();
+				if (wsdlLocations != null && wsdlLocations.size() != 0) {
+					serviceUrl = wsdlLocations.get(0).replace("?wsdl", "");
+				}
+			}
+			// TODO how to get REST Bindings ....
+			// And how to register the bindings ...
+    	}
+    	//log.debug("serviceUrl => " + serviceUrl);
+    	return serviceUrl; // TODO put here methods from REST & SOAP service visitors
     	//log.debug("getBindingUrl");
         /*
     	String serviceUrl = compositeReader.getAttributeValue(null, "uri"); // rather than "" ?! // TODO SCA_URI
@@ -316,7 +347,8 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		NotificationService notificationService = Framework.getRuntime().getService(NotificationService.class);
 		FraSCAtiScaImporter scaImporter = this;
 
-		String serviceUrl = getBindingUrl(binding);
+		//String serviceUrl = getBindingUrl(binding);
+		String serviceUrl = getBindingUrl();
 		if (serviceUrl == null) {
 			log.debug("serviceUrl is null, method visitBinding returns");
 			// TODO error
@@ -369,7 +401,9 @@ public class FraSCAtiScaImporter implements IScaImporter {
             notificationService.notifyService(documentManager, properties);
         } catch (MalformedURLException e) {
             log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
-        }		
+        }
+        
+        
 		
 	}
 
