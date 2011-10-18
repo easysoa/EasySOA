@@ -5,7 +5,7 @@ $(function() {
 	window.AppView = Backbone.View.extend({
 	
 	    error: function(msg) {
-              console.log(msg);
+              console.error(msg);
               SubmitForm.failure(msg);
 	    },
 	    
