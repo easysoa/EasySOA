@@ -53,7 +53,6 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
 
     @Override
     public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, MalformedURLException {
-        log.debug("#### VISIT METHOD #####");
         String serviceUrl = bindingInfoProvider.getBindingUrl();
         if (serviceUrl == null) {
         	log.debug("serviceUrl is null, returning !");

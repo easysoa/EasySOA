@@ -234,7 +234,7 @@ public class XMLScaImporter implements IScaImporter {
             List<BindingInfoProvider> bindingInfoProviders) throws ClientException {
         QName bindingQName = compositeReader.getName();
         for (BindingInfoProvider bindingInfoProvider : bindingInfoProviders) {
-            if (bindingInfoProvider.isOkFor(bindingQName.getNamespaceURI(), bindingQName.getLocalPart())) {
+            if (bindingInfoProvider.isOkFor(bindingQName)) {
 	        	try {
 	                scaVisitor.visit(bindingInfoProvider);
 	                scaVisitorsToPostCheck.add(scaVisitor);

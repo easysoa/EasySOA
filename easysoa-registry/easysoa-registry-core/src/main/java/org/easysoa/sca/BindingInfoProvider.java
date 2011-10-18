@@ -9,9 +9,17 @@ package org.easysoa.sca;
  */
 public interface BindingInfoProvider {
 
-	boolean isOkFor(String namespace, String bindingName);
-	//boolean isOkFor(QName bindingQName);
+	/**
+	 * 
+	 * @param object The object to test
+	 * @return True is the object is ok, false otherwise
+	 */
+	boolean isOkFor(Object object);
 
+	/**
+	 * 
+	 * @return
+	 */
 	String getBindingUrl();
 
 }
