@@ -30,7 +30,7 @@
 	<parent>
 		<groupId>org.easysoa.registry</groupId>
 		<artifactId>easysoa-registry-parent</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.4-SNAPSHOT</version>
 		<relativePath>../easysoa-registry-parent/pom.xml</relativePath>
 	</parent>
 	
@@ -191,7 +191,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.nuxeo.ecm.platform</groupId>
-			<artifactId>nuxeo-platform-webapp</artifactId>
+			<artifactId>nuxeo-platform-webapp</artifactId><!-- ??? -->
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-webapp-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-webapp-base</artifactId><!-- with the previous one, provides the admin ui -->
 		</dependency>
 		<dependency>
 			<groupId>org.nuxeo.ecm.platform</groupId>
