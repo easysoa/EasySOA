@@ -83,7 +83,8 @@ webServer.configure(function(){
     webServer.use(urlFixer);
     webServer.use(easysoaAuth.authFilter);
     webServer.use(webServer.router);
-    webServer.use(express.favicon());
+    console.log(__dirname + '/' + settings.webRoot + '/favicon.ico');
+    webServer.use(express.favicon(__dirname + '/favicon.ico', { maxAge: 0 }));
     webServer.use(express.static(__dirname + '/' + settings.webRoot));
     webServer.use(express.directory(__dirname + '/' + settings.webRoot));
 });
