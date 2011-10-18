@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -42,13 +43,13 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 // TODO: Refactor visitor implementations
-public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
+public class ReferenceBindingVisitor extends ScaVisitorBase {
 
-    private static Log log = LogFactory.getLog(ReferenceBindingVisitorBase.class);
+    private static Log log = LogFactory.getLog(ReferenceBindingVisitor.class);
     
     protected DocumentModel referenceModel;
 
-    public ReferenceBindingVisitorBase(IScaImporter scaImporter) {
+    public ReferenceBindingVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
     
@@ -71,11 +72,11 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
         return sbuf.toString();
     }
     
-    public void visit() throws ClientException {
+    public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException {
 
         // Notify service reference
         Map<String, String> properties = new HashMap<String, String>();
-        String refUrl = getBindingUrl();
+        String refUrl = bindingInfoProvider.getBindingUrl();
         properties.put(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
         properties.put(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
         properties.put(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
@@ -113,7 +114,5 @@ public abstract class ReferenceBindingVisitorBase extends ScaVisitorBase {
             log.warn("Reference URL is invalid", e);
         }
     }
-
-    protected abstract String getBindingUrl();
 
 }

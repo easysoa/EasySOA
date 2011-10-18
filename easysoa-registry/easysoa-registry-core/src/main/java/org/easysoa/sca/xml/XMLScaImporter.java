@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.sca;
+package org.easysoa.sca.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,11 +35,11 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.sca.visitors.RestBindingScaVisitor;
-import org.easysoa.sca.visitors.RestReferenceBindingVisitor;
+import org.easysoa.sca.BindingInfoProvider;
+import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.visitors.ScaVisitor;
-import org.easysoa.sca.visitors.WSBindingScaVisitor;
-import org.easysoa.sca.visitors.WSReferenceBindingVisitor;
+import org.easysoa.sca.visitors.ReferenceBindingVisitor;
+import org.easysoa.sca.visitors.ServiceBindingVisitor;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
@@ -83,33 +83,30 @@ public class XMLScaImporter implements IScaImporter {
     private Stack<String> archiNameStack = new Stack<String>();
     private List<ScaVisitor> scaVisitorsToPostCheck = new ArrayList<ScaVisitor>();
     
-    
+    /**
+     * 
+     * @param documentManager
+     * @param compositeFile
+     * @throws ClientException
+     */
     public XMLScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
         this.documentManager = documentManager;
         this.compositeFile = compositeFile;
         this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class)
                 .getDefaultAppliImpl(documentManager);
-        init();
-    }
-
-    public List<ScaVisitor> createServiceBindingVisitors() {
-        ArrayList<ScaVisitor> serviceBindingVisitors = new ArrayList<ScaVisitor>();
-        serviceBindingVisitors.add(new WSBindingScaVisitor(this));
-        serviceBindingVisitors.add(new RestBindingScaVisitor(this));
-        return serviceBindingVisitors;
-    }
-     
-    public List<ScaVisitor> createReferenceBindingVisitors() {
-        ArrayList<ScaVisitor> serviceBindingVisitors = new ArrayList<ScaVisitor>();
-        serviceBindingVisitors.add(new WSReferenceBindingVisitor(this));
-        serviceBindingVisitors.add(new RestReferenceBindingVisitor(this));
-        return serviceBindingVisitors;
+        //init();
     }
     
     public String getBindingUrl() {
     	return null; // TODO put here methods from REST & SOAP service visitors
     }
 
+    /**
+     * 
+     * @throws IOException
+     * @throws XMLStreamException
+     * @throws ClientException
+     */
     public void importSCA() throws IOException, XMLStreamException, ClientException {
 
         // Initialization
@@ -150,14 +147,14 @@ public class XMLScaImporter implements IScaImporter {
                     // service !
                     getArchiNameStack().push(name);
                     acceptBindingParentVisitors(compositeReader,
-                            SCA_SERVICE_QNAME, createServiceBindingVisitors());
+                            SCA_SERVICE_QNAME, createServiceBindingVisitors(), createBindingInfoProviders());
                     getArchiNameStack().pop();
                     
                 } else if (elementName.equals(SCA_REFERENCE_QNAME)) {
                     // reference !
                     getArchiNameStack().push(name);
                     acceptBindingParentVisitors(compositeReader,
-                            SCA_REFERENCE_QNAME, createReferenceBindingVisitors());
+                            SCA_REFERENCE_QNAME, createReferenceBindingVisitors(), createBindingInfoProviders());
                     getArchiNameStack().pop();
                 }
                 
@@ -196,43 +193,59 @@ public class XMLScaImporter implements IScaImporter {
         this.serviceStackUrl = serviceStackUrl;
     }
 
-    private void init() {
+    //private void init() {
         /*elementQnameToScaVisitor = new HashMap<QName, ScaVisitor>();
         elementQnameToScaVisitor.put(SCA_SERVICE_QNAME, null);
         elementQnameToScaVisitor.put(SCA_REFERENCE_QNAME, null);*/
+    //}
+
+    public ScaVisitor createServiceBindingVisitors() {
+        return new ServiceBindingVisitor(this);
+    }
+     
+    public ScaVisitor createReferenceBindingVisitors() {
+        return new ReferenceBindingVisitor(this);
+    }
+
+    private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
+    public List<BindingInfoProvider> createBindingInfoProviders() {
+    	if (bindingInfoProviders == null) {
+    		bindingInfoProviders = new ArrayList<BindingInfoProvider>();
+            bindingInfoProviders.add(new WSBindingInfoProvider(this));
+            bindingInfoProviders.add(new RestBindingInfoProvider(this));
+    	}
+        return bindingInfoProviders;
     }
 
     private void acceptBindingParentVisitors(XMLStreamReader compositeReader,
-            QName scaQname, List<ScaVisitor> bindingVisitors)
+            QName scaQname, ScaVisitor scaVisitor,
+            List<BindingInfoProvider> bindingInfoProviders)
             throws XMLStreamException, ClientException {
-        while (compositeReader.next() != XMLEvent.END_ELEMENT
-                || !compositeReader.getName().equals(scaQname)) {
-            if (compositeReader.getEventType() == XMLEvent.START_ELEMENT
-                    && compositeReader.getLocalName().startsWith("binding.")) {
+        while (compositeReader.next() != XMLEvent.END_ELEMENT || !compositeReader.getName().equals(scaQname)) {
+            if (compositeReader.getEventType() == XMLEvent.START_ELEMENT && compositeReader.getLocalName().startsWith("binding.")) {
                 // binding !
-                acceptBindingVisitors(compositeReader, bindingVisitors);
+                acceptBindingVisitors(compositeReader, scaVisitor, bindingInfoProviders);
             }
         }
     }
 
     private void acceptBindingVisitors(XMLStreamReader compositeReader,
-            List<ScaVisitor> bindingVisitors) throws ClientException {
+            ScaVisitor scaVisitor,
+            List<BindingInfoProvider> bindingInfoProviders) throws ClientException {
         QName bindingQName = compositeReader.getName();
-        for (ScaVisitor bindingVisitor : bindingVisitors) {
-            if (bindingVisitor.isOkFor(bindingQName)) {
-                try {
-                    bindingVisitor.visit();
-                    scaVisitorsToPostCheck.add(bindingVisitor);
-                } catch (Exception ex) {
-                    log.error("Error when visiting binding " + bindingVisitor.getDescription()
-                            + " at archi path " + toCurrentArchiPath()
-                            + " in SCA composite file " + compositeFile.getFilename(), ex);
-                }
+        for (BindingInfoProvider bindingInfoProvider : bindingInfoProviders) {
+            if (bindingInfoProvider.isOkFor(bindingQName.getNamespaceURI(), bindingQName.getLocalPart())) {
+	        	try {
+	                scaVisitor.visit(bindingInfoProvider);
+	                scaVisitorsToPostCheck.add(scaVisitor);
+	            } catch (Exception ex) {
+	                log.error("Error when visiting binding " + scaVisitor.getDescription()
+	                        + " at archi path " + toCurrentArchiPath()
+	                        + " in SCA composite file " + compositeFile.getFilename(), ex);
+	            }
             }
         }
     }    
-    
-
 
     public String getCurrentArchiName() {
         return getArchiNameStack().peek();
@@ -247,7 +260,6 @@ public class XMLScaImporter implements IScaImporter {
         return sbuf.toString();
     }
     
-
     public CoreSession getDocumentManager() {
         return documentManager;
     }

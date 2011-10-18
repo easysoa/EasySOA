@@ -20,8 +20,6 @@
 
 package org.easysoa.sca.visitors;
 
-import javax.xml.stream.XMLStreamReader;
-
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.NotificationService;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -33,12 +31,10 @@ import org.nuxeo.runtime.api.Framework;
  * @author mdutoo
  *
  */
-// TODO: Refactor visitor implementations
 public abstract class ScaVisitorBase implements ScaVisitor {
 
     protected CoreSession documentManager;
     protected IScaImporter scaImporter;
-    protected XMLStreamReader compositeReader;
     protected NotificationService notificationService;
     
     /**
@@ -48,7 +44,6 @@ public abstract class ScaVisitorBase implements ScaVisitor {
     public ScaVisitorBase(IScaImporter scaImporter) {
         this.documentManager = scaImporter.getDocumentManager();
         this.scaImporter = scaImporter;
-        this.compositeReader = scaImporter.getCompositeReader();
         this.notificationService = Framework.getRuntime().getService(NotificationService.class);
     }
     

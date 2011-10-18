@@ -20,22 +20,16 @@
 
 package org.easysoa.sca.visitors;
 
-import javax.xml.namespace.QName;
+import org.easysoa.sca.BindingInfoProvider;
 
 public interface ScaVisitor {
 
     /**
-     * If this visitor applies 
-     * @param bindingQName
-     * @return
-     */
-    boolean isOkFor(QName bindingQName);
-
-    /**
      * 
+     * @param bindingInfoProvider 
      * @throws Exception when local, not fatal error
      */
-    void visit() throws Exception;
+    void visit(BindingInfoProvider bindingInfoProvider) throws Exception;
 
     /**
      * To resolve linking when visit is finished

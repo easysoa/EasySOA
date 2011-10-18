@@ -19,7 +19,7 @@
 		</reference>
 		<reference name="wsLocalTest">
 			<interface.java interface="pureairflowers.clients.PureAirFlowersClients" />
-			<binding.ws name="webService"
+			<binding.ws name="webServiceTest"
 				wsdlElement="http://clients.pureairflowers/#wsdl.port(PureAirFlowers/PureAirFlowersClientsImplPort)"
 				instance:wsdlLocation="http://localhost:9000/PureAirFlowersClientsLocalTest?wsdl" />
 		</reference>
@@ -46,7 +46,7 @@
 	</component>
 	<service name="ProxyService" promote="Proxy/restInterface">
 		<interface.java interface="com.openwide.sca.proxy.RestSoapProxy" />
-		<frascati:binding.rest uri="http://localhost:7001/" />
+		<frascati:binding.rest uri="http://localhost:7001/" name="test" />
 		<binding.ws uri="http://localhost:9000/restSoapProxyWS" />
 	</service>
 	
@@ -58,7 +58,7 @@
   	</component>	
   	<service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">
     	<interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
-    	<frascati:binding.rest uri="http://localhost:7001/"/>
+    	<frascati:binding.rest uri="http://localhost:7085/"/>
   	</service>	
 </composite>
 

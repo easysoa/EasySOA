@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.sca.xml.XMLScaImporter;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;

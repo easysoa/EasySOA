@@ -20,7 +20,6 @@
 
 package org.easysoa.sca;
 
-import javax.xml.stream.XMLStreamReader;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -35,16 +34,10 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 public interface IScaImporter {
 
 	/**
-	 * 
+	 * Returns the Nuxeo document manager
 	 * @return
 	 */
     public CoreSession getDocumentManager();
-    
-    // TODO alas still a tight coupling with the original XML-based importer
-    /**
-     * 
-     */
-    public XMLStreamReader getCompositeReader();
 
     /**
      * 

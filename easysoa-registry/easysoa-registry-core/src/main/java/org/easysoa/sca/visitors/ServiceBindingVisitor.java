@@ -24,15 +24,13 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.XMLScaImporter;
 import org.nuxeo.ecm.core.api.ClientException;
 
 /**
@@ -41,28 +39,22 @@ import org.nuxeo.ecm.core.api.ClientException;
  * @author mkalam-alami
  *
  */
-// TODO: Refactor visitor implementations
-public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
+public class ServiceBindingVisitor extends ScaVisitorBase {
     
-	private static Log log = LogFactory.getLog(ServiceBindingVisitorBase.class);	
+	private static Log log = LogFactory.getLog(ServiceBindingVisitor.class);	
 	
 	/**
 	 * 
 	 * @param scaImporter
 	 */
-    public ServiceBindingVisitorBase(IScaImporter scaImporter) {
+    public ServiceBindingVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
 
     @Override
-    public boolean isOkFor(QName bindingQName) {
-        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.ws"));
-    }
-    
-    @Override
-    public void visit() throws ClientException, MalformedURLException {
+    public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, MalformedURLException {
         log.debug("#### VISIT METHOD #####");
-        String serviceUrl = getBindingUrl();
+        String serviceUrl = bindingInfoProvider.getBindingUrl();
         if (serviceUrl == null) {
         	log.debug("serviceUrl is null, returning !");
             // TODO error
@@ -91,12 +83,6 @@ public abstract class ServiceBindingVisitorBase extends ScaVisitorBase {
         properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?
         notificationService.notifyService(documentManager, properties);
     }
-
-    /**
-     * 
-     * @return
-     */
-    public abstract String getBindingUrl();
 
     @Override
     public void postCheck() throws ClientException {
