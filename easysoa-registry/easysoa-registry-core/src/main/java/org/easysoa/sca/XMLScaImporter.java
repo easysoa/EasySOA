@@ -38,7 +38,6 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.visitors.RestBindingScaVisitor;
 import org.easysoa.sca.visitors.RestReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
-import org.easysoa.sca.visitors.ServiceBindingVisitorBase;
 import org.easysoa.sca.visitors.WSBindingScaVisitor;
 import org.easysoa.sca.visitors.WSReferenceBindingVisitor;
 import org.easysoa.services.DocumentService;

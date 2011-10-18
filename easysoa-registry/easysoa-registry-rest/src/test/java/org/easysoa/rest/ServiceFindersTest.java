@@ -51,7 +51,9 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 @Features({EasySOACoreFeature.class, WebEngineFeature.class})
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @Deploy({"org.easysoa.registry.rest"})
-@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
+@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
+    "org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
+    "org.easysoa.registry.rest:OSGI-INF/serviceFinders-contrib.xml"})
 public class ServiceFindersTest {
 
     static final Log log = LogFactory.getLog(ServiceFindersTest.class);

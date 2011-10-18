@@ -43,7 +43,9 @@ public class LogIntent implements IntentHandler {
 	    System.out.println("[LOG INTENT] PUT LOG INTENT CODE TO RUN BEFORE THE JOINPOINT PROCESSING");
 	    Object[] args = ijp.getArguments();
 	    for(Object obj : args){
-	    	System.out.println("[LOG INTENT]  Arg Object type : " + obj.getClass().getName() + ", Object value : " + obj.toString());
+	        if (obj != null) {
+	            System.out.println("[LOG INTENT]  Arg Object type : " + obj.getClass().getName() + ", Object value : " + obj.toString());
+	        }
 	    }
 	    ret = ijp.proceed();
 	    //
