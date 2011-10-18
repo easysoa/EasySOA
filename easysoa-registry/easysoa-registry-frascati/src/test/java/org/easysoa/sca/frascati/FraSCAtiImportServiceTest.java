@@ -143,7 +143,7 @@ public class FraSCAtiImportServiceTest
 		// services :
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "/Proxy/restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(1, resDocList.size());
 		resDoc = resDocList.get(0);
 		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));

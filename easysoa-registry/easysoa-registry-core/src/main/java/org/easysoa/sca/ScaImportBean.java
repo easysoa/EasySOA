@@ -28,6 +28,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.sca.xml.XMLScaImporter;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
