@@ -18,33 +18,6 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-/**
- * EasySOA: OW2 FraSCAti in Nuxeo
- * Copyright (C) 2011 INRIA, University of Lille 1
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
- * USA
- *
- * Contact: frascati@ow2.org
- *
- * Author: Philippe Merle
- *
- * Contributor(s):
- *
- */
-
 package org.easysoa.registry.frascati.rest;
 
 import static org.junit.Assert.*;
@@ -67,11 +40,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.server.AutomationServer;
+import org.nuxeo.ecm.core.test.annotations.BackendType;
+import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.webengine.WebEngine;
 import org.nuxeo.ecm.webengine.app.WebEngineModule;
 import org.nuxeo.ecm.webengine.test.WebEngineFeature;
@@ -86,8 +62,8 @@ import com.google.inject.Inject;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 /**
- * Tests FraSCAti service.
- * @author Philippe Merle - INRIA
+ * Tests easysoa-registry-rest (on top of REST Nuxeo) with HTTP monitoring (on Nuxeo-embedded FraSCAti)
+ * @author Marc Dutoo
  *
  * TODO MDU jetty, binding
  *
@@ -113,7 +89,10 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 	"org.nuxeo.theme.webengine",
 	///"org.nuxeo.theme.webengine:OSGI-INF/nxthemes-webengine-contrib.xml",
 	//"org.nuxeo.ecm.actions",
-	"org.nuxeo.ecm.actions:OSGI-INF/actions-framework.xml",
+	////"org.nuxeo.ecm.actions:OSGI-INF/actions-framework.xml",
+	/////"org.nuxeo.ecm.platform.actions",
+    /////"org.nuxeo.ecm.platform.actions.relations.web",
+	"org.nuxeo.ecm.webapp.ui", // not required, gets the ui anyway ?!
 	"org.nuxeo.ecm.platform.search",
 	"org.nuxeo.ecm.relations.jena",
 	"org.nuxeo.ecm.relations",
@@ -131,12 +110,13 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 	//"org.nuxeo.ecm.automation.features:OSGI-INF/batchmanager-framework.xml"
 })
 @LocalDeploy({
-	"org.nuxeo.ecm.platform.webengine.sites.core.contrib:OSGI-INF/webengine-sites-relation-contrib.xml",
+	/////"org.nuxeo.ecm.platform.webengine.sites.core.contrib:OSGI-INF/webengine-sites-relation-contrib.xml",
 	"org.nuxeo.ecm.relations.jena:OSGI-INF/nxrelations-test-jena-bundle.xml",
 	"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"
 })
 //@Jetty(config="test_jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
+//@RepositoryConfig(type=BackendType.H2)
 public class EmbeddedFraSCAtiServiceTest
 {
 
@@ -146,11 +126,18 @@ public class EmbeddedFraSCAtiServiceTest
     @Inject AutomationService automationService;
     @Inject AutomationServer automationServer;
     @Inject WebEngine webEngine;
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception
+    {
+        //assertNotNull(frascatiService.getComposite("httpDiscoveryProxy"));
+    }
     
     @Before
     public void setUp() throws Exception
     {
-  	  	//assertNotNull("Cannot get FraSCAti service component", frascatiService);
+  	  	//assertNotNull("FraSCAti service component unavailable", frascatiService);
+        //assertNotNull(frascatiService.getComposite("httpDiscoveryProxy"));
     }
     
     /**
@@ -158,23 +145,34 @@ public class EmbeddedFraSCAtiServiceTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void test() throws Exception
     {
-  	  	//testGetComposite();
-  	  	//testInfiniteLoopDetection();
-    	assertNotNull(automationService);
-    	assertNotNull(automationServer);
-    	assertNotNull(Framework.getService(AutomationService.class));
-    	assertNotNull(webEngine);
-    	WebEngineModule[] modules = webEngine.getApplications();
-    	for (WebEngineModule module : modules) {
-    		System.out.println(" module " + module.getId());
-    	}
-    	webEngine.reload();
-    	webEngine.reloadModules();
-    	//webEngine.addApplication(app);
-  	  	cleanNuxeoRegistery();
+        testNuxeo(); // tests REST nuxeo
+        testHttpMonitoring(); // starts monitoring
+  	  	testInfiniteLoopDetection(); // monitoring basic test
+    }
+    
+    /**
+     * Test
+     * @throws Exception
+     */
+    //@Test
+    public void testNuxeo() throws Exception
+    {
+        assertNotNull(automationService);
+        assertNotNull(automationServer);
+        assertNotNull(Framework.getService(AutomationService.class));
+        assertNotNull(webEngine);
+        WebEngineModule[] modules = webEngine.getApplications();
+        for (WebEngineModule module : modules) {
+            System.out.println(" module " + module.getId());
+        }
+        webEngine.reload();
+        webEngine.reloadModules();
+        //webEngine.addApplication(app);
+
+        starter();
+        cleanNuxeoRegistery(); // tests REST nuxeo
     }
     
     /**
@@ -189,14 +187,14 @@ public class EmbeddedFraSCAtiServiceTest
     }
     
     /**
-     * Test load SCA composite
+     * Test start HTTP monitoring
+     * WARNING don't forget to use the right registry properties in httpDiscoveryProxy.properties !
      * @throws Exception
      */
-    @Test
-    public void testGetComposite() throws Exception
+    //@Test
+    public void testHttpMonitoring() throws Exception
     {
-      //frascatiService.getComposite("helloworld-pojo");
-      frascatiService.getComposite("httpDiscoveryProxy");
+        assertNotNull(frascatiService.getComposite("httpDiscoveryProxy"));
     }
   
     
