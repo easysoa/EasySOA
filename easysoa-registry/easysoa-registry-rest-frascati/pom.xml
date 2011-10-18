@@ -51,12 +51,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.openwide.easysoa</groupId>
+			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-rest</artifactId>
 			<version>0.4-SNAPSHOT</version><!-- TODO dep mgmt in parent -->
 		</dependency>
 		<dependency>
-			<groupId>org.openwide.easysoa.proxy</groupId>
+			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 			<version>0.4-SNAPSHOT</version><!-- TODO dep mgmt in parent -->
 		</dependency>
