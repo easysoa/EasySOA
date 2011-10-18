@@ -43,6 +43,19 @@
 	</properties>
 	
 	<dependencies>
+	    <!-- REQUIRED AT ALL IMPORT LEVELS, copied from easysoa-registry-frascati -->
+		<!-- Force to use the following JDT else an older is used -->
+		<!-- i.e. Nuxeo's 3.1.1-NXP-4284 which is a maven "managed dependency" version -->
+		<!-- TODO don't require it, packaging (imply removing it from nuxeo distrib ??) -->
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>
+			<!-- version>3.3.0-v_771</version --><!-- maven.org --><!--$NO-MVN-MAN-VER$-->
+			<!-- version>3.1.1-NXP-4284</version --><!-- nuxeo-->
+			<version>3.3.0.771</version><!-- openarchitectureware.org -->
+			<!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->
+			<scope>compile</scope>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.easysoa.registry</groupId>
