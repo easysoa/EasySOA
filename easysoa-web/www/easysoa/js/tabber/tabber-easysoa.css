@@ -87,8 +87,7 @@ ul.tabbernav li.tabberactive a:hover
 
  /* If you set a fix height set overflow to auto and you will get a
     scrollbar when necessary */
-
- /* overflow:auto; */
+  overflow:auto; 
 }
 
 /* If desired, hide the heading since a heading is provided by the tab */
@@ -97,14 +96,14 @@ ul.tabbernav li.tabberactive a:hover
 }
 .tabberlive .tabbertab h3 {
  display:none;
-}*./
+}*/
 
 /* Example of using an ID to set different styles for the tabs on the page */
-.tabberlive#tab1 {
+/*.tabberlive#tab1 {
 }
 .tabberlive#tab2 {
 }
 .tabberlive#tab2 .tabbertab {
  height:200px;
  overflow:auto;
-}
+}*/

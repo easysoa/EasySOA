@@ -48,10 +48,12 @@ function isRequestToSocketIO(request) {
     return request.url.indexOf("socket.io") != -1;
 }
 
-function isInIgnoreList(request_url) {
+function isInIgnoreList(urlString) {
+	if (urlString.indexOf("socket.io") != -1) {
+		return true;
+	}
     for (i in settings.ignore) {
-	    if (request_url.pathname.indexOf(settings.ignore[i]) != -1
-	        || request_url.pathname.indexOf("socket.io") != -1) {
+	    if (urlString.indexOf(settings.ignore[i]) != -1) {
 		    return true;
 	    }
     }
@@ -83,7 +85,8 @@ webServer.configure(function(){
     webServer.use(urlFixer);
     webServer.use(easysoaAuth.authFilter);
     webServer.use(webServer.router);
-    webServer.use(express.favicon());
+    console.log(__dirname + '/' + settings.webRoot + '/favicon.ico');
+    webServer.use(express.favicon(__dirname + '/favicon.ico', { maxAge: 0 }));
     webServer.use(express.static(__dirname + '/' + settings.webRoot));
     webServer.use(express.directory(__dirname + '/' + settings.webRoot));
 });
@@ -186,7 +189,7 @@ var proxyServer = http.createServer(function(request, response) {
         });
       
         // Scraping
-        if (!isInIgnoreList(request_url)) {
+        if (!isInIgnoreList(request.url)) {
             console.log("[INFO] Scraping: " + request.url);
             easysoaScraping.sendUrlToScrapers(request_url, function(scraperResults) {
               for (var linkName in scraperResults) {

@@ -57,6 +57,12 @@ function submitForm(form, url, wsdlUrl, serviceName, binding, operation, respons
                 outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
            }
         }
-    );
+    )
+    .error(function() {
+       for(j=0; j<outputFields.length; j++){
+            var fieldName = outputFields[j].name;
+            outputFields[j].value = "Error.";
+       }
+    });
 
 }

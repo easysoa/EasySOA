@@ -47,8 +47,9 @@
 
 package org.easysoa.registry.frascati.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+
+import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -130,6 +131,7 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 	//"org.nuxeo.ecm.automation.features:OSGI-INF/batchmanager-framework.xml"
 })
 @LocalDeploy({
+	"org.nuxeo.ecm.platform.webengine.sites.core.contrib:OSGI-INF/webengine-sites-relation-contrib.xml",
 	"org.nuxeo.ecm.relations.jena:OSGI-INF/nxrelations-test-jena-bundle.xml",
 	"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"
 })
@@ -173,14 +175,24 @@ public class EmbeddedFraSCAtiServiceTest
     	webEngine.reloadModules();
     	//webEngine.addApplication(app);
   	  	cleanNuxeoRegistery();
-    	System.in.read();//
+    }
+    
+    /**
+     * Test
+     * @throws Exception
+     */
+    @Test
+    @Ignore
+    public void starter() throws Exception
+    {
+    	System.in.read();
     }
     
     /**
      * Test load SCA composite
      * @throws Exception
      */
-    //@Test
+    @Test
     public void testGetComposite() throws Exception
     {
       //frascatiService.getComposite("helloworld-pojo");
@@ -220,7 +232,7 @@ public class EmbeddedFraSCAtiServiceTest
    	 * @throws JSONException 
    	 */
     //@Test
-   	public static String cleanNuxeoRegistery() throws JSONException  {
+   	public static String cleanNuxeoRegistery() throws IOException, JSONException  {
 		log.info("cleanNuxeoRegistery...");
    		// Not possible NXQL to select only one field, only select * is available ..
    		String nuxeoQuery = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' AND (ecm:primaryType = 'Service' OR ecm:primaryType = 'ServiceAPI' OR ecm:primaryType = 'Workspace')";
