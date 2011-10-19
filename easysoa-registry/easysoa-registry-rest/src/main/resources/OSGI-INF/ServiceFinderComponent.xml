@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.rest.servicefinder.ServiceFinderComponent">
+
+  <documentation>
+    The service finding tool allows to search for services from a given URL.
+    This component provides a way to register new ways to find services.
+    @author Marwane Kalam-Alami
+  </documentation>
+
+  <implementation class="org.easysoa.rest.servicefinder.ServiceFinderComponent" />
+
+  <extension-point name="serviceFinders">
+    <object class="org.easysoa.rest.servicefinder.ServiceFinderDescriptor" />
+  </extension-point>
+
+</component>
