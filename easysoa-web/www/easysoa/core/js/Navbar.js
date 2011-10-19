@@ -20,8 +20,8 @@ $(function() {
 			var url = this.get("url");
 			if (url.indexOf(this.HTTP) == -1)
 				return (withHTTP) ? this.HTTP+url : url;
-  		else
-  		  return url;
+	  		else
+	  		  return url;
 		},
 		
 		update: function(newUrl) {

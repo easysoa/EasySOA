@@ -43,6 +43,10 @@ exports.provideWsdl = function(linkName, link) {
     exports.broadcastemit('wsdl', wsdlList[linkName]);
 }
 
+exports.clearWsdls = function() {
+    wsdlList = new Array();
+}
+
 exports.setClientWellConfigured = function(request) {
 	// XXX: Emits event to everyone
 	clientWellConfigured = true;

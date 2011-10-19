@@ -48,6 +48,7 @@ $(function() {
                       }
 			      });
 			    // Couldn't make it work through the proxy
+			    // TODO Fix socket.io requests
 			  /*window.socket.send(JSON.stringify({
 			    'url': this.getURL(),
 			    'servicename': $('#submitService').attr('value'),

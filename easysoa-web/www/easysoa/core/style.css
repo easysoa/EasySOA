@@ -171,6 +171,13 @@ li {
 	overflow: auto;
 }
 
+#trash {
+	float: right;
+	width: 16px;
+	height: 18px;
+	background: url('img/trash.png');
+}
+
 .inputLabel {
 	width: 100%;
 }
