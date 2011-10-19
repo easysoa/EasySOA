@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Contact : easysoa-dev@groups.google.com
+ * Contact : easysoa-dev@googlegroups.com
  */
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://www.webserviceX.NET", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)

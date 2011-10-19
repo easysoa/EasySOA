@@ -3,7 +3,7 @@
 // 
 // MIT licensed
 // 
-// Contact : easysoa-dev@groups.google.com
+// Contact : easysoa-dev@googlegroups.com
 
 /* 
  * Provides functions to communicate with the discovery by browsing tool.

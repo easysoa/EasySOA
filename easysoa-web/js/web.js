@@ -3,7 +3,7 @@
 // 
 // MIT licensed
 // 
-// Contact : easysoa-dev@groups.google.com
+// Contact : easysoa-dev@googlegroups.com
 
 /* 
  * EasySOA Web server + Discovery by browsing proxy
