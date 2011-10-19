@@ -41,7 +41,6 @@ public class WSBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 
 	@Override
 	public boolean isOkFor(Object object) {
-		log.debug("Object to check : " + object);
 		if (object instanceof WebServiceBinding) {
 			return true;
 		}

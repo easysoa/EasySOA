@@ -141,13 +141,12 @@ public class FraSCAtiImportServiceTest
 		new RepositoryLogger(session, "Repository state after import").logAllRepository();
 		
 		// services :
-		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(1, resDocList.size());
 		resDoc = resDocList.get(0);
 		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
-		/*
+		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(1, resDocList.size());
@@ -155,21 +154,20 @@ public class FraSCAtiImportServiceTest
 		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
 
 		// references :
-		
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				ServiceReference.DOCTYPE + "' AND "
+		/*resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				Service.DOCTYPE + "' AND " 
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				+ " = '" +  "ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(1, resDocList.size());
 
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				ServiceReference.DOCTYPE + "' AND "
+				Service.DOCTYPE + "' AND "
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
 				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());
+		assertEquals(1, resDocList.size());*/
 		
 		// api :
-		
+		/*
 		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
 		assertEquals("PureAirFlowers API", apiModel.getTitle());*/
 		
