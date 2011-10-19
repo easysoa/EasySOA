@@ -18,19 +18,13 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-
 package org.easysoa.registry.frascati;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.frascati.FraSCAtiScaImporter;
 import org.eclipse.stp.sca.WebServiceBinding;
 
 public class WSBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 
-	// Logger
-	private static Log log = LogFactory.getLog(WSBindingInfoProvider.class);	
-	
 	/**
 	 * 
 	 * @param frascatiScaImporter

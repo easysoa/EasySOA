@@ -51,7 +51,6 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 import com.google.inject.Inject;
 
-
 /**
  * Tests SCA import.
  * Done in the manner of SCAImportBean.

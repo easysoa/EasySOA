@@ -18,32 +18,24 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.registry.frascati;
+package org.easysoa.sca.extension;
 
-import org.easysoa.sca.frascati.FraSCAtiScaImporter;
-import org.eclipse.stp.sca.domainmodel.frascati.RestBinding;
+import org.nuxeo.common.xmap.annotation.XContent;
+import org.nuxeo.common.xmap.annotation.XNode;
+import org.nuxeo.common.xmap.annotation.XObject;
 
-public class RestBindingInfoProvider extends FrascatiBindingInfoProviderBase {
+/**
+ * 
+ * @author jguillemotte
+ */
+@XObject("serviceFinder")
+public class ScaImporterDescriptor {
 
-	/**
-	 * 
-	 * @param frascatiScaImporter
-	 */
-	public RestBindingInfoProvider(FraSCAtiScaImporter frascatiScaImporter) {
-		super(frascatiScaImporter);
-	}
+    @XContent
+    protected String implementation;
 
-	@Override
-	public boolean isOkFor(Object object) {
-		if (object instanceof RestBinding) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String getBindingUrl() {
-		return frascatiScaImporter.getBindingUrl();
-	}
-
+    @XNode("@enabled")
+    protected boolean enabled = true;
+    
 }
+ 

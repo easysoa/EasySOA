@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-
-//import javax.xml.namespace.QName;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
@@ -131,6 +128,12 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 */
     private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
 	
+    public FraSCAtiScaImporter(){
+    	this.documentManager = null;
+    	this.compositeFile = null;
+    	this.parentAppliImplModel = null;
+    }
+    
 	/**
 	 * Constructor
 	 * @param documentManager Nuxeo document manager
@@ -324,6 +327,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * @throws Exception
 	 */
 	public void importSCAZip() throws Exception {
+		log.debug("Importing SCA Composite contained in ZIP");
 		// Initialization
 		File scaZipTmpFile = File.createTempFile(IdUtils.generateStringId(), ".jar");
 		compositeFile.transferTo(scaZipTmpFile);
@@ -334,7 +338,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		for (Composite scaZipComposite : scaZipCompositeSet) {
 			visitComposite(scaZipComposite);
 		}
-
 	}
 
 	/**
@@ -342,6 +345,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * @throws Exception
 	 */
 	public void importSCAComposite() throws Exception {
+		log.debug("Importing SCA Composite");
 		// Initialization
 		File compositeTmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
 		compositeFile.transferTo(compositeTmpFile);
@@ -429,6 +433,19 @@ public class FraSCAtiScaImporter implements IScaImporter {
 
 	public Stack<EObject> getBindingStack(){
 		return bindingStack;
+	}
+
+	@Override
+	public void importSCA() throws Exception {
+		String scaFileName = compositeFile.getFilename();
+		log.debug("scaFileName = " + compositeFile.getFilename());
+		if (scaFileName.endsWith(".composite")) {
+			importSCAComposite();
+		} else if (scaFileName.endsWith(".jar") || scaFileName.endsWith(".zip")) {
+			importSCAZip();
+		} else {
+			throw new Exception("Unsupported file type : neither a Composite nor an SCA zip or jar");
+		}		
 	}
 
 }

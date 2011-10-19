@@ -82,7 +82,8 @@ import com.google.inject.Inject;
 })
 @LocalDeploy({
 	"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
-	"org.easysoa.registry.core:org/easysoa/tests/datasource-contrib.xml" // required because no jetty.naming in deps
+	"org.easysoa.registry.frascati:OSGI-INF/sca-importer-frascati-contrib.xml",
+	"org.easysoa.registry.core:test/datasource-contrib.xml" // required because no jetty.naming in deps
 })
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class FraSCAtiImportServiceTest
