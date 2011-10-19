@@ -18,33 +18,32 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
-package org.easysoa.sca.xml;
+package org.easysoa.registry.frascati;
 
-import javax.xml.namespace.QName;
+import org.easysoa.sca.frascati.FraSCAtiScaImporter;
+import org.eclipse.stp.sca.domainmodel.frascati.RestBinding;
 
-public class WSBindingInfoProvider extends XMLBindingInfoProviderBase {
+public class RestBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 
-	public WSBindingInfoProvider(XMLScaImporter xmlScaImporter) {
-		super(xmlScaImporter);
+	/**
+	 * 
+	 * @param frascatiScaImporter
+	 */
+	public RestBindingInfoProvider(FraSCAtiScaImporter frascatiScaImporter) {
+		super(frascatiScaImporter);
 	}
 
 	@Override
 	public boolean isOkFor(Object object) {
-		QName bindingQName = (QName) object;
-        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.ws"));
+		if (object instanceof RestBinding) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public String getBindingUrl() {
-        // getting referenced service url
-        String refUrl = xmlScaImporter.getCompositeReader().getAttributeValue(null, "uri"); // rather than "" ?! // TODO SCA_URI
-        if (refUrl == null) {
-            String wsdlLocation = xmlScaImporter.getCompositeReader().getAttributeValue(XMLScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
-            if (wsdlLocation != null) {
-                refUrl = wsdlLocation.replace("?wsdl", "");
-            }
-        }
-        return refUrl;
+		return frascatiScaImporter.getBindingUrl();
 	}
 
 }

@@ -124,6 +124,11 @@ webServer.get('/send', function(request, response, next) {
        }
 });
 
+webServer.get('/clear', function(request, response, next) {
+	easysoaDbb.clearWsdls();
+	response.end();
+});
+
 // Tunnel Proxy rules :
 // TODO LATER make it generic with a loop and a table in settings
 scaffolding_server_url = url.parse(settings.scaffoldingServer);
@@ -173,6 +178,9 @@ proxy.on('proxyError', function(error, request, result) {
 
 var proxyServer = http.createServer(function(request, response) {
 
+    request.url = fixUrl(request.url);
+    request_url = url.parse(request.url);
+        
 	// Allow the client to know that it's configured correctly
 	if (!isRequestToSocketIO(request)) {
 		easysoaDbb.setClientWellConfigured(request);
@@ -181,8 +189,6 @@ var proxyServer = http.createServer(function(request, response) {
     // Proxying
     if (!isRequestToProxy(request)) {
 
-        request.url = fixUrl(request.url);
-        request_url = url.parse(request.url);
         proxy.proxyRequest(request, response, {
             host: request_url.hostname,
             port: request_url.port
@@ -198,9 +204,7 @@ var proxyServer = http.createServer(function(request, response) {
             });
         }
     }
-    else { 
-        request.url = request.url.replace('http://localhost:'+settings.proxyPort, '');
-    }
+    
 });
 
 easysoaNuxeo.checkNuxeo(null, null, function(result) {

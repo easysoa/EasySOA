@@ -34,6 +34,29 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 public interface IScaImporter {
 
 	/**
+	 * Import a SCA
+	 */
+	public void importSCA() throws Exception;
+	
+	/**
+	 * 
+	 * @param appliImplModel
+	 */
+	public void setParentAppliImpl(DocumentModel appliImplModel);
+	
+	/**
+	 * 
+	 * @param serviceStackType
+	 */
+	public void setServiceStackType(String serviceStackType);
+	
+	/**
+	 * 
+	 * @param serviceStackUrl
+	 */
+	public void setServiceStackUrl(String serviceStackUrl);
+	
+	/**
 	 * Returns the Nuxeo document manager
 	 * @return
 	 */

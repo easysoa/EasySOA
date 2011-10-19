@@ -11,4 +11,4 @@ Bundle-Vendor: INRIA
 Nuxeo-Require: org.nuxeo.ecm.core.api,
  org.nuxeo.ecm.core,
  org.easysoa.registry.core
-Nuxeo-Component: OSGI-INF/frascati-service.xml
+Nuxeo-Component: OSGI-INF/frascati-service.xml, OSGI-INF/sca-importer-frascati-contrib.xml  

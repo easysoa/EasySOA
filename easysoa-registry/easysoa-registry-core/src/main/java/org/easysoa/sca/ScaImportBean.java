@@ -22,13 +22,11 @@ package org.easysoa.sca;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.model.SelectItem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.sca.xml.XMLScaImporter;
+import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
@@ -88,9 +86,10 @@ public class ScaImportBean {
 
         if (compositeFile != null) {
             
-            XMLScaImporter importer;
+            IScaImporter importer;
             try {
-                importer = new XMLScaImporter(documentManager, compositeFile);
+            	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, compositeFile);
+                
                 DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
                 if (parentAppliImpl != null) {
                     importer.setParentAppliImpl(appliImplModel);
@@ -103,7 +102,6 @@ public class ScaImportBean {
                 }
                 
                 importer.importSCA();
-                
                 navigationContext.navigateToRef(appliImplModel.getRef());
                 
             } catch (Exception e) {

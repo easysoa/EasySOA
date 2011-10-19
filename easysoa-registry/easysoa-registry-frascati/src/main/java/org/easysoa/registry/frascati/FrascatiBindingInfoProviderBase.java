@@ -18,28 +18,21 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
+package org.easysoa.registry.frascati;
 
-package org.easysoa.sca.xml;
+import org.easysoa.sca.BindingInfoProvider;
+import org.easysoa.sca.frascati.FraSCAtiScaImporter;
 
-import javax.xml.namespace.QName;
+public abstract class FrascatiBindingInfoProviderBase implements BindingInfoProvider {
 
-public class RestBindingInfoProvider extends XMLBindingInfoProviderBase {
-
-	public RestBindingInfoProvider(XMLScaImporter xmlScaImporter) {
-		super(xmlScaImporter);
-	}
-
-	@Override
-	public boolean isOkFor(Object object) {
-		QName bindingQName = (QName) object;
-        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.rest"));
-	}
-
-	@Override
-	public String getBindingUrl() {
-        // getting referenced service url
-        String refUrl = xmlScaImporter.getCompositeReader().getAttributeValue(XMLScaImporter.FRASCATI_URI, "uri");
-        return refUrl;
-	}
-
+    protected FraSCAtiScaImporter frascatiScaImporter;
+    
+    /**
+     * 
+     * @param frascatiScaImporter
+     */
+    public FrascatiBindingInfoProviderBase(FraSCAtiScaImporter frascatiScaImporter) {
+    	this.frascatiScaImporter = frascatiScaImporter;
+    }
+	
 }

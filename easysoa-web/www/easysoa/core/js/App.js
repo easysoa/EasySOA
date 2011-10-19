@@ -18,6 +18,7 @@ $(function() {
 			this.frameView = new FrameView;
 			this.navBarView = new NavbarView;
 			this.submitFormView = new SubmitFormView;
+			this.serviceListView = new ServiceListView;
         
 	        socket = io.connect();
 	        

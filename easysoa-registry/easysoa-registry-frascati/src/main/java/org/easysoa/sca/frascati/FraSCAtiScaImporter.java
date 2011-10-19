@@ -25,14 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-
-//import javax.xml.namespace.QName;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.registry.frascati.FraSCAtiService;
 import org.easysoa.registry.frascati.RestBindingInfoProvider;
 import org.easysoa.registry.frascati.WSBindingInfoProvider;
@@ -42,7 +37,6 @@ import org.easysoa.sca.visitors.ReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.sca.visitors.ServiceBindingVisitor;
 import org.easysoa.services.DocumentService;
-import org.easysoa.services.NotificationService;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.BaseReference;
 import org.eclipse.stp.sca.BaseService;
@@ -54,6 +48,7 @@ import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
 import org.eclipse.stp.sca.WebServiceBinding;
+import org.eclipse.stp.sca.domainmodel.frascati.RestBinding;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -133,6 +128,12 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 */
     private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
 	
+    public FraSCAtiScaImporter(){
+    	this.documentManager = null;
+    	this.compositeFile = null;
+    	this.parentAppliImplModel = null;
+    }
+    
 	/**
 	 * Constructor
 	 * @param documentManager Nuxeo document manager
@@ -143,7 +144,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
 		this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
-		/*init();*/
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
     }	
 	
 	/**
-	 * Visit the composite
+	 * Visit the composite. For eachservice, component, reference ... visit the associated bindings
 	 * @param scaComposite the composite to visit
 	 */
 	private void visitComposite(Composite scaComposite) {
@@ -190,15 +190,13 @@ public class FraSCAtiScaImporter implements IScaImporter {
 			getBindingStack().push(service);
 			for (Binding binding : service.getBinding()) {
 				try {
-                    acceptBindingVisitors(binding, createServiceBindingVisitor(), createBindingInfoProviders());					
-					//visitBinding(binding);
+                    acceptBindingVisitors(binding, createServiceBindingVisitor(), createBindingInfoProviders());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.warn("A problem occurs during the visit of services", e);
 				}
 			}
+			getBindingStack().pop();			
 			getArchiNameStack().pop();
-			getBindingStack().pop();
 		}
 		// Get references
 		for (Reference reference : scaComposite.getReference()) {
@@ -207,15 +205,13 @@ public class FraSCAtiScaImporter implements IScaImporter {
 			getBindingStack().push(reference);
 			for (Binding binding : reference.getBinding()) {
 				try {
-                    acceptBindingVisitors(binding, createReferenceBindingVisitor(), createBindingInfoProviders());					
-					//visitBinding(binding);
+                    acceptBindingVisitors(binding, createReferenceBindingVisitor(), createBindingInfoProviders());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.warn("A problem occurs during the visit of references", e);
 				}
 			}
+			getBindingStack().pop();			
 			getArchiNameStack().pop();
-			getBindingStack().pop();
 		}
 		// Get components
 		for (Component component : scaComposite.getComponent()) {
@@ -230,27 +226,23 @@ public class FraSCAtiScaImporter implements IScaImporter {
 				for (Binding binding : componentService.getBinding()) {
 					try {
 						acceptBindingVisitors(binding, createServiceBindingVisitor(), createBindingInfoProviders());
-						//visitBinding(binding);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						log.warn("A problem occurs during the visit of component services", e);
 					}
 				}
+				getBindingStack().pop();				
 				getArchiNameStack().pop();
-				getBindingStack().pop();
 			}
 			// Get component references
 			for (ComponentReference componentReference : component.getReference()) {
 				log.debug("ComponentReference.name=" + componentReference.getName());
 				getArchiNameStack().push(componentReference.getName());
-				getBindingStack().push(componentReference);
+				getBindingStack().push(componentReference);				
 				for (Binding binding : componentReference.getBinding()) {
 					try {
 						acceptBindingVisitors(binding, createReferenceBindingVisitor(), createBindingInfoProviders());
-						//visitBinding(binding);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						log.warn("A problem occurs during the visit of component references", e);
 					}
 				}
 				getArchiNameStack().pop();
@@ -269,7 +261,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 */
 	private void acceptBindingVisitors(Binding binding, ScaVisitor scaVisitor, List<BindingInfoProvider> bindingInfoProviders) {
         for (BindingInfoProvider bindingInfoProvider : bindingInfoProviders) {
-            if (bindingInfoProvider.isOkFor(SCA_URI, binding.getName())) {
+            if (bindingInfoProvider.isOkFor(binding)) {
 	        	try {
 	                scaVisitor.visit(bindingInfoProvider);
 	                //scaVisitorsToPostCheck.add(scaVisitor);
@@ -284,7 +276,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
 
 	@Override
     public String getBindingUrl() {
-    	//log.debug("current binding : " + getCurrentBinding());
     	String serviceUrl = null;
     	Binding binding = null;
     	if(getCurrentBinding() instanceof BaseService){
@@ -299,31 +290,25 @@ public class FraSCAtiScaImporter implements IScaImporter {
     	}
     	if (binding != null) {
     		serviceUrl = binding.getUri();
-    		log.debug("binding name => " + binding.getName());
     	}
+    	log.debug("binding name : " + binding.getName());    	
     	if(serviceUrl == null){
-			// wsdlLocation case
+			// wsdlLocation in case of wsdl binding
 			if (binding instanceof WebServiceBinding) {
 				List<String> wsdlLocations = ((WebServiceBinding) binding).getWsdlLocation();
 				if (wsdlLocations != null && wsdlLocations.size() != 0) {
 					serviceUrl = wsdlLocations.get(0).replace("?wsdl", "");
 				}
+			// URI in case of rest binding
+			} else if(binding instanceof RestBinding){
+				String uri = ((RestBinding) binding).getUri();
+				if (uri != null && !"".equals(uri)) {
+					serviceUrl = uri;
+				}				
 			}
-			// TODO how to get REST Bindings ....
-			// And how to register the bindings ...
     	}
-    	log.debug("serviceUrl => " + serviceUrl);
-    	return serviceUrl; // TODO put here methods from REST & SOAP service visitors
-    	//log.debug("getBindingUrl");
-        /*
-    	String serviceUrl = compositeReader.getAttributeValue(null, "uri"); // rather than "" ?! // TODO SCA_URI
-        if (serviceUrl == null) {
-            String wsdlLocation = compositeReader.getAttributeValue(XMLScaImporter.WSDLINSTANCE_URI , "wsdlLocation");
-            if (wsdlLocation != null) {
-                serviceUrl = wsdlLocation.replace("?wsdl", "");
-            }
-        }
-        return serviceUrl;*/
+    	log.debug("serviceUrl : " + serviceUrl);
+    	return serviceUrl; 
     }
 
 	/**
@@ -342,6 +327,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * @throws Exception
 	 */
 	public void importSCAZip() throws Exception {
+		log.debug("Importing SCA Composite contained in ZIP");
 		// Initialization
 		File scaZipTmpFile = File.createTempFile(IdUtils.generateStringId(), ".jar");
 		compositeFile.transferTo(scaZipTmpFile);
@@ -352,7 +338,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		for (Composite scaZipComposite : scaZipCompositeSet) {
 			visitComposite(scaZipComposite);
 		}
-
 	}
 
 	/**
@@ -360,6 +345,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * @throws Exception
 	 */
 	public void importSCAComposite() throws Exception {
+		log.debug("Importing SCA Composite");
 		// Initialization
 		File compositeTmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
 		compositeFile.transferTo(compositeTmpFile);
@@ -447,6 +433,19 @@ public class FraSCAtiScaImporter implements IScaImporter {
 
 	public Stack<EObject> getBindingStack(){
 		return bindingStack;
+	}
+
+	@Override
+	public void importSCA() throws Exception {
+		String scaFileName = compositeFile.getFilename();
+		log.debug("scaFileName = " + compositeFile.getFilename());
+		if (scaFileName.endsWith(".composite")) {
+			importSCAComposite();
+		} else if (scaFileName.endsWith(".jar") || scaFileName.endsWith(".zip")) {
+			importSCAZip();
+		} else {
+			throw new Exception("Unsupported file type : neither a Composite nor an SCA zip or jar");
+		}		
 	}
 
 }

@@ -18,28 +18,24 @@
  * Contact : easysoa-dev@groups.google.com
  */
 
+package org.easysoa.sca.extension;
 
-package org.easysoa.sca.xml;
+import org.nuxeo.common.xmap.annotation.XContent;
+import org.nuxeo.common.xmap.annotation.XNode;
+import org.nuxeo.common.xmap.annotation.XObject;
 
-import javax.xml.namespace.QName;
+/**
+ * 
+ * @author jguillemotte
+ */
+@XObject("serviceFinder")
+public class ScaImporterDescriptor {
 
-public class RestBindingInfoProvider extends XMLBindingInfoProviderBase {
+    @XContent
+    protected String implementation;
 
-	public RestBindingInfoProvider(XMLScaImporter xmlScaImporter) {
-		super(xmlScaImporter);
-	}
-
-	@Override
-	public boolean isOkFor(Object object) {
-		QName bindingQName = (QName) object;
-        return bindingQName.equals(new QName(XMLScaImporter.SCA_URI, "binding.rest"));
-	}
-
-	@Override
-	public String getBindingUrl() {
-        // getting referenced service url
-        String refUrl = xmlScaImporter.getCompositeReader().getAttributeValue(XMLScaImporter.FRASCATI_URI, "uri");
-        return refUrl;
-	}
-
+    @XNode("@enabled")
+    protected boolean enabled = true;
+    
 }
+ 
