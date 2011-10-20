@@ -132,7 +132,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
     	this.documentManager = null;
     	this.compositeFile = null;
     	this.parentAppliImplModel = null;
-    	init();
     }
     
 	/**
@@ -146,8 +145,8 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		this.compositeFile = compositeFile;
 		if(documentManager != null){
 			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
+			init();
 		}
-		init();
 	}
 
 	/**

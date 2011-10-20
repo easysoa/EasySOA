@@ -83,7 +83,7 @@ import com.google.inject.Inject;
     "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
     "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
     "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml", // required to enable the specific doctype listeners
+    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
     //"org.nuxeo.runtime.datasource"
 })
 @LocalDeploy({
