@@ -96,7 +96,7 @@ public class ScaImporterComponent extends DefaultComponent {
 		if (scaImporterDescriptor.enabled) {
 			Class<?> scaImporterClass = Class.forName(scaImporterDescriptor.implementation.trim());
 			if (IScaImporter.class.isAssignableFrom(scaImporterClass)) {
-				// trying to create one
+				// trying to create one in order to check that the impl has the required constructor 
 				scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class }).newInstance(new Object[] { null, null });
 				this.scaImporterClasses.add(scaImporterClass);
 			} else {

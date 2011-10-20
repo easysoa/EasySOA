@@ -43,7 +43,6 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
     "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml", // required to enable the specific doctype listeners
     "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
-    "org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml",
     "org.nuxeo.runtime.datasource"
 })
 @Features(NuxeoFeatureBase.class)

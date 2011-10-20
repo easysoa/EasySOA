@@ -143,7 +143,9 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	public FraSCAtiScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
-		this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
+		if(documentManager != null){
+			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
+		}
 	}
 
 	/**

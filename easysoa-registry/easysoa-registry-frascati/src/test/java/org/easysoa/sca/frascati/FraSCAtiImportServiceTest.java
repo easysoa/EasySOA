@@ -24,13 +24,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.MalformedURLException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.registry.frascati.FraSCAtiService;
+import org.easysoa.sca.IScaImporter;
+import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
@@ -38,12 +42,14 @@ import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
+import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.services.resource.ResourceService;
@@ -65,7 +71,7 @@ import com.google.inject.Inject;
 @Features(EasySOACoreFeature.class)
 @Deploy({
 	"org.easysoa.registry.frascati",
-	//"org.easysoa.registry.core" // deployed auto by dep
+	//"org.easysoa.registry.core", // deployed auto by dep
 	"org.nuxeo.runtime.datasource",
 
 	// BUG should but does not work without deploying the following deps
@@ -77,12 +83,14 @@ import com.google.inject.Inject;
     "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
     "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
     "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
+    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml", // required to enable the specific doctype listeners
     //"org.nuxeo.runtime.datasource"
 })
 @LocalDeploy({
-	"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
-	"org.easysoa.registry.frascati:OSGI-INF/sca-importer-frascati-contrib.xml",
+	///"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
+	"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
+	///"org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml", // would override frascati so no
+	///"org.easysoa.registry.frascati:OSGI-INF/sca-importer-frascati-contrib.xml",
 	"org.easysoa.registry.core:test/datasource-contrib.xml" // required because no jetty.naming in deps
 })
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
@@ -100,6 +108,8 @@ public class FraSCAtiImportServiceTest
     DocumentModel parentAppliImplModel;
     
     @Inject FraSCAtiService frascatiService;
+    
+    @Inject ScaImporterComponent scaImporterComponent;
     
     @Before
     public void setUp() throws ClientException, MalformedURLException {
@@ -238,5 +248,70 @@ public class FraSCAtiImportServiceTest
 		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
 		
     }
+    
+    @Test
+    public void testFrascatiScaImporter() throws Exception {
+    	// SCA composite file to import :
+    	// to load a file, we use simply File, since user.dir is set relatively to the project
+    	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
+    	File scaFile = new File(scaFilePath);    	
+    	// Check that the ScaImporterComponent is started
+    	
+    	/*scaImportBean.setCompositeFile(new InputStreamBlob(new FileInputStream(scaFile)));
+    	scaImportBean.setParentAppliImpl(parentAppliImplModel.getId());
+    	scaImportBean.importSCA();*/
+    	
+    	// Getting the importer
+    	Blob blob = new InputStreamBlob(new FileInputStream(scaFile));
+    	blob.setFilename(scaFilePath);
+    	IScaImporter importer = scaImporterComponent.createScaImporter(session, blob);
+    	// If importer is null, we have a problem
+    	assertNotNull(importer);
+    	
+		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
+		importer.setServiceStackType("FraSCAti");
+		importer.setServiceStackUrl("/");
+    	importer.importSCA();
+    	
+    	// Check import results
+    	DocumentModelList resDocList;
+		DocumentModel resDoc;
+		
+		// Log repository
+		new RepositoryLogger(session, "Repository state after import").logAllRepository();
+		
+		// services :
+		
+		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		assertEquals(1, resDocList.size());
+		resDoc = resDocList.get(0);
+		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
+		
+		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		assertEquals(1, resDocList.size());
+		resDoc = resDocList.get(0);
+		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
+
+		// references :
+		
+		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				ServiceReference.DOCTYPE + "' AND "
+				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
+				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		assertEquals(1, resDocList.size());
+
+		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
+				ServiceReference.DOCTYPE + "' AND "
+				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
+				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+		assertEquals(1, resDocList.size());
+		
+		// api :
+		
+		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
+		assertEquals("PureAirFlowers API", apiModel.getTitle());
+    }    
     
 }

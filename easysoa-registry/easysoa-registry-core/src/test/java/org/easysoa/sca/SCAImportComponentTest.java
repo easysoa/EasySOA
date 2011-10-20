@@ -30,12 +30,16 @@ import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.services.resource.ResourceService;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 import com.google.inject.Inject;
 
 @RunWith(FeaturesRunner.class)
 @Features(EasySOACoreTestFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
+@LocalDeploy({
+	"org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml"
+})
 public class SCAImportComponentTest {
 
     static final Log log = LogFactory.getLog(SCAImportComponentTest.class);

@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.registry.frascati">
+<!--<component name="org.easysoa.registry.frascati">-->
+<component name="org.easysoa.registry.frascati.service">
+	
 	<implementation class="org.easysoa.registry.frascati.FraSCAtiService" />
+	
 	<service>
 		<provide interface="org.easysoa.registry.frascati.FraSCAtiService" />
 	</service>
+	
 </component>
