@@ -73,7 +73,7 @@ public class ScaImportBean {
     
     @Create
     public void init() throws ClientException {
-        compositeFile = null;
+    	compositeFile = null;
         documentManager = navigationContext.getOrCreateDocumentManager();
         appliImpls = getAllAppliImplsAsSelectItems(documentManager);
         serviceStackType = "FraSCAti"; // TODO get it from wizard

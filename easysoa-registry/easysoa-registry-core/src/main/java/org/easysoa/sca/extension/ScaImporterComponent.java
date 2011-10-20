@@ -35,7 +35,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 /**
  * 
  * @author jguillemotte
-  */
+ */
 public class ScaImporterComponent extends DefaultComponent {
 
     public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.sca.extension.ScaImporterComponent");
@@ -51,6 +51,7 @@ public class ScaImporterComponent extends DefaultComponent {
 	@Override
     public void registerContribution(Object contribution, String extensionPoint, ComponentInstance contributor) throws Exception {
         try {
+        	log.debug("registering contribution ..." + extensionPoint);
             synchronized (scaImporterClasses) {
             	if (extensionPoint.equals("scaImporters")) {
             		ScaImporterDescriptor scaImporterDescriptor = (ScaImporterDescriptor) contribution;
@@ -85,27 +86,41 @@ public class ScaImporterComponent extends DefaultComponent {
         }
 	}
 	
+	/**
+	 * 
+	 * @param scaImporterDescriptor
+	 * @param contributor
+	 * @throws Exception
+	 */
     public void checkAndSetScaImporter(ScaImporterDescriptor scaImporterDescriptor, ComponentInstance contributor) throws Exception {
 		if (scaImporterDescriptor.enabled) {
 			Class<?> scaImporterClass = Class.forName(scaImporterDescriptor.implementation.trim());
 			if (IScaImporter.class.isAssignableFrom(scaImporterClass)) {
 				// trying to create one
-				scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class })
-					.newInstance(new Object[] { null, null });
+				scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class }).newInstance(new Object[] { null, null });
 				this.scaImporterClasses.add(scaImporterClass);
 			} else {
+				log.debug("Check and set Sca importer error");
 				throw new InvalidClassException(renderContributionError(contributor, "class " + scaImporterDescriptor.implementation
 	                    + " is not an instance of " + IScaImporter.class.getName()));
 			}
 		}
     }
 	
+    /**
+     * Creates a SCA Importer
+     * @param documentManager
+     * @param compositeFile
+     * @return
+     */
     public IScaImporter createScaImporter(CoreSession documentManager, Blob compositeFile) {
 		try {
+			log.debug("scaImporterClasses.size() = " + scaImporterClasses.size());
 			Class<?> scaImporterClass = this.scaImporterClasses.get(scaImporterClasses.size() - 1);
 			return (IScaImporter) scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class })
 				.newInstance(new Object[] { documentManager, compositeFile });
-		} catch (Exception e) {
+		} catch (Exception ex) {
+			log.error("An error occurs during the creation of SCA importer", ex);
 			// TODO log "error creating sca import, bad config, see init logs"
 		}
 		return null;
