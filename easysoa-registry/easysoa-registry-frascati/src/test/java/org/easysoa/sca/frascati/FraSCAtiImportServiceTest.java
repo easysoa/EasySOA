@@ -249,18 +249,16 @@ public class FraSCAtiImportServiceTest
 		
     }
     
+    /**
+     * Test the frascati SCA importer deployed as a Nuxeo extension point
+     */
     @Test
     public void testFrascatiScaImporter() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
     	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
     	File scaFile = new File(scaFilePath);    	
-    	// Check that the ScaImporterComponent is started
-    	
-    	/*scaImportBean.setCompositeFile(new InputStreamBlob(new FileInputStream(scaFile)));
-    	scaImportBean.setParentAppliImpl(parentAppliImplModel.getId());
-    	scaImportBean.importSCA();*/
-    	
+   	
     	// Getting the importer
     	Blob blob = new InputStreamBlob(new FileInputStream(scaFile));
     	// Filename needs to be registered manually ... 

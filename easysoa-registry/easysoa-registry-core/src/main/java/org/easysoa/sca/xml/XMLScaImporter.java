@@ -172,8 +172,7 @@ public class XMLScaImporter implements IScaImporter {
 			}
 		}
 
-		documentManager.save(); // required else saved documents won't be
-								// resolved in postCheck
+		documentManager.save(); // required else saved documents won't be resolved in postCheck
 
 		// post check
 		for (ScaVisitor scaVisitor : scaVisitorsToPostCheck) {
@@ -184,8 +183,7 @@ public class XMLScaImporter implements IScaImporter {
 			}
 		}
 
-		documentManager.save(); // NB. only required for additional, external
-								// code
+		documentManager.save(); // NB. only required for additional, external code
 	}
 
 	public void setServiceStackType(String serviceStackType) {
@@ -218,6 +216,10 @@ public class XMLScaImporter implements IScaImporter {
 
 	private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
 
+	/**
+	 * Returns a list of binding providers
+	 * @return
+	 */
 	public List<BindingInfoProvider> createBindingInfoProviders() {
 		if (bindingInfoProviders == null) {
 			bindingInfoProviders = new ArrayList<BindingInfoProvider>();
@@ -227,6 +229,15 @@ public class XMLScaImporter implements IScaImporter {
 		return bindingInfoProviders;
 	}
 
+	/**
+	 * 
+	 * @param compositeReader
+	 * @param scaQname
+	 * @param scaVisitor
+	 * @param bindingInfoProviders
+	 * @throws XMLStreamException
+	 * @throws ClientException
+	 */
 	private void acceptBindingParentVisitors(XMLStreamReader compositeReader, QName scaQname, ScaVisitor scaVisitor, List<BindingInfoProvider> bindingInfoProviders) throws XMLStreamException,
 			ClientException {
 		while (compositeReader.next() != XMLEvent.END_ELEMENT || !compositeReader.getName().equals(scaQname)) {
@@ -237,6 +248,13 @@ public class XMLScaImporter implements IScaImporter {
 		}
 	}
 
+	/**
+	 * 
+	 * @param compositeReader
+	 * @param scaVisitor
+	 * @param bindingInfoProviders
+	 * @throws ClientException
+	 */
 	private void acceptBindingVisitors(XMLStreamReader compositeReader, ScaVisitor scaVisitor, List<BindingInfoProvider> bindingInfoProviders) throws ClientException {
 		QName bindingQName = compositeReader.getName();
 		for (BindingInfoProvider bindingInfoProvider : bindingInfoProviders) {
@@ -251,10 +269,16 @@ public class XMLScaImporter implements IScaImporter {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public String getCurrentArchiName() {
 		return getArchiNameStack().peek();
 	}
 
+	/**
+	 * 
+	 */
 	public String toCurrentArchiPath() {
 		StringBuffer sbuf = new StringBuffer();
 		for (String archiName : getArchiNameStack()) {

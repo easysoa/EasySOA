@@ -128,10 +128,11 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 */
     private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
 	
-    public FraSCAtiScaImporter(){
+    public FraSCAtiScaImporter() throws Exception {
     	this.documentManager = null;
     	this.compositeFile = null;
     	this.parentAppliImplModel = null;
+    	init();
     }
     
 	/**
@@ -140,14 +141,23 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * @param compositeFile Composite file to import
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
+	public FraSCAtiScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
 		if(documentManager != null){
 			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
 		}
+		init();
 	}
 
+	/**
+	 * Initialization
+	 * @throws Exception
+	 */
+	private void init() throws Exception{
+		frascatiService = Framework.getService(FraSCAtiService.class);
+	}
+	
 	/**
 	 * Build a list of binding info providers
 	 * @return
@@ -266,7 +276,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
             if (bindingInfoProvider.isOkFor(binding)) {
 	        	try {
 	                scaVisitor.visit(bindingInfoProvider);
-	                //scaVisitorsToPostCheck.add(scaVisitor);
 	            } catch (Exception ex) {
 	                log.error("Error when visiting binding " + scaVisitor.getDescription()
 	                        + " at archi path " + toCurrentArchiPath()
@@ -334,7 +343,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		File scaZipTmpFile = File.createTempFile(IdUtils.generateStringId(), ".jar");
 		compositeFile.transferTo(scaZipTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
-		frascatiService = Framework.getService(FraSCAtiService.class); // TODO in init
 		Set<Composite> scaZipCompositeSet = frascatiService.readScaZip(scaZipTmpFile);
 		// Visit each composite
 		for (Composite scaZipComposite : scaZipCompositeSet) {
@@ -352,7 +360,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		File compositeTmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
 		compositeFile.transferTo(compositeTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
-		frascatiService = Framework.getService(FraSCAtiService.class); // TODO in init
 		Composite scaZipComposite = frascatiService.readComposite(compositeTmpFile.toURI().toURL());
 		visitComposite(scaZipComposite);
 	}
