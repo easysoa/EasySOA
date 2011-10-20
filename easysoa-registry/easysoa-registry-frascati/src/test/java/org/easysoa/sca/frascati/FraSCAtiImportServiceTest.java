@@ -263,6 +263,7 @@ public class FraSCAtiImportServiceTest
     	
     	// Getting the importer
     	Blob blob = new InputStreamBlob(new FileInputStream(scaFile));
+    	// Filename needs to be registered manually ... 
     	blob.setFilename(scaFilePath);
     	IScaImporter importer = scaImporterComponent.createScaImporter(session, blob);
     	// If importer is null, we have a problem

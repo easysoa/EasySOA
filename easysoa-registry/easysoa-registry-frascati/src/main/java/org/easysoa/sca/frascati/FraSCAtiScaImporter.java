@@ -439,8 +439,12 @@ public class FraSCAtiScaImporter implements IScaImporter {
 
 	@Override
 	public void importSCA() throws Exception {
-		String scaFileName = compositeFile.getFilename();
 		log.debug("scaFileName = " + compositeFile.getFilename());
+		// If the filename is not set, it is not possible to choose the corresponding import method
+		if(compositeFile.getFilename() == null || "".equals(compositeFile.getFilename())){
+			throw new Exception("Invalid file name (null or empty) : please check thaht the file name is set");
+		}
+		String scaFileName = compositeFile.getFilename();
 		if (scaFileName.endsWith(".composite")) {
 			importSCAComposite();
 		} else if (scaFileName.endsWith(".jar") || scaFileName.endsWith(".zip")) {

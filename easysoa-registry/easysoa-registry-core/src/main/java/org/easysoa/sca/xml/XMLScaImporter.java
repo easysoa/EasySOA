@@ -130,13 +130,8 @@ public class XMLScaImporter implements IScaImporter {
 			 */
 
 			if (compositeReader.getEventType() == XMLEvent.START_ELEMENT) {
-				String name = compositeReader.getAttributeValue(null, "name"); // rather
-																				// than
-																				// ""
-																				// ?!
-																				// //
-																				// TODO
-																				// SCA_URI
+				String name = compositeReader.getAttributeValue(null, "name"); // rather than "" ?! 
+				// TODO SCA_URI
 				QName elementName = compositeReader.getName();
 
 				if (elementName.equals(SCA_COMPONENT_QNAME)) {
