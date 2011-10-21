@@ -1,9 +1,12 @@
 
-This project regroups 3 mocks used by the smart travel sample. It work with FraSCAti.
+This project includes 3 mocks used by the smart travel sample. It work with FraSCAti.
 
 This project DO NOT WORK with already existing smart travel clients ! 
 
 Indeed, FraSCAti ignore JAXWS annotations so the FraSCAti generated web services are not compatibles with existing clients (there are some differences between the generated WSDl and the original WSDL). 
+
+An other version of this project can be found in the "easysoa-samples-smarttravel-services-backup". This project works with CXF and generate web services compatibles with existing clients. 
+You can found more informations in the readme.txt project file. 
  
 -------
 
