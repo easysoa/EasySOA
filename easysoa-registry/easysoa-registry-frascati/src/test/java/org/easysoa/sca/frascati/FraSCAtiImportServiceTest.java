@@ -22,6 +22,7 @@ package org.easysoa.sca.frascati;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -256,7 +257,10 @@ public class FraSCAtiImportServiceTest
     public void testFrascatiScaImporter() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
-    	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
+    	//String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
+    	// With this sample, no problem, all the required (specified in the composite file) classes are in a single jar
+    	String scaFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
+
     	File scaFile = new File(scaFilePath);    	
    	
     	// Getting the importer
@@ -312,5 +316,35 @@ public class FraSCAtiImportServiceTest
 		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
 		assertEquals("PureAirFlowers API", apiModel.getTitle());
     }    
+    
+    @Test
+    public void testFrascatiClassNotFoundException() throws Exception {
+    	// With this sample, frascati throws a ClassNotFoundException because required classes are in an other jar
+    	String scaFilePath = "src/test/resources/" + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
+    	File scaFile = new File(scaFilePath);    	
+   	
+    	// Getting the importer
+    	Blob blob = new InputStreamBlob(new FileInputStream(scaFile));
+    	// Filename needs to be registered manually ... 
+    	blob.setFilename(scaFilePath);
+    	IScaImporter importer = scaImporterComponent.createScaImporter(session, blob);
+    	// If importer is null, we have a problem
+    	assertNotNull(importer);
+    	
+		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
+		importer.setServiceStackType("FraSCAti");
+		importer.setServiceStackUrl("/");
+		try{
+			importer.importSCA();
+			// if not exception is throws, fail the test
+			fail();
+		}
+		catch(Exception ex){
+			assertEquals("org.ow2.frascati.tinfi.TinfiRuntimeException", ex.getClass().getName());
+			assertEquals("java.lang.NoClassDefFoundError: Lnet/webservicex/GlobalWeatherSoap;", ex.getMessage());
+		}
+
+    	
+    }
     
 }

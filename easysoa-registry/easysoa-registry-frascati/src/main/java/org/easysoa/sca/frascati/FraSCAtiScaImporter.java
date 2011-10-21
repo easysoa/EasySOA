@@ -221,7 +221,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 					log.warn("A problem occurs during the visit of references", e);
 				}
 			}
-			getBindingStack().pop();			
+			getBindingStack().pop();
 			getArchiNameStack().pop();
 		}
 		// Get components
@@ -448,7 +448,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 		log.debug("scaFileName = " + compositeFile.getFilename());
 		// If the filename is not set, it is not possible to choose the corresponding import method
 		if(compositeFile.getFilename() == null || "".equals(compositeFile.getFilename())){
-			throw new Exception("Invalid file name (null or empty) : please check thaht the file name is set");
+			throw new Exception("Invalid file name (null or empty) : please check that the file name is set");
 		}
 		String scaFileName = compositeFile.getFilename();
 		if (scaFileName.endsWith(".composite")) {
@@ -457,7 +457,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 			importSCAZip();
 		} else {
 			throw new Exception("Unsupported file type : neither a Composite nor an SCA zip or jar");
-		}		
+		}	
 	}
 
 }
