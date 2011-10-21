@@ -330,7 +330,7 @@ public class FraSCAtiImportServiceTest
     	IScaImporter importer = scaImporterComponent.createScaImporter(session, blob);
     	// If importer is null, we have a problem
     	assertNotNull(importer);
-    	
+
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
@@ -343,8 +343,6 @@ public class FraSCAtiImportServiceTest
 			assertEquals("org.ow2.frascati.tinfi.TinfiRuntimeException", ex.getClass().getName());
 			assertEquals("java.lang.NoClassDefFoundError: Lnet/webservicex/GlobalWeatherSoap;", ex.getMessage());
 		}
-
-    	
     }
     
 }
