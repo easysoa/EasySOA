@@ -3,4 +3,6 @@
   <expression:EMFExpression id="[row2.payload:/air:getAirportInformationByISOCountryCode/air:CountryAbbrviation] row4.airportsInformations" expression="row4.airportsInformations"/>
   <expression:EMFExpression id="row4.airportsInformations  row5.airportsInformations" expression="row5.airportsInformations"/>
   <expression:EMFExpression id="row5.airportsInformations " expression="row5.airportsInformations"/>
+  <expression:EMFExpression id="&quot;No informations ...&quot;" expression="&quot;No airport informations found for this country code : &quot; + "/>
+  <expression:EMFExpression id="&quot;No airport informations found for this country code : &quot; +   row6.countryCode" expression="&quot;No airport informations found for this country code : &quot; + row6.countryCode"/>
 </xmi:XMI>
