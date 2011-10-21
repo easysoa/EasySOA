@@ -74,6 +74,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	
 	@Override
 	public String updateWsdl(String wsdlSource) throws Exception {
+	    
 		// Hack for Talend airport sample
 		if(wsdlSource == null || "".equals(wsdlSource)){
 			wsdlSource = defaultWsdl;
