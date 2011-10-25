@@ -53,18 +53,21 @@ public class WSBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 
 	@Override
 	public String getBindingUrl() {
-		//return frascatiScaImporter.getBindingUrl();
     	String serviceUrl = null;
     	Binding binding = null;
     	if(frascatiScaImporter.getCurrentBinding() instanceof BaseService){
     		// NB. only difference between Service and ComponentService is Service.promote
     		BaseService componentService = (BaseService) frascatiScaImporter.getCurrentBinding();
     		// TODO do not take only the first one, missing bindings in the case of multiple bindings
-    		binding = componentService.getBinding().get(0);
+    		if(componentService.getBinding() != null && componentService.getBinding().size() > 0){
+    			binding = componentService.getBinding().get(0);
+    		}
     	} else if(frascatiScaImporter.getCurrentBinding() instanceof BaseReference){
     		// NB. only difference between Reference and ComponentReferenceis Reference.promote
     		BaseReference componentReference = (BaseReference) frascatiScaImporter.getCurrentBinding();
-    		binding = componentReference.getBinding().get(0);
+    		if(componentReference.getBinding() != null && componentReference.getBinding().size() > 0){
+    			binding = componentReference.getBinding().get(0);
+    		}
     	}
     	if (binding != null) {
     		serviceUrl = binding.getUri();
