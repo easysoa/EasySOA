@@ -100,6 +100,17 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<!-- For Frascati -->
+		<!--<repository>
+			<id>Frascati</id>
+			<name>Frascati repository</name>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>-->		
+		<!-- For Frascati SNAPSHOT versions -->		
+		<!--<repository>
+			<id>ow2-snapshot</id>
+			<url>http://maven.ow2.org//maven2-snapshot</url>
+		</repository>-->		
 	</repositories>
 
 </project>

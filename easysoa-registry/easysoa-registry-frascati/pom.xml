@@ -114,6 +114,17 @@
 			<artifactId>frascati-binding-rest</artifactId>
 			<version>${frascati.version}</version>
 		</dependency>
+		<!-- For web explorer -->
+		<!--<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-explorer-core</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>-->
+		<!--<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-web-explorer</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>-->
 	</dependencies>
 
 	<build>

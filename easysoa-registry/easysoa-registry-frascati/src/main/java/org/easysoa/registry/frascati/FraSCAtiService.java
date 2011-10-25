@@ -58,6 +58,7 @@ import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
+import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 
 /**
@@ -81,6 +82,18 @@ public class FraSCAtiService extends DefaultComponent {
 	public FraSCAtiService() throws FrascatiException {
 		// Instantiate OW2 FraSCAti.
 		frascati = FraSCAti.newFraSCAti();
+		
+		// Test to launch Web explorer : DOESN'T WORK
+		// There is a problem with duplicate frascati.composite file in both web explorer module and runtime factory module
+		/*URL compositeUrl = ClassLoader.getSystemResource("WebExplorer.composite");			
+		try{
+			// Loading Web explorer composite
+			frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug(ex);
+		}*/
 	}
 
 	/**
