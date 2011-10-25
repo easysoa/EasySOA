@@ -38,8 +38,6 @@ import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.sca.visitors.ServiceBindingVisitor;
 import org.easysoa.services.DocumentService;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.stp.sca.BaseReference;
-import org.eclipse.stp.sca.BaseService;
 import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Component;
 import org.eclipse.stp.sca.ComponentReference;
@@ -47,8 +45,6 @@ import org.eclipse.stp.sca.ComponentService;
 import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
-import org.eclipse.stp.sca.WebServiceBinding;
-import org.eclipse.stp.sca.domainmodel.frascati.RestBinding;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -283,43 +279,6 @@ public class FraSCAtiScaImporter implements IScaImporter {
             }
         }
 	}
-
-	@Override
-    public String getBindingUrl() {
-    	String serviceUrl = null;
-    	Binding binding = null;
-    	if(getCurrentBinding() instanceof BaseService){
-    		// NB. only difference between Service and ComponentService is Service.promote
-    		BaseService componentService = (BaseService) getCurrentBinding();
-    		// TODO do not take only the first one, missing bindings in the case of multiple bindings
-    		binding = componentService.getBinding().get(0);
-    	} else if(getCurrentBinding() instanceof BaseReference){
-    		// NB. only difference between Reference and ComponentReferenceis Reference.promote
-    		BaseReference componentReference = (BaseReference) getCurrentBinding();
-    		binding = componentReference.getBinding().get(0);
-    	}
-    	if (binding != null) {
-    		serviceUrl = binding.getUri();
-    	}
-    	log.debug("binding name : " + binding.getName());    	
-    	if(serviceUrl == null){
-			// wsdlLocation in case of wsdl binding
-			if (binding instanceof WebServiceBinding) {
-				List<String> wsdlLocations = ((WebServiceBinding) binding).getWsdlLocation();
-				if (wsdlLocations != null && wsdlLocations.size() != 0) {
-					serviceUrl = wsdlLocations.get(0).replace("?wsdl", "");
-				}
-			// URI in case of rest binding
-			} else if(binding instanceof RestBinding){
-				String uri = ((RestBinding) binding).getUri();
-				if (uri != null && !"".equals(uri)) {
-					serviceUrl = uri;
-				}				
-			}
-    	}
-    	log.debug("serviceUrl : " + serviceUrl);
-    	return serviceUrl; 
-    }
 
 	/**
 	 * 

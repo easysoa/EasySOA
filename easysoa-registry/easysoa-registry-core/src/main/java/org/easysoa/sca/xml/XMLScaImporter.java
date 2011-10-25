@@ -99,10 +99,6 @@ public class XMLScaImporter implements IScaImporter {
 		// init();
 	}
 
-	public String getBindingUrl() {
-		return null; // TODO put here methods from REST & SOAP service visitors
-	}
-
 	/**
 	 * 
 	 * @throws IOException
@@ -156,7 +152,6 @@ public class XMLScaImporter implements IScaImporter {
 					getArchiNameStack().push(name);
 					acceptBindingParentVisitors(compositeReader, SCA_SERVICE_QNAME, createServiceBindingVisitors(), createBindingInfoProviders());
 					getArchiNameStack().pop();
-
 				} else if (elementName.equals(SCA_REFERENCE_QNAME)) {
 					// reference !
 					getArchiNameStack().push(name);

@@ -20,11 +20,21 @@
 
 package org.easysoa.registry.frascati;
 
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.frascati.FraSCAtiScaImporter;
+import org.eclipse.stp.sca.BaseReference;
+import org.eclipse.stp.sca.BaseService;
+import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.WebServiceBinding;
 
 public class WSBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 
+	// Logger
+	private static Log log = LogFactory.getLog(WSBindingInfoProvider.class);
+	
 	/**
 	 * 
 	 * @param frascatiScaImporter
@@ -43,7 +53,32 @@ public class WSBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 
 	@Override
 	public String getBindingUrl() {
-		return frascatiScaImporter.getBindingUrl();
+		//return frascatiScaImporter.getBindingUrl();
+    	String serviceUrl = null;
+    	Binding binding = null;
+    	if(frascatiScaImporter.getCurrentBinding() instanceof BaseService){
+    		// NB. only difference between Service and ComponentService is Service.promote
+    		BaseService componentService = (BaseService) frascatiScaImporter.getCurrentBinding();
+    		// TODO do not take only the first one, missing bindings in the case of multiple bindings
+    		binding = componentService.getBinding().get(0);
+    	} else if(frascatiScaImporter.getCurrentBinding() instanceof BaseReference){
+    		// NB. only difference between Reference and ComponentReferenceis Reference.promote
+    		BaseReference componentReference = (BaseReference) frascatiScaImporter.getCurrentBinding();
+    		binding = componentReference.getBinding().get(0);
+    	}
+    	if (binding != null) {
+    		serviceUrl = binding.getUri();
+    	}
+    	log.debug("binding name : " + binding.getName());    	
+    	if(serviceUrl == null){
+			// wsdlLocation in case of wsdl binding
+			List<String> wsdlLocations = ((WebServiceBinding) binding).getWsdlLocation();
+			if (wsdlLocations != null && wsdlLocations.size() != 0) {
+				serviceUrl = wsdlLocations.get(0).replace("?wsdl", "");
+			}
+    	}
+    	log.debug("serviceUrl : " + serviceUrl);
+    	return serviceUrl;
 	}
 
 }

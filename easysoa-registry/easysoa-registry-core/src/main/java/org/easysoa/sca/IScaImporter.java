@@ -98,9 +98,4 @@ public interface IScaImporter {
      */
     public String toCurrentArchiPath();
     
-    /**
-     * 
-     * @return
-     */
-    public String getBindingUrl();
 }
