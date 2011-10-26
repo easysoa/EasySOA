@@ -70,7 +70,7 @@ public class SoaNodesJsonMapper implements JsonMapper {
 			service.setContentTypeIn(child.getJSONObject("properties").getString("serv:contentTypeIn"));
 			service.setContentTypeOut(child.getJSONObject("properties").getString("serv:contentTypeOut"));
 			service.setHttpMethod(child.getJSONObject("properties").getString("serv:httpMethod"));
-			service.setRelatedUsers(child.getJSONObject("properties").getString("serv:relatedUsers"));
+			service.setParticipants(child.getJSONObject("properties").getString("serv:relatedUsers"));
 			res = service;
 		}
 		else if ("Workspace".equals(child.get("type"))){

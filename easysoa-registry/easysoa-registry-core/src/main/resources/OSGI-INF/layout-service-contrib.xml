@@ -11,16 +11,16 @@
       </templates>
       <rows>
         <row>
-          <widget>servicedef_relatedUsers</widget>
+          <widget>servicedef_participants</widget>
         </row>
       </rows>
-      <widget name="servicedef_relatedUsers" type="text">
+      <widget name="servicedef_participants" type="text">
         <labels>
-          <label mode="any">label.easysoa.servicedef.relatedUsers</label>
+          <label mode="any">label.easysoa.servicedef.participants</label>
         </labels>
         <translated>true</translated>
         <fields>
-          <field>serv:relatedUsers</field>
+          <field>serv:participants</field>
         </fields>
       </widget>
     </layout>

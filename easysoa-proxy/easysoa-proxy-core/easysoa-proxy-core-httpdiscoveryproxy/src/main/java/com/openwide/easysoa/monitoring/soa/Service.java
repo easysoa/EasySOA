@@ -40,7 +40,7 @@ public class Service extends Node {
 	*/
 	
 	private String contentTypeOut;
-	private String relatedUsers;
+	private String participants;
 	private String contentTypeIn;
 	private String httpMethod;
 	private String parentUrl;
@@ -58,7 +58,7 @@ public class Service extends Node {
 		this.contentTypeIn = "";
 		this.contentTypeOut = "";
 		this.httpMethod = "";
-		this.relatedUsers = "";
+		this.participants = "";
 		this.parentUrl = "";
 	}
 	
@@ -75,16 +75,16 @@ public class Service extends Node {
 		this.contentTypeOut = contentTypeOut;
 	}
 	/**
-	 * @return the relatedUsers
+	 * @return the participants
 	 */
-	public String getRelatedUsers() {
-		return relatedUsers;
+	public String getParticipants() {
+		return participants;
 	}
 	/**
-	 * @param relatedUsers the relatedUsers to set
+	 * @param participants the participants to set
 	 */
-	public void setRelatedUsers(String relatedUsers) {
-		this.relatedUsers = relatedUsers;
+	public void setParticipants(String participants) {
+		this.participants = participants;
 	}
 
 	/**
