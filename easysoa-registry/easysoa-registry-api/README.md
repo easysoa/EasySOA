@@ -16,3 +16,7 @@ To build the API as a reusable JAR, type:
 `mvn clean package`
 
 Then pick **easysoa-registry-api-SOMEVERSION-jar-with-dependencies.jar** and include it in your project.
+
+## Example
+
+See the [NuxeoRegistrationService](https://github.com/easysoa/EasySOA/blob/master/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/src/main/java/com/openwide/easysoa/nuxeo/registration/NuxeoRegistrationService.java) class, in the `easysoa-proxy-core-httpdiscoveryproxy` project.
