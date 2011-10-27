@@ -39,7 +39,7 @@ public class Service extends EasySOADoctype {
     public static final String PROP_URL = "url";
     public static final String PROP_LIGHTURL = "lightUrl";
     public static final String PROP_CALLCOUNT = "callcount";
-    public static final String PROP_RELATEDUSERS = "relatedUsers";
+    public static final String PROP_PARTICIPANTS = "participants";
     public static final String PROP_HTTPMETHOD = "httpMethod";
     public static final String PROP_CONTENTTYPEIN = "contentTypeIn";
     public static final String PROP_CONTENTTYPEOUT = "contentTypeOut";
@@ -60,7 +60,7 @@ public class Service extends EasySOADoctype {
                 propertyList = new HashMap<String, String>();
                 propertyList.put(PROP_URL, "(mandatory) Service URL.");
                 propertyList.put(PROP_CALLCOUNT, "Times the service has been called since last notification");
-                propertyList.put(PROP_RELATEDUSERS, "Users that have been using the service");
+                propertyList.put(PROP_PARTICIPANTS, "Consumers & providers of the service");
                 propertyList.put(PROP_HTTPMETHOD, "POST, GET...");
                 propertyList.put(PROP_CONTENTTYPEIN, "HTTP content type of the request body");
                 propertyList.put(PROP_CONTENTTYPEOUT, "HTTP content type of the result body");
