@@ -95,7 +95,7 @@ import org.nuxeo.runtime.api.Framework;
  * @author mdutoo
  * 
  */
-public class FraSCAtiScaImporter implements IScaImporter {
+public class FraSCAtiScaImporterBase implements IScaImporter {
 
 	public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
 	public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
@@ -105,7 +105,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	//public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
 
 	// Logger
-	private static Log log = LogFactory.getLog(FraSCAtiScaImporter.class);
+	private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
 
 	// Nuxeo document manager
 	private CoreSession documentManager;
@@ -124,7 +124,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 */
     private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
 	
-    public FraSCAtiScaImporter() throws Exception {
+    public FraSCAtiScaImporterBase() throws Exception {
     	this.documentManager = null;
     	this.compositeFile = null;
     	this.parentAppliImplModel = null;
@@ -136,7 +136,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * @param compositeFile Composite file to import
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception {
+	public FraSCAtiScaImporterBase(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
 		if(documentManager != null){
@@ -186,7 +186,7 @@ public class FraSCAtiScaImporter implements IScaImporter {
 	 * Visit the composite. For eachservice, component, reference ... visit the associated bindings
 	 * @param scaComposite the composite to visit
 	 */
-	private void visitComposite(Composite scaComposite) {
+	protected void visitComposite(Composite scaComposite) {
 		log.debug("visiting composite");
 		log.debug("scaComposite" + scaComposite);
 		log.debug("Composite.name=" + scaComposite.getName());

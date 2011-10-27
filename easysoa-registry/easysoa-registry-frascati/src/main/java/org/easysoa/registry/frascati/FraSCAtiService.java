@@ -132,6 +132,16 @@ public class FraSCAtiService extends DefaultComponent {
 
 	/**
 	 * 
+	 * @param urls
+	 * @return
+	 * @throws FrascatiException
+	 */
+	public DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws FrascatiException {
+		return new DiscoveryProcessingContext(frascati.getCompositeManager().newProcessingContext(urls));
+	}
+	
+	/**
+	 * 
 	 * @param compositeUrl
 	 * @param scaZipUrls
 	 * @return
@@ -141,12 +151,14 @@ public class FraSCAtiService extends DefaultComponent {
 		// Create a processing context with where to find ref'd classes
 		// /ProcessingContext processingContext =
 		// frascati.getCompositeManager().newProcessingContext(scaZipUrls);
-		ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaZipUrls);
-
+		//ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaZipUrls);
+		DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaZipUrls);
+		
 		// Only parse and check the SCA composite, i.e., don't generate code for
 		// the SCA composite and don't instantiate it.
-		processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
-
+		//processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
+		processingContext.setProcessingMode(ProcessingMode.instantiate);
+		
 		try {
 			// Process the SCA composite.
 			frascati.processComposite(compositeUrl.toString(), processingContext);
@@ -154,11 +166,13 @@ public class FraSCAtiService extends DefaultComponent {
 			// Return the Eclipse STP SCA Composite.
 			return processingContext.getRootComposite();
 		} catch (FrascatiException fe) {
-			System.err.println("The number of checking errors is equals to " + processingContext.getErrors());
+			//System.err.println("The number of checking errors is equals to " + processingContext.getErrors());
+			log.error("The number of checking errors is equals to " + processingContext.getErrors());
 			// for (error : processingContext.getData(key, type)) {
 			//
 			// }
-			System.err.println("The number of checking warnings is equals to " + processingContext.getWarnings());
+			//System.err.println("The number of checking warnings is equals to " + processingContext.getWarnings());
+			log.error("The number of checking warnings is equals to " + processingContext.getWarnings());
 		}
 
 		// TODO feed parsing errors / warnings up to UI ?!

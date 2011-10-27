@@ -36,7 +36,8 @@ import org.ow2.frascati.assembly.factory.api.ProcessingMode;
  * wrapping FraSCAti's original, runtime-focused one (ProcessingContextImpl,
  * built by frascati.getCompositeManager() i.e. AssemblyFactoryManager)
  * 
- * - Unfound classes produce warnings rather than errors
+ * - Unfound classes produce a harmless warnings, rather than errors and throw a fatal exception
+ * - Remembers error and warning messages
  * 
  * NB. can't extend rather than delegate because methods are final
  * @author mdutoo

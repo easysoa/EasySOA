@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.sca.frascati.FraSCAtiScaImporter;
+import org.easysoa.sca.frascati.FraSCAtiScaImporterBase;
 import org.eclipse.stp.sca.BaseReference;
 import org.eclipse.stp.sca.BaseService;
 import org.eclipse.stp.sca.Binding;
@@ -39,7 +39,7 @@ public class WSBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 	 * 
 	 * @param frascatiScaImporter
 	 */
-	public WSBindingInfoProvider(FraSCAtiScaImporter frascatiScaImporter) {
+	public WSBindingInfoProvider(FraSCAtiScaImporterBase frascatiScaImporter) {
 		super(frascatiScaImporter);
 	}
 

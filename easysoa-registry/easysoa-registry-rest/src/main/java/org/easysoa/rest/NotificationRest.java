@@ -37,6 +37,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySoaApiFactory;
+import org.easysoa.api.INotificationRest;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
@@ -53,7 +55,7 @@ import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.spi.container.ContainerRequest;
 
 @Path("easysoa/notification")
-public class NotificationRest {
+public class NotificationRest implements INotificationRest {
 
     private static final Log log = LogFactory.getLog(NotificationRest.class);
     
@@ -70,14 +72,16 @@ public class NotificationRest {
         } catch (JSONException e) {
             log.error("JSON init failure", e);
         }
+        // TODO better
+        EasySoaApiFactory.getInstance().setNotificationRest(this);
     }
 
-    @POST
+    //@Override
+	@POST
     @Path("/appliimpl")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostAppliImpl(@Context HttpContext httpContext,
-            @Context HttpServletRequest request) throws JSONException {
+    public Object doPostAppliImpl(@Context HttpContext httpContext, @Context HttpServletRequest request) throws JSONException {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
@@ -89,12 +93,8 @@ public class NotificationRest {
         return getFormattedResult();
     }
 
-    /**
-     * Appli Impl. Documentation
-     * @return
-     * @throws JSONException
-     */
-    @GET
+    //@Override
+	@GET
     @Path("/appliimpl")
     @Produces(MediaType.APPLICATION_JSON)
     public Object doGetAppliImpl() throws JSONException {
@@ -114,12 +114,12 @@ public class NotificationRest {
         return getFormattedResult();
     }
 
-    @POST
+    //@Override
+	@POST
     @Path("/api")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostApi(@Context HttpContext httpContext,
-            @Context HttpServletRequest request) throws JSONException {
+    public Object doPostApi(@Context HttpContext httpContext, @Context HttpServletRequest request) throws JSONException {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
@@ -131,12 +131,8 @@ public class NotificationRest {
         return getFormattedResult();
     }
     
-    /**
-     * API Documentation
-     * @return
-     * @throws JSONException
-     */
-    @GET
+    //@Override
+	@GET
     @Path("/api")
     @Produces(MediaType.APPLICATION_JSON)
     public Object doGetApi() throws JSONException {
@@ -155,12 +151,12 @@ public class NotificationRest {
         return getFormattedResult();
     }
 
-    @POST
+    //@Override
+	@POST
     @Path("/service")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostService(@Context HttpContext httpContext,
-            @Context HttpServletRequest request) throws JSONException {
+    public Object doPostService(@Context HttpContext httpContext, @Context HttpServletRequest request) throws JSONException {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
@@ -172,12 +168,8 @@ public class NotificationRest {
         return getFormattedResult();
     }
 
-    /**
-     * Service Documentation
-     * @return
-     * @throws JSONException
-     */
-    @GET
+    //@Override
+	@GET
     @Path("/service")
     @Produces(MediaType.APPLICATION_JSON)
     public Object doGetService() throws JSONException {
@@ -196,7 +188,8 @@ public class NotificationRest {
         return getFormattedResult();
     }
 
-    @POST
+    //@Override
+	@POST
     @Path("/{all:.*}")
     @Produces(MediaType.APPLICATION_JSON)
     public Object doPostInvalid() throws JSONException, LoginException {
