@@ -24,6 +24,11 @@ import org.easysoa.rest.RestNotificationFactory;
 import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
 import org.easysoa.rest.RestNotificationRequest;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class ServiceNotificationExample {
 	
     /**
