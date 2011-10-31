@@ -55,6 +55,8 @@ public class AppliImpl extends EasySOADoctype {
     // Feature-specific properties
     public static final String PROP_DOMAIN = "domain";
     public static final String PROP_LIFECYCLESTATUS = "lifeCycleStatus";
+    public static final String PROP_DESIGNDOCUMENTNAME = "designDocumentName";
+    public static final String PROP_DESIGNDOCUMENTSOURCE = "designDocumentSource";
     
     public static final String PROP_SERVERENTRY = "serverEntry"; // Internal
     
@@ -88,6 +90,8 @@ public class AppliImpl extends EasySOADoctype {
             featurePropertyList = new HashMap<String, String>(); 
             featurePropertyList.put(PROP_DOMAIN, "Feature's business domain.");
             featurePropertyList.put(PROP_LIFECYCLESTATUS, "Feature's lifecycle status.");
+            featurePropertyList.put(PROP_DESIGNDOCUMENTNAME, "The name of the attached design document.");
+            featurePropertyList.put(PROP_DESIGNDOCUMENTSOURCE, "The origin of the attached design document.");
         }
         return featurePropertyList;
     }
