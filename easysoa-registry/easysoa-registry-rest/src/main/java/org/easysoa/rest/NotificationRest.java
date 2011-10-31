@@ -108,6 +108,10 @@ public class NotificationRest implements INotificationRest {
         for (Entry<String, String> entry : appliImplDef.entrySet()) {
             params.put(entry.getKey(), entry.getValue());
         }
+        Map<String, String> featureDef = AppliImpl.getFeaturePropertyList();
+        for (Entry<String, String> entry : featureDef.entrySet()) {
+            params.put(entry.getKey(), entry.getValue());
+        }
         result.put("parameters", params);
         result.put("description", "Notification concerning an application implementation.");
     

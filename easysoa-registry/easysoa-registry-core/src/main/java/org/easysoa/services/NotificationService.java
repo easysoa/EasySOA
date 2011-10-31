@@ -94,6 +94,7 @@ public class NotificationService extends DefaultComponent {
             
             // Update optional properties
             setPropertiesIfNotNull(appliImplModel, AppliImpl.SCHEMA, AppliImpl.getPropertyList(), properties);
+            setPropertiesIfNotNull(appliImplModel, AppliImpl.FEATURE_SCHEMA, AppliImpl.getFeaturePropertyList(), properties);
             
             // Save
             session.saveDocument(appliImplModel);
@@ -445,10 +446,6 @@ public class NotificationService extends DefaultComponent {
                 // Dublin Core properties
                 else if (EasySOADoctype.getDublinCorePropertyList().containsKey(key)) {
                     setPropertyIfNotNull(model, "dublincore", key, value);
-                }
-                // Unknown
-                else {
-                    throw new ClientException("Unkown property "+key);
                 }
             }
         }
