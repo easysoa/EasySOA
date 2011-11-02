@@ -64,10 +64,11 @@ public class Server {
      * @throws Exception
      */
     public static void main(String args[]) throws Exception {
-    	new Server(args[0]);
-    	if(args == null || args[0] == null || "".equals(args[0])){
-    		throw new IllegalArgumentException("The deployment address must be specified in arg0 !");
-    	}
+        String addressBase = ADDRESS_BASE;
+        if(args != null && args.length != 0 && args[0] != null && !"".equals(args[0])){
+            addressBase = args[0];
+        }
+    	new Server(addressBase);
         System.out.println("Server ready...");
         System.out.println("To stop the server, push the 'Q' key !");
         while(System.in.read()!='q' && System.in.read()!='Q'){
