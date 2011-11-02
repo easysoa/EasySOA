@@ -41,6 +41,7 @@ import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.Blob;
@@ -95,8 +96,7 @@ import com.google.inject.Inject;
 	"org.easysoa.registry.core:test/datasource-contrib.xml" // required because no jetty.naming in deps
 })
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class FraSCAtiImportServiceTest
-{
+public class FraSCAtiImportServiceTest {
 
     static final Log log = LogFactory.getLog(FraSCAtiImportServiceTest.class);
 

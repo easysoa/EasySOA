@@ -20,6 +20,7 @@
 
 package org.easysoa.sca.visitors;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.rest.RestNotificationFactory;
+import org.easysoa.rest.RestNotificationRequest;
+import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.DocumentService;
@@ -43,13 +48,13 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 // TODO: Refactor visitor implementations
-public class ReferenceBindingVisitor extends ScaVisitorBase {
+public class ApiReferenceBindingVisitor extends ScaVisitorBase {
 
-    private static Log log = LogFactory.getLog(ReferenceBindingVisitor.class);
+    private static Log log = LogFactory.getLog(ApiReferenceBindingVisitor.class);
     
     protected DocumentModel referenceModel;
 
-    public ReferenceBindingVisitor(IScaImporter scaImporter) {
+    public ApiReferenceBindingVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
     
@@ -72,7 +77,7 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         return sbuf.toString();
     }
     
-    @Override
+    /*@Override
     public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException {
 
         // Notify service reference
@@ -95,6 +100,37 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         } catch (MalformedURLException e) {
             log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
         } 
+    }*/
+    
+    @Override
+    public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, IOException {
+        
+    	// Using default value for API url
+	    RestNotificationFactory factory = new RestNotificationFactory();
+	    
+        String refUrl = bindingInfoProvider.getBindingUrl();	    
+	    
+        // Notify service reference
+        // TODO : Add a rest service for service references, not existing in the REST notification server
+	    /*
+        RestNotificationRequest requestServiceReference = factory.createNotification(RestNotificationService.);
+	    requestServiceReference.setProperty(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
+	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
+	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
+	    requestServiceReference.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
+	    requestServiceReference.setProperty(ServiceReference.PROP_PARENTURL, 
+                (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));	    
+	    requestServiceReference.send();
+	    
+        // Notify referenced service
+	    RestNotificationRequest requestService = factory.createNotification(RestNotificationService.SERVICE);
+        requestService.setProperty(Service.PROP_URL, refUrl);
+        requestService.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
+        try {
+        	requestService.send();
+        } catch (Exception e) {
+            log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
+        }*/	    
     }
 
     @Override

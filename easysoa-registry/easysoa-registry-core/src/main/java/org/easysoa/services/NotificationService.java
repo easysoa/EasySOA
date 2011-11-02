@@ -287,12 +287,10 @@ public class NotificationService extends DefaultComponent {
             // Find reference, then enrich or create
             DocumentModel referenceModel = docService.findServiceReference(session, archiPath);
             if (referenceModel == null){
-                referenceModel = docService.createReference(session, 
-                        appliImplModel.getPathAsString(), archiPath);
+                referenceModel = docService.createReference(session, appliImplModel.getPathAsString(), archiPath);
             }
             properties.remove(ServiceReference.PROP_PARENTURL);
-            setPropertiesIfNotNull(referenceModel, ServiceReference.SCHEMA, 
-                    ServiceReference.getPropertyList(), properties);
+            setPropertiesIfNotNull(referenceModel, ServiceReference.SCHEMA, ServiceReference.getPropertyList(), properties);
             
             session.saveDocument(referenceModel);
             session.save();

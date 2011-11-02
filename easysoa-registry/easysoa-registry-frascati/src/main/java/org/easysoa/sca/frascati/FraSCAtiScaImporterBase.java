@@ -151,6 +151,7 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	 */
 	private void init() throws Exception{
 		frascatiService = Framework.getService(FraSCAtiService.class);
+		//frascatiService.setImporter(this);
 	}
 	
 	/**
@@ -189,7 +190,7 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	protected void visitComposite(Composite scaComposite) {
 		log.debug("visiting composite");
 		log.debug("scaComposite" + scaComposite);
-		log.debug("Composite.name=" + scaComposite.getName());
+		log.debug("Composite.name =" + scaComposite.getName());
 		// Get services
 		for (Service service : scaComposite.getService()) {
 			log.debug("Service.name=" + service.getName());
@@ -272,9 +273,12 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	        	try {
 	                scaVisitor.visit(bindingInfoProvider);
 	            } catch (Exception ex) {
-	                log.error("Error when visiting binding " + scaVisitor.getDescription()
-	                        + " at archi path " + toCurrentArchiPath()
-	                        + " in SCA composite file " + compositeFile.getFilename(), ex);
+	            	String errorMessage = "Error when visiting binding " + scaVisitor.getDescription()
+	            			+ " at archi path " + toCurrentArchiPath();
+	            	if(compositeFile != null){
+	            			errorMessage = errorMessage + " in SCA composite file " + compositeFile.getFilename();
+	            	}
+	                log.error(errorMessage, ex);
 	            }
             }
         }

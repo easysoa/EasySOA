@@ -41,13 +41,14 @@ public class RestNotificationFactory {
     public static final String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo/site";
     
     public enum RestNotificationService {
-        APPLIIMPL, SERVICEAPI, SERVICE;
+        APPLIIMPL, SERVICEAPI, SERVICE;/*, SERVICEREFERENCE;*/
     }
     
     private static final String API_PATH = "/easysoa/notification/";
     private static final String SERVICE_APPLIIMPL = "appliimpl";
     private static final String SERVICE_SERVICEAPI = "api";
     private static final String SERVICE_SERVICE = "service";
+    //private static final String SERVICE_REFERENCE = "service";
 
     private static Log log = LogFactory.getLog(RestNotificationFactory.class);
     

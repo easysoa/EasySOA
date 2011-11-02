@@ -20,15 +20,14 @@
 
 package org.easysoa.sca.visitors;
 
-import java.net.MalformedURLException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.rest.RestNotificationFactory;
+import org.easysoa.rest.RestNotificationRequest;
+import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -39,19 +38,20 @@ import org.nuxeo.ecm.core.api.ClientException;
  * @author mkalam-alami
  *
  */
-public class ServiceBindingVisitor extends ScaVisitorBase {
+public class ApiServiceBindingVisitor extends ScaVisitorBase {
     
-	private static Log log = LogFactory.getLog(ServiceBindingVisitor.class);	
+	private static Log log = LogFactory.getLog(ApiServiceBindingVisitor.class);	
 	
 	/**
 	 * 
 	 * @param scaImporter
 	 */
-    public ServiceBindingVisitor(IScaImporter scaImporter) {
+    public ApiServiceBindingVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
 
-    @Override
+    //@Override
+    /*
     public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, MalformedURLException {
         String serviceUrl = bindingInfoProvider.getBindingUrl();
         if (serviceUrl == null) {
@@ -81,6 +81,40 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
         properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?
         notificationService.notifyService(documentManager, properties);
+    }*/
+
+    @Override
+    public void visit(BindingInfoProvider bindingInfoProvider) throws Exception {
+        String serviceUrl = bindingInfoProvider.getBindingUrl();
+        if (serviceUrl == null) {
+        	log.warn("serviceUrl is null, returning !");
+        	return;
+        }
+        log.debug("serviceUrl is not null, registering API's and services...");
+        // Null exception !!!
+        String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+        String apiUrl = notificationService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
+        
+        // Using default value for API url
+	    RestNotificationFactory factory = new RestNotificationFactory();
+	    
+	    // enrich or create API
+	    RestNotificationRequest requestServiceApi = factory.createNotification(RestNotificationService.SERVICEAPI);
+	    requestServiceApi.setProperty(ServiceAPI.PROP_URL, apiUrl);
+	    requestServiceApi.setProperty(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
+	    requestServiceApi.setProperty(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
+	    requestServiceApi.setProperty(ServiceAPI.PROP_PARENTURL, appliImplUrl);	    
+	    requestServiceApi.send();
+	    
+	    // enrich or create service
+	    RestNotificationRequest requestService = factory.createNotification(RestNotificationService.SERVICE);	    
+	    requestService.setProperty(Service.PROP_URL, serviceUrl);
+	    requestService.setProperty(Service.PROP_TITLE, scaImporter.getCurrentArchiName());
+	    requestService.setProperty(Service.PROP_PARENTURL, apiUrl);
+	    requestService.setProperty(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
+	    requestService.setProperty(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
+	    requestService.setProperty(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?	    
+	    requestService.send();
     }
     
     @Override

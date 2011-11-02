@@ -57,6 +57,7 @@ import org.eclipse.stp.sca.Composite;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
 import org.ow2.frascati.FraSCAti;
+import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
@@ -137,6 +138,7 @@ public class FraSCAtiService extends DefaultComponent {
 	 * @throws FrascatiException
 	 */
 	public DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws FrascatiException {
+		// add a parameter to pass the importer
 		return new DiscoveryProcessingContext(frascati.getCompositeManager().newProcessingContext(urls));
 	}
 	
@@ -149,15 +151,23 @@ public class FraSCAtiService extends DefaultComponent {
 	 */
 	public Composite readComposite(URL compositeUrl, URL... scaZipUrls)	throws Exception {
 		// Create a processing context with where to find ref'd classes
-		// /ProcessingContext processingContext =
-		// frascati.getCompositeManager().newProcessingContext(scaZipUrls);
+		//ProcessingContext processingContext = frascati.getCompositeManager().newProcessingContext(scaZipUrls);
+		log.debug("composite URL = " + compositeUrl);
+		// TODO : if we have a standalone composite file, do not instanciate and start the composite
+		// TODO : change the processing context to discovery processing context
 		//ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaZipUrls);
 		DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaZipUrls);
 		
 		// Only parse and check the SCA composite, i.e., don't generate code for
 		// the SCA composite and don't instantiate it.
 		//processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
-		processingContext.setProcessingMode(ProcessingMode.instantiate);
+		processingContext.setProcessingMode(ProcessingMode.generate);
+		
+		// Problem with this mode : class not found exceptions when a single composite is loaded
+		//processingContext.setProcessingMode(ProcessingMode.compile);
+		
+		// Generate Juliac class generation and compilation errors 
+		//processingContext.setProcessingMode(ProcessingMode.instantiate);
 		
 		try {
 			// Process the SCA composite.

@@ -4,9 +4,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easysoa.api.EasySoaApiFactory;
-import org.easysoa.api.INotificationRest;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+//import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
+import org.easysoa.sca.frascati.FraSCAtiImportServiceTest;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Composite;
 import org.objectweb.fractal.api.Component;
@@ -19,8 +21,13 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 	protected List<String> warningMessages = new ArrayList<String>();
 	protected List<String> errorMessages = new ArrayList<String>();	
 
-	public DiscoveryProcessingContext(ProcessingContext delegate) {
+	static final Log log = LogFactory.getLog(FraSCAtiImportServiceTest.class);
+	
+	//protected IScaImporter scaImporter;
+	
+	public DiscoveryProcessingContext(ProcessingContext delegate/*, IScaImporter scaImporter*/) {
 		this.delegate = delegate;
+		//this.scaImporter = scaImporter;
 	}	
 	
 	//////////////////////////////////////////////
@@ -84,11 +91,18 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 		return delegate.getData(key, type);
 	}
 
+	// called only with instanciate processing mode
 	protected void discover(Composite composite) {
+		log.debug("discovering composite ....");
 		// TODO FraSCAtiSCAImporter(...Base/Api...).visitComposite(composite)
 		try {
+			// TODO : do not creates a new ScaImporter .... Use the one created by the test or SCA import bean ....
+			// Establish or find the relation between frascatiService and FrascatiScaImporter ...
 			ApiFraSCAtiScaImporter frascatiImporter = new ApiFraSCAtiScaImporter();
+
+			// pass the importer as a parameters when the processing context is created ?
 			frascatiImporter.visitComposite(composite);
+			//scaImporter.visitComposite(composite);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
