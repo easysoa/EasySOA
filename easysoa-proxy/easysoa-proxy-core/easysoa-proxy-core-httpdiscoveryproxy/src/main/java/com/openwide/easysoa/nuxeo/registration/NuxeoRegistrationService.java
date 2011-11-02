@@ -128,7 +128,7 @@ public class NuxeoRegistrationService {
         request.setProperty(org.easysoa.doctypes.Service.PROP_CALLCOUNT, Integer.toString(service.getCallCount()));
         request.setProperty(org.easysoa.doctypes.Service.PROP_CONTENTTYPEIN, service.getContentTypeIn());
         request.setProperty(org.easysoa.doctypes.Service.PROP_CONTENTTYPEOUT, service.getContentTypeOut());
-        request.setProperty(org.easysoa.doctypes.Service.PROP_RELATEDUSERS, service.getRelatedUsers());
+        request.setProperty(org.easysoa.doctypes.Service.PROP_PARTICIPANTS, service.getParticipants());
         request.setProperty(org.easysoa.doctypes.Service.PROP_HTTPMETHOD, service.getHttpMethod());
     
         //TODO "discoveryTypeMonitoring": "Notes about monitoring-specific notifications.

@@ -13,7 +13,7 @@
   </service>
 
   <extension-point name="scaImporters">
-    <object class="org.easysoa.sca.frascati.ScaImporterDescriptor" />
+    <object class="org.easysoa.sca.extension.ScaImporterDescriptor" />
   </extension-point>
 
 </component>

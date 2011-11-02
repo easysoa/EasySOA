@@ -46,6 +46,9 @@ public class EasySOADoctype {
     public static final String PROP_DTIMPORT = "discoveryTypeImport";
     public static final String PROP_ARCHIPATH = "archiPath";
     public static final String PROP_ARCHILOCALNAME = "archiLocalName";
+    
+    // Notification API properties
+    public static final String PROP_PARENTURL = "parentUrl";
 
     private static Map<String, String> commonPropertyList = null;
     private static Map<String, String> dublinCorePropertyList = null;

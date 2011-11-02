@@ -5,7 +5,7 @@
   <xs:element name="url" type="xs:string" />
   <xs:element name="lightUrl" type="xs:string" />
   <xs:element name="callcount" type="xs:int" />
-  <xs:element name="relatedUsers" type="xs:string" />
+  <xs:element name="participants" type="xs:string" />
   <xs:element name="httpMethod" type="xs:string" />
   <xs:element name="contentTypeIn" type="xs:string" />
   <xs:element name="contentTypeOut" type="xs:string" />

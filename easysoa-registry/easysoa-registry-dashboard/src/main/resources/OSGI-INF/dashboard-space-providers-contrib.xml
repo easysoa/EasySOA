@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.dashboard.spaceproviders.contrib" version="1.0">
+
+  <require>org.nuxeo.ecm.user.center.dashboard.opensocial.spaceprovider</require>
+
+  <extension target="org.nuxeo.ecm.spaces.core.spacemanager.service" point="spaceProviders">
+    <spaceProvider name="userDashboardSpaceProvider">
+      <class>
+        org.easysoa.dashboard.UserDashboardSpaceProvider
+      </class>
+    </spaceProvider>
+  </extension>
+
+</component>

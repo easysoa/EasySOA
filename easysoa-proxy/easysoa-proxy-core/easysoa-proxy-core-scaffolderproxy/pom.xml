@@ -32,7 +32,7 @@
     <dependency>
       <groupId>org.easysoa</groupId>
       <artifactId>easysoa-common</artifactId>
-      <version>0.4-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>

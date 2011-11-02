@@ -28,7 +28,7 @@ import org.nuxeo.common.xmap.annotation.XObject;
  * 
  * @author jguillemotte
  */
-@XObject("serviceFinder")
+@XObject("IScaImporter")
 public class ScaImporterDescriptor {
 
     @XContent
@@ -38,4 +38,3 @@ public class ScaImporterDescriptor {
     protected boolean enabled = true;
     
 }
- 

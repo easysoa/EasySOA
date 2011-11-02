@@ -20,6 +20,9 @@
 
 package org.easysoa.sca;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.model.SelectItem;
@@ -40,6 +43,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.runtime.api.Framework;
 
@@ -73,7 +77,7 @@ public class ScaImportBean {
     
     @Create
     public void init() throws ClientException {
-        compositeFile = null;
+    	compositeFile = null;
         documentManager = navigationContext.getOrCreateDocumentManager();
         appliImpls = getAllAppliImplsAsSelectItems(documentManager);
         serviceStackType = "FraSCAti"; // TODO get it from wizard
@@ -85,6 +89,18 @@ public class ScaImportBean {
     public void importSCA() {
 
         if (compositeFile != null) {
+        	// filename not set, get the default zip file
+        	if (compositeFile.getFilename() == null || "".equals(compositeFile.getFilename())) {
+            	//String scaFilePath = "src/main/resources/" + "test/defaultsca.zip";
+        		String scaFilePath =  System.getProperty("user.dir") + "/test/defaultsca.zip";
+            	File scaFile = new File(scaFilePath);    	
+            	try {
+					compositeFile = new InputStreamBlob(new FileInputStream(scaFile));
+	            	compositeFile.setFilename(scaFilePath);					
+				} catch (FileNotFoundException ex) {
+					log.warn("Problem during default composite file loading" , ex);
+				}
+        	}
             
             IScaImporter importer;
             try {

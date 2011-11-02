@@ -31,7 +31,6 @@ import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 import org.ow2.frascati.FraSCAti;
 
-
 /**
  * Used to test issue #23 FraSCAti can't mock a specific WSDL (because no JAXWS annotations support)
  * https://github.com/easysoa/easysoa-model-demo/issues/23 .

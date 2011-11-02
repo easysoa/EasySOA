@@ -77,7 +77,7 @@ EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
 EASYSOA_TALEND = EASYSOA+':samples:Talend-Airport-Service'
 EASYSOA_TRAVEL_BACKUP = EASYSOA+':samples:easysoa-samples-smarttravel:easysoa-samples-smarttravel-services-backup'
 
-desc 'EasySOA project - Available options for all EasySOA tasks: "test=no" to skip tests, "offline=yes" to build in offline mode'
+desc 'EasySOA project - Available options for all EasySOA tasks: "test=no" to skip tests, "offline=yes" to build in offline mode, "withtalend=yes" to include Talend ESB'
 define 'easysoa', :base_dir => '../' do
   
   task :mvn do
@@ -282,6 +282,7 @@ task :packageall do # TODO Less messy code
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
+  cp_r FileList['./deps/frascati/lib/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/' # XXX Dirty way of managing FraSCAti dependencies
   
   # Copy Node.js server
   puts "Copying web server & proxy (node.js)..."

@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 
 public class ProxyUtil {
 
@@ -35,6 +36,13 @@ public class ProxyUtil {
 	
 	
 	public static URL getUrlOrFile(String wsdlSource) throws Exception {
+
+	    // XXX: Airport service hack
+        if (wsdlSource.contains("AirportService")) {
+            wsdlSource = "http://127.0.0.1:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT 
+                    + "/scaffoldingProxy/files/modified_airport_soap.wsdl";
+        }
+	    
 		try {
 			return new URL(wsdlSource);
 		} catch (MalformedURLException e) {

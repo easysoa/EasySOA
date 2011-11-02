@@ -42,9 +42,10 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
     "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
     "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml", // required to enable the specific doctype listeners
+    "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
     "org.nuxeo.runtime.datasource"
 })
 @Features(NuxeoFeatureBase.class)
-@LocalDeploy("org.easysoa.registry.core:org/easysoa/tests/datasource-contrib.xml")
+@LocalDeploy("org.easysoa.registry.core:test/datasource-contrib.xml")
 public class EasySOACoreTestFeature extends SimpleFeature {
 }

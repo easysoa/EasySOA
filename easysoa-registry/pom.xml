@@ -40,8 +40,8 @@
 		<module>easysoa-registry-dashboard</module>
 		<module>easysoa-registry-dependencies</module>
 		<!-- Temporary disabling FraSCAti projects (see WIP on Git branch 'nuxeo-frascati') -->
-		<!--<module>easysoa-registry-frascati</module>
-		<module>easysoa-registry-rest-frascati</module>-->
+		<module>easysoa-registry-frascati</module>
+		<!--<module>easysoa-registry-rest-frascati</module>-->
 	</modules>
 
 	<!-- ============= -->
@@ -100,6 +100,17 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<!-- For Frascati -->
+		<!--<repository>
+			<id>Frascati</id>
+			<name>Frascati repository</name>
+			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+		</repository>-->		
+		<!-- For Frascati SNAPSHOT versions -->		
+		<!--<repository>
+			<id>ow2-snapshot</id>
+			<url>http://maven.ow2.org//maven2-snapshot</url>
+		</repository>-->		
 	</repositories>
 
 </project>

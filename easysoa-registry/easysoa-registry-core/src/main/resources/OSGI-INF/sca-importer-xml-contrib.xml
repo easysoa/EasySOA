@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.sca.xml.contrib.sca.importer" version="1.0">
+<component name="org.easysoa.sca.extension.sca.importer.contrib" version="1.0">
 
   <extension target="org.easysoa.sca.extension.ScaImporterComponent" point="scaImporters">
     <IScaImporter>org.easysoa.sca.xml.XMLScaImporter</IScaImporter>

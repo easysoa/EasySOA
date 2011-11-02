@@ -21,17 +21,17 @@
 package org.easysoa.registry.frascati;
 
 import org.easysoa.sca.BindingInfoProvider;
-import org.easysoa.sca.frascati.FraSCAtiScaImporter;
+import org.easysoa.sca.frascati.FraSCAtiScaImporterBase;
 
 public abstract class FrascatiBindingInfoProviderBase implements BindingInfoProvider {
 
-    protected FraSCAtiScaImporter frascatiScaImporter;
+    protected FraSCAtiScaImporterBase frascatiScaImporter;
     
     /**
      * 
      * @param frascatiScaImporter
      */
-    public FrascatiBindingInfoProviderBase(FraSCAtiScaImporter frascatiScaImporter) {
+    public FrascatiBindingInfoProviderBase(FraSCAtiScaImporterBase frascatiScaImporter) {
     	this.frascatiScaImporter = frascatiScaImporter;
     }
 	
