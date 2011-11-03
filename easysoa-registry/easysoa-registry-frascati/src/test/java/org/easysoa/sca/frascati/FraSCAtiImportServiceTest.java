@@ -41,7 +41,6 @@ import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.Blob;

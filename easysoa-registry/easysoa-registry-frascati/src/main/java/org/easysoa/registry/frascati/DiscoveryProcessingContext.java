@@ -8,7 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 //import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
-import org.easysoa.sca.frascati.FraSCAtiImportServiceTest;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Composite;
 import org.objectweb.fractal.api.Component;
@@ -21,7 +20,7 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 	protected List<String> warningMessages = new ArrayList<String>();
 	protected List<String> errorMessages = new ArrayList<String>();	
 
-	static final Log log = LogFactory.getLog(FraSCAtiImportServiceTest.class);
+	static final Log log = LogFactory.getLog(DiscoveryProcessingContext.class);
 	
 	//protected IScaImporter scaImporter;
 	

@@ -57,9 +57,7 @@ import org.eclipse.stp.sca.Composite;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
 import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
-import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 
 /**
@@ -127,9 +125,9 @@ public class FraSCAtiService extends DefaultComponent {
 	/**
 	 * 
 	 */
-	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws FrascatiException {
-		return new ParsingProcessingContext(frascati.getCompositeManager().newProcessingContext(urls));
-	}
+    public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws FrascatiException {
+        return new ParsingProcessingContext(frascati.getCompositeManager().newProcessingContext(urls));
+    }
 
 	/**
 	 * 

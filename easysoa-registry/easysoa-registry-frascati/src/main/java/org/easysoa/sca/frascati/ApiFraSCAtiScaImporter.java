@@ -2,9 +2,7 @@ package org.easysoa.sca.frascati;
 
 import org.easysoa.sca.visitors.ApiReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ApiServiceBindingVisitor;
-import org.easysoa.sca.visitors.ReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
-import org.easysoa.sca.visitors.ServiceBindingVisitor;
 import org.eclipse.stp.sca.Composite;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
