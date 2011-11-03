@@ -43,6 +43,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.NotificationService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -185,6 +186,43 @@ public class NotificationRest implements INotificationRest {
         }
         Map<String, String> serviceDef = Service.getPropertyList();
         for (Entry<String, String> entry : serviceDef.entrySet()) {
+            params.put(entry.getKey(), entry.getValue());
+        }
+        result.put("parameters", params);
+        result.put("description", "Service-level notification.");
+        return getFormattedResult();
+    }
+	
+    //@Override
+    @POST
+    @Path("/servicereference")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object doPostServiceReference(@Context HttpContext httpContext, @Context HttpServletRequest request) throws JSONException {
+        CoreSession session = SessionFactory.getSession(request);
+        Map<String, String> params = getFormValues(httpContext);
+        try {
+            notifService.notifyServiceReference(session, params);
+        }
+        catch (Exception e) {
+            appendError(e.getMessage());
+        }
+        return getFormattedResult();
+    }
+
+    //@Override
+    @GET
+    @Path("/servicereference")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object doGetServiceReference() throws JSONException {
+        result = new JSONObject();
+        JSONObject params = new JSONObject();
+        Map<String, String> commonDef = getCommonPropertiesDocumentation();
+        for (Entry<String, String> entry : commonDef.entrySet()) {
+            params.put(entry.getKey(), entry.getValue());
+        }
+        Map<String, String> serviceReferenceDef = ServiceReference.getPropertyList();
+        for (Entry<String, String> entry : serviceReferenceDef.entrySet()) {
             params.put(entry.getKey(), entry.getValue());
         }
         result.put("parameters", params);

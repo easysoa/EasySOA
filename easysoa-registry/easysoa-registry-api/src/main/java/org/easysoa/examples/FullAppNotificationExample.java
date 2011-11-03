@@ -23,6 +23,7 @@ package org.easysoa.examples;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.rest.RestNotificationFactory;
 import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
 import org.easysoa.rest.RestNotificationRequest;
@@ -67,6 +68,14 @@ public class FullAppNotificationExample {
             request.setProperty(Service.PROP_PARTICIPANTS, "My company"); // The service participants
             request.send();
         }
+        
+        // A service reference
+        request = factory.createNotification(RestNotificationService.SERVICEREFERENCE);
+        request.setProperty(ServiceReference.PROP_PARENTURL, APP_URL);
+        request.setProperty(ServiceReference.PROP_REFURL, SERVICE_URL + "1");
+        request.setProperty(ServiceReference.PROP_ARCHIPATH, "/service1");
+        request.setProperty(ServiceReference.PROP_TITLE, "Reference to My Service #1");
+        request.send();
 
     }
 }
