@@ -86,6 +86,9 @@ public class ScaImportBean {
         // (possibly initialized using composite info), then customizing it
     }
     
+    /**
+     * 
+     */
     public void importSCA() {
 
         if (compositeFile != null) {

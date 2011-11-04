@@ -120,7 +120,7 @@ public class ParsingProcessingContext implements ProcessingContext {
 	}
 
 	public void warning(String message) {
-		delegate.warning(message);//
+		delegate.warning(message); // Never called ?
 		warningMessages.add(message);
 	}
 
@@ -129,7 +129,7 @@ public class ParsingProcessingContext implements ProcessingContext {
 	}
 
 	public void error(String message) {
-		delegate.error(message);//
+		delegate.error(message); // Never called ?
 		errorMessages.add(message);
 	}
 

@@ -47,17 +47,18 @@
 
 package org.easysoa.registry.frascati;
 
-//import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.junit.runner.RunWith;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.ow2.frascati.util.FrascatiException;
 
-//import com.google.inject.Inject;
+import com.google.inject.Inject;
 
 /**
  * Tests FraSCAti Web Explorer service.
@@ -65,12 +66,12 @@ import org.junit.Test;
  *
  */
 
-//@RunWith(FeaturesRunner.class)
+@RunWith(FeaturesRunner.class)
 public class FraSCAtiWebExplorerServiceTest {
 
     static final Log log = LogFactory.getLog(FraSCAtiWebExplorerServiceTest.class);
     
-    //@Inject FraSCAtiWebExplorerService frascatiWebExplorerService;
+    @Inject FraSCAtiService frascatiService;
     
     @Before
     public void setUp() throws Exception {
@@ -78,13 +79,47 @@ public class FraSCAtiWebExplorerServiceTest {
     }
     
     /**
-     * Test load SCA composite
+     * Test the start of frascati web explorer
+     * @throws Exception
+     */
+    /*@Test
+    public void testStartFraSCAti() throws Exception {
+    	frascatiService.startFrascati();
+    	log.info(frascatiService.getFraSCAti());
+    	assertNotNull(frascatiService.getFraSCAti());
+    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getComposites());
+    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getTopLevelDomainComposite());
+    }*/
+    
+    /**
+     * Test the start of frascati web explorer
+     * @throws Exception
+     */
+    /*@Test
+    public void testStartWebExplorer() throws Exception {
+    	frascatiService.startFrascati();
+    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getComposites());
+    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getTopLevelDomainComposite());
+    	Object frascatiWebExplorer = frascatiService.startWebExplorer();
+    	log.info(frascatiWebExplorer);
+    	assertNotNull(frascatiWebExplorer);
+    }*/
+    
+    /**
+     * Test the start and the stop of frascati web explorer. This test stop and wait for a manual intervention to continue
      * @throws Exception
      */
     @Test
     @Ignore
-    public void testGetComposite() throws Exception {
-    	//frascatiWebExplorerService.getComposite("helloworld-pojo");
+    public void waitUntilRead() throws Exception {
+		// Starting Frascati web explorer
+    	//frascatiService.startWebExplorer();
+    	log.info("Test started, just push a key (then enter) in the console window to stop the test !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		log.info("Test stopping !");		
+		// Stopping Frascati web explorer
+		//frascatiService.stopWebExplorer();
     }
-
+    
 }

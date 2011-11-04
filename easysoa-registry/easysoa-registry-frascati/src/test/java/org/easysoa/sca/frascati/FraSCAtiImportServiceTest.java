@@ -26,7 +26,10 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
+
+import javax.xml.soap.SOAPException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -114,6 +117,7 @@ public class FraSCAtiImportServiceTest {
     
     @Before
     public void setUp() throws ClientException, MalformedURLException {
+
     	// FraSCAti
   	  	assertNotNull("Cannot get FraSCAti service component", frascatiService);
 
@@ -132,6 +136,7 @@ public class FraSCAtiImportServiceTest {
     }
     
     @Test
+    @Ignore    
     public void importSCAZipSimple() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -189,6 +194,7 @@ public class FraSCAtiImportServiceTest {
     /** The following FraSCAti parsing-based import would fail without custom
      * ProcessingContext.loadClass() because of unknown class in zip */
     @Test
+    @Ignore
     public void importSCAZip() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -220,6 +226,7 @@ public class FraSCAtiImportServiceTest {
     }
     
     @Test
+    @Ignore
     public void testSCAComposite() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -317,6 +324,7 @@ public class FraSCAtiImportServiceTest {
     }    
     
     @Test
+    @Ignore
     public void testFrascatiClassNotFoundException() throws Exception {
     	// With this sample, frascati throws a ClassNotFoundException because required classes are in an other jar
     	String scaFilePath = "src/test/resources/" + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";

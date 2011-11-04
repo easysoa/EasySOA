@@ -56,10 +56,9 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
+import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
-import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 
 /**
@@ -70,6 +69,8 @@ import org.ow2.frascati.util.FrascatiException;
  *         <artifactId>core</artifactId> <version>3.3.0.771</version> <!-- TODO
  *         Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core
  *         ?!! -->
+ *         
+ *         TODO : EasySOAApp start() stop() FraSCAtiBootstrapApp FraSCAtiCompositeApp qui l'impl
  * 
  */
 public class FraSCAtiService extends DefaultComponent {
@@ -78,23 +79,20 @@ public class FraSCAtiService extends DefaultComponent {
 
 	private static Log log = LogFactory.getLog(FraSCAtiService.class);
 
-	private FraSCAti frascati;
+	private EasySOAApp easySOAApp;
 
 	public FraSCAtiService() throws FrascatiException {
 		// Instantiate OW2 FraSCAti.
-		frascati = FraSCAti.newFraSCAti();
-		
-		// Test to launch Web explorer : DOESN'T WORK
-		// There is a problem with duplicate frascati.composite file in both web explorer module and runtime factory module
-		/*URL compositeUrl = ClassLoader.getSystemResource("WebExplorer.composite");			
-		try{
-			// Loading Web explorer composite
-			frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-			log.debug(ex);
-		}*/
+		//easySOAApp = new FraSCAtiBootstrapApp();
+		easySOAApp = new FraSCAtiCompositeApp();
+		easySOAApp.start();
+	}
+	
+	public Component[] startScaApp(URL scaAppUrl) throws FrascatiException {
+		// TODO : change the processing context to discovery processing context
+		ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaAppUrl);
+		//DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaAppUrl);
+		return easySOAApp.getFrascati().getCompositeManager().processContribution(scaAppUrl.toString(), processingContext);
 	}
 
 	/**
@@ -104,7 +102,7 @@ public class FraSCAtiService extends DefaultComponent {
 	 * @return the composite.
 	 */
 	public Object getComposite(String composite) throws FrascatiException {
-		return frascati.getComposite(composite);
+		return easySOAApp.getFrascati().getComposite(composite);
 	}
 
 	/**
@@ -116,7 +114,7 @@ public class FraSCAtiService extends DefaultComponent {
 	 * @throws FrascatiException
 	 */
 	public FraSCAti getFraSCAti() {
-		return frascati;
+		return easySOAApp.getFrascati();
 	}
 
 	// //////////////////////////////////////////////
@@ -128,7 +126,7 @@ public class FraSCAtiService extends DefaultComponent {
 	 * 
 	 */
 	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws FrascatiException {
-		return new ParsingProcessingContext(frascati.getCompositeManager().newProcessingContext(urls));
+		return new ParsingProcessingContext(easySOAApp.getFrascati().getCompositeManager().newProcessingContext(urls));
 	}
 
 	/**
@@ -139,7 +137,7 @@ public class FraSCAtiService extends DefaultComponent {
 	 */
 	public DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws FrascatiException {
 		// add a parameter to pass the importer
-		return new DiscoveryProcessingContext(frascati.getCompositeManager().newProcessingContext(urls));
+		return new DiscoveryProcessingContext(easySOAApp.getFrascati().getCompositeManager().newProcessingContext(urls));
 	}
 	
 	/**
@@ -155,14 +153,17 @@ public class FraSCAtiService extends DefaultComponent {
 		log.debug("composite URL = " + compositeUrl);
 		// TODO : if we have a standalone composite file, do not instanciate and start the composite
 		// TODO : change the processing context to discovery processing context
-		//ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaZipUrls);
-		DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaZipUrls);
+		
+		ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaZipUrls);
+		//DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaZipUrls);
 		
 		// Only parse and check the SCA composite, i.e., don't generate code for
 		// the SCA composite and don't instantiate it.
 		//processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
-		processingContext.setProcessingMode(ProcessingMode.generate);
-		
+		//processingContext.setProcessingMode(ProcessingMode.generate);
+		processingContext.setProcessingMode(ProcessingMode.start);
+
+		// TODO : Solve problem here ...
 		// Problem with this mode : class not found exceptions when a single composite is loaded
 		//processingContext.setProcessingMode(ProcessingMode.compile);
 		
@@ -171,7 +172,7 @@ public class FraSCAtiService extends DefaultComponent {
 		
 		try {
 			// Process the SCA composite.
-			frascati.processComposite(compositeUrl.toString(), processingContext);
+			easySOAApp.getFrascati().processComposite(compositeUrl.toString(), processingContext);
 
 			// Return the Eclipse STP SCA Composite.
 			return processingContext.getRootComposite();
@@ -183,6 +184,7 @@ public class FraSCAtiService extends DefaultComponent {
 			// }
 			//System.err.println("The number of checking warnings is equals to " + processingContext.getWarnings());
 			log.error("The number of checking warnings is equals to " + processingContext.getWarnings());
+			log.error(fe);			
 		}
 
 		// TODO feed parsing errors / warnings up to UI ?!
