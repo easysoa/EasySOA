@@ -57,7 +57,7 @@ public class NotificationServicePropertiesTest {
 
     static final Log log = LogFactory.getLog(NotificationServicePropertiesTest.class);
     
-    @Inject NotificationService notifService;
+    @Inject DiscoveryService notifService;
     
     @Inject DocumentService docService;
     

@@ -44,7 +44,7 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.services.NotificationService;
+import org.easysoa.services.DiscoveryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -62,7 +62,7 @@ public class NotificationRest implements INotificationRest {
     
     private static final String ERROR = "[ERROR] ";
 
-    private NotificationService notifService = Framework.getRuntime().getService(NotificationService.class);
+    private DiscoveryService notifService = Framework.getRuntime().getService(DiscoveryService.class);
     
     private JSONObject result = new JSONObject();
     private Map<String, String> commonPropertiesDocumentation;

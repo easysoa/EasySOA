@@ -31,7 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
-import org.easysoa.services.NotificationService;
+import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.event.Event;
@@ -72,7 +72,7 @@ public class ServiceReferenceListener implements EventListener {
         try {
 
             DocumentService docService = Framework.getService(DocumentService.class);
-            NotificationService notifService = Framework.getService(NotificationService.class);
+            DiscoveryService notifService = Framework.getService(DiscoveryService.class);
             
             // Create service from WSDL if it doesn't exist
             String refUrl = (String) doc.getProperty(SCHEMA, PROP_REFURL);

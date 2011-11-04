@@ -21,7 +21,7 @@
 package org.easysoa.sca.visitors;
 
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.NotificationService;
+import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.runtime.api.Framework;
 
@@ -35,7 +35,7 @@ public abstract class ScaVisitorBase implements ScaVisitor {
 
     protected CoreSession documentManager;
     protected IScaImporter scaImporter;
-    protected NotificationService notificationService;
+    protected DiscoveryService notificationService;
     
     /**
      * 
@@ -44,7 +44,7 @@ public abstract class ScaVisitorBase implements ScaVisitor {
     public ScaVisitorBase(IScaImporter scaImporter) {
         this.documentManager = scaImporter.getDocumentManager();
         this.scaImporter = scaImporter;
-        this.notificationService = Framework.getRuntime().getService(NotificationService.class);
+        this.notificationService = Framework.getRuntime().getService(DiscoveryService.class);
     }
     
     @Override

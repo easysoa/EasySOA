@@ -81,7 +81,7 @@ public class NotificationServiceTreeTest {
 
     private static CoreSession sessionStatic;
     
-    @Inject NotificationService notifService;
+    @Inject DiscoveryService notifService;
     
     @Inject DocumentService docService;
     
