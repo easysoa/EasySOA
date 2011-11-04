@@ -49,6 +49,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
+import org.nuxeo.ecm.webengine.model.view.TemplateView;
 import org.nuxeo.runtime.api.Framework;
 
 import com.sun.jersey.api.core.HttpContext;
@@ -77,7 +78,13 @@ public class DiscoveryRest implements IDiscoveryRest {
         EasySoaApiFactory.getInstance().setDiscoveryRest(this);
     }
 
-    //@Override
+    @GET
+    @Path("/")
+    public Object doPostDiscoveryRoot() {
+        return new TemplateView(new EasySOAAppRoot(), "index.html");
+    }
+    
+    
 	@POST
     @Path("/appliimpl")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -94,7 +101,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@GET
     @Path("/appliimpl")
     @Produces(MediaType.APPLICATION_JSON)
@@ -119,7 +125,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@POST
     @Path("/api")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -136,7 +141,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
     
-    //@Override
 	@GET
     @Path("/api")
     @Produces(MediaType.APPLICATION_JSON)
@@ -156,7 +160,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@POST
     @Path("/service")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -173,7 +176,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@GET
     @Path("/service")
     @Produces(MediaType.APPLICATION_JSON)
@@ -193,7 +195,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
 	
-    //@Override
     @POST
     @Path("/servicereference")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -210,7 +211,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
 
-    //@Override
     @GET
     @Path("/servicereference")
     @Produces(MediaType.APPLICATION_JSON)
@@ -230,7 +230,6 @@ public class DiscoveryRest implements IDiscoveryRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@POST
     @Path("/{all:.*}")
     @Produces(MediaType.APPLICATION_JSON)

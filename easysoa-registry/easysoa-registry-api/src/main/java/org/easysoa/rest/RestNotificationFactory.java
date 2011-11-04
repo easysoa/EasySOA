@@ -44,7 +44,7 @@ public class RestNotificationFactory {
         APPLIIMPL, SERVICEAPI, SERVICE, SERVICEREFERENCE;
     }
     
-    private static final String API_PATH = "/easysoa/notification/";
+    private static final String API_PATH = "/easysoa/discovery/";
     private static final String SERVICE_APPLIIMPL = "appliimpl";
     private static final String SERVICE_SERVICEAPI = "api";
     private static final String SERVICE_SERVICE = "service";
