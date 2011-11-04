@@ -14,6 +14,7 @@
 	    height: 820px;
 	    background-color: #EEF5FA;
 	    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 10pt;
     }
 
     h1 {
@@ -35,14 +36,6 @@
     li {
 	    margin-left: 20px;
 	    margin-bottom: 10px;
-    }
-
-    #logoLink {
-        width: 220px;
-        height: 50px;
-        position: absolute;
-        left: 15px;
-        top: 10px;
     }
 
     #headerLogo {
@@ -74,7 +67,7 @@
     }
 
     p {
-      font-size: 11pt;
+      font-size: 10pt;
       margin-bottom: 10px;
     }
 
@@ -97,65 +90,53 @@
       background-color: #cde;
     }
 
-    input[type=text] {
-      padding: 3px;
-      width: 100%;
-      font-weight: bold;
-      color: black;
-    }
-
-    input[type=password] {
-      padding: 3px;
-      width: 100%;
-      font-weight: bold;
-      color: black;
-    }
-
-    input[disabled] {
-      color: #444;
-    }
-
-    input[type=submit] {
-      padding: 3px;
-      width: 150px;
-      font-size: 12pt;
-    }
-
     a {
       color: #036;
       text-decoration: none;
       font-weight: bold;
     }
-
-    a img {
-      border: 0;
+    
+    .url {
+      font-family: monospace;
+      background-color: #DDD;
+      border: 1px solid #AAA;
+    }
+    
+    .param {
+      font-family: monospace;
+      background-color: #DDF;
+      border: 1px solid #AAF;
+      margin-right: 5px;
     }
 
-    .more {
-      width: 100px;
-      text-align: right;
-      float: right;
-      border: 1px solid #373;
-      background: url('/easysoa/img/more.png') #EFE;
-      background-repeat: no-repeat;
-      background-position: 98% 50%;
-      padding: 2px;
-      padding-right: 20px;
-      margin: 2px;
-      margin-left: 5px;
+    .code {
+      font-family: monospace;
+      background-color: #EEE;
+    }
+    
+    .exampleRequest {
+      font-weight: bold;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #AAA;
+    }
+    
+    .exampleResponse {
+      color: #222;
+    }
+    
+    li {
       margin-bottom: 0;
-      font-size: 8pt;
+    }
+    
+    th {
+      font-size: 12pt;
+    }
+    
+    td:first-child {
+      font-size: 12pt;
     }
 
-    .loginInfoBox {
-      font-size: 11pt;
-      width: 100%;
-      background-color: #D5FFDA;
-      border: 1px solid green;
-      margin: 5px;
-      margin-bottom: 15px;
-      padding: 4px;
-    }
     -->
 	  </style>
 	</head>
@@ -174,51 +155,138 @@
   <table style="width: 100%; max-width: 1000px">
     <tr><th colspan="2">Service Finder</th></tr>
     <tr><td style="width: 150px">Description</td><td>Allows to find services by providing any kind of URL. The adress is then run through several strategies to find WSDLs.</td></tr>
-    <tr><td>URL</td><td></td></tr>
-    <tr><td>Method</td><td></td></tr>
-    <tr><td>Parameters</td><td></td></tr>
-    <tr><td>Result</td><td></td></tr>
-    <tr><td>Example</td><td></td></tr>
+    <tr><td>URL</td><td><span class="url">/nuxeo/site/easysoa/servicefinder</span></td></tr>
+    <tr><td>Method</td><td>GET</td></tr>
+    <tr><td>Parameters</td><td><span class="param">url</span> The URL to explore<br />
+    <tr><td>Parameters format</td><td>Append the URL directly like this: <span class="url">.../servicefinder/<span class="param">http://...</span></span></td></tr>
+    <tr><td>Result</td><td>A JSON object containing:
+      <ul>
+        <li><span class="param">/applicationName</span> The application name</li>    
+        <li><span class="param">/foundLinks</span> A list of WSDLs (the key is the service name, the value is its URL)</li>
+      </ul>
+    </td></tr>
+    <tr><td>Example</td><td class="code">
+      <p class="exampleRequest">/nuxeo/site/easysoa/servicefinder/http://www.myapp.com/services</p>
+      <pre class="exampleResponse">
+{
+  "applicationName": "My App", 
+  "foundLinks": {
+    "My service name": "http://www.myapp.com/services/myservice?wsdl",
+    "My other service name": "http://www.myapp.com/services/myotherservice?wsdl"
+  }
+}
+      </pre>
+    </td></tr>
   </table>
   
   <h2>Discovery API</h2>
   
   <table style="width: 100%; max-width: 1000px">
     <tr><th colspan="2">Application Discovery</th></tr>
-    <tr><td style="width: 150px">Description</td><td></td></tr>
-    <tr><td>URL</td><td></td></tr>
-    <tr><td>Method</td><td></td></tr>
-    <tr><td>Parameters</td><td></td></tr>
-    <tr><td>Result</td><td></td></tr>
-    <tr><td>Example</td><td></td></tr>
+    <tr><td style="width: 150px">Description</td><td>Allows to notify information about an application.</td></tr>
+    <tr><td>URL</td><td><span class="url">/nuxeo/site/easysoa/discovery/appliimpl</span></td></tr>
+    <tr><td>Method</td><td>POST</td></tr>
+    <tr><td>Parameters</td><td>
+      <ul>
+        <li><span class="param">url</span> <b>(mandatory)</b> Services root</li>
+        <li><span class="param">title</span> Application title</li>
+        <li>...</li>
+      </ul>
+      For all parameters, browse to <span class="url">/nuxeo/site/easysoa/discovery/appliimpl</span> (same URL, GET method)
+    </td></tr>
+    <tr><td>Parameters format</td><td>Through the body, in the "application/x-www-form-urlencoded" format.</td></tr>
+    <tr><td>Result</td><td>A JSON object containing a <span class="param">result</span> entry, that should contain "ok" if the request succeeded.</td></tr>
+    <tr><td>Example</td><td class="code">
+      <p class="exampleRequest">/nuxeo/site/easysoa/notification/appliimpl<br />
+      <u><i>Body</i></u>: url=http://app.com/&title=My App</p>
+      <pre class="exampleResponse">
+{
+  "result": "ok"
+}
+      </pre>
+    </td></tr>
   </table>
   
+  <table style="width: 100%; max-width: 1000px">
+    <tr><th colspan="2">Service API Discovery</th></tr>
+    <tr><td style="width: 150px">Description</td><td>Allows to notify information about an API.</td></tr>
+    <tr><td>URL</td><td><span class="url">/nuxeo/site/easysoa/discovery/api</span></td></tr>
+    <tr><td>Method</td><td>POST</td></tr>
+    <tr><td>Parameters</td><td>
+      <ul>
+        <li><span class="param">url</span> <b>(mandatory)</b> Services root</li>
+        <li><span class="param">parentUrl</span> The parent application or API URL</li>
+        <li><span class="param">title</span> Application title</li>
+        <li>...</li>
+      </ul>
+      For all parameters, browse to <span class="url">/nuxeo/site/easysoa/discovery/api</span> (same URL, GET method)
+    </td></tr>
+    <tr><td>Parameters format</td><td>Through the body, in the "application/x-www-form-urlencoded" format.</td></tr>
+    <tr><td>Result</td><td>A JSON object containing a <span class="param">result</span> entry, that should contain "ok" if the request succeeded.</td></tr>
+    <tr><td>Example</td><td class="code">
+      <p class="exampleRequest">/nuxeo/site/easysoa/notification/api<br />
+      <u><i>Body</i></u>: url=http://app.com/api&parentUrl=http://app.com/&title=My App</p>
+      <pre class="exampleResponse">
+{
+  "result": "ok"
+}
+      </pre>
+    </td></tr>
+  </table>
   
-	<p>Tries to find WSDLs from given web page.</p>
-	
-	<p>Use: <b>.../nuxeo/site/easysoa/wsdlscraper/{url}</b></p>
-	
-	<p>Params: <b>{url}</b> The encoded URL of the page to consider.<br />
-	Other protocols than HTTP are not supported.</p>
-	
-	<p>Return: <b>{ "applicationName": "(the application name)", "foundLinks": { "(link name)" : "(link url)", "(link2 name)" : "(link2 url)" ... } }</b>.</p>
-	
-	<p>JSONP Support: add a "callback" query parameter to make the request return a JSONP call instead of a JSON object.</p>
-
-<h2>Service notification</h2>
-
-	<p>Allows to upload a WSDL to the Nuxeo repository. Currently uploads blindly any given file.
-	 
-	<p>Use: <b>.../nuxeo/restAPI/wsdlupload/{applicationName}/{serviceName}/{url}</b></p>
-	
-	<p>Params: <b>{applicationName}</b> The application name, optional (ignored if empty) <br />
-	<b>{serviceName}</b> The service name, optional (ignored if empty)<br />
-	<b>{url}</b> The file to upload, not encoded. Other protocols than HTTP are not supported.</p>
-	
-	<p>Return: <b>{"result": ["ok"]}</b> is no error was found.</p>
-	
-	<p>JSONP Support: add a "callback" query parameter to make the request return a JSONP call instead of a JSON object.</p>
-
+  <table style="width: 100%; max-width: 1000px">
+    <tr><th colspan="2">Service Discovery</th></tr>
+    <tr><td style="width: 150px">Description</td><td>Allows to notify information about a service.</td></tr>
+    <tr><td>URL</td><td><span class="url">/nuxeo/site/easysoa/discovery/service</span></td></tr>
+    <tr><td>Method</td><td>POST</td></tr>
+    <tr><td>Parameters</td><td>
+      <ul>
+        <li><span class="param">url</span> <b>(mandatory)</b> Services root</li>
+        <li><span class="param">parentUrl</span> <b>(mandatory)</b> The parent API URL</li>
+        <li><span class="param">title</span> Service title</li>
+        <li>...</li>
+      </ul>
+      For all parameters, browse to <span class="url">/nuxeo/site/easysoa/discovery/service</span> (same URL, GET method)
+    </td></tr>
+    <tr><td>Parameters format</td><td>Through the body, in the "application/x-www-form-urlencoded" format.</td></tr>
+    <tr><td>Result</td><td>A JSON object containing a <span class="param">result</span> entry, that should contain "ok" if the request succeeded.</td></tr>
+    <tr><td>Example</td><td class="code">
+      <p class="exampleRequest">/nuxeo/site/easysoa/notification/service<br />
+      <u><i>Body</i></u>: url=http://app.com/api/service&parentUrl=http://app.com/api&title=My App</p>
+      <pre class="exampleResponse">
+{
+  "result": "ok"
+}
+      </pre>
+    </td></tr>
+  </table>
+  
+  <table style="width: 100%; max-width: 1000px">
+    <tr><th colspan="2">Service Reference Discovery</th></tr>
+    <tr><td style="width: 150px">Description</td><td>Allows to notify information about a service reference.</td></tr>
+    <tr><td>URL</td><td><span class="url">/nuxeo/site/easysoa/discovery/servicereference</span></td></tr>
+    <tr><td>Method</td><td>POST</td></tr>
+    <tr><td>Parameters</td><td>
+      <ul>
+        <li><span class="param">parentUrl</span> <b>(mandatory)</b> The parent application URL</li>
+        <li><span class="param">archiPath</span> <b>(mandatory)</b> Reference Path in architecture</li>
+        <li><span class="param">title</span> Service reference title</li>
+        <li>...</li>
+      </ul>
+      For all parameters, browse to <span class="url">/nuxeo/site/easysoa/discovery/servicereference</span> (same URL, GET method)
+    </td></tr>
+    <tr><td>Parameters format</td><td>Through the body, in the "application/x-www-form-urlencoded" format.</td></tr>
+    <tr><td>Result</td><td>A JSON object containing a <span class="param">result</span> entry, that should contain "ok" if the request succeeded.</td></tr>
+    <tr><td>Example</td><td class="code">
+      <p class="exampleRequest">/nuxeo/site/easysoa/notification/servicereference<br />
+      <u><i>Body</i></u>: archiPath=/api/service&parentUrl=http://app.com&title=My Service Reference</p>
+      <pre class="exampleResponse">
+{
+  "result": "ok"
+}
+      </pre>
+    </td></tr>
+  </table>
 
 </div>
 
