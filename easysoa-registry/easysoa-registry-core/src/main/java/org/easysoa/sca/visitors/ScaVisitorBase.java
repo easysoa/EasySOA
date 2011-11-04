@@ -35,7 +35,7 @@ public abstract class ScaVisitorBase implements ScaVisitor {
 
     protected CoreSession documentManager;
     protected IScaImporter scaImporter;
-    protected DiscoveryService notificationService;
+    protected DiscoveryService discoveryService;
     
     /**
      * 
@@ -44,7 +44,7 @@ public abstract class ScaVisitorBase implements ScaVisitor {
     public ScaVisitorBase(IScaImporter scaImporter) {
         this.documentManager = scaImporter.getDocumentManager();
         this.scaImporter = scaImporter;
-        this.notificationService = Framework.getRuntime().getService(DiscoveryService.class);
+        this.discoveryService = Framework.getRuntime().getService(DiscoveryService.class);
     }
     
     @Override

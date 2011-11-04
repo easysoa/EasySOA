@@ -45,7 +45,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 public class DiscoveryService extends DefaultComponent {
 
     public static final ComponentName NAME = new ComponentName(
-            "org.easysoa.services.DiscoveryService");
+            DiscoveryService.class.getName());
 
     private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
     private static final String ERROR_API_URL_APPLIIMPL = ERROR_API_URL_BASE + "bad appliimpl URL";

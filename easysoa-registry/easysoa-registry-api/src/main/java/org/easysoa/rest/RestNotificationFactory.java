@@ -40,7 +40,7 @@ public class RestNotificationFactory {
 
     public static final String NUXEO_URL_LOCALHOST = "http://localhost:8080/nuxeo/site";
     
-    public enum RestNotificationService {
+    public enum RestDiscoveryService {
         APPLIIMPL, SERVICEAPI, SERVICE, SERVICEREFERENCE;
     }
     
@@ -52,7 +52,7 @@ public class RestNotificationFactory {
 
     private static Log log = LogFactory.getLog(RestNotificationFactory.class);
     
-    private Map<RestNotificationService, URL> apiUrls;
+    private Map<RestDiscoveryService, URL> apiUrls;
 
     /**
      * Creates a new notification factory.
@@ -73,12 +73,12 @@ public class RestNotificationFactory {
         new URL(nuxeoApisUrl).openConnection();
         
         // Store API services URLs
-        String notificationApiUrl = nuxeoApisUrl + API_PATH;
-        apiUrls = new HashMap<RestNotificationService, URL>();
-        apiUrls.put(RestNotificationService.APPLIIMPL, new URL(notificationApiUrl + SERVICE_APPLIIMPL));
-        apiUrls.put(RestNotificationService.SERVICEAPI, new URL(notificationApiUrl + SERVICE_SERVICEAPI));
-        apiUrls.put(RestNotificationService.SERVICE, new URL(notificationApiUrl + SERVICE_SERVICE));
-        apiUrls.put(RestNotificationService.SERVICEREFERENCE, new URL(notificationApiUrl + SERVICE_SERVICEREFERENCE));
+        String discoveryApiUrl = nuxeoApisUrl + API_PATH;
+        apiUrls = new HashMap<RestDiscoveryService, URL>();
+        apiUrls.put(RestDiscoveryService.APPLIIMPL, new URL(discoveryApiUrl + SERVICE_APPLIIMPL));
+        apiUrls.put(RestDiscoveryService.SERVICEAPI, new URL(discoveryApiUrl + SERVICE_SERVICEAPI));
+        apiUrls.put(RestDiscoveryService.SERVICE, new URL(discoveryApiUrl + SERVICE_SERVICE));
+        apiUrls.put(RestDiscoveryService.SERVICEREFERENCE, new URL(discoveryApiUrl + SERVICE_SERVICEREFERENCE));
         
     }
     
@@ -87,7 +87,7 @@ public class RestNotificationFactory {
      * @param api
      * @return
      */
-    public RestNotificationRequest createNotification(RestNotificationService api) {
+    public RestNotificationRequest createNotification(RestDiscoveryService api) {
         return createNotification(api, "POST");
     }
     
@@ -98,7 +98,7 @@ public class RestNotificationFactory {
      * @param method
      * @return
      */
-    public RestNotificationRequest createNotification(RestNotificationService api, String method) {
+    public RestNotificationRequest createNotification(RestDiscoveryService api, String method) {
         try {
             return new RestNotificationRequestImpl(apiUrls.get(api), method);
         } catch (MalformedURLException e) {

@@ -8,7 +8,7 @@ package org.easysoa.api;
  * @author jguillemotte
  *
  */
-public interface INotificationRest {
+public interface IDiscoveryRest {
 
 	/*
 	@POST

@@ -10,7 +10,7 @@ public class EasySoaApiFactory {
 	// Singleton instance
 	private static EasySoaApiFactory instance = null;
 	//
-	private INotificationRest notificationRest;
+	private IDiscoveryRest discoveryRest;
 	
 	/**
 	 * Constructor
@@ -36,16 +36,16 @@ public class EasySoaApiFactory {
 	 * 
 	 * @return
 	 */
-	public INotificationRest getNotificationRest() {
-		return notificationRest;
+	public IDiscoveryRest getNotificationRest() {
+		return discoveryRest;
 	}
 
 	/**
 	 * 
 	 * @param notificationRest
 	 */
-	public void setNotificationRest(INotificationRest notificationRest) {
-		this.notificationRest = notificationRest;
+	public void setDiscoveryRest(IDiscoveryRest notificationRest) {
+		this.discoveryRest = notificationRest;
 	}
 	
 }

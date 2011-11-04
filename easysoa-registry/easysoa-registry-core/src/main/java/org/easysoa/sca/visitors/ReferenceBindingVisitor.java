@@ -84,14 +84,14 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
         properties.put(ServiceReference.PROP_PARENTURL, 
                 (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-        referenceModel = notificationService.notifyServiceReference(documentManager, properties);
+        referenceModel = discoveryService.notifyServiceReference(documentManager, properties);
         
         // Notify referenced service
         properties = new HashMap<String, String>();
         properties.put(Service.PROP_URL, refUrl);
         properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
         try {
-            notificationService.notifyService(documentManager, properties);
+            discoveryService.notifyService(documentManager, properties);
         } catch (MalformedURLException e) {
             log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
         } 

@@ -38,7 +38,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySoaApiFactory;
-import org.easysoa.api.INotificationRest;
+import org.easysoa.api.IDiscoveryRest;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
@@ -55,26 +55,26 @@ import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.spi.container.ContainerRequest;
 
-@Path("easysoa/notification")
-public class NotificationRest implements INotificationRest {
+@Path("easysoa/discovery")
+public class DiscoveryRest implements IDiscoveryRest {
 
-    private static final Log log = LogFactory.getLog(NotificationRest.class);
+    private static final Log log = LogFactory.getLog(DiscoveryRest.class);
     
     private static final String ERROR = "[ERROR] ";
 
-    private DiscoveryService notifService = Framework.getRuntime().getService(DiscoveryService.class);
+    private DiscoveryService discoveryService = Framework.getRuntime().getService(DiscoveryService.class);
     
     private JSONObject result = new JSONObject();
     private Map<String, String> commonPropertiesDocumentation;
     
-    public NotificationRest() {
+    public DiscoveryRest() {
         try {
             result.put("result", "ok");
         } catch (JSONException e) {
             log.error("JSON init failure", e);
         }
         // TODO better
-        EasySoaApiFactory.getInstance().setNotificationRest(this);
+        EasySoaApiFactory.getInstance().setDiscoveryRest(this);
     }
 
     //@Override
@@ -86,7 +86,7 @@ public class NotificationRest implements INotificationRest {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
-            notifService.notifyAppliImpl(session, params);
+            discoveryService.notifyAppliImpl(session, params);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -128,7 +128,7 @@ public class NotificationRest implements INotificationRest {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
-            notifService.notifyServiceApi(session, params);
+            discoveryService.notifyServiceApi(session, params);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -165,7 +165,7 @@ public class NotificationRest implements INotificationRest {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
-            notifService.notifyService(session, params);
+            discoveryService.notifyService(session, params);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -202,7 +202,7 @@ public class NotificationRest implements INotificationRest {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
-            notifService.notifyServiceReference(session, params);
+            discoveryService.notifyServiceReference(session, params);
         }
         catch (Exception e) {
             appendError(e.getMessage());

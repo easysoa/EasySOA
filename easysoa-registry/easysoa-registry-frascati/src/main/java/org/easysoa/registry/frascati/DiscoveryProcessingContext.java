@@ -108,10 +108,10 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 		}
 		// then reimpl ScaVisitors on top of a nuxeo-free EasySOA API (instead of Nuxeo), by calling
 		// either some of the existing RestNotificationRequestImpl
-		// or LATER an API common to client and server like INotificationRest :
+		// or LATER an API common to client and server like IDiscoveryRest :
 		
-		// Getting notification API
-        //INotificationRest notificationRest = EasySoaApiFactory.getInstance().getNotificationRest();
+		// Getting discovery API
+        //IDiscoveryRest discoveryRest = EasySoaApiFactory.getInstance().getDiscoveryRest();
 		// Sending a notification
         //notificationRest.
         

@@ -24,7 +24,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.rest.AbstractRestTest;
 import org.junit.Assume;
@@ -73,7 +73,7 @@ public class DocumentCreationTest extends AbstractRestTest {
 		String url = "http://myApp.com/", title = "myApp";
 
 		RestNotificationRequest notification = getRestNotificationFactory()
-				.createNotification(RestNotificationService.APPLIIMPL);
+				.createNotification(RestDiscoveryService.APPLIIMPL);
 		Assume.assumeNotNull(notification); // TODO Assumes are a bit random ATM, improve them
 		notification.setProperty(AppliImpl.PROP_TITLE, title);
 		notification.setProperty(AppliImpl.PROP_URL, url);
@@ -92,7 +92,7 @@ public class DocumentCreationTest extends AbstractRestTest {
 		String url = "api/", parentUrl = "http://myApp.com/", title = "myApi";
 
 		RestNotificationRequest notification = getRestNotificationFactory()
-				.createNotification(RestNotificationService.SERVICEAPI);
+				.createNotification(RestDiscoveryService.SERVICEAPI);
 		Assume.assumeNotNull(notification);
 		notification.setProperty(ServiceAPI.PROP_TITLE, title)
 				.setProperty(ServiceAPI.PROP_PARENTURL, parentUrl)
@@ -112,7 +112,7 @@ public class DocumentCreationTest extends AbstractRestTest {
 		String url = "service", parentUrl = "api/", title = "myService";
 
 		RestNotificationRequest notification = getRestNotificationFactory()
-				.createNotification(RestNotificationService.SERVICE);
+				.createNotification(RestDiscoveryService.SERVICE);
 		Assume.assumeNotNull(notification);
 		notification.setProperty(Service.PROP_TITLE, title)
 				.setProperty(Service.PROP_PARENTURL, parentUrl)

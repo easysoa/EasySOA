@@ -34,7 +34,7 @@ public class EasySOAApp extends Application {
         Set<Class<?>> result = new HashSet<Class<?>>();
         result.add(EasySOAAppRoot.class);
         result.add(ServiceFinderRest.class);
-        result.add(NotificationRest.class);
+        result.add(DiscoveryRest.class);
         return result;
     }
 
