@@ -34,7 +34,7 @@ public interface NuxeoMock {
 	 * @return
 	 */
 	@POST
-	@Path("/nuxeo/site/easysoa/notification/{type}")
+	@Path("/nuxeo/site/easysoa/discovery/{type}")
 	public String processNotificationRequest(@PathParam("type") String type);
 	
 	/**

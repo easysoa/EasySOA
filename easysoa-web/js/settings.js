@@ -28,7 +28,7 @@ var settings = {
     ],
     
     // Address of the REST services on which to send notifications
-    nuxeoNotification: "http://127.0.0.1:8080/nuxeo/site/easysoa/notification/",
+    nuxeoDiscovery: "http://127.0.0.1:8080/nuxeo/site/easysoa/discovery/",
     
     // Address of the automation services, to test Nuxeo status and the user login
     nuxeoAutomation: "http://127.0.0.1:8080/nuxeo/site/automation"
