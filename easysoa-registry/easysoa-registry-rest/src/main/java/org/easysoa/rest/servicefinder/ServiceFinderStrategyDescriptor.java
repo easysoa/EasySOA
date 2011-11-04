@@ -30,7 +30,7 @@ import org.nuxeo.common.xmap.annotation.XObject;
  *
  */
 @XObject("serviceFinder")
-public class ServiceFinderDescriptor {
+public class ServiceFinderStrategyDescriptor {
 
     @XContent
     protected String implementation;

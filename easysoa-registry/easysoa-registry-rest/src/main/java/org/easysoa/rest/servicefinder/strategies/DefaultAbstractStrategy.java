@@ -18,25 +18,25 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.rest.servicefinder.finders;
+package org.easysoa.rest.servicefinder.strategies;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.easysoa.HttpFile;
-import org.easysoa.rest.servicefinder.ServiceFinder;
+import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 
 /**
  * 
- * Abstract service finder which provides a way to retrieve the application name.
+ * Abstract strategy which provides a way to retrieve the application name.
  * 
  * @author mkalam-alami
  *
  */
-public abstract class DefaultAbstractServiceFinder implements ServiceFinder {
+public abstract class DefaultAbstractStrategy implements ServiceFinderStrategy {
     
     private static HtmlCleaner cleaner = new HtmlCleaner();
     

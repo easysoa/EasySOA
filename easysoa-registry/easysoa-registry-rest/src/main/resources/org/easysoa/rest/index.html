@@ -2,15 +2,198 @@
 <html>
 	<head>
 		<title>EasySOA REST Services Documentation</title>
+		<style rel="stylesheet" type="text/css">
+		<!--
+	  * {
+	    margin: 0;
+	    padding: 0;
+    }
+
+    body {
+	    width: 100%;
+	    height: 820px;
+	    background-color: #EEF5FA;
+	    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    }
+
+    h1 {
+	    padding-top: 20px;
+	    margin-bottom: 10px;
+	    border-bottom: 1px solid grey;
+	    color: #446;
+	    font-size: 15pt;
+    }
+
+    h2 {
+	    font: 12pt Arial;
+	    font-weight: bold;
+	    padding-top: 10px;
+	    padding-bottom: 5px;
+	    color: #248;
+    }
+
+    li {
+	    margin-left: 20px;
+	    margin-bottom: 10px;
+    }
+
+    #logoLink {
+        width: 220px;
+        height: 50px;
+        position: absolute;
+        left: 15px;
+        top: 10px;
+    }
+
+    #headerLogo {
+      width: 100%;
+      padding-top: 10px;
+      padding-left: 280px;
+      font-size: 14pt;
+      height: 60px;
+      background: url('http://www.easysoa.org/wp-content/themes/easysoa/img/EasySOA-50px.png') white;
+      background-repeat: no-repeat;
+      background-position: 20px 10px;
+      border-bottom: 2px solid #444;
+    }
+
+    #header {
+      width: 100%;
+      padding-top: 23px;
+      font-size: 14pt;
+      font-weight: bold;
+      height: 47px;
+      background: url('/easysoa/img/Logo.png') white;
+      background-repeat: no-repeat;
+      background-position: 20px 15px;
+      border-bottom: 2px solid #444;
+    }
+    
+    #container { 
+      padding: 20px;
+    }
+
+    p {
+      font-size: 11pt;
+      margin-bottom: 10px;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid black;
+      margin: 10px;
+      width: 800px;
+    }
+
+    td {
+      border: 1px solid grey;
+      padding: 5px;
+      background-color: white;
+    }
+
+    th {
+      border: 1px solid grey;
+      padding: 5px;
+      background-color: #cde;
+    }
+
+    input[type=text] {
+      padding: 3px;
+      width: 100%;
+      font-weight: bold;
+      color: black;
+    }
+
+    input[type=password] {
+      padding: 3px;
+      width: 100%;
+      font-weight: bold;
+      color: black;
+    }
+
+    input[disabled] {
+      color: #444;
+    }
+
+    input[type=submit] {
+      padding: 3px;
+      width: 150px;
+      font-size: 12pt;
+    }
+
+    a {
+      color: #036;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a img {
+      border: 0;
+    }
+
+    .more {
+      width: 100px;
+      text-align: right;
+      float: right;
+      border: 1px solid #373;
+      background: url('/easysoa/img/more.png') #EFE;
+      background-repeat: no-repeat;
+      background-position: 98% 50%;
+      padding: 2px;
+      padding-right: 20px;
+      margin: 2px;
+      margin-left: 5px;
+      margin-bottom: 0;
+      font-size: 8pt;
+    }
+
+    .loginInfoBox {
+      font-size: 11pt;
+      width: 100%;
+      background-color: #D5FFDA;
+      border: 1px solid green;
+      margin: 5px;
+      margin-bottom: 15px;
+      padding: 4px;
+    }
+    -->
+	  </style>
 	</head>
 </html>
 <body>
 
-<h1>EasySOA REST Services Documentation</h1>
+<div id="header">
+  <div id="headerLogo"></div>
+</div>
+<div id="container">
 
+  <h1>EasySOA REST Services Documentation</h1>
 
-<h2>WSDL Scraper</h2>
-
+  <h2>Service Finder</h2>
+  
+  <table style="width: 100%; max-width: 1000px">
+    <tr><th colspan="2">Service Finder</th></tr>
+    <tr><td style="width: 150px">Description</td><td>Allows to find services by providing any kind of URL. The adress is then run through several strategies to find WSDLs.</td></tr>
+    <tr><td>URL</td><td></td></tr>
+    <tr><td>Method</td><td></td></tr>
+    <tr><td>Parameters</td><td></td></tr>
+    <tr><td>Result</td><td></td></tr>
+    <tr><td>Example</td><td></td></tr>
+  </table>
+  
+  <h2>Discovery API</h2>
+  
+  <table style="width: 100%; max-width: 1000px">
+    <tr><th colspan="2">Application Discovery</th></tr>
+    <tr><td style="width: 150px">Description</td><td></td></tr>
+    <tr><td>URL</td><td></td></tr>
+    <tr><td>Method</td><td></td></tr>
+    <tr><td>Parameters</td><td></td></tr>
+    <tr><td>Result</td><td></td></tr>
+    <tr><td>Example</td><td></td></tr>
+  </table>
+  
+  
 	<p>Tries to find WSDLs from given web page.</p>
 	
 	<p>Use: <b>.../nuxeo/site/easysoa/wsdlscraper/{url}</b></p>
@@ -36,5 +219,7 @@
 	
 	<p>JSONP Support: add a "callback" query parameter to make the request return a JSONP call instead of a JSON object.</p>
 
+
+</div>
 
 </body>

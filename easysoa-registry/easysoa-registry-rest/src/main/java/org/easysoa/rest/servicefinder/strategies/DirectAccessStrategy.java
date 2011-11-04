@@ -18,39 +18,42 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.rest.servicefinder.finders;
+package org.easysoa.rest.servicefinder.strategies;
 
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.easysoa.EasySOAConstants;
 import org.easysoa.rest.servicefinder.FoundService;
-import org.easysoa.rest.servicefinder.ServiceFinder;
+import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
+import org.ow2.easywsdl.wsdl.WSDLFactory;
+import org.ow2.easywsdl.wsdl.api.Description;
+import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
 /**
  * 
- * Scraper based on the knowledge of various services stacks,
- * to retrieve web-services by trying various URL patterns.
- * 
- * XXX: Currently highly mocked, works with the demo only.
+ * Finds a service when its WSDL URL is given.
  * 
  * @author mkalam-alami
  *
  */
-public class ContextServiceFinder extends DefaultAbstractServiceFinder implements ServiceFinder {
+public class DirectAccessStrategy extends DefaultAbstractStrategy implements ServiceFinderStrategy {
     
     @Override
     public List<FoundService> findFromURL(URL url) throws Exception {
-        
+
         List<FoundService> foundServices = new LinkedList<FoundService>();
         
-        // XXX: Hard-coded matching of the PAF demo services
-        if (url.getPath().contains("crm")) {
-            foundServices.add(new FoundService(
-                    "Orders service",
-                    "http://localhost:"+EasySOAConstants.PAF_SERVICES_PORT+"/PureAirFlowers?wsdl",
-                    guessApplicationName(url)));
+        String urlString = url.toString();
+        if (urlString.toLowerCase().endsWith("?wsdl")) {
+            
+            // Guess service name
+            WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
+            Description desc = reader.read(url);
+            String serviceName = desc.getQName().getLocalPart();
+            
+            foundServices.add(new FoundService(serviceName, urlString));
+            
         }
         
         return foundServices;
