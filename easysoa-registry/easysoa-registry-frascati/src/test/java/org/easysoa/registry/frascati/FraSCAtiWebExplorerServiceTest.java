@@ -110,7 +110,7 @@ public class FraSCAtiWebExplorerServiceTest {
      * @throws Exception
      */
     @Test
-    @Ignore
+    //@Ignore
     public void waitUntilRead() throws Exception {
 		// Starting Frascati web explorer
     	//frascatiService.startWebExplorer();

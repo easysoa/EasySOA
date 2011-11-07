@@ -29,7 +29,7 @@ import javax.ws.rs.core.GenericEntity;
 
 import org.apache.log4j.Logger;
 import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.rest.RestNotificationRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -110,7 +110,7 @@ public class NuxeoRegistrationService {
           }
         }
         */
-        RestNotificationRequest request = factory.createNotification(RestNotificationService.SERVICE);
+        RestNotificationRequest request = factory.createNotification(RestDiscoveryService.SERVICE);
         
         request.setProperty(org.easysoa.doctypes.Service.PROP_URL, service.getUrl()); // ex. http://localhost:9080/CreateSummary
         request.setProperty(org.easysoa.doctypes.Service.PROP_PARENTURL, service.getUrl().substring(0, service.getUrl().lastIndexOf('/'))); // ex.    http://localhost:9080
@@ -170,7 +170,7 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		*/	
-        RestNotificationRequest request = factory.createNotification(RestNotificationService.APPLIIMPL);
+        RestNotificationRequest request = factory.createNotification(RestDiscoveryService.APPLIIMPL);
         
         request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_URL, appli.getUrl());
         request.setProperty(org.easysoa.doctypes.AppliImpl.PROP_UIURL, appli.getUiUrl());
@@ -215,7 +215,7 @@ public class NuxeoRegistrationService {
 		  }
 		}
 		 */
-        RestNotificationRequest request = factory.createNotification(RestNotificationService.APPLIIMPL);
+        RestNotificationRequest request = factory.createNotification(RestDiscoveryService.APPLIIMPL);
         
         request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_URL, api.getUrl());
         request.setProperty(org.easysoa.doctypes.ServiceAPI.PROP_PARENTURL, api.getParentUrl());

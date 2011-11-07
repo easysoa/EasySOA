@@ -62,7 +62,7 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
     	
         log.debug("serviceUrl is not null, registering API's and services...");
         String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-        String apiUrl = notificationService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
+        String apiUrl = discoveryService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         
         // enrich or create API
         Map<String, String> properties = new HashMap<String, String>();
@@ -70,7 +70,7 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
         properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
         properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);
-        notificationService.notifyServiceApi(documentManager, properties);
+        discoveryService.notifyServiceApi(documentManager, properties);
 
         // enrich or create service
         properties = new HashMap<String, String>();
@@ -80,7 +80,7 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
         properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
         properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?
-        notificationService.notifyService(documentManager, properties);
+        discoveryService.notifyService(documentManager, properties);
     }
     
     @Override

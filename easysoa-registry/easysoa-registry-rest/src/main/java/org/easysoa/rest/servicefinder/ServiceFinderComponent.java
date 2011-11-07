@@ -19,13 +19,14 @@ import org.nuxeo.runtime.model.DefaultComponent;
 public class ServiceFinderComponent extends DefaultComponent {
 
     public static final ComponentName NAME = new ComponentName(
-            ComponentName.DEFAULT_TYPE, "org.easysoa.rest.servicefinder.ServiceFinderComponent");
+            ComponentName.DEFAULT_TYPE, ServiceFinderComponent.class.getName());
+    public static final String EXTENSTION_POINT_STRATEGIES = "strategies";
 
     private static Log log = LogFactory.getLog(ServiceFinderComponent.class);
     
-    private List<ServiceFinder> finders = new LinkedList<ServiceFinder>();
+    private List<ServiceFinderStrategy> finders = new LinkedList<ServiceFinderStrategy>();
 
-    public List<ServiceFinder> getServiceFinders() {
+    public List<ServiceFinderStrategy> getServiceFinders() {
         return finders;
     }
     
@@ -33,17 +34,17 @@ public class ServiceFinderComponent extends DefaultComponent {
             String extensionPoint, ComponentInstance contributor) throws Exception {
         try {
             synchronized (finders) {
-            if (extensionPoint.equals("serviceFinders")) {
-                ServiceFinderDescriptor finderDescriptor = (ServiceFinderDescriptor) contribution;
+            if (extensionPoint.equals(EXTENSTION_POINT_STRATEGIES)) {
+                ServiceFinderStrategyDescriptor finderDescriptor = (ServiceFinderStrategyDescriptor) contribution;
                 if (finderDescriptor.enabled) {
                     Class<?> finderClass = Class.forName(finderDescriptor.implementation.trim());
-                    if (ServiceFinder.class.isAssignableFrom(finderClass)) {
-                        finders.add((ServiceFinder) finderClass.newInstance());
+                    if (ServiceFinderStrategy.class.isAssignableFrom(finderClass)) {
+                        finders.add((ServiceFinderStrategy) finderClass.newInstance());
                     } else {
                         throw new InvalidClassException(renderContributionError(
                                 contributor, "class " + finderDescriptor.implementation
                                         + " is not an instance of "
-                                        + ServiceFinder.class.getName()));
+                                        + ServiceFinderStrategy.class.getName()));
                     }
                 }
             }
@@ -57,12 +58,12 @@ public class ServiceFinderComponent extends DefaultComponent {
     public void unregisterContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor) throws Exception {
         synchronized (finders) {
-        if (extensionPoint.equals("serviceFinders")) {
-            ServiceFinderDescriptor finderDescriptor = (ServiceFinderDescriptor) contribution;
+        if (extensionPoint.equals(EXTENSTION_POINT_STRATEGIES)) {
+            ServiceFinderStrategyDescriptor finderDescriptor = (ServiceFinderStrategyDescriptor) contribution;
             if (finderDescriptor.enabled) {
                 Class<?> finderClass = Class.forName(finderDescriptor.implementation.trim());
                 try {
-                    for (ServiceFinder finder : finders) {
+                    for (ServiceFinderStrategy finder : finders) {
                         if (finder.getClass().equals(finderClass)) {
                             finders.remove(finder);
                         }

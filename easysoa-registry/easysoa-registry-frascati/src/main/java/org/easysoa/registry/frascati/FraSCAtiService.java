@@ -129,6 +129,7 @@ public class FraSCAtiService extends DefaultComponent {
 		return new ParsingProcessingContext(easySOAApp.getFrascati().getCompositeManager().newProcessingContext(urls));
 	}
 
+
 	/**
 	 * 
 	 * @param urls

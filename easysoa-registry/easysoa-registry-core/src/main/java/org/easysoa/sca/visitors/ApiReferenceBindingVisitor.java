@@ -22,18 +22,10 @@ package org.easysoa.sca.visitors;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.Service;
-import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.rest.RestNotificationRequest;
-import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.DocumentService;
@@ -106,9 +98,9 @@ public class ApiReferenceBindingVisitor extends ScaVisitorBase {
     public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, IOException {
         
     	// Using default value for API url
-	    RestNotificationFactory factory = new RestNotificationFactory();
+	    //RestNotificationFactory factory = new RestNotificationFactory();
 	    
-        String refUrl = bindingInfoProvider.getBindingUrl();	    
+        //String refUrl = bindingInfoProvider.getBindingUrl();	    
 	    
         // Notify service reference
         // TODO : Add a rest service for service references, not existing in the REST notification server

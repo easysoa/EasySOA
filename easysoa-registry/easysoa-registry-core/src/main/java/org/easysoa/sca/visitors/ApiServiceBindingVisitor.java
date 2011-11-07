@@ -27,7 +27,7 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.rest.RestNotificationFactory;
 import org.easysoa.rest.RestNotificationRequest;
-import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -93,13 +93,13 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
         log.debug("serviceUrl is not null, registering API's and services...");
         // Null exception !!!
         String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-        String apiUrl = notificationService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
+        String apiUrl = discoveryService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         
         // Using default value for API url
 	    RestNotificationFactory factory = new RestNotificationFactory();
 	    
 	    // enrich or create API
-	    RestNotificationRequest requestServiceApi = factory.createNotification(RestNotificationService.SERVICEAPI);
+	    RestNotificationRequest requestServiceApi = factory.createNotification(RestDiscoveryService.SERVICEAPI);
 	    requestServiceApi.setProperty(ServiceAPI.PROP_URL, apiUrl);
 	    requestServiceApi.setProperty(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
 	    requestServiceApi.setProperty(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
@@ -107,7 +107,7 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
 	    requestServiceApi.send();
 	    
 	    // enrich or create service
-	    RestNotificationRequest requestService = factory.createNotification(RestNotificationService.SERVICE);	    
+	    RestNotificationRequest requestService = factory.createNotification(RestDiscoveryService.SERVICE);	    
 	    requestService.setProperty(Service.PROP_URL, serviceUrl);
 	    requestService.setProperty(Service.PROP_TITLE, scaImporter.getCurrentArchiName());
 	    requestService.setProperty(Service.PROP_PARENTURL, apiUrl);

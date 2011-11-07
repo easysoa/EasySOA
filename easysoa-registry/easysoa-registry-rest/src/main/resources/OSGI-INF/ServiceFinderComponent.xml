@@ -9,8 +9,8 @@
 
   <implementation class="org.easysoa.rest.servicefinder.ServiceFinderComponent" />
 
-  <extension-point name="serviceFinders">
-    <object class="org.easysoa.rest.servicefinder.ServiceFinderDescriptor" />
+  <extension-point name="strategies">
+    <object class="org.easysoa.rest.servicefinder.ServiceFinderStrategyDescriptor" />
   </extension-point>
 
 </component>

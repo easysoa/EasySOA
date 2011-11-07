@@ -32,7 +32,8 @@ import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
 import org.nuxeo.ecm.automation.core.operations.document.Query;
 
 /**
- * Thin layer to ease the use of the Nuxeo automation API.
+ * Thin layer to ease the use of the Nuxeo automation API
+ * (currently for document queries only).
  * @author mkalam-alami
  *
  */
@@ -43,12 +44,10 @@ public class AutomationHelper {
     private HttpAutomationClient client = null;
     private Session session = null;
     
-    // TODO Better constructor arguments 
-    public AutomationHelper(String nuxeoUrl) throws Exception { 
-        client = new HttpAutomationClient(nuxeoUrl+"/automation");
+    public AutomationHelper(String nuxeoAutomationUrl, String username, String password) throws Exception { 
+        client = new HttpAutomationClient(nuxeoAutomationUrl);
         try {
-            // XXX: Hardcoded auth to external Nuxeo instance
-            session = client.getSession("Administrator", "Administrator"); 
+            session = client.getSession(username, password); 
         }
         catch (Exception e) {
             log.warn("Failed to create automation session: " + e.getMessage());

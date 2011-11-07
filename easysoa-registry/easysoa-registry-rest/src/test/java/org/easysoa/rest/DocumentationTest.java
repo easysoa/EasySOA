@@ -23,7 +23,7 @@ package org.easysoa.rest;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
-import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.rest.AbstractRestTest;
 import org.json.JSONObject;
@@ -66,7 +66,7 @@ public class DocumentationTest extends AbstractRestTest {
 	@Test
 	public void testNotificationDocumentation() throws Exception {
 		// Create request
-		RestNotificationRequest request = getRestNotificationFactory().createNotification(RestNotificationService.SERVICE, "GET");
+		RestNotificationRequest request = getRestNotificationFactory().createNotification(RestDiscoveryService.SERVICE, "GET");
 		JSONObject doc = request.send();
 		
 		// Check documentation contents

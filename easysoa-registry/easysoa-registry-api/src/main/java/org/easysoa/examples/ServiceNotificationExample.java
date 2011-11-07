@@ -21,7 +21,7 @@
 package org.easysoa.examples;
 import org.easysoa.doctypes.Service;
 import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.rest.RestNotificationRequest;
 
 /**
@@ -37,7 +37,7 @@ public class ServiceNotificationExample {
 	public static void main(String[] args) throws Exception {
 		
 	    RestNotificationFactory factory = new RestNotificationFactory("http://localhost:8080/nuxeo/site");
-	    RestNotificationRequest request = factory.createNotification(RestNotificationService.SERVICE);
+	    RestNotificationRequest request = factory.createNotification(RestDiscoveryService.SERVICE);
 	    request.setProperty(Service.PROP_URL, "http://www.myservices.com/api/service");
 	    request.setProperty(Service.PROP_TITLE, "Service");
 	    request.send();

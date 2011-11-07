@@ -42,10 +42,10 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
 
-public class NotificationService extends DefaultComponent {
+public class DiscoveryService extends DefaultComponent {
 
     public static final ComponentName NAME = new ComponentName(
-            "org.easysoa.notification.NotificationService");
+            DiscoveryService.class.getName());
 
     private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
     private static final String ERROR_API_URL_APPLIIMPL = ERROR_API_URL_BASE + "bad appliimpl URL";
@@ -54,9 +54,9 @@ public class NotificationService extends DefaultComponent {
     
     private static final Map<String, String> propertyFilter = new HashMap<String, String>();
 
-    private static Log log = LogFactory.getLog(NotificationService.class);
+    private static Log log = LogFactory.getLog(DiscoveryService.class);
     
-    public NotificationService() {
+    public DiscoveryService() {
         propertyFilter.put(AppliImpl.PROP_URL, null);
         
         propertyFilter.put(ServiceAPI.PROP_URL, null);

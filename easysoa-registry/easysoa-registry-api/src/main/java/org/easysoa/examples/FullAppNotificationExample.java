@@ -23,8 +23,9 @@ package org.easysoa.examples;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.rest.RestNotificationFactory.RestNotificationService;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.rest.RestNotificationRequest;
 
 /**
@@ -45,14 +46,14 @@ public class FullAppNotificationExample {
 
         // Application
         RestNotificationFactory factory = new RestNotificationFactory("http://localhost:8080/nuxeo/site");
-        RestNotificationRequest request = factory.createNotification(RestNotificationService.APPLIIMPL);
+        RestNotificationRequest request = factory.createNotification(RestDiscoveryService.APPLIIMPL);
         request.setProperty(AppliImpl.PROP_URL, APP_URL);
         request.setProperty(AppliImpl.PROP_TITLE, "My App");
         request.setProperty(AppliImpl.PROP_DOMAIN, "CRM");
         request.send();
 
         // API in which the services will be contained
-        request = factory.createNotification(RestNotificationService.SERVICEAPI);
+        request = factory.createNotification(RestDiscoveryService.SERVICEAPI);
         request.setProperty(ServiceAPI.PROP_PARENTURL, APP_URL); // Ensures in which app this will be stored
         request.setProperty(ServiceAPI.PROP_URL, API_URL);
         request.setProperty(ServiceAPI.PROP_TITLE, "My API");
@@ -60,13 +61,21 @@ public class FullAppNotificationExample {
 
         // A few services
         for (int i = 1; i < 10; i++) {
-            request = factory.createNotification(RestNotificationService.SERVICE);
+            request = factory.createNotification(RestDiscoveryService.SERVICE);
             request.setProperty(Service.PROP_PARENTURL, API_URL); // Ensures in which API this will be stored
             request.setProperty(Service.PROP_URL, SERVICE_URL + i);
             request.setProperty(Service.PROP_TITLE, "My Service #" + i);
             request.setProperty(Service.PROP_PARTICIPANTS, "My company"); // The service participants
             request.send();
         }
+        
+        // A service reference
+        request = factory.createNotification(RestDiscoveryService.SERVICEREFERENCE);
+        request.setProperty(ServiceReference.PROP_PARENTURL, APP_URL);
+        request.setProperty(ServiceReference.PROP_REFURL, SERVICE_URL + "1");
+        request.setProperty(ServiceReference.PROP_ARCHIPATH, "/service1");
+        request.setProperty(ServiceReference.PROP_TITLE, "Reference to My Service #1");
+        request.send();
 
     }
 }

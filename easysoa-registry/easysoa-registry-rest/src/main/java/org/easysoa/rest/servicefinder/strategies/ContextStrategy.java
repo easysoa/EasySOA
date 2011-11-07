@@ -18,42 +18,39 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.rest.servicefinder.finders;
+package org.easysoa.rest.servicefinder.strategies;
 
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.easysoa.EasySOAConstants;
 import org.easysoa.rest.servicefinder.FoundService;
-import org.easysoa.rest.servicefinder.ServiceFinder;
-import org.ow2.easywsdl.wsdl.WSDLFactory;
-import org.ow2.easywsdl.wsdl.api.Description;
-import org.ow2.easywsdl.wsdl.api.WSDLReader;
+import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 
 /**
  * 
- * Finds a service when its WSDL URL is given.
+ * Scraper based on the knowledge of various services stacks,
+ * to retrieve web-services by trying various URL patterns.
+ * 
+ * XXX: Currently highly mocked, works with the demo only.
  * 
  * @author mkalam-alami
  *
  */
-public class DirectAccessServiceFinder extends DefaultAbstractServiceFinder implements ServiceFinder {
+public class ContextStrategy extends DefaultAbstractStrategy implements ServiceFinderStrategy {
     
     @Override
     public List<FoundService> findFromURL(URL url) throws Exception {
-
+        
         List<FoundService> foundServices = new LinkedList<FoundService>();
         
-        String urlString = url.toString();
-        if (urlString.toLowerCase().endsWith("?wsdl")) {
-            
-            // Guess service name
-            WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
-            Description desc = reader.read(url);
-            String serviceName = desc.getQName().getLocalPart();
-            
-            foundServices.add(new FoundService(serviceName, urlString));
-            
+        // XXX: Hard-coded matching of the PAF demo services
+        if (url.getPath().contains("crm")) {
+            foundServices.add(new FoundService(
+                    "Orders service",
+                    "http://localhost:"+EasySOAConstants.PAF_SERVICES_PORT+"/PureAirFlowers?wsdl",
+                    guessApplicationName(url)));
         }
         
         return foundServices;

@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.rest.servicefinder.finders;
+package org.easysoa.rest.servicefinder.strategies;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.easysoa.HttpFile;
 import org.easysoa.rest.servicefinder.FoundService;
-import org.easysoa.rest.servicefinder.ServiceFinder;
+import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 
@@ -38,7 +38,7 @@ import org.htmlcleaner.TagNode;
  * @author mkalam-alami
  *
  */
-public class ScrapingServiceFinder extends DefaultAbstractServiceFinder implements ServiceFinder {
+public class ScrapingStrategy extends DefaultAbstractStrategy implements ServiceFinderStrategy {
 
     @Override
     public List<FoundService> findFromURL(URL url) throws Exception {

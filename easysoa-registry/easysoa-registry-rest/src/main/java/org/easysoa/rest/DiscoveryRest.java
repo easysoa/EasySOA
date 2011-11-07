@@ -38,45 +38,53 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySoaApiFactory;
-import org.easysoa.api.INotificationRest;
+import org.easysoa.api.IDiscoveryRest;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.services.NotificationService;
+import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.services.DiscoveryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
+import org.nuxeo.ecm.webengine.model.view.TemplateView;
 import org.nuxeo.runtime.api.Framework;
 
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.spi.container.ContainerRequest;
 
-@Path("easysoa/notification")
-public class NotificationRest implements INotificationRest {
+@Path("easysoa/discovery")
+public class DiscoveryRest implements IDiscoveryRest {
 
-    private static final Log log = LogFactory.getLog(NotificationRest.class);
+    private static final Log log = LogFactory.getLog(DiscoveryRest.class);
     
     private static final String ERROR = "[ERROR] ";
 
-    private NotificationService notifService = Framework.getRuntime().getService(NotificationService.class);
+    private DiscoveryService discoveryService = Framework.getRuntime().getService(DiscoveryService.class);
     
     private JSONObject result = new JSONObject();
     private Map<String, String> commonPropertiesDocumentation;
     
-    public NotificationRest() {
+    public DiscoveryRest() {
         try {
             result.put("result", "ok");
         } catch (JSONException e) {
             log.error("JSON init failure", e);
         }
         // TODO better
-        EasySoaApiFactory.getInstance().setNotificationRest(this);
+        EasySoaApiFactory.getInstance().setDiscoveryRest(this);
     }
 
-    //@Override
+    @GET
+    @Path("/")
+    public Object doPostDiscoveryRoot() {
+        return new TemplateView(new EasySOAAppRoot(), "index.html");
+    }
+    
+    
 	@POST
     @Path("/appliimpl")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -85,7 +93,7 @@ public class NotificationRest implements INotificationRest {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
-            notifService.notifyAppliImpl(session, params);
+            discoveryService.notifyAppliImpl(session, params);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -93,7 +101,6 @@ public class NotificationRest implements INotificationRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@GET
     @Path("/appliimpl")
     @Produces(MediaType.APPLICATION_JSON)
@@ -118,7 +125,6 @@ public class NotificationRest implements INotificationRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@POST
     @Path("/api")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -127,7 +133,7 @@ public class NotificationRest implements INotificationRest {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
-            notifService.notifyServiceApi(session, params);
+            discoveryService.notifyServiceApi(session, params);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -135,7 +141,6 @@ public class NotificationRest implements INotificationRest {
         return getFormattedResult();
     }
     
-    //@Override
 	@GET
     @Path("/api")
     @Produces(MediaType.APPLICATION_JSON)
@@ -155,7 +160,6 @@ public class NotificationRest implements INotificationRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@POST
     @Path("/service")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -164,7 +168,7 @@ public class NotificationRest implements INotificationRest {
         CoreSession session = SessionFactory.getSession(request);
         Map<String, String> params = getFormValues(httpContext);
         try {
-            notifService.notifyService(session, params);
+            discoveryService.notifyService(session, params);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -172,7 +176,6 @@ public class NotificationRest implements INotificationRest {
         return getFormattedResult();
     }
 
-    //@Override
 	@GET
     @Path("/service")
     @Produces(MediaType.APPLICATION_JSON)
@@ -191,8 +194,42 @@ public class NotificationRest implements INotificationRest {
         result.put("description", "Service-level notification.");
         return getFormattedResult();
     }
+	
+    @POST
+    @Path("/servicereference")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object doPostServiceReference(@Context HttpContext httpContext, @Context HttpServletRequest request) throws JSONException {
+        CoreSession session = SessionFactory.getSession(request);
+        Map<String, String> params = getFormValues(httpContext);
+        try {
+            discoveryService.notifyServiceReference(session, params);
+        }
+        catch (Exception e) {
+            appendError(e.getMessage());
+        }
+        return getFormattedResult();
+    }
 
-    //@Override
+    @GET
+    @Path("/servicereference")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object doGetServiceReference() throws JSONException {
+        result = new JSONObject();
+        JSONObject params = new JSONObject();
+        Map<String, String> commonDef = getCommonPropertiesDocumentation();
+        for (Entry<String, String> entry : commonDef.entrySet()) {
+            params.put(entry.getKey(), entry.getValue());
+        }
+        Map<String, String> serviceReferenceDef = ServiceReference.getPropertyList();
+        for (Entry<String, String> entry : serviceReferenceDef.entrySet()) {
+            params.put(entry.getKey(), entry.getValue());
+        }
+        result.put("parameters", params);
+        result.put("description", "Service-level notification.");
+        return getFormattedResult();
+    }
+
 	@POST
     @Path("/{all:.*}")
     @Produces(MediaType.APPLICATION_JSON)

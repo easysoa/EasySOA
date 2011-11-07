@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.component.discovery">
+
+  <implementation class="org.easysoa.services.DiscoveryService" />
+
+  <service>
+    <provide interface="org.easysoa.services.DiscoveryService" />
+  </service>
+
+</component>

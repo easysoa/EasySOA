@@ -39,7 +39,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
-import org.easysoa.services.NotificationService;
+import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -111,7 +111,7 @@ public class ServiceListener implements EventListener {
                     if (blob != null) {
                         
                         // Save WSDLblob
-                        NotificationService notifService = Framework.getService(NotificationService.class);
+                        DiscoveryService notifService = Framework.getService(DiscoveryService.class);
                         doc.setProperty("file", "content", blob);
                         doc.setProperty("file", "filename", notifService.computeServiceTitle(fileUrl)+".wsdl");
                         

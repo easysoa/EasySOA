@@ -45,9 +45,12 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public abstract class AbstractRestTest {
-    
+
     protected static boolean useEmbeddedNuxeo;
 
+    private final static String AUTH_USERNAME = "Administrator"; // XXX: Hard-coded
+    private final static String AUTH_PASSWORD = "Administrator"; // XXX: Hard-coded
+    
     private static Log log = LogFactory.getLog(AbstractRestTest.class);
     private static AutomationHelper automation = null;
     private static RestNotificationFactory notificationFactory = null;
@@ -110,7 +113,8 @@ public abstract class AbstractRestTest {
             }
             // Could also be deployed with the existing Nuxeo,
             // if the automation bundles were correctly deployed & configured.
-            automation = new AutomationHelper(nuxeoUrl);
+            automation = new AutomationHelper(nuxeoUrl+"/automation",
+                    AUTH_USERNAME, AUTH_PASSWORD);
         }
         notificationFactory = new RestNotificationFactory(nuxeoUrl);
 

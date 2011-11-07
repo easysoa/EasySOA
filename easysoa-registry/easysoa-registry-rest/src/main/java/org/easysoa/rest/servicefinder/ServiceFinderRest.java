@@ -76,9 +76,9 @@ public class ServiceFinderRest {
         if (url != null) {
             ServiceFinderComponent finderComponent = (ServiceFinderComponent) Framework
                     .getRuntime().getComponent(ServiceFinderComponent.NAME);
-            List<ServiceFinder> serviceFinders = finderComponent.getServiceFinders();
+            List<ServiceFinderStrategy> serviceFinders = finderComponent.getServiceFinders();
 
-            for (ServiceFinder serviceFinder : serviceFinders) {
+            for (ServiceFinderStrategy serviceFinder : serviceFinders) {
                 List<FoundService> finderResult = null;
                 try {
                     finderResult = serviceFinder.findFromURL(url);

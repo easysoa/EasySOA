@@ -19,7 +19,7 @@ var base64 = require('./lib/base64').base64;
 eval(fs.readFileSync('./settings.js', 'ASCII'));
 
 var nuxeoReady = false;
-var nuxeoNotification = url.parse(settings.nuxeoNotification);
+var nuxeoDiscovery = url.parse(settings.nuxeoDiscovery);
 var nuxeoAutomation = url.parse(settings.nuxeoAutomation);
 
 // INTERNAL FUNCTIONS
@@ -173,10 +173,10 @@ exports.registerWsdl = function(data, callback) {
           '&title='+data.servicename+
           '&discoveryTypeBrowsing=Discovered by '+data.session.username;
       var nuxeoUploadOptions = {
-	          port : nuxeoNotification.port,
+	          port : nuxeoDiscovery.port,
 	          method : 'POST',
-	          host : nuxeoNotification.hostname,
-	          path : nuxeoNotification.href+"service",
+	          host : nuxeoDiscovery.hostname,
+	          path : nuxeoDiscovery.href+"service",
 	          headers : {
 	            'Content-Type': 'application/x-www-form-urlencoded',
 	            'Content-Length': body.length,
