@@ -6,7 +6,7 @@
 // Contact : easysoa-dev@googlegroups.com
 
 /**
- * Unified API Scnario #1 
+ * Unified API Scenario #1 
  * Description: Create Service Scaffolder Client for a given existing service endpoint
  * Context : Light
  * Author: Marwane Kalam-Alami
@@ -19,17 +19,21 @@ var api = require('./api.js');
 var user = "Sophie";
 var envFilter = [ "sandbox", "dev" ]; // "sandbox" is a sandboxed version of "staging" i.e. actual, existing services
 var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter); // user also navigates or filters
-// Build environment
 
-var testEnv = api.createEnvironment("Light", user); // on default business architecture
+// Create environment
+
+var testEnv = api.createEnvironment("Light", user, "PureAirFlowers"); // on default business architecture
+
 api.addExternalServiceEndpoint(testEnv, serviceEndpointToScaffold);
+
 var scaffolderClient = api.createScaffolderClient(testEnv, serviceEndpointToScaffold);
-api.addServiceImpl(testEnv, scaffolderClient);
+var scaffolderClientEndpoint = api.addServiceImpl(testEnv, scaffolderClient);
 
 // Launch scaffolder
 
+console.log("Setting up environment "+testEnv.name);
 if (api.start(testEnv)) { // starts scaffolder
-    api.display(scaffolderClient.clientUi);
+    api.display(scaffolderClientEndpoint.url);
     console.log("Done.");
 } else {
     console.error("Fail.");

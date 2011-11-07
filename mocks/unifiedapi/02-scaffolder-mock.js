@@ -6,7 +6,7 @@
 // Contact : easysoa-dev@googlegroups.com
 
 /**
- * Unified API Scnario #2 
+ * Unified API Scenario #2 
  * Description: Create Service Scaffolder Client from mock of a given existing service implementation
  * Context : Light
  * Author: Marwane Kalam-Alami
@@ -20,21 +20,21 @@ var user = "Sophie";
 var envFilter = [ "sandbox", "dev" ]; // "sandbox" is a sandboxed version of "staging" i.e. actual, existing services
 var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter); // user also navigates or filters
 
-// Create mock
+// Create environment
 
-var serviceMock = api.createMockServiceImpl(serviceEndpointToScaffold);
+var testEnv = api.createEnvironment("Light", user, "PureAirFlowers"); // on default business architecture
 
-// Build environment
-
-var testEnv = api.createEnvironment("Light", user); // on default business architecture
+var serviceMock = api.createMockServiceImpl(serviceEndpointToScaffold); // TODO createImpl("js", mock=true, params=serviceEndpointToScaffold ?
 var serviceMockEndpoint = api.addServiceImpl(testEnv, serviceMock);
+
 var scaffolderClient = api.createScaffolderClient(testEnv, serviceMockEndpoint);
-api.addServiceImpl(testEnv, scaffolderClient);
+var scaffolderClientEndpoint = api.addServiceImpl(testEnv, scaffolderClient);
 
 // Launch scaffolder
 
-if (api.start(testEnv)) { // starts scaffolder
-    api.display(scaffolderClient.clientUi);
+console.log("Setting up environment "+testEnv.name);
+if (api.start(testEnv)) {
+    api.display(scaffolderClientEndpoint.url);
     console.log("Done.");
 } else {
     console.error("Fail.");

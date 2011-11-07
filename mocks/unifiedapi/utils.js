@@ -1,9 +1,20 @@
-// Unified API Mocking7
+// Unified API Mocking
 // Copyright (c) 2011 Open Wide and others
 // 
 // MIT licensed
 // 
 // Contact : easysoa-dev@googlegroups.com
+
+// ===================== Functions =====================
+
+/**
+ * Turns any text into an URL-compatible string
+ */
+exports.toUrlPath = function(name) {
+    return name.replace(/ /g, "_");
+};
+
+// ============ Object prototype additions ==============
 
 /**
  * Clones an object
@@ -31,10 +42,8 @@ Object.defineProperty(Object.prototype, "extend", {
         var props = Object.getOwnPropertyNames(from);
         var dest = this.clone();
         props.forEach(function(name) {
-            if (name in dest) {
-                var destination = Object.getOwnPropertyDescriptor(from, name);
-                Object.defineProperty(dest, name, destination);
-            }
+            var destination = Object.getOwnPropertyDescriptor(from, name);
+            Object.defineProperty(dest, name, destination);
         });
         return dest;
     }

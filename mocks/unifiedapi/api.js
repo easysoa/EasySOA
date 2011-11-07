@@ -39,6 +39,24 @@
  * /envDev/scaffolderClient/references/calledService
 */
 
+/*
+Scenarios TODO
+
+OK scaffolder calling a service selected (in accessible environments)
+OK scaffolder calling a mock
+scaffolder, then (from called service in this environment) create mock, by replace (or LATER fork)
+
+scaffolder, then in between add WS monitoring proxy
+then record exchanges (autostart, reset(), save(name), restore(name))
+then create mock using a named recorded session of exchanges (when a given request appears, return the response)
+
+then create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
+then add WS proxy + js impl between template UI and mock
+then record exchanges and let the user tailor a recording session that is a test suite
+then setup test suite to be called on each js impl changes
+
+*/
+
 var utils = require('./utils.js');
 
 EASYSOA_HOST = "http://localhost";
@@ -46,30 +64,59 @@ EASYSOA_LIGHT_SERVER_URL = EASYSOA_HOST + ":9011/";
 EASYSOA_PAF_SERVICES_URL = EASYSOA_HOST + ":9010/";
 EASYSOA_SCAFFOLDER_UI_URL = EASYSOA_HOST + ":8090/";
 
+SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT = "scaffolderclient";
+SERVICE_IMPL_TYPE_MOCK = "mock";
+
 // ===================== Default objects =====================
 
 var ServiceImpl = {
-    name : undefined
+    name : undefined,
+    type : undefined
 };
+
+var ServiceScaffolderImpl = ServiceImpl.extend({
+    name : undefined,
+    targetEndpoint : undefined,
+    type : SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT
+});
+
+var MockImpl = ServiceImpl.extend({
+    name : undefined,
+    type : SERVICE_IMPL_TYPE_MOCK
+});
 
 var ServiceEndpoint = {
     name : undefined,
+    type : undefined,
     url : undefined,
     started : false,
     checkStarted : function() {
-        console.log("Checking: " + this.url);
+        console.log(" * Checking: " + this.url);
         return this.started;
     },
     start : function() {
-        console.log("Starting: " + this.name);
+        console.log(" * Starting: " + this.name);
         this.started = true;
         return this.started;
     },
     stop : function() {
-        console.log("Stopping: " + this.name);
+        console.log(" * Stopping: " + this.name);
         this.started = false;
     }
 };
+
+var ServiceScaffolderEndpoint = ServiceEndpoint.extend({
+    name : undefined,
+    url : undefined, // UI
+    targetEndpoint : undefined,
+    type : SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT
+});
+
+var MockEndpoint = ServiceEndpoint.extend({
+    name : undefined,
+    url : undefined,
+    type : SERVICE_IMPL_TYPE_MOCK
+});
 
 var Environment = {
     id : undefined,
@@ -78,13 +125,6 @@ var Environment = {
     serviceImpls : new Array(),
     externalServiceEndpoints : new Array()
 };
-
-var ServiceScaffolder = ServiceEndpoint.extend({
-    name : undefined,
-    url : undefined,
-    scaffolderUi : undefined,
-    scaffoldedServiceUrl : undefined
-});
 
 // ===================== EasySOA UI =====================
 
@@ -99,21 +139,21 @@ exports.selectServiceEndpointInUI = function(envFilter) {
 // ===================== Services =====================
 
 exports.createMockServiceImpl = function(serviceEndpointToMock) {
-    return ServiceImpl.extend({
+    return MockImpl.extend({
         name : serviceEndpointToMock.name + " mock"
     });
 };
 
 // ===================== Environments =====================
 
-exports.createEnvironment = function(envKind, user) {
+exports.createEnvironment = function(envKind, user, name) {
     if (envKind == "Light") {
         implServerUrl = EASYSOA_LIGHT_SERVER_URL;
     }
     var id = 0;
     return Environment.extend({
         id : id,
-        name : user + "_" + id + "_" + "PureAirFlowers",
+        name : user + "_" + id + "_" + name,
         implServerUrl : implServerUrl
     });
 };
@@ -123,10 +163,21 @@ exports.addExternalServiceEndpoint = function(env, serviceEndpointToScaffold) {
 };
 
 exports.addServiceImpl = function(env, serviceImpl) {
-    var newServiceEndpoint = ServiceEndpoint.extend({
-        name : serviceImpl.name,
-        url : env.implServerUrl + serviceImpl.name.replace(" ", "_")
-    });
+    var newServiceEndpoint = ServiceEndpoint.extend(serviceImpl);
+    
+    switch (newServiceEndpoint.type) {
+        case SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT:
+            newServiceEndpoint.url = env.implServerUrl + utils.toUrlPath(serviceImpl.name)
+                + "_Scaffolder_Client?endpoint=" + newServiceEndpoint.targetEndpoint;
+            break;
+        case SERVICE_IMPL_TYPE_MOCK:
+            newServiceEndpoint.url = env.implServerUrl + "mock/" + utils.toUrlPath(serviceImpl.name);
+            break;
+        default:
+            newServiceEndpoint.url = env.implServerUrl + utils.toUrlPath(serviceImpl.name);
+    }
+
+    
     env.serviceImpls.push(newServiceEndpoint);
     return newServiceEndpoint;
 };
@@ -154,14 +205,14 @@ exports.stop = function(env) {
 //===================== Scaffolder clients =====================
 
 exports.createScaffolderClient = function(env, serviceEndpointToScaffold) {
-    return ServiceEndpoint.extend({
+    return ServiceScaffolderImpl.extend({
         name : serviceEndpointToScaffold.name + " Scaffolder Client",
-        url : env.implServerUrl + serviceEndpointToScaffold.name + "ScaffolderClient",
-        scaffolderUi : EASYSOA_SCAFFOLDER_UI_URL,
-        scaffoldedServiceUrl : serviceEndpointToScaffold.url
+        url : env.implServerUrl + utils.toUrlPath(serviceEndpointToScaffold.name)
+                + "_Scaffolder_Client",
+        type : SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT
     });
 };
 
-exports.display = function(ui) {
-    console.log("Displaying: "+ui);
+exports.display = function(scaffolderUi) {
+    console.log("Displaying UI: "+scaffolderUi);
 };
