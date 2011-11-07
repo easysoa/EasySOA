@@ -6,8 +6,8 @@
 // Contact : easysoa-dev@googlegroups.com
 
 /**
- * Unified API Scnario #1 
- * Description: Create Service Scaffolder Client for a given existing service endpoint
+ * Unified API Scnario #2 
+ * Description: Create Service Scaffolder Client from mock of a given existing service implementation
  * Context : Light
  * Author: Marwane Kalam-Alami
  */
@@ -19,11 +19,16 @@ var api = require('./api.js');
 var user = "Sophie";
 var envFilter = [ "sandbox", "dev" ]; // "sandbox" is a sandboxed version of "staging" i.e. actual, existing services
 var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter); // user also navigates or filters
+
+// Create mock
+
+var serviceMock = api.createMockServiceImpl(serviceEndpointToScaffold);
+
 // Build environment
 
 var testEnv = api.createEnvironment("Light", user); // on default business architecture
-api.addExternalServiceEndpoint(testEnv, serviceEndpointToScaffold);
-var scaffolderClient = api.createScaffolderClient(testEnv, serviceEndpointToScaffold);
+var serviceMockEndpoint = api.addServiceImpl(testEnv, serviceMock);
+var scaffolderClient = api.createScaffolderClient(testEnv, serviceMockEndpoint);
 api.addServiceImpl(testEnv, scaffolderClient);
 
 // Launch scaffolder
