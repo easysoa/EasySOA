@@ -66,6 +66,7 @@ EASYSOA_SCAFFOLDER_UI_URL = EASYSOA_HOST + ":8090/";
 
 SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT = "scaffolderclient";
 SERVICE_IMPL_TYPE_MOCK = "mock";
+SERVICE_IMPL_TYPE_EXTERNAL = "external";
 
 // ===================== Default objects =====================
 
@@ -89,6 +90,7 @@ var ServiceEndpoint = {
     name : undefined,
     type : undefined,
     url : undefined,
+    env : undefined,
     started : false,
     checkStarted : function() {
         console.log(" * Checking: " + this.url);
@@ -131,6 +133,12 @@ var Environment = {
 exports.selectServiceEndpointInUI = function(envFilter) {
     return ServiceEndpoint.extend({
         name : "PureAirFlowers",
+        type : SERVICE_IMPL_TYPE_EXTERNAL,
+        env : Environment.extend({
+                id : 2,
+                name : envFilter[0],
+                implServerUrl : EASYSOA_PAF_SERVICES_URL
+            }),
         url : EASYSOA_PAF_SERVICES_URL + "PureAirFlowers",
         started : true
     });
@@ -164,11 +172,12 @@ exports.addExternalServiceEndpoint = function(env, serviceEndpointToScaffold) {
 
 exports.addServiceImpl = function(env, serviceImpl) {
     var newServiceEndpoint = ServiceEndpoint.extend(serviceImpl);
+    newServiceEndpoint.env = env;
     
     switch (newServiceEndpoint.type) {
         case SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT:
             newServiceEndpoint.url = env.implServerUrl + utils.toUrlPath(serviceImpl.name)
-                + "_Scaffolder_Client?endpoint=" + newServiceEndpoint.targetEndpoint;
+                + "_Scaffolder_Client?endpoint=" + serviceImpl.targetEndpoint;
             break;
         case SERVICE_IMPL_TYPE_MOCK:
             newServiceEndpoint.url = env.implServerUrl + "mock/" + utils.toUrlPath(serviceImpl.name);
@@ -176,7 +185,6 @@ exports.addServiceImpl = function(env, serviceImpl) {
         default:
             newServiceEndpoint.url = env.implServerUrl + utils.toUrlPath(serviceImpl.name);
     }
-
     
     env.serviceImpls.push(newServiceEndpoint);
     return newServiceEndpoint;
@@ -207,12 +215,19 @@ exports.stop = function(env) {
 exports.createScaffolderClient = function(env, serviceEndpointToScaffold) {
     return ServiceScaffolderImpl.extend({
         name : serviceEndpointToScaffold.name + " Scaffolder Client",
-        url : env.implServerUrl + utils.toUrlPath(serviceEndpointToScaffold.name)
-                + "_Scaffolder_Client",
+        url : env.implServerUrl + utils.toUrlPath(serviceEndpointToScaffold.name) + "_Scaffolder_Client",
+        targetEndpoint : serviceEndpointToScaffold.url,
         type : SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT
     });
 };
 
-exports.display = function(scaffolderUi) {
-    console.log("Displaying UI: "+scaffolderUi);
+exports.setTargetEndpoint = function(serviceEndpointToScaffold, targetEndpoint) {
+    serviceEndpointToScaffold.targetEndpoint = targetEndpoint.url;
+    serviceEndpointToScaffold.url = serviceEndpointToScaffold.env.implServerUrl
+            + utils.toUrlPath(targetEndpoint.name)
+            + "_Scaffolder_Client?endpoint=" + targetEndpoint.url;
+};
+
+exports.display = function(serviceEndpointToScaffold) {
+    console.log("Displaying UI: "+serviceEndpointToScaffold.url);
 };

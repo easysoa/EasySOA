@@ -33,8 +33,16 @@ var scaffolderClientEndpoint = api.addServiceImpl(testEnv, scaffolderClient);
 
 console.log("Setting up environment "+testEnv.name);
 if (api.start(testEnv)) { // starts scaffolder
-    api.display(scaffolderClientEndpoint.url);
+    api.display(scaffolderClientEndpoint);
     console.log("Done.");
 } else {
     console.error("Fail.");
 }
+
+// Exports for further scenarios
+
+exports.user = user;
+exports.serviceEndpointToScaffold = serviceEndpointToScaffold;
+exports.testEnv = testEnv;
+exports.scaffolderClient = scaffolderClient;
+exports.scaffolderClientEndpoint = scaffolderClientEndpoint;
