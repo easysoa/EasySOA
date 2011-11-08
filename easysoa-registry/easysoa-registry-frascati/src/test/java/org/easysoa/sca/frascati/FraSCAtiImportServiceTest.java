@@ -47,6 +47,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -145,8 +146,9 @@ public class FraSCAtiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-    	FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, new FileBlob(scaFile)); // TODO put FileBlob back in orig test
-		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
+    	//FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, scaFile); // TODO put FileBlob back in orig test
+		FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile); // TODO put FileBlob back in orig test
+    	importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
 		importer.importSCAZip();
@@ -203,7 +205,8 @@ public class FraSCAtiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-    	FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, new FileBlob(scaFile)); // TODO put FileBlob back in orig test
+    	//FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, scaFile); // TODO put FileBlob back in orig test
+    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
@@ -235,7 +238,8 @@ public class FraSCAtiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
 
-    	FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, new FileBlob(scaFile));
+    	//FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, scaFile);
+    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");

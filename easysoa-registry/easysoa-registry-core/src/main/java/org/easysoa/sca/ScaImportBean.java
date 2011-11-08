@@ -108,10 +108,10 @@ public class ScaImportBean {
             IScaImporter importer;
             try {
             	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, compositeFile);
-                
                 DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
                 if (parentAppliImpl != null) {
-                    importer.setParentAppliImpl(appliImplModel);
+                    // Add a test here to check if instance of NuxeoFrascatiScaImporter
+                	importer.setParentAppliImpl(appliImplModel);
                 }
                 if (serviceStackType != null) {
                     importer.setServiceStackType(serviceStackType);

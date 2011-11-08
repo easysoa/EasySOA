@@ -97,7 +97,10 @@ public class ScaImporterComponent extends DefaultComponent {
 			Class<?> scaImporterClass = Class.forName(scaImporterDescriptor.implementation.trim());
 			if (IScaImporter.class.isAssignableFrom(scaImporterClass)) {
 				// trying to create one in order to check that the impl has the required constructor 
+				
+				// TODO Change this instanciation method ... Not the same constructor for all Sca Importers   
 				scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class }).newInstance(new Object[] { null, null });
+				
 				this.scaImporterClasses.add(scaImporterClass);
 			} else {
 				log.debug("Check and set Sca importer error");
@@ -117,8 +120,11 @@ public class ScaImporterComponent extends DefaultComponent {
 		try {
 			log.debug("scaImporterClasses.size() = " + scaImporterClasses.size());
 			Class<?> scaImporterClass = this.scaImporterClasses.get(scaImporterClasses.size() - 1);
+			
+			// TODO Change this instanciation method ... Not the same constructor for all Sca Importers			
 			return (IScaImporter) scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class })
-				.newInstance(new Object[] { documentManager, compositeFile });
+					.newInstance(new Object[] { documentManager, compositeFile });
+			
 		} catch (Exception ex) {
 			log.error("An error occurs during the creation of SCA importer", ex);
 			// TODO log "error creating sca import, bad config, see init logs"

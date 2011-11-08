@@ -100,9 +100,9 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 		try {
 			// TODO : do not creates a new ScaImporter .... Use the one created by the test or SCA import bean ....
 			// Establish or find the relation between frascatiService and FrascatiScaImporter ...
-			ApiFraSCAtiScaImporter frascatiImporter = new ApiFraSCAtiScaImporter();
+			//ApiFraSCAtiScaImporter frascatiImporter = new ApiFraSCAtiScaImporter();
 			// pass the importer as a parameters when the processing context is created ?
-			frascatiImporter.visitComposite(composite);
+			//frascatiImporter.visitComposite(composite);
 			//scaImporter.visitComposite(composite);
 		} catch (Exception e) {
 			e.printStackTrace();

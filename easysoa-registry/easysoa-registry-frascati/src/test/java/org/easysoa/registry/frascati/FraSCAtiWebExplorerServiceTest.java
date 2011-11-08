@@ -79,47 +79,17 @@ public class FraSCAtiWebExplorerServiceTest {
     }
     
     /**
-     * Test the start of frascati web explorer
-     * @throws Exception
-     */
-    /*@Test
-    public void testStartFraSCAti() throws Exception {
-    	frascatiService.startFrascati();
-    	log.info(frascatiService.getFraSCAti());
-    	assertNotNull(frascatiService.getFraSCAti());
-    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getComposites());
-    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getTopLevelDomainComposite());
-    }*/
-    
-    /**
-     * Test the start of frascati web explorer
-     * @throws Exception
-     */
-    /*@Test
-    public void testStartWebExplorer() throws Exception {
-    	frascatiService.startFrascati();
-    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getComposites());
-    	frascatiService.stopComponents(frascatiService.getFraSCAti().getCompositeManager().getTopLevelDomainComposite());
-    	Object frascatiWebExplorer = frascatiService.startWebExplorer();
-    	log.info(frascatiWebExplorer);
-    	assertNotNull(frascatiWebExplorer);
-    }*/
-    
-    /**
      * Test the start and the stop of frascati web explorer. This test stop and wait for a manual intervention to continue
      * @throws Exception
      */
     @Test
-    //@Ignore
+    @Ignore
     public void waitUntilRead() throws Exception {
 		// Starting Frascati web explorer
-    	//frascatiService.startWebExplorer();
     	log.info("Test started, just push a key (then enter) in the console window to stop the test !");
 		// Just push a key in the console window to stop the test
 		System.in.read();
 		log.info("Test stopping !");		
-		// Stopping Frascati web explorer
-		//frascatiService.stopWebExplorer();
     }
     
 }

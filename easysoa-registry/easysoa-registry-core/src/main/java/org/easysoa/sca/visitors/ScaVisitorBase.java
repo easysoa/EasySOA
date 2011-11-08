@@ -22,8 +22,9 @@ package org.easysoa.sca.visitors;
 
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.DiscoveryService;
-import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.runtime.api.Framework;
+
+/*import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.runtime.api.Framework;*/
 
 /**
  * Visitor for REST reference bindings
@@ -33,7 +34,7 @@ import org.nuxeo.runtime.api.Framework;
  */
 public abstract class ScaVisitorBase implements ScaVisitor {
 
-    protected CoreSession documentManager;
+    //protected CoreSession documentManager;
     protected IScaImporter scaImporter;
     protected DiscoveryService discoveryService;
     
@@ -41,10 +42,19 @@ public abstract class ScaVisitorBase implements ScaVisitor {
      * 
      * @param scaImporter
      */
-    public ScaVisitorBase(IScaImporter scaImporter) {
-        this.documentManager = scaImporter.getDocumentManager();
+    public ScaVisitorBase(IScaImporter scaImporter){
+    	this(scaImporter, null);
+    }
+    
+    /**
+     * 
+     * @param scaImporter
+     */
+    public ScaVisitorBase(IScaImporter scaImporter, DiscoveryService discoveryService) {
+        //this.documentManager = scaImporter.getDocumentManager();
         this.scaImporter = scaImporter;
-        this.discoveryService = Framework.getRuntime().getService(DiscoveryService.class);
+        //this.discoveryService = Framework.getRuntime().getService(DiscoveryService.class);
+        this.discoveryService = discoveryService;
     }
     
     @Override

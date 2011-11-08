@@ -54,12 +54,13 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
-import org.nuxeo.runtime.model.ComponentName;
-import org.nuxeo.runtime.model.DefaultComponent;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
 import org.ow2.frascati.util.FrascatiException;
+
+import org.nuxeo.runtime.model.ComponentName;
+import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * 
@@ -161,8 +162,7 @@ public class FraSCAtiService extends DefaultComponent {
 		// Only parse and check the SCA composite, i.e., don't generate code for
 		// the SCA composite and don't instantiate it.
 		//processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
-		//processingContext.setProcessingMode(ProcessingMode.generate);
-		processingContext.setProcessingMode(ProcessingMode.start);
+		processingContext.setProcessingMode(ProcessingMode.generate);
 
 		// TODO : Solve problem here ...
 		// Problem with this mode : class not found exceptions when a single composite is loaded
@@ -170,6 +170,7 @@ public class FraSCAtiService extends DefaultComponent {
 		
 		// Generate Juliac class generation and compilation errors 
 		//processingContext.setProcessingMode(ProcessingMode.instantiate);
+		//processingContext.setProcessingMode(ProcessingMode.start);
 		
 		try {
 			// Process the SCA composite.

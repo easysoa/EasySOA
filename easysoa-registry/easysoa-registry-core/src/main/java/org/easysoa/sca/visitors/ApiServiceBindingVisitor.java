@@ -30,6 +30,8 @@ import org.easysoa.rest.RestNotificationRequest;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
+import org.easysoa.services.DiscoveryService;
+
 import org.nuxeo.ecm.core.api.ClientException;
 
 /**
@@ -91,8 +93,8 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
         	return;
         }
         log.debug("serviceUrl is not null, registering API's and services...");
-        // Null exception !!!
-        String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+        //String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+        String appliImplUrl = scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         String apiUrl = discoveryService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         
         // Using default value for API url
@@ -102,7 +104,7 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
 	    RestNotificationRequest requestServiceApi = factory.createNotification(RestDiscoveryService.SERVICEAPI);
 	    requestServiceApi.setProperty(ServiceAPI.PROP_URL, apiUrl);
 	    requestServiceApi.setProperty(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
-	    requestServiceApi.setProperty(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
+	    requestServiceApi.setProperty(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getName());
 	    requestServiceApi.setProperty(ServiceAPI.PROP_PARENTURL, appliImplUrl);	    
 	    requestServiceApi.send();
 	    
@@ -113,7 +115,7 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
 	    requestService.setProperty(Service.PROP_PARENTURL, apiUrl);
 	    requestService.setProperty(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
 	    requestService.setProperty(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-	    requestService.setProperty(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?	    
+	    requestService.setProperty(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ?	    
 	    requestService.send();
     }
     

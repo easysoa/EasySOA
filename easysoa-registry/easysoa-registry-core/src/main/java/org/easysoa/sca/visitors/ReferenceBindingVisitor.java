@@ -31,8 +31,10 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
+import org.easysoa.services.DiscoveryService;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.runtime.api.Framework;
 
@@ -49,8 +51,8 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
     
     protected DocumentModel referenceModel;
 
-    public ReferenceBindingVisitor(IScaImporter scaImporter) {
-        super(scaImporter);
+    public ReferenceBindingVisitor(IScaImporter scaImporter, DiscoveryService discoveryService) {
+        super(scaImporter, discoveryService);
     }
     
     @Override
@@ -73,7 +75,7 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
     }
     
     @Override
-    public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException {
+    public void visit(BindingInfoProvider bindingInfoProvider) throws Exception {
 
         // Notify service reference
         Map<String, String> properties = new HashMap<String, String>();
@@ -81,17 +83,17 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
         properties.put(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
         properties.put(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-        properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
-        properties.put(ServiceReference.PROP_PARENTURL, 
-                (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-        referenceModel = discoveryService.notifyServiceReference(documentManager, properties);
+        properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
+        //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        referenceModel = discoveryService.notifyServiceReference((CoreSession) scaImporter.getDocumentManager(), properties);
         
         // Notify referenced service
         properties = new HashMap<String, String>();
         properties.put(Service.PROP_URL, refUrl);
-        properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
+        properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         try {
-            discoveryService.notifyService(documentManager, properties);
+            discoveryService.notifyService((CoreSession) scaImporter.getDocumentManager(), properties);
         } catch (MalformedURLException e) {
             log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
         } 
@@ -105,10 +107,10 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);
         DocumentModel refServiceModel;
         try {
-            refServiceModel = docService.findService(documentManager, refUrl);
+            refServiceModel = docService.findService((CoreSession) scaImporter.getDocumentManager(), refUrl);
             if (refServiceModel != null) {
                 referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFPATH, refServiceModel.getPathAsString());
-                documentManager.saveDocument(referenceModel);
+                ((CoreSession) scaImporter.getDocumentManager()).saveDocument(referenceModel);
             }
         } catch (MalformedURLException e) {
             log.warn("Reference URL is invalid", e);

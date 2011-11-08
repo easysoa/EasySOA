@@ -40,12 +40,15 @@ import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.sca.visitors.ReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ServiceBindingVisitor;
+import org.easysoa.services.DiscoveryService;
 import org.easysoa.services.DocumentService;
+
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -72,7 +75,7 @@ public class XMLScaImporter implements IScaImporter {
 	private static Log log = LogFactory.getLog(XMLScaImporter.class);
 
 	private CoreSession documentManager;
-	private Blob compositeFile;
+	private File compositeFile;
 	private String serviceStackType;
 	private String serviceStackUrl;
 	private DocumentModel parentAppliImplModel;
@@ -90,7 +93,7 @@ public class XMLScaImporter implements IScaImporter {
 	 * @param compositeFile
 	 * @throws ClientException
 	 */
-	public XMLScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException {
+	public XMLScaImporter(CoreSession documentManager, File compositeFile) throws ClientException {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
 		if(documentManager != null){
@@ -109,7 +112,8 @@ public class XMLScaImporter implements IScaImporter {
 
 		// Initialization
 		File compositeTmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
-		compositeFile.transferTo(compositeTmpFile);
+		Blob blobCompositeFile = new FileBlob(compositeFile);
+		blobCompositeFile.transferTo(compositeTmpFile);
 
 		// Parsing using StAX (to get both SAX & DOM parsing benefits)
 		XMLInputFactory xmlif = XMLInputFactory.newInstance();
@@ -150,12 +154,12 @@ public class XMLScaImporter implements IScaImporter {
 				} else if (elementName.equals(SCA_SERVICE_QNAME)) {
 					// service !
 					getArchiNameStack().push(name);
-					acceptBindingParentVisitors(compositeReader, SCA_SERVICE_QNAME, createServiceBindingVisitors(), createBindingInfoProviders());
+					acceptBindingParentVisitors(compositeReader, SCA_SERVICE_QNAME, createServiceBindingVisitor(), createBindingInfoProviders());
 					getArchiNameStack().pop();
 				} else if (elementName.equals(SCA_REFERENCE_QNAME)) {
 					// reference !
 					getArchiNameStack().push(name);
-					acceptBindingParentVisitors(compositeReader, SCA_REFERENCE_QNAME, createReferenceBindingVisitors(), createBindingInfoProviders());
+					acceptBindingParentVisitors(compositeReader, SCA_REFERENCE_QNAME, createReferenceBindingVisitor(), createBindingInfoProviders());
 					getArchiNameStack().pop();
 				}
 
@@ -174,7 +178,7 @@ public class XMLScaImporter implements IScaImporter {
 			try {
 				scaVisitor.postCheck();
 			} catch (Exception ex) {
-				log.error("Error while postChecking scaVisitor " + scaVisitor.getDescription() + " in SCA composite file " + compositeFile.getFilename(), ex);
+				log.error("Error while postChecking scaVisitor " + scaVisitor.getDescription() + " in SCA composite file " + compositeFile.getName(), ex);
 			}
 		}
 
@@ -201,14 +205,16 @@ public class XMLScaImporter implements IScaImporter {
 	 */
 	// }
 
-	public ScaVisitor createServiceBindingVisitors() {
-		return new ServiceBindingVisitor(this);
+	@Override
+	public ScaVisitor createServiceBindingVisitor() {
+		return new ServiceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
 	}
 
-	public ScaVisitor createReferenceBindingVisitors() {
-		return new ReferenceBindingVisitor(this);
+	@Override
+	public ScaVisitor createReferenceBindingVisitor() {
+		return new ReferenceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
 	}
-
+	
 	private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
 
 	/**
@@ -258,7 +264,7 @@ public class XMLScaImporter implements IScaImporter {
 					scaVisitor.visit(bindingInfoProvider);
 					scaVisitorsToPostCheck.add(scaVisitor);
 				} catch (Exception ex) {
-					log.error("Error when visiting binding " + scaVisitor.getDescription() + " at archi path " + toCurrentArchiPath() + " in SCA composite file " + compositeFile.getFilename(), ex);
+					log.error("Error when visiting binding " + scaVisitor.getDescription() + " at archi path " + toCurrentArchiPath() + " in SCA composite file " + compositeFile.getName(), ex);
 				}
 			}
 		}
@@ -287,7 +293,7 @@ public class XMLScaImporter implements IScaImporter {
 		return documentManager;
 	}
 
-	public Blob getCompositeFile() {
+	public File getCompositeFile() {
 		return compositeFile;
 	}
 
@@ -309,6 +315,18 @@ public class XMLScaImporter implements IScaImporter {
 
 	public XMLStreamReader getCompositeReader() {
 		return compositeReader;
+	}
+
+	@Override
+	public String getModelProperty(String arg0, String arg1) throws Exception {
+		return (String) (parentAppliImplModel.getProperty(arg0, arg1)); 
+	}
+
+	@Override
+	public void setParentAppliImpl(Object appliImplModel) {
+		if(appliImplModel instanceof DocumentModel){
+			parentAppliImplModel = (DocumentModel) appliImplModel;
+		}
 	}
 
 }

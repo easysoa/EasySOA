@@ -21,13 +21,20 @@
 package org.easysoa.sca.frascati;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.UUID;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.registry.frascati.FileUtils;
 import org.easysoa.registry.frascati.FraSCAtiService;
 import org.easysoa.registry.frascati.RestBindingInfoProvider;
 import org.easysoa.registry.frascati.WSBindingInfoProvider;
@@ -45,12 +52,13 @@ import org.eclipse.stp.sca.ComponentService;
 import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
-import org.nuxeo.common.utils.IdUtils;
+
+/*import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.api.Framework;*/
 
 /**
  * ScaImporter using FraSCAti SCA parser
@@ -95,7 +103,13 @@ import org.nuxeo.runtime.api.Framework;
  * @author mdutoo
  * 
  */
-public class FraSCAtiScaImporterBase implements IScaImporter {
+
+/**
+ * Base SCA Importer class (Nuxeo free) to register services
+ * @author jguillemotte
+ *
+ */
+public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 
 	public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
 	public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
@@ -108,27 +122,28 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
 
 	// Nuxeo document manager
-	private CoreSession documentManager;
-	private Blob compositeFile;
+	//private CoreSession documentManager;
+	protected File compositeFile;
 	private String serviceStackType;
 	private String serviceStackUrl;
-	private DocumentModel parentAppliImplModel;
+	//private DocumentModel parentAppliImplModel;	
 
 	private Stack<String> archiNameStack = new Stack<String>();
 	private Stack<EObject> bindingStack = new Stack<EObject>();
 
-	private/* @Inject */FraSCAtiService frascatiService; // TODO better Inject doesn't work outside tests ?!
+	protected/* @Inject */FraSCAtiService frascatiService; // TODO better Inject doesn't work outside tests ?!
 
 	/**
 	 * List of binding info providers
 	 */
     private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
 	
-    public FraSCAtiScaImporterBase() throws Exception {
-    	this.documentManager = null;
-    	this.compositeFile = null;
-    	this.parentAppliImplModel = null;
-    }
+    /*public FraSCAtiScaImporterBase() throws Exception {
+        // Code to remove : Nuxeo dependent
+    	//this.documentManager = null;
+    	//this.compositeFile = null;
+    	//this.parentAppliImplModel = null;
+    }*/
     
 	/**
 	 * Constructor
@@ -136,23 +151,27 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	 * @param compositeFile Composite file to import
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporterBase(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception {
+	public FraSCAtiScaImporterBase(File compositeFile){
+		this.compositeFile = compositeFile;
+	}
+    /*public FraSCAtiScaImporterBase(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
 		if(documentManager != null){
 			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
-			init();
+			//init();
 		}
-	}
+	}*/
 
 	/**
 	 * Initialization
 	 * @throws Exception
 	 */
-	private void init() throws Exception{
+    // To remove : Nuxeo dependent
+	/*private void init() throws Exception{
 		frascatiService = Framework.getService(FraSCAtiService.class);
 		//frascatiService.setImporter(this);
-	}
+	}*/
 	
 	/**
 	 * Build a list of binding info providers
@@ -171,17 +190,17 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
      * creates and returns a ServiceBindingVisitor
      * @return
      */
-    public ScaVisitor createServiceBindingVisitor() {
+    /*public ScaVisitor createServiceBindingVisitor() {
         return new ServiceBindingVisitor(this);
-    }
+    }*/
     
     /**
      * creates and returns a ReferenceBindingVisitor 
      * @return
      */
-    public ScaVisitor createReferenceBindingVisitor() {
+    /*public ScaVisitor createReferenceBindingVisitor() {
         return new ReferenceBindingVisitor(this);
-    }	
+    }*/	
 	
 	/**
 	 * Visit the composite. For eachservice, component, reference ... visit the associated bindings
@@ -273,11 +292,10 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	        	try {
 	                scaVisitor.visit(bindingInfoProvider);
 	            } catch (Exception ex) {
-	            	String errorMessage = "Error when visiting binding " + scaVisitor.getDescription()
-	            			+ " at archi path " + toCurrentArchiPath();
-	            	if(compositeFile != null){
+	            	String errorMessage = "Error when visiting binding " + scaVisitor.getDescription() + " at archi path " + toCurrentArchiPath();
+	            	/*if(compositeFile != null){
 	            			errorMessage = errorMessage + " in SCA composite file " + compositeFile.getFilename();
-	            	}
+	            	}*/
 	                log.error(errorMessage, ex);
 	            }
             }
@@ -289,9 +307,9 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	 * @return
 	 * @throws ClientException
 	 */
-	public String getAppliImplUrl() throws ClientException {
+	/*public String getAppliImplUrl() throws ClientException {
 		return (String) getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-	}
+	}*/
 
 	/**
 	 * Import all the composite contained in the zip archive
@@ -302,8 +320,11 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	public void importSCAZip() throws Exception {
 		log.debug("Importing SCA Composite contained in ZIP");
 		// Initialization
-		File scaZipTmpFile = File.createTempFile(IdUtils.generateStringId(), ".jar");
-		compositeFile.transferTo(scaZipTmpFile);
+		//File scaZipTmpFile = File.createTempFile(IdUtils.generateStringId(), ".jar");
+		File scaZipTmpFile = File.createTempFile(UUID.randomUUID().toString(), ".jar");
+		// Replace this code, record the content of the composite in the new tmp composite
+		//compositeFile.transferTo(scaZipTmpFile);
+		FileUtils.copyTo(compositeFile, scaZipTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
 		Set<Composite> scaZipCompositeSet = frascatiService.readScaZip(scaZipTmpFile);
 		// Visit each composite
@@ -319,8 +340,11 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	public void importSCAComposite() throws Exception {
 		log.debug("Importing SCA Composite");
 		// Initialization
-		File compositeTmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
-		compositeFile.transferTo(compositeTmpFile);
+		//File compositeTmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
+		File compositeTmpFile = File.createTempFile(UUID.randomUUID().toString(), ".jar");		
+		// Replace this code, record the content of the composite in the new tmp composite		
+		//compositeFile.transferTo(compositeTmpFile);
+		FileUtils.copyTo(compositeFile, compositeTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
 		Composite scaZipComposite = frascatiService.readComposite(compositeTmpFile.toURI().toURL());
 		visitComposite(scaZipComposite);
@@ -337,9 +361,9 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 	 * 
 	 * @param parentAppliImplModel
 	 */
-	public void setParentAppliImpl(DocumentModel parentAppliImplModel) {
+	/*public void setParentAppliImpl(DocumentModel parentAppliImplModel) {
 		this.parentAppliImplModel = parentAppliImplModel;
-	}
+	}*/
 
 	/**
 	 * 
@@ -369,13 +393,13 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 		return sbuf.toString();
 	}
 
-	@Override
+	/*@Override
 	public CoreSession getDocumentManager() {
 		return documentManager;
-	}
+	}*/
 
 	@Override
-	public Blob getCompositeFile() {
+	public File getCompositeFile() {
 		return compositeFile;
 	}
 
@@ -389,10 +413,10 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 		return serviceStackUrl;
 	}
 
-	@Override
-	public DocumentModel getParentAppliImplModel() {
+	//@Override
+	/*public DocumentModel getParentAppliImplModel() {
 		return parentAppliImplModel;
-	}
+	}*/
 
 	/**
 	 * 
@@ -408,12 +432,12 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 
 	@Override
 	public void importSCA() throws Exception {
-		log.debug("scaFileName = " + compositeFile.getFilename());
+		log.debug("scaFileName = " + compositeFile.getName());
 		// If the filename is not set, it is not possible to choose the corresponding import method
-		if(compositeFile.getFilename() == null || "".equals(compositeFile.getFilename())){
+		if(compositeFile.getName() == null || "".equals(compositeFile.getName())){
 			throw new Exception("Invalid file name (null or empty) : please check that the file name is set");
 		}
-		String scaFileName = compositeFile.getFilename();
+		String scaFileName = compositeFile.getName();
 		if (scaFileName.endsWith(".composite")) {
 			importSCAComposite();
 		} else if (scaFileName.endsWith(".jar") || scaFileName.endsWith(".zip")) {
@@ -422,5 +446,5 @@ public class FraSCAtiScaImporterBase implements IScaImporter {
 			throw new Exception("Unsupported file type : neither a Composite nor an SCA zip or jar");
 		}	
 	}
-
+	
 }

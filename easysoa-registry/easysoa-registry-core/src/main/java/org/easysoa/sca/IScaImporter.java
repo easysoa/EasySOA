@@ -20,9 +20,8 @@
 
 package org.easysoa.sca;
 
-import org.nuxeo.ecm.core.api.Blob;
-import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
+import java.io.File;
+import org.easysoa.sca.visitors.ScaVisitor;
 
 /**
  * Introduced to ease adding another (notably FraSCAti-based) SCA importer in addition to the
@@ -42,7 +41,9 @@ public interface IScaImporter {
 	 * 
 	 * @param appliImplModel
 	 */
-	public void setParentAppliImpl(DocumentModel appliImplModel);
+    // TODO Not really a good solution, do better	
+	//public void setParentAppliImpl(DocumentModel appliImplModel);
+	public void setParentAppliImpl(Object appliImplModel);
 	
 	/**
 	 * 
@@ -60,13 +61,15 @@ public interface IScaImporter {
 	 * Returns the Nuxeo document manager
 	 * @return
 	 */
-    public CoreSession getDocumentManager();
+    // To delete : nuxeo dependent
+	//public CoreSession getDocumentManager();
+	public Object getDocumentManager();
 
     /**
      * 
      * @return
      */
-    public Blob getCompositeFile();
+    public File getCompositeFile();
     
     /**
      * 
@@ -84,7 +87,8 @@ public interface IScaImporter {
      * 
      * @return
      */
-    public DocumentModel getParentAppliImplModel();
+    // To delete : nuxeo dependent    
+    //public DocumentModel getParentAppliImplModel();
 
     /**
      * 
@@ -97,5 +101,25 @@ public interface IScaImporter {
      * @return
      */
     public String toCurrentArchiPath();
+    
+    /**
+     * Returns a model property
+     * @param arg0
+     * @param arg1
+     * @return
+     */
+    public String getModelProperty(String arg0, String arg1) throws Exception;
+    
+    /**
+     * creates and returns a ServiceBindingVisitor
+     * @return A <code>ScaVisitor<code>
+     */
+    public ScaVisitor createServiceBindingVisitor();
+
+    /**
+     * creates and returns a ReferenceBindingVisitor
+     * @return A <code>ScaVisitor<code>
+     */
+    public ScaVisitor createReferenceBindingVisitor();    
     
 }

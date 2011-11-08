@@ -1,15 +1,14 @@
 package org.easysoa.sca.frascati;
 
+import java.io.File;
+
 import org.easysoa.sca.visitors.ApiReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ApiServiceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.stp.sca.Composite;
-import org.nuxeo.ecm.core.api.Blob;
-import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreSession;
 
 /**
- * 
+ * Sca Importer (Nuxeo free), uses the Registry API to register services
  * @author jguillemotte
  *
  */
@@ -19,26 +18,12 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	 * Default constructor
 	 * @throws Exception
 	 */
-	public ApiFraSCAtiScaImporter() throws Exception {
-		super();
+	public ApiFraSCAtiScaImporter(File scaComposite) throws Exception {
+		super(scaComposite);
 	}
 
-	/**
-	 * 
-	 * @param documentManager
-	 * @param compositeFile
-	 * @throws Exception 
-	 * @throws ClientException 
-	 */
-	// TODO : change this constructor : No need to pass a coreSession object
-	public ApiFraSCAtiScaImporter(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception{
-		super(documentManager, compositeFile);
-	}
-	
-    /**
-     * creates and returns a ServiceBindingVisitor
-     * @return
-     */
+
+    @Override	
     public ScaVisitor createServiceBindingVisitor() {
         // Visitor using Notification API
     	return new ApiServiceBindingVisitor(this);
@@ -48,6 +33,7 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
      * creates and returns a ReferenceBindingVisitor 
      * @return
      */
+    @Override
     public ScaVisitor createReferenceBindingVisitor() {
         // Visitor using Notification API
     	return new ApiReferenceBindingVisitor(this);
@@ -55,8 +41,24 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
     
     public void visitComposite(Composite composite){
     	// do not call the supertype method !
-    	
     	//super.visitComposite(composite);
     }
+
+	@Override
+	public String getModelProperty(String arg0, String arg1) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getDocumentManager() {
+		return null;
+	}
+
+
+	@Override
+	public void setParentAppliImpl(Object appliImplModel) {
+		// Nothing to do here
+	}
 	
 }

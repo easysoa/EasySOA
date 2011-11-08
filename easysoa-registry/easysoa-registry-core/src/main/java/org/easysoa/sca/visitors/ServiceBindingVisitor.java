@@ -29,9 +29,12 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
+import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreSession;
 
 /**
  * Visitor for WS bindings.
@@ -47,12 +50,12 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
 	 * 
 	 * @param scaImporter
 	 */
-    public ServiceBindingVisitor(IScaImporter scaImporter) {
-        super(scaImporter);
+    public ServiceBindingVisitor(IScaImporter scaImporter, DiscoveryService discoveryService) {
+        super(scaImporter, discoveryService);
     }
 
     @Override
-    public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, MalformedURLException {
+    public void visit(BindingInfoProvider bindingInfoProvider) throws Exception, ClientException, MalformedURLException {
         String serviceUrl = bindingInfoProvider.getBindingUrl();
         if (serviceUrl == null) {
         	log.debug("serviceUrl is null, returning !");
@@ -61,16 +64,18 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         }
     	
         log.debug("serviceUrl is not null, registering API's and services...");
-        String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+        //String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+        String appliImplUrl = scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+
         String apiUrl = discoveryService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         
         // enrich or create API
         Map<String, String> properties = new HashMap<String, String>();
         properties.put(ServiceAPI.PROP_URL, apiUrl);
         properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
-        properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
+        properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getName());
         properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);
-        discoveryService.notifyServiceApi(documentManager, properties);
+        discoveryService.notifyServiceApi((CoreSession) scaImporter.getDocumentManager(), properties);
 
         // enrich or create service
         properties = new HashMap<String, String>();
@@ -79,8 +84,8 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(Service.PROP_PARENTURL, apiUrl);
         properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
         properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-        properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?
-        discoveryService.notifyService(documentManager, properties);
+        properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ?
+        discoveryService.notifyService((CoreSession) scaImporter.getDocumentManager(), properties);
     }
     
     @Override

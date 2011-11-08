@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
+import org.easysoa.services.DiscoveryService;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -128,7 +129,7 @@ public class ApiReferenceBindingVisitor extends ScaVisitorBase {
     @Override
     public void postCheck() throws ClientException {
         
-        DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
+        /*DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
         // find referenced service
         String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);
         DocumentModel refServiceModel;
@@ -140,7 +141,7 @@ public class ApiReferenceBindingVisitor extends ScaVisitorBase {
             }
         } catch (MalformedURLException e) {
             log.warn("Reference URL is invalid", e);
-        }
+        }*/
     }
 
 }
