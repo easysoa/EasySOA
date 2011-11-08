@@ -37,4 +37,9 @@ monitoring.save("myrun2");
 monitoring.restore("myrun");
 monitoring.reset();
 
+// Use monitoring session to build mock
+
+var mockImpl = api.createMockServiceImpl(serviceEndpointToScaffold);
+mockImpl.useRecords(monitoring.getRecords("myrun"));
+
 console.log("Done.");

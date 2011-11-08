@@ -85,7 +85,10 @@ var ServiceScaffolderImpl = ServiceImpl.extend({
 
 var MockImpl = ServiceImpl.extend({
     name : undefined,
-    type : SERVICE_IMPL_TYPE_MOCK
+    type : SERVICE_IMPL_TYPE_MOCK,
+    useRecords : function(records) {
+        console.log("Making mock use some request/response records");
+    }
 });
 
 var ServiceEndpoint = {
@@ -268,6 +271,12 @@ exports.createProxyFeature = function(type) {
               if (activeRun != undefined) {
                   console.log("Resetting run "+activeRun);
               }
+          },
+          getRecords: function(name) {
+              return new Array({
+                  "request1" : "response1",
+                  "request2" : "response2"
+              });
           }
       });
   }
