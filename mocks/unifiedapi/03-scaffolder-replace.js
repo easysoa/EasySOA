@@ -26,7 +26,7 @@ console.log("[Scenario #3]");
 
 // Create mock of existing endpoint
 
-var serviceMock = new api.JavascriptImpl("MyMock", isMock=true, serviceImplToMock=serviceEndpointToScaffold.getImpl());
+var serviceMock = new api.JavascriptImpl("MyMock", options={isMock: true}, serviceImplToMock=serviceEndpointToScaffold.getImpl());
 var serviceMockEndpoint = testEnv.addServiceImpl(serviceMock);
 
 // Update Scaffolder

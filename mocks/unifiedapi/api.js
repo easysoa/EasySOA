@@ -62,12 +62,14 @@ Object.extend(global, require('prototype'));
 
 EASYSOA_HOST = "http://localhost";
 EASYSOA_LIGHT_SERVER_URL = EASYSOA_HOST + ":9011/";
+EASYSOA_JAVA_SERVER_URL = EASYSOA_HOST + ":9011/";
 EASYSOA_PAF_SERVICES_URL = EASYSOA_HOST + ":9010/";
 EASYSOA_SCAFFOLDER_UI_URL = EASYSOA_HOST + ":8090/";
 
 SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT = "scaffolderclient";
 SERVICE_IMPL_TYPE_TEMPLATING_UI = "ui";
 SERVICE_IMPL_TYPE_JAVASCRIPT = "javascript";
+SERVICE_IMPL_TYPE_JAVA = "java";
 SERVICE_IMPL_TYPE_MOCK = "mock";
 SERVICE_IMPL_TYPE_EXTERNAL = "external";
 
@@ -81,10 +83,16 @@ toUrlPath = function(name) {
 // ===================== Service Impls. =====================
 
 var AbstractServiceImpl = Class.create({
-    initialize : function(name, type, isMock /*=false*/) {
+    initialize : function(name, type, options /*=undefined*/) {
         this.name = name;
         this.type = type;
-        this.isMock = (isMock == undefined) ? false : isMock;
+        
+        this.isMock = false;
+        this.isProductionReady = false;
+        if (options != undefined) {
+            this.isMock = (options.isMock == undefined) ? this.isMock : options.isMock;
+            this.isProductionReady = (options.isProductionReady == undefined) ? this.isMock : options.isProductionReady;
+        }
     },
     getName : function() {
         return this.name;
@@ -98,16 +106,16 @@ var AbstractServiceImpl = Class.create({
 
 
 var ScaffolderClientImpl = Class.create(AbstractServiceImpl, {
-    initialize : function($super, name, targetEndpoint, isMock /*=false*/) {
-        $super(name, SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT, isMock);
+    initialize : function($super, name, targetEndpoint, options /*=undefined*/) {
+        $super(name, SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT, options);
         this.targetEndpoint = targetEndpoint;
     }
 });
 
 
 var JavascriptImpl = Class.create(AbstractServiceImpl, {
-    initialize : function($super, name, isMock /*=false*/, serviceImplToMock) {
-        $super(name, SERVICE_IMPL_TYPE_MOCK, isMock);
+    initialize : function($super, name, options /*=undefined*/, serviceImplToMock /*=undefined*/) {
+        $super(name, SERVICE_IMPL_TYPE_MOCK, options);
         if (serviceImplToMock != undefined) {
             console.log("Building mock using "+serviceImplToMock.name);
         }
@@ -117,9 +125,15 @@ var JavascriptImpl = Class.create(AbstractServiceImpl, {
     }
 });
 
+var JavaImpl = Class.create(AbstractServiceImpl, {
+    initialize : function($super, name, options /*=undefined*/) {
+        $super(name, SERVICE_IMPL_TYPE_JAVA, options);
+    }
+});
+
 var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
-    initialize : function($super, name, fromScaffolderClient /*=undefined*/, isMock /*=false*/) {
-        $super(name, SERVICE_IMPL_TYPE_TEMPLATING_UI, isMock);
+    initialize : function($super, name, options, fromScaffolderClient /*=undefined*/) {
+        $super(name, SERVICE_IMPL_TYPE_TEMPLATING_UI, options);
         if (fromScaffolderClient != undefined) {
             console.log("Building template UI using "+fromScaffolderClient.name);
         }
@@ -127,7 +141,7 @@ var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
 });
 
 var ExternalImpl = Class.create(AbstractServiceImpl, {
-    initialize : function($super, name, isMock /*=false*/) {
+    initialize : function($super, name, options /*=undefined*/) {
         $super(name, SERVICE_IMPL_TYPE_EXTERNAL, isMock);
     }
 });
@@ -193,6 +207,14 @@ var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
     }
 });
 
+
+var JavaServiceEndpoint = Class.create(ServiceEndpoint, {
+    initialize : function($super, impl, env) {
+        $super(impl, EASYSOA_JAVA_SERVER_URL+impl.name, env);
+    }
+});
+
+
 var ExternalEndpoint = Class.create(ServiceEndpoint, {
     initialize : function($super, impl, url, env /*=undefined*/) {
         $super(impl, url, env);
@@ -257,8 +279,9 @@ var AbstractEnvironment = Class.create({
         var newServiceEndpoint;
         switch (serviceImpl.type) {
             case SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT:
-                newServiceEndpoint = new ScaffolderClientEndpoint(serviceImpl, this);
-                break;
+                newServiceEndpoint = new ScaffolderClientEndpoint(serviceImpl, this); break;
+            case SERVICE_IMPL_TYPE_JAVA:
+                newServiceEndpoint = new JavaServiceEndpoint(serviceImpl, this); break;
             default:
                 newServiceEndpoint = new ServiceEndpoint(serviceImpl,
                         this.implServerUrl + toUrlPath(serviceImpl.name), this);
@@ -266,7 +289,6 @@ var AbstractEnvironment = Class.create({
 
         newServiceEndpoint.env = this;
         this.serviceEndpoints.push(newServiceEndpoint);
-        
         return newServiceEndpoint;
     },
     removeServiceImpl : function(serviceImplToRemove) {
@@ -279,6 +301,7 @@ var AbstractEnvironment = Class.create({
         this.serviceEndpoints = newServiceEndpoints;
     },
     start : function() {
+        console.log("Starting environment "+this.name+"...");
         var allIsStarted = true;
         this.externalServiceEndpoints.each(function(endpoint) {
             if (!endpoint.checkStarted()) {
@@ -302,6 +325,29 @@ var AbstractEnvironment = Class.create({
 var StagingEnvironment = Class.create(AbstractEnvironment, {
     initialize : function($super, name, url) {
         $super(exports.ENVIRONMENT_TYPE_STAGING, name, url);
+    }
+});
+
+var ProductionEnvironment = Class.create(AbstractEnvironment, {
+    initialize : function($super, name, url) {
+        $super(exports.ENVIRONMENT_TYPE_PRODUCTION, name, url);
+    },
+    addExternalServiceEndpoint : function($super, serviceEndpoint) {
+        if (serviceEndpoint.getImpl().isProductionReady) {
+            $super(serviceEndpoint);
+        }
+        else {
+            console.log("Service endpoint "+serviceEndpoint.getImpl().name+" is not production ready!");
+        }
+    },
+    addServiceImpl : function($super, serviceImpl) {
+        if (serviceImpl.isProductionReady) {
+            return $super(serviceImpl);
+        }
+        else {
+            console.log("Service endpoint "+serviceImpl.name+" is not production ready!");
+            return null;
+        }
     }
 });
 
@@ -344,6 +390,7 @@ exports.selectServiceEndpointInUI = function(envFilter) {
 
 exports.ScaffolderClientImpl        = ScaffolderClientImpl;
 exports.JavascriptImpl              = JavascriptImpl;
+exports.JavaImpl                    = JavaImpl;
 exports.TemplatingUIImpl            = TemplatingUIImpl;
 exports.ExternalImpl                = ExternalImpl;
 
@@ -353,5 +400,6 @@ exports.MonitoringProxyFeature      = MonitoringProxyFeature;
 
 exports.LightEnvironment            = LightEnvironment;
 exports.StagingEnvironment          = StagingEnvironment;
+exports.ProductionEnvironment          = ProductionEnvironment;
 
 exports.TestSuite                   = TestSuite;

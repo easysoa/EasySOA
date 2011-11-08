@@ -27,7 +27,7 @@ var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter);
 
 var testEnv = new api.LightEnvironment("PureAirFlowers", "Sophie");
 
-var serviceMock = new api.JavascriptImpl("MyMock", isMock=true, serviceImplToMock=serviceEndpointToScaffold.getImpl());
+var serviceMock = new api.JavascriptImpl("MyMock", options={isMock: true}, serviceImplToMock=serviceEndpointToScaffold.getImpl());
 var serviceMockEndpoint = testEnv.addServiceImpl(serviceMock);
 
 var scaffolderClient = new api.ScaffolderClientImpl("MyClient", serviceMockEndpoint);

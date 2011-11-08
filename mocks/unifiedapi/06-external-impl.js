@@ -31,7 +31,7 @@ console.log("[Scenario #6]");
 // Implement external service
 
 var externalImpl = new api.ExternalImpl("myBrainfckService");
-var externalEndpoint = new api.ExternalEndpoint(externalImpl, "http://myservices.com/myBrainfckService");
+var externalEndpoint = new api.ServiceEndpoint(externalImpl, "http://myservices.com/myBrainfckService");
 testEnv.addExternalServiceEndpoint(externalEndpoint);
 
 // Record some exchanges

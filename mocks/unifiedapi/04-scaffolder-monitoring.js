@@ -40,7 +40,7 @@ monitoring.reset();
 
 // Use monitoring session to build mock
 
-var serviceMock = new api.JavascriptImpl("MyMock", isMock=true, serviceImplToMock=serviceEndpointToScaffold.getImpl());
+var serviceMock = new api.JavascriptImpl("MyMock", options={isMock: true}, serviceImplToMock=serviceEndpointToScaffold.getImpl());
 serviceMock.feedMockWithRecords(monitoring.getRecords("myrun"));
 
 console.log("Done.");

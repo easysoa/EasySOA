@@ -14,5 +14,25 @@
 
 var api = require('./api.js');
 
+// Set up environments
+
+var lightEnv = new api.LightEnvironment("light", "Sophie");
+var productionEnv = new api.ProductionEnvironment("production", "http://www.myservices.com");
+
+// Implement java service
+
+var javaImpl = new api.JavaImpl("myHeavyService");
+javaImpl.edit();
+lightEnv.addServiceImpl(javaImpl);
+lightEnv.start();
+
+// Send to production environment
+
+productionEnv.addServiceImpl(javaImpl); // Should fail: the service is not production-ready
+
+javaImpl.isProductionReady = true;
+productionEnv.addServiceImpl(javaImpl);
+
+productionEnv.start();
 
 console.log("Done.");
