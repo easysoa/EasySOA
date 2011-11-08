@@ -142,7 +142,7 @@ var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
 
 var ExternalImpl = Class.create(AbstractServiceImpl, {
     initialize : function($super, name, options /*=undefined*/) {
-        $super(name, SERVICE_IMPL_TYPE_EXTERNAL, isMock);
+        $super(name, SERVICE_IMPL_TYPE_EXTERNAL, options);
     }
 });
 
@@ -156,6 +156,7 @@ var ServiceEndpoint = Class.create({
         this.autoUpdate = (autoUpdate == undefined) ? false : autoUpdate;
         this.started = false;
         this.proxyFeatures = new $H();
+        this.onUpdateListeners = new Array();
     },
     getName : function() {
         return this.impl.name;
@@ -182,8 +183,8 @@ var ServiceEndpoint = Class.create({
     getProxyFeature: function(name) {
         return this.proxyFeatures.get(name);
     },
-    registerListener: function(event, callback) {
-        console.log("Registering callback on event "+event);
+    registerOnUpdateListener: function(runnable) {
+        this.onUpdateListeners.push(runnable);
     },
     setEnvironment: function(env) {
         this.env = env;
