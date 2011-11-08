@@ -44,9 +44,9 @@ Scenarios TODO
 
 OK scaffolder calling a service selected (in accessible environments)
 OK scaffolder calling a mock
-scaffolder, then (from called service in this environment) create mock, by replace (or LATER fork)
+OK scaffolder, then (from called service in this environment) create mock, by replace (or LATER fork)
 
-scaffolder, then in between add WS monitoring proxy
+OK scaffolder, then in between add WS monitoring proxy
 then record exchanges (autostart, reset(), save(name), restore(name))
 then create mock using a named recorded session of exchanges (when a given request appears, return the response)
 
@@ -67,6 +67,8 @@ EASYSOA_SCAFFOLDER_UI_URL = EASYSOA_HOST + ":8090/";
 SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT = "scaffolderclient";
 SERVICE_IMPL_TYPE_MOCK = "mock";
 SERVICE_IMPL_TYPE_EXTERNAL = "external";
+
+exports.PROXY_FEATURE_TYPE_MONITORING = "external";
 
 // ===================== Default objects =====================
 
@@ -92,6 +94,7 @@ var ServiceEndpoint = {
     url : undefined,
     env : undefined,
     started : false,
+    proxyFeatures : new Array(),
     checkStarted : function() {
         console.log(" * Checking: " + this.url);
         return this.started;
@@ -104,6 +107,14 @@ var ServiceEndpoint = {
     stop : function() {
         console.log(" * Stopping: " + this.name);
         this.started = false;
+    },
+    use : function(proxyFeature) {
+        if (typeof proxyFeature === "function") {
+            this.proxyFeatures.push(proxyFeature);
+        }
+        else {
+            console.error(proxyFeature+" must be a function");
+        }
     }
 };
 
@@ -210,7 +221,7 @@ exports.stop = function(env) {
     }
 };
 
-//===================== Scaffolder clients =====================
+// ===================== Scaffolder clients =====================
 
 exports.createScaffolderClient = function(env, serviceEndpointToScaffold) {
     return ServiceScaffolderImpl.extend({
@@ -230,4 +241,14 @@ exports.setTargetEndpoint = function(serviceEndpointToScaffold, targetEndpoint) 
 
 exports.display = function(serviceEndpointToScaffold) {
     console.log("Displaying UI: "+serviceEndpointToScaffold.url);
+};
+
+//===================== Proxy features =====================
+
+exports.createProxyFeature = function(type) {
+  if (type = exports.PROXY_FEATURE_TYPE_MONITORING) {
+      return function(request, response) {
+        console.log("Monitoring triggered");  
+      };
+  }
 };
