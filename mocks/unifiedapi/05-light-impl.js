@@ -16,7 +16,6 @@ var api = require('./api.js');
 
 // Reproduce Scenario #1: Create Service Scaffolder Client for a given existing service endpoint
 //                and #4: Enable monitoring and use its records to build a mock
-// [ Scaffolder UI ] ==proxy==> [ WS ]
 
 var imports = require('./04-scaffolder-monitoring.js');
 var testEnv = imports.testEnv;

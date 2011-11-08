@@ -52,3 +52,4 @@ exports.testEnv = testEnv;
 exports.scaffolderClient = scaffolderClient;
 exports.serviceEndpointToScaffold = serviceEndpointToScaffold;
 exports.scaffolderClientEndpoint = scaffolderClientEndpoint;
+exports.monitoring = monitoring;

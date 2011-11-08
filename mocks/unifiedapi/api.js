@@ -126,6 +126,11 @@ var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
     }
 });
 
+var ExternalImpl = Class.create(AbstractServiceImpl, {
+    initialize : function($super, name, isMock /*=false*/) {
+        $super(name, SERVICE_IMPL_TYPE_EXTERNAL, isMock);
+    }
+});
 
 //===================== Service Endpoints =====================
 
@@ -165,6 +170,9 @@ var ServiceEndpoint = Class.create({
     },
     registerListener: function(event, callback) {
         console.log("Registering callback on event "+event);
+    },
+    setEnvironment: function(env) {
+        this.env = env;
     }
 });
 
@@ -185,6 +193,11 @@ var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
     }
 });
 
+var ExternalEndpoint = Class.create(ServiceEndpoint, {
+    initialize : function($super, impl, url, env /*=undefined*/) {
+        $super(impl, url, env);
+    }
+});
 
 //===================== Proxy features =====================
 
@@ -237,6 +250,7 @@ var AbstractEnvironment = Class.create({
         this.externalServiceEndpoints = new Array();
     },
     addExternalServiceEndpoint : function(serviceEndpoint) {
+        serviceEndpoint.setEnvironment(this);
         this.externalServiceEndpoints.push(serviceEndpoint);
     },
     addServiceImpl : function(serviceImpl) {
@@ -299,18 +313,19 @@ var LightEnvironment = Class.create(AbstractEnvironment, {
 
 //======================== UI =========================
 
-var OnUpdateListener = Class.create({
-    onUpdate: function() {
+var Runnable = Class.create({
+    run: function() {
         // To implement
     }
 });
 
-var TestSuite = Class.create(OnUpdateListener, {
-    initialize: function(records) {
-        this.records = records;
+var TestSuite = Class.create(Runnable, {
+    initialize: function(serviceImpl, requestsRecords) {
+        this.serviceImpl = serviceImpl;
+        this.requestsRecords = requestsRecords;
     },
-    onUpdate: function() {
-       console.log("Running test suite.");
+    run: function() {
+       console.log("Running test suite on service " + this.serviceImpl.name);
     } 
 });
 
@@ -330,6 +345,9 @@ exports.selectServiceEndpointInUI = function(envFilter) {
 exports.ScaffolderClientImpl        = ScaffolderClientImpl;
 exports.JavascriptImpl              = JavascriptImpl;
 exports.TemplatingUIImpl            = TemplatingUIImpl;
+exports.ExternalImpl                = ExternalImpl;
+
+exports.ExternalEndpoint            = ExternalEndpoint;
 
 exports.MonitoringProxyFeature      = MonitoringProxyFeature;
 
