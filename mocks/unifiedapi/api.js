@@ -50,7 +50,7 @@ OK scaffolder, then in between add WS monitoring proxy
 OK then record exchanges (autostart, reset(), save(name), restore(name))
 OK then create mock using a named recorded session of exchanges (when a given request appears, return the response)
 
-then create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
+OK then create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
 then add WS proxy + js impl between template UI and mock
 then record exchanges and let the user tailor a recording session that is a test suite
 then setup test suite to be called on each js impl changes
@@ -90,7 +90,7 @@ var AbstractServiceImpl = Class.create({
     },
     edit : function() {
         if (this.type != SERVICE_IMPL_TYPE_EXTERNAL) {
-            console.log("Making user edit service impl. "+name);
+            console.log("Making user edit service impl. "+this.name);
         }
     }
 });
@@ -117,8 +117,11 @@ var JavascriptImpl = Class.create(AbstractServiceImpl, {
 });
 
 var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
-    initialize : function($super, name, isMock /*=false*/) {
+    initialize : function($super, name, fromScaffolderClient /*=undefined*/, isMock /*=false*/) {
         $super(name, SERVICE_IMPL_TYPE_TEMPLATING_UI, isMock);
+        if (fromScaffolderClient != undefined) {
+            console.log("Building template UI using "+fromScaffolderClient.name);
+        }
     }
 });
 
@@ -126,10 +129,11 @@ var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
 //===================== Service Endpoints =====================
 
 var ServiceEndpoint = Class.create({
-    initialize : function(impl, url, env) {
+    initialize : function(impl, url, env, autoUpdate /*=false*/) {
         this.impl = impl;
         this.url = url;
         this.env = env;
+        this.autoUpdate = (autoUpdate == undefined) ? false : autoUpdate;
         this.started = false;
         this.proxyFeatures = new $H();
     },
@@ -157,6 +161,9 @@ var ServiceEndpoint = Class.create({
     },
     getProxyFeature: function(name) {
         return this.proxyFeatures.get(name);
+    },
+    registerListener: function(event, callback) {
+        console.log("Registering callback on event "+event);
     }
 });
 
@@ -225,7 +232,7 @@ var AbstractEnvironment = Class.create({
     initialize : function(envType, name, implServerUrl) {
         this.name = name;
         this.implServerUrl = implServerUrl;
-        this.serviceImpls = new Array();
+        this.serviceEndpoints = new Array();
         this.externalServiceEndpoints = new Array();
     },
     addExternalServiceEndpoint : function(serviceEndpoint) {
@@ -243,38 +250,37 @@ var AbstractEnvironment = Class.create({
         }
 
         newServiceEndpoint.env = this;
-        this.serviceImpls.push(newServiceEndpoint);
+        this.serviceEndpoints.push(newServiceEndpoint);
         
         return newServiceEndpoint;
     },
     removeServiceImpl : function(serviceImplToRemove) {
-        var i = 0;
-        for (var serviceImpl in this.serviceImpls) {
-            if (serviceImpl == serviceImplToRemove) {
-                this.serviceImpls.splice(i, i+1);
-                return;
+        var newServiceEndpoints = Array();
+        this.serviceEndpoints.each(function (endpoint) {
+            if (endpoint.impl != serviceImplToRemove) {
+                newServiceEndpoints.push(endpoint);
             }
-            i++;
-        }
+        });
+        this.serviceEndpoints = newServiceEndpoints;
     },
     start : function() {
         var allIsStarted = true;
-        this.externalServiceEndpoints.each(function(impl) {
-            if (!impl.checkStarted()) {
+        this.externalServiceEndpoints.each(function(endpoint) {
+            if (!endpoint.checkStarted()) {
                 allIsStarted = false;
             }
         });
-        this.serviceImpls.each(function(impl) {
-            if (!impl.start()) {
+        this.serviceEndpoints.each(function(endpoint) {
+            if (!endpoint.start()) {
                 allIsStarted = false;
             }
         });
         return allIsStarted;
     },
     stop : function() {
-        for (var serviceImpl in this.serviceImpls) {
-            serviceImpl.stop();
-        }
+        this.serviceEndpoints.each(function(endpoint) {
+            endpoint.stop();
+        });
     }
 });
 
@@ -290,6 +296,22 @@ var LightEnvironment = Class.create(AbstractEnvironment, {
     }
 });
 
+//======================== UI =========================
+
+var OnUpdateListener = Class.create({
+    onUpdate: function() {
+        // To implement
+    }
+});
+
+var TestSuite = Class.create(OnUpdateListener, {
+    initialize: function(records) {
+        this.records = records;
+    },
+    onUpdate: function() {
+       console.log("Running test suite.");
+    } 
+});
 
 // ======================== UI =========================
 
@@ -312,3 +334,5 @@ exports.MonitoringProxyFeature      = MonitoringProxyFeature;
 
 exports.LightEnvironment            = LightEnvironment;
 exports.StagingEnvironment          = StagingEnvironment;
+
+exports.TestSuite                   = TestSuite;

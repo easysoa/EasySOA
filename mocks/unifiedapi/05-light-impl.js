@@ -16,6 +16,7 @@ var api = require('./api.js');
 
 // Reproduce Scenario #1: Create Service Scaffolder Client for a given existing service endpoint
 //                and #4: Enable monitoring and use its records to build a mock
+// [ Scaffolder UI ] ==proxy==> [ WS ]
 
 var imports = require('./04-scaffolder-monitoring.js');
 var testEnv = imports.testEnv;
@@ -26,16 +27,34 @@ var serviceEndpointToScaffold = imports.serviceEndpointToScaffold;
 console.log("-------------------------------------");
 console.log("[Scenario #5]");
 
-// create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
 
-var uiServiceImpl = new api.TemplatingUIImpl("pafUI");
+// Replace scaffolder UI with a templating UI
+// [ Templating UI ] =========> [ WS ]
+
+var uiServiceImpl = new api.TemplatingUIImpl("MyServiceUI", scaffolderClient);
 var uiServiceEndpoint = testEnv.addServiceImpl(uiServiceImpl);
 testEnv.removeServiceImpl(scaffolderClient);
 
-// add WS proxy + js impl between template UI and mock
+// Add proxy to templating UI
+// [ Templating UI ] ==proxy==> [ WS ]
 
-// record exchanges and let the user tailor a recording session that is a test suite
+var uiMonitoring = new api.MonitoringProxyFeature("uimonit");
+uiServiceEndpoint.use(uiMonitoring);
 
-// setup test suite to be called on each js impl changes
+// Implement JS service & template UI
+// [ Templating UI ] ==proxy==> [ JS ] =========> [ WS ]
+
+var jsServiceImpl = new api.JavascriptImpl("myjsservice");
+jsServiceImpl.edit(); // Implement JS service
+var jsServiceEndpoint = testEnv.addServiceImpl(jsServiceImpl, autoUpdate=true);
+uiServiceImpl.edit(); // Make template use new JS service
+
+// Record some exchanges and build test suite to be executed on each service impl. update
+
+uiMonitoring.reset();
+uiMonitoring.save("exchangesForTests");
+var records = uiMonitoring.getRecords("exchangesForTests");
+var testSuite = new api.TestSuite(records);
+jsServiceEndpoint.registerListener("onUpdate", testSuite);
 
 console.log("Done.");
