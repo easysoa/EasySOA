@@ -48,7 +48,7 @@ OK scaffolder, then (from called service in this environment) create mock, by re
 
 OK scaffolder, then in between add WS monitoring proxy
 OK then record exchanges (autostart, reset(), save(name), restore(name))
-then create mock using a named recorded session of exchanges (when a given request appears, return the response)
+OK then create mock using a named recorded session of exchanges (when a given request appears, return the response)
 
 then create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
 then add WS proxy + js impl between template UI and mock
@@ -57,7 +57,7 @@ then setup test suite to be called on each js impl changes
 
 */
 
-var utils = require('./utils.js');
+Object.extend(global, require('prototype'));
 
 EASYSOA_HOST = "http://localhost";
 EASYSOA_LIGHT_SERVER_URL = EASYSOA_HOST + ":9011/";
@@ -65,222 +65,250 @@ EASYSOA_PAF_SERVICES_URL = EASYSOA_HOST + ":9010/";
 EASYSOA_SCAFFOLDER_UI_URL = EASYSOA_HOST + ":8090/";
 
 SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT = "scaffolderclient";
+SERVICE_IMPL_TYPE_TEMPLATING_UI = "ui";
+SERVICE_IMPL_TYPE_JAVASCRIPT = "javascript";
 SERVICE_IMPL_TYPE_MOCK = "mock";
 SERVICE_IMPL_TYPE_EXTERNAL = "external";
 
-exports.PROXY_FEATURE_TYPE_MONITORING = "monitoring";
+exports.ENVIRONMENT_TYPE_LIGHT = "light";
+exports.ENVIRONMENT_TYPE_STAGING = "staging";
 
-// ===================== Default objects =====================
-
-var ServiceImpl = {
-    name : undefined,
-    type : undefined
+toUrlPath = function(name) {
+    return name.sub(' ', '_');
 };
 
-var ServiceScaffolderImpl = ServiceImpl.extend({
-    name : undefined,
-    targetEndpoint : undefined,
-    type : SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT
+// ===================== Service Impls. =====================
+
+var AbstractServiceImpl = Class.create({
+    initialize : function(name, type, isMock /*=false*/) {
+        this.name = name;
+        this.type = type;
+        this.isMock = (isMock == undefined) ? false : isMock;
+    },
+    getName : function() {
+        return this.name;
+    },
+    edit : function() {
+        if (this.type != SERVICE_IMPL_TYPE_EXTERNAL) {
+            console.log("Making user edit service impl. "+name);
+        }
+    }
 });
 
-var MockImpl = ServiceImpl.extend({
-    name : undefined,
-    type : SERVICE_IMPL_TYPE_MOCK,
+
+var ScaffolderClientImpl = Class.create(AbstractServiceImpl, {
+    initialize : function($super, name, targetEndpoint, isMock /*=false*/) {
+        $super(name, SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT, isMock);
+        this.targetEndpoint = targetEndpoint;
+    }
+});
+
+
+var JavascriptImpl = Class.create(AbstractServiceImpl, {
+    initialize : function($super, name, isMock /*=false*/, serviceImplToMock) {
+        $super(name, SERVICE_IMPL_TYPE_MOCK, isMock);
+        if (serviceImplToMock != undefined) {
+            console.log("Building mock using "+serviceImplToMock.name);
+        }
+    },
     useRecords : function(records) {
         console.log("Making mock use some request/response records");
     }
 });
 
-var ServiceEndpoint = {
-    name : undefined,
-    type : undefined,
-    url : undefined,
-    env : undefined,
-    started : false,
-    proxyFeatures : new Array(),
+var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
+    initialize : function($super, name, isMock /*=false*/) {
+        $super(name, SERVICE_IMPL_TYPE_TEMPLATING_UI, isMock);
+    }
+});
+
+
+//===================== Service Endpoints =====================
+
+var ServiceEndpoint = Class.create({
+    initialize : function(impl, url, env) {
+        this.impl = impl;
+        this.url = url;
+        this.env = env;
+        this.started = false;
+        this.proxyFeatures = new $H();
+    },
+    getName : function() {
+        return this.impl.name;
+    },
+    getImpl : function() {
+        return this.impl;
+    },
     checkStarted : function() {
         console.log(" * Checking: " + this.url);
         return this.started;
     },
     start : function() {
-        console.log(" * Starting: " + this.name);
+        console.log(" * Starting: " + this.impl.name);
         this.started = true;
         return this.started;
     },
     stop : function() {
-        console.log(" * Stopping: " + this.name);
+        console.log(" * Stopping: " + this.impl.name);
         this.started = false;
     },
-    use : function(proxyFeature) {
-        this.proxyFeatures[proxyFeature.name] = proxyFeature;
+    use : function(proxyFeature) { // TODO Use class as key instead of names
+        this.proxyFeatures.set(proxyFeature.name, proxyFeature);
     },
     getProxyFeature: function(name) {
-        return this.proxyFeatures[name];
+        return this.proxyFeatures.get(name);
     }
-};
-
-var ServiceScaffolderEndpoint = ServiceEndpoint.extend({
-    name : undefined,
-    url : undefined, // UI
-    targetEndpoint : undefined,
-    type : SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT
 });
 
-var MockEndpoint = ServiceEndpoint.extend({
-    name : undefined,
-    url : undefined,
-    type : SERVICE_IMPL_TYPE_MOCK
+
+var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
+    initialize : function($super, impl, env) {
+        $super(impl, null, env);
+        this.setTargetEndpoint(impl.targetEndpoint);
+    },
+    setTargetEndpoint : function(targetEndpoint) {
+        this.impl.targetEndpointUrl = targetEndpoint.url;
+        this.url = this.env.implServerUrl
+                + toUrlPath(targetEndpoint.getName())
+                + "_Scaffolder_Client?endpoint=" + targetEndpoint.url;
+    },
+    display : function() {
+        console.log("Displaying UI: "+this.url);
+    }
 });
 
-var Environment = {
-    id : undefined,
-    name : undefined,
-    implServerUrl : undefined,
-    serviceImpls : new Array(),
-    externalServiceEndpoints : new Array()
-};
-
-var ProxyFeature = {
-    name : undefined,
-    process : undefined // function process(request, response)
-};
-
-// ===================== EasySOA UI =====================
-
-exports.selectServiceEndpointInUI = function(envFilter) {
-    return ServiceEndpoint.extend({
-        name : "PureAirFlowers",
-        type : SERVICE_IMPL_TYPE_EXTERNAL,
-        env : Environment.extend({
-                id : 2,
-                name : envFilter[0],
-                implServerUrl : EASYSOA_PAF_SERVICES_URL
-            }),
-        url : EASYSOA_PAF_SERVICES_URL + "PureAirFlowers",
-        started : true
-    });
-};
-
-// ===================== Services =====================
-
-exports.createMockServiceImpl = function(serviceEndpointToMock) {
-    return MockImpl.extend({
-        name : serviceEndpointToMock.name + " mock"
-    });
-};
-
-// ===================== Environments =====================
-
-exports.createEnvironment = function(envKind, user, name) {
-    if (envKind == "Light") {
-        implServerUrl = EASYSOA_LIGHT_SERVER_URL;
-    }
-    var id = 0;
-    return Environment.extend({
-        id : id,
-        name : user + "_" + id + "_" + name,
-        implServerUrl : implServerUrl
-    });
-};
-
-exports.addExternalServiceEndpoint = function(env, serviceEndpointToScaffold) {
-    env.externalServiceEndpoints.push(serviceEndpointToScaffold);
-};
-
-exports.addServiceImpl = function(env, serviceImpl) {
-    var newServiceEndpoint = ServiceEndpoint.extend(serviceImpl);
-    newServiceEndpoint.env = env;
-    
-    switch (newServiceEndpoint.type) {
-        case SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT:
-            newServiceEndpoint.url = env.implServerUrl + utils.toUrlPath(serviceImpl.name)
-                + "_Scaffolder_Client?endpoint=" + serviceImpl.targetEndpoint;
-            break;
-        case SERVICE_IMPL_TYPE_MOCK:
-            newServiceEndpoint.url = env.implServerUrl + "mock/" + utils.toUrlPath(serviceImpl.name);
-            break;
-        default:
-            newServiceEndpoint.url = env.implServerUrl + utils.toUrlPath(serviceImpl.name);
-    }
-    
-    env.serviceImpls.push(newServiceEndpoint);
-    return newServiceEndpoint;
-};
-
-exports.start = function(env) {
-    for (i in env.externalServiceEndpoints) {
-        if (!env.externalServiceEndpoints[i].checkStarted()) {
-            return false;
-        }
-    }
-    for (i in env.serviceImpls) {
-        if (!env.serviceImpls[i].start()) {
-            return false;
-        }
-    }
-    return true;
-};
-
-exports.stop = function(env) {
-    for (serviceImpl in env.serviceImpls) {
-        serviceImpl.stop();
-    }
-};
-
-// ===================== Scaffolder clients =====================
-
-exports.createScaffolderClient = function(env, serviceEndpointToScaffold) {
-    return ServiceScaffolderImpl.extend({
-        name : serviceEndpointToScaffold.name + " Scaffolder Client",
-        url : env.implServerUrl + utils.toUrlPath(serviceEndpointToScaffold.name) + "_Scaffolder_Client",
-        targetEndpoint : serviceEndpointToScaffold.url,
-        type : SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT
-    });
-};
-
-exports.setTargetEndpoint = function(serviceEndpointToScaffold, targetEndpoint) {
-    serviceEndpointToScaffold.targetEndpoint = targetEndpoint.url;
-    serviceEndpointToScaffold.url = serviceEndpointToScaffold.env.implServerUrl
-            + utils.toUrlPath(targetEndpoint.name)
-            + "_Scaffolder_Client?endpoint=" + targetEndpoint.url;
-};
-
-exports.display = function(serviceEndpointToScaffold) {
-    console.log("Displaying UI: "+serviceEndpointToScaffold.url);
-};
 
 //===================== Proxy features =====================
 
-exports.createProxyFeature = function(type) {
-  if (type = exports.PROXY_FEATURE_TYPE_MONITORING) {
-      return ProxyFeature.extend({
-          name: "monitoring",
-          activeRun: undefined,
-          process: function(request, response) {
-              console.log("Monitoring triggered");  
-          },
-          save: function(name) {
-              console.log("Saving current run as " + name);
-              activeRun = undefined;
-          },
-          restore: function(name) {
-              console.log("Restoring run " + name);
-              activeRun = name;
-          },
-          reset: function() {
-              if (activeRun != undefined) {
-                  console.log("Resetting run "+activeRun);
-              }
-          },
-          getRecords: function(name) {
-              return new Array({
-                  "request1" : "response1",
-                  "request2" : "response2"
-              });
-          }
-      });
-  }
-  else {
-      return null;
-  }
+var AbstractProxyFeature = Class.create({
+    initialize : function(name) {
+        this.name = name;
+    },
+    process : function(request, response) {
+        // To implement
+    }
+});
+
+var MonitoringProxyFeature = Class.create(AbstractProxyFeature, {
+    initialize : function($super, name) {
+        $super(name);
+        this.activeRun = null;
+    },
+    process: function(request, response) {
+        console.log("Monitoring triggered");  
+    },
+    save: function(name) {
+        console.log("Saving current run as " + name);
+        activeRun = null;
+    },
+    restore: function(name) {
+        console.log("Restoring run " + name);
+        activeRun = name;
+    },
+    reset: function() {
+        if (activeRun != null) {
+            console.log("Resetting run "+activeRun);
+        }
+    },
+    getRecords: function(name) {
+        return new Array({
+            "request1" : "response1",
+            "request2" : "response2"
+        });
+    }
+});
+
+
+// ===================== Environments =====================
+
+var AbstractEnvironment = Class.create({
+    initialize : function(envType, name, implServerUrl) {
+        this.name = name;
+        this.implServerUrl = implServerUrl;
+        this.serviceImpls = new Array();
+        this.externalServiceEndpoints = new Array();
+    },
+    addExternalServiceEndpoint : function(serviceEndpoint) {
+        this.externalServiceEndpoints.push(serviceEndpoint);
+    },
+    addServiceImpl : function(serviceImpl) {
+        var newServiceEndpoint;
+        switch (serviceImpl.type) {
+            case SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT:
+                newServiceEndpoint = new ScaffolderClientEndpoint(serviceImpl, this);
+                break;
+            default:
+                newServiceEndpoint = new ServiceEndpoint(serviceImpl,
+                        this.implServerUrl + toUrlPath(serviceImpl.name), this);
+        }
+
+        newServiceEndpoint.env = this;
+        this.serviceImpls.push(newServiceEndpoint);
+        
+        return newServiceEndpoint;
+    },
+    removeServiceImpl : function(serviceImplToRemove) {
+        var i = 0;
+        for (var serviceImpl in this.serviceImpls) {
+            if (serviceImpl == serviceImplToRemove) {
+                this.serviceImpls.splice(i, i+1);
+                return;
+            }
+            i++;
+        }
+    },
+    start : function() {
+        var allIsStarted = true;
+        this.externalServiceEndpoints.each(function(impl) {
+            if (!impl.checkStarted()) {
+                allIsStarted = false;
+            }
+        });
+        this.serviceImpls.each(function(impl) {
+            if (!impl.start()) {
+                allIsStarted = false;
+            }
+        });
+        return allIsStarted;
+    },
+    stop : function() {
+        for (var serviceImpl in this.serviceImpls) {
+            serviceImpl.stop();
+        }
+    }
+});
+
+var StagingEnvironment = Class.create(AbstractEnvironment, {
+    initialize : function($super, name, url) {
+        $super(exports.ENVIRONMENT_TYPE_STAGING, name, url);
+    }
+});
+
+var LightEnvironment = Class.create(AbstractEnvironment, {
+    initialize : function($super, name, user) {
+        $super(exports.ENVIRONMENT_TYPE_LIGHT, user + "_" + name, EASYSOA_LIGHT_SERVER_URL);
+    }
+});
+
+
+// ======================== UI =========================
+
+exports.selectServiceEndpointInUI = function(envFilter) {
+    var selectedEndpoint = new ServiceEndpoint(
+            new AbstractServiceImpl("PureAirFlowers", SERVICE_IMPL_TYPE_EXTERNAL),
+            EASYSOA_PAF_SERVICES_URL + "PureAirFlowers",
+            new StagingEnvironment(envFilter[0], EASYSOA_PAF_SERVICES_URL));
+    selectedEndpoint.started = true;
+    return selectedEndpoint;
 };
+
+//======================== Exports =========================
+
+exports.ScaffolderClientImpl        = ScaffolderClientImpl;
+exports.JavascriptImpl              = JavascriptImpl;
+exports.TemplatingUIImpl            = TemplatingUIImpl;
+
+exports.MonitoringProxyFeature      = MonitoringProxyFeature;
+
+exports.LightEnvironment            = LightEnvironment;
+exports.StagingEnvironment          = StagingEnvironment;

@@ -16,21 +16,21 @@ var api = require('./api.js');
 
 // Reproduce Scenario #01: Create Service Scaffolder Client for a given existing service endpoint
 
-console.log("------------------------------------");
-console.log("[Scenario #1]");
 var imports = require('./01-scaffolder.js');
 testEnv = imports.testEnv;
 scaffolderClientEndpoint = imports.scaffolderClientEndpoint;
 serviceEndpointToScaffold = imports.serviceEndpointToScaffold;
+
 console.log("------------------------------------");
+console.log("[Scenario #3]");
 
 // Create mock of existing endpoint
 
-var serviceMock = api.createMockServiceImpl(serviceEndpointToScaffold); // TODO createImpl("js", mock=true, params=serviceEndpointToScaffold ?
-var serviceMockEndpoint = api.addServiceImpl(testEnv, serviceMock);
+var serviceMock = new api.JavascriptImpl("MyMock", isMock=true, serviceImplToMock=serviceEndpointToScaffold.getImpl());
+var serviceMockEndpoint = testEnv.addServiceImpl(serviceMock);
 
 // Update Scaffolder
 
-api.setTargetEndpoint(scaffolderClientEndpoint, serviceMockEndpoint, testEnv);
-api.display(scaffolderClientEndpoint);
+scaffolderClientEndpoint.setTargetEndpoint(serviceMockEndpoint);
+scaffolderClientEndpoint.display();
 console.log("Done.");

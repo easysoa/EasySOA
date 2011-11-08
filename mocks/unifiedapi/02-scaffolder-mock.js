@@ -16,25 +16,28 @@ var api = require('./api.js');
 
 // Make the user choose a service
 
+console.log("-------------------------------------");
+console.log("[Scenario #2]");
+
 var user = "Sophie";
 var envFilter = [ "sandbox", "dev" ];
 var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter);
 
 // Create environment
 
-var testEnv = api.createEnvironment("Light", user, "PureAirFlowers");
+var testEnv = new api.LightEnvironment("PureAirFlowers", "Sophie");
 
-var serviceMock = api.createMockServiceImpl(serviceEndpointToScaffold); // TODO createImpl("js", mock=true, params=serviceEndpointToScaffold ?
-var serviceMockEndpoint = api.addServiceImpl(testEnv, serviceMock);
+var serviceMock = new api.JavascriptImpl("MyMock", isMock=true, serviceImplToMock=serviceEndpointToScaffold.getImpl());
+var serviceMockEndpoint = testEnv.addServiceImpl(serviceMock);
 
-var scaffolderClient = api.createScaffolderClient(testEnv, serviceMockEndpoint);
-var scaffolderClientEndpoint = api.addServiceImpl(testEnv, scaffolderClient);
+var scaffolderClient = new api.ScaffolderClientImpl("MyClient", serviceMockEndpoint);
+var scaffolderClientEndpoint = testEnv.addServiceImpl(scaffolderClient);
 
 // Launch scaffolder
 
 console.log("Setting up environment "+testEnv.name);
-if (api.start(testEnv)) {
-    api.display(scaffolderClientEndpoint);
+if (testEnv.start()) {
+    scaffolderClientEndpoint.display();
     console.log("Done.");
 } else {
     console.error("Fail.");

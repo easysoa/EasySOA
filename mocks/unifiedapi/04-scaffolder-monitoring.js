@@ -6,32 +6,33 @@
 // Contact : easysoa-dev@googlegroups.com
 
 /**
- * Unified API Scenario #3 
- * Description: Create mock and make it replace the scaffolder client's targeted service
+ * Unified API Scenario #4
+ * Description: Enable monitoring and use its records to build a mock
  * Context : Light
  * Author: Marwane Kalam-Alami
  */
 
 var api = require('./api.js');
 
-// Reproduce Scenario #01: Create Service Scaffolder Client for a given existing service endpoint
+// Reproduce Scenario #1: Create Service Scaffolder Client for a given existing service endpoint
 
-console.log("------------------------------------");
-console.log("[Scenario #1]");
 var imports = require('./01-scaffolder.js');
-testEnv = imports.testEnv;
-scaffolderClientEndpoint = imports.scaffolderClientEndpoint;
-serviceEndpointToScaffold = imports.serviceEndpointToScaffold;
-console.log("------------------------------------");
+var testEnv = imports.testEnv;
+var scaffolderClient = imports.scaffolderClient;
+var scaffolderClientEndpoint = imports.scaffolderClientEndpoint;
+var serviceEndpointToScaffold = imports.serviceEndpointToScaffold;
+
+console.log("-------------------------------------");
+console.log("[Scenario #4]");
+
 
 // Add monitoring to scaffolder
 
-var monitoring = api.createProxyFeature(api.PROXY_FEATURE_TYPE_MONITORING);
-scaffolderClientEndpoint.use(monitoring);
+scaffolderClientEndpoint.use(new api.MonitoringProxyFeature("mymonit"));
 
 // Retrieve and control scaffolder monitoring
 
-monitoring = scaffolderClientEndpoint.getProxyFeature(api.PROXY_FEATURE_TYPE_MONITORING);
+var monitoring = scaffolderClientEndpoint.getProxyFeature("mymonit");
 monitoring.save("myrun");
 monitoring.save("myrun2");
 monitoring.restore("myrun");
@@ -39,7 +40,15 @@ monitoring.reset();
 
 // Use monitoring session to build mock
 
-var mockImpl = api.createMockServiceImpl(serviceEndpointToScaffold);
-mockImpl.useRecords(monitoring.getRecords("myrun"));
+var serviceMock = new api.JavascriptImpl("MyMock", isMock=true, serviceImplToMock=serviceEndpointToScaffold.getImpl());
+serviceMock.useRecords(monitoring.getRecords("myrun"));
 
 console.log("Done.");
+
+
+//Exports for further scenarios
+
+exports.testEnv = testEnv;
+exports.scaffolderClient = scaffolderClient;
+exports.serviceEndpointToScaffold = serviceEndpointToScaffold;
+exports.scaffolderClientEndpoint = scaffolderClientEndpoint;

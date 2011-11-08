@@ -16,24 +16,26 @@ var api = require('./api.js');
 
 // Make the user choose a service
 
-var user = "Sophie";
+console.log("-------------------------------------");
+console.log("[Scenario #1]");
+
 var envFilter = [ "sandbox", "dev" ]; // "sandbox" is a sandboxed version of "staging" i.e. actual, existing services
 var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter); // user also navigates or filters
 
 // Create environment
 
-var testEnv = api.createEnvironment("Light", user, "PureAirFlowers"); // on default business architecture
+var testEnv = new api.LightEnvironment("PureAirFlowers", "Sophie"); // on default business architecture
 
-api.addExternalServiceEndpoint(testEnv, serviceEndpointToScaffold);
+testEnv.addExternalServiceEndpoint(serviceEndpointToScaffold);
 
-var scaffolderClient = api.createScaffolderClient(testEnv, serviceEndpointToScaffold);
-var scaffolderClientEndpoint = api.addServiceImpl(testEnv, scaffolderClient);
+var scaffolderClient = new api.ScaffolderClientImpl("MyClient", serviceEndpointToScaffold);
+var scaffolderClientEndpoint = testEnv.addServiceImpl(scaffolderClient);
 
 // Launch scaffolder
 
 console.log("Setting up environment "+testEnv.name);
-if (api.start(testEnv)) { // starts scaffolder
-    api.display(scaffolderClientEndpoint);
+if (testEnv.start()) { // starts scaffolder
+    scaffolderClientEndpoint.display();
     console.log("Done.");
 } else {
     console.error("Fail.");
@@ -41,7 +43,6 @@ if (api.start(testEnv)) { // starts scaffolder
 
 // Exports for further scenarios
 
-exports.user = user;
 exports.serviceEndpointToScaffold = serviceEndpointToScaffold;
 exports.testEnv = testEnv;
 exports.scaffolderClient = scaffolderClient;
