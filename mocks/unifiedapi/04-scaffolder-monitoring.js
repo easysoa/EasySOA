@@ -28,4 +28,13 @@ console.log("------------------------------------");
 
 var monitoring = api.createProxyFeature(api.PROXY_FEATURE_TYPE_MONITORING);
 scaffolderClientEndpoint.use(monitoring);
+
+// Retrieve and control scaffolder monitoring
+
+monitoring = scaffolderClientEndpoint.getProxyFeature(api.PROXY_FEATURE_TYPE_MONITORING);
+monitoring.save("myrun");
+monitoring.save("myrun2");
+monitoring.restore("myrun");
+monitoring.reset();
+
 console.log("Done.");

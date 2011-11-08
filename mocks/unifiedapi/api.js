@@ -47,7 +47,7 @@ OK scaffolder calling a mock
 OK scaffolder, then (from called service in this environment) create mock, by replace (or LATER fork)
 
 OK scaffolder, then in between add WS monitoring proxy
-then record exchanges (autostart, reset(), save(name), restore(name))
+OK then record exchanges (autostart, reset(), save(name), restore(name))
 then create mock using a named recorded session of exchanges (when a given request appears, return the response)
 
 then create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
@@ -68,7 +68,7 @@ SERVICE_IMPL_TYPE_SCAFFOLDER_CLIENT = "scaffolderclient";
 SERVICE_IMPL_TYPE_MOCK = "mock";
 SERVICE_IMPL_TYPE_EXTERNAL = "external";
 
-exports.PROXY_FEATURE_TYPE_MONITORING = "external";
+exports.PROXY_FEATURE_TYPE_MONITORING = "monitoring";
 
 // ===================== Default objects =====================
 
@@ -109,12 +109,10 @@ var ServiceEndpoint = {
         this.started = false;
     },
     use : function(proxyFeature) {
-        if (typeof proxyFeature === "function") {
-            this.proxyFeatures.push(proxyFeature);
-        }
-        else {
-            console.error(proxyFeature+" must be a function");
-        }
+        this.proxyFeatures[proxyFeature.name] = proxyFeature;
+    },
+    getProxyFeature: function(name) {
+        return this.proxyFeatures[name];
     }
 };
 
@@ -137,6 +135,11 @@ var Environment = {
     implServerUrl : undefined,
     serviceImpls : new Array(),
     externalServiceEndpoints : new Array()
+};
+
+var ProxyFeature = {
+    name : undefined,
+    process : undefined // function process(request, response)
 };
 
 // ===================== EasySOA UI =====================
@@ -247,8 +250,28 @@ exports.display = function(serviceEndpointToScaffold) {
 
 exports.createProxyFeature = function(type) {
   if (type = exports.PROXY_FEATURE_TYPE_MONITORING) {
-      return function(request, response) {
-        console.log("Monitoring triggered");  
-      };
+      return ProxyFeature.extend({
+          name: "monitoring",
+          activeRun: undefined,
+          process: function(request, response) {
+              console.log("Monitoring triggered");  
+          },
+          save: function(name) {
+              console.log("Saving current run as " + name);
+              activeRun = undefined;
+          },
+          restore: function(name) {
+              console.log("Restoring run " + name);
+              activeRun = name;
+          },
+          reset: function() {
+              if (activeRun != undefined) {
+                  console.log("Resetting run "+activeRun);
+              }
+          }
+      });
+  }
+  else {
+      return null;
   }
 };
