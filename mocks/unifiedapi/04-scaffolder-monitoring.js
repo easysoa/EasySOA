@@ -28,7 +28,7 @@ console.log("[Scenario #4]");
 
 // Add monitoring to scaffolder
 
-scaffolderClientEndpoint.use(new api.MonitoringProxyFeature("mymonit"));
+scaffolderClientEndpoint.useProxyFeature(new api.MonitoringProxyFeature("mymonit"));
 
 // Retrieve and control scaffolder monitoring
 
@@ -41,7 +41,7 @@ monitoring.reset();
 // Use monitoring session to build mock
 
 var serviceMock = new api.JavascriptImpl("MyMock", isMock=true, serviceImplToMock=serviceEndpointToScaffold.getImpl());
-serviceMock.useRecords(monitoring.getRecords("myrun"));
+serviceMock.feedMockWithRecords(monitoring.getRecords("myrun"));
 
 console.log("Done.");
 

@@ -39,7 +39,7 @@ testEnv.removeServiceImpl(scaffolderClient);
 // [ Templating UI ] ==proxy==> [ WS ]
 
 var uiMonitoring = new api.MonitoringProxyFeature("uimonit");
-uiServiceEndpoint.use(uiMonitoring);
+uiServiceEndpoint.useProxyFeature(uiMonitoring);
 
 // Implement JS service & template UI
 // [ Templating UI ] ==proxy==> [ JS ] =========> [ WS ]

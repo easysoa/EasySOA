@@ -40,7 +40,8 @@
 */
 
 /*
-Scenarios TODO
+
+> Scenario list
 
 OK scaffolder calling a service selected (in accessible environments)
 OK scaffolder calling a mock
@@ -51,9 +52,9 @@ OK then record exchanges (autostart, reset(), save(name), restore(name))
 OK then create mock using a named recorded session of exchanges (when a given request appears, return the response)
 
 OK then create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
-then add WS proxy + js impl between template UI and mock
-then record exchanges and let the user tailor a recording session that is a test suite
-then setup test suite to be called on each js impl changes
+OK then add WS proxy + js impl between template UI and mock
+OK then record exchanges and let the user tailor a recording session that is a test suite
+OK then setup test suite to be called on each js impl changes
 
 */
 
@@ -111,7 +112,7 @@ var JavascriptImpl = Class.create(AbstractServiceImpl, {
             console.log("Building mock using "+serviceImplToMock.name);
         }
     },
-    useRecords : function(records) {
+    feedMockWithRecords : function(records) {
         console.log("Making mock use some request/response records");
     }
 });
@@ -156,7 +157,7 @@ var ServiceEndpoint = Class.create({
         console.log(" * Stopping: " + this.impl.name);
         this.started = false;
     },
-    use : function(proxyFeature) { // TODO Use class as key instead of names
+    useProxyFeature : function(proxyFeature) { // TODO Use class as key instead of names
         this.proxyFeatures.set(proxyFeature.name, proxyFeature);
     },
     getProxyFeature: function(name) {
