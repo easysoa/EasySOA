@@ -31,12 +31,31 @@ var AbstractServer = Class.create({
     initialize : function(url, supportedImplTypes) {
         this.url = url;
         this.supportedImplTypes = supportedImplTypes;
+        this.serviceEndpoints = new Array();
+    },
+    supports : function(serviceImpl) {
+        return (this.supportedImplTypes.indexOf(serviceImpl.type) != -1);
     },
     install : function(serviceImpl, env) {
         // To implement
     },
-    supports : function(serviceImpl) {
-        return (this.supportedImplTypes.indexOf(serviceImpl.type) != -1);
+    remove : function(serviceImpl) {
+        var newServiceEndpoints = Array();
+        this.serviceEndpoints.each(function (endpoint) {
+            if (endpoint.impl != serviceImpl) {
+                newServiceEndpoints.push(endpoint);
+            }
+        });
+        this.serviceEndpoints = newServiceEndpoints;
+    },
+    start : function() {
+        var allIsStarted = true;
+        this.serviceEndpoints.each(function(endpoint) {
+            if (!endpoint.start()) {
+                allIsStarted = false;
+            }
+        });
+        return allIsStarted;
     }
 });
 
@@ -49,15 +68,22 @@ var LightServer = Class.create(AbstractServer, {
             ]);
     },
     install : function(serviceImpl, env) {
+        var newEndpoint = null;
+        
         switch (serviceImpl.type) {
         case consts.ServiceImplType.SCAFFOLDER_CLIENT:
-            return new endpoints.ScaffolderClientEndpoint(serviceImpl, env); break;
+            newEndpoint = new endpoints.ScaffolderClientEndpoint(serviceImpl, env); break;
         case consts.ServiceImplType.JAVA:
-            return new endpoints.JavaServiceEndpoint(serviceImpl, env); break;
+            newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env); break;
         default:
-            return new endpoints.ServiceEndpoint(serviceImpl,
+            newEndpoint = new endpoints.ServiceEndpoint(serviceImpl,
                     this.implServerUrl + toUrlPath(serviceImpl.name), env);
         }
+        
+        if (newEndpoint != null) {
+            this.serviceEndpoints.push(newEndpoint);
+        }
+        return newEndpoint;
     }
 });
 
@@ -66,7 +92,9 @@ var JavaServer = Class.create(AbstractServer, {
         $super(EASYSOA_JAVA_SERVER_URL, [ consts.ServiceImplType.JAVA ]);
     },
     install : function(serviceImpl, env) {
-        return new endpoints.JavaServiceEndpoint(serviceImpl, env);
+        var newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env);
+        this.serviceEndpoints.push(newEndpoint);
+        return newEndpoint;
     }
 });
 
@@ -75,14 +103,13 @@ var JavaServer = Class.create(AbstractServer, {
 var AbstractEnvironment = Class.create({
     initialize : function(envType, name, serverArray) {
         this.name = name;
-        this.serviceEndpoints = new Array();
         this.externalServiceEndpoints = new Array();
         this.servers = new $H();
         for (var i = 0; i < serverArray.length; i++) {
-          var server = serverArray[i];
-          for (var i = 0; i < server.supportedImplTypes.length; i++) {
-            this.servers.set(server.supportedImplTypes[i], server);
-          }
+            var server = serverArray[i];
+            for (var j = 0; j < server.supportedImplTypes.length; j++) {
+                this.servers.set(server.supportedImplTypes[j], server);
+            }
         }
     },
     addExternalServiceEndpoint : function(serviceEndpoint) {
@@ -91,36 +118,29 @@ var AbstractEnvironment = Class.create({
     },
     addServiceImpl : function(serviceImpl) {
         var newServiceEndpoint = null;
-        this.servers.each(function (entry) {
+        this.servers.each(function(entry) {
             var server = entry[1];
             if (server.supports(serviceImpl)) {
                 newServiceEndpoint = server.install(serviceImpl, this);
-            };
-        });
-        if (newServiceEndpoint != null) {
-            this.serviceEndpoints.push(newServiceEndpoint);
-        }
-        return newServiceEndpoint;
-    },
-    removeServiceImpl : function(serviceImplToRemove) {
-        var newServiceEndpoints = Array();
-        this.serviceEndpoints.each(function (endpoint) {
-            if (endpoint.impl != serviceImplToRemove) {
-                newServiceEndpoints.push(endpoint);
             }
         });
-        this.serviceEndpoints = newServiceEndpoints;
+        return newServiceEndpoint;
+    },
+    removeServiceImpl : function(serviceImpl) {
+        this.servers.each(function (entry) {
+            entry[1].remove(serviceImpl); 
+        });
     },
     start : function() {
-        console.log("Starting environment "+this.name+"...");
+        console.log("Starting environment " + this.name + "...");
         var allIsStarted = true;
         this.externalServiceEndpoints.each(function(endpoint) {
             if (!endpoint.checkStarted()) {
                 allIsStarted = false;
             }
         });
-        this.serviceEndpoints.each(function(endpoint) {
-            if (!endpoint.start()) {
+        this.servers.each(function(entry) {
+            if (!entry[1].start()) {
                 allIsStarted = false;
             }
         });
@@ -147,8 +167,8 @@ var ProductionEnvironment = Class.create(AbstractEnvironment, {
         if (serviceEndpoint.getImpl().isProductionReady) {
             $super(serviceEndpoint);
         }
-        else {
-            console.log("Service endpoint "+serviceEndpoint.getImpl().name+" is not production ready!");
+         else {
+            console.log("Service endpoint " + serviceEndpoint.getImpl().name + " is not production ready!");
         }
     },
     addServiceImpl : function($super, serviceImpl) {

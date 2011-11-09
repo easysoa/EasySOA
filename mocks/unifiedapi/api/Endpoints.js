@@ -71,7 +71,7 @@ var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
 
 var JavaServiceEndpoint = Class.create(ServiceEndpoint, {
     initialize : function($super, impl, env) {
-        $super(impl, EASYSOA_JAVA_SERVER_URL+impl.name, env);
+        $super(impl, EASYSOA_JAVA_SERVER_URL + impl.name, env);
     }
 });
 

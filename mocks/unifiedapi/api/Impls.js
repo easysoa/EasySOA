@@ -8,12 +8,19 @@
 Object.extend(global, require('prototype'));
 var consts = require('./Consts');
 
+/**
+ * Available options:
+ * options = {
+ *      isMock            : true/false (default = false),
+ *      isProductionReady : true/false (default = false)
+ * }
+ */
 
 var AbstractServiceImpl = Class.create({
     initialize : function(name, type, options /*=undefined*/) {
         this.name = name;
         this.type = type;
-        
+
         this.isMock = false;
         this.isProductionReady = false;
         if (options != undefined) {
