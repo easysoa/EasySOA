@@ -9,11 +9,6 @@ Object.extend(global, require('prototype'));
 var consts = require('./Consts');
 var endpoints = require('./Endpoints');
 
-EASYSOA_HOST = "http://localhost";
-EASYSOA_LIGHT_SERVER_URL = EASYSOA_HOST + ":9011/";
-EASYSOA_JAVA_SERVER_URL = EASYSOA_HOST + ":9011/";
-EASYSOA_SCAFFOLDER_UI_URL = EASYSOA_HOST + ":8090/";
-
 var EnvironmentType = {
   DEVELOPMENT : "development",
   STAGING : "staging",
@@ -32,9 +27,7 @@ var AbstractServer = Class.create({
         this.url = url;
         this.supportedImplTypes = supportedImplTypes;
         this.serviceEndpoints = new Array();
-    },
-    supports : function(serviceImpl) {
-        return (this.supportedImplTypes.indexOf(serviceImpl.type) != -1);
+        this.isStarted = false;
     },
     install : function(serviceImpl, env) {
         // To implement
@@ -49,19 +42,36 @@ var AbstractServer = Class.create({
         this.serviceEndpoints = newServiceEndpoints;
     },
     start : function() {
-        var allIsStarted = true;
-        this.serviceEndpoints.each(function(endpoint) {
-            if (!endpoint.start()) {
-                allIsStarted = false;
+        if (!this.isStarted) {
+            var allIsStarted = true;
+            this.serviceEndpoints.each(function(endpoint) {
+                if (!endpoint.start()) {
+                    allIsStarted = false;
+                }
+            });
+            if (allIsStarted) {
+                this.isStarted = true;
             }
+            else {
+                this.stop();
+            }
+            return allIsStarted;
+        }
+        else {
+            return true;
+        }
+    },
+    stop : function() {
+        this.serviceEndpoints.each(function(endpoint) {
+            endpoint.stop();
+            this.isStarted = false;
         });
-        return allIsStarted;
     }
 });
 
 var LightServer = Class.create(AbstractServer, {
     initialize : function($super) {
-        $super(EASYSOA_LIGHT_SERVER_URL, [
+        $super(consts.ServerURL.LIGHT, [
                 consts.ServiceImplType.SCAFFOLDER_CLIENT,
                 consts.ServiceImplType.TEMPLATING_UI,
                 consts.ServiceImplType.JAVASCRIPT
@@ -89,7 +99,7 @@ var LightServer = Class.create(AbstractServer, {
 
 var JavaServer = Class.create(AbstractServer, {
     initialize : function($super) {
-        $super(EASYSOA_JAVA_SERVER_URL, [ consts.ServiceImplType.JAVA ]);
+        $super(consts.ServerURL.JAVA, [ consts.ServiceImplType.JAVA ]);
     },
     install : function(serviceImpl, env) {
         var newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env);
@@ -117,14 +127,8 @@ var AbstractEnvironment = Class.create({
         this.externalServiceEndpoints.push(serviceEndpoint);
     },
     addServiceImpl : function(serviceImpl) {
-        var newServiceEndpoint = null;
-        this.servers.each(function(entry) {
-            var server = entry[1];
-            if (server.supports(serviceImpl)) {
-                newServiceEndpoint = server.install(serviceImpl, this);
-            }
-        });
-        return newServiceEndpoint;
+        var server = this.servers.get(serviceImpl.type);
+        return server.install(serviceImpl, this);
     },
     removeServiceImpl : function(serviceImpl) {
         this.servers.each(function (entry) {

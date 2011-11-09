@@ -6,6 +6,7 @@
 // Contact : easysoa-dev@googlegroups.com
 
 Object.extend(global, require('prototype'));
+var consts = require('./Consts');
 
 
 var ServiceEndpoint = Class.create({
@@ -59,7 +60,7 @@ var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
     },
     setTargetEndpoint : function(targetEndpoint) {
         this.impl.targetEndpointUrl = targetEndpoint.url;
-        this.url = this.env.implServerUrl
+        this.url = this.env.implServerUrl // FIXME
                 + toUrlPath(targetEndpoint.getName())
                 + "_Scaffolder_Client?endpoint=" + targetEndpoint.url;
     },
@@ -71,7 +72,7 @@ var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
 
 var JavaServiceEndpoint = Class.create(ServiceEndpoint, {
     initialize : function($super, impl, env) {
-        $super(impl, EASYSOA_JAVA_SERVER_URL + impl.name, env);
+        $super(impl, consts.ServerURL.JAVA + impl.name, env);
     }
 });
 

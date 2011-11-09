@@ -21,6 +21,7 @@ var AbstractServiceImpl = Class.create({
         this.name = name;
         this.type = type;
 
+        this.references = new Array();
         this.isMock = false;
         this.isProductionReady = false;
         if (options != undefined) {
@@ -35,6 +36,9 @@ var AbstractServiceImpl = Class.create({
         if (this.type != consts.ServiceImplType.EXTERNAL) {
             console.log("Making user edit service impl. "+this.name);
         }
+    },
+    addReference : function(serviceImpl) {
+        this.references.push(serviceImpl.name);
     }
 });
 

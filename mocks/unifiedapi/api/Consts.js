@@ -13,6 +13,17 @@ var ServiceImplType = {
     EXTERNAL : "external"
 };
 
+EASYSOA_HOST = "http://localhost";
+
+var ServerURL = {
+    LIGHT : EASYSOA_HOST + ":9011/",
+    JAVA : EASYSOA_HOST + ":9012/",
+    SCAFFOLDER : EASYSOA_HOST + ":8090/",
+    TUNNELLING : EASYSOA_HOST + ":8091/"
+};
+
+
 module.exports = {
-  ServiceImplType : ServiceImplType
+  ServiceImplType   : ServiceImplType,
+  ServerURL         : ServerURL
 };

@@ -24,6 +24,7 @@ testEnv.addExternalServiceEndpoint(extEndpoint);
 // Create own service
 
 var ourImpl = new api.JavaImpl("ourService");
+ourImpl.addReference(extImpl);
 var ourEndpoint = testEnv.addServiceImpl(ourImpl);
 
 testEnv.start();
