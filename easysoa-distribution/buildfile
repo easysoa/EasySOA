@@ -108,6 +108,12 @@ define 'easysoa', :base_dir => '../' do
         cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], NUXEO_PATH
         
       end
+      
+      task :nuxeoreset do
+        NUXEO_DATA_PATH = _(NUXEO_PATH + '/nxserver/data');
+        puts "Cleaning folder: " + NUXEO_DATA_PATH
+        rm_rf NUXEO_DATA_PATH
+      end
     
   end
   
@@ -164,6 +170,9 @@ task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn']
                  
 desc "Deploys registry components"
 task :nx_dist => [EASYSOA_REGISTRY+':dist']
+
+desc "Deploys registry components"
+task :nx_reset => [EASYSOA_REGISTRY+':nuxeoreset']
 
 desc "Cleans all registry components"
 task :nx_clean => [EASYSOA_REGISTRY+':clean']
