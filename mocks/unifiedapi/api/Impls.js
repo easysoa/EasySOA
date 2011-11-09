@@ -7,6 +7,7 @@
 
 Object.extend(global, require('prototype'));
 var consts = require('./Consts');
+var proxies = require('./Proxies');
 
 /**
  * Available options:
@@ -21,12 +22,13 @@ var AbstractServiceImpl = Class.create({
         this.name = name;
         this.type = type;
 
-        this.references = new Array();
+        this.tunnelingNodes = new $H();
         this.isMock = false;
         this.isProductionReady = false;
         if (options != undefined) {
             this.isMock = (options.isMock == undefined) ? this.isMock : options.isMock;
-            this.isProductionReady = (options.isProductionReady == undefined) ? this.isMock : options.isProductionReady;
+            this.isProductionReady = (options.isProductionReady == undefined) ? 
+                    this.isMock : options.isProductionReady;
         }
     },
     getName : function() {
@@ -34,11 +36,20 @@ var AbstractServiceImpl = Class.create({
     },
     edit : function() {
         if (this.type != consts.ServiceImplType.EXTERNAL) {
-            console.log("Making user edit service impl. "+this.name);
+            var showReferences = this.tunnelingNodes.size() > 0;
+            console.log("Making user edit service impl. " + this.name
+                    + ((showReferences) ? " with available dependencies:" : ""));
+            if (showReferences) {
+                this.tunnelingNodes.each(function(entry) {
+                   console.log(" * "+entry[0]+": "+entry[1].url); 
+                });
+            }
         }
     },
-    addReference : function(serviceImpl) {
-        this.references.push(serviceImpl.name);
+    addReference : function(toServiceImpl) {
+        var tunnelingNode = new proxies.TunnelingNode(this, toServiceImpl);
+        this.tunnelingNodes.set(toServiceImpl.name, tunnelingNode);
+        return tunnelingNode;
     }
 });
 

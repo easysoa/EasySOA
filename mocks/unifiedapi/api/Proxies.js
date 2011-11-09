@@ -6,6 +6,26 @@
 // Contact : easysoa-dev@googlegroups.com
 
 Object.extend(global, require('prototype'));
+var consts = require('./Consts');
+
+
+//===================== Tunneling node =====================
+
+var TunnelingNode = Class.create({
+    initialize : function(fromServiceImpl, toServiceImpl) {
+        this.fromServiceImpl = fromServiceImpl;
+        this.toServiceImpl = toServiceImpl;
+        
+        this.url = consts.ServerURL.TUNNELING + fromServiceImpl.name + "/to/" + toServiceImpl.name;
+        this.proxyFeatures = new $H();
+    },
+    useProxyFeature : function(proxyFeature) {
+        this.proxyFeatures.set(proxyFeature.getClass(), proxyFeature);
+    },
+    getProxyFeature: function(clazz) {
+        return this.proxyFeatures.get(clazz);
+    }
+});
 
 
 //===================== Proxy features =====================
@@ -57,8 +77,16 @@ var MonitoringProxyFeature = Class.create(AbstractProxyFeature, {
     }
 });
 
+var ChangeDetectionFeature = Class.create(AbstractProxyFeature, {
+    initialize : function($super, trustedRecords, onChangeCallback) {
+        $super(ChangeDetectionFeature);
+        this.trustedRecords = trustedRecords;
+        this.onChangeCallback = onChangeCallback;
+    }
+});
 
 module.exports = {
-  AbstractProxyFeature   :  AbstractProxyFeature,
-  MonitoringProxyFeature :  MonitoringProxyFeature
+  TunnelingNode          : TunnelingNode,
+  MonitoringProxyFeature :  MonitoringProxyFeature,
+  ChangeDetectionFeature :  ChangeDetectionFeature
 };

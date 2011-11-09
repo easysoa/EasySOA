@@ -42,7 +42,6 @@ var ServiceEndpoint = Class.create({
         this.proxyFeatures.set(proxyFeature.getClass(), proxyFeature);
     },
     getProxyFeature: function(clazz) {
-       // console.log(clazz);
         return this.proxyFeatures.get(clazz);
     },
     registerOnUpdateListener: function(runnable) {

@@ -19,7 +19,7 @@ var ServerURL = {
     LIGHT : EASYSOA_HOST + ":9011/",
     JAVA : EASYSOA_HOST + ":9012/",
     SCAFFOLDER : EASYSOA_HOST + ":8090/",
-    TUNNELLING : EASYSOA_HOST + ":8091/"
+    TUNNELING : EASYSOA_HOST + ":8091/tunnelingDev/"
 };
 
 

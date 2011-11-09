@@ -7,7 +7,7 @@
 
 /**
  * Unified API Scenario #8
- * Description: Detect API changes
+ * Description: Detect API changes + Service references
  * Context : Integration
  * Author: Marwane Kalam-Alami
  */
@@ -21,11 +21,27 @@ var extImpl = new api.ExternalImpl("uberService");
 var extEndpoint = new api.ExternalEndpoint(extImpl, "http://www.othercompany.org/uberService");
 testEnv.addExternalServiceEndpoint(extEndpoint);
 
-// Create own service
+// Create own service with reference to an existing one
 
 var ourImpl = new api.JavaImpl("ourService");
-ourImpl.addReference(extImpl);
+var tunnelingNode = ourImpl.addReference(extImpl);
+ourImpl.edit();
 var ourEndpoint = testEnv.addServiceImpl(ourImpl);
+
+// Record a few exchanges
+
+var monitoring = new api.MonitoringProxyFeature();
+ourEndpoint.useProxyFeature(monitoring);
+monitoring.save("coveringExchanges"); // Assuming exchanges have been run since previous line
+var coveringExchanges = monitoring.getRecords("coveringExchanges");
+
+// Enable service change detection
+
+tunnelingNode.useProxyFeature(new api.ChangeDetectionFeature(
+        coveringExchanges,
+        function(changedEndpoint, message) {
+           console.log("A service has changed!"); 
+        }));
 
 testEnv.start();
 

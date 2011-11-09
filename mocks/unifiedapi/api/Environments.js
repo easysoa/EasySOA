@@ -10,9 +10,9 @@ var consts = require('./Consts');
 var endpoints = require('./Endpoints');
 
 var EnvironmentType = {
-  DEVELOPMENT : "development",
-  STAGING : "staging",
-  PRODUCTION : "production"
+  DEVELOPMENT   : "development",
+  STAGING       : "staging",
+  PRODUCTION    : "production"
 };
 
 toUrlPath = function(name) {
