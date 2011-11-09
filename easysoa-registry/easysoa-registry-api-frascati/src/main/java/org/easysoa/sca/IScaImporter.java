@@ -61,7 +61,7 @@ public interface IScaImporter {
 	 * Returns the Nuxeo document manager
 	 * @return
 	 */
-    // To delete : nuxeo dependent
+    // TODO Not really a good solution, do better
 	//public CoreSession getDocumentManager();
 	public Object getDocumentManager();
 
@@ -83,13 +83,6 @@ public interface IScaImporter {
      */
     public String getServiceStackUrl();
     
-    /**
-     * 
-     * @return
-     */
-    // To delete : nuxeo dependent    
-    //public DocumentModel getParentAppliImplModel();
-
     /**
      * 
      * @return

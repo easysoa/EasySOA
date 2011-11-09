@@ -33,7 +33,6 @@ import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.DiscoveryService;
 import org.easysoa.services.DocumentService;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.runtime.api.Framework;
@@ -100,7 +99,7 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
     }
 
     @Override
-    public void postCheck() throws ClientException {
+    public void postCheck() throws Exception {
         
         DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
         // find referenced service

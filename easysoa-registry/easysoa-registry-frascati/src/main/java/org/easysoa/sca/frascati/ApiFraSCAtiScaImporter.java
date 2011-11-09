@@ -1,7 +1,6 @@
 package org.easysoa.sca.frascati;
 
 import java.io.File;
-
 import org.easysoa.sca.visitors.ApiReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ApiServiceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
@@ -22,7 +21,6 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 		super(scaComposite);
 	}
 
-
     @Override	
     public ScaVisitor createServiceBindingVisitor() {
         // Visitor using Notification API
@@ -40,13 +38,11 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
     }
     
     public void visitComposite(Composite composite){
-    	// do not call the supertype method !
-    	//super.visitComposite(composite);
+    	super.visitComposite(composite);
     }
 
 	@Override
 	public String getModelProperty(String arg0, String arg1) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -54,7 +50,6 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	public Object getDocumentManager() {
 		return null;
 	}
-
 
 	@Override
 	public void setParentAppliImpl(Object appliImplModel) {

@@ -20,6 +20,7 @@
 
 package org.easysoa.sca.extension;
 
+import java.io.File;
 import java.io.InvalidClassException;
 import java.util.LinkedList;
 import java.util.List;
@@ -95,11 +96,13 @@ public class ScaImporterComponent extends DefaultComponent {
     public void checkAndSetScaImporter(ScaImporterDescriptor scaImporterDescriptor, ComponentInstance contributor) throws Exception {
 		if (scaImporterDescriptor.enabled) {
 			Class<?> scaImporterClass = Class.forName(scaImporterDescriptor.implementation.trim());
+			log.debug("scaImporterClass = " + scaImporterClass);
 			if (IScaImporter.class.isAssignableFrom(scaImporterClass)) {
 				// trying to create one in order to check that the impl has the required constructor 
 				
-				// TODO Change this instanciation method ... Not the same constructor for all Sca Importers   
-				scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class }).newInstance(new Object[] { null, null });
+				// TODO Change this instantiation method ... Not the same constructor for all Sca Importers   
+				//scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class }).newInstance(new Object[] { null, null });
+				scaImporterClass.getConstructor(new Class[]{ CoreSession.class, File.class }).newInstance(new Object[] { null, null });
 				
 				this.scaImporterClasses.add(scaImporterClass);
 			} else {
@@ -116,13 +119,14 @@ public class ScaImporterComponent extends DefaultComponent {
      * @param compositeFile
      * @return
      */
-    public IScaImporter createScaImporter(CoreSession documentManager, Blob compositeFile) {
+    //public IScaImporter createScaImporter(CoreSession documentManager, Blob compositeFile) {
+    public IScaImporter createScaImporter(CoreSession documentManager, File compositeFile) {
 		try {
 			log.debug("scaImporterClasses.size() = " + scaImporterClasses.size());
 			Class<?> scaImporterClass = this.scaImporterClasses.get(scaImporterClasses.size() - 1);
 			
 			// TODO Change this instanciation method ... Not the same constructor for all Sca Importers			
-			return (IScaImporter) scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class })
+			return (IScaImporter) scaImporterClass.getConstructor(new Class[]{ CoreSession.class, File.class })
 					.newInstance(new Object[] { documentManager, compositeFile });
 			
 		} catch (Exception ex) {

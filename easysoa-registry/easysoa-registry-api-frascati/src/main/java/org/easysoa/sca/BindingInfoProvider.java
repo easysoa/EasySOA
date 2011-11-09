@@ -1,7 +1,5 @@
 package org.easysoa.sca;
 
-//import javax.xml.namespace.QName;
-
 /**
  * Specific to a binding implementation ex. WS, REST...
  * @author jguillemotte, mdutoo

@@ -56,7 +56,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.ow2.frascati.tinfi.TinfiRuntimeException;
-
 import com.google.inject.Inject;
 
 /**

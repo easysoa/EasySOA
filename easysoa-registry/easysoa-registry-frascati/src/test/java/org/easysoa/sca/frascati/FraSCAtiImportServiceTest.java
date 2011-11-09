@@ -23,14 +23,8 @@ package org.easysoa.sca.frascati;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
-
-import javax.xml.soap.SOAPException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
@@ -44,18 +38,13 @@ import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
-import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.services.resource.ResourceService;
@@ -63,9 +52,7 @@ import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.LocalDeploy;
-
 import com.google.inject.Inject;
-
 
 /**
  * Tests SCA import with FraSCAti
@@ -85,7 +72,7 @@ import com.google.inject.Inject;
     //"org.easysoa.registry.core",
     "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
     "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-    "org.easysoa.registry.core:OSGI-INF/NotificationServiceComponent.xml", // idem
+    "org.easysoa.registry.core:OSGI-INF/DiscoveryServiceComponent.xml", // idem
     "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
     "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
     "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
@@ -137,7 +124,7 @@ public class FraSCAtiImportServiceTest {
     }
     
     @Test
-    @Ignore    
+    //@Ignore    
     public void importSCAZipSimple() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -146,7 +133,6 @@ public class FraSCAtiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-    	//FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, scaFile); // TODO put FileBlob back in orig test
 		FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile); // TODO put FileBlob back in orig test
     	importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
@@ -196,7 +182,7 @@ public class FraSCAtiImportServiceTest {
     /** The following FraSCAti parsing-based import would fail without custom
      * ProcessingContext.loadClass() because of unknown class in zip */
     @Test
-    @Ignore
+    //@Ignore
     public void importSCAZip() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -205,7 +191,6 @@ public class FraSCAtiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-    	//FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, scaFile); // TODO put FileBlob back in orig test
     	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
@@ -229,7 +214,7 @@ public class FraSCAtiImportServiceTest {
     }
     
     @Test
-    @Ignore
+    //@Ignore
     public void testSCAComposite() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -237,8 +222,6 @@ public class FraSCAtiImportServiceTest {
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-
-    	//FraSCAtiScaImporterBase importer = new FraSCAtiScaImporterBase(session, scaFile);
     	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
@@ -275,10 +258,7 @@ public class FraSCAtiImportServiceTest {
     	File scaFile = new File(scaFilePath);    	
    	
     	// Getting the importer
-    	Blob blob = new InputStreamBlob(new FileInputStream(scaFile));
-    	// Filename needs to be registered manually ... 
-    	blob.setFilename(scaFilePath);
-    	IScaImporter importer = scaImporterComponent.createScaImporter(session, blob);
+    	IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
     	// If importer is null, we have a problem
     	assertNotNull(importer);
     	
@@ -328,17 +308,14 @@ public class FraSCAtiImportServiceTest {
     }    
     
     @Test
-    @Ignore
+    //@Ignore
     public void testFrascatiClassNotFoundException() throws Exception {
     	// With this sample, frascati throws a ClassNotFoundException because required classes are in an other jar
     	String scaFilePath = "src/test/resources/" + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
     	File scaFile = new File(scaFilePath);    	
    	
     	// Getting the importer
-    	Blob blob = new InputStreamBlob(new FileInputStream(scaFile));
-    	// Filename needs to be registered manually ... 
-    	blob.setFilename(scaFilePath);
-    	IScaImporter importer = scaImporterComponent.createScaImporter(session, blob);
+    	IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
     	// If importer is null, we have a problem
     	assertNotNull(importer);
 

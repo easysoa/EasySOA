@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
@@ -38,7 +37,6 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
 import org.ow2.frascati.util.FrascatiException;
-
 import com.google.inject.Inject;
 
 
@@ -49,8 +47,7 @@ import com.google.inject.Inject;
  */
 
 @RunWith(FeaturesRunner.class)
-public class FraSCAtiServiceReadScaTest
-{
+public class FraSCAtiServiceReadScaTest {
 
     static final Log log = LogFactory.getLog(FraSCAtiServiceReadScaTest.class);
     
@@ -84,8 +81,7 @@ public class FraSCAtiServiceReadScaTest
 
 
     /** Rather here than in FraSCAtiService because only public for test purpose */
-    public Composite readComposite(URL compositeUrl, ProcessingContext processingContext) throws Exception
-    {
+    public Composite readComposite(URL compositeUrl, ProcessingContext processingContext) throws Exception {
   	  if (processingContext.getRootComposite() != null) {
   		  throw new Exception("Unlawful reuse of processingContext : already has a root composite "
   				  + processingContext.getRootComposite().getName());

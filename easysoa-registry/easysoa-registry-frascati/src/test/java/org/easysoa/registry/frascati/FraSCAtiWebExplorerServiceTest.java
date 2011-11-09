@@ -56,8 +56,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.ow2.frascati.util.FrascatiException;
-
 import com.google.inject.Inject;
 
 /**

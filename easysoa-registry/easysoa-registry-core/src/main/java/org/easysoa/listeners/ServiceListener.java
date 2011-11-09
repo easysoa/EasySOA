@@ -38,6 +38,7 @@ import org.easysoa.HttpFile;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.properties.PropertyNormalizer;
+import org.easysoa.services.ApiUrlProcessor;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.Blob;
@@ -113,7 +114,7 @@ public class ServiceListener implements EventListener {
                         // Save WSDLblob
                         DiscoveryService notifService = Framework.getService(DiscoveryService.class);
                         doc.setProperty("file", "content", blob);
-                        doc.setProperty("file", "filename", notifService.computeServiceTitle(fileUrl)+".wsdl");
+                        doc.setProperty("file", "filename", ApiUrlProcessor.computeServiceTitle(fileUrl)+".wsdl");
                         
                         // Extract file to system for analysis
                         File tmpFile = File.createTempFile(doc.getId(), null);

@@ -27,7 +27,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,22 +34,14 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.test.EasySOACoreTestFeature;
-import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.test.annotations.BackendType;
-import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
-
 import com.google.inject.Inject;
 
 /**
@@ -59,10 +50,7 @@ import com.google.inject.Inject;
  * @author mkalam-alami, mdutoo
  *
  */
-@RunWith(FeaturesRunner.class)
-@Features(EasySOACoreTestFeature.class)
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class NotificationServiceTreeTest {
+public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
 
     static final Log log = LogFactory.getLog(NotificationServiceTreeTest.class);
     
@@ -192,7 +180,6 @@ public class NotificationServiceTreeTest {
     	
     	
     	//// Default behaviour: a new application is created with given URLs
-
     	String newApiUrl = "http://www.i-dont-exist-too.com/api";
     	
     	// Create service

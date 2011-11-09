@@ -34,7 +34,6 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.properties.PropertyNormalizer;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -44,13 +43,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 
 public class DiscoveryService extends DefaultComponent {
 
-    public static final ComponentName NAME = new ComponentName(
-            DiscoveryService.class.getName());
-
-    private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
-    private static final String ERROR_API_URL_APPLIIMPL = ERROR_API_URL_BASE + "bad appliimpl URL";
-    private static final String ERROR_API_URL_API = ERROR_API_URL_BASE + "bad api URL";
-    private static final String ERROR_API_URL_SERVICE = ERROR_API_URL_BASE + "bad service URL";
+    public static final ComponentName NAME = new ComponentName(DiscoveryService.class.getName());
     
     private static final Map<String, String> propertyFilter = new HashMap<String, String>();
 
@@ -193,7 +186,7 @@ public class DiscoveryService extends DefaultComponent {
      */
     public final DocumentModel notifyService(CoreSession session,
             Map<String, String> properties) throws ClientException, MalformedURLException {
-        
+   	
         // Check mandatory fields
         String url = properties.get(Service.PROP_URL);
         if (url != null && !url.isEmpty()) {
@@ -208,10 +201,10 @@ public class DiscoveryService extends DefaultComponent {
             }
             
             if (parentUrl == null || parentUrl.isEmpty()) {
-                parentUrl = computeApiUrl(url);
+                parentUrl = ApiUrlProcessor.computeApiUrl(url);
             }
             if (title == null || title.isEmpty()) {
-                title = computeServiceTitle(url);
+                title = ApiUrlProcessor.computeServiceTitle(url);
                 properties.put(Service.PROP_TITLE, title);
             }
         
@@ -220,10 +213,10 @@ public class DiscoveryService extends DefaultComponent {
             DocumentModel apiModel = docService.findServiceApi(session, parentUrl);
             if (apiModel == null) {
                 // Guess Appli. Impl.
-                String appliImplUrl = computeAppliImplUrl(parentUrl);
+                String appliImplUrl = ApiUrlProcessor.computeAppliImplUrl(parentUrl);
                 DocumentModel appliImplModel = docService.findAppliImpl(session, appliImplUrl.toString());
                 if (appliImplModel == null) {
-                    appliImplModel = docService.findAppliImpl(session, computeAppliImplUrl(appliImplUrl));
+                    appliImplModel = docService.findAppliImpl(session, ApiUrlProcessor.computeAppliImplUrl(appliImplUrl));
                 }
                 // Create API
                 apiModel = docService.createServiceAPI(session, 
@@ -301,69 +294,6 @@ public class DiscoveryService extends DefaultComponent {
         else {
             throw new ClientException("Parent application URL or architecture path not informed");
         }
-    }
-    
-    /**
-     * Guesses an API url given the service URL and others.
-     * Normalizes URLs first.
-     * @param appliImplUrl has to be empty (means no default root url for this appliimpl)
-     * or a well-formed URL.
-     * @param apiUrlPath
-     * @param serviceUrlPath
-     * @return
-     * @throws MalformedURLException 
-     */
-    public final String computeApiUrl(String appliImplUrl, String apiUrlPath,
-            String serviceUrlPath) throws MalformedURLException {
-        
-        apiUrlPath = PropertyNormalizer.normalizeUrl(apiUrlPath, ERROR_API_URL_API);
-        serviceUrlPath = PropertyNormalizer.normalizeUrl(serviceUrlPath, ERROR_API_URL_SERVICE);
-        
-        int apiPathEndIndex = -1;
-        
-        try {
-            if (appliImplUrl.length() != 0) {
-                // appliImplUrl has to be well-formed
-                appliImplUrl = PropertyNormalizer.normalizeUrl(appliImplUrl, ERROR_API_URL_APPLIIMPL);
-                String defaultApiUrl = PropertyNormalizer.concatUrlPath(appliImplUrl, apiUrlPath);
-                if (serviceUrlPath.contains(defaultApiUrl)) {
-                    apiPathEndIndex = serviceUrlPath.indexOf(defaultApiUrl) + defaultApiUrl.length();
-                } // else default appliImplUrl does not apply
-            } // else empty appliImplUrl means no default appliImplUrl for apis
-        }
-        catch (Exception e) {
-            log.warn("Failed to compute API url from appli URL & API URL path, using default ("+e.getMessage()+")");
-        }
-        
-        if (apiPathEndIndex == -1) {
-            return computeApiUrl(serviceUrlPath);
-        }
-        
-        return PropertyNormalizer.normalizeUrl(
-                serviceUrlPath.substring(0, apiPathEndIndex), ERROR_API_URL_API); // TODO http://localhost:9000/hrestSoapProxyWSIntern
-    }
-    
-    public String computeApiUrl(String serviceUrlPath) throws MalformedURLException {
-        return PropertyNormalizer.normalizeUrl(
-                serviceUrlPath.substring(0, serviceUrlPath.lastIndexOf('/')),
-                ERROR_API_URL_API); 
-    }
-    
-    public String computeAppliImplUrl(String apiUrlPath) throws MalformedURLException {
-        if (apiUrlPath.replace("://", "").lastIndexOf('/') != -1) {
-            return PropertyNormalizer.normalizeUrl(
-                    apiUrlPath.substring(0, apiUrlPath.lastIndexOf('/')),
-                    ERROR_API_URL_APPLIIMPL); 
-        }
-        else {
-            URL url = new URL(apiUrlPath);
-            return PropertyNormalizer.normalizeUrl(url.getProtocol()+"://"+url.getHost());
-        }
-    }
-
-    public String computeServiceTitle(String serviceUrlPath) throws MalformedURLException {
-        String lastUrlPart = serviceUrlPath.substring(serviceUrlPath.lastIndexOf('/')+1);
-        return lastUrlPart.replaceAll("(wsdl|WSDL|[^\\w.-])", "");
     }
     
     private String getNewCallcount(DocumentModel serviceModel, String newCalls) {

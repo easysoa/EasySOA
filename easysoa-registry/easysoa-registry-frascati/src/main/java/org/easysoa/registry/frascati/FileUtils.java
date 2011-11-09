@@ -134,6 +134,8 @@ public class FileUtils {
 	 */
 	public static final void copyTo(File source, File target) throws Exception {
 		// Input and outputs channels
+		log.debug("source file = " + source);
+		log.debug("target file = " + target);
 		FileChannel in = null;
 		FileChannel out = null;
 		try {

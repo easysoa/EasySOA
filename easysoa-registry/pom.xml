@@ -40,6 +40,8 @@
 		<module>easysoa-registry-dashboard</module>
 		<module>easysoa-registry-dependencies</module>
 		<!-- Temporary disabling FraSCAti projects (see WIP on Git branch 'nuxeo-frascati') -->
+		<!--<module>easysoa-registry-api-frascati</module>-->
+		<module>easysoa-registry-api-frascati</module>
 		<module>easysoa-registry-frascati</module>
 		<!--<module>easysoa-registry-rest-frascati</module>-->
 	</modules>

@@ -52,7 +52,7 @@
 			<artifactId>core</artifactId>
 			<!-- version>3.3.0-v_771</version --><!-- maven.org --><!--$NO-MVN-MAN-VER$-->
 			<!-- version>3.1.1-NXP-4284</version --><!-- nuxeo-->
-			<version>3.3.0.771</version><!-- openarchitectureware.org -->
+			<version>3.3.0.771</version><!--$NO-MVN-MAN-VER$--><!-- openarchitectureware.org -->
 			<!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->
 			<scope>compile</scope>
 		</dependency>

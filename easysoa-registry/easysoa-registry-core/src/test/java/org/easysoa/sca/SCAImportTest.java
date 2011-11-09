@@ -23,31 +23,22 @@ package org.easysoa.sca;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.MalformedURLException;
-
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.xml.XMLScaImporter;
+import org.easysoa.services.CoreServiceTestHelperBase;
 import org.easysoa.services.DocumentService;
-import org.easysoa.test.EasySOACoreTestFeature;
-import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
-import org.nuxeo.ecm.core.test.annotations.BackendType;
-import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.services.resource.ResourceService;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 import com.google.inject.Inject;
 
@@ -58,10 +49,7 @@ import com.google.inject.Inject;
  * @author mdutoo
  *
  */
-@RunWith(FeaturesRunner.class)
-@Features(EasySOACoreTestFeature.class)
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class SCAImportTest {
+public class SCAImportTest extends CoreServiceTestHelperBase {
 
     @Inject CoreSession session;
 
@@ -97,7 +85,6 @@ public class SCAImportTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-		//XMLScaImporter importer = new XMLScaImporter(session, new InputStreamBlob(new FileInputStream(scaFile)));
     	XMLScaImporter importer = new XMLScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
@@ -111,7 +98,6 @@ public class SCAImportTest {
 		new RepositoryLogger(session, "Repository state after import").logAllRepository();
 		
 		// services :
-		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
 		assertEquals(1, resDocList.size());
@@ -125,7 +111,6 @@ public class SCAImportTest {
 		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
 
 		// references :
-		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				ServiceReference.DOCTYPE + "' AND "
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
@@ -139,7 +124,6 @@ public class SCAImportTest {
 		assertEquals(1, resDocList.size());
 		
 		// api :
-		
 		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
 		assertEquals("PureAirFlowers API", apiModel.getTitle());
 		

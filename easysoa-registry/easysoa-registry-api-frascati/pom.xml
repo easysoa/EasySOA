@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!--<parent>
+		<artifactId>easysoa-registry</artifactId>
+		<groupId>org.easysoa.registry</groupId>
+		<version>0.4-SNAPSHOT</version>
+	</parent>-->
+	
+	<groupId>org.easysoa.registry</groupId>
+	<artifactId>easysoa-registry-api-frascati</artifactId>
+	<name>easysoa-registry-api-frascati</name>
+	<version>0.4-SNAPSHOT</version>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<dependencies>
+		<!-- Registry dependencies -->
+		<dependency>
+			<groupId>org.easysoa.registry</groupId>
+			<artifactId>easysoa-registry-api</artifactId>
+			<version>0.4-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+	
+		<!-- For tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>			
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1</version>
+		</dependency>
+	</dependencies>
+
+</project>

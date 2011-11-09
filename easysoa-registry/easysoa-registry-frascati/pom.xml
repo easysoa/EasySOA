@@ -91,7 +91,12 @@
 			<artifactId>easysoa-registry-core</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.easysoa.registry</groupId>
+			<artifactId>easysoa-registry-api-frascati</artifactId>
+			<version>0.4-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
 		<!-- add all FraSCAti extensions that can appear in parsed composites : bindings, impls -->
 		<!-- NB. binding-factory required transitively by bindings -->
 		<!-- dependency>

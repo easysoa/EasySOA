@@ -90,13 +90,13 @@ public class ScaImportBean {
      * 
      */
     public void importSCA() {
-
+    	File scaFile = null;
         if (compositeFile != null) {
         	// filename not set, get the default zip file
         	if (compositeFile.getFilename() == null || "".equals(compositeFile.getFilename())) {
             	//String scaFilePath = "src/main/resources/" + "test/defaultsca.zip";
         		String scaFilePath =  System.getProperty("user.dir") + "/test/defaultsca.zip";
-            	File scaFile = new File(scaFilePath);    	
+            	scaFile = new File(scaFilePath);    	
             	try {
 					compositeFile = new InputStreamBlob(new FileInputStream(scaFile));
 	            	compositeFile.setFilename(scaFilePath);					
@@ -107,7 +107,8 @@ public class ScaImportBean {
             
             IScaImporter importer;
             try {
-            	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, compositeFile);
+            	//importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, compositeFile);
+            	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, scaFile);
                 DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
                 if (parentAppliImpl != null) {
                     // Add a test here to check if instance of NuxeoFrascatiScaImporter
@@ -139,7 +140,7 @@ public class ScaImportBean {
     }
 
     public void setCompositeFile(Blob compositeFile) {
-        this.compositeFile = compositeFile;
+    	this.compositeFile = compositeFile;
     }
 
     public String getParentAppliImpl() {

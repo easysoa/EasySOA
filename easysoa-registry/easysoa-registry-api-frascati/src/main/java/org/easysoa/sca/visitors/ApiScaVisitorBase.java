@@ -21,7 +21,6 @@
 package org.easysoa.sca.visitors;
 
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.DiscoveryService;
 
 /**
  * Visitor for REST reference bindings
@@ -29,26 +28,16 @@ import org.easysoa.services.DiscoveryService;
  * @author mdutoo
  *
  */
-public abstract class ScaVisitorBase implements ScaVisitor {
+public abstract class ApiScaVisitorBase implements ScaVisitor {
 
     protected IScaImporter scaImporter;
-    protected DiscoveryService discoveryService;
     
     /**
      * 
      * @param scaImporter
      */
-    public ScaVisitorBase(IScaImporter scaImporter){
-    	this(scaImporter, null);
-    }
-    
-    /**
-     * 
-     * @param scaImporter
-     */
-    public ScaVisitorBase(IScaImporter scaImporter, DiscoveryService discoveryService) {
+    public ApiScaVisitorBase(IScaImporter scaImporter) {
         this.scaImporter = scaImporter;
-        this.discoveryService = discoveryService;
     }
     
     //@Override

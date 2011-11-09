@@ -13,10 +13,18 @@
   <name>EasySOA Registry Core</name>
 
   <dependencies>
+	<!-- Easysoa registry -->
     <dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-api-frascati</artifactId>
+      <version>0.4-SNAPSHOT</version>
+    </dependency>
+	
+	<!-- Nuxeo -->
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core</artifactId>

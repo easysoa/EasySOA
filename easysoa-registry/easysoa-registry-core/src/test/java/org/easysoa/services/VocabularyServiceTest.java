@@ -24,23 +24,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.test.EasySOACoreTestFeature;
-import org.easysoa.test.EasySOARepositoryInit;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.test.annotations.BackendType;
-import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.directory.Directory;
 import org.nuxeo.ecm.directory.api.DirectoryService;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
-
 import com.google.inject.Inject;
 
 /**
@@ -48,10 +39,7 @@ import com.google.inject.Inject;
  * @author mkalam-alami, mdutoo
  *
  */
-@RunWith(FeaturesRunner.class)
-@Features(EasySOACoreTestFeature.class)
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class VocabularyServiceTest {
+public class VocabularyServiceTest extends CoreServiceTestHelperBase {
 
     static final Log log = LogFactory.getLog(VocabularyServiceTest.class);
     

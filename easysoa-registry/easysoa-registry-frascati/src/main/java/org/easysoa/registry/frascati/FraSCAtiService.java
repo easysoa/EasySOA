@@ -153,6 +153,7 @@ public class FraSCAtiService extends DefaultComponent {
 		// Create a processing context with where to find ref'd classes
 		//ProcessingContext processingContext = frascati.getCompositeManager().newProcessingContext(scaZipUrls);
 		log.debug("composite URL = " + compositeUrl);
+		log.debug("scaZipUrls = " + scaZipUrls);
 		// TODO : if we have a standalone composite file, do not instanciate and start the composite
 		// TODO : change the processing context to discovery processing context
 		

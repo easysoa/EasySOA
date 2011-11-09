@@ -30,6 +30,7 @@ public abstract class AbstractEasySOAApp implements EasySOAApp {
 	 * @throws FrascatiException
 	 */
 	public void stopComponents(Component... components) throws FrascatiException {
+		log.debug("Closing components");
 		for(Component component : components){
 			frascati.close(component);
 		}

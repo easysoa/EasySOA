@@ -30,9 +30,7 @@ import org.easysoa.rest.RestNotificationRequest;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.DiscoveryService;
-
-import org.nuxeo.ecm.core.api.ClientException;
+import org.easysoa.services.ApiUrlProcessor;
 
 /**
  * Visitor for WS bindings.
@@ -40,7 +38,7 @@ import org.nuxeo.ecm.core.api.ClientException;
  * @author mkalam-alami
  *
  */
-public class ApiServiceBindingVisitor extends ScaVisitorBase {
+public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
     
 	private static Log log = LogFactory.getLog(ApiServiceBindingVisitor.class);	
 	
@@ -85,7 +83,7 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
         notificationService.notifyService(documentManager, properties);
     }*/
 
-    @Override
+    //@Override
     public void visit(BindingInfoProvider bindingInfoProvider) throws Exception {
         String serviceUrl = bindingInfoProvider.getBindingUrl();
         if (serviceUrl == null) {
@@ -95,8 +93,9 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
         log.debug("serviceUrl is not null, registering API's and services...");
         //String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         String appliImplUrl = scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-        String apiUrl = discoveryService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
-        
+        String apiUrl = ApiUrlProcessor.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
+        // TODO recompute the apiUrl : find a way to use or move the computeApiUrl
+        //String apiUrl = "";
         // Using default value for API url
 	    RestNotificationFactory factory = new RestNotificationFactory();
 	    
@@ -119,8 +118,8 @@ public class ApiServiceBindingVisitor extends ScaVisitorBase {
 	    requestService.send();
     }
     
-    @Override
-    public void postCheck() throws ClientException {
+    //@Override
+    public void postCheck() throws Exception {
         // nothing to do
     }
 

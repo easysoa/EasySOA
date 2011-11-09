@@ -29,14 +29,6 @@ public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	private Blob blobCompositeFile;	
 	
 	/**
-	 * Default constructor
-	 * @throws Exception
-	 */
-	/*public FraSCAtiScaImporter() throws Exception {
-		super();
-	}*/
-
-	/**
 	 * 
 	 * @param documentManager
 	 * @param compositeFile

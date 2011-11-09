@@ -21,18 +21,10 @@
 package org.easysoa.sca.visitors;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.DiscoveryService;
-import org.easysoa.services.DocumentService;
-import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * Visitor for REST reference bindings
@@ -41,11 +33,11 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 // TODO: Refactor visitor implementations
-public class ApiReferenceBindingVisitor extends ScaVisitorBase {
+public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
 
     private static Log log = LogFactory.getLog(ApiReferenceBindingVisitor.class);
     
-    protected DocumentModel referenceModel;
+    //protected DocumentModel referenceModel;
 
     public ApiReferenceBindingVisitor(IScaImporter scaImporter) {
         super(scaImporter);
@@ -54,7 +46,7 @@ public class ApiReferenceBindingVisitor extends ScaVisitorBase {
     @Override
     public String getDescription() {
         StringBuffer sbuf = new StringBuffer(this.toString());
-        sbuf.append("[path=");
+        /*sbuf.append("[path=");
         sbuf.append(referenceModel.getPathAsString());
         sbuf.append(",type=");
         sbuf.append(referenceModel.getType());
@@ -66,7 +58,7 @@ public class ApiReferenceBindingVisitor extends ScaVisitorBase {
             sbuf.append("(" + msg + ")");
             log.error(msg, ex);
         }
-        sbuf.append("]");
+        sbuf.append("]");*/
         return sbuf.toString();
     }
     
@@ -95,8 +87,8 @@ public class ApiReferenceBindingVisitor extends ScaVisitorBase {
         } 
     }*/
     
-    @Override
-    public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, IOException {
+    //@Override
+    public void visit(BindingInfoProvider bindingInfoProvider) throws Exception, IOException {
         
     	// Using default value for API url
 	    //RestNotificationFactory factory = new RestNotificationFactory();
@@ -126,8 +118,8 @@ public class ApiReferenceBindingVisitor extends ScaVisitorBase {
         }*/	    
     }
 
-    @Override
-    public void postCheck() throws ClientException {
+    //@Override
+    public void postCheck() throws Exception {
         
         /*DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
         // find referenced service
