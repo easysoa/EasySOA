@@ -12,7 +12,7 @@
  * Author: Marwane Kalam-Alami
  */
 
-var api = require('./api.js');
+var api = require('./api');
 
 // Reproduce Scenario #01: Create Service Scaffolder Client for a given existing service endpoint
 

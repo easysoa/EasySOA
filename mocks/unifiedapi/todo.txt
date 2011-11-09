@@ -1,0 +1,21 @@
+## Tasks
+
+- Clarify notions environements and "service hosts"
+
+
+## Scenario list
+
+OK scaffolder calling a service selected (in accessible environments)
+OK scaffolder calling a mock
+OK scaffolder, then (from called service in this environment) create mock, by replace (or LATER fork)
+
+OK scaffolder, then in between add WS monitoring proxy
+OK then record exchanges (autostart, reset(), save(name), restore(name))
+OK then create mock using a named recorded session of exchanges (when a given request appears, return the response)
+
+OK then create template UI impl to replace scaffolder (LATER impl rather linked or forked from other env)
+OK then add WS proxy + js impl between template UI and mock
+OK then record exchanges and let the user tailor a recording session that is a test suite
+OK then setup test suite to be called on each js impl changes
+
+

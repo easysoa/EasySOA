@@ -9,10 +9,10 @@
  * Unified API Scenario #2 
  * Description: Create Service Scaffolder Client from mock of a given existing service implementation
  * Context : Light
- * Author: Marwane Kalam-Alami
+ * Author: Marc Dutoo, Marwane Kalam-Alami
  */
 
-var api = require('./api.js');
+var api = require('./api');
 
 // Make the user choose a service
 
@@ -25,7 +25,7 @@ var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter);
 
 // Create environment
 
-var testEnv = new api.LightEnvironment("PureAirFlowers", "Sophie");
+var testEnv = new api.DevelopmentEnvironment("PureAirFlowers", "Sophie");
 
 var serviceMock = new api.JavascriptImpl("MyMock", options={isMock: true}, serviceImplToMock=serviceEndpointToScaffold.getImpl());
 var serviceMockEndpoint = testEnv.addServiceImpl(serviceMock);

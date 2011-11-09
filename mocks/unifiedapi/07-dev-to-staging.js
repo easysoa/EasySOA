@@ -12,11 +12,11 @@
  * Author: Marwane Kalam-Alami
  */
 
-var api = require('./api.js');
+var api = require('./api');
 
 // Set up environments
 
-var lightEnv = new api.LightEnvironment("light", "Sophie");
+var lightEnv = new api.DevelopmentEnvironment("light", "Sophie");
 var productionEnv = new api.ProductionEnvironment("production", "http://www.myservices.com");
 
 // Implement java service

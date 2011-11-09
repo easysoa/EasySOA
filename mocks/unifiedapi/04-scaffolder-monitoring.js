@@ -12,7 +12,7 @@
  * Author: Marwane Kalam-Alami
  */
 
-var api = require('./api.js');
+var api = require('./api');
 
 // Reproduce Scenario #1: Create Service Scaffolder Client for a given existing service endpoint
 
@@ -28,11 +28,11 @@ console.log("[Scenario #4]");
 
 // Add monitoring to scaffolder
 
-scaffolderClientEndpoint.useProxyFeature(new api.MonitoringProxyFeature("mymonit"));
+scaffolderClientEndpoint.useProxyFeature(new api.MonitoringProxyFeature());
 
 // Retrieve and control scaffolder monitoring
 
-var monitoring = scaffolderClientEndpoint.getProxyFeature("mymonit");
+var monitoring = scaffolderClientEndpoint.getProxyFeature(api.MonitoringProxyFeature);
 monitoring.save("myrun");
 monitoring.save("myrun2");
 monitoring.restore("myrun");

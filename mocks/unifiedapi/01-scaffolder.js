@@ -9,10 +9,10 @@
  * Unified API Scenario #1 
  * Description: Create Service Scaffolder Client for a given existing service endpoint
  * Context : Light
- * Author: Marwane Kalam-Alami
+ * Author: Marc Dutoo, Marwane Kalam-Alami
  */
 
-var api = require('./api.js');
+var api = require('./api');
 
 // Make the user choose a service
 
@@ -24,7 +24,7 @@ var serviceEndpointToScaffold = api.selectServiceEndpointInUI(envFilter); // use
 
 // Create environment
 
-var testEnv = new api.LightEnvironment("PureAirFlowers", "Sophie"); // on default business architecture
+var testEnv = new api.DevelopmentEnvironment("PureAirFlowers", "Sophie"); // on default business architecture
 
 testEnv.addExternalServiceEndpoint(serviceEndpointToScaffold);
 
