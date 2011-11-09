@@ -1,7 +1,9 @@
-## Tasks
+## TODO
 
-- Clarify notions environements and "service hosts"
-
+* Introduce service "groups"
+* Make ProxyFeatures startable/stoppable
+* Differentiate Discovery proxies from Tunnels
+* Sandboxed/monitored services have to be made available through tunneling URLs 
 
 ## Scenario list
 
@@ -17,5 +19,3 @@ OK then create template UI impl to replace scaffolder (LATER impl rather linked 
 OK then add WS proxy + js impl between template UI and mock
 OK then record exchanges and let the user tailor a recording session that is a test suite
 OK then setup test suite to be called on each js impl changes
-
-

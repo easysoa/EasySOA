@@ -17,6 +17,12 @@ var AbstractProxyFeature = Class.create({
     process : function(request, response) {
         // To implement
     },
+    start : function() {
+        
+    },
+    stop : function() {
+        
+    },
     getClass : function() {
       return this.clazz;
     }
