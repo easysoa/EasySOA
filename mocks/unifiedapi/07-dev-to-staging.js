@@ -14,6 +14,9 @@
 
 var api = require('./api');
 
+console.log("-------------------------------------");
+console.log("[Scenario #7]");
+
 // Set up environments
 
 var lightEnv = new api.DevelopmentEnvironment("light", "Sophie");

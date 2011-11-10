@@ -14,6 +14,9 @@
 
 var api = require('./api');
 
+console.log("-------------------------------------");
+console.log("[Scenario #9]");
+
 // New service creation project
 
 var project = new api.Project("Service creation");

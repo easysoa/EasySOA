@@ -69,26 +69,16 @@ var AbstractServer = Class.create({
     }
 });
 
-var LightServer = Class.create(AbstractServer, {
+var NodeServer = Class.create(AbstractServer, {
     initialize : function($super) {
         $super(consts.ServerURL.LIGHT, [
-                consts.ServiceImplType.SCAFFOLDER_CLIENT,
                 consts.ServiceImplType.TEMPLATING_UI,
                 consts.ServiceImplType.JAVASCRIPT
             ]);
     },
     install : function(serviceImpl, env) {
-        var newEndpoint = null;
-        
-        switch (serviceImpl.type) {
-        case consts.ServiceImplType.SCAFFOLDER_CLIENT:
-            newEndpoint = new endpoints.ScaffolderClientEndpoint(serviceImpl, env); break;
-        case consts.ServiceImplType.JAVA:
-            newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env); break;
-        default:
-            newEndpoint = new endpoints.ServiceEndpoint(serviceImpl,
-                    this.implServerUrl + toUrlPath(serviceImpl.name), env);
-        }
+        var newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env);
+        this.serviceEndpoints.push(newEndpoint);
         
         if (newEndpoint != null) {
             this.serviceEndpoints.push(newEndpoint);
@@ -97,13 +87,24 @@ var LightServer = Class.create(AbstractServer, {
     }
 });
 
-var JavaServer = Class.create(AbstractServer, {
+var FraSCAtiServer = Class.create(AbstractServer, {
     initialize : function($super) {
-        $super(consts.ServerURL.JAVA, [ consts.ServiceImplType.JAVA ]);
+        $super(consts.ServerURL.JAVA, [ 
+                 consts.ServiceImplType.SCAFFOLDER_CLIENT,
+                 consts.ServiceImplType.JAVA
+             ]);
     },
     install : function(serviceImpl, env) {
-        var newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env);
-        this.serviceEndpoints.push(newEndpoint);
+        var newEndpoint = null;
+        switch (serviceImpl.type) {
+        case consts.ServiceImplType.SCAFFOLDER_CLIENT:
+            newEndpoint = new endpoints.ScaffolderClientEndpoint(serviceImpl, env); break;
+        case consts.ServiceImplType.JAVA:
+            newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env); break;
+        }
+        if (newEndpoint != null) {
+            this.serviceEndpoints.push(newEndpoint);
+        }
         return newEndpoint;
     }
 });
@@ -169,13 +170,13 @@ var AbstractEnvironment = Class.create({
 
 var StagingEnvironment = Class.create(AbstractEnvironment, {
     initialize : function($super, name) {
-        $super(EnvironmentType.STAGING, name, [ new JavaServer() ]);
+        $super(EnvironmentType.STAGING, name, [ new FraSCAtiServer() ]);
     }
 });
 
 var ProductionEnvironment = Class.create(AbstractEnvironment, {
     initialize : function($super, name) {
-        $super(EnvironmentType.PRODUCTION, name, [ new JavaServer() ]);
+        $super(EnvironmentType.PRODUCTION, name, [ new FraSCAtiServer() ]);
     },
     addExternalServiceEndpoint : function($super, serviceEndpoint) {
         if (serviceEndpoint.getImpl().isProductionReady) {
@@ -199,7 +200,7 @@ var ProductionEnvironment = Class.create(AbstractEnvironment, {
 var DevelopmentEnvironment = Class.create(AbstractEnvironment, {
     initialize : function($super, name, user) {
         $super(EnvironmentType.DEVELOPMENT, user + "_" + name,
-                [ new LightServer() , new JavaServer() ]);
+                [ new NodeServer() , new FraSCAtiServer() ]);
         this.user = user;
     }
 });

@@ -16,10 +16,9 @@ var ServiceImplType = {
 EASYSOA_HOST = "http://localhost";
 
 var ServerURL = {
-    LIGHT : EASYSOA_HOST + ":9011/",
-    JAVA : EASYSOA_HOST + ":9012/",
-    SCAFFOLDER : EASYSOA_HOST + ":8090/",
-    TUNNELING : EASYSOA_HOST + ":8091/tunnelingDev/"
+    NODE : EASYSOA_HOST + ":9011/",
+    FRASCATI : EASYSOA_HOST + ":9012/",
+    TUNNELING : EASYSOA_HOST + ":9013/tunnelingDev/"
 };
 
 

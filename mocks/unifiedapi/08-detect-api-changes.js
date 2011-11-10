@@ -14,6 +14,9 @@
 
 var api = require('./api');
 
+console.log("-------------------------------------");
+console.log("[Scenario #8]");
+
 // Prepare environment
 
 var testEnv = new api.DevelopmentEnvironment("PureAirFlowers", "Sophie"); // on default business architecture
