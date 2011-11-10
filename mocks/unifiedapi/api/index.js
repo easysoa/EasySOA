@@ -3,6 +3,7 @@ Object.extend(module.exports, require('./Consts'));
 Object.extend(module.exports, require('./Endpoints'));
 Object.extend(module.exports, require('./Environments'));
 Object.extend(module.exports, require('./Impls'));
+Object.extend(module.exports, require('./Projects'));
 Object.extend(module.exports, require('./Proxies'));
 Object.extend(module.exports, require('./Tests'));
 

@@ -13,7 +13,8 @@ var proxies = require('./Proxies');
  * Available options:
  * options = {
  *      isMock            : true/false (default = false),
- *      isProductionReady : true/false (default = false)
+ *      isProductionReady : true/false (default = false),
+ *      serviceDef        : ServiceDefinition (default = undefined)
  * }
  */
 
@@ -25,10 +26,14 @@ var AbstractServiceImpl = Class.create({
         this.tunnelingNodes = new $H();
         this.isMock = false;
         this.isProductionReady = false;
+        this.serviceDef = undefined;
         if (options != undefined) {
             this.isMock = (options.isMock == undefined) ? this.isMock : options.isMock;
             this.isProductionReady = (options.isProductionReady == undefined) ? 
                     this.isMock : options.isProductionReady;
+            this.serviceDef = (options.serviceDef == undefined) ? 
+                    this.serviceDef : options.serviceDef;
+            
         }
     },
     getName : function() {

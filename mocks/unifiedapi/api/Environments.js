@@ -151,9 +151,19 @@ var AbstractEnvironment = Class.create({
         return allIsStarted;
     },
     stop : function() {
-        this.serviceEndpoints.each(function(endpoint) {
-            endpoint.stop();
+        this.servers.each(function(entry) {
+            entry[1].stop();
         });
+    },
+    cloneAs : function(clazz, name /*=undefined*/, user /*=undefined*/) {
+      if (name == undefined) {
+          name = this.name;
+      }
+      if (user == undefined) {
+          user = this.user;
+      }
+      var newEnv = new clazz(name, user); // TODO Clone environment contents
+      return newEnv;
     }
 });
 
@@ -164,7 +174,7 @@ var StagingEnvironment = Class.create(AbstractEnvironment, {
 });
 
 var ProductionEnvironment = Class.create(AbstractEnvironment, {
-    initialize : function($super, name, url) {
+    initialize : function($super, name) {
         $super(EnvironmentType.PRODUCTION, name, [ new JavaServer() ]);
     },
     addExternalServiceEndpoint : function($super, serviceEndpoint) {
@@ -190,6 +200,7 @@ var DevelopmentEnvironment = Class.create(AbstractEnvironment, {
     initialize : function($super, name, user) {
         $super(EnvironmentType.DEVELOPMENT, user + "_" + name,
                 [ new LightServer() , new JavaServer() ]);
+        this.user = user;
     }
 });
 
