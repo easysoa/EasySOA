@@ -58,7 +58,7 @@ public class BuildPropertyFileExample {
         
         // Store in file
 
-        File propertieFile = new File("out.properties");
+        File propertieFile = new File("target/out.properties");
         FileOutputStream fos = new FileOutputStream(propertieFile);
         properties.store(fos, "EasySOA Services list");
         fos.close();
