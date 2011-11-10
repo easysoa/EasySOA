@@ -41,7 +41,10 @@ var serviceBEndpoint = new api.ExternalEndpoint(serviceBImpl, "http://www.otherc
 var clientEndpoint = env.addServiceImpl(clientImpl);
 env.addExternalServiceEndpoint(serviceAEndpoint);
 env.addExternalServiceEndpoint(serviceBEndpoint);
-env.resolveReferences(); // Note: also implicitly called when starting
+env.resolveReferences();  // For each managed service, resolve references by:
+                          // - Choosing the endpoint 
+                          // - Creating a tunneling node
+                          // Thus it validates the environment (or not if a reference could not be satisfied)
 
 // Add detection change feature
 
@@ -53,8 +56,7 @@ var changeDetection = new api.ChangeDetectionFeature(
        console.log("A service has changed!"); 
     });
 
-
-var tunnelingNodes = clientEndpoint.getOutputTunnelingNodes();
+var tunnelingNodes = clientEndpoint.getOutputTunnelingNodes(); // A way among others to retrieve a group of tunneling nodes
 tunnelingNodes.each(function (tunnelingNode) {
     tunnelingNode.useProxyFeature(changeDetection);
 });

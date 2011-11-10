@@ -141,6 +141,7 @@ var AbstractEnvironment = Class.create({
     },
     start : function() {
         console.log("Starting environment " + this.name + "...");
+        this.resolveReferences();
         var allIsStarted = true;
         this.externalServiceEndpoints.each(function(endpoint) {
             if (!endpoint.checkStarted()) {

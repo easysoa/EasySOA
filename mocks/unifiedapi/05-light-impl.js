@@ -56,4 +56,5 @@ var records = uiMonitoring.getRecords("exchangesForTests");
 var testSuite = new api.TestSuite(records);
 jsServiceEndpoint.registerOnUpdateListener(testSuite);
 
+
 console.log("Done.");
