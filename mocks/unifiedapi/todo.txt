@@ -1,9 +1,7 @@
 ## TODO
 
 * Introduce service "groups"
-* Make ProxyFeatures startable/stoppable
-* Differentiate Discovery proxies from Tunnels
-* Sandboxed/monitored services have to be made available through tunneling URLs 
+* Store proxy origin (impact on API?) 
 
 ## Scenario list
 

@@ -30,5 +30,3 @@ MIT license
 * samples/nuxeo/nuxeoAutomationApi.js - Returns as JSON the Content Automation API of a Nuxeo server.
 * samples/nuxeo/nuxeoAutomationQuery[Fetch[Children]][_proxied].js - A few sample Content Automation operations on a Nuxeo server.
 * samples/nuxeo/nuxeoQuery.js - Does a Nuxeo query using the Site Admin API.
-
-
