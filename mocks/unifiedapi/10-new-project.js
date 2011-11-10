@@ -6,7 +6,7 @@
 // Contact : easysoa-dev@googlegroups.com
 
 /**
- * Unified API Scenario #8
+ * Unified API Scenario #10
  * Description: New design & development project
  * Context : Integration
  * Author: Marwane Kalam-Alami
@@ -15,7 +15,7 @@
 var api = require('./api');
 
 console.log("-------------------------------------");
-console.log("[Scenario #9]");
+console.log("[Scenario #10]");
 
 // New service creation project
 

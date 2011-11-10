@@ -136,6 +136,9 @@ var AbstractEnvironment = Class.create({
             entry[1].remove(serviceImpl); 
         });
     },
+    resolveReferences : function() {
+        // TODO
+    },
     start : function() {
         console.log("Starting environment " + this.name + "...");
         var allIsStarted = true;

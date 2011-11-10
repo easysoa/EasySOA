@@ -10,13 +10,15 @@ var consts = require('./Consts');
 var proxies = require('./Proxies');
 
 /**
- * Available options:
+ * Available service impl. options:
  * options = {
  *      isMock            : true/false (default = false),
  *      isProductionReady : true/false (default = false),
  *      serviceDef        : ServiceDefinition (default = undefined)
  * }
  */
+
+//===================== Service Impl. =====================
 
 var AbstractServiceImpl = Class.create({
     initialize : function(name, type, options /*=undefined*/) {
@@ -54,7 +56,13 @@ var AbstractServiceImpl = Class.create({
     addReference : function(toServiceImpl) {
         var tunnelingNode = new proxies.TunnelingNode(this, toServiceImpl);
         this.tunnelingNodes.set(toServiceImpl.name, tunnelingNode);
-        return tunnelingNode;
+        return tunnelingNode; // XXX not intuitive
+    },
+    addReferences : function(toServiceImpls) {
+        var impl = this;
+        toServiceImpls.each(function (toServiceImpl) {
+            impl.addReference(toServiceImpl);
+        });
     }
 });
 
@@ -99,10 +107,31 @@ var ExternalImpl = Class.create(AbstractServiceImpl, {
 });
 
 
+//===================== Appli Impl. =====================
+
+var AppliImpl = Class.create({
+   initialize: function(name) {
+       this.name = name;
+       this.serviceImpls = new $H();
+   },
+   addServiceImpl: function(serviceImpl) {
+       this.serviceImpls.set(serviceImpl.name, serviceImpl);
+   },
+   getServiceImpls: function() {
+       return this.serviceImpls;
+   },
+   getServiceImpl: function(name) {
+       return this.serviceImpls.get(name);
+   }
+});
+
+
+
 module.exports = {
   ScaffolderClientImpl  :   ScaffolderClientImpl,
   JavascriptImpl        :   JavascriptImpl,
   JavaImpl              :   JavaImpl,
   TemplatingUIImpl      :   TemplatingUIImpl,
-  ExternalImpl          :   ExternalImpl
+  ExternalImpl          :   ExternalImpl,
+  AppliImpl          :   AppliImpl
 };

@@ -49,6 +49,9 @@ var ServiceEndpoint = Class.create({
     },
     setEnvironment: function(env) {
         this.env = env;
+    },
+    getOutputTunnelingNodes: function() {
+        return new Array(); // TODO 
     }
 });
 
