@@ -113,6 +113,11 @@
               <artifactId>easysoa-registry-api</artifactId>
               <version>${project.version}</version>
             </dependency>
+            <dependency>
+              <groupId>org.easysoa.registry</groupId>
+              <artifactId>easysoa-registry-api-frascati</artifactId>
+              <version>${project.version}</version>
+            </dependency>
               <!-- Force org.eclipse.core.runtime version, to make sure it is fetched from a valid repository.
               Otherwise, given our listed repositories, it uses version 3.4.0 which leads to a missing dependency
               (org.eclipse.equinox:app:jar:[1.0.0,2.0.0)):

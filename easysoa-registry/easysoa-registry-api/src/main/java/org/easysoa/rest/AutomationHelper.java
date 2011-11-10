@@ -18,18 +18,16 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.test.rest;
+package org.easysoa.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.properties.PropertyNormalizer;
-import org.junit.Assume;
 import org.nuxeo.ecm.automation.client.jaxrs.OperationRequest;
 import org.nuxeo.ecm.automation.client.jaxrs.Session;
 import org.nuxeo.ecm.automation.client.jaxrs.impl.HttpAutomationClient;
 import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
-import org.nuxeo.ecm.automation.core.operations.document.Query;
 
 /**
  * Thin layer to ease the use of the Nuxeo automation API
@@ -40,6 +38,8 @@ import org.nuxeo.ecm.automation.core.operations.document.Query;
 public class AutomationHelper {
     
     private static Log log = LogFactory.getLog(AutomationHelper.class);
+    
+    private static String QUERY_OPERATION_ID = "Document.Query";
     
     private HttpAutomationClient client = null;
     private Session session = null;
@@ -60,8 +60,7 @@ public class AutomationHelper {
     }
     
     public Documents query(String query) throws Exception {
-        Assume.assumeNotNull(session);
-        OperationRequest request = session.newRequest(Query.ID);
+        OperationRequest request = session.newRequest(QUERY_OPERATION_ID);
         request.setHeader("X-NXDocumentProperties", "*");
         request.set("query", query);
         return (Documents) request.execute();
