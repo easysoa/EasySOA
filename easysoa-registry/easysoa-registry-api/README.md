@@ -6,8 +6,9 @@ This project contains common resources used by the service registry, but is also
 
 * The definition of all custom document types ;
 * A basic way to remotely access the EasySOA Discovery API, in order to register applications (_Appli Impl._), api (_ServiceAPI_) & services (_Service_ doctype).
+* The Java Automation Client from Nuxeo, which is [documented here](http://doc.nuxeo.com/display/NXDOC/Using+Nuxeo+Automation+Client). An example is also [included here](https://github.com/easysoa/EasySOA/blob/master/easysoa-registry/easysoa-registry-api/src/main/java/org/easysoa/rest/AutomationHelper.java).
 
-Note that the REST client is very basic, and will eventually be changed for something more solid (like a library based on a full-featured generic REST client, able to parse WADLs).
+Note that the custom REST client is very basic, and will eventually be changed for something more solid (like a library based on a full-featured generic REST client, able to parse WADLs).
 
 ## Building & Using the API as a self-sufficient JAR
 
