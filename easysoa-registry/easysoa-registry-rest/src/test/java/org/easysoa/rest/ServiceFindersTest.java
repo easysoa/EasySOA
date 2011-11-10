@@ -53,7 +53,7 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 @Deploy({"org.easysoa.registry.rest"})
 @LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
     "org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
-    "org.easysoa.registry.rest:OSGI-INF/serviceFinders-contrib.xml"})
+    "org.easysoa.registry.rest:OSGI-INF/serviceFinder-contrib.xml"})
 public class ServiceFindersTest {
 
     static final Log log = LogFactory.getLog(ServiceFindersTest.class);

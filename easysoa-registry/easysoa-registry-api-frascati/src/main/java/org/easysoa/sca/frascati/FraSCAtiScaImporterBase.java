@@ -29,7 +29,11 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.registry.frascati.FileUtils;
-import org.easysoa.registry.frascati.FraSCAtiService;
+
+//import org.easysoa.registry.frascati.FraSCAtiService;
+
+import org.easysoa.registry.frascati.FraSCAtiServiceBase;
+import org.easysoa.registry.frascati.FraSCAtiServiceItf;
 import org.easysoa.registry.frascati.RestBindingInfoProvider;
 import org.easysoa.registry.frascati.WSBindingInfoProvider;
 import org.easysoa.sca.BindingInfoProvider;
@@ -43,6 +47,7 @@ import org.eclipse.stp.sca.ComponentService;
 import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
+import org.ow2.frascati.util.FrascatiException;
 
 /**
  * ScaImporter using FraSCAti SCA parser
@@ -113,7 +118,7 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	private Stack<String> archiNameStack = new Stack<String>();
 	private Stack<EObject> bindingStack = new Stack<EObject>();
 
-	protected/* @Inject */FraSCAtiService frascatiService; // TODO better Inject doesn't work outside tests ?!
+	protected/* @Inject */FraSCAtiServiceItf frascatiService; // TODO better Inject doesn't work outside tests ?!
 
 	/**
 	 * List of binding info providers
@@ -124,10 +129,12 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	 * Constructor
 	 * @param documentManager Nuxeo document manager
 	 * @param compositeFile Composite file to import
+	 * @throws FrascatiException 
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporterBase(File compositeFile){
+	public FraSCAtiScaImporterBase(File compositeFile) throws FrascatiException{
 		this.compositeFile = compositeFile;
+		frascatiService = new FraSCAtiServiceBase();
 	}
     /*public FraSCAtiScaImporterBase(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception {
 		this.documentManager = documentManager;
@@ -296,6 +303,7 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 		//compositeFile.transferTo(compositeTmpFile);
 		FileUtils.copyTo(compositeFile, compositeTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
+		log.debug("frascatiService : " +  frascatiService);
 		Composite scaZipComposite = frascatiService.readComposite(compositeTmpFile.toURI().toURL());
 		log.debug("composite : " + scaZipComposite);
 		visitComposite(scaZipComposite);
@@ -381,6 +389,11 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 		} else {
 			throw new Exception("Unsupported file type : neither a Composite nor an SCA zip or jar");
 		}	
+	}
+	
+	//TODO Refactor this method
+	public void setFrascatiService(FraSCAtiServiceItf frascatiService){
+		this.frascatiService = frascatiService;
 	}
 	
 }

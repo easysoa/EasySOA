@@ -5,9 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<!--<parent>
-		<artifactId>easysoa-registry</artifactId>
 		<groupId>org.easysoa.registry</groupId>
+		<artifactId>easysoa-registry-parent</artifactId>
 		<version>0.4-SNAPSHOT</version>
+		<relativePath>../easysoa-registry-parent/pom.xml</relativePath>
 	</parent>-->
 	
 	<groupId>org.easysoa.registry</groupId>
@@ -17,6 +18,7 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <frascati.version>1.5-SNAPSHOT</frascati.version>
 	</properties>
 	
 	<dependencies>
@@ -27,6 +29,37 @@
 			<version>0.4-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
+        <!-- Minimal OW2 FraSCAti + JDT. -->
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>${frascati.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>		
+		<!-- Force to use the following JDT else an older is used. -->
+		<!--><dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>-->
+			<!-- version>3.3.0-v_771</version --><!-- maven.org --><!--$NO-MVN-MAN-VER$-->
+			<!--<version>3.3.0.771</version> (Managed) --><!-- openarchitectureware.org -->
+			<!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->			
+			<!--<scope>compile</scope>
+		</dependency>-->	
 	
 		<!-- For tests -->
 		<dependency>

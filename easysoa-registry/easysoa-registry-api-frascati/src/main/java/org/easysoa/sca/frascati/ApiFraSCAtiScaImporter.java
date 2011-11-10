@@ -7,7 +7,7 @@ import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.stp.sca.Composite;
 
 /**
- * Sca Importer (Nuxeo free), uses the Registry API to register services
+ * Sca Importer (Nuxeo free), uses the Registry API to register services in Nuxeo
  * @author jguillemotte
  *
  */
@@ -19,6 +19,7 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	 */
 	public ApiFraSCAtiScaImporter(File scaComposite) throws Exception {
 		super(scaComposite);
+		//init();
 	}
 
     @Override	

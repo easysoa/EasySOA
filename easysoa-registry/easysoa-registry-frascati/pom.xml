@@ -26,7 +26,7 @@
   * Contributor(s):
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.easysoa.registry</groupId>
 		<artifactId>easysoa-registry-parent</artifactId>
@@ -96,6 +96,12 @@
 			<artifactId>easysoa-registry-api-frascati</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<!--<dependency>
+			<groupId>org.easysoa.registry</groupId>
+			<artifactId>easysoa-registry-api</artifactId>
+			<scope>compile</scope>
+		</dependency>-->
+		
 		<!-- add all FraSCAti extensions that can appear in parsed composites : bindings, impls -->
 		<!-- NB. binding-factory required transitively by bindings -->
 		<!-- dependency>

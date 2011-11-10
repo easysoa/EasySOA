@@ -42,7 +42,7 @@ public class WSBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 	public WSBindingInfoProvider(FraSCAtiScaImporterBase frascatiScaImporter) {
 		super(frascatiScaImporter);
 	}
-
+	
 	@Override
 	public boolean isOkFor(Object object) {
 		if (object instanceof WebServiceBinding) {
