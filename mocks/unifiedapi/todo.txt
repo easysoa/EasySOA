@@ -1,7 +1,5 @@
 ## TODO
 
-* Introduce service "groups"
-* Store proxy origin (impact on API?) 
 
 ## Scenario list
 

@@ -50,6 +50,11 @@ var ServiceEndpoint = Class.create({
     },
     getReferences: function(availableEndpoints) {
         return this.impl.references;
+    },
+    addReference : function(toServiceImpl) {
+        var newReference = new ServiceReference(this, toServiceImpl, "endpoint"); // TODO uncouple with impl refs
+        this.references.push(newReference);
+        return newReference;
     }
 });
 
