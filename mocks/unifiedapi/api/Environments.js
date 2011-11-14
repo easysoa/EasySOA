@@ -198,13 +198,20 @@ var AbstractEnvironment = Class.create({
             entry[1].stop();
         });
     },
-    cloneAs : function(clazz, name /*=undefined*/, user /*=undefined*/) {
+    cloneAs : function(clazz, name /*=undefined*/, options /*=undefined*/) {
       if (name == undefined) {
           name = this.name;
       }
-      if (user == undefined) {
+      if (options == undefined || options.user == undefined) {
           user = this.user;
       }
+      
+      var msg = "Cloning environment " + this.name + " to " + name;
+      if (options != undefined && options.noProxies != undefined) {
+          msg += " (without the proxies & tunnels)";
+      }
+      console.log(msg);
+      
       var newEnv = new clazz(name, user); // TODO Clone environment contents
       return newEnv;
     }

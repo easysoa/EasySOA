@@ -46,7 +46,7 @@ stagingEnv.start();
 // Send the service to production
 
 serviceImpl.isProductionReady = true;
-var productionEnv = stagingEnv.cloneAs(api.ProductionEnvironment, "Production");
+var productionEnv = stagingEnv.cloneAs(api.ProductionEnvironment, "Production", options={noProxies: true});
 productionEnv.start();
 
 console.log("Done.");

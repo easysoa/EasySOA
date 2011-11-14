@@ -32,6 +32,7 @@ externalAppliImpl.addServiceImpl(serviceBImpl);
 // Add references
 
 clientImpl.addReferences(externalAppliImpl.getServiceImpls());
+clientImpl.edit();
 
 // Add services to environment
 
