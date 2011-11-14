@@ -1,4 +1,7 @@
 <img src="https://github.com/easysoa/EasySOA/wiki/logo.png" height="80" />
+
+### Current version : Demo 0.4-SNAPSHOT
+
 ## Introduction
 
 #### EasySOA builds on the web and Open Source technologies to make Service Oriented Architectures (SOA) simpler to use.
