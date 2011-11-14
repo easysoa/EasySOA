@@ -56,7 +56,9 @@ var changeDetection = new api.ChangeDetectionFeature(
        console.log("A service has changed!"); 
     });
 
-var tunnelingNodes = clientEndpoint.getOutputTunnelingNodes(); // A way among others to retrieve a group of tunneling nodes
+console.log(clientEndpoint.getReferences()[1]);
+
+var tunnelingNodes = env.getTunnelingNodesByClientEndpoint(clientEndpoint); // A way among others to retrieve a group of tunneling nodes
 tunnelingNodes.each(function (tunnelingNode) {
     tunnelingNode.useProxyFeature(changeDetection);
 });

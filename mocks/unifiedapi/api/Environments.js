@@ -8,6 +8,7 @@
 Object.extend(global, require('prototype'));
 var consts = require('./Consts');
 var endpoints = require('./Endpoints');
+var proxies = require('./Proxies');
 
 var EnvironmentType = {
   DEVELOPMENT   : "development",
@@ -77,7 +78,7 @@ var NodeServer = Class.create(AbstractServer, {
             ]);
     },
     install : function(serviceImpl, env) {
-        var newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env);
+        var newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, this);
         this.serviceEndpoints.push(newEndpoint);
         
         if (newEndpoint != null) {
@@ -98,9 +99,9 @@ var FraSCAtiServer = Class.create(AbstractServer, {
         var newEndpoint = null;
         switch (serviceImpl.type) {
         case consts.ServiceImplType.SCAFFOLDER_CLIENT:
-            newEndpoint = new endpoints.ScaffolderClientEndpoint(serviceImpl, env); break;
+            newEndpoint = new endpoints.ScaffolderClientEndpoint(serviceImpl, this); break;
         case consts.ServiceImplType.JAVA:
-            newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, env); break;
+            newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, this); break;
         }
         if (newEndpoint != null) {
             this.serviceEndpoints.push(newEndpoint);
@@ -115,7 +116,9 @@ var AbstractEnvironment = Class.create({
     initialize : function(envType, name, serverArray) {
         this.name = name;
         this.externalServiceEndpoints = new Array();
+        this.endpoints = new Array();
         this.servers = new $H();
+        this.tunnelingNodes = new Array(); // put in a tunneling server?
         for (var i = 0; i < serverArray.length; i++) {
             var server = serverArray[i];
             for (var j = 0; j < server.supportedImplTypes.length; j++) {
@@ -124,12 +127,13 @@ var AbstractEnvironment = Class.create({
         }
     },
     addExternalServiceEndpoint : function(serviceEndpoint) {
-        serviceEndpoint.setEnvironment(this);
         this.externalServiceEndpoints.push(serviceEndpoint);
     },
     addServiceImpl : function(serviceImpl) {
         var server = this.servers.get(serviceImpl.type);
-        return server.install(serviceImpl, this);
+        var newEndpoint = server.install(serviceImpl, this);
+        this.endpoints.push(newEndpoint);
+        return newEndpoint;
     },
     removeServiceImpl : function(serviceImpl) {
         this.servers.each(function (entry) {
@@ -137,7 +141,41 @@ var AbstractEnvironment = Class.create({
         });
     },
     resolveReferences : function() {
-        // TODO
+        var tunnelingNodes = new Array();
+        var allEndpoints = this.endpoints.concat(this.externalServiceEndpoints);
+        allEndpoints.each(function (endpoint) {
+            var references = endpoint.getReferences();
+            // Resolve each reference
+            references.each(function (reference) {
+                var matchingEndpoint = null;
+                allEndpoints.each(function (potentialEndpoint) {
+                    if (reference.toImpl == potentialEndpoint.impl) {
+                        matchingEndpoint = potentialEndpoint;
+                    }
+                });
+                // Create tunneling node for each reference
+                if (matchingEndpoint != null) {
+                    tunnelingNodes.push(new proxies.TunnelingNode(reference.fromImpl, matchingEndpoint.impl));
+                }
+            });
+        });
+        this.tunnelingNodes = tunnelingNodes;
+    },
+    getTunnelingNodeByReference : function(reference) {
+        var result = null;
+        this.tunnelingNodes.each(function (tunnelingNode) {
+            result = tunnelingNode;
+         });
+        return result;
+    },
+    getTunnelingNodesByClientEndpoint : function(endpoint) {
+        var result = new Array();
+        this.tunnelingNodes.each(function (tunnelingNode) {
+           if (tunnelingNode.fromImpl == endpoint.impl) {
+               result.push(tunnelingNode);
+           }
+        });
+        return result;
     },
     start : function() {
         console.log("Starting environment " + this.name + "...");

@@ -12,11 +12,11 @@ var consts = require('./Consts');
 //===================== Tunneling node =====================
 
 var TunnelingNode = Class.create({
-    initialize : function(fromServiceImpl, toServiceImpl) {
-        this.fromServiceImpl = fromServiceImpl;
-        this.toServiceImpl = toServiceImpl;
+    initialize : function(fromImpl, toImpl) {
+        this.fromImpl = fromImpl;
+        this.toImpl = toImpl;
         
-        this.url = consts.ServerURL.TUNNELING + fromServiceImpl.name + "/to/" + toServiceImpl.name;
+        this.url = this.buildUrl(fromImpl, toImpl);
         this.proxyFeatures = new $H();
     },
     useProxyFeature : function(proxyFeature) {
@@ -24,6 +24,10 @@ var TunnelingNode = Class.create({
     },
     getProxyFeature: function(clazz) {
         return this.proxyFeatures.get(clazz);
+    },
+    buildUrl: function(fromImpl, toImpl) {
+        return consts.ServerURL.TUNNELING + fromImpl.name.sub(' ', '_')
+                + "/to/" + toImpl.name.sub(' ', '_');
     }
 });
 

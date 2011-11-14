@@ -25,9 +25,9 @@ var AbstractServiceImpl = Class.create({
         this.name = name;
         this.type = type;
 
-        this.tunnelingNodes = new $H();
         this.isMock = false;
         this.isProductionReady = false;
+        this.references = new Array();
         this.serviceDef = undefined;
         if (options != undefined) {
             this.isMock = (options.isMock == undefined) ? this.isMock : options.isMock;
@@ -43,26 +43,28 @@ var AbstractServiceImpl = Class.create({
     },
     edit : function() {
         if (this.type != consts.ServiceImplType.EXTERNAL) {
-            var showReferences = this.tunnelingNodes.size() > 0;
+            var showReferences = this.references.size() > 0;
             console.log("Making user edit service impl. " + this.name
                     + ((showReferences) ? " with available dependencies:" : ""));
             if (showReferences) {
-                this.tunnelingNodes.each(function(entry) {
-                   console.log(" * "+entry[0]+": "+entry[1].url); 
+                this.references.each(function(reference) {
+                   console.log(" * " + reference.tunnelingUrl + " = " + reference.toImpl.name); 
                 });
             }
         }
     },
     addReference : function(toServiceImpl) {
-        var tunnelingNode = new proxies.TunnelingNode(this, toServiceImpl);
-        this.tunnelingNodes.set(toServiceImpl.name, tunnelingNode);
-        return tunnelingNode; // XXX not intuitive
+        var newReference = new ServiceReference(this, toServiceImpl, "implementation");
+        this.references.push(newReference);
+        return newReference;
     },
-    addReferences : function(toServiceImpls) {
+    addReferences : function(toServiceImplHashTable) {
         var impl = this;
-        toServiceImpls.each(function (toServiceImpl) {
-            impl.addReference(toServiceImpl);
+        var newReferences = new Array();
+        toServiceImplHashTable.each(function (entry) {
+            newReferences.push(impl.addReference(entry[1]));
         });
+        return newReferences;
     }
 });
 
@@ -125,6 +127,18 @@ var AppliImpl = Class.create({
    }
 });
 
+
+
+//===================== Service Reference =====================
+
+var ServiceReference = Class.create({
+   initialize: function(fromImpl, toImpl, creationTime) {
+       this.fromImpl = fromImpl;
+       this.toImpl = toImpl;
+       this.creationTime = creationTime;
+       this.tunnelingUrl = proxies.TunnelingNode.prototype.buildUrl(fromImpl, toImpl);
+   }
+});
 
 
 module.exports = {

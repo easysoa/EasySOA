@@ -7,13 +7,14 @@
 
 Object.extend(global, require('prototype'));
 var consts = require('./Consts');
+var proxies = require('./Proxies');
 
 
 var ServiceEndpoint = Class.create({
-    initialize : function(impl, url, env, autoUpdate /*=false*/) {
+    initialize : function(impl, url, server, autoUpdate /*=false*/) {
         this.impl = impl;
         this.url = url;
-        this.env = env;
+        this.server = server;
         this.autoUpdate = (autoUpdate == undefined) ? false : autoUpdate;
         this.started = false;
         this.proxyFeatures = new $H();
@@ -47,22 +48,19 @@ var ServiceEndpoint = Class.create({
     registerOnUpdateListener: function(runnable) {
         this.onUpdateListeners.push(runnable);
     },
-    setEnvironment: function(env) {
-        this.env = env;
-    },
-    getOutputTunnelingNodes: function() {
-        return new Array(); // TODO 
+    getReferences: function(availableEndpoints) {
+        return this.impl.references;
     }
 });
 
 var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
-    initialize : function($super, impl, env) {
-        $super(impl, null, env);
+    initialize : function($super, impl, server) {
+        $super(impl, null, server);
         this.setTargetEndpoint(impl.targetEndpoint);
     },
     setTargetEndpoint : function(targetEndpoint) {
         this.impl.targetEndpointUrl = targetEndpoint.url;
-        this.url = this.env.implServerUrl // FIXME
+        this.url = this.server.url
                 + toUrlPath(targetEndpoint.getName())
                 + "_Scaffolder_Client?endpoint=" + targetEndpoint.url;
     },
@@ -73,15 +71,15 @@ var ScaffolderClientEndpoint = Class.create(ServiceEndpoint, {
 
 
 var JavaServiceEndpoint = Class.create(ServiceEndpoint, {
-    initialize : function($super, impl, env) {
-        $super(impl, consts.ServerURL.JAVA + impl.name, env);
+    initialize : function($super, impl, server) {
+        $super(impl, server.url + impl.name, server);
     }
 });
 
 
 var ExternalEndpoint = Class.create(ServiceEndpoint, {
-    initialize : function($super, impl, url, env /*=undefined*/) {
-        $super(impl, url, env);
+    initialize : function($super, impl, url, server /*=undefined*/) {
+        $super(impl, url, server);
     }
 });
 

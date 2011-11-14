@@ -27,7 +27,7 @@ testEnv.addExternalServiceEndpoint(extEndpoint);
 // Create own service with reference to an existing one
 
 var ourImpl = new api.JavaImpl("ourService");
-var tunnelingNode = ourImpl.addReference(extImpl);
+var extImplReference = ourImpl.addReference(extImpl);
 ourImpl.edit();
 var ourEndpoint = testEnv.addServiceImpl(ourImpl);
 
@@ -40,6 +40,8 @@ var coveringExchanges = monitoring.getRecords("coveringExchanges");
 
 // Enable service change detection
 
+testEnv.resolveReferences(); // Creates the tunneling nodes
+var tunnelingNode = testEnv.getTunnelingNodeByReference(extImplReference);
 tunnelingNode.useProxyFeature(new api.ChangeDetectionFeature(
         coveringExchanges,
         function(changedEndpoint, message) {
