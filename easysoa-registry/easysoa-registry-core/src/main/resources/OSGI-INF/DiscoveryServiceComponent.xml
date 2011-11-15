@@ -6,5 +6,9 @@
   <service>
     <provide interface="org.easysoa.services.DiscoveryService" />
   </service>
+  
+  <service>
+    <provide interface="org.easysoa.api.EasySOAApi" />
+  </service>
 
 </component>

@@ -20,13 +20,15 @@
 
 package org.easysoa.examples;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
-import org.easysoa.rest.RestNotificationRequest;
 
 /**
  * 
@@ -44,38 +46,40 @@ public class FullAppNotificationExample {
      */
     public static void main(String[] args) throws Exception {
 
+        EasySOAApi api = EasySOAApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
+        
         // Application
-        RestNotificationFactory factory = new RestNotificationFactory("http://localhost:8080/nuxeo/site");
-        RestNotificationRequest request = factory.createNotification(RestDiscoveryService.APPLIIMPL);
-        request.setProperty(AppliImpl.PROP_URL, APP_URL);
-        request.setProperty(AppliImpl.PROP_TITLE, "My App");
-        request.setProperty(AppliImpl.PROP_DOMAIN, "CRM");
-        request.send();
+        
+        Map<String, String> appProps = new HashMap<String, String>();
+        appProps.put(AppliImpl.PROP_URL, APP_URL);
+        appProps.put(AppliImpl.PROP_TITLE, "My App");
+        appProps.put(AppliImpl.PROP_DOMAIN, "CRM");
+        api.notifyAppliImpl(appProps);
 
         // API in which the services will be contained
-        request = factory.createNotification(RestDiscoveryService.SERVICEAPI);
-        request.setProperty(ServiceAPI.PROP_PARENTURL, APP_URL); // Ensures in which app this will be stored
-        request.setProperty(ServiceAPI.PROP_URL, API_URL);
-        request.setProperty(ServiceAPI.PROP_TITLE, "My API");
-        request.send();
+        Map<String, String> apiProps = new HashMap<String, String>();
+        apiProps.put(ServiceAPI.PROP_PARENTURL, APP_URL); // Ensures in which app this will be stored
+        apiProps.put(ServiceAPI.PROP_URL, API_URL);
+        apiProps.put(ServiceAPI.PROP_TITLE, "My API");
+        api.notifyServiceApi(apiProps);
 
         // A few services
+        Map<String, String> serviceProps = new HashMap<String, String>();
         for (int i = 1; i < 10; i++) {
-            request = factory.createNotification(RestDiscoveryService.SERVICE);
-            request.setProperty(Service.PROP_PARENTURL, API_URL); // Ensures in which API this will be stored
-            request.setProperty(Service.PROP_URL, SERVICE_URL + i);
-            request.setProperty(Service.PROP_TITLE, "My Service #" + i);
-            request.setProperty(Service.PROP_PARTICIPANTS, "My company"); // The service participants
-            request.send();
+            serviceProps.put(Service.PROP_PARENTURL, API_URL); // Ensures in which API this will be stored
+            serviceProps.put(Service.PROP_URL, SERVICE_URL + i);
+            serviceProps.put(Service.PROP_TITLE, "My Service #" + i);
+            serviceProps.put(Service.PROP_PARTICIPANTS, "My company"); // The service participants
+            api.notifyService(serviceProps);
         }
         
         // A service reference
-        request = factory.createNotification(RestDiscoveryService.SERVICEREFERENCE);
-        request.setProperty(ServiceReference.PROP_PARENTURL, APP_URL);
-        request.setProperty(ServiceReference.PROP_REFURL, SERVICE_URL + "1");
-        request.setProperty(ServiceReference.PROP_ARCHIPATH, "/service1");
-        request.setProperty(ServiceReference.PROP_TITLE, "Reference to My Service #1");
-        request.send();
+        Map<String, String> serviceRefProps = new HashMap<String, String>();
+        serviceRefProps.put(ServiceReference.PROP_PARENTURL, APP_URL);
+        serviceRefProps.put(ServiceReference.PROP_REFURL, SERVICE_URL + "1");
+        serviceRefProps.put(ServiceReference.PROP_ARCHIPATH, "/service1");
+        serviceRefProps.put(ServiceReference.PROP_TITLE, "Reference to My Service #1");
+        api.notifyServiceReference(serviceRefProps);
 
     }
 }

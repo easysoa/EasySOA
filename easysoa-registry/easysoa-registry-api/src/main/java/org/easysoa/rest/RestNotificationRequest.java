@@ -20,23 +20,39 @@
 
 package org.easysoa.rest;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.json.JSONObject;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public interface RestNotificationRequest {
 
     /**
-     * Sets a form parameter to be send with the request.
+     * Sets a form parameter to be sent with the request.
      * @param property
      * @param value
      * @return
      */
     RestNotificationRequest setProperty(String property, String value);
+
+    /**
+     * Sets several form parameters to be sent with the request.
+     * @param property
+     * @param value
+     * @return
+     */
+    RestNotificationRequest setProperties(Map<String, String> entries);
     
     /**
      * Sends the notification.
      * @throws IOException When the request failed.
-     * @throws ProtocolException When the request returned an error.
-     * @return The result if the notification was successfully sent, else null. 
+     * @throws Exception When the request returned an error.
+     * @return a JSONObject containing the response 
      * @throws Exception 
      */
     JSONObject send() throws Exception;

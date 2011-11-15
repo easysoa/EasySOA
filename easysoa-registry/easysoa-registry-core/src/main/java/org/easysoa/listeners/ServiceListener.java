@@ -40,7 +40,6 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.ApiUrlProcessor;
 import org.easysoa.services.DocumentService;
-import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -111,8 +110,7 @@ public class ServiceListener implements EventListener {
                     
                     if (blob != null) {
                         
-                        // Save WSDLblob
-                        DiscoveryService notifService = Framework.getService(DiscoveryService.class);
+                        // Save WSDL blob
                         doc.setProperty("file", "content", blob);
                         doc.setProperty("file", "filename", ApiUrlProcessor.computeServiceTitle(fileUrl)+".wsdl");
                         
@@ -203,7 +201,7 @@ public class ServiceListener implements EventListener {
                             }
             
                         } catch (Exception e) {
-                            log.error("WSDL parsing failed", e);
+                            log.warn("WSDL parsing failed: " + e.getMessage());
                         } finally {
                             tmpFile.delete();
                         }

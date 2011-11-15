@@ -58,7 +58,16 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
         requestProperties.put(property, value);
         return this;
     }
+
+    public RestNotificationRequest setProperties(Map<String, String> entries) {
+        requestProperties.putAll(entries);
+        return this;
+    }
     
+    /**
+     * Sends the request and returns its result as a JSONObject
+     * (useless for POST requests, but useful to GET documentation)
+     */
     public JSONObject send() throws Exception {
         
         // Prepare request

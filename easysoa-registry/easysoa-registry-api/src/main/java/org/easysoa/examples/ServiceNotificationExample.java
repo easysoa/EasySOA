@@ -19,6 +19,11 @@
  */
 
 package org.easysoa.examples;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.rest.RestNotificationFactory;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
@@ -36,6 +41,16 @@ public class ServiceNotificationExample {
      */
 	public static void main(String[] args) throws Exception {
 		
+	    // Method #1: With the EasySOA API
+	    
+	    EasySOAApi api = EasySOAApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
+	    Map<String, String> properties = new HashMap<String, String>();
+	    properties.put(Service.PROP_URL, "http://www.myservices.com/api/service");
+	    properties.put(Service.PROP_TITLE, "Service");
+	    api.notifyService(properties);
+	    
+	    // Method #2: With direct requests (will be eventually deprecated)
+	    
 	    RestNotificationFactory factory = new RestNotificationFactory("http://localhost:8080/nuxeo/site");
 	    RestNotificationRequest request = factory.createNotification(RestDiscoveryService.SERVICE);
 	    request.setProperty(Service.PROP_URL, "http://www.myservices.com/api/service");

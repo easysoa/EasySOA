@@ -47,6 +47,7 @@ public class DiscoveryService extends DefaultComponent {
     
     private static final Map<String, String> propertyFilter = new HashMap<String, String>();
 
+    @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog(DiscoveryService.class);
     
     public DiscoveryService() {
