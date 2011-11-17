@@ -209,7 +209,7 @@ public class XMLScaImporter implements IScaImporter {
 
 	@Override
 	public ScaVisitor createServiceBindingVisitor() {
-		return new ServiceBindingVisitor(this);
+		return new ServiceBindingVisitor(this, api);
 	}
 
 	@Override

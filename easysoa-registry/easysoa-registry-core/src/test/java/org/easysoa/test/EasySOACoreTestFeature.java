@@ -27,8 +27,8 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
 
 
 /**
- * Allows for easy testing of EasySOA Core non-UI code within EasySOA Core tests
- * see http://doc.nuxeo.com/display/CORG/Unit+Testing
+ * Allows for easy testing of EasySOA Core non-UI code within EasySOA Core tests.
+ * See {@link http://doc.nuxeo.com/display/CORG/Unit+Testing}
  * 
  * @author mdutoo
  *

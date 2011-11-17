@@ -38,14 +38,6 @@ public abstract class ScaVisitorBase implements ScaVisitor {
      * 
      * @param scaImporter
      */
-    public ScaVisitorBase(IScaImporter scaImporter){
-    	this(scaImporter, null);
-    }
-    
-    /**
-     * 
-     * @param scaImporter
-     */
     public ScaVisitorBase(IScaImporter scaImporter, EasySOAApi api) {
         this.scaImporter = scaImporter;
         this.api = api;

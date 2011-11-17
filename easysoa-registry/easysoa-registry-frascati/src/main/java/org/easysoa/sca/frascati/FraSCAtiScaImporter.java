@@ -56,7 +56,7 @@ public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	
 	@Override
     public ScaVisitor createServiceBindingVisitor() {
-        return new ServiceBindingVisitor(this);
+        return new ServiceBindingVisitor(this, getApi());
     }
     
 	@Override
