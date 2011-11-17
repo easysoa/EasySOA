@@ -39,11 +39,10 @@ import org.easysoa.api.EasySOAApi;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.sca.visitors.ReferenceBindingVisitor;
+import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.sca.visitors.ServiceBindingVisitor;
-import org.easysoa.services.DocumentServiceImpl;
-
+import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -100,7 +99,7 @@ public class XMLScaImporter implements IScaImporter {
 		this.compositeFile = compositeFile;
 		this.api = EasySOALocalApiFactory.createLocalApi(documentManager);
 		if(documentManager != null){
-			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentServiceImpl.class).getDefaultAppliImpl(documentManager);
+			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
 		}
 		// init();
 	}

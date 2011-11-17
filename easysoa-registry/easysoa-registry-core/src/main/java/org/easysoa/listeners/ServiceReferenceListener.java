@@ -33,7 +33,6 @@ import org.easysoa.api.EasySOAApi;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
-import org.easysoa.services.DocumentServiceImpl;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.event.Event;
@@ -73,7 +72,7 @@ public class ServiceReferenceListener implements EventListener {
         
         try {
 
-            DocumentService docService = Framework.getService(DocumentServiceImpl.class);
+            DocumentService docService = Framework.getService(DocumentService.class);
             EasySOAApi api = EasySOALocalApiFactory.createLocalApi(session);
             
             // Create service from WSDL if it doesn't exist

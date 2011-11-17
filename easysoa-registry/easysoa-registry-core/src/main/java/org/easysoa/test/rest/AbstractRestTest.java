@@ -29,14 +29,13 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.AutomationHelper;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.services.DocumentService;
-import org.easysoa.api.AutomationHelper;
 import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.services.DocumentServiceImpl;
+import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.runtime.api.Framework;
@@ -133,7 +132,7 @@ public abstract class AbstractRestTest {
 
     protected void assertDocumentExists(CoreSession session, String doctype, String url) throws Exception {
         if (useEmbeddedNuxeo && session != null) {
-            DocumentService docService = Framework.getService(DocumentServiceImpl.class);
+            DocumentService docService = Framework.getService(DocumentService.class);
             DocumentModel model = null;
             // TODO DocumentService refactoring
             if (AppliImpl.DOCTYPE.equals(doctype)) {

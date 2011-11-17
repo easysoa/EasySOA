@@ -30,10 +30,9 @@ import org.easysoa.api.EasySOAApi;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.services.DocumentService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.DocumentServiceImpl;
+import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.IdRef;
@@ -104,7 +103,7 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
     @Override
     public void postCheck() throws Exception {
         
-        DocumentService docService = Framework.getRuntime().getService(DocumentServiceImpl.class); 
+        DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
         // find referenced service
         String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);
         DocumentModel refServiceModel;

@@ -25,13 +25,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.model.SelectItem;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.services.DocumentService;
 import org.easysoa.sca.extension.ScaImporterComponent;
-import org.easysoa.services.DocumentServiceImpl;
+import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
@@ -157,7 +158,7 @@ public class ScaImportBean {
         // Gather information
         String wsRootId = null;
         try {
-            DocumentService docService = Framework.getService(DocumentServiceImpl.class);
+            DocumentService docService = Framework.getService(DocumentService.class);
             wsRootId = documentManager.getDocument(docService.getDefaultAppliImpl(documentManager).getParentRef()).getId();
         } catch (Exception e) {
             log.error("Failed to retrieve workspace root", e);
