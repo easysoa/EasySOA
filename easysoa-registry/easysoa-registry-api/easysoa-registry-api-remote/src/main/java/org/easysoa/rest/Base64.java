@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.impl.utils;
+package org.easysoa.rest;
 
 /**
  * Encodes and decodes to and from Base64 notation.

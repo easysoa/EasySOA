@@ -23,6 +23,7 @@ package org.easysoa;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.DocumentServiceImpl;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.LifeCycleConstants;
@@ -79,7 +80,7 @@ public class DomainInit extends UnrestrictedSessionRunner {
         // Touch default application
         DocumentService docService;
         try {
-            docService = Framework.getService(DocumentService.class);
+            docService = Framework.getService(DocumentServiceImpl.class);
             docService.getDefaultAppliImpl(session); 
         } catch (Exception e) {
             log.warn("Failed to make sure default application exists", e);

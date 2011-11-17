@@ -2,19 +2,16 @@ package org.easysoa.sca.frascati;
 
 import java.io.File;
 
+import org.easysoa.api.EasySOAApi;
 import org.easysoa.registry.frascati.FraSCAtiService;
 import org.easysoa.sca.visitors.ReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.sca.visitors.ServiceBindingVisitor;
-import org.easysoa.services.DiscoveryService;
 import org.easysoa.services.DocumentService;
 import org.eclipse.stp.sca.Composite;
-
-import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -25,8 +22,11 @@ import org.nuxeo.runtime.api.Framework;
 public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 
 	private DocumentModel parentAppliImplModel;	
+	//private Blob blobCompositeFile;	
+	
+	// Needed to fetch documents (should be gone when the API is complete)
+	private DocumentService documentService;
 	private CoreSession documentManager;
-	private Blob blobCompositeFile;	
 	
 	/**
 	 * 
@@ -35,12 +35,13 @@ public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	 * @throws Exception 
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporter(CoreSession documentManager, File compositeFile) throws ClientException, Exception{
-		super(compositeFile);
-		blobCompositeFile = new FileBlob(compositeFile);
-		this.documentManager = documentManager;
+	public FraSCAtiScaImporter(EasySOAApi api, File compositeFile, CoreSession documentManager) throws ClientException, Exception{
+		super(api, compositeFile);
+        //this.blobCompositeFile = new FileBlob(compositeFile);
+        this.documentManager = documentManager;
 		if(documentManager != null){
-			parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
+		    this.documentService = Framework.getRuntime().getService(DocumentService.class);
+		    this.parentAppliImplModel = documentService.getDefaultAppliImpl(documentManager);
 		}
 		init();
 	}
@@ -55,12 +56,12 @@ public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	
 	@Override
     public ScaVisitor createServiceBindingVisitor() {
-        return new ServiceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
+        return new ServiceBindingVisitor(this);
     }
     
 	@Override
     public ScaVisitor createReferenceBindingVisitor() {
-    	return new ReferenceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
+    	return new ReferenceBindingVisitor(this, getApi());
     }
     
     @Override

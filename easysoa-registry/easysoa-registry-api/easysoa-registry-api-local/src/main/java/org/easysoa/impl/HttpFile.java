@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa;
+package org.easysoa.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,7 +35,6 @@ import java.net.URL;
 
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
-import org.restlet.data.CharacterSet;
 
 /**
  * Basic file downloading tool, given an HTTP url.
@@ -70,8 +69,7 @@ public class HttpFile {
         connection.setReadTimeout(DOWNLOAD_TIMEOUT);
         InputStream is = connection.getInputStream();
         FileOutputStream fos = new FileOutputStream(this.file);
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,
-                CharacterSet.UTF_8.getName()));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
         int c;
         try {
             while ((c = is.read()) != -1) {

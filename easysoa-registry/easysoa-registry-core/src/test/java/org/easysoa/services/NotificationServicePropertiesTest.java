@@ -28,7 +28,10 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.Service;
+import org.easysoa.services.DocumentService;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,15 +50,16 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
 
     static final Log log = LogFactory.getLog(NotificationServicePropertiesTest.class);
     
-    @Inject DiscoveryService notifService;
-    
     @Inject DocumentService docService;
     
     @Inject CoreSession session;
+    
+    private EasySOAApi api;
 
     @Before
     public void setUp() throws Exception {
-  	  	assertNotNull("Cannot get notification service component", notifService);
+        api = EasySOALocalApiFactory.createLocalApi(session);
+  	  	assertNotNull("Cannot get API", api);
   	  	assertNotNull("Cannot get document service component", docService);
     }
     
@@ -75,7 +79,7 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
     	properties.put(Service.PROP_URL, serviceUrl);
     	properties.put(Service.PROP_PARENTURL, parentUrl);
     	properties.put(Service.PROP_CALLCOUNT, "5");
-    	notifService.notifyService(session, properties);
+    	api.notifyService(properties);
     	
     	DocumentModel doc = docService.findService(session, serviceUrl);
     	Assume.assumeNotNull(doc);
@@ -86,7 +90,7 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
     	properties.put(Service.PROP_URL, serviceUrl);
     	properties.put(Service.PROP_PARENTURL, parentUrl);
     	properties.put(Service.PROP_CALLCOUNT, "10");
-    	notifService.notifyService(session, properties);
+    	api.notifyService(properties);
     	
     	doc = docService.findService(session, serviceUrl);
     	assertEquals(new Long(15), (Long) doc.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT));
@@ -111,7 +115,7 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
     	properties.put(Service.PROP_URL, wsdlUrl);
     	properties.put(Service.PROP_CALLCOUNT, "5");
     	properties.put(Service.PROP_FILEURL, wsdlUrl);
-    	notifService.notifyService(session, properties);
+    	api.notifyService(properties);
     	
     	// The URL should have been changed according to the WSDL contents
     	DocumentModel doc = docService.findService(session, serviceUrl);
@@ -127,7 +131,7 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
     	properties.put(Service.PROP_URL, wsdlUrl);
     	properties.put(Service.PROP_FILEURL, wsdlUrl);
     	properties.put(Service.PROP_DESCRIPTION, "hello");
-    	notifService.notifyService(session, properties);
+    	api.notifyService(properties);
     	
     	list = session.query(query);
     	assertEquals(1, list.size());

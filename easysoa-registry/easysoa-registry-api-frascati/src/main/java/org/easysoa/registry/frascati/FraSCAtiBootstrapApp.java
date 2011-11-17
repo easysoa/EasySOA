@@ -14,7 +14,8 @@ import org.ow2.frascati.util.FrascatiException;
  */
 public class FraSCAtiBootstrapApp extends AbstractEasySOAApp {
 
-	private static Log log = LogFactory.getLog(FraSCAtiBootstrapApp.class);
+	@SuppressWarnings("unused")
+    private static Log log = LogFactory.getLog(FraSCAtiBootstrapApp.class);
 	
 	/* (non-Javadoc)
 	 * @see org.easysoa.registry.frascati.EasySOAApp#start()

@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Composite;
 import org.objectweb.fractal.api.Component;

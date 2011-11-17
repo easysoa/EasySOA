@@ -1,10 +1,22 @@
 package org.easysoa.impl;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.easysoa.api.EasySOAApi;
-import org.easysoa.services.DiscoveryService;
+import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.EasySOADoctype;
+import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.properties.ApiUrlProcessor;
+import org.easysoa.services.DocumentService;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -16,57 +28,339 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public class EasySOALocalApi implements EasySOAApi {
-
-    private DiscoveryService service;
     
     private CoreSession session;
     
+    private static final Map<String, String> propertyFilter = new HashMap<String, String>();
+
     public EasySOALocalApi(CoreSession session) throws Exception {
-        this.service = Framework.getService(DiscoveryService.class);
         this.session = session;
+        
+        propertyFilter.put(AppliImpl.PROP_URL, null);
+        
+        propertyFilter.put(ServiceAPI.PROP_URL, null);
+        propertyFilter.put(ServiceAPI.PROP_PARENTURL, null);
+        
+        propertyFilter.put(Service.PROP_URL, null);
+        propertyFilter.put(Service.PROP_PARENTURL, null);
     }
     
-    @Override
-    public boolean notifyAppliImpl(Map<String, String> properties) {
-        try {
-            service.notifyAppliImpl(session, properties);
+    /**
+     * Creates or update an Appli Impl. given the specified properties.
+     * Properties require at least application's URL (PROP_URL).
+     * @param session
+     * @param properties A set of properties of the document, among the AppliImpl.PROP_XXX constants.
+     * @return The created/updated Appli Impl.
+     * @throws ClientException
+     * @throws MalformedURLException 
+     */
+    public final boolean notifyAppliImpl(Map<String, String> properties)
+            throws ClientException, MalformedURLException {
+        
+        // Check mandatory field
+        String url = properties.get(Service.PROP_URL);
+        if (url != null && !url.isEmpty()) {
+            
+            // Find or create document
+            DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
+            DocumentModel appliImplModel = docService.findAppliImpl(session, url);
+            if (appliImplModel == null) {
+                String title = (properties.get("title") != null) ? properties.get("title") : properties.get(AppliImpl.PROP_URL);
+                appliImplModel = docService.createAppliImpl(session, url);
+                appliImplModel.setProperty("dublincore", "title", title);
+                session.saveDocument(appliImplModel);
+            }
+            
+            // Update optional properties
+            setPropertiesIfNotNull(appliImplModel, AppliImpl.SCHEMA, AppliImpl.getPropertyList(), properties);
+            setPropertiesIfNotNull(appliImplModel, AppliImpl.FEATURE_SCHEMA, AppliImpl.getFeaturePropertyList(), properties);
+            
+            // Save
+            session.saveDocument(appliImplModel);
+            session.save();
+            
             return true;
+        
         }
-        catch (Exception e) { 
-            return false;
+        else {
+            throw new ClientException("Appli name or root services URL not informed");
         }
     }
 
-    @Override
-    public boolean notifyServiceApi(Map<String, String> properties) {
-        try {
-            service.notifyServiceApi(session, properties);
+    /**
+     * Creates or update an API given the specified properties.
+     * Properties require at least application's URL (PROP_URL) ;
+     * the parent document URL (PROP_PARENTURL) is also recommended if known.
+     * @param session
+     * @param properties A set of properties of the document, among the ServiceAPI.PROP_XXX constants.
+     * @return The created/updated API
+     * @throws ClientException
+     * @throws MalformedURLException 
+     */
+    public final boolean notifyServiceApi(Map<String, String> properties)
+            throws ClientException, MalformedURLException {
+        
+        // Check mandatory fields
+        String url = properties.get(Service.PROP_URL);
+        if (url != null && !url.isEmpty()) {
+            
+            // Exctract main fields
+            String parentUrl = properties.get(ServiceAPI.PROP_PARENTURL),
+                title = properties.get("title");
+            
+            if (title == null || title.isEmpty()) {
+                title = url;
+                properties.put("title", title);
+            }
+            
+            // Find or create document and parent
+            DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
+            DocumentModel parentModel = docService.findAppliImpl(session, parentUrl);
+            if (parentModel == null) {
+                parentModel = docService.findServiceApi(session, parentUrl);
+            }
+            if (parentModel == null) {
+                if (parentUrl == null) {
+                    parentModel = docService.getDefaultAppliImpl(session);
+                }
+                else {
+                    parentModel = docService.createAppliImpl(session, parentUrl);
+                }
+                session.save();
+            }
+            
+            DocumentModel apiModel = docService.findServiceApi(session, url);
+            if (apiModel == null) {
+                apiModel = docService.createServiceAPI(session, parentModel.getPathAsString(), url);
+            }
+            if (!parentModel.getRef().equals(apiModel.getParentRef())) {
+                apiModel = session.move(apiModel.getRef(), parentModel.getRef(), null);
+            }
+
+            // Update optional properties
+            if (url.toLowerCase().contains("wsdl")) {
+                try {
+                    HttpFile f = new HttpFile(new URL(url));
+                    f.download();
+                    apiModel.setProperty("file", "content", f.getBlob());
+                } catch (Exception e) {
+                    throw new ClientException("Failed to download attached file", e);
+                }
+            }
+            setPropertiesIfNotNull(apiModel, ServiceAPI.SCHEMA, ServiceAPI.getPropertyList(), properties);
+            
+            // Save
+            session.saveDocument(apiModel);
+            session.save();
+            
             return true;
         }
-        catch (Exception e) { 
-            return false;
+        else {
+            throw new ClientException("API URL or parent URL not informed");
+        }
+    }
+    
+    /**
+     * Creates or update a Service given the specified properties.
+     * Properties require at least application's URL (PROP_URL) and parent API URL (PROP_PARENTURL).
+     * If parent API is unknown, you can use the {@link #computeApiUrl} function.
+     * @param session
+     * @param properties A set of properties of the document, among the Service.PROP_XXX constants.
+     * @return The created/updated Service
+     * @throws ClientException
+     * @throws MalformedURLException 
+     */
+    public final boolean notifyService(Map<String, String> properties) throws ClientException, MalformedURLException {
+    
+        // Check mandatory fields
+        String url = properties.get(Service.PROP_URL);
+        if (url != null && !url.isEmpty()) {
+
+            // Exctract main fields
+            String parentUrl = properties.get(Service.PROP_PARENTURL),
+                title = properties.get(Service.PROP_TITLE);
+            
+            // Store URL as file in case of a WSDL
+            if (url.toLowerCase().contains("wsdl")) {
+                properties.put(Service.PROP_FILEURL, url);
+            }
+            
+            if (parentUrl == null || parentUrl.isEmpty()) {
+                parentUrl = ApiUrlProcessor.computeApiUrl(url);
+            }
+            if (title == null || title.isEmpty()) {
+                title = ApiUrlProcessor.computeServiceTitle(url);
+                properties.put(Service.PROP_TITLE, title);
+            }
+        
+            // Find or create document and parent
+            DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
+            DocumentModel apiModel = docService.findServiceApi(session, parentUrl);
+            if (apiModel == null) {
+                // Guess Appli. Impl.
+                String appliImplUrl = ApiUrlProcessor.computeAppliImplUrl(parentUrl);
+                DocumentModel appliImplModel = docService.findAppliImpl(session, appliImplUrl.toString());
+                if (appliImplModel == null) {
+                    appliImplModel = docService.findAppliImpl(session, ApiUrlProcessor.computeAppliImplUrl(appliImplUrl));
+                }
+                // Create API
+                apiModel = docService.createServiceAPI(session, 
+                        (appliImplModel != null) ? appliImplModel.getPathAsString() : null, parentUrl);
+                apiModel.setProperty("dublincore", "title", title+" API");
+                session.saveDocument(apiModel);
+                session.save();
+            }
+            DocumentModel serviceModel = docService.findService(session, url);
+            if (serviceModel == null) {
+                serviceModel = docService.createService(session, apiModel.getPathAsString(), url);
+            }
+
+            // Update optional properties
+            properties.put(Service.PROP_CALLCOUNT, 
+                    getNewCallcount(serviceModel, properties.get(Service.PROP_CALLCOUNT))
+                );
+            setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
+            
+            // Update location
+            if (!apiModel.getRef().equals(serviceModel.getParentRef())) {
+                serviceModel = session.move(serviceModel.getRef(), apiModel.getRef(), null);
+            }
+            
+            // Save
+            session.saveDocument(serviceModel); 
+            session.save();
+
+            return true;
+            
+        }
+        else {
+            throw new ClientException("Service URL not informed");
+        }
+        
+    }
+
+    /**
+     * Creates or update a ServiceReference given the specified properties.
+     * Properties require at least an architecture path (PROP_ARCHIPATH).
+     * @param session
+     * @param properties A set of properties of the document, among the ServiceReference.PROP_XXX constants.
+     * @return The created/updated Service
+     * @throws ClientException
+     */
+    public final boolean notifyServiceReference(
+            Map<String, String> properties) throws ClientException {
+
+        String archiPath = properties.get(ServiceReference.PROP_ARCHIPATH);
+        String parentUrl = properties.get(ServiceReference.PROP_PARENTURL);
+        
+        if (archiPath != null && parentUrl != null) {
+            
+            // Find parent application
+            DocumentService docService = Framework.getRuntime().getService(DocumentService.class);
+            DocumentModel appliImplModel = docService.findAppliImpl(session, parentUrl);
+            if (appliImplModel == null) {
+                throw new ClientException("Parent application URL invalid");
+            }
+            
+            // Find reference, then enrich or create
+            DocumentModel referenceModel = docService.findServiceReference(session, archiPath);
+            if (referenceModel == null){
+                referenceModel = docService.createReference(session, appliImplModel.getPathAsString(), archiPath);
+            }
+            properties.remove(ServiceReference.PROP_PARENTURL);
+            setPropertiesIfNotNull(referenceModel, ServiceReference.SCHEMA, ServiceReference.getPropertyList(), properties);
+            
+            session.saveDocument(referenceModel);
+            session.save();
+            
+            return true;
+
+        }
+        else {
+            throw new ClientException("Parent application URL or architecture path not informed");
+        }
+    }
+    
+    private String getNewCallcount(DocumentModel serviceModel, String newCalls) {
+        Long previousCallcount, newCallsLong;
+        try {
+            previousCallcount = (Long) serviceModel.getProperty(Service.SCHEMA, Service.PROP_CALLCOUNT);
+        } catch (Exception e) {
+            previousCallcount = 0L;
+        }
+        if (previousCallcount == null) {
+            previousCallcount = 0L;
+        }
+        try {
+            newCallsLong = Long.parseLong(newCalls);
+        } catch (Exception e) {
+            newCallsLong = 0L;
+        }
+        return ((Long) (newCallsLong + previousCallcount)).toString();
+    }
+    
+    /**
+     * Sets a property to a model, but only if the value parameter is not null.
+     * @param result
+     * @param callback
+     * @return
+     * @throws ClientException 
+     */
+    private void setPropertyIfNotNull(DocumentModel model, String schema, 
+            String property, Object value) throws ClientException {
+        if (value != null && !propertyFilter.containsKey(property)) {
+            // Append value if the property is a discovery field
+            if (property.equals(EasySOADoctype.PROP_DTBROWSING)
+                    || property.equals(EasySOADoctype.PROP_DTIMPORT)
+                    || property.equals(EasySOADoctype.PROP_DTMONITORING)) {
+                String prevValue = (String) model.getProperty(schema, property);
+                if (prevValue == null) {
+                    model.setProperty(schema, property, value);
+                }
+                else if (!prevValue.contains(value.toString())) {
+                    model.setProperty(schema, property, prevValue + ", " + value);
+                }
+            }
+            // Otherwise just set the property as expected
+            else {
+                model.setProperty(schema, property, value);
+            }
         }
     }
 
-    @Override
-    public boolean notifyService(Map<String, String> properties) {
-        try {
-            service.notifyService(session, properties);
-            return true;
-        }
-        catch (Exception e) { 
-            return false;
-        }
-    }
-
-    @Override
-    public boolean notifyServiceReference(Map<String, String> properties) {
-        try {
-            service.notifyServiceReference(session, properties);
-            return true;
-        }
-        catch (Exception e) { 
-            return false;
+    /**
+     * Sets properties of given schema to the specified model, but only if the value parameter is not null.
+     * If the property is not found in the given schema, it will try to find a match in SOA Common or Dublin Core property.
+     * @param result
+     * @param callback
+     * @return
+     * @throws ClientException 
+     */
+    private void setPropertiesIfNotNull(DocumentModel model, String schema, 
+            Map<String, String> schemaDef, Map<String, String> properties) throws ClientException {
+        
+        properties.putAll(propertyFilter);
+        
+        // Update optional properties
+        for (Entry<String, String> entry : properties.entrySet()) {
+            
+            String key = entry.getKey();
+            String value = entry.getValue();
+            
+            if (value != null && !value.isEmpty()) {
+                // Given schema specific properties
+                if (schemaDef.containsKey(key)) {
+                    setPropertyIfNotNull(model, schema, key, value);
+                }
+                // EasySOA specific properties
+                else if (EasySOADoctype.getCommonPropertyList().containsKey(key)) {
+                    setPropertyIfNotNull(model, EasySOADoctype.SCHEMA_COMMON, key, value);
+                }
+                // Dublin Core properties
+                else if (EasySOADoctype.getDublinCorePropertyList().containsKey(key)) {
+                    setPropertyIfNotNull(model, "dublincore", key, value);
+                }
+            }
         }
     }
 

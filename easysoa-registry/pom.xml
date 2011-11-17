@@ -76,7 +76,7 @@
 								<copy todir="target/lib" flatten="true">
 									<fileset dir=".">
 										<include name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
-										<include name="easysoa-registry-api/target/*-jar-with-dependencies.jar" />
+										<include name="easysoa-registry-api/**/*-jar-with-dependencies.jar" />
 									</fileset>
 								</copy>
 							</tasks>

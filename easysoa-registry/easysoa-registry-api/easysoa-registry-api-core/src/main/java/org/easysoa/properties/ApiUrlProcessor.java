@@ -1,15 +1,12 @@
-package org.easysoa.services;
+package org.easysoa.properties;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.easysoa.properties.PropertyNormalizer;
+import java.util.logging.Logger;
 
 public class ApiUrlProcessor {
 
-	private static Log log = LogFactory.getLog(ApiUrlProcessor.class);	
+	private static Logger log = Logger.getLogger(ApiUrlProcessor.class.getName());	
 	
     private static final String ERROR_API_URL_BASE = "Can't get service API url because ";
     private static final String ERROR_API_URL_APPLIIMPL = ERROR_API_URL_BASE + "bad appliimpl URL";
@@ -45,7 +42,7 @@ public class ApiUrlProcessor {
             } // else empty appliImplUrl means no default appliImplUrl for apis
         }
         catch (Exception e) {
-            log.warn("Failed to compute API url from appli URL & API URL path, using default ("+e.getMessage()+")");
+            log.warning("Failed to compute API url from appli URL & API URL path, using default ("+e.getMessage()+")");
         }
         
         if (apiPathEndIndex == -1) {

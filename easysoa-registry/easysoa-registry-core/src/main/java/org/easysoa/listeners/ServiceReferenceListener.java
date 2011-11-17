@@ -29,9 +29,11 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
-import org.easysoa.services.DiscoveryService;
+import org.easysoa.services.DocumentServiceImpl;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.event.Event;
@@ -71,8 +73,8 @@ public class ServiceReferenceListener implements EventListener {
         
         try {
 
-            DocumentService docService = Framework.getService(DocumentService.class);
-            DiscoveryService notifService = Framework.getService(DiscoveryService.class);
+            DocumentService docService = Framework.getService(DocumentServiceImpl.class);
+            EasySOAApi api = EasySOALocalApiFactory.createLocalApi(session);
             
             // Create service from WSDL if it doesn't exist
             String refUrl = (String) doc.getProperty(SCHEMA, PROP_REFURL);
@@ -81,7 +83,7 @@ public class ServiceReferenceListener implements EventListener {
                 if (referenceService == null) {
                     Map<String, String> properties = new HashMap<String, String>();
                     properties.put(Service.PROP_URL, refUrl);
-                    notifService.notifyService(session, properties);
+                    api.notifyService(properties);
                 }
             }
             

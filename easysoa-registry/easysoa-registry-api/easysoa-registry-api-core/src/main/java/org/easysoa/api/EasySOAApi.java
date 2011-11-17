@@ -9,13 +9,13 @@ import java.util.Map;
  */
 public interface EasySOAApi {
 
-    boolean notifyAppliImpl(Map<String, String> properties);
+    boolean notifyAppliImpl(Map<String, String> properties) throws Exception;
 
-    boolean notifyServiceApi(Map<String, String> properties);
+    boolean notifyServiceApi(Map<String, String> properties) throws Exception;
 
-    boolean notifyService(Map<String, String> properties);
+    boolean notifyService(Map<String, String> properties) throws Exception;
 
-    boolean notifyServiceReference(Map<String, String> properties);
+    boolean notifyServiceReference(Map<String, String> properties) throws Exception;
     
     // TODO: Common way to describe documents for local and remote access?
     // Documents queryDocuments(String query);

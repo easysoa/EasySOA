@@ -35,13 +35,14 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.sca.visitors.ReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ServiceBindingVisitor;
-import org.easysoa.services.DiscoveryService;
-import org.easysoa.services.DocumentService;
+import org.easysoa.services.DocumentServiceImpl;
 
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
@@ -75,6 +76,7 @@ public class XMLScaImporter implements IScaImporter {
 	private static Log log = LogFactory.getLog(XMLScaImporter.class);
 
 	private CoreSession documentManager;
+    private EasySOAApi api;
 	private File compositeFile;
 	private String serviceStackType;
 	private String serviceStackUrl;
@@ -91,13 +93,14 @@ public class XMLScaImporter implements IScaImporter {
 	 * 
 	 * @param documentManager
 	 * @param compositeFile
-	 * @throws ClientException
+	 * @throws Exception 
 	 */
-	public XMLScaImporter(CoreSession documentManager, File compositeFile) throws ClientException {
+	public XMLScaImporter(CoreSession documentManager, File compositeFile) throws Exception {
 		this.documentManager = documentManager;
 		this.compositeFile = compositeFile;
+		this.api = EasySOALocalApiFactory.createLocalApi(documentManager);
 		if(documentManager != null){
-			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
+			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentServiceImpl.class).getDefaultAppliImpl(documentManager);
 		}
 		// init();
 	}
@@ -207,12 +210,12 @@ public class XMLScaImporter implements IScaImporter {
 
 	@Override
 	public ScaVisitor createServiceBindingVisitor() {
-		return new ServiceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
+		return new ServiceBindingVisitor(this);
 	}
 
 	@Override
 	public ScaVisitor createReferenceBindingVisitor() {
-		return new ReferenceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
+		return new ReferenceBindingVisitor(this, api);
 	}
 	
 	private ArrayList<BindingInfoProvider> bindingInfoProviders = null;

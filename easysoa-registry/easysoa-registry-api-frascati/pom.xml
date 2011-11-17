@@ -24,9 +24,9 @@
 	<dependencies>
 		<!-- Registry dependencies -->
 		<dependency>
-			<groupId>org.easysoa.registry</groupId>
-			<artifactId>easysoa-registry-api</artifactId>
-			<version>0.4-SNAPSHOT</version>
+			<groupId>org.easysoa.registry.api</groupId>
+			<artifactId>easysoa-registry-api-core</artifactId>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
         <!-- Minimal OW2 FraSCAti + JDT. -->

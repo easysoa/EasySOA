@@ -25,7 +25,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.easysoa.HttpFile;
+import org.easysoa.impl.HttpFile;
 import org.easysoa.rest.servicefinder.FoundService;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 import org.htmlcleaner.HtmlCleaner;

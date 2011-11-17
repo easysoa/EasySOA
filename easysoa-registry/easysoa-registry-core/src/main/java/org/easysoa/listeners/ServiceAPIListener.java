@@ -33,8 +33,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
-import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
+import org.easysoa.properties.PropertyNormalizer;
+import org.easysoa.services.DocumentServiceImpl;
 import org.easysoa.services.VocabularyHelper;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -154,7 +155,7 @@ public class ServiceAPIListener implements EventListener {
                     session.saveDocument(parentModel);
 
                     DocumentService docService = Framework.getRuntime()
-                            .getService(DocumentService.class);
+                            .getService(DocumentServiceImpl.class);
 
                     // Generate services
                     if (!creationEvent) {

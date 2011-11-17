@@ -23,13 +23,15 @@ package org.easysoa.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
@@ -39,20 +41,20 @@ import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+
 import com.google.inject.Inject;
 
 /**
- * Tests notification service.
+ * Tests discovery API.
  * All unit tests have to be launched together.
  * @author mkalam-alami, mdutoo
  *
  */
-public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
+public class DiscoveryAPITreeTest extends CoreServiceTestHelperBase {
 
-    static final Log log = LogFactory.getLog(NotificationServiceTreeTest.class);
+    static final Log log = LogFactory.getLog(DiscoveryAPITreeTest.class);
     
     private static final String APPLIIMPL_URL = "http://www.myapp.com/services";
     private static final String APPLIIMPL_TITLE= "My App";
@@ -69,15 +71,16 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
 
     private static CoreSession sessionStatic;
     
-    @Inject DiscoveryService notifService;
+    private EasySOAApi api;
     
     @Inject DocumentService docService;
     
     @Inject CoreSession session;
 
     @Before
-    public void setUp() {
-  	  	assertNotNull("Cannot get notification service component", notifService);
+    public void setUp() throws Exception {
+        api = EasySOALocalApiFactory.createLocalApi(session);
+  	  	assertNotNull("Cannot get API", api);
   	  	assertNotNull("Cannot get document service component", docService);
   	  	sessionStatic = session;
     }
@@ -87,13 +90,13 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
      * @throws Exception
      */
     @Test
-    public void testAppliImplCreation() throws ClientException, MalformedURLException {
+    public void testAppliImplCreation() throws Exception {
     	
     	// Create Appli Impl.
     	Map<String, String> properties = new HashMap<String, String>();
     	properties.put("title", APPLIIMPL_TITLE);
     	properties.put(AppliImpl.PROP_URL, APPLIIMPL_URL);
-    	notifService.notifyAppliImpl(session, properties);
+    	api.notifyAppliImpl(properties);
     	
     	// Check creation
     	DocumentModel doc = docService.findAppliImpl(session, APPLIIMPL_URL);
@@ -108,7 +111,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
      * @throws Exception
      */
     @Test
-    public void testServiceAPICreation() throws ClientException, MalformedURLException {
+    public void testServiceAPICreation() throws Exception {
 
     	Assume.assumeNotNull(docService.findAppliImpl(session, APPLIIMPL_URL));
     	
@@ -119,7 +122,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
     	properties.put("title", API_TITLE);
     	properties.put(ServiceAPI.PROP_URL, API_URL);
     	properties.put(ServiceAPI.PROP_PARENTURL, APPLIIMPL_URL);
-    	notifService.notifyServiceApi(session, properties);
+    	api.notifyServiceApi(properties);
     	
     	// Check creation
     	DocumentModel doc = docService.findServiceApi(session, API_URL);
@@ -140,7 +143,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
     	properties.put("title", API2_TITLE);
     	properties.put(ServiceAPI.PROP_URL, API2_URL);
     	properties.put(ServiceAPI.PROP_PARENTURL, newAppliImplUrl);
-    	notifService.notifyServiceApi(session, properties);
+    	api.notifyServiceApi(properties);
     	
     	// Check creation
     	doc = docService.findServiceApi(session, API2_URL);
@@ -156,7 +159,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
     }
 
     @Test
-    public void testServiceCreation() throws ClientException, MalformedURLException {
+    public void testServiceCreation() throws Exception {
 
     	Assume.assumeNotNull(docService.findServiceApi(session, API_URL));
     	
@@ -167,7 +170,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
     	properties.put("title", SERVICE_TITLE);
     	properties.put(Service.PROP_URL, SERVICE_URL);
     	properties.put(Service.PROP_PARENTURL, API_URL);
-    	notifService.notifyService(session, properties);
+    	api.notifyService(properties);
 
     	// Check creation
     	DocumentModel doc = docService.findService(session, SERVICE_URL);
@@ -187,7 +190,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
     	properties.put("title", SERVICE2_TITLE);
     	properties.put(Service.PROP_URL, SERVICE2_URL);
     	properties.put(Service.PROP_PARENTURL, newApiUrl);
-    	notifService.notifyService(session, properties);
+    	api.notifyService(properties);
 
     	// Check creation
     	doc = docService.findService(session, SERVICE2_URL);
@@ -206,7 +209,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
     
 
     @Test
-    public void testServiceReferenceCreation() throws ClientException, MalformedURLException {
+    public void testServiceReferenceCreation() throws Exception {
 
     	URL referenceUrl = new URL("http://www.webservicex.net/globalweather.asmx?WSDL");
     	String generatedServiceTitle = "globalweather.asmx";
@@ -232,7 +235,7 @@ public class NotificationServiceTreeTest extends CoreServiceTestHelperBase {
     	properties.put(ServiceReference.PROP_ARCHIPATH, referenceUrl.toString());
     	properties.put(ServiceReference.PROP_PARENTURL, 
     			(String) parentModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-    	notifService.notifyServiceReference(session, properties);
+    	api.notifyServiceReference(properties);
 
     	// Check creation
     	DocumentModel doc = docService.findServiceReference(session, referenceUrl.toString());

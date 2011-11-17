@@ -35,6 +35,7 @@ import org.easysoa.sca.IScaImporter;
 // TODO: Refactor visitor implementations
 public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
 
+    @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog(ApiReferenceBindingVisitor.class);
     
     //protected DocumentModel referenceModel;

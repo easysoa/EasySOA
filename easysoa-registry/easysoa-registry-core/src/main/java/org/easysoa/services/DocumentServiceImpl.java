@@ -32,6 +32,7 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.services.DocumentService;
 import org.easysoa.properties.PropertyNormalizer;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -47,14 +48,18 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * @author mkalam-alami
  *
  */
-public class DocumentService extends DefaultComponent {
+public class DocumentServiceImpl extends DefaultComponent implements DocumentService {
     
-    private static Log log = LogFactory.getLog(DocumentService.class);
+    private static Log log = LogFactory.getLog(DocumentServiceImpl.class);
 
     // Must not be directly accessed, use getters
     private DocumentModel defaultAppliImpl = null;
     private DocumentModel wsRoot = null; 
     
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#createAppliImpl(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
+     */
+    @Override
     public final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException, MalformedURLException {
         String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
         DocumentModel appliImplModel = session.createDocumentModel(AppliImpl.DOCTYPE);
@@ -64,15 +69,10 @@ public class DocumentService extends DefaultComponent {
         return session.createDocument(appliImplModel);
     }
 
-    /**
-     * 
-     * @param session
-     * @param parentPath If null or invalid, default application is used
-     * @param url
-     * @return
-     * @throws ClientException
-     * @throws MalformedURLException 
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#createServiceAPI(org.nuxeo.ecm.core.api.CoreSession, java.lang.String, java.lang.String)
      */
+    @Override
     public final DocumentModel createServiceAPI(CoreSession session,
             String parentPath, String url) throws ClientException, MalformedURLException {
         String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
@@ -95,16 +95,10 @@ public class DocumentService extends DefaultComponent {
         return session.createDocument(apiModel);
     }
     
-    /**
-     * Returns null if the service API doesn't exist.
-     * 
-     * @param session
-     * @param parentPath service API
-     * @param url
-     * @return
-     * @throws ClientException
-     * @throws MalformedURLException 
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#createService(org.nuxeo.ecm.core.api.CoreSession, java.lang.String, java.lang.String)
      */
+    @Override
     public final DocumentModel createService(CoreSession session,
             String parentPath, String url) throws ClientException, MalformedURLException {
         if (parentPath != null) {
@@ -123,15 +117,10 @@ public class DocumentService extends DefaultComponent {
         }
     }
     
-    /**
-     * Returns null if the service API Impl doesn't exist.
-     * 
-     * @param session
-     * @param parentPath service API Impl
-     * @param archiPath
-     * @return
-     * @throws ClientException
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#createReference(org.nuxeo.ecm.core.api.CoreSession, java.lang.String, java.lang.String)
      */
+    @Override
     public final DocumentModel createReference(CoreSession session,
             String parentPath, String title) throws ClientException {
         if (parentPath != null) {
@@ -145,6 +134,10 @@ public class DocumentService extends DefaultComponent {
         }
     }
     
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#findAppliImpl(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
+     */
+    @Override
     public DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
         if (appliUrl != null) {
             try {
@@ -160,6 +153,10 @@ public class DocumentService extends DefaultComponent {
         }
     }
     
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#findServiceApi(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
+     */
+    @Override
     public DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
         if (apiUrl != null) {
             try {
@@ -175,6 +172,10 @@ public class DocumentService extends DefaultComponent {
         }
     }
     
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#findService(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
+     */
+    @Override
     public DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException {
         if (url != null) {
             DocumentModel result = findFirstDocument(session, Service.DOCTYPE,
@@ -191,6 +192,10 @@ public class DocumentService extends DefaultComponent {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#findServiceReference(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
+     */
+    @Override
     public DocumentModel findServiceReference(CoreSession session,
             String referenceArchiPath) throws ClientException {
         if (referenceArchiPath == null) {
@@ -200,16 +205,10 @@ public class DocumentService extends DefaultComponent {
                 EasySOADoctype.SCHEMA_COMMON_PREFIX +ServiceReference.PROP_ARCHIPATH, referenceArchiPath);
     }
     
-    /**
-     * Merges properties from a document to another,
-     * i.e. copies properties from a source model to the destination.
-     * The source document is deleted, and the destination saved.
-     * @param from
-     * @param to
-     * @param overwrite If destination properties have to be overwritten
-     * @return
-     * @throws ClientException
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#mergeDocument(org.nuxeo.ecm.core.api.CoreSession, org.nuxeo.ecm.core.api.DocumentModel, org.nuxeo.ecm.core.api.DocumentModel, boolean)
      */
+    @Override
     public boolean mergeDocument(CoreSession session, DocumentModel from,
             DocumentModel to, boolean overwrite) throws ClientException {
         if (to.getType().equals(to.getType())) {
@@ -232,6 +231,10 @@ public class DocumentService extends DefaultComponent {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#generateDocumentID(org.nuxeo.ecm.core.api.DocumentModel)
+     */
+    @Override
     public String generateDocumentID(DocumentModel doc) {
         try {
             return IdUtils.generateId(doc.getTitle(), "-", true, 0);
@@ -241,12 +244,10 @@ public class DocumentService extends DefaultComponent {
         }
     }
 
-    /**
-     * Returns the default Appli Impl., creates it if necessary.
-     * @param session
-     * @return
-     * @throws ClientException
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#getDefaultAppliImpl(org.nuxeo.ecm.core.api.CoreSession)
      */
+    @Override
     public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
         if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
             DocumentModel appliimpl = getChild(session, getWorkspaceRoot(session).getRef(), AppliImpl.DEFAULT_APPLIIMPL_TITLE);
@@ -272,6 +273,10 @@ public class DocumentService extends DefaultComponent {
         return defaultAppliImpl;
     }
 
+    /* (non-Javadoc)
+     * @see org.easysoa.services.DocumentService#getWorkspaceRoot(org.nuxeo.ecm.core.api.CoreSession)
+     */
+    @Override
     public DocumentModel getWorkspaceRoot(CoreSession session) throws ClientException {
         if (wsRoot == null || !session.exists(wsRoot.getRef())) {
             DocumentModel defaultDomain = session.getChildren(session.getRootDocument().getRef()).get(0);

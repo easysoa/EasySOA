@@ -34,12 +34,13 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.HttpFile;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.properties.PropertyNormalizer;
-import org.easysoa.services.ApiUrlProcessor;
 import org.easysoa.services.DocumentService;
+import org.easysoa.impl.HttpFile;
+import org.easysoa.properties.ApiUrlProcessor;
+import org.easysoa.properties.PropertyNormalizer;
+import org.easysoa.services.DocumentServiceImpl;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -242,7 +243,7 @@ public class ServiceListener implements EventListener {
             
             // Test if the service already exists, delete the other one(s) if necessary
             try {
-                DocumentService docService = Framework.getService(DocumentService.class);
+                DocumentService docService = Framework.getService(DocumentServiceImpl.class);
                 DocumentModelList existingServiceModels = session.query(
                         "SELECT * FROM Service WHERE serv:url = '" + url + "'");
                 for (DocumentModel existingServiceModel : existingServiceModels) {

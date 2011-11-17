@@ -23,8 +23,6 @@ package org.easysoa.properties;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 
 /**
@@ -35,9 +33,6 @@ import org.easysoa.doctypes.EasySOADoctype;
 public class PropertyNormalizer extends EasySOADoctype {
 
     private static final String DEFAULT_NORMALIZE_ERROR = "Failed to normalize property";
-
-    @SuppressWarnings("unused")
-    private static Log log = LogFactory.getLog(PropertyNormalizer.class);
     
     /**
      * Normalizes the given URL :

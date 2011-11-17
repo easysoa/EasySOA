@@ -1,11 +1,11 @@
-package org.easysoa.impl;
+package org.easysoa.rest;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import org.easysoa.api.EasySOAApi;
-import org.easysoa.impl.RestNotificationFactory.RestDiscoveryService;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 
 /**
  * 

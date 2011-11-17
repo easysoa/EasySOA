@@ -20,8 +20,8 @@
 
 package org.easysoa.sca.visitors;
 
+import org.easysoa.api.EasySOAApi;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.DiscoveryService;
 
 /**
  * Visitor for REST reference bindings
@@ -32,7 +32,7 @@ import org.easysoa.services.DiscoveryService;
 public abstract class ScaVisitorBase implements ScaVisitor {
 
     protected IScaImporter scaImporter;
-    protected DiscoveryService discoveryService;
+    protected EasySOAApi api;
     
     /**
      * 
@@ -46,9 +46,9 @@ public abstract class ScaVisitorBase implements ScaVisitor {
      * 
      * @param scaImporter
      */
-    public ScaVisitorBase(IScaImporter scaImporter, DiscoveryService discoveryService) {
+    public ScaVisitorBase(IScaImporter scaImporter, EasySOAApi api) {
         this.scaImporter = scaImporter;
-        this.discoveryService = discoveryService;
+        this.api = api;
     }
     
     //@Override

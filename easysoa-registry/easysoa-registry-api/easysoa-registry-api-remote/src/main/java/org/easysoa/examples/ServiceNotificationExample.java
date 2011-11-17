@@ -25,9 +25,9 @@ import java.util.Map;
 import org.easysoa.api.EasySOAApi;
 import org.easysoa.api.EasySOARemoteApiFactory;
 import org.easysoa.doctypes.Service;
-import org.easysoa.impl.RestNotificationFactory;
-import org.easysoa.impl.RestNotificationRequest;
-import org.easysoa.impl.RestNotificationFactory.RestDiscoveryService;
+import org.easysoa.rest.RestNotificationFactory;
+import org.easysoa.rest.RestNotificationRequest;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 
 /**
  * 

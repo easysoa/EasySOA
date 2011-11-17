@@ -1,6 +1,8 @@
 package org.easysoa.sca.frascati;
 
 import java.io.File;
+
+import org.easysoa.api.EasySOAApi;
 import org.easysoa.sca.visitors.ApiReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ApiServiceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
@@ -12,20 +14,19 @@ import org.eclipse.stp.sca.Composite;
  *
  */
 public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
-
+    
 	/**
 	 * Default constructor
 	 * @throws Exception
 	 */
-	public ApiFraSCAtiScaImporter(File scaComposite) throws Exception {
-		super(scaComposite);
-		//init();
+	public ApiFraSCAtiScaImporter(EasySOAApi api, File scaComposite) throws Exception {
+		super(api, scaComposite);
 	}
 
     @Override	
     public ScaVisitor createServiceBindingVisitor() {
         // Visitor using Notification API
-    	return new ApiServiceBindingVisitor(this);
+    	return new ApiServiceBindingVisitor(this, getApi());
     }
     
     /**

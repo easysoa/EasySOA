@@ -20,17 +20,18 @@
 
 package org.easysoa.sca.visitors;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApi;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.rest.RestNotificationRequest;
-import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
+import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.ApiUrlProcessor;
 
 /**
  * Visitor for WS bindings.
@@ -42,12 +43,15 @@ public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
     
 	private static Log log = LogFactory.getLog(ApiServiceBindingVisitor.class);	
 	
+	private EasySOAApi api;
+	
 	/**
 	 * 
 	 * @param scaImporter
 	 */
-    public ApiServiceBindingVisitor(IScaImporter scaImporter) {
+    public ApiServiceBindingVisitor(IScaImporter scaImporter, EasySOAApi api) {
         super(scaImporter);
+        this.api = api;
     }
 
     //@Override
@@ -97,25 +101,24 @@ public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
         // TODO recompute the apiUrl : find a way to use or move the computeApiUrl
         //String apiUrl = "";
         // Using default value for API url
-	    RestNotificationFactory factory = new RestNotificationFactory();
 	    
 	    // enrich or create API
-	    RestNotificationRequest requestServiceApi = factory.createNotification(RestDiscoveryService.SERVICEAPI);
-	    requestServiceApi.setProperty(ServiceAPI.PROP_URL, apiUrl);
-	    requestServiceApi.setProperty(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
-	    requestServiceApi.setProperty(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getName());
-	    requestServiceApi.setProperty(ServiceAPI.PROP_PARENTURL, appliImplUrl);	    
-	    requestServiceApi.send();
+	    Map<String, String> properties = new HashMap<String, String>();
+        properties.put(ServiceAPI.PROP_URL, apiUrl);
+        properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
+        properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getName());
+        properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);	    
+	    api.notifyServiceApi(properties);
 	    
 	    // enrich or create service
-	    RestNotificationRequest requestService = factory.createNotification(RestDiscoveryService.SERVICE);	    
-	    requestService.setProperty(Service.PROP_URL, serviceUrl);
-	    requestService.setProperty(Service.PROP_TITLE, scaImporter.getCurrentArchiName());
-	    requestService.setProperty(Service.PROP_PARENTURL, apiUrl);
-	    requestService.setProperty(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
-	    requestService.setProperty(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-	    requestService.setProperty(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ?	    
-	    requestService.send();
+        properties.clear();
+	    properties.put(Service.PROP_URL, serviceUrl);
+	    properties.put(Service.PROP_TITLE, scaImporter.getCurrentArchiName());
+	    properties.put(Service.PROP_PARENTURL, apiUrl);
+	    properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
+	    properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
+	    properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ?	    
+	    api.notifyService(properties);
     }
     
     //@Override

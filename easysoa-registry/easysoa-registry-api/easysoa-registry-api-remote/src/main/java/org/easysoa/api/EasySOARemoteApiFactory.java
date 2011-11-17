@@ -2,7 +2,7 @@ package org.easysoa.api;
 
 import java.io.IOException;
 
-import org.easysoa.impl.EasySOARemoteApi;
+import org.easysoa.rest.EasySOARemoteApi;
 
 /**
  * 

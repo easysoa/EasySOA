@@ -15,8 +15,19 @@
   <dependencies>
 	<!-- Easysoa registry -->
     <dependency>
-      <groupId>org.easysoa.registry</groupId>
-      <artifactId>easysoa-registry-api</artifactId>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-local</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-remote</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry</groupId>

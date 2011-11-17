@@ -28,6 +28,7 @@ import java.util.Stack;
 import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApi;
 import org.easysoa.registry.frascati.FileUtils;
 
 //import org.easysoa.registry.frascati.FraSCAtiService;
@@ -110,10 +111,11 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	// Logger
 	private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
 
+	private EasySOAApi api;
+	
 	protected File compositeFile;
 	private String serviceStackType;
 	private String serviceStackUrl;
-
 
 	private Stack<String> archiNameStack = new Stack<String>();
 	private Stack<EObject> bindingStack = new Stack<EObject>();
@@ -132,7 +134,8 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	 * @throws FrascatiException 
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporterBase(File compositeFile) throws FrascatiException{
+	public FraSCAtiScaImporterBase(EasySOAApi api, File compositeFile) throws FrascatiException{
+	    this.api = api;
 		this.compositeFile = compositeFile;
 		frascatiService = new FraSCAtiServiceBase();
 	}
@@ -375,7 +378,7 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	}
 
 	@Override
-	public void importSCA() throws Exception {
+	public void importSCA() throws Exception {	    
 		log.debug("scaFileName = " + compositeFile.getName());
 		// If the filename is not set, it is not possible to choose the corresponding import method
 		if(compositeFile.getName() == null || "".equals(compositeFile.getName())){
@@ -394,6 +397,10 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	//TODO Refactor this method
 	public void setFrascatiService(FraSCAtiServiceItf frascatiService){
 		this.frascatiService = frascatiService;
+	}
+	
+	protected EasySOAApi getApi() {
+	    return api;
 	}
 	
 }
