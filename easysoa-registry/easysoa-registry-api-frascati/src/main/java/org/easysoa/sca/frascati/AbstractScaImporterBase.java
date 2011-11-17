@@ -38,6 +38,7 @@ import org.easysoa.registry.frascati.RestBindingInfoProvider;
 import org.easysoa.registry.frascati.WSBindingInfoProvider;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
+import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
@@ -98,7 +99,7 @@ import org.ow2.frascati.util.FrascatiException;
  * @author jguillemotte
  *
  */
-public abstract class FraSCAtiScaImporterBase implements IScaImporter {
+public abstract class AbstractScaImporterBase implements IScaImporter {
 
 	public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
 	public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
@@ -108,7 +109,7 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	//public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
 
 	// Logger
-	private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
+	private static Log log = LogFactory.getLog(AbstractScaImporterBase.class);
 
 	protected File compositeFile;
 	private String serviceStackType;
@@ -120,6 +121,8 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 
 	protected/* @Inject */FraSCAtiServiceItf frascatiService; // TODO better Inject doesn't work outside tests ?!
 
+	protected BindingVisitorFactory bindingVisitorFactory;
+	
 	/**
 	 * List of binding info providers
 	 */
@@ -132,8 +135,9 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	 * @throws FrascatiException 
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporterBase(File compositeFile) throws FrascatiException{
+	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile) throws FrascatiException{
 		this.compositeFile = compositeFile;
+		this.bindingVisitorFactory =  bindingVisitorFactory;
 		frascatiService = new FraSCAtiServiceBase();
 	}
     /*public FraSCAtiScaImporterBase(CoreSession documentManager, Blob compositeFile) throws ClientException, Exception {

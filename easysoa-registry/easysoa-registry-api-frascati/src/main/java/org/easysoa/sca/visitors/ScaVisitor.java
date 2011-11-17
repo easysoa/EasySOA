@@ -43,4 +43,9 @@ public interface ScaVisitor {
      */
     String getDescription();
 
+    /**
+     * Set the document manager
+     */
+    public void setDocumentManager(Object documentManager);
+    
 }

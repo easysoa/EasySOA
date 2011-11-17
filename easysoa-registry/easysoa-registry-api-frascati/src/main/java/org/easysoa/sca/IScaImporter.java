@@ -63,7 +63,7 @@ public interface IScaImporter {
 	 */
     // TODO Not really a good solution, do better
 	//public CoreSession getDocumentManager();
-	public Object getDocumentManager();
+	//public Object getDocumentManager();
 
     /**
      * 

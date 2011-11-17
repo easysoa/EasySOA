@@ -123,4 +123,9 @@ public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
         // nothing to do
     }
 
+	@Override
+	public void setDocumentManager(Object documentManager) {
+		// Nothing to do, document manager is not used here
+	}
+
 }

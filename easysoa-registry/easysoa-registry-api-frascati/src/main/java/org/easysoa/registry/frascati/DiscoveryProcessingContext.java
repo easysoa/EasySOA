@@ -22,11 +22,8 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 
 	static final Log log = LogFactory.getLog(DiscoveryProcessingContext.class);
 	
-	//protected IScaImporter scaImporter;
-	
-	public DiscoveryProcessingContext(ProcessingContext delegate/*, IScaImporter scaImporter*/) {
+	public DiscoveryProcessingContext(ProcessingContext delegate) {
 		this.delegate = delegate;
-		//this.scaImporter = scaImporter;
 	}
 
 	//////////////////////////////////////////////

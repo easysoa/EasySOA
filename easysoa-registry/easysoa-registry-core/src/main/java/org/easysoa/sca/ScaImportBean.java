@@ -30,6 +30,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.sca.extension.ScaImporterComponent;
+import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
+import org.easysoa.sca.visitors.BindingVisitorFactory;
+import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
@@ -108,8 +111,14 @@ public class ScaImportBean {
             IScaImporter importer;
             try {
             	//importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, compositeFile);
-            	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, scaFile);
-                DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
+            	
+            	// TODO Call here a BindingVisistorFactory to pass the coresession (documentManager)
+            	// Replace the parameters in the method createScaImporter to use the bindingVisitor instead of the documentManager 
+            	//importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, scaFile);
+            	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(documentManager);
+            	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(visitorFactory, scaFile);
+            	
+            	DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
                 if (parentAppliImpl != null) {
                     // Add a test here to check if instance of NuxeoFrascatiScaImporter
                 	importer.setParentAppliImpl(appliImplModel);

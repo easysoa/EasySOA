@@ -20,7 +20,6 @@ public class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 
 	public FraSCAtiServiceBase() throws FrascatiException {
 		// Instantiate OW2 FraSCAti.
-		//easySOAApp = new FraSCAtiBootstrapApp();
 		easySOAApp = new FraSCAtiCompositeApp();
 		easySOAApp.start();
 	}
@@ -131,9 +130,7 @@ public class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 	@Override
 	public Set<Composite> readScaZip(File scaZipFile) throws Exception {
 		// NB. can't use processContribution() because in check mode returns
-		// nothing
-		// and puts in the context only the single root composite
-
+		// nothing and puts in the context only the single root composite
 		URL scaZipFileUrl = scaZipFile.toURI().toURL();
 
 		// if sca zip : (still fails to load sub composite, i.e. intent, because

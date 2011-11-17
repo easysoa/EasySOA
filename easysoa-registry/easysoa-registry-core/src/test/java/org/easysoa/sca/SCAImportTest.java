@@ -27,6 +27,9 @@ import java.net.MalformedURLException;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
+import org.easysoa.sca.visitors.BindingVisitorFactory;
+import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.easysoa.sca.xml.XMLScaImporter;
 import org.easysoa.services.CoreServiceTestHelperBase;
 import org.easysoa.services.DocumentService;
@@ -85,7 +88,9 @@ public class SCAImportTest extends CoreServiceTestHelperBase {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-    	XMLScaImporter importer = new XMLScaImporter(session, scaFile);
+    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	XMLScaImporter importer = new XMLScaImporter(visitorFactory, scaFile);    	
+    	//XMLScaImporter importer = new XMLScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");

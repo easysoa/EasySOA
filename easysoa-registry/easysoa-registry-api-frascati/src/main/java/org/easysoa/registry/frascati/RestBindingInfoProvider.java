@@ -22,7 +22,7 @@ package org.easysoa.registry.frascati;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.sca.frascati.FraSCAtiScaImporterBase;
+import org.easysoa.sca.frascati.AbstractScaImporterBase;
 import org.eclipse.stp.sca.BaseReference;
 import org.eclipse.stp.sca.BaseService;
 import org.eclipse.stp.sca.Binding;
@@ -37,7 +37,7 @@ public class RestBindingInfoProvider extends FrascatiBindingInfoProviderBase {
 	 * 
 	 * @param frascatiScaImporter
 	 */
-	public RestBindingInfoProvider(FraSCAtiScaImporterBase frascatiScaImporter) {
+	public RestBindingInfoProvider(AbstractScaImporterBase frascatiScaImporter) {
 		super(frascatiScaImporter);
 	}
 

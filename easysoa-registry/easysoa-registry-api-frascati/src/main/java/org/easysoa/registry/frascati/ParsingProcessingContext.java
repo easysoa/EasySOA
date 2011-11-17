@@ -20,16 +20,13 @@
 
 package org.easysoa.registry.frascati;
 
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Composite;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
-
 
 /**
  * ProcessingContext for parsing-only purpose
@@ -53,7 +50,6 @@ public class ParsingProcessingContext implements ProcessingContext {
 	public ParsingProcessingContext(ProcessingContext delegate) {
 		this.delegate = delegate;
 	}
-	
 
 	//////////////////////////////////////////////
 	// additional methods
@@ -65,7 +61,6 @@ public class ParsingProcessingContext implements ProcessingContext {
 	public List<String> getErrorMessages() {
 		return errorMessages;
 	}
-
 
 	//////////////////////////////////////////////
 	// delegate enhanced methods

@@ -75,7 +75,8 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
         properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getName());
         properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);
-        discoveryService.notifyServiceApi((CoreSession) scaImporter.getDocumentManager(), properties);
+        //discoveryService.notifyServiceApi((CoreSession) scaImporter.getDocumentManager(), properties);
+        discoveryService.notifyServiceApi(documentManager, properties);
 
         // enrich or create service
         properties = new HashMap<String, String>();
@@ -85,12 +86,18 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
         properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
         properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ?
-        discoveryService.notifyService((CoreSession) scaImporter.getDocumentManager(), properties);
+        //discoveryService.notifyService((CoreSession) scaImporter.getDocumentManager(), properties);
+        discoveryService.notifyService(documentManager, properties);
     }
     
     @Override
     public void postCheck() throws ClientException {
         // nothing to do
     }
+
+	@Override
+	public void setDocumentManager(Object documentManager) {
+		this.documentManager = (CoreSession) documentManager;
+	}
 
 }

@@ -120,7 +120,6 @@ public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
 
     //@Override
     public void postCheck() throws Exception {
-        
         /*DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
         // find referenced service
         String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);
@@ -135,5 +134,10 @@ public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
             log.warn("Reference URL is invalid", e);
         }*/
     }
+
+	@Override
+	public void setDocumentManager(Object documentManager) {
+		// Nothing to do, document manager is not used here
+	}
 
 }

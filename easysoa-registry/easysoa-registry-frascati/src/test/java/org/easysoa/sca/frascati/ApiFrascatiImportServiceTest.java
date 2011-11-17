@@ -12,6 +12,8 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.registry.frascati.FraSCAtiService;
 import org.easysoa.sca.extension.ScaImporterComponent;
+import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
+import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
@@ -109,7 +111,8 @@ public class ApiFrascatiImportServiceTest {
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(scaFile);
+    	BindingVisitorFactory bindingVisitorFactory = new ApiBindingVisitorFactory();
+    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile);
     	importer.setFrascatiService(frascatiService);
 		//importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");

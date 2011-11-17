@@ -3,6 +3,7 @@ package org.easysoa.sca.frascati;
 import java.io.File;
 import org.easysoa.sca.visitors.ApiReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ApiServiceBindingVisitor;
+import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.stp.sca.Composite;
 
@@ -11,21 +12,21 @@ import org.eclipse.stp.sca.Composite;
  * @author jguillemotte
  *
  */
-public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
+public class ApiFraSCAtiScaImporter extends AbstractScaImporterBase {
 
 	/**
 	 * Default constructor
 	 * @throws Exception
 	 */
-	public ApiFraSCAtiScaImporter(File scaComposite) throws Exception {
-		super(scaComposite);
-		//init();
+	public ApiFraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory, File scaComposite) throws Exception {
+		super(bindingVisitorFactory, scaComposite);
 	}
 
     @Override	
     public ScaVisitor createServiceBindingVisitor() {
         // Visitor using Notification API
-    	return new ApiServiceBindingVisitor(this);
+    	//return new ApiServiceBindingVisitor(this);
+    	return bindingVisitorFactory.createServiceBindingVisitor(this);
     }
     
     /**
@@ -35,11 +36,12 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
     @Override
     public ScaVisitor createReferenceBindingVisitor() {
         // Visitor using Notification API
-    	return new ApiReferenceBindingVisitor(this);
+    	//return new ApiReferenceBindingVisitor(this);
+    	return bindingVisitorFactory.createReferenceBindingVisitor(this);
     }
     
     public void visitComposite(Composite composite){
-    	super.visitComposite(composite);
+    	//super.visitComposite(composite);
     }
 
 	@Override
@@ -47,10 +49,10 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 		return null;
 	}
 
-	@Override
+	/*@Override
 	public Object getDocumentManager() {
 		return null;
-	}
+	}*/
 
 	@Override
 	public void setParentAppliImpl(Object appliImplModel) {

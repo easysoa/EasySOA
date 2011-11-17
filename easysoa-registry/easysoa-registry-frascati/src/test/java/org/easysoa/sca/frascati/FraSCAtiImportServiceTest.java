@@ -33,6 +33,9 @@ import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.registry.frascati.FraSCAtiService;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.extension.ScaImporterComponent;
+import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
+import org.easysoa.sca.visitors.BindingVisitorFactory;
+import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
@@ -133,7 +136,9 @@ public class FraSCAtiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
-		FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile); // TODO put FileBlob back in orig test
+    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);    	
+		//FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile); // TODO put FileBlob back in orig test
     	importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
@@ -190,8 +195,10 @@ public class FraSCAtiImportServiceTest {
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	
-    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
+
+    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);
+    	//FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
@@ -222,7 +229,9 @@ public class FraSCAtiImportServiceTest {
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
+    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);    	
+    	//FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
@@ -258,7 +267,9 @@ public class FraSCAtiImportServiceTest {
     	File scaFile = new File(scaFilePath);    	
    	
     	// Getting the importer
-    	IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
+    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	IScaImporter importer = scaImporterComponent.createScaImporter(visitorFactory, scaFile);
+    	//IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
     	// If importer is null, we have a problem
     	assertNotNull(importer);
     	
@@ -315,7 +326,9 @@ public class FraSCAtiImportServiceTest {
     	File scaFile = new File(scaFilePath);    	
    	
     	// Getting the importer
-    	IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
+    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	IScaImporter importer = scaImporterComponent.createScaImporter(visitorFactory, scaFile);
+    	//IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
     	// If importer is null, we have a problem
     	assertNotNull(importer);
 
