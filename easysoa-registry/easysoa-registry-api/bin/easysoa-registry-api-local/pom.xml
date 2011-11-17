@@ -22,8 +22,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.easysoa.registry</groupId>
-            <artifactId>easysoa-registry-core</artifactId>
+            <groupId>org.nuxeo.ecm.core</groupId>
+            <artifactId>nuxeo-core-api</artifactId>
         </dependency>
     </dependencies>
 	

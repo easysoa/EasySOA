@@ -50,11 +50,11 @@ public class EasySOALocalApi implements EasySOAApi {
      * Properties require at least application's URL (PROP_URL).
      * @param session
      * @param properties A set of properties of the document, among the AppliImpl.PROP_XXX constants.
-     * @return The created/updated Appli Impl.
+     * @return The created/updated Appli Impl. ID
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public final boolean notifyAppliImpl(Map<String, String> properties)
+    public final String notifyAppliImpl(Map<String, String> properties)
             throws ClientException, MalformedURLException {
         
         // Check mandatory field
@@ -79,7 +79,7 @@ public class EasySOALocalApi implements EasySOAApi {
             session.saveDocument(appliImplModel);
             session.save();
             
-            return true;
+            return appliImplModel.getId();
         
         }
         else {
@@ -93,11 +93,11 @@ public class EasySOALocalApi implements EasySOAApi {
      * the parent document URL (PROP_PARENTURL) is also recommended if known.
      * @param session
      * @param properties A set of properties of the document, among the ServiceAPI.PROP_XXX constants.
-     * @return The created/updated API
+     * @return The created/updated API ID
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public final boolean notifyServiceApi(Map<String, String> properties)
+    public final String notifyServiceApi(Map<String, String> properties)
             throws ClientException, MalformedURLException {
         
         // Check mandatory fields
@@ -153,7 +153,7 @@ public class EasySOALocalApi implements EasySOAApi {
             session.saveDocument(apiModel);
             session.save();
             
-            return true;
+            return apiModel.getId();
         }
         else {
             throw new ClientException("API URL or parent URL not informed");
@@ -166,11 +166,11 @@ public class EasySOALocalApi implements EasySOAApi {
      * If parent API is unknown, you can use the {@link #computeApiUrl} function.
      * @param session
      * @param properties A set of properties of the document, among the Service.PROP_XXX constants.
-     * @return The created/updated Service
+     * @return The created/updated Service ID
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public final boolean notifyService(Map<String, String> properties) throws ClientException, MalformedURLException {
+    public final String notifyService(Map<String, String> properties) throws ClientException, MalformedURLException {
     
         // Check mandatory fields
         String url = properties.get(Service.PROP_URL);
@@ -230,7 +230,7 @@ public class EasySOALocalApi implements EasySOAApi {
             session.saveDocument(serviceModel); 
             session.save();
 
-            return true;
+            return serviceModel.getId();
             
         }
         else {
@@ -247,7 +247,7 @@ public class EasySOALocalApi implements EasySOAApi {
      * @return The created/updated Service
      * @throws ClientException
      */
-    public final boolean notifyServiceReference(
+    public final String notifyServiceReference(
             Map<String, String> properties) throws ClientException {
 
         String archiPath = properties.get(ServiceReference.PROP_ARCHIPATH);
@@ -273,7 +273,7 @@ public class EasySOALocalApi implements EasySOAApi {
             session.saveDocument(referenceModel);
             session.save();
             
-            return true;
+            return referenceModel.getId();
 
         }
         else {

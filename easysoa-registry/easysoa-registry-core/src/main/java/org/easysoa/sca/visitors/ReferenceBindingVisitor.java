@@ -36,6 +36,7 @@ import org.easysoa.sca.IScaImporter;
 import org.easysoa.services.DocumentServiceImpl;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -86,8 +87,9 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
         properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-        api.notifyServiceReference(properties); // XXX referenceModel = ?
-        
+        String referenceModelId = api.notifyServiceReference(properties);
+        referenceModel = ((CoreSession) scaImporter.getDocumentManager()).getDocument(new IdRef(referenceModelId));
+                
         // Notify referenced service
         properties = new HashMap<String, String>();
         properties.put(Service.PROP_URL, refUrl);

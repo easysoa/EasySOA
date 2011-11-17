@@ -86,7 +86,8 @@ public class DiscoveryRest {
         EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            api.notifyAppliImpl(params);
+            String id = api.notifyAppliImpl(params);
+            result.put("documentId", id);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -126,7 +127,8 @@ public class DiscoveryRest {
         EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            api.notifyServiceApi(params);
+            String id = api.notifyServiceApi(params);
+            result.put("documentId", id);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -161,7 +163,8 @@ public class DiscoveryRest {
         EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            api.notifyService(params);
+            String id = api.notifyService(params);
+            result.put("documentId", id);
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -196,7 +199,8 @@ public class DiscoveryRest {
         EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            api.notifyServiceReference(params);
+            String id = api.notifyServiceReference(params);
+            result.put("documentId", id);
         }
         catch (Exception e) {
             appendError(e.getMessage());
