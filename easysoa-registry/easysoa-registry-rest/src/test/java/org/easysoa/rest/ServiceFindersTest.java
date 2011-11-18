@@ -87,7 +87,6 @@ public class ServiceFindersTest {
             log.info("Found service: "+linkName);
             log.info(foundLinks.getString(linkName));
         }
-        
     }
     
     private UriInfo mockUriInfo(String uri) throws URISyntaxException {

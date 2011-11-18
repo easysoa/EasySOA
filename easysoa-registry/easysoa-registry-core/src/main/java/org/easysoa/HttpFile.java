@@ -43,7 +43,8 @@ import org.restlet.data.CharacterSet;
  *
  */
 public class HttpFile {
-    
+
+    private static final int CONNECT_TIMEOUT = 1000;
     private static final int DOWNLOAD_TIMEOUT = 15000;
     
     private URL url;
@@ -54,12 +55,20 @@ public class HttpFile {
     }
 
     public boolean isURLAvailable() {
+        Socket s = new Socket();
         try {
-            new Socket().connect(new InetSocketAddress(
-                    url.getHost(), (url.getPort() != -1) ? url.getPort() : 80));
+            s.connect(
+                    new InetSocketAddress(url.getHost(),
+                            (url.getPort() != -1) ? url.getPort() : 80),
+                    CONNECT_TIMEOUT);
             return true;
         }
         catch (IOException e) {
+            try {
+                s.close();
+            } catch (IOException e1) {
+                // Do nothing
+            }
             return false;
         }
     }
