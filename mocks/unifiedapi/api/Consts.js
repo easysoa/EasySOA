@@ -10,6 +10,7 @@ var ServiceImplType = {
     TEMPLATING_UI : "ui",
     JAVASCRIPT : "javascript",
     JAVA : "java",
+    TALEND : "talend",
     EXTERNAL : "external"
 };
 

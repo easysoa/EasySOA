@@ -102,12 +102,18 @@ var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
     }
 });
 
+var TalendImpl = Class.create(AbstractServiceImpl, {
+    initialize : function($super, name, endpointUrl, options /*=undefined*/) {
+        $super(name, consts.ServiceImplType.TALEND, options);
+        this.endpointUrl = endpointUrl;
+    }
+});
+
 var ExternalImpl = Class.create(AbstractServiceImpl, {
     initialize : function($super, name, options /*=undefined*/) {
         $super(name, consts.ServiceImplType.EXTERNAL, options);
     }
 });
-
 
 //===================== Appli Impl. =====================
 
@@ -146,6 +152,7 @@ module.exports = {
   JavascriptImpl        :   JavascriptImpl,
   JavaImpl              :   JavaImpl,
   TemplatingUIImpl      :   TemplatingUIImpl,
+  TalendImpl            :   TalendImpl,
   ExternalImpl          :   ExternalImpl,
-  AppliImpl          :   AppliImpl
+  AppliImpl             :   AppliImpl
 };

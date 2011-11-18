@@ -15,3 +15,5 @@ require('./07-dev-to-staging');
 require('./08-api-changes');
 require('./09-api-changes-group');
 require('./10-new-project');
+require('./11-talend-service');
+require('./12-conf-generation');

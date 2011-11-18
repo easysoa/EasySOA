@@ -118,7 +118,7 @@ var AbstractEnvironment = Class.create({
         this.externalServiceEndpoints = new Array();
         this.endpoints = new Array();
         this.servers = new $H();
-        this.tunnelingNodes = new Array(); // put in a tunneling server?
+        this.tunnelingNodes = new Array(); // TODO put in a tunneling server?
         for (var i = 0; i < serverArray.length; i++) {
             var server = serverArray[i];
             for (var j = 0; j < server.supportedImplTypes.length; j++) {
@@ -130,8 +130,15 @@ var AbstractEnvironment = Class.create({
         this.externalServiceEndpoints.push(serviceEndpoint);
     },
     addServiceImpl : function(serviceImpl) {
-        var server = this.servers.get(serviceImpl.type);
-        var newEndpoint = server.install(serviceImpl, this);
+        var newEndpoint;
+        if (serviceImpl.type != consts.ServiceImplType.TALEND) {
+            var server = this.servers.get(serviceImpl.type);
+            newEndpoint = server.install(serviceImpl, this);
+        }
+        else {
+            // Talend: no auto deployment possible
+            newEndpoint = new endpoints.ExternalEndpoint(serviceImpl, serviceImpl.endpointUrl);
+        }
         this.endpoints.push(newEndpoint);
         return newEndpoint;
     },
@@ -143,6 +150,7 @@ var AbstractEnvironment = Class.create({
     resolveReferences : function() {
         var tunnelingNodes = new Array();
         var allEndpoints = this.endpoints.concat(this.externalServiceEndpoints);
+        var allReferencesResolved = true;
         allEndpoints.each(function (endpoint) {
             var references = endpoint.getReferences();
             // Resolve each reference
@@ -157,9 +165,15 @@ var AbstractEnvironment = Class.create({
                 if (matchingEndpoint != null) {
                     tunnelingNodes.push(new proxies.TunnelingNode(reference.fromImpl, matchingEndpoint.impl));
                 }
+                else {
+                    console.info("Warning: could not resolve reference from " + 
+                            reference.fromImpl.name + " to " + reference.toImpl.name);
+                    allReferencesResolved = false;
+                }
             });
         });
         this.tunnelingNodes = tunnelingNodes;
+        return allReferencesResolved;
     },
     getTunnelingNodeByReference : function(reference) {
         var result = null;
@@ -179,19 +193,23 @@ var AbstractEnvironment = Class.create({
     },
     start : function() {
         console.log("Starting environment " + this.name + "...");
-        this.resolveReferences();
-        var allIsStarted = true;
-        this.externalServiceEndpoints.each(function(endpoint) {
-            if (!endpoint.checkStarted()) {
-                allIsStarted = false;
-            }
-        });
-        this.servers.each(function(entry) {
-            if (!entry[1].start()) {
-                allIsStarted = false;
-            }
-        });
-        return allIsStarted;
+        if (this.resolveReferences()) {
+            var allIsStarted = true;
+            this.externalServiceEndpoints.each(function(endpoint) {
+                if (!endpoint.checkStarted()) {
+                    allIsStarted = false;
+                }
+            });
+            this.servers.each(function(entry) {
+                if (!entry[1].start()) {
+                    allIsStarted = false;
+                }
+            });
+            return allIsStarted;
+        }
+        else {
+            return false;
+        }
     },
     stop : function() {
         this.servers.each(function(entry) {

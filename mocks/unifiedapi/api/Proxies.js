@@ -89,8 +89,17 @@ var ChangeDetectionFeature = Class.create(AbstractProxyFeature, {
     }
 });
 
+var FuseFeature = Class.create(AbstractProxyFeature, {
+    initialize : function($super, limitPerMinute) {
+        $super(ChangeDetectionFeature);
+        this.limitPerMinute = limitPerMinute;
+    }
+});
+
+
 module.exports = {
   TunnelingNode          : TunnelingNode,
-  MonitoringProxyFeature :  MonitoringProxyFeature,
-  ChangeDetectionFeature :  ChangeDetectionFeature
+  MonitoringProxyFeature : MonitoringProxyFeature,
+  ChangeDetectionFeature : ChangeDetectionFeature,
+  FuseFeature            : FuseFeature
 };

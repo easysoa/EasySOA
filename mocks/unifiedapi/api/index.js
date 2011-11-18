@@ -17,3 +17,7 @@ module.exports.selectServiceEndpointInUI = function(envFilter) {
     selectedEndpoint.started = true;
     return selectedEndpoint;
 };
+
+module.exports.selectServiceImplFromEnvInUI = function(env) {
+    return env.endpoints[0].impl;
+};
