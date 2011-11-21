@@ -1,4 +1,5 @@
 Object.extend(global, require('prototype'));
+Object.extend(module.exports, require('./Configuration'));
 Object.extend(module.exports, require('./Consts'));
 Object.extend(module.exports, require('./Endpoints'));
 Object.extend(module.exports, require('./Environments'));

@@ -17,6 +17,30 @@ var api = require('./api');
 console.log("-------------------------------------");
 console.log("[Scenario #12]");
 
-// TODO
+// Set up environment
+
+var serviceImpl = new api.JavaImpl("MyService");
+serviceImpl.edit();
+serviceImpl.isProductionReady = true;
+
+var devEnv = new api.DevelopmentEnvironment("MyEnv", "Sophie");
+devEnv.addServiceImpl(serviceImpl);
+devEnv.start();
+
+var prodEnv = new api.ProductionEnvironment("Production");
+prodEnv.addServiceImpl(serviceImpl);
+prodEnv.start();
+
+// Property File
+
+var endpointConfGen = new api.EndpointListConfGenerator();
+endpointConfGen.generate(devEnv, "properties"); // Generate a property file to be used in any runtime
+endpointConfGen.generate(prodEnv, "properties");
+
+// Template File
+
+var templateConfGen = new api.TemplateConfGenerator(new api.TemplatingUIImpl("SpringConfTpl"));
+templateConfGen.edit();
+templateConfGen.generate(prodEnv);
 
 console.log("Done.");

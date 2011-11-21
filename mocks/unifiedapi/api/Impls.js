@@ -94,7 +94,7 @@ var JavaImpl = Class.create(AbstractServiceImpl, {
 });
 
 var TemplatingUIImpl = Class.create(AbstractServiceImpl, {
-    initialize : function($super, name, options, fromScaffolderClient /*=undefined*/) {
+    initialize : function($super, name, options /*=undefined*/, fromScaffolderClient /*=undefined*/) {
         $super(name, consts.ServiceImplType.TEMPLATING_UI, options);
         if (fromScaffolderClient != undefined) {
             console.log("Building template UI using "+fromScaffolderClient.name);
