@@ -15,10 +15,26 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>easysoa-registry-api-frascati</module>
         <module>easysoa-registry-api-core</module>
         <module>easysoa-registry-api-local</module>
         <module>easysoa-registry-api-remote</module>
-        <module>easysoa-registry-api-frascati</module>
     </modules>
+    
+    <build>
+      <pluginManagement>
+        <plugins>      
+          <!-- Compile with Java 1.6 -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <source>1.6</source>
+              <target>1.6</target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </pluginManagement>
+    </build>
 
 </project>
