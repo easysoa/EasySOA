@@ -22,12 +22,10 @@
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-core</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-local</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>

@@ -15,10 +15,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>easysoa-registry-api-frascati</module>
         <module>easysoa-registry-api-core</module>
         <module>easysoa-registry-api-local</module>
         <module>easysoa-registry-api-remote</module>
+        <module>easysoa-registry-api-frascati</module>
     </modules>
 
 </project>

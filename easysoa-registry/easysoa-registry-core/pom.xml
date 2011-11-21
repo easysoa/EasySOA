@@ -13,24 +13,21 @@
   <name>EasySOA Registry Core</name>
 
   <dependencies>
-	<!-- Easysoa registry -->
+	<!-- Easysoa Registry API -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-core</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-local</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-remote</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.easysoa.registry</groupId>
+      <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-frascati</artifactId>
     </dependency>
 	

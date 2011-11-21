@@ -1,123 +1,133 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<parent>
-		<artifactId>nuxeo-features-parent</artifactId>
-		<groupId>org.nuxeo.ecm.platform</groupId>
-		<version>5.4.2</version>
-	</parent>
+    <parent>
+        <artifactId>nuxeo-features-parent</artifactId>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <version>5.4.2</version>
+    </parent>
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.easysoa.registry</groupId>
-	<artifactId>easysoa-registry-parent</artifactId>
-	<version>0.4-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<name>EasySOA Registry Parent</name>
-	<url>http://maven.apache.org</url>
+    <name>EasySOA Registry Parent</name>
+    <url>http://maven.apache.org</url>
 
-	<properties>
-		<easysoa.nuxeo.version>5.4.2</easysoa.nuxeo.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <easysoa.nuxeo.version>5.4.2</easysoa.nuxeo.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.easysoa</groupId>
-			<artifactId>easysoa-common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+    <dependencies>
         <dependency>
-          <groupId>org.ow2.easywsdl</groupId>
-          <artifactId>easywsdl-wsdl</artifactId>
-          <version>2.1</version>
+            <groupId>org.easysoa</groupId>
+            <artifactId>easysoa-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
-		
-		<!-- Testing framework dependencies-->
-		<dependency>
-			<groupId>org.nuxeo.runtime</groupId>
-			<artifactId>nuxeo-runtime-datasource</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.nuxeo.ecm.platform</groupId>
-			<artifactId>nuxeo-platform-directory-types-contrib</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.ow2.easywsdl</groupId>
+            <artifactId>easywsdl-wsdl</artifactId>
+            <version>2.1</version>
+        </dependency>
 
-	<!-- ============= -->
-	<!-- Repositories -->
-	<!-- ============= -->
-	<repositories>
-		<repository>
-			<id>Nuxeo</id>
-			<name>Nuxeo Public Releases Repository</name>
-			<url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<!-- For Frascati release versions -->
-		<repository>
-			<id>Frascati</id>
-			<name>Frascati repository</name>
-			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
-		</repository>
-		<!-- For Frascati SNAPSHOT versions -->		
-		<repository>
-			<id>ow2-snapshot</id>
-			<url>http://maven.ow2.org//maven2-snapshot</url>
-		</repository>	
-		<!-- For Frascati Eclipse dependencies : equinox, sca model (?) -->		
-		<repository>
-			<id>eclipse mirror</id>
-			<name>Eclipse EMF Mirror</name>
-			<url>http://www.openarchitectureware.org/m2</url>
-		</repository>
+        <!-- Testing framework dependencies -->
+        <dependency>
+            <groupId>org.nuxeo.runtime</groupId>
+            <artifactId>nuxeo-runtime-datasource</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-directory-types-contrib</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- ============= -->
+    <!-- Repositories -->
+    <!-- ============= -->
+    <repositories>
+        <repository>
+            <id>Nuxeo</id>
+            <name>Nuxeo Public Releases Repository</name>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <!-- For Frascati release versions -->
+        <repository>
+            <id>Frascati</id>
+            <name>Frascati repository</name>
+            <url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
+        </repository>
+        <!-- For Frascati SNAPSHOT versions -->
+        <repository>
+            <id>ow2-snapshot</id>
+            <url>http://maven.ow2.org//maven2-snapshot</url>
+        </repository>
+        <!-- For Frascati Eclipse dependencies : equinox, sca model (?) -->
+        <repository>
+            <id>eclipse mirror</id>
+            <name>Eclipse EMF Mirror</name>
+            <url>http://www.openarchitectureware.org/m2</url>
+        </repository>
         <!-- For tuscany sca model -->
         <repository>
-                <id>apache.incubator</id>
-                <url>http://people.apache.org/repo/m2-incubating-repository</url>
+            <id>apache.incubator</id>
+            <url>http://people.apache.org/repo/m2-incubating-repository</url>
         </repository>
-        <!-- For frascati-required jdt core only-->
+        <!-- For frascati-required jdt core only -->
         <repository>
-                <id>INRIA gforge</id>
-                <url>http://maven-repo.gforge.inria.fr/releases/</url>
+            <id>INRIA gforge</id>
+            <url>http://maven-repo.gforge.inria.fr/releases/</url>
         </repository>
-	</repositories>
+    </repositories>
 
 	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.easysoa.registry</groupId>
-				<artifactId>easysoa-registry-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-            <dependency>
-              <groupId>org.easysoa.registry</groupId>
-              <artifactId>easysoa-registry-api</artifactId>
-              <version>${project.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.easysoa.registry</groupId>
-              <artifactId>easysoa-registry-api-frascati</artifactId>
-              <version>${project.version}</version>
-            </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.easysoa.registry</groupId>
+            <artifactId>easysoa-registry-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-local</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-remote</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-frascati</artifactId>
+            <version>${project.version}</version>
+        </dependency>
               <!-- Force org.eclipse.core.runtime version, to make sure it is fetched from a valid repository.
               Otherwise, given our listed repositories, it uses version 3.4.0 which leads to a missing dependency
               (org.eclipse.equinox:app:jar:[1.0.0,2.0.0)):
@@ -132,7 +142,7 @@
               <artifactId>runtime</artifactId>
               <version>3.3.100-v20070530</version>
             </dependencyi -->
-		</dependencies>
+	</dependencies>
     
     
 	</dependencyManagement>
