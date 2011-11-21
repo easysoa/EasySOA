@@ -43,4 +43,14 @@ var templateConfGen = new api.TemplateConfGenerator(new api.TemplatingUIImpl("Sp
 templateConfGen.edit();
 templateConfGen.generate(prodEnv);
 
+// SCA configuration File
+
+var scaConfGen = new api.SCACompositeGenerator();
+scaConfGen.generate(devEnv);
+
+//SCA configuration File
+
+var soapUiGen = new api.SoapUIProjectGenerator();
+soapUiGen.generate(devEnv);
+
 console.log("Done.");

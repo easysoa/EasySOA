@@ -27,6 +27,24 @@ var EndpointListConfGenerator = new Class.create(AbstractConfGenerator, {
 });
 
 
+var SCACompositeGenerator = new Class.create(AbstractConfGenerator, {
+    initialize : function() {
+        // Do nothing
+    },
+    generate : function(env) {
+        console.log("Generating .composite from environment " + env.name);
+    }
+});
+
+var SoapUIProjectGenerator = new Class.create(AbstractConfGenerator, {
+    initialize : function() {
+        // Do nothing
+    },
+    generate : function(env) {
+        console.log("Generating SOAP UI project from environment " + env.name);
+    }
+});
+
 var TemplateConfGenerator = new Class.create(AbstractConfGenerator, {
     initialize : function() {
         // Do nothing
@@ -43,5 +61,7 @@ var TemplateConfGenerator = new Class.create(AbstractConfGenerator, {
 
 module.exports = {
     TemplateConfGenerator       : TemplateConfGenerator,
+    SCACompositeGenerator       : SCACompositeGenerator,
+    SoapUIProjectGenerator      : SoapUIProjectGenerator,
     EndpointListConfGenerator   : EndpointListConfGenerator
 };
