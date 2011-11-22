@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
@@ -27,7 +27,7 @@ import org.nuxeo.runtime.api.Framework;
  * @author mkalam-alami
  *
  */
-public class EasySOALocalApi implements EasySOAApi {
+public class EasySOALocalApi implements EasySOAApiSession {
     
     private CoreSession session;
     

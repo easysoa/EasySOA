@@ -29,7 +29,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
@@ -73,7 +73,7 @@ public class ServiceReferenceListener implements EventListener {
         try {
 
             DocumentService docService = Framework.getService(DocumentService.class);
-            EasySOAApi api = EasySOALocalApiFactory.createLocalApi(session);
+            EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(session);
             
             // Create service from WSDL if it doesn't exist
             String refUrl = (String) doc.getProperty(SCHEMA, PROP_REFURL);

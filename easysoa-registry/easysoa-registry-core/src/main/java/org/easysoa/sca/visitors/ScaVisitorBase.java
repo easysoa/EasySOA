@@ -20,7 +20,7 @@
 
 package org.easysoa.sca.visitors;
 
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.sca.IScaImporter;
 
 /**
@@ -32,13 +32,13 @@ import org.easysoa.sca.IScaImporter;
 public abstract class ScaVisitorBase implements ScaVisitor {
 
     protected IScaImporter scaImporter;
-    protected EasySOAApi api;
+    protected EasySOAApiSession api;
     
     /**
      * 
      * @param scaImporter
      */
-    public ScaVisitorBase(IScaImporter scaImporter, EasySOAApi api) {
+    public ScaVisitorBase(IScaImporter scaImporter, EasySOAApiSession api) {
         this.scaImporter = scaImporter;
         this.api = api;
     }

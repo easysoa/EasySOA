@@ -28,7 +28,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.services.DocumentService;
@@ -54,7 +54,7 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
     
     @Inject CoreSession session;
     
-    private EasySOAApi api;
+    private EasySOAApiSession api;
 
     @Before
     public void setUp() throws Exception {

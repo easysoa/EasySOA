@@ -7,7 +7,7 @@ import java.util.Map;
  * @author mkalam-alami
  *
  */
-public interface EasySOAApi {
+public interface EasySOAApiSession {
 
     /**
      * Creates or updates an Appli Impl. given a set of properties

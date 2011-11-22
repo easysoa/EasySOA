@@ -35,7 +35,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
@@ -75,7 +75,7 @@ public class XMLScaImporter implements IScaImporter {
 	private static Log log = LogFactory.getLog(XMLScaImporter.class);
 
 	private CoreSession documentManager;
-    private EasySOAApi api;
+    private EasySOAApiSession api;
 	private File compositeFile;
 	private String serviceStackType;
 	private String serviceStackUrl;

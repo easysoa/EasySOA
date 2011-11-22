@@ -28,7 +28,7 @@ import java.io.File;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
@@ -106,7 +106,7 @@ public class FraSCAtiImportServiceTest {
     
     @Inject ScaImporterComponent scaImporterComponent;
     
-    private EasySOAApi api;
+    private EasySOAApiSession api;
     
     @Before
     public void setUp() throws Exception {

@@ -28,7 +28,7 @@ import java.util.Stack;
 import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.registry.frascati.FileUtils;
 
 //import org.easysoa.registry.frascati.FraSCAtiService;
@@ -111,7 +111,7 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	// Logger
 	private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
 
-	private EasySOAApi api;
+	private EasySOAApiSession api;
 	
 	protected File compositeFile;
 	private String serviceStackType;
@@ -134,7 +134,7 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 	 * @throws FrascatiException 
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporterBase(EasySOAApi api, File compositeFile) throws FrascatiException{
+	public FraSCAtiScaImporterBase(EasySOAApiSession api, File compositeFile) throws FrascatiException{
 	    this.api = api;
 		this.compositeFile = compositeFile;
 		frascatiService = new FraSCAtiServiceBase();
@@ -399,7 +399,7 @@ public abstract class FraSCAtiScaImporterBase implements IScaImporter {
 		this.frascatiService = frascatiService;
 	}
 	
-	protected EasySOAApi getApi() {
+	protected EasySOAApiSession getApi() {
 	    return api;
 	}
 	

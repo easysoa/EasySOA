@@ -37,7 +37,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
@@ -83,7 +83,7 @@ public class DiscoveryRest {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Object doPostAppliImpl(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
-        EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
+        EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
             String id = api.notifyAppliImpl(params);
@@ -124,7 +124,7 @@ public class DiscoveryRest {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Object doPostApi(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
-        EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
+        EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
             String id = api.notifyServiceApi(params);
@@ -160,7 +160,7 @@ public class DiscoveryRest {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Object doPostService(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
-        EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
+        EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
             String id = api.notifyService(params);
@@ -196,7 +196,7 @@ public class DiscoveryRest {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Object doPostServiceReference(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
-        EasySOAApi api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
+        EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
             String id = api.notifyServiceReference(params);

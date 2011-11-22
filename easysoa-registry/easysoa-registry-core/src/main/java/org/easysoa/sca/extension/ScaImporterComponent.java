@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.IScaImporter;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -103,7 +103,7 @@ public class ScaImporterComponent extends DefaultComponent {
 				// trying to create one in order to check that the impl has the required constructor 
 				
 				// TODO Change this instantiation method ... Not the same constructor for all Sca Importers   
-				scaImporterClass.getConstructor(new Class[]{ EasySOAApi.class, File.class, CoreSession.class }).newInstance(new Object[] { null, null, null });
+				scaImporterClass.getConstructor(new Class[]{ EasySOAApiSession.class, File.class, CoreSession.class }).newInstance(new Object[] { null, null, null });
 				
 				this.scaImporterClasses.add(scaImporterClass);
 			} else {
@@ -128,7 +128,7 @@ public class ScaImporterComponent extends DefaultComponent {
 			
 			// TODO Change this instanciation method ... Not the same constructor for all Sca Importers			
 			return (IScaImporter) scaImporterClass.getConstructor(
-			        new Class[]{ EasySOAApi.class, File.class, CoreSession.class })
+			        new Class[]{ EasySOAApiSession.class, File.class, CoreSession.class })
 					.newInstance(new Object[] { 
 					        EasySOALocalApiFactory.createLocalApi(documentManager),
 					        compositeFile,

@@ -26,7 +26,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
@@ -51,7 +51,7 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
     
     protected DocumentModel referenceModel;
 
-    public ReferenceBindingVisitor(IScaImporter scaImporter, EasySOAApi api) {
+    public ReferenceBindingVisitor(IScaImporter scaImporter, EasySOAApiSession api) {
         super(scaImporter, api);
     }
     

@@ -2,7 +2,7 @@ package org.easysoa.sca.frascati;
 
 import java.io.File;
 
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.sca.visitors.ApiReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ApiServiceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
@@ -19,7 +19,7 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
 	 * Default constructor
 	 * @throws Exception
 	 */
-	public ApiFraSCAtiScaImporter(EasySOAApi api, File scaComposite) throws Exception {
+	public ApiFraSCAtiScaImporter(EasySOAApiSession api, File scaComposite) throws Exception {
 		super(api, scaComposite);
 	}
 

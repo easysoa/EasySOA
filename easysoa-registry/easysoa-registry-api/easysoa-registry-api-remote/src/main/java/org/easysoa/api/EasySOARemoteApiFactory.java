@@ -11,11 +11,11 @@ import org.easysoa.rest.EasySOARemoteApi;
  */
 public class EasySOARemoteApiFactory {
 
-    public static EasySOAApi createRemoteApi() throws IOException {
+    public static EasySOAApiSession createRemoteApi() throws IOException {
         return new EasySOARemoteApi();
     }
     
-    public static EasySOAApi createRemoteApi(String nuxeoApisUrl) throws IOException {
+    public static EasySOAApiSession createRemoteApi(String nuxeoApisUrl) throws IOException {
         return new EasySOARemoteApi(nuxeoApisUrl);
     }
 	

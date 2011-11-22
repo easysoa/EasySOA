@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
@@ -111,7 +111,7 @@ public class ApiFrascatiImportServiceTest {
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	EasySOAApi api = EasySOALocalApiFactory.createLocalApi(session);
+    	EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(session);
     	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(api, scaFile);
     	importer.setFrascatiService(frascatiService);
 		//importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));

@@ -22,7 +22,7 @@ package org.easysoa.examples;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOARemoteApiFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.rest.RestNotificationFactory;
@@ -43,7 +43,7 @@ public class ServiceNotificationExample {
 		
 	    // Method #1: With the EasySOA API
 	    
-	    EasySOAApi api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
+	    EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
 	    Map<String, String> properties = new HashMap<String, String>();
 	    properties.put(Service.PROP_URL, "http://www.myservices.com/api/service");
 	    properties.put(Service.PROP_TITLE, "Service");

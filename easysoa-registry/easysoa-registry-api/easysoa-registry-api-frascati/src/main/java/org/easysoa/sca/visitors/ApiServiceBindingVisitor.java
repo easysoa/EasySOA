@@ -25,7 +25,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
@@ -43,13 +43,13 @@ public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
     
 	private static Log log = LogFactory.getLog(ApiServiceBindingVisitor.class);	
 	
-	private EasySOAApi api;
+	private EasySOAApiSession api;
 	
 	/**
 	 * 
 	 * @param scaImporter
 	 */
-    public ApiServiceBindingVisitor(IScaImporter scaImporter, EasySOAApi api) {
+    public ApiServiceBindingVisitor(IScaImporter scaImporter, EasySOAApiSession api) {
         super(scaImporter);
         this.api = api;
     }

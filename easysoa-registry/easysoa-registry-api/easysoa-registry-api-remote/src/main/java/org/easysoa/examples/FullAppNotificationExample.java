@@ -23,7 +23,7 @@ package org.easysoa.examples;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOARemoteApiFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
@@ -46,7 +46,7 @@ public class FullAppNotificationExample {
      */
     public static void main(String[] args) throws Exception {
 
-        EasySOAApi api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
+        EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
         
         // Application
         

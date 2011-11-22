@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 
 /**
@@ -12,7 +12,7 @@ import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
  * @author mkalam-alami
  *
  */
-public class EasySOARemoteApi implements EasySOAApi {
+public class EasySOARemoteApi implements EasySOAApiSession {
     
     private static Logger logger = Logger.getLogger(EasySOARemoteApi.class.getName());
     

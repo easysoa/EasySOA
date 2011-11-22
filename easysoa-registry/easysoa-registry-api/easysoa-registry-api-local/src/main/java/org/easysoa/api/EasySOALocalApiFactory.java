@@ -1,6 +1,6 @@
 package org.easysoa.api;
 
-import org.easysoa.api.EasySOAApi;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.impl.EasySOALocalApi;
 import org.nuxeo.ecm.core.api.CoreSession;
 
@@ -11,7 +11,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
  */
 public class EasySOALocalApiFactory  {
 
-    public static EasySOAApi createLocalApi(CoreSession session) throws Exception {
+    public static EasySOAApiSession createLocalApi(CoreSession session) throws Exception {
         return new EasySOALocalApi(session);
     }
 
