@@ -20,20 +20,22 @@
 
 package org.easysoa.sca.frascati;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.frascati.mock.TestMock;
-import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
+import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.ow2.frascati.util.FrascatiException;
@@ -75,8 +77,8 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     	// to load a file, we use simply File, since user.dir is set relatively to the project
     	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
     	File scaFile = new File(scaFilePath);
-    	BindingVisitorFactory bindingVisitorFactory = new ApiBindingVisitorFactory();
-    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, EasySOAApiFraSCAti.getInstance(), scaFile);
+    	BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
+    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile,  EasySOAApiFraSCAti.getInstance());
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
 		importer.importSCAComposite();

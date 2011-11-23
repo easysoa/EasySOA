@@ -43,7 +43,6 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase implements F
 		super(bindingVisitorFactory, compositeFile, frascatiService);
 	}
 
-
 	@Override
 	public String getModelProperty(String arg0, String arg1) throws Exception {
 		return null;
