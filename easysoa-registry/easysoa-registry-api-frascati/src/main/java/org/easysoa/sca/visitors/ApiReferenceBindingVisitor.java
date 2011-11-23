@@ -20,9 +20,14 @@
 
 package org.easysoa.sca.visitors;
 
-import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.doctypes.Service;
+import org.easysoa.rest.RestNotificationFactory;
+import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
+import org.easysoa.rest.RestNotificationRequest;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 
@@ -32,36 +37,50 @@ import org.easysoa.sca.IScaImporter;
  * @author mdutoo
  *
  */
-// TODO: Refactor visitor implementations
 public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
 
     private static Log log = LogFactory.getLog(ApiReferenceBindingVisitor.class);
-    
-    //protected DocumentModel referenceModel;
 
     public ApiReferenceBindingVisitor(IScaImporter scaImporter) {
         super(scaImporter);
     }
-    
-    @Override
-    public String getDescription() {
-        StringBuffer sbuf = new StringBuffer(this.toString());
-        /*sbuf.append("[path=");
-        sbuf.append(referenceModel.getPathAsString());
-        sbuf.append(",type=");
-        sbuf.append(referenceModel.getType());
-        sbuf.append(",title=");
+
+	@Override
+	public void visit(BindingInfoProvider bindingInfoProvider) throws Exception {
+	    RestNotificationFactory factory = new RestNotificationFactory();
+        String refUrl = bindingInfoProvider.getBindingUrl();	    
+	    
+        // Notify service reference
+        RestNotificationRequest requestServiceReference = factory.createNotification(RestDiscoveryService.SERVICEREFERENCE);
+	    requestServiceReference.setProperty(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
+	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
+	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
+	    requestServiceReference.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
+	    //requestServiceReference.setProperty(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));	
+	    requestServiceReference.setProperty(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+	    requestServiceReference.send();
+	    
+        // Notify referenced service
+	    RestNotificationRequest requestService = factory.createNotification(RestDiscoveryService.SERVICE);
+        requestService.setProperty(Service.PROP_URL, refUrl);
+        requestService.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         try {
-            sbuf.append(referenceModel.getPropertyValue("dc:title"));
-        } catch (Exception ex) {
-            String msg = "error while getting title";
-            sbuf.append("(" + msg + ")");
-            log.error(msg, ex);
-        }
-        sbuf.append("]");*/
-        return sbuf.toString();
-    }
-    
+        	requestService.send();
+        } catch (Exception e) {
+            log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
+        }		
+	}
+
+	@Override
+	public void postCheck() throws Exception {
+		// TODO : re-implement the old method postCheck here 
+	}
+
+	@Override
+	public void setDocumentManager(Object documentManager) {
+		// Nothing to do, document manager is not used here
+	}
+      
     /*@Override
     public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException {
 
@@ -86,41 +105,11 @@ public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
             log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
         } 
     }*/
-    
-    //@Override
-    public void visit(BindingInfoProvider bindingInfoProvider) throws Exception, IOException {
-        
-    	// Using default value for API url
-	    //RestNotificationFactory factory = new RestNotificationFactory();
-	    
-        //String refUrl = bindingInfoProvider.getBindingUrl();	    
-	    
-        // Notify service reference
-        // TODO : Add a rest service for service references, not existing in the REST notification server
-	    /*
-        RestNotificationRequest requestServiceReference = factory.createNotification(RestNotificationService.);
-	    requestServiceReference.setProperty(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
-	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
-	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-	    requestServiceReference.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
-	    requestServiceReference.setProperty(ServiceReference.PROP_PARENTURL, 
-                (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));	    
-	    requestServiceReference.send();
-	    
-        // Notify referenced service
-	    RestNotificationRequest requestService = factory.createNotification(RestNotificationService.SERVICE);
-        requestService.setProperty(Service.PROP_URL, refUrl);
-        requestService.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ??
-        try {
-        	requestService.send();
-        } catch (Exception e) {
-            log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
-        }*/	    
-    }
 
+	// OLD POSTCHECK METHOD
     //@Override
-    public void postCheck() throws Exception {
-        /*DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
+    /*public void postCheck() throws Exception {
+        DocumentService docService = Framework.getRuntime().getService(DocumentService.class); 
         // find referenced service
         String refUrl = (String) referenceModel.getProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFURL);
         DocumentModel refServiceModel;
@@ -132,12 +121,7 @@ public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
             }
         } catch (MalformedURLException e) {
             log.warn("Reference URL is invalid", e);
-        }*/
-    }
-
-	@Override
-	public void setDocumentManager(Object documentManager) {
-		// Nothing to do, document manager is not used here
-	}
+        }
+    }*/
 
 }

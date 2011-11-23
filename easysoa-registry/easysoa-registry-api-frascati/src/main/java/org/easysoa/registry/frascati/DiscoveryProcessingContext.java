@@ -1,3 +1,23 @@
+/**
+ * EasySOA Registry
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
+
 package org.easysoa.registry.frascati;
 
 import java.net.URL;
@@ -6,24 +26,31 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Composite;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
+import org.ow2.frascati.util.FrascatiException;
 
 public class DiscoveryProcessingContext implements ProcessingContext {
 
 	protected ProcessingContext delegate;
+	private FraSCAtiServiceItf fraSCAtiService;
+	private FraSCAtiRuntimeScaImporterItf runtimeScaImporter;
+	
 	protected List<String> warningMessages = new ArrayList<String>();
-	protected List<String> errorMessages = new ArrayList<String>();	
+	protected List<String> errorMessages = new ArrayList<String>();
 
 	static final Log log = LogFactory.getLog(DiscoveryProcessingContext.class);
 	
-	public DiscoveryProcessingContext(ProcessingContext delegate) {
-		this.delegate = delegate;
+	//public DiscoveryProcessingContext(ProcessingContext delegate) {
+	public DiscoveryProcessingContext(FraSCAtiServiceItf fraSCAtiService, FraSCAtiRuntimeScaImporterItf runtimeScaImporter, URL... urls) throws FrascatiException{
+		//this.delegate = delegate;
+		this.delegate = fraSCAtiService.getFraSCAti().getCompositeManager().newProcessingContext(urls);
+		this.fraSCAtiService = fraSCAtiService; // TODO get from runtimeScaImporter ??
+		this.runtimeScaImporter = runtimeScaImporter;
 	}
 
 	//////////////////////////////////////////////
@@ -85,22 +112,18 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 			//XXX hack to call EasySOA service discovery
 			//TODO later in AssemblyFactoryManager ex. in delegate CompositeProcessor...
 			Composite composite = (Composite) key;
-			discover(composite);
+			this.discover(composite);
 		}
 		return delegate.getData(key, type);
 	}
 
-	// called only with instanciate processing mode
+	// called only with instantiate processing mode
 	protected void discover(Composite composite) {
-		log.debug("dicover method...." + composite);
+		log.debug("discover method...." + composite);
 		// TODO FraSCAtiSCAImporter(...Base/Api...).visitComposite(composite)
 		try {
-			// TODO : do not creates a new ScaImporter .... Use the one created by the test or SCA import bean ....
-			// Establish or find the relation between frascatiService and FrascatiScaImporter ...
-			//ApiFraSCAtiScaImporter frascatiImporter = new ApiFraSCAtiScaImporter();
 			// pass the importer as a parameters when the processing context is created ?
-			//frascatiImporter.visitComposite(composite);
-			//scaImporter.visitComposite(composite);
+			runtimeScaImporter.visitComposite(composite);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

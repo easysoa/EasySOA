@@ -88,6 +88,7 @@ public class SCAImportTest extends CoreServiceTestHelperBase {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
+    	// TODO share between XML and FraSCAti
     	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
     	XMLScaImporter importer = new XMLScaImporter(visitorFactory, scaFile);    	
     	//XMLScaImporter importer = new XMLScaImporter(session, scaFile);

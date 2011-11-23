@@ -1,9 +1,30 @@
+/**
+ * EasySOA Registry
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
+
 package org.easysoa.registry.frascati;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Set;
 
+import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.eclipse.stp.sca.Composite;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
@@ -11,15 +32,13 @@ import org.ow2.frascati.util.FrascatiException;
 
 public interface FraSCAtiServiceItf {
 
-	public abstract Component[] startScaApp(URL scaAppUrl) throws FrascatiException;
-
 	/**
 	 * Get an SCA composite.
 	 * 
 	 * @param composite the composite to get.
 	 * @return the composite.
 	 */
-	public abstract Object getComposite(String composite) throws FrascatiException;
+	public abstract Object getComposite(String composite) throws Exception;
 
 	/**
 	 * Added for convenience in a first time. TODO To improve usability and
@@ -34,7 +53,7 @@ public interface FraSCAtiServiceItf {
 	/**
 	 * 
 	 */
-	public abstract ParsingProcessingContext newParsingProcessingContext(URL... urls) throws FrascatiException;
+	public abstract ParsingProcessingContext newParsingProcessingContext(URL... urls) throws Exception;
 
 	/**
 	 * 
@@ -42,7 +61,7 @@ public interface FraSCAtiServiceItf {
 	 * @return
 	 * @throws FrascatiException
 	 */
-	public abstract DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws FrascatiException;
+	public abstract DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws Exception;
 
 	/**
 	 * 
@@ -66,5 +85,12 @@ public interface FraSCAtiServiceItf {
 	 * @return
 	 */
 	public abstract Set<Composite> readScaZip(File scaZipFile) throws Exception;
+
+	/**
+	 * Returns the default impl of FraSCAtiRuntimeScaImporterItf (for this impl of FraSCAtiServiceItf)
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract FraSCAtiRuntimeScaImporterItf newRuntimeScaImporter() throws Exception;
 
 }

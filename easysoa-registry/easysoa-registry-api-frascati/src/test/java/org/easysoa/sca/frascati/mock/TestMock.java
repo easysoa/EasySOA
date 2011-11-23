@@ -18,8 +18,10 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.sca.visitors;
+package org.easysoa.sca.frascati.mock;
 
-public abstract class AbstractBindingVisitorFactoryBase implements BindingVisitorFactory {
+public interface TestMock<T> {
 
+	public void setTest(T test);
+	
 }

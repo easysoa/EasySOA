@@ -69,7 +69,7 @@ public class FraSCAtiWebExplorerServiceTest {
 
     static final Log log = LogFactory.getLog(FraSCAtiWebExplorerServiceTest.class);
     
-    @Inject FraSCAtiService frascatiService;
+    @Inject NxFraSCAtiService frascatiService;
     
     @Before
     public void setUp() throws Exception {

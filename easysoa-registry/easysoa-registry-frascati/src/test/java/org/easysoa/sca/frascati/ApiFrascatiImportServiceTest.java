@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.EasySOADoctype;
-import org.easysoa.registry.frascati.FraSCAtiService;
+import org.easysoa.registry.frascati.NxFraSCAtiService;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
@@ -76,7 +76,7 @@ public class ApiFrascatiImportServiceTest {
     
     DocumentModel parentAppliImplModel;
     
-    @Inject FraSCAtiService frascatiService;
+    @Inject NxFraSCAtiService frascatiService;
     
     @Inject ScaImporterComponent scaImporterComponent;
     
@@ -101,6 +101,8 @@ public class ApiFrascatiImportServiceTest {
 		}
     }
 	
+    // TODO : How to make this test works ?
+    // The REST server is not started
     @Test
     @Ignore
     public void testSCAComposite() throws Exception {
@@ -112,8 +114,7 @@ public class ApiFrascatiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	BindingVisitorFactory bindingVisitorFactory = new ApiBindingVisitorFactory();
-    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile);
-    	importer.setFrascatiService(frascatiService);
+    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, frascatiService, scaFile);
 		//importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");

@@ -97,7 +97,8 @@ public class ScaImportBean {
         if (compositeFile != null) {
         	// filename not set, get the default zip file
         	if (compositeFile.getFilename() == null || "".equals(compositeFile.getFilename())) {
-            	//String scaFilePath = "src/main/resources/" + "test/defaultsca.zip";
+            	log.warn("Composite file not specified : using default file : /test/defaultsca.zip");
+        		//String scaFilePath = "src/main/resources/" + "test/defaultsca.zip";
         		String scaFilePath =  System.getProperty("user.dir") + "/test/defaultsca.zip";
             	scaFile = new File(scaFilePath);    	
             	try {

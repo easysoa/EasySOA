@@ -21,6 +21,8 @@
 package org.easysoa.sca;
 
 import java.io.File;
+
+import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 
 /**
@@ -103,16 +105,8 @@ public interface IScaImporter {
      */
     public String getModelProperty(String arg0, String arg1) throws Exception;
     
-    /**
-     * creates and returns a ServiceBindingVisitor
-     * @return A <code>ScaVisitor<code>
-     */
+    public BindingVisitorFactory getBindingVisitorFactory();
     public ScaVisitor createServiceBindingVisitor();
-
-    /**
-     * creates and returns a ReferenceBindingVisitor
-     * @return A <code>ScaVisitor<code>
-     */
-    public ScaVisitor createReferenceBindingVisitor();    
+    public ScaVisitor createReferenceBindingVisitor();
     
 }
