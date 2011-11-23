@@ -23,7 +23,6 @@ package org.easysoa.registry.frascati.rest;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpHost;
@@ -34,7 +33,7 @@ import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.registry.frascati.FraSCAtiService;
+import org.easysoa.registry.frascati.NxFraSCAtiService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -122,7 +121,7 @@ public class EmbeddedFraSCAtiServiceTest
 
     static final Log log = LogFactory.getLog(EmbeddedFraSCAtiServiceTest.class);
     
-    @Inject FraSCAtiService frascatiService;
+    @Inject NxFraSCAtiService frascatiService;
     @Inject AutomationService automationService;
     @Inject AutomationServer automationServer;
     @Inject WebEngine webEngine;

@@ -72,19 +72,28 @@
 			<!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->			
 			<!--<scope>compile</scope>
 		</dependency>-->	
+		<!-- Logging -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1</version>
+		</dependency>
 	
 		<!-- For tests -->
+		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.2</version>
 			<scope>test</scope>			
 		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-		</dependency>
+		<!-- Mockito -->
+  		<dependency>
+  			<groupId>org.mockito</groupId>
+  			<artifactId>mockito-all</artifactId>
+  			<version>1.9.0-rc1</version>
+  			<scope>test</scope>
+  		</dependency>		
 	</dependencies>
 
     <!-- Plugin management -->
