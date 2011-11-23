@@ -50,52 +50,18 @@ public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
         super(scaImporter);
     }
 
-    //@Override
-    /*
-    public void visit(BindingInfoProvider bindingInfoProvider) throws ClientException, MalformedURLException {
-        String serviceUrl = bindingInfoProvider.getBindingUrl();
-        if (serviceUrl == null) {
-        	log.debug("serviceUrl is null, returning !");
-            // TODO error
-            return;
-        }
-    	
-        log.debug("serviceUrl is not null, registering API's and services...");
-        String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-        String apiUrl = notificationService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
-        
-        // enrich or create API
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put(ServiceAPI.PROP_URL, apiUrl);
-        properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
-        properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename());
-        properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);
-        notificationService.notifyServiceApi(documentManager, properties);
-
-        // enrich or create service
-        properties = new HashMap<String, String>();
-        properties.put(Service.PROP_URL, serviceUrl);
-        properties.put(Service.PROP_TITLE, scaImporter.getCurrentArchiName());
-        properties.put(Service.PROP_PARENTURL, apiUrl);
-        properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
-        properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-        properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getFilename()); // TODO also upload and link to it ?
-        notificationService.notifyService(documentManager, properties);
-    }*/
-
-    //@Override
+    @Override
     public void visit(BindingInfoProvider bindingInfoProvider) throws Exception {
         String serviceUrl = bindingInfoProvider.getBindingUrl();
         if (serviceUrl == null) {
         	log.warn("serviceUrl is null, returning !");
+        	// TODO : throws here an exception to be displayed in the GUI
         	return;
         }
         log.debug("serviceUrl is not null, registering API's and services...");
         //String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         String appliImplUrl = scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         String apiUrl = ApiUrlProcessor.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
-        // TODO recompute the apiUrl : find a way to use or move the computeApiUrl
-        //String apiUrl = "";
         // Using default value for API url
 	    RestNotificationFactory factory = new RestNotificationFactory();
 	    
@@ -118,7 +84,7 @@ public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
 	    requestService.send();
     }
     
-    //@Override
+    @Override
     public void postCheck() throws Exception {
         // nothing to do
     }

@@ -24,12 +24,10 @@ import java.io.File;
 import java.io.InvalidClassException;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
@@ -48,13 +46,12 @@ public class ScaImporterComponent extends DefaultComponent {
 
     public List<Class<?>> getScaImporterClasses() {
         return scaImporterClasses;
-    }    
+    }
     
 	@Override
     public void registerContribution(Object contribution, String extensionPoint, ComponentInstance contributor) throws Exception {
-		log.error("Not a error, a debug message ... Registering contribution : " + extensionPoint);
+    	log.debug("registering contribution ..." + extensionPoint);
 		try {
-        	log.debug("registering contribution ..." + extensionPoint);
             synchronized (scaImporterClasses) {
             	if (extensionPoint.equals("scaImporters")) {
             		ScaImporterDescriptor scaImporterDescriptor = (ScaImporterDescriptor) contribution;
@@ -91,7 +88,7 @@ public class ScaImporterComponent extends DefaultComponent {
 	}
 	
 	/**
-	 * 
+	 * Check that the impl has the required constructor 
 	 * @param scaImporterDescriptor
 	 * @param contributor
 	 * @throws Exception
@@ -102,16 +99,8 @@ public class ScaImporterComponent extends DefaultComponent {
 			log.debug("scaImporterClass = " + scaImporterClass);
 			if (IScaImporter.class.isAssignableFrom(scaImporterClass)) {
 				// trying to create one in order to check that the impl has the required constructor 
-				
-				//scaImporterClass.getConstructor(new Class[]{ CoreSession.class, Blob.class }).newInstance(new Object[] { null, null });
 				log.debug("scaImporterClass = " + scaImporterClass.getName());
-				// TODO Change this test.. Not the same constructor for all Sca Importers, find a way to unify constructors
-				/*if(!scaImporterClass.getName().equals("org.easysoa.sca.frascati.ApiFraSCAtiScaImporter")){
-					scaImporterClass.getConstructor(new Class[]{ CoreSession.class, File.class }).newInstance(new Object[] { null, null });
-				} else {*/
-					scaImporterClass.getConstructor(new Class[]{BindingVisitorFactory.class, File.class}).newInstance(new Object[] {null, null});
-				/*}*/
-				
+				scaImporterClass.getConstructor(new Class[]{BindingVisitorFactory.class, File.class}).newInstance(new Object[] {null, null});
 				this.scaImporterClasses.add(scaImporterClass);
 			} else {
 				log.debug("Check and set Sca importer error");
@@ -120,29 +109,18 @@ public class ScaImporterComponent extends DefaultComponent {
 			}
 		}
     }
-	
+    
     /**
      * Creates a SCA Importer
-     * @param documentManager
-     * @param compositeFile
-     * @return
+     * @param bindingVisitorFactory The binding factory to use 
+     * @param compositeFile The composite file to parse/discover
+     * @return A <code>IScaImporter</code>
      */
-    //public IScaImporter createScaImporter(CoreSession documentManager, Blob compositeFile) {
-    //public IScaImporter createScaImporter(/*CoreSession documentManager, */File compositeFile) {
     public IScaImporter createScaImporter(BindingVisitorFactory bindingVisitorFactory, File compositeFile) {	
 		try {
-			log.error("Not an error, just a debug test : " + scaImporterClasses.size());
 			log.debug("scaImporterClasses.size() = " + scaImporterClasses.size());
 			Class<?> scaImporterClass = this.scaImporterClasses.get(scaImporterClasses.size() - 1);
-			
-			// TODO Change this test.. Not the same constructor for all Sca Importers, find a way to unify constructors			
-			
-			/*if(!scaImporterClass.getName().equals("org.easysoa.sca.frascati.ApiFraSCAtiScaImporter")){
-				return (IScaImporter) scaImporterClass.getConstructor(new Class[]{ CoreSession.class, File.class }).newInstance(new Object[] { documentManager, compositeFile });
-			} else {*/
-				return (IScaImporter) scaImporterClass.getConstructor(new Class[]{BindingVisitorFactory.class, File.class}).newInstance(new Object[] {bindingVisitorFactory, compositeFile});
-			/*}*/
-			/*return (IScaImporter) scaImporterClass.getConstructor(new Class[]{ CoreSession.class, File.class }).newInstance(new Object[] { documentManager, compositeFile });*/
+			return (IScaImporter) scaImporterClass.getConstructor(new Class[]{BindingVisitorFactory.class, File.class}).newInstance(new Object[] {bindingVisitorFactory, compositeFile});
 		} catch (Exception ex) {
 			log.error("An error occurs during the creation of SCA importer", ex);
 			// TODO log "error creating sca import, bad config, see init logs"
@@ -151,13 +129,12 @@ public class ScaImporterComponent extends DefaultComponent {
     }
 	
 	/**
-	 * 
-	 * @param contributor
-	 * @param message
-	 * @return
+	 * Render a contributor error
+	 * @param contributor a <code>ComponentInstance</code>
+	 * @param message The error message to add at the end of the contribution error
+	 * @return A contribution error message
 	 */
-    private String renderContributionError(ComponentInstance contributor,
-            String message) {
+    private String renderContributionError(ComponentInstance contributor, String message) {
         return "Invalid contribution from '" + contributor.getName() + "': " + message;
     }	
 	

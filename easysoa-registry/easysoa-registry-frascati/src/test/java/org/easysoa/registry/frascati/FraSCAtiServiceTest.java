@@ -70,7 +70,7 @@ public class FraSCAtiServiceTest
 
     static final Log log = LogFactory.getLog(FraSCAtiServiceTest.class);
     
-    @Inject FraSCAtiService frascatiService;
+    @Inject NxFraSCAtiService frascatiService;
     
     @Before
     public void setUp() throws Exception {

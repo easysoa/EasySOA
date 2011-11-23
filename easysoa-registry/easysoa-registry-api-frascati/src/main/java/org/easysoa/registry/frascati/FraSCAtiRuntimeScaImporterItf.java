@@ -18,8 +18,12 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.sca.visitors;
+package org.easysoa.registry.frascati;
 
-public abstract class AbstractBindingVisitorFactoryBase implements BindingVisitorFactory {
+import org.eclipse.stp.sca.Composite;
 
+public interface FraSCAtiRuntimeScaImporterItf {
+
+	public void visitComposite(Composite composite);
+	
 }

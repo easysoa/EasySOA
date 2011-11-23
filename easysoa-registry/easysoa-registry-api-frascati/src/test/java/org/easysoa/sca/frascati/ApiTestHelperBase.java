@@ -18,39 +18,40 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.registry.frascati;
+
+package org.easysoa.sca.frascati;
+
+import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
+import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 
-/**
- * @author jguillemotte
- *
- */
-public abstract class AbstractEasySOAApp implements EasySOAApp {
+public class ApiTestHelperBase {
 
-	private static Log log = LogFactory.getLog(AbstractEasySOAApp.class);	
+    static final Log log = LogFactory.getLog(ApiTestHelperBase.class);
 	
-	protected FraSCAti frascati;
-	
-	@Override
-	public FraSCAti getFrascati(){
-		return frascati;
+	/** The FraSCAti platform */
+    protected static FraSCAti frascati;
+
+    protected static ArrayList<Component> componentList;    
+    
+	protected static void startMock() throws FrascatiException {
+		log.info("Services Mock Starting");
+		componentList.add(frascati.processComposite("src/test/resources/RestApiMock.composite", new ProcessingContextImpl()));
 	}
 	
 	/**
-	 * 
-	 * @param components
-	 * @throws FrascatiException
+	 * Start FraSCAti
+	 * @throws FrascatiException 
 	 */
-	public void stopComponents(Component... components) throws FrascatiException {
-		log.debug("Closing components");
-		for(Component component : components){
-			frascati.close(component);
-		}
+	protected static void startFraSCAti() throws FrascatiException {
+		log.info("FraSCATI Starting");
+		componentList =  new ArrayList<Component>();
+		frascati = FraSCAti.newFraSCAti();
 	}
-
+	
 }

@@ -39,7 +39,6 @@ import org.ow2.frascati.assembly.factory.api.ProcessingMode;
 import org.ow2.frascati.util.FrascatiException;
 import com.google.inject.Inject;
 
-
 /**
  * Tests SCA read with FraSCAti
  * @author mdutoo
@@ -51,14 +50,13 @@ public class FraSCAtiServiceReadScaTest {
 
     static final Log log = LogFactory.getLog(FraSCAtiServiceReadScaTest.class);
     
-    @Inject FraSCAtiService frascatiService;
+    @Inject NxFraSCAtiService frascatiService;
     
     @Before
     public void setUp() throws ClientException, MalformedURLException {
     	// FraSCAti
   	  	assertNotNull("Cannot get FraSCAti service component", frascatiService);
     }
-    
     
     /** checking that FraSCAti parsing-based import of SCA ref'ing unknown class
      * fails without custom ProcessingContext.loadClass() */

@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.registry.frascati.FraSCAtiService;
+import org.easysoa.registry.frascati.NxFraSCAtiService;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
@@ -102,7 +102,7 @@ public class FraSCAtiImportServiceTest {
     
     DocumentModel parentAppliImplModel;
     
-    @Inject FraSCAtiService frascatiService;
+    @Inject NxFraSCAtiService frascatiService;
     
     @Inject ScaImporterComponent scaImporterComponent;
     
@@ -125,7 +125,7 @@ public class FraSCAtiImportServiceTest {
 			// session.removeDocument(parentAppliImplModel.getRef());
 		}
     }
-    
+
     @Test
     //@Ignore    
     public void importSCAZipSimple() throws Exception {

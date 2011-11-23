@@ -35,12 +35,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.frascati.AbstractScaImporterBase;
-import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
+import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
-import org.easysoa.sca.visitors.ReferenceBindingVisitor;
-import org.easysoa.sca.visitors.ServiceBindingVisitor;
-import org.easysoa.services.DiscoveryService;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
@@ -49,7 +46,6 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.nuxeo.runtime.api.Framework;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * Imports an SCA composite file.
@@ -63,7 +59,6 @@ import org.ow2.frascati.util.FrascatiException;
  * @author mdutoo, mkalam-alami, jguillemotte
  * 
  */
-//public class XMLScaImporter implements IScaImporter {
 public class XMLScaImporter extends AbstractScaImporterBase {
 
 	public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
@@ -82,9 +77,6 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	private DocumentModel parentAppliImplModel;
 
 	private XMLStreamReader compositeReader;
-	// private List<ScaVisitor> serviceBindingVisitors;
-	// private List<ScaVisitor> referenceBindingVisitors;
-	// private Map<QName, ScaVisitor> elementQnameToScaVisitor;
 	private Stack<String> archiNameStack = new Stack<String>();
 	private List<ScaVisitor> scaVisitorsToPostCheck = new ArrayList<ScaVisitor>();
 
@@ -92,15 +84,16 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	 * 
 	 * @param documentManager
 	 * @param compositeFile
-	 * @throws ClientException
-	 * @throws FrascatiException 
+	 * @throws Exception 
 	 */
-	//public XMLScaImporter(CoreSession documentManager, File compositeFile) throws ClientException {
-	public XMLScaImporter(BindingVisitorFactory bindingVisitorFactory, File compositeFile) throws ClientException, FrascatiException {
+	public XMLScaImporter(BindingVisitorFactory bindingVisitorFactory, File compositeFile) throws Exception {
 		super(bindingVisitorFactory, compositeFile);
 		this.compositeFile = compositeFile;
-		if(bindingVisitorFactory != null){
-			this.documentManager = (CoreSession) (bindingVisitorFactory.getDocumentManager());
+	}
+	
+	private void init() throws ClientException {
+		if(bindingVisitorFactory instanceof NxBindingVisitorFactory){
+			this.documentManager = ((NxBindingVisitorFactory)bindingVisitorFactory).getDocumentManager();
 		}
 		if(documentManager != null){
 			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
@@ -114,6 +107,7 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	 * @throws ClientException
 	 */
 	public void importSCA() throws IOException, XMLStreamException, ClientException {
+		init();
 
 		// Initialization
 		File compositeTmpFile = File.createTempFile(IdUtils.generateStringId(), ".composite");
@@ -212,13 +206,11 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	
 	@Override
 	public ScaVisitor createServiceBindingVisitor() {
-		//return new ServiceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
 		return this.bindingVisitorFactory.createServiceBindingVisitor(this);
 	}
 
 	@Override
 	public ScaVisitor createReferenceBindingVisitor() {
-		//return new ReferenceBindingVisitor(this, Framework.getRuntime().getService(DiscoveryService.class));
 		return this.bindingVisitorFactory.createReferenceBindingVisitor(this);
 	}
 	
