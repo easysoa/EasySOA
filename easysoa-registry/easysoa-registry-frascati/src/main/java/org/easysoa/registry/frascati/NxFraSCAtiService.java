@@ -54,7 +54,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.FraSCAtiScaImporter;
-import org.easysoa.sca.visitors.NxBindingVisitorFactory;
+import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.runtime.model.Adaptable;
 import org.nuxeo.runtime.model.ComponentContext;
@@ -104,13 +104,13 @@ public class NxFraSCAtiService extends FraSCAtiServiceBase implements org.nuxeo.
 	}
 	
 	public FraSCAtiRuntimeScaImporterItf newLocalRuntimeScaImporter(CoreSession documentManager) throws Exception {
-		NxBindingVisitorFactory nxBindingVisitorFactory = new NxBindingVisitorFactory(documentManager);
+		LocalBindingVisitorFactory nxBindingVisitorFactory = new LocalBindingVisitorFactory(documentManager);
 		FraSCAtiScaImporter fraSCAtiScaImporter = new FraSCAtiScaImporter(nxBindingVisitorFactory, null);
 		return fraSCAtiScaImporter;
 	}
 	
 	public IScaImporter newLocalScaImporter(CoreSession documentManager, File compositeFile) throws Exception {
-		NxBindingVisitorFactory nxBindingVisitorFactory = new NxBindingVisitorFactory(documentManager);
+		LocalBindingVisitorFactory nxBindingVisitorFactory = new LocalBindingVisitorFactory(documentManager);
 		FraSCAtiScaImporter fraSCAtiScaImporter = new FraSCAtiScaImporter(nxBindingVisitorFactory, compositeFile);
 		return fraSCAtiScaImporter;
 	}

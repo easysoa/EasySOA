@@ -25,13 +25,13 @@ import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.IScaImporter;
 import org.nuxeo.ecm.core.api.CoreSession;
 
-public class NxBindingVisitorFactory extends AbstractBindingVisitorFactoryBase {
+public class LocalBindingVisitorFactory extends AbstractBindingVisitorFactoryBase {
 
     protected EasySOAApiSession api;
     
 	protected CoreSession documentManager;
 
-	public NxBindingVisitorFactory(CoreSession documentManager) throws Exception {
+	public LocalBindingVisitorFactory(CoreSession documentManager) throws Exception {
         this.api = EasySOALocalApiFactory.createLocalApi(documentManager);
 		this.documentManager = documentManager;
 	}

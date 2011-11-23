@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.frascati.AbstractScaImporterBase;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.NxBindingVisitorFactory;
+import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
@@ -94,8 +94,8 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	}
 	
 	private void init() throws ClientException {
-		if(bindingVisitorFactory instanceof NxBindingVisitorFactory){
-			this.documentManager = ((NxBindingVisitorFactory)bindingVisitorFactory).getDocumentManager();
+		if(bindingVisitorFactory instanceof LocalBindingVisitorFactory){
+			this.documentManager = ((LocalBindingVisitorFactory)bindingVisitorFactory).getDocumentManager();
 		}
 		if(documentManager != null){
 			this.parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);

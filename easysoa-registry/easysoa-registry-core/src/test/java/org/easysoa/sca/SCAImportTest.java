@@ -29,7 +29,7 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.NxBindingVisitorFactory;
+import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.sca.xml.XMLScaImporter;
 import org.easysoa.services.CoreServiceTestHelperBase;
 import org.easysoa.services.DocumentService;
@@ -89,7 +89,7 @@ public class SCAImportTest extends CoreServiceTestHelperBase {
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
     	// TODO share between XML and FraSCAti
-    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
     	XMLScaImporter importer = new XMLScaImporter(visitorFactory, scaFile);    	
     	//XMLScaImporter importer = new XMLScaImporter(session, scaFile);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));

@@ -33,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.NxBindingVisitorFactory;
+import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
@@ -116,7 +116,7 @@ public class ScaImportBean {
             	
             	// TODO Call here a BindingVisistorFactory to pass the coresession (documentManager)
             	//importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, scaFile);
-            	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(documentManager);
+            	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(documentManager);
             	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(visitorFactory, scaFile);
             	
             	DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));

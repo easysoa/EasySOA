@@ -13,7 +13,7 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.NxBindingVisitorFactory;
+import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.CoreServiceTestHelperBase;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.rest.RepositoryLogger;
@@ -70,7 +70,7 @@ public class SCAImportComponentTest extends CoreServiceTestHelperBase {
     	File scaFile = new File(scaFilePath);    	
     	
     	// Getting the importer
-    	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
+    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
     	IScaImporter importer = scaImporterComponent.createScaImporter(visitorFactory, scaFile);
     	// If importer is null, we have a problem
     	assertNotNull(importer);

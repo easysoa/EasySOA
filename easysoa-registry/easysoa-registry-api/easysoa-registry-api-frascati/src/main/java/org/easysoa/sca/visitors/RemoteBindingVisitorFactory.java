@@ -31,7 +31,7 @@ import org.easysoa.sca.IScaImporter;
  * @author jguillemotte
  *
  */
-public class ApiBindingVisitorFactory extends AbstractBindingVisitorFactoryBase {
+public class RemoteBindingVisitorFactory extends AbstractBindingVisitorFactoryBase {
 
     private EasySOAApiSession api;
     
@@ -39,12 +39,12 @@ public class ApiBindingVisitorFactory extends AbstractBindingVisitorFactoryBase 
 	 * Constructor
 	 * @throws IOException 
 	 */
-	public ApiBindingVisitorFactory() throws IOException {
+	public RemoteBindingVisitorFactory() throws IOException {
 		super();
 		api = EasySOARemoteApiFactory.createRemoteApi();
 	}
 
-    public ApiBindingVisitorFactory(String nuxeoApisUrl) throws IOException {
+    public RemoteBindingVisitorFactory(String nuxeoApisUrl) throws IOException {
         super();
         api = EasySOARemoteApiFactory.createRemoteApi(nuxeoApisUrl);
     }

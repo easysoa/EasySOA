@@ -25,7 +25,7 @@ import java.io.File;
 import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
 import org.easysoa.registry.frascati.NxFraSCAtiService;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.NxBindingVisitorFactory;
+import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
 import org.eclipse.stp.sca.Composite;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -53,8 +53,8 @@ public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase implements FraS
 	 */
 	public FraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory, /*CoreSession documentManager,*/ File compositeFile) throws ClientException, Exception{
 		super(bindingVisitorFactory, compositeFile, Framework.getService(NxFraSCAtiService.class));
-		if(bindingVisitorFactory instanceof NxBindingVisitorFactory){
-			this.documentManager = ((NxBindingVisitorFactory)bindingVisitorFactory).getDocumentManager();
+		if(bindingVisitorFactory instanceof LocalBindingVisitorFactory){
+			this.documentManager = ((LocalBindingVisitorFactory)bindingVisitorFactory).getDocumentManager();
 		}
 		if(documentManager != null){
 			parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);

@@ -24,7 +24,7 @@ import java.io.File;
 
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
-import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
+import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.ow2.frascati.util.FrascatiException;
 
 /**
@@ -53,13 +53,13 @@ public class EasySOAApiFraSCAti extends FraSCAtiServiceBase {
 	}
 
 	public FraSCAtiRuntimeScaImporterItf newRemoteRuntimeScaImporter() throws Exception {
-		ApiBindingVisitorFactory apiBindingVisitorFactory = new ApiBindingVisitorFactory();
+		RemoteBindingVisitorFactory apiBindingVisitorFactory = new RemoteBindingVisitorFactory();
 		ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(apiBindingVisitorFactory, null, this);
 		return apiFraSCAtiScaImporter;
 	}
 	
 	public IScaImporter newRemoteScaImporter(File compositeFile) throws Exception {
-		ApiBindingVisitorFactory apiBindingVisitorFactory = new ApiBindingVisitorFactory();
+		RemoteBindingVisitorFactory apiBindingVisitorFactory = new RemoteBindingVisitorFactory();
 		ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(apiBindingVisitorFactory, compositeFile, this);
 		return apiFraSCAtiScaImporter;
 	}
