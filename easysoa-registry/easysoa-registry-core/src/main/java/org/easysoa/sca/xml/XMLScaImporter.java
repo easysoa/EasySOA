@@ -33,11 +33,13 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.BindingInfoProvider;
-import org.easysoa.sca.frascati.AbstractScaImporterBase;
-import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.NxBindingVisitorFactory;
+import org.easysoa.sca.IScaImporter;
+import org.easysoa.sca.visitors.ReferenceBindingVisitor;
 import org.easysoa.sca.visitors.ScaVisitor;
+import org.easysoa.sca.visitors.ServiceBindingVisitor;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
@@ -71,6 +73,7 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	private static Log log = LogFactory.getLog(XMLScaImporter.class);
 
 	private CoreSession documentManager;
+    private EasySOAApiSession api;
 	private File compositeFile;
 	private String serviceStackType;
 	private String serviceStackUrl;
@@ -206,12 +209,12 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	
 	@Override
 	public ScaVisitor createServiceBindingVisitor() {
-		return this.bindingVisitorFactory.createServiceBindingVisitor(this);
+		return this.bindingVisitorFactory.createServiceBindingVisitor(this, api);
 	}
 
 	@Override
 	public ScaVisitor createReferenceBindingVisitor() {
-		return this.bindingVisitorFactory.createReferenceBindingVisitor(this);
+		return this.bindingVisitorFactory.createReferenceBindingVisitor(this, api);
 	}
 	
 	private ArrayList<BindingInfoProvider> bindingInfoProviders = null;

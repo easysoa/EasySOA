@@ -47,8 +47,6 @@
 
 package org.easysoa.registry.frascati;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;

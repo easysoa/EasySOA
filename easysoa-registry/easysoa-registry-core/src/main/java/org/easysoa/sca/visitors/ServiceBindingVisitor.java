@@ -26,15 +26,14 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.ApiUrlProcessor;
-import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreSession;
 
 /**
  * Visitor for WS bindings.
@@ -50,8 +49,8 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
 	 * 
 	 * @param scaImporter
 	 */
-    public ServiceBindingVisitor(IScaImporter scaImporter, DiscoveryService discoveryService) {
-        super(scaImporter, discoveryService);
+    public ServiceBindingVisitor(IScaImporter scaImporter, EasySOAApiSession api) {
+        super(scaImporter, api);
     }
 
     @Override
@@ -75,8 +74,7 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceAPI.PROP_TITLE, scaImporter.getServiceStackType()); // TODO better, ex. from composite name...
         properties.put(ServiceAPI.PROP_DTIMPORT, scaImporter.getCompositeFile().getName());
         properties.put(ServiceAPI.PROP_PARENTURL, appliImplUrl);
-        //discoveryService.notifyServiceApi((CoreSession) scaImporter.getDocumentManager(), properties);
-        discoveryService.notifyServiceApi(documentManager, properties);
+        api.notifyServiceApi(properties);
 
         // enrich or create service
         properties = new HashMap<String, String>();
@@ -86,8 +84,7 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
         properties.put(Service.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
         properties.put(Service.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
         properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ?
-        //discoveryService.notifyService((CoreSession) scaImporter.getDocumentManager(), properties);
-        discoveryService.notifyService(documentManager, properties);
+        api.notifyService(properties);
     }
     
     @Override

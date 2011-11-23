@@ -29,11 +29,11 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.AutomationHelper;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.rest.AutomationHelper;
 import org.easysoa.rest.RestNotificationFactory;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.CoreSession;

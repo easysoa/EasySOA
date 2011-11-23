@@ -26,15 +26,16 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.DiscoveryService;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -50,8 +51,8 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
     
     protected DocumentModel referenceModel;
 
-    public ReferenceBindingVisitor(IScaImporter scaImporter, DiscoveryService discoveryService) {
-        super(scaImporter, discoveryService);
+    public ReferenceBindingVisitor(IScaImporter scaImporter, EasySOAApiSession api) {
+        super(scaImporter, api);
     }
     
     @Override
@@ -85,16 +86,15 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
         properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-        //referenceModel = discoveryService.notifyServiceReference((CoreSession) scaImporter.getDocumentManager(), properties);
-        referenceModel = discoveryService.notifyServiceReference(documentManager, properties);
-        
+        String referenceModelId = api.notifyServiceReference(properties);
+        referenceModel = ((CoreSession) scaImporter.getDocumentManager()).getDocument(new IdRef(referenceModelId));
+                
         // Notify referenced service
         properties = new HashMap<String, String>();
         properties.put(Service.PROP_URL, refUrl);
         properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         try {
-            //discoveryService.notifyService((CoreSession) scaImporter.getDocumentManager(), properties);
-            discoveryService.notifyService(documentManager, properties);
+            api.notifyService(properties);
         } catch (MalformedURLException e) {
             log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
         } 

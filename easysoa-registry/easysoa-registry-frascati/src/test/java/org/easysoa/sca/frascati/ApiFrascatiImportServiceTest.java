@@ -5,12 +5,15 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.net.MalformedURLException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.EasySOAConstants;
-import org.easysoa.doctypes.Service;
+import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.registry.frascati.NxFraSCAtiService;
+import org.easysoa.doctypes.Service;
+import org.easysoa.registry.frascati.FraSCAtiService;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
@@ -32,8 +35,8 @@ import org.nuxeo.runtime.services.resource.ResourceService;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.Jetty;
 import org.nuxeo.runtime.test.runner.LocalDeploy;
+
 import com.google.inject.Inject;
 
 @RunWith(FeaturesRunner.class)
@@ -113,8 +116,9 @@ public class ApiFrascatiImportServiceTest {
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	BindingVisitorFactory bindingVisitorFactory = new ApiBindingVisitorFactory();
-    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, frascatiService, scaFile);
+    	EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(session);
+    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(api, scaFile);
+    	importer.setFrascatiService(frascatiService);
 		//importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");

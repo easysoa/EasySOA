@@ -27,6 +27,11 @@ import org.easysoa.registry.frascati.NxFraSCAtiService;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
+import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.registry.frascati.FraSCAtiService;
+import org.easysoa.sca.visitors.ReferenceBindingVisitor;
+import org.easysoa.sca.visitors.ScaVisitor;
+import org.easysoa.sca.visitors.ServiceBindingVisitor;
 import org.easysoa.services.DocumentService;
 import org.eclipse.stp.sca.Composite;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -36,8 +41,9 @@ import org.nuxeo.runtime.api.Framework;
 
 /**
  * Sca Importer : Uses Nuxeo API's to register services
+ * 
  * @author jguillemotte
- *
+ * 
  */
 public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase implements FraSCAtiRuntimeScaImporterItf {
 

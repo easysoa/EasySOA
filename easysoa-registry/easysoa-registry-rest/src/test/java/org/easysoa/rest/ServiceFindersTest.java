@@ -32,7 +32,7 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.HttpFile;
+import org.easysoa.impl.HttpFile;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
 import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONObject;

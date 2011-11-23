@@ -31,20 +31,17 @@
 		</dependency>
 	</dependencies>
 
-	<modules>
-		<module>easysoa-registry-api</module>
-		<module>easysoa-registry-parent</module>
-		<module>easysoa-registry-core</module>
-	    <module>easysoa-registry-web</module>
-		<module>easysoa-registry-rest</module>
-		<module>easysoa-registry-dashboard</module>
-		<module>easysoa-registry-dependencies</module>
-		<!-- Temporary disabling FraSCAti projects (see WIP on Git branch 'nuxeo-frascati') -->
-		<!--<module>easysoa-registry-api-frascati</module>-->
-		<module>easysoa-registry-api-frascati</module>
-		<module>easysoa-registry-frascati</module>
-		<!--<module>easysoa-registry-rest-frascati</module>-->
-	</modules>
+    <modules>
+        <module>easysoa-registry-api</module>
+        <module>easysoa-registry-parent</module>
+        <module>easysoa-registry-core</module>
+        <module>easysoa-registry-web</module>
+        <module>easysoa-registry-rest</module>
+        <module>easysoa-registry-dashboard</module>
+        <module>easysoa-registry-dependencies</module>
+        <module>easysoa-registry-frascati</module>
+        <!--<module>easysoa-registry-rest-frascati</module> -->
+    </modules>
 
 	<!-- ============= -->
 	<!-- Custom tasks -->
@@ -76,7 +73,7 @@
 								<copy todir="target/lib" flatten="true">
 									<fileset dir=".">
 										<include name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
-										<include name="easysoa-registry-api/target/*-jar-with-dependencies.jar" />
+										<include name="easysoa-registry-api/**/*.jar" />
 									</fileset>
 								</copy>
 							</tasks>

@@ -23,10 +23,13 @@ package org.easysoa.sca.frascati;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+
 import java.io.File;
-import java.net.MalformedURLException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
@@ -43,7 +46,6 @@ import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -55,6 +57,7 @@ import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.LocalDeploy;
+
 import com.google.inject.Inject;
 
 /**
@@ -106,9 +109,13 @@ public class FraSCAtiImportServiceTest {
     
     @Inject ScaImporterComponent scaImporterComponent;
     
+    private EasySOAApiSession api;
+    
     @Before
-    public void setUp() throws ClientException, MalformedURLException {
+    public void setUp() throws Exception {
 
+        this.api = EasySOALocalApiFactory.createLocalApi(session);
+        
     	// FraSCAti
   	  	assertNotNull("Cannot get FraSCAti service component", frascatiService);
 
@@ -137,8 +144,7 @@ public class FraSCAtiImportServiceTest {
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	
     	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
-    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);    	
-		//FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile); // TODO put FileBlob back in orig test
+		FraSCAtiScaImporter importer = new FraSCAtiScaImporter(api, scaFile, session); // TODO put FileBlob back in orig test
     	importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
@@ -195,10 +201,15 @@ public class FraSCAtiImportServiceTest {
     	File scaFile = new File(scaFilePath);
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
+<<<<<<< HEAD
 
     	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
     	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);
     	//FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
+=======
+    	
+    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(api, scaFile, session);
+>>>>>>> api-projects
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
@@ -230,8 +241,7 @@ public class FraSCAtiImportServiceTest {
     	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
     	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
     	BindingVisitorFactory visitorFactory = new NxBindingVisitorFactory(session);
-    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);    	
-    	//FraSCAtiScaImporter importer = new FraSCAtiScaImporter(session, scaFile);
+    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(api, scaFile, session);
 		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
