@@ -21,13 +21,13 @@
 package org.easysoa.sca.frascati.mock;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
 import org.easysoa.sca.frascati.ApiFrascatiImportServiceTest;
 import org.osoa.sca.annotations.Scope;
 
