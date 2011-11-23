@@ -30,7 +30,6 @@ import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.registry.frascati.FileUtils;
 import org.easysoa.registry.frascati.FraSCAtiServiceItf;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Component;
 import org.eclipse.stp.sca.ComponentReference;
@@ -38,6 +37,7 @@ import org.eclipse.stp.sca.ComponentService;
 import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.ow2.frascati.util.FrascatiException;
 
 public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
@@ -45,20 +45,6 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 	private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
 
 	private EasySOAApiSession api;
-	
-	protected File compositeFile;
-	private String serviceStackType;
-	private String serviceStackUrl;
-
-	private Stack<String> archiNameStack = new Stack<String>();
-	private Stack<EObject> bindingStack = new Stack<EObject>();
-
-	protected/* @Inject */FraSCAtiServiceItf frascatiService; // TODO better Inject doesn't work outside tests ?!
-
-	/**
-	 * List of binding info providers
-	 */
-    private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
     
 	/**
 	 * Constructor
@@ -68,13 +54,10 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 	 * @throws ClientException 
 	 */
 
-	public FraSCAtiScaImporterBase(EasySOAApiSession api, File compositeFile) throws FrascatiException{
-	    this.api = api;
-		this.compositeFile = compositeFile;
-		frascatiService = new FraSCAtiServiceBase();
+	public FraSCAtiScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile, FraSCAtiServiceItf frascatiService) throws FrascatiException{
+	    super(bindingVisitorFactory, compositeFile);
+		this.frascatiService = frascatiService;
 	}
-
-
 
 	@Override
 	public void importSCA() throws Exception {

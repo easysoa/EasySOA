@@ -50,6 +50,8 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
     private static Log log = LogFactory.getLog(ReferenceBindingVisitor.class);
     
     protected DocumentModel referenceModel;
+    
+    private CoreSession documentManager;
 
     public ReferenceBindingVisitor(IScaImporter scaImporter, EasySOAApiSession api) {
         super(scaImporter, api);
@@ -87,7 +89,7 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
         properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
         String referenceModelId = api.notifyServiceReference(properties);
-        referenceModel = ((CoreSession) scaImporter.getDocumentManager()).getDocument(new IdRef(referenceModelId));
+        referenceModel = documentManager.getDocument(new IdRef(referenceModelId));
                 
         // Notify referenced service
         properties = new HashMap<String, String>();

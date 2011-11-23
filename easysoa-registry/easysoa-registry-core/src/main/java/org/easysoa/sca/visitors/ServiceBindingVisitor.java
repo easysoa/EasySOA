@@ -94,7 +94,7 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
 
 	@Override
 	public void setDocumentManager(Object documentManager) {
-		this.documentManager = (CoreSession) documentManager;
+	    // Not needed
 	}
 
 }

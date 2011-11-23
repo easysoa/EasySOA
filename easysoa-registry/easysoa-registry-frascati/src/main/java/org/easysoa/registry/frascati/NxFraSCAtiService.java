@@ -56,8 +56,6 @@ import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.FraSCAtiScaImporter;
 import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.webengine.WebEngine;
-import org.nuxeo.ecm.webengine.session.UserSession;
 import org.nuxeo.runtime.model.Adaptable;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
@@ -80,7 +78,8 @@ public class NxFraSCAtiService extends FraSCAtiServiceBase implements org.nuxeo.
 	
 	public static final ComponentName NAME = new ComponentName("org.easysoa.registry.frascati.FraSCAtiServiceComponent");
 
-	private static Log log = LogFactory.getLog(NxFraSCAtiService.class);
+	@SuppressWarnings("unused")
+    private static Log log = LogFactory.getLog(NxFraSCAtiService.class);
 	
 	private CoreSession documentManager;
 	

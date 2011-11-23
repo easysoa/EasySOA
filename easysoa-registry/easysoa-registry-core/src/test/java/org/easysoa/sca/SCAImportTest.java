@@ -24,15 +24,15 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.net.MalformedURLException;
+
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.NxBindingVisitorFactory;
-import org.easysoa.services.DocumentService;
 import org.easysoa.sca.xml.XMLScaImporter;
 import org.easysoa.services.CoreServiceTestHelperBase;
+import org.easysoa.services.DocumentService;
 import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;

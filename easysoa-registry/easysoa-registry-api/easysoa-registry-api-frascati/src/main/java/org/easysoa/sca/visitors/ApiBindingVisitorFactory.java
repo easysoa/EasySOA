@@ -20,6 +20,10 @@
 
 package org.easysoa.sca.visitors;
 
+import java.io.IOException;
+
+import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOARemoteApiFactory;
 import org.easysoa.sca.IScaImporter;
 
 /**
@@ -29,19 +33,28 @@ import org.easysoa.sca.IScaImporter;
  */
 public class ApiBindingVisitorFactory extends AbstractBindingVisitorFactoryBase {
 
+    private EasySOAApiSession api;
+    
 	/**
 	 * Constructor
+	 * @throws IOException 
 	 */
-	public ApiBindingVisitorFactory(){
+	public ApiBindingVisitorFactory() throws IOException {
 		super();
+		api = EasySOARemoteApiFactory.createRemoteApi();
 	}
-	
+
+    public ApiBindingVisitorFactory(String nuxeoApisUrl) throws IOException {
+        super();
+        api = EasySOARemoteApiFactory.createRemoteApi(nuxeoApisUrl);
+    }
+    
 	/**
 	 * Create and return a new ApiReferenceBindingVisitor
 	 * @return a <code>ScaVisitor</code>
 	 */
 	public ScaVisitor createReferenceBindingVisitor(IScaImporter scaImporter){
-    	return new ApiReferenceBindingVisitor(scaImporter);
+    	return new ApiReferenceBindingVisitor(scaImporter, api);
 	}
 	
 	/**
@@ -49,7 +62,7 @@ public class ApiBindingVisitorFactory extends AbstractBindingVisitorFactoryBase 
 	 * @return a <code>ScaVisitor</code>
 	 */
 	public ScaVisitor createServiceBindingVisitor(IScaImporter scaImporter){
-    	return new ApiServiceBindingVisitor(scaImporter);
+    	return new ApiServiceBindingVisitor(scaImporter, api);
 	}	
 	
 }

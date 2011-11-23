@@ -1,20 +1,21 @@
 package org.easysoa.sca;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.net.MalformedURLException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.services.DocumentService;
 import org.easysoa.sca.extension.ScaImporterComponent;
-import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.easysoa.services.CoreServiceTestHelperBase;
+import org.easysoa.services.DocumentService;
 import org.easysoa.test.rest.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;

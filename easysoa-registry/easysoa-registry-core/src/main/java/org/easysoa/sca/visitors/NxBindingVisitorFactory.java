@@ -20,16 +20,19 @@
 
 package org.easysoa.sca.visitors;
 
+import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.IScaImporter;
-import org.easysoa.services.DiscoveryService;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.runtime.api.Framework;
 
 public class NxBindingVisitorFactory extends AbstractBindingVisitorFactoryBase {
 
+    protected EasySOAApiSession api;
+    
 	protected CoreSession documentManager;
 
-	public NxBindingVisitorFactory(CoreSession documentManager){
+	public NxBindingVisitorFactory(CoreSession documentManager) throws Exception {
+        this.api = EasySOALocalApiFactory.createLocalApi(documentManager);
 		this.documentManager = documentManager;
 	}
 	
@@ -39,14 +42,14 @@ public class NxBindingVisitorFactory extends AbstractBindingVisitorFactoryBase {
 	
 	@Override
 	public ScaVisitor createReferenceBindingVisitor(IScaImporter scaImporter) {
-		ScaVisitor scaVisitor = new ReferenceBindingVisitor(scaImporter, Framework.getRuntime().getService(DiscoveryService.class));
+		ScaVisitor scaVisitor = new ReferenceBindingVisitor(scaImporter, api);
 		scaVisitor.setDocumentManager(this.documentManager);
 		return scaVisitor;
 	}
 
 	@Override
 	public ScaVisitor createServiceBindingVisitor(IScaImporter scaImporter) {
-		ScaVisitor scaVisitor = new ServiceBindingVisitor(scaImporter, Framework.getRuntime().getService(DiscoveryService.class));
+		ScaVisitor scaVisitor = new ServiceBindingVisitor(scaImporter, api);
 		scaVisitor.setDocumentManager(this.documentManager);
 		return scaVisitor;
 	}

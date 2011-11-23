@@ -27,11 +27,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
-import org.easysoa.sca.visitors.ApiBindingVisitorFactory;
 import org.eclipse.stp.sca.Composite;
-import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
 import org.ow2.frascati.util.FrascatiException;

@@ -20,14 +20,15 @@
 
 package org.easysoa.sca.visitors;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.doctypes.Service;
-import org.easysoa.rest.RestNotificationFactory;
-import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
-import org.easysoa.rest.RestNotificationRequest;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.IScaImporter;
 
@@ -39,34 +40,35 @@ import org.easysoa.sca.IScaImporter;
  */
 public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
 
-    @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog(ApiReferenceBindingVisitor.class);
 
-    public ApiReferenceBindingVisitor(IScaImporter scaImporter) {
+    private EasySOAApiSession api;
+    
+    public ApiReferenceBindingVisitor(IScaImporter scaImporter, EasySOAApiSession api) {
         super(scaImporter);
+        this.api = api;
     }
 
 	@Override
 	public void visit(BindingInfoProvider bindingInfoProvider) throws Exception {
-	    RestNotificationFactory factory = new RestNotificationFactory();
         String refUrl = bindingInfoProvider.getBindingUrl();	    
 	    
         // Notify service reference
-        RestNotificationRequest requestServiceReference = factory.createNotification(RestDiscoveryService.SERVICEREFERENCE);
-	    requestServiceReference.setProperty(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
-	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
-	    requestServiceReference.setProperty(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
-	    requestServiceReference.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
-	    //requestServiceReference.setProperty(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));	
-	    requestServiceReference.setProperty(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-	    requestServiceReference.send();
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put(ServiceReference.PROP_REFURL, refUrl); // getting referenced service url
+        properties.put(ServiceReference.PROP_ARCHIPATH, scaImporter.toCurrentArchiPath());
+	    properties.put(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
+	    properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
+	    //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));	
+	    properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        api.notifyServiceReference(properties);
 	    
         // Notify referenced service
-	    RestNotificationRequest requestService = factory.createNotification(RestDiscoveryService.SERVICE);
-        requestService.setProperty(Service.PROP_URL, refUrl);
-        requestService.setProperty(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
+        properties = new HashMap<String, String>();
+        properties.put(Service.PROP_URL, refUrl);
+        properties.put(Service.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         try {
-        	requestService.send();
+            api.notifyService(properties);
         } catch (Exception e) {
             log.warn("Failed to register referenced service, composite seems to link to an invalid URL");
         }		

@@ -36,7 +36,7 @@ import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
-import org.eclipse.stp.sca.Composite;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.ow2.frascati.util.FrascatiException;
 
 /**
@@ -114,7 +114,7 @@ public abstract class AbstractScaImporterBase implements IScaImporter {
 	/**
 	 * List of binding info providers
 	 */
-    private ArrayList<BindingInfoProvider> bindingInfoProviders = null;
+    private List<BindingInfoProvider> bindingInfoProviders = null;
     
 	/**
 	 * Constructor

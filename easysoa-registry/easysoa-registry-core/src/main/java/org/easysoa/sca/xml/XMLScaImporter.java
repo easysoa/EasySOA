@@ -26,20 +26,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.api.EasySOAApiSession;
-import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.sca.BindingInfoProvider;
-import org.easysoa.sca.IScaImporter;
-import org.easysoa.sca.visitors.ReferenceBindingVisitor;
+import org.easysoa.sca.frascati.AbstractScaImporterBase;
+import org.easysoa.sca.visitors.BindingVisitorFactory;
+import org.easysoa.sca.visitors.NxBindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
-import org.easysoa.sca.visitors.ServiceBindingVisitor;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.Blob;
@@ -73,7 +73,6 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	private static Log log = LogFactory.getLog(XMLScaImporter.class);
 
 	private CoreSession documentManager;
-    private EasySOAApiSession api;
 	private File compositeFile;
 	private String serviceStackType;
 	private String serviceStackUrl;
@@ -209,12 +208,12 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 	
 	@Override
 	public ScaVisitor createServiceBindingVisitor() {
-		return this.bindingVisitorFactory.createServiceBindingVisitor(this, api);
+		return this.bindingVisitorFactory.createServiceBindingVisitor(this);
 	}
 
 	@Override
 	public ScaVisitor createReferenceBindingVisitor() {
-		return this.bindingVisitorFactory.createReferenceBindingVisitor(this, api);
+		return this.bindingVisitorFactory.createReferenceBindingVisitor(this);
 	}
 	
 	private ArrayList<BindingInfoProvider> bindingInfoProviders = null;

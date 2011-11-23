@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Composite;
 import org.objectweb.fractal.api.Component;
@@ -37,7 +36,7 @@ import org.ow2.frascati.util.FrascatiException;
 public class DiscoveryProcessingContext implements ProcessingContext {
 
 	protected ProcessingContext delegate;
-	private FraSCAtiServiceItf fraSCAtiService;
+	//private FraSCAtiServiceItf fraSCAtiService;
 	private FraSCAtiRuntimeScaImporterItf runtimeScaImporter;
 	
 	protected List<String> warningMessages = new ArrayList<String>();
@@ -49,7 +48,7 @@ public class DiscoveryProcessingContext implements ProcessingContext {
 	public DiscoveryProcessingContext(FraSCAtiServiceItf fraSCAtiService, FraSCAtiRuntimeScaImporterItf runtimeScaImporter, URL... urls) throws FrascatiException{
 		//this.delegate = delegate;
 		this.delegate = fraSCAtiService.getFraSCAti().getCompositeManager().newProcessingContext(urls);
-		this.fraSCAtiService = fraSCAtiService; // TODO get from runtimeScaImporter ??
+		//this.fraSCAtiService = fraSCAtiService; // TODO get from runtimeScaImporter ??
 		this.runtimeScaImporter = runtimeScaImporter;
 	}
 

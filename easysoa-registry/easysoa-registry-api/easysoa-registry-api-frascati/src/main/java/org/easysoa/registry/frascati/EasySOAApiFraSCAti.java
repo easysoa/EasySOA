@@ -54,13 +54,13 @@ public class EasySOAApiFraSCAti extends FraSCAtiServiceBase {
 
 	public FraSCAtiRuntimeScaImporterItf newRemoteRuntimeScaImporter() throws Exception {
 		ApiBindingVisitorFactory apiBindingVisitorFactory = new ApiBindingVisitorFactory();
-		ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(apiBindingVisitorFactory, this, null);
+		ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(apiBindingVisitorFactory, null, this);
 		return apiFraSCAtiScaImporter;
 	}
 	
 	public IScaImporter newRemoteScaImporter(File compositeFile) throws Exception {
 		ApiBindingVisitorFactory apiBindingVisitorFactory = new ApiBindingVisitorFactory();
-		ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(apiBindingVisitorFactory, this, compositeFile);
+		ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(apiBindingVisitorFactory, compositeFile, this);
 		return apiFraSCAtiScaImporter;
 	}
 	

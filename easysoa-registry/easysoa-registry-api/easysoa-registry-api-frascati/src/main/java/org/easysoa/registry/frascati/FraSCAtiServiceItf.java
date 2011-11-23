@@ -24,9 +24,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Set;
 
-import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.eclipse.stp.sca.Composite;
-import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.util.FrascatiException;
 
