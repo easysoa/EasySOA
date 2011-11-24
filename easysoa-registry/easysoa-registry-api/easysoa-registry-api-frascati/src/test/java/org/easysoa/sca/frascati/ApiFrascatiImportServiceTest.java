@@ -49,22 +49,33 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     static final Log log = LogFactory.getLog(ApiFrascatiImportServiceTest.class);
     
-    private ArrayList<ExchangeRecord> recordList;
+    // List to record the messages exchanged between client and mock rest api server
+    private ArrayList<ExchangeRecord> recordList; 
+    
+    
+    //mock creation
+    //private List<Object> mockedList = mock(List.class);
     
     @Before
     public void setUp() throws FrascatiException {
+    	
+    	// Create Mockito mock
     	recordList = new ArrayList<ExchangeRecord>();
+    	//recordList = mock(ArrayList.class);
+    	
     	// Start fraSCAti
  	    startFraSCAti();
-    	// Maybe need to add a mock REST API server to simulate the exchange
+ 	    // Start the mock service composite
     	startMock();
+    	// Set the test class
     	setTest(this);
     }
     
     /**
-     * Set this object in the RestApiMock. When the EasySoaRestApiMock receive a request, it calls the check method corresponding to the received request
-     * @param test
-     * @throws FrascatiException
+     * Set the ApiFrascatiImportServiceTest in the RestApiMock. 
+     * When the EasySoaRestApiMock receive a request, it calls the check method corresponding to the received request
+     * @param test ApiFrascatiImportServiceTest
+     * @throws FrascatiException If a problem occurs when the set is done
      */
     @SuppressWarnings("unchecked")
     protected void setTest(ApiFrascatiImportServiceTest test) throws FrascatiException{
@@ -74,6 +85,10 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     	        ).setTest(test);    	    	
     }
     
+    /**
+     * Main test
+     * @throws Exception
+     */
     @Test
     public void testSCAComposite() throws Exception {
     	// SCA composite file to import :
@@ -81,16 +96,22 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
     	File scaFile = new File(scaFilePath);
     	BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
-    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile,  EasySOAApiFraSCAti.getInstance());
+    	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile, EasySOAApiFraSCAti.getInstance());
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
 		importer.importSCAComposite();
-		checkExchanges();
 		
+		// Check the recorded exchanges
+		checkExchanges();
+		// Check with Mockito
 		checkTestSCAComposite(/*...*/);
     }
-    
-    public void checkExchanges() throws IOException{
+
+    /**
+     * Check the recorded exchanges
+     * @throws IOException 
+     */
+    public void checkExchanges() {
     	for(ExchangeRecord record : recordList){
         	assertTrue(record.getRequestContent().contains("RestSoapProxy.composite"));    		
     	}
@@ -99,6 +120,12 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     public void checkTestSCAComposite(/*...*/) throws Exception {
     	// abstract above, impl'd using nuxeo queries when not mocked, when mocked checks that checkCaseOne==true
     	// OR use mock libraries ex. mockito, rmock, easymock, jmock...
+   	
+    	//verification
+    	// Not really lot of interrest 
+    	/*for(ExchangeRecord record : recordList){
+    		verify(recordList).add(record);
+    	}*/
     }
     
     /**
@@ -122,8 +149,9 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws IOException 
      */
     public void recordExchange(ServletRequest request, ServletResponse response) throws IOException {
-    	recordList.add(new ExchangeRecord(request, response));
+    	ExchangeRecord record = new ExchangeRecord(request, response);
+    	System.out.println("request content : " + record.getRequestContent());
+    	recordList.add(record);
     }
-    
     
 }

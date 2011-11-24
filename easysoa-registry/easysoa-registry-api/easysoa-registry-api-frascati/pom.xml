@@ -36,47 +36,59 @@
             <scope>compile</scope>
         </dependency>
         <!-- Minimal OW2 FraSCAti + JDT. -->
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-runtime-factory</artifactId>
-            <version>${frascati.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-binding-ws</artifactId>
-            <version>${frascati.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-binding-http</artifactId>
-            <version>${frascati.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-binding-rest</artifactId>
-            <version>${frascati.version}</version>
-        </dependency>
-        <!-- Force to use the following JDT else an older is used. -->
-        <!--><dependency> <groupId>org.eclipse.jdt</groupId> <artifactId>core</artifactId> -->
-        <!-- version>3.3.0-v_771</version --><!-- maven.org --><!--$NO-MVN-MAN-VER$ -->
-        <!--<version>3.3.0.771</version> (Managed) --><!-- openarchitectureware.org -->
-        <!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->
-        <!--<scope>compile</scope> </dependency> -->
-
-        <!-- For tests -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1</version>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>${frascati.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>		
+		<!-- Force to use the following JDT else an older is used. -->
+		<!--><dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>-->
+			<!-- version>3.3.0-v_771</version --><!-- maven.org --><!--$NO-MVN-MAN-VER$-->
+			<!--<version>3.3.0.771</version> (Managed) --><!-- openarchitectureware.org -->
+			<!-- TODO Eclipse m2e says : Overriding managed version 3.1.1-NXP-4284 for core ?!! -->			
+			<!--<scope>compile</scope>
+		</dependency>-->	
+		<!-- Logging -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1</version>
+		</dependency>
+	
+		<!-- For tests -->
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>			
+		</dependency>
+		<!-- Mockito -->
+  		<dependency>
+  			<groupId>org.mockito</groupId>
+  			<artifactId>mockito-all</artifactId>
+  			<version>1.9.0-rc1</version>
+  			<scope>test</scope>
+  		</dependency>
+	</dependencies>
 
     <build>
         <!-- Specify Manifest location -->

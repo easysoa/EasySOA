@@ -53,12 +53,11 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 	 * @throws FrascatiException 
 	 * @throws ClientException 
 	 */
-
 	public FraSCAtiScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile, FraSCAtiServiceItf frascatiService) throws FrascatiException{
 	    super(bindingVisitorFactory, compositeFile);
 		this.frascatiService = frascatiService;
 	}
-
+	
 	@Override
 	public void importSCA() throws Exception {
 		// If the filename is not set, it is not possible to choose the corresponding import method
