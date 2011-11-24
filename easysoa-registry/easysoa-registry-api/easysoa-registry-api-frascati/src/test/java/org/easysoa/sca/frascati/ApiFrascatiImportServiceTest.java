@@ -66,9 +66,12 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @param test
      * @throws FrascatiException
      */
+    @SuppressWarnings("unchecked")
     protected void setTest(ApiFrascatiImportServiceTest test) throws FrascatiException{
     	System.out.println("composite restApiMock : " + frascati.getComposite("RestApiMock"));
-    	frascati.getService(frascati.getComposite("RestApiMock"), "restApiMockServiceJava", TestMock.class).setTest(test);    	    	
+    	((TestMock<ApiFrascatiImportServiceTest>) frascati.getService(
+    	            frascati.getComposite("RestApiMock"), "restApiMockServiceJava", TestMock.class)
+    	        ).setTest(test);    	    	
     }
     
     @Test
