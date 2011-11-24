@@ -20,13 +20,11 @@
 
 package org.easysoa.sca.frascati;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import javax.servlet.ServletRequest;
@@ -80,9 +78,11 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws FrascatiException If a problem occurs when the set is done
      */
     @SuppressWarnings("unchecked")
-	protected void setTest(ApiFrascatiImportServiceTest test) throws FrascatiException{
+    protected void setTest(ApiFrascatiImportServiceTest test) throws FrascatiException{
     	System.out.println("composite restApiMock : " + frascati.getComposite("RestApiMock"));
-    	frascati.getService(frascati.getComposite("RestApiMock"), "restApiMockServiceJava", TestMock.class).setTest(test);    	    	
+    	((TestMock<ApiFrascatiImportServiceTest>) frascati.getService(
+    	            frascati.getComposite("RestApiMock"), "restApiMockServiceJava", TestMock.class)
+    	        ).setTest(test);    	    	
     }
     
     /**
