@@ -68,7 +68,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
                 String title = (properties.get("title") != null) ? properties.get("title") : properties.get(AppliImpl.PROP_URL);
                 appliImplModel = docService.createAppliImpl(session, url);
                 appliImplModel.setProperty("dublincore", "title", title);
-                session.saveDocument(appliImplModel);
+                appliImplModel = session.saveDocument(appliImplModel);
             }
             
             // Update optional properties
@@ -150,7 +150,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             setPropertiesIfNotNull(apiModel, ServiceAPI.SCHEMA, ServiceAPI.getPropertyList(), properties);
             
             // Save
-            session.saveDocument(apiModel);
+            apiModel = session.saveDocument(apiModel);
             session.save();
             
             return apiModel.getId();
@@ -227,7 +227,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             }
             
             // Save
-            session.saveDocument(serviceModel); 
+            serviceModel = session.saveDocument(serviceModel); 
             session.save();
 
             return serviceModel.getId();
@@ -270,7 +270,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             properties.remove(ServiceReference.PROP_PARENTURL);
             setPropertiesIfNotNull(referenceModel, ServiceReference.SCHEMA, ServiceReference.getPropertyList(), properties);
             
-            session.saveDocument(referenceModel);
+            referenceModel = session.saveDocument(referenceModel);
             session.save();
             
             return referenceModel.getId();
