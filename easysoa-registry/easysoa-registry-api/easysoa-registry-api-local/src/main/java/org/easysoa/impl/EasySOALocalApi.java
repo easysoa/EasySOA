@@ -221,8 +221,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
                 );
             setPropertiesIfNotNull(serviceModel, Service.SCHEMA, Service.getPropertyList(), properties);
             
-            // Update location
-            if (!apiModel.getRef().equals(serviceModel.getParentRef())) {
+            // Update location (unless the service has just been created)
+            if (!apiModel.getRef().equals(serviceModel.getParentRef()) && serviceModel.getParentRef() != null) {
                 serviceModel = session.move(serviceModel.getRef(), apiModel.getRef(), null);
             }
             
