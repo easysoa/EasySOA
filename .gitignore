@@ -3,6 +3,7 @@
 target/
 reports/
 distrib/
+bin/
 
 # Other unnecessary files
 *.project
@@ -11,6 +12,7 @@ distrib/
 *.swp
 *.tar.gz
 *.orig
+*~
 .DS_Store
 .tmp*~
 .classpath
