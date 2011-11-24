@@ -21,8 +21,6 @@
 package org.easysoa.sca;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,14 +45,14 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.runtime.api.Framework;
 
 /**
  * SCA Import form
+ * 
  * @author mkalam-alami, mdutoo
- *
+ * 
  */
 @Name("easysoaImport")
 @Scope(ScopeType.CONVERSATION)
@@ -70,18 +68,18 @@ public class ScaImportBean {
     NavigationContext navigationContext;
 
     List<SelectItem> appliImpls;
-    
+
     private Blob compositeFile;
-    
+
     private String parentAppliImpl;
-    
+
     private String serviceStackType;
-    
+
     private String serviceStackUrl;
-    
+
     @Create
     public void init() throws ClientException {
-    	compositeFile = null;
+        compositeFile = null;
         documentManager = navigationContext.getOrCreateDocumentManager();
         appliImpls = getAllAppliImplsAsSelectItems(documentManager);
         serviceStackType = "FraSCAti"; // TODO get it from wizard
@@ -89,40 +87,30 @@ public class ScaImportBean {
         // by choosing a stack (api server) type (frascati...)
         // (possibly initialized using composite info), then customizing it
     }
-    
+
     /**
      * 
      */
     public void importSCA() {
-    	File scaFile = null;
         if (compositeFile != null) {
-        	// filename not set, get the default zip file
-        	if (compositeFile.getFilename() == null || "".equals(compositeFile.getFilename())) {
-            	log.warn("Composite file not specified : using default file : /test/defaultsca.zip");
-        		//String scaFilePath = "src/main/resources/" + "test/defaultsca.zip";
-        		String scaFilePath =  System.getProperty("user.dir") + "/test/defaultsca.zip";
-            	scaFile = new File(scaFilePath);    	
-            	try {
-					compositeFile = new InputStreamBlob(new FileInputStream(scaFile));
-	            	compositeFile.setFilename(scaFilePath);					
-				} catch (FileNotFoundException ex) {
-					log.warn("Problem during default composite file loading" , ex);
-				}
-        	}
             
-            IScaImporter importer;
+            File scaFile = null;
+
             try {
-            	//importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, compositeFile);
-            	
-            	// TODO Call here a BindingVisistorFactory to pass the coresession (documentManager)
-            	//importer = Framework.getService(ScaImporterComponent.class).createScaImporter(documentManager, scaFile);
-            	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(documentManager);
-            	importer = Framework.getService(ScaImporterComponent.class).createScaImporter(visitorFactory, scaFile);
-            	
-            	DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
+                // Transfer composite to temporary file
+                if (compositeFile.getFilename().lastIndexOf(".") == -1) {
+                    log.warn("Chosen file has no extension, file type might not be recognized.");
+                }
+                scaFile = File.createTempFile("scaimport", compositeFile.getFilename());
+                compositeFile.transferTo(scaFile);
+
+                BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(documentManager);
+                IScaImporter importer = Framework.getService(ScaImporterComponent.class).createScaImporter(visitorFactory, scaFile);
+
+                DocumentModel appliImplModel = documentManager.getDocument(new IdRef(parentAppliImpl));
                 if (parentAppliImpl != null) {
                     // Add a test here to check if instance of NuxeoFrascatiScaImporter
-                	importer.setParentAppliImpl(appliImplModel);
+                    importer.setParentAppliImpl(appliImplModel);
                 }
                 if (serviceStackType != null) {
                     importer.setServiceStackType(serviceStackType);
@@ -130,17 +118,21 @@ public class ScaImportBean {
                 if (serviceStackUrl != null) {
                     importer.setServiceStackUrl(serviceStackUrl);
                 }
-                
+
                 importer.importSCA();
                 navigationContext.navigateToRef(appliImplModel.getRef());
-                
+
             } catch (Exception e) {
                 log.error("Failed to import SCA", e);
+            } finally {
+                if (scaFile != null) {
+                    scaFile.delete();
+                }
             }
-        
+
         }
     }
-    
+
     public List<SelectItem> getAppliImpls() {
         return appliImpls;
     }
@@ -150,7 +142,7 @@ public class ScaImportBean {
     }
 
     public void setCompositeFile(Blob compositeFile) {
-    	this.compositeFile = compositeFile;
+        this.compositeFile = compositeFile;
     }
 
     public String getParentAppliImpl() {
@@ -160,9 +152,9 @@ public class ScaImportBean {
     public void setParentAppliImpl(String parentAppliImpl) {
         this.parentAppliImpl = parentAppliImpl;
     }
-    
+
     private static List<SelectItem> getAllAppliImplsAsSelectItems(CoreSession documentManager) throws ClientException {
-        
+
         // Gather information
         String wsRootId = null;
         try {
@@ -177,17 +169,16 @@ public class ScaImportBean {
         if (wsRootId != null) {
             query += " AND ecm:parentId = '" + wsRootId + "'";
         }
-        
+
         // Send query
         List<SelectItem> appliImplItems = new ArrayList<SelectItem>();
         DocumentModelList appliImplList = documentManager.query(query);
-        
+
         // Transform into wanted format
         for (DocumentModel appliImpl : appliImplList) {
             try {
                 appliImplItems.add(new SelectItem(appliImpl.getId(), appliImpl.getTitle()));
-            }
-            catch (Exception e) { 
+            } catch (Exception e) {
                 log.warn("Failed to extract data from an AppliImpl");
             }
         }
