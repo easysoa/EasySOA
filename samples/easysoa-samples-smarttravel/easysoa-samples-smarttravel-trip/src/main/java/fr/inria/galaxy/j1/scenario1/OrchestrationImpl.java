@@ -35,10 +35,11 @@ import de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoap;
  * @author Christophe Demarey
  */
 public class OrchestrationImpl implements Trip {
+	
 	public static final String SEA = "SEA";
 	public static final String MOUNTAIN = "MOUNTAIN";
 	public static final String ART = "ART";
-
+	
 	/** The reference to the meteo service */
 	@Reference(name = "Check_Meteo_genService_ref")
 	protected GlobalWeatherSoap meteoService;
@@ -152,8 +153,10 @@ public class OrchestrationImpl implements Trip {
 		//String summary = summaryService.summarize(city, country, meteo, exchangeRate, chosenPhrase, translatedPhrase);
 		String summary = summaryService.summarize(city, country, meteo, exchangeRate, "Aller manger au Mc Donald => Go eat to the Mc Donald", translatedPhrase); // WS call 4 ///////////////////////
 		System.err.println("[OrchestrationImpl] Summary: \n" + summary);
+	
 		return summary;
 		//return "" + exchangeRate;
 
 	}
+
 }

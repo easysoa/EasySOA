@@ -25,6 +25,13 @@ package fr.inria.galaxy.j1.scenario1;
  */
 public interface Trip {
  
+	/**
+	 * Trip service main method
+	 * @param activity 
+	 * @param userSentence
+	 * @param rateTreshold
+	 * @return Return the trip response
+	 */
 	public String process( String activity, String userSentence, double rateTreshold);
 	
 }

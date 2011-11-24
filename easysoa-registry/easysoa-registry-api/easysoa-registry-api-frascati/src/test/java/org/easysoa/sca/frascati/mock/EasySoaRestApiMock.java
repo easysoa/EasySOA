@@ -21,22 +21,26 @@
 package org.easysoa.sca.frascati.mock;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
 import org.easysoa.sca.frascati.ApiFrascatiImportServiceTest;
 import org.osoa.sca.annotations.Scope;
 
+/**
+ * Rest API mock server to work with local tests
+ * @author jguillemotte
+ *
+ */
 @Scope("COMPOSITE")
 @SuppressWarnings("serial")
 public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestMock<ApiFrascatiImportServiceTest> {
 
-	// TODO : Make a composite file with this test to start it in FraSCAti
-	
+	// Test class
 	private ApiFrascatiImportServiceTest test;
 
 	@Override
@@ -53,19 +57,18 @@ public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestM
 		// as delegate except for InputStream, which would return ex. a ByteArrayInputStream()
 		// on the request content...
 
-		test.recordExchange(request, response);
-		
 		// TODO : Call a 'record' method with the request and response.
-		// Record all messages and then call a method to check the recorded messages
+		// Record all messages and then call a method to check the recorded messages		
+		test.recordExchange(request, response);
+
+		// here, call methods on test containing asserts related to each use case of the mock, ex:
+		// if isCaseOne(req) then test.checkCaseOne(req, res)...		
 		/*try{
         		test.checkCaseOne(req, res);    			
     	}
     	catch(Exception ex){
     		throw new ServletException(ex.getMessage());
     	}*/
-		// here, call methods on test containing asserts related to each use case of the mock, ex:
-		// if isCaseOne(req) then test.checkCaseOne(req, res)...
 	}
-
 
 }

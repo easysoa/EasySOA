@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.4-SNAPSHOT</version>
 		<relativePath>../easysoa-samples-parent/pom.xml</relativePath>
 	</parent>
 
@@ -29,31 +29,31 @@
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-factory</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-implementation-fractal</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-ws</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-http</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-binding-rest</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -65,13 +65,13 @@
 		<dependency>
 			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-core</artifactId>
-			<version>0.3-SNAPSHOT</version>
+			<version>0.4-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-rest</artifactId>
-			<version>0.3-SNAPSHOT</version>
+			<version>0.4-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -84,7 +84,14 @@
 		<dependency>
 			<groupId>org.easysoa.samples.smarttravel</groupId>
 			<artifactId>easysoa-samples-smarttravel-trip</artifactId>
-			<version>0.3-SNAPSHOT</version>
+			<version>0.4-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa.samples.smarttravel</groupId>
+			<artifactId>easysoa-samples-smarttravel-services-backup</artifactId>
+			<version>0.4-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -115,6 +122,14 @@
 	      <version>3.0.4.RELEASE</version>
 	      <scope>test</scope>      
 	    </dependency>
+	    
+	    <!-- Mockito -->
+  		<dependency>
+  			<groupId>org.mockito</groupId>
+  			<artifactId>mockito-all</artifactId>
+  			<version>1.9.0-rc1</version>
+  			<scope>test</scope>
+  		</dependency>	    
 	</dependencies>
 
 	<build>

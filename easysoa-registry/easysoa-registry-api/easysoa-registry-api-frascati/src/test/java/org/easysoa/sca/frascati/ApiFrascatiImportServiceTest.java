@@ -26,6 +26,7 @@ import static org.mockito.Mockito.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.servlet.ServletRequest;
@@ -51,11 +52,19 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     static final Log log = LogFactory.getLog(ApiFrascatiImportServiceTest.class);
     
     // List to record the messages exchanged between client and mock rest api server
-    private ArrayList<ExchangeRecord> recordList;
+    private ArrayList<ExchangeRecord> recordList; 
+    
+    
+    //mock creation
+    //private List<Object> mockedList = mock(List.class);
     
     @Before
     public void setUp() throws FrascatiException {
+    	
+    	// Create Mockito mock
     	recordList = new ArrayList<ExchangeRecord>();
+    	//recordList = mock(ArrayList.class);
+    	
     	// Start fraSCAti
  	    startFraSCAti();
  	    // Start the mock service composite
@@ -91,9 +100,11 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
 		importer.importSCAComposite();
+		
 		// Check the recorded exchanges
 		checkExchanges();
-		//checkTestSCAComposite(/*...*/);
+		// Check with Mockito
+		checkTestSCAComposite(/*...*/);
     }
 
     /**
@@ -109,6 +120,12 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     public void checkTestSCAComposite(/*...*/) throws Exception {
     	// abstract above, impl'd using nuxeo queries when not mocked, when mocked checks that checkCaseOne==true
     	// OR use mock libraries ex. mockito, rmock, easymock, jmock...
+   	
+    	//verification
+    	// Not really lot of interrest 
+    	/*for(ExchangeRecord record : recordList){
+    		verify(recordList).add(record);
+    	}*/
     }
     
     /**
@@ -132,7 +149,9 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws IOException 
      */
     public void recordExchange(ServletRequest request, ServletResponse response) throws IOException {
-    	recordList.add(new ExchangeRecord(request, response));
+    	ExchangeRecord record = new ExchangeRecord(request, response);
+    	System.out.println("request content : " + record.getRequestContent());
+    	recordList.add(record);
     }
     
 }

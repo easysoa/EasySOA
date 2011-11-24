@@ -4,12 +4,12 @@ Created-By: Apache Maven
 Built-By: Philippe Merle
 Build-Jdk: 1.6.0_24
 Bundle-ManifestVersion: 1
-Bundle-Version: 0.0.1
 Bundle-Name: easysoa-registry-api-frascati
 Bundle-SymbolicName: org.easysoa.registry.api.frascati;singleton:=true
 Bundle-Vendor: INRIA
 Nuxeo-Require: org.nuxeo.ecm.core.api,
  org.nuxeo.ecm.core,
  org.easysoa.registry.core,
- org.easysoa.registry.api
-Nuxeo-Component: OSGI-INF/frascati-service-base.xml, OSGI-INF/sca-importer-api-frascati-contrib.xml
+ org.easysoa.registry.api.local
+Nuxeo-Component: OSGI-INF/frascati-service-base.xml,
+ OSGI-INF/sca-importer-api-frascati-contrib.xml
