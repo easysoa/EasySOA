@@ -20,14 +20,14 @@ console.log("[Scenario #10]");
 // New service creation project
 
 var project = new api.Project("Service creation");
-var service = new api.ServiceDefinition("My new service");
+var service = new api.ServiceContract("My new service");
 project.addService(service);
 service.edit(); // Work on service contract
 project.setReadyForImplementation(true);
 
 // Prototype service implementation
 
-var prototypeImpl = new api.JavascriptImpl("My new service proto", options={serviceDef: service});
+var prototypeImpl = new api.JavascriptImpl("My new service proto", options={contract: service});
 prototypeImpl.edit();
 
 var testEnv = new api.DevelopmentEnvironment("Proto test", "George");
@@ -36,7 +36,7 @@ testEnv.start();
 
 // Real service implementation
 
-var serviceImpl = new api.JavaImpl("My new service", options={serviceDef: service});
+var serviceImpl = new api.JavaImpl("My new service", options={contract: service});
 serviceImpl.edit();
 
 var stagingEnv = new api.StagingEnvironment("Staging");

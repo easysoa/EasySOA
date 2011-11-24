@@ -29,7 +29,7 @@ devEnv.start();
 // New service creation project
 
 var project = new api.Project("Service creation");
-var service = new api.ServiceDefinition("My new service");
+var service = new api.ServiceContract("My new service");
 project.addService(service);
 service.edit(); // Work on service contract
 project.setReadyForImplementation(true);

@@ -11,12 +11,12 @@ var consts = require('./Consts');
 
 //===================== ServiceDefinition =====================
 
-var ServiceDefinition = Class.create({
+var ServiceContract = Class.create({
     initialize : function(name) {
         this.name = name;
     },
     edit : function() {
-        console.log("Making user edit service " + this.name + "'s definition");
+        console.log("Making user edit service " + this.name + "'s contract");
     }
 });
 
@@ -39,6 +39,6 @@ var Project = Class.create({
 
 
 module.exports = {
-    ServiceDefinition : ServiceDefinition,
+        ServiceContract : ServiceContract,
     Project : Project
 };

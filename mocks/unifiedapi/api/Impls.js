@@ -33,8 +33,8 @@ var AbstractServiceImpl = Class.create({
             this.isMock = (options.isMock == undefined) ? this.isMock : options.isMock;
             this.isProductionReady = (options.isProductionReady == undefined) ? 
                     this.isMock : options.isProductionReady;
-            this.serviceDef = (options.serviceDef == undefined) ? 
-                    this.serviceDef : options.serviceDef;
+            this.contract = (options.contract == undefined) ? 
+                    this.contract : options.contract;
             
         }
     },

@@ -6,6 +6,7 @@ Object.extend(module.exports, require('./Environments'));
 Object.extend(module.exports, require('./Impls'));
 Object.extend(module.exports, require('./Projects'));
 Object.extend(module.exports, require('./Proxies'));
+Object.extend(module.exports, require('./Queries'));
 Object.extend(module.exports, require('./Tests'));
 
 // ===================== UI =====================
