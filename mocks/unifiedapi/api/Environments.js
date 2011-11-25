@@ -33,6 +33,15 @@ var AbstractServer = Class.create({
     install : function(serviceImpl, env) {
         // To implement
     },
+    contains : function(serviceImpl) {
+        var result = false;
+        this.serviceEndpoints.each(function (endpoint) {
+            if (endpoint.impl == serviceImpl) {
+                result = true;
+            }
+        });
+        return result;
+    },
     remove : function(serviceImpl) {
         var newServiceEndpoints = Array();
         this.serviceEndpoints.each(function (endpoint) {
@@ -141,6 +150,20 @@ var AbstractEnvironment = Class.create({
         }
         this.endpoints.push(newEndpoint);
         return newEndpoint;
+    },
+    replaceServiceImpl : function(serviceImpl, newServiceImpl) {
+        var replaced = false;
+        this.servers.each(function (entry) {
+            if (entry[1].contains(serviceImpl)) {
+                entry[1].remove(serviceImpl);
+                entry[1].install(newServiceImpl);
+                replaced = true;
+                console.log("Replacing " + serviceImpl.name + " with " + newServiceImpl.name);
+            }
+        });
+        if (!replaced) {
+            console.error("Couldn't find impl. "+serviceImpl.name);
+        }
     },
     removeServiceImpl : function(serviceImpl) {
         this.servers.each(function (entry) {

@@ -6,6 +6,7 @@
 // Contact : easysoa-dev@googlegroups.com
 
 Object.extend(global, require('prototype'));
+var impls = require('./Impls');
 
 var Query = Class.create({
     initialize : function() {
@@ -13,6 +14,7 @@ var Query = Class.create({
     },
     run : function(query) {
         console.log(query);
+        return new impls.JavaImpl("QueriedService");
     }
 });
 

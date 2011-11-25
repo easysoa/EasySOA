@@ -12,14 +12,27 @@ Object.extend(module.exports, require('./Tests'));
 // ===================== UI =====================
 
 module.exports.selectServiceEndpointInUI = function(envFilter) {
+    // Run query on services
+    var query = "SELECT * FROM ServiceEndpoint WHERE ";
+    envFilter.each(function (environmentName) {
+        query += "endp:environment = '"+environmentName+"' OR ";
+    });
+    new module.exports.Query().run(query.substring(0, query.length - 4));
+    
+    // Return the one chosen by the user
     var selectedEndpoint = new module.exports.ServiceEndpoint(
             new module.exports.ExternalImpl("PureAirFlowers"),
             "http://localhost:9010/PureAirFlowers",
             new module.exports.StagingEnvironment(envFilter[0]));
     selectedEndpoint.started = true;
     return selectedEndpoint;
+    
 };
 
 module.exports.selectServiceImplFromEnvInUI = function(env) {
+    // Run query on services
+    new module.exports.Query().run("SELECT * FROM ServiceEndpoint WHERE endp:environment = '" + env.name + "'");
+    
+    // Return the one chosen by the user
     return env.endpoints[0].impl;
 };
