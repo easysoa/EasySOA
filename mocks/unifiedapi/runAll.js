@@ -18,3 +18,4 @@ require('./10-new-project');
 require('./11-talend-service');
 require('./12-conf-generation');
 require('./13-queries');
+require('./14-validation');
