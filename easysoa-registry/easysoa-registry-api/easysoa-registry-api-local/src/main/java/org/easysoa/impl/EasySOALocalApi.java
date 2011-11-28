@@ -3,10 +3,14 @@ package org.easysoa.impl;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOADocument;
+import org.easysoa.api.EasySOALocalDocument;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
@@ -17,12 +21,13 @@ import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.runtime.api.Framework;
 
 /**
  * 
- * Thin layer between the EasySOAApi and the DiscoveryService.
- * (XXX: They should eventually be merged)
+ * Local implementation of the EasySOA API, and core of the notification handling.
  * 
  * @author mkalam-alami
  *
@@ -54,7 +59,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public final String notifyAppliImpl(Map<String, String> properties)
+    public final EasySOADocument notifyAppliImpl(Map<String, String> properties)
             throws ClientException, MalformedURLException {
         
         // Check mandatory field
@@ -78,8 +83,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
             // Save
             session.saveDocument(appliImplModel);
             session.save();
-            
-            return appliImplModel.getId();
+
+            return new EasySOALocalDocument(appliImplModel);
         
         }
         else {
@@ -97,7 +102,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public final String notifyServiceApi(Map<String, String> properties)
+    public final EasySOADocument notifyServiceApi(Map<String, String> properties)
             throws ClientException, MalformedURLException {
         
         // Check mandatory fields
@@ -152,8 +157,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
             // Save
             apiModel = session.saveDocument(apiModel);
             session.save();
-            
-            return apiModel.getId();
+
+            return new EasySOALocalDocument(apiModel);
         }
         else {
             throw new ClientException("API URL or parent URL not informed");
@@ -170,7 +175,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public final String notifyService(Map<String, String> properties) throws ClientException, MalformedURLException {
+    public final EasySOADocument notifyService(Map<String, String> properties) throws ClientException, MalformedURLException {
     
         // Check mandatory fields
         String url = properties.get(Service.PROP_URL);
@@ -230,7 +235,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             serviceModel = session.saveDocument(serviceModel); 
             session.save();
 
-            return serviceModel.getId();
+            return new EasySOALocalDocument(serviceModel);
             
         }
         else {
@@ -247,7 +252,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
      * @return The created/updated Service
      * @throws ClientException
      */
-    public final String notifyServiceReference(
+    public final EasySOADocument notifyServiceReference(
             Map<String, String> properties) throws ClientException {
 
         String archiPath = properties.get(ServiceReference.PROP_ARCHIPATH);
@@ -272,8 +277,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
             
             referenceModel = session.saveDocument(referenceModel);
             session.save();
-            
-            return referenceModel.getId();
+
+            return new EasySOALocalDocument(referenceModel);
 
         }
         else {
@@ -362,6 +367,21 @@ public class EasySOALocalApi implements EasySOAApiSession {
                 }
             }
         }
+    }
+
+    @Override
+    public List<EasySOADocument> queryDocuments(String query) throws Exception {
+        List<EasySOADocument> result = new LinkedList<EasySOADocument>();
+        DocumentModelList list = session.query(query);
+        for (DocumentModel model : list) {
+            result.add(new EasySOALocalDocument(model));
+        }
+        return result;
+    }
+
+    @Override
+    public EasySOADocument getDocumentById(String id) throws Exception {
+        return new EasySOALocalDocument(session.getDocument(new IdRef(id)));
     }
 
 }

@@ -20,6 +20,8 @@
 
 package org.easysoa.api;
 
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
@@ -27,6 +29,7 @@ import org.easysoa.properties.PropertyNormalizer;
 import org.nuxeo.ecm.automation.client.jaxrs.OperationRequest;
 import org.nuxeo.ecm.automation.client.jaxrs.Session;
 import org.nuxeo.ecm.automation.client.jaxrs.impl.HttpAutomationClient;
+import org.nuxeo.ecm.automation.client.jaxrs.model.Document;
 import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
 
 /**
@@ -45,7 +48,7 @@ public class AutomationHelper {
     private HttpAutomationClient client = null;
     private Session session = null;
     
-    public AutomationHelper(String nuxeoAutomationUrl, String username, String password) throws Exception { 
+    public AutomationHelper(String nuxeoAutomationUrl, String username, String password) throws IOException { 
         client = new HttpAutomationClient(nuxeoAutomationUrl);
         try {
             session = client.getSession(username, password); 
@@ -55,6 +58,11 @@ public class AutomationHelper {
         }
     }
 
+    public Document getDocumentById(String id) throws Exception {
+        // TODO Do better (automation API probably has something more specific)
+        return query("SELECT * FROM Document WHERE ecm:uuid = '" + id + "'").get(0);
+    }
+    
     public Documents findDocumentByUrl(String doctype, String url) throws Exception {
         return query("SELECT * FROM " + doctype + " WHERE " + 
             EasySOADoctype.getSchemaPrefix(doctype) + "url = '" + PropertyNormalizer.normalizeUrl(url) + "'");

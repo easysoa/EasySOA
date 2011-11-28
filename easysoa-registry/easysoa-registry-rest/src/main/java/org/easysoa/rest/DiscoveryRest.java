@@ -38,6 +38,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
@@ -86,8 +87,8 @@ public class DiscoveryRest {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            String id = api.notifyAppliImpl(params);
-            result.put("documentId", id);
+            EasySOADocument doc = api.notifyAppliImpl(params);
+            result.put("documentId", doc.getId());
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -127,8 +128,8 @@ public class DiscoveryRest {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            String id = api.notifyServiceApi(params);
-            result.put("documentId", id);
+            EasySOADocument doc = api.notifyServiceApi(params);
+            result.put("documentId", doc.getId());
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -163,8 +164,8 @@ public class DiscoveryRest {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            String id = api.notifyService(params);
-            result.put("documentId", id);
+            EasySOADocument doc = api.notifyService(params);
+            result.put("documentId", doc.getId());
         }
         catch (Exception e) {
             appendError(e.getMessage());
@@ -199,8 +200,8 @@ public class DiscoveryRest {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
         Map<String, String> params = getFormValues(httpContext);
         try {
-            String id = api.notifyServiceReference(params);
-            result.put("documentId", id);
+            EasySOADocument doc = api.notifyServiceReference(params);
+            result.put("documentId", doc.getId());
         }
         catch (Exception e) {
             appendError(e.getMessage());

@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOADocument;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
@@ -88,8 +89,8 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
         properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-        String referenceModelId = api.notifyServiceReference(properties);
-        referenceModel = documentManager.getDocument(new IdRef(referenceModelId));
+        EasySOADocument referenceDoc = api.notifyServiceReference(properties);
+        referenceModel = documentManager.getDocument(new IdRef(referenceDoc.getId()));
                 
         // Notify referenced service
         properties = new HashMap<String, String>();

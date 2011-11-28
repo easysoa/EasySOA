@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
@@ -66,7 +67,7 @@ public class NXQLTest {
         if (api == null) {
         
             api = EasySOALocalApiFactory.createLocalApi(session);
-            String id = null;
+            EasySOADocument doc = null;
             
             // Application
             
@@ -74,8 +75,8 @@ public class NXQLTest {
             appProps.put(AppliImpl.PROP_URL, APP_URL);
             appProps.put(AppliImpl.PROP_TITLE, "My App");
             appProps.put(AppliImpl.PROP_DOMAIN, "CRM");
-            id = api.notifyAppliImpl(appProps);
-            appliImplModel = session.getDocument(new IdRef(id));
+            doc = api.notifyAppliImpl(appProps);
+            appliImplModel = session.getDocument(new IdRef(doc.getId()));
             
             // API in which the services will be contained
             Map<String, String> apiProps = new HashMap<String, String>();
