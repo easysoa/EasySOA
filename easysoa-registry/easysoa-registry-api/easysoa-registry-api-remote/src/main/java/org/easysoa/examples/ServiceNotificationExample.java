@@ -21,8 +21,10 @@
 package org.easysoa.examples;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOARemoteApiFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.rest.RestNotificationFactory;
@@ -36,6 +38,8 @@ import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
  */
 public class ServiceNotificationExample {
 	
+    private static Logger logger = Logger.getLogger(ServiceNotificationExample.class.getName());
+    
     /**
      * Registers a service to Nuxeo.
      */
@@ -43,18 +47,21 @@ public class ServiceNotificationExample {
 		
 	    // Method #1: With the EasySOA API
 	    
-	    EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site", "Administrator", "Administrator");
+	    EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi(
+	            "http://localhost:8080/nuxeo/site", "Administrator", "Administrator");
 	    Map<String, String> properties = new HashMap<String, String>();
 	    properties.put(Service.PROP_URL, "http://www.myservices.com/api/service");
-	    properties.put(Service.PROP_TITLE, "Service");
-	    api.notifyService(properties);
+	    properties.put(Service.PROP_TITLE, "MyService");
+        EasySOADocument service = api.notifyService(properties);
+        logger.info("Registered " + service.getType() + ": " + service.getTitle() + 
+                " (url=" + service.getPropertyAsString("serv:url") + ")");
 	    
 	    // Method #2: With direct requests (will be eventually deprecated)
 	    
 	    RestNotificationFactory factory = new RestNotificationFactory("http://localhost:8080/nuxeo/site");
 	    RestNotificationRequest request = factory.createNotification(RestDiscoveryService.SERVICE);
 	    request.setProperty(Service.PROP_URL, "http://www.myservices.com/api/service");
-	    request.setProperty(Service.PROP_TITLE, "Service");
+	    request.setProperty(Service.PROP_TITLE, "MyService");
 	    request.send();
 	    
 	}

@@ -25,11 +25,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Properties;
 
-import org.easysoa.api.AutomationHelper;
-import org.nuxeo.ecm.automation.client.jaxrs.model.Document;
-import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
+import org.easysoa.api.EasySOAApiSession;
+import org.easysoa.api.EasySOADocument;
+import org.easysoa.api.EasySOARemoteApiFactory;
 
 /**
  * 
@@ -45,15 +46,14 @@ public class BuildPropertyFileExample {
 
         // Request service list
 
-        AutomationHelper automationHelper = new AutomationHelper(
-                "http://localhost:8080/nuxeo/site/automation","Administrator", "Administrator");
-        Documents documents = automationHelper.query("SELECT * FROM Service");
+        EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("Administrator", "Administrator");
+        List<EasySOADocument> documents = api.queryDocuments("SELECT * FROM Service");
 
         // Fill properties
 
         Properties properties = new Properties();
-        for (Document doc : documents) {
-            properties.setProperty(doc.getTitle().replace(' ', '_'), doc.getString("serv:url"));
+        for (EasySOADocument doc : documents) {
+            properties.setProperty(doc.getTitle().replace(' ', '_'), doc.getPropertyAsString("serv:url"));
         }
         
         // Store in file
