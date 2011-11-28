@@ -11,8 +11,8 @@ import org.easysoa.rest.EasySOARemoteApi;
  */
 public class EasySOARemoteApiFactory {
 
-    public static EasySOAApiSession createRemoteApi() throws IOException {
-        return new EasySOARemoteApi();
+    public static EasySOAApiSession createRemoteApi(String user, String password) throws IOException {
+        return new EasySOARemoteApi(user, password);
     }
     
     public static EasySOAApiSession createRemoteApi(String nuxeoApisUrl) throws IOException {
