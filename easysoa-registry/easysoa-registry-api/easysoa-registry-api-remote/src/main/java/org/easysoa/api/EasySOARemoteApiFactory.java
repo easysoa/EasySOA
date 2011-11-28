@@ -15,8 +15,8 @@ public class EasySOARemoteApiFactory {
         return new EasySOARemoteApi(user, password);
     }
     
-    public static EasySOAApiSession createRemoteApi(String nuxeoApisUrl) throws IOException {
-        return new EasySOARemoteApi(nuxeoApisUrl);
+    public static EasySOAApiSession createRemoteApi(String nuxeoApisUrl, String user, String password) throws IOException {
+        return new EasySOARemoteApi(nuxeoApisUrl, user, password);
     }
 	
 }

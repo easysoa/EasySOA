@@ -43,7 +43,7 @@ public class ServiceNotificationExample {
 		
 	    // Method #1: With the EasySOA API
 	    
-	    EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
+	    EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site", "Administrator", "Administrator");
 	    Map<String, String> properties = new HashMap<String, String>();
 	    properties.put(Service.PROP_URL, "http://www.myservices.com/api/service");
 	    properties.put(Service.PROP_TITLE, "Service");

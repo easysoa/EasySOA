@@ -46,7 +46,7 @@ public class RemoteBindingVisitorFactory extends AbstractBindingVisitorFactoryBa
 
     public RemoteBindingVisitorFactory(String nuxeoApisUrl) throws IOException {
         super();
-        api = EasySOARemoteApiFactory.createRemoteApi(nuxeoApisUrl);
+        api = EasySOARemoteApiFactory.createRemoteApi(nuxeoApisUrl, "Administrator", "Administrator"); // XXX
     }
     
 	/**

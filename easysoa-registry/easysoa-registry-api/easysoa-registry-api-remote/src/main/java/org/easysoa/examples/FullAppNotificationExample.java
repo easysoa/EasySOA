@@ -46,7 +46,7 @@ public class FullAppNotificationExample {
      */
     public static void main(String[] args) throws Exception {
 
-        EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site");
+        EasySOAApiSession api = EasySOARemoteApiFactory.createRemoteApi("http://localhost:8080/nuxeo/site", "Administrator", "Administrator");
         
         // Application
         

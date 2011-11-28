@@ -21,6 +21,8 @@ import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
  */
 public class EasySOARemoteApi implements EasySOAApiSession {
     
+    private static final String AUTOMATION_URL = "http://localhost:8080/nuxeo/site/automation";
+    
     private static Logger logger = Logger.getLogger(EasySOARemoteApi.class.getName());
     
     private RestNotificationFactory notificationFactory;
@@ -29,11 +31,12 @@ public class EasySOARemoteApi implements EasySOAApiSession {
     
     public EasySOARemoteApi(String username, String password) throws IOException {
         this.notificationFactory = new RestNotificationFactory();
-        this.automationHelper = new AutomationHelper("http://localhost:8080/nuxeo/site/automation", username, password);
+        this.automationHelper = new AutomationHelper(AUTOMATION_URL, username, password);
     }
 
-    public EasySOARemoteApi(String nuxeoApisUrl) throws IOException {
+    public EasySOARemoteApi(String nuxeoApisUrl, String username, String password) throws IOException {
         this.notificationFactory = new RestNotificationFactory(nuxeoApisUrl);
+        this.automationHelper = new AutomationHelper(AUTOMATION_URL, username, password);
     }
 
     @Override
