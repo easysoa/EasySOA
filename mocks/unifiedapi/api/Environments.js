@@ -88,8 +88,6 @@ var NodeServer = Class.create(AbstractServer, {
     },
     install : function(serviceImpl, env) {
         var newEndpoint = new endpoints.JavaServiceEndpoint(serviceImpl, this);
-        this.serviceEndpoints.push(newEndpoint);
-        
         if (newEndpoint != null) {
             this.serviceEndpoints.push(newEndpoint);
         }
@@ -128,6 +126,7 @@ var AbstractEnvironment = Class.create({
         this.endpoints = new Array();
         this.servers = new $H();
         this.tunnelingNodes = new Array(); // TODO put in a tunneling server?
+        this.eventListeners = new $H();
         for (var i = 0; i < serverArray.length; i++) {
             var server = serverArray[i];
             for (var j = 0; j < server.supportedImplTypes.length; j++) {
@@ -151,6 +150,9 @@ var AbstractEnvironment = Class.create({
         this.endpoints.push(newEndpoint);
         return newEndpoint;
     },
+    getAllEndpoints : function() {
+        return this.endpoints.concat(this.externalServiceEndpoints);
+    },
     replaceServiceImpl : function(serviceImpl, newServiceImpl) {
         var replaced = false;
         this.servers.each(function (entry) {
@@ -170,9 +172,12 @@ var AbstractEnvironment = Class.create({
             entry[1].remove(serviceImpl); 
         });
     },
+    addValidationRule : function(validationRule, eventType) {
+        this.eventListeners.set(eventType, validationRule); // (Not used anywhere in the mock atm)
+    },
     resolveReferences : function() {
         var tunnelingNodes = new Array();
-        var allEndpoints = this.endpoints.concat(this.externalServiceEndpoints);
+        var allEndpoints = this.getAllEndpoints();
         var allReferencesResolved = true;
         allEndpoints.each(function (endpoint) {
             var references = endpoint.getReferences();

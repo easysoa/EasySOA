@@ -8,6 +8,7 @@ Object.extend(module.exports, require('./Projects'));
 Object.extend(module.exports, require('./Proxies'));
 Object.extend(module.exports, require('./Queries'));
 Object.extend(module.exports, require('./Tests'));
+Object.extend(module.exports, require('./Validation'));
 
 // ===================== UI =====================
 
@@ -36,3 +37,9 @@ module.exports.selectServiceImplFromEnvInUI = function(env) {
     // Return the one chosen by the user
     return env.endpoints[0].impl;
 };
+
+module.exports.getUnexpectedNotification = function() {
+    return {
+        url : "http://unexpected.notification.com"
+    };
+}

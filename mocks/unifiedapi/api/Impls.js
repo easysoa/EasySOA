@@ -29,6 +29,7 @@ var AbstractServiceImpl = Class.create({
         this.isProductionReady = false;
         this.references = new Array();
         this.serviceDef = undefined;
+        this.eventListeners = new $H();
         if (options != undefined) {
             this.isMock = (options.isMock == undefined) ? this.isMock : options.isMock;
             this.isProductionReady = (options.isProductionReady == undefined) ? 
@@ -65,6 +66,9 @@ var AbstractServiceImpl = Class.create({
             newReferences.push(impl.addReference(entry[1]));
         });
         return newReferences;
+    },
+    addValidationRule : function(validationRule, eventType) {
+        this.eventListeners.set(eventType, validationRule); // (Not used anywhere in the mock atm)
     }
 });
 

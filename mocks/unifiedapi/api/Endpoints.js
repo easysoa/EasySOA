@@ -48,8 +48,16 @@ var ServiceEndpoint = Class.create({
     registerOnUpdateListener: function(runnable) {
         this.onUpdateListeners.push(runnable);
     },
-    getReferences: function(availableEndpoints) {
+    getReferences: function() {
         return this.impl.references;
+    },
+    getResolvedReferences : function() {
+        if (this.impl.references.length > 0) {
+            return { "http://url1.com": this.impl.references[0] };
+        }
+        else {
+            return null;
+        }
     },
     addReference : function(toServiceImpl) {
         var newReference = new ServiceReference(this, toServiceImpl, "endpoint"); // TODO uncouple with impl refs
