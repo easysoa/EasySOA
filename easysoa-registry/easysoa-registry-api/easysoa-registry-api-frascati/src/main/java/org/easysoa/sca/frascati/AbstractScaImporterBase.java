@@ -37,7 +37,6 @@ import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Composite;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.ow2.frascati.util.FrascatiException;
 
 /**

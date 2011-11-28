@@ -1,0 +1,30 @@
+<project name="EasySOA Regstry" default="dist" basedir=".">
+
+	<description>Ant task to gather all jars according to the Nuxeo DM file structure.</description>
+
+	<target name="dist">
+		<echo>Copying jars to the 'plugins/target' folder</echo>
+		<delete dir="target/" />
+		<mkdir dir="target/nxserver/plugins" />
+		<copy todir="target/nxserver/plugins" flatten="true">
+			<fileset dir=".">
+				<include name="**/target/*.jar" />
+				<exclude name="**/target/*-jar-with-dependencies.jar" />
+				<exclude name="**/easysoa-registry-api-core/target/*.jar" />
+				<exclude name="**/easysoa-registry-api-remote/target/*.jar" />
+				<exclude name="**/easysoa-registry-dependencies/target/*.jar" />
+			</fileset>
+		</copy>
+		<mkdir dir="target/lib" />
+		<copy todir="target/lib" flatten="true">
+			<fileset dir=".">
+				<include name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
+                <include name="easysoa-registry-api/easysoa-registry-api-core/target/*.jar" />
+                <include name="easysoa-registry-api/easysoa-registry-api-remote/target/*.jar" />
+                <exclude name="easysoa-registry-api/easysoa-registry-api-remote/target/*-jar-with-dependencies.jar" />
+			</fileset>
+		</copy>
+
+	</target>
+
+</project>
