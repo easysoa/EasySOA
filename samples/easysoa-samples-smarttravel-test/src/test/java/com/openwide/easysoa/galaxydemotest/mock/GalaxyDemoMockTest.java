@@ -50,7 +50,8 @@ public class GalaxyDemoMockTest extends MockTestHelper {
 		logger.info("Trip service response : " + tripServiceResponse);
 		
 		// Add mockito tests to check calls of other services
-		verify(((Delegated<CurrencyServerWebServiceSoap>)(server.getCurrencyImplementor())).getDelegate()).getCurrencyValue("3", "EUR", "USD");
+		//verify(((Delegated<CurrencyServerWebServiceSoap>)(server.getCurrencyImplementor())).getDelegate()).getCurrencyValue("3", "EUR", "USD");
+		verify(server.getCurrencyImplementor().getDelegate()).getCurrencyValue("3", "EUR", "USD");
 		verify(server.getMeteoImplementor().getDelegate()).getWeather("Grenoble", "France");
 		verify(server.getTranslateImplementor().getDelegate()).translate("BD061A8446F9FA67F9CD39B278237C98599FAFEA", "I would like a beer", "EN", "FR");
 		

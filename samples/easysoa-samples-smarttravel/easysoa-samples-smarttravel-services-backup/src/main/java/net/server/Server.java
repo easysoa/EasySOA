@@ -23,7 +23,6 @@ package net.server;
 import javax.xml.ws.Endpoint;
 
 import com.microsofttranslator.api.v1.soap_svc.LanguageServiceSoapSpyWrapper;
-import de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoap;
 import de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoapSpyWrapper;
 import net.webservicex.GlobalWeatherWebServiceSoapSpyWrapper;
 
@@ -32,11 +31,9 @@ public class Server {
 	public final static String ADDRESS_BASE = "http://localhost:9020/";
 	
 	protected GlobalWeatherWebServiceSoapSpyWrapper meteoImplementor;
-	
-	//protected CurrencyServerWebServiceSoapSpyWrapper currencyImplementor;
-	protected CurrencyServerWebServiceSoap currencyImplementor;
-	
+	protected CurrencyServerWebServiceSoapSpyWrapper currencyImplementor;
 	protected LanguageServiceSoapSpyWrapper translateImplementor;
+	//protected CurrencyServerWebServiceSoap currencyImplementor;
 	
 	/**
 	 * 
@@ -78,8 +75,8 @@ public class Server {
     	return this.meteoImplementor;
     }
     
-    //public CurrencyServerWebServiceSoapSpyWrapper getCurrencyImplementor(){
-    public CurrencyServerWebServiceSoap getCurrencyImplementor(){
+    public CurrencyServerWebServiceSoapSpyWrapper getCurrencyImplementor(){
+    //public CurrencyServerWebServiceSoap getCurrencyImplementor(){
     	return this.currencyImplementor;
     }
     
