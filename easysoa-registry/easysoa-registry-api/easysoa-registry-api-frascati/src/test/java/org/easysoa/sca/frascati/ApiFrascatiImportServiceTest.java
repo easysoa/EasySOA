@@ -21,15 +21,14 @@
 package org.easysoa.sca.frascati;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
@@ -51,18 +50,14 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     
     // List to record the messages exchanged between client and mock rest api server
     private ArrayList<ExchangeRecord> recordList; 
-    
-    
-    //mock creation
-    //private List<Object> mockedList = mock(List.class);
+   
+    // Boolean to indicate if the test is mocked or not
+    boolean mockedTest = true;
     
     @Before
     public void setUp() throws FrascatiException {
-    	
-    	// Create Mockito mock
+    	// init record list
     	recordList = new ArrayList<ExchangeRecord>();
-    	//recordList = mock(ArrayList.class);
-    	
     	// Start fraSCAti
  	    startFraSCAti();
  	    // Start the mock service composite
@@ -99,12 +94,16 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     	ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile, EasySOAApiFraSCAti.getInstance());
 		importer.setServiceStackType("FraSCAti");
 		importer.setServiceStackUrl("/");
-		importer.importSCAComposite();
-		
+		// Create a spy importer for Mockito
+		ApiFraSCAtiScaImporter spyImporter = spy(importer);
+		// Import the SCA composite
+		spyImporter.importSCAComposite();
 		// Check the recorded exchanges
 		checkExchanges();
 		// Check with Mockito
-		checkTestSCAComposite(/*...*/);
+    	verify(spyImporter).importSCAComposite();
+		// 
+    	//checkTestSCAComposite(/*...*/);
     }
 
     /**
@@ -113,19 +112,25 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      */
     public void checkExchanges() {
     	for(ExchangeRecord record : recordList){
-        	assertTrue(record.getRequestContent().contains("RestSoapProxy.composite"));    		
+        	assertTrue("'RestSoapProxy.composite' not found in request", record.getRequestContent().contains("RestSoapProxy.composite"));    		
     	}
     }
     
+    // add a method to check the recorded exchanges in the order :
+    // - eg check record one contains "blabla", record 2 contains "an other blabla" ...
+    
+    /**
+     * 
+     * @throws Exception
+     */
     public void checkTestSCAComposite(/*...*/) throws Exception {
     	// abstract above, impl'd using nuxeo queries when not mocked, when mocked checks that checkCaseOne==true
     	// OR use mock libraries ex. mockito, rmock, easymock, jmock...
-   	
-    	//verification
-    	// Not really lot of interrest 
-    	/*for(ExchangeRecord record : recordList){
-    		verify(recordList).add(record);
-    	}*/
+    	if(mockedTest){
+    		
+    	} else {
+    		
+    	}
     }
     
     /**
@@ -133,14 +138,13 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @param req <code>ServletRequest</code>
      * @param res <code>Servletresponse</code>
      */
-    // TODO : add more check methods
-    public void checkCaseOne(ServletRequest req, ServletResponse res) throws Exception {
+    /*public void checkCaseOne(ServletRequest req, ServletResponse res) throws Exception {
     	String requestContent;
 		requestContent = new Scanner(req.getInputStream()).useDelimiter("\\A").next();
     	assertTrue(requestContent.contains("RestSoapPoxy.composite"));
     	res.getOutputStream().println("OK");
     	//checkCaseOne==true;
-    }
+    }*/
     
     /**
      * Record a REST exchange to be checked
@@ -150,7 +154,8 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      */
     public void recordExchange(ServletRequest request, ServletResponse response) throws IOException {
     	ExchangeRecord record = new ExchangeRecord(request, response);
-    	System.out.println("request content : " + record.getRequestContent());
+    	//System.out.println("request content : " + record.getRequestContent());
+    	log.debug("request content : " + record.getRequestContent());
     	recordList.add(record);
     }
     

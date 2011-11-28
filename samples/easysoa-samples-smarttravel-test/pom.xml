@@ -75,6 +75,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.easysoa.registry</groupId>
+			<artifactId>easysoa-registry-api-frascati</artifactId>
+			<version>0.4-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>		
+		<dependency>
 			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 			<version>1.0-SNAPSHOT</version>
@@ -129,7 +135,7 @@
   			<artifactId>mockito-all</artifactId>
   			<version>1.9.0-rc1</version>
   			<scope>test</scope>
-  		</dependency>	    
+  		</dependency>
 	</dependencies>
 
 	<build>

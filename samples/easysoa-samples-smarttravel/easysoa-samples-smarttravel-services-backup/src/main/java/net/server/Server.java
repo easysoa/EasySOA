@@ -22,15 +22,21 @@ package net.server;
 
 import javax.xml.ws.Endpoint;
 
-import com.microsofttranslator.api.v1.soap_svc.LanguageService;
-import com.microsofttranslator.api.v1.soap_svc.LanguageServiceImpl;
-import de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoapImpl1;
-
-import net.webservicex.GlobalWeatherSoapImpl1;
+import com.microsofttranslator.api.v1.soap_svc.LanguageServiceSoapSpyWrapper;
+import de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoap;
+import de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoapSpyWrapper;
+import net.webservicex.GlobalWeatherWebServiceSoapSpyWrapper;
 
 public class Server {
 
 	public final static String ADDRESS_BASE = "http://localhost:9020/";
+	
+	protected GlobalWeatherWebServiceSoapSpyWrapper meteoImplementor;
+	
+	//protected CurrencyServerWebServiceSoapSpyWrapper currencyImplementor;
+	protected CurrencyServerWebServiceSoap currencyImplementor;
+	
+	protected LanguageServiceSoapSpyWrapper translateImplementor;
 	
 	/**
 	 * 
@@ -44,20 +50,43 @@ public class Server {
         }
 
         // Meteo backup
-        GlobalWeatherSoapImpl1 meteoImplementor = new GlobalWeatherSoapImpl1();
-        //Endpoint.publish(address, implementor);
+        //meteoImplementor = new GlobalWeatherSoapImpl1();
+        meteoImplementor = new GlobalWeatherWebServiceSoapSpyWrapper();
         Endpoint.publish(addressBase + "WeatherService", meteoImplementor);
         
         // Currency Backup
-        CurrencyServerWebServiceSoapImpl1 currencyImplementor = new CurrencyServerWebServiceSoapImpl1();
+        //currencyImplementor = new CurrencyServerWebServiceSoapImpl1();
+        currencyImplementor = new CurrencyServerWebServiceSoapSpyWrapper();
         Endpoint.publish(addressBase + "CurrencyServerWebService", currencyImplementor);
+
+        /**
+         * Cannot use here a dynamic proxy. There is a problem with JAXWS annotations.
+         * The annotations are not used and the service is not deployed at the right place so the client service cannot use it.
+         */
+        //CurrencyServerWebServiceSoapSpyWrapper currencyWrapper = new CurrencyServerWebServiceSoapSpyWrapper();
+        //currencyImplementor = (CurrencyServerWebServiceSoap) CurrencyServerWebServiceSoapSpyDynWrapper.newInstance(currencyWrapper);
+        //Endpoint.publish(addressBase + "CurrencyServerWebService", currencyWrapper);
+        //Endpoint.publish(addressBase + "CurrencyServerWebService", (CurrencyServerWebServiceSoapSpyWrapper)currencyImplementor);
         
         // Translator backup
-        LanguageService translateImplementor = new LanguageServiceImpl();
-        //Endpoint.publish(address, translateImplementor);
+        //translateImplementor = new LanguageServiceImpl();
+        translateImplementor = new LanguageServiceSoapSpyWrapper();
         Endpoint.publish(addressBase + "SoapService", translateImplementor);
     }
 
+    public GlobalWeatherWebServiceSoapSpyWrapper getMeteoImplementor(){
+    	return this.meteoImplementor;
+    }
+    
+    //public CurrencyServerWebServiceSoapSpyWrapper getCurrencyImplementor(){
+    public CurrencyServerWebServiceSoap getCurrencyImplementor(){
+    	return this.currencyImplementor;
+    }
+    
+    public LanguageServiceSoapSpyWrapper getTranslateImplementor(){
+    	return this.translateImplementor;
+    }
+    
     /**
      * 
      * @param args

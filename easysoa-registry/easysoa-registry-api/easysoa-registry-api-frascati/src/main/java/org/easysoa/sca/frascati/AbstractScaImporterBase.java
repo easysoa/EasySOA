@@ -36,6 +36,7 @@ import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
+import org.eclipse.stp.sca.Composite;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.ow2.frascati.util.FrascatiException;
 
@@ -100,16 +101,16 @@ public abstract class AbstractScaImporterBase implements IScaImporter {
 	// Logger
 	private static Log log = LogFactory.getLog(AbstractScaImporterBase.class);
 
+	// Import either a composite file or a composite object
 	protected File compositeFile;
+	protected Composite scaComposite;
+	
 	private String serviceStackType;
 	private String serviceStackUrl;
-
 	private Stack<String> archiNameStack = new Stack<String>();
 	private Stack<EObject> bindingStack = new Stack<EObject>();
-
 	protected/* @Inject */FraSCAtiServiceItf frascatiService; // TODO better Inject doesn't work outside tests ?!
 	protected BindingVisitorFactory bindingVisitorFactory;
-	
 	
 	/**
 	 * List of binding info providers
@@ -120,11 +121,21 @@ public abstract class AbstractScaImporterBase implements IScaImporter {
 	 * Constructor
 	 * @param compositeFile Composite file to import, can be null if this is used as a runtime importer
 	 * @throws FrascatiException 
-	 * @throws ClientException 
 	 */
 	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile) throws FrascatiException{
 		this.bindingVisitorFactory = bindingVisitorFactory;
 		this.compositeFile = compositeFile;
+	}
+	
+	/**
+	 * 
+	 * @param bindingVisitorFactory
+	 * @param scaComposite Composite object to import, can be null if this is used as a runtime importer
+	 * @throws FrascatiException
+	 */
+	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, Composite scaComposite) throws FrascatiException{
+		this.bindingVisitorFactory = bindingVisitorFactory;
+		this.scaComposite = scaComposite;		
 	}
 
 	public BindingVisitorFactory getBindingVisitorFactory() {

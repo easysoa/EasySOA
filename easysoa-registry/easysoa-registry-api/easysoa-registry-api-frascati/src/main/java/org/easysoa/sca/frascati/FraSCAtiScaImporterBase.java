@@ -71,7 +71,7 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 			importSCAZip();
 		} else {
 			throw new Exception("Unsupported file type : neither a Composite nor an SCA zip or jar");
-		}	
+		}
 	}
 
 	/**
@@ -101,8 +101,17 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 	public void importSCAComposite() throws Exception {
 		log.debug("Importing SCA Composite");
 		// Initialization
-		File compositeTmpFile = File.createTempFile(UUID.randomUUID().toString(), ".composite");		
-		// Replace this code, record the content of the composite in the new tmp composite		
+		// TODO works only with physical files, add modifications to work with composite objects
+		// Make 2 different constructors : one with file, other with composite and then
+		// make tests like the following code
+		/*if(this.compositeFile != null){
+			// Import sca file
+		} else if this.scaComposite != null {
+			// Import sca composite
+		} else {
+			// Throws an error
+		}*/
+		File compositeTmpFile = File.createTempFile(UUID.randomUUID().toString(), ".composite");
 		FileUtils.copyTo(compositeFile, compositeTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
 		log.debug("frascatiService : " +  frascatiService);
@@ -110,7 +119,6 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 		log.debug("composite : " + scaZipComposite);
 		visitComposite(scaZipComposite);
 	}
-
 	
 	/**
 	 * Visit the composite. For each service, component, reference ... visit the associated bindings

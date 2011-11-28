@@ -133,6 +133,9 @@ public class FileUtils {
 	 * @throws Exception If a problem occurs
 	 */
 	public static final void copyTo(File source, File target) throws Exception {
+		if(source == null || target == null ){
+			throw new IllegalArgumentException("Source and target files must not be null");
+		}
 		// Input and outputs channels
 		log.debug("source file = " + source);
 		log.debug("target file = " + target);
