@@ -1,6 +1,10 @@
 package org.easysoa.api.exceptions;
 
-
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class SchemaNotFoundException extends RuntimeException {
 
     public SchemaNotFoundException() {

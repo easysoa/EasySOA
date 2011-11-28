@@ -7,6 +7,11 @@ import org.easysoa.api.exceptions.PropertyNotFoundException;
 import org.easysoa.api.exceptions.SchemaNotFoundException;
 import org.nuxeo.ecm.automation.client.jaxrs.model.Document;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class EasySOARemoteDocument implements EasySOADocument {
 
     private Document document;

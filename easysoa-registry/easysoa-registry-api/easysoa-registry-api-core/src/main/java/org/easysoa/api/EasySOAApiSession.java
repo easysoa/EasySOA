@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Main EasySOA API interface.
+ * Allows to fetch documents and make notifications to the SOA model.
  * 
  * @author mkalam-alami
  *

@@ -1,6 +1,10 @@
 package org.easysoa.api.exceptions;
 
-
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class PropertyNotFoundException extends RuntimeException {
 
     public PropertyNotFoundException() {
