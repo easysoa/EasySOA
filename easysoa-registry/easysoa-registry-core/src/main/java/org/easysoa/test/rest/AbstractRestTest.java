@@ -117,7 +117,7 @@ public abstract class AbstractRestTest {
             automation = new AutomationHelper(nuxeoUrl+"/automation",
                     AUTH_USERNAME, AUTH_PASSWORD);
         }
-        notificationFactory = new RestNotificationFactory(nuxeoUrl);
+        notificationFactory = new RestNotificationFactory(nuxeoUrl, AUTH_USERNAME, AUTH_PASSWORD);
 
         }
     }

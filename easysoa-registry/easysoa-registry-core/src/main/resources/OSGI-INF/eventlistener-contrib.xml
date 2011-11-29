@@ -23,6 +23,10 @@
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
     </listener>
+    <listener name="publicationlistener" class="org.easysoa.environments.PublicationListener" order="121">
+      <event>documentCreated</event>
+      <event>documentModified</event>
+    </listener>
     
   </extension>
   

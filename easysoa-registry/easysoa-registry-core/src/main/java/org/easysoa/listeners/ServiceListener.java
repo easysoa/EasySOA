@@ -80,7 +80,7 @@ public class ServiceListener implements EventListener {
             return;
         }
         String type = doc.getType();
-        if (!type.equals(DOCTYPE)) {
+        if (!type.equals(DOCTYPE) || doc.isProxy()) {
             return;
         }
 

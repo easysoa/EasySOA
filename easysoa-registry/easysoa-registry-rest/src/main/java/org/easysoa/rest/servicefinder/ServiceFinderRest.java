@@ -76,18 +76,18 @@ public class ServiceFinderRest {
         if (url != null) {
             ServiceFinderComponent finderComponent = (ServiceFinderComponent) Framework
                     .getRuntime().getComponent(ServiceFinderComponent.NAME);
-            List<ServiceFinderStrategy> serviceFinders = finderComponent.getServiceFinders();
+            List<ServiceFinderStrategy> strategies = finderComponent.getStrategies();
 
-            for (ServiceFinderStrategy serviceFinder : serviceFinders) {
-                List<FoundService> finderResult = null;
+            for (ServiceFinderStrategy strategy : strategies) {
+                List<FoundService> strategyResult = null;
                 try {
-                    finderResult = serviceFinder.findFromURL(url);
+                    strategyResult = strategy.findFromURL(url);
                 }
                 catch (Exception e) {
-                    errors.put(formatError(e, "Failed to run service finder "+serviceFinder.getClass().getName()));
+                    errors.put(formatError(e, "Failed to run service finder strategy "+strategy.getClass().getName()));
                 }
-                if (finderResult != null) {
-                    foundServices.addAll(finderResult);
+                if (strategyResult != null) {
+                    foundServices.addAll(strategyResult);
                 }
             }
         }
