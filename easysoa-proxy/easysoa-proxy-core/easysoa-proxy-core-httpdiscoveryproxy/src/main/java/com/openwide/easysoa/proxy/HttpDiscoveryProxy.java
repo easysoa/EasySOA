@@ -77,10 +77,12 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	// Port the proxy use.
 	@Property
 	public int proxyPort;
-
-	// Timeouts
-	private final static int HTTP_CONNEXION_TIMEOUT_MS = 10000; 
-	private final static int HTTP_SOCKET_TIMEOUT_MS = 10000;
+	
+	// Message forward Timeouts
+	@Property
+	public int forwardHttpConnexionTimeoutMs;
+	@Property
+	public int forwardHttpSocketTimeoutMs;
 	
 	/**
 	 * Logger
@@ -262,8 +264,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		httpClient.setHttpRequestRetryHandler(new HttpRetryHandler());
 		// set the connection timeout
 		HttpParams httpParams = httpClient.getParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, HTTP_CONNEXION_TIMEOUT_MS);
-		HttpConnectionParams.setSoTimeout(httpParams, HTTP_SOCKET_TIMEOUT_MS);
+		HttpConnectionParams.setConnectionTimeout(httpParams, this.forwardHttpConnexionTimeoutMs);
+		HttpConnectionParams.setSoTimeout(httpParams, this.forwardHttpSocketTimeoutMs);
 		
 		// URL
 		StringBuffer requestUrlBuffer = new StringBuffer();
