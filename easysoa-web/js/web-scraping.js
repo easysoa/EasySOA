@@ -34,7 +34,8 @@ exports.sendUrlToScrapers = function(request_url, callback) {
 		    host : scraperURL.hostname,
 		    path : scraperURL.href.replace('?', request_url.href)
 	    };
-              
+          
+          console.log(scraperOptions);    
 	    // Scraper request
 	    scraperRequest = http.request(scraperOptions, function(scraperResponse) {
 		

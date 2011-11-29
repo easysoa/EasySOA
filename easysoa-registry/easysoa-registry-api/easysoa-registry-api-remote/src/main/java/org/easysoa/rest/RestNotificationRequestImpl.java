@@ -38,19 +38,21 @@ import org.json.JSONObject;
 
 public class RestNotificationRequestImpl implements RestNotificationRequest {
     
-    private static final String LOGIN = "Administrator";
-    private static final String PASSWORD = "Administrator";
-
     private static Log log = LogFactory.getLog(RestNotificationRequestImpl.class);
     
     private URL requestUrl;
     private Map<String, String> requestProperties; 
     private String method;
+    private String username;
+    private String password;
     
-    public RestNotificationRequestImpl(URL requestUrl, String method) throws MalformedURLException {
+    public RestNotificationRequestImpl(URL requestUrl, String username, String password,
+            String method) throws MalformedURLException {
         this.requestUrl = requestUrl;
         this.requestProperties = new HashMap<String, String>();
         this.method = method;
+        this.username = username;
+        this.password = password;
     }
     
     public RestNotificationRequest setProperty(String property, String value) {
@@ -81,7 +83,7 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
                 throw new Exception();
         }
         catch (Exception e) {
-            log.warn("Failed to send the notification due to an external problem (Nuxeo not started?)");
+            log.warn("Failed to send the notification, is Nuxeo started? (" + e.getMessage() + ")");
             return null;
         }
         
@@ -117,7 +119,7 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
         connection.setRequestMethod(method);
         connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
         connection.setRequestProperty("Authorization", "Basic " +
-                Base64.encodeBytes((LOGIN + ":" + PASSWORD).getBytes()));
+                Base64.encodeBytes((username + ":" + password).getBytes()));
         connection.setDoOutput(true);
         
         // Write request
@@ -146,10 +148,16 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
             reader.close();
         }
         
+        String answerString = answer.toString();
         try {
-            return new JSONObject(answer.toString());
+            return new JSONObject(answerString);
         } catch (JSONException e) {
-            log.error("Failed to convert response to expected JSON object", e);
+            if (answer.toString().startsWith("<!DOCTYPE")) {
+                log.warn("Failed to parse response a JSON, credentials are probably invalid.");
+            }
+            else {
+                log.warn("Failed to parse response: " + answerString);
+            }
             return null;
         }
     }

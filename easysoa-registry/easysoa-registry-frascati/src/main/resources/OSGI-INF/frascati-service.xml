@@ -5,7 +5,7 @@
 	<implementation class="org.easysoa.registry.frascati.NxFraSCAtiService" />
 	
 	<service>
-		<provide interface="org.easysoa.registry.frascati.NxFraSCAtiService" />
+		<provide interface="org.easysoa.registry.frascati.FraSCAtiServiceItf" />
 	</service>
 	
 </component>
