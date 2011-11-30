@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public class AppliImpl extends EasySOADoctype {
 
-    public static final String DOCTYPE = "Workspace";
+    public static final String DOCTYPE = "AppliImpl";
     public static final String SCHEMA = "appliimpldef";
     public static final String SCHEMA_PREFIX = "app:";
     public static final String FEATURE_SCHEMA = "feature";

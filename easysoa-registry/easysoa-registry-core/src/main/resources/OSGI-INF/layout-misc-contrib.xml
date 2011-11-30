@@ -10,7 +10,7 @@
       <rows>
         <row>
           <widget>summary_current_document_files</widget>
-          <!--<widget>summary_current_document_description</widget> -->
+          <widget>summary_current_document_description</widget>
           <widget>summary_current_document_publications</widget>
           <widget>summary_current_document_view</widget>
           <widget>summary_current_document_dublincore</widget>

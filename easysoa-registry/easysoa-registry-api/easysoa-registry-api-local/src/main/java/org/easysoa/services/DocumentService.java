@@ -44,6 +44,8 @@ public interface DocumentService {
      */
     public abstract DocumentModel createReference(CoreSession session, String parentPath, String title) throws ClientException;
 
+    public abstract DocumentModel findWorkspace(CoreSession session, String name) throws ClientException;
+    
     public abstract DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException;
 
     public abstract DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException;
@@ -65,7 +67,7 @@ public interface DocumentService {
     public abstract boolean mergeDocument(CoreSession session, DocumentModel from, DocumentModel to, boolean overwrite) throws ClientException;
 
     public abstract String generateDocumentID(DocumentModel doc);
-
+    
     /**
      * Returns the default Appli Impl., creates it if necessary.
      * @param session
