@@ -39,8 +39,22 @@ public class PublicationServiceImpl implements PublicationService {
                 session.save();
             }
 
+            // Removed existing publicated versions of the document
+            boolean proxyExists = false;
+            DocumentModelList proxies = session.getProxies(model.getRef(), null);
+            for (DocumentModel proxy : proxies) {
+                if (!proxy.getParentRef().equals(targetEnvironment.getParentRef())) {
+                    session.removeDocument(proxy.getRef());
+                }
+                else {
+                    proxyExists = true;
+                }
+            }
+            
             // Document publication (creates a proxy of the latest version of the document, at the target location)
-            session.publishDocument(model, targetEnvironment);
+            if (!proxyExists) {
+                session.publishDocument(model, targetEnvironment);
+            }
             
             /*
              * For more detailed information on the publication mechanics, see:

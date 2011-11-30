@@ -11,15 +11,14 @@
       <bigIcon>/icons/note_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <!-- Business -->
-        <layout>heading</layout>
-        <layout>soacommon_author</layout>
-        <layout>service_common</layout>
+        <!--<layout>heading</layout>-->
         <!-- Technical -->
         <layout>service_tech</layout>
         <!-- Specifications -->
         <layout>service_spec</layout>
+        <layout>service_common</layout>
         <layout>files</layout>
+        <layout>soacommon_author</layout>
       </layouts>
     </type>
 
@@ -30,14 +29,13 @@
       <icon-expanded>/icons/folder_open.gif</icon-expanded>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <!-- Business -->
-        <layout>heading</layout>
-        <layout>soacommon_author</layout>
+        <!--<layout>heading</layout>-->
         <!-- Technical -->
         <layout>serviceapi_tech</layout>
         <!-- Specifications -->
         <layout>serviceapi_spec</layout>
         <layout>files</layout>
+        <layout>soacommon_author</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
@@ -55,14 +53,14 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <!-- Business -->
-        <layout>heading</layout>
-        <layout>soacommon_author</layout>
+        <!--<layout>heading</layout>-->
         <layout>serviceref_common</layout>
         <!-- Technical -->
         <layout>serviceref_tech</layout>
         <!-- Specifications -->
         <layout>serviceref_spec</layout>
         <layout>files</layout>
+        <layout>soacommon_author</layout>
       </layouts>
     </type>
 
@@ -70,25 +68,25 @@
       <label>Application Impl.</label>
       <layouts mode="any">
         <!-- Business -->
-        <layout>heading</layout>
-        <layout>soacommon_author</layout>
+        <!--<layout>heading</layout>-->
         <layout>appliimpldef_common</layout>
         <!-- Technical -->
         <layout>appliimpldef_tech</layout>
         <!-- Specifications -->
         <layout>appliimpldef_spec</layout>
         <layout>files</layout>
+        <layout>soacommon_author</layout>
       </layouts>
       <layouts mode="edit"> <!-- Necessary to override edit mode-specific contributions -->
         <!-- Business -->
-        <layout>heading</layout>
-        <layout>soacommon_author</layout>
+        <!--<layout>heading</layout>-->
         <layout>appliimpldef_common</layout>
         <!-- Technical -->
         <layout>appliimpldef_tech</layout>
         <!-- Specifications -->
         <layout>appliimpldef_spec</layout>
         <layout>files</layout>
+        <layout>soacommon_author</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
