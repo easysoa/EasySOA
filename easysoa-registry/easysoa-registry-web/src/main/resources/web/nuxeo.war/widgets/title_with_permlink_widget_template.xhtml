@@ -22,12 +22,12 @@
       
         <h:outputText value="#{nxd:titleOrId(field_0)}"/>
         
-	<!-- EasySOA: Display doctype -->
-	<c:if test="#{field_0.getType() == 'Workspace' || field_0.getType() == 'Service' || field_0.getType() == 'ServiceAPI' || field_0.getType() == 'ServiceReference'}">
-		<span class="doctype"><h:outputText value=" (#{field_0.getType().replaceFirst('Workspace', 'Appli. Impl.')})"/></span>
-	</c:if>
+    <!-- EasySOA: Display doctype -->
+    <c:if test="#{field_0.getType() == 'AppliImpl' || field_0.getType() == 'Service' || field_0.getType() == 'ServiceAPI' || field_0.getType() == 'ServiceReference'}">
+        <span class="doctype"><h:outputText value=" (#{field_0.getType()})"/></span>
+    </c:if>
         
-	<!-- EasySOA: Hide permalink -->
+    <!-- EasySOA: Hide permalink -->
        <!--  <span title="uid: #{field_0.id}">
           <nxd:restDocumentLink document="#{field_0}" pattern="id">
             <nxu:graphicImage value="/icons/permalink.png"
@@ -38,23 +38,23 @@
        </span> -->
       </h1>
 
-	<!-- EasySOA: Display url -->
-	<div style="color: #444; margin: 5px; margin-top: 0">
-		<c:choose>
-			<c:when test="#{field_0.getType() == 'Workspace'}">
-				<h:outputText value="#{field_0.getPropertyValue('app:url')}"/>
-			</c:when>
-			<c:when test="#{field_0.getType() == 'Service'}">
-				<h:outputText value="#{field_0.getPropertyValue('serv:url')}"/>
-			</c:when>
-			<c:when test="#{field_0.getType() == 'ServiceAPI'}">
-				<h:outputText value="#{field_0.getPropertyValue('api:url')}"/>
-			</c:when>
-			<c:when test="#{field_0.getType() == 'ServiceReference'}">
-				<h:outputText value="References #{field_0.getPropertyValue('sref:refUrl')}"/>
-			</c:when>
-		</c:choose>
-	</div>
+    <!-- EasySOA: Display url -->
+    <div style="color: #444; margin: 5px; margin-top: 0">
+        <c:choose>
+            <c:when test="#{field_0.getType() == 'AppliImpl'}">
+                <h:outputText value="#{field_0.getPropertyValue('app:url')}"/>
+            </c:when>
+            <c:when test="#{field_0.getType() == 'Service'}">
+                <h:outputText value="#{field_0.getPropertyValue('serv:url')}"/>
+            </c:when>
+            <c:when test="#{field_0.getType() == 'ServiceAPI'}">
+                <h:outputText value="#{field_0.getPropertyValue('api:url')}"/>
+            </c:when>
+            <c:when test="#{field_0.getType() == 'ServiceReference'}">
+                <h:outputText value="References #{field_0.getPropertyValue('sref:refUrl')}"/>
+            </c:when>
+        </c:choose>
+    </div>
 
     </h:panelGroup>
 
