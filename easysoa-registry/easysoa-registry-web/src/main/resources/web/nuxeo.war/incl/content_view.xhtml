@@ -201,12 +201,12 @@
 </c:if>
 
 <!-- EasySOA : Show discovery icons and other document info -->
-<c:if test="#{contentViewName == 'document_content' and (currentDocument.getType().equals('Workspace') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceRef'))}">
+<c:if test="#{contentViewName == 'document_content' and (currentDocument.getType().equals('AppliImpl') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceRef'))}">
   
     <ui:include src="/incl/tabs/easysoa_view.xhtml" />
 
     <!-- EasySOA : Show folderish documents metadata-->
-    <c:if test="#{currentDocument.getType().equals('Workspace') || currentDocument.getType().equals('ServiceAPI')}">
+    <c:if test="#{currentDocument.getType().equals('AppliImpl') || currentDocument.getType().equals('ServiceAPI')}">
       <h:form id="document_view">
         <a4j:region id="documentViewRegion">
           <a4j:outputPanel id="documentViewPanel">
