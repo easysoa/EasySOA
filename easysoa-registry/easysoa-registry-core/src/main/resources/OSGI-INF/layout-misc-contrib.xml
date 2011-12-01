@@ -42,6 +42,12 @@
         <row>
           <widget>workspacedef_referencedWorkspace</widget>
         </row>
+        <row>
+          <widget>workspacedef_isValidated</widget>
+        </row>
+        <row>
+          <widget>workspacedef_validationLog</widget>
+        </row>
       </rows>
       <widget name="workspacedef_referencedWorkspace" type="template">
         <labels>
@@ -54,6 +60,24 @@
         <properties widgetMode="view">
           <property name="template">/widgets/document_path_link_template.xhtml</property>
         </properties>
+      </widget>
+      <widget name="workspacedef_isValidated" type="textr">
+        <labels>
+          <label mode="any">label.easysoa.workspacedef.isValidated</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>wsdef:isValidated</field>
+        </fields>
+      </widget>
+      <widget name="workspacedef_validationLog" type="textarea">
+        <labels>
+          <label mode="any">label.easysoa.workspacedef.validationLog</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>wsdef:validationLog</field>
+        </fields>
       </widget>
     </layout>
     

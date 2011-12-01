@@ -2,6 +2,7 @@ package org.easysoa.environments;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.services.DeletedDocumentFilter;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -24,9 +25,11 @@ public class PublicationServiceImpl implements PublicationService {
         try {
             // Find or create target environment
             DocumentModel targetEnvironment = null;
-            DocumentModelList environments = session.getChildren(sectionsRootRef);
+            DocumentModelList environments = session.getChildren(sectionsRootRef, "Section",
+                    new DeletedDocumentFilter(), null);
             for (DocumentModel environment : environments) {
-                if (environment.getTitle().equals(environmentName)) {
+                if (environment.getTitle().equals(environmentName) 
+                        && !"deleted".equals(environment.getCurrentLifeCycleState())) {
                     targetEnvironment = environment;
                     break;
                 }

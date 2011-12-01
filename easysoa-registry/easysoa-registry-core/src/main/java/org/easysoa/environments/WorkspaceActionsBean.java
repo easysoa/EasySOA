@@ -20,13 +20,16 @@
 
 package org.easysoa.environments;
 
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Workspace;
+import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -55,8 +58,9 @@ public class WorkspaceActionsBean {
         PublicationService publicationService = Framework.getService(PublicationService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
         
-        if (currentDocModel.getType().equals("Workspace")) {
-            DocumentModelList appModels = documentManager.getChildren(currentDocModel.getRef());
+        if (currentDocModel.getType().equals(Workspace.DOCTYPE)) {
+            DocumentModelList appModels = documentManager.getChildren(currentDocModel.getRef(), 
+                    AppliImpl.DOCTYPE, new DeletedDocumentFilter(), null);
             for (DocumentModel appModel : appModels) {
                 publicationService.publish(documentManager, appModel, currentDocModel.getTitle());
             }
@@ -72,17 +76,24 @@ public class WorkspaceActionsBean {
         DocumentService docService = Framework.getService(DocumentService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
         
-        if (currentDocModel.getType().equals("Workspace")) {
-            String newName = currentDocModel.getTitle() + " (copy)";
-            DocumentModel newWorkspace = documentManager.copy(currentDocModel.getRef(), 
-                    docService.getWorkspaceRoot(documentManager), newName);
-            newWorkspace.setProperty("dublincore", "title", newName);
+        if (currentDocModel.getType().equals("Section")) {
+
+            DocumentModel newWorkspace = documentManager.createDocumentModel(
+                    docService.getWorkspaceRoot(documentManager).toString(),
+                    IdUtils.generateStringId(), Workspace.DOCTYPE);
+            newWorkspace.setProperty("dublincore", "title", currentDocModel.getTitle() + " (copy)");
             newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDWORKSPACE, currentDocModel.getId());
-            documentManager.saveDocument(newWorkspace);
+            newWorkspace = documentManager.createDocument(newWorkspace);
+            
+            DocumentModelList appsToCopy = documentManager.getChildren(currentDocModel.getRef());
+            for (DocumentModel appToCopy : appsToCopy) {
+                documentManager.copy(appToCopy.getRef(), newWorkspace.getRef(), null);
+            }
+            
             documentManager.save();
         }
         else {
-            throw new Exception("Cannot start fork: current document is not a workspace");
+            throw new Exception("Cannot start fork: current document is not an environment");
         }
         
     }
