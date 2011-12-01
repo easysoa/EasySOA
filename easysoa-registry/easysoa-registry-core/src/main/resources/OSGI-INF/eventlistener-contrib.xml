@@ -22,6 +22,10 @@
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
     </listener>
+    <listener name="validationlistener" class="org.easysoa.listeners.ValidationListener" order="121">
+      <event>documentCreated</event>
+      <event>documentModified</event>
+    </listener>
     
   </extension>
   

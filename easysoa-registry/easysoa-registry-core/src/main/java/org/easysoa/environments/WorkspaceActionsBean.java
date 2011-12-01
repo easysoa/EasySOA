@@ -20,6 +20,8 @@
 
 package org.easysoa.environments;
 
+import org.easysoa.doctypes.Workspace;
+import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
@@ -37,10 +39,10 @@ import org.nuxeo.runtime.api.Framework;
  * @author mkalam-alami
  * 
  */
-@Name("easysoaPublicationActions")
+@Name("easysoaWorkspaceActions")
 @Scope(ScopeType.CONVERSATION)
 @Install(precedence = Install.FRAMEWORK)
-public class PublicationActionsBean {
+public class WorkspaceActionsBean {
 
     @In(create = true, required = false)
     CoreSession documentManager;
@@ -51,16 +53,36 @@ public class PublicationActionsBean {
     public void publishCurrentWorkspace() throws Exception {
         
         PublicationService publicationService = Framework.getService(PublicationService.class);
-        DocumentModel model = navigationContext.getCurrentDocument();
+        DocumentModel currentDocModel = navigationContext.getCurrentDocument();
         
-        if (model.getType().equals("Workspace")) {
-            DocumentModelList appModels = documentManager.getChildren(model.getRef());
+        if (currentDocModel.getType().equals("Workspace")) {
+            DocumentModelList appModels = documentManager.getChildren(currentDocModel.getRef());
             for (DocumentModel appModel : appModels) {
-                publicationService.publish(documentManager, appModel, model.getTitle());
+                publicationService.publish(documentManager, appModel, currentDocModel.getTitle());
             }
         }
         else {
             throw new Exception("Cannot start publication: current document is not a workspace");
+        }
+        
+    }
+    
+    public void forkCurrentWorkspace() throws Exception {
+        
+        DocumentService docService = Framework.getService(DocumentService.class);
+        DocumentModel currentDocModel = navigationContext.getCurrentDocument();
+        
+        if (currentDocModel.getType().equals("Workspace")) {
+            String newName = currentDocModel.getTitle() + " (copy)";
+            DocumentModel newWorkspace = documentManager.copy(currentDocModel.getRef(), 
+                    docService.getWorkspaceRoot(documentManager), newName);
+            newWorkspace.setProperty("dublincore", "title", newName);
+            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDWORKSPACE, currentDocModel.getId());
+            documentManager.saveDocument(newWorkspace);
+            documentManager.save();
+        }
+        else {
+            throw new Exception("Cannot start fork: current document is not a workspace");
         }
         
     }

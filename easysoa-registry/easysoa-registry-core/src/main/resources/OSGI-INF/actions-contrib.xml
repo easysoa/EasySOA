@@ -29,7 +29,11 @@
     </action>
 
     <!-- Workspace publication button -->
-    <action id="easysoaWorkspacePublish" link="#{easysoaPublicationActions.publishCurrentWorkspace}" label="label.easysoa.publishworkspace.button">
+    <action id="easysoaWorkspacePublish" link="#{easysoaWorkspaceActions.publishCurrentWorkspace}" label="label.easysoa.publishworkspace.button">
+      <category>SUBVIEW_UPPER_LIST</category>
+      <filter-id>isWorkspace</filter-id>
+    </action>
+    <action id="easysoaWorkspaceFork" link="#{easysoaWorkspaceActions.forkCurrentWorkspace}" label="label.easysoa.forkworkspace.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isWorkspace</filter-id>
     </action>

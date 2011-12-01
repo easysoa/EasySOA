@@ -9,6 +9,7 @@
     <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
     <schema name="serviceref" src="schemas/serviceref.xsd" prefix="sref" />
     <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
+    <schema name="workspacedef" src="schemas/workspacedef.xsd" prefix="wsdef" />
     <schema name="feature" src="schemas/feature.xsd" prefix="feat" />
     <schema name="querynav2" src="schemas/querynav2.xsd" />
   </extension>
@@ -82,6 +83,7 @@
     </doctype>
     
     <doctype extends="Folder" name="Workspace">
+      <schema name="workspacedef" />
       <subtypes>
         <type>AppliImpl</type>
       </subtypes>
