@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.component.publicationservice">
+
+  <implementation class="org.easysoa.validation.ValidationServiceImpl" />
+
+  <service>
+    <provide interface="org.easysoa.validation.ValidationService" />
+  </service>
+
+</component>

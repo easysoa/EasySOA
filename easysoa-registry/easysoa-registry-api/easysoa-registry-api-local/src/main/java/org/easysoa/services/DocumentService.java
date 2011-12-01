@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentRef;
 
 public interface DocumentService {
 
@@ -76,6 +77,6 @@ public interface DocumentService {
      */
     public abstract DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException;
 
-    public abstract DocumentModel getWorkspaceRoot(CoreSession session) throws ClientException;
+    public abstract DocumentRef getWorkspaceRoot(CoreSession session) throws ClientException;
 
 }
