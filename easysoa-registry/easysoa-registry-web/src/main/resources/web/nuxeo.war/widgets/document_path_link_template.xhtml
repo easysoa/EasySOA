@@ -10,8 +10,8 @@
   <div>
   
     <c:choose>
-        <c:when test="${field != null}">
-  
+        <c:when test="${field != null and field != ''}">
+          
             <c:set var="targetDocumentQuery" value="select * from Document where ecm:path = '${field}'"/>
             <nxu:methodResult name="targetDocument" value="#{documentManager.query(targetDocumentQuery).get(0)}">
                 <nxu:graphicImage

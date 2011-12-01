@@ -69,6 +69,7 @@
       <icon>/icons/workspace.gif</icon>
       <bigIcon>/icons/workspace_100.png</bigIcon>
       <icon-expanded>/icons/workspace_open.gif</icon-expanded>
+      <default-view>view_documents</default-view>
       <layouts mode="any">
         <!-- Business -->
         <layout>heading</layout>

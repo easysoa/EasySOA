@@ -6,7 +6,7 @@
       <type name="Service">default</type>
       <type name="ServiceAPI">default</type>
       <type name="ServiceReference">default</type>
-      <type name="Workspace">default</type>
+      <type name="AppliImpl">default</type>
     </types>
   </extension>
 

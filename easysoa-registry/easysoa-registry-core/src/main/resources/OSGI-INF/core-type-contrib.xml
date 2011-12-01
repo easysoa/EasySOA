@@ -64,7 +64,7 @@
       <facet name="Publishable" />
     </doctype>
 
-    <doctype extends="Folder" name="AppliImpl">
+    <doctype extends="Workspace" name="AppliImpl">
       <schema name="dublincore" />
       <schema name="soacommon" />
       <schema name="feature" />
