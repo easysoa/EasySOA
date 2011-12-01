@@ -35,7 +35,7 @@
     </action>
     <action id="easysoaWorkspaceFork" link="#{easysoaWorkspaceActions.forkCurrentWorkspace}" label="label.easysoa.forkworkspace.button">
       <category>SUBVIEW_UPPER_LIST</category>
-      <filter-id>isWorkspace</filter-id>
+      <filter-id>isSection</filter-id>
     </action>
 
   </extension>
@@ -52,6 +52,11 @@
     <filter id="isWorkspace">
       <rule grant="true">
         <type>Workspace</type>
+      </rule>
+    </filter>
+    <filter id="isSection">
+      <rule grant="true">
+        <type>Section</type>
       </rule>
     </filter>
   </extension>

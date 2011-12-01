@@ -20,22 +20,19 @@
 
 package org.easysoa.listeners;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
-import org.nuxeo.ecm.core.api.Blob;
+import org.easysoa.doctypes.ServiceAPI;
+import org.easysoa.doctypes.Workspace;
+import org.easysoa.validation.ValidationService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
-import org.nuxeo.ecm.platform.publisher.api.PublisherService;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -46,8 +43,6 @@ import org.nuxeo.runtime.api.Framework;
 public class ValidationListener implements EventListener {
 
     private static Log log = LogFactory.getLog(ValidationListener.class);
-
-    /*private ValidationService validationService;*/
 
     public void handleEvent(Event event) {
 
@@ -61,103 +56,35 @@ public class ValidationListener implements EventListener {
         DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
 
         // Check document type
-        if (doc == null) {
+        if (doc == null || doc.isProxy()) {
             return;
         }
         String type = doc.getType();
-        
-        // if env (workspace ?) and creation validate all for the first time
-        
-        // if app / api validate all app / api
-        
-        // if service validate it
-        if (type.equals(Service.DOCTYPE) && !doc.isProxy()) {
-            // XXX Just a publication POC
+        if (type.equals(Workspace.DOCTYPE) || type.equals(AppliImpl.DOCTYPE) || 
+                type.equals(ServiceAPI.DOCTYPE) || type.equals(Service.DOCTYPE)) {
+
+            // Run validation
             try {
-                // Init validation
-                /*if (validationService == null) {
-                    validationService = Framework.getService(ValidationService.class);
-                }
-                validationService.validate(doc);*/
+                ValidationService validationService = Framework.getService(ValidationService.class);
 
-                String serviceName = (String) doc.getTitle();
-                
-                ArrayList<String> errors = new ArrayList<String>();
-                
-                // get service in reference env
-                PublisherService publisherService = Framework.getService(PublisherService.class);
-                /*PublicationTree publicationTree = publisherService.get(doc);
-                DocumentModel referenceEnvService = publicationTree.getExistingPublishedDocument(docLocation);*/
-                DocumentModel referenceEnvService = null;
-                
-                // delta-based validation would be : ex. if wsdl changed, check it
-                
-                // for now only full validation :
-                
-                // check there is a reference service
-                if (referenceEnvService == null) {
-                    Boolean hasNotificationBeenApproved = (Boolean) referenceEnvService.getProperty("easysoa", "hasNotificationBeenApproved");
-                    if (!hasNotificationBeenApproved) {
-                        errors.add(serviceName + " : unknown service");
-                    }
+                DocumentModel workspace = (Workspace.DOCTYPE.equals(doc.getType())) ? 
+                        doc : validationService.getWorkspace(session, doc);
+                Boolean isValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
+                if (isValidated) {
+                    // Validate all child services
+
+                    validationService.validateServices(session, doc);
+                } else {
+                    // If the environment was not successfully validated,
+                    // re-check all to allow it to become validated
+                    validationService.validateServices(session, workspace);
                 }
-                
-                // check wsdl
-                Blob referenceEnvWsdlBlob = (Blob) referenceEnvService.getProperty("file", "content");
-                if (referenceEnvWsdlBlob != null) {
-                    Blob wsdlBlob = (Blob) doc.getProperty("file", "content");
-                    File referenceEnvWsdlFile = File.createTempFile("easysoa", "wsdl");
-                    File wsdlFile = File.createTempFile("easysoa", "wsdl");
-                    referenceEnvWsdlBlob.transferTo(referenceEnvWsdlFile);
-                    wsdlBlob.transferTo(wsdlFile);
-                    if (wsdlBlob != null && isFinerWsdlThan(wsdlFile, referenceEnvWsdlFile)) {
-                        errors.add(serviceName + " : service has different wsdl");
-                    }
-                }
-                
-                // if runtime env only :
-                
-                // check discovered by browsing
-                String discoveryTypeBrowsing = (String) referenceEnvService.getProperty("soacommon", "discoveryTypeBrowsing");
-                if (discoveryTypeBrowsing == null || discoveryTypeBrowsing.trim().length() == 0) {
-                    errors.add(serviceName + " : service not found by browsing");
-                }
-                
-                // check discovered by monitoring
-                String discoveryTypeMonitoring = (String) referenceEnvService.getProperty("soacommon", "discoveryTypeMonitoring");
-                if (discoveryTypeMonitoring == null || discoveryTypeMonitoring.trim().length() == 0) {
-                    errors.add(serviceName + " : service not found by browsing");
-                }
-                
-                // execute related tests (?)
-                
-                // update errors display
-                
+
             } catch (Exception e) {
-                log.error("Failed to validate service", e);
+                log.error("Failed to validate " + type, e);
             }
-
         }
 
     }
-
-    private boolean isFinerWsdlThan(File wsdlFile, File referenceEnvWsdlFile) {
-        try {
-            FileInputStream wsdlFin = new FileInputStream(wsdlFile);
-            FileInputStream referenceEnvWsdlFin = new FileInputStream(referenceEnvWsdlFile);
-            byte[] referenceEnvBuf = new byte[1024];
-            byte[] buf = new byte[1024];
-            int referenceEnvNbRead, nbRead;
-            while ((referenceEnvNbRead = referenceEnvWsdlFin.read(referenceEnvBuf)) > 0) {
-                nbRead = wsdlFin.read(buf);
-                if (nbRead != referenceEnvNbRead) {
-                    
-                }
-            }
-        } catch (IOException ioex) {
-            return false;
-        }
-        return true;
-    }
-
+    
 }

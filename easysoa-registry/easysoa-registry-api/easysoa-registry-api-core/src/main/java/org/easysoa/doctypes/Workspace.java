@@ -36,5 +36,7 @@ public class Workspace {
     
     // Workspace properties
     public static final String PROP_REFERENCEDWORKSPACE = "referencedWorkspace";
+    public static final String PROP_ISVALIDATED = "isValidated";
+    public static final String PROP_VALIDATIONLOG = "validationLog";
     
 }

@@ -91,7 +91,6 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>workspacedef</layout>
-        <layout>files</layout>
       </layouts>
       <subtypes>
         <type>AppliImpl</type>
