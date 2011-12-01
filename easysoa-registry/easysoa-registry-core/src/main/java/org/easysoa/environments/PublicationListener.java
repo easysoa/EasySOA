@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Service;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.event.DocumentEventTypes;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -59,25 +60,35 @@ public class PublicationListener implements EventListener {
         }
         String type = doc.getType();
 
+        // XXX Just a publication POC
         if (type.equals(Service.DOCTYPE) && !doc.isProxy()) {
-            // XXX Just a publication POC
-            try {
-                // Init publication
-                if (publisher == null) {
-                    publisher = Framework.getService(PublicationService.class);
-                }
-                String url = (String) doc.getProperty(Service.SCHEMA, Service.PROP_URL);
-                
-                // Publish according to URL
-                if (url != null && !url.isEmpty()) {
-                    if (url.contains("127.0.0.1")) {
-                        publisher.publish(session, doc, "Development");
-                    } else {
-                        publisher.publish(session, doc, "Master");
+            
+            // Publish
+            if (!DocumentEventTypes.ABOUT_TO_REMOVE.equals(event.getName())) {
+
+                try {
+                    // Init publication
+                    if (publisher == null) {
+                        publisher = Framework.getService(PublicationService.class);
                     }
+                    String url = (String) doc.getProperty(Service.SCHEMA, Service.PROP_URL);
+                    
+                    // Publish according to URL
+                    if (url != null && !url.isEmpty()) {
+                        if (url.contains("127.0.0.1")) {
+                            publisher.publish(session, doc, "Development");
+                        } else {
+                            publisher.publish(session, doc, "Master");
+                        }
+                    }
+                } catch (Exception e) {
+                    log.error("Failed to publish service", e);
                 }
-            } catch (Exception e) {
-                log.error("Failed to publish service", e);
+            }
+            
+            // Unpublish
+            else {
+                publisher.unpublish(session, doc);
             }
 
         }

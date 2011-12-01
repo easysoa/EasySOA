@@ -69,4 +69,16 @@ public class PublicationServiceImpl implements PublicationService {
         }
     }
 
+    @Override
+    public void unpublish(CoreSession session, DocumentModel model) {
+        try {
+            DocumentModelList proxies = session.getProxies(model.getRef(), null);
+            for (DocumentModel proxy : proxies) {
+                session.removeDocument(proxy.getRef());
+            }
+        } catch (Exception e) {
+            log.error(e);
+        }
+    }
+
 }
