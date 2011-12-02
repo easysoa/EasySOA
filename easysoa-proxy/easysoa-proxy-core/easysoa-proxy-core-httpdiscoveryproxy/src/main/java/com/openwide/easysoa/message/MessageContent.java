@@ -31,7 +31,7 @@ public class MessageContent {
 
 	private Long size;
 	private String mimeType;
-	private String text;
+	private String content;
 	private String encoding;
 	private String comment;
 	private CustomFields customFields = new CustomFields();
@@ -46,10 +46,10 @@ public class MessageContent {
 	 * @param encoding Encoding
 	 * @param comment Optional user comment.
 	 */
-	public MessageContent(long size, String mimeType, String text, String encoding, String comment) {
+	public MessageContent(long size, String mimeType, String content, String encoding, String comment) {
 		this.size = size;
 		this.mimeType = mimeType;
-		this.text = text;
+		this.content = content;
 		this.encoding = encoding;
 		this.comment = comment;
 	}
@@ -98,16 +98,16 @@ public class MessageContent {
 	 * Returns the text.
 	 * @return Returns the text
 	 */
-	public String getText() {
-		return text;
+	public String getContent() {
+		return content;
 	}
 
 	/**
 	 * Sets the text.
 	 * @param text The text to set.
 	 */
-	public void setText(String text) {
-		this.text = text;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	/**

@@ -20,51 +20,27 @@
 
 package com.openwide.easysoa.proxy;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.nio.CharBuffer;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.UUID;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpMessage;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreFactory;
-import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.MessageContent;
-import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.run.RunManager;
+import com.openwide.easysoa.util.RequestForwarder;
 
 /**
  * HTTP Proxy 
@@ -109,7 +85,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		ProxyConfigurator.configure();
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */
 	@Override
@@ -117,7 +93,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		doHttpMethod(request, response);
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see HttpServlet#doPost(HttpServletRequest, HttpServletResponse)
 	 */	
 	@Override
@@ -171,11 +147,10 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	}
 
 	/**
-	 * 
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
+	 * Get the HTTP request, build an exchange record and send it to the discovery API, forward and send back the response 
+	 * @param request HTTP request
+	 * @param response HTTP response
+	 * @throws ServletException, IOException If a problem occurs
 	 */
 	public final void doHttpMethod(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.debug("------------------");
@@ -196,7 +171,6 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    }
 	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client
-
 			// attempting to reset response
 			response.reset();
 			response.setStatus(rex.getStatusCode());
@@ -267,136 +241,46 @@ public class HttpDiscoveryProxy extends HttpServlet {
 
 	/**
 	 * Send back the request to the original recipient and get the response
-	 * @throws Exception 
+	 * @param request HTTP Request
+	 * @param response HTTP response
+	 * @return A message object to be used by the discovery API
+	 * @throws Exception If a problem occurs during the forward
 	 */
 	private Message forward(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PrintWriter respOut = response.getWriter();
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-        
-		// set the retry handler
-		httpClient.setHttpRequestRetryHandler(new HttpRetryHandler());
-		// set the connection timeout
-		HttpParams httpParams = httpClient.getParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, this.forwardHttpConnexionTimeoutMs);
-		HttpConnectionParams.setSoTimeout(httpParams, this.forwardHttpSocketTimeoutMs);
-		
-		// URL
-		StringBuffer requestUrlBuffer = new StringBuffer();
-		requestUrlBuffer.append(request.getRequestURL().toString());
-	    if(request.getQueryString() != null){
-	    	requestUrlBuffer.append("?");
-	    	requestUrlBuffer.append(request.getQueryString());
-	    }
-	    String requestUrlString = requestUrlBuffer.toString();
-	    
-	    // Body
-		Message message = new Message(request);
-		// TODO what id to use ? TimeStamp ? generated UUID ??
-		// Build a new exchangeRecord and set the in message
-		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(request));
-		
-    	HttpEntity httpEntity = new StringEntity(message.getBody());
-		logger.debug("Request URL String : " +  requestUrlString);
-		logger.debug("Request Body String : " + message.getBody());
 
-		HttpUriRequest httpUriRequest;
-		// TODO later use a pattern to create them (builder found in a map method -> builder...)
-		if("GET".equalsIgnoreCase(request.getMethod())){
-	    	httpUriRequest = new HttpGet(requestUrlString);
-	    } else if("PUT".equalsIgnoreCase(request.getMethod())){
-	    	HttpPut httpPut = new HttpPut(requestUrlString);
-	    	httpPut.setEntity(httpEntity);
-	    	httpUriRequest = httpPut;
-	    } else if("DELETE".equalsIgnoreCase(request.getMethod())){
-	    	httpUriRequest = new HttpDelete(requestUrlString);
-	    } else if("OPTIONS".equalsIgnoreCase(request.getMethod())){
-	    	httpUriRequest = new HttpOptions(requestUrlString);
-	    } else if("HEAD".equalsIgnoreCase(request.getMethod())){
-	    	httpUriRequest = new HttpOptions(requestUrlString);
-	    } else if("TRACE".equalsIgnoreCase(request.getMethod())){
-	    	httpUriRequest = new HttpOptions(requestUrlString);
-	    } else { // POST
-	    	HttpPost httpPost = new HttpPost(requestUrlString);
-	    	httpPost.setEntity(httpEntity);
-	    	httpUriRequest = httpPost;
-	    }
-    	setHeaders(request, httpUriRequest);
-	    
-    	// TODO proxy for outgoing messages : allow to conf it, with a ProxyStrategy interface & a few impl (proxy all, by host, LATER or possibly driven by easysoa ui...) injected in frascati
-	    //if (requestUrlString.contains("microsoft")) {
-	    //    HttpHost myProxy = new HttpHost("localhost", 8084, "http");
-	    //    httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
-    	//}
-    	
-    	
-    	// TODO : To get the response and save it in a OutMessage, need to change the call to execute method => execute(HttpHost, HttpRequest)
-    	//ResponseHandler<String> responseHandler = new HttpResponseHandler();
-    	//String clientResponse = httpClient.execute(httpUriRequest, responseHandler);
-    	HttpResponse clientResponse = httpClient.execute(httpUriRequest);
-    	
-    	// Set the out message
-    	OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
-    	MessageContent messageContent = new MessageContent();
-    	
-		// Read the response message content
-		InputStreamReader in= new InputStreamReader(clientResponse.getEntity().getContent());
-		BufferedReader bin= new BufferedReader(in);
-		StringBuffer responseBuffer = new StringBuffer();
-		String line;
-		do{
-			 line = bin.readLine();
-			 if(line != null){
-				 responseBuffer.append(line); 
-			 }
-		}
-		while(line != null);
-		messageContent.setText(responseBuffer.toString());
-    	messageContent.setSize(clientResponse.getEntity().getContentLength());
-    	messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
-    	outMessage.setMessageContent(messageContent);
-    	
-    	exchangeRecord.setOutMessage(outMessage);
+		// Request forwarder
+		RequestForwarder forwarder = new RequestForwarder();
+		forwarder.setForwardHttpConnexionTimeoutMs(forwardHttpConnexionTimeoutMs);
+		forwarder.setForwardHttpSocketTimeoutMs(forwardHttpSocketTimeoutMs);
+		// Use HttpRetryHandler default value for retry
+		forwarder.setRetryHandler(new HttpRetryHandler());
+
+		// TODO : remove the old Message class, replaced by new Messaging API - ExchangeRecord
+		Message message = new Message(request);
+		// Build a new exchangeRecord and set the in message
+		// TODO what id to use ? TimeStamp ? generated UUID ??		
+		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(request));
+
+		// forward the message
+		exchangeRecord.setOutMessage(forwarder.send(exchangeRecord.getInMessage()));
+
 		// Save the exchangeRecord
 		ExchangeRecordStore erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
 		erStore.save(exchangeRecord);
-    	
-    	logger.debug("clientResponse : " + clientResponse);
-    	
-    	//message.setResponse(clientResponse);
-    	message.setResponse("TEST" + outMessage.getMessageContent().getText());
-	    //respOut.write(clientResponse);
-    	respOut.write("TEST" + outMessage.getMessageContent().getText());
+
+    	logger.debug("clientResponse : " + exchangeRecord.getOutMessage().getMessageContent().getContent());
+
+    	message.setResponse(exchangeRecord.getOutMessage().getMessageContent().getContent());
+    	respOut.write(exchangeRecord.getOutMessage().getMessageContent().getContent());
     	respOut.close();
     	return message;
 	}
 
 	/**
-	 * Set headers in the httpMessage
-	 * @param request The request where to get headers
-	 * @param httpMessage The http message to set
-	 */
-	private void setHeaders(HttpServletRequest request, HttpMessage httpMessage){
-		Enumeration<String> enum1 = request.getHeaderNames();
-		logger.debug("Requests Headers :");
-		while(enum1.hasMoreElements()){
-			String headerName = enum1.nextElement();
-			String headerValue = request.getHeader(headerName);
-			// to avoid an exception when the Content-length header is set twice
-			//if("Host".equals(headerName) && headerValue.contains("microsoft")){////
-			//	httpMessage.setHeader("Host", "localhost:8084");////
-			//} else/////
-			if(!"Content-Length".equals(headerName) && !"Transfer-Encoding".equals(headerName)){
-				httpMessage.setHeader(headerName, headerValue);
-			}
-			//logger.debug("Header name = " + headerName + ", Header value = " + headerValue);
-			logger.debug(headerName + ": " + headerValue);
-		}
-	}
-		
-	/**
-	 * 
-	 * @param error
-	 * @return
+	 * Builds an XML SoapFault
+	 * @param error Error to integrate to the returned XML SOAP Fault
+	 * @return A XML <code>String</code> representing a SOAP fault
 	 */
 	private String buildSoapFault(String error){
 		StringBuffer fault = new StringBuffer();
@@ -413,6 +297,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 
 	/**
 	 * Detect if the request call directly the proxy, if true, an exception is throw
+	 * @param request The request to check
+	 * @throws Exception If an infinite loop is detected
 	 */
 	private void infiniteLoopDetection(HttpServletRequest request) throws Exception{
 		// Get the server name and port to detect the loop

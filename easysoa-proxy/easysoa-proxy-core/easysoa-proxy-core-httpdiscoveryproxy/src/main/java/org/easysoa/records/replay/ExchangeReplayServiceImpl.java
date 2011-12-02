@@ -2,37 +2,16 @@ package org.easysoa.records.replay;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.proxy.HttpResponseHandler;
-import com.openwide.easysoa.proxy.HttpRetryHandler;
 import com.openwide.easysoa.util.RequestForwarder;
 
 /**
@@ -100,12 +79,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		// NB. without correlated asserts, test on response are impossible,
 		// however diff is possible (on server or client)
 		// ex. on server : http://code.google.com/p/java-diff-utils/
-		
-		// Get the corresponding recorded exchange.
-		// Get the inMessage
-		// make a new request with inMessage datas
-		// Send the request
-		// Get the response and compare it to the outMessage. 
+
 		String response;
     	ExchangeRecordStore erfs;
 		try {
@@ -116,18 +90,17 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 			RequestForwarder requestForwarder = new RequestForwarder();
 			OutMessage outMessage = requestForwarder.send(record.getInMessage());
 
-			logger.debug("Response of orignal exchange : " + record.getOutMessage().getMessageContent().getText());
-			logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getText());
-			// compare the returned response with the one contained in the stored Exchange record
-			response = outMessage.getMessageContent().getText();
+			logger.debug("Response of orignal exchange : " + record.getOutMessage().getMessageContent().getContent());
+			logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
+			// TODO : compare the returned response with the one contained in the stored Exchange record with an assert template
+			response = outMessage.getMessageContent().getContent();
 		}
 		catch(Exception ex){
 			response = "A problem occurs during the replay, see logs for more informations !";
 			ex.printStackTrace();
 			logger.error("A problem occurs duringt the replay of exchange record  with id " + exchangeRecordId);
 		}
-		
-		return response; // JSON
+			return response; // JSON
 	}
 	
 	@Override

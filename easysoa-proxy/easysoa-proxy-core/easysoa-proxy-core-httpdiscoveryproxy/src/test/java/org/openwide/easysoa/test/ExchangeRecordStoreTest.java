@@ -17,6 +17,8 @@ public class ExchangeRecordStoreTest {
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeRecordStoreTest.class.getName());
 
+	// TODO : update to test list and replay services
+	
 	@Test
     public void saveAndReadRecordsTest() throws Exception {
     	ExchangeRecordStore erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();

@@ -55,21 +55,21 @@ public class RequestForwarder {
 	// Retry handler
 	private HttpRequestRetryHandler retryHandler; 
 	// Timeouts
-	private int forwardHttpConnexionTimeoutMs = -1;
-	private int forwardHttpSocketTimeoutMs = -1;
+	private int forwardHttpConnexionTimeoutMs;
+	private int forwardHttpSocketTimeoutMs;
 	
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public RequestForwarder(){
-		
+		forwardHttpConnexionTimeoutMs = -1;
+		forwardHttpSocketTimeoutMs = -1;		
 	}
 	
 	/**
-	 * send the request
-	 * @param inMessage
-	 * @throws IOException 
-	 * @throws ClientProtocolException 
+	 * send the request, build an <code>OutMessage</code> with the response
+	 * @param inMessage The request will be build with this message 
+	 * @throws IOException, ClientProtocolException If a problem occurs 
 	 */
 	// TODO : add a return type corresponding to the response
 	public OutMessage send(InMessage inMessage) throws ClientProtocolException, IOException{
@@ -135,6 +135,7 @@ public class RequestForwarder {
     	HttpResponse clientResponse = httpClient.execute(httpUriRequest);		
 		
     	// Get and package the response
+    	// TODO set the missing value like timnings ....
     	OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
     	MessageContent messageContent = new MessageContent();
     	
@@ -146,11 +147,11 @@ public class RequestForwarder {
 		do{
 			 line = bin.readLine();
 			 if(line != null){
-				 responseBuffer.append(line); 
+				 responseBuffer.append(line);
 			 }
 		}
 		while(line != null);
-		messageContent.setText(responseBuffer.toString());
+		messageContent.setContent(responseBuffer.toString());
     	messageContent.setSize(clientResponse.getEntity().getContentLength());
     	messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
     	outMessage.setMessageContent(messageContent);    	
@@ -158,36 +159,37 @@ public class RequestForwarder {
 		return outMessage;
 	}
 
-		/**
-		 * Set headers in the httpMessage
-		 * @param request The request where to get headers
-		 * @param httpMessage The http message to set
-		 */
-		private void setHeaders(InMessage inMessage, HttpMessage httpMessage){
-			logger.debug("Requests Headers :");
-			for(Header header : inMessage.getHeaders().getHeaders()){
-				// to avoid an exception when the Content-length header is set twice
-				//if("Host".equals(headerName) && headerValue.contains("microsoft")){////
-				//	httpMessage.setHeader("Host", "localhost:8084");////
-				//} else/////
-				if(!"Content-Length".equals(header.getName()) && !"Transfer-Encoding".equals(header.getName())){
-					httpMessage.setHeader(header.getName(), header.getValue());
-				}
-				logger.debug(header.getName() + ": " + header.getValue());
+	/**
+	 * Set headers in the httpMessage
+	 * @param request The request where to get headers
+	 * @param httpMessage The http message to set
+	 */
+	private void setHeaders(InMessage inMessage, HttpMessage httpMessage) {
+		logger.debug("Requests Headers :");
+		for (Header header : inMessage.getHeaders().getHeaders()) {
+			// to avoid an exception when the Content-length header is set twice
+			// if("Host".equals(headerName) &&
+			// headerValue.contains("microsoft")){////
+			// httpMessage.setHeader("Host", "localhost:8084");////
+			// } else/////
+			if (!"Content-Length".equals(header.getName()) && !"Transfer-Encoding".equals(header.getName())) {
+				httpMessage.setHeader(header.getName(), header.getValue());
 			}
-		}	    
+			logger.debug(header.getName() + ": " + header.getValue());
+		}
+	}	    
 	    
 	/**
-	 * 
-	 * @param retryHandler
+	 * Set the retry handler
+	 * @param retryHandler 
 	 */
 	public void setRetryHandler(HttpRequestRetryHandler retryHandler){
 		this.retryHandler = retryHandler;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Get the retry handler
+	 * @return <code>HttpRetryHandler</code>
 	 */
 	public HttpRequestRetryHandler getRetryHandler(){
 		return retryHandler;
