@@ -47,6 +47,8 @@ public interface DocumentService {
 
     public abstract DocumentModel findWorkspace(CoreSession session, String name) throws ClientException;
     
+    public abstract DocumentModel findEnvironment(CoreSession session, String name) throws ClientException;
+    
     public abstract DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException;
 
     public abstract DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException;

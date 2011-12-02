@@ -35,7 +35,7 @@ public class Workspace {
     public static final String SCHEMA_PREFIX = "wsdef:";
     
     // Workspace properties
-    public static final String PROP_REFERENCEDWORKSPACE = "referencedWorkspace";
+    public static final String PROP_REFERENCEDENVIRONMENT = "referencedEnvironment";
     public static final String PROP_ISVALIDATED = "isValidated";
     public static final String PROP_VALIDATIONLOG = "validationLog";
     

@@ -38,7 +38,7 @@ public class ValidationServiceImpl implements ValidationService {
         
         // Find services
         DocumentModel referenceSection = session.getDocument(
-                new IdRef((String) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDWORKSPACE)));
+                new IdRef((String) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT)));
         DocumentModelList referenceServices = session.getChildren(referenceSection.getRef(),
                 Service.DOCTYPE, new DeletedDocumentFilter(), null);
         DocumentModelList services = session.getChildren(model.getRef(), Service.DOCTYPE);
