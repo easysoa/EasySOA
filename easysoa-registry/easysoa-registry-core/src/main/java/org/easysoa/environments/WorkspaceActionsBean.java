@@ -23,6 +23,7 @@ package org.easysoa.environments;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
+import org.easysoa.services.DirectChildrenDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
@@ -30,9 +31,11 @@ import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.nuxeo.common.utils.IdUtils;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.runtime.api.Framework;
 
@@ -78,16 +81,18 @@ public class WorkspaceActionsBean {
         
         if (currentDocModel.getType().equals("Section")) {
 
+            // Create destination workspace
             DocumentModel newWorkspace = documentManager.createDocumentModel(
                     docService.getWorkspaceRoot(documentManager).toString(),
                     IdUtils.generateStringId(), Workspace.DOCTYPE);
             newWorkspace.setProperty("dublincore", "title", currentDocModel.getTitle() + " (copy)");
-            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDWORKSPACE, currentDocModel.getId());
+            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, currentDocModel.getId());
             newWorkspace = documentManager.createDocument(newWorkspace);
             
+            // Copy applications and their contents
             DocumentModelList appsToCopy = documentManager.getChildren(currentDocModel.getRef());
             for (DocumentModel appToCopy : appsToCopy) {
-                documentManager.copy(appToCopy.getRef(), newWorkspace.getRef(), null);
+                copyRecursive(appToCopy.getRef(), newWorkspace.getRef());
             }
             
             documentManager.save();
@@ -96,6 +101,15 @@ public class WorkspaceActionsBean {
             throw new Exception("Cannot start fork: current document is not an environment");
         }
         
+    }
+    
+    private DocumentModel copyRecursive(DocumentRef from, DocumentRef toFolder) throws ClientException {
+        DocumentModel newDoc = documentManager.copy(from, toFolder, null);
+        DocumentModelList children = documentManager.getChildren(from, null, new DirectChildrenDocumentFilter(from), null);
+        for (DocumentModel child : children) {
+            copyRecursive(child.getRef(), newDoc.getRef());
+        }
+        return newDoc;
     }
        
 

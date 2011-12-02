@@ -132,6 +132,14 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
             return null;
         }
     }
+    
+    public DocumentModel findEnvironment(CoreSession session, String name) throws ClientException {
+        if (name != null) {
+            return findFirstDocument(session, "Section", "dc:title", name);
+        } else {
+            return null;
+        }
+    }
 
     public DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
         if (appliUrl != null) {
@@ -230,8 +238,8 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
     }
 
     private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
-        DocumentModelList apis = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + type + "' AND " + field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted'");
-        return (apis != null && apis.size() > 0) ? apis.get(0) : null;
+        DocumentModelList apis = session.query("SELECT * FROM " + type + " WHERE " + field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted'");
+        return (apis != null && !apis.isEmpty()) ? apis.get(0) : null;
     }
 
 }
