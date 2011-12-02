@@ -18,45 +18,61 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.sca.frascati;
+package org.easysoa.sca.records;
 
-import java.io.IOException;
-import java.util.Scanner;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
+@Deprecated
 public class ExchangeRecord {
 
-	//private ServletRequest request;
-	private String requestContent;
-	private ServletResponse response;
+	// TODO : remove this class and use ExchangeRecord form the easysoa.messaging.api instead !!!
+	
+	// in / out messages
+	private String inMessage;
+	private String outMessage;
+	// Exchange ID
+	private String exchangeId;
+
+	/**
+	 * Build a new ExchangeRecord object
+	 * @param request The request content
+	 * @param response The response content
+	 * @throws IOException
+	 */
+	public ExchangeRecord(String inMessage, String outMessage) {
+		//this.requestContent = new Scanner(request.getInputStream()).useDelimiter("\\A").next();
+		this.inMessage = inMessage;
+		this.outMessage = outMessage;
+	}
 	
 	/**
-	 * Build a new ExchangeRecord object 
-	 * @param request The request
-	 * @param response The response
-	 * @throws IOException 
+	 * 
+	 * @param inMessage
 	 */
-	public ExchangeRecord(ServletRequest request, ServletResponse response) throws IOException {
-		this.requestContent = new Scanner(request.getInputStream()).useDelimiter("\\A").next();
-		this.response = response;
+	public ExchangeRecord(String inMessage){
+		this.inMessage = inMessage;
+	}
+	
+	/**
+	 * 
+	 * @param outMessage
+	 */
+	public void setOutMessage(String outMessage){
+		this.outMessage = outMessage;
 	}
 	
 	/**
 	 * returns the exchange request
 	 * @return <code>ServletRequest</code>
 	 */
-	public String getRequestContent(){
-		return this.requestContent;
+	public String getInMessage(){
+		return this.inMessage;
 	}
 	
 	/**
 	 * Returns the exchange response
 	 * @return <code>ServletResponse</code>
 	 */
-	public ServletResponse getResponse(){
-		return this.response;
+	public String getOutMessage(){
+		return this.outMessage;
 	}
 	
 }

@@ -27,6 +27,15 @@
 		</sca:service>
 		<sca:reference name="runManager" target="runManagerComponent" />
 	</sca:component>
+	
+	<!-- Exchange replay service -->
+	<sca:component name="exchangeReplayServiceComponent">
+		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
+		<sca:service name="exchangeReplayService">
+			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
+			<frascati:binding.rest uri="http://localhost:8085/" />
+		</sca:service>
+	</sca:component>	
 
 	<!-- Monitoring service -->
 	<sca:component name="monitoringServiceComponent">

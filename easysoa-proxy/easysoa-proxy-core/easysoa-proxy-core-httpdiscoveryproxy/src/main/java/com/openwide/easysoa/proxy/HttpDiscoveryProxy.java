@@ -46,10 +46,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
+import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.run.RunManager;
 
@@ -278,6 +280,9 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    
 	    // Body
 		Message message = new Message(request);
+		// TODO what id to use ? TimeStamp ? generated UUID ??
+		//ExchangeRecord exchangeRecord = new ExchangeRecord("id", new InMessage(request));
+		
     	HttpEntity httpEntity = new StringEntity(message.getBody());
 		logger.debug("Request URL String : " +  requestUrlString);
 		logger.debug("Request Body String : " + message.getBody());
