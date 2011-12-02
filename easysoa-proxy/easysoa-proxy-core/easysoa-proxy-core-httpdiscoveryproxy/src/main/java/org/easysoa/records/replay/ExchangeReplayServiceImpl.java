@@ -29,6 +29,7 @@ import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Scope;
 
+import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.proxy.HttpResponseHandler;
 import com.openwide.easysoa.proxy.HttpRetryHandler;
@@ -84,12 +85,14 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	}
 
 	@Override
+	@Produces("application/json,application/xml")
 	public ExchangeRecord[] list(@PathParam("service") String service) {
 		// LATER
 		return null;
 	}
 
-	@Override	
+	@Override
+	//@Produces("application/json,application/xml")
 	public String replay(@PathParam("exchangeRecordId") String exchangeRecordId) {
 		// call remote service using chosen record :
 		// see how to share monit.forward(Message) code (extract it in a Util class), see also scaffolder client
@@ -103,7 +106,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		// make a new request with inMessage datas
 		// Send the request
 		// Get the response and compare it to the outMessage. 
-
+		String response;
     	ExchangeRecordStore erfs;
 		try {
 			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
@@ -111,68 +114,24 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 			ExchangeRecord record = erfs.load(exchangeRecordId);
 			// Send the request
 			RequestForwarder requestForwarder = new RequestForwarder();
-			requestForwarder.send(record);
-			
+			OutMessage outMessage = requestForwarder.send(record.getInMessage());
+
+			logger.debug("Response of orignal exchange : " + record.getOutMessage().getMessageContent().getText());
+			logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getText());
 			// compare the returned response with the one contained in the stored Exchange record
-			
-			
-			
-			
-			////// Send message
-			/*
-			DefaultHttpClient httpClient = new DefaultHttpClient();
-			httpClient.setHttpRequestRetryHandler(new HttpRetryHandler());
-			// set the connection timeout
-			HttpParams httpParams = httpClient.getParams();
-			HttpConnectionParams.setConnectionTimeout(httpParams, this.forwardHttpConnexionTimeoutMs);
-			HttpConnectionParams.setSoTimeout(httpParams, this.forwardHttpSocketTimeoutMs);
-			
-			// URL
-			StringBuffer requestUrlBuffer = new StringBuffer();
-			requestUrlBuffer.append(request.getRequestURL().toString());
-		    if(request.getQueryString() != null){
-		    	requestUrlBuffer.append("?");
-		    	requestUrlBuffer.append(request.getQueryString());
-		    }
-		    String requestUrlString = requestUrlBuffer.toString();
-	    	HttpEntity httpEntity = new StringEntity(message.getBody());
-			HttpUriRequest httpUriRequest;
-			// TODO later use a pattern to create them (builder found in a map method -> builder...)
-			if("GET".equalsIgnoreCase(request.getMethod())){
-		    	httpUriRequest = new HttpGet(requestUrlString);
-		    } else if("PUT".equalsIgnoreCase(request.getMethod())){
-		    	HttpPut httpPut = new HttpPut(requestUrlString);
-		    	httpPut.setEntity(httpEntity);
-		    	httpUriRequest = httpPut;
-		    } else if("DELETE".equalsIgnoreCase(request.getMethod())){
-		    	httpUriRequest = new HttpDelete(requestUrlString);
-		    } else if("OPTIONS".equalsIgnoreCase(request.getMethod())){
-		    	httpUriRequest = new HttpOptions(requestUrlString);
-		    } else if("HEAD".equalsIgnoreCase(request.getMethod())){
-		    	httpUriRequest = new HttpOptions(requestUrlString);
-		    } else if("TRACE".equalsIgnoreCase(request.getMethod())){
-		    	httpUriRequest = new HttpOptions(requestUrlString);
-		    } else { // POST
-		    	HttpPost httpPost = new HttpPost(requestUrlString);
-		    	httpPost.setEntity(httpEntity);
-		    	httpUriRequest = httpPost;
-		    }
-	    	setHeaders(request, httpUriRequest);
-	    	ResponseHandler<String> responseHandler = new HttpResponseHandler();
-	    	String clientResponse = httpClient.execute(httpUriRequest, responseHandler);
-	    	logger.debug("clientResponse : " + clientResponse);
-	    	*/
-	    	///// Send message end
-			
+			response = outMessage.getMessageContent().getText();
 		}
 		catch(Exception ex){
+			response = "A problem occurs during the replay, see logs for more informations !";
+			ex.printStackTrace();
 			logger.error("A problem occurs duringt the replay of exchange record  with id " + exchangeRecordId);
 		}
 		
-		return null; // JSON
+		return response; // JSON
 	}
 	
-	@Override	
+	@Override
+	@Produces("application/json,application/xml")	
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment) {
 		// LATER
 		// requires to extract service in request & response

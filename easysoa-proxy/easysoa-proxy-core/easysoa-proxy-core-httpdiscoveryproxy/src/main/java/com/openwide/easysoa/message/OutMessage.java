@@ -45,7 +45,7 @@ public class OutMessage implements Message {
 	private String comment;
 
 	public OutMessage(){}
-	
+
 	/**
 	 * Out message constructor
 	 */
@@ -101,5 +101,13 @@ public class OutMessage implements Message {
 	public String getStatusText() {
 		return statusText;
 	}
+	
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
+	public void setStatusText(String statusText) {
+		this.statusText = statusText;
+	}
+	
 }

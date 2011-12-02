@@ -3,14 +3,41 @@
  */
 package com.openwide.easysoa.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpMessage;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.ExchangeRecordStore;
+import org.easysoa.records.ExchangeRecordStoreFactory;
 
+import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.message.MessageContent;
+import com.openwide.easysoa.message.OutMessage;
+import com.openwide.easysoa.message.QueryParam;
+import com.openwide.easysoa.monitoring.Message;
+import com.openwide.easysoa.proxy.HttpDiscoveryProxy;
 import com.openwide.easysoa.proxy.HttpRetryHandler;
 
 /**
@@ -20,21 +47,32 @@ import com.openwide.easysoa.proxy.HttpRetryHandler;
  */
 public class RequestForwarder {
 
+	/**
+	 * Logger
+	 */
+	static Logger logger = Logger.getLogger(RequestForwarder.class.getName());	
+	
 	// Retry handler
 	private HttpRequestRetryHandler retryHandler; 
 	// Timeouts
 	private int forwardHttpConnexionTimeoutMs = -1;
 	private int forwardHttpSocketTimeoutMs = -1;
 	
+	/**
+	 * 
+	 */
 	public RequestForwarder(){
 		
 	}
-
+	
 	/**
-	 * Forward the request
+	 * send the request
+	 * @param inMessage
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
 	// TODO : add a return type corresponding to the response
-	public void send(ExchangeRecord exchangeRecord){
+	public OutMessage send(InMessage inMessage) throws ClientProtocolException, IOException{
 		// Default HTTP client
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		// Set retry handler
@@ -49,26 +87,96 @@ public class RequestForwarder {
 		if(forwardHttpSocketTimeoutMs > 0){
 			HttpConnectionParams.setSoTimeout(httpParams, this.forwardHttpSocketTimeoutMs);
 		}
-		
-		// Building URL
-		/*InMessage inMessage = exchangeRecord.getInMessage();
+		// Build URL with parameters
 		StringBuffer requestUrlBuffer = new StringBuffer();
-		requestUrlBuffer.append(inMessage.getProtocol());
-	    if(request.getQueryString() != null){
+		requestUrlBuffer.append(inMessage.getCompleteUrl());
+	    if(inMessage.getQueryString() != null){
 	    	requestUrlBuffer.append("?");
-	    	requestUrlBuffer.append(request.getQueryString());
+	    	for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
+	    		// for each query param, build name=value and add '&' char
+	    		if("?".equals(requestUrlBuffer.charAt(requestUrlBuffer.length()))){
+		    		requestUrlBuffer.append("&");
+	    		}
+	    		requestUrlBuffer.append(queryParam.getName());
+	    		requestUrlBuffer.append("=");
+	    		requestUrlBuffer.append(queryParam.getValue());
+	    	}
 	    }
-	    String requestUrlString = requestUrlBuffer.toString();*/
-	    
-	    /*
-	    HttpEntity httpEntity = new StringEntity(message.getBody());
-		HttpUriRequest httpUriRequest;		
-		*/
+		logger.debug("URL : " + requestUrlBuffer.toString());
+	    	
+		// message body
+		// TODO add message entity
+    	//HttpEntity httpEntity = new StringEntity(message.getBody());
 		
+		HttpUriRequest httpUriRequest;
+		// TODO later use a pattern to create them (builder found in a map method -> builder...)
+		if("GET".equalsIgnoreCase(inMessage.getMethod())){
+	    	httpUriRequest = new HttpGet(requestUrlBuffer.toString());		
+		} else if("PUT".equalsIgnoreCase(inMessage.getMethod())){
+	 	   	HttpPut httpPut = new HttpPut(requestUrlBuffer.toString());
+	 	   	//httpPut.setEntity(httpEntity);
+	 	   	httpUriRequest = httpPut;
+	 	} else if("DELETE".equalsIgnoreCase(inMessage.getMethod())){
+	 	   	httpUriRequest = new HttpDelete(requestUrlBuffer.toString());
+	 	} else if("OPTIONS".equalsIgnoreCase(inMessage.getMethod())){
+	 	 	httpUriRequest = new HttpOptions(requestUrlBuffer.toString());
+	 	} else if("HEAD".equalsIgnoreCase(inMessage.getMethod())){
+	 	   	httpUriRequest = new HttpOptions(requestUrlBuffer.toString());
+	 	} else if("TRACE".equalsIgnoreCase(inMessage.getMethod())){
+	 	  	httpUriRequest = new HttpOptions(requestUrlBuffer.toString());
+	 	} else { // POST
+	 	   	HttpPost httpPost = new HttpPost(requestUrlBuffer.toString());
+	 	   	//httpPost.setEntity(httpEntity);
+	 	   	httpUriRequest = httpPost;
+	 	}
+		setHeaders(inMessage, httpUriRequest);
 		
+		// Send the request
+    	HttpResponse clientResponse = httpClient.execute(httpUriRequest);		
 		
+    	// Get and package the response
+    	OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
+    	MessageContent messageContent = new MessageContent();
+    	
+		// Read the response message content
+		InputStreamReader in= new InputStreamReader(clientResponse.getEntity().getContent());
+		BufferedReader bin= new BufferedReader(in);
+		StringBuffer responseBuffer = new StringBuffer();
+		String line;
+		do{
+			 line = bin.readLine();
+			 if(line != null){
+				 responseBuffer.append(line); 
+			 }
+		}
+		while(line != null);
+		messageContent.setText(responseBuffer.toString());
+    	messageContent.setSize(clientResponse.getEntity().getContentLength());
+    	messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
+    	outMessage.setMessageContent(messageContent);    	
+    	// Return response message
+		return outMessage;
 	}
 
+		/**
+		 * Set headers in the httpMessage
+		 * @param request The request where to get headers
+		 * @param httpMessage The http message to set
+		 */
+		private void setHeaders(InMessage inMessage, HttpMessage httpMessage){
+			logger.debug("Requests Headers :");
+			for(Header header : inMessage.getHeaders().getHeaders()){
+				// to avoid an exception when the Content-length header is set twice
+				//if("Host".equals(headerName) && headerValue.contains("microsoft")){////
+				//	httpMessage.setHeader("Host", "localhost:8084");////
+				//} else/////
+				if(!"Content-Length".equals(header.getName()) && !"Transfer-Encoding".equals(header.getName())){
+					httpMessage.setHeader(header.getName(), header.getValue());
+				}
+				logger.debug(header.getName() + ": " + header.getValue());
+			}
+		}	    
+	    
 	/**
 	 * 
 	 * @param retryHandler

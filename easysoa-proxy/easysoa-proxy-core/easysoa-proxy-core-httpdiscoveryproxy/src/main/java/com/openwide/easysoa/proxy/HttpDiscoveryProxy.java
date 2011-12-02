@@ -20,11 +20,16 @@
 
 package com.openwide.easysoa.proxy;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.nio.CharBuffer;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
@@ -47,11 +53,16 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.ExchangeRecordStore;
+import org.easysoa.records.ExchangeRecordStoreFactory;
+import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.message.MessageContent;
+import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.run.RunManager;
 
@@ -281,7 +292,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    // Body
 		Message message = new Message(request);
 		// TODO what id to use ? TimeStamp ? generated UUID ??
-		//ExchangeRecord exchangeRecord = new ExchangeRecord("id", new InMessage(request));
+		// Build a new exchangeRecord and set the in message
+		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(request));
 		
     	HttpEntity httpEntity = new StringEntity(message.getBody());
 		logger.debug("Request URL String : " +  requestUrlString);
@@ -314,12 +326,46 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    //if (requestUrlString.contains("microsoft")) {
 	    //    HttpHost myProxy = new HttpHost("localhost", 8084, "http");
 	    //    httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, myProxy);
-	    //}
-    	ResponseHandler<String> responseHandler = new HttpResponseHandler();
-    	String clientResponse = httpClient.execute(httpUriRequest, responseHandler);
+    	//}
+    	
+    	
+    	// TODO : To get the response and save it in a OutMessage, need to change the call to execute method => execute(HttpHost, HttpRequest)
+    	//ResponseHandler<String> responseHandler = new HttpResponseHandler();
+    	//String clientResponse = httpClient.execute(httpUriRequest, responseHandler);
+    	HttpResponse clientResponse = httpClient.execute(httpUriRequest);
+    	
+    	// Set the out message
+    	OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
+    	MessageContent messageContent = new MessageContent();
+    	
+		// Read the response message content
+		InputStreamReader in= new InputStreamReader(clientResponse.getEntity().getContent());
+		BufferedReader bin= new BufferedReader(in);
+		StringBuffer responseBuffer = new StringBuffer();
+		String line;
+		do{
+			 line = bin.readLine();
+			 if(line != null){
+				 responseBuffer.append(line); 
+			 }
+		}
+		while(line != null);
+		messageContent.setText(responseBuffer.toString());
+    	messageContent.setSize(clientResponse.getEntity().getContentLength());
+    	messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
+    	outMessage.setMessageContent(messageContent);
+    	
+    	exchangeRecord.setOutMessage(outMessage);
+		// Save the exchangeRecord
+		ExchangeRecordStore erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
+		erStore.save(exchangeRecord);
+    	
     	logger.debug("clientResponse : " + clientResponse);
-    	message.setResponse(clientResponse);
-	    respOut.write(clientResponse);
+    	
+    	//message.setResponse(clientResponse);
+    	message.setResponse("TEST" + outMessage.getMessageContent().getText());
+	    //respOut.write(clientResponse);
+    	respOut.write("TEST" + outMessage.getMessageContent().getText());
     	respOut.close();
     	return message;
 	}

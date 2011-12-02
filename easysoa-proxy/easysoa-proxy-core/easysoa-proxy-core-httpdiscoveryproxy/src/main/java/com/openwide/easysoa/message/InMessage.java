@@ -33,21 +33,63 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class InMessage implements Message {
 
+	/**
+	 * Protocol (http, htpps, ...)
+	 */
 	private String protocol;
-	
+	/**
+	 * Method (get, post ...)
+	 */
 	private String method;
+	/**
+	 * Serveur (www.easysoa.org, ...) or ip address
+	 */
 	private String server;
+	/**
+	 * Port 
+	 */
 	private int port;
+	/**
+	 * Path : only the part after the port number
+	 */
 	private String path;
-	private String httpVersion;
+	/**
+	 * Complete url includeing protocol, server, port and path
+	 */
+	private String completeUrl;
+	/**
+	 * Protocol version
+	 */
+	private String protocolVersion;
+	/**
+	 * Message headers
+	 */
 	private Headers headers;
+	/**
+	 * QueryString : url parameters after the first ?
+	 */
 	private QueryString queryString;
+	/**
+	 * Message body data
+	 */
 	private PostData postData;
+	/**
+	 * Optional comment
+	 */
+	private String comment;
+	/**
+	 * Message body or entity 
+	 */
+	private MessageContent messageContent;
+	
+	
 	// private Long headersSize;
 	// private Long bodySize;
-	private String comment;
 	private CustomFields customFields = new CustomFields();
 
+	/**
+	 * Default constructor
+	 */
 	public InMessage(){}
 	
 	// TODO : replace path by the complete URL
@@ -70,10 +112,12 @@ public class InMessage implements Message {
 			this.headers.addHeader(new Header(headerName, request.getHeader(headerName)));
 		}
 		// Set protocol, server, port, path
-		this.protocol = request.getProtocol();
+		this.protocol = request.getProtocol().substring(0,request.getProtocol().indexOf('/'));
+		this.protocolVersion = request.getProtocol().substring(request.getProtocol().indexOf('/')+1);
 		this.server = request.getServerName();
 		this.port = request.getServerPort();
-		this.path = request.getServletPath();
+		this.path = request.getRequestURI();
+		this.completeUrl = request.getRequestURL().toString();
 		// Set url parameters
 		this.queryString = new QueryString();
 		Enumeration<String> parametersNameEnum = request.getParameterNames(); 
@@ -84,7 +128,6 @@ public class InMessage implements Message {
 			}
 		}
 		this.comment = "";
-		//logger.debug("InMessage done");
 	}
 	
 	public String getProtocol() {
@@ -119,12 +162,12 @@ public class InMessage implements Message {
 		return method;
 	}
 
-	public String getHttpVersion() {
-		return httpVersion;
+	public String getProtocolVersion() {
+		return protocolVersion;
 	}
 
-	public void setHttpVersion(String httpVersion) {
-		this.httpVersion = httpVersion;
+	public void setProtocolVersion(String protocolVersion) {
+		this.protocolVersion = protocolVersion;
 	}
 
 	public Headers getHeaders() {
@@ -175,4 +218,12 @@ public class InMessage implements Message {
 		this.path = path;
 	}
 
+	public String getCompleteUrl() {
+		return completeUrl;
+	}
+
+	public void setCompleteUrl(String completeUrl) {
+		this.completeUrl = completeUrl;
+	}	
+	
 }
