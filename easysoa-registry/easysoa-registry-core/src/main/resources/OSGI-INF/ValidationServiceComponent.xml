@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.core.component.publicationservice">
+<component name="org.easysoa.core.component.validationservice">
 
   <implementation class="org.easysoa.validation.ValidationServiceImpl" />
 
