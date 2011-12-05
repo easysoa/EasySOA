@@ -20,8 +20,6 @@
 
 package com.openwide.easysoa.message;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Post data
  * @author jguillemotte

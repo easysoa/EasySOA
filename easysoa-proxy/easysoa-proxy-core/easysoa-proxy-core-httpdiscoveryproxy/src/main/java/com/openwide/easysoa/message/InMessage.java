@@ -20,6 +20,9 @@
 
 package com.openwide.easysoa.message;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.CharBuffer;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +57,7 @@ public class InMessage implements Message {
 	 */
 	private String path;
 	/**
-	 * Complete url includeing protocol, server, port and path
+	 * Complete url including protocol, server, port, path
 	 */
 	private String completeUrl;
 	/**
@@ -86,6 +89,14 @@ public class InMessage implements Message {
 	// private Long headersSize;
 	// private Long bodySize;
 	private CustomFields customFields = new CustomFields();
+
+	public MessageContent getMessageContent() {
+		return messageContent;
+	}
+
+	public void setMessageContent(MessageContent messageContent) {
+		this.messageContent = messageContent;
+	}
 
 	/**
 	 * Default constructor
@@ -125,6 +136,33 @@ public class InMessage implements Message {
 			String parameterName = parametersNameEnum.nextElement();
 			for(String parameterValue : request.getParameterValues(parameterName)){
 				this.queryString.addQueryParam(new QueryParam(parameterName, parameterValue));
+			}
+		}
+		this.messageContent = new MessageContent();
+	    //char[] charArray = new char[8192];
+	    StringBuffer requestBody = new StringBuffer();
+	    BufferedReader requestBodyReader = null;
+	    CharBuffer buffer = CharBuffer.allocate(512); 
+		try {
+			requestBodyReader = request.getReader();
+			//int nbCharRead;
+		    while(requestBodyReader.ready()){
+		    	requestBodyReader.read(buffer);
+		    	requestBody.append(buffer.rewind());
+		    }
+			/*while((nbCharRead = requestBodyReader.read(charArray)) != -1){
+		    	requestBody = requestBody.append(new String(charArray), 0, nbCharRead);
+		    }*/
+			this.messageContent.setContent(requestBody.toString());
+			this.messageContent.setSize(requestBody.length());
+			this.messageContent.setMimeType(request.getContentType());
+		} catch (IOException ex) {
+			//logger.error("Error while reading request body !", ex);
+		} finally {	    
+			try {
+				requestBodyReader.close();
+			} catch (IOException ex) {
+				//logger.warn("Error while closing the requestBodyReader !", ex);
 			}
 		}
 		this.comment = "";

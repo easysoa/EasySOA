@@ -25,6 +25,8 @@ import java.util.Deque;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
+
 import com.openwide.easysoa.monitoring.Message;
 
 @SuppressWarnings("serial")
@@ -43,7 +45,8 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 	/**
 	 * An ArrayDeque to store the received messages corresponding to the node url
 	 */
-	private ArrayDeque<Message> msgs;
+	//private ArrayDeque<Message> msgs;
+	private ArrayDeque<ExchangeRecord> msgs;
 	
 	/**
 	 * 
@@ -71,7 +74,8 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 		this.nodeName = nodeName;
 		this.partialUrlCallCount = 0;
 		this.completeUrlCallCount = 0;
-		this.msgs = new ArrayDeque<Message>();
+		//this.msgs = new ArrayDeque<Message>();
+		this.msgs = new ArrayDeque<ExchangeRecord>();
 		this.registered = false;
 		this.setPartialUrl(partialUrl);
 	}
@@ -133,7 +137,8 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 	/**
 	 * Add a message in the message list 
 	 */
-	public void addMessage(Message msg){
+	//public void addMessage(Message msg){
+	public void addMessage(ExchangeRecord msg){
 		this.msgs.add(msg);
 	}
 	
@@ -141,7 +146,8 @@ public class UrlTreeNode extends DefaultMutableTreeNode{
 	 * 
 	 * @return
 	 */
-	public Deque<Message> getMessages(){
+	//public Deque<Message> getMessages(){
+	public Deque<ExchangeRecord> getMessages(){
 		return this.msgs;
 	}
 	

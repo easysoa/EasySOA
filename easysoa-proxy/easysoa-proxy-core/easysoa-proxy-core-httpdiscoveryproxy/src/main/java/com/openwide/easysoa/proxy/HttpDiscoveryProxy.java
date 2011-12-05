@@ -166,8 +166,10 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	// Detect infinite request loop (proxy send a request to itself)
 	    	infiniteLoopDetection(request);	    	
 	    	// Listening the message
-	    	Message message = forward(request, response);
-	    	runManager.record(message);
+	    	//Message message = forward(request, response);
+	    	ExchangeRecord exchangeRecord = forward(request, response); 
+	    	//runManager.record(message);
+	    	runManager.record(exchangeRecord);
 	    }
 	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client
@@ -246,7 +248,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 * @return A message object to be used by the discovery API
 	 * @throws Exception If a problem occurs during the forward
 	 */
-	private Message forward(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private ExchangeRecord forward(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PrintWriter respOut = response.getWriter();
 
 		// Request forwarder
@@ -257,7 +259,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		forwarder.setRetryHandler(new HttpRetryHandler());
 
 		// TODO : remove the old Message class, replaced by new Messaging API - ExchangeRecord
-		Message message = new Message(request);
+		//Message message = new Message(request);
 		// Build a new exchangeRecord and set the in message
 		// TODO what id to use ? TimeStamp ? generated UUID ??		
 		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(request));
@@ -266,15 +268,17 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		exchangeRecord.setOutMessage(forwarder.send(exchangeRecord.getInMessage()));
 
 		// Save the exchangeRecord
+		// TODO : maybe not the right place to save the Exchange record
 		ExchangeRecordStore erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
 		erStore.save(exchangeRecord);
 
     	logger.debug("clientResponse : " + exchangeRecord.getOutMessage().getMessageContent().getContent());
 
-    	message.setResponse(exchangeRecord.getOutMessage().getMessageContent().getContent());
+    	//message.setResponse(exchangeRecord.getOutMessage().getMessageContent().getContent());
     	respOut.write(exchangeRecord.getOutMessage().getMessageContent().getContent());
     	respOut.close();
-    	return message;
+    	//return message;
+    	return exchangeRecord;
 	}
 
 	/**

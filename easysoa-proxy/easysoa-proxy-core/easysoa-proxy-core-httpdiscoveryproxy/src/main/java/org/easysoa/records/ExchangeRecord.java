@@ -21,10 +21,7 @@
 package org.easysoa.records;
 
 import java.io.IOException;
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlRootElement;
-
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 
@@ -55,18 +52,27 @@ public class ExchangeRecord {
 	//private Timeouts timeouts;
 	// Exchange ID
 	private String exchangeID;
-
+	// Exchange type
+	private ExchangeType exchangeType;
+	
 	// TODO add a constructor from a servletRequest object
 	// Add a setter for a ServletResponse object
 	// Add also constructors/methods for CXF messages
 	// Goal is to obtain a neutral messaging API
 
+	/**
+	 *	Message types 
+	 */
+	public enum ExchangeType {
+	    WSDL, REST, SOAP
+	}	
+	
 	public ExchangeRecord(){
 		this.exchangeID = "";
 		this.inMessage = null;
 		this.outMessage = null;
 	}
-	
+
 	/**
 	 * Build a new ExchangeRecord object
 	 * @param request The request content
@@ -134,5 +140,20 @@ public class ExchangeRecord {
 	public OutMessage getOutMessage(){
 		return this.outMessage;
 	}
-	
+
+	/**
+	 * Get the exchange type
+	 * @return The exchange type
+	 */
+	public ExchangeType getExchangeType() {
+		return exchangeType;
+	}
+
+	/**
+	 * Set the exchange type
+	 * @param exchangeType The exchange type
+	 */
+	public void setExchangeType(ExchangeType exchangeType) {
+		this.exchangeType = exchangeType;
+	}	
 }

@@ -24,6 +24,7 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -54,7 +55,8 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	public ValidatedMonitoringService(){
 		// init & fill it from Nuxeo
 		logger.debug("Mode = VALIDATED !!");
-		unknownMessagesList = new ArrayDeque<Message>();
+		//unknownMessagesList = new ArrayDeque<Message>();
+		unknownExchangeRecordList = new ArrayDeque<ExchangeRecord>();
 		monitoringModel = new MonitoringModel();
 		monitoringModel.fetchFromNuxeo();
 		logger.debug("Validated mode : Printing monitoring model keyset");
@@ -90,8 +92,13 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	}
 
 	@Override
-	public void listen(Message message) {
+	/*public void listen(Message message) {
 		listen(message, esperEngine);
+	}*/
+	public void listen(ExchangeRecord exchangeRecord){
+		listen(exchangeRecord, esperEngine);
 	}
+	
+	
 
 }

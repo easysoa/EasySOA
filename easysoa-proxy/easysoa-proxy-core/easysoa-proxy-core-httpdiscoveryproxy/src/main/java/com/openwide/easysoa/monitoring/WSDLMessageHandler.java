@@ -21,9 +21,11 @@
 package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.ExchangeRecord.ExchangeType;
 
 import com.openwide.easysoa.esper.EsperEngine;
-import com.openwide.easysoa.monitoring.Message.MessageType;
+import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 import com.openwide.easysoa.proxy.PropertyManager;
@@ -36,31 +38,46 @@ public class WSDLMessageHandler implements MessageHandler {
 	private static Logger logger = Logger.getLogger(WSDLMessageHandler.class.getName());
 	
 	@Override
-	public boolean isOkFor(Message message) {
-		if(message != null){
-			return message.getParameters().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"));
-		} else {
-			return false;
+	//public boolean isOkFor(Message message) {
+	public boolean isOkFor(ExchangeRecord exchangeRecord) {
+		//if(message != null){
+		boolean returnValue = false;
+		if(exchangeRecord != null){
+			//return message.getParameters().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"));
+			//return 
+			for(QueryParam queryParam: exchangeRecord.getInMessage().getQueryString().getQueryParams()){
+				if(queryParam.getName().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"))){
+					return true;
+				}
+			}
 		}
+		return returnValue;
 	}
 
 	@Override
-	public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine) {
+	//public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine) {
+	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// enrich the message
-		message.setType(MessageType.WSDL);
+		//message.setType(MessageType.WSDL);
+		exchangeRecord.setExchangeType(ExchangeType.WSDL);		
 		logger.debug("WSDL found");
 		
 		// Service construction
-		String serviceName = message.getPathName();
+		//String serviceName = message.getPathName();
+		String serviceName = exchangeRecord.getInMessage().getPath();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		Service service = new Service(message.getUrl());
+		//Service service = new Service(message.getUrl());
+		Service service = new Service(exchangeRecord.getInMessage().getCompleteUrl());
 		service.setCallCount(1);
-		service.setTitle(message.getPathName());
-		service.setDescription(message.getPathName());
-		service.setHttpMethod(message.getMethod());
+		//service.setTitle(message.getPathName());
+		service.setTitle(exchangeRecord.getInMessage().getPath());
+		//service.setDescription(message.getPathName());
+		service.setDescription(exchangeRecord.getInMessage().getPath());
+		//service.setHttpMethod(message.getMethod());
+		service.setHttpMethod(exchangeRecord.getInMessage().getMethod());
 		
         try {
             new NuxeoRegistrationService().registerRestService(service);  

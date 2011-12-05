@@ -23,8 +23,6 @@ package com.openwide.easysoa.message;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Collection of query parameters
  * @author jguillemotte

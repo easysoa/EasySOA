@@ -20,7 +20,6 @@
 
 package com.openwide.easysoa.message;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Represent an HTTP Header

@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
  * @author jguillemotte
  *
  */
+@Deprecated
 public class Message {
 	
 	/**

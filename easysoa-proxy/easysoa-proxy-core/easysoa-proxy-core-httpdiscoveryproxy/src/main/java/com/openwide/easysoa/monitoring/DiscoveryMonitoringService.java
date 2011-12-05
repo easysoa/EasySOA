@@ -23,6 +23,7 @@ package com.openwide.easysoa.monitoring;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -60,7 +61,8 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 		logger.debug("Mode = DISCOVERY !!");
 		monitoringModel = null;
 		urlTree = new UrlTree(new UrlTreeNode("root", ""));
-		unknownMessagesList = null;
+		//unknownMessagesList = null;
+		unknownExchangeRecordList = null;
 	}
 
 	/**
@@ -149,7 +151,8 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 				service.setParentUrl(node.getPartialUrl());
 				service.setTitle(childNode.getNodeName());
 				service.setDescription(childNode.getNodeName());
-				service.setHttpMethod(childNode.getMessages().getLast().getMethod());
+				//service.setHttpMethod(childNode.getMessages().getLast().getMethod());
+				service.setHttpMethod(childNode.getMessages().getLast().getInMessage().getMethod());
 				if(!"ok".equals(nrs.registerRestService(service))){
 					childNode.setRegistered();
 				}
@@ -159,8 +162,10 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	}
 
 	@Override
-	public void listen(Message message) {
+	/*public void listen(Message message) {
 		listen(message, esperEngine);
+	}*/
+	public void listen(ExchangeRecord exchangeRecord) {
+		listen(exchangeRecord, esperEngine);
 	}
-	
 }

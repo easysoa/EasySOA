@@ -6,10 +6,6 @@ package com.openwide.easysoa.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Enumeration;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
@@ -27,18 +23,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
-import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStore;
-import org.easysoa.records.ExchangeRecordStoreFactory;
-
 import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.QueryParam;
-import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.proxy.HttpDiscoveryProxy;
-import com.openwide.easysoa.proxy.HttpRetryHandler;
 
 /**
  * This class contains stuff to help with forwarding a request
@@ -94,7 +83,7 @@ public class RequestForwarder {
 	    	requestUrlBuffer.append("?");
 	    	for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
 	    		// for each query param, build name=value and add '&' char
-	    		if("?".equals(requestUrlBuffer.charAt(requestUrlBuffer.length()))){
+	    		if("?".equals(requestUrlBuffer.charAt(requestUrlBuffer.length()-1))){
 		    		requestUrlBuffer.append("&");
 	    		}
 	    		requestUrlBuffer.append(queryParam.getName());
@@ -105,8 +94,7 @@ public class RequestForwarder {
 		logger.debug("URL : " + requestUrlBuffer.toString());
 	    	
 		// message body
-		// TODO add message entity
-    	//HttpEntity httpEntity = new StringEntity(message.getBody());
+    	HttpEntity httpEntity = new StringEntity(inMessage.getMessageContent().getContent());
 		
 		HttpUriRequest httpUriRequest;
 		// TODO later use a pattern to create them (builder found in a map method -> builder...)
@@ -114,7 +102,7 @@ public class RequestForwarder {
 	    	httpUriRequest = new HttpGet(requestUrlBuffer.toString());		
 		} else if("PUT".equalsIgnoreCase(inMessage.getMethod())){
 	 	   	HttpPut httpPut = new HttpPut(requestUrlBuffer.toString());
-	 	   	//httpPut.setEntity(httpEntity);
+	 	   	httpPut.setEntity(httpEntity);
 	 	   	httpUriRequest = httpPut;
 	 	} else if("DELETE".equalsIgnoreCase(inMessage.getMethod())){
 	 	   	httpUriRequest = new HttpDelete(requestUrlBuffer.toString());
@@ -126,7 +114,7 @@ public class RequestForwarder {
 	 	  	httpUriRequest = new HttpOptions(requestUrlBuffer.toString());
 	 	} else { // POST
 	 	   	HttpPost httpPost = new HttpPost(requestUrlBuffer.toString());
-	 	   	//httpPost.setEntity(httpEntity);
+	 	   	httpPost.setEntity(httpEntity);
 	 	   	httpUriRequest = httpPost;
 	 	}
 		setHeaders(inMessage, httpUriRequest);
@@ -153,7 +141,9 @@ public class RequestForwarder {
 		while(line != null);
 		messageContent.setContent(responseBuffer.toString());
     	messageContent.setSize(clientResponse.getEntity().getContentLength());
-    	messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
+    	if(clientResponse.getEntity().getContentType() != null){
+    		messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
+    	}
     	outMessage.setMessageContent(messageContent);    	
     	// Return response message
 		return outMessage;
