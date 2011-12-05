@@ -129,13 +129,18 @@ public class PublicationServiceImpl implements PublicationService {
     private DocumentModel publishAppliImpl(CoreSession session, DocumentModel appliImplModel, DocumentModel envModel) throws ClientException { 
         // Publish AppliImpl
         removeExistingPublishedVersions(session, appliImplModel, envModel);
-        DocumentModel publishedAppliImplModel = session.publishDocument(appliImplModel, envModel);
+        DocumentModel publishedAppliImplModel = doPublish(session, appliImplModel, envModel);
         
         // Publish children
         DocumentModelList apiModels = session.getChildren(appliImplModel.getRef(), 
                 ServiceAPI.DOCTYPE, new DirectChildrenDocumentFilter(appliImplModel.getRef()), null);
         for (DocumentModel apiModel : apiModels) {
             publishApi(session, apiModel, envModel, publishedAppliImplModel);
+        }
+        DocumentModelList serviceReferenceModels = session.getChildren(appliImplModel.getRef(), 
+                ServiceReference.DOCTYPE, new DeletedDocumentFilter(), null);
+        for (DocumentModel serviceReferenceModel : serviceReferenceModels) {
+            publishServiceReference(session, serviceReferenceModel, envModel, publishedAppliImplModel);
         }
         
         return publishedAppliImplModel;
@@ -156,7 +161,7 @@ public class PublicationServiceImpl implements PublicationService {
         
         // Publish API
         removeExistingPublishedVersions(session, apiModel, envModel);
-        DocumentModel publishedApiModel = session.publishDocument(apiModel, publishedAppliImplModel);
+        DocumentModel publishedApiModel = doPublish(session, apiModel, publishedAppliImplModel);
         
         // Publish children
         DocumentModelList childApiModels = session.getChildren(apiModel.getRef(), 
@@ -183,7 +188,7 @@ public class PublicationServiceImpl implements PublicationService {
         
         // Publish service
         removeExistingPublishedVersions(session, serviceModel, envModel);
-        return session.publishDocument(serviceModel, publishedApiModel);
+        return doPublish(session, serviceModel, publishedApiModel);
     }
 
     private DocumentModel publishServiceReference(CoreSession session, DocumentModel serviceReferenceModel,
@@ -196,8 +201,18 @@ public class PublicationServiceImpl implements PublicationService {
         
         // Publish service reference
         removeExistingPublishedVersions(session, serviceReferenceModel, envModel);
-        return session.publishDocument(serviceReferenceModel, publishedAppliImplModel);
+        return doPublish(session, serviceReferenceModel, publishedAppliImplModel);
     }
+    
+    private DocumentModel doPublish(CoreSession session, DocumentModel model, DocumentModel destParentModel) throws ClientException {
+        DocumentModel publishedModel = session.publishDocument(model, destParentModel);
+        // XXX Not sure why, but we have to undelete documents if they were previously published and deleted
+        if ("deleted".equals(publishedModel.getCurrentLifeCycleState())) {
+            session.followTransition(publishedModel.getRef(), "undelete");
+        }
+        return publishedModel;
+    }
+
     private void removeExistingPublishedVersions(CoreSession session, DocumentModel model, DocumentModel envModel) throws ClientException {
         DocumentModelList proxies = session.getProxies(model.getRef(), null);
         for (DocumentModel proxy : proxies) {
