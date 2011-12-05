@@ -62,8 +62,6 @@ public class WorkspaceActionsBean {
 
     public void publishCurrentWorkspace() throws Exception {
         
-        long t = System.currentTimeMillis();
-        
         PublicationService publicationService = Framework.getService(PublicationService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
         
@@ -73,9 +71,6 @@ public class WorkspaceActionsBean {
             for (DocumentModel appModel : appModels) {
                 publicationService.publish(documentManager, appModel, currentDocModel.getTitle());
             }
-            
-            long dt = System.currentTimeMillis() - t;
-            log.info("Publication done in " + dt + "ms");
         }
         else {
             throw new Exception("Cannot start publication: current document is not a workspace");
@@ -84,8 +79,6 @@ public class WorkspaceActionsBean {
     }
     
     public void forkCurrentWorkspace() throws Exception {
-
-        long t = System.currentTimeMillis();
         
         DocumentService docService = Framework.getService(DocumentService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
@@ -107,9 +100,6 @@ public class WorkspaceActionsBean {
             }
             
             documentManager.save();
-            
-            long dt = System.currentTimeMillis() - t;
-            log.info("Forking done in " + dt + "ms");
         }
         else {
             throw new Exception("Cannot start fork: current document is not an environment");
@@ -117,11 +107,17 @@ public class WorkspaceActionsBean {
         
     }
     
-    private DocumentModel copyRecursive(DocumentRef from, DocumentRef toFolder) throws ClientException {
-        DocumentModel newDoc = documentManager.copy(from, toFolder, null);
-        DocumentModelList children = documentManager.getChildren(from, null, new DirectChildrenDocumentFilter(from), null);
-        for (DocumentModel child : children) {
-            copyRecursive(child.getRef(), newDoc.getRef());
+    private DocumentModel copyRecursive(DocumentRef from, DocumentRef toFolder) {
+        DocumentModel newDoc = null;
+        try  {
+            DocumentModelList children = documentManager.getChildren(from, null, new DirectChildrenDocumentFilter(from), null);
+            newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
+            for (DocumentModel child : children) {
+                copyRecursive(child.getRef(), newDoc.getRef());
+            }
+        }
+        catch (Exception e) {
+            log.error("Failed to copy document " + from.toString(), e);
         }
         return newDoc;
     }
