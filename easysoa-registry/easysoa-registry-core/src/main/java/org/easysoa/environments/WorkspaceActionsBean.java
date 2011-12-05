@@ -20,6 +20,8 @@
 
 package org.easysoa.environments;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
@@ -50,6 +52,8 @@ import org.nuxeo.runtime.api.Framework;
 @Install(precedence = Install.FRAMEWORK)
 public class WorkspaceActionsBean {
 
+    protected static final Log log = LogFactory.getLog(WorkspaceActionsBean.class);
+    
     @In(create = true, required = false)
     CoreSession documentManager;
 
@@ -57,6 +61,8 @@ public class WorkspaceActionsBean {
     NavigationContext navigationContext;
 
     public void publishCurrentWorkspace() throws Exception {
+        
+        long t = System.currentTimeMillis();
         
         PublicationService publicationService = Framework.getService(PublicationService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
@@ -67,6 +73,9 @@ public class WorkspaceActionsBean {
             for (DocumentModel appModel : appModels) {
                 publicationService.publish(documentManager, appModel, currentDocModel.getTitle());
             }
+            
+            long dt = System.currentTimeMillis() - t;
+            log.info("Publication done in " + dt + "ms");
         }
         else {
             throw new Exception("Cannot start publication: current document is not a workspace");
@@ -75,6 +84,8 @@ public class WorkspaceActionsBean {
     }
     
     public void forkCurrentWorkspace() throws Exception {
+
+        long t = System.currentTimeMillis();
         
         DocumentService docService = Framework.getService(DocumentService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
@@ -96,6 +107,9 @@ public class WorkspaceActionsBean {
             }
             
             documentManager.save();
+            
+            long dt = System.currentTimeMillis() - t;
+            log.info("Forking done in " + dt + "ms");
         }
         else {
             throw new Exception("Cannot start fork: current document is not an environment");
