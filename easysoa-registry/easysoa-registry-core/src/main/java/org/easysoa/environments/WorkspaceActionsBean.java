@@ -33,7 +33,6 @@ import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.nuxeo.common.utils.IdUtils;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -42,7 +41,7 @@ import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * Publication actions
+ * Publication and forking actions
  * 
  * @author mkalam-alami
  * 
@@ -110,17 +109,24 @@ public class WorkspaceActionsBean {
     private DocumentModel copyRecursive(DocumentRef from, DocumentRef toFolder) {
         DocumentModel newDoc = null;
         try  {
+            // FIXME
+            newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
+            DocumentModelList children = documentManager.getChildren(from, null, new DirectChildrenDocumentFilter(from), null);
+            for (DocumentModel child : children) {
+                copyRecursive(child.getRef(), newDoc.getRef());
+            }
+            /*
             DocumentModelList children = documentManager.getChildren(from, null, new DirectChildrenDocumentFilter(from), null);
             newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
             for (DocumentModel child : children) {
                 copyRecursive(child.getRef(), newDoc.getRef());
             }
+            */
         }
         catch (Exception e) {
             log.error("Failed to copy document " + from.toString(), e);
         }
         return newDoc;
     }
-       
-
+    
 }
