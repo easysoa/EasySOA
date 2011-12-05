@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
-import org.easysoa.services.DirectChildrenDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
@@ -93,7 +92,7 @@ public class WorkspaceActionsBean {
             newWorkspace = documentManager.createDocument(newWorkspace);
             
             // Copy applications and their contents
-            DocumentModelList appsToCopy = documentManager.getChildren(currentDocModel.getRef());
+            DocumentModelList appsToCopy = documentManager.getChildren(currentDocModel.getRef(), AppliImpl.DOCTYPE);
             for (DocumentModel appToCopy : appsToCopy) {
                 copyRecursive(appToCopy.getRef(), newWorkspace.getRef());
             }
@@ -111,12 +110,12 @@ public class WorkspaceActionsBean {
         try  {
             // FIXME
             newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
-            DocumentModelList children = documentManager.getChildren(from, null, new DirectChildrenDocumentFilter(from), null);
+            DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);
             for (DocumentModel child : children) {
                 copyRecursive(child.getRef(), newDoc.getRef());
             }
             /*
-            DocumentModelList children = documentManager.getChildren(from, null, new DirectChildrenDocumentFilter(from), null);
+            DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);
             newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
             for (DocumentModel child : children) {
                 copyRecursive(child.getRef(), newDoc.getRef());

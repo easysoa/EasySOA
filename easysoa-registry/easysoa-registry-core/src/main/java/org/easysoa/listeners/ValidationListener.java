@@ -70,9 +70,8 @@ public class ValidationListener implements EventListener {
                 DocumentModel workspace = (Workspace.DOCTYPE.equals(doc.getType())) ? 
                         doc : validationService.getWorkspace(session, doc);
                 Boolean isValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
-                if (isValidated) {
+                if (isValidated != null && isValidated) {
                     // Validate all child services
-
                     validationService.validateServices(session, doc);
                 } else {
                     // If the environment was not successfully validated,
