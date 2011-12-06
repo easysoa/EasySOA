@@ -35,7 +35,8 @@ public class OutMessage implements Message {
 	 */
 	private int status;
 	private String statusText;
-	private String httpVersion;
+	private String protocol;
+	private String protocolVersion;
 	// private Cookies cookies;
 	private Headers headers;
 	private MessageContent messageContent;
@@ -54,12 +55,20 @@ public class OutMessage implements Message {
 		this.statusText = statusText;
 	}
 
-	public String getHttpVersion() {
-		return httpVersion;
+	public String getProtocol() {
+		return protocol;
 	}
 
-	public void setHttpVersion(String httpVersion) {
-		this.httpVersion = httpVersion;
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
+	}	
+	
+	public String getProtocolVersion() {
+		return protocolVersion;
+	}
+
+	public void setProtocolVersion(String protocolVersion) {
+		this.protocolVersion = protocolVersion;
 	}
 
 	public Headers getHeaders() {

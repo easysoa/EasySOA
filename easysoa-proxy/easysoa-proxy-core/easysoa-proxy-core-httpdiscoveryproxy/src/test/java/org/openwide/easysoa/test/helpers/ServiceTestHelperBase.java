@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.openwide.easysoa.test;
+package org.openwide.easysoa.test.helpers;
 
 import java.io.IOException;
 

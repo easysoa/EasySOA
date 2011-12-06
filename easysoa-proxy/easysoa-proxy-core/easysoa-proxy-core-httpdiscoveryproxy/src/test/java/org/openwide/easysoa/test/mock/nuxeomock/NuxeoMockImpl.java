@@ -23,7 +23,7 @@ package org.openwide.easysoa.test.mock.nuxeomock;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;
-import org.openwide.easysoa.test.Utilities;
+import org.openwide.easysoa.test.util.Utilities;
 
 public class NuxeoMockImpl implements NuxeoMock {
 

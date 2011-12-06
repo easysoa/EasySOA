@@ -139,20 +139,15 @@ public class InMessage implements Message {
 			}
 		}
 		this.messageContent = new MessageContent();
-	    //char[] charArray = new char[8192];
 	    StringBuffer requestBody = new StringBuffer();
 	    BufferedReader requestBodyReader = null;
 	    CharBuffer buffer = CharBuffer.allocate(512); 
 		try {
 			requestBodyReader = request.getReader();
-			//int nbCharRead;
 		    while(requestBodyReader.ready()){
 		    	requestBodyReader.read(buffer);
 		    	requestBody.append(buffer.rewind());
 		    }
-			/*while((nbCharRead = requestBodyReader.read(charArray)) != -1){
-		    	requestBody = requestBody.append(new String(charArray), 0, nbCharRead);
-		    }*/
 			this.messageContent.setContent(requestBody.toString());
 			this.messageContent.setSize(requestBody.length());
 			this.messageContent.setMimeType(request.getContentType());

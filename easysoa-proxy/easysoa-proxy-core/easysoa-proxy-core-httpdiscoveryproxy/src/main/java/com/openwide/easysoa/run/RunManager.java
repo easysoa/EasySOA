@@ -72,7 +72,6 @@ public interface RunManager {
 	 * Record a message in the current run
 	 * @param message The <code>Message</code> to record
 	 */
-	//public void record(Message message);
 	public void record(ExchangeRecord exchangeRecord);
 	
 	/**

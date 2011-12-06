@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
 
 /**

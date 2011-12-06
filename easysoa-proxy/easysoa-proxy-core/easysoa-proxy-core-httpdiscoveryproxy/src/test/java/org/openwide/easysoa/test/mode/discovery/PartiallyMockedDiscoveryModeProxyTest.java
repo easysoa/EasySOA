@@ -18,13 +18,16 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.openwide.easysoa.test;
+package org.openwide.easysoa.test.mode.discovery;
 
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.json.JSONException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.openwide.easysoa.test.helpers.DiscoveryModeProxyTestBase;
+import org.openwide.easysoa.test.helpers.PartiallyMockedServiceTestHelper;
+import org.openwide.easysoa.test.helpers.ServiceTestHelperBase;
 import org.ow2.frascati.util.FrascatiException;
 
 /**

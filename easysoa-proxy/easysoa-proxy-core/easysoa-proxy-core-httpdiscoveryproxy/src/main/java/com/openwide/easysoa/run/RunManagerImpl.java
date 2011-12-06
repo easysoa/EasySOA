@@ -27,10 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.ExchangeRecordStore;
+import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
-import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitoringService;
 
 /**
@@ -157,16 +158,18 @@ public class RunManagerImpl implements RunManager {
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#record()
 	 */	
 	@Override
-	//public void record(Message message) {
 	public void record(ExchangeRecord exchangeRecord){
 		// Get the current run and add a message
-		//logger.debug("Recording message : " + message);
 		logger.debug("Recording message : " + exchangeRecord);
 		try{
-			//this.getCurrentRun().addMessage(message);
 			this.getCurrentRun().addExchange(exchangeRecord);
-			//monitoringService.listen(message);
 			monitoringService.listen(exchangeRecord);
+			
+			// Save the exchangeRecord
+			// TODO : maybe not the right place to save the Exchange record ?
+			// TODO add an exchangeRecordSetFileStore to store a list of exchangeRecord's
+			ExchangeRecordStore erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
+			erStore.save(exchangeRecord);			
 		}
 		catch(Exception ex){
 			logger.error("Unable to record message !", ex);

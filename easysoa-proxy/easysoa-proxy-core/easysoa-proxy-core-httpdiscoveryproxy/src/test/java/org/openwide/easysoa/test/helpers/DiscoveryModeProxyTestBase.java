@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.openwide.easysoa.test;
+package org.openwide.easysoa.test.helpers;
 
 import static org.junit.Assert.assertEquals;
 
@@ -46,6 +46,7 @@ import org.json.JSONObject;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
+import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 

@@ -18,9 +18,13 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.openwide.easysoa.test;
+package org.openwide.easysoa.test.mode.validated;
 
 import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+
+import javax.xml.soap.SOAPException;
 
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpResponseException;
@@ -31,6 +35,7 @@ import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,12 +44,11 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
+import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
-import org.easysoa.EasySOAConstants;
 
-
-public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
+public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Logger
@@ -60,14 +64,15 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
     @BeforeClass
 	public static void setUp() throws FrascatiException, InterruptedException, JSONException {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
-	   // Clean Nuxeo registery, No clean here, validated mode require a filled registry to work ! Run the PartiallyMockedDiscoveryModeProxy test first !
+	   // Clean Nuxeo registery
+	   // Mocked so don't need to clean
 	   //cleanNuxeoRegistery();
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
 	   startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy_validatedMode.composite");
 	   // Start services mock
-	   startMockServices(false);
+	   startMockServices(true);
     }	
 	
     /**
@@ -82,7 +87,6 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
     
 	@Test
 	public final void testRestValidatedMode() throws Exception {
-		// TODO To complete with the test code for REST validated mode
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// HTTP proxy Client
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
@@ -123,7 +127,7 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 		}
 
 		// Stop the run
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
+		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:"+ EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/stopCurrentRun"), responseHandler);
 		assertEquals("Current run stopped !", resp);
 		logger.info("stop run : " + resp);
 		
@@ -141,18 +145,6 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 		JSONObject jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
 		assertEquals("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));			
 		
-		//Re-run, no need to clean Nuxeo registry here : validated mode
-		resp = httpProxyDriverClient.execute(new HttpGet("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/reRun/RESTValidatedTestRun"), responseHandler);
-		assertEquals("Re-run done", resp);
-
-		// Check registered api's in Nuxeo
-		nuxeoResponse = nrs.sendQuery(nuxeoQuery);		
-		// Get the property JSON Object
-		entries = new JSONObject(nuxeoResponse).getString("entries");
-		firstEntry = new JSONArray(entries).getJSONObject(0).toString();
-		jsonObject = new JSONObject(new JSONObject(firstEntry).getString("properties"));
-		assertEquals("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/users/show", jsonObject.get("serv:url"));
-		
 		logger.info("Test REST Validated mode ended successfully !");		
 	}
 	
@@ -160,6 +152,21 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 	@Ignore
 	public final void testSoapValidatedMode() throws Exception {
 		// TODO To complete with the test code for SOAP validated mode		
+	}	
+	
+	/**
+	 * Wait for an user action to stop the test 
+	 * @throws ClientException
+	 * @throws SOAPException
+	 * @throws IOException
+	 */
+	@Test
+	@Ignore
+	public final void testWaitUntilRead() throws Exception{
+		logger.info("Test waiting for user action to stop !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		logger.info("Test stopped !");
 	}	
 	
 }
