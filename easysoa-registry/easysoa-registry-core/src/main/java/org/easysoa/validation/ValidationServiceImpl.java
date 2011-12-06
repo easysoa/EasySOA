@@ -101,9 +101,9 @@ public class ValidationServiceImpl implements ValidationService {
     
     private DocumentModel getMatchingService(DocumentModel service, DocumentModelList referenceServices) throws ClientException {
         // XXX Use relations to store link between services?
-        String titleToMatch = service.getTitle();
+        String urlToMatch = (String) service.getProperty(Service.DOCTYPE, Service.PROP_URL);
         for (DocumentModel potentialMatch : referenceServices) {
-            if (titleToMatch.equals(potentialMatch.getProperty(Service.DOCTYPE, Service.PROP_URL))) {
+            if (urlToMatch.equals(potentialMatch.getProperty(Service.DOCTYPE, Service.PROP_URL))) {
                 return potentialMatch;
             }
         }
