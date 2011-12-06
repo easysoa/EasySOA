@@ -23,6 +23,7 @@ package org.easysoa.environments;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
@@ -108,19 +109,16 @@ public class WorkspaceActionsBean {
     private DocumentModel copyRecursive(DocumentRef from, DocumentRef toFolder) {
         DocumentModel newDoc = null;
         try {
-            // FIXME
             newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
+            if (Service.DOCTYPE.equals(newDoc.getType())) {
+                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, from.toString());
+                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Created by copy");
+                documentManager.saveDocument(newDoc);
+            }
             DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);
             for (DocumentModel child : children) {
                 copyRecursive(child.getRef(), newDoc.getRef());
             }
-            /*
-            DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);
-            newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
-            for (DocumentModel child : children) {
-                copyRecursive(child.getRef(), newDoc.getRef());
-            }
-            */
         }
         catch (Exception e) {
             log.error("Failed to copy document " + from.toString(), e);

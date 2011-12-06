@@ -17,6 +17,8 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.runtime.api.Framework;
 
@@ -58,10 +60,9 @@ public class ValidationServiceImpl implements ValidationService {
             }
             
             // Validate services
-            
             if (services != null) {
                 for (DocumentModel service : services) {
-                    DocumentModel matchingService = getMatchingService(service, referenceServices);
+                    DocumentModel matchingService = getMatchingService(session, service, referenceServices);
                     result = validateService(service, matchingService);
                     if (!result.isEmpty()) {
                         errorsCount += result.size();
@@ -99,15 +100,33 @@ public class ValidationServiceImpl implements ValidationService {
     
     }
     
-    private DocumentModel getMatchingService(DocumentModel service, DocumentModelList referenceServices) throws ClientException {
-        // XXX Use relations to store link between services?
-        String urlToMatch = (String) service.getProperty(Service.DOCTYPE, Service.PROP_URL);
-        for (DocumentModel potentialMatch : referenceServices) {
-            if (urlToMatch.equals(potentialMatch.getProperty(Service.DOCTYPE, Service.PROP_URL))) {
-                return potentialMatch;
+    private DocumentModel getMatchingService(CoreSession session, DocumentModel service,
+            DocumentModelList referenceServices) throws ClientException {
+        
+        DocumentModel referenceModel = null;
+        
+        // Fetch reference service
+        DocumentRef referenceRef = new IdRef((String) service.getProperty(Service.DOCTYPE, Service.PROP_REFERENCESERVICE));
+        if (referenceRef != null) {
+            referenceModel = session.getDocument(referenceRef);
+        }
+        
+        // Guess reference service by correlation on WSDLs
+        if (referenceModel == null) {
+            String namespace = (String) service.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE);
+            String serviceName = (String) service.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME);
+            if (namespace != null && !namespace.isEmpty() && serviceName != null && !serviceName.isEmpty()) {
+                for (DocumentModel potentialMatch : referenceServices) {
+                    if (namespace.equals(potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE))
+                            && namespace.equals(potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME))) {
+                        referenceModel = potentialMatch;
+                        break;
+                    }
+                }
             }
         }
-        return null;
+        
+        return referenceModel;
     }
     
 
@@ -147,22 +166,16 @@ public class ValidationServiceImpl implements ValidationService {
                         errors.add(serviceName + " : service has different wsdl");
                     }
                 }
-                
-                // Check discovery (TODO restrict to runtime env only)
 
-                // check discovered by browsing
-                String discoveryTypeBrowsing = (String) referenceService.getProperty("soacommon", "discoveryTypeBrowsing");
-                if (discoveryTypeBrowsing == null || discoveryTypeBrowsing.trim().length() == 0) {
-                    errors.add(serviceName + " : service not found by browsing");
+                // check discovery (either by browsing or by monitoring) TODO restrict to runtime env only
+                String discoveryTypeBrowsing = (String) referenceService.getProperty(Service.SCHEMA_COMMON, Service.PROP_DTBROWSING);
+                String discoveryTypeMonitoring = (String) referenceService.getProperty(Service.SCHEMA_COMMON, Service.PROP_DTMONITORING);
+                if (discoveryTypeBrowsing == null || discoveryTypeBrowsing.isEmpty()
+                        && (discoveryTypeMonitoring == null || discoveryTypeMonitoring.isEmpty())) {
+                    errors.add(serviceName + " : service not found by browsing nor by monitoring");
                 }
 
-                // check discovered by monitoring
-                String discoveryTypeMonitoring = (String) referenceService.getProperty("soacommon", "discoveryTypeMonitoring");
-                if (discoveryTypeMonitoring == null || discoveryTypeMonitoring.trim().length() == 0) {
-                    errors.add(serviceName + " : service not found by monitoring");
-                }
-
-                // execute related tests (?)
+                // Execute related tests (?)
 
             }
             else {

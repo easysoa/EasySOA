@@ -65,9 +65,10 @@
         <fields>
           <field>wsdef:isValidated</field>
         </fields>
-        <properties mode="edit">
-          <property name="disabled">true</property>
-        </properties>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
       </widget>
       <widget name="workspacedef_validationLog" type="textarea">
         <labels>
@@ -77,9 +78,10 @@
         <fields>
           <field>wsdef:validationLog</field>
         </fields>
-        <properties mode="edit">
-          <property name="disabled">true</property>
-        </properties>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
       </widget>
     </layout>
     
