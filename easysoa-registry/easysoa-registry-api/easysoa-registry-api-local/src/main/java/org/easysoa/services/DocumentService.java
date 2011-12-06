@@ -79,6 +79,15 @@ public interface DocumentService {
      */
     public abstract DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException;
 
+    /**
+     * Returns the workspace in which the current document is.
+     * @param session
+     * @param model
+     * @return The workspace or null
+     * @throws Exception
+     */
+    public abstract DocumentModel getWorkspace(CoreSession session, DocumentModel model) throws ClientException;
+    
     public abstract DocumentRef getWorkspaceRoot(CoreSession session) throws ClientException;
 
 }

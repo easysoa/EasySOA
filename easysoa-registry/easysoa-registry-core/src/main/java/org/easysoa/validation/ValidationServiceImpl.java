@@ -11,14 +11,14 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
+import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * 
@@ -32,36 +32,51 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     public void validateServices(CoreSession session, DocumentModel model) throws Exception {
 
-        // Find model's workspace
+        // Find model's workspace and reference environment
+        DocumentService docService = Framework.getService(DocumentService.class);
         boolean modelIsWorkspace = Workspace.DOCTYPE.equals(model.getType());
-        DocumentModel workspace = (modelIsWorkspace) ? model : getWorkspace(session, model);
+        DocumentModel workspace = (modelIsWorkspace) ? model : docService.getWorkspace(session, model);
         
-        // Find services
-        DocumentModel referenceSection = session.getDocument(
-                new IdRef((String) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT)));
-        DocumentModelList referenceServices = session.getChildren(referenceSection.getRef(),
-                Service.DOCTYPE, new DeletedDocumentFilter(), null);
-        DocumentModelList services = session.getChildren(model.getRef(), Service.DOCTYPE);
-        if (services == null) {
-            services = new DocumentModelListImpl();
-        }
-        if (Service.DOCTYPE.equals(model.getType())) {
-            services.add(model);
-        }
-        
-        // Validate services
+        DocumentModel referenceEnv = docService.findEnvironment(session, 
+                (String) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT));
+
+        // Start validation
+        DocumentModelList services = null;
         List<String> errors = new LinkedList<String>(), result;
         int errorsCount = 0;
-        for (DocumentModel service : services) {
-            DocumentModel matchingService = getMatchingService(service, referenceServices);
-            result = validateService(service, matchingService);
-            if (!result.isEmpty()) {
-                errorsCount += result.size();
-                errors.addAll(result);
-            }
-        }
         
-        // Save validation status and log
+        if (referenceEnv != null) {
+
+            // Find services to match
+            DocumentModelList referenceServices = getAllServices(session, referenceEnv);
+            if (Service.DOCTYPE.equals(model.getType())) {
+                services = new DocumentModelListImpl();
+                services.add(model);
+            }
+            else {
+                services = getAllServices(session, model);
+            }
+            
+            // Validate services
+            
+            if (services != null) {
+                for (DocumentModel service : services) {
+                    DocumentModel matchingService = getMatchingService(service, referenceServices);
+                    result = validateService(service, matchingService);
+                    if (!result.isEmpty()) {
+                        errorsCount += result.size();
+                        errors.addAll(result);
+                    }
+                }
+                
+            }
+        
+        }
+        else {
+            errors.add("No valid reference environment");
+        }
+
+        // Save validation state and result log
         Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED),
                 isNowValidated = (errorsCount == 0);
         if (modelIsWorkspace || (wasValidated && !isNowValidated)) {
@@ -70,10 +85,10 @@ public class ValidationServiceImpl implements ValidationService {
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         String validationLog = "Last validation run at " + dateFormat.format(new Date()) + '\n';
         if (isNowValidated) {
-            validationLog = "Successfully validated against environment "+ referenceSection.getTitle() + ".";
+            validationLog += "Successfully validated " + services.size() + " services against environment "+ referenceEnv.getTitle() + ".";
         }
         else {
-            validationLog = "Found " + errorsCount + " validation errors.\n";
+            validationLog += "Found " + errorsCount + " validation errors.\n";
             for (String error : errors) {
                 validationLog +=  " * " + error + '\n';
             }
@@ -81,14 +96,14 @@ public class ValidationServiceImpl implements ValidationService {
         workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_VALIDATIONLOG, validationLog);
         session.saveDocument(workspace);
         session.save();
-        
+    
     }
     
     private DocumentModel getMatchingService(DocumentModel service, DocumentModelList referenceServices) throws ClientException {
-        // XXX Correlation by title, have to make better linking between services
+        // XXX Use relations to store link between services?
         String titleToMatch = service.getTitle();
         for (DocumentModel potentialMatch : referenceServices) {
-            if (titleToMatch.equals(potentialMatch.getTitle())) {
+            if (titleToMatch.equals(potentialMatch.getProperty(Service.DOCTYPE, Service.PROP_URL))) {
                 return potentialMatch;
             }
         }
@@ -144,7 +159,7 @@ public class ValidationServiceImpl implements ValidationService {
                 // check discovered by monitoring
                 String discoveryTypeMonitoring = (String) referenceService.getProperty("soacommon", "discoveryTypeMonitoring");
                 if (discoveryTypeMonitoring == null || discoveryTypeMonitoring.trim().length() == 0) {
-                    errors.add(serviceName + " : service not found by browsing");
+                    errors.add(serviceName + " : service not found by monitoring");
                 }
 
                 // execute related tests (?)
@@ -180,24 +195,18 @@ public class ValidationServiceImpl implements ValidationService {
         }
         return true;*/
     }
-
-    public DocumentModel getWorkspace(CoreSession session, DocumentModel model) throws ClientException {
-        // Use path to retrieve the workspace's path
-        String path = model.getPathAsString() + "/";
-        int i = 0;
-        for (int step = 1; step <= 3; step++) {
-            i = path.indexOf('/', i + 1);
-        }
-        if (i != -1) {
-            // Retrieve and check workspace
-            DocumentModel workspace = session.getDocument(new PathRef(path.substring(0, i)));
-            if (workspace != null && workspace.getType().equals("Workspace")) {
-                return workspace;
-            } else {
-                return null;
+    
+    public DocumentModelList getAllServices(CoreSession session, DocumentModel model) throws ClientException {
+        DocumentModelList services = new DocumentModelListImpl();
+        for (DocumentModel child : session.getChildren(model.getRef(), null, new DeletedDocumentFilter(), null)) {
+            if (child.getType().equals(Service.DOCTYPE)) {
+                services.add(child);
             }
-        } else {
-            return null;
+            else {
+                services.addAll(getAllServices(session, child));
+            }
         }
+        return services;
     }
+
 }

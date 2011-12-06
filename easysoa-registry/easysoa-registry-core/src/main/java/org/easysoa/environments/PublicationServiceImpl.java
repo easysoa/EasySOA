@@ -7,7 +7,6 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.DeletedDocumentFilter;
-import org.easysoa.services.DirectChildrenDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -133,7 +132,7 @@ public class PublicationServiceImpl implements PublicationService {
         
         // Publish children
         DocumentModelList apiModels = session.getChildren(appliImplModel.getRef(), 
-                ServiceAPI.DOCTYPE, new DirectChildrenDocumentFilter(appliImplModel.getRef()), null);
+                ServiceAPI.DOCTYPE, new DeletedDocumentFilter(), null);
         for (DocumentModel apiModel : apiModels) {
             publishApi(session, apiModel, envModel, publishedAppliImplModel);
         }

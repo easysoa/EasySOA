@@ -76,7 +76,7 @@ public class WorkspaceActionsBean {
         
     }
     
-    public void forkCurrentWorkspace() throws Exception {
+    public void forkCurrentEnvironment() throws Exception {
         
         DocumentService docService = Framework.getService(DocumentService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
@@ -88,7 +88,7 @@ public class WorkspaceActionsBean {
                     docService.getWorkspaceRoot(documentManager).toString(),
                     IdUtils.generateStringId(), Workspace.DOCTYPE);
             newWorkspace.setProperty("dublincore", "title", currentDocModel.getTitle() + " (copy)");
-            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, currentDocModel.getId());
+            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, currentDocModel.getTitle());
             newWorkspace = documentManager.createDocument(newWorkspace);
             
             // Copy applications and their contents
@@ -107,7 +107,7 @@ public class WorkspaceActionsBean {
     
     private DocumentModel copyRecursive(DocumentRef from, DocumentRef toFolder) {
         DocumentModel newDoc = null;
-        try  {
+        try {
             // FIXME
             newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
             DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);
