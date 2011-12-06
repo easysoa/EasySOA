@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.component.publicationservice">
+
+  <implementation class="org.easysoa.environments.PublicationServiceImpl" />
+
+  <service>
+    <provide interface="org.easysoa.environments.PublicationService" />
+  </service>
+
+</component>

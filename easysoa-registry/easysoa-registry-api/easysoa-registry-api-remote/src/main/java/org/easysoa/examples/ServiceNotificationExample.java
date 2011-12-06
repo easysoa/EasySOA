@@ -58,7 +58,8 @@ public class ServiceNotificationExample {
 	    
 	    // Method #2: With direct requests (will be eventually deprecated)
 	    
-	    RestNotificationFactory factory = new RestNotificationFactory("http://localhost:8080/nuxeo/site");
+	    RestNotificationFactory factory = new RestNotificationFactory(
+	            "http://localhost:8080/nuxeo/site", "Administrator", "Administrator");
 	    RestNotificationRequest request = factory.createNotification(RestDiscoveryService.SERVICE);
 	    request.setProperty(Service.PROP_URL, "http://www.myservices.com/api/service");
 	    request.setProperty(Service.PROP_TITLE, "MyService");

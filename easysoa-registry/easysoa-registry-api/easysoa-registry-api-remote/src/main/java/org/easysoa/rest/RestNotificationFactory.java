@@ -53,13 +53,16 @@ public class RestNotificationFactory {
     private static Log log = LogFactory.getLog(RestNotificationFactory.class);
     
     private Map<RestDiscoveryService, URL> apiUrls;
+    
+    private String username;
+    private String password;
 
     /**
      * Creates a new notification factory.
      * @throws IOException 
      */
-    public RestNotificationFactory() throws IOException {
-        this(NUXEO_URL_LOCALHOST);
+    public RestNotificationFactory(String username, String password) throws IOException {
+        this(NUXEO_URL_LOCALHOST, username, password);
     }
     
     /**
@@ -67,7 +70,10 @@ public class RestNotificationFactory {
      * @param server (ex: RestNotificationFactory.NUXEO_URL_LOCALHOST)
      * @throws IOException 
      */
-    public RestNotificationFactory(String nuxeoApisUrl) throws IOException {
+    public RestNotificationFactory(String nuxeoApisUrl, String username, String password) throws IOException {
+        
+        this.username = username;
+        this.password = password;
         
         // Test connection
         new URL(nuxeoApisUrl).openConnection();
@@ -100,7 +106,7 @@ public class RestNotificationFactory {
      */
     public RestNotificationRequest createNotification(RestDiscoveryService api, String method) {
         try {
-            return new RestNotificationRequestImpl(apiUrls.get(api), method);
+            return new RestNotificationRequestImpl(apiUrls.get(api), username, password, method);
         } catch (MalformedURLException e) {
             log.error(e);
             return null;

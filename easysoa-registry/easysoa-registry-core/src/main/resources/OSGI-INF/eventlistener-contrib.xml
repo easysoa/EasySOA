@@ -5,15 +5,14 @@
 
   <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
   
-    <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
+   <!--  <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
-      <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries-->
-    </listener>
+    </listener>-->
     <listener name="serviceapilistener" class="org.easysoa.listeners.ServiceAPIListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
-      <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries-->
+      <!-- <event>documentDeleted</event> TODO: Remove obsolete vocabulary entries -->
     </listener>
     <listener name="servicelistener" class="org.easysoa.listeners.ServiceListener" order="120">
       <event>documentCreated</event>
@@ -22,6 +21,10 @@
     <listener name="servicereferencelistener" class="org.easysoa.listeners.ServiceReferenceListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
+    </listener>
+    <listener name="validationlistener" class="org.easysoa.listeners.ValidationListener" order="121">
+      <event>documentCreated</event>
+      <event>documentModified</event>
     </listener>
     
   </extension>

@@ -17,7 +17,7 @@
       <a4j:outputPanel id="documentViewPanel">
       
       	 <!-- EasySOA hook -->
-		 <c:if test="#{currentDocument.getType().equals('Workspace') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceRef')}">
+		 <c:if test="#{currentDocument.getType().equals('AppliImpl') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceRef')}">
  			<ui:include src="/incl/tabs/easysoa_view.xhtml" />
          </c:if>
           

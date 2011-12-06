@@ -30,12 +30,12 @@ public class EasySOARemoteApi implements EasySOAApiSession {
     private AutomationHelper automationHelper;
     
     public EasySOARemoteApi(String username, String password) throws IOException {
-        this.notificationFactory = new RestNotificationFactory();
+        this.notificationFactory = new RestNotificationFactory(username, password);
         this.automationHelper = new AutomationHelper(AUTOMATION_URL, username, password);
     }
 
     public EasySOARemoteApi(String nuxeoApisUrl, String username, String password) throws IOException {
-        this.notificationFactory = new RestNotificationFactory(nuxeoApisUrl);
+        this.notificationFactory = new RestNotificationFactory(nuxeoApisUrl, username, password);
         this.automationHelper = new AutomationHelper(AUTOMATION_URL, username, password);
     }
 

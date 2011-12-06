@@ -23,6 +23,7 @@ package org.easysoa;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.DocumentService;
+import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.LifeCycleConstants;
@@ -39,6 +40,7 @@ public class DomainInit extends UnrestrictedSessionRunner {
 
     public static final String DOMAIN_TITLE = "EasySOA";
     public static final String WORKSPACE_ROOT_TITLE = "Service Registry";
+    public static final String SECTIONS_ROOT_TITLE = "Environments";
 
     private static Log log = LogFactory.getLog(DomainInit.class);
 
@@ -53,6 +55,7 @@ public class DomainInit extends UnrestrictedSessionRunner {
 
         DocumentModel root = session.getChildren(
                 this.session.getRootDocument().getRef()).get(0);
+        DocumentModel sectionRoot = null;
 
         // Change root title
         if (!root.getTitle().equals(DOMAIN_TITLE)) {
@@ -65,26 +68,37 @@ public class DomainInit extends UnrestrictedSessionRunner {
             if (rootChild.getType().equals("WorkspaceRoot")) {
                 rootChild.setProperty("dublincore", "title", WORKSPACE_ROOT_TITLE);
                 session.saveDocument(rootChild);
-                session.save();
             } 
-            // Remove unnecessary documents: sections root, templates root.
-            // Put them in the trash rather than deleting them since they are needed by Nuxeo.
-            else if (!rootChild.getCurrentLifeCycleState()
-                    .equals(LifeCycleConstants.DELETED_STATE)) {
+            // Change Sections root title
+            else if (rootChild.getType().equals("SectionRoot")) {
+                sectionRoot = rootChild;
+                sectionRoot.setProperty("dublincore", "title", SECTIONS_ROOT_TITLE);
+                session.saveDocument(sectionRoot);
+            }
+            // Remove templates root (put it in the trash rather than deleting them since it is needed by Nuxeo)
+            else if (!rootChild.getCurrentLifeCycleState().equals(LifeCycleConstants.DELETED_STATE)) {
                 rootChild.followTransition(LifeCycleConstants.DELETE_TRANSITION);
                 session.saveDocument(rootChild);
             }
         }
      
-        // Touch default application
         DocumentService docService;
         try {
             docService = Framework.getService(DocumentService.class);
+
+            // Touch default application
             docService.getDefaultAppliImpl(session); 
+            
+            // Create default environment if necessary
+            if (sectionRoot != null && !session.hasChildren(sectionRoot.getRef())) {
+               DocumentModel newSection = session.createDocumentModel(sectionRoot.getPathAsString(), IdUtils.generateStringId(), "Section");
+               newSection.setProperty("dublincore", "title", "Master");
+               session.createDocument(newSection);
+            }
         } catch (Exception e) {
             log.warn("Failed to make sure default application exists", e);
         }
-
+        
         session.save();
 
     }

@@ -114,7 +114,7 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
             //refServiceModel = docService.findService((CoreSession) scaImporter.getDocumentManager(), refUrl);
         	refServiceModel = docService.findService(documentManager, refUrl);
             if (refServiceModel != null) {
-                referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFPATH, refServiceModel.getPathAsString());
+                referenceModel.setProperty(ServiceReference.SCHEMA, ServiceReference.PROP_REFID, refServiceModel.getId());
                 //((CoreSession) scaImporter.getDocumentManager()).saveDocument(referenceModel);
                 documentManager.saveDocument(referenceModel);
             }

@@ -44,6 +44,10 @@ public class Service extends EasySOADoctype {
     public static final String PROP_CONTENTTYPEIN = "contentTypeIn";
     public static final String PROP_CONTENTTYPEOUT = "contentTypeOut";
     public static final String PROP_FILEURL = "fileUrl"; // TODO: Switch to EasySOADoctype?
+    public static final String PROP_REFERENCESERVICE = "referenceService";
+    public static final String PROP_REFERENCESERVICEORIGIN = "referenceServiceOrigin";
+    public static final String PROP_WSDLSERVICENAME = "wsdlServiceName";
+    public static final String PROP_WSDLNAMESPACE = "wsdlNamespace";
 
     public static final String PROP_PARENTURL = "parentUrl";
 

@@ -6,7 +6,7 @@ $(function() {
 	
 	    error: function(msg) {
               console.error(msg);
-              SubmitForm.failure(msg);
+              SubmitForm.view.failure(msg);
 	    },
 	    
 		/**
@@ -34,7 +34,7 @@ $(function() {
                   $('#nothingProxied').remove();
             });
             socket.on('error', function(data) {
-                  App.error(data.substring(7, data.length-1));
+                  App.error(data);
             });
             socket.on('wsdl', function(data) {
                   try {

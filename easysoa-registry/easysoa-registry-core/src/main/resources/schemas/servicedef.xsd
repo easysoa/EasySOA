@@ -5,10 +5,17 @@
   <xs:element name="url" type="xs:string" />
   <xs:element name="lightUrl" type="xs:string" />
   <xs:element name="callcount" type="xs:int" />
+  
   <xs:element name="participants" type="xs:string" />
+  
   <xs:element name="httpMethod" type="xs:string" />
   <xs:element name="contentTypeIn" type="xs:string" />
   <xs:element name="contentTypeOut" type="xs:string" />
   <xs:element name="fileUrl" type="xs:string" />
+  
+  <xs:element name="referenceService" type="xs:string" />
+  <xs:element name="referenceServiceOrigin" type="xs:string" />
+  <xs:element name="wsdlServiceName" type="xs:string" />
+  <xs:element name="wsdlNamespace" type="xs:string" />
   
 </xs:schema>

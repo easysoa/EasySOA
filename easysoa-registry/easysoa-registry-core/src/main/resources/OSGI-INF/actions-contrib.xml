@@ -14,11 +14,8 @@
 
     <!-- Disable unused tabs -->
     <action id="TAB_RELATIONS" enabled="false" />
-   <!-- <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" />
-    <action id="view_comments" enabled="false" />
-    <action id="TAB_CONTENT_HISTORY" enabled="false" />
-    <action id="TAB_PREVIEW" enabled="false" />
-    <action id="TAB_MANAGE" enabled="false" />-->
+    <!-- <action id="TAB_MY_SUBSCRIPTIONS" enabled="false" /> <action id="view_comments" enabled="false" /> <action id="TAB_CONTENT_HISTORY" enabled="false" /> <action id="TAB_PREVIEW" enabled="false" 
+      /> <action id="TAB_MANAGE" enabled="false" /> -->
 
     <!-- SCA Import page -->
     <action id="easysoaImport" link="sca_import_form" label="label.easysoa.import.link">
@@ -31,14 +28,35 @@
       <category>EASYSOA_IMPORT</category>
     </action>
 
+    <!-- Workspace publication button -->
+    <action id="easysoaWorkspacePublish" link="#{easysoaWorkspaceActions.publishCurrentWorkspace}" label="label.easysoa.publishworkspace.button">
+      <category>SUBVIEW_UPPER_LIST</category>
+      <filter-id>isWorkspace</filter-id>
+    </action>
+    <action id="easysoaEnvironmentFork" link="#{easysoaWorkspaceActions.forkCurrentEnvironment}" label="label.easysoa.forkworkspace.button">
+      <category>SUBVIEW_UPPER_LIST</category>
+      <filter-id>isSection</filter-id>
+    </action>
+
   </extension>
 
   <!-- Enable "new" button for custom folder types -->
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
     <filter id="create">
       <rule grant="true">
-        <type>ServiceAPI</type>
         <type>Workspace</type>
+        <type>AppliImpl</type>
+        <type>ServiceAPI</type>
+      </rule>
+    </filter>
+    <filter id="isWorkspace">
+      <rule grant="true">
+        <type>Workspace</type>
+      </rule>
+    </filter>
+    <filter id="isSection">
+      <rule grant="true">
+        <type>Section</type>
       </rule>
     </filter>
   </extension>

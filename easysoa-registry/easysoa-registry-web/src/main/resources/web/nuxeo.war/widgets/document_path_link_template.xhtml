@@ -10,9 +10,8 @@
   <div>
   
     <c:choose>
-        <c:when test="${field != null}">
-  
-            <c:set var="targetDocumentQuery" value="select * from Document where ecm:path = '${field}'"/>
+        <c:when test="${field != null and field != ''}">
+            <c:set var="targetDocumentQuery" value="select * from Document where ecm:uuid = '${field}'"/>
             <nxu:methodResult name="targetDocument" value="#{documentManager.query(targetDocumentQuery).get(0)}">
                 <nxu:graphicImage
                       value="#{nxd:iconPath(targetDocument)}" alt="#{targetDocument.type}">
@@ -35,7 +34,7 @@
     
         </c:when>
         <c:otherwise>
-            <span style="color: grey"><i>(ERROR: Invalid link)</i></span>
+            -
         </c:otherwise>
     </c:choose>
     

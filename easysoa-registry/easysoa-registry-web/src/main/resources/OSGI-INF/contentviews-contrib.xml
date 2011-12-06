@@ -59,7 +59,7 @@
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
             !='deleted' AND
-            ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'Workspace'
+            ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'AppliImpl'
           </fixedPart>
         </whereClause>
         <sort column="dc:title" ascending="true" />
@@ -98,7 +98,7 @@
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
             !='deleted' AND
-            ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'Workspace'
+            ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'AppliImpl'
           </fixedPart>
         </whereClause>
         <sort column="dc:title" ascending="true" />

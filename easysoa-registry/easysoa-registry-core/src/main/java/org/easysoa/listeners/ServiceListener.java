@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.impl.HttpFile;
 import org.easysoa.properties.ApiUrlProcessor;
@@ -80,7 +81,7 @@ public class ServiceListener implements EventListener {
             return;
         }
         String type = doc.getType();
-        if (!type.equals(DOCTYPE)) {
+        if (!type.equals(DOCTYPE) || doc.isProxy()) {
             return;
         }
 
@@ -89,7 +90,7 @@ public class ServiceListener implements EventListener {
             // Extract data from document
             String title = (String) doc.getProperty("dublincore", "title");
             String url = (String) doc.getProperty(SCHEMA, PROP_URL);
-            String fileUrl = (String) doc.getProperty(SCHEMA, PROP_FILEURL);
+            String fileUrl = (url != null) ? url + "?wsdl" : null;
 
             // Extract data from WSDL
             if (fileUrl != null) {
@@ -128,15 +129,20 @@ public class ServiceListener implements EventListener {
                             org.ow2.easywsdl.wsdl.api.Service firstService = 
                                 (org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
                             
+                            // Namespace extraction
+                            String namespace = desc.getTargetNamespace();
+                            doc.setProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE, namespace);
+                            
                             // URL extraction
                             Endpoint firstEndpoint = firstService.getEndpoints().get(0);
                             url = PropertyNormalizer.normalizeUrl(firstEndpoint.getAddress());
                             doc.setProperty(SCHEMA, PROP_URL, url);
                             
                             // Service name extraction
+                            String serviceName = firstService.getQName().getLocalPart();
+                            doc.setProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME, serviceName);
                             if (title == null || title.isEmpty() || title.equals(fileUrl)) {
-                                title = firstService.getQName().getLocalPart();
-                                doc.setProperty("dublincore", "title", title);
+                                doc.setProperty("dublincore", "title", serviceName);
                             }
                             
                             //// Update parent's properties
@@ -231,22 +237,19 @@ public class ServiceListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
                 }
             }
-            else {
-                String potentialWsdlUrl = url+"?wsdl";
-                HttpFile file = new HttpFile(new URL(potentialWsdlUrl));
-                if (file.isURLAvailable()) {
-                    doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(potentialWsdlUrl));
-                }
-            }
             session.save();
             
             // Test if the service already exists, delete the other one(s) if necessary
             try {
                 DocumentService docService = Framework.getService(DocumentService.class);
+                DocumentModel workspace = docService.getWorkspace(session, doc);
                 DocumentModelList existingServiceModels = session.query(
-                        "SELECT * FROM Service WHERE serv:url = '" + url + "'");
+                        "SELECT * FROM " + Service.DOCTYPE + " WHERE " +
+                        		"ecm:path STARTSWITH '" + workspace.getPathAsString() + 
+                        		"' AND " + Service.SCHEMA_PREFIX + Service.PROP_URL + " = '" + url + "'");
                 for (DocumentModel existingServiceModel : existingServiceModels) {
-                    if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
+                    if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())
+                            && !existingServiceModel.isProxy()) {
                         docService.mergeDocument(session, existingServiceModel, doc, false);
                     }
                 }

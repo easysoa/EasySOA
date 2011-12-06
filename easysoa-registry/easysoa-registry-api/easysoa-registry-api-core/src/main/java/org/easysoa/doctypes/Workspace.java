@@ -18,24 +18,25 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.rest.servicefinder;
+package org.easysoa.doctypes;
 
-import org.nuxeo.common.xmap.annotation.XContent;
-import org.nuxeo.common.xmap.annotation.XNode;
-import org.nuxeo.common.xmap.annotation.XObject;
 
 /**
+ * Mirror of the properties defined in the XML contributions.
+ * Defines all of the custom Workspace data.
  * 
  * @author mkalam-alami
  *
  */
-@XObject("strategy")
-public class ServiceFinderStrategyDescriptor {
+public class Workspace {
 
-    @XContent
-    protected String implementation;
-
-    @XNode("@enabled")
-    protected boolean enabled = true;
-
+    public static final String DOCTYPE = "Workspace";
+    public static final String SCHEMA = "workspacedef";
+    public static final String SCHEMA_PREFIX = "wsdef:";
+    
+    // Workspace properties
+    public static final String PROP_REFERENCEDENVIRONMENT = "referencedEnvironment";
+    public static final String PROP_ISVALIDATED = "isValidated";
+    public static final String PROP_VALIDATIONLOG = "validationLog";
+    
 }
