@@ -63,7 +63,7 @@ public class ValidationServiceImpl implements ValidationService {
             if (services != null) {
                 for (DocumentModel service : services) {
                     DocumentModel matchingService = getMatchingService(session, service, referenceServices);
-                    result = validateService(service, matchingService);
+                    result = validateService(session, service, matchingService);
                     if (!result.isEmpty()) {
                         errorsCount += result.size();
                         errors.addAll(result);
@@ -142,8 +142,9 @@ public class ValidationServiceImpl implements ValidationService {
      * @param service
      * @param referenceService
      * @return A list of errors
+     * @throws ClientException 
      */
-    private List<String> validateService(DocumentModel service, DocumentModel referenceService) {
+    private List<String> validateService(CoreSession session, DocumentModel service, DocumentModel referenceService) throws ClientException {
 
         // Init
         List<String> errors = new LinkedList<String>();
@@ -191,6 +192,27 @@ public class ValidationServiceImpl implements ValidationService {
             
         } catch (Exception e) {
             errors.add("Exception while validating service " + serviceName + ": " + e.getMessage());
+        }
+        
+        // Store service validation state
+        boolean wasValidated = false;
+        Object wasValidatedRaw = service.getProperty(Service.SCHEMA, Service.PROP_ISVALIDATED);
+        if (wasValidatedRaw != null) {
+            wasValidated = (Boolean) wasValidatedRaw;
+        }
+        String oldLog = (String) service.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONLOG);
+        boolean isNowValidated = errors.isEmpty();
+        String newLog = "";
+        if (!errors.isEmpty()) {
+            for (String error : errors) {
+                newLog += error + '\n';
+            }
+        }
+        if (isNowValidated != wasValidated || !oldLog.equals(newLog)) {
+            service.setProperty(Service.SCHEMA, Service.PROP_ISVALIDATED, isNowValidated);
+            service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONLOG, newLog);
+            // XXX: Will probably trigger an infinite loop if the validation log isn't stable when repeated
+            session.saveDocument(service); 
         }
 
         return errors;
