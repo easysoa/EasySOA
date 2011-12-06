@@ -64,7 +64,7 @@ public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestM
 		// here, call methods on test containing asserts related to each use case of the mock, ex:
 		// if isCaseOne(req) then test.checkCaseOne(req, res)...		
 		/*try{
-        		test.checkCaseOne(req, res);    			
+        	test.checkCaseOne(req, res);    			
     	}
     	catch(Exception ex){
     		throw new ServletException(ex.getMessage());

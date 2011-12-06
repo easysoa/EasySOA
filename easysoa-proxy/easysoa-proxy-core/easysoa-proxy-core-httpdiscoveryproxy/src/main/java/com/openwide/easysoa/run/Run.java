@@ -24,7 +24,8 @@ import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Deque;
 import org.apache.log4j.Logger;
-import com.openwide.easysoa.monitoring.Message;
+import org.easysoa.records.ExchangeRecord;
+//import com.openwide.easysoa.monitoring.Message;
 
 /**
  * Run is a set of recorded messages
@@ -41,7 +42,8 @@ public class Run {
 	/**
 	 * The messages collection
 	 */
-	private ArrayDeque<Message> messagesList;
+	//private ArrayDeque<Message> messagesList;
+	private ArrayDeque<ExchangeRecord> exchangeRecordList;
 	
 	/**
 	 * Start run date
@@ -68,7 +70,8 @@ public class Run {
 			throw new IllegalArgumentException("name parameter must not be null");
 		}
 		this.name = name;
-		messagesList = new ArrayDeque<Message>();
+		//messagesList = new ArrayDeque<Message>();
+		exchangeRecordList = new ArrayDeque<ExchangeRecord>();
 		startDate = null;
 		stopDate = null;
 	}
@@ -77,20 +80,41 @@ public class Run {
 	 * Add a message
 	 * @param message The message to add in the collection
 	 */
+	/*@Deprecated
 	public void addMessage(Message message) throws IllegalArgumentException {
 		if(message == null){
 			throw new IllegalArgumentException("The parameter message must not be null !");
 		}
 		logger.debug("Adding message in message list : " + message);
 		this.messagesList.add(message);
+	}*/
+	
+	/**
+	 * Add an exchange record
+	 * @param exchangeRecord The exchangeRecord to add
+	 * @throws IllegalArgumentException If the exchange record is null
+	 */
+	public void addExchange(ExchangeRecord exchangeRecord) throws IllegalArgumentException {
+		if(exchangeRecord == null){
+			throw new IllegalArgumentException("The parameter message must not be null !");
+		}
+		logger.debug("Adding exchange record in list : " + exchangeRecord);
+		this.exchangeRecordList.add(exchangeRecord);
 	}
 	
 	/**
 	 * Returns the message list
 	 * @return The message list in a <code>Deque</code>
 	 */
-	public Deque<Message> getMessageList(){
+	/*public Deque<Message> getMessageList(){
 		return this.messagesList;
+	}*/
+	/**
+	 * Returns the exchange record list
+	 * @return The exchange record list in a <code>Deque</code>
+	 */
+	public Deque<ExchangeRecord> getExchangeRecordList(){
+		return this.exchangeRecordList;
 	}
 	
 	/**

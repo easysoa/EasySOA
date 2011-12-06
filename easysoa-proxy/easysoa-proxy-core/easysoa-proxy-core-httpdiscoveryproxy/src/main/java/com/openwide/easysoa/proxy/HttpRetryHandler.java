@@ -30,17 +30,38 @@ import org.apache.http.protocol.ExecutionContext;
 import javax.net.ssl.SSLHandshakeException;
 
 /**
- * Http Retry handler for Apache HTTP client used to redirect the request received by the proxy
+ * HTTP Retry handler for Apache HTTP client used to redirect the request received by the proxy
  * @author jguillemotte
  *
  */
 public class HttpRetryHandler implements HttpRequestRetryHandler {
 
-	private static final int MAX_RETRY_NUMBER = 5; 
+	// Max number of retries
+	private int maxRetryNumber;
+	
+	/**
+	 * Default constructor
+	 * Recount number is set to 5
+	 */
+	public HttpRetryHandler(){
+		this.maxRetryNumber = 5;
+	}
+	
+	/**
+	 * Parameterized constructor
+	 * @param maxRetryNumber The max number of retries, must be <= to 0
+	 * @throws IllegalArgumentException If the maxNumberRetry param is set with a value < to 0
+	 */
+	public HttpRetryHandler(int maxRetryNumber) throws IllegalArgumentException {
+		if(maxRetryNumber < 0){
+			throw new IllegalArgumentException("maxRetryNumber must be at least equals to 0");
+		}
+		this.maxRetryNumber = maxRetryNumber;
+	}
 	
 	@Override
 	public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
-        if (executionCount >= MAX_RETRY_NUMBER) {
+        if (executionCount >= maxRetryNumber) {
             // Do not retry if over max retry count
             return false;
         }

@@ -21,6 +21,9 @@
 package com.openwide.easysoa.monitoring;
 
 import java.util.ArrayDeque;
+
+import org.easysoa.records.ExchangeRecord;
+
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 
 public interface MonitoringService {
@@ -36,7 +39,8 @@ public interface MonitoringService {
 	 * Listen a message
 	 * @param message The <code>Message</code> to listen
 	 */
-	public void listen(Message message);
+	//public void listen(Message message);
+	public void listen(ExchangeRecord exchangeRecord);
 
 	/**
 	 * 
@@ -54,7 +58,8 @@ public interface MonitoringService {
 	 * Returns the unknown messages list
 	 * @return
 	 */
-	public ArrayDeque<Message> getUnknownMessagesList();
+	//public ArrayDeque<Message> getUnknownMessagesList();
+	public ArrayDeque<ExchangeRecord> getUnknownExchangeRecordList();
 
 	/**
 	 */

@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 import javax.swing.tree.DefaultTreeModel;
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
+
 import com.openwide.easysoa.monitoring.Message;
 
 @SuppressWarnings("serial")
@@ -53,8 +55,10 @@ public class UrlTree extends DefaultTreeModel {
 	 * If the node exists, 
 	 * @param url The url to add in the tree
 	 */
-	public void addUrlNode(Message msg){
-		String url = msg.getUrl().substring(msg.getUrl().indexOf("//")+2);
+	//public void addUrlNode(Message msg){
+	public void addUrlNode(ExchangeRecord exchangeRecord){
+		//String url = msg.getUrl().substring(msg.getUrl().indexOf("//")+2);
+		String url = exchangeRecord.getInMessage().getCompleteUrl().substring(exchangeRecord.getInMessage().getCompleteUrl().indexOf("//")+2);
 		logger.debug("url = " +  url);
 		UrlTreeNode urlNode;
 		StringBuffer path = new StringBuffer();
@@ -83,7 +87,8 @@ public class UrlTree extends DefaultTreeModel {
 			// else add a new node in the tree
 			else {
 				logger.debug("[addUrlNode()] Add node in tree");
-				urlNode = new UrlTreeNode(token, msg.getProtocol() + "://" + path.toString());
+				//urlNode = new UrlTreeNode(token, msg.getProtocol() + "://" + path.toString());
+				urlNode = new UrlTreeNode(token, exchangeRecord.getInMessage().getProtocol() + "://" + path.toString());
 				// Get the parent node and add a new child
 				// if path = token => parent node = root
 				if(path.toString().equals(token)){
@@ -106,7 +111,8 @@ public class UrlTree extends DefaultTreeModel {
 			}
 
 			// Add the msg in the node
-			urlNode.addMessage(msg);
+			//urlNode.addMessage(msg);
+			urlNode.addMessage(exchangeRecord);
 		}
 		// Increase the root for each url to obtain the total number of url
 		((UrlTreeNode)(this.getRoot())).increasePartialUrlCounter();

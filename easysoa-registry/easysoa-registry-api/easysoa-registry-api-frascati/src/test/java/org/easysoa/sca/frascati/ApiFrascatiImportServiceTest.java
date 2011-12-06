@@ -27,12 +27,16 @@ import static org.mockito.Mockito.verify;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.frascati.mock.TestMock;
+import org.easysoa.sca.records.ExchangeRecord;
+import org.easysoa.sca.records.ExchangeRecordStore;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.junit.Before;
@@ -106,13 +110,15 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     	//checkTestSCAComposite(/*...*/);
     }
 
+
+    
     /**
      * Check the recorded exchanges
      * @throws IOException 
      */
     public void checkExchanges() {
     	for(ExchangeRecord record : recordList){
-        	assertTrue("'RestSoapProxy.composite' not found in request", record.getRequestContent().contains("RestSoapProxy.composite"));    		
+        	assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().contains("RestSoapProxy.composite"));    		
     	}
     }
     
@@ -153,9 +159,8 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws IOException 
      */
     public void recordExchange(ServletRequest request, ServletResponse response) throws IOException {
-    	ExchangeRecord record = new ExchangeRecord(request, response);
-    	//System.out.println("request content : " + record.getRequestContent());
-    	log.debug("request content : " + record.getRequestContent());
+    	ExchangeRecord record = new ExchangeRecord(new Scanner(request.getInputStream()).useDelimiter("\\A").next(), "");
+    	log.debug("request content : " + record.getInMessage());
     	recordList.add(record);
     }
     

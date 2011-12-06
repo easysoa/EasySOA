@@ -20,6 +20,8 @@
 
 package com.openwide.easysoa.monitoring;
 
+import org.easysoa.records.ExchangeRecord;
+
 import com.openwide.easysoa.esper.EsperEngine;
 
 public interface MessageHandler {
@@ -29,13 +31,16 @@ public interface MessageHandler {
 	 * @param message The message to handle 
 	 * @return True if the message can be handled, false otherwise
 	 */
-	public boolean isOkFor(Message message);
+	//public boolean isOkFor(Message message);
+	public boolean isOkFor(ExchangeRecord exchangeRecord);
 	
 	/**
 	 * Handle the message
 	 * @param message The message to handle
 	 */
 	// TODO : Monitoring service as parameter here is not a good solution, find an other way ...
-	public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine);
+	//public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine);
+	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine);
+	
 
 }

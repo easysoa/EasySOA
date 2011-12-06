@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
@@ -156,12 +157,16 @@ public class RunManagerImpl implements RunManager {
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#record()
 	 */	
 	@Override
-	public void record(Message message) {
+	//public void record(Message message) {
+	public void record(ExchangeRecord exchangeRecord){
 		// Get the current run and add a message
-		logger.debug("Recording message : " + message);
+		//logger.debug("Recording message : " + message);
+		logger.debug("Recording message : " + exchangeRecord);
 		try{
-			this.getCurrentRun().addMessage(message);
-			monitoringService.listen(message);
+			//this.getCurrentRun().addMessage(message);
+			this.getCurrentRun().addExchange(exchangeRecord);
+			//monitoringService.listen(message);
+			monitoringService.listen(exchangeRecord);
 		}
 		catch(Exception ex){
 			logger.error("Unable to record message !", ex);
@@ -194,10 +199,15 @@ public class RunManagerImpl implements RunManager {
 		// 2 solutions :
 		// 1st : add a reference to monitoring service in runManager. The same Monitoring service is used for all the run in a same run manager
 		// 2nd : Each run can have a different run manager, defined when the run is created. We can give a monitoringServiceFactory as reference to the runManager.
-		for(Message message : run.getMessageList()){
+		/*for(Message message : run.getMessageList()){
 			logger.debug("Listening message : " + message);
 			monitoringService.listen(message);
+		}*/
+		for(ExchangeRecord exchangeRecord : run.getExchangeRecordList()){
+			logger.debug("Listening exchange record : " + exchangeRecord);
+			monitoringService.listen(exchangeRecord);
 		}
+		
 		monitoringService.registerDetectedServicesToNuxeo();		
 	}
 

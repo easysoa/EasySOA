@@ -1,0 +1,141 @@
+<application xmlns="http://wadl.dev.java.net/2009/02"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<grammars>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			attributeFormDefault="unqualified" elementFormDefault="unqualified">
+			<xs:element name="exchangeRecord" type="exchangeRecord" />
+			<xs:element name="inMessage" type="inMessage" />
+			<xs:element name="outMessage" type="outMessage" />
+			<xs:element name="queryString" type="queryString" />
+			<xs:complexType name="exchangeRecord">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="exchangeID" type="xs:string" />
+					<xs:element minOccurs="0" ref="inMessage" />
+					<xs:element minOccurs="0" ref="outMessage" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="inMessage">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="comment" type="xs:string" />
+					<xs:element minOccurs="0" name="customFields" type="customFields" />
+					<xs:element minOccurs="0" name="headers" type="headers" />
+					<xs:element minOccurs="0" name="httpVersion" type="xs:string" />
+					<xs:element minOccurs="0" name="method" type="xs:string" />
+					<xs:element minOccurs="0" name="postData" type="postData" />
+					<xs:element minOccurs="0" ref="queryString" />
+					<xs:element minOccurs="0" name="url" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="customFields">
+				<xs:sequence>
+					<xs:element name="customFields">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element minOccurs="0" name="key" type="xs:string" />
+											<xs:element minOccurs="0" name="value" type="customField" />
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="customField">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="value" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="headers">
+				<xs:sequence />
+			</xs:complexType>
+			<xs:complexType name="postData">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="comment" type="xs:string" />
+					<xs:element minOccurs="0" name="customFields" type="customFields" />
+					<xs:element minOccurs="0" name="data" type="xs:string" />
+					<xs:element minOccurs="0" name="mimeType" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="queryString">
+				<xs:sequence />
+			</xs:complexType>
+			<xs:complexType name="outMessage">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="comment" type="xs:string" />
+					<xs:element minOccurs="0" name="headers" type="headers" />
+					<xs:element minOccurs="0" name="httpVersion" type="xs:string" />
+					<xs:element minOccurs="0" name="messageContent" type="messageContent" />
+					<xs:element minOccurs="0" name="redirectURL" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="messageContent">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="comment" type="xs:string" />
+					<xs:element minOccurs="0" name="customFields" type="customFields" />
+					<xs:element minOccurs="0" name="encoding" type="xs:string" />
+					<xs:element minOccurs="0" name="mimeType" type="xs:string" />
+					<xs:element name="size" type="xs:long" />
+					<xs:element minOccurs="0" name="text" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType final="#all" name="exchangeRecordArray">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="item"
+						nillable="true" type="exchangeRecord" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</grammars>
+	<resources base="http://localhost:8085/">
+		<resource path="/">
+			<resource path="cloneToEnvironment/{anotherEnvironment}">
+				<method name="POST">
+					<request>
+						<representation mediaType="application/octet-stream">
+							<param name="request" style="plain" type="xs:string" />
+						</representation>
+					</request>
+					<response status="204"></response>
+				</method>
+			</resource>
+			<resource path="list">
+				<method name="GET">
+					<response>
+						<representation mediaType="application/json" />
+						<representation mediaType="text/xml" />
+					</response>
+				</method>
+			</resource>
+			<resource path="list/{service}">
+				<method name="GET">
+					<request>
+						<representation mediaType="application/octet-stream">
+							<param name="request" style="plain" type="xs:string" />
+						</representation>
+					</request>
+					<response>
+						<representation mediaType="application/octet-stream" />
+					</response>
+				</method>
+			</resource>
+			<resource path="replay/{exchangeRecordId}">
+				<method name="GET">
+					<request>
+						<representation mediaType="application/octet-stream">
+							<param name="request" style="plain" type="xs:string" />
+						</representation>
+					</request>
+					<response>
+						<representation mediaType="application/octet-stream">
+							<param name="result" style="plain" type="xs:string" />
+						</representation>
+					</response>
+				</method>
+			</resource>
+		</resource>
+	</resources>
+</application>

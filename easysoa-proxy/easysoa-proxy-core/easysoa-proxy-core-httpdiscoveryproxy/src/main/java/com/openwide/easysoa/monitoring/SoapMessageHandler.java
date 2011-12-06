@@ -23,9 +23,9 @@ package com.openwide.easysoa.monitoring;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-
+import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.ExchangeRecord.ExchangeType;
 import com.openwide.easysoa.esper.EsperEngine;
-import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
@@ -42,12 +42,15 @@ public class SoapMessageHandler implements MessageHandler {
 	private static Logger logger = Logger.getLogger(SoapMessageHandler.class.getName());	
 	
 	@Override
-	public boolean isOkFor(Message message) {
-		if(message != null){
-			logger.debug("Message body : " + message.getBody());
+	// public boolean isOkFor(Message message) {
+	public boolean isOkFor(ExchangeRecord exchangeRecord) {
+		if(exchangeRecord != null){
+			logger.debug("Message body : " + exchangeRecord.getInMessage().getMessageContent().getContent());
 		}
 		//TODO : Refine the way that a WSDl message is discovered
-		if(message != null && (message.getBody().toLowerCase().contains("<soap:envelope") || message.getBody().toLowerCase().contains("http://schemas.xmlsoap.org/soap/envelope/"))  && checkWsdl(message.getUrl())){
+		if(exchangeRecord != null && (exchangeRecord.getInMessage().getMessageContent().getContent().toLowerCase().contains("<soap:envelope") 
+				|| exchangeRecord.getInMessage().getMessageContent().getContent().toLowerCase().contains("http://schemas.xmlsoap.org/soap/envelope/"))  
+				&& checkWsdl(exchangeRecord.getInMessage().getCompleteUrl())){
 			logger.debug("Returns true");
 			return true;
 		} else {
@@ -57,22 +60,31 @@ public class SoapMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine) {
+	//public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine) {
+	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// enrich the message
-		message.setType(MessageType.SOAP);
+		//message.setType(MessageType.SOAP);
+		exchangeRecord.setExchangeType(ExchangeType.SOAP);
 		logger.debug("WSDL found");
-		String serviceName = message.getPathName();
+		//String serviceName = message.getPathName();
+		String serviceName = exchangeRecord.getInMessage().getPath();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		Service service = new Service(message.getUrl());
-		service.setFileUrl(message.getUrl()+"?wsdl");
-		service.setParentUrl(message.getUrl());
+		//Service service = new Service(message.getUrl());
+		Service service = new Service(exchangeRecord.getInMessage().getCompleteUrl());
+		//service.setFileUrl(message.getUrl()+"?wsdl");
+		service.setFileUrl(exchangeRecord.getInMessage().getCompleteUrl() + "?wsdl");
+		//service.setParentUrl(message.getUrl());
+		service.setParentUrl(exchangeRecord.getInMessage().getCompleteUrl());
 		service.setCallCount(1);
-		service.setTitle(message.getPathName());
-		service.setDescription(message.getPathName());
-		service.setHttpMethod(message.getMethod());
+		//service.setTitle(message.getPathName());
+		service.setTitle(exchangeRecord.getInMessage().getPath());
+		//service.setDescription(message.getPathName());
+		service.setDescription(exchangeRecord.getInMessage().getPath());
+		//service.setHttpMethod(message.getMethod());
+		service.setHttpMethod(exchangeRecord.getInMessage().getMethod());
 
         try {
             new NuxeoRegistrationService().registerWSDLService(service);

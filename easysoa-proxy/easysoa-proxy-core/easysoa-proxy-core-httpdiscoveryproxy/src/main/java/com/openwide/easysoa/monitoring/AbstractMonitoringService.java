@@ -24,6 +24,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
+
 import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 
@@ -47,7 +49,8 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	/**
 	 * Data structure to store unknown messages
 	 */
-	protected ArrayDeque<Message> unknownMessagesList;	
+	//protected ArrayDeque<Message> unknownMessagesList;
+	protected ArrayDeque<ExchangeRecord> unknownExchangeRecordList;
 	
 	/**
 	 * Monitoring model : contains data from Nuxeo
@@ -73,14 +76,16 @@ public abstract class AbstractMonitoringService implements MonitoringService {
     /**
      * Constructor
      */
-    public AbstractMonitoringService(){}
+    public AbstractMonitoringService(){
+		this.unknownExchangeRecordList = new ArrayDeque<ExchangeRecord>();
+    }
         
     /**
      * 
      * @param message 
      * @param esperEngine 
      */
-	public void listen(Message message, EsperEngine esperEngine){
+	/*public void listen(Message message, EsperEngine esperEngine){
 	    logger.debug("Listenning message : " + message);
 		for(MessageHandler mh : messageHandlers){
 	    	// Call each messageHandler, when the good message handler is found, stop the loop
@@ -91,7 +96,25 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	    		}
 	    	}
 	    }
-	}	
+	}*/
+	
+	public void listen(ExchangeRecord exchangeRecord, EsperEngine esperEngine){
+	    logger.debug("Listenning exchange record : " + exchangeRecord);
+		
+	    for(MessageHandler mh : messageHandlers){
+	    	// Call each messageHandler, when the good message handler is found, stop the loop
+	    	if(mh.isOkFor(exchangeRecord)){
+	    		logger.debug("MessageHandler found : " + mh.getClass().getName());
+	    		if(mh.handle(exchangeRecord, this, esperEngine)){
+	    			break;
+	    		}
+	    	}
+	    }
+	    
+	}
+	
+	
+	
 
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.monitoring.MonitoringService#getModel()
@@ -113,8 +136,12 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	 * @see com.openwide.easysoa.monitoring.MonitoringService#getUnknownMessagesList()
 	 */
 	@Override
-	public ArrayDeque<Message> getUnknownMessagesList(){
+	/*public ArrayDeque<Message> getUnknownMessagesList(){
 		return this.unknownMessagesList;
+	}*/
+	
+	public ArrayDeque<ExchangeRecord> getUnknownExchangeRecordList(){
+		return this.unknownExchangeRecordList;
 	}
 	
 }

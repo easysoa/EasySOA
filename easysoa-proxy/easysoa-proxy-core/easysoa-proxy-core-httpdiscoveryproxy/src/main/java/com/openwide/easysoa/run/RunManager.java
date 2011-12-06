@@ -22,6 +22,8 @@ package com.openwide.easysoa.run;
 
 import java.util.List;
 
+import org.easysoa.records.ExchangeRecord;
+
 import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitoringService;
 
@@ -70,7 +72,8 @@ public interface RunManager {
 	 * Record a message in the current run
 	 * @param message The <code>Message</code> to record
 	 */
-	public void record(Message message);
+	//public void record(Message message);
+	public void record(ExchangeRecord exchangeRecord);
 	
 	/**
 	 * Returns the list of all recorded runs in their record order
