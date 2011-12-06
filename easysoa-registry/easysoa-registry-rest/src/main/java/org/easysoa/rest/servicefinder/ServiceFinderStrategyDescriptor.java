@@ -29,7 +29,7 @@ import org.nuxeo.common.xmap.annotation.XObject;
  * @author mkalam-alami
  *
  */
-@XObject("serviceFinder")
+@XObject("strategy")
 public class ServiceFinderStrategyDescriptor {
 
     @XContent

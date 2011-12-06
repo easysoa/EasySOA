@@ -51,7 +51,7 @@ public class ServiceFinderRest {
 
     @GET
     public Object doGet() {
-        return "Invalid use.";
+        return "Invalid use (please append an address to explore to the URL)";
     }
 
     @GET
