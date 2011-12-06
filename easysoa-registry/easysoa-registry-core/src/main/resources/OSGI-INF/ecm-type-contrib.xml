@@ -13,12 +13,12 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>files</layout>
+        <layout>service_common</layout>
+        <layout>soacommon_author</layout>
         <!-- Technical -->
         <layout>service_tech</layout>
         <!-- Specifications -->
         <layout>service_spec</layout>
-        <layout>service_common</layout>
-        <layout>soacommon_author</layout>
       </layouts>
     </type>
 
@@ -31,11 +31,11 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>files</layout>
+        <layout>soacommon_author</layout>
         <!-- Technical -->
         <layout>serviceapi_tech</layout>
         <!-- Specifications -->
         <layout>serviceapi_spec</layout>
-        <layout>soacommon_author</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
@@ -56,11 +56,11 @@
         <layout>heading</layout>
         <layout>files</layout>
         <layout>serviceref_common</layout>
+        <layout>soacommon_author</layout>
         <!-- Technical -->
         <layout>serviceref_tech</layout>
         <!-- Specifications -->
         <layout>serviceref_spec</layout>
-        <layout>soacommon_author</layout>
       </layouts>
     </type>
 
@@ -75,11 +75,11 @@
         <layout>heading</layout>
         <layout>files</layout>
         <layout>appliimpldef_common</layout>
+        <layout>soacommon_author</layout>
         <!-- Technical -->
         <layout>appliimpldef_tech</layout>
         <!-- Specifications -->
         <layout>appliimpldef_spec</layout>
-        <layout>soacommon_author</layout>
       </layouts>
       <subtypes>
         <type>ServiceAPI</type>
