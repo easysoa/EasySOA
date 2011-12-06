@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.impl.HttpFile;
 import org.easysoa.properties.ApiUrlProcessor;
@@ -243,10 +244,14 @@ public class ServiceListener implements EventListener {
             // Test if the service already exists, delete the other one(s) if necessary
             try {
                 DocumentService docService = Framework.getService(DocumentService.class);
+                DocumentModel workspace = docService.getWorkspace(session, doc);
                 DocumentModelList existingServiceModels = session.query(
-                        "SELECT * FROM Service WHERE serv:url = '" + url + "'");
+                        "SELECT * FROM " + Service.DOCTYPE + " WHERE " +
+                        		"ecm:path STARTSWITH '" + workspace.getPathAsString() + 
+                        		"' AND " + Service.SCHEMA_PREFIX + Service.PROP_URL + " = '" + url + "'");
                 for (DocumentModel existingServiceModel : existingServiceModels) {
-                    if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
+                    if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())
+                            && !existingServiceModel.isProxy()) {
                         docService.mergeDocument(session, existingServiceModel, doc, false);
                     }
                 }

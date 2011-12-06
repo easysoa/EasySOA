@@ -233,6 +233,26 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
         }
     }
 
+    public DocumentModel getWorkspace(CoreSession session, DocumentModel model) throws ClientException {
+        // Use path to retrieve the workspace's path
+        String path = model.getPathAsString() + "/";
+        int i = 0;
+        for (int step = 1; step <= 3; step++) {
+            i = path.indexOf('/', i + 1);
+        }
+        if (i != -1) {
+            // Retrieve and check workspace
+            DocumentModel workspace = session.getDocument(new PathRef(path.substring(0, i)));
+            if (workspace != null && workspace.getType().equals("Workspace")) {
+                return workspace;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
     public DocumentRef getWorkspaceRoot(CoreSession session) throws ClientException {
         return workspaceRootRef;
     }

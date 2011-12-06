@@ -92,6 +92,11 @@
         <layout>heading</layout>
         <layout>workspacedef</layout>
       </layouts>
+      <!--  Needed to override 'edit mode'-specific conf -->
+      <layouts mode="edit">
+        <layout>heading</layout>
+        <layout>workspacedef</layout>
+      </layouts>
       <subtypes>
         <type>AppliImpl</type>
       </subtypes>

@@ -33,7 +33,7 @@
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isWorkspace</filter-id>
     </action>
-    <action id="easysoaWorkspaceFork" link="#{easysoaWorkspaceActions.forkCurrentWorkspace}" label="label.easysoa.forkworkspace.button">
+    <action id="easysoaEnvironmentFork" link="#{easysoaWorkspaceActions.forkCurrentEnvironment}" label="label.easysoa.forkworkspace.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isSection</filter-id>
     </action>
