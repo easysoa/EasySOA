@@ -86,7 +86,11 @@ public class ValidationServiceImpl implements ValidationService {
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         String validationLog = "Last validation run at " + dateFormat.format(new Date()) + '\n';
         if (isNowValidated) {
-            validationLog += "Successfully validated " + services.size() + " services against environment "+ referenceEnv.getTitle() + ".";
+            validationLog += "Successfully validated " + services.size() + " services against environment "+ referenceEnv.getTitle();
+            if (!modelIsWorkspace) {
+                validationLog += "(partial workspace validation)";
+            }
+            validationLog += ".";
         }
         else {
             validationLog += "Found " + errorsCount + " validation errors.\n";
@@ -106,9 +110,12 @@ public class ValidationServiceImpl implements ValidationService {
         DocumentModel referenceModel = null;
         
         // Fetch reference service
-        DocumentRef referenceRef = new IdRef((String) service.getProperty(Service.DOCTYPE, Service.PROP_REFERENCESERVICE));
-        if (referenceRef != null) {
-            referenceModel = session.getDocument(referenceRef);
+        String referenceId = (String) service.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
+        if (referenceId != null) {
+            DocumentRef referenceRef = new IdRef(referenceId);
+            if (referenceRef != null) {
+                referenceModel = session.getDocument(referenceRef);
+            }
         }
         
         // Guess reference service by correlation on WSDLs
