@@ -5,25 +5,20 @@
 	<title>EasySOA Integration - Service dashboard</title>
 	<meta charset="utf-8" />
 	<link href="/easysoa/style.css" type="text/css" media="all" rel="stylesheet" />
+    <link href="style.css" type="text/css" media="all" rel="stylesheet" />
 	<script type="text/javascript" src="/easysoa/lib/jquery.js"></script>
+    <script type="text/javascript" src="/easysoa/lib/underscore.js"></script>
+    <script type="text/javascript" src="/easysoa/lib/backbone.js"></script>
 	<script type="text/javascript" src="/easysoa/js/common.js"></script>
-	<script type="text/javascript">
-	<!--
-	
-		$(document).ready(function() {
-					
-		});
-	
-	-->	
-	</script>
-	
+    <script type="text/javascript" src="js/Services.js"></script>
+    <script type="text/javascript" src="js/App.js"></script>
 </head>
 	
 <body>
 
 <div id="headerIntegration">
 	<div id="headerIntegrationContents">
-	    <a href="/easysoa" id="logoLink">&nbsp;</a>
+	    <a href="/easysoa" id="logoLink"> </a>
     	<div id="headerUserBar"></div>
 		<div id="headerBreadcrumbs"><a href="/easysoa/index.html">EasySOA</a> > <b>Dashboard</b></div>
 		Service dashboard
@@ -32,9 +27,30 @@
 
 <div id="container" style="width: 100%">
     
-    Welcome! The dashboard is in progress, come back later.
+    <table id="servicelist">
+    <tr>
+        <th>Service name</th>
+        <th></th>
+        <th>Referenced service name</th>
+        <th>Validation state</th>
+    </tr>
+    <tr id="placeholder">
+        <td><img src="/easysoa/img/loading.gif" /></td>
+    </tr>
+    <tr id="error"></tr>
+    </table>
     
 </div>
+  
+<script type="text/template" id="serviceentry-template">
+    <td><%= localService.get('name') %></td>
+    <td> --&gt; </td>
+    <td><%= referencedService.get('name') %></td>
+    <td><%= localService.get('isValidated') %></td>
+</script>
+<script type="text/template" id="error-template">
+    <td colspan="4"><b>ERROR:</b> <%= error %></td>
+</script>
   
 </body>
 

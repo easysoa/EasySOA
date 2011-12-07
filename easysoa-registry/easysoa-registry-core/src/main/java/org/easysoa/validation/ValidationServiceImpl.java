@@ -171,8 +171,11 @@ public class ValidationServiceImpl implements ValidationService {
                     referenceEnvWsdlBlob.transferTo(referenceEnvWsdlFile);
                     wsdlBlob.transferTo(wsdlFile);
                     if (wsdlBlob != null && !isFinerWsdlThan(wsdlFile, referenceEnvWsdlFile)) {
-                        errors.add(serviceName + " : service has different wsdl");
+                        errors.add(serviceName + ": Service has different WSDL");
                     }
+                }
+                else {
+                    errors.add(serviceName + ": Cannot access WSDLs to compare them");
                 }
 
                 // check discovery (either by browsing or by monitoring) TODO restrict to runtime env only
@@ -180,7 +183,7 @@ public class ValidationServiceImpl implements ValidationService {
                 String discoveryTypeMonitoring = (String) referenceService.getProperty(Service.SCHEMA_COMMON, Service.PROP_DTMONITORING);
                 if (discoveryTypeBrowsing == null || discoveryTypeBrowsing.isEmpty()
                         && (discoveryTypeMonitoring == null || discoveryTypeMonitoring.isEmpty())) {
-                    errors.add(serviceName + " : service not found by browsing nor by monitoring");
+                    errors.add(serviceName + ": Service not found by browsing nor by monitoring");
                 }
 
                 // Execute related tests (?)
