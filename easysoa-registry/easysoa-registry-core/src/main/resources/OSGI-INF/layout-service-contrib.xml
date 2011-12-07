@@ -19,6 +19,12 @@
         <row>
           <widget>servicedef_referenceServiceOrigin</widget>
         </row>
+        <row>
+          <widget>servicedef_isValidated</widget>
+        </row>
+        <row>
+          <widget>servicedef_validationLog</widget>
+        </row>
       </rows>
       <widget name="servicedef_participants" type="text">
         <labels>
@@ -52,6 +58,32 @@
         <translated>true</translated>
         <fields>
           <field>serv:referenceServiceOrigin</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+      </widget>
+      <widget name="servicedef_isValidated" type="text">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.isValidated</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:isValidated</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+      </widget>
+      <widget name="servicedef_validationLog" type="textarea">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.validationLog</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:validationLog</field>
         </fields>
         <widgetModes>
           <mode value="create">hidden</mode>

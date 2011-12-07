@@ -1,0 +1,12 @@
+#placeholder {
+	text-align: center;
+}
+
+#error {
+	display: none;
+	color: darkred;
+    text-align: center;
+}
+#error td {
+    background-color: #FFF5F5;
+}

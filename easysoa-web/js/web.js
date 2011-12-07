@@ -149,6 +149,29 @@ webServer.get('/light/serviceList', function(request, response, next) {
 	});
 });
 
+webServer.get('/servicesstate', function(request, response, next) {
+    var easysoaServicestateUrl = url.parse(settings.nuxeoEasySOARest + request.url);
+    var requestOptions = {
+        'port' : easysoaServicestateUrl.port,
+        'method' : 'GET',
+        'host' : easysoaServicestateUrl.hostname,
+        'path' : easysoaServicestateUrl.href,
+        'headers' : {
+            Authorization: easysoaNuxeo.computeAuthorization(request.session.username, request.session.password)
+        }
+    };
+    http.request(requestOptions, function(nxResponse) {
+          var responseData = '';
+          nxResponse.on('data', function(data) {
+              responseData += data;
+          });
+          nxResponse.on('end', function() {
+              response.write(responseData);
+              response.end();
+          });
+    }).end();
+});
+
 webServer.get('*', function(request, response, next) {
     // Socket.io compatibility
     if (request.url.indexOf('socket.io') != -1) {

@@ -18,7 +18,7 @@ var easysoaNuxeo = require('./web-nuxeo.js');
 
 redirectTo = function(result, url) {
     result.redirect(url);
-}
+};
 
 isLoginValid = function(username, password, callback) {
     if (easysoaNuxeo.isNuxeoReady()) {
@@ -29,13 +29,14 @@ isLoginValid = function(username, password, callback) {
     else {
         throw "Nuxeo is not ready";
     }
-}
+};
 
 isAnonymouslyAvailable = function(url) {
     return url.pathname.indexOf('easysoa/core') == -1 
         && url.pathname.indexOf('easysoa/light') == -1
+        && url.pathname.indexOf('easysoa/dashboard') == -1
         && url.pathname.indexOf('scaffoldingProxy') == -1;
-}
+};
 
 // EXPORTS
    
@@ -115,7 +116,7 @@ exports.authFilter = function (request, result, next) {
     else {
         result.redirect('/easysoa/login.html?prev='+reqUrl.href);
     }
-}
+};
 
 
 exports.handleLogin = function(request, result) {
@@ -135,13 +136,12 @@ exports.handleLogin = function(request, result) {
     else {
         exports.redirectToLogin(result, request.url, true);
     }
-}
+};
 
 exports.redirectToLogin = function(result, prevUrl, error) {
     redirectTo(result, '/easysoa/login.html' + ((prevUrl) ? '?prev='+prevUrl : '') + ((error) ? '?error=true' : ''));
-}
+};
 
 exports.isLoggedIn = function(request) {
     return request.session != undefined && request.session.user != undefined;
-}
-
+};

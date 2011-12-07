@@ -24,15 +24,6 @@ var nuxeoAutomation = url.parse(settings.nuxeoAutomation);
 
 // INTERNAL FUNCTIONS
 
-computeAuthorization = function(username, password) {
-    if (username != null && password != null) {
-        return "Basic " + base64.encode(username + ':' + password);
-    }
-    else {
-        return null;
-    }
-}
-
 sendNotification = function(nuxeoUploadOptions, body, callback) {
 
       restRequest = http.request(nuxeoUploadOptions, function(restResponse) {
@@ -64,22 +55,53 @@ sendNotification = function(nuxeoUploadOptions, body, callback) {
 
 // EXPORTS
 
-/*
- *
+exports.computeAuthorization = function(username, password) {
+    if (username != null && password != null) {
+        return "Basic " + base64.encode(username + ':' + password);
+    }
+    else {
+        return null;
+    }
+};
+
+/**
+ * 
  */
 exports.isNuxeoReady = function() {
     return nuxeoReady;
-}
+};
 
-/*
- *
+/**
+ * 
+ * @param session
+ * @param query
+ * @param headers
+ * @param callback
  */
+exports.queryDocuments = function(session, query, callback, headers) {
+    if (headers == undefined || headers == null) {
+        headers = {};
+    }
+    if (headers["X-NXDocumentProperties"] == undefined)  {
+        headers["X-NXDocumentProperties"] = "*";
+    }
+    easysoaNuxeo.automationQuery(session, "Document.Query", {query: query}, headers, callback);
+};
+
 // TODO Refactoring with checkNuxeo
 exports.automationQuery = function(session, operation, input, headers, callback) {
 
+  // Normalize optional params
+  if (input == null)
+      input = "";
+  if (headers == null)
+      headers = {};
+  if (callback == null)
+      callback = function() {};
+    
   headers['Content-Type'] = 'application/json+nxrequest';
   headers['Accept'] = 'application/json+nxentity, */*';
-  headers['Authorization'] = computeAuthorization(session.username, session.password);
+  headers['Authorization'] = exports.computeAuthorization(session.username, session.password);
 
   var requestOptions = {
 	  'port' : nuxeoAutomation.port,
@@ -111,7 +133,7 @@ exports.automationQuery = function(session, operation, input, headers, callback)
 
 };
 
-/*
+/**
  *
  */
 exports.checkNuxeo = function(username, password, callback) {
@@ -123,7 +145,7 @@ exports.checkNuxeo = function(username, password, callback) {
 	  path : nuxeoAutomation.href,
 	  headers : {
 	    'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': computeAuthorization(username, password)
+        'Authorization': exports.computeAuthorization(username, password)
 	  }
   };
   
@@ -147,7 +169,7 @@ exports.checkNuxeo = function(username, password, callback) {
     if (!nuxeoReady) {
       console.log("[INFO] Nuxeo is not ready yet...");
       setTimeout(function() { 
-              exports.checkNuxeo(username, password, callback) 
+              exports.checkNuxeo(username, password, callback);
           }, 3000);
     }
   });
@@ -157,7 +179,7 @@ exports.checkNuxeo = function(username, password, callback) {
 };
 
 
-/*
+/**
  *
  */
 exports.registerWsdl = function(data, callback) {
@@ -180,7 +202,7 @@ exports.registerWsdl = function(data, callback) {
 	          headers : {
 	            'Content-Type': 'application/x-www-form-urlencoded',
 	            'Content-Length': body.length,
-	            'Authorization': computeAuthorization(data.session.username, data.session.password)
+	            'Authorization': exports.computeAuthorization(data.session.username, data.session.password)
 	          }
           };
           
@@ -191,4 +213,4 @@ exports.registerWsdl = function(data, callback) {
       console.error("[ERROR] Client message badly formatted. "+error);
     }
         
-}
+};

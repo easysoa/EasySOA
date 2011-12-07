@@ -18,4 +18,7 @@
   <xs:element name="wsdlServiceName" type="xs:string" />
   <xs:element name="wsdlNamespace" type="xs:string" />
   
+  <xs:element name="isValidated" type="xs:boolean" />
+  <xs:element name="validationLog" type="xs:string" />
+  
 </xs:schema>
