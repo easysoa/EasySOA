@@ -10,3 +10,51 @@
 #error td {
     background-color: #FFF5F5;
 }
+
+#serviceentries {
+	width: 80%;
+}
+
+.serviceEntryLocalServiceName {
+    font-size: 11pt;
+    text-decoration: underline;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.serviceEntryArrow {
+    text-align: center;
+}
+
+.serviceEntryReferencedServiceName {
+    font-weight: bold;
+    text-decoration: underline;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.serviceEntryValidationIcon {
+    text-align: center;
+}
+
+.serviceEntryValidationLog {
+    font-size: 11pt;
+    font-family: monospace;
+}
+
+.selectedLocal {
+    background-color: #FFA;
+}
+.selectedReference {
+    background-color: #FFA;
+}
+
+input[type=button] {
+	font-size: 13pt;
+	padding: 5px;
+	margin: 10px;
+}

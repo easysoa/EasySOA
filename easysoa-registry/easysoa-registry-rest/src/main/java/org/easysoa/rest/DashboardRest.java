@@ -36,15 +36,42 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.runtime.api.Framework;
 
-@Path("easysoa/servicesstate")
-public class ServicesStateRest {
+@Path("easysoa/dashboard")
+public class DashboardRest {
     
     @GET
-    @Path("/")
+    @Path("/linkservices")
+    public Object linkServices(@Context HttpServletRequest request, 
+            @QueryParam("fromid") String fromId, 
+            @QueryParam("toid") String toId) throws Exception {
+
+        CoreSession session = SessionFactory.getSession(request);
+        
+        DocumentModel localServiceModel = session.getDocument(new IdRef(fromId));
+        if (localServiceModel != null) {
+            if (session.exists(new IdRef(toId))) {
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, toId);
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Manually set");
+                session.saveDocument(localServiceModel);
+                session.save();
+            }
+            else {
+                return formatError("Referenced service doesn't exist anymore");
+            }
+        }
+        else {
+            return formatError("Local service doesn't exist anymore");
+        }
+        return new JSONObject().toString();
+    }
+
+    @GET
+    @Path("/servicesstate")
     public Object getServicesState(@Context HttpServletRequest request, @QueryParam("username") String username) throws Exception {
 
         // Init
@@ -60,7 +87,8 @@ public class ServicesStateRest {
 
                 // Gather workspace services
                 DocumentModelList workspaceServiceModels = session.query("SELECT * FROM " + Service.DOCTYPE +
-                        " WHERE ecm:path STARTSWITH '" + workspaceModel.getPathAsString() + "'");
+                        " WHERE ecm:path STARTSWITH '" + workspaceModel.getPathAsString() + "'" +
+                        " AND ecm:currentLifeCycleState <> 'deleted'");
                 
                 // Find environment
                 DocumentModel environmentModel = docService.findEnvironment(session, 
@@ -69,7 +97,8 @@ public class ServicesStateRest {
 
                     // Gather reference services
                     DocumentModelList environmentServiceModels = session.query("SELECT * FROM " + Service.DOCTYPE +
-                            " WHERE ecm:path STARTSWITH '" + environmentModel.getPathAsString() + "'");
+                            " WHERE ecm:path STARTSWITH '" + environmentModel.getPathAsString() + "'" +
+                            " AND ecm:currentLifeCycleState <> 'deleted'");
                     
                     // Build response, with services in order:
                     // 1. Matching services
@@ -118,6 +147,7 @@ public class ServicesStateRest {
         // Local service
         JSONObject localService = new JSONObject();
         if (workspaceServiceModel != null) {
+            localService.put("id", workspaceServiceModel.getId());
             localService.put("name", workspaceServiceModel.getTitle());
             localService.put("url", workspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_URL));
             localService.put("isValidated", workspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_ISVALIDATED));
@@ -128,6 +158,7 @@ public class ServicesStateRest {
         // Referenced service
         JSONObject referencedService = new JSONObject();
         if (referencedServiceModel != null) {
+            referencedService.put("id", referencedServiceModel.getId());
             referencedService.put("name", referencedServiceModel.getTitle());
             referencedService.put("url", referencedServiceModel.getProperty(Service.SCHEMA, Service.PROP_URL));
         }
@@ -158,6 +189,7 @@ public class ServicesStateRest {
         return matchingService;
     }
     
+
     public String formatError(String error) throws JSONException {
         return formatError(error, null);
     }

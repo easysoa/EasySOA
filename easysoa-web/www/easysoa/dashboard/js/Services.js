@@ -5,6 +5,7 @@ window.Service = Backbone.Model.extend({
     /** Backbone function: default values */
     defaults: function() {
         return {
+            id: null,
             name: null,
             url: null,
             isValidated: null,
@@ -34,6 +35,18 @@ window.ServiceEntries = Backbone.Collection.extend({
     /** Backbone function: sorting comparator */
     comparator: function(model) {
         return (model.localService != null) ? model.localService.name : null;
+    }
+    
+});
+
+window.Services = Backbone.Collection.extend({
+
+    /** Backbone data: contents model */
+    model: Service,
+
+    /** Backbone function: sorting comparator */
+    comparator: function(model) {
+        return model.name;
     }
     
 });

@@ -27,31 +27,55 @@
 
 <div id="container" style="width: 100%">
     
-    <table id="servicelist">
+    <table id="serviceentries">
     <tr>
         <th>Service name</th>
         <th></th>
         <th>Referenced service name</th>
         <th>Validation state</th>
+        <th>Validation log</th>
     </tr>
     <tr id="placeholder">
-        <td><img src="/easysoa/img/loading.gif" /></td>
+        <td colspan="5"><img src="/easysoa/img/loading.gif" /></td>
     </tr>
     <tr id="error"></tr>
     </table>
     
+    <input class="defineReferenceLink" type="button" value="Define link" />
+    
 </div>
   
 <script type="text/template" id="serviceentry-template">
-    <td><%= localService.get('name') %></td>
-    <td> --&gt; </td>
-    <td><%= referencedService.get('name') %></td>
-    <td><%= localService.get('isValidated') %></td>
+    <td class="serviceEntryLocalServiceName">
+        <%= localService.get('name') %>
+        <div style="display: none" class="id"><%= localService.cid %></div>
+    </td>
+    <td class="serviceEntryArrow">
+        <img src="img/arrow.png" />
+    </td>
+    <td class="serviceEntryReferencedServiceName">
+        <%= referencedService.get('name') %>
+        <div style="display: none" class="id"><%= referencedService.cid %></div>
+    </td>
+    <td class="serviceEntryValidationIcon">
+        <% if (localService.get('name') == undefined) { %>
+            <img src="img/red.png" />
+        <% } else if (referencedService.get('name') == undefined) { %>
+            <img src="img/grey.png" />
+        <% } else if (localService.get('isValidated') != 'true') { %>
+            <img src="img/red.png" />
+        <% } else { %>
+            <img src="img/green.png" />
+        <% } %>
+    </td>
+    <td class="serviceEntryValidationLog">
+        <%= localService.get('validationLog') %>
+    </td>
 </script>
 <script type="text/template" id="error-template">
-    <td colspan="4"><b>ERROR:</b> <%= error %></td>
+    <td colspan="5"><b>ERROR:</b> <%= error %></td>
 </script>
-  
+
 </body>
 
 </html>

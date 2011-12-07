@@ -211,7 +211,7 @@ public class ValidationServiceImpl implements ValidationService {
                 newLog += error + '\n';
             }
         }
-        if (isNowValidated != wasValidated || !oldLog.equals(newLog)) {
+        if (isNowValidated != wasValidated || oldLog == null || !oldLog.equals(newLog)) {
             service.setProperty(Service.SCHEMA, Service.PROP_ISVALIDATED, isNowValidated);
             service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONLOG, newLog);
             // XXX: Will probably trigger an infinite loop if the validation log isn't stable when repeated

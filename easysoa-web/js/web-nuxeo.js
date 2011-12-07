@@ -24,6 +24,15 @@ var nuxeoAutomation = url.parse(settings.nuxeoAutomation);
 
 // INTERNAL FUNCTIONS
 
+computeAuthorization = function(username, password) {
+    if (username != null && password != null) {
+        return "Basic " + base64.encode(username + ':' + password);
+    }
+    else {
+        return null;
+    }
+};
+
 sendNotification = function(nuxeoUploadOptions, body, callback) {
 
       restRequest = http.request(nuxeoUploadOptions, function(restResponse) {
@@ -54,15 +63,6 @@ sendNotification = function(nuxeoUploadOptions, body, callback) {
 };
 
 // EXPORTS
-
-exports.computeAuthorization = function(username, password) {
-    if (username != null && password != null) {
-        return "Basic " + base64.encode(username + ':' + password);
-    }
-    else {
-        return null;
-    }
-};
 
 /**
  * 
@@ -101,7 +101,7 @@ exports.automationQuery = function(session, operation, input, headers, callback)
     
   headers['Content-Type'] = 'application/json+nxrequest';
   headers['Accept'] = 'application/json+nxentity, */*';
-  headers['Authorization'] = exports.computeAuthorization(session.username, session.password);
+  headers['Authorization'] = computeAuthorization(session.username, session.password);
 
   var requestOptions = {
 	  'port' : nuxeoAutomation.port,
@@ -145,7 +145,7 @@ exports.checkNuxeo = function(username, password, callback) {
 	  path : nuxeoAutomation.href,
 	  headers : {
 	    'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': exports.computeAuthorization(username, password)
+        'Authorization': computeAuthorization(username, password)
 	  }
   };
   
@@ -202,7 +202,7 @@ exports.registerWsdl = function(data, callback) {
 	          headers : {
 	            'Content-Type': 'application/x-www-form-urlencoded',
 	            'Content-Length': body.length,
-	            'Authorization': exports.computeAuthorization(data.session.username, data.session.password)
+	            'Authorization': computeAuthorization(data.session.username, data.session.password)
 	          }
           };
           
@@ -213,4 +213,31 @@ exports.registerWsdl = function(data, callback) {
       console.error("[ERROR] Client message badly formatted. "+error);
     }
         
+};
+
+
+/**
+ * NOTE: Appends the url path to the EasySOA Rest URL
+ */
+exports.forwardToNuxeo = function(request, response, settings) {
+    var easysoaServicestateUrl = url.parse(settings.nuxeoEasySOARest + request.url);
+    var requestOptions = {
+        'port' : easysoaServicestateUrl.port,
+        'method' : 'GET',
+        'host' : easysoaServicestateUrl.hostname,
+        'path' : easysoaServicestateUrl.href,
+        'headers' : {
+            Authorization: computeAuthorization(request.session.username, request.session.password)
+        }
+    };
+    http.request(requestOptions, function(nxResponse) {
+          var responseData = '';
+          nxResponse.on('data', function(data) {
+              responseData += data;
+          });
+          nxResponse.on('end', function() {
+              response.write(responseData);
+              response.end();
+          });
+    }).end();
 };
