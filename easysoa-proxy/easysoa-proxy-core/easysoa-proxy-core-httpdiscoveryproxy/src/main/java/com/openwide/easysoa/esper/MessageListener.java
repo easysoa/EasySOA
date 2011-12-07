@@ -23,12 +23,14 @@ package com.openwide.easysoa.esper;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.ExchangeRecord.ExchangeType;
 
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
-import com.openwide.easysoa.monitoring.Message;
-import com.openwide.easysoa.monitoring.Message.MessageType;
+//import com.openwide.easysoa.monitoring.Message;
+//import com.openwide.easysoa.monitoring.Message.MessageType;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
@@ -65,18 +67,23 @@ public class MessageListener implements UpdateListener {
 		@SuppressWarnings("unchecked")
 		HashMap<String,Object> hm = (HashMap<String,Object>)(newData.getUnderlying());
 		BeanEventBean beb = (BeanEventBean)(hm.get("s"));
-		Message msg = (Message)(beb.getUnderlying());
-		String serviceName = msg.getPathName();
+		//Message msg = (Message)(beb.getUnderlying());
+		ExchangeRecord record = (ExchangeRecord)(beb.getUnderlying());
+		String serviceName = record.getInMessage().getPath();
+		//String serviceName = msg.getPathName();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		if(MessageType.WSDL.compareTo(msg.getType()) == 0){
+		//if(MessageType.WSDL.compareTo(msg.getType()) == 0){
+		if(ExchangeType.WSDL.compareTo(record.getExchangeType()) == 0){
 			Service service;
 			//WSDLService service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
-			service = new Service(msg.getUrl());
+			//service = new Service(msg.getUrl());
+			service = new Service(record.getInMessage().getCompleteUrl());
 			service.setTitle(serviceName);
-			service.setHttpMethod(msg.getMethod());
+			//service.setHttpMethod(msg.getMethod());
+			service.setHttpMethod(record.getInMessage().getMethod());
 			service.setCallCount(1);
 			try {
 			    new NuxeoRegistrationService().registerWSDLService(service);

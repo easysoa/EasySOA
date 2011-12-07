@@ -3,13 +3,10 @@ package org.openwide.easysoa.test.messaging;
 import static org.junit.Assert.assertEquals;
 
 import java.util.UUID;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
@@ -23,7 +20,6 @@ import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
-
 import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;
@@ -31,13 +27,17 @@ import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.ContentReader;
 
+/**
+ * To test the messaging API. Only the save, load, replay functions without any integration with the HttpDiscoveryproxy.
+ * @author jguillemotte
+ *
+ */
 public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeRecordStoreTest.class.getName());
 
 	// TODO : update to test list and replay services
-	// TODO add test to fill ExchangeRecord with real data form mocked REST service
 
 	@Before
 	public void setUp() throws FrascatiException{
@@ -62,7 +62,6 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 
 		// Send Http Rest requests
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
-		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		UrlMock urlMock = new UrlMock();
 		HttpResponse response;
 		HttpUriRequest httpUriRequest;

@@ -16,22 +16,22 @@ public interface ExchangeReplayService {
 
 	@GET
 	@Path("/list")
-	@Produces("application/json,application/xml")	
+	@Produces("application/json")
 	public List<ExchangeRecord> list();
 
 	@GET
 	@Path("/list/{service}")
-	@Produces("application/json,application/xml")	
+	@Produces("application/json")	
 	public ExchangeRecord[] list(@PathParam("service") String service);
 	
 	@GET
 	@Path("/replay/{exchangeRecordId}")
-	//@Produces("application/json,application/xml")	
+	@Produces("application/json")	
 	public String replay(@PathParam("exchangeRecordId") String exchangeRecordId);
 	
 	@POST
 	@Path("/cloneToEnvironment/{anotherEnvironment}")
-	@Produces("application/json,application/xml")	
+	@Produces("application/json")	
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment);
 	
 }

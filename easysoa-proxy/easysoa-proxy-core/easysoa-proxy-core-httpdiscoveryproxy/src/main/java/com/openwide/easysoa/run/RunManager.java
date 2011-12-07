@@ -21,10 +21,7 @@
 package com.openwide.easysoa.run;
 
 import java.util.List;
-
 import org.easysoa.records.ExchangeRecord;
-
-import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.MonitoringService;
 
 public interface RunManager {

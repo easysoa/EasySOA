@@ -42,12 +42,13 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeReplayServiceImpl.class.getName());	
 	
+	// Running environment
 	private String environment;
 
 	@Override
 	@GET
 	@Path("/list")
-	@Produces("application/json,application/xml") 
+	@Produces("application/json")
 	public List<ExchangeRecord> list() {
 		logger.debug("list method called ...");
     	ExchangeRecordStore erfs;
@@ -64,14 +65,16 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	}
 
 	@Override
-	@Produces("application/json,application/xml")
+	@Produces("application/json")
 	public ExchangeRecord[] list(@PathParam("service") String service) {
 		// LATER
+		// TODO request to get all the persisted exchange records
+		// and next apply a filter to select only those with the corresponding service
 		return null;
 	}
 
 	@Override
-	//@Produces("application/json,application/xml")
+	@Produces("application/json")
 	public String replay(@PathParam("exchangeRecordId") String exchangeRecordId) {
 		// call remote service using chosen record :
 		// see how to share monit.forward(Message) code (extract it in a Util class), see also scaffolder client
@@ -100,11 +103,11 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 			ex.printStackTrace();
 			logger.error("A problem occurs duringt the replay of exchange record  with id " + exchangeRecordId);
 		}
-			return response; // JSON
+		return response; // JSON
 	}
 	
 	@Override
-	@Produces("application/json,application/xml")	
+	@Produces("application/json")	
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment) {
 		// LATER
 		// requires to extract service in request & response
