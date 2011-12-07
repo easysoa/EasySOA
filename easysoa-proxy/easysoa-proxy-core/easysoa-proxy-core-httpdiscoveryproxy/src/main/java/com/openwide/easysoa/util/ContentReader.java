@@ -34,7 +34,7 @@ public class ContentReader {
 		   	requestBody.append(buffer.rewind());
 		}
 		requestBody.trimToSize();		
-		logger.debug("Reader content : " +  requestBody.toString());		
+		//logger.debug("Reader content : " +  requestBody.toString());		
 		return requestBody.toString();
 	}
 	
@@ -51,7 +51,7 @@ public class ContentReader {
 			requestBody.append( buffer.flip() );
 			buffer.clear();
 		}
-		logger.debug("InputStream content : " +  requestBody.toString());
+		//logger.debug("InputStream content : " +  requestBody.toString());
 		return requestBody.toString();
 	}	
 	

@@ -56,7 +56,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		try {
 			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
 			recordList = erfs.list();
-			logger.debug("recordeList size = " + recordList.size());
+			logger.debug("recordedList size = " + recordList.size());
 		} catch (Exception ex) {
 			logger.error("An error occurs during the listing of exchanges records", ex);
 			recordList = new ArrayList<ExchangeRecord>();
@@ -93,7 +93,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 			RequestForwarder requestForwarder = new RequestForwarder();
 			OutMessage outMessage = requestForwarder.send(record.getInMessage());
 
-			logger.debug("Response of orignal exchange : " + record.getOutMessage().getMessageContent().getContent());
+			logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
 			logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
 			// TODO : compare the returned response with the one contained in the stored Exchange record with an assert template
 			response = outMessage.getMessageContent().getContent();

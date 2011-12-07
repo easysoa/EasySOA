@@ -84,7 +84,7 @@ public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarte
 		
 		// Set client to use the HTTP Discovery Proxy
 		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
-		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);				
+		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 		
 		// Send a request to the proxy itself 
 		try{
