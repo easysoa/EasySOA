@@ -47,17 +47,27 @@
 <!-- Templates -->
 
 <script type="text/template" id="serviceentriescolumn-template">
-   <th><%= name %></th>
+   <th width="150px"><%= get('name') %></th>
 </script>
 
 <script type="text/template" id="serviceentryicon-template">
-  <% if (value == undefined) { %>
-    <img src="img/grey.png" />
-  <% } else if (value != 'true' && value != true) { %>
-    <img src="img/red.png" />
-  <% } else { %>
-    <img src="img/green.png" />
-  <% } %>
+  <% 
+  var img;
+  var size = '32px';
+  if (value == undefined) {
+    img = 'grey';
+  }
+  else if (value != 'true' && value != true) {
+    img = 'red';
+  }
+  else {
+    img = 'green';
+  }
+  if (small) {
+    size = '16px';
+  }
+  %>
+  <img src="img/<%= img %>.png" width="<%= size %>" />
 </script>
 
 <script type="text/template" id="serviceentry-template">
@@ -77,18 +87,18 @@
     </td>
     <td class="serviceEntryValidationIcon">
         <%  if (localService.get('name') == undefined) { %>
-          <%= iconTemplate({value: 'false'}) %>
+          <%= iconTemplate({value: 'false', small: false}) %>
         <%  } else if (referencedService.get('name') == undefined) { %>
-          <%= iconTemplate({value: null}) %>
+          <%= iconTemplate({value: null, small: false}) %>
         <%  } else { %>
-          <%= iconTemplate({value: localService.get('isValidated')}) %>
+          <%= iconTemplate({value: localService.get('isValidated'), small: false}) %>
         <%  } %>
     </td>
     <% validationState = localService.get('validationState');
        for (validator in validationState) { %>
     <td class="serviceEntryValidationResult">
         <div title="<%= validationState[validator].validationLog %>">
-            <%= iconTemplate({value: validationState[validator].isValidated}) %>
+            <%= iconTemplate({value: validationState[validator].isValidated, small: true}) %>
         </div>
     </td>
     <% } %>

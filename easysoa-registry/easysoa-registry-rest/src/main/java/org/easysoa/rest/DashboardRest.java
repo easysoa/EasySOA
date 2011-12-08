@@ -55,10 +55,10 @@ public class DashboardRest {
     @Path("/validators")
     public Object getValidators(@Context HttpServletRequest request) throws Exception {
         ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
-        JSONArray result = new JSONArray();
+        JSONObject result = new JSONObject();
         List<ServiceValidator> validators = validationService.getValidators();
         for (ServiceValidator validator : validators) {
-            result.put(validator.getLabel());
+            result.put(validator.getName(), validator.getLabel());
         }
         return result.toString();
     }
