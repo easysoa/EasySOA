@@ -1,5 +1,7 @@
 package org.easysoa.validation;
 
+import java.util.List;
+
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
@@ -8,7 +10,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  * @author mkalam-alami
  *
  */
-public interface ValidationService {
+public interface ServiceValidationService {
     
     /**
      * Validates all of the services contained in the given document
@@ -18,5 +20,11 @@ public interface ValidationService {
      * @throws Exception
      */
     void validateServices(CoreSession session, DocumentModel model) throws Exception;
+
+    /**
+     * 
+     * @return The actual validator list: it should be read only
+     */
+    List<ServiceValidator> getValidators();
 
 }

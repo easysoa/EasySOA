@@ -27,7 +27,7 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DocumentService;
-import org.easysoa.validation.ValidationService;
+import org.easysoa.validation.ServiceValidationService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.event.Event;
@@ -69,7 +69,7 @@ public class ValidationListener implements EventListener {
                 DocumentModel workspace = docService.getWorkspace(session, doc);
 
                 // Run validation
-                ValidationService validationService = Framework.getService(ValidationService.class);
+                ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
                 Boolean isValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
                 if (isValidated != null && isValidated) {
                     // Validate all child services

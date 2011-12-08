@@ -9,7 +9,7 @@ window.Service = Backbone.Model.extend({
             name: null,
             url: null,
             isValidated: null,
-            validationLog: null
+            validationState: {}
         };
     }
     
@@ -40,7 +40,7 @@ window.ServiceEntries = Backbone.Collection.extend({
 });
 
 window.Services = Backbone.Collection.extend({
-
+    
     /** Backbone data: contents model */
     model: Service,
 
@@ -53,18 +53,23 @@ window.Services = Backbone.Collection.extend({
 
 window.ServiceEntryView = Backbone.View.extend({
 
-    /** Backbone data: view tag */
-    tagName: "tr",
-
+    tagName: 'tr',
+    
     template: _.template($('#serviceentry-template').html()),
     
     initialize: function(model) {
+        _.bindAll(this, 'remove');
         this.model = model;
+        this.model.bind('destroy', this.remove, this);
     },
     
     render: function() {
         $(this.el).html(this.template(this.model.toJSON()));
         return this;
+    },
+    
+    remove: function() {
+        $(this.el).remove();
     }
     
 });

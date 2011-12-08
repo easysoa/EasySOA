@@ -1,0 +1,17 @@
+<f:subview xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core" id="#{widget.id}">
+
+    <c:choose>
+        <c:when test="${field == null}">
+            <img src="img/validation/grey.png" />
+        </c:when>
+        <c:when test="${field == 'true'}">
+            <img src="img/validation/green.png" />
+        </c:when>
+        <c:when test="${field == 'false'}">
+            <img src="img/validation/red.png" />
+        </c:when>
+    </c:choose>
+
+</f:subview>

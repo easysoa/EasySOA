@@ -1,3 +1,18 @@
+#headerIntegration {
+  width: 100%;
+  padding-top: 10px;
+  font-size: 14pt;
+  height: 60px;
+  background: url('/easysoa/img/Integration50.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border-bottom: 2px solid #444;
+}
+
+#headerIntegrationContents {
+  padding-left: 330px;
+}
+
 #placeholder {
 	text-align: center;
 }
@@ -41,9 +56,10 @@
     text-align: center;
 }
 
-.serviceEntryValidationLog {
-    font-size: 11pt;
+.serviceEntryValidationResult {
+    font-size: 10pt;
     font-family: monospace;
+    text-align: center;
 }
 
 .selectedLocal {

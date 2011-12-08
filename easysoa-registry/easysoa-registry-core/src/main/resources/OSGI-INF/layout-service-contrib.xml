@@ -23,7 +23,7 @@
           <widget>servicedef_isValidated</widget>
         </row>
         <row>
-          <widget>servicedef_validationLog</widget>
+          <widget>servicedef_validationState</widget>
         </row>
       </rows>
       <widget name="servicedef_participants" type="text">
@@ -64,7 +64,7 @@
           <mode value="edit">hidden</mode>
         </widgetModes>
       </widget>
-      <widget name="servicedef_isValidated" type="text">
+      <widget name="servicedef_isValidated" type="template">
         <labels>
           <label mode="any">label.easysoa.servicedef.isValidated</label>
         </labels>
@@ -76,19 +76,25 @@
           <mode value="create">hidden</mode>
           <mode value="edit">hidden</mode>
         </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/isvalidated_template.xhtml</property>
+        </properties>
       </widget>
-      <widget name="servicedef_validationLog" type="textarea">
+      <widget name="servicedef_validationState" type="template">
         <labels>
-          <label mode="any">label.easysoa.servicedef.validationLog</label>
+          <label mode="any">label.easysoa.servicedef.validationState</label>
         </labels>
         <translated>true</translated>
         <fields>
-          <field>serv:validationLog</field>
+          <field>serv:validationState</field>
         </fields>
         <widgetModes>
           <mode value="create">hidden</mode>
           <mode value="edit">hidden</mode>
         </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/validation_state_template.xhtml</property>
+        </properties>
       </widget>
     </layout>
 

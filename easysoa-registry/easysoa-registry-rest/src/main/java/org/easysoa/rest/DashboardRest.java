@@ -20,6 +20,8 @@
 
 package org.easysoa.rest;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,6 +31,8 @@ import javax.ws.rs.core.Context;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DocumentService;
+import org.easysoa.validation.ServiceValidationService;
+import org.easysoa.validation.ServiceValidator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,11 +42,27 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
+import org.nuxeo.ecm.core.api.model.Property;
+import org.nuxeo.ecm.core.api.model.PropertyException;
+import org.nuxeo.ecm.core.api.model.impl.ListProperty;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.runtime.api.Framework;
 
 @Path("easysoa/dashboard")
 public class DashboardRest {
+
+    @GET
+    @Path("/validators")
+    public Object getValidators(@Context HttpServletRequest request) throws Exception {
+        ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
+        JSONArray result = new JSONArray();
+        List<ServiceValidator> validators = validationService.getValidators();
+        for (ServiceValidator validator : validators) {
+            result.put(validator.getLabel());
+        }
+        return result.toString();
+    }
+
     
     @GET
     @Path("/linkservices")
@@ -151,7 +171,7 @@ public class DashboardRest {
             localService.put("name", workspaceServiceModel.getTitle());
             localService.put("url", workspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_URL));
             localService.put("isValidated", workspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_ISVALIDATED));
-            localService.put("validationLog", workspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONLOG));
+            localService.put("validationState", getValidationStateAsJSON(workspaceServiceModel));
         }
         serviceEntry.put("localService", localService);
         
@@ -166,6 +186,18 @@ public class DashboardRest {
         
         // Add to service entry list
         serviceEntries.put(serviceEntry);
+    }
+    
+    private JSONObject getValidationStateAsJSON(DocumentModel serviceModel) throws PropertyException, ClientException, JSONException {
+        JSONObject validationStateJSON = new JSONObject();
+        ListProperty validationStateProperty = (ListProperty) serviceModel.getProperty(Service.SCHEMA_PREFIX + Service.PROP_VALIDATIONSTATE);
+        for (Property validatorResult : validationStateProperty.getChildren()) {
+            JSONObject validatorResultJSON = new JSONObject();
+            validatorResultJSON.put(Service.SUBPROP_ISVALIDATED, validatorResult.get(Service.SUBPROP_ISVALIDATED).getValue());
+            validatorResultJSON.put(Service.SUBPROP_VALIDATIONLOG, validatorResult.get(Service.SUBPROP_VALIDATIONLOG).getValue());
+            validationStateJSON.put((String) validatorResult.get(Service.SUBPROP_VALIDATORNAME).getValue(), validatorResultJSON);
+        }
+        return validationStateJSON;
     }
 
     public DocumentModel popMatchingService(DocumentModel environmentServiceModel, DocumentModelList workspaceServiceModels) throws ClientException {

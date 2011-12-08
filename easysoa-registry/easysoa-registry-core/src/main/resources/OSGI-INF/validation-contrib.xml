@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.component.validators.contrib">
+
+  <extension target="org.easysoa.validation.ServiceValidatorComponent" point="validators">
+    <validator 
+        name="RuntimeDiscoveryValidator" 
+        label="Discovery at runtime"
+        class="org.easysoa.validation.validators.RuntimeDiscoveryValidator" />
+    <validator 
+        name="WSDLValidator"
+        label="WSDL match"
+        class="org.easysoa.validation.validators.WSDLValidator" />
+  </extension>
+
+</component>

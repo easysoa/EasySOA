@@ -1,0 +1,40 @@
+<f:subview xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core" id="#{widget.id}">
+
+    <table style="width: 400px">
+        <tr>
+            <th>Validator name</th>
+            <th>Is validated</th>
+            <th>Validation log</th>
+        </tr>
+        <c:choose>
+            <c:when test="${field.getChildren().size() > 0}">
+                <c:forEach var="entry" items="${field.getChildren()}">
+                    <tr>
+                        <td><h:outputText
+                                value="${entry.get('validatorName').getValue()}" /></td>
+                        <td style="text-align: center"><c:choose>
+                                <c:when test="${entry.get('isValidated').getValue() == null}">
+                                    <img src="img/validation/grey.png" width="16" />
+                                </c:when>
+                                <c:when test="${entry.get('isValidated').getValue() == 'true'}">
+                                    <img src="img/validation/green.png" width="16" />
+                                </c:when>
+                                <c:when test="${entry.get('isValidated').getValue() == 'false'}">
+                                    <img src="img/validation/red.png" width="16" />
+                                </c:when>
+                            </c:choose></td>
+                        <td><h:outputText value="${entry.get('validationLog').getValue()}" /></td>
+                    </tr>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="3" style="text-align: center">No validation run.</td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
+    </table>
+
+</f:subview>

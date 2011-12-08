@@ -218,6 +218,8 @@ public class ServiceListener implements EventListener {
                 }
             }
             
+            session.save();
+            
             // Maintain properties
             if (url != null) {
                 try {
@@ -237,7 +239,6 @@ public class ServiceListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
                 }
             }
-            session.save();
             
             // Test if the service already exists, delete the other one(s) if necessary
             try {

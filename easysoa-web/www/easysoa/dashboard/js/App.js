@@ -1,4 +1,9 @@
 $(function(){
+
+window.ValidatorName = Backbone.Model.extend({});
+window.Validators = Backbone.Collection.extend({
+    model: ValidatorName
+});
     
 window.AppView = Backbone.View.extend({
     
@@ -11,29 +16,57 @@ window.AppView = Backbone.View.extend({
         'click .defineReferenceLink' : 'defineReferenceLink'
     },
 
+    /** Tags */
     entriesTableTag: $('#serviceentries'),
+    entriesHeaderTag: $('#serviceentriesheader'),
     placeHolderTag: $('#placeholder'),
     errorTag: $('#error'),
     
-    /** Template for error messages */
+    /** Templates */
     errorTemplate: _.template($('#error-template').html()),
+    entriesheadervalidatorTemplate: _.template($('#serviceentriescolumn-template').html()),
     
     initialize: function() {
         // Makes sure the bound functions are called with the app as 'this'
         _.bindAll(this, 'add', 'hidePlaceholder', 'loadServices',
-                'selectLocalItem', 'selectReferencedItem', 'defineReferenceLink'); 
+                'selectLocalItem', 'selectReferencedItem', 'defineReferenceLink',
+                'loadValidators', 'addValidatorColumn'); 
         
         // Create the model and bind it to the app functions
         this.serviceEntries = new ServiceEntries();
-        this.serviceEntries.bind('add', this.add);
-        
-        // Create other app attributes
+        this.validatorNames = new Validators();
         this.services = new Services();
         this.selectedLocal = null;
         this.selectedReference = null;
         
+        this.serviceEntries.bind('add', this.add);
+        this.validatorNames.bind('add', this.addValidatorColumn);
+        
         // Load the models
+        this.loadValidators();
         this.loadServices();
+    },
+
+    loadValidators: function() {
+        if (window.username != undefined) {
+            var app = this;
+            $.ajax({
+                url: '/dashboard/validators',
+                success: function(data, textStatus, jqXHR) {
+                    var names = $.parseJSON(jqXHR.responseText);
+                    for (i in names) {
+                        app.validatorNames.add(new ValidatorName({name: names[i]}));
+                    }
+                },
+                error: function(data) {
+                    app.showError("Failed to query validators");
+                }
+            });
+        }
+        else { 
+            // Wait for username to be retrieved
+            setTimeout(this.loadValidators, 100);  
+        }
     },
     
     loadServices: function() {
@@ -122,6 +155,10 @@ window.AppView = Backbone.View.extend({
         var serviceEntryView = new ServiceEntryView(serviceEntry);
         this.hidePlaceholder();
         this.entriesTableTag.append(serviceEntryView.render().el);
+    },
+    
+    addValidatorColumn: function(validatorName) {
+        this.entriesHeaderTag.append(this.entriesheadervalidatorTemplate(validatorName));
     },
     
     hidePlaceholder: function() {
