@@ -57,7 +57,7 @@
           <field>wsdef:referencedEnvironment</field>
         </fields>
       </widget>
-      <widget name="workspacedef_isValidated" type="text">
+      <widget name="workspacedef_isValidated" type="template">
         <labels>
           <label mode="any">label.easysoa.workspacedef.isValidated</label>
         </labels>
@@ -69,6 +69,9 @@
           <mode value="create">hidden</mode>
           <mode value="edit">hidden</mode>
         </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/isvalidated_template.xhtml</property>
+        </properties>
       </widget>
       <widget name="workspacedef_validationLog" type="textarea">
         <labels>

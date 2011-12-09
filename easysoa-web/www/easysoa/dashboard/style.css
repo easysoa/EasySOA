@@ -60,6 +60,24 @@
     font-size: 10pt;
     font-family: monospace;
     text-align: center;
+    position: relative;
+}
+
+.serviceEntryValidationResult div {
+    float: right;
+    display: none;
+}
+
+.serviceEntryValidationResult .visible {
+	display: block !important;
+    position: absolute;
+	border: 1px solid #AAA;
+	border-radius: 10px;
+	padding: 5px;
+	margin-left: 100px;
+	margin-top: -5px;
+	background-color: #FFE;
+	z-index: 1;
 }
 
 .selectedLocal {

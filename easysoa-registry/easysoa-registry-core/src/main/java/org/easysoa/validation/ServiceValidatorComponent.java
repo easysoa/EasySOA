@@ -1,5 +1,7 @@
 package org.easysoa.validation;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -7,6 +9,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +18,8 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.LevenshteinDistance;
+import org.easysoa.services.ServiceValidationService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -117,7 +123,11 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             // Validate services
             if (services != null) {
                 for (DocumentModel service : services) {
-                    DocumentModel matchingService = getMatchingService(session, service, referenceServices);
+                    DocumentModel matchingService = null;
+                    SortedSet<CorrelationMatch> matches = findCorrelatedServices(session, service, referenceServices);
+                    if (!matches.isEmpty()) {
+                        matchingService = matches.first().getDocumentModel();
+                    }
                     result = validateService(session, service, matchingService);
                     if (!result.isEmpty()) {
                         errorsCount += result.size();
@@ -220,60 +230,6 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         return allErrors;
     }
 
-    private DocumentModelList getAllServices(CoreSession session, DocumentModel model) throws ClientException {
-        DocumentModelList services = new DocumentModelListImpl();
-        for (DocumentModel child : session.getChildren(model.getRef(), null, new DeletedDocumentFilter(), null)) {
-            if (child.getType().equals(Service.DOCTYPE)) {
-                services.add(child);
-            }
-            else {
-                services.addAll(getAllServices(session, child));
-            }
-        }
-        return services;
-    }
-
-    private DocumentModel getMatchingService(CoreSession session, DocumentModel service,
-            DocumentModelList referenceServices) throws ClientException {
-        
-        DocumentModel referenceModel = null;
-        
-        // Fetch reference service
-        String referenceId = (String) service.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
-        if (referenceId != null) {
-            DocumentRef referenceRef = new IdRef(referenceId);
-            if (referenceRef != null) {
-                referenceModel = session.getDocument(referenceRef);
-            }
-        }
-        
-        // Guess reference service by correlation on WSDLs
-        if (referenceModel == null) {
-            String namespace = (String) service.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE);
-            String serviceName = (String) service.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME);
-            if (namespace != null && !namespace.isEmpty() && serviceName != null && !serviceName.isEmpty()) {
-                for (DocumentModel potentialMatch : referenceServices) {
-                    if (namespace.equals(potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE))
-                            && namespace.equals(potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME))) {
-                        referenceModel = potentialMatch;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        return referenceModel;
-    }
-    
-
-    private String formatErrors(List<String> errors) {
-        StringBuilder result = new StringBuilder();
-        for (String error : errors) {
-            result.append(error + '\n');
-        }
-        return result.toString();
-    }
-    
     /**
      * Half-hacky way to avoid infinite 'save > validation' loops,
      * by checking if the new validation state differs from the previous one.
@@ -322,6 +278,106 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             hash += subhash;
         }
         return hash;
+    }
+
+    private String formatErrors(List<String> errors) {
+        StringBuilder result = new StringBuilder();
+        for (String error : errors) {
+            result.append(error + '\n');
+        }
+        return result.toString();
+    }
+
+    public SortedSet<CorrelationMatch> findCorrelatedServices(CoreSession session, DocumentModel service) throws Exception {
+        DocumentService docService = Framework.getService(DocumentService.class);
+        DocumentModel workspace = docService.getWorkspace(session, service);
+        String referencedEnvironment = (String) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT);
+        if (referencedEnvironment != null) {
+            DocumentModel referenceWorkspace = docService.findWorkspace(session, referencedEnvironment);
+            return findCorrelatedServices(session, service, getAllServices(session, referenceWorkspace));
+        }
+        else {
+            return null;
+        }
+    }
+
+    private SortedSet<CorrelationMatch> findCorrelatedServices(CoreSession session, DocumentModel service,
+            DocumentModelList referenceServices) throws ClientException, MalformedURLException {
+        
+        SortedSet<CorrelationMatch> matches = new TreeSet<CorrelationMatch>();
+        
+        DocumentModel referenceModel = null;
+        
+        // Fetch reference service
+        String referenceId = (String) service.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
+        if (referenceId != null) {
+            DocumentRef referenceRef = new IdRef(referenceId);
+            if (referenceRef != null) {
+                referenceModel = session.getDocument(referenceRef);
+                matches.add(new CorrelationMatch(referenceModel, 1.0));
+            }
+        }
+       
+        /*
+         * Guess reference service by correlation on WSDLs
+         * Correlation scale (if results reach > 1.0, they are truncated to 1.0):
+         * - WSDL Service name = 0.7
+         * - WSDL Namespace = 0.3
+         * - Service name = 0.3
+         * - Service URL paths = 0.3
+         */
+        if (referenceModel == null) {
+            String namespace = (String) service.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE);
+            String serviceName = (String) service.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME);
+            String title = service.getTitle();
+            String urlPath = new URL((String) service.getProperty(Service.SCHEMA, Service.PROP_URL)).getPath();
+            if (namespace != null && !namespace.isEmpty() && serviceName != null && !serviceName.isEmpty()) {
+                for (DocumentModel potentialMatch : referenceServices) {
+                    
+                    double correlationGrade = 0;
+                    correlationGrade += getComparisonGrade(serviceName, 
+                            (String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME), 0.7);
+                    correlationGrade += getComparisonGrade(namespace, 
+                            (String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE), 0.3);
+                    correlationGrade += getComparisonGrade(title, 
+                            (String) potentialMatch.getTitle(), 0.3);
+                    correlationGrade += getComparisonGrade(urlPath, 
+                            new URL((String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_URL)).getPath(), 0.3);
+                    
+                    if (correlationGrade >= 0.3) {
+                        matches.add(new CorrelationMatch(potentialMatch, Math.min(correlationGrade, 1.0)));
+                    }
+                }
+            }
+        }
+        
+        return matches;
+    }
+    
+    private double getComparisonGrade(String value1, String value2, double maxGrade) {
+        if (value1.equals(value2)) {
+            return maxGrade;
+        }
+        else if (value1.contains(value2) || value2.contains(value1)) {
+            return maxGrade / 2; 
+        }
+        else {
+            return maxGrade * Math.max(LevenshteinDistance.getLevenshteinDistance(value1, value2) - value1.length(), 0) 
+                    / value1.length();
+        }
+    }
+    
+    private DocumentModelList getAllServices(CoreSession session, DocumentModel model) throws ClientException {
+        DocumentModelList services = new DocumentModelListImpl();
+        for (DocumentModel child : session.getChildren(model.getRef(), null, new DeletedDocumentFilter(), null)) {
+            if (child.getType().equals(Service.DOCTYPE)) {
+                services.add(child);
+            }
+            else {
+                services.addAll(getAllServices(session, child));
+            }
+        }
+        return services;
     }
     
 }

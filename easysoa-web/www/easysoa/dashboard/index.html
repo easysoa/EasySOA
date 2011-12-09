@@ -97,9 +97,8 @@
     <% validationState = localService.get('validationState');
        for (validator in validationState) { %>
     <td class="serviceEntryValidationResult">
-        <div title="<%= validationState[validator].validationLog %>">
-            <%= iconTemplate({value: validationState[validator].isValidated, small: true}) %>
-        </div>
+       <div><%= validationState[validator].validationLog %></div>
+       <%= iconTemplate({value: validationState[validator].isValidated, small: true}) %>
     </td>
     <% } %>
 </script>

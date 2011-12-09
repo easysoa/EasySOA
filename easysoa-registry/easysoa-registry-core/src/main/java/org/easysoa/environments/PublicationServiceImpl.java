@@ -8,6 +8,7 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.PublicationService;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;

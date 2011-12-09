@@ -73,7 +73,7 @@ window.AppView = Backbone.View.extend({
         if (window.username != undefined) {
             var app = this;
             $.ajax({
-                url: '/dashboard/servicesstate?username=' + window.username,
+                url: '/dashboard/services/' + window.username,
                 success: function(data, textStatus, jqXHR) {
                     app.hidePlaceholder();
                     var result = $.parseJSON(jqXHR.responseText);
@@ -137,7 +137,7 @@ window.AppView = Backbone.View.extend({
             var toId = this.services.getByCid(this.selectedReference).get('id');
             var app = this;
             $.ajax({
-                url: '/dashboard/linkservices?fromid=' + fromId + '&toid=' + toId,
+                url: '/dashboard/services/' + fromId + '/linkto/' + toId,
                 success: function(data, textStatus, jqXHR) {
                     location.reload();
                 },

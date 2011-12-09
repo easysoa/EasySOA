@@ -27,6 +27,7 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.PublicationService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
@@ -88,7 +89,7 @@ public class WorkspaceActionsBean {
             DocumentModel newWorkspace = documentManager.createDocumentModel(
                     docService.getWorkspaceRoot(documentManager).toString(),
                     IdUtils.generateStringId(), Workspace.DOCTYPE);
-            newWorkspace.setProperty("dublincore", "title", currentDocModel.getTitle() + " (copy)");
+            newWorkspace.setProperty("dublincore", "title", documentManager.getPrincipal().getName());
             newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, currentDocModel.getTitle());
             newWorkspace = documentManager.createDocument(newWorkspace);
             

@@ -18,7 +18,7 @@
   <implementation class="org.easysoa.validation.ServiceValidatorComponent" />
 
   <service>
-    <provide interface="org.easysoa.validation.ServiceValidationService" />
+    <provide interface="org.easysoa.services.ServiceValidationService" />
   </service>
 
   <extension-point name="validators">

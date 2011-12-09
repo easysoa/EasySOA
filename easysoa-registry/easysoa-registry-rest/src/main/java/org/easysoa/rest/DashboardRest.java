@@ -21,17 +21,20 @@
 package org.easysoa.rest;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DocumentService;
-import org.easysoa.validation.ServiceValidationService;
+import org.easysoa.services.ServiceValidationService;
+import org.easysoa.validation.CorrelationMatch;
 import org.easysoa.validation.ServiceValidator;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,30 +55,102 @@ import org.nuxeo.runtime.api.Framework;
 public class DashboardRest {
 
     @GET
-    @Path("/validators")
-    public Object getValidators(@Context HttpServletRequest request) throws Exception {
-        ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
-        JSONObject result = new JSONObject();
-        List<ServiceValidator> validators = validationService.getValidators();
-        for (ServiceValidator validator : validators) {
-            result.put(validator.getName(), validator.getLabel());
+    @Path("/services/{workspace}")
+    public Object getServicesByWorkspace(@Context HttpServletRequest request, 
+            @PathParam("workspace") String workspace) throws Exception {
+    
+        // Init
+        CoreSession session = SessionFactory.getSession(request);
+        DocumentService docService = Framework.getService(DocumentService.class);
+        JSONArray serviceEntries = new JSONArray();
+        
+        try {
+            
+            // Find workspace
+            DocumentModel workspaceModel = docService.findWorkspace(session, workspace);
+            if (workspaceModel != null) {
+    
+                // Gather workspace services
+                DocumentModelList workspaceServiceModels = session.query("SELECT * FROM " + Service.DOCTYPE +
+                        " WHERE ecm:path STARTSWITH '" + workspaceModel.getPathAsString() + "'" +
+                        " AND ecm:currentLifeCycleState <> 'deleted'");
+                
+                // Find environment
+                DocumentModel environmentModel = docService.findEnvironment(session, 
+                        (String) workspaceModel.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT));
+                if (environmentModel != null) {
+    
+                    // Gather reference services
+                    DocumentModelList environmentServiceModels = session.query("SELECT * FROM " + Service.DOCTYPE +
+                            " WHERE ecm:path STARTSWITH '" + environmentModel.getPathAsString() + "'" +
+                            " AND ecm:currentLifeCycleState <> 'deleted'");
+                    
+                    // Build response, with services in order:
+                    // 1. Matching services
+                    // 2. Reference services without match (= in environment only)
+                    // 3. Workspace services without match
+                    DocumentModelList environmentServiceModelsWithoutMatch = new DocumentModelListImpl();
+                    for (DocumentModel environmentServiceModel : environmentServiceModels) {
+                        DocumentModel workspaceServiceModel = popReferencedService(environmentServiceModel, workspaceServiceModels);
+                        if (workspaceServiceModel != null) {
+                            serviceEntries.put(getServiceEntry(workspaceServiceModel, environmentServiceModel));
+                        }
+                        else {
+                            environmentServiceModelsWithoutMatch.add(environmentServiceModel);
+                        }
+                    }
+                    for (DocumentModel environmentServiceModel : environmentServiceModelsWithoutMatch) {
+                        serviceEntries.put(getServiceEntry(null, environmentServiceModel));
+                    }
+                    
+                    for (DocumentModel workspaceServiceModel : workspaceServiceModels) {
+                        serviceEntries.put(getServiceEntry(workspaceServiceModel, null));
+                    }
+                    
+                }
+                else {
+                    return formatError("Workspace '" + workspace + "' has no reference environment");
+                }
+            
+            }
+            else {
+                return formatError("No such workspace: '" + workspace + "'");
+            }
+        
         }
-        return result.toString();
+        catch (Exception e) {
+            return formatError("Failed to query services state", e);
+        }
+        
+        return serviceEntries.toString();
+        
+    }
+    
+    
+    @GET
+    @Path("/service/{serviceid}")
+    public Object getServiceById(@Context HttpServletRequest request, 
+            @PathParam("serviceid") String serviceid) throws Exception {
+        CoreSession session = SessionFactory.getSession(request);
+        DocumentModel worskspaceServiceModel = session.getDocument(new IdRef(serviceid));
+        String referenceId = (String) worskspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
+        DocumentModel referencedServiceModel = (referenceId != null) ? session.getDocument(new IdRef(referenceId)) : null;
+        return getServiceEntry(session.getDocument(new IdRef(serviceid)), referencedServiceModel);
     }
 
     
-    @GET
-    @Path("/linkservices")
-    public Object linkServices(@Context HttpServletRequest request, 
-            @QueryParam("fromid") String fromId, 
-            @QueryParam("toid") String toId) throws Exception {
-
+    @POST
+    @Path("/service/{serviceid}/linkto/{referenceid}")
+    public Object createServiceReference(@Context HttpServletRequest request, 
+            @PathParam("serviceid") String serviceid, 
+            @PathParam("referenceid") String referenceid) throws Exception {
+    
         CoreSession session = SessionFactory.getSession(request);
         
-        DocumentModel localServiceModel = session.getDocument(new IdRef(fromId));
+        DocumentModel localServiceModel = session.getDocument(new IdRef(serviceid));
         if (localServiceModel != null) {
-            if (session.exists(new IdRef(toId))) {
-                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, toId);
+            if (session.exists(new IdRef(referenceid))) {
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, referenceid);
                 localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Manually set");
                 session.saveDocument(localServiceModel);
                 session.save();
@@ -90,103 +165,57 @@ public class DashboardRest {
         return new JSONObject().toString();
     }
 
+    
     @GET
-    @Path("/servicesstate")
-    public Object getServicesState(@Context HttpServletRequest request, @QueryParam("username") String username) throws Exception {
-
-        // Init
+    @Path("/service/{serviceid}/matches")
+    public Object getServiceMatches(@Context HttpServletRequest request,
+            @PathParam("serviceid") String serviceId) throws Exception {
         CoreSession session = SessionFactory.getSession(request);
-        DocumentService docService = Framework.getService(DocumentService.class);
-        JSONArray serviceEntries = new JSONArray();
-        
-        try {
-            
-            // Find workspace
-            DocumentModel workspaceModel = docService.findWorkspace(session, username);
-            if (workspaceModel != null) {
-
-                // Gather workspace services
-                DocumentModelList workspaceServiceModels = session.query("SELECT * FROM " + Service.DOCTYPE +
-                        " WHERE ecm:path STARTSWITH '" + workspaceModel.getPathAsString() + "'" +
-                        " AND ecm:currentLifeCycleState <> 'deleted'");
-                
-                // Find environment
-                DocumentModel environmentModel = docService.findEnvironment(session, 
-                        (String) workspaceModel.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT));
-                if (environmentModel != null) {
-
-                    // Gather reference services
-                    DocumentModelList environmentServiceModels = session.query("SELECT * FROM " + Service.DOCTYPE +
-                            " WHERE ecm:path STARTSWITH '" + environmentModel.getPathAsString() + "'" +
-                            " AND ecm:currentLifeCycleState <> 'deleted'");
-                    
-                    // Build response, with services in order:
-                    // 1. Matching services
-                    // 2. Reference services without match (= in environment only)
-                    // 3. Workspace services without match
-                    DocumentModelList environmentServiceModelsWithoutMatch = new DocumentModelListImpl();
-                    for (DocumentModel environmentServiceModel : environmentServiceModels) {
-                        DocumentModel workspaceServiceModel = popMatchingService(environmentServiceModel, workspaceServiceModels);
-                        if (workspaceServiceModel != null) {
-                            addServiceEntry(serviceEntries, workspaceServiceModel, environmentServiceModel);
-                        }
-                        else {
-                            environmentServiceModelsWithoutMatch.add(environmentServiceModel);
-                        }
-                    }
-                    for (DocumentModel environmentServiceModel : environmentServiceModelsWithoutMatch) {
-                        addServiceEntry(serviceEntries, null, environmentServiceModel);
-                    }
-                    
-                    for (DocumentModel workspaceServiceModel : workspaceServiceModels) {
-                        addServiceEntry(serviceEntries, workspaceServiceModel, null);
-                    }
-                    
-                }
-                else {
-                    return formatError("Workspace '" + username + "' has no reference environment");
-                }
-            
-            }
-            else {
-                return formatError("No such workspace: '" + username + "'");
-            }
-        
+        ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
+        SortedSet<CorrelationMatch> findCorrelatedServices = validationService.findCorrelatedServices(session, session.getDocument(new IdRef(serviceId)));
+        JSONArray result = new JSONArray();
+        for (CorrelationMatch match : findCorrelatedServices) {
+            JSONObject matchJSON = new JSONObject();
+            matchJSON.put("id", match.getDocumentModel().getId());
+            matchJSON.put("title", match.getDocumentModel().getTitle());
+            matchJSON.put("correlationRate", match.getCorrelationRateAsPercentage());
         }
-        catch (Exception e) {
-            return formatError("Failed to query services state", e);
-        }
-        
-        return serviceEntries.toString();
-        
+        return result.toString();
     }
     
-    private void addServiceEntry(JSONArray serviceEntries, DocumentModel workspaceServiceModel, DocumentModel referencedServiceModel) throws JSONException, ClientException {
-        JSONObject serviceEntry = new JSONObject();
-        
-        // Local service
-        JSONObject localService = new JSONObject();
-        if (workspaceServiceModel != null) {
-            localService.put("id", workspaceServiceModel.getId());
-            localService.put("name", workspaceServiceModel.getTitle());
-            localService.put("url", workspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_URL));
-            localService.put("isValidated", workspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_ISVALIDATED));
-            localService.put("validationState", getValidationStateAsJSON(workspaceServiceModel));
+
+    @GET
+    @Path("/validators")
+    public Object getValidators(@Context HttpServletRequest request) throws Exception {
+        ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
+        JSONObject result = new JSONObject();
+        List<ServiceValidator> validators = validationService.getValidators();
+        for (ServiceValidator validator : validators) {
+            result.put(validator.getName(), validator.getLabel());
         }
-        serviceEntry.put("localService", localService);
-        
-        // Referenced service
-        JSONObject referencedService = new JSONObject();
-        if (referencedServiceModel != null) {
-            referencedService.put("id", referencedServiceModel.getId());
-            referencedService.put("name", referencedServiceModel.getTitle());
-            referencedService.put("url", referencedServiceModel.getProperty(Service.SCHEMA, Service.PROP_URL));
-        }
-        serviceEntry.put("referencedService", referencedService);
-        
-        // Add to service entry list
-        serviceEntries.put(serviceEntry);
+        return result.toString();
     }
+    
+    
+    private JSONObject getServiceEntry(DocumentModel workspaceServiceModel, DocumentModel referencedServiceModel) throws JSONException, ClientException {
+        JSONObject serviceEntry = new JSONObject();
+        serviceEntry.put("localService", getDocumentModelAsJSON(workspaceServiceModel));
+        serviceEntry.put("referencedService", getDocumentModelAsJSON(referencedServiceModel));
+        return serviceEntry;
+    }
+    
+    private JSONObject getDocumentModelAsJSON(DocumentModel model) throws JSONException, ClientException {
+        JSONObject modelJSON = new JSONObject();
+        if (model != null) {
+            modelJSON.put("id", model.getId());
+            modelJSON.put("name", model.getTitle());
+            modelJSON.put("url", model.getProperty(Service.SCHEMA, Service.PROP_URL));
+            modelJSON.put("isValidated", model.getProperty(Service.SCHEMA, Service.PROP_ISVALIDATED));
+            modelJSON.put("validationState", getValidationStateAsJSON(model));
+        }
+        return modelJSON;
+    }
+    
     
     private JSONObject getValidationStateAsJSON(DocumentModel serviceModel) throws PropertyException, ClientException, JSONException {
         JSONObject validationStateJSON = new JSONObject();
@@ -200,7 +229,8 @@ public class DashboardRest {
         return validationStateJSON;
     }
 
-    public DocumentModel popMatchingService(DocumentModel environmentServiceModel, DocumentModelList workspaceServiceModels) throws ClientException {
+    
+    private DocumentModel popReferencedService(DocumentModel environmentServiceModel, DocumentModelList workspaceServiceModels) throws ClientException {
         // Init
         String idToMatch = environmentServiceModel.getId();
         DocumentModel matchingService = null;
@@ -221,12 +251,13 @@ public class DashboardRest {
         return matchingService;
     }
     
-
-    public String formatError(String error) throws JSONException {
+    
+    private String formatError(String error) throws JSONException {
         return formatError(error, null);
     }
 
-    public String formatError(String error, Exception e) throws JSONException {
+    
+    private String formatError(String error, Exception e) throws JSONException {
         JSONObject errorObject = new JSONObject();
         errorObject.put("error", error);
         if (e != null) {

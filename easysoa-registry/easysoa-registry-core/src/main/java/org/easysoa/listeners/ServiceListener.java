@@ -23,6 +23,8 @@ package org.easysoa.listeners;
 import static org.easysoa.doctypes.Service.DOCTYPE;
 import static org.easysoa.doctypes.Service.PROP_FILEURL;
 import static org.easysoa.doctypes.Service.PROP_URL;
+import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICE;
+import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICEORIGIN;
 import static org.easysoa.doctypes.Service.SCHEMA;
 
 import java.io.File;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.SortedSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,10 +44,13 @@ import org.easysoa.impl.HttpFile;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.ServiceValidationService;
+import org.easysoa.validation.CorrelationMatch;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -237,6 +243,18 @@ public class ServiceListener implements EventListener {
                 }
                 else {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
+                }
+            }
+            String referencedService = (String) doc.getProperty(SCHEMA, PROP_REFERENCESERVICE);
+            if (referencedService != null && !session.exists(new IdRef(referencedService))) {
+                // Remove obsolete link to service
+                doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, null);
+                ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
+                SortedSet<CorrelationMatch> correlatedServices = validationService.findCorrelatedServices(session, doc);
+                if (!correlatedServices.isEmpty()) {
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, correlatedServices.first().getDocumentModel());
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICEORIGIN,
+                            "Automatic correlation (" + correlatedServices.first().getCorrelationRateAsPercentageString() + " match)");
                 }
             }
             

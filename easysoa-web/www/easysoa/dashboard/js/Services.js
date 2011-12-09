@@ -55,10 +55,15 @@ window.ServiceEntryView = Backbone.View.extend({
 
     tagName: 'tr',
     
+    events: {
+        "mouseover .serviceEntryValidationResult" : "showLabel",
+        "mouseout .serviceEntryValidationResult" : "hideLabel",
+    },
+    
     template: _.template($('#serviceentry-template').html()),
     
     initialize: function(model) {
-        _.bindAll(this, 'remove');
+        _.bindAll(this, 'remove', 'showLabel', 'hideLabel');
         this.model = model;
         this.model.bind('destroy', this.remove, this);
     },
@@ -70,6 +75,17 @@ window.ServiceEntryView = Backbone.View.extend({
     
     remove: function() {
         $(this.el).remove();
+    },
+    
+    showLabel: function(event) {
+        var label = $('div', event.currentTarget);
+        if (label.html().trim() != "") {
+            $('div', event.currentTarget).addClass("visible");
+        }
+    },
+    
+    hideLabel: function(event) {
+        $('div', event.currentTarget).removeClass("visible");
     }
     
 });

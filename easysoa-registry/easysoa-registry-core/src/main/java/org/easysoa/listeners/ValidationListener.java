@@ -27,7 +27,7 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DocumentService;
-import org.easysoa.validation.ServiceValidationService;
+import org.easysoa.services.ServiceValidationService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.event.Event;
