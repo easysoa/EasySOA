@@ -16,13 +16,13 @@
     <a4j:region id="documentViewRegion">
       <a4j:outputPanel id="documentViewPanel">
       
-      	 <!-- EasySOA hook -->
-		 <c:if test="#{currentDocument.getType().equals('AppliImpl') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceRef')}">
- 			<ui:include src="/incl/tabs/easysoa_view.xhtml" />
+         <!-- EasySOA hook -->
+         <c:if test="#{currentDocument.getType().equals('AppliImpl') || currentDocument.getType().equals('ServiceAPI') || currentDocument.getType().equals('Service') || currentDocument.getType().equals('ServiceReference')}">
+            <ui:include src="/incl/tabs/easysoa_view.xhtml" />
          </c:if>
           
-	     <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
-	     
+         <nxl:layout value="#{currentDocument}" mode="view" name="#{currentDocumentSummaryLayout}"/>
+         
       </a4j:outputPanel>
     </a4j:region>
   </h:form>

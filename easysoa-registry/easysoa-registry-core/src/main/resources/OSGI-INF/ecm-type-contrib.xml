@@ -85,6 +85,9 @@
         <type>ServiceAPI</type>
         <type>ServiceReference</type>
       </subtypes>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
     </type>
     
     <type id="Workspace" coretype="Workspace">

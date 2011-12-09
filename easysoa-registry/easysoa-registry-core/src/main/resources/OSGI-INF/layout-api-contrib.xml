@@ -7,8 +7,7 @@
 
     <layout name="serviceapi_tech">
       <templates>
-        <template mode="any">/layouts/layout_easysoa_template.xhtml
-				</template>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
       <properties mode="any">
         <property name="title">Technical information</property>
@@ -36,8 +35,7 @@
 
     <layout name="serviceapi_spec">
       <templates>
-        <template mode="any">/layouts/layout_easysoa_template.xhtml
-				</template>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
       <properties mode="any">
         <property name="title">Specifications</property>
