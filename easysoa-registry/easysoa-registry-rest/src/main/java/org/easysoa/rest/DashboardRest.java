@@ -135,7 +135,7 @@ public class DashboardRest {
         DocumentModel worskspaceServiceModel = session.getDocument(new IdRef(serviceid));
         String referenceId = (String) worskspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
         DocumentModel referencedServiceModel = (referenceId != null) ? session.getDocument(new IdRef(referenceId)) : null;
-        return getServiceEntry(session.getDocument(new IdRef(serviceid)), referencedServiceModel);
+        return getServiceEntry(session.getDocument(new IdRef(serviceid)), referencedServiceModel).toString();
     }
 
     
@@ -144,14 +144,19 @@ public class DashboardRest {
     public Object createServiceReference(@Context HttpServletRequest request, 
             @PathParam("serviceid") String serviceid, 
             @PathParam("referenceid") String referenceid) throws Exception {
-    
-        CoreSession session = SessionFactory.getSession(request);
         
+        CoreSession session = SessionFactory.getSession(request);
         DocumentModel localServiceModel = session.getDocument(new IdRef(serviceid));
         if (localServiceModel != null) {
-            if (session.exists(new IdRef(referenceid))) {
-                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, referenceid);
-                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Manually set");
+            boolean referenceidIsNull = "null".equals(referenceid);
+            if (referenceidIsNull || session.exists(new IdRef(referenceid))) {
+                String newReferenceId = null, newReferenceOrigin = null;
+                if (!referenceidIsNull) {
+                    newReferenceId = referenceid;
+                    newReferenceOrigin = "Manually set";
+                }
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, newReferenceId);
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, newReferenceOrigin);
                 session.saveDocument(localServiceModel);
                 session.save();
             }

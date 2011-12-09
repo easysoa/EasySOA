@@ -290,11 +290,11 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
 
     public SortedSet<CorrelationMatch> findCorrelatedServices(CoreSession session, DocumentModel service) throws Exception {
         DocumentService docService = Framework.getService(DocumentService.class);
-        DocumentModel workspace = docService.getWorkspace(session, service);
-        String referencedEnvironment = (String) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT);
-        if (referencedEnvironment != null) {
-            DocumentModel referenceWorkspace = docService.findWorkspace(session, referencedEnvironment);
-            return findCorrelatedServices(session, service, getAllServices(session, referenceWorkspace));
+        DocumentModel workspaceModel = docService.getWorkspace(session, service);
+        String referencedEnvironmentTitle = (String) workspaceModel.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT);
+        if (referencedEnvironmentTitle != null) {
+            DocumentModel referencedEnvironmentModel = docService.findEnvironment(session, referencedEnvironmentTitle);
+            return findCorrelatedServices(session, service, getAllServices(session, referencedEnvironmentModel));
         }
         else {
             return null;
@@ -305,15 +305,14 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             DocumentModelList referenceServices) throws ClientException, MalformedURLException {
         
         SortedSet<CorrelationMatch> matches = new TreeSet<CorrelationMatch>();
-        
         DocumentModel referenceModel = null;
         
         // Fetch reference service
         String referenceId = (String) service.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
         if (referenceId != null) {
             DocumentRef referenceRef = new IdRef(referenceId);
-            if (referenceRef != null) {
-                referenceModel = session.getDocument(referenceRef);
+            if (session.exists(referenceRef)) {
+                referenceModel = session.getDocument(new IdRef(referenceId));
                 matches.add(new CorrelationMatch(referenceModel, 1.0));
             }
         }
@@ -331,22 +330,19 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             String serviceName = (String) service.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME);
             String title = service.getTitle();
             String urlPath = new URL((String) service.getProperty(Service.SCHEMA, Service.PROP_URL)).getPath();
-            if (namespace != null && !namespace.isEmpty() && serviceName != null && !serviceName.isEmpty()) {
-                for (DocumentModel potentialMatch : referenceServices) {
-                    
-                    double correlationGrade = 0;
-                    correlationGrade += getComparisonGrade(serviceName, 
-                            (String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME), 0.7);
-                    correlationGrade += getComparisonGrade(namespace, 
-                            (String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE), 0.3);
-                    correlationGrade += getComparisonGrade(title, 
-                            (String) potentialMatch.getTitle(), 0.3);
-                    correlationGrade += getComparisonGrade(urlPath, 
-                            new URL((String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_URL)).getPath(), 0.3);
-                    
-                    if (correlationGrade >= 0.3) {
-                        matches.add(new CorrelationMatch(potentialMatch, Math.min(correlationGrade, 1.0)));
-                    }
+            for (DocumentModel potentialMatch : referenceServices) {
+                double correlationGrade = 0;
+                correlationGrade += getComparisonGrade(serviceName, 
+                        (String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME), 0.7);
+                correlationGrade += getComparisonGrade(namespace, 
+                        (String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE), 0.3);
+                correlationGrade += getComparisonGrade(title, 
+                        (String) potentialMatch.getTitle(), 0.3);
+                correlationGrade += getComparisonGrade(urlPath, 
+                        new URL((String) potentialMatch.getProperty(Service.SCHEMA, Service.PROP_URL)).getPath(), 0.3);
+                
+                if (correlationGrade >= 0.3) {
+                    matches.add(new CorrelationMatch(potentialMatch, Math.min(correlationGrade, 1.0)));
                 }
             }
         }
@@ -355,6 +351,9 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
     }
     
     private double getComparisonGrade(String value1, String value2, double maxGrade) {
+        if (value1 == null || value2 == null) {
+            return 0;
+        }
         if (value1.equals(value2)) {
             return maxGrade;
         }
@@ -362,7 +361,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             return maxGrade / 2; 
         }
         else {
-            return maxGrade * Math.max(LevenshteinDistance.getLevenshteinDistance(value1, value2) - value1.length(), 0) 
+            return maxGrade * Math.max(value1.length() - LevenshteinDistance.getLevenshteinDistance(value1, value2), 0) 
                     / value1.length();
         }
     }

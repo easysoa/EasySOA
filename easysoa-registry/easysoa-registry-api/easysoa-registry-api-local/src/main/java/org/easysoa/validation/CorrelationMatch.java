@@ -35,7 +35,7 @@ public class CorrelationMatch implements Comparable<CorrelationMatch> {
      * @return Ex: "33.3%"
      */
     public String getCorrelationRateAsPercentageString() {
-        return String.valueOf(correlationRate) + "%";
+        return String.valueOf(getCorrelationRateAsPercentage()) + "%";
     }
 
     /**

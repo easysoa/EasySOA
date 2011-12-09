@@ -246,15 +246,19 @@ public class ServiceListener implements EventListener {
                 }
             }
             String referencedService = (String) doc.getProperty(SCHEMA, PROP_REFERENCESERVICE);
-            if (referencedService != null && !session.exists(new IdRef(referencedService))) {
-                // Remove obsolete link to service
-                doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, null);
+            if (referencedService == null || !session.exists(new IdRef(referencedService))) {
+                // If no reference or missing, find new reference by correlation
+                DocumentModel newReferenceService = null;
                 ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
                 SortedSet<CorrelationMatch> correlatedServices = validationService.findCorrelatedServices(session, doc);
-                if (!correlatedServices.isEmpty()) {
-                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, correlatedServices.first().getDocumentModel());
+                if (correlatedServices != null && !correlatedServices.isEmpty()) {
+                    newReferenceService = correlatedServices.first().getDocumentModel();
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, newReferenceService.getId());
                     doc.setProperty(SCHEMA, PROP_REFERENCESERVICEORIGIN,
                             "Automatic correlation (" + correlatedServices.first().getCorrelationRateAsPercentageString() + " match)");
+                }
+                else {
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, null);
                 }
             }
             
