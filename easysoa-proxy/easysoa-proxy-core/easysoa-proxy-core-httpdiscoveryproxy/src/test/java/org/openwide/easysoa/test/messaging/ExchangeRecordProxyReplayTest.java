@@ -90,7 +90,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		// get a list of recorded exchanges
 		logger.debug("Calling list service ...");
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		httpUriRequest = new HttpGet("http://localhost:8085/list");
+		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecordlist?storeName=");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		
@@ -105,12 +105,12 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		
 		String recordID;
 		String originalResponse;
-		List<ExchangeRecord> recordList = fileStore.list(); 
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(""); 
 		
 		for(ExchangeRecord record : recordList){
 			recordID = record.getExchangeID();
 			originalResponse = record.getOutMessage().getMessageContent().getContent();
-			httpUriRequest = new HttpGet("http://localhost:8085/replay/" + recordID);
+			httpUriRequest = new HttpGet("http://localhost:8085/replay?exchangeRecordStoreName=&exchangeRecordId=" + record.getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
 			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);

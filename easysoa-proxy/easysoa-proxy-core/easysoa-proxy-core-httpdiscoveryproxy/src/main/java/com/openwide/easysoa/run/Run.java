@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.Deque;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-//import com.openwide.easysoa.monitoring.Message;
 
 /**
  * Run is a set of recorded messages
@@ -39,10 +38,17 @@ public class Run {
 	 */
 	private static Logger logger = Logger.getLogger(Run.class.getName());
 	
+	//
+	public enum RunStatus {
+		RUNNING, STOPPED, SAVED
+	}
+	
+	//
+	private RunStatus status;
+	
 	/**
 	 * The messages collection
 	 */
-	//private ArrayDeque<Message> messagesList;
 	private ArrayDeque<ExchangeRecord> exchangeRecordList;
 	
 	/**
@@ -65,30 +71,17 @@ public class Run {
 	/**
 	 * Initialize a new <code>Run</code> instance 
 	 */
+	// TODO :  check thaht the run name does not contains exotic characters because the name will be used to create the run folder for persistence. 
 	public Run(String name) throws IllegalArgumentException {
 		if(name == null){
 			throw new IllegalArgumentException("name parameter must not be null");
 		}
 		this.name = name;
-		//messagesList = new ArrayDeque<Message>();
 		exchangeRecordList = new ArrayDeque<ExchangeRecord>();
 		startDate = null;
 		stopDate = null;
 	}
-	
-	/**
-	 * Add a message
-	 * @param message The message to add in the collection
-	 */
-	/*@Deprecated
-	public void addMessage(Message message) throws IllegalArgumentException {
-		if(message == null){
-			throw new IllegalArgumentException("The parameter message must not be null !");
-		}
-		logger.debug("Adding message in message list : " + message);
-		this.messagesList.add(message);
-	}*/
-	
+
 	/**
 	 * Add an exchange record
 	 * @param exchangeRecord The exchangeRecord to add
@@ -102,13 +95,6 @@ public class Run {
 		this.exchangeRecordList.add(exchangeRecord);
 	}
 	
-	/**
-	 * Returns the message list
-	 * @return The message list in a <code>Deque</code>
-	 */
-	/*public Deque<Message> getMessageList(){
-		return this.messagesList;
-	}*/
 	/**
 	 * Returns the exchange record list
 	 * @return The exchange record list in a <code>Deque</code>
@@ -166,6 +152,22 @@ public class Run {
 			throw new IllegalArgumentException();
 		}
 		this.name = name;
+	}
+
+	/**
+	 * Returns the status
+	 * @return The run status
+	 */
+	public RunStatus getStatus() {
+		return status;
+	}
+
+	/**
+	 * Set the run status
+	 * @param status Run status
+	 */
+	public void setStatus(RunStatus status) {
+		this.status = status;
 	}
 	
 }

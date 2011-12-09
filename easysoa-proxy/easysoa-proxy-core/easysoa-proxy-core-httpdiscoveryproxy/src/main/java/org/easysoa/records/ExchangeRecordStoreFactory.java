@@ -30,7 +30,7 @@ import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 public class ExchangeRecordStoreFactory {
 
 	// TODO : add a way to create dynamically different exchange stores
-    public static ExchangeRecordStore createExchangeRecordStore() throws Exception {
+    public static ExchangeRecordStoreManager createExchangeRecordStore() throws Exception {
         return new ExchangeRecordFileStore();
     }
 

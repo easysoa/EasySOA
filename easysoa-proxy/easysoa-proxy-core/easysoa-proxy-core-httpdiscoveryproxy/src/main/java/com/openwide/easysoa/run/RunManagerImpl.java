@@ -27,12 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStore;
+import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
 import com.openwide.easysoa.monitoring.MonitoringService;
+import com.openwide.easysoa.run.Run.RunStatus;
 
 /**
  * A manager for run's
@@ -50,11 +51,16 @@ public class RunManagerImpl implements RunManager {
 	 * Logger
 	 */
 	private Logger logger = Logger.getLogger(RunManagerImpl.class.getName());	
-
+	
 	/**
-	 * 
+	 * when set to true, a run is automatically started when the getCurrentRun is called if there is no current run.
 	 */
 	private boolean autoStart = true;	
+	
+	/**
+	 * When set to true, the run is automatically saved when the stop method is called. 
+	 */
+	private boolean autoSave = true;
 	
 	/**
 	 * Reference to monitoring service : only one monitoring service for the runManager 
@@ -72,13 +78,14 @@ public class RunManagerImpl implements RunManager {
 	/**
 	 * Run list
 	 */
-	private ArrayDeque<Run> runList;
+	// obsolete, only one run at the same time
+	//private ArrayDeque<Run> runList;
 
 	/**
 	 * 
 	 */
 	public RunManagerImpl(){
-		runList = new ArrayDeque<Run>();
+		//runList = new ArrayDeque<Run>();
 		logger.debug("Init RunManagerImpl ...");
 	}
 	
@@ -88,8 +95,31 @@ public class RunManagerImpl implements RunManager {
 	 */
 	public void setAutoStart(boolean autoStart){
 		this.autoStart = autoStart;
-		//RunManagerImpl.autoStart = autoStart;
 	}
+
+	/**
+	 * Returns true id the auto start is enabled
+	 * @return true id the auto start is enabled 
+	 */
+	public boolean isAutoStart() {
+		return autoStart;
+	}	
+
+	/**
+	 * Set the auto save. The auto save feature save automatically the run when the stop method is called.
+	 * @param autoStart true if the current run should be saved automatically when the method stop is called, false otherwise
+	 */
+	public void setAutoSave(boolean autoSave) {
+		this.autoSave = autoSave;
+	}
+
+	/**
+	 * Returns true id the auto save is enabled
+	 * @return true id the auto save is enabled 
+	 */	
+	public boolean isAutoSave() {
+		return autoSave;
+	}	
 	
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getCurrentRun()
@@ -110,11 +140,13 @@ public class RunManagerImpl implements RunManager {
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#start(java.lang.String)
 	 */
 	@Override
-	public void start(String runName) throws Exception {
+	public String start(String runName) throws Exception {
 		StringBuffer error = new StringBuffer();
 		if(currentRun == null && checkUniqueRunName(runName)){
 			currentRun = new Run(runName);
 			currentRun.setStartDate(new Date());
+			currentRun.setStatus(RunStatus.RUNNING);
+			return "Run " + runName + " started !";
 		} else {
 			error.append("Unable to start a new run. ");
 			if(currentRun != null){
@@ -130,29 +162,38 @@ public class RunManagerImpl implements RunManager {
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#stop()
 	 */
 	@Override
-	public void stop(){
+	public String stop() throws Exception {
+		String response;
 		if(this.currentRun != null){
 			this.currentRun.setStopDate(new Date());
-			this.runList.add(currentRun);
-			this.currentRun = null;
+			//this.runList.add(currentRun);
+			//this.currentRun = null;
+			currentRun.setStatus(RunStatus.STOPPED);
+			if(autoSave){
+				save();
+			}
+			response = "Run " + currentRun.getName() + " stopped !";
+		} else {
+			throw new Exception("There is no current run to stop !");
 		}
+		return response;
 	}
 	
 	/**
 	 * Returns the run list
 	 * @return A <code>List</code> of <code>Run</code>
 	 */
-	public ArrayDeque<Run> listRuns(){
+	/*public ArrayDeque<Run> listRuns(){
 		return this.runList;
-	}
+	}*/
 	
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getLastRun()
 	 */
-	@Override
+	/*@Override
 	public Run getLastRun(){
 		return this.runList.getLast();
-	}
+	}*/
 
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#record()
@@ -164,12 +205,6 @@ public class RunManagerImpl implements RunManager {
 		try{
 			this.getCurrentRun().addExchange(exchangeRecord);
 			monitoringService.listen(exchangeRecord);
-			
-			// Save the exchangeRecord
-			// TODO : maybe not the right place to save the Exchange record ?
-			// TODO add an exchangeRecordSetFileStore to store a list of exchangeRecord's
-			ExchangeRecordStore erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
-			erStore.save(exchangeRecord);			
 		}
 		catch(Exception ex){
 			logger.error("Unable to record message !", ex);
@@ -179,7 +214,7 @@ public class RunManagerImpl implements RunManager {
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getOrderedRunNames()
 	 */	
-	@Override
+	/*@Override
 	public List<String> getOrderedRunNames() {
 		ArrayList<String> runsNameList = new ArrayList<String>();
 		Iterator<Run> runIterator = runList.descendingIterator();
@@ -187,12 +222,12 @@ public class RunManagerImpl implements RunManager {
 			runsNameList.add(runIterator.next().getName());
 		}
 		return runsNameList;
-	}
+	}*/
 	
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#reRun()
 	 */
-	@Override
+	/*@Override
 	public void reRun(String runName) throws Exception {
 		Run run = getRun(runName);
 		// TODO remove this and find a way to re-init the monitoringService (especially the tree)
@@ -202,30 +237,35 @@ public class RunManagerImpl implements RunManager {
 		// 2 solutions :
 		// 1st : add a reference to monitoring service in runManager. The same Monitoring service is used for all the run in a same run manager
 		// 2nd : Each run can have a different run manager, defined when the run is created. We can give a monitoringServiceFactory as reference to the runManager.
-		/*for(Message message : run.getMessageList()){
-			logger.debug("Listening message : " + message);
-			monitoringService.listen(message);
-		}*/
+		//for(Message message : run.getMessageList()){
+		//	logger.debug("Listening message : " + message);
+		//	monitoringService.listen(message);
+		}
 		for(ExchangeRecord exchangeRecord : run.getExchangeRecordList()){
 			logger.debug("Listening exchange record : " + exchangeRecord);
 			monitoringService.listen(exchangeRecord);
 		}
-		
 		monitoringService.registerDetectedServicesToNuxeo();		
-	}
+	}*/
 
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#deleteRun()
 	 */	
-	@Override
+	/*@Override
 	public void deleteRun(String runName) throws Exception {
 		this.runList.remove(getRun(runName));
+	}*/
+	
+	@Override
+	public String delete() throws Exception {
+		currentRun = null;
+		return "Run deleted !";
 	}
 
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getRun()
 	 */	
-	@Override
+	/*@Override
 	public Run getRun(String runName) throws Exception {
 		Iterator<Run> iter = this.runList.iterator();
 		while(iter.hasNext()){
@@ -235,7 +275,7 @@ public class RunManagerImpl implements RunManager {
 			}
 		}
 		throw new Exception("There is no run with the name '" +runName + "'");
-	}
+	}*/
 
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getMonitoringService()
@@ -244,6 +284,15 @@ public class RunManagerImpl implements RunManager {
 	public MonitoringService getMonitoringService() {
 		return this.monitoringService;
 	}	
+
+	@Override
+	public String save() throws Exception {
+		// Save the exchangeRecord
+		ExchangeRecordStoreManager erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
+		erStore.save(currentRun);
+		currentRun.setStatus(RunStatus.SAVED);
+		return "Run " + currentRun.getName() + " saved !";
+	}
 	
 	/**
 	 * Check if the specified runName is unique
@@ -251,14 +300,26 @@ public class RunManagerImpl implements RunManager {
 	 * @return true if the run name is unique, false otherwise
 	 */
 	private boolean checkUniqueRunName(String runName){
-		Iterator<Run> iter = this.runList.iterator();
+		// TODO rewrite this method to check the run folder names
+		/*Iterator<Run> iter = this.runList.iterator();
 		while(iter.hasNext()){
 			Run run = iter.next();
 			if(run.getName().equalsIgnoreCase(runName)){
 				return false;
 			}
-		}
+		}*/
 		return true;
 	}
+
+	@Override
+	public boolean isCurrentRun() {
+		if(currentRun != null){
+			return true;
+		} else {
+			return false;			
+		}
+	}
+
+	
 	
 }
