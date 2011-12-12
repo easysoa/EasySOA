@@ -24,14 +24,14 @@
 				instance:wsdlLocation="http://localhost:9000/PureAirFlowersClientsLocalTest?wsdl" />
 		</reference>
 	</component>
-	<component name="PureAirFlowersClientsLocalTest">
-		<implementation.java
-			class="pureairflowers.clients.PureAirFlowersClientsLocalTestImpl" />
-		<service name="PureAirFlowersClients">
-			<interface.java interface="pureairflowers.clients.PureAirFlowersClients" />
-			<binding.ws uri="http://localhost:9000/PureAirFlowersClientsLocalTest" />
-		</service>
-	</component>
+	<!-- Default FraSCAti parsing would fail on the following because class is unknown in zip -->
+  	<!-- component name="PureAirFlowersClientsLocalTest">
+    <implementation.java class="pureairflowers.clients.PureAirFlowersClientsLocalTestImpl"/>
+    <service name="PureAirFlowersClients">
+      <interface.java interface="pureairflowers.clients.PureAirFlowersClients"/>
+      <binding.ws uri="http://localhost:9000/PureAirFlowersClientsLocalTest"/>
+    </service>
+  </component -->
 	<component name="ProxyUnused">
 		<implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl" />
 		<service name="restInterface">

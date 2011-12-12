@@ -51,22 +51,16 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(EasySOACoreFeature.class)
 @Deploy({
-	//"org.easysoa.registry.frascati",
-	"org.easysoa.registry.core", // deployed auto by dep
 	"org.nuxeo.runtime.datasource",
-
-    //"org.easysoa.registry.core",
-    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
-    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-    "org.easysoa.registry.core:OSGI-INF/DiscoveryServiceComponent.xml", // idem
-    "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
-    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
-    //"org.nuxeo.runtime.datasource"
+	"org.easysoa.registry.frascati", // deployed auto by dep
+	"org.easysoa.registry.core"//, // deployed auto by dep
+//    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
+//    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
+//    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
+//    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
+//    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
 })
 @LocalDeploy({
-	//"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
 	"org.easysoa.registry.core:org/easysoa/tests/datasource-contrib.xml" // required because no jetty.naming in deps
 })
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
@@ -82,14 +76,9 @@ public class EasySoaCoreTest
     @Inject ResourceService resourceService;
     
     DocumentModel parentAppliImplModel;
-    
-    //@Inject FraSCAtiService frascatiService;
-    
+        
     @Test
     public void setUp() throws ClientException, MalformedURLException {
-    	// FraSCAti
-  	  	//assertNotNull("Cannot get FraSCAti service component", frascatiService);
-
     	// Find or create appli
     	String appliUrl = "http://localhost";
 		parentAppliImplModel = docService.findAppliImpl(session, appliUrl);

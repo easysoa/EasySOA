@@ -20,23 +20,22 @@
 
 package org.easysoa.registry.frascati;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.frascati.NuxeoFraSCAtiException;
+import org.nuxeo.frascati.api.AbstractProcessingContext;
+import org.nuxeo.frascati.api.ProcessingModeProxy;
+import org.nuxeo.frascati.test.FraSCAtiFeature;
+import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.ow2.frascati.assembly.factory.api.ProcessingContext;
-import org.ow2.frascati.assembly.factory.api.ProcessingMode;
-import org.ow2.frascati.util.FrascatiException;
+
 import com.google.inject.Inject;
 
 /**
@@ -44,20 +43,14 @@ import com.google.inject.Inject;
  * @author mdutoo
  *
  */
-
 @RunWith(FeaturesRunner.class)
+@Features({FraSCAtiFeature.class})
 public class FraSCAtiServiceReadScaTest {
-
+	
     static final Log log = LogFactory.getLog(FraSCAtiServiceReadScaTest.class);
-    
-    @Inject NxFraSCAtiService frascatiService;
-    
-    @Before
-    public void setUp() throws ClientException, MalformedURLException {
-    	// FraSCAti
-  	  	assertNotNull("Cannot get FraSCAti service component", frascatiService);
-    }
-    
+       
+    @Inject NxFraSCAtiService frascatiRegistryService;
+        
     /** checking that FraSCAti parsing-based import of SCA ref'ing unknown class
      * fails without custom ProcessingContext.loadClass() */
     @Test
@@ -65,45 +58,49 @@ public class FraSCAtiServiceReadScaTest {
     	// SCA composite file to import :
     	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
     	File scaFile = new File(scaFilePath);
-	
-    	// reading all services :
-		Composite composite = frascatiService.readComposite(scaFile.toURI().toURL());
-		int serviceNb = composite.getService().size();
-		Assert.assertTrue(serviceNb > 0);
-		
+    	Composite composite = null;
+    	try{
+	    	composite = frascatiRegistryService.readComposite(scaFile.toURI().toURL());	
+			int serviceNb = composite.getService().size();			
+			Assert.assertTrue(serviceNb > 0);	
+    	} catch (Exception e){
+    		e.printStackTrace();
+    	}		
 		// reading only until unfound class (then ParserException in AssemblyFactoryManager.processComposite())
 		// therefore not all services read :
-		Composite crippledComposite = this.readComposite(scaFile.toURI().toURL(), frascatiService.getFraSCAti().getCompositeManager().newProcessingContext());
+		Composite crippledComposite = readComposite(scaFile.toURI().toURL(),
+				frascatiRegistryService.newParsingProcessingContext());
+		
 		Assert.assertTrue(crippledComposite == null);
     }
 
 
     /** Rather here than in FraSCAtiService because only public for test purpose */
-    public Composite readComposite(URL compositeUrl, ProcessingContext processingContext) throws Exception {
+    public Composite readComposite(URL compositeUrl, AbstractProcessingContext processingContext) 
+    		throws Exception {
   	  if (processingContext.getRootComposite() != null) {
   		  throw new Exception("Unlawful reuse of processingContext : already has a root composite "
   				  + processingContext.getRootComposite().getName());
   	  }
       // Only parse and check the SCA composite, i.e., don't generate code for the SCA composite and don't instantiate it.
-      processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
-      
+      processingContext.setProcessingMode(ProcessingModeProxy.check); // else composite fails to start because ref'd WSDLs are unavailable      
       try {
+    	  
         // Process the SCA composite.
-    	  frascatiService.getFraSCAti().processComposite(compositeUrl.toString(), processingContext);
-        
-        // Return the Eclipse STP SCA Composite.
-        return processingContext.getRootComposite();
-      } catch(FrascatiException fe) {
+    	frascatiRegistryService.getFraSCAti().processComposite(compositeUrl.toString(),
+    			processingContext);   
+    	
+      } catch(NuxeoFraSCAtiException fe) {
       	System.err.println("The number of checking errors is equals to " + processingContext.getErrors());
       	//for (error : processingContext.getData(key, type)) {
       	//	
       	//}
     	System.err.println("The number of checking warnings is equals to " + processingContext.getWarnings());
       }
-
       Composite parsedComposite = processingContext.getRootComposite();
       // resetting for next parsing :
   	  processingContext.setRootComposite(null);
+  	  
       return parsedComposite;
     }
     

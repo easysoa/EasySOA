@@ -56,13 +56,12 @@ import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.FraSCAtiScaImporter;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
 import org.nuxeo.runtime.model.Adaptable;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.Extension;
-import org.objectweb.fractal.api.Component;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * 
@@ -74,7 +73,7 @@ import org.ow2.frascati.util.FrascatiException;
  *         ?!! -->
  * 
  */
-public class NxFraSCAtiService extends FraSCAtiServiceBase implements org.nuxeo.runtime.model.Component, Adaptable {
+public class NxFraSCAtiService extends FraSCAtiRegistryServiceBase implements org.nuxeo.runtime.model.Component, Adaptable {
 	
 	public static final ComponentName NAME = new ComponentName("org.easysoa.registry.frascati.FraSCAtiServiceComponent");
 
@@ -83,7 +82,7 @@ public class NxFraSCAtiService extends FraSCAtiServiceBase implements org.nuxeo.
 	
 	private CoreSession documentManager;
 	
-	public NxFraSCAtiService() throws FrascatiException {
+	public NxFraSCAtiService()  {
 		super();
 	}
 	
@@ -95,12 +94,12 @@ public class NxFraSCAtiService extends FraSCAtiServiceBase implements org.nuxeo.
 	 * @return
 	 * @throws Exception
 	 */
-	public Component[] startScaApp(URL scaAppUrl, CoreSession documentManager) throws Exception {
+	public FraSCAtiCompositeItf[] startScaApp(URL scaAppUrl, CoreSession documentManager) throws Exception {
 		// TODO : change the processing context to discovery processing context
 		//ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaAppUrl);
 		this.setDocumentManager(documentManager);
 		DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaAppUrl);
-		return easySOAApp.getFrascati().getCompositeManager().processContribution(scaAppUrl.toString(), processingContext);
+		return easySOAApp.getFrascati().processContribution(scaAppUrl.toString(), processingContext);
 	}
 	
 	public FraSCAtiRuntimeScaImporterItf newLocalRuntimeScaImporter(CoreSession documentManager) throws Exception {
