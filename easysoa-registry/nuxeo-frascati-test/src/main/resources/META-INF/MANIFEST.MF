@@ -1,0 +1,5 @@
+Bundle-Name: nuxeo-frascati-test
+Bundle-SymbolicName: org.nuxeo.frascati.test
+Bundle-Vendor: INRIA
+Nuxeo-Require: org.nuxeo.ecm.core.api,org.nuxeo.ecm.core,org.nuxeo.runtime.bridge,org.nuxeo.frascati
+
