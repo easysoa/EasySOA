@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.frascati.service">
+
+	<implementation class="org.nuxeo.runtime.bridge.ApplicationComponent" />
+	<property name="name" value="NuxeoFraSCAti" />
+	<service>
+		<provide interface="org.nuxeo.frascati.api.FraSCAtiServiceItf" />
+	</service>
+
+	<extension target="org.nuxeo.runtime.bridge.ApplicationLoader" point="applications">
+		<application name="NuxeoFraSCAti" isolated="true" factory="org.nuxeo.frascati.factory.FraSCAtiFactory">
+			<classpath>
+				<entry>frascati/lib/*.jar</entry>
+			</classpath>
+		</application>
+	</extension>
+</component>
