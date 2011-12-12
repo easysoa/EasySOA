@@ -1,3 +1,9 @@
+input[type=button] {
+    font-size: 13pt;
+    padding: 5px;
+    margin: 10px;
+}
+
 #headerIntegration {
   width: 100%;
   padding-top: 10px;
@@ -20,14 +26,15 @@
 #error {
 	display: none;
 	color: darkred;
-    text-align: center;
-}
-#error td {
     background-color: #FFF5F5;
+    border: 1px solid darkred;
+    padding: 10px;
+    margin: 5px;
+    width: 400px;
 }
 
 #serviceentries {
-	width: 80%;
+	width: 70%;
 }
 
 .serviceEntryLocalServiceName {
@@ -50,6 +57,7 @@
     -khtml-user-select: none;
     user-select: none;
     cursor: pointer;
+    width: 30%;
 }
 
 .serviceEntryValidationIcon {
@@ -83,12 +91,33 @@
 .selectedLocal {
     background-color: #FFA;
 }
+
 .selectedReference {
     background-color: #FFA;
 }
 
-input[type=button] {
-	font-size: 13pt;
-	padding: 5px;
-	margin: 10px;
+.correlationResult {
+	font-style: italic;
+	text-decoration: none;
+	color: darkgreen;
+	font-size: 10pt;
+	width: 300px;
+}
+
+#actionButtons {
+	width: 70%;
+}
+#actionButtons td {
+	background-color: #DDD;
+}
+#actionButtons div {
+    float: left;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 30px;
+    height: 40px;
+}
+
+.actionButton {
+	display: none;
 }

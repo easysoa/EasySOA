@@ -223,7 +223,7 @@ exports.forwardToNuxeo = function(request, response, settings) {
     var easysoaServicestateUrl = url.parse(settings.nuxeoEasySOARest + request.url);
     var requestOptions = {
         'port' : easysoaServicestateUrl.port,
-        'method' : 'GET',
+        'method' : request.method,
         'host' : easysoaServicestateUrl.hostname,
         'path' : easysoaServicestateUrl.href,
         'headers' : {

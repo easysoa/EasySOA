@@ -150,7 +150,7 @@ webServer.get('/light/serviceList', function(request, response, next) {
 });
 
 // Dashboard requests routing to Nuxeo
-webServer.get('/dashboard/*', function(request, response, next) {
+webServer.all('/dashboard/*', function(request, response, next) {
     easysoaNuxeo.forwardToNuxeo(request, response, settings);
 });
 

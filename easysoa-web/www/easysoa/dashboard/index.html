@@ -37,10 +37,15 @@
     <tr id="placeholder">
         <td colspan="4"><img src="/easysoa/img/loading.gif" /></td>
     </tr>
-    <tr id="error"></tr>
     </table>
     
-    <input class="defineReferenceLink" type="button" value="Define link" />
+    <table id="actionButtons"><tr><td>
+        <div>Available actions:</div>
+        <input class="actionButton" id="defineReferenceLink" type="button" value="Define reference" />
+        <input class="actionButton" id="breakReferenceLink" type="button" value="Break reference link" />
+    </td></tr></table>
+    
+    <div id="errorHolder"></div>
     
 </div>
 
@@ -74,28 +79,29 @@
 
     <% var iconTemplate = _.template($('#serviceentryicon-template').html()); %>
     
-    <td class="serviceEntryLocalServiceName">
-      <%= localService.get('name') %>
-      <div style="display: none" class="id"><%= localService.cid %></div>
+    <td class="serviceEntryLocalServiceName" id="<%= id %>" cid="<%= cid %>">
+      <%= name %>
     </td>
     <td class="serviceEntryArrow">
       <img src="img/arrow.png" />
     </td>
-    <td class="serviceEntryReferencedServiceName">
-      <%= referencedService.get('name') %>
-      <div style="display: none" class="id"><%= referencedService.cid %></div>
-    </td>
+    <% if (referencedService.cid != null) { %>
+      <td class="serviceEntryReferencedServiceName" id="<%= referencedService.get('id') %>" cid="<%= referencedService.cid %>">
+        <%= referencedService.get('name') %>
+      </td>
+    <% } else { %>
+      <td></td>
+    <%  } %>
     <td class="serviceEntryValidationIcon">
-        <%  if (localService.get('name') == undefined) { %>
+        <%  if (name == undefined) { %>
           <%= iconTemplate({value: 'false', small: false}) %>
-        <%  } else if (referencedService.get('name') == undefined) { %>
+        <%  } else if (name == undefined) { %>
           <%= iconTemplate({value: null, small: false}) %>
         <%  } else { %>
-          <%= iconTemplate({value: localService.get('isValidated'), small: false}) %>
+          <%= iconTemplate({value: isValidated, small: false}) %>
         <%  } %>
     </td>
-    <% validationState = localService.get('validationState');
-       for (validator in validationState) { %>
+    <% for (validator in validationState) { %>
     <td class="serviceEntryValidationResult">
        <div><%= validationState[validator].validationLog %></div>
        <%= iconTemplate({value: validationState[validator].isValidated, small: true}) %>
@@ -103,8 +109,12 @@
     <% } %>
 </script>
   
+<script type="text/template" id="correlationresult-template">
+    <div class="correlationResult">Possible match (correlation: <%= correlationRate %>%)</div>
+</script>
+
 <script type="text/template" id="error-template">
-    <td colspan="4"><b>ERROR:</b> <%= error %></td>
+    <div id="error"><b>ERROR:</b> <%= error %></div>
 </script>
 
 </body>

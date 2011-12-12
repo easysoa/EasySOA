@@ -8,33 +8,21 @@ window.Service = Backbone.Model.extend({
             id: null,
             name: null,
             url: null,
+            referencedService: {}, /* Service */
             isValidated: null,
-            validationState: {}
+            validationState: {},
         };
-    }
+    },
     
-});
-
-window.ServiceEntry = Backbone.Model.extend({
-
-    /** Backbone function: default values */
-    defaults: function() {
-        return {
-          localService: new Service(),
-          referencedService: new Service()
-        };
-    }
+    initialize: function(data) {
+        // Convert the referenceService field to a valid Service model
+        if (this.get('referencedService').id != undefined) {
+            this.set({'referencedService': new Service(this.get('referencedService'))});
+        }
+    },
     
-});
-
-window.ServiceEntries = Backbone.Collection.extend({
-
-    /** Backbone data: contents model */
-    model: ServiceEntry,
-
-    /** Backbone function: sorting comparator */
-    comparator: function(model) {
-        return (model.localService != null) ? model.localService.name : null;
+    hasReference: function() {
+        return (this.get('referencedService').cid != undefined);
     }
     
 });
@@ -69,7 +57,15 @@ window.ServiceEntryView = Backbone.View.extend({
     },
     
     render: function() {
-        $(this.el).html(this.template(this.model.toJSON()));
+        var json = this.model.toJSON();
+        json.cid = this.model.cid;  // XXX Don't use cids in HTML, rather push the event from the service view to the app?
+        if (this.model.get('referencedService') != undefined) {
+            json.referencedService.cid = this.model.get('referencedService').cid;
+        }
+        else {
+            json.referencedService = null;
+        }
+        $(this.el).html(this.template(json));
         return this;
     },
     

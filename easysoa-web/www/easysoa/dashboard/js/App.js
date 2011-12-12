@@ -13,27 +13,29 @@ window.AppView = Backbone.View.extend({
     events:  {
         'click .serviceEntryLocalServiceName' : 'selectLocalItem',
         'click .serviceEntryReferencedServiceName' : 'selectReferencedItem',
-        'click .defineReferenceLink' : 'defineReferenceLink'
+        'click #defineReferenceLink' : 'defineReferenceLink',
+        'click #breakReferenceLink' : 'breakReferenceLink'
     },
 
     /** Tags */
     entriesTableTag: $('#serviceentries'),
     entriesHeaderTag: $('#serviceentriesheader'),
     placeHolderTag: $('#placeholder'),
-    errorTag: $('#error'),
+    errorHolder: $('#errorHolder'),
     
     /** Templates */
     errorTemplate: _.template($('#error-template').html()),
     entriesheadervalidatorTemplate: _.template($('#serviceentriescolumn-template').html()),
+    correlationResultTemplate: _.template($('#correlationresult-template').html()),
     
     initialize: function() {
         // Makes sure the bound functions are called with the app as 'this'
         _.bindAll(this, 'add', 'hidePlaceholder', 'loadServices',
                 'selectLocalItem', 'selectReferencedItem', 'defineReferenceLink',
-                'loadValidators', 'addValidatorColumn'); 
+                'loadValidators', 'addValidatorColumn', 'showError'); 
         
         // Create the model and bind it to the app functions
-        this.serviceEntries = new ServiceEntries();
+        this.serviceEntries = new Services();
         this.validatorNames = new Validators();
         this.services = new Services();
         this.selectedLocal = null;
@@ -79,15 +81,10 @@ window.AppView = Backbone.View.extend({
                     var result = $.parseJSON(jqXHR.responseText);
                     if (result.error == undefined) {
                         for (var i in result) {
-                            var newLocalService = new Service(result[i].localService);
-                            var newReferencedService = new Service(result[i].referencedService);
-                            var newServiceEntry = new ServiceEntry({
-                                localService: newLocalService,
-                                referencedService: newReferencedService
-                            });
-                            app.serviceEntries.add(newServiceEntry);
-                            app.services.add(newLocalService);
-                            app.services.add(newReferencedService);
+                            var newService = new Service(result[i]);
+                            app.serviceEntries.add(newService);
+                            app.services.add(newService);
+                            app.services.add(newService.get('referencedService'));
                         }
                     }
                     else {
@@ -106,16 +103,43 @@ window.AppView = Backbone.View.extend({
     },
 
     selectLocalItem: function(event) {
+        // Select item
         var target = $(event.target);
         var targetWasSelected = target.hasClass("selectedLocal");
         $('.serviceEntryLocalServiceName').removeClass("selectedLocal");
         if (!targetWasSelected) {
             target.addClass("selectedLocal");
-            this.selectedLocal = $(".selectedLocal .id").html();
+            this.selectedLocal = $(".selectedLocal").attr('cid');
         }
         else {
             this.selectedLocal = null;
         }
+        
+        // Show correlation results if service has no reference
+        $('.correlationResult').remove();
+        if (this.selectedLocal != null) {
+            var localServiceModel = this.serviceEntries.getByCid(this.selectedLocal);
+            if (localServiceModel.get('referencedService').cid == null) {
+                var app = this;
+                $.ajax({
+                    url: '/dashboard/service/' + localServiceModel.get('id') + '/matches',
+                    success: function(data, textStatus, jqXHR) {
+                        // If the user didn't click somewhere before
+                        if (app.selectedLocal == localServiceModel.cid) {
+                            var matches = $.parseJSON(jqXHR.responseText);
+                            for (var i in matches) {
+                                $('#'+matches[i].id).append(app.correlationResultTemplate(matches[i]));
+                            }
+                        }
+                    },
+                    error: function(data) {
+                        app.showError("Failed to query services");
+                    }
+                });
+            }
+        }
+        
+        this.updateEnabledButtons();
     },
     
     selectReferencedItem: function(event) {
@@ -124,20 +148,37 @@ window.AppView = Backbone.View.extend({
         $('.serviceEntryReferencedServiceName').removeClass("selectedReference");
         if (!targetWasSelected) {
             target.addClass("selectedReference");
-            this.selectedReference = $(".selectedReference .id").html();
+            this.selectedReference = $(".selectedReference").attr('cid');
         }
         else {
             this.selectedReference = null;
         }
+        
+        this.updateEnabledButtons();
     },
     
-    defineReferenceLink: function(event) {
+    updateEnabledButtons: function() {
+        this.toggle($('#defineReferenceLink'), this.selectedReference != null && this.selectedLocal != null);
+        this.toggle($('#breakReferenceLink'), this.selectedLocal != null && this.services.getByCid(this.selectedLocal).hasReference());
+    },
+    
+    toggle: function(element, value) {
+        if (value) {
+            element.show(100);
+        }
+        else {
+            element.hide(100);
+        }
+    },
+    
+    defineReferenceLink: function() {
         if (this.selectedReference != null && this.selectedLocal != null) {
             var fromId = this.services.getByCid(this.selectedLocal).get('id');
             var toId = this.services.getByCid(this.selectedReference).get('id');
             var app = this;
             $.ajax({
-                url: '/dashboard/services/' + fromId + '/linkto/' + toId,
+                url: '/dashboard/service/' + fromId + '/linkto/' + toId,
+                type: 'POST',
                 success: function(data, textStatus, jqXHR) {
                     location.reload();
                 },
@@ -148,6 +189,25 @@ window.AppView = Backbone.View.extend({
         }
         else {
             alert("You must select both a service and a reference to match.");
+        }
+    },
+    
+    breakReferenceLink: function() {
+        if (this.selectedLocal != null && this.services.getByCid(this.selectedLocal).hasReference()) {
+            var fromId = this.services.getByCid(this.selectedLocal).get('id');
+            $.ajax({
+                url: '/dashboard/service/' + fromId + '/linkto/null',
+                type: 'POST',
+                success: function(data, textStatus, jqXHR) {
+                    location.reload();
+                },
+                error: function(data) {
+                    app.showError("Failed to unlink services");
+                }
+            });
+        }
+        else {
+            alert("You must a service that has a reference.");
         }
     },
     
@@ -167,10 +227,13 @@ window.AppView = Backbone.View.extend({
     
     showError: function(error) {
         console.log("Error: " + error);
-        var app = this;
         this.hidePlaceholder();
-        this.errorTag.html(app.errorTemplate({error: error}));
-        this.errorTag.show('fast');
+        this.errorHolder.html(this.errorTemplate({error: error}));
+        var error = $("#error");
+        error.show('fast');
+        setTimeout(function() {
+            error.hide('slow');
+        }, 3000);
     }
     
 });
