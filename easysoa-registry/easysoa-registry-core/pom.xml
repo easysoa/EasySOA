@@ -13,6 +13,19 @@
   <name>EasySOA Registry Core</name>
 
   <dependencies>
+    <!-- Provided dependencies -->
+	<dependency>
+		<groupId>org.eclipse.stp.sca.domainmodel</groupId>
+		<artifactId>frascati-model</artifactId>
+		<version>2.0.1.2</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.eclipse.emf</groupId>
+		<artifactId>ecore</artifactId>
+		<version>2.4.0</version>
+		<scope>provided</scope>
+	</dependency>		
 	<!-- Easysoa Registry API -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
