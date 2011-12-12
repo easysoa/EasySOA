@@ -2,6 +2,8 @@ package org.easysoa.validation.validators;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +12,17 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.ow2.easywsdl.schema.api.ComplexType;
+import org.ow2.easywsdl.schema.api.Element;
+import org.ow2.easywsdl.schema.api.Schema;
+import org.ow2.easywsdl.schema.api.Type;
+import org.ow2.easywsdl.wsdl.WSDLFactory;
+import org.ow2.easywsdl.wsdl.api.Description;
+import org.ow2.easywsdl.wsdl.api.InterfaceType;
+import org.ow2.easywsdl.wsdl.api.Operation;
+import org.ow2.easywsdl.wsdl.api.Part;
+import org.ow2.easywsdl.wsdl.api.WSDLException;
+import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
 /**
  * 
@@ -35,8 +48,14 @@ public class WSDLValidator extends ServiceValidator {
             File wsdlFile = File.createTempFile("easysoa", "wsdl");
             referenceEnvWsdlBlob.transferTo(referenceEnvWsdlFile);
             wsdlBlob.transferTo(wsdlFile);
-            if (wsdlBlob != null && !isFinerWsdlThan(wsdlFile, referenceEnvWsdlFile)) {
-                errors.add("Service has different WSDL");
+            try {
+                if (wsdlBlob != null && !isWsdlCompatibleWith(wsdlFile, referenceEnvWsdlFile)) {
+                    errors.add("Service has different WSDL");
+                }
+            } catch (WSDLException e) {
+                errors.add("Invalid WSDL: " + e.getMessage());
+            } catch (URISyntaxException e) {
+                errors.add(e.getMessage());
             }
         }
         else {
@@ -46,23 +65,126 @@ public class WSDLValidator extends ServiceValidator {
         return errors;
     }
 
-    private boolean isFinerWsdlThan(File wsdlFile, File referenceEnvWsdlFile) {
-        return true;
-        /*try {
-            FileInputStream wsdlFin = new FileInputStream(wsdlFile);
-            FileInputStream referenceEnvWsdlFin = new FileInputStream(referenceEnvWsdlFile);
-            byte[] referenceEnvBuf = new byte[1024];
-            byte[] buf = new byte[1024];
-            int referenceEnvNbRead, nbRead;
-            while ((referenceEnvNbRead = referenceEnvWsdlFin.read(referenceEnvBuf)) > 0) {
-                nbRead = wsdlFin.read(buf);
-                if (nbRead != referenceEnvNbRead) {
-    
+    /**
+     * Checks the compatibility between two WSDL 
+     * @param wsdlFile
+     * @param referenceEnvWsdlFile
+     * @return If the WSDL is compatible with the referenced one
+     */
+    public boolean isWsdlCompatibleWith(File wsdlFile, File referenceEnvWsdlFile) throws WSDLException, MalformedURLException, IOException, URISyntaxException  {
+
+        /**
+         * Parses both WSDLs in parallel, following the reference WSDL structure.
+         * XXX: Parsing is rough, incomplete and could deserve a more structured approach
+         * (for instance node visitors in a similar way to the SCA parsing)
+         */
+        
+        // Load WSDLs
+        WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
+        Description wsdl = reader.read(wsdlFile.toURI().toURL());
+        Description referenceWsdl = reader.read(referenceEnvWsdlFile.toURI().toURL());
+        
+        // Match interfaces
+        for (InterfaceType referenceInterfaceType : referenceWsdl.getInterfaces()) {
+            InterfaceType interfaceType = wsdl.getInterface(referenceInterfaceType.getQName());
+            if (interfaceType != null) {
+                
+                // Match operations
+                for (Operation referenceOperation : referenceInterfaceType.getOperations()) {
+                    Operation operation = interfaceType.getOperation(referenceOperation.getQName());
+                    
+                    // Match parameters types
+                    if (operation != null) {
+                        // Input
+                        for (Part referencePart : referenceOperation.getInput().getParts()) {
+                            Part part = operation.getInput().getPart(referencePart.getPartQName().getLocalPart());
+                            if (part != null) {
+                                if (!part.getElement().equals(referencePart.getElement())) {
+                                    return false;
+                                }
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                        // Output
+                        for (Part referencePart : referenceOperation.getOutput().getParts()) {
+                            Part part = operation.getOutput().getPart(referencePart.getPartQName().getLocalPart());
+                            if (part != null) {
+                                if (!part.getElement().equals(referencePart.getElement())) {
+                                    return false;
+                                }
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                    }
+                    else {
+                        return false;
+                    }
                 }
             }
-        } catch (IOException ioex) {
-            return false;
+            else {
+                return false;
+            }
         }
-        return true;*/
+
+        // Match message types
+        List<Schema> referenceSchemas = referenceWsdl.getTypes().getSchemas(),
+                     schemas = wsdl.getTypes().getSchemas();
+        if (!referenceSchemas.isEmpty()) {
+            Schema referenceSchema = referenceSchemas.get(0);
+            if (!schemas.isEmpty()) {
+                Schema schema = schemas.get(0);
+                // Match elements
+                for (Element referenceElement : referenceSchema.getElements()) {
+                    Element element = schema.getElement(referenceElement.getQName());
+                    if (element != null) {
+                        if (!element.getType().getQName().equals(referenceElement.getType().getQName())) {
+                            return false;
+                        }
+                    }
+                    else {
+                       return false;
+                    }
+                }
+                // Match types
+                for (Type referenceType : referenceSchema.getTypes()) {
+                    Type type = schema.getType(referenceType.getQName());
+                    if (type != null) {
+                        if (referenceType instanceof ComplexType) {
+                            if (type instanceof ComplexType) {
+                                for (Element referenceElement : ((ComplexType) referenceType).getSequence().getElements()) {
+                                    boolean found = false;
+                                    for (Element element : ((ComplexType) type).getSequence().getElements()) {
+                                        if (element.equals(referenceElement)) {
+                                            found = true;
+                                        }
+                                    }
+                                    if (!found) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                        else if (!type.equals(referenceType)) {
+                            return false;
+                        }
+                    }
+                    else {
+                       return false;
+                    }
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }

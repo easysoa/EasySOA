@@ -144,17 +144,18 @@ window.AppView = Backbone.View.extend({
     
     selectReferencedItem: function(event) {
         var target = $(event.target);
-        var targetWasSelected = target.hasClass("selectedReference");
-        $('.serviceEntryReferencedServiceName').removeClass("selectedReference");
-        if (!targetWasSelected) {
-            target.addClass("selectedReference");
-            this.selectedReference = $(".selectedReference").attr('cid');
+        if (!target.hasClass('correlationResult')) {
+            var targetWasSelected = target.hasClass("selectedReference");
+            $('.serviceEntryReferencedServiceName').removeClass("selectedReference");
+            if (!targetWasSelected) {
+                target.addClass("selectedReference");
+                this.selectedReference = $(".selectedReference").attr('cid');
+            }
+            else {
+                this.selectedReference = null;
+            }
+            this.updateEnabledButtons();
         }
-        else {
-            this.selectedReference = null;
-        }
-        
-        this.updateEnabledButtons();
     },
     
     updateEnabledButtons: function() {

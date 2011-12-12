@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="Trip" targetNamespace="http://scenario1.j1.galaxy.inria.fr/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://scenario1.j1.galaxy.inria.fr/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://scenario1.j1.galaxy.inria.fr/" xmlns:tns="http://scenario1.j1.galaxy.inria.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:element name="process" type="tns:process"/>
+   <xsd:complexType name="process">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="argBroken" nillable="true" type="xsd:string"/> <!-- Wrong argument -->
+         <xsd:element minOccurs="0" name="arg1" nillable="true" type="xsd:string"/>
+         <xsd:element name="arg2" type="xsd:double"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="processResponse" type="tns:processResponse"/>
+   <xsd:complexType name="processResponse">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>  </wsdl:types>
+  <wsdl:message name="process">
+    <wsdl:part element="tns:process" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processResponse">
+    <wsdl:part element="tns:processResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TripPortType">
+    <wsdl:operation name="process">
+      <wsdl:input message="tns:process" name="process">
+    </wsdl:input>
+      <wsdl:output message="tns:processResponse" name="processResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TripSoapBinding" type="tns:TripPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="process">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="process">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Trip">
+    <wsdl:port binding="tns:TripSoapBinding" name="TripPort">
+      <soap:address location="http://localhost:9000/GalaxyTrip"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
