@@ -28,7 +28,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
@@ -56,6 +58,7 @@ public class DashboardRest {
 
     @GET
     @Path("/services/{workspace}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Object getServicesByWorkspace(@Context HttpServletRequest request, 
             @PathParam("workspace") String workspace) throws Exception {
     
@@ -89,20 +92,22 @@ public class DashboardRest {
                     // 1. Matching services
                     // 2. Reference services without match (= in environment only)
                     // 3. Workspace services without match
-                    DocumentModelList environmentServiceModelsWithoutMatch = new DocumentModelListImpl();
+                    DocumentModelList matchedEnvironmentServiceModels = new DocumentModelListImpl();
                     for (DocumentModel environmentServiceModel : environmentServiceModels) {
-                        DocumentModel workspaceServiceModel = popReferencedService(environmentServiceModel, workspaceServiceModels);
-                        if (workspaceServiceModel != null) {
-                            serviceEntries.put(getServiceEntry(workspaceServiceModel, environmentServiceModel));
-                        }
-                        else {
-                            environmentServiceModelsWithoutMatch.add(environmentServiceModel);
+                        DocumentModelList matchingWorkspaceServiceModels = getLocalServices(environmentServiceModel, workspaceServiceModels);
+                        if (!workspaceServiceModels.isEmpty()) {
+                            for (DocumentModel workspaceServiceModel : matchingWorkspaceServiceModels) {
+                                serviceEntries.put(getServiceEntry(workspaceServiceModel, environmentServiceModel));
+                                matchedEnvironmentServiceModels.add(environmentServiceModel);
+                                workspaceServiceModels.remove(workspaceServiceModel);
+                            }
                         }
                     }
-                    for (DocumentModel environmentServiceModel : environmentServiceModelsWithoutMatch) {
-                        serviceEntries.put(getServiceEntry(null, environmentServiceModel));
+                    for (DocumentModel environmentServiceModel : environmentServiceModels) {
+                        if (!matchedEnvironmentServiceModels.contains(environmentServiceModel)) {
+                            serviceEntries.put(getServiceEntry(null, environmentServiceModel));
+                        }
                     }
-                    
                     for (DocumentModel workspaceServiceModel : workspaceServiceModels) {
                         serviceEntries.put(getServiceEntry(workspaceServiceModel, null));
                     }
@@ -129,6 +134,7 @@ public class DashboardRest {
     
     @GET
     @Path("/service/{serviceid}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Object getServiceById(@Context HttpServletRequest request, 
             @PathParam("serviceid") String serviceid) throws Exception {
         CoreSession session = SessionFactory.getSession(request);
@@ -141,6 +147,7 @@ public class DashboardRest {
     
     @POST
     @Path("/service/{serviceid}/linkto/{referenceid}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Object createServiceReference(@Context HttpServletRequest request, 
             @PathParam("serviceid") String serviceid, 
             @PathParam("referenceid") String referenceid) throws Exception {
@@ -167,12 +174,13 @@ public class DashboardRest {
         else {
             return formatError("Local service doesn't exist anymore");
         }
-        return new JSONObject().toString();
+        return new JSONObject("{result: 'ok'}").toString();
     }
 
     
     @GET
     @Path("/service/{serviceid}/matches")
+    @Produces(MediaType.APPLICATION_JSON)
     public Object getServiceMatches(@Context HttpServletRequest request,
             @PathParam("serviceid") String serviceId) throws Exception {
         CoreSession session = SessionFactory.getSession(request);
@@ -184,6 +192,7 @@ public class DashboardRest {
             matchJSON.put("id", match.getDocumentModel().getId());
             matchJSON.put("title", match.getDocumentModel().getTitle());
             matchJSON.put("correlationRate", match.getCorrelationRateAsPercentage());
+            result.put(matchJSON);
         }
         return result.toString();
     }
@@ -191,6 +200,7 @@ public class DashboardRest {
 
     @GET
     @Path("/validators")
+    @Produces(MediaType.APPLICATION_JSON)
     public Object getValidators(@Context HttpServletRequest request) throws Exception {
         ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
         JSONObject result = new JSONObject();
@@ -203,15 +213,15 @@ public class DashboardRest {
     
     
     private JSONObject getServiceEntry(DocumentModel workspaceServiceModel, DocumentModel referencedServiceModel) throws JSONException, ClientException {
-        JSONObject serviceEntry = new JSONObject();
-        serviceEntry.put("localService", getDocumentModelAsJSON(workspaceServiceModel));
+        JSONObject serviceEntry = getDocumentModelAsJSON(workspaceServiceModel);
         serviceEntry.put("referencedService", getDocumentModelAsJSON(referencedServiceModel));
         return serviceEntry;
     }
     
     private JSONObject getDocumentModelAsJSON(DocumentModel model) throws JSONException, ClientException {
-        JSONObject modelJSON = new JSONObject();
+        JSONObject modelJSON = null;
         if (model != null) {
+            modelJSON = new JSONObject();
             modelJSON.put("id", model.getId());
             modelJSON.put("name", model.getTitle());
             modelJSON.put("url", model.getProperty(Service.SCHEMA, Service.PROP_URL));
@@ -235,25 +245,15 @@ public class DashboardRest {
     }
 
     
-    private DocumentModel popReferencedService(DocumentModel environmentServiceModel, DocumentModelList workspaceServiceModels) throws ClientException {
-        // Init
+    private DocumentModelList getLocalServices(DocumentModel environmentServiceModel, DocumentModelList workspaceServiceModels) throws ClientException {
         String idToMatch = environmentServiceModel.getId();
-        DocumentModel matchingService = null;
-        
-        // Find
+        DocumentModelList matchingServices = new DocumentModelListImpl();
         for (DocumentModel worskpaceServiceModel : workspaceServiceModels) {
             if (idToMatch.equals(worskpaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE))) {
-                matchingService = worskpaceServiceModel;
-                break;
+                matchingServices.add(worskpaceServiceModel);
             }
         }
-        
-        // Remove from list
-        if (matchingService != null) {
-            workspaceServiceModels.remove(matchingService);
-        }
-        
-        return matchingService;
+        return matchingServices;
     }
     
     

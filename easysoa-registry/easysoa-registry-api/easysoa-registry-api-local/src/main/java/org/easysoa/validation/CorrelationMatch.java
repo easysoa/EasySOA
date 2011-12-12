@@ -1,5 +1,6 @@
 package org.easysoa.validation;
 
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
 public class CorrelationMatch implements Comparable<CorrelationMatch> {
@@ -8,9 +9,12 @@ public class CorrelationMatch implements Comparable<CorrelationMatch> {
     
     private double correlationRate;
     
+    private String stringValue;
+    
     public CorrelationMatch(DocumentModel documentModel, double correlationRate) {
         this.documentModel = documentModel;
         this.correlationRate = correlationRate;
+        this.stringValue = String.valueOf(Math.floor(correlationRate * 1000)) + '-' + documentModel.getId();
     }
     
     public DocumentModel getDocumentModel() {
@@ -42,6 +46,12 @@ public class CorrelationMatch implements Comparable<CorrelationMatch> {
      * Allows to sort highest correlation rates first
      */
     public int compareTo(CorrelationMatch otherMatch) {
-        return (int) Math.ceil((otherMatch.getCorrelationRate() - correlationRate)*1000);
+        // Note: We can't only compare correlation rates, since if compareTo() returns 0,
+        // any TreeSet that is supposed to hold the objects will not add the new one.
+        return toString().compareTo(otherMatch.toString());
+    }
+    
+    public String toString() {
+        return stringValue;
     }
 }

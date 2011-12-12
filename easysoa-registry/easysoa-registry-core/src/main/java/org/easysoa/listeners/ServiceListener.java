@@ -251,7 +251,8 @@ public class ServiceListener implements EventListener {
                 DocumentModel newReferenceService = null;
                 ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
                 SortedSet<CorrelationMatch> correlatedServices = validationService.findCorrelatedServices(session, doc);
-                if (correlatedServices != null && !correlatedServices.isEmpty()) {
+                if (correlatedServices != null && !correlatedServices.isEmpty()
+                        && correlatedServices.first().getCorrelationRate() > 0.9) {
                     newReferenceService = correlatedServices.first().getDocumentModel();
                     doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, newReferenceService.getId());
                     doc.setProperty(SCHEMA, PROP_REFERENCESERVICEORIGIN,
