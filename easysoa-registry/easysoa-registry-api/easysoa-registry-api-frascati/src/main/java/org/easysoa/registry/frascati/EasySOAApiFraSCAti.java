@@ -32,7 +32,7 @@ import org.ow2.frascati.util.FrascatiException;
  * @author mkalam-alami, jguillemotte
  *
  */
-public class EasySOAApiFraSCAti extends FraSCAtiServiceBase {
+public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase {
 	
 	private static EasySOAApiFraSCAti instance = null;
 

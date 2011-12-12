@@ -27,7 +27,7 @@ import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.registry.frascati.FraSCAtiServiceItf;
+import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
 import org.easysoa.registry.frascati.RestBindingInfoProvider;
 import org.easysoa.registry.frascati.WSBindingInfoProvider;
 import org.easysoa.sca.BindingInfoProvider;
@@ -37,7 +37,6 @@ import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Composite;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * ScaImporter using FraSCAti SCA parser
@@ -108,7 +107,7 @@ public abstract class AbstractScaImporterBase implements IScaImporter {
 	private String serviceStackUrl;
 	private Stack<String> archiNameStack = new Stack<String>();
 	private Stack<EObject> bindingStack = new Stack<EObject>();
-	protected/* @Inject */FraSCAtiServiceItf frascatiService; // TODO better Inject doesn't work outside tests ?!
+	protected FraSCAtiRegistryServiceItf frascatiRegistryService;
 	protected BindingVisitorFactory bindingVisitorFactory;
 	
 	/**
@@ -121,7 +120,7 @@ public abstract class AbstractScaImporterBase implements IScaImporter {
 	 * @param compositeFile Composite file to import, can be null if this is used as a runtime importer
 	 * @throws FrascatiException 
 	 */
-	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile) throws FrascatiException{
+	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile) {
 		this.bindingVisitorFactory = bindingVisitorFactory;
 		this.compositeFile = compositeFile;
 	}
@@ -132,7 +131,7 @@ public abstract class AbstractScaImporterBase implements IScaImporter {
 	 * @param scaComposite Composite object to import, can be null if this is used as a runtime importer
 	 * @throws FrascatiException
 	 */
-	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, Composite scaComposite) throws FrascatiException{
+	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, Composite scaComposite){
 		this.bindingVisitorFactory = bindingVisitorFactory;
 		this.scaComposite = scaComposite;		
 	}

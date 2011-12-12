@@ -28,20 +28,19 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
-import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.assembly.factory.api.ProcessingMode;
-import org.ow2.frascati.util.FrascatiException;
+import org.nuxeo.frascati.NuxeoFraSCAtiException;
+import org.nuxeo.frascati.api.FraSCAtiServiceItf;
+import org.nuxeo.frascati.api.ProcessingModeProxy;
 
-public abstract class FraSCAtiServiceBase implements FraSCAtiServiceItf {
+public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistryServiceItf {
 
-	private static Log log = LogFactory.getLog(FraSCAtiServiceBase.class);
-
+	private static Log log = LogFactory.getLog(FraSCAtiRegistryServiceBase.class);
+	
 	protected EasySOAApp easySOAApp;
 
-	public FraSCAtiServiceBase() throws FrascatiException {
+	public FraSCAtiRegistryServiceBase() {
 		// Instantiate OW2 FraSCAti.
-		//easySOAApp = new FraSCAtiBootstrapApp(); // Used to start FraSCAti web explorer
-		easySOAApp = FraSCAtiCompositeApp.getInstance();
+		easySOAApp = new FraSCAtiBootstrapApp(); 
 		easySOAApp.start();
 	}
 
@@ -51,7 +50,7 @@ public abstract class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 	 * @param composite the composite to get.
 	 * @return the composite.
 	 */
-	public Object getComposite(String composite) throws FrascatiException {
+	public Object getComposite(String composite) throws NuxeoFraSCAtiException {
 		return easySOAApp.getFrascati().getComposite(composite);
 	}
 
@@ -61,9 +60,8 @@ public abstract class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 	 * FraSCAtiService methods calling them.
 	 * 
 	 * @return
-	 * @throws FrascatiException
 	 */
-	public FraSCAti getFraSCAti() {
+	public FraSCAtiServiceItf getFraSCAti() {
 		return easySOAApp.getFrascati();
 	}
 
@@ -75,17 +73,17 @@ public abstract class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 	/**
 	 * 
 	 */
-	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws FrascatiException {
-		return new ParsingProcessingContext(easySOAApp.getFrascati().getCompositeManager().newProcessingContext(urls));
+	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws NuxeoFraSCAtiException {
+		return new ParsingProcessingContext(easySOAApp.getFrascati().newProcessingContext(urls));
 	}
 
 	/**
 	 * 
 	 * @param urls
 	 * @return
-	 * @throws FrascatiException
+	 * @throws Exception 
 	 */
-	public DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws Exception {
+	public DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws Exception  {
 		// add a parameter to pass the importer
 		FraSCAtiRuntimeScaImporterItf runtimeScaImporter = newRuntimeScaImporter();
 		return new DiscoveryProcessingContext(this, runtimeScaImporter, urls);
@@ -113,7 +111,7 @@ public abstract class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 		// Only parse and check the SCA composite, i.e., don't generate code for
 		// the SCA composite and don't instantiate it.
 		//processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
-		processingContext.setProcessingMode(ProcessingMode.generate);
+		processingContext.setProcessingMode(ProcessingModeProxy.parse);
 
 		// TODO : Solve problem here ...
 		// Problem with this mode : class not found exceptions when a single composite is loaded
@@ -126,10 +124,8 @@ public abstract class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 		try {
 			// Process the SCA composite.
 			easySOAApp.getFrascati().processComposite(compositeUrl.toString(), processingContext);
-
-			// Return the Eclipse STP SCA Composite.
-			return processingContext.getRootComposite();
-		} catch (FrascatiException fe) {
+			
+		} catch (NuxeoFraSCAtiException fe) {
 			//System.err.println("The number of checking errors is equals to " + processingContext.getErrors());
 			log.error("The number of checking errors is equals to " + processingContext.getErrors());
 			// for (error : processingContext.getData(key, type)) {
@@ -137,13 +133,18 @@ public abstract class FraSCAtiServiceBase implements FraSCAtiServiceItf {
 			// }
 			//System.err.println("The number of checking warnings is equals to " + processingContext.getWarnings());
 			log.error("The number of checking warnings is equals to " + processingContext.getWarnings());
-			log.error(fe);			
+			log.error(fe);	
 		}
-
 		// TODO feed parsing errors / warnings up to UI ?!
 		log.warn("\nErrors while parsing " + compositeUrl + ":\n" + processingContext.getErrorMessages());
 		log.info("\nWarnings while parsing " + compositeUrl + ":\n" + processingContext.getWarningMessages());
-		return null;
+		
+		Composite composite = processingContext.getRootComposite();
+		
+		if(composite == null){
+			throw new FraSCAtiRegistryException("Composite '" + compositeUrl + "' can not be loaded");
+		}
+		return composite;
 	}
 
 	/**

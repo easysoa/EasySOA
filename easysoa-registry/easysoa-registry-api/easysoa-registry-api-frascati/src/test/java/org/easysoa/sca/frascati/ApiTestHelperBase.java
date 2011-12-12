@@ -18,40 +18,54 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-
 package org.easysoa.sca.frascati;
 
 import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.objectweb.fractal.api.Component;
-import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
+import org.easysoa.registry.frascati.ParsingProcessingContext;
+import org.eclipse.stp.sca.Composite;
+import org.junit.runner.RunWith;
+import org.nuxeo.frascati.NuxeoFraSCAtiException;
+import org.nuxeo.frascati.api.FraSCAtiServiceItf;
+import org.nuxeo.frascati.test.FraSCAtiFeature;
+import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.ow2.frascati.util.FrascatiException;
 
+@RunWith(FeaturesRunner.class)
+@Features(FraSCAtiFeature.class)
 public class ApiTestHelperBase {
 
     static final Log log = LogFactory.getLog(ApiTestHelperBase.class);
 	
 	/** The FraSCAti platform */
-    protected static FraSCAti frascati;
+    protected static FraSCAtiServiceItf frascati;
 
-    protected static ArrayList<Component> componentList;    
+    protected static ArrayList<Composite> componentList;    
     
-	protected static void startMock() throws FrascatiException {
+	protected static void startMock() {
 		log.info("Services Mock Starting");
-		componentList.add(frascati.processComposite("src/test/resources/RestApiMock.composite", new ProcessingContextImpl()));
+		ParsingProcessingContext context  = null;
+		try{
+			context = new ParsingProcessingContext(frascati.newProcessingContext());
+			frascati.processComposite("src/test/resources/RestApiMock.composite",context);
+		} catch (NuxeoFraSCAtiException e){
+			log.info(e.getMessage());
+		}
+		componentList.add(context.getRootComposite());
 	}
 	
 	/**
 	 * Start FraSCAti
 	 * @throws FrascatiException 
 	 */
-	protected static void startFraSCAti() throws FrascatiException {
+	protected static void startFraSCAti() {
 		log.info("FraSCATI Starting");
-		componentList =  new ArrayList<Component>();
-		frascati = FraSCAti.newFraSCAti();
+		componentList =  new ArrayList<Composite>();
+		frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
 	}
 	
 }

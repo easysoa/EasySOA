@@ -25,10 +25,9 @@ import java.net.URL;
 import java.util.Set;
 
 import org.eclipse.stp.sca.Composite;
-import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.util.FrascatiException;
+import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 
-public interface FraSCAtiServiceItf {
+public interface FraSCAtiRegistryServiceItf {
 
 	/**
 	 * Get an SCA composite.
@@ -46,7 +45,7 @@ public interface FraSCAtiServiceItf {
 	 * @return
 	 * @throws FrascatiException
 	 */
-	public abstract FraSCAti getFraSCAti();
+	public abstract FraSCAtiServiceItf getFraSCAti();
 
 	/**
 	 * 

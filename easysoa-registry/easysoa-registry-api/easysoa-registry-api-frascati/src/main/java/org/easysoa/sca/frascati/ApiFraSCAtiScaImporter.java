@@ -23,7 +23,7 @@ package org.easysoa.sca.frascati;
 import java.io.File;
 
 import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
-import org.easysoa.registry.frascati.FraSCAtiServiceItf;
+import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 
 /**
@@ -39,7 +39,7 @@ public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase implements F
 	 */
 
 	public ApiFraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory, File compositeFile,
-	        FraSCAtiServiceItf frascatiService) throws Exception {
+	        FraSCAtiRegistryServiceItf frascatiService) throws Exception {
 		super(bindingVisitorFactory, compositeFile, frascatiService);
 	}
 

@@ -22,9 +22,8 @@ package org.easysoa.registry.frascati;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.objectweb.fractal.api.Component;
-import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.util.FrascatiException;
+import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
+import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 
 /**
  * @author jguillemotte
@@ -34,21 +33,21 @@ public abstract class AbstractEasySOAApp implements EasySOAApp {
 
 	private static Log log = LogFactory.getLog(AbstractEasySOAApp.class);	
 	
-	protected FraSCAti frascati;
+	protected FraSCAtiServiceItf frascati;
 	
 	@Override
-	public FraSCAti getFrascati(){
+	public FraSCAtiServiceItf getFrascati(){
 		return frascati;
 	}
 	
 	/**
-	 * 
 	 * @param components
-	 * @throws FrascatiException
 	 */
-	public void stopComponents(Component... components) throws FrascatiException {
+	public void stopComponents(FraSCAtiCompositeItf... components) {
+		
 		log.debug("Closing components");
-		for(Component component : components){
+		
+		for(FraSCAtiCompositeItf component : components){
 			frascati.close(component);
 		}
 	}

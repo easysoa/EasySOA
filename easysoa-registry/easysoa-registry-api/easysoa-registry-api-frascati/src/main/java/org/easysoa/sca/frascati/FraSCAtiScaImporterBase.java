@@ -28,7 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.registry.frascati.FileUtils;
-import org.easysoa.registry.frascati.FraSCAtiServiceItf;
+import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Component;
@@ -38,7 +38,6 @@ import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.ow2.frascati.util.FrascatiException;
 
 public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 
@@ -53,9 +52,10 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 	 * @throws FrascatiException 
 	 * @throws ClientException 
 	 */
-	public FraSCAtiScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile, FraSCAtiServiceItf frascatiService) throws FrascatiException{
+	public FraSCAtiScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile, 
+			FraSCAtiRegistryServiceItf frascatiRegistryService){
 	    super(bindingVisitorFactory, compositeFile);
-		this.frascatiService = frascatiService;
+		this.frascatiRegistryService = frascatiRegistryService;
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 		// Replace this code, record the content of the composite in the new tmp composite
 		FileUtils.copyTo(compositeFile, scaZipTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
-		Set<Composite> scaZipCompositeSet = frascatiService.readScaZip(scaZipTmpFile);
+		Set<Composite> scaZipCompositeSet = frascatiRegistryService.readScaZip(scaZipTmpFile);
 		// Visit each composite
 		for (Composite scaZipComposite : scaZipCompositeSet) {
 			visitComposite(scaZipComposite);
@@ -114,8 +114,8 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 		File compositeTmpFile = File.createTempFile(UUID.randomUUID().toString(), ".composite");
 		FileUtils.copyTo(compositeFile, compositeTmpFile);
 		// Read an (Eclipse SOA) SCA composite then visit it
-		log.debug("frascatiService : " +  frascatiService);
-		Composite scaZipComposite = frascatiService.readComposite(compositeTmpFile.toURI().toURL());
+		log.debug("frascatiService : " +  frascatiRegistryService);
+		Composite scaZipComposite = frascatiRegistryService.readComposite(compositeTmpFile.toURI().toURL());
 		log.debug("composite : " + scaZipComposite);
 		visitComposite(scaZipComposite);
 	}
@@ -125,9 +125,12 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 	 * @param scaComposite the composite to visit
 	 */
 	public void visitComposite(Composite scaComposite) {
-		log.debug("visiting composite");
-		log.debug("scaComposite" + scaComposite);
-		log.debug("Composite.name =" + scaComposite.getName());
+		log.info("visiting composite");
+		log.info("scaComposite : " + scaComposite);
+		if(scaComposite == null){
+			return;
+		}
+		log.info("Composite.name =" + scaComposite.getName());
 		// Get services
 		for (Service service : scaComposite.getService()) {
 			log.debug("Service.name=" + service.getName());

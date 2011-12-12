@@ -31,23 +31,24 @@ import java.util.Scanner;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.frascati.mock.TestMock;
 import org.easysoa.sca.records.ExchangeRecord;
-import org.easysoa.sca.records.ExchangeRecordStore;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.ow2.frascati.util.FrascatiException;
+import org.nuxeo.frascati.NuxeoFraSCAtiException;
 
 /**
  * Test class for the FraSCAti SCA importer working with the REST API
  * @author jguillemotte
  *
  */
+@SuppressWarnings("deprecation")
 public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     static final Log log = LogFactory.getLog(ApiFrascatiImportServiceTest.class);
@@ -59,7 +60,7 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     boolean mockedTest = true;
     
     @Before
-    public void setUp() throws FrascatiException {
+    public void setUp() throws NuxeoFraSCAtiException {
     	// init record list
     	recordList = new ArrayList<ExchangeRecord>();
     	// Start fraSCAti
@@ -74,10 +75,10 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * Set the ApiFrascatiImportServiceTest in the RestApiMock. 
      * When the EasySoaRestApiMock receive a request, it calls the check method corresponding to the received request
      * @param test ApiFrascatiImportServiceTest
-     * @throws FrascatiException If a problem occurs when the set is done
+     * @throws NuxeoFraSCAtiException  If a problem occurs when the set is done
      */
     @SuppressWarnings("unchecked")
-    protected void setTest(ApiFrascatiImportServiceTest test) throws FrascatiException{
+    protected void setTest(ApiFrascatiImportServiceTest test) throws NuxeoFraSCAtiException {
     	System.out.println("composite restApiMock : " + frascati.getComposite("RestApiMock"));
     	((TestMock<ApiFrascatiImportServiceTest>) frascati.getService(
     	            frascati.getComposite("RestApiMock"), "restApiMockServiceJava", TestMock.class)
@@ -100,8 +101,12 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
 		importer.setServiceStackUrl("/");
 		// Create a spy importer for Mockito
 		ApiFraSCAtiScaImporter spyImporter = spy(importer);
-		// Import the SCA composite
-		spyImporter.importSCAComposite();
+		try{
+			// Import the SCA composite
+			spyImporter.importSCAComposite();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 		// Check the recorded exchanges
 		checkExchanges();
 		// Check with Mockito
@@ -159,7 +164,13 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws IOException 
      */
     public void recordExchange(ServletRequest request, ServletResponse response) throws IOException {
-    	ExchangeRecord record = new ExchangeRecord(new Scanner(request.getInputStream()).useDelimiter("\\A").next(), "");
+    	
+    	Scanner scan = new Scanner(request.getInputStream()).useDelimiter("\\A");
+    	String next = scan.next();
+    	if(next == null){
+    		next = "";
+    	}
+    	ExchangeRecord record = new ExchangeRecord(next, "");
     	log.debug("request content : " + record.getInMessage());
     	recordList.add(record);
     }

@@ -37,7 +37,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ow2.frascati.assembly.factory.api.ManagerException;
+
 
 public class FileUtils {
 
