@@ -84,6 +84,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) {
 		// loads all files in path with extension & lists them
     	//File folder = new File(path + FILE_PREFIX + exchangeRecordStoreName + "/");
+		logger.debug("exchangeRecordStoreName  = " + exchangeRecordStoreName);
 		File folder = new File(path + exchangeRecordStoreName + "/");
     	File[] listOfFiles = folder.listFiles();
     	logger.debug("listOfFiles.size = " + listOfFiles.length);

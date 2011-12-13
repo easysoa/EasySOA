@@ -24,16 +24,19 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.List;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.records.ExchangeRecord;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,13 +71,30 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	@Test
 	public void testReplay() throws Exception {
 	
+		
+		// TODO : rewrite this test to :
+		// - create a run
+		// - Send request to the proxy
+		// - save the run
+		// - Get the store lit
+		// - get the record list
+		// - replay and check each of the records
+
+		DefaultHttpClient httpClient = new DefaultHttpClient();		
+		
+		// Start a new Run
+		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/Test_Run");
+		//BasicHttpParams postRequestParams = new BasicHttpParams();
+		//postRequestParams.setParameter("runName", "Test_Run");
+		//newRunPostRequest.setParams(postRequestParams);
+		assertEquals("Run 'Test_Run' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));
+		
 		// Get the twitter mock set and send requests to the mock through the HTTP proxy
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
 
 		// Set client to use the HTTP Discovery Proxy
 		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-		
 		UrlMock urlMock = new UrlMock();
 		HttpResponse response;
 		String entityResponseString;
@@ -87,37 +107,50 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 			entityResponseString = ContentReader.read(response.getEntity().getContent());			
 		}
 
-		// get a list of recorded exchanges
-		logger.debug("Calling list service ...");
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecordlist?storeName=");
+		// Stop and save the run
+		HttpPost stopRunPostRequest = new HttpPost("http://localhost:8084/run/stop");
+		assertEquals("Current run stopped !", httpClient.execute(stopRunPostRequest, new BasicResponseHandler()));
+
+		// get a list of recorded exchange store
+		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecordStorelist");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
+		logger.debug("Exchange record store list response : " + entityResponseString);
+		assertTrue(entityResponseString.contains("Test_Run"));
 		
-		// problem with this log, log is aggregated on the same line and hang the test
-		//logger.debug("List response : " + entityResponseString);
-		assertTrue(entityResponseString.contains("exchangeID"));
+		// Get an exchange record
+		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecord/Test_Run/1");
+		response = httpClient.execute(httpUriRequest);
+		entityResponseString = ContentReader.read(response.getEntity().getContent());
+		logger.debug("Exchange record response : " + entityResponseString);
+		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchangeID\":1"));
 		
+		// get a list of recorded exchanges contained in the Test_Run folder
+		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecordList/Test_Run");
+		//logger.debug("Sending request");
+		response = httpClient.execute(httpUriRequest);
+		//logger.debug("Reading response");
+		entityResponseString = ContentReader.read(response.getEntity().getContent());
+		//logger.debug("Exchange record list response : " + entityResponseString);
+		//assertTrue(entityResponseString.contains("ExchangeID"));
+
 		// replay one or several exchanges
 		logger.debug("Calling Replay service ...");
-		// How to get an ID to replay ? one solution is to read an id from the record list
 		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 		
-		String recordID;
 		String originalResponse;
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(""); 
-		
-		for(ExchangeRecord record : recordList){
-			recordID = record.getExchangeID();
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Test_Run");
+		ExchangeRecord record = recordList.get(0); 
+		//for(ExchangeRecord record : recordList){
 			originalResponse = record.getOutMessage().getMessageContent().getContent();
-			httpUriRequest = new HttpGet("http://localhost:8085/replay?exchangeRecordStoreName=&exchangeRecordId=" + record.getExchangeID());
+			httpUriRequest = new HttpGet("http://localhost:8085/replay/Test_Run/" + record.getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
 			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
 			
 			// Compare the replayed exchange with the original exchange
 			assertEquals(originalResponse, entityResponseString);
-		}
+		//}
 	}
 	
     /**

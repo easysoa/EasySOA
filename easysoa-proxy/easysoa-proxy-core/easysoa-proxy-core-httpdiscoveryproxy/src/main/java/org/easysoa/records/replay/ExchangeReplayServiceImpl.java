@@ -1,3 +1,22 @@
+/**
+ * EasySOA Proxy
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
 package org.easysoa.records.replay;
 
 import java.util.ArrayList;
@@ -51,14 +70,14 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeReplayServiceImpl.class.getName());	
 	
+	// TODO Enable the environment data
 	// Running environment
 	private String environment;
 
 	@Override
 	@GET
-	@Path("/getExchangeRecordlist/{storeName}")
+	@Path("/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	//public List<ExchangeRecord> getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) {
 	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) {
 		logger.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
     	ExchangeRecordStoreManager erfs;
@@ -76,11 +95,20 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 
 	@Override
 	@GET
-	@Path("/getExchangeRecordlist/{storeName}/{exchangeID}")
+	@Path("/getExchangeRecord/{storeName}/{exchangeID}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	//public List<ExchangeRecord> getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) {
-	public RecordCollection getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchnageID) {
-		
+	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) {
+		logger.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
+    	ExchangeRecordStoreManager erfs;
+    	ExchangeRecord record = null;
+		try {
+			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
+			record = erfs.load(exchangeRecordStoreName, exchangeID);
+		} 
+		catch (Exception ex) {
+			logger.error("An error occurs during the list");
+		}
+		return record;
 	}
 	
 	
@@ -88,7 +116,6 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@GET
 	@Path("/getExchangeRecordStorelist")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	//public List<ExchangeRecordStore> getExchangeRecordStorelist() {
 	public StoreCollection getExchangeRecordStorelist() {
 		logger.debug("getExchangeRecordStorelist method called ...");
     	ExchangeRecordStoreManager erfs;
@@ -105,7 +132,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	}	
 	
 	@Override
-	@Path("/replay")	
+	@Path("/replay/{exchangeRecordStoreName}/{exchangeRecordId}")
 	@Produces("application/json")
 	public String replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) {
 		// call remote service using chosen record :
@@ -118,7 +145,6 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     	ExchangeRecordStoreManager erfs;
 		StringBuffer responseBuffer = new StringBuffer();    	
 		try {
-			//List<ExchangeRecord> recordList;
 			Collection<ExchangeRecord> recordList;
 			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
 			// get the record
@@ -135,15 +161,9 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 			// Send the request
 				requestForwarder = new RequestForwarder();
 				outMessage = requestForwarder.send(record.getInMessage());
-	
 				logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
 				logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
-				
-				// TODO : compare the returned response with the one contained in the stored Exchange record with an assert template
-				// TODO : change the response to return JSON structure
-				responseBuffer.append("Replay result for Exchange Record " + record.getExchangeID() + " => ");
 				responseBuffer.append(outMessage.getMessageContent().getContent());
-				responseBuffer.append("<br/>");
 			}
 		}
 		catch(Exception ex){

@@ -25,7 +25,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.FormParam; 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
@@ -55,8 +54,8 @@ public interface HttpProxyDriver {
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
 	@POST
-	@Path("/startNewRun/")
-	public String startNewRun(@FormParam("runName") String runName);
+	@Path("/run/start/{runName}")
+	public String startNewRun(@PathParam("runName") String runName);
 
 	/**
 	 * Delete the specified run
@@ -71,8 +70,8 @@ public interface HttpProxyDriver {
 	 * Stop the current run
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
-	@GET
-	@Path("/stopCurrentRun")
+	@POST
+	@Path("/run/stop")
 	public String stopCurrentRun();	
 	
 	/**
@@ -106,7 +105,7 @@ public interface HttpProxyDriver {
 	/**
 	 * Save the current run
 	 */
-	@GET
+	@POST
 	@Path("/run/save")
 	public void save();
 		

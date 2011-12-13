@@ -73,7 +73,7 @@
 		</sca:service>
 		<!--<sca:implementation.java class="org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore" />-->
 		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
-	</sca:component>	
+	</sca:component>
 	
 	<!-- Esper Engine -->
 	<sca:component name="esperEngineComponent">

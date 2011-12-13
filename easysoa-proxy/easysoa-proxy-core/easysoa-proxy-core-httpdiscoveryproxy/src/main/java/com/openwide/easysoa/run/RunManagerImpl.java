@@ -20,18 +20,13 @@
 
 package com.openwide.easysoa.run;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import com.openwide.easysoa.monitoring.DiscoveryMonitoringService;
 import com.openwide.easysoa.monitoring.MonitoringService;
 import com.openwide.easysoa.run.Run.RunStatus;
 
