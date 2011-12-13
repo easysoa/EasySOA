@@ -76,7 +76,7 @@ public class DashboardRest {
                 // Gather workspace services
                 DocumentModelList workspaceServiceModels = session.query("SELECT * FROM " + Service.DOCTYPE +
                         " WHERE ecm:path STARTSWITH '" + workspaceModel.getPathAsString() + "'" +
-                        " AND ecm:currentLifeCycleState <> 'deleted'");
+                        " AND ecm:currentLifeCycleState <> 'deleted' AND ecm:currentLifeCycleState <> 'obsolete'");
                 
                 // Find environment
                 DocumentModel environmentModel = docService.findEnvironment(session, 
@@ -145,39 +145,6 @@ public class DashboardRest {
     }
 
     
-    @POST
-    @Path("/service/{serviceid}/linkto/{referenceid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Object createServiceReference(@Context HttpServletRequest request, 
-            @PathParam("serviceid") String serviceid, 
-            @PathParam("referenceid") String referenceid) throws Exception {
-        
-        CoreSession session = SessionFactory.getSession(request);
-        DocumentModel localServiceModel = session.getDocument(new IdRef(serviceid));
-        if (localServiceModel != null) {
-            boolean referenceidIsNull = "null".equals(referenceid);
-            if (referenceidIsNull || session.exists(new IdRef(referenceid))) {
-                String newReferenceId = null, newReferenceOrigin = null;
-                if (!referenceidIsNull) {
-                    newReferenceId = referenceid;
-                    newReferenceOrigin = "Manually set";
-                }
-                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, newReferenceId);
-                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, newReferenceOrigin);
-                session.saveDocument(localServiceModel);
-                session.save();
-            }
-            else {
-                return formatError("Referenced service doesn't exist anymore");
-            }
-        }
-        else {
-            return formatError("Local service doesn't exist anymore");
-        }
-        return new JSONObject("{result: 'ok'}").toString();
-    }
-
-    
     @GET
     @Path("/service/{serviceid}/matches")
     @Produces(MediaType.APPLICATION_JSON)
@@ -212,6 +179,62 @@ public class DashboardRest {
     }
     
     
+    @POST
+    @Path("/service/{serviceid}/linkto/{referenceid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object createServiceReference(@Context HttpServletRequest request, 
+            @PathParam("serviceid") String serviceid, 
+            @PathParam("referenceid") String referenceid) throws Exception {
+        
+        CoreSession session = SessionFactory.getSession(request);
+        DocumentModel localServiceModel = session.getDocument(new IdRef(serviceid));
+        if (localServiceModel != null) {
+            boolean referenceidIsNull = "null".equals(referenceid);
+            if (referenceidIsNull || session.exists(new IdRef(referenceid))) {
+                String newReferenceId = null, newReferenceOrigin = null;
+                if (!referenceidIsNull) {
+                    newReferenceId = referenceid;
+                    newReferenceOrigin = "Manually set";
+                }
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, newReferenceId);
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, newReferenceOrigin);
+                session.saveDocument(localServiceModel);
+                session.save();
+            }
+            else {
+                return formatError("Referenced service doesn't exist anymore");
+            }
+        }
+        else {
+            return formatError("Local service doesn't exist anymore");
+        }
+        return new JSONObject("{result: 'ok'}").toString();
+    }
+    
+    @POST
+    @Path("/service/{serviceid}/lifecycle/{transition}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object followLifeCycleTransition(@Context HttpServletRequest request, 
+            @PathParam("serviceid") String serviceid, 
+            @PathParam("transition") String transition) throws Exception {
+        CoreSession session = SessionFactory.getSession(request);
+        DocumentModel localServiceModel = session.getDocument(new IdRef(serviceid));
+        if (localServiceModel != null) {
+            try {
+                localServiceModel.followTransition(transition);
+                session.saveDocument(localServiceModel);
+                session.save();
+            }
+            catch (ClientException e) {
+                return formatError("Failed to follow transition '" + transition + "': " + e.getMessage());
+            }
+        }
+        else {
+            return formatError("Specified service doesn't exist anymore");
+        }
+        return new JSONObject("{result: 'ok'}").toString();
+    }
+
     private JSONObject getServiceEntry(DocumentModel workspaceServiceModel, DocumentModel referencedServiceModel) throws JSONException, ClientException {
         JSONObject serviceEntry = getDocumentModelAsJSON(workspaceServiceModel);
         serviceEntry.put("referencedService", getDocumentModelAsJSON(referencedServiceModel));
@@ -226,6 +249,7 @@ public class DashboardRest {
             modelJSON.put("name", model.getTitle());
             modelJSON.put("url", model.getProperty(Service.SCHEMA, Service.PROP_URL));
             modelJSON.put("isValidated", model.getProperty(Service.SCHEMA, Service.PROP_ISVALIDATED));
+            modelJSON.put("lifeCycleState", model.getCurrentLifeCycleState());
             modelJSON.put("validationState", getValidationStateAsJSON(model));
         }
         return modelJSON;
@@ -264,7 +288,7 @@ public class DashboardRest {
     
     private String formatError(String error, Exception e) throws JSONException {
         JSONObject errorObject = new JSONObject();
-        errorObject.put("error", error);
+        errorObject.put("result", error);
         if (e != null) {
             errorObject.put("stacktrace", e);
         }

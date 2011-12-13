@@ -29,6 +29,7 @@
     
     <table id="serviceentries">
     <tr id="serviceentriesheader">
+      <th>State</th>
       <th>Service name</th>
       <th></th>
       <th>Referenced service name</th>
@@ -43,6 +44,10 @@
         <div>Available actions:</div>
         <input class="actionButton" id="defineReferenceLink" type="button" value="Define reference" />
         <input class="actionButton" id="breakReferenceLink" type="button" value="Break reference link" />
+        <input class="actionButton" id="approveService" type="button" value="Approve service" />
+        <input class="actionButton" id="maskService" type="button" value="Mask service" />
+        <input class="actionButton" id="removeService" type="button" value="Remove service" />
+        <input class="actionButton" id="resetService" type="button" value="Reset service" />
     </td></tr></table>
     
     <div id="errorHolder"></div>
@@ -79,6 +84,9 @@
 
     <% var iconTemplate = _.template($('#serviceentryicon-template').html()); %>
     
+    <td class="serviceEntryLocalState">
+      <img src="img/<%= lifeCycleState %>.png" />
+    </td>
     <td class="serviceEntryLocalServiceName" id="<%= id %>" cid="<%= cid %>">
       <%= name %>
     </td>

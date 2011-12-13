@@ -114,6 +114,7 @@ public class WorkspaceActionsBean {
             if (Service.DOCTYPE.equals(newDoc.getType())) {
                 newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, from.toString());
                 newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Created by copy");
+                newDoc.followTransition("approve");
                 documentManager.saveDocument(newDoc);
             }
             DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);

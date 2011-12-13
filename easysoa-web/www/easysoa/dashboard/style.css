@@ -37,6 +37,10 @@ input[type=button] {
 	width: 70%;
 }
 
+.serviceEntryLocalState {
+	text-align: center;
+}
+
 .serviceEntryLocalServiceName {
     font-size: 11pt;
     text-decoration: underline;
