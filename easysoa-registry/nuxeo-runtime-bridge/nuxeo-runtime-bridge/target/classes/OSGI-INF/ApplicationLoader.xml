@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<component name="org.nuxeo.runtime.bridge.ApplicationLoader" version="1.0">
+  <documentation>
+  Load spring application when Nuxoe starts. The application are isolated if requested.
+  @author Bogdan Stefanescu (bs@nuxeo.com)
+  </documentation>
+
+  <implementation class="org.nuxeo.runtime.bridge.ApplicationLoader"/>
+  
+  <extension-point name="applications">
+    <documentation>Register an application to be loaded at startup</documentation>
+    <object class="org.nuxeo.runtime.bridge.ApplicationDescriptor"/>
+  </extension-point>
+  
+</component>
+
