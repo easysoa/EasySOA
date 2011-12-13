@@ -336,7 +336,7 @@
 							<artifactItem><groupId>asm</groupId><artifactId>asm-util</artifactId><version>${asm.version}</version></artifactItem>       
 							<artifactItem><groupId>asm</groupId><artifactId>asm</artifactId><version>${asm.version}</version></artifactItem>       
 							<artifactItem><groupId>com.eaio.uuid</groupId><artifactId>uuid</artifactId><version>3.2</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybox</groupId><artifactId>easybox-api</artifactId><version>1.0-alpha-1</version></artifactItem>
+							<!-- <artifactItem><groupId>com.ebmwebsourcing.easybox</groupId><artifactId>easybox-api</artifactId><version>1.0-alpha-1</version></artifactItem>
 							<artifactItem><groupId>com.ebmwebsourcing.easybox</groupId><artifactId>easybox-impl</artifactId><version>1.0-alpha-1</version></artifactItem>
 							<artifactItem><groupId>com.ebmwebsourcing.easybpel.extended.service</groupId><artifactId>easybpel.extended.service.activity</artifactId><version>1.4-alpha-1</version></artifactItem>
 							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easybpel.extended.activities.configuration</artifactId><version>1.4-alpha-1</version></artifactItem>
@@ -363,7 +363,7 @@
 							<artifactItem><groupId>com.ebmwebsourcing.easyviper.service</groupId><artifactId>easyviper.extended.service.behaviour</artifactId><version>1.4-alpha-1</version></artifactItem>
 							<artifactItem><groupId>com.ebmwebsourcing.wsstar</groupId><artifactId>legacy-jaxb-core</artifactId><version>1.3.0-alpha-1</version></artifactItem>
 							<artifactItem><groupId>com.ebmwebsourcing.wsstar</groupId><artifactId>ws-addressing-definition</artifactId><version>1.3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.espertech</groupId><artifactId>esper</artifactId><version>4.3.0</version></artifactItem>
+							 --><artifactItem><groupId>com.espertech</groupId><artifactId>esper</artifactId><version>4.3.0</version></artifactItem>
 							<artifactItem><groupId>com.google.guava</groupId><artifactId>guava</artifactId><version>r07</version></artifactItem>
 							<artifactItem><groupId>com.jnaerator</groupId><artifactId>jnaerator-parser</artifactId><version>0.9.4</version></artifactItem>
 							<artifactItem><groupId>com.jnaerator</groupId><artifactId>jnaerator-rococoa-runtime</artifactId><version>0.9.4</version></artifactItem>
@@ -572,5 +572,16 @@
 		        </plugin>    
         </plugins>
     </build>
+  
+    <repositories>
+      <repository>
+        <id>FraSCAti - INRIA Repository</id>
+        <url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public/</url>
+      </repository>
+      <repository>
+        <id>Nuxeo Public Releases</id>
+        <url>http://maven.in.nuxeo.com/nexus/content/repositories/public-releases</url>
+      </repository>
+    </repositories>
 
 </project>

@@ -32,6 +32,9 @@
 	</dependencies>
 
     <modules>
+        <module>nuxeo-runtime-bridge</module>
+        <module>nuxeo-frascati</module>
+        <module>nuxeo-frascati-test</module>
         <module>easysoa-registry-api</module>
         <module>easysoa-registry-parent</module>
         <module>easysoa-registry-core</module>
