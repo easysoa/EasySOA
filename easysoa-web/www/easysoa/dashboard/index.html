@@ -50,7 +50,13 @@
         <input class="actionButton" id="resetService" type="button" value="Reset service" />
     </td></tr></table>
     
+    <div class="legend">
+        State legend: <img src="img/project.png" /> = Discovered, <img src="img/approved.png" /> = Approved, <img src="img/null.png" /> = Missing
+    </div>
+    
     <div id="errorHolder"></div>
+    
+    
     
 </div>
 
@@ -85,7 +91,7 @@
     <% var iconTemplate = _.template($('#serviceentryicon-template').html()); %>
     
     <td class="serviceEntryLocalState">
-      <img src="img/<%= lifeCycleState %>.png" />
+      <img src="img/<%= lifeCycleState || 'null' %>.png" />
     </td>
     <td class="serviceEntryLocalServiceName" id="<%= id %>" cid="<%= cid %>">
       <%= name %>

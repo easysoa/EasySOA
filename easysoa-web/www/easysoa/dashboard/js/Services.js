@@ -9,8 +9,9 @@ window.Service = Backbone.Model.extend({
             name: null,
             url: null,
             referencedService: {}, /* Service */
-            isValidated: null,
+            isValidated: false,
             validationState: {},
+            lifeCycleState: null
         };
     },
     

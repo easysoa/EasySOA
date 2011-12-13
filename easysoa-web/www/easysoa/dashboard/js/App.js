@@ -14,6 +14,7 @@ window.AppView = Backbone.View.extend({
         'click .serviceEntryLocalServiceName' : 'selectLocalItem',
         'click .serviceEntryReferencedServiceName' : 'selectReferencedItem',
         'click #defineReferenceLink' : 'defineReferenceLink',
+        'click #breakReferenceLink' : 'breakReferenceLink',
         'click .actionButton' : 'updateLifeCycleState'
     },
 
@@ -159,15 +160,23 @@ window.AppView = Backbone.View.extend({
     },
     
     updateEnabledButtons: function() {
-        var service = this.services.getByCid(this.selectedLocal);
-        var lifeCycleState = service.get('lifeCycleState');
-        
-        this.toggle($('#defineReferenceLink'), this.selectedReference != null && this.selectedLocal != null);
-        this.toggle($('#breakReferenceLink'), this.selectedLocal != null && service.hasReference());
-        this.toggle($('#approveService'), this.selectedLocal != null && 'project' == lifeCycleState);
-        this.toggle($('#maskService'), this.selectedLocal != null && 'project' == lifeCycleState);
-        this.toggle($('#removeService'), this.selectedLocal != null && 'project' == lifeCycleState);
-        this.toggle($('#resetService'), this.selectedLocal != null && ('approved' == lifeCycleState || 'obsoloete' == lifeCycleState));
+        var hideAll = true;
+        if (this.selectedLocal != null) {
+            var service = this.services.getByCid(this.selectedLocal);
+            if (service.get('id') != null) {
+                hideAll = false;
+                var lifeCycleState = service.get('lifeCycleState');
+                this.toggle($('#defineReferenceLink'), this.selectedReference != null && this.selectedLocal != null);
+                this.toggle($('#breakReferenceLink'), this.selectedLocal != null && service.hasReference());
+                this.toggle($('#approveService'), this.selectedLocal != null && 'project' == lifeCycleState);
+                this.toggle($('#maskService'), this.selectedLocal != null && 'project' == lifeCycleState);
+                this.toggle($('#removeService'), this.selectedLocal != null && 'project' == lifeCycleState);
+                this.toggle($('#resetService'), this.selectedLocal != null && ('approved' == lifeCycleState || 'obsoloete' == lifeCycleState));
+            }
+        }
+        if (hideAll) {
+            $('.actionButton').hide(100);
+        }
     },
     
     toggle: function(element, value) {
@@ -207,7 +216,8 @@ window.AppView = Backbone.View.extend({
                 url: '/dashboard/service/' + fromId + '/linkto/null',
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
-                    location.reload();
+                    // XXX: Page is ometimes reloaded before the update is done ; why?
+                    setTimeout(location.reload, 300);  
                 },
                 error: function(data) {
                     app.showError("Failed to unlink services");
@@ -224,6 +234,13 @@ window.AppView = Backbone.View.extend({
             var buttonId = $(event.target).attr('id');
             var serviceId = this.services.getByCid(this.selectedLocal).get('id');
             var lifecycleTransition = null;
+            
+            if (buttonId == 'maskService' || buttonId == 'removeService') {
+                if (!confirm('Are you sure?')) {
+                    return;
+                }
+            }
+            
             switch (buttonId) {
             case 'approveService': lifecycleTransition = 'approve'; break;
             case 'maskService': lifecycleTransition = 'obsolete'; break;
@@ -234,7 +251,8 @@ window.AppView = Backbone.View.extend({
                 url: '/dashboard/service/' + serviceId + '/lifecycle/' + lifecycleTransition,
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
-                    location.reload();
+                    // XXX: Page is ometimes reloaded before the update is done ; why?
+                    setTimeout(location.reload, 300);  
                 },
                 error: function(data) {
                     app.showError("Failed to update lifecycle state");

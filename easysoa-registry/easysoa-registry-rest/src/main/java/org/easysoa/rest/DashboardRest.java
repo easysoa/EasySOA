@@ -195,6 +195,12 @@ public class DashboardRest {
                 if (!referenceidIsNull) {
                     newReferenceId = referenceid;
                     newReferenceOrigin = "Manually set";
+                    if (localServiceModel.getAllowedStateTransitions().contains("approve")) {
+                        localServiceModel.followTransition("approve");
+                    }
+                }
+                else if (localServiceModel.getAllowedStateTransitions().contains("backToProject")) {
+                    localServiceModel.followTransition("backToProject");
                 }
                 localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, newReferenceId);
                 localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, newReferenceOrigin);
@@ -242,9 +248,8 @@ public class DashboardRest {
     }
     
     private JSONObject getDocumentModelAsJSON(DocumentModel model) throws JSONException, ClientException {
-        JSONObject modelJSON = null;
+        JSONObject modelJSON = new JSONObject();
         if (model != null) {
-            modelJSON = new JSONObject();
             modelJSON.put("id", model.getId());
             modelJSON.put("name", model.getTitle());
             modelJSON.put("url", model.getProperty(Service.SCHEMA, Service.PROP_URL));
