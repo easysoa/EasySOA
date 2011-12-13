@@ -85,14 +85,21 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	@Override
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
-		runManager.stop();
-		runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+		try {
+			runManager.stop();
+			runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+		}
+		catch(Exception ex){
+			logger.error("Unable to stop the current run", ex);
+			return ex.getMessage();			
+		}
 		return "Current run stopped !";
 	}
 
 	@Override
 	@Deprecated
 	// TODO Modify this method to change the monitoring mode
+	// Method not used at the current time.
 	public String setMonitoringMode(String mode) {
 		logger.debug("Set monitoring mode !");
 		try {
@@ -107,7 +114,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Monitoring mode set";
 	}
 
-	@Override
+	/*@Override
 	public String getOrderedRunNames() {
 		StringBuffer result = new StringBuffer();
 		int i = 1;
@@ -118,9 +125,9 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 			i++;
 		}
 		return result.toString();
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public String reRun(String runName) {
 		try{
 			runManager.reRun(runName);
@@ -130,10 +137,10 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 			return ex.getMessage();	
 		}
 		return "Re-run done";
-	}
+	}*/
 
-	@Override
-	public String deleteRun(String runName) {
+	//@Override
+	/*public String deleteRun(String runName) {
 		try {
 			runManager.deleteRun(runName);
 		}
@@ -142,6 +149,12 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 			return ex.getMessage();			
 		}
 		return "Run deleted ";		
+	}*/
+	
+	@Override
+	public void save(){
+		// TODO  add code to save the current run in a specifed folder.
+		// Each exchangeRecord contained in the run is saved in a JSON file
 	}
 
 }

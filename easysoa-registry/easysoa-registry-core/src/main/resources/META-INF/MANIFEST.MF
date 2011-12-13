@@ -30,4 +30,7 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/VocabularyHelperComponent.xml,
  OSGI-INF/ImplementationRelationServiceComponent.xml,
  OSGI-INF/workflow-contrib.xml,
- OSGI-INF/ScaImporterComponent.xml
+ OSGI-INF/ScaImporterComponent.xml,
+ OSGI-INF/PublicationServiceComponent.xml,
+ OSGI-INF/ServiceValidatorServiceComponent.xml,
+ OSGI-INF/servicevalidators-contrib.xml

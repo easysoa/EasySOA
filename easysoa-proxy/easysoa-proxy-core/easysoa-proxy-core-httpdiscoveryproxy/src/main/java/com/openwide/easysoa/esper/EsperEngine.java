@@ -20,7 +20,7 @@
 
 package com.openwide.easysoa.esper;
 
-import com.openwide.easysoa.monitoring.Message;
+import org.easysoa.records.ExchangeRecord;
 import com.openwide.easysoa.monitoring.soa.Node;
 
 public interface EsperEngine {
@@ -35,6 +35,7 @@ public interface EsperEngine {
 	 * Send a event to the Esper engine 
 	 * @param soaNode The <code>Message</code> contained in the event
 	 */
-	public void sendEvent(Message message);
+	//public void sendEvent(Message message);
+	public void sendEvent(ExchangeRecord exchangeRecord);
 	
 }

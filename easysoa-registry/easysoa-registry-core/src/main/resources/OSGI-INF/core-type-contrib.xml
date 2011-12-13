@@ -9,6 +9,7 @@
     <schema name="serviceapidef" src="schemas/serviceapidef.xsd" prefix="api" />
     <schema name="serviceref" src="schemas/serviceref.xsd" prefix="sref" />
     <schema name="appliimpldef" src="schemas/appliimpldef.xsd" prefix="app" />
+    <schema name="workspacedef" src="schemas/workspacedef.xsd" prefix="wsdef" />
     <schema name="feature" src="schemas/feature.xsd" prefix="feat" />
     <schema name="querynav2" src="schemas/querynav2.xsd" />
   </extension>
@@ -30,6 +31,7 @@
       <facet name="Commentable" />
       <facet name="Versionable" />
       <facet name="Indexable" />
+      <facet name="Publishable" />
     </doctype>
 
     <doctype extends="Folder" name="ServiceAPI">
@@ -41,6 +43,7 @@
       <facet name="Folderish" />
       <facet name="Commentable" />
       <facet name="Indexable" />
+      <facet name="Publishable" />
       <subtypes>
         <type>ServiceAPI</type>
         <type>Service</type>
@@ -59,21 +62,30 @@
       <facet name="Commentable" />
       <facet name="Versionable" />
       <facet name="Indexable" />
+      <facet name="Publishable" />
     </doctype>
 
-    <doctype extends="Folder" name="Workspace">
+    <doctype extends="Document" name="AppliImpl">
       <schema name="dublincore" />
       <schema name="soacommon" />
       <schema name="feature" />
       <schema name="appliimpldef" />
-      <schema name="webcontainer" />
       <schema name="file" />
       <schema name="files" />
       <facet name="Folderish" />
       <facet name="Commentable" />
+      <facet name="Indexable" />
+      <facet name="Publishable" />
       <subtypes>
         <type>ServiceAPI</type>
         <type>ServiceReference</type>
+      </subtypes>
+    </doctype>
+    
+    <doctype extends="Folder" name="Workspace">
+      <schema name="workspacedef" />
+      <subtypes>
+        <type>AppliImpl</type>
       </subtypes>
     </doctype>
 

@@ -1,14 +1,38 @@
 <?xml version="1.0"?>
 <xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/servicedef/"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:nxs="http://www.nuxeo.org/ecm/schemas/servicedef/">
 
   <xs:element name="url" type="xs:string" />
   <xs:element name="lightUrl" type="xs:string" />
   <xs:element name="callcount" type="xs:int" />
+  
   <xs:element name="participants" type="xs:string" />
+  
   <xs:element name="httpMethod" type="xs:string" />
   <xs:element name="contentTypeIn" type="xs:string" />
   <xs:element name="contentTypeOut" type="xs:string" />
   <xs:element name="fileUrl" type="xs:string" />
+  
+  <xs:element name="referenceService" type="xs:string" />
+  <xs:element name="referenceServiceOrigin" type="xs:string" />
+  <xs:element name="wsdlServiceName" type="xs:string" />
+  <xs:element name="wsdlNamespace" type="xs:string" />
+  
+  <xs:complexType name="validatorResult">
+    <xs:sequence>
+      <xs:element name="validatorName" type="xs:string" />
+      <xs:element name="isValidated" type="xs:boolean" />
+      <xs:element name="validationLog" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validationState">
+    <xs:sequence>
+      <xs:element name="validatorName" type="nxs:validatorResult" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="isValidated" type="xs:boolean" />
+  <xs:element name="validationState" type="nxs:validationState" />
   
 </xs:schema>

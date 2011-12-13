@@ -1,7 +1,5 @@
 package com.openwide.easysoa.message;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * A key/value object
  * @author jguillemotte

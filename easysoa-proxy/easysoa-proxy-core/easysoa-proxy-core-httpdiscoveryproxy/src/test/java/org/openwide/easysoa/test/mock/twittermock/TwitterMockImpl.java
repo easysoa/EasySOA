@@ -20,7 +20,7 @@
 
 package org.openwide.easysoa.test.mock.twittermock;
 
-import org.openwide.easysoa.test.Utilities;
+import org.openwide.easysoa.test.util.Utilities;
 
 /**
  * Implementation of Twitter mock

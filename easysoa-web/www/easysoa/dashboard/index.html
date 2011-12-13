@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>EasySOA Integration - Service dashboard</title>
+	<meta charset="utf-8" />
+	<link href="/easysoa/style.css" type="text/css" media="all" rel="stylesheet" />
+    <link href="style.css" type="text/css" media="all" rel="stylesheet" />
+	<script type="text/javascript" src="/easysoa/lib/jquery.js"></script>
+    <script type="text/javascript" src="/easysoa/lib/underscore.js"></script>
+    <script type="text/javascript" src="/easysoa/lib/backbone.js"></script>
+	<script type="text/javascript" src="/easysoa/js/common.js"></script>
+    <script type="text/javascript" src="js/Services.js"></script>
+    <script type="text/javascript" src="js/App.js"></script>
+</head>
+	
+<body>
+
+<div id="headerIntegration">
+	<div id="headerIntegrationContents">
+	    <a href="/easysoa" id="logoLink"> </a>
+    	<div id="headerUserBar"></div>
+		<div id="headerBreadcrumbs"><a href="/easysoa/index.html">EasySOA</a> > <b>Dashboard</b></div>
+		Service dashboard
+    </div>
+</div>
+
+<div id="container" style="width: 100%">
+    
+    <table id="serviceentries">
+    <tr id="serviceentriesheader">
+      <th>Service name</th>
+      <th></th>
+      <th>Referenced service name</th>
+      <th>Validation state</th>
+    </tr>
+    <tr id="placeholder">
+        <td colspan="4"><img src="/easysoa/img/loading.gif" /></td>
+    </tr>
+    </table>
+    
+    <table id="actionButtons"><tr><td>
+        <div>Available actions:</div>
+        <input class="actionButton" id="defineReferenceLink" type="button" value="Define reference" />
+        <input class="actionButton" id="breakReferenceLink" type="button" value="Break reference link" />
+    </td></tr></table>
+    
+    <div id="errorHolder"></div>
+    
+</div>
+
+<!-- Templates -->
+
+<script type="text/template" id="serviceentriescolumn-template">
+   <th width="150px"><%= get('name') %></th>
+</script>
+
+<script type="text/template" id="serviceentryicon-template">
+  <% 
+  var img;
+  var size = '32px';
+  if (value == undefined) {
+    img = 'grey';
+  }
+  else if (value != 'true' && value != true) {
+    img = 'red';
+  }
+  else {
+    img = 'green';
+  }
+  if (small) {
+    size = '16px';
+  }
+  %>
+  <img src="img/<%= img %>.png" width="<%= size %>" />
+</script>
+
+<script type="text/template" id="serviceentry-template">
+
+    <% var iconTemplate = _.template($('#serviceentryicon-template').html()); %>
+    
+    <td class="serviceEntryLocalServiceName" id="<%= id %>" cid="<%= cid %>">
+      <%= name %>
+    </td>
+    <td class="serviceEntryArrow">
+      <img src="img/arrow.png" />
+    </td>
+    <% if (referencedService.cid != null) { %>
+      <td class="serviceEntryReferencedServiceName" id="<%= referencedService.get('id') %>" cid="<%= referencedService.cid %>">
+        <%= referencedService.get('name') %>
+      </td>
+    <% } else { %>
+      <td></td>
+    <%  } %>
+    <td class="serviceEntryValidationIcon">
+        <%  if (name == undefined) { %>
+          <%= iconTemplate({value: 'false', small: false}) %>
+        <%  } else if (name == undefined) { %>
+          <%= iconTemplate({value: null, small: false}) %>
+        <%  } else { %>
+          <%= iconTemplate({value: isValidated, small: false}) %>
+        <%  } %>
+    </td>
+    <% for (validator in validationState) { %>
+    <td class="serviceEntryValidationResult">
+       <div><%= validationState[validator].validationLog %></div>
+       <%= iconTemplate({value: validationState[validator].isValidated, small: true}) %>
+    </td>
+    <% } %>
+</script>
+  
+<script type="text/template" id="correlationresult-template">
+    <div class="correlationResult">Possible match (correlation: <%= correlationRate %>%)</div>
+</script>
+
+<script type="text/template" id="error-template">
+    <div id="error"><b>ERROR:</b> <%= error %></div>
+</script>
+
+</body>
+
+</html>

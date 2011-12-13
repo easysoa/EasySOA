@@ -67,7 +67,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	
 	// Just for compatibily with airport tuto hack
 	@Property
-	String defaultWsdl;		
+	String defaultWsdl;
 	
 	@Override
 	public String updateWsdl(String wsdlSource) throws Exception {

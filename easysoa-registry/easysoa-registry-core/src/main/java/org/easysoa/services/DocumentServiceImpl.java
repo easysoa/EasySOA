@@ -46,42 +46,45 @@ import org.nuxeo.runtime.model.DefaultComponent;
 /**
  * 
  * @author mkalam-alami
- *
+ * 
  */
 public class DocumentServiceImpl extends DefaultComponent implements DocumentService {
-    
+
     private static Log log = LogFactory.getLog(DocumentServiceImpl.class);
 
-    // Must not be directly accessed, use getters
-    private DocumentModel defaultAppliImpl = null;
-    private DocumentModel wsRoot = null; 
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#createAppliImpl(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
-     */
-    @Override
+    private final static String DEFAULT_WORKSPACE = "Master";
+
+    private PathRef workspaceRootRef = new PathRef("/default-domain/workspaces");
+
     public final DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException, MalformedURLException {
+        return createAppliImpl(session, url, DEFAULT_WORKSPACE);
+    }
+
+    public final DocumentModel createAppliImpl(CoreSession session, String url, String workspace) throws ClientException, MalformedURLException {
+        // Find or create workspace
+        DocumentModel workspaceModel = findWorkspace(session, workspace);
+        if (workspaceModel == null) {
+            workspaceModel = session.createDocumentModel(workspaceRootRef.toString(), IdUtils.generateId(workspace, "", true, 15), "Workspace");
+            workspaceModel.setProperty("dublincore", "title", workspace);
+            workspaceModel = session.createDocument(workspaceModel);
+            session.save();
+        }
+        // Create Appli Impl.
         String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
         DocumentModel appliImplModel = session.createDocumentModel(AppliImpl.DOCTYPE);
         appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL, normalizedUrl);
         appliImplModel.setProperty("dublincore", "title", normalizedUrl);
-        appliImplModel.setPathInfo(getWorkspaceRoot(session).getPathAsString(), generateDocumentID(appliImplModel));
+        appliImplModel.setPathInfo(workspaceModel.getPathAsString(), generateDocumentID(appliImplModel));
         return session.createDocument(appliImplModel);
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#createServiceAPI(org.nuxeo.ecm.core.api.CoreSession, java.lang.String, java.lang.String)
-     */
-    @Override
-    public final DocumentModel createServiceAPI(CoreSession session,
-            String parentPath, String url) throws ClientException, MalformedURLException {
+    public final DocumentModel createServiceAPI(CoreSession session, String parentPath, String url) throws ClientException, MalformedURLException {
         String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
         boolean invalidParent = false;
         if (parentPath == null) {
             invalidParent = true;
-        }
-        else if (!session.exists(new PathRef(parentPath))) {
-            log.warn("Parent AppliImpl "+parentPath+" not found, using default");
+        } else if (!session.exists(new PathRef(parentPath))) {
+            log.warn("Parent AppliImpl " + parentPath + " not found, using default");
             invalidParent = true;
         }
         if (invalidParent) {
@@ -94,13 +97,8 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
         apiModel.setPathInfo(parentPath, generateDocumentID(apiModel));
         return session.createDocument(apiModel);
     }
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#createService(org.nuxeo.ecm.core.api.CoreSession, java.lang.String, java.lang.String)
-     */
-    @Override
-    public final DocumentModel createService(CoreSession session,
-            String parentPath, String url) throws ClientException, MalformedURLException {
+
+    public final DocumentModel createService(CoreSession session, String parentPath, String url) throws ClientException, MalformedURLException {
         if (parentPath != null) {
             String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
             DocumentModel serviceModel = session.createDocumentModel(Service.DOCTYPE);
@@ -111,106 +109,83 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
             serviceModel.setProperty("dublincore", "title", normalizedUrl);
             serviceModel.setPathInfo(parentPath, generateDocumentID(serviceModel));
             return session.createDocument(serviceModel);
-        }
-        else {
+        } else {
             return null;
         }
     }
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#createReference(org.nuxeo.ecm.core.api.CoreSession, java.lang.String, java.lang.String)
-     */
-    @Override
-    public final DocumentModel createReference(CoreSession session,
-            String parentPath, String title) throws ClientException {
+
+    public final DocumentModel createReference(CoreSession session, String parentPath, String title) throws ClientException {
         if (parentPath != null) {
             DocumentModel referenceModel = session.createDocumentModel(ServiceReference.DOCTYPE);
             referenceModel.setProperty("dublincore", "title", title);
             referenceModel.setPathInfo(parentPath, generateDocumentID(referenceModel));
             return session.createDocument(referenceModel);
-        }
-        else {
-            return null;
-        }
-    }
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#findAppliImpl(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
-     */
-    @Override
-    public DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
-        if (appliUrl != null) {
-            try {
-                return findFirstDocument(session, AppliImpl.DOCTYPE, 
-                        AppliImpl.SCHEMA_PREFIX+AppliImpl.PROP_URL,
-                        PropertyNormalizer.normalizeUrl(appliUrl));
-            } catch (MalformedURLException e) {
-                return null;
-            }
-        }
-        else {
-            return null;
-        }
-    }
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#findServiceApi(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
-     */
-    @Override
-    public DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
-        if (apiUrl != null) {
-            try {
-                return findFirstDocument(session, ServiceAPI.DOCTYPE, 
-                        ServiceAPI.SCHEMA_PREFIX+ServiceAPI.PROP_URL,
-                        PropertyNormalizer.normalizeUrl(apiUrl));
-            } catch (MalformedURLException e) {
-                return null;
-            }
-        }
-        else {
-            return null;
-        }
-    }
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#findService(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
-     */
-    @Override
-    public DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException {
-        if (url != null) {
-            DocumentModel result = findFirstDocument(session, Service.DOCTYPE,
-                    Service.SCHEMA_PREFIX+Service.PROP_URL, PropertyNormalizer.normalizeUrl(url));
-            if (result == null) {
-                // Match either service url or WSDL url
-                result = findFirstDocument(session, Service.DOCTYPE,
-                        Service.SCHEMA_PREFIX+Service.PROP_FILEURL, url);
-            }
-            return result;
-        }
-        else {
+        } else {
             return null;
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#findServiceReference(org.nuxeo.ecm.core.api.CoreSession, java.lang.String)
-     */
-    @Override
-    public DocumentModel findServiceReference(CoreSession session,
-            String referenceArchiPath) throws ClientException {
+    public DocumentModel findWorkspace(CoreSession session, String name) throws ClientException {
+        if (name != null) {
+            return findFirstDocument(session, "Workspace", "dc:title", name);
+        } else {
+            return null;
+        }
+    }
+    
+    public DocumentModel findEnvironment(CoreSession session, String name) throws ClientException {
+        if (name != null) {
+            return findFirstDocument(session, "Section", "dc:title", name);
+        } else {
+            return null;
+        }
+    }
+
+    public DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException {
+        if (appliUrl != null) {
+            try {
+                return findFirstDocument(session, AppliImpl.DOCTYPE, AppliImpl.SCHEMA_PREFIX + AppliImpl.PROP_URL, PropertyNormalizer.normalizeUrl(appliUrl));
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException {
+        if (apiUrl != null) {
+            try {
+                return findFirstDocument(session, ServiceAPI.DOCTYPE, ServiceAPI.SCHEMA_PREFIX + ServiceAPI.PROP_URL, PropertyNormalizer.normalizeUrl(apiUrl));
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException {
+        if (url != null) {
+            DocumentModel result = findFirstDocument(session, Service.DOCTYPE, Service.SCHEMA_PREFIX + Service.PROP_URL, PropertyNormalizer.normalizeUrl(url));
+            if (result == null) {
+                // Match either service url or WSDL url
+                result = findFirstDocument(session, Service.DOCTYPE, Service.SCHEMA_PREFIX + Service.PROP_FILEURL, url);
+            }
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    public DocumentModel findServiceReference(CoreSession session, String referenceArchiPath) throws ClientException {
         if (referenceArchiPath == null) {
             return null;
         }
-        return findFirstDocument(session, ServiceReference.DOCTYPE,
-                EasySOADoctype.SCHEMA_COMMON_PREFIX +ServiceReference.PROP_ARCHIPATH, referenceArchiPath);
+        return findFirstDocument(session, ServiceReference.DOCTYPE, EasySOADoctype.SCHEMA_COMMON_PREFIX + ServiceReference.PROP_ARCHIPATH, referenceArchiPath);
     }
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#mergeDocument(org.nuxeo.ecm.core.api.CoreSession, org.nuxeo.ecm.core.api.DocumentModel, org.nuxeo.ecm.core.api.DocumentModel, boolean)
-     */
-    @Override
-    public boolean mergeDocument(CoreSession session, DocumentModel from,
-            DocumentModel to, boolean overwrite) throws ClientException {
+
+    public boolean mergeDocument(CoreSession session, DocumentModel from, DocumentModel to, boolean overwrite) throws ClientException {
         if (to.getType().equals(to.getType())) {
             for (String schema : from.getDocumentType().getSchemaNames()) {
                 Map<String, Object> schemaPropertiesFrom = from.getProperties(schema);
@@ -225,84 +200,66 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
             }
             session.removeDocument(from.getRef());
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#generateDocumentID(org.nuxeo.ecm.core.api.DocumentModel)
-     */
-    @Override
     public String generateDocumentID(DocumentModel doc) {
         try {
             return IdUtils.generateId(doc.getTitle(), "-", true, 0);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return IdUtils.generateStringId();
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#getDefaultAppliImpl(org.nuxeo.ecm.core.api.CoreSession)
-     */
-    @Override
     public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
-        if (defaultAppliImpl == null || !session.exists(defaultAppliImpl.getRef())) {
-            DocumentModel appliimpl = getChild(session, getWorkspaceRoot(session).getRef(), AppliImpl.DEFAULT_APPLIIMPL_TITLE);
-            if (appliimpl == null) {
-                DocumentModel appliImpl;
-                try {
-                    appliImpl = createAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);
-                    appliImpl.setProperty("dublincore", "title", AppliImpl.DEFAULT_APPLIIMPL_TITLE);
-                    appliImpl.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT,
-                            AppliImpl.DEFAULT_ENVIRONMENT);
-                    session.saveDocument(appliImpl);
-                    session.save();
-                    defaultAppliImpl = appliImpl;
-                    return defaultAppliImpl;
-                } catch (MalformedURLException e) {
-                    log.error("Default Appli Impl. URL is invalid", e);
-                    return null;
-                }
+        // Find or create AppliImpl
+        DocumentModel appliImpl = findAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);
+        if (appliImpl == null) {
+            try {
+                appliImpl = createAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL, DEFAULT_WORKSPACE);
+                appliImpl.setProperty("dublincore", "title", AppliImpl.DEFAULT_APPLIIMPL_TITLE);
+                appliImpl.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, AppliImpl.DEFAULT_ENVIRONMENT);
+                session.saveDocument(appliImpl);
+                session.save();
+                return appliImpl;
+            } catch (MalformedURLException e) {
+                log.error("Default Appli Impl. URL is invalid", e);
+                return null;
             }
-            else
-                defaultAppliImpl = appliimpl;
+        } else {
+            return appliImpl;
         }
-        return defaultAppliImpl;
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.services.DocumentService#getWorkspaceRoot(org.nuxeo.ecm.core.api.CoreSession)
-     */
-    @Override
-    public DocumentModel getWorkspaceRoot(CoreSession session) throws ClientException {
-        if (wsRoot == null || !session.exists(wsRoot.getRef())) {
-            DocumentModel defaultDomain = session.getChildren(session.getRootDocument().getRef()).get(0);
-            DocumentModelList domainChildren =  session.getChildren(defaultDomain.getRef());
-            for (DocumentModel model : domainChildren) {
-                if (model.getType().equals("WorkspaceRoot")) {
-                    return model;
-                }
-            }
+    public DocumentModel getWorkspace(CoreSession session, DocumentModel model) throws ClientException {
+        // Use path to retrieve the workspace's path
+        String path = model.getPathAsString() + "/";
+        int i = 0;
+        for (int step = 1; step <= 3; step++) {
+            i = path.indexOf('/', i + 1);
         }
-        return wsRoot;
+        if (i != -1) {
+            // Retrieve and check workspace
+            DocumentModel workspace = session.getDocument(new PathRef(path.substring(0, i)));
+            if (workspace != null && workspace.getType().equals("Workspace")) {
+                return workspace;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    public DocumentRef getWorkspaceRoot(CoreSession session) throws ClientException {
+        return workspaceRootRef;
     }
 
     private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
-        DocumentModelList apis = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-                type + "' AND " + field + " = '" +  value + "' AND ecm:currentLifeCycleState <> 'deleted'");
-        return (apis != null && apis.size() > 0) ? apis.get(0) : null;
-    }
-
-    private DocumentModel getChild(CoreSession session, DocumentRef parent, String childTitle) throws ClientException { 
-        for (DocumentModel model : session.getChildren(parent)) {
-            if (model.getTitle().equals(childTitle) && model.getCurrentLifeCycleState() != "deleted") {
-                return model;
-            }
-        }
-        return null;
+        DocumentModelList apis = session.query("SELECT * FROM " + type + " WHERE " + field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted'");
+        return (apis != null && !apis.isEmpty()) ? apis.get(0) : null;
     }
 
 }

@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+		<title>Run manager UI</title>
+        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/proxiedRequest.js"></script>
+		<link href="/easysoa/style.css" rel="stylesheet">
+		<script type="text/javascript">
+		
+			function sendGetRecordForm(exchangeRecordStoreName) {
+				//document.getRecordsForm.action ="http://localhost:8090/runManager/exchangeRecordStore/getRecords.html?exchangeRecordStoreName="+exchangeRecordStoreName;
+				//alert(document.getRecordsForm.action);
+				document.getRecordsForm.exchangeRecordStoreName.value = exchangeRecordStoreName;
+				document.getRecordsForm.submit();
+			}
+		
+		</script>
+	</head>
+	<body>
+		<p>
+			<h1>Run</h1>
+			
+			<!-- TODO : display the number of record in the run -->
+			Current run : 
+			#if($runManager.isCurrentRun())
+				$runManager.getCurrentRun().getName() - $runManager.getCurrentRun().getStatus()
+			#else
+				There is no current run !
+			#end
+			<br/>
+			#if(!$runManager.isCurrentRun())
+			<form method="post" name="createNewRunForm" action="http://localhost:8090/runManager/run/startNewRun.html">
+				Create a new run named : <input type="text" name="runName" /> <input type="submit" value="Create" />
+			</form>
+			#elseif($runManager.isCurrentRun() && $runManager.getCurrentRun().getStatus() == "RUNNING")
+			<form method="post" name="stopRunForm" action="http://localhost:8090/runManager/run/stopRun.html">
+				Stop the run : <input type="submit" value="Stop" />
+			</form>
+			#elseif($runManager.isCurrentRun() && $runManager.getCurrentRun().getStatus() == "STOPPED")
+			<form method="post" name="saveRunForm" action="http://localhost:8090/runManager/run/saveRun.html">
+				Save the run : <input type="submit" value="Save" />
+			</form>
+			#elseif($runManager.isCurrentRun() && $runManager.getCurrentRun().getStatus() == "SAVED")
+			<form method="post" name="deleteRunForm" action="http://localhost:8090/runManager/run/deleteRun.html">
+				Delete the run : <input type="submit" value="Delete" />
+			</form>
+			#end
+			<br/>
+		</p>
+		<p>
+			<h1>Exchange store</h1>
+			Exchange record stores :
+			<br/>
+			<form method="get" name="getRecordsForm" action="http://localhost:8090/runManager/exchangeRecordStore/getRecords.html">
+				<input type="text" name="exchangeRecordStoreName" value="" hidden=""/>
+				<ul>
+					#foreach( $exchangeRecordStore in $exchangeRecordStoreManager.getExchangeRecordStorelist() )
+    				<li>$exchangeRecordStore.getStoreName() - <button type="button" onclick="sendGetRecordForm('$exchangeRecordStore.getStoreName()')">Get records</button> </li>
+					#end
+				</ul>
+			</form>
+			<br/>
+				with links to replay the entire Exchange store or to replay only one exchange 		
+			<br/>
+		</p>
+	</body>
+</html>

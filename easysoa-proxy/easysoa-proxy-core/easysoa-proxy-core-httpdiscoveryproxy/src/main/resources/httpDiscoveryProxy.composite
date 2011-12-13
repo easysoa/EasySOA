@@ -35,7 +35,17 @@
 			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
 			<frascati:binding.rest uri="http://localhost:8085/" />
 		</sca:service>
-	</sca:component>	
+	</sca:component>
+
+	<!-- Client UI for RunManager and Exchange store, Works with velocity -->
+  	<sca:component name="runManagerUIComponent">
+	    <implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="runManagerUITemplate.html" location="webContent" />
+	    <sca:service name="velocity">
+    		<tuscany:binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/runManager" />
+    	</sca:service>
+		<sca:reference name="runManager" target="runManagerComponent/runManagerService" />
+		<sca:reference name="exchangeRecordStoreManager" target="exchangeStoreManagerComponent/exchangeStoreManagerService" />
+	</sca:component>
 
 	<!-- Monitoring service -->
 	<sca:component name="monitoringServiceComponent">
@@ -43,7 +53,7 @@
 			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.monitoring.DiscoveryMonitoringService" />
-		<sca:reference name="esperEngine" target="esperEngineComponent" />		
+		<sca:reference name="esperEngine" target="esperEngineComponent" />
 	</sca:component>
 
 	<!-- Run Manager -->
@@ -54,6 +64,16 @@
 		<sca:implementation.java class="com.openwide.easysoa.run.RunManagerImpl" />
 		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
 	</sca:component>
+	
+	<!-- Exchange record Manager -->
+	<sca:component name="exchangeStoreManagerComponent">
+		<sca:service name="exchangeStoreManagerService">
+			<!--<sca:interface.java interface="org.easysoa.records.ExchangeRecordStoreManager" />-->
+			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
+		</sca:service>
+		<!--<sca:implementation.java class="org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore" />-->
+		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
+	</sca:component>	
 	
 	<!-- Esper Engine -->
 	<sca:component name="esperEngineComponent">

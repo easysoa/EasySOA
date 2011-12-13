@@ -41,6 +41,12 @@
       <artifactId>frascati-binding-rest</artifactId>
       <version>${frascati.version}</version>
     </dependency>
+	<!-- Required to run velocity web apps -->
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-implementation-velocity</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>    
     <!-- to run it with mvn -Prun -->
     <dependency>
       <groupId>org.ow2.frascati.mojo</groupId>
@@ -65,18 +71,20 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
-      <version>1.8-ea02</version>
+      <!--<version>1.8-ea02</version>-->
+      <!--<version>1.11-b02</version>-->
+      <version>1.9-ea07</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>${log4j.version}</version>
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20090211</version>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>

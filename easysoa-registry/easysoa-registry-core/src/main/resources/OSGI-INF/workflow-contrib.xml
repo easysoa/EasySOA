@@ -8,7 +8,7 @@
         <type>Service</type>
         <type>ServiceAPI</type>
         <type>ServiceReference</type>
-        <type>Workspace</type>
+        <type>AppliImpl</type>
       </rule>
     </filter>
   </extension>

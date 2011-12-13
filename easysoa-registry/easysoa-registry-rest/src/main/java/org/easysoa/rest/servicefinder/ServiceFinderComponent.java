@@ -24,27 +24,26 @@ public class ServiceFinderComponent extends DefaultComponent {
 
     private static Log log = LogFactory.getLog(ServiceFinderComponent.class);
     
-    private List<ServiceFinderStrategy> finders = new LinkedList<ServiceFinderStrategy>();
+    private List<ServiceFinderStrategy> strategies = new LinkedList<ServiceFinderStrategy>();
 
-    public List<ServiceFinderStrategy> getServiceFinders() {
-        return finders;
+    public List<ServiceFinderStrategy> getStrategies() {
+        return strategies;
     }
     
     public void registerContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor) throws Exception {
         try {
-            synchronized (finders) {
+            synchronized (strategies) {
             if (extensionPoint.equals(EXTENSTION_POINT_STRATEGIES)) {
                 ServiceFinderStrategyDescriptor finderDescriptor = (ServiceFinderStrategyDescriptor) contribution;
                 if (finderDescriptor.enabled) {
                     Class<?> finderClass = Class.forName(finderDescriptor.implementation.trim());
                     if (ServiceFinderStrategy.class.isAssignableFrom(finderClass)) {
-                        finders.add((ServiceFinderStrategy) finderClass.newInstance());
+                        strategies.add((ServiceFinderStrategy) finderClass.newInstance());
                     } else {
                         throw new InvalidClassException(renderContributionError(
                                 contributor, "class " + finderDescriptor.implementation
-                                        + " is not an instance of "
-                                        + ServiceFinderStrategy.class.getName()));
+                                        + " is not an instance of " + ServiceFinderStrategy.class.getName()));
                     }
                 }
             }
@@ -57,15 +56,15 @@ public class ServiceFinderComponent extends DefaultComponent {
 
     public void unregisterContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor) throws Exception {
-        synchronized (finders) {
+        synchronized (strategies) {
         if (extensionPoint.equals(EXTENSTION_POINT_STRATEGIES)) {
             ServiceFinderStrategyDescriptor finderDescriptor = (ServiceFinderStrategyDescriptor) contribution;
             if (finderDescriptor.enabled) {
                 Class<?> finderClass = Class.forName(finderDescriptor.implementation.trim());
                 try {
-                    for (ServiceFinderStrategy finder : finders) {
+                    for (ServiceFinderStrategy finder : strategies) {
                         if (finder.getClass().equals(finderClass)) {
-                            finders.remove(finder);
+                            strategies.remove(finder);
                         }
                     }
                 }

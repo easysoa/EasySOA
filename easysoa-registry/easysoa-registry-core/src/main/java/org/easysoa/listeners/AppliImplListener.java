@@ -71,11 +71,6 @@ public class AppliImplListener implements EventListener {
         if (!type.equals(DOCTYPE)) {
             return;
         }
-        
-        // Initialize workflow
-        /*if (hasNoWorkflow(session, appliImplModel)) {
-            initWorkflow(session, appliImplModel);
-        }*/
 
         // Update properties
         if (maintainInternalProperties(session, appliImplModel)) {
@@ -92,21 +87,6 @@ public class AppliImplListener implements EventListener {
         }
 
     }
-
-    /*private boolean hasNoWorkflow(CoreSession session, DocumentModel appliImplModel) {
-        return true; // TODO
-    }
-    
-    private boolean initWorkflow(CoreSession session, DocumentModel appliImplModel) {
-        try {
-            // TODO
-        }
-        catch (Exception e) {
-            log.error("Failed to init Appli. Impl. workflow", e);
-            return false;
-        }
-        return true;
-    }*/
 
     private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel) {
         try {

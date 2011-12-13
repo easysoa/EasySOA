@@ -23,6 +23,8 @@ package org.easysoa.listeners;
 import static org.easysoa.doctypes.Service.DOCTYPE;
 import static org.easysoa.doctypes.Service.PROP_FILEURL;
 import static org.easysoa.doctypes.Service.PROP_URL;
+import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICE;
+import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICEORIGIN;
 import static org.easysoa.doctypes.Service.SCHEMA;
 
 import java.io.File;
@@ -30,20 +32,25 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.SortedSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.impl.HttpFile;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.ServiceValidationService;
+import org.easysoa.validation.CorrelationMatch;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -80,7 +87,7 @@ public class ServiceListener implements EventListener {
             return;
         }
         String type = doc.getType();
-        if (!type.equals(DOCTYPE)) {
+        if (!type.equals(DOCTYPE) || doc.isProxy()) {
             return;
         }
 
@@ -89,7 +96,7 @@ public class ServiceListener implements EventListener {
             // Extract data from document
             String title = (String) doc.getProperty("dublincore", "title");
             String url = (String) doc.getProperty(SCHEMA, PROP_URL);
-            String fileUrl = (String) doc.getProperty(SCHEMA, PROP_FILEURL);
+            String fileUrl = (url != null) ? url + "?wsdl" : null;
 
             // Extract data from WSDL
             if (fileUrl != null) {
@@ -128,15 +135,20 @@ public class ServiceListener implements EventListener {
                             org.ow2.easywsdl.wsdl.api.Service firstService = 
                                 (org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
                             
+                            // Namespace extraction
+                            String namespace = desc.getTargetNamespace();
+                            doc.setProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE, namespace);
+                            
                             // URL extraction
                             Endpoint firstEndpoint = firstService.getEndpoints().get(0);
                             url = PropertyNormalizer.normalizeUrl(firstEndpoint.getAddress());
                             doc.setProperty(SCHEMA, PROP_URL, url);
                             
                             // Service name extraction
+                            String serviceName = firstService.getQName().getLocalPart();
+                            doc.setProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME, serviceName);
                             if (title == null || title.isEmpty() || title.equals(fileUrl)) {
-                                title = firstService.getQName().getLocalPart();
-                                doc.setProperty("dublincore", "title", title);
+                                doc.setProperty("dublincore", "title", serviceName);
                             }
                             
                             //// Update parent's properties
@@ -212,6 +224,8 @@ public class ServiceListener implements EventListener {
                 }
             }
             
+            session.save();
+            
             // Maintain properties
             if (url != null) {
                 try {
@@ -231,22 +245,35 @@ public class ServiceListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
                 }
             }
-            else {
-                String potentialWsdlUrl = url+"?wsdl";
-                HttpFile file = new HttpFile(new URL(potentialWsdlUrl));
-                if (file.isURLAvailable()) {
-                    doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(potentialWsdlUrl));
+            String referencedService = (String) doc.getProperty(SCHEMA, PROP_REFERENCESERVICE);
+            if (referencedService == null || !session.exists(new IdRef(referencedService))) {
+                // If no reference or missing, find new reference by correlation
+                DocumentModel newReferenceService = null;
+                ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
+                SortedSet<CorrelationMatch> correlatedServices = validationService.findCorrelatedServices(session, doc);
+                if (correlatedServices != null && !correlatedServices.isEmpty()
+                        && correlatedServices.first().getCorrelationRate() > 0.9) {
+                    newReferenceService = correlatedServices.first().getDocumentModel();
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, newReferenceService.getId());
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICEORIGIN,
+                            "Automatic correlation (" + correlatedServices.first().getCorrelationRateAsPercentageString() + " match)");
+                }
+                else {
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, null);
                 }
             }
-            session.save();
             
             // Test if the service already exists, delete the other one(s) if necessary
             try {
                 DocumentService docService = Framework.getService(DocumentService.class);
+                DocumentModel workspace = docService.getWorkspace(session, doc);
                 DocumentModelList existingServiceModels = session.query(
-                        "SELECT * FROM Service WHERE serv:url = '" + url + "'");
+                        "SELECT * FROM " + Service.DOCTYPE + " WHERE " +
+                        		"ecm:path STARTSWITH '" + workspace.getPathAsString() + 
+                        		"' AND " + Service.SCHEMA_PREFIX + Service.PROP_URL + " = '" + url + "'");
                 for (DocumentModel existingServiceModel : existingServiceModels) {
-                    if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())) {
+                    if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())
+                            && !existingServiceModel.isProxy()) {
                         docService.mergeDocument(session, existingServiceModel, doc, false);
                     }
                 }

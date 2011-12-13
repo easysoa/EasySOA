@@ -34,7 +34,7 @@ exports.sendUrlToScrapers = function(request_url, callback) {
 		    host : scraperURL.hostname,
 		    path : scraperURL.href.replace('?', request_url.href)
 	    };
-              
+	    
 	    // Scraper request
 	    scraperRequest = http.request(scraperOptions, function(scraperResponse) {
 		
@@ -69,7 +69,7 @@ exports.sendUrlToScrapers = function(request_url, callback) {
         scraperRequest.addListener('error', function(error) {
             msg = "Scraper unavailable: "+settings.scrapers[scraper];
             easysoaDbb.broadcastemit('error', "ERROR: "+msg);
-      		console.log("[WARN] "+msg);
+      		  console.log("[WARN] "+msg);
         });
 	     
 	    scraperRequest.end();

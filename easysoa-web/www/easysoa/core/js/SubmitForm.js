@@ -27,7 +27,7 @@ $(function() {
 		
 		submit: function() {
 			if (this.getURL() != '') {
-                this.view.info("Sending request...");
+          this.view.info("Sending request...");
 			    jQuery.ajax({
 			        url: '/send',
 			        data: {

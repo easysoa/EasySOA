@@ -85,7 +85,6 @@ webServer.configure(function(){
     webServer.use(urlFixer);
     webServer.use(easysoaAuth.authFilter);
     webServer.use(webServer.router);
-    console.log(__dirname + '/' + settings.webRoot + '/favicon.ico');
     webServer.use(express.favicon(__dirname + '/favicon.ico', { maxAge: 0 }));
     webServer.use(express.static(__dirname + '/' + settings.webRoot));
     webServer.use(express.directory(__dirname + '/' + settings.webRoot));
@@ -148,6 +147,11 @@ webServer.get('/light/serviceList', function(request, response, next) {
 		response.write(JSON.stringify(responseData));
 		response.end();
 	});
+});
+
+// Dashboard requests routing to Nuxeo
+webServer.all('/dashboard/*', function(request, response, next) {
+    easysoaNuxeo.forwardToNuxeo(request, response, settings);
 });
 
 webServer.get('*', function(request, response, next) {

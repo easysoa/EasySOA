@@ -34,7 +34,9 @@ public class MessageContent {
 	private String comment;
 	private CustomFields customFields = new CustomFields();
 
-	public MessageContent(){}
+	public MessageContent(){
+		this.size = 0L;
+	}
 	
 	/**
 	 * Creates a new <code>MessageContent</code> object

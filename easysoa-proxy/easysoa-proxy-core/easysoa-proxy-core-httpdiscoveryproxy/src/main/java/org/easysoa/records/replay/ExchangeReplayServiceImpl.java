@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
+import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.message.OutMessage;
@@ -42,20 +43,21 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeReplayServiceImpl.class.getName());	
 	
+	// Running environment
 	private String environment;
 
 	@Override
 	@GET
-	@Path("/list")
-	@Produces("application/json,application/xml") 
-	public List<ExchangeRecord> list() {
+	@Path("/list/{storeName}")
+	@Produces("application/json")
+	public List<ExchangeRecord> getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) {
 		logger.debug("list method called ...");
-    	ExchangeRecordStore erfs;
+    	ExchangeRecordStoreManager erfs;
     	List<ExchangeRecord> recordList;
 		try {
 			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
-			recordList = erfs.list();
-			logger.debug("recordeList size = " + recordList.size());
+			recordList = erfs.getExchangeRecordlist(exchangeRecordStoreName);
+			logger.debug("recordedList size = " + recordList.size());
 		} catch (Exception ex) {
 			logger.error("An error occurs during the listing of exchanges records", ex);
 			recordList = new ArrayList<ExchangeRecord>();
@@ -64,47 +66,73 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	}
 
 	@Override
-	@Produces("application/json,application/xml")
-	public ExchangeRecord[] list(@PathParam("service") String service) {
-		// LATER
-		return null;
-	}
-
+	public List<ExchangeRecordStore> getExchangeRecordStorelist() {
+		logger.debug("list{service} method called ...");
+    	ExchangeRecordStoreManager erfs;
+    	List<ExchangeRecordStore> storeList; 
+    	try{
+    		erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
+    		storeList = erfs.getExchangeRecordStorelist();
+    	}
+    	catch(Exception ex){
+			logger.error("An error occurs during the listing of exchanges record stores", ex);
+			storeList = new ArrayList<ExchangeRecordStore>();    		
+    	}
+    	return storeList;
+	}	
+	
 	@Override
-	//@Produces("application/json,application/xml")
-	public String replay(@PathParam("exchangeRecordId") String exchangeRecordId) {
+	@Produces("application/json")
+	public String replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) {
 		// call remote service using chosen record :
 		// see how to share monit.forward(Message) code (extract it in a Util class), see also scaffolder client
 		
 		// NB. without correlated asserts, test on response are impossible,
 		// however diff is possible (on server or client)
 		// ex. on server : http://code.google.com/p/java-diff-utils/
-
-		String response;
-    	ExchangeRecordStore erfs;
+		logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
+		
+    	ExchangeRecordStoreManager erfs;
+		StringBuffer responseBuffer = new StringBuffer();    	
 		try {
+			List<ExchangeRecord> recordList;
 			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
 			// get the record
-			ExchangeRecord record = erfs.load(exchangeRecordId);
+			if(exchangeRecordId==null || "".equals(exchangeRecordId)){
+				 recordList = getExchangeRecordlist(exchangeRecordStoreName);
+			} else {
+				recordList = new ArrayList<ExchangeRecord>();
+				recordList.add(erfs.load(exchangeRecordStoreName, exchangeRecordId));			
+			}
+			RequestForwarder requestForwarder;
+			OutMessage outMessage;
+			logger.debug("records number to replay : " + recordList.size());
+			for(ExchangeRecord record : recordList){
 			// Send the request
-			RequestForwarder requestForwarder = new RequestForwarder();
-			OutMessage outMessage = requestForwarder.send(record.getInMessage());
-
-			logger.debug("Response of orignal exchange : " + record.getOutMessage().getMessageContent().getContent());
-			logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
-			// TODO : compare the returned response with the one contained in the stored Exchange record with an assert template
-			response = outMessage.getMessageContent().getContent();
+				requestForwarder = new RequestForwarder();
+				outMessage = requestForwarder.send(record.getInMessage());
+	
+				logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
+				logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
+				
+				// TODO : compare the returned response with the one contained in the stored Exchange record with an assert template
+				// TODO : change the response to return JSON structure
+				responseBuffer.append("Replay result for Exchange Record " + record.getExchangeID() + " => ");
+				responseBuffer.append(outMessage.getMessageContent().getContent());
+				responseBuffer.append("<br/>");
+			}
 		}
 		catch(Exception ex){
-			response = "A problem occurs during the replay, see logs for more informations !";
+			responseBuffer.append("A problem occurs during the replay, see logs for more informations !");
 			ex.printStackTrace();
 			logger.error("A problem occurs duringt the replay of exchange record  with id " + exchangeRecordId);
 		}
-			return response; // JSON
+		logger.debug("Response : " + responseBuffer.toString());
+		return responseBuffer.toString(); // JSON
 	}
 	
 	@Override
-	@Produces("application/json,application/xml")	
+	@Produces("application/json")	
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment) {
 		// LATER
 		// requires to extract service in request & response

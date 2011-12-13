@@ -30,6 +30,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.junit.Test;
+import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 
 /**
  * Minimal test to make the binding.http fail after been restarted

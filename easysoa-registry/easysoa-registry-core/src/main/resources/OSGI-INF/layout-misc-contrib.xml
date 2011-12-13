@@ -2,11 +2,97 @@
 <component name="org.easysoa.core.contrib.layout.misc">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
 
+    <!-- Default summary layout override -->
+    <layout name="default_summary_layout">
+      <templates>
+        <template mode="any">/layouts/layout_summary_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>summary_current_document_files</widget>
+          <widget>summary_current_document_description</widget>
+          <widget>summary_current_document_publications</widget>
+          <widget>summary_current_document_view</widget>
+          <widget>summary_current_document_dublincore</widget>
+          <widget>summary_current_document_comments</widget>
+        </row>
+        <row>
+          <!-- <widget>summary_current_document_lc_and_version</widget> -->
+          <widget>summary_current_document_actions</widget>
+          <widget>summary_current_document_custom_actions</widget>
+          <widget>summary_current_document_tagging</widget>
+          <widget>summary_current_document_relations</widget>
+        </row>
+        <!--<row>
+          <widget>summary_current_document_publications</widget>
+        </row> -->
+        <row>
+          <widget>summary_current_document_single_tasks</widget>
+        </row>
+      </rows>
+    </layout>
+
+    <!-- Common author information -->
+    <layout name="workspacedef">
+      <templates>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>workspacedef_referencedEnvironment</widget>
+        </row>
+        <row>
+          <widget>workspacedef_isValidated</widget>
+        </row>
+        <row>
+          <widget>workspacedef_validationLog</widget>
+        </row>
+      </rows>
+      <widget name="workspacedef_referencedEnvironment" type="text">
+        <labels>
+          <label mode="any">label.easysoa.workspacedef.referencedEnvironment</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>wsdef:referencedEnvironment</field>
+        </fields>
+      </widget>
+      <widget name="workspacedef_isValidated" type="template">
+        <labels>
+          <label mode="any">label.easysoa.workspacedef.isValidated</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>wsdef:isValidated</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/isvalidated_template.xhtml</property>
+        </properties>
+      </widget>
+      <widget name="workspacedef_validationLog" type="textarea">
+        <labels>
+          <label mode="any">label.easysoa.workspacedef.validationLog</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>wsdef:validationLog</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+      </widget>
+    </layout>
+    
     <!-- Common author information -->
     <layout name="soacommon_author">
       <templates>
         <template mode="any">/layouts/layout_easysoa_template.xhtml
-				</template>
+        </template>
       </templates>
       <rows>
         <row>
@@ -40,7 +126,7 @@
     <layout name="dublincore">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml
-				</template>
+        </template>
       </templates>
       <rows>
         <row>
@@ -62,7 +148,7 @@
     <layout name="fileRequired">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml
-				</template>
+        </template>
       </templates>
       <rows>
         <row>
@@ -88,7 +174,7 @@
           <property name="required">true</property>
           <property name="template">
             /widgets/extended_file_widget.xhtml
-					</property>
+          </property>
         </properties>
       </widget>
     </layout>

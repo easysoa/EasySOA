@@ -6,8 +6,8 @@
 <xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/serviceref/"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
-  <!-- path to referenced service. TODO or rather custom type ?? -->
-  <xs:element name="refPath" type="xs:string" />
+  <!-- ID of referenced service. TODO or rather custom type ?? -->
+  <xs:element name="refId" type="xs:string" />
   
   <!-- URL of referenced service (only a cache copy if refPath is known) -->
   <xs:element name="refUrl" type="xs:string" />

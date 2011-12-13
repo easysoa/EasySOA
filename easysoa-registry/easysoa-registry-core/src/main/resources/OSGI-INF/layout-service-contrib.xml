@@ -13,6 +13,18 @@
         <row>
           <widget>servicedef_participants</widget>
         </row>
+        <row>
+          <widget>servicedef_referenceService</widget>
+        </row>
+        <row>
+          <widget>servicedef_referenceServiceOrigin</widget>
+        </row>
+        <row>
+          <widget>servicedef_isValidated</widget>
+        </row>
+        <row>
+          <widget>servicedef_validationState</widget>
+        </row>
       </rows>
       <widget name="servicedef_participants" type="text">
         <labels>
@@ -22,6 +34,67 @@
         <fields>
           <field>serv:participants</field>
         </fields>
+      </widget>
+      <widget name="servicedef_referenceService" type="template">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.referenceService</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:referenceService</field>
+        </fields>
+        <properties widgetMode="view">
+          <property name="template">/widgets/document_path_link_template.xhtml</property>
+        </properties>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+      </widget>
+      <widget name="servicedef_referenceServiceOrigin" type="text">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.referenceServiceOrigin</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:referenceServiceOrigin</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+      </widget>
+      <widget name="servicedef_isValidated" type="template">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.isValidated</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:isValidated</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/isvalidated_template.xhtml</property>
+        </properties>
+      </widget>
+      <widget name="servicedef_validationState" type="template">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.validationState</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:validationState</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/validation_state_template.xhtml</property>
+        </properties>
       </widget>
     </layout>
 
@@ -131,6 +204,12 @@
         <row>
           <widget>servicedef_callcount</widget>
         </row>
+        <row>
+          <widget>servicedef_wsdlServiceName</widget>
+        </row>
+        <row>
+          <widget>servicedef_wsdlNamespace</widget>
+        </row>
       </rows>
       <widget name="servicedef_url" type="text">
         <labels>
@@ -155,6 +234,32 @@
         </fields>
         <widgetModes>
           <mode value="create">hidden</mode>
+        </widgetModes>
+      </widget>
+      <widget name="servicedef_wsdlServiceName" type="text">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.wsdlServiceName</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:wsdlServiceName</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+      </widget>
+      <widget name="servicedef_wsdlNamespace" type="text">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.wsdlNamespace</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:wsdlNamespace</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
         </widgetModes>
       </widget>
     </layout>

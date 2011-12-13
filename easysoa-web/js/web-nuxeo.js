@@ -31,7 +31,7 @@ computeAuthorization = function(username, password) {
     else {
         return null;
     }
-}
+};
 
 sendNotification = function(nuxeoUploadOptions, body, callback) {
 
@@ -64,19 +64,41 @@ sendNotification = function(nuxeoUploadOptions, body, callback) {
 
 // EXPORTS
 
-/*
- *
+/**
+ * 
  */
 exports.isNuxeoReady = function() {
     return nuxeoReady;
-}
+};
 
-/*
- *
+/**
+ * 
+ * @param session
+ * @param query
+ * @param headers
+ * @param callback
  */
+exports.queryDocuments = function(session, query, callback, headers) {
+    if (headers == undefined || headers == null) {
+        headers = {};
+    }
+    if (headers["X-NXDocumentProperties"] == undefined)  {
+        headers["X-NXDocumentProperties"] = "*";
+    }
+    easysoaNuxeo.automationQuery(session, "Document.Query", {query: query}, headers, callback);
+};
+
 // TODO Refactoring with checkNuxeo
 exports.automationQuery = function(session, operation, input, headers, callback) {
 
+  // Normalize optional params
+  if (input == null)
+      input = "";
+  if (headers == null)
+      headers = {};
+  if (callback == null)
+      callback = function() {};
+    
   headers['Content-Type'] = 'application/json+nxrequest';
   headers['Accept'] = 'application/json+nxentity, */*';
   headers['Authorization'] = computeAuthorization(session.username, session.password);
@@ -111,7 +133,7 @@ exports.automationQuery = function(session, operation, input, headers, callback)
 
 };
 
-/*
+/**
  *
  */
 exports.checkNuxeo = function(username, password, callback) {
@@ -147,7 +169,7 @@ exports.checkNuxeo = function(username, password, callback) {
     if (!nuxeoReady) {
       console.log("[INFO] Nuxeo is not ready yet...");
       setTimeout(function() { 
-              exports.checkNuxeo(username, password, callback) 
+              exports.checkNuxeo(username, password, callback);
           }, 3000);
     }
   });
@@ -157,7 +179,7 @@ exports.checkNuxeo = function(username, password, callback) {
 };
 
 
-/*
+/**
  *
  */
 exports.registerWsdl = function(data, callback) {
@@ -191,4 +213,31 @@ exports.registerWsdl = function(data, callback) {
       console.error("[ERROR] Client message badly formatted. "+error);
     }
         
-}
+};
+
+
+/**
+ * NOTE: Appends the url path to the EasySOA Rest URL
+ */
+exports.forwardToNuxeo = function(request, response, settings) {
+    var easysoaServicestateUrl = url.parse(settings.nuxeoEasySOARest + request.url);
+    var requestOptions = {
+        'port' : easysoaServicestateUrl.port,
+        'method' : request.method,
+        'host' : easysoaServicestateUrl.hostname,
+        'path' : easysoaServicestateUrl.href,
+        'headers' : {
+            Authorization: computeAuthorization(request.session.username, request.session.password)
+        }
+    };
+    http.request(requestOptions, function(nxResponse) {
+          var responseData = '';
+          nxResponse.on('data', function(data) {
+              responseData += data;
+          });
+          nxResponse.on('end', function() {
+              response.write(responseData);
+              response.end();
+          });
+    }).end();
+};

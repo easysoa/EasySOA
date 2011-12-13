@@ -22,8 +22,10 @@ package com.openwide.easysoa.proxy;
 
 import org.osoa.sca.annotations.Remotable;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.FormParam; 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
@@ -52,19 +54,19 @@ public interface HttpProxyDriver {
 	 * @param runName The new run name
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
-	@GET
-	@Path("/startNewRun/{runName}")
-	public String startNewRun(@PathParam("runName") String runName);
+	@POST
+	@Path("/startNewRun/")
+	public String startNewRun(@FormParam("runName") String runName);
 
 	/**
 	 * Delete the specified run
 	 * @param runName The run name to delete
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
-	@GET
+	/*@GET
 	@Path("/deleteRun/{runName}")
 	public String deleteRun(@PathParam("runName") String runName);
-	
+	*/
 	/**
 	 * Stop the current run
 	 * @return a <code>String</code> to indicate if the command succeed
@@ -86,17 +88,26 @@ public interface HttpProxyDriver {
 	 * Returns the names of all recorded runs in their record order
 	 * @return The name of all recorded runs
 	 */
-	@GET
+	/*@GET
 	@Path("/getOrderedRunNames")
 	public String getOrderedRunNames();
+	*/
 	
 	/**
 	 * Re-run the specified run
 	 * @param runName The run name to re-run
 	 * @return a <code>String</code> to indicate if the command succeed 
 	 */
-	@GET
+	/*@GET
 	@Path("/reRun/{runName}")
 	public String reRun(@PathParam("runName") String runName);
+	*/
+	
+	/**
+	 * Save the current run
+	 */
+	@GET
+	@Path("/run/save")
+	public void save();
 		
 }

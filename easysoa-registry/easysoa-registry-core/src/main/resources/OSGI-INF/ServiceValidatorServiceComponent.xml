@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.validation.ServiceValidatorComponent">
+
+  <documentation>
+  <!--
+    Allows to register service validators.
+    Each validator must implement the org.easysoa.validation.ServiceValidator interface.
+    
+    Example contribution:
+    <extension target="org.easysoa.sca.extension.ScaImporterComponent" point="scaImporters">
+        <validator name="MyValidator" class="org.easysoa.MyValidator" />
+    </extension>
+    
+    @author Marwane Kalam-Alami
+  -->
+  </documentation>
+
+  <implementation class="org.easysoa.validation.ServiceValidatorComponent" />
+
+  <service>
+    <provide interface="org.easysoa.services.ServiceValidationService" />
+  </service>
+
+  <extension-point name="validators">
+    <object class="org.easysoa.validation.ServiceValidatorDescriptor" />
+  </extension-point>
+
+</component>

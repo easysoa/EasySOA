@@ -32,13 +32,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStore;
-import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.run.RunManager;
 import com.openwide.easysoa.util.RequestForwarder;
 
@@ -166,9 +163,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	// Detect infinite request loop (proxy send a request to itself)
 	    	infiniteLoopDetection(request);	    	
 	    	// Listening the message
-	    	//Message message = forward(request, response);
 	    	ExchangeRecord exchangeRecord = forward(request, response); 
-	    	//runManager.record(message);
 	    	runManager.record(exchangeRecord);
 	    }
 	    catch (HttpResponseException rex) {
@@ -258,26 +253,15 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		// Use HttpRetryHandler default value for retry
 		forwarder.setRetryHandler(new HttpRetryHandler());
 
-		// TODO : remove the old Message class, replaced by new Messaging API - ExchangeRecord
-		//Message message = new Message(request);
 		// Build a new exchangeRecord and set the in message
 		// TODO what id to use ? TimeStamp ? generated UUID ??		
 		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(request));
 
 		// forward the message
 		exchangeRecord.setOutMessage(forwarder.send(exchangeRecord.getInMessage()));
-
-		// Save the exchangeRecord
-		// TODO : maybe not the right place to save the Exchange record
-		ExchangeRecordStore erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
-		erStore.save(exchangeRecord);
-
     	logger.debug("clientResponse : " + exchangeRecord.getOutMessage().getMessageContent().getContent());
-
-    	//message.setResponse(exchangeRecord.getOutMessage().getMessageContent().getContent());
     	respOut.write(exchangeRecord.getOutMessage().getMessageContent().getContent());
     	respOut.close();
-    	//return message;
     	return exchangeRecord;
 	}
 
