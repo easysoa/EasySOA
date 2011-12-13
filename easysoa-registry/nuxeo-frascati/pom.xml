@@ -36,13 +36,13 @@
 	</properties>		
 	
 	<dependencies>	
-        <!-- XXX: Unavailable in any Maven repository.
-        Temporarily copied the code into the nuxeo-frascati project itself -->	
-		<!-- <dependency>
+        <dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-util-comp</artifactId>
-			<version>1.5-SNAPSHOT</version>			
-		</dependency> -->
+			<version>1.5-SNAPSHOT</version>	
+            <scope>system</scope>
+            <systemPath>${project.basedir}/resources/frascati-util-comp-1.5-SNAPSHOT.jar</systemPath>		
+		</dependency>
 		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
 			<artifactId>nuxeo-runtime-bridge</artifactId>
