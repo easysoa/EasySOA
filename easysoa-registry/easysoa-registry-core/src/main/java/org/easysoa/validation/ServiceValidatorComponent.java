@@ -136,37 +136,36 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
                 }
                 
             }
-        
+
+	        // Save workspace validation state and result log
+	        Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED),
+	                isNowValidated = (errorsCount == 0);
+	        if (modelIsWorkspace || (wasValidated && !isNowValidated)) {
+	            workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isNowValidated);
+	        }
+	        SimpleDateFormat dateFormat = new SimpleDateFormat();
+	        String validationLog = "Last validation run at " + dateFormat.format(new Date()) + '\n';
+	        if (isNowValidated) {
+	            validationLog += "Successfully validated " + services.size() + " services against environment "+ referenceEnv.getTitle();
+	            if (!modelIsWorkspace) {
+	                validationLog += "(partial workspace validation)";
+	            }
+	            validationLog += ".";
+	        }
+	        else {
+	            validationLog += "Found " + errorsCount + " validation errors.\n";
+	            for (String error : errors) {
+	                validationLog +=  " * " + error + '\n';
+	            }
+	        }
+	        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_VALIDATIONLOG, validationLog);
+	        session.saveDocument(workspace);
+	        session.save();
+
         }
         else {
             errors.add("No valid reference environment");
         }
-
-        // Save workspace validation state and result log
-        Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED),
-                isNowValidated = (errorsCount == 0);
-        if (modelIsWorkspace || (wasValidated && !isNowValidated)) {
-            workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isNowValidated);
-        }
-        SimpleDateFormat dateFormat = new SimpleDateFormat();
-        String validationLog = "Last validation run at " + dateFormat.format(new Date()) + '\n';
-        if (isNowValidated) {
-            validationLog += "Successfully validated " + services.size() + " services against environment "+ referenceEnv.getTitle();
-            if (!modelIsWorkspace) {
-                validationLog += "(partial workspace validation)";
-            }
-            validationLog += ".";
-        }
-        else {
-            validationLog += "Found " + errorsCount + " validation errors.\n";
-            for (String error : errors) {
-                validationLog +=  " * " + error + '\n';
-            }
-        }
-        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_VALIDATIONLOG, validationLog);
-        session.saveDocument(workspace);
-        session.save();
-    
     }
     
     /**
