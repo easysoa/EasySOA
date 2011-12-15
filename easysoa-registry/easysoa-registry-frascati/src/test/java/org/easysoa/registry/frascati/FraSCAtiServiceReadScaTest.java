@@ -49,7 +49,7 @@ public class FraSCAtiServiceReadScaTest {
 	
     static final Log log = LogFactory.getLog(FraSCAtiServiceReadScaTest.class);
        
-    @Inject NxFraSCAtiService frascatiRegistryService;
+    @Inject NxFraSCAtiRegistryService frascatiRegistryService;
         
     /** checking that FraSCAti parsing-based import of SCA ref'ing unknown class
      * fails without custom ProcessingContext.loadClass() */

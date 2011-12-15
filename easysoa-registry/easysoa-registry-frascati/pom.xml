@@ -81,12 +81,17 @@
 		<dependency>
 			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-core</artifactId>
-			<scope>compile</scope>
+			<!--<scope>compile</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>org.easysoa.registry.api</groupId>
 			<artifactId>easysoa-registry-api-frascati</artifactId>
-			<scope>compile</scope>
+			<!--<scope>compile</scope>-->
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo</groupId>
+			<artifactId>nuxeo-frascati</artifactId>
+			<version>0.0-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>org.easysoa.registry.api</groupId>

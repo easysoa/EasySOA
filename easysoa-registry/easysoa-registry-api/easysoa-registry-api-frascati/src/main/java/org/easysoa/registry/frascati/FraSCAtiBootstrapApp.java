@@ -40,7 +40,7 @@ public class FraSCAtiBootstrapApp extends AbstractEasySOAApp {
 	 */
 	@Override
 	public FraSCAtiServiceItf start() {
-		frascati =  Framework.getLocalService(FraSCAtiServiceItf.class);
+		frascati = Framework.getLocalService(FraSCAtiServiceItf.class); // TODO TODO pb
 		return frascati;
 	}
 

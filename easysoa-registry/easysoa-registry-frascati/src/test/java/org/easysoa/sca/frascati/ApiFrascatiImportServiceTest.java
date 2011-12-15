@@ -10,8 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
-import org.easysoa.registry.frascati.NxFraSCAtiService;
-import org.easysoa.sca.extension.ScaImporterComponent;
+import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
+//import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
@@ -31,7 +31,7 @@ import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
-import org.nuxeo.runtime.services.resource.ResourceService;
+//import org.nuxeo.runtime.services.resource.ResourceService;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -44,19 +44,20 @@ import com.google.inject.Inject;
 @Deploy({
 	"org.nuxeo.runtime.datasource",
 	"org.easysoa.registry.frascati",
-    "org.easysoa.registry.core"//,
-//    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
-//    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-//    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-//    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-//    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
+    "org.easysoa.registry.core",
+    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
+    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
+    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
+    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
+    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
     //"org.nuxeo.runtime.datasource"
 })
 @LocalDeploy({
 	///"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
 	//"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
+	"org.easysoa.registry.core:OSGI-INF/ServiceValidatorServiceComponent.xml",
 	///"org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml", // would override frascati so no
-	///"org.easysoa.registry.frascati:OSGI-INF/sca-importer-frascati-contrib.xml",
+	//"org.easysoa.registry.frascati:OSGI-INF/sca-importer-frascati-contrib.xml",
 	"org.easysoa.registry.core:test/datasource-contrib.xml" // required because no jetty.naming in deps
 })
 //@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
@@ -69,13 +70,14 @@ public class ApiFrascatiImportServiceTest {
 
     @Inject DocumentService docService;
     
-    @Inject ResourceService resourceService;
+    //@Inject ResourceService resourceService;
     
     DocumentModel parentAppliImplModel;
         
-    @Inject ScaImporterComponent scaImporterComponent;
+    //@Inject ScaImporterComponent scaImporterComponent;
 
-    @Inject NxFraSCAtiService frascatiRegistryService;
+    @Inject NxFraSCAtiRegistryService frascatiRegistryService;
+    
     @Before
     public void setUp() throws ClientException, MalformedURLException, NuxeoFraSCAtiException {
     	    	
@@ -100,7 +102,7 @@ public class ApiFrascatiImportServiceTest {
     // TODO : How to make this test works ?
     // The REST server is not started
     @Test
-    @Ignore
+    //@Ignore
     public void testSCAComposite() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project

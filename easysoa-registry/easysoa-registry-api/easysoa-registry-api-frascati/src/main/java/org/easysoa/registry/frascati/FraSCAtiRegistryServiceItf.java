@@ -25,7 +25,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.eclipse.stp.sca.Composite;
-import org.nuxeo.frascati.api.FraSCAtiServiceItf;
+import org.nuxeo.frascati.api.FraSCAtiServiceItf; // TODO pb
 
 public interface FraSCAtiRegistryServiceItf {
 
