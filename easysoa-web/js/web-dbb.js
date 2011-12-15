@@ -25,33 +25,33 @@ var wsdlList = new Array();
 
 exports.forceSocketIOHandling = function(request, response) {
     io.handleRequest(request, response);
-}
+};
 
 exports.broadcastemit = function(type, data) {
     if (io != null) {
         io.sockets.emit(type, data);
     }
-}
+};
     
 exports.setNuxeoReady = function() {
     nuxeoReady = true;
     exports.broadcastemit('ready');
-}
+};
 
 exports.provideWsdl = function(linkName, link) {
     wsdlList[linkName] = JSON.stringify(link);
     exports.broadcastemit('wsdl', wsdlList[linkName]);
-}
+};
 
 exports.clearWsdls = function() {
     wsdlList = new Array();
-}
+};
 
 exports.setClientWellConfigured = function(request) {
 	// XXX: Emits event to everyone
 	clientWellConfigured = true;
 	exports.broadcastemit('proxyack');
-}
+};
 
 exports.startDiscoveryByBrowsingHandler = function(server) {
   
@@ -76,4 +76,4 @@ exports.startDiscoveryByBrowsingHandler = function(server) {
 
        });
       
-}
+};

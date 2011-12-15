@@ -58,4 +58,4 @@ exports.fetchServiceList = function(session, callback) {
       console.error("[ERROR] Failed to fetch service list: "+error.stack);
     }
         
-}
+};

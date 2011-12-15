@@ -191,7 +191,7 @@ exports.registerWsdl = function(data, callback) {
       console.log("[INFO] Registering: "+data.url);
         
       var body = 'url='+data.url+
-          '&fileUrl='+data.url+
+          '&environment='+data.environment+
           '&title='+data.servicename+
           '&discoveryTypeBrowsing=Discovered by '+data.session.username;
       var nuxeoUploadOptions = {

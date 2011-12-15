@@ -33,7 +33,7 @@ $(function() {
 			        data: {
 			            'url': this.getURL(),
 			            'servicename': $('#submitService').attr('value'),
-			            'applicationname': $('#submitApp').attr('value')
+			            'environment': $('#environmentSelect option').filter(":selected").attr('value')
 			          },
 			        success: function (data) {
 			            if (data == 'ok') {
@@ -80,15 +80,32 @@ $(function() {
 		messageInfo: $('#messageInfo'),
 		messageSuccess: $('#messageSuccess'),
 		messageFailure: $('#messageFailure'),
+		environmentSelect: $('#environmentSelect'),
 		
 		events: {
-			"click #submit": "submit"
+			"click #submit": "submit",
+			"click #newEnvironment": "newEnvironment"
 		},
 		
 		initialize: function() {
-			_.bindAll(this, 'render');
+			_.bindAll(this, 'render', 'newEnvironment');
 			SubmitForm.view = this;
 			SubmitForm.bind('change', this.render);
+			
+      // Init environment list
+      this.environmentSelect.append('<option value="Master">Master</option>');
+      var view = this;
+      $.ajax({
+        url: '/discovery/environments',
+        success: function(data, textStatus, jqXHR) {
+            var environments = jQuery.parseJSON(jqXHR.responseText);
+            for (i in environments) {
+              if (environments[i] != 'Master') {
+                view.environmentSelect.append('<option value="' + environments[i] + '">' + environments[i] + '</option>');
+              }
+            }
+        }
+      });
 		},
 	
 		render: function() {
@@ -136,6 +153,15 @@ $(function() {
 						$('#messageFailure').fadeOut(500);
 					}, 5000);
 				});
+		},
+		
+		newEnvironment: function() {
+		  var newEnvName = prompt('New environment name');
+		  if (newEnvName != null) {
+		    this.environmentSelect.append('<option value="' + newEnvName + '">' 
+		      + newEnvName + '</option>');
+		    $('option[value='+newEnvName+']', this.environmentSelect).attr('selected', 'selected');
+		  }
 		}
 		
 	});

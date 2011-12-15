@@ -76,4 +76,4 @@ exports.sendUrlToScrapers = function(request_url, callback) {
 	
     }
 
-}
+};

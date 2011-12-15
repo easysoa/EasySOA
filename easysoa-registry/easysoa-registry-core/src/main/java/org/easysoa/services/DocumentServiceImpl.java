@@ -214,13 +214,31 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
     }
 
     public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
-        // Find or create AppliImpl
-        DocumentModel appliImpl = findAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL);
+    	return getDefaultAppliImpl(session, DEFAULT_WORKSPACE);
+    }
+    
+    public DocumentModel getDefaultAppliImpl(CoreSession session, String workspace) throws ClientException {
+    	
+    	// Find the AppliImpl
+    	if (workspace == null) {
+    		workspace = DEFAULT_WORKSPACE;
+    	}
+    	DocumentModel workspaceModel = findWorkspace(session, workspace);
+    	DocumentModel appliImpl = null;
+    	if (workspaceModel != null) {
+            DocumentModelList appliImplList = session.query("SELECT * FROM " + AppliImpl.DOCTYPE + 
+            		" WHERE " + AppliImpl.SCHEMA_PREFIX + AppliImpl.PROP_URL + " = '" + AppliImpl.DEFAULT_APPLIIMPL_URL + 
+            		"' AND ecm:path STARTSWITH '" + workspaceModel.getPathAsString() + "'");
+            if (appliImplList != null && !appliImplList.isEmpty()) {
+            	appliImpl = appliImplList.get(0);
+            }
+    	}
+    	
+    	// If not found, create it
         if (appliImpl == null) {
             try {
-                appliImpl = createAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL, DEFAULT_WORKSPACE);
+                appliImpl = createAppliImpl(session, AppliImpl.DEFAULT_APPLIIMPL_URL, workspace);
                 appliImpl.setProperty("dublincore", "title", AppliImpl.DEFAULT_APPLIIMPL_TITLE);
-                appliImpl.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT, AppliImpl.DEFAULT_ENVIRONMENT);
                 session.saveDocument(appliImpl);
                 session.save();
                 return appliImpl;

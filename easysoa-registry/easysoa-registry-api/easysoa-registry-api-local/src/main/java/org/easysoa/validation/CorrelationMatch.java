@@ -1,6 +1,5 @@
 package org.easysoa.validation;
 
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
 public class CorrelationMatch implements Comparable<CorrelationMatch> {

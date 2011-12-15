@@ -175,9 +175,6 @@
         <row>
           <widget>appliimpldef_technology</widget>
         </row>
-        <row>
-          <widget>appliimpldef_environment</widget>
-        </row>
       </rows>
       <widget name="appliimpldef_url" type="text">
         <labels>
@@ -220,15 +217,6 @@
         <translated>true</translated>
         <fields>
           <field>app:technology</field>
-        </fields>
-      </widget>
-      <widget name="appliimpldef_environment" type="text">
-        <labels>
-          <label mode="any">label.easysoa.appliimpldef.environment</label>
-        </labels>
-        <translated>true</translated>
-        <fields>
-          <field>app:environment</field>
         </fields>
       </widget>
     </layout>

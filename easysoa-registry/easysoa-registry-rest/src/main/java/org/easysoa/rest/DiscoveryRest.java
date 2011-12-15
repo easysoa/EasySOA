@@ -45,8 +45,13 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.ecm.webengine.model.view.TemplateView;
 
@@ -77,7 +82,18 @@ public class DiscoveryRest {
     public Object doPostDiscoveryRoot() {
         return new TemplateView(new EasySOAAppRoot(), "index.html");
     }
-    
+
+    @GET
+    @Path("/environments")
+    public Object doGetEnvironmentNames(@Context HttpServletRequest request) throws ClientException {
+        CoreSession session = SessionFactory.getSession(request);
+        DocumentModelList models = session.query("SELECT * FROM Workspace WHERE ecm:currentLifeCycleState <> 'deleted'");
+        JSONArray result = new JSONArray();
+        for (DocumentModel model : models) {
+            result.put(model.getTitle());
+        }
+        return result.toString();
+    }
     
     @POST
     @Path("/appliimpl")

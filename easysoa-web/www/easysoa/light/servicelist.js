@@ -10,11 +10,11 @@ $(document).ready(function() {
 	
 	makeRow = function(content) {
 		return '<tr><td>'+content+'</td></tr>';
-	}
+	};
 	
 	makeLink = function(title, url) {
 		return '<a href="'+url+'">'+title+'</a>';
-	}
+	};
 	
 	jQuery.ajax({
 		url: '/light/serviceList',

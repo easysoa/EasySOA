@@ -71,7 +71,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
             DocumentModel appliImplModel = docService.findAppliImpl(session, url);
             if (appliImplModel == null) {
                 String title = (properties.get("title") != null) ? properties.get("title") : properties.get(AppliImpl.PROP_URL);
-                appliImplModel = docService.createAppliImpl(session, url);
+                String workspace = (properties.get(Service.PROP_ENVIRONMENT) != null) ? properties.get(Service.PROP_ENVIRONMENT) : "Master";
+                appliImplModel = docService.createAppliImpl(session, url, workspace);
                 appliImplModel.setProperty("dublincore", "title", title);
                 appliImplModel = session.saveDocument(appliImplModel);
             }
@@ -129,7 +130,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
                     parentModel = docService.getDefaultAppliImpl(session);
                 }
                 else {
-                    parentModel = docService.createAppliImpl(session, parentUrl);
+                    String workspace = (properties.get(Service.PROP_ENVIRONMENT) != null) ? properties.get(Service.PROP_ENVIRONMENT) : "Master";
+                    parentModel = docService.createAppliImpl(session, parentUrl, workspace);
                 }
                 session.save();
             }
@@ -208,9 +210,11 @@ public class EasySOALocalApi implements EasySOAApiSession {
                 if (appliImplModel == null) {
                     appliImplModel = docService.findAppliImpl(session, ApiUrlProcessor.computeAppliImplUrl(appliImplUrl));
                 }
+                if (appliImplModel == null) {
+                    appliImplModel = docService.getDefaultAppliImpl(session, properties.get(Service.PROP_ENVIRONMENT));
+                }
                 // Create API
-                apiModel = docService.createServiceAPI(session, 
-                        (appliImplModel != null) ? appliImplModel.getPathAsString() : null, parentUrl);
+                apiModel = docService.createServiceAPI(session, appliImplModel.getPathAsString(), parentUrl);
                 apiModel.setProperty("dublincore", "title", title+" API");
                 session.saveDocument(apiModel);
                 session.save();

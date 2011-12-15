@@ -134,6 +134,13 @@ input[type=password] {
   color: black;
 }
 
+select {
+  padding: 3px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+}
+
 input[disabled] {
   color: #444;
 }

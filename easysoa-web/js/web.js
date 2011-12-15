@@ -100,7 +100,7 @@ webServer.get('/send', function(request, response, next) {
        * Message from the client should have the following JSON format:
        * {
        *  'url': 'The URL',
-       *  'applicationname': 'The applicationname',
+       *  'environment': 'The target environment',
        *  'servicename': 'The service name'
        * }
        */
@@ -149,7 +149,10 @@ webServer.get('/light/serviceList', function(request, response, next) {
 	});
 });
 
-// Dashboard requests routing to Nuxeo
+// Discovery/dashboard requests routing to Nuxeo
+webServer.all('/discovery/*', function(request, response, next) {
+    easysoaNuxeo.forwardToNuxeo(request, response, settings);
+});
 webServer.all('/dashboard/*', function(request, response, next) {
     easysoaNuxeo.forwardToNuxeo(request, response, settings);
 });

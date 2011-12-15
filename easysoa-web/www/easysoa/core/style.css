@@ -178,6 +178,11 @@ li {
 	background: url('img/trash.png');
 }
 
+#newEnvironment {
+  vertical-align: middle;
+  height: 16px;
+}
+
 .inputLabel {
 	width: 100%;
 }

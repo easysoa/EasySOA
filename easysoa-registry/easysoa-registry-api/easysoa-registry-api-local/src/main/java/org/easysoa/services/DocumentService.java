@@ -9,12 +9,32 @@ import org.nuxeo.ecm.core.api.DocumentRef;
 
 public interface DocumentService {
 
+    /**
+     * Creates an Appli Impl. in the Master workspace.
+     * @param session
+     * @param url
+     * @return
+     * @throws ClientException
+     * @throws MalformedURLException
+     */
     public abstract DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException, MalformedURLException;
+
+    /**
+     * Creates an Appli Impl. in the given workspace.
+     * If no such workspace exists, it is created.
+     * @param session
+     * @param url
+     * @param workspace
+     * @return
+     * @throws ClientException
+     * @throws MalformedURLException
+     */
+    public abstract DocumentModel createAppliImpl(CoreSession session, String url, String workspace) throws ClientException, MalformedURLException;
 
     /**
      * 
      * @param session
-     * @param parentPath If null or invalid, default application is used
+     * @param parentPath Valid Service API or Appli Impl.
      * @param url
      * @return
      * @throws ClientException
@@ -26,7 +46,7 @@ public interface DocumentService {
      * Returns null if the service API doesn't exist.
      * 
      * @param session
-     * @param parentPath service API
+     * @param parentPath Valid Service API
      * @param url
      * @return
      * @throws ClientException
@@ -79,6 +99,15 @@ public interface DocumentService {
      */
     public abstract DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException;
 
+    /**
+     * Returns the default Appli Impl. in the desired workspace, creates it if necessary.
+     * @param session
+     * @param workspace
+     * @return Never returns null
+     * @throws ClientException
+     */
+    public abstract DocumentModel getDefaultAppliImpl(CoreSession session, String workspace) throws ClientException;
+    
     /**
      * Returns the workspace in which the current document is.
      * @param session

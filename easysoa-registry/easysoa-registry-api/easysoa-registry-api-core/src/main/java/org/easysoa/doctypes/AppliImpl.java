@@ -48,7 +48,6 @@ public class AppliImpl extends EasySOADoctype {
     public static final String PROP_SOURCESURL = "sourcesUrl";
     public static final String PROP_SERVER = "server";
     public static final String PROP_PROVIDER = "provider";
-    public static final String PROP_ENVIRONMENT = "environment";
     public static final String PROP_TECHNOLOGY = "technology";
     public static final String PROP_STANDARD = "standard";
     
@@ -78,7 +77,6 @@ public class AppliImpl extends EasySOADoctype {
             propertyList.put(PROP_SOURCESURL, "Source code access.");
             propertyList.put(PROP_SERVER, "IP of the server.");
             propertyList.put(PROP_PROVIDER, "Company that provides these services.");
-            propertyList.put(PROP_ENVIRONMENT, "The application environment (production, development...)");
             propertyList.put(PROP_TECHNOLOGY, "Services implementation technology.");
             propertyList.put(PROP_STANDARD, "Protocol standard if applicable.");
         }

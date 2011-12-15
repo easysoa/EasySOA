@@ -49,6 +49,7 @@ public class EasySOADoctype {
     
     // Notification API properties
     public static final String PROP_PARENTURL = "parentUrl";
+    public static final String PROP_ENVIRONMENT = "environment";
 
     private static Map<String, String> commonPropertyList = null;
     private static Map<String, String> dublinCorePropertyList = null;
