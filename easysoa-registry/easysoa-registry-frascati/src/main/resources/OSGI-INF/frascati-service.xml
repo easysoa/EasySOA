@@ -2,10 +2,12 @@
 <!--<component name="org.easysoa.registry.frascati">-->
 <component name="org.easysoa.registry.nx.frascati.service">
 	
-	<implementation class="org.easysoa.registry.frascati.NxFraSCAtiService" />
+	<implementation class="org.easysoa.registry.frascati.NxFraSCAtiRegistryService" />
 	
 	<service>
-		<provide interface="org.easysoa.registry.frascati.FraSCAtiServiceItf" />
+		<!--<provide interface="org.easysoa.registry.frascati.FraSCAtiServiceItf" />-->
+		<!-- provide interface="org.nuxeo.frascati.api.FraSCAtiServiceItf" / -->
+		<provide interface="org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf" />
 	</service>
 	
 </component>

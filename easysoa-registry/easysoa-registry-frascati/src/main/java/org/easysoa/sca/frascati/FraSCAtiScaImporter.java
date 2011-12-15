@@ -23,7 +23,7 @@ package org.easysoa.sca.frascati;
 import java.io.File;
 
 import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
-import org.easysoa.registry.frascati.NxFraSCAtiService;
+import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
@@ -52,7 +52,7 @@ public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase implements FraS
 	 * @throws ClientException 
 	 */
 	public FraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory, /*CoreSession documentManager,*/ File compositeFile) throws ClientException, Exception{
-		super(bindingVisitorFactory, compositeFile, Framework.getService(NxFraSCAtiService.class));
+		super(bindingVisitorFactory, compositeFile, Framework.getService(NxFraSCAtiRegistryService.class));
 		if(bindingVisitorFactory instanceof LocalBindingVisitorFactory){
 			this.documentManager = ((LocalBindingVisitorFactory)bindingVisitorFactory).getDocumentManager();
 		}

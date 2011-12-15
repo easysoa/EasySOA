@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.registry.frascati.NxFraSCAtiService;
+import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
@@ -71,12 +71,12 @@ import com.google.inject.Inject;
 @Deploy({
 	"org.nuxeo.runtime.datasource",
 	"org.easysoa.registry.frascati",
-    "org.easysoa.registry.core"//,
-//    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
-//    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-//    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-//    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-//    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
+    "org.easysoa.registry.core",
+    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
+	"org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
+    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
+    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
+    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
 })
 @LocalDeploy({
 	"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
@@ -97,7 +97,7 @@ public class FraSCAtiImportServiceTest{
     
     @Inject ScaImporterComponent scaImporterComponent;
 
-    @Inject NxFraSCAtiService frascatiRegistryService;
+    @Inject NxFraSCAtiRegistryService frascatiRegistryService;
     
 	@Before
 	public void setUp() throws Exception {

@@ -32,6 +32,12 @@ import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 import org.nuxeo.frascati.api.ProcessingModeProxy;
 
+/**
+ * TODO pb : now wrongly depends on Nuxeo through FraSCAtiServiceItf
+ * 
+ * @author jguillemotte
+ *
+ */
 public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistryServiceItf {
 
 	private static Log log = LogFactory.getLog(FraSCAtiRegistryServiceBase.class);
@@ -40,7 +46,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 
 	public FraSCAtiRegistryServiceBase() {
 		// Instantiate OW2 FraSCAti.
-		easySOAApp = new FraSCAtiBootstrapApp(); 
+		easySOAApp = new FraSCAtiBootstrapApp();
 		easySOAApp.start();
 	}
 

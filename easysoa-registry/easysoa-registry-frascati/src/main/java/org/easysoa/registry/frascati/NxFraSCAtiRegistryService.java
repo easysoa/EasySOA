@@ -73,16 +73,16 @@ import org.nuxeo.runtime.model.Extension;
  *         ?!! -->
  * 
  */
-public class NxFraSCAtiService extends FraSCAtiRegistryServiceBase implements org.nuxeo.runtime.model.Component, Adaptable {
+public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase implements org.nuxeo.runtime.model.Component, Adaptable {
 	
 	public static final ComponentName NAME = new ComponentName("org.easysoa.registry.frascati.FraSCAtiServiceComponent");
 
 	@SuppressWarnings("unused")
-    private static Log log = LogFactory.getLog(NxFraSCAtiService.class);
+    private static Log log = LogFactory.getLog(NxFraSCAtiRegistryService.class);
 	
 	private CoreSession documentManager;
 	
-	public NxFraSCAtiService()  {
+	public NxFraSCAtiRegistryService()  {
 		super();
 	}
 	
