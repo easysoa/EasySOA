@@ -520,7 +520,7 @@
 							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory-tinfi-oo</artifactId><version>${frascati.version}</version></artifactItem>
 							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory</artifactId><version>${frascati.version}</version></artifactItem>
 							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-explorer-api</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-bpel</artifactId><version>${frascati.version}</version></artifactItem>
+							<!--<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-bpel</artifactId><version>${frascati.version}</version></artifactItem>-->
 							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-fractal</artifactId><version>${frascati.version}</version></artifactItem>
 							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-osgi-equinox</artifactId><version>${frascati.version}</version></artifactItem>
 							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-osgi</artifactId><version>${frascati.version}</version></artifactItem>
@@ -582,6 +582,8 @@
         <id>Nuxeo Public Releases</id>
         <url>http://maven.in.nuxeo.com/nexus/content/repositories/public-releases</url>
       </repository>
+      
+      
     </repositories>
 
 </project>
