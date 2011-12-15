@@ -5,6 +5,7 @@
 		<groupId>org.nuxeo.runtime</groupId>
 		<artifactId>nuxeo-runtime-parent</artifactId>
 		<version>5.4.2-SNAPSHOT</version>
+		<relativePath>../nuxeo-runtime-parent</relativePath>
 	</parent>
 	<artifactId>nuxeo-runtime-bridge</artifactId>
 	<name>Nuxeo Runtime Bridge</name>
