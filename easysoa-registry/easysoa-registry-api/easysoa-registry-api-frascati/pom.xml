@@ -161,11 +161,11 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3</version>
-                <configuration>
+                <!--<configuration>
                     <archive>
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
-                </configuration>
+                </configuration>-->
             </plugin>   
 		 	<plugin>
 		          <groupId>org.apache.maven.plugins</groupId>
