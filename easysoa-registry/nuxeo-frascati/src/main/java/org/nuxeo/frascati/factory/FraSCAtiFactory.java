@@ -61,15 +61,15 @@ public class FraSCAtiFactory implements ApplicationFactory {
     	
     	if(cl == ClassLoaderSingleton.setClassLoader(cl)){  	
 	    	String home = Environment.getDefault().getHome().getAbsolutePath();     
-	
+	    	log.log(Level.INFO,"Frascati home dir : " + home); 
+	    	
 	    	String outputDir = new StringBuilder(home).append(sep).append("tmp").toString();     	
 	        System.setProperty(FRASCATI_OUTPUT_DIRECTORY_PROPERTY,outputDir); 
 	
 	    	log.log(Level.INFO,"Define FraSCAti default output dir : " + outputDir); 
-	    	
 	    	String propertyBootFilePath = new StringBuilder(home).append(
 	    			sep).append("config").append(sep).append("frascati_boot.properties").toString();
-	    	
+	    	log.log(Level.INFO,"Read frascati_boot.properties file at " + propertyBootFilePath);
 	    	try{
 		    	Properties props = new Properties();
 		    	props.loadFromXML(new FileInputStream(new File(propertyBootFilePath)));	 

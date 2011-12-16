@@ -4,6 +4,7 @@ import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
@@ -66,7 +67,6 @@ public class TestFraSCAtiInNuxeo {
     	Runnable r = frascatiService.getService(fcomponent.getComponent(), "r", Runnable.class);
 	    assertNotNull(r);
 	    r.run();   	
-    	
     }
     
     /**
@@ -99,7 +99,15 @@ public class TestFraSCAtiInNuxeo {
     	}
     }
 	
-   private class ProcessingContextTest extends AbstractProcessingContext {
+    @Test
+    public void testWait() throws IOException{
+		log.info("Frascati in Nuxeo started, wait for user action to stop !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		log.info("Frascati in Nuxeo stopped !");    	
+    }
+    
+    private class ProcessingContextTest extends AbstractProcessingContext {
 
     	public ProcessingContextTest(ReflectionHelper delegate) throws NuxeoFraSCAtiException {
     		super(delegate);
