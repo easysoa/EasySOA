@@ -252,6 +252,13 @@
 			<version>1.5-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-util-comp</artifactId>
+			<version>1.5-SNAPSHOT</version>	
+			<scope>system</scope>
+            <systemPath>${project.basedir}/../nuxeo-frascati/resources/frascati-util-comp-1.5-SNAPSHOT.jar</systemPath>		
+		</dependency>
 	</dependencies>
 
     <!-- Plugin management -->

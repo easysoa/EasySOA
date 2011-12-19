@@ -6,22 +6,22 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.frascati.api.AbstractProcessingContext;
-import org.nuxeo.frascati.api.FraSCAtiServiceItf;
-import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
-import org.ow2.frascati.util.reflect.ReflectionHelper;
+import org.nuxeo.frascati.api.AbstractProcessingContext;
+import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
+import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.ow2.frascati.util.reflect.ReflectionHelper;
 
 @RunWith(FeaturesRunner.class)
 @Features(FraSCAtiFeature.class)
@@ -76,7 +76,7 @@ public class TestFraSCAtiInNuxeo {
      */
     @Test(expected = NuxeoFraSCAtiException.class)
     public void testThrowExceptionIfGetUnexistingService() throws NuxeoFraSCAtiException {      	
-    	Runnable r = frascatiService.getService(fcomponent.getComponent(), "unknown", Runnable.class);    	
+    	frascatiService.getService(fcomponent.getComponent(), "unknown", Runnable.class);    	
     }
    
     @Test
@@ -100,6 +100,7 @@ public class TestFraSCAtiInNuxeo {
     }
 	
     @Test
+    @Ignore
     public void testWait() throws IOException{
 		log.info("Frascati in Nuxeo started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test
