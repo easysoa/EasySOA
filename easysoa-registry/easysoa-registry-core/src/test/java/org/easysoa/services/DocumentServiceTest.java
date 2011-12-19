@@ -119,17 +119,16 @@ public class DocumentServiceTest {
     	DocumentModel apiModel = docService.createServiceAPI(session, appliImplModel.getPathAsString(), apiUrl);
 
     	// Create Service with WSDL adress only
-    	DocumentModel model = docService.createService(session, apiModel.getPathAsString(), wsdlUrl);
+    	DocumentModel model = docService.createService(session, apiModel.getPathAsString(), serviceUrl);
+    	model.setProperty(Service.SCHEMA, Service.PROP_FILEURL, wsdlUrl);
     	session.saveDocument(model);
     	session.save();
     	
     	// Check service contents
     	model = docService.findService(session, serviceUrl);
-    	assertNotNull("Failed to fetch document by fileUrl", model);
-    	assertEquals("Service didn't recognize URL as a WSDL file", wsdlUrl, 
-    			model.getProperty(Service.SCHEMA, Service.PROP_FILEURL));
-    	assertEquals("Failed to extract service URL from WSDL", serviceUrl, 
-    			model.getProperty(Service.SCHEMA, Service.PROP_URL));
+    	assertNotNull("Failed to fetch document by url", model);
+    	assertEquals("Failed to extract data from WSDL", "http://www.ebi.ac.uk/WSCensor", 
+    			model.getProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE));
     	assertNotNull("Failed to save WSDL in 'file' schema", model.getProperty("file", "content"));
     	
     }
