@@ -105,7 +105,6 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 */
 	public Composite readComposite(URL compositeUrl, URL... scaZipUrls)	throws Exception {
 		// Create a processing context with where to find ref'd classes
-		//ProcessingContext processingContext = frascati.getCompositeManager().newProcessingContext(scaZipUrls);
 		log.debug("composite URL = " + compositeUrl);
 		log.debug("scaZipUrls = " + scaZipUrls);
 		// TODO : if we have a standalone composite file, do not instanciate and start the composite
@@ -116,8 +115,8 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		
 		// Only parse and check the SCA composite, i.e., don't generate code for
 		// the SCA composite and don't instantiate it.
-		//processingContext.setProcessingMode(ProcessingMode.check); // else composite fails to start because ref'd WSDLs are unavailable
-		processingContext.setProcessingMode(ProcessingModeProxy.parse);
+		processingContext.setProcessingMode(ProcessingModeProxy.check); // else composite fails to start because ref'd WSDLs are unavailable
+		//processingContext.setProcessingMode(ProcessingModeProxy.parse);
 
 		// TODO : Solve problem here ...
 		// Problem with this mode : class not found exceptions when a single composite is loaded
@@ -128,16 +127,13 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		//processingContext.setProcessingMode(ProcessingMode.start);
 		
 		try {
+			// Register first => registering fails
+			// Process next
 			// Process the SCA composite.
 			easySOAApp.getFrascati().processComposite(compositeUrl.toString(), processingContext);
-			
-		} catch (NuxeoFraSCAtiException fe) {
-			//System.err.println("The number of checking errors is equals to " + processingContext.getErrors());
+		} 
+		catch (NuxeoFraSCAtiException fe) {
 			log.error("The number of checking errors is equals to " + processingContext.getErrors());
-			// for (error : processingContext.getData(key, type)) {
-			//
-			// }
-			//System.err.println("The number of checking warnings is equals to " + processingContext.getWarnings());
 			log.error("The number of checking warnings is equals to " + processingContext.getWarnings());
 			log.error(fe);	
 		}

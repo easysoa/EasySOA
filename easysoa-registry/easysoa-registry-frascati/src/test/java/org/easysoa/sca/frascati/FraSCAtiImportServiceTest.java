@@ -22,6 +22,7 @@ package org.easysoa.sca.frascati;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -318,6 +319,8 @@ public class FraSCAtiImportServiceTest{
     	String scaFilePath = "src/test/resources/" + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
     	File scaFile = new File(scaFilePath);    	
    	
+    	boolean classNotFoundExceptionThrowed = false;
+    	
     	// Getting the importer
     	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
     	IScaImporter importer = scaImporterComponent.createScaImporter(visitorFactory, scaFile);
@@ -330,13 +333,11 @@ public class FraSCAtiImportServiceTest{
 		importer.setServiceStackUrl("/");
 		try{			
 			importer.importSCA();
-			
 		} catch(Exception e){
-			e.printStackTrace();
-			return;
+			classNotFoundExceptionThrowed = true;
+			//e.printStackTrace();
 		}
-		// if not exception is throws, fail the test
-		fail();		
+		assertTrue(classNotFoundExceptionThrowed);
     }
     
 }

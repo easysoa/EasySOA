@@ -50,11 +50,10 @@ import com.google.inject.Inject;
     "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
     "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
     "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
-    //"org.nuxeo.runtime.datasource"
 })
 @LocalDeploy({
 	///"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no frascatiService OUTSIDE TEST INJECTIONS
-	//"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
+	"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
 	"org.easysoa.registry.core:OSGI-INF/ServiceValidatorServiceComponent.xml",
 	///"org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml", // would override frascati so no
 	//"org.easysoa.registry.frascati:OSGI-INF/sca-importer-frascati-contrib.xml",
@@ -99,10 +98,11 @@ public class ApiFrascatiImportServiceTest {
 		}
     }
 	
-    // TODO : How to make this test works ?
-    // The REST server is not started
+    /**
+     * Parse a single composite file without the required classes
+     * @throws Exception If a problem occurs
+     */
     @Test
-    //@Ignore
     public void testSCAComposite() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project

@@ -35,7 +35,6 @@ public class DiscoveryProcessingContext extends AbstractProcessingContext {
 	
 	static final Log log = LogFactory.getLog(DiscoveryProcessingContext.class);
 	
-	//public DiscoveryProcessingContext(ProcessingContext delegate) {
 	public DiscoveryProcessingContext(FraSCAtiRegistryServiceItf fraSCAtiService, 
 			FraSCAtiRuntimeScaImporterItf runtimeScaImporter, URL... urls) throws NuxeoFraSCAtiException {
 		
@@ -43,6 +42,12 @@ public class DiscoveryProcessingContext extends AbstractProcessingContext {
 		this.runtimeScaImporter = runtimeScaImporter;
 	}
 
+	/**
+	 * 
+	 * @param key
+	 * @param type
+	 * @param data
+	 */
 	public <T> void putData(Object key, Class<T> type, T data) {
 		delegate.invokeInherited("putData",
 				"org.ow2.frascati.parser.api.ParsingContext",
@@ -50,6 +55,12 @@ public class DiscoveryProcessingContext extends AbstractProcessingContext {
 				new Object[]{key, type, data});
 	}
 
+	/**
+	 * 
+	 * @param key
+	 * @param type
+	 * @return
+	 */
 	public <T> T getData(Object key, Class<T> type) {
 		log.debug("getData method ....");
 		log.debug("Object = " + key);
@@ -69,7 +80,10 @@ public class DiscoveryProcessingContext extends AbstractProcessingContext {
 		return data;
 	}
 
-	// called only with instantiate processing mode
+	/**
+	 * called only with instantiate processing mode
+	 * @param composite
+	 */
 	protected void discover(Composite composite) {
 		log.debug("discover method...." + composite);
 		// TODO FraSCAtiSCAImporter(...Base/Api...).visitComposite(composite)
