@@ -80,7 +80,7 @@ window.AppView = Backbone.View.extend({
                 success: function(data, textStatus, jqXHR) {
                     app.hidePlaceholder();
                     var result = $.parseJSON(jqXHR.responseText);
-                    if (result.error == undefined) {
+                    if (result.result == undefined) {
                         for (var i in result) {
                             var newService = new Service(result[i]);
                             app.serviceEntries.add(newService);
@@ -89,7 +89,7 @@ window.AppView = Backbone.View.extend({
                         }
                     }
                     else {
-                        app.showError(result.error);
+                        app.showError(result.result);
                     }
                 },
                 error: function(data) {

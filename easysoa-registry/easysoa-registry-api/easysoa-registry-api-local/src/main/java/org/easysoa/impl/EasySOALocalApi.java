@@ -188,8 +188,9 @@ public class EasySOALocalApi implements EasySOAApiSession {
                 title = properties.get(Service.PROP_TITLE);
             
             // Store URL as file in case of a WSDL
-            if (url.toLowerCase().contains("wsdl")) {
+            if (url.toLowerCase().endsWith("?wsdl")) {
                 properties.put(Service.PROP_FILEURL, url);
+                url = url.substring(0, url.length() - 5);
             }
             
             if (parentUrl == null || parentUrl.isEmpty()) {

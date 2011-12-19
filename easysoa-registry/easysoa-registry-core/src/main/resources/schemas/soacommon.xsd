@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/soacommon/"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+  
   <!-- Discovery info : -->
 
   <xs:element name="discoveryTypeBrowsing" type="xs:string" />

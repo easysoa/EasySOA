@@ -262,6 +262,13 @@ public class ServiceListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, null);
                 }
             }
+
+            // Make sure the validation is re-run (unless we precisely just changed the validation state)
+            DocumentModel oldDoc = session.getDocument(doc.getRef());
+            Object wasDirty = oldDoc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
+            if (wasDirty == null || wasDirty.equals(doc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY))) {
+            	doc.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY, true);
+            }
             
             // Test if the service already exists, delete the other one(s) if necessary
             try {
