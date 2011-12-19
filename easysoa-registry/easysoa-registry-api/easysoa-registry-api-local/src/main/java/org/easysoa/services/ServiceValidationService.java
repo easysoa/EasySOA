@@ -20,9 +20,10 @@ public interface ServiceValidationService {
      * (or the one service given in parameter), against the workspace's reference environment. 
      * @param session
      * @param model
+     * @return A list of validation errors
      * @throws Exception
      */
-    void validateServices(CoreSession session, DocumentModel model) throws Exception;
+    List<String> validateServices(CoreSession session, DocumentModel model) throws Exception;
 
     /**
      * Finds correlated services from the reference environment of the given service.

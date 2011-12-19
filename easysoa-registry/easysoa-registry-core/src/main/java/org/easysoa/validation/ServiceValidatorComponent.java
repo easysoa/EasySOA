@@ -2,9 +2,6 @@ package org.easysoa.validation;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,10 +24,6 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
-import org.nuxeo.ecm.core.api.model.Property;
-import org.nuxeo.ecm.core.api.model.PropertyException;
-import org.nuxeo.ecm.core.api.model.PropertyNotFoundException;
-import org.nuxeo.ecm.core.api.model.impl.ListProperty;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.ComponentName;
@@ -93,7 +86,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
     }
 
     @Override
-    public void validateServices(CoreSession session, DocumentModel model) throws Exception {
+    public List<String> validateServices(CoreSession session, DocumentModel model) throws Exception {
 
         // Find model's workspace and reference environment
         DocumentService docService = Framework.getService(DocumentService.class);
@@ -105,8 +98,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
 
         // Start validation
         DocumentModelList services = null;
-        List<String> errors = new LinkedList<String>(), result;
-        int errorsCount = 0;
+        List<String> result, errors = new LinkedList<String>();
         
         if (referenceEnv != null) {
 
@@ -123,49 +115,28 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             // Validate services
             if (services != null) {
                 for (DocumentModel service : services) {
-                    DocumentModel matchingService = null;
-                    SortedSet<CorrelationMatch> matches = findCorrelatedServices(session, service, referenceServices);
-                    if (!matches.isEmpty()) {
-                        matchingService = matches.first().getDocumentModel();
-                    }
-                    result = validateService(session, service, matchingService);
-                    if (!result.isEmpty()) {
-                        errorsCount += result.size();
-                        errors.addAll(result);
-                    }
+                	Object isValidationStateDirty = service.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
+                	if (isValidationStateDirty == null || ((Boolean) isValidationStateDirty)) {
+	                    DocumentModel matchingService = null;
+	                    SortedSet<CorrelationMatch> matches = findCorrelatedServices(session, service, referenceServices);
+	                    if (!matches.isEmpty()) {
+	                        matchingService = matches.first().getDocumentModel();
+	                    }
+	                    result = validateService(session, service, matchingService);
+	                    if (!result.isEmpty()) {
+	                        errors.addAll(result);
+	                    }
+                	}
                 }
                 
             }
-
-	        // Save workspace validation state and result log
-	        Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED),
-	                isNowValidated = (errorsCount == 0);
-	        if (modelIsWorkspace || (wasValidated && !isNowValidated)) {
-	            workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isNowValidated);
-	        }
-	        SimpleDateFormat dateFormat = new SimpleDateFormat();
-	        String validationLog = "Last validation run at " + dateFormat.format(new Date()) + '\n';
-	        if (isNowValidated) {
-	            validationLog += "Successfully validated " + services.size() + " services against environment "+ referenceEnv.getTitle();
-	            if (!modelIsWorkspace) {
-	                validationLog += "(partial workspace validation)";
-	            }
-	            validationLog += ".";
-	        }
-	        else {
-	            validationLog += "Found " + errorsCount + " validation errors.\n";
-	            for (String error : errors) {
-	                validationLog +=  " * " + error + '\n';
-	            }
-	        }
-	        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_VALIDATIONLOG, validationLog);
-	        session.saveDocument(workspace);
-	        session.save();
 
         }
         else {
             errors.add("No valid reference environment");
         }
+
+        return errors;
     }
     
     /**
@@ -181,7 +152,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         List<String> allErrors = new LinkedList<String>();
         List<Map<String, Object>> newValidationState = new LinkedList<Map<String, Object>>(); 
         boolean isNowValidated = true;
-        
+		
         // Run validations
         if (referenceService != null) {
             synchronized (validators) {
@@ -214,71 +185,14 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         }
         
         // Update service validation state
-        ListProperty oldValidationState = (ListProperty) service.getProperty(Service.SCHEMA_PREFIX + Service.PROP_VALIDATIONSTATE);
-        boolean wasValidated = false;
-        Object wasValidatedRaw = service.getProperty(Service.SCHEMA, Service.PROP_ISVALIDATED);
-        if (wasValidatedRaw != null) {
-            wasValidated = (Boolean) wasValidatedRaw;
-        }
-        if (isNowValidated != wasValidated || !areValidationStatesEqual(oldValidationState, newValidationState)) {
-            service.setProperty(Service.SCHEMA, Service.PROP_ISVALIDATED, isNowValidated);
-            service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATE, newValidationState);
-            session.saveDocument(service); 
-        }
-    
+        service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY, false);
+        service.setProperty(Service.SCHEMA, Service.PROP_ISVALIDATED, isNowValidated);
+        service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATE, newValidationState);
+        session.saveDocument(service); 
+        
         return allErrors;
     }
-
-    /**
-     * Half-hacky way to avoid infinite 'save > validation' loops,
-     * by checking if the new validation state differs from the previous one.
-     * @param oldValidationState
-     * @param newValidationState
-     * @return
-     */
-    private boolean areValidationStatesEqual(ListProperty oldValidationState, List<Map<String, Object>> newValidationState) {
-        try {
-            return getValidationStateHash(oldValidationState).equals(getValidationStateHash(newValidationState));
-        }
-        catch (Exception e) {
-            log.error("Failed to compare old and new validation states", e);
-            return true;
-        }
-        
-    }
-
-    private Object getValidationStateHash(List<Map<String, Object>> newValidationState) {
-        List<String> subhashes = new LinkedList<String>();
-        for (Map<String, Object> validatorResult : newValidationState) {
-            String subhash = (String) validatorResult.get(Service.SUBPROP_VALIDATORNAME)
-                + ((Boolean) validatorResult.get(Service.SUBPROP_ISVALIDATED)).toString()
-                + (String) validatorResult.get(Service.SUBPROP_VALIDATIONLOG);
-            subhashes.add(subhash);
-        }
-        Collections.sort(subhashes); // Make validators order not relevant
-        String hash = "";
-        for (String subhash : subhashes) {
-            hash += subhash;
-        }
-        return hash;
-    }
-
-    private Object getValidationStateHash(ListProperty oldValidationState) throws PropertyNotFoundException, PropertyException {
-        List<String> subhashes = new LinkedList<String>();
-        for (Property validatorResult : oldValidationState.getChildren()) {
-            String subhash = (String) validatorResult.get(Service.SUBPROP_VALIDATORNAME).getValue()
-                    + ((Boolean) validatorResult.get(Service.SUBPROP_ISVALIDATED).getValue()).toString()
-                    + (String) validatorResult.get(Service.SUBPROP_VALIDATIONLOG).getValue();
-            subhashes.add(subhash);
-        }
-        Collections.sort(subhashes); // Make validators order not relevant
-        String hash = "";
-        for (String subhash : subhashes) {
-            hash += subhash;
-        }
-        return hash;
-    }
-
+    
     private String formatErrors(List<String> errors) {
         StringBuilder result = new StringBuilder();
         for (String error : errors) {

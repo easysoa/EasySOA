@@ -4,6 +4,5 @@
 
   <xs:element name="referencedEnvironment" type="xs:string" />
   <xs:element name="isValidated" type="xs:boolean" />
-  <xs:element name="validationLog" type="xs:string" />
   
 </xs:schema>
