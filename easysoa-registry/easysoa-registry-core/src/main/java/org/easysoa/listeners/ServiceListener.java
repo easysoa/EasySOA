@@ -96,7 +96,10 @@ public class ServiceListener implements EventListener {
             // Extract data from document
             String title = (String) doc.getProperty("dublincore", "title");
             String url = (String) doc.getProperty(SCHEMA, PROP_URL);
-            String fileUrl = (url != null) ? url + "?wsdl" : null;
+            String fileUrl = (String) doc.getProperty(SCHEMA, PROP_FILEURL);
+            if (fileUrl == null) {
+            	fileUrl = guessFileUrl(url);
+            }
 
             // Extract data from WSDL
             if (fileUrl != null) {
@@ -104,15 +107,9 @@ public class ServiceListener implements EventListener {
                 try {
                     
                     // Download file
-                    Blob blob = null;
-                    try {
-                        blob = new HttpFile(new URL(fileUrl)).download().getBlob();
-                    }
-                    catch (IOException e) {
-                        log.info("I/O Error while downloading attached WSDL '" + fileUrl + "': " + e.getMessage());
-                    }
-                    catch (Exception e) {
-                        log.info("Failed to download attached WSDL '" + fileUrl + "': " + e.getMessage());
+                    Blob blob = downloadBlob(fileUrl);
+                    if (blob == null && fileUrl != null && !fileUrl.equals(guessFileUrl(url))) {
+                    	blob = downloadBlob(guessFileUrl(url));
                     }
                     
                     if (blob != null) {
@@ -234,7 +231,7 @@ public class ServiceListener implements EventListener {
                     log.warn("Failed to normalize URL", e);
                 }
             }
-            if (fileUrl != null && !fileUrl.isEmpty()) {
+            if (fileUrl != null) {
                 // XXX: Hacked Airport Light URL
                 if (fileUrl.contains("irport")) {
                     doc.setProperty(SCHEMA, PROP_FILEURL, 
@@ -293,5 +290,22 @@ public class ServiceListener implements EventListener {
         }
 
     }
+
+	private Blob downloadBlob(String url) {
+        try {
+            return new HttpFile(new URL(url)).download().getBlob();
+        }
+        catch (IOException e) {
+            log.info("I/O Error while downloading attached WSDL '" + url + "': " + e.getMessage());
+        }
+        catch (Exception e) {
+            log.info("Failed to download attached WSDL '" + url + "': " + e.getMessage());
+        }
+        return null;
+	}
+
+	private String guessFileUrl(String url) {
+		return (url != null) ? url + "?wsdl" : null;
+	}
     
 }
