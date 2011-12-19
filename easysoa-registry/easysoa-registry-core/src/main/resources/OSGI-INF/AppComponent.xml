@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.app.AppComponent">
+
+  <documentation>
+    App management component
+    @author Jeremie guillemotte
+  </documentation>
+
+  <implementation class="org.easysoa.app.AppComponent" />
+
+  <service>
+    <provide interface="org.easysoa.app.AppComponent" />
+  </service>
+
+  <extension-point name="apps">
+    <object class="org.easysoa.app.AppDescriptor" />
+  </extension-point>
+
+</component>

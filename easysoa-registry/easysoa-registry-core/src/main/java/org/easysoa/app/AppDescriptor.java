@@ -18,38 +18,23 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.registry.frascati;
+package org.easysoa.app;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
-import org.nuxeo.frascati.api.FraSCAtiServiceItf;
+import org.nuxeo.common.xmap.annotation.XContent;
+import org.nuxeo.common.xmap.annotation.XNode;
+import org.nuxeo.common.xmap.annotation.XObject;
 
 /**
+ * 
  * @author jguillemotte
- *
  */
-public abstract class AbstractEasySOAApp implements EasySOAApp {
+@XObject("EasySOAApp")
+public class AppDescriptor {
 
-	private static Log log = LogFactory.getLog(AbstractEasySOAApp.class);	
-	
-	protected FraSCAtiServiceItf frascati;
-	
-	@Override
-	public FraSCAtiServiceItf getFrascati(){
-		return frascati;
-	}
-	
-	/**
-	 * @param components
-	 */
-	public void stopComponents(FraSCAtiCompositeItf... components) {
-		
-		log.debug("Closing components");
-		
-		for(FraSCAtiCompositeItf component : components){
-			frascati.close(component);
-		}
-	}
+    @XContent
+    protected String appPath;
 
+    @XNode("@enabled")
+    protected boolean enabled = true;
+    
 }

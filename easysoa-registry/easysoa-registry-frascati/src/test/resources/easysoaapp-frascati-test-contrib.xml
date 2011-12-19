@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.sca.frascati.nx.app.contrib" version="1.0">
+
+  <extension target="org.easysoa.app.AppComponent" point="apps">
+    <EasySOAApp>../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/src/main/resources/httpDiscoveryProxy.composite</EasySOAApp>
+    <!--<EasySOAApp>scaffolderProxy.composite</EasySOAApp> -->
+  </extension> 
+
+</component>

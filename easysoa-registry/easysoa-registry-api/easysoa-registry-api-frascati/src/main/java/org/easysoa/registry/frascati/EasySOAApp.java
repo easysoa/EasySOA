@@ -21,25 +21,41 @@
 package org.easysoa.registry.frascati;
 
 
-import org.nuxeo.frascati.api.FraSCAtiServiceItf;
-
-
+/**
+ * Represents an EasySOA application.
+ * 
+ * Still TODO on this API, in FraSCAti implementation(s) (our own, Studio...) and others (Light, Talend ?) :
+ * state (in FraSCAti only STARTED & STOPPED, add STARTING & STOPPING)
+ * an evented way to be updated by info especially state change, ex. nuxeo events (but only nuxeo) or handlers (beware of FraSCAti wrapped side)
+ * provisioning : how the app is provided at the place said (path) ; for now manually as artifactItems, LATER do it at registerContribution time, LATER for other impls
+ * packaging : how the app is packaged ; for now jar(s) & root composite name
+ * management UI : for now web explorer TODO test it ; LATER list, integrated in environment UI & env start...
+ * 
+ * @author jguillemotte
+ *
+ */
 public interface EasySOAApp {
+	
+	/**
+	 * Unique app id, built using way of starting it and root app resource (ex. "NxFraSCAti:target/httpDiscovery.composite") 
+	 * LATER link app with registry model (using runtime discovery) and with desc info stored there
+	 * LATER put in model more info like this (appId) about how it is started up
+	 * @return
+	 */
+	public String getAppId();
 
 	/**
 	 * Start the EasySOA app
 	 */
-	public FraSCAtiServiceItf start() ;
+	public void start();
 
 	/**
 	 * Stop the EasySOA app
 	 */	
-	public void stop() ;
+	public void stop();
 	
-	/**
-	 * Returns the FraSCAti instance
-	 * @return The FraSCAti instance
-	 */
-	public FraSCAtiServiceItf getFrascati();
+	//public AppState getState();
+	
+	//public FraSCAtiCompositeItf[] getComposite();
 	
 }

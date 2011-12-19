@@ -49,14 +49,19 @@ package org.easysoa.registry.frascati;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.app.AppComponent;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.FraSCAtiScaImporter;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
+import org.nuxeo.frascati.api.FraSCAtiServiceItf;
+import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.bridge.Application;
 import org.nuxeo.runtime.model.Adaptable;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
@@ -75,16 +80,28 @@ import org.nuxeo.runtime.model.Extension;
  */
 public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase implements org.nuxeo.runtime.model.Component, Adaptable {
 	
+	// Service component
 	public static final ComponentName NAME = new ComponentName("org.easysoa.registry.frascati.FraSCAtiServiceComponent");
 
-	@SuppressWarnings("unused")
+	// Logger
     private static Log log = LogFactory.getLog(NxFraSCAtiRegistryService.class);
 	
+	// Nuxeo Core session
 	private CoreSession documentManager;
 	
+	// List of Easy SOA Apps
+	private List<EasySOAApp> apps;
+	
+	/**
+	 * 
+	 */
 	public NxFraSCAtiRegistryService()  {
 		super();
 	}
+	
+	/*public void setApps(List<EasySOAApp> apps){
+		this.apps = apps;
+	}*/
 	
 	/**
 	 * TODO LATER Move in FraSCAtiAppManager, use EasySOAApp as parameter, remember them to allow to list & stop them
@@ -99,15 +116,28 @@ public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase imple
 		//ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaAppUrl);
 		this.setDocumentManager(documentManager);
 		DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaAppUrl);
-		return easySOAApp.getFrascati().processContribution(scaAppUrl.toString(), processingContext);
+		return this.frascati.processContribution(scaAppUrl.toString(), processingContext);
 	}
 	
+	/**
+	 * 
+	 * @param documentManager
+	 * @return
+	 * @throws Exception
+	 */
 	public FraSCAtiRuntimeScaImporterItf newLocalRuntimeScaImporter(CoreSession documentManager) throws Exception {
 		LocalBindingVisitorFactory nxBindingVisitorFactory = new LocalBindingVisitorFactory(documentManager);
 		FraSCAtiScaImporter fraSCAtiScaImporter = new FraSCAtiScaImporter(nxBindingVisitorFactory, null);
 		return fraSCAtiScaImporter;
 	}
 	
+	/**
+	 * 
+	 * @param documentManager
+	 * @param compositeFile
+	 * @return
+	 * @throws Exception
+	 */
 	public IScaImporter newLocalScaImporter(CoreSession documentManager, File compositeFile) throws Exception {
 		LocalBindingVisitorFactory nxBindingVisitorFactory = new LocalBindingVisitorFactory(documentManager);
 		FraSCAtiScaImporter fraSCAtiScaImporter = new FraSCAtiScaImporter(nxBindingVisitorFactory, compositeFile);
@@ -124,10 +154,68 @@ public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase imple
 
     @Override
     public void activate(ComponentContext context) throws Exception {
+		this.frascati = Framework.getLocalService(FraSCAtiServiceItf.class); // TODO don't call it in constructor else too early
+    	
+		/*AppComponent appComponent = Framework.getService(AppComponent.class); // Too early, AppComponent not yet started
+    	this.apps = appComponent.getApps();*/
+    	
+		log.debug("Starting components");
+		// For test only
+		// Start the HttpDiscoveryProxy in Nuxeo with embedded FraSCAti
+		//log.debug("Trying to load Http discovery proxy !");
+		//System.out.println("Trying to load Http discovery proxy (NxFrascatiRegistryService.activate method)!");
+		try {
+			if(this.frascati != null){
+				//this.frascati.processComposite("../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/src/main/resources/httpDiscoveryProxy.composite");
+				//easySOAApp.getFrascati().processContribution("../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT.jar");
+				//easySOAApp.getFrascati().processComposite("scaffoldingProxy");
+				
+				// Start EasySOAApps
+				// TODO : Apps variable still null at the moment, How to set ?
+				if(apps != null){
+					for(EasySOAApp easySOAApp : apps){
+						try{
+							easySOAApp.start();
+						}
+						catch(Exception ex){
+							log.error("An error occurs during the start of EasySOAApp", ex);
+						}
+					}
+				}
+
+			} else {
+				log.debug("Unable to get FraSCAti, null returned !");
+				System.out.println("Unable to get FraSCAti, null returned !");
+			}
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			log.debug("Error catched when trying to load the EasySOA apps !", ex);
+			System.out.println("Error catched when trying to load the EasySOA apps  : " + ex.getMessage());
+		}    	
+   	
     }
 
     @Override
     public void deactivate(ComponentContext context) throws Exception {
+		
+		log.debug("Closing components");
+		/*for(FraSCAtiCompositeItf component : components){
+			frascati.close(component);
+		}*/
+		// stop EasySOAApps
+		if(apps != null){
+			for(EasySOAApp easySOAApp : apps){
+				try{
+					easySOAApp.stop();
+				}
+				catch(Exception ex){
+					log.error("An error occurs during the stop of EasySOAApp", ex);
+				}
+			}
+		}		
+		
+    	// stop FraSCAti
+		((Application)frascati).destroy();
     }
 
     @Override
@@ -137,8 +225,7 @@ public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase imple
             return;
         }
         for (Object contrib : contribs) {
-            registerContribution(contrib, extension.getExtensionPoint(),
-                    extension.getComponent());
+            registerContribution(contrib, extension.getExtensionPoint(), extension.getComponent());
         }
     }
 
@@ -149,19 +236,18 @@ public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase imple
             return;
         }
         for (Object contrib : contribs) {
-            unregisterContribution(contrib, extension.getExtensionPoint(),
-                    extension.getComponent());
+            unregisterContribution(contrib, extension.getExtensionPoint(), extension.getComponent());
         }
     }
 
-    public void registerContribution(Object contribution,
-            String extensionPoint, ComponentInstance contributor)
-            throws Exception {
+    public void registerContribution(Object contribution, String extensionPoint, ComponentInstance contributor) throws Exception {
+    	log.debug("NxFrascatiRegistryService debug (contribution) : " + contribution);
+    	log.debug("NxFrascatiRegistryService debug (extensionPoint) : " + extensionPoint);
+    	log.debug("NxFrascatiRegistryService debug (contributor) : " + contributor);
     }
 
-    public void unregisterContribution(Object contribution,
-            String extensionPoint, ComponentInstance contributor)
-            throws Exception {
+    public void unregisterContribution(Object contribution, String extensionPoint, ComponentInstance contributor) throws Exception {
+    	
     }
 
     @Override

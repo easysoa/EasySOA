@@ -42,12 +42,32 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 
 	private static Log log = LogFactory.getLog(FraSCAtiRegistryServiceBase.class);
 	
-	protected EasySOAApp easySOAApp;
+	protected FraSCAtiServiceItf frascati; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti
 
 	public FraSCAtiRegistryServiceBase() {
 		// Instantiate OW2 FraSCAti.
-		easySOAApp = new FraSCAtiBootstrapApp();
-		easySOAApp.start();
+		/*easySOAApp = new FraSCAtiBootstrapApp();
+		easySOAApp.start();*/
+
+		// For test only
+		// Start the HttpDiscoveryProxy in Nuxeo with embedded FraSCAti
+		// does not works because NuxeoFrascati is not yet instanced ....
+		/*
+		log.debug("Trying to load Http discovery proxy !");
+		System.out.println("Trying to load Http discovery proxy !");
+		try {
+			if(easySOAApp.getFrascati() != null){
+				//easySOAApp.getFrascati().processComposite("httpDiscoveryProxy");
+				easySOAApp.getFrascati().processComposite("scaffoldingProxy");
+			} else {
+				log.debug("Unable to get FraSCAti, null returned !");
+				System.out.println("Unable to get FraSCAti, null returned !");
+			}
+		} catch (NuxeoFraSCAtiException ex) {
+			// TODO Auto-generated catch block
+			log.debug("Error catched when trying to load Http discovery proxy !", ex);
+			System.out.println("Error catched when trying to load Http discovery proxy : " + ex.getMessage());
+		}*/
 	}
 
 	/**
@@ -57,7 +77,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * @return the composite.
 	 */
 	public Object getComposite(String composite) throws NuxeoFraSCAtiException {
-		return easySOAApp.getFrascati().getComposite(composite);
+		return frascati.getComposite(composite);
 	}
 
 	/**
@@ -68,7 +88,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * @return
 	 */
 	public FraSCAtiServiceItf getFraSCAti() {
-		return easySOAApp.getFrascati();
+		return frascati;
 	}
 
 	// //////////////////////////////////////////////
@@ -80,7 +100,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * 
 	 */
 	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws NuxeoFraSCAtiException {
-		return new ParsingProcessingContext(easySOAApp.getFrascati().newProcessingContext(urls));
+		return new ParsingProcessingContext(frascati.newProcessingContext(urls));
 	}
 
 	/**
@@ -94,7 +114,6 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		FraSCAtiRuntimeScaImporterItf runtimeScaImporter = newRuntimeScaImporter();
 		return new DiscoveryProcessingContext(this, runtimeScaImporter, urls);
 	}
-	
 	
 	/**
 	 * 
@@ -130,7 +149,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 			// Register first => registering fails
 			// Process next
 			// Process the SCA composite.
-			easySOAApp.getFrascati().processComposite(compositeUrl.toString(), processingContext);
+			frascati.processComposite(compositeUrl.toString(), processingContext);
 		} 
 		catch (NuxeoFraSCAtiException fe) {
 			log.error("The number of checking errors is equals to " + processingContext.getErrors());
