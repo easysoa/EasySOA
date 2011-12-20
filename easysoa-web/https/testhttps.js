@@ -51,8 +51,22 @@ httpProxy.createServer({
     target: { https: true }
   },
   function (req, res, proxy) {
-    console.log(req.url);
-    res.write('hello');
-    res.end();
+  
+    var requestUrl = url.parse(req.url);
+    var hostToProxy = requestUrl.hostname || 'localhost';
+    var portToProxy = requestUrl.port || 80;
+    console.log("(s) " + hostToProxy + " " + portToProxy);
+    
+    // Works (on direct access)
+    proxy.proxyRequest(req, res, {
+      host: 'localhost',
+      port: '8000'
+    });
+    
+    // Doesn't work (server can't be used a the browser proxy)
+    /* proxy.proxyRequest(req, res, {
+      host: hostToProxy,
+      port: portToProxy
+    });*/
   }
 ).listen(8082);
