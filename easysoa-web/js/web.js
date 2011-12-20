@@ -156,6 +156,9 @@ webServer.all('/discovery/*', function(request, response, next) {
 webServer.all('/dashboard/*', function(request, response, next) {
     easysoaNuxeo.forwardToNuxeo(request, response, settings);
 });
+webServer.all('/servicefinder', function(request, response, next) {
+    easysoaNuxeo.forwardToNuxeo(request, response, settings);
+});
 
 webServer.get('*', function(request, response, next) {
     // Socket.io compatibility
