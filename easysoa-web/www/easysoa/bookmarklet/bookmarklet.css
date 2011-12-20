@@ -1,0 +1,12 @@
+div.easysoa-box {
+  position: fixed;
+  padding: 10px;
+  left: 20px;
+  top: 20px;
+  height: 400px;
+  width: 300px;
+  border: 2px solid darkblue;
+  background-color: white;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13pt;
+}
