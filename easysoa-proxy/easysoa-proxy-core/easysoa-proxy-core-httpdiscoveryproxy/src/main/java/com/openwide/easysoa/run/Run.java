@@ -96,7 +96,7 @@ public class Run {
 			throw new IllegalArgumentException("The parameter message must not be null !");
 		}
 		exchangeRecordCounter++;
-		exchangeRecord.setExchangeID(Long.toString(exchangeRecordCounter));
+		exchangeRecord.getExchange().setExchangeID(Long.toString(exchangeRecordCounter));
 		logger.debug("Adding exchange record in list : " + exchangeRecord);
 		this.exchangeRecordList.add(exchangeRecord);
 	}

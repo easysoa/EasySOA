@@ -129,9 +129,9 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
     			id = erfs.save(record);
     			logger.debug("record ID = " + id);
     			exchangeRecord = erfs.load("", id);
-    			logger.debug("Request content from saved record : " + exchangeRecord.getExchangeID());
+    			logger.debug("Request content from saved record : " + exchangeRecord.getExchange().getExchangeID());
     			// Check the exchange id
-    			assertEquals(id, exchangeRecord.getExchangeID());
+    			assertEquals(id, exchangeRecord.getExchange().getExchangeID());
     			// Check the InMessage URL
     			assertEquals(record.getInMessage().getCompleteUrl(), exchangeRecord.getInMessage().getCompleteUrl());
     		}

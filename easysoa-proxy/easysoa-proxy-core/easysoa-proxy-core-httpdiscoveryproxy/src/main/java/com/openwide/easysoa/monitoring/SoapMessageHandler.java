@@ -24,7 +24,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecord.ExchangeType;
+import org.easysoa.records.Exchange.ExchangeType;
 import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
@@ -64,7 +64,7 @@ public class SoapMessageHandler implements MessageHandler {
 	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// enrich the message
 		//message.setType(MessageType.SOAP);
-		exchangeRecord.setExchangeType(ExchangeType.SOAP);
+		exchangeRecord.getExchange().setExchangeType(ExchangeType.SOAP);
 		logger.debug("WSDL found");
 		//String serviceName = message.getPathName();
 		String serviceName = exchangeRecord.getInMessage().getPath();

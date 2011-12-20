@@ -45,32 +45,25 @@ public class ExchangeRecord {
 	// recent lib, not in Maven repo's, needs mappers to work with cxf or soapUI model
 	// - Use CXF Messages : Complete message lib with interceptors but works only with cxf ...
 
+	// Exchange data
+	private Exchange exchange;
+	
 	// in / out messages
 	private InMessage inMessage;
 	private OutMessage outMessage;
+	
 	// Message timeouts Add here or in the response message ?
 	//private Timeouts timeouts;
-	// Exchange ID
-	private String exchangeID;
-	// Exchange type
-	private ExchangeType exchangeType;
 	
 	// TODO add a constructor from a servletRequest object
 	// Add a setter for a ServletResponse object
 	// Add also constructors/methods for CXF messages
 	// Goal is to obtain a neutral messaging API
-
-	/**
-	 *	Message types 
-	 */
-	public enum ExchangeType {
-	    WSDL, REST, SOAP
-	}	
 	
 	public ExchangeRecord(){
-		this.exchangeID = "";
-		this.inMessage = null;
-		this.outMessage = null;
+		this.setExchange(new Exchange());
+		this.inMessage = new InMessage();
+		this.outMessage = new OutMessage();
 	}
 
 	/**
@@ -80,11 +73,10 @@ public class ExchangeRecord {
 	 * @throws IOException
 	 */
 	public ExchangeRecord(String exchangeID, InMessage inMessage, OutMessage outMessage) throws IllegalArgumentException {
-		//this.requestContent = new Scanner(request.getInputStream()).useDelimiter("\\A").next();
 		if(exchangeID == null || "".equals(exchangeID) || inMessage == null){
 			throw new IllegalArgumentException("the parameters exchangeID and inMessage must not be null or empty");
 		}
-		this.exchangeID = exchangeID;
+		this.setExchange(new Exchange(exchangeID));
 		this.inMessage = inMessage;
 		this.outMessage = outMessage;
 	}
@@ -95,18 +87,6 @@ public class ExchangeRecord {
 	 */
 	public ExchangeRecord(String exchangeID, InMessage inMessage) throws IllegalArgumentException {
 		this(exchangeID, inMessage, null);
-	}
-	
-	public void setExchangeID(String exchangeID){
-		this.exchangeID = exchangeID;
-	}
-	
-	/**
-	 * Returns the exchange ID
-	 * @return The Exchange ID
-	 */
-	public String getExchangeID(){
-		return this.exchangeID;
 	}
 	
 	/**
@@ -142,18 +122,19 @@ public class ExchangeRecord {
 	}
 
 	/**
-	 * Get the exchange type
-	 * @return The exchange type
+	 * Returns the exchange data
+	 * @return <code>Exchange</code> object containing exchange data
 	 */
-	public ExchangeType getExchangeType() {
-		return exchangeType;
+	public Exchange getExchange() {
+		return exchange;
 	}
 
 	/**
-	 * Set the exchange type
-	 * @param exchangeType The exchange type
+	 * Set the exchange data
+	 * @param exchange
 	 */
-	public void setExchangeType(ExchangeType exchangeType) {
-		this.exchangeType = exchangeType;
-	}	
+	public void setExchange(Exchange exchange) {
+		this.exchange = exchange;
+	}
+
 }

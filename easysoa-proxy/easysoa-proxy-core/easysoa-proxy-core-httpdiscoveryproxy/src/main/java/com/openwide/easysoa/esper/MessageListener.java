@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecord.ExchangeType;
+import org.easysoa.records.Exchange.ExchangeType;
 
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
@@ -76,7 +76,7 @@ public class MessageListener implements UpdateListener {
 		}
 		serviceName = serviceName.replace('/', '_');
 		//if(MessageType.WSDL.compareTo(msg.getType()) == 0){
-		if(ExchangeType.WSDL.compareTo(record.getExchangeType()) == 0){
+		if(ExchangeType.WSDL.compareTo(record.getExchange().getExchangeType()) == 0){
 			Service service;
 			//WSDLService service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
 			//service = new Service(msg.getUrl());

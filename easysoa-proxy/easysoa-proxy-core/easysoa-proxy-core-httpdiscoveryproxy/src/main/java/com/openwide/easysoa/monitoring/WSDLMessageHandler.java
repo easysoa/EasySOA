@@ -22,7 +22,7 @@ package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecord.ExchangeType;
+import org.easysoa.records.Exchange.ExchangeType;
 
 import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.message.QueryParam;
@@ -59,7 +59,7 @@ public class WSDLMessageHandler implements MessageHandler {
 	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// enrich the message
 		//message.setType(MessageType.WSDL);
-		exchangeRecord.setExchangeType(ExchangeType.WSDL);		
+		exchangeRecord.getExchange().setExchangeType(ExchangeType.WSDL);		
 		logger.debug("WSDL found");
 		
 		// Service construction

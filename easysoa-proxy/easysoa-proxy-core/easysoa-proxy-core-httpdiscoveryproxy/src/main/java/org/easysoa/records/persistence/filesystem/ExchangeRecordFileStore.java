@@ -30,32 +30,44 @@ import java.util.List;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
+import org.easysoa.records.Exchange;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreManager;
 
+import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.run.Run;
 
 /**
- * Take a ExchangeRecordStoreArray and store the Exchange records as files in the file system
+ * Take a ExchangeRecordStoreArray and store the Exchange records as files in
+ * the file system
+ * 
  * @author jguillemotte
- *
+ * 
  */
 public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 
-	// TODO : The Exchange records must be stored in a human readable format : no serialization but JSON instead.
-	// Maybe is a good idea to work with HAR format with custom extensions to store ID's, request times ....
-	// See if it is necessary to store Exchange records sets at once in the same file (HAR can do that) instead of storing one record in one file.
-	
-	// If we use HAR, we need to made a class to map a servletRequest/Response to HAR Message Object. HAR log are stored with JSON format.
-	// When reading a stored HAR file, parsing from JSON is automatic, just have to map HAR message object informations to servlet object.
+	// TODO : The Exchange records must be stored in a human readable format :
+	// no serialization but JSON instead.
+	// Maybe is a good idea to work with HAR format with custom extensions to
+	// store ID's, request times ....
+	// See if it is necessary to store Exchange records sets at once in the same
+	// file (HAR can do that) instead of storing one record in one file.
+
+	// If we use HAR, we need to made a class to map a servletRequest/Response
+	// to HAR Message Object. HAR log are stored with JSON format.
+	// When reading a stored HAR file, parsing from JSON is automatic, just have
+	// to map HAR message object informations to servlet object.
 
 	// Logger
-	private static Logger logger = Logger.getLogger(ExchangeRecordFileStore.class.getName());	
-	
+	private static Logger logger = Logger.getLogger(ExchangeRecordFileStore.class.getName());
+
 	public final static String FILE_EXTENSION = ".json";
-	//public final static String FILE_PREFIX = "_";
-	
+	public final static String EXCHANGE_FILE_PREFIX = "excRec_";
+	public final static String IN_MESSAGE_FILE_PREFIX = "inMess_";
+	public final static String OUT_MESSAGE_FILE_PREFIX = "outMess_";
+
 	// TODO : Modify the way the path is stored, used ....
 	// Base path = target/
 	// customPath = name of ExchangeRecordStore
@@ -68,140 +80,176 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		// TODO remove the 'target/' default path
 		this.path = "target/";
 	}
-	
+
 	/**
 	 * Constructor
-	 * @param path Path where the Exchange record will be stored
+	 * 
+	 * @param path
+	 *            Path where the Exchange record will be stored
 	 */
 	public ExchangeRecordFileStore(String path) {
 		this.path = path;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.easysoa.sca.records.ExchangeRecordStore#list()
-	 */	
+	 */
 	@Override
 	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) {
 		// loads all files in path with extension & lists them
-    	//File folder = new File(path + FILE_PREFIX + exchangeRecordStoreName + "/");
 		logger.debug("exchangeRecordStoreName  = " + exchangeRecordStoreName);
 		File folder = new File(path + exchangeRecordStoreName + "/");
-    	File[] listOfFiles = folder.listFiles();
-    	logger.debug("listOfFiles.size = " + listOfFiles.length);
-    	ArrayList<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
-    	for (File file : listOfFiles) {
-            if (file.isFile()) {
-            	logger.debug("file name : " + file.getName());
-                if (file.getName().endsWith(FILE_EXTENSION)) {
-                	String id = file.getName().substring(0, file.getName().lastIndexOf("."));
-                	logger.debug("record id : " + id);
-                	try {
+		File[] listOfFiles = folder.listFiles();
+		logger.debug("listOfFiles.size = " + listOfFiles.length);
+		ArrayList<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
+		for (File file : listOfFiles) {
+			if (file.isFile()) {
+				logger.debug("file name : " + file.getName());
+				if (file.getName().endsWith(FILE_EXTENSION)) {
+					String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));
+					logger.debug("record id : " + id);
+					try {
 						recordList.add(load(exchangeRecordStoreName, id));
 					} catch (Exception ex) {
 						logger.debug(ex);
 					}
-    	        }
-    	    }
-    	}
-    	return recordList;	
+				}
+			}
+		}
+		return recordList;
 	}
 
 	@Override
 	public List<ExchangeRecordStore> getExchangeRecordStorelist() {
-    	File folder = new File(path);
-    	File[] listOfFiles = folder.listFiles();
-    	logger.debug("listOfFiles.size = " + listOfFiles.length);
-    	ArrayList<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
-    	for (File file : listOfFiles) {
-            //if (file.isDirectory() && file.getName().startsWith(FILE_PREFIX)) {
-    		if (file.isDirectory()) {
-            	storeList.add(new ExchangeRecordStore(file.getName()));
-            }
-    	}
+		File folder = new File(path);
+		File[] listOfFiles = folder.listFiles();
+		logger.debug("listOfFiles.size = " + listOfFiles.length);
+		ArrayList<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
+		for (File file : listOfFiles) {
+			if (file.isDirectory()) {
+				storeList.add(new ExchangeRecordStore(file.getName()));
+			}
+		}
 		return storeList;
-	}	
-	
-	/* (non-Javadoc)
-	 * @see org.easysoa.sca.records.ExchangeRecordStore#save(org.easysoa.sca.records.ExchangeRecord)
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.easysoa.sca.records.ExchangeRecordStore#save(org.easysoa.sca.records
+	 * .ExchangeRecord)
 	 */
 	@Override
 	public String save(ExchangeRecord exchangeRecord) throws Exception {
 		return save(exchangeRecord, path);
 	}
-	
+
 	/**
 	 * 
 	 * @param exchangeRecord
 	 * @param path
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private String save(ExchangeRecord exchangeRecord, String recordPath) throws IOException{
-		File recordFile = new File(recordPath + exchangeRecord.getExchangeID() + FILE_EXTENSION);
-		FileWriter fw = new FileWriter(recordFile); 
+		File inMEssageFile = new File(recordPath + IN_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + FILE_EXTENSION);
+		File outMessageFile = new File(recordPath + OUT_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + FILE_EXTENSION);
+		File exchangeFile = new File(recordPath + EXCHANGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + FILE_EXTENSION);
+		FileWriter inMessFw = new FileWriter(inMEssageFile);
+		FileWriter outMessFw = new FileWriter(outMessageFile);
+		FileWriter exchangeFw = new FileWriter(exchangeFile);
 	    try{
-	    	JSONObject jObject = JSONObject.fromObject(exchangeRecord);	    	
-	    	fw.write(jObject.toString());
+	    	inMessFw.write(JSONObject.fromObject(exchangeRecord.getInMessage()).toString());
+	    	outMessFw.write(JSONObject.fromObject(exchangeRecord.getOutMessage()).toString());
+	    	exchangeFw.write(JSONObject.fromObject(exchangeRecord.getExchange()).toString());
 	    }
 	    finally{
-	    	fw.close();
+	    	inMessFw.close();
+	    	outMessFw.close();
+	    	exchangeFw.close();
 	    }
-		return exchangeRecord.getExchangeID();		
+		return exchangeRecord.getExchange().getExchangeID();		
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.easysoa.sca.records.ExchangeRecordStore#save(com.openwide.easysoa.run.Run)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.easysoa.sca.records.ExchangeRecordStore#save(com.openwide.easysoa.run.Run)
 	 */
 	@Override
-	public String save(Run run) throws Exception{
+	public String save(Run run) throws Exception {
 		// Create the run folder
-		//File runFolder = new File(path + "/" + FILE_PREFIX + run.getName());
 		File runFolder = new File(path + "/" + run.getName());
 		runFolder.mkdir();
-		for(ExchangeRecord record : run.getExchangeRecordList()){
+		for (ExchangeRecord record : run.getExchangeRecordList()) {
 			save(record, path + "/" + run.getName() + "/");
 		}
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.easysoa.sca.records.ExchangeRecordStore#load(java.lang.String)
 	 */
 	@Override
-	public ExchangeRecord load(String storeName, String recordID) throws Exception {
-		ExchangeRecord record = null;
-		File recordFile = new File(path + storeName + "/" + recordID + FILE_EXTENSION);
-		FileReader fr = new FileReader(recordFile);
-		CharBuffer buffer = CharBuffer.allocate(256);
-		StringBuffer jsonStringBuffer = new StringBuffer();
+	public ExchangeRecord load(String exchangeStoreName, String recordID) throws Exception {
+		ExchangeRecord record = new ExchangeRecord();
+		record.setExchange((Exchange) JSONObject.toBean(readJSONFile(exchangeStoreName, recordID, EXCHANGE_FILE_PREFIX), Exchange.class));
+		record.setInMessage((InMessage) JSONObject.toBean(readJSONFile(exchangeStoreName, recordID, IN_MESSAGE_FILE_PREFIX), InMessage.class));
+		record.setOutMessage((OutMessage) JSONObject.toBean(readJSONFile(exchangeStoreName, recordID, OUT_MESSAGE_FILE_PREFIX), OutMessage.class));
+		return record;
+	}
+
+	/**
+	 * Read a JSON file and returns a <code>JSONObject</code>
+	 * @param exchangeStoreName The exchange store name where to read files
+	 * @param recordID The exchange record ID to read
+	 * @param prefix Prefix of the file to read
+	 * @return A <code>JSONObject</code>
+	 * @throws Exception If a problem occurs
+	 */
+	private JSONObject readJSONFile(String exchangeStoreName, String recordID, String prefix) throws Exception {
+		File file = new File(path + exchangeStoreName + "/" + prefix + recordID + FILE_EXTENSION);
+		FileReader fr = new FileReader(file);
+		JSONObject returnObject;
 		try {
-			while(fr.ready()){
+			CharBuffer buffer = CharBuffer.allocate(256);
+			StringBuffer jsonStringBuffer = new StringBuffer();
+			while (fr.ready()) {
 				fr.read(buffer);
 				jsonStringBuffer.append(buffer.rewind());
 			}
 			jsonStringBuffer.trimToSize();
-			JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonStringBuffer.toString()); 
-			record = (ExchangeRecord) JSONObject.toBean(jsonObject, ExchangeRecord.class);
+			returnObject = (JSONObject) JSONSerializer.toJSON(jsonStringBuffer.toString());			
 		}
 		finally {
-			fr.close();
+			if(fr != null){
+				fr.close();
+			}
 		}
-		return record;
+		return returnObject;
 	}
 	
 	/**
 	 * Return the path where the exchange records are stored
+	 * 
 	 * @return A <code>String</code> representing the path
 	 */
-	public String getStorePath(){
+	public String getStorePath() {
 		return this.path;
 	}
-	
+
 	/**
 	 * Set the path where the exchange record will be stored
+	 * 
 	 * @param path
 	 */
-	public void setStorePath(String path){
+	public void setStorePath(String path) {
 		this.path = path;
 	}
 

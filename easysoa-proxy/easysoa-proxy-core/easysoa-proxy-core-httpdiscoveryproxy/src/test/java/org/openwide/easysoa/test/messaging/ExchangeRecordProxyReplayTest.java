@@ -123,7 +123,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		logger.debug("Exchange record response : " + entityResponseString);
-		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchangeID\":1"));
+		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));
 		
 		// get a list of recorded exchanges contained in the Test_Run folder
 		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecordList/Test_Run");
@@ -143,7 +143,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		ExchangeRecord record = recordList.get(0); 
 		//for(ExchangeRecord record : recordList){
 			originalResponse = record.getOutMessage().getMessageContent().getContent();
-			httpUriRequest = new HttpGet("http://localhost:8085/replay/Test_Run/" + record.getExchangeID());
+			httpUriRequest = new HttpGet("http://localhost:8085/replay/Test_Run/" + record.getExchange().getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
 			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);

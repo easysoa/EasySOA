@@ -22,7 +22,7 @@ package com.openwide.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecord.ExchangeType;
+import org.easysoa.records.Exchange.ExchangeType;
 import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.soa.Node;
 
@@ -44,7 +44,7 @@ public class RestMessageHandler implements MessageHandler {
 	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// Add the url in the url tree structure
 		logger.debug("REST message found");
-		exchangeRecord.setExchangeType(ExchangeType.REST);
+		exchangeRecord.getExchange().setExchangeType(ExchangeType.REST);
 		//if(MonitoringMode.DISCOVERY.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
 		if(monitoringService instanceof DiscoveryMonitoringService){
 			logger.debug("Discovery mode, message added in tree");
