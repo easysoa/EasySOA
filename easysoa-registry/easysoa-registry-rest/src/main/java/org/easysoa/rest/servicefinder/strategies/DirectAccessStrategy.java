@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.easysoa.rest.servicefinder.BrowsingContext;
 import org.easysoa.rest.servicefinder.FoundService;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 import org.ow2.easywsdl.wsdl.WSDLFactory;
@@ -40,16 +41,17 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
 public class DirectAccessStrategy extends DefaultAbstractStrategy implements ServiceFinderStrategy {
     
     @Override
-    public List<FoundService> findFromURL(URL url) throws Exception {
+    public List<FoundService> findFromContext(BrowsingContext context) throws Exception {
 
         List<FoundService> foundServices = new LinkedList<FoundService>();
         
+        URL url = context.getURL();
         String urlString = url.toString();
         if (urlString.toLowerCase().endsWith("?wsdl")) {
             
             // Guess service name
             WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
-            Description desc = reader.read(url);
+            Description desc = reader.read(url); // TODO use context response
             String serviceName = desc.getQName().getLocalPart();
             
             foundServices.add(new FoundService(serviceName, urlString));

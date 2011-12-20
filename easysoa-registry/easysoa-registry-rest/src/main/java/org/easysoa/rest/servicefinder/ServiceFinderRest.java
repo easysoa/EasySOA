@@ -24,16 +24,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import org.easysoa.rest.DiscoveryRest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nuxeo.runtime.api.Framework;
+
+import com.sun.jersey.api.core.HttpContext;
 
 /**
  * REST service to find WSDLs from given URL.
@@ -58,22 +63,43 @@ public class ServiceFinderRest {
     @Path("/{url:.*}")
     public Object doGet(@Context UriInfo uriInfo) throws Exception {
 
-        JSONObject result = new JSONObject();
-        JSONArray errors = new JSONArray();
-        
-        // Initialization
+        // Retrieve URL
         URL url = null;
         try {
             url = new URL(uriInfo.getRequestUri().toString().substring(
                     uriInfo.getBaseUri().toString().length()+"easysoa/servicefinder/".length())); // TODO remove callback
         }
         catch (MalformedURLException e) {
-            errors.put(formatError(e));
+            return "{ errors: '" + formatError(e) + "' }";
         }
+        
+        // Find WSDLs
+        return findWSDls(new BrowsingContext(url));
+    }
+    
+
+    @POST
+    @Path("/")
+    public Object doPost(@Context HttpContext httpContext) throws Exception {
+    	
+    	// Retrieve params
+    	Map<String, String> formValues = DiscoveryRest.getFormValues(httpContext);
+    	
+    	// Find WSDLs
+    	BrowsingContext browsingContext = new BrowsingContext(new URL(formValues.get("url")), formValues.get("data"));
+        return findWSDls(browsingContext);
+    }
+    
+
+    public Object findWSDls(BrowsingContext context) throws Exception {
+
+        JSONArray errors = new JSONArray();
+        JSONObject result = new JSONObject();
+        
 
         // Run finders
         List<FoundService> foundServices = new LinkedList<FoundService>();
-        if (url != null) {
+        if (context.getURL() != null) {
             ServiceFinderComponent finderComponent = (ServiceFinderComponent) Framework
                     .getRuntime().getComponent(ServiceFinderComponent.NAME);
             List<ServiceFinderStrategy> strategies = finderComponent.getStrategies();
@@ -81,7 +107,7 @@ public class ServiceFinderRest {
             for (ServiceFinderStrategy strategy : strategies) {
                 List<FoundService> strategyResult = null;
                 try {
-                    strategyResult = strategy.findFromURL(url);
+                    strategyResult = strategy.findFromContext(context);
                 }
                 catch (Exception e) {
                     errors.put(formatError(e, "Failed to run service finder strategy "+strategy.getClass().getName()));

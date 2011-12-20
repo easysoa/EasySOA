@@ -25,7 +25,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.easysoa.impl.HttpFile;
+import org.easysoa.rest.servicefinder.BrowsingContext;
 import org.easysoa.rest.servicefinder.FoundService;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 import org.htmlcleaner.HtmlCleaner;
@@ -41,17 +41,14 @@ import org.htmlcleaner.TagNode;
 public class ScrapingStrategy extends DefaultAbstractStrategy implements ServiceFinderStrategy {
 
     @Override
-    public List<FoundService> findFromURL(URL url) throws Exception {
+    public List<FoundService> findFromContext(BrowsingContext context) throws Exception {
 
+    	URL url = context.getURL();
         List<FoundService> foundServices = new LinkedList<FoundService>();
-
-        // Web page download
-        HttpFile f = new HttpFile(url);
-        f.download();
 
         // Web page parsing
         HtmlCleaner cleaner = new HtmlCleaner();
-        TagNode cleanHtml = cleaner.clean(f.getFile());
+        TagNode cleanHtml = cleaner.clean(context.getData());
 
         // Find app name
         String applicationName = guessApplicationName(url);
@@ -94,9 +91,6 @@ public class ScrapingStrategy extends DefaultAbstractStrategy implements Service
             }
         }
 
-        if (f != null) {
-            f.delete();
-        }
         return foundServices;
 
     }

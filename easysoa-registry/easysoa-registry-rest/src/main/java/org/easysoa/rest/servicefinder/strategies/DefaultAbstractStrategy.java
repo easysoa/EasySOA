@@ -51,21 +51,21 @@ public abstract class DefaultAbstractStrategy implements ServiceFinderStrategy {
     protected static String guessApplicationName(URL url) throws IOException, URISyntaxException {
         URL siteRootUrl = new URL(url.getProtocol() + "://" + url.getHost()
                 + ":" + ((url.getPort() == -1) ? 80 : url.getPort()));
-        String applicationName = extractApplicatioNameFromUrl(siteRootUrl);
+        String applicationName = extractApplicationNameFromUrl(siteRootUrl);
         if (applicationName == null) {
-            applicationName = extractApplicatioNameFromUrl(url);
+            applicationName = extractApplicationNameFromUrl(url);
         }
         return applicationName;
     }
     
-    private static String extractApplicatioNameFromUrl(URL url) throws IOException, URISyntaxException {
+    private static String extractApplicationNameFromUrl(URL url) throws IOException, URISyntaxException {
         HttpFile siteRootFile = new HttpFile(url);
         siteRootFile.download();
         TagNode siteRootCleanHtml = cleaner.clean(siteRootFile.getFile());
-        return extractApplicatioName(siteRootCleanHtml);
+        return extractApplicationName(siteRootCleanHtml);
     }
 
-    private static String extractApplicatioName(TagNode html) {
+    private static String extractApplicationName(TagNode html) {
         TagNode[] titles = html.getElementsByName("title", true);
         if (titles.length > 0) {
             return titles[0].getText().toString();

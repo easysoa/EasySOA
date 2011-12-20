@@ -274,7 +274,8 @@ public class DiscoveryRest {
         }
     }
 
-    private Map<String, String> getFormValues(HttpContext httpContext) {
+    // TODO Refactoring
+    public static Map<String, String> getFormValues(HttpContext httpContext) {
         /*
          * When accessing the form the usual way, the returned Form is empty,
          * and the following Warning is logged. This hack avoids the problem.
