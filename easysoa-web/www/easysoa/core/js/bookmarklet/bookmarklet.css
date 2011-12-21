@@ -9,19 +9,22 @@ div.easysoa-frame {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 14pt;
   display: none;
+  z-index: 1000;
+  text-align: left;
 }
 
 div.easysoa-frame input {
   width: 150px;
   font-size: 14pt;
+  margin: 3px;
 }
 
 div.easysoa-frame input[type=submit] {
   width: 200px;
-  margin: 5px;
 }
 
 div.easysoa-form-label {
   width: 100px;
   float: left;
+  padding-top: 3px;
 }

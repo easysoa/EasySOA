@@ -29,7 +29,7 @@ function loadCSS(url) {
 
 loadJS(EASYSOA_WEB + '/easysoa/lib/jquery.js');
 loadJS(EASYSOA_WEB + '/easysoa/lib/underscore.js');
-loadCSS(EASYSOA_WEB + '/easysoa/bookmarklet/bookmarklet.css');
+loadCSS(EASYSOA_WEB + '/easysoa/core/js/bookmarklet/bookmarklet.css');
 
 /**
  * HTML templates
@@ -60,7 +60,8 @@ function loadTemplate(name, data) {
         url: EASYSOA_WEB + '/login',
         data: {
           username: jQuery('#easysoa-username').attr('value'),
-          password: jQuery('#easysoa-password').attr('value')
+          password: jQuery('#easysoa-password').attr('value'),
+          ajax: true
         },
         success: function() {
           start();

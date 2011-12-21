@@ -230,7 +230,6 @@ exports.forwardToNuxeo = function(request, response, settings) {
             Authorization: computeAuthorization(request.session.username, request.session.password)
         }
     };
-    console.log(requestOptions);
     http.request(requestOptions, function(nxResponse) {
           var responseData = '';
           nxResponse.on('data', function(data) {

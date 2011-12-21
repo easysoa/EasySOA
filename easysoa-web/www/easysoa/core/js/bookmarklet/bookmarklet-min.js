@@ -1,0 +1,1 @@
+function loadJS(a){var b=document.createElement("script");b.type="text/javascript",b.src=a,document.getElementsByTagName("head")[0].appendChild(b)}loadJS("http://localhost:8083/easysoa/core/js/bookmarklet/discovery.js"),setTimeout(function(){window.EASYSOA_WEB||alert("Error: EasySOA seems unreachable")},500),void 0

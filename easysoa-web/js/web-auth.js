@@ -32,7 +32,8 @@ isLoginValid = function(username, password, callback) {
 };
 
 isAnonymouslyAvailable = function(url) {
-    return url.pathname.indexOf('easysoa/core') == -1 
+    return (url.pathname.indexOf('easysoa/core') == -1
+            ||  url.pathname.indexOf('bookmarklet') != -1)
         && url.pathname.indexOf('easysoa/light') == -1
         && url.pathname.indexOf('easysoa/dashboard') == -1
         && url.pathname.indexOf('scaffoldingProxy') == -1;
