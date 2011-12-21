@@ -101,9 +101,9 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 		Class<T> clazz = (Class<T>) delegate.invoke("loadClass",
 				new Class<?>[]{String.class},
 				new Object[]{className});	
-		if(clazz == null){
-			throw new ClassNotFoundException(className);
-		}
+//		if(clazz == null){
+//			throw new ClassNotFoundException(className);
+//		}
 		return clazz;
 	}
 

@@ -111,8 +111,9 @@ public class EasySOAProcessingContext implements ProcessingContext, ParsingConte
 			if (getResource(className.replace(".", File.separator) + ".java") != null) {
 				return null;
 			}
-			throw cnfe;
+			//throw cnfe;
 		}
+		return null;
 	}
 
 	/**
