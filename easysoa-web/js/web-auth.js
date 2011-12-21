@@ -96,18 +96,36 @@ exports.authFilter = function (request, result, next) {
                     request.session.username = request.body.username;
                     request.session.password = request.body.password; // XXX: Could store the Base64 hash instead
                   console.log('[INFO] User `' + request.body.username + '` just logged in');
-                  result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
+                  if (request.body.ajax) {
+                	  result.write('{result: "ok"}');
+                	  result.end();
+                  }
+                  else {
+                	  result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
+                  }
                   return;
               // Unauthorized
               } else {
-                result.redirect('/easysoa/login.html?error=true&prev='+request.body.prev);
+            	if (request.body.ajax) {
+	              	result.write('{result: "error", error: "Invalid credentials"}');
+	            	result.end();
+            	}
+            	else {
+            		result.redirect('/easysoa/login.html?error=true&prev='+request.body.prev);
+            	}
                 return;
               }
            });
          }
          catch (error) {
             console.log("[INFO] Request error, assuming Nuxeo is not started: "+error);
-            result.redirect('/easysoa/login.html?nuxeoNotReady=true&prev='+request.body.prev);
+        	if (request.body.ajax) {
+	          	result.write('{result: "error", error: "Nuxeo not started"}');
+	        	result.end();
+        	}
+        	else {
+        		result.redirect('/easysoa/login.html?nuxeoNotReady=true&prev='+request.body.prev);
+        	}
             return;
          }
     }
