@@ -20,7 +20,6 @@
 package org.nuxeo.frascati.api;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,10 +36,8 @@ import org.ow2.frascati.util.reflect.ReflectionHelper;
 public abstract class AbstractProcessingContext  implements FraSCAtiProcessingContextItf{
 	
 	protected ReflectionHelper delegate;
-	protected List<String> warningMessages = new ArrayList<String>();
-	protected List<String> errorMessages = new ArrayList<String>();	
-
-	protected static final Logger log = Logger.getLogger(AbstractProcessingContext.class.getCanonicalName());	
+	protected static final Logger log = Logger.getLogger(
+			AbstractProcessingContext.class.getCanonicalName());	
 	
 	/**
 	 * Constructor
@@ -66,7 +63,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public List<String> getWarningMessages() {
-		return warningMessages;
+		return  (List<String>) delegate.invoke("getWarningMessages");
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +71,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public List<String> getErrorMessages() {
-		return errorMessages;
+		return  (List<String>) delegate.invoke("getErrorMessages");
 	}
 
 	//////////////////////////////////////////////
@@ -85,8 +82,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public ClassLoader getClassLoader() {
-		return (ClassLoader) delegate.invokeInherited("getClassLoader",
-				"org.ow2.frascati.parser.api.ParsingContext");
+		return (ClassLoader) delegate.invoke("getClassLoader");
 	}
 
 	/* (non-Javadoc)
@@ -102,8 +98,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public <T> Class<T> loadClass(String className) throws ClassNotFoundException {
-		Class<T> clazz = (Class<T>) delegate.invokeInherited("loadClass",
-				"org.ow2.frascati.parser.api.ParsingContext",
+		Class<T> clazz = (Class<T>) delegate.invoke("loadClass",
 				new Class<?>[]{String.class},
 				new Object[]{className});	
 		if(clazz == null){
@@ -127,8 +122,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public URL getResource(String name) {
-		return (URL) delegate.invokeInherited("getResource",
-				"org.ow2.frascati.parser.api.ParsingContext",
+		return (URL) delegate.invoke("getResource",
 				new Class<?>[]{String.class},
 				new Object[]{name});
 	}
@@ -158,11 +152,9 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public void warning(String message) {
-		delegate.invokeInherited("warning",
-				"org.ow2.frascati.parser.api.ParsingContext",
+		delegate.invoke("warning",
 				new Class<?>[]{String.class},
 				new Object[]{message});
-		warningMessages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -170,8 +162,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public int getWarnings() {
-		return (Integer)delegate.invokeInherited("getWarnings",
-				"org.ow2.frascati.parser.api.ParsingContext");
+		return (Integer)delegate.invoke("getWarnings");
 	}
 
 	/* (non-Javadoc)
@@ -179,11 +170,9 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public void error(String message) {
-		delegate.invokeInherited("error",
-				"org.ow2.frascati.parser.api.ParsingContext",
+		delegate.invoke("error",
 				new Class<?>[]{String.class},
 				new Object[]{message});
-		errorMessages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -191,8 +180,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public int getErrors() {		
-		return (Integer)delegate.invokeInherited("getErrors",
-				"org.ow2.frascati.parser.api.ParsingContext");
+		return (Integer)delegate.invoke("getErrors");
 	}
 
 	/* (non-Javadoc)
@@ -200,8 +188,7 @@ public abstract class AbstractProcessingContext  implements FraSCAtiProcessingCo
 	 */
 	@Override
 	public String getLocationURI(EObject eObject) {
-		return (String) delegate.invokeInherited("getLocationURI",
-				"org.ow2.frascati.parser.api.ParsingContext",
+		return (String) delegate.invoke("getLocationURI",
 				new Class<?>[]{EObject.class},
 				new Object[]{eObject});
 	}
