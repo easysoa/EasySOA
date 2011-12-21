@@ -64,17 +64,20 @@ function loadTemplate(name, data) {
 				},
 				dataType : 'jsonp',
 				success : function(data) {
+					console.log(data);
 					if (data.result == "ok") {
-						console.log('cool');
+						start();
 					}
 					else {
 						var errorTag = jQuery('#easysoa-login-error');
+						errorTag.hide('fast');
 						errorTag.html('ERROR: ' + data.error);
 						errorTag.show('fast');
 					}
 				},
 				error : function() {
 					var errorTag = jQuery('#easysoa-login-error');
+					errorTag.hide('fast');
 					errorTag.html('ERROR: Failed to run login request');
 					errorTag.show('fast');
 				}
@@ -90,8 +93,14 @@ function loadTemplate(name, data) {
 function checkIsLoggedIn(callbackOnSuccess, callbackOnError) {
 	jQuery.ajax({
 		url : EASYSOA_WEB + '/userdata',
-		success : function(data, msg, xhr) {
-			callbackOnSuccess();
+		dataType : 'jsonp',
+		success : function(data) {
+			if (data && data.username)  {
+				callbackOnSuccess();
+			}
+			else {
+				callbackOnError();
+			}
 		},
 		error : function() {
 			callbackOnError();

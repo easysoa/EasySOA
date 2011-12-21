@@ -49,9 +49,9 @@ exports.handleLogin = function(request, response) {
     	try {
 	        isLoginValid(credentials.username, credentials.password, function(isValid) {
 	            if (isValid) {
-	                request.session.username = request.body.username;
-	                request.session.password = request.body.password; // XXX: Could store the Base64 hash instead
-	                console.log("[INFO] Session created for: "+request.body.username);
+	                request.session.username = credentials.username;
+	                request.session.password = credentials.password; // XXX: Could store the Base64 hash instead
+	                console.log("[INFO] Session created for: "+credentials.username);
 	            	if (credentials.callback) {
 	            		response.writeHead(200, {'Content-Type': 'application/json'});
 	            		response.end(credentials.callback + '({result: "ok"})');
@@ -95,7 +95,7 @@ exports.handleLogin = function(request, response) {
 
 exports.authFilter = function (request, response, next) {
     reqUrl = request.urlp = url.parse(request.url, true);
-
+    
     // Logout
     if (reqUrl.pathname == "/logout") {
       request.session.destroy();
@@ -108,10 +108,20 @@ exports.authFilter = function (request, response, next) {
         if (request.session && request.session.username) {
             var responseData = new Object();
             responseData.username = request.session.username;
-            response.write(JSON.stringify(responseData));
+            if (request.query && request.query.callback) {
+                response.write(request.query.callback + '(' + JSON.stringify(responseData) + ')');
+            }
+            else {
+                response.write(JSON.stringify(responseData));
+            }
         }
         else {
-        	response.writeHead(403);
+            if (request.query && request.query.callback) {
+                response.write(request.query.callback + '()');
+            }
+            else {
+            	response.writeHead(403);
+            }
         }
         response.end();
         return;
