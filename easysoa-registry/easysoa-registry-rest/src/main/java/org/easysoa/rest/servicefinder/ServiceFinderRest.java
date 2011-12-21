@@ -33,6 +33,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.easysoa.rest.DiscoveryRest;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,18 +65,32 @@ public class ServiceFinderRest {
     @Path("/{url:.*}")
     public Object doGet(@Context UriInfo uriInfo) throws Exception {
 
-        // Retrieve URL
         URL url = null;
+        String callback = null;
         try {
-            url = new URL(uriInfo.getRequestUri().toString().substring(
-                    uriInfo.getBaseUri().toString().length()+"easysoa/servicefinder/".length())); // TODO remove callback
+            // Retrieve URL
+        	String restServiceURL = uriInfo.getBaseUri().toString().length()+"easysoa/servicefinder/";
+        	url = new URL(uriInfo.getRequestUri().toString().substring(restServiceURL.length()));
+        	if (url.getQuery().contains("callback=")) {
+        		List<NameValuePair> queryTokens = URLEncodedUtils.parse(url.toURI(), "UTF-8");
+        		for (NameValuePair token : queryTokens) {
+        			if (token.getName().equals("callback")) {
+        				callback = token.getValue(); // TODO remove callback from original URL
+        			}
+        		}
+        	}
         }
         catch (MalformedURLException e) {
             return "{ errors: '" + formatError(e) + "' }";
         }
         
         // Find WSDLs
-        return findWSDls(new BrowsingContext(url));
+        if (callback != null) {
+        	return callback + '(' + findWSDls(new BrowsingContext(url)) + ')';
+        }
+        else {
+        	return findWSDls(new BrowsingContext(url));
+        }
     }
     
 
@@ -91,7 +107,7 @@ public class ServiceFinderRest {
     }
     
 
-    public Object findWSDls(BrowsingContext context) throws Exception {
+    public String findWSDls(BrowsingContext context) throws Exception {
 
         JSONArray errors = new JSONArray();
         JSONObject result = new JSONObject();
