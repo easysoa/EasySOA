@@ -16,8 +16,16 @@ var easysoaNuxeo = require('./web-nuxeo.js');
 
 // INTERNAL FUNCTIONS
 
-redirectTo = function(result, url) {
-    result.redirect(url);
+redirectTo = function(response, url) {
+	response.redirect(url);
+};
+
+isAnonymouslyAvailable = function(url) {
+    return (url.pathname.indexOf('easysoa/core') == -1
+            ||  url.pathname.indexOf('bookmarklet') != -1)
+        && url.pathname.indexOf('easysoa/light') == -1
+        && url.pathname.indexOf('easysoa/dashboard') == -1
+        && url.pathname.indexOf('scaffoldingProxy') == -1;
 };
 
 isLoginValid = function(username, password, callback) {
@@ -31,23 +39,67 @@ isLoginValid = function(username, password, callback) {
     }
 };
 
-isAnonymouslyAvailable = function(url) {
-    return (url.pathname.indexOf('easysoa/core') == -1
-            ||  url.pathname.indexOf('bookmarklet') != -1)
-        && url.pathname.indexOf('easysoa/light') == -1
-        && url.pathname.indexOf('easysoa/dashboard') == -1
-        && url.pathname.indexOf('scaffoldingProxy') == -1;
+// EXPORTS
+
+exports.handleLogin = function(request, response) {
+	
+	var credentials = request.body || request.query;
+	
+    if (credentials && credentials.username && credentials.password) {
+    	try {
+	        isLoginValid(credentials.username, credentials.password, function(isValid) {
+	            if (isValid) {
+	                request.session.username = request.body.username;
+	                request.session.password = request.body.password; // XXX: Could store the Base64 hash instead
+	                console.log("[INFO] Session created for: "+request.body.username);
+	            	if (credentials.callback) {
+	            		response.writeHead(200, {'Content-Type': 'application/json'});
+	            		response.end(credentials.callback + '({result: "ok"})');
+	            	}
+	            	else {
+	            		redirectTo(response, request.query.prev || '/easysoa');
+	            	}
+	            }
+	            else {
+	            	if (credentials.callback) {
+	            		response.writeHead(200, {'Content-Type': 'application/json'});
+	            		response.end(credentials.callback + '({result: "error", error: "Invalid credentials"})');
+	            	}
+	            	else {
+	            		redirectToLogin(response, request.url, true);
+	            	}
+	            }
+	        });
+    	}
+    	catch (error) {
+        	if (credentials.callback) {
+        		response.writeHead(200, {'Content-Type': 'application/json'});
+        		console.log(credentials.callback + '({result: "error", error: "Nuxeo not started"})');
+        		response.end(credentials.callback + '({result: "error", error: "Nuxeo not started"})');
+        	}
+        	else {
+        		redirectToLogin(response, request.url, true);
+        	}
+    	}
+    }
+    else {
+    	if (credentials.callback) {
+    		response.writeHead(200, {'Content-Type': 'application/json'});
+    		response.end(credentials.callback + '({result: "error", error: "Invalid parameters"})');
+    	}
+    	else {
+    		response.redirect('/easysoa/login.html?nuxeoNotReady=true&prev='+request.body.prev);
+    	}
+    }
 };
 
-// EXPORTS
-   
-exports.authFilter = function (request, result, next) {
+exports.authFilter = function (request, response, next) {
     reqUrl = request.urlp = url.parse(request.url, true);
 
     // Logout
     if (reqUrl.pathname == "/logout") {
       request.session.destroy();
-      result.redirect('/easysoa');
+      response.redirect('/easysoa');
       return;
     }
     
@@ -56,12 +108,12 @@ exports.authFilter = function (request, result, next) {
         if (request.session && request.session.username) {
             var responseData = new Object();
             responseData.username = request.session.username;
-            result.write(JSON.stringify(responseData));
+            response.write(JSON.stringify(responseData));
         }
         else {
-            result.writeHead(403);
+        	response.writeHead(403);
         }
-        result.end();
+        response.end();
         return;
     }
 
@@ -69,11 +121,11 @@ exports.authFilter = function (request, result, next) {
     if (request.session && request.session.username != undefined) {
         if (request.url == '/login') {
             if (request.body && request.body.prev) {
-               result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
+            	response.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
                return;
             }
             else {
-               result.redirect('/easysoa');
+            	response.redirect('/easysoa');
                return;
             }
         }
@@ -89,76 +141,18 @@ exports.authFilter = function (request, result, next) {
         return;
     }
     else if (reqUrl.pathname == "/login" && request.body) {
-        try {
-            isLoginValid(request.body.username, request.body.password, function (callbackResult) {
-              // Logged successfully
-              if (callbackResult) {
-                    request.session.username = request.body.username;
-                    request.session.password = request.body.password; // XXX: Could store the Base64 hash instead
-                  console.log('[INFO] User `' + request.body.username + '` just logged in');
-                  if (request.body.ajax) {
-                	  result.write('{result: "ok"}');
-                	  result.end();
-                  }
-                  else {
-                	  result.redirect((request.body.prev != '') ? request.body.prev : '/easysoa');
-                  }
-                  return;
-              // Unauthorized
-              } else {
-            	if (request.body.ajax) {
-	              	result.write('{result: "error", error: "Invalid credentials"}');
-	            	result.end();
-            	}
-            	else {
-            		result.redirect('/easysoa/login.html?error=true&prev='+request.body.prev);
-            	}
-                return;
-              }
-           });
-         }
-         catch (error) {
-            console.log("[INFO] Request error, assuming Nuxeo is not started: "+error);
-        	if (request.body.ajax) {
-	          	result.write('{result: "error", error: "Nuxeo not started"}');
-	        	result.end();
-        	}
-        	else {
-        		result.redirect('/easysoa/login.html?nuxeoNotReady=true&prev='+request.body.prev);
-        	}
-            return;
-         }
+        handleLogin(request, response);
     }
     else if (isAnonymouslyAvailable(reqUrl)) {
         next();
     }
     else {
-        result.redirect('/easysoa/login.html?prev='+reqUrl.href);
+    	response.redirect('/easysoa/login.html?prev='+reqUrl.href);
     }
 };
 
-
-exports.handleLogin = function(request, result) {
-    if (request.body != undefined) {
-        exports.isLoginValid(request.body.username, request.body.password, function(isValid) {
-            if (isValid) {
-                request.session.username = request.body.username;
-                request.session.password = request.body.password;
-                console.log("[INFO] Session created for: "+request.body.username);
-                redirectTo(result, request.query.prev || '/easysoa');
-            }
-            else {
-                exports.redirectToLogin(result, request.url, true);
-            }
-        });
-    }
-    else {
-        exports.redirectToLogin(result, request.url, true);
-    }
-};
-
-exports.redirectToLogin = function(result, prevUrl, error) {
-    redirectTo(result, '/easysoa/login.html' + ((prevUrl) ? '?prev='+prevUrl : '') + ((error) ? '?error=true' : ''));
+exports.redirectToLogin = redirectToLogin = function(response, prevUrl, error) {
+    redirectTo(response, '/easysoa/login.html' + ((prevUrl) ? '?prev='+prevUrl : '') + ((error) ? '?error=true' : ''));
 };
 
 exports.isLoggedIn = function(request) {

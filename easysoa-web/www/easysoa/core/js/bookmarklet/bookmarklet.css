@@ -1,30 +1,35 @@
 div.easysoa-frame {
-  position: fixed;
-  padding: 10px;
-  left: 20px;
-  top: 20px;
-  width: 300px;
-  border: 2px solid darkblue;
-  background-color: white;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 14pt;
-  display: none;
-  z-index: 1000;
-  text-align: left;
+	position: fixed;
+	padding: 10px;
+	left: 20px;
+	top: 20px;
+	width: 300px;
+	border: 2px solid darkblue;
+	background-color: white;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 14pt;
+	display: none;
+	z-index: 1000;
+	text-align: left;
 }
 
 div.easysoa-frame input {
-  width: 150px;
-  font-size: 14pt;
-  margin: 3px;
+	width: 150px;
+	font-size: 14pt;
+	margin: 3px;
 }
 
 div.easysoa-frame input[type=submit] {
-  width: 200px;
+	width: 200px;
 }
 
 div.easysoa-form-label {
-  width: 100px;
-  float: left;
-  padding-top: 3px;
+	width: 100px;
+	float: left;
+	padding-top: 3px;
+}
+
+div#easysoa-login-error {
+	color: darkred;
+	padding: 5px;
 }

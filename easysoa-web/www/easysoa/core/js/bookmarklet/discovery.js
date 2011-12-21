@@ -45,6 +45,7 @@ function initTemplates() {
       <div class="easysoa-form-label">User:</div><input type="text" id="easysoa-username" /><br />\
       <div class="easysoa-form-label">Password:</div><input type="password" id="easysoa-password" /><br />\
       <input type="submit" id="easysoa-submit" />\
+	  <div id="easysoa-login-error"></div>\
     </div>');
 }
 
@@ -56,27 +57,26 @@ function loadTemplate(name, data) {
 	if (name == 'login') {
 		jQuery('#easysoa-submit').click(function() {
 			jQuery.ajax({
-				type : 'POST',
 				url : EASYSOA_WEB + '/login',
 				data : {
 					username : jQuery('#easysoa-username').attr('value'),
-					password : jQuery('#easysoa-password').attr('value'),
-					ajax : true
+					password : jQuery('#easysoa-password').attr('value')
 				},
-				success : function(data, message, xhr) {
-					var response = jQuery.parseJSON(xhr.resultText);
-					console.log(response);
-					if (response.result == "ok") {
+				dataType : 'jsonp',
+				success : function(data) {
+					if (data.result == "ok") {
 						console.log('cool');
 					}
 					else {
-						console.log('not cool');
-						// TODO
+						var errorTag = jQuery('#easysoa-login-error');
+						errorTag.html('ERROR: ' + data.error);
+						errorTag.show('fast');
 					}
 				},
-				error : function(error) {
-					console.log('not cool');
-					// TODO
+				error : function() {
+					var errorTag = jQuery('#easysoa-login-error');
+					errorTag.html('ERROR: Failed to run login request');
+					errorTag.show('fast');
 				}
 			});
 		});
