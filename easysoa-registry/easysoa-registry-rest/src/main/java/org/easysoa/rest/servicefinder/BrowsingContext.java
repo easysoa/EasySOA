@@ -37,6 +37,9 @@ public class BrowsingContext {
 		        }
 		        data = dataBuffer.toString();
 	        }
+	        catch (Exception e) {
+	        	data = null;
+	        }
 	        finally {
 	        	file.delete();
 	        }

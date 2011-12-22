@@ -69,7 +69,7 @@ public class ServiceFinderRest {
         String callback = null;
         try {
             // Retrieve URL
-        	String restServiceURL = uriInfo.getBaseUri().toString().length()+"easysoa/servicefinder/";
+        	String restServiceURL = uriInfo.getBaseUri().toString()+"easysoa/servicefinder/";
         	url = new URL(uriInfo.getRequestUri().toString().substring(restServiceURL.length()));
         	if (url.getQuery().contains("callback=")) {
         		List<NameValuePair> queryTokens = URLEncodedUtils.parse(url.toURI(), "UTF-8");

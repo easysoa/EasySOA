@@ -3,6 +3,7 @@ groupname, description
 "administrators","Group of users with administrative rights"
 "Administrator",""
 "Business User",""
+"Business Architect",""
 "Developer",""
 "Architect",""
 "IT Staff",""

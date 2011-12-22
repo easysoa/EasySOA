@@ -7,6 +7,7 @@
   <xs:element name="discoveryTypeBrowsing" type="xs:string" />
   <xs:element name="discoveryTypeMonitoring" type="xs:string" />
   <xs:element name="discoveryTypeImport" type="xs:string" />
+  <xs:element name="discoveryTypeEclipse" type="xs:string" />
 
   <!-- Whom, which role, which environment is the service originiated from / by ? (e.g: Eclipse SOA, John as a business architect) -->
   <xs:element name="author" type="xs:string" />

@@ -326,7 +326,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
             // Append value if the property is a discovery field
             if (property.equals(EasySOADoctype.PROP_DTBROWSING)
                     || property.equals(EasySOADoctype.PROP_DTIMPORT)
-                    || property.equals(EasySOADoctype.PROP_DTMONITORING)) {
+                    || property.equals(EasySOADoctype.PROP_DTMONITORING)
+                    || property.equals(EasySOADoctype.PROP_DTECLIPSE)) {
                 String prevValue = (String) model.getProperty(schema, property);
                 if (prevValue == null) {
                     model.setProperty(schema, property, value);
