@@ -66,7 +66,7 @@ import com.google.inject.Inject;
 })
 @LocalDeploy({
 	"org.easysoa.registry.core:OSGI-INF/AppComponent.xml",
-	"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
+	"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml"
 	//"org.easysoa.registry.core:OSGI-INF/easysoaapp-frascati-contrib.xml"	
 	//"org.easysoa.registry.frascati:easysoaapp-frascati-test-contrib.xml" // Otherwise the apps are loaded twice
 	//"org.easysoa.registry.core:test/datasource-contrib.xml" // required because no jetty.naming in deps

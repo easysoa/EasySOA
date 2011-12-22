@@ -24,13 +24,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.nuxeo.ecm.core.api.Blob;
-import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
+import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
 
 /**
  * Basic file downloading tool, given an HTTP(S) url.
@@ -42,6 +41,7 @@ public class HttpDownloaderImpl implements HttpDownloader {
     private HttpClient client = new HttpClient();
     private URL url;
     private File file = null;
+    private byte[] bytes = null;
 
     public HttpDownloaderImpl(String url) throws MalformedURLException {
         this.url = new URL(url);
@@ -63,47 +63,63 @@ public class HttpDownloaderImpl implements HttpDownloader {
     }
     
 	@Override
-	public HttpDownloader download() throws IOException, URISyntaxException {
-
-        this.file = File.createTempFile("tmp", "tmp");
-        FileOutputStream fos = new FileOutputStream(this.file);
-    
-        try {
-	    	GetMethod getMethod = new GetMethod(url.toString());
-	    	int responseCode = client.executeMethod(getMethod);
-	    	if (responseCode == 200) {
-	    		byte[] body = getMethod.getResponseBody();
-	    		fos.write(body);
-	    		fos.flush();
-	    	}
-        }
-        finally {
-        	fos.close();
-        }
-	
+	public HttpDownloader download() throws Exception {
+    	GetMethod getMethod = new GetMethod(url.toString());
+    	int responseCode = client.executeMethod(getMethod);
+    	if (responseCode == 200) {
+    		this.bytes = getMethod.getResponseBody();
+    	}
         return this;
+    }
+	
+	@Override
+	public boolean isDownloaded() {
+        return this.bytes != null;
     }
 	
     @Override
 	public void delete() {
-        if (isDownloaded()) {
+        if (this.file != null) {
             this.file.delete();
         }
+        this.bytes = null;
     }
 
 	@Override
-	public File getFile() {
-        return this.file;
-    }
+	public byte[] getBytes() {
+		return this.bytes;
+	}
 
 	@Override
 	public Blob getBlob() {
-        return isDownloaded() ? new FileBlob(this.file) : null;
+        return this.bytes != null ? new ByteArrayBlob(this.bytes) : null;
     }
 
 	@Override
-	public boolean isDownloaded() {
-        return (this.file != null) && (this.file.exists());
+	public File getFile() throws IOException {
+		if (this.file == null && this.bytes != null) {
+			FileOutputStream fos = null;
+			try {
+				// Export bytes to file
+		        this.file = File.createTempFile("tmp", "tmp");
+		        fos = new FileOutputStream(this.file);
+				fos.write(this.bytes);
+				fos.flush();
+			}
+			catch (Exception e) {
+				// On failure, delete the file
+				if (this.file != null) {
+					this.file.delete();
+				}
+				this.file = null;
+			}
+	        finally {
+	        	if (fos != null) {
+	        		fos.close();
+	        	}
+	        }
+		}
+        return this.file;
     }
     
 }
