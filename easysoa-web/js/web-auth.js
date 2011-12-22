@@ -41,7 +41,7 @@ isLoginValid = function(username, password, callback) {
 
 // EXPORTS
 
-exports.handleLogin = function(request, response) {
+exports.handleLogin = handleLogin = function(request, response) {
 	
 	var credentials = request.body || request.query;
 	
@@ -93,7 +93,7 @@ exports.handleLogin = function(request, response) {
     }
 };
 
-exports.authFilter = function (request, response, next) {
+exports.authFilter = authFilter = function (request, response, next) {
     reqUrl = request.urlp = url.parse(request.url, true);
     
     // Logout
@@ -165,6 +165,6 @@ exports.redirectToLogin = redirectToLogin = function(response, prevUrl, error) {
     redirectTo(response, '/easysoa/login.html' + ((prevUrl) ? '?prev='+prevUrl : '') + ((error) ? '?error=true' : ''));
 };
 
-exports.isLoggedIn = function(request) {
+exports.isLoggedIn = isLoggedIn = function(request) {
     return request.session != undefined && request.session.user != undefined;
 };
