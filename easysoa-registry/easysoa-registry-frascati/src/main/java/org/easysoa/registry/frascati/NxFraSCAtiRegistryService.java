@@ -53,7 +53,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.app.AppComponent;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.FraSCAtiScaImporter;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
