@@ -126,7 +126,8 @@ public class ApiFrascatiImportServiceTest {
 		
 		// services :
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + 
+				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
 		
 		assertEquals(1, resDocList.size());
 		

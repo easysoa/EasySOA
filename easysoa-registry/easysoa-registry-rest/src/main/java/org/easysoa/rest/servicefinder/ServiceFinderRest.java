@@ -71,7 +71,7 @@ public class ServiceFinderRest {
             // Retrieve URL
         	String restServiceURL = uriInfo.getBaseUri().toString()+"easysoa/servicefinder/";
         	url = new URL(uriInfo.getRequestUri().toString().substring(restServiceURL.length()));
-        	if (url.getQuery().contains("callback=")) {
+        	if (url.getQuery() != null && url.getQuery().contains("callback=")) {
         		List<NameValuePair> queryTokens = URLEncodedUtils.parse(url.toURI(), "UTF-8");
         		for (NameValuePair token : queryTokens) {
         			if (token.getName().equals("callback")) {

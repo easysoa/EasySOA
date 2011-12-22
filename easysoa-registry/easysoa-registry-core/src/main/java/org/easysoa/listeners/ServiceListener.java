@@ -274,7 +274,8 @@ public class ServiceListener implements EventListener {
                 DocumentModelList existingServiceModels = session.query(
                         "SELECT * FROM " + Service.DOCTYPE + " WHERE " +
                         		"ecm:path STARTSWITH '" + workspace.getPathAsString() + 
-                        		"' AND " + Service.SCHEMA_PREFIX + Service.PROP_URL + " = '" + url + "'");
+                        		"' AND " + Service.SCHEMA_PREFIX + Service.PROP_URL + " = '" + url + "'" +
+                        		" AND ecm:isProxy = 0");
                 for (DocumentModel existingServiceModel : existingServiceModels) {
                     if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())
                             && !existingServiceModel.isProxy()) {
