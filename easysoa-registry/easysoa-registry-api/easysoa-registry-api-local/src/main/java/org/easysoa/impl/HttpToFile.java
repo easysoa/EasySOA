@@ -20,75 +20,65 @@
 
 package org.easysoa.impl;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 
 /**
- * Basic file downloading tool, given an HTTP url.
+ * Basic file downloading tool, given an HTTP(S) url.
  * @author mkalam-alami
  *
  */
-public class HttpFile {
+public class HttpToFile {
 
-    private static final int CONNECT_TIMEOUT = 1000;
-    private static final int DOWNLOAD_TIMEOUT = 15000;
-    
+    private HttpClient client = new HttpClient();
     private URL url;
     private File file = null;
 
-    public HttpFile(URL url) {
+    public HttpToFile(String url) throws MalformedURLException {
+        this.url = new URL(url);
+    }
+    
+    public HttpToFile(URL url) {
         this.url = url;
     }
 
     public boolean isURLAvailable() {
-        Socket s = new Socket();
-        try {
-            s.connect(
-                    new InetSocketAddress(url.getHost(),
-                            (url.getPort() != -1) ? url.getPort() : 80),
-                    CONNECT_TIMEOUT);
-            return true;
-        }
-        catch (IOException e) {
-            try {
-                s.close();
-            } catch (IOException e1) {
-                // Do nothing
-            }
-            return false;
-        }
+    	try {
+        	GetMethod getMethod = new GetMethod(url.toString());
+        	return client.executeMethod(getMethod) == 200;
+    	}
+    	catch (Exception e) {
+    		return false;
+    	}
     }
     
-    public HttpFile download() throws MalformedURLException, IOException, URISyntaxException {
-        HttpURLConnection connection = ((HttpURLConnection) this.url.openConnection());
+    public HttpToFile download() throws MalformedURLException, IOException, URISyntaxException {
+
         this.file = File.createTempFile("tmp", "tmp");
-        connection.setReadTimeout(DOWNLOAD_TIMEOUT);
-        InputStream is = connection.getInputStream();
         FileOutputStream fos = new FileOutputStream(this.file);
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
-        int c;
+    
         try {
-            while ((c = is.read()) != -1) {
-                bw.write((char) c);
-            }
-            bw.flush();
+	    	GetMethod getMethod = new GetMethod(url.toString());
+	    	int responseCode = client.executeMethod(getMethod);
+	    	if (responseCode == 200) {
+	    		byte[] body = getMethod.getResponseBody();
+	    		fos.write(body);
+	    		fos.flush();
+	    	}
         }
         finally {
-            bw.close();
+        	fos.close();
         }
+	
         return this;
     }
 
@@ -109,5 +99,5 @@ public class HttpFile {
     public boolean isDownloaded() {
         return (this.file != null) && (this.file.exists());
     }
-
+    
 }

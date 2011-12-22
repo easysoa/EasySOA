@@ -147,7 +147,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             // Update optional properties
             if (url.toLowerCase().contains("wsdl")) {
                 try {
-                    HttpFile f = new HttpFile(new URL(url));
+                    HttpToFile f = new HttpToFile(new URL(url));
                     f.download();
                     apiModel.setProperty("file", "content", f.getBlob());
                 } catch (Exception e) {
