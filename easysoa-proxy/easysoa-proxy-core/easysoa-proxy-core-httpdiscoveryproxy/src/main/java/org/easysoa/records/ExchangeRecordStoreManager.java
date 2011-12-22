@@ -21,6 +21,9 @@ package org.easysoa.records;
 
 import java.util.List;
 
+import org.easysoa.template.Template;
+import org.easysoa.template.TemplateField;
+
 import com.openwide.easysoa.run.Run;
 
 /**
@@ -64,5 +67,11 @@ public interface ExchangeRecordStoreManager {
 	 */
 	public List<ExchangeRecordStore> getExchangeRecordStorelist();	
 	
+	/**
+	 * Returns a list of <code>TemplateField</code> specified in the template
+	 * @param templateName The name of the template to use
+	 * @return A <code>List</code> of <code>TemplateField</code>
+	 */
+	public Template getTemplate(String templateName) throws Exception;
 	
 }

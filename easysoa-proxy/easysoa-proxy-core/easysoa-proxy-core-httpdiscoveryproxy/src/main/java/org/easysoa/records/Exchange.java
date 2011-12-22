@@ -3,10 +3,13 @@
  */
 package org.easysoa.records;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author jguillemotte
  *
  */
+@XmlRootElement
 public class Exchange {
 
 	// Exchange ID
@@ -66,6 +69,6 @@ public class Exchange {
 	 */
 	public void setExchangeType(ExchangeType exchangeType) {
 		this.exchangeType = exchangeType;
-	}	
+	}
 	
 }

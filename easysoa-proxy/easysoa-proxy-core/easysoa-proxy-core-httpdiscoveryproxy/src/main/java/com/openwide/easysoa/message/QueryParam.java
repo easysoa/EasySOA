@@ -29,6 +29,11 @@ public class QueryParam extends CustomField {
 
 	private String comment;
 
+	public QueryParam(){
+		super();
+		comment = "";
+	}
+	
 	/**
 	 * Creates a new <code>QueryParam</code> object
 	 * @param name Name of the query parameter

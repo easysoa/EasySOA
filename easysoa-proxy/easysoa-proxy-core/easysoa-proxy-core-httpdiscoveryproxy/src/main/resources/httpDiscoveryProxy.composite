@@ -68,10 +68,8 @@
 	<!-- Exchange record Manager -->
 	<sca:component name="exchangeStoreManagerComponent">
 		<sca:service name="exchangeStoreManagerService">
-			<!--<sca:interface.java interface="org.easysoa.records.ExchangeRecordStoreManager" />-->
 			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
 		</sca:service>
-		<!--<sca:implementation.java class="org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore" />-->
 		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
 	</sca:component>
 	

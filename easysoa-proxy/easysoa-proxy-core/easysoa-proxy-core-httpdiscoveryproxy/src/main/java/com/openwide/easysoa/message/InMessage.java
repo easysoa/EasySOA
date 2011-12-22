@@ -59,7 +59,7 @@ public class InMessage implements Message {
 	/**
 	 * Complete url including protocol, server, port, path
 	 */
-	private String completeUrl;
+	//private String completeUrl;
 	/**
 	 * Protocol version
 	 */
@@ -85,29 +85,27 @@ public class InMessage implements Message {
 	 */
 	private MessageContent messageContent;
 	
-	
 	// private Long headersSize;
 	// private Long bodySize;
-	private CustomFields customFields = new CustomFields();
-
-	public MessageContent getMessageContent() {
-		return messageContent;
-	}
-
-	public void setMessageContent(MessageContent messageContent) {
-		this.messageContent = messageContent;
-	}
+	private CustomFields customFields;
 
 	/**
 	 * Default constructor
 	 */
-	public InMessage(){}
-	
-	// TODO : replace path by the complete URL
-	public InMessage(String method, String path) {
-		this.method = method;
-		this.path = path;
-	}	
+	public InMessage(){
+		this.comment = "";
+		this.method = "";
+		this.path = "";
+		this.port = -1;
+		this.server = "";
+		this.customFields = new CustomFields();
+		this.headers = new Headers();
+		this.messageContent = new MessageContent();
+		this.postData = new PostData();
+		this.protocol = "";
+		this.protocolVersion = "";
+		this.queryString = new QueryString();
+	}
 	
 	/**
 	 * Build a InMessage from an HttpServletrequest
@@ -128,7 +126,7 @@ public class InMessage implements Message {
 		this.server = request.getServerName();
 		this.port = request.getServerPort();
 		this.path = request.getRequestURI();
-		this.completeUrl = request.getRequestURL().toString();
+		//this.completeUrl = request.getRequestURL().toString();
 		// Set url parameters
 		this.queryString = new QueryString();
 		Enumeration<String> parametersNameEnum = request.getParameterNames(); 
@@ -251,12 +249,47 @@ public class InMessage implements Message {
 		this.path = path;
 	}
 
-	public String getCompleteUrl() {
-		return completeUrl;
+	public MessageContent getMessageContent() {
+		return messageContent;
 	}
 
-	public void setCompleteUrl(String completeUrl) {
-		this.completeUrl = completeUrl;
+	public void setMessageContent(MessageContent messageContent) {
+		this.messageContent = messageContent;
 	}	
+	
+	/**
+	 * Builds the complete url
+	 * @return the complete url with protocol, server, port and path
+	 */
+	public String buildCompleteUrl() {
+		//return completeUrl;
+		StringBuffer urlBuffer = new StringBuffer();
+		urlBuffer.append(this.protocol.toLowerCase());
+		urlBuffer.append("://");
+		urlBuffer.append(this.server);
+		if(this.port > -1){
+			urlBuffer.append(":");
+			urlBuffer.append(this.port);
+		}
+		urlBuffer.append(this.path);
+		/*if(!this.queryString.getQueryParams().isEmpty()){
+			urlBuffer.append("?");
+			boolean firstParam = true;
+			for(QueryParam param : this.queryString.getQueryParams()){
+				if(!firstParam){
+					urlBuffer.append("?");
+				}
+				urlBuffer.append(param.getName());
+				urlBuffer.append("=");
+				urlBuffer.append(param.getValue());
+				firstParam = false;
+			}
+		}*/
+		return urlBuffer.toString();
+	}
+
+	/*public void setCompleteUrl(String completeUrl) {
+		this.completeUrl = completeUrl;
+	}*/
 	
 }

@@ -35,6 +35,12 @@ public class Header {
 	// comment
 	private String comment;
 
+	public Header(){
+		this.name = "";
+		this.value = "";
+		this.comment = "";
+	}
+	
 	/**
 	 * Creates a new <code>Header</code> object with empty comment
 	 * @param name Header name
@@ -80,4 +86,29 @@ public class Header {
 		return comment;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * 
+	 * @param value
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * 
+	 * @param comment
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	
 }

@@ -26,17 +26,31 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
 import org.easysoa.records.Exchange;
+import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreManager;
+import org.easysoa.template.Template;
+import org.easysoa.template.TemplateField;
 
+import com.openwide.easysoa.message.CustomField;
+import com.openwide.easysoa.message.CustomFields;
+import com.openwide.easysoa.message.Header;
+import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
+import com.openwide.easysoa.message.PostData;
+import com.openwide.easysoa.message.QueryParam;
+import com.openwide.easysoa.message.QueryString;
 import com.openwide.easysoa.run.Run;
 
 /**
@@ -102,21 +116,25 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		logger.debug("exchangeRecordStoreName  = " + exchangeRecordStoreName);
 		File folder = new File(path + exchangeRecordStoreName + "/");
 		File[] listOfFiles = folder.listFiles();
-		logger.debug("listOfFiles.size = " + listOfFiles.length);
 		ArrayList<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
-		for (File file : listOfFiles) {
-			if (file.isFile()) {
-				logger.debug("file name : " + file.getName());
-				if (file.getName().endsWith(FILE_EXTENSION)) {
-					String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));
-					logger.debug("record id : " + id);
-					try {
-						recordList.add(load(exchangeRecordStoreName, id));
-					} catch (Exception ex) {
-						logger.debug(ex);
+		if(listOfFiles != null){
+			logger.debug("listOfFiles.size = " + listOfFiles.length);
+			for (File file : listOfFiles) {
+				if (file.isFile()) {
+					logger.debug("file name : " + file.getName());
+					if (file.getName().endsWith(FILE_EXTENSION)) {
+						String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));
+						logger.debug("record id : " + id);
+						try {
+							recordList.add(load(exchangeRecordStoreName, id));
+						} catch (Exception ex) {
+							logger.debug(ex);
+						}
 					}
 				}
 			}
+		} else {
+			logger.debug("listOfFiles is null, no records to return !");
 		}
 		return recordList;
 	}
@@ -199,22 +217,30 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	@Override
 	public ExchangeRecord load(String exchangeStoreName, String recordID) throws Exception {
 		ExchangeRecord record = new ExchangeRecord();
-		record.setExchange((Exchange) JSONObject.toBean(readJSONFile(exchangeStoreName, recordID, EXCHANGE_FILE_PREFIX), Exchange.class));
-		record.setInMessage((InMessage) JSONObject.toBean(readJSONFile(exchangeStoreName, recordID, IN_MESSAGE_FILE_PREFIX), InMessage.class));
-		record.setOutMessage((OutMessage) JSONObject.toBean(readJSONFile(exchangeStoreName, recordID, OUT_MESSAGE_FILE_PREFIX), OutMessage.class));
+		HashMap<String, Class> classMap = new HashMap<String, Class>();
+		classMap.put("exchangeType", ExchangeType.class);
+		classMap.put("queryString", QueryString.class);
+		classMap.put("queryParams", QueryParam.class);
+		classMap.put("postData", PostData.class);
+		classMap.put("headers", Headers.class);
+		classMap.put("headerList", Header.class);
+		classMap.put("customFields", CustomFields.class);
+		classMap.put("customFieldList", CustomField.class);
+		classMap.put("messageContent", MessageContent.class);
+		record.setExchange((Exchange) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + EXCHANGE_FILE_PREFIX + recordID + FILE_EXTENSION), Exchange.class, classMap));
+		record.setInMessage((InMessage) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + IN_MESSAGE_FILE_PREFIX + recordID + FILE_EXTENSION), InMessage.class, classMap));
+		record.setOutMessage((OutMessage) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + OUT_MESSAGE_FILE_PREFIX + recordID + FILE_EXTENSION), OutMessage.class, classMap));
 		return record;
 	}
 
 	/**
 	 * Read a JSON file and returns a <code>JSONObject</code>
-	 * @param exchangeStoreName The exchange store name where to read files
-	 * @param recordID The exchange record ID to read
-	 * @param prefix Prefix of the file to read
+	 * @param filePath The exchange store name where to read files
 	 * @return A <code>JSONObject</code>
 	 * @throws Exception If a problem occurs
 	 */
-	private JSONObject readJSONFile(String exchangeStoreName, String recordID, String prefix) throws Exception {
-		File file = new File(path + exchangeStoreName + "/" + prefix + recordID + FILE_EXTENSION);
+	private JSONObject readJSONFile(String filePath) throws Exception {
+		File file = new File(filePath);
 		FileReader fr = new FileReader(file);
 		JSONObject returnObject;
 		try {
@@ -251,6 +277,16 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 */
 	public void setStorePath(String path) {
 		this.path = path;
+	}
+
+	@Override
+	public Template getTemplate(String templateName) throws Exception {
+		// TODO remove this hard coded path
+		logger.debug("loading template :" + templateName);
+		System.out.println("Template to use : " + System.getProperty("user.dir") + "/src/test/resources/templates/" + templateName + ".fld");
+		HashMap<String, Class> classMap = new HashMap<String, Class>();
+		classMap.put("templateFields", TemplateField.class);
+		return (Template) JSONObject.toBean(readJSONFile(System.getProperty("user.dir") +  "/src/test/resources/templates/" + templateName + ".fld"), Template.class, classMap);
 	}
 
 }

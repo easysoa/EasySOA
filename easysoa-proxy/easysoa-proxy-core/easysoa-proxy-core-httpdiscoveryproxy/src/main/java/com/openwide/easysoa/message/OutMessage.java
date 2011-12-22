@@ -103,12 +103,16 @@ public class OutMessage implements Message {
 		this.comment = comment;
 	}
 
-	public Integer getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
 	public String getStatusText() {
 		return statusText;
+	}
+	
+	public void setStatus(String status) throws NumberFormatException {
+		this.status = Integer.parseInt(status);
 	}
 	
 	public void setStatus(int status) {
