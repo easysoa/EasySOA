@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOALocalDocument;
@@ -34,6 +36,8 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public class EasySOALocalApi implements EasySOAApiSession {
+
+    private static Log log = LogFactory.getLog(EasySOALocalApi.class);
     
     private CoreSession session;
     
@@ -237,7 +241,12 @@ public class EasySOALocalApi implements EasySOAApiSession {
             
             // Update location (unless the service has just been created)
             if (!apiModel.getRef().equals(serviceModel.getParentRef()) && serviceModel.getParentRef() != null) {
-                serviceModel = session.move(serviceModel.getRef(), apiModel.getRef(), null);
+            	try {
+            		serviceModel = session.move(serviceModel.getRef(), apiModel.getRef(), null);
+            	}
+            	catch (Exception e) {
+            		log.warn("Failed to move service: " + e.getMessage());
+            	}
             }
             
             // Save
