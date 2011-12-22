@@ -21,6 +21,7 @@ package org.nuxeo.frascati;
 
 
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.InvocationTargetException;
 //import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
@@ -66,6 +67,9 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	Class<?> processingContextClass = ReflectionUtil.forName(ClassLoaderSingleton.classLoader(),
 			"org.ow2.frascati.assembly.factory.api.ProcessingContext");
 
+	Class<?> easysoaProcessingContextClass = ReflectionUtil.forName(ClassLoaderSingleton.classLoader(),
+			"org.easysoa.frascati.processor.EasySOAProcessingContext");
+	
 	Class<?> componentClass = ReflectionUtil.forName(ClassLoaderSingleton.classLoader(),
 			"org.objectweb.fractal.api.Component");
 	
@@ -299,12 +303,30 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 		Thread.currentThread().setContextClassLoader((ClassLoader) frascatiClassLoader.get());
 		
 		if(urls == null || urls.length == 0){
-			processingContext.set(frascati.invoke("newProcessingContext"));
+			try {
+				processingContext.set(easysoaProcessingContextClass.newInstance());
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		} else {
-			processingContext.set(
-				compositeManager.invoke("newProcessingContext",
-						new Class<?>[]{URL[].class},
-						new Object[]{urls}));
+			try {
+				processingContext.set(easysoaProcessingContextClass.getConstructor(
+						new Class<?>[]{URL[].class}).newInstance(new Object[]{urls}));
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {	
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
 		}
 		Thread.currentThread().setContextClassLoader(currentClassLoader);
 		return processingContext;
