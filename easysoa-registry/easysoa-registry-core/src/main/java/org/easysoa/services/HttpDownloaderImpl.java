@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.impl;
+package org.easysoa.services;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,21 +37,22 @@ import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
  * @author mkalam-alami
  *
  */
-public class HttpToFile {
+public class HttpDownloaderImpl implements HttpDownloader {
 
     private HttpClient client = new HttpClient();
     private URL url;
     private File file = null;
 
-    public HttpToFile(String url) throws MalformedURLException {
+    public HttpDownloaderImpl(String url) throws MalformedURLException {
         this.url = new URL(url);
     }
     
-    public HttpToFile(URL url) {
+    public HttpDownloaderImpl(URL url) {
         this.url = url;
     }
 
-    public boolean isURLAvailable() {
+    @Override
+	public boolean isURLAvailable() {
     	try {
         	GetMethod getMethod = new GetMethod(url.toString());
         	return client.executeMethod(getMethod) == 200;
@@ -61,7 +62,8 @@ public class HttpToFile {
     	}
     }
     
-    public HttpToFile download() throws MalformedURLException, IOException, URISyntaxException {
+	@Override
+	public HttpDownloader download() throws IOException, URISyntaxException {
 
         this.file = File.createTempFile("tmp", "tmp");
         FileOutputStream fos = new FileOutputStream(this.file);
@@ -81,22 +83,26 @@ public class HttpToFile {
 	
         return this;
     }
-
-    public void delete() {
+	
+    @Override
+	public void delete() {
         if (isDownloaded()) {
             this.file.delete();
         }
     }
 
-    public File getFile() {
+	@Override
+	public File getFile() {
         return this.file;
     }
 
-    public Blob getBlob() {
+	@Override
+	public Blob getBlob() {
         return isDownloaded() ? new FileBlob(this.file) : null;
     }
 
-    public boolean isDownloaded() {
+	@Override
+	public boolean isDownloaded() {
         return (this.file != null) && (this.file.exists());
     }
     

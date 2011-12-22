@@ -22,7 +22,6 @@ package org.easysoa.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Iterator;
 
 import javax.ws.rs.core.UriInfo;
@@ -32,8 +31,9 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.impl.HttpToFile;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
+import org.easysoa.services.HttpDownloader;
+import org.easysoa.services.HttpDownloaderService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONObject;
 import org.junit.Assume;
@@ -41,6 +41,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.nuxeo.ecm.webengine.test.WebEngineFeature;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -65,7 +66,8 @@ public class ServiceFindersTest {
     public void testServiceFinder() throws Exception {
         
         // Check that the service is available
-        HttpToFile onlineServiceFile = new HttpToFile(new URL(ONLINE_SERVICE_URL));
+    	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
+        HttpDownloader onlineServiceFile = httpDownloaderService.createHttpDownloader(ONLINE_SERVICE_URL);
         Assume.assumeTrue(onlineServiceFile.isURLAvailable());
         
         // Make request
@@ -93,7 +95,8 @@ public class ServiceFindersTest {
     public void testServiceFinderJSONP() throws Exception {
 
         // Check that the service is available
-    	HttpToFile onlineServiceFile = new HttpToFile(new URL(ONLINE_SERVICE_URL));
+    	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
+        HttpDownloader onlineServiceFile = httpDownloaderService.createHttpDownloader(ONLINE_SERVICE_URL);
         Assume.assumeTrue(onlineServiceFile.isURLAvailable());
 
         // Make request

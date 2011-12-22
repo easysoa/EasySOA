@@ -1,7 +1,6 @@
 package org.easysoa.impl;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +17,8 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.HttpDownloader;
+import org.easysoa.services.HttpDownloaderService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -36,10 +37,13 @@ public class EasySOALocalApi implements EasySOAApiSession {
     
     private CoreSession session;
     
+    private HttpDownloaderService httpDownloaderService;
+    
     private static final Map<String, String> propertyFilter = new HashMap<String, String>();
 
     public EasySOALocalApi(CoreSession session) throws Exception {
         this.session = session;
+    	this.httpDownloaderService = Framework.getService(HttpDownloaderService.class);
         
         propertyFilter.put(AppliImpl.PROP_URL, null);
         
@@ -147,7 +151,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             // Update optional properties
             if (url.toLowerCase().contains("wsdl")) {
                 try {
-                    HttpToFile f = new HttpToFile(new URL(url));
+                    HttpDownloader f = httpDownloaderService.createHttpDownloader(url);
                     f.download();
                     apiModel.setProperty("file", "content", f.getBlob());
                 } catch (Exception e) {

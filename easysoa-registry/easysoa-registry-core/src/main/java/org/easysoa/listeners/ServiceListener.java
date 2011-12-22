@@ -40,10 +40,10 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.impl.HttpToFile;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.HttpDownloaderImpl;
 import org.easysoa.services.ServiceValidationService;
 import org.easysoa.validation.CorrelationMatch;
 import org.nuxeo.ecm.core.api.Blob;
@@ -293,7 +293,7 @@ public class ServiceListener implements EventListener {
 
 	private Blob downloadBlob(String url) {
         try {
-            return new HttpToFile(new URL(url)).download().getBlob();
+            return new HttpDownloaderImpl(new URL(url)).download().getBlob();
         }
         catch (IOException e) {
             log.info("I/O Error while downloading attached WSDL '" + url + "': " + e.getMessage());

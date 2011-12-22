@@ -3,7 +3,9 @@ package org.easysoa.rest.servicefinder;
 import java.io.FileInputStream;
 import java.net.URL;
 
-import org.easysoa.impl.HttpToFile;
+import org.easysoa.services.HttpDownloader;
+import org.easysoa.services.HttpDownloaderService;
+import org.nuxeo.runtime.api.Framework;
 
 public class BrowsingContext {
 
@@ -23,7 +25,8 @@ public class BrowsingContext {
 	public BrowsingContext(URL url) throws Exception {
 		if (url != null) {
 			// Download the file at the given URL
-			HttpToFile file = new HttpToFile(url);
+	    	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
+	        HttpDownloader file = httpDownloaderService.createHttpDownloader(url);
 	        try {
 		        file.download();
 		        FileInputStream fis = new FileInputStream(file.getFile());
