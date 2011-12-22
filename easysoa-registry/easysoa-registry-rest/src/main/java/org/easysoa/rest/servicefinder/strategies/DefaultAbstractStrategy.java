@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.easysoa.impl.HttpFile;
+import org.easysoa.impl.HttpToFile;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
@@ -59,7 +59,7 @@ public abstract class DefaultAbstractStrategy implements ServiceFinderStrategy {
     }
     
     private static String extractApplicationNameFromUrl(URL url) throws IOException, URISyntaxException {
-        HttpFile siteRootFile = new HttpFile(url);
+    	HttpToFile siteRootFile = new HttpToFile(url);
         siteRootFile.download();
         TagNode siteRootCleanHtml = cleaner.clean(siteRootFile.getFile());
         return extractApplicationName(siteRootCleanHtml);

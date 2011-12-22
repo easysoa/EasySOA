@@ -3,7 +3,7 @@ package org.easysoa.rest.servicefinder;
 import java.io.FileInputStream;
 import java.net.URL;
 
-import org.easysoa.impl.HttpFile;
+import org.easysoa.impl.HttpToFile;
 
 public class BrowsingContext {
 
@@ -23,7 +23,7 @@ public class BrowsingContext {
 	public BrowsingContext(URL url) throws Exception {
 		if (url != null) {
 			// Download the file at the given URL
-	        HttpFile file = new HttpFile(url);
+			HttpToFile file = new HttpToFile(url);
 	        try {
 		        file.download();
 		        FileInputStream fis = new FileInputStream(file.getFile());

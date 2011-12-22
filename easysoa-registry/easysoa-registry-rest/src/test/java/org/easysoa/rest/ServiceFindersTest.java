@@ -32,7 +32,7 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.impl.HttpFile;
+import org.easysoa.impl.HttpToFile;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
 import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONObject;
@@ -65,7 +65,7 @@ public class ServiceFindersTest {
     public void testServiceFinder() throws Exception {
         
         // Check that the service is available
-        HttpFile onlineServiceFile = new HttpFile(new URL(ONLINE_SERVICE_URL));
+        HttpToFile onlineServiceFile = new HttpToFile(new URL(ONLINE_SERVICE_URL));
         Assume.assumeTrue(onlineServiceFile.isURLAvailable());
         
         // Make request
@@ -93,7 +93,7 @@ public class ServiceFindersTest {
     public void testServiceFinderJSONP() throws Exception {
 
         // Check that the service is available
-        HttpFile onlineServiceFile = new HttpFile(new URL(ONLINE_SERVICE_URL));
+    	HttpToFile onlineServiceFile = new HttpToFile(new URL(ONLINE_SERVICE_URL));
         Assume.assumeTrue(onlineServiceFile.isURLAvailable());
 
         // Make request

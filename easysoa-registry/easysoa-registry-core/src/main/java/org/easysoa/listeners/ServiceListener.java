@@ -40,7 +40,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.impl.HttpFile;
+import org.easysoa.impl.HttpToFile;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
@@ -293,7 +293,7 @@ public class ServiceListener implements EventListener {
 
 	private Blob downloadBlob(String url) {
         try {
-            return new HttpFile(new URL(url)).download().getBlob();
+            return new HttpToFile(new URL(url)).download().getBlob();
         }
         catch (IOException e) {
             log.info("I/O Error while downloading attached WSDL '" + url + "': " + e.getMessage());
