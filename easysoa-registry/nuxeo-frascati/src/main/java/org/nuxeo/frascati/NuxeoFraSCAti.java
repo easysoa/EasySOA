@@ -22,7 +22,6 @@ package org.nuxeo.frascati;
 
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
-//import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 import java.util.logging.Level;
@@ -34,6 +33,8 @@ import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
+import org.easysoa.frascati.processor.intent.ParserIntentObservable;
+import org.easysoa.frascati.processor.intent.ParserIntentObserver;
 import org.nuxeo.frascati.api.AbstractProcessingContext;
 import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
@@ -51,7 +52,9 @@ import org.nuxeo.runtime.bridge.Application;
 public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	
 	Logger log = Logger.getLogger(NuxeoFraSCAti.class.getCanonicalName());
-
+	
+	ParserIntentObservable parserIntentObservable = null;
+	
 	ReflectionHelper frascati = new ReflectionHelper(
 			ClassLoaderSingleton.classLoader(),"org.ow2.frascati.FraSCAti");
 	
@@ -93,34 +96,83 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 					frascatiClassLoader.get() == null){
 			destroy();
 			throw new NuxeoFraSCAtiException("Enable to instantiate properly the FraSCAti instance");			
-		} 
+		} 				
+		FraSCAtiCompositeItf fraSCAtiComponent = getTopLevelDomainComposite().getSubComponents()[0];
+		FraSCAtiCompositeItf[] composites  = fraSCAtiComponent.getSubComponents();
+		
+		//Weaves an intent to the composite parser 
+		FraSCAtiCompositeItf componentIntent = null;		
+		FraSCAtiCompositeItf componentParser = null;
+		
+		for(FraSCAtiCompositeItf composite : composites){	
+			
+			if("parser-intent".equals(composite.getName())){								
+				componentIntent = composite;
+				if(componentParser!=null){
+					break;
+				}								
+			} else if("sca-parser".equals(composite.getName())){
+				componentParser = composite;
+				if(componentIntent!=null){
+					break;
+				}								
+			}
+		}
+		if(componentIntent!=null && componentParser!=null){
+			
+			ReflectionHelper component  = new ReflectionHelper(ClassLoaderSingleton.classLoader(),
+					"org.objectweb.fractal.api.Component");		
+			
+			ReflectionHelper intentController = new ReflectionHelper(ClassLoaderSingleton.classLoader(),
+					"org.ow2.frascati.tinfi.api.control.SCABasicIntentController");
+
+			component.set(componentParser.getComponent());
+			
+			intentController.set(component.invoke("getFcInterface",
+					new Class<?>[]{String.class},
+					new Object[]{intentController.getStatic("NAME")}));
+						
+			ReflectionHelper intentHandler = new ReflectionHelper(ClassLoaderSingleton.classLoader(),
+					"org.ow2.frascati.tinfi.api.IntentHandler");
+			
+			component.set(componentIntent.getComponent());
+			
+			intentHandler.set(getService(componentIntent.getComponent(),
+					"intent",intentHandler.getReflectedClass()));
+			
+			parserIntentObservable = (ParserIntentObservable) component.invoke("getFcInterface",
+					new Class<?>[]{String.class},
+					new Object[]{"intent-observable"});			
+			
+			if(intentController!=null && intentHandler != null){				
+				componentParser.stop();
+				intentController.invoke("addFcIntentHandler",
+						new Class<?>[]{intentHandler.getReflectedClass()},
+						new Object[]{intentHandler.get()});
+				componentParser.start();				
+			} else {
+				log.log(Level.WARNING,
+					"Enable to retrieve intent controller or intent handler");
+			}				
+		} else {
+			log.log(Level.WARNING,
+				"Enable to retrieve intent component or parser component");
+		}			
 	}
 
 	/* (non-Javadoc)
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf#remove(java.lang.String)
 	 */
-	@Override
-	public void remove(String composite) throws NuxeoFraSCAtiException {
-		
-		FraSCAtiCompositeItf component = getComposite(composite);
-				
+	public void remove(String composite) throws NuxeoFraSCAtiException {		
+		FraSCAtiCompositeItf component = getComposite(composite);				
 		compositeManager.invoke("removeComposite",
 				new Class<?>[]{String.class},
-				new Object[]{composite});
-		
-//		compositeManager.invokeInherited("removeFractalSubComponent", 
-//				"org.ow2.frascati.util.AbstractFractalLoggeable",
-//				new Class<?>[]{componentClass,componentClass},
-//				new Object[]{
-//				compositeManager.invoke("getTopLevelDomainComposite"),
-//				component.getComponent()});
-				
+				new Object[]{composite});				
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf#getComposite(java.lang.String)
 	 */
-	@Override
 	public FraSCAtiCompositeItf getComposite(String composite) throws NuxeoFraSCAtiException {	
 		
 		ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();		
@@ -142,7 +194,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf
 	 * #processComposite(java.lang.String, org.nuxeo.frascati.api.AbstractProcessingContext)
 	 */
-	@Override
 	public FraSCAtiCompositeItf processComposite(String composite,
 			AbstractProcessingContext processingContext) throws NuxeoFraSCAtiException {
 		
@@ -158,7 +209,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf
 	 * #processComposite(java.lang.String, org.nuxeo.frascati.api.AbstractProcessingContext)
 	 */
-	@Override
 	public FraSCAtiCompositeItf processComposite(String composite,
 			int mode, URL...urls) throws NuxeoFraSCAtiException {
 	
@@ -183,7 +233,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf
 	 * #processComposite(java.lang.String)
 	 */
-	@Override
 	public FraSCAtiCompositeItf processComposite(String composite) throws NuxeoFraSCAtiException {		
 		return processComposite(composite,ProcessingModeProxy.all,new URL[]{});
 	}
@@ -214,7 +263,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf
 	 * #processContribution(java.lang.String, org.nuxeo.frascati.api.AbstractProcessingContext)
 	 */
-	@Override
 	public FraSCAtiCompositeItf[] processContribution(String contribution,
 			AbstractProcessingContext processingContext) throws NuxeoFraSCAtiException {
 		
@@ -234,7 +282,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	/* (non-Javadoc)
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf#processContribution(java.lang.String, int, java.net.URL[])
 	 */
-	@Override
 	public FraSCAtiCompositeItf[] processContribution(String contribution,
 			int mode,URL... urls) throws NuxeoFraSCAtiException {
 				
@@ -263,7 +310,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	/* (non-Javadoc)
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf#processContribution(java.lang.String)
 	 */
-	@Override
 	public FraSCAtiCompositeItf[] processContribution(String contribution) throws NuxeoFraSCAtiException {		
 		return processContribution(contribution,ProcessingModeProxy.all,new URL[]{});
 	}
@@ -293,7 +339,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf
 	 * #newProcessingContext(java.net.URL[])
 	 */
-	@Override
 	public ReflectionHelper newProcessingContext(URL... urls) {
 	
 		ReflectionHelper processingContext = new ReflectionHelper(
@@ -332,11 +377,11 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 		return processingContext;
 		
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf#getComposites()
 	 */
-	@Override
 	public FraSCAtiCompositeItf[] getComposites() {		
 		int length;
 		Object[] components = (Object[]) compositeManager.invoke("getComposites");
@@ -357,7 +402,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	/* (non-Javadoc)
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf#getTopLevelDomainComposite()
 	 */
-	@Override
 	public FraSCAtiCompositeItf getTopLevelDomainComposite() {		
 		Object component = compositeManager.invoke(
 				"getTopLevelDomainComposite");			
@@ -369,7 +413,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf
 	 * #getService(java.lang.Object, java.lang.String, java.lang.Class)
 	 */
-	@Override
 	public <T> T getService(Object component,String serviceName,Class<T> serviceClass)
 			throws NuxeoFraSCAtiException{
 		
@@ -389,11 +432,22 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 		return result;		
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see org.nuxeo.frascati.api.FraSCAtiServiceItf#addParserIntentObserver(org.easysoa.frascati.processor.intent.ParserIntentObserver)
+	 */
+	public void addParserIntentObserver(ParserIntentObserver observer) {
+		if(parserIntentObservable == null){
+			log.log(Level.WARNING,"No ParserIntentObservable has been found");
+			return;
+		}
+		parserIntentObservable.addParserIntentObserver(observer);
+	}
+
 	 /* (non-Javadoc)
      * @see org.nuxeo.runtime.bridge.Application#getService(java.lang.Class)
      */
     @SuppressWarnings("unchecked")
-    @Override
     public <T> T getService(Class<T> type) {
         if (type.isAssignableFrom(getClass())) {
             return (T)this;
@@ -405,7 +459,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 	 * @see org.nuxeo.frascati.api.FraSCAtiServiceIt
 	 * f#close(org.nuxeo.frascati.api.FractalComponentItf)
 	 */
-    @Override
 	public void close(FraSCAtiCompositeItf component) {
 		if(component == null){
 			return;
@@ -444,7 +497,6 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
     /* (non-Javadoc)
      * @see org.nuxeo.runtime.bridge.Application#destroy()
      */
-    @Override
     public void destroy() {    	
     	
     	MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
@@ -498,6 +550,4 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
     	compositeManager = null;
     	frascatiClassLoader = null;
     }
-
-
 }

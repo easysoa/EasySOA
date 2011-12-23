@@ -23,6 +23,7 @@ import java.net.URL;
 
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.ow2.frascati.util.reflect.ReflectionHelper;
+import org.easysoa.frascati.processor.intent.ParserIntentObserver;
 
 public interface FraSCAtiServiceItf {
 
@@ -192,5 +193,13 @@ public interface FraSCAtiServiceItf {
 	 */
 	FraSCAtiCompositeItf getTopLevelDomainComposite();
 
-
+	
+	/**
+	 * Adds a ParserIntentObserver which newComposite method will be call
+	 * each time the FraSCAti instance will load a new composite
+	 * 
+	 * @param observer
+	 * 		the observer to add to the observers list
+	 */
+	void addParserIntentObserver(ParserIntentObserver observer);
 }

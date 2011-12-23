@@ -21,22 +21,63 @@
 			<artifactId>frascati-sca-parser</artifactId>
 			<version>1.5-SNAPSHOT</version>	
 			<scope>provided</scope>		
+		</dependency>	
+		<dependency>
+			<groupId>org.easysoa.registry</groupId>
+			<artifactId>easysoa-frascati-shared</artifactId>
+			<version>0.4-SNAPSHOT</version>	
+			<scope>provided</scope>		
 		</dependency>
 	</dependencies>
 
-    <!-- Plugin management -->
-	<build>
-        <plugins>      
-          <!-- Compile with Java 1.6 -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <source>1.6</source>
-              <target>1.6</target>
-            </configuration>
-          </plugin>          
-	   </plugins>
-    </build>
+	<!-- Plugin management -->
+	<build>		
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.ow2.frascati.mojo</groupId>
+					<artifactId>frascati-compiler-plugin</artifactId>
+					<version>1.5-SNAPSHOT</version>
+					<executions>
+						<execution>
+							<id>compile-composite</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>compile</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<loggingConfFile>${frascati.logging.properties}</loggingConfFile>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>xerces</groupId>
+							<artifactId>xercesImpl</artifactId>
+							<version>2.9.1</version>
+							<scope>compile</scope>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.ow2.frascati.mojo</groupId>
+				<artifactId>frascati-compiler-plugin</artifactId>
+				<configuration>
+					<composite>org/ow2/frascati/FraSCAti</composite>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
