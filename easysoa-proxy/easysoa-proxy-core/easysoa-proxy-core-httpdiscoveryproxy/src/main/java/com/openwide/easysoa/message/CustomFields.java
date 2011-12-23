@@ -30,21 +30,21 @@ import java.util.Map;
  */
 public class CustomFields {
 
-	private Map<String, CustomField> customFields;
+	private Map<String, CustomField> customFieldList;
 
 	/**
 	 * Creates a new <code>CustomFields</code> object
 	 */
 	public CustomFields() {
-		this.customFields = new HashMap<String, CustomField>();
+		this.customFieldList = new HashMap<String, CustomField>();
 	}
 
 	/**
 	 * Returns the customFields map.
 	 * @return Returns the customFields.
 	 */
-	public Map<String, CustomField> getCustomFields() {
-		return customFields;
+	public Map<String, CustomField> getCustomFieldList() {
+		return customFieldList;
 	}
 
 	/**
@@ -53,8 +53,8 @@ public class CustomFields {
 	 * @param customFields
 	 *            The customFields to set.
 	 */
-	public void setCustomFields(Map<String, CustomField> customFields) {
-		this.customFields = customFields;
+	public void setCustomFieldList(Map<String, CustomField> customFields) {
+		this.customFieldList = customFields;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class CustomFields {
 	 * @param value Value to set for the custom field
 	 */
 	public void addCustomField(String name, String value) {
-		this.customFields.put(name, new CustomField(name, value));
+		this.customFieldList.put(name, new CustomField(name, value));
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class CustomFields {
 	 * @return the associated value or null if not present
 	 */
 	public CustomField getCustomField(String name) {
-		return this.customFields.get(name);
+		return this.customFieldList.get(name);
 	}
 
 }

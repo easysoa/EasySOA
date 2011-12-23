@@ -10,7 +10,10 @@ public class CustomField {
 	private String name;
 	private String value;
 	
-	public CustomField(){}
+	public CustomField(){
+		this.name = "";
+		this.value = "";
+	}
 	
 	public CustomField(String name, String value) {
 		this.name = name;
@@ -23,6 +26,10 @@ public class CustomField {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getName() {

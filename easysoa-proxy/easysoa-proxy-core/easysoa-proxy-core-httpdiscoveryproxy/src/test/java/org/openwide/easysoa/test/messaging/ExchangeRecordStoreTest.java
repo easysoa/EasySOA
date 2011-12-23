@@ -94,7 +94,8 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 
 				// In message - message filling is not complete
 				InMessage inMessage = new InMessage();
-				inMessage.setCompleteUrl(url);
+				inMessage.setPath(httpUriRequest.getURI().getPath());
+				inMessage.setMethod(httpUriRequest.getMethod());
 				inMessage.setServer(httpUriRequest.getURI().getHost());
 				inMessage.setPort(httpUriRequest.getURI().getPort());
 				Headers headers = new Headers();
@@ -133,7 +134,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
     			// Check the exchange id
     			assertEquals(id, exchangeRecord.getExchange().getExchangeID());
     			// Check the InMessage URL
-    			assertEquals(record.getInMessage().getCompleteUrl(), exchangeRecord.getInMessage().getCompleteUrl());
+    			assertEquals(record.getInMessage().buildCompleteUrl(), exchangeRecord.getInMessage().buildCompleteUrl());
     		}
     		catch(Exception ex){
     			ex.printStackTrace();

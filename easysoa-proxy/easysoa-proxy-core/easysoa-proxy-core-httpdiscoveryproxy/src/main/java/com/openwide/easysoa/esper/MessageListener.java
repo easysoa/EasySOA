@@ -80,7 +80,7 @@ public class MessageListener implements UpdateListener {
 			Service service;
 			//WSDLService service = new WSDLService(msg.getHost(), serviceName, msg.getCompleteMessage(), msg.getMethod());
 			//service = new Service(msg.getUrl());
-			service = new Service(record.getInMessage().getCompleteUrl());
+			service = new Service(record.getInMessage().buildCompleteUrl());
 			service.setTitle(serviceName);
 			//service.setHttpMethod(msg.getMethod());
 			service.setHttpMethod(record.getInMessage().getMethod());

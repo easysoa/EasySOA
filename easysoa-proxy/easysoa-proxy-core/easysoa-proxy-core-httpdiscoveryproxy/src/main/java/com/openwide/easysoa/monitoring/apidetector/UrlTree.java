@@ -58,7 +58,7 @@ public class UrlTree extends DefaultTreeModel {
 	//public void addUrlNode(Message msg){
 	public void addUrlNode(ExchangeRecord exchangeRecord){
 		//String url = msg.getUrl().substring(msg.getUrl().indexOf("//")+2);
-		String url = exchangeRecord.getInMessage().getCompleteUrl().substring(exchangeRecord.getInMessage().getCompleteUrl().indexOf("//")+2);
+		String url = exchangeRecord.getInMessage().buildCompleteUrl().substring(exchangeRecord.getInMessage().buildCompleteUrl().indexOf("//")+2);
 		logger.debug("url = " +  url);
 		UrlTreeNode urlNode;
 		StringBuffer path = new StringBuffer();

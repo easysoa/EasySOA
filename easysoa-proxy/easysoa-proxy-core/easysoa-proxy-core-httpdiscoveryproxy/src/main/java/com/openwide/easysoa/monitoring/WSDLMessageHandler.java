@@ -70,7 +70,7 @@ public class WSDLMessageHandler implements MessageHandler {
 		}
 		serviceName = serviceName.replace('/', '_');
 		//Service service = new Service(message.getUrl());
-		Service service = new Service(exchangeRecord.getInMessage().getCompleteUrl());
+		Service service = new Service(exchangeRecord.getInMessage().buildCompleteUrl());
 		service.setCallCount(1);
 		//service.setTitle(message.getPathName());
 		service.setTitle(exchangeRecord.getInMessage().getPath());

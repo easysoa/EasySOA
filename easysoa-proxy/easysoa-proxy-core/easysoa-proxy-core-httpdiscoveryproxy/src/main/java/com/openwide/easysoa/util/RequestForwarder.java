@@ -52,7 +52,7 @@ public class RequestForwarder {
 	 */
 	public RequestForwarder(){
 		forwardHttpConnexionTimeoutMs = -1;
-		forwardHttpSocketTimeoutMs = -1;		
+		forwardHttpSocketTimeoutMs = -1;
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class RequestForwarder {
 		}
 		// Build URL with parameters
 		StringBuffer requestUrlBuffer = new StringBuffer();
-		requestUrlBuffer.append(inMessage.getCompleteUrl());
+		requestUrlBuffer.append(inMessage.buildCompleteUrl());
 	    if(inMessage.getQueryString() != null){
 	    	requestUrlBuffer.append("?");
 	    	for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
@@ -155,8 +155,8 @@ public class RequestForwarder {
 	 * @param httpMessage The http message to set
 	 */
 	private void setHeaders(InMessage inMessage, HttpMessage httpMessage) {
-		logger.debug("Requests Headers :");
-		for (Header header : inMessage.getHeaders().getHeaders()) {
+		//logger.debug("Requests Headers :");
+		for (Header header : inMessage.getHeaders().getHeaderList()) {
 			// to avoid an exception when the Content-length header is set twice
 			// if("Host".equals(headerName) &&
 			// headerValue.contains("microsoft")){////
