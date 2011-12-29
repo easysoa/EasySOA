@@ -72,6 +72,30 @@
 					</execution>
 				</executions>
 			</plugin>
+                         <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-dependency-plugin</artifactId>
+                          <!--<version>2.4</version>-->
+                          <executions>
+                           <execution>
+                            <id>copy-dependencies</id>
+                            <phase>package</phase>
+                            <goals>
+                             <goal>copy</goal>
+                            </goals>
+                            <configuration>
+                             <artifactItems>
+                              <artifactItem>
+                               <groupId>xalan</groupId>
+                               <artifactId>xalan</artifactId>
+                               <version>2.7.1</version>
+                               <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                              </artifactItem>
+                             </artifactItems>
+                            </configuration>
+                          </execution>
+                         </executions>
+                        </plugin>
 		</plugins>
 	</build>
 
