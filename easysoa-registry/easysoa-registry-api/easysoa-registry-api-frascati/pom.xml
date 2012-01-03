@@ -479,8 +479,8 @@
         <url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public/</url>
       </repository>
       <repository>
-        <id>Nuxeo public-snapshots</id>
-        <url>http://maven.in.nuxeo.com/nexus/content/repositories/public-snapshots</url>
+        <id>Nuxeo public-snapshot</id>
+        <url>https://maven.nuxeo.org/nexus/content/repositories/public-snapshot</url>
       </repository>
     </repositories>
 
