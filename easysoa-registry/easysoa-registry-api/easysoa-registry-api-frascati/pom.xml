@@ -472,12 +472,16 @@
 		        </plugin>    
         </plugins>
     </build>
-    
+
     <repositories>
-        <repository>
-            <id>FraSCAti - INRIA Repository</id>
-            <url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public/</url>
-        </repository>
+      <repository>
+        <id>FraSCAti - INRIA Repository</id>
+        <url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public/</url>
+      </repository>
+      <repository>
+        <id>Nuxeo public-snapshots</id>
+        <url>http://maven.in.nuxeo.com/nexus/content/repositories/public-snapshots</url>
+      </repository>
     </repositories>
 
 </project>
