@@ -40,10 +40,10 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
-import org.easysoa.impl.HttpFile;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.HttpDownloaderImpl;
 import org.easysoa.services.ServiceValidationService;
 import org.easysoa.validation.CorrelationMatch;
 import org.nuxeo.ecm.core.api.Blob;
@@ -272,9 +272,11 @@ public class ServiceListener implements EventListener {
                 DocumentService docService = Framework.getService(DocumentService.class);
                 DocumentModel workspace = docService.getWorkspace(session, doc);
                 DocumentModelList existingServiceModels = session.query(
-                        "SELECT * FROM " + Service.DOCTYPE + " WHERE " +
-                        		"ecm:path STARTSWITH '" + workspace.getPathAsString() + 
-                        		"' AND " + Service.SCHEMA_PREFIX + Service.PROP_URL + " = '" + url + "'");
+                        "SELECT * FROM " + Service.DOCTYPE + " WHERE" +
+                        		" ecm:path STARTSWITH '" + workspace.getPathAsString() + "'" +
+                        		" AND " + Service.SCHEMA_PREFIX + Service.PROP_URL + " = '" + url + "'" +
+                        		" AND ecm:currentLifeCycleState <> 'deleted'" +
+                        		" AND ecm:isProxy = 0");
                 for (DocumentModel existingServiceModel : existingServiceModels) {
                     if (existingServiceModel != null && !existingServiceModel.getRef().equals(doc.getRef())
                             && !existingServiceModel.isProxy()) {
@@ -293,7 +295,7 @@ public class ServiceListener implements EventListener {
 
 	private Blob downloadBlob(String url) {
         try {
-            return new HttpFile(new URL(url)).download().getBlob();
+            return new HttpDownloaderImpl(new URL(url)).download().getBlob();
         }
         catch (IOException e) {
             log.info("I/O Error while downloading attached WSDL '" + url + "': " + e.getMessage());

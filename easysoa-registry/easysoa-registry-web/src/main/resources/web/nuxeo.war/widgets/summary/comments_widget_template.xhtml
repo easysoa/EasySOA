@@ -27,7 +27,8 @@
       
 			<!-- EasySOA: Display group-related icon -->
 			<div style="float: left; padding-top: 4px">
-				<h:graphicImage value="/img/users/bu.png" rendered="#{userGroup[0] != null and userGroup['0'].equals('Business User')}" />
+				<h:graphicImage value="/img/users/biz.png" rendered="#{userGroup[0] != null and userGroup['0'].equals('Business User')}" />
+				<h:graphicImage value="/img/users/bizarchitect.png" rendered="#{userGroup[0] != null and userGroup['0'].equals('Business Architect')}" />
 				<h:graphicImage value="/img/users/developer.png" rendered="#{userGroup[0] != null and userGroup['0'].equals('Developer')}" />
 				<h:graphicImage value="/img/users/architect.png" rendered="#{userGroup[0] != null and userGroup['0'].equals('Architect')}" />
 				<h:graphicImage value="/img/users/administrator.png" rendered="#{userGroup[0] != null and userGroup['0'].equals('Administrator')}" />

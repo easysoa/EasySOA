@@ -20,14 +20,14 @@
 
 package org.easysoa.rest.servicefinder.strategies;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.easysoa.impl.HttpFile;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
+import org.easysoa.services.HttpDownloader;
+import org.easysoa.services.HttpDownloaderService;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * 
@@ -45,27 +45,27 @@ public abstract class DefaultAbstractStrategy implements ServiceFinderStrategy {
      * the site's root title, else the given page title. 
      * @param url
      * @return The application name or null if neither of the pages has a title tag.
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws Exception 
      */
-    protected static String guessApplicationName(URL url) throws IOException, URISyntaxException {
+    protected static String guessApplicationName(URL url) throws Exception {
         URL siteRootUrl = new URL(url.getProtocol() + "://" + url.getHost()
                 + ":" + ((url.getPort() == -1) ? 80 : url.getPort()));
-        String applicationName = extractApplicatioNameFromUrl(siteRootUrl);
+        String applicationName = extractApplicationNameFromUrl(siteRootUrl);
         if (applicationName == null) {
-            applicationName = extractApplicatioNameFromUrl(url);
+            applicationName = extractApplicationNameFromUrl(url);
         }
         return applicationName;
     }
     
-    private static String extractApplicatioNameFromUrl(URL url) throws IOException, URISyntaxException {
-        HttpFile siteRootFile = new HttpFile(url);
+    private static String extractApplicationNameFromUrl(URL url) throws Exception {
+    	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
+        HttpDownloader siteRootFile = httpDownloaderService.createHttpDownloader(url);
         siteRootFile.download();
         TagNode siteRootCleanHtml = cleaner.clean(siteRootFile.getFile());
-        return extractApplicatioName(siteRootCleanHtml);
+        return extractApplicationName(siteRootCleanHtml);
     }
 
-    private static String extractApplicatioName(TagNode html) {
+    private static String extractApplicationName(TagNode html) {
         TagNode[] titles = html.getElementsByName("title", true);
         if (titles.length > 0) {
             return titles[0].getText().toString();

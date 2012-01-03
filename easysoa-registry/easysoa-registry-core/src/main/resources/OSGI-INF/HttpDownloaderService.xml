@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.services.HttpDownloaderService">
+
+  <documentation>
+    The SCA importer tool allows to register services and API's contained in a SCA composite file.
+    @author Jeremie guillemotte
+  </documentation>
+
+  <implementation class="org.easysoa.services.HttpDownloaderServiceImpl" />
+
+  <service>
+    <provide interface="org.easysoa.services.HttpDownloaderService" />
+  </service>
+
+</component>

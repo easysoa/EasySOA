@@ -32,6 +32,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -208,6 +209,30 @@ public class DiscoveryRest {
         return getFormattedResult();
     }
     
+    @GET
+    @Path("/service/jsonp")
+    @Produces("application/javascript")
+    public Object doGetServiceJSONP(@Context HttpContext httpContext, @Context HttpServletRequest request,
+            @QueryParam("callback") String callback) throws Exception {
+        EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
+        Map<String, List<String>> multiValuedParams = httpContext.getRequest().getQueryParameters();
+        Map<String, String> params = new HashMap<String, String>();
+        for (Entry<String, List<String>> entry : multiValuedParams.entrySet()) {
+            List<String> value = entry.getValue();
+            if (value != null) {
+                params.put(entry.getKey(), value.get(value.size() - 1));
+            }
+        }
+        try {
+            EasySOADocument doc = api.notifyService(params);
+            result.put("documentId", doc.getId());
+        }
+        catch (Exception e) {
+            appendError(e.getMessage());
+        }
+        return getFormattedResult(callback);
+    }
+    
     @POST
     @Path("/servicereference")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -274,7 +299,8 @@ public class DiscoveryRest {
         }
     }
 
-    private Map<String, String> getFormValues(HttpContext httpContext) {
+    // TODO Refactoring
+    public static Map<String, String> getFormValues(HttpContext httpContext) {
         /*
          * When accessing the form the usual way, the returned Form is empty,
          * and the following Warning is logged. This hack avoids the problem.
@@ -326,6 +352,14 @@ public class DiscoveryRest {
         catch (JSONException e) {
             return "{ result: \""+ERROR+"Could not format results to JSON.\"}";
         }
+    }
+    
+    private String getFormattedResult(String callback) {
+        String result = getFormattedResult();
+        if (callback != null) {
+            result = callback + '(' + result + ')';
+        }
+        return result;
     }
     
 }

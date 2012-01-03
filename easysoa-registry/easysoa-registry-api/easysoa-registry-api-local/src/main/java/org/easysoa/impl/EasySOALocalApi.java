@@ -1,13 +1,14 @@
 package org.easysoa.impl;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOALocalDocument;
@@ -18,6 +19,8 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.HttpDownloader;
+import org.easysoa.services.HttpDownloaderService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -33,13 +36,18 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public class EasySOALocalApi implements EasySOAApiSession {
+
+    private static Log log = LogFactory.getLog(EasySOALocalApi.class);
     
     private CoreSession session;
+    
+    private HttpDownloaderService httpDownloaderService;
     
     private static final Map<String, String> propertyFilter = new HashMap<String, String>();
 
     public EasySOALocalApi(CoreSession session) throws Exception {
         this.session = session;
+    	this.httpDownloaderService = Framework.getService(HttpDownloaderService.class);
         
         propertyFilter.put(AppliImpl.PROP_URL, null);
         
@@ -147,7 +155,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             // Update optional properties
             if (url.toLowerCase().contains("wsdl")) {
                 try {
-                    HttpFile f = new HttpFile(new URL(url));
+                    HttpDownloader f = httpDownloaderService.createHttpDownloader(url);
                     f.download();
                     apiModel.setProperty("file", "content", f.getBlob());
                 } catch (Exception e) {
@@ -233,7 +241,12 @@ public class EasySOALocalApi implements EasySOAApiSession {
             
             // Update location (unless the service has just been created)
             if (!apiModel.getRef().equals(serviceModel.getParentRef()) && serviceModel.getParentRef() != null) {
-                serviceModel = session.move(serviceModel.getRef(), apiModel.getRef(), null);
+            	try {
+            		serviceModel = session.move(serviceModel.getRef(), apiModel.getRef(), null);
+            	}
+            	catch (Exception e) {
+            		log.warn("Failed to move service: " + e.getMessage());
+            	}
             }
             
             // Save
@@ -322,7 +335,8 @@ public class EasySOALocalApi implements EasySOAApiSession {
             // Append value if the property is a discovery field
             if (property.equals(EasySOADoctype.PROP_DTBROWSING)
                     || property.equals(EasySOADoctype.PROP_DTIMPORT)
-                    || property.equals(EasySOADoctype.PROP_DTMONITORING)) {
+                    || property.equals(EasySOADoctype.PROP_DTMONITORING)
+                    || property.equals(EasySOADoctype.PROP_DTECLIPSE)) {
                 String prevValue = (String) model.getProperty(schema, property);
                 if (prevValue == null) {
                     model.setProperty(schema, property, value);

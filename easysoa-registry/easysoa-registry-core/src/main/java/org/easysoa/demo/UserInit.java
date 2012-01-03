@@ -41,6 +41,7 @@ import org.nuxeo.runtime.api.Framework;
 public class UserInit extends UnrestrictedSessionRunner {
 
     public static final String GROUP_BUSINESS_USER = "Business User";
+    public static final String GROUP_BUSINESS_ARCHITECT = "Business Architect";
     public static final String GROUP_ARCHITECT = "Architect";
     public static final String GROUP_DEVELOPER = "Developer";
     public static final String GROUP_IT_STAFF = "IT Staff";
@@ -71,7 +72,7 @@ public class UserInit extends UnrestrictedSessionRunner {
             // (XXX: had to make them administrator subgroups, see below)
             //setSubgroups(GROUP_DEFAULT_MEMBERS, new String[] { });
             setSubgroups(GROUP_DEFAULT_ADMINISTRATORS, new String[] { GROUP_ADMINISTRATOR, GROUP_BUSINESS_USER, GROUP_DEVELOPER,
-            GROUP_ARCHITECT, GROUP_IT_STAFF });
+            GROUP_ARCHITECT, GROUP_IT_STAFF, GROUP_BUSINESS_ARCHITECT });
 
             // Set write rights for all "members" members
             // FIXME: Rights are not granted through the REST services

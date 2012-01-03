@@ -56,6 +56,13 @@
 			  <ui:param name="type" value="Import"/>
 			</ui:include>
 		</div>
+		<div style="float: left">
+			<ui:include src="easysoa_view_icon.xhtml">
+			  <ui:param name="image" value="dtEclipse"/>
+			  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeEclipse')}"/>
+			  <ui:param name="type" value="Eclipse"/>
+			</ui:include>
+		</div>
 	</td>
 	</c:if>
 

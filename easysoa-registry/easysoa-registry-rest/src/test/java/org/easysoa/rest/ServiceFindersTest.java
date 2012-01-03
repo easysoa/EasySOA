@@ -22,7 +22,6 @@ package org.easysoa.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Iterator;
 
 import javax.ws.rs.core.UriInfo;
@@ -32,8 +31,9 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.impl.HttpFile;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
+import org.easysoa.services.HttpDownloader;
+import org.easysoa.services.HttpDownloaderService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.json.JSONObject;
 import org.junit.Assume;
@@ -41,6 +41,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.nuxeo.ecm.webengine.test.WebEngineFeature;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -56,21 +57,22 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
     "org.easysoa.registry.rest:OSGI-INF/serviceFinder-contrib.xml"})
 public class ServiceFindersTest {
 
+    // TODO: Embed in test a web page containing WSDLs to find
+	private static final String ONLINE_SERVICE_URL = "http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/";
+
     static final Log log = LogFactory.getLog(ServiceFindersTest.class);
     
     @Test
     public void testServiceFinder() throws Exception {
         
-        // TODO: Embed in test a web page containing WSDLs to find
-        String onlineServiceURL = "http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/";
-       
         // Check that the service is available
-        HttpFile onlineServiceFile = new HttpFile(new URL(onlineServiceURL));
+    	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
+        HttpDownloader onlineServiceFile = httpDownloaderService.createHttpDownloader(ONLINE_SERVICE_URL);
         Assume.assumeTrue(onlineServiceFile.isURLAvailable());
         
         // Make request
         ServiceFinderRest serviceFinder = new ServiceFinderRest();
-        Object obj = serviceFinder.doGet(mockUriInfo(onlineServiceURL));
+        Object obj = serviceFinder.doGet(mockUriInfo(ONLINE_SERVICE_URL));
         
         // Check result data
         Assert.assertNotNull(obj);
@@ -87,6 +89,27 @@ public class ServiceFindersTest {
             log.info("Found service: "+linkName);
             log.info(foundLinks.getString(linkName));
         }
+    }
+    
+    @Test
+    public void testServiceFinderJSONP() throws Exception {
+
+        // Check that the service is available
+    	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
+        HttpDownloader onlineServiceFile = httpDownloaderService.createHttpDownloader(ONLINE_SERVICE_URL);
+        Assume.assumeTrue(onlineServiceFile.isURLAvailable());
+
+        // Make request
+        ServiceFinderRest serviceFinder = new ServiceFinderRest();
+        Object obj = serviceFinder.doGet(mockUriInfo(ONLINE_SERVICE_URL + "?callback=mycallback"));
+    	
+        // Check result data
+        Assert.assertNotNull(obj);
+        JSONObject json = new JSONObject(obj.toString());
+        String response = json.toString(2);
+        log.info("Service finder response: " + response);
+        Assert.assertTrue("Malformated JSONP response", response.startsWith("mycallback(") && response.endsWith(")"));
+    	
     }
     
     private UriInfo mockUriInfo(String uri) throws URISyntaxException {

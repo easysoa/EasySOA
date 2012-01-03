@@ -165,7 +165,7 @@ public class ScaImportBean {
         }
 
         // Compute query
-        String query = "SELECT * FROM " + AppliImpl.DOCTYPE + " WHERE ecm:currentLifeCycleState <> 'deleted'";
+        String query = "SELECT * FROM " + AppliImpl.DOCTYPE + " WHERE ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0";
         if (wsRootId != null) {
             query += " AND ecm:parentId = '" + wsRootId + "'";
         }

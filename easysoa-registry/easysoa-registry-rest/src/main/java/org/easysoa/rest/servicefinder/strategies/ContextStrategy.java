@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.easysoa.EasySOAConstants;
+import org.easysoa.rest.servicefinder.BrowsingContext;
 import org.easysoa.rest.servicefinder.FoundService;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 
@@ -41,11 +42,12 @@ import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 public class ContextStrategy extends DefaultAbstractStrategy implements ServiceFinderStrategy {
     
     @Override
-    public List<FoundService> findFromURL(URL url) throws Exception {
+    public List<FoundService> findFromContext(BrowsingContext context) throws Exception {
         
         List<FoundService> foundServices = new LinkedList<FoundService>();
         
         // XXX: Hard-coded matching of the PAF demo services
+        URL url = context.getURL();
         if (url.getPath().contains("crm")) {
             foundServices.add(new FoundService(
                     "Orders service",

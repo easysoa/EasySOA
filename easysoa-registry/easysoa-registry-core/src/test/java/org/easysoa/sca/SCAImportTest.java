@@ -105,13 +105,15 @@ public class SCAImportTest extends CoreServiceTestHelperBase {
 		
 		// services :
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" +
+				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
 		assertEquals(1, resDocList.size());
 		resDoc = resDocList.get(0);
 		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
 		
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + 
+				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
 		assertEquals(1, resDocList.size());
 		resDoc = resDocList.get(0);
 		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
@@ -120,13 +122,13 @@ public class SCAImportTest extends CoreServiceTestHelperBase {
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				ServiceReference.DOCTYPE + "' AND "
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
 		assertEquals(1, resDocList.size());
 
 		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
 				ServiceReference.DOCTYPE + "' AND "
 				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
+				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
 		assertEquals(1, resDocList.size());
 		
 		// api :

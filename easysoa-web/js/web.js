@@ -91,7 +91,12 @@ webServer.configure(function(){
 });
 
 webServer.get('/login', function(request, response, next) {
-    response.redirect('/easysoa/login.html');
+	if (request.query && request.query.callback) {
+		easysoaAuth.handleLogin(request, response);
+	}
+	else {
+		response.redirect('/easysoa/login.html');
+	}
 });
       
 webServer.get('/send', function(request, response, next) {
@@ -154,6 +159,9 @@ webServer.all('/discovery/*', function(request, response, next) {
     easysoaNuxeo.forwardToNuxeo(request, response, settings);
 });
 webServer.all('/dashboard/*', function(request, response, next) {
+    easysoaNuxeo.forwardToNuxeo(request, response, settings);
+});
+webServer.all('/servicefinder/*', function(request, response, next) {
     easysoaNuxeo.forwardToNuxeo(request, response, settings);
 });
 

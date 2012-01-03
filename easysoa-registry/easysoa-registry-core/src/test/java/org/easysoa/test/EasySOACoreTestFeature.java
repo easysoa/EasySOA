@@ -41,6 +41,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
     "org.easysoa.registry.core:OSGI-INF/lifecycle-contrib.xml",
     "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
+    "org.easysoa.registry.core:OSGI-INF/HttpDownloaderService.xml",
     "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml", // required to enable the specific doctype listeners
     "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
     "org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml",
