@@ -276,9 +276,9 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
     }
 
     private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
-        DocumentModelList apis = session.query("SELECT * FROM " + type + " WHERE " + 
-        		field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-        return (apis != null && !apis.isEmpty()) ? apis.get(0) : null;
+        DocumentModelList results = session.query("SELECT * FROM " + type + " WHERE " + 
+        		field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0 AND ecm:isCheckedInVersion = 0");
+        return (results != null && !results.isEmpty()) ? results.get(0) : null;
     }
 
 }
