@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.preview.adapter.contrib">
+
+  <extension target="org.nuxeo.ecm.platform.preview.adapter.PreviewAdapterManagerComponent"
+    point="AdapterFactory">
+
+    <documentation>
+      @author Tiry (tdelprat@nuxeo.com)
+      Defines WSDLToHtml based preview adapter for some document types
+    </documentation>
+
+    <previewAdapter name="easySOAPreviewAdapter" enabled="true">
+      <typeName>Service</typeName>
+      <class>org.easysoa.preview.EasySOAPreviewAdapterFactory</class>
+    </previewAdapter>
+
+  </extension>
+
+</component>

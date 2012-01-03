@@ -56,15 +56,17 @@ public class RestMessageHandler implements MessageHandler {
 			logger.debug("Validated mode, checking if message exists in urlSoaModel");
 			//MonitoringModel monitoringModel =  DiscoveryMonitoringService.getMonitorService().getModel();
 			MonitoringModel monitoringModel = monitoringService.getModel();
-			logger.debug("searched key : " + exchangeRecord.getInMessage().getCompleteUrl());
+			logger.debug("searched key : " + exchangeRecord.getInMessage().buildCompleteUrl());
 			//TODO change this to match with partial url
-			String urlSoaModelType =  monitoringModel.getSoaModelUrlToTypeMap().get(exchangeRecord.getInMessage().getCompleteUrl());
+			String urlSoaModelType =  monitoringModel.getSoaModelUrlToTypeMap().get(exchangeRecord.getInMessage().buildCompleteUrl());
 			// if none, maybe it is a resource :
 			if (urlSoaModelType == null) {
 				logger.debug("urlSoaModelType is null, searched key not found ..");
-				int lastSlashIndex =exchangeRecord.getInMessage().getCompleteUrl().lastIndexOf('/'); // TODO BETTER regexp or finite automat OR ESPER OR SHARED MODEL WITH TREE OR ABSTRACT TREE ??!!
-				String serviceUrlOfResource = exchangeRecord.getInMessage().getCompleteUrl().substring(0, lastSlashIndex);
-				exchangeRecord.getInMessage().setCompleteUrl(serviceUrlOfResource); // HACK TODO rather add a field
+				int lastSlashIndex = exchangeRecord.getInMessage().buildCompleteUrl().lastIndexOf('/'); // TODO BETTER regexp or finite automat OR ESPER OR SHARED MODEL WITH TREE OR ABSTRACT TREE ??!!
+				String serviceUrlOfResource = exchangeRecord.getInMessage().buildCompleteUrl().substring(0, lastSlashIndex);
+				// TODO setCompleteUrl method has been removed, see how to replace the following line with other methods
+				//exchangeRecord.getInMessage().setCompleteUrl(serviceUrlOfResource); // HACK TODO rather add a field
+				//exchangeRecord.getInMessage().setPath(serviceUrlOfResource); // HACK TODO rather add a field
 				urlSoaModelType = monitoringModel.getSoaModelUrlToTypeMap().get(serviceUrlOfResource);
 			}
 			if (urlSoaModelType != null) {
@@ -73,7 +75,7 @@ public class RestMessageHandler implements MessageHandler {
 				// TODO write listener that group by serviceUrl and register to nuxeo every minute
 				Node soaNode = null;
 				for(Node node : monitoringService.getModel().getSoaNodes()){
-					if(node.getUrl().equals(exchangeRecord.getInMessage().getCompleteUrl())){
+					if(node.getUrl().equals(exchangeRecord.getInMessage().buildCompleteUrl())){
 						soaNode = node;
 						logger.debug("Node found ! " + soaNode.getTitle());
 						break;

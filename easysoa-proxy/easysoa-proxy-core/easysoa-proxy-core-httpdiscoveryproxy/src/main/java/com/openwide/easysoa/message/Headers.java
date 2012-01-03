@@ -30,13 +30,13 @@ import java.util.List;
  */
 public class Headers {
 
-	private List<Header> headers;
+	private List<Header> headerList;
 
 	/**
 	 * Creates a new <code>Headers</code> object
 	 */
 	public Headers() {
-		headers = new ArrayList<Header>();
+		headerList = new ArrayList<Header>();
 	}
 
 	/**
@@ -44,23 +44,23 @@ public class Headers {
 	 * @param header The header to add
 	 */
 	public void addHeader(Header header) {
-		headers.add(header);
+		headerList.add(header);
 	}
 
 	/**
 	 * Returns the headers.
 	 * @return Returns the headers.
 	 */
-	public List<Header> getHeaders() {
-		return headers;
+	public List<Header> getHeaderList() {
+		return headerList;
 	}
 
 	/**
 	 * Sets the headers value.
 	 * @param headers The headers to set.
 	 */
-	protected void setHeaders(List<Header> headers) {
-		this.headers = headers;
+	public void setHeaderList(List<Header> headers) {
+		this.headerList = headers;
 	}
 
 }

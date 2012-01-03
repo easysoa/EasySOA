@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.convert.plugins">
+
+  <extension target="org.nuxeo.ecm.core.convert.service.ConversionServiceImpl"
+    point="converter">
+
+    <documentation>
+      @author Tiry (tdelprat@nuxeo.com)
+      Defines WSDLToHtml converter
+    </documentation>
+
+    <converter name="wsdl2html" class="org.easysoa.preview.WSDLToHtmlConverter">
+      <sourceMimeType>text/xml</sourceMimeType>
+      <destinationMimeType>text/html</destinationMimeType>
+    </converter>
+
+  </extension>
+
+</component>

@@ -60,12 +60,9 @@ public class NuxeoRegistrationService {
 	private static RestNotificationFactory factory = null;
 
     public NuxeoRegistrationService() throws IOException {
-
-        factory = new RestNotificationFactory(PropertyManager.getProperty("nuxeo.rest.service"));
-        
-        // TODO: When auth is enabled in Discovery client, configure with
-        // PropertyManager.getProperty("nuxeo.auth.login", "Administrator")
-        // PropertyManager.getProperty("nuxeo.auth.password", "Administrator")
+        factory = new RestNotificationFactory(PropertyManager.getProperty("nuxeo.rest.service"),
+        		PropertyManager.getProperty("nuxeo.auth.login", "Administrator"),
+        		PropertyManager.getProperty("nuxeo.auth.password", "Administrator"));
     }
 
     /**

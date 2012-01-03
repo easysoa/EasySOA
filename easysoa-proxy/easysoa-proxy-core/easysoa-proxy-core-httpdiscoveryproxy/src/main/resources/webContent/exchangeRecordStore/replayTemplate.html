@@ -1,0 +1,34 @@
+
+<!-- get the template and display the fields specified in the template in a form -->
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+		<title>Run manager UI</title>
+        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/proxiedRequest.js"></script>
+		<link href="/easysoa/style.css" rel="stylesheet">
+		<script type="text/javascript">
+			function replay(storeName, exchangeRecordID){
+				/*if(exchangeRecordID != ""){
+					document.replayForm.exchangeRecordID.value = exchangeRecordID;	
+				}*/
+				document.replayForm.action = "http://localhost:8085/runManager/replayWithTemplate/Test_Run/1"
+				document.replayForm.submit();
+			}
+		</script>
+	</head>
+	<body>
+		<h2>Fields in template : </h2>
+		<form>
+		#foreach( $templateField in $exchangeRecordStoreManager.getTemplate("testTemplate").getTemplateFields() )
+    		$templateField.getFieldName() ($templateField.getFieldType()) : <input type="text" name="$templateField.getFieldName()" value="$templateField.getDefaultValue()" />
+    		<br/>
+		#end
+		</form>
+		<button type="button" onclick="replay()">Replay</button> </li>	
+	</body>
+</html>
+
+

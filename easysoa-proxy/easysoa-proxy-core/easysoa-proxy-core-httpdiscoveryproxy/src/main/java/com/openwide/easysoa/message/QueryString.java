@@ -59,7 +59,25 @@ public class QueryString {
 	 * Sets the query parameters.
 	 * @param queryParams The queryParams to set.
 	 */
-	protected void setQueryParams(List<QueryParam> queryParams) {
+	public void setQueryParams(List<QueryParam> queryParams) {
 		this.queryParams = queryParams;
 	}
+	
+	/**
+	 * Builds a query param string from the query param list (eg : param1=value1&param2=value2&param3=value3 ...)
+	 * @return A query param <code>String</code>
+	 */
+	public String makeString(){
+		StringBuffer buffer = new StringBuffer();
+		for(QueryParam param : this.queryParams){
+			if(buffer.length() > 0){
+				buffer.append("&");
+			}
+			buffer.append(param.getName());
+			buffer.append("=");
+			buffer.append(param.getValue());
+		}
+		return buffer.toString();
+	}
+
 }

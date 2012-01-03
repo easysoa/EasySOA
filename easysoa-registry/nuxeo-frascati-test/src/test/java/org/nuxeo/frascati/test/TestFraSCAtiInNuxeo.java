@@ -2,6 +2,7 @@ package org.nuxeo.frascati.test;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,13 +42,9 @@ public class TestFraSCAtiInNuxeo {
 	public void setUp() throws MalformedURLException, ClientException, Exception{
 		
 		frascatiService = Framework.getLocalService(FraSCAtiServiceItf.class);
-		assertNotNull(frascatiService);
-		
-		File scaFile = new File(scaFilePath);   
-		
-		frascatiService.processComposite(scaFile.getAbsolutePath(),
-					new ProcessingContextTest(
-							frascatiService.newProcessingContext()));			
+		assertNotNull(frascatiService);		
+		File scaFile = new File(scaFilePath);   		
+		frascatiService.processComposite(scaFile.getAbsolutePath());			
 		fcomponent = frascatiService.getComposite("helloworld-pojo");	
 	}
 	
@@ -99,6 +96,26 @@ public class TestFraSCAtiInNuxeo {
     	}
     }
 	
+    @Test 
+    public void testParserIntentObserver(){
+    	
+    	ParserIntentObserverTest testObserver = new ParserIntentObserverTest();
+    	frascatiService.addParserIntentObserver(testObserver);
+    	try {
+			tearDown();
+	    	File scaFile = new File(scaFilePath); 
+	    	frascatiService.processComposite(scaFile.getAbsolutePath());	
+	    	
+		} catch (NuxeoFraSCAtiException e) {
+			e.printStackTrace();
+		}
+	    assertEquals(1,testObserver.size());
+	    log.info("ParserIntentObserver has one composite left ...");
+	    assertEquals("helloworld-pojo",testObserver.last().getName());
+	    log.info("... and its name is helloworld-pojo");
+    }
+    
+    
     @Test
     @Ignore
     public void testWait() throws IOException{
@@ -107,13 +124,5 @@ public class TestFraSCAtiInNuxeo {
 		System.in.read();
 		log.info("Frascati in Nuxeo stopped !");    	
     }
-    
-    private class ProcessingContextTest extends AbstractProcessingContext {
-
-    	public ProcessingContextTest(ReflectionHelper delegate) throws NuxeoFraSCAtiException {
-    		super(delegate);
-    	}
-
-    }
-	
+    	
 }

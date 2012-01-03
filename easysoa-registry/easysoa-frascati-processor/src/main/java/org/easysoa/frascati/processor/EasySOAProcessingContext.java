@@ -102,9 +102,7 @@ public class EasySOAProcessingContext implements ProcessingContext, ParsingConte
 	 * @see 
 	 *      org.ow2.frascati.parser.api.ParsingContext.loadClass(java.lang.String)
 	 */
-	@Override
-	public final <T> Class<T> loadClass(String className)
-			throws ClassNotFoundException {
+	public final <T> Class<T> loadClass(String className) {
 		try {
 			return (Class<T>) this.classLoader.loadClass(className);
 		} catch (ClassNotFoundException cnfe) {
@@ -198,11 +196,10 @@ public class EasySOAProcessingContext implements ProcessingContext, ParsingConte
 		return this.nbWarnings;
 	}
 
-	@Override
 	public void error(String message) {
+		errorMessages.add(message);
 		log.severe(message);
 		this.nbErrors++;
-		errorMessages.add(message);
 	}
 
 	/**

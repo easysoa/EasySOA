@@ -19,15 +19,21 @@
  */
 package org.easysoa.records.replay;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Request;
+
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
+import org.easysoa.template.Template;
 import org.osoa.sca.annotations.Remotable;
 
 @Remotable
@@ -57,5 +63,18 @@ public interface ExchangeReplayService {
 	@Path("/cloneToEnvironment/{anotherEnvironment}")
 	@Produces("application/json")	
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment);
+	
+	@GET
+	@Path("/getTemplate/{templateName}")
+	@Produces("application/json")
+	public Template getTemplate(@PathParam("templateName") String templateName) throws Exception;	
+	
+	@POST
+	@Path("/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
+	@Produces("application/json")
+	//@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	//@Consumes("multipart/form-data")
+	@Consumes("application/x-www-form-urlencoded")
+	public String replayWithTemplate(MultivaluedMap<String, String> formData, @PathParam("exchangeStoreName") String exchangeStoreName, @PathParam("exchangeRecordID") String exchangeRecordId, @PathParam("templateName") String templateName) throws Exception;	
 	
 }

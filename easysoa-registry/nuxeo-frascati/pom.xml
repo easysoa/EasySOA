@@ -44,6 +44,12 @@
             <systemPath>${project.basedir}/resources/frascati-util-comp-1.5-SNAPSHOT.jar</systemPath>		
 		</dependency>
 		<dependency>
+			<groupId>org.easysoa.registry</groupId>
+			<artifactId>easysoa-frascati-shared</artifactId>
+			<version>0.4-SNAPSHOT</version>	
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
 			<artifactId>nuxeo-runtime-bridge</artifactId>
 			<version>5.4.2-SNAPSHOT</version>
