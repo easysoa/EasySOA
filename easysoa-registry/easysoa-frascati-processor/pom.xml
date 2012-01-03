@@ -29,7 +29,20 @@
 			<scope>provided</scope>		
 		</dependency>
 	</dependencies>
-
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>frascati-plugin</id>
+			<url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+	
 	<!-- Plugin management -->
 	<build>		
 		<pluginManagement>
