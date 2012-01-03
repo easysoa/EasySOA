@@ -4,6 +4,8 @@
 
 var jQuery, underscore;
 var templates = new Object();
+var wsdls = new Array();
+var username = null;
 
 LIBS_POLLING_INTERVAL = 20;
 EASYSOA_WEB = 'http://localhost:8083';
@@ -57,7 +59,8 @@ function start() {
 	} else {
 		checkIsLoggedIn(
 		// If logged in, start WSDL search
-		function() {
+		function(aUsername) {
+			username = aUsername;
 			findWSDLs();
 		},
 		// Else display login form
@@ -73,7 +76,7 @@ function checkIsLoggedIn(callbackOnSuccess, callbackOnError) {
 		dataType : 'jsonp',
 		success : function(data) {
 			if (data && data.username)  {
-				callbackOnSuccess();
+				callbackOnSuccess(data.username);
 			}
 			else {
 				callbackOnError();
@@ -94,33 +97,72 @@ function findWSDLs() {
 		// in case it couldn't get access to the page
 		var linkUrl = jQuery(this).attr('href');
 		if (linkUrl && linkUrl.substr(-4) == 'wsdl') {
-			runServiceFinder(linkUrl, appendWSDLs);
+			runServiceFinder(linkUrl);
 		}
 	});
 }
 
-function runServiceFinder(theUrl, callback) {
-	// Send whole HTML to Nuxeo
-	console.log(theUrl);
+function runServiceFinder(theUrl) {
+	// Send request to Nuxeo
 	jQuery.ajax({
 		url : EASYSOA_WEB + '/servicefinder/' + theUrl,
 		dataType : 'jsonp',
 		success : function(data) {
-			callback(data);
+			if (data.foundLinks) {
+				appendWSDLs(data);
+			}
 		},
 		error : function(msg) {
-			console.log("ERROR"); // TODO
-			console.log(msg); // TODO
+			console.log("EasySOA ERROR: ", msg);
 		}
 	});
 }
 
 function appendWSDLs(data) {
-	console.log("Found WSDLs!");
-	console.log(data);
-	// TODO
+	var resultsDiv = jQuery('#easysoa-tpl-results');
+	var wsdlEntryTpl = templates['wsdl'];
+	for (key in data.foundLinks) {
+		var newWSDL = {
+			id: wsdls.length,
+			applicationName: data.applicationName,
+			serviceName: key,
+			serviceURL: data.foundLinks[key]
+		};
+		wsdls.push(newWSDL);
+		resultsDiv.append(wsdlEntryTpl(newWSDL));
+	}
 }
 
+function sendWSDL(domElement) {
+	var $domElement = jQuery(domElement);
+	var wsdlToSend = wsdls[$domElement.attr('id')];
+	$domElement.animate({opacity:0.5}, 1000);
+	jQuery.ajax({
+		url : EASYSOA_WEB + '/discovery/service/jsonp',
+		dataType : 'jsonp',
+		data : {
+			'title': wsdlToSend.serviceName,
+			'url': wsdlToSend.serviceURL,
+			'discoveryTypeBrowsing': 'Discovered by ' + username + ' (via bookmarklet)'
+		},
+		success : function(data) {
+			if (data.result == "ok") {
+				jQuery(domElement).css({ 'background-color': '#CD5', 'opacity' : 1 });
+			}
+			else {
+				console.warn("EasySOA ERROR: ", data.result);
+				jQuery(domElement).css({ 'background-color': '#C77', 'opacity' : 1 });
+			}
+		},
+		error : function(msg) {
+			console.warn("EasySOA ERROR: Request failure - ", msg);
+		}
+	});
+}
+
+function exit() {
+	jQuery('.easysoa-frame').hide('fast');
+}
 
 /**
  * HTML templates
@@ -130,15 +172,24 @@ function initTemplates() {
 	
 	templates['results'] = underscore.template(
 	'<div class="easysoa easysoa-frame" id="easysoa-tpl-results">\
-      Found WSDLs:\
+	  <div class="easysoa-exit" onclick="exit()"></div>\
+      Found WSDLs:<br />\
+	  <span class="easysoa-doc">(click on those you want to submit)</span>\
     </div>');
 	
 	templates['login'] = underscore.template(
-	'<div class="easysoa easysoa-frame" id="easysoa-tpl-login">\
-      <div class="easysoa-form-label">User:</div><input type="text" id="easysoa-username" /><br />\
+	'<div class="easysoa-frame" id="easysoa-tpl-login">\
+	  <div class="easysoa-exit" onclick="exit()"></div>\
+	  <div class="easysoa-form-label">User:</div><input type="text" id="easysoa-username" /><br />\
       <div class="easysoa-form-label">Password:</div><input type="password" id="easysoa-password" /><br />\
       <input type="submit" id="easysoa-submit" />\
 	  <div id="easysoa-login-error"></div>\
+    </div>');
+	
+	templates['wsdl'] = underscore.template(
+	'<div class="easysoa-wsdl-result" onclick="sendWSDL(this)" id="<%= id %>">\
+      <span class="easysoa-wsdl-name"><%= serviceName %></span><br />\
+	  <a href="<%= serviceURL %>" class="easysoa-wsdl-link"><%= serviceURL %></a>\
     </div>');
 }
 

@@ -11,6 +11,13 @@ div.easysoa-frame {
 	display: none;
 	z-index: 1000;
 	text-align: left;
+	max-height: 600px;
+	overflow: auto;
+}
+
+.easysoa-doc {
+	font-size: 10pt;
+	color: grey;
 }
 
 div.easysoa-frame input {
@@ -32,4 +39,36 @@ div.easysoa-form-label {
 div#easysoa-login-error {
 	color: darkred;
 	padding: 5px;
+}
+
+div.easysoa-wsdl-result {
+	font-size: 10pt;
+	float: left;
+	width: 90%;
+	display: block;
+	border: 1px solid grey;
+	margin: 5px;
+	padding: 5px;
+}
+
+div.easysoa-wsdl-result:hover {
+	background-color: #FFD;
+	cursor: pointer;
+}
+
+span.easysoa-wsdl-name {
+	font-weight: bold;
+}
+
+a.easysoa-wsdl-link {
+	font-style: italic;
+	color: darkblue;
+}
+
+div.easysoa-exit {
+	background: url('http://localhost:8083/easysoa/core/img/close.png');
+	width: 16px;
+	height: 16px;
+	float: right;
+	cursor: pointer;
 }
