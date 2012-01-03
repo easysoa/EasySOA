@@ -58,25 +58,25 @@
 		</div>
 		<div style="float: left">
 			<ui:include src="easysoa_view_icon.xhtml">
-			  <ui:param name="image" value="dtEclipse"/>
-			  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeEclipse')}"/>
-			  <ui:param name="type" value="Eclipse"/>
+			  <ui:param name="image" value="dtDesign"/>
+			  <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeDesign')}"/>
+			  <ui:param name="type" value="Design"/>
 			</ui:include>
 		</div>
 	</td>
 	</c:if>
 
       <td class="boldLabel" style="width: 50px">
-	<h:outputText value="#{messages['label.content.header.currentLifecycleState']}"/>
+		<h:outputText value="#{messages['label.content.header.currentLifecycleState']}"/>
       </td>
       <td style="width: 70px">
-	<h:outputText value="#{messages[currentDocument.currentLifeCycleState]}" />
+		<h:outputText value="#{messages[currentDocument.currentLifeCycleState]}" />
       </td>
       <td class="boldLabel" style="width: 50px">
-	<h:outputText value="#{messages['label.version']}"/>
+		<h:outputText value="#{messages['label.version']}"/>
       </td>
       <td style="width: 50px">
-	<h:outputText value="#{currentDocumentVersionInfo.versionLabel}"/>
+		<h:outputText value="#{currentDocumentVersionInfo.versionLabel}"/>
       </td>
 
 	</tr></table>

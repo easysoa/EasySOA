@@ -336,7 +336,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             if (property.equals(EasySOADoctype.PROP_DTBROWSING)
                     || property.equals(EasySOADoctype.PROP_DTIMPORT)
                     || property.equals(EasySOADoctype.PROP_DTMONITORING)
-                    || property.equals(EasySOADoctype.PROP_DTECLIPSE)) {
+                    || property.equals(EasySOADoctype.PROP_DTDESIGN)) {
                 String prevValue = (String) model.getProperty(schema, property);
                 if (prevValue == null) {
                     model.setProperty(schema, property, value);

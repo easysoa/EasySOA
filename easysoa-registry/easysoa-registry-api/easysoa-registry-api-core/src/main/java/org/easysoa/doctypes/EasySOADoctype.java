@@ -44,7 +44,7 @@ public class EasySOADoctype {
     public static final String PROP_DTBROWSING = "discoveryTypeBrowsing";
     public static final String PROP_DTMONITORING = "discoveryTypeMonitoring";
     public static final String PROP_DTIMPORT = "discoveryTypeImport";
-    public static final String PROP_DTECLIPSE = "discoveryTypeEclipse";
+    public static final String PROP_DTDESIGN = "discoveryTypeDesign";
     public static final String PROP_ARCHIPATH = "archiPath";
     public static final String PROP_ARCHILOCALNAME = "archiLocalName";
     
@@ -74,7 +74,7 @@ public class EasySOADoctype {
                         " Informs the document of the notification source.");
                 commonPropertyList.put(PROP_DTIMPORT, "Notes about import-specific notifications." +
                         " Informs the document of the notification source.");
-                commonPropertyList.put(PROP_DTECLIPSE, "Notes about Eclipse-specific notifications." +
+                commonPropertyList.put(PROP_DTDESIGN, "Notes about design-time notifications." +
                         " Informs the document of the notification source.");
             }
             return commonPropertyList;
