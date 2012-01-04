@@ -62,7 +62,10 @@ function isInIgnoreList(urlString) {
 
 function fixUrl(url) {
    url = url.replace('localhost', '127.0.0.1');
-   url = url.replace('/http://127.0.0.1:'+settings.webPort, ''); // URL fix (pb caused by Connect/Express?)
+   // XXX URL fix (pb caused by Connect/Express?)
+   if (url.indexOf('servicefinder') == -1) {
+    url = url.replace('/http://127.0.0.1:'+settings.webPort, '');
+   }
    return url;
 }
 

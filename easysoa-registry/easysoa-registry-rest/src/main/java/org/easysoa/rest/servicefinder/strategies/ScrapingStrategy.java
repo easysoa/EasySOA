@@ -43,52 +43,56 @@ public class ScrapingStrategy extends DefaultAbstractStrategy implements Service
     @Override
     public List<FoundService> findFromContext(BrowsingContext context) throws Exception {
 
-    	URL url = context.getURL();
         List<FoundService> foundServices = new LinkedList<FoundService>();
-
-        // Web page parsing
-        HtmlCleaner cleaner = new HtmlCleaner();
-        TagNode cleanHtml = cleaner.clean(context.getData());
-
-        // Find app name
-        String applicationName = guessApplicationName(url);
         
-        // Find links
-        List<String> foundServicesNames = new LinkedList<String>();
-        Object[] links = cleanHtml.evaluateXPath("//a");
-        changeToAbsolutePath(links, "href", url);
-
-        for (Object o : links) {
-            TagNode link = (TagNode) o;
-            try {
-                String ref = new URL(url, link.getAttributeByName("href"))
-                        .toString();
-                String name = (link.getText() != null) ? link.getText()
-                        .toString() : ref;
-
-                // Truncate if name is an URL (serviceName cannot contain slashes)
-                if (name.contains("/")) {
-                    String[] nameParts = name.split("/}");
-                    name = nameParts[nameParts.length - 1].replaceAll(
-                            "(\\?|\\.|wsdl)", "");
-                }
-
-                // Append digits to the link name if it already exists
-                int i = 1;
-                if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
-                    while (foundServicesNames.contains(name)) {
-                        name = (i == 1 ? name + i++ : name.substring(0,
-                                name.length() - 1))
-                                + i++;
+        if (context.getData() != null) {
+        	URL url = context.getURL();
+    
+            // Web page parsing
+            HtmlCleaner cleaner = new HtmlCleaner();
+            TagNode cleanHtml = cleaner.clean(context.getData());
+    
+            // Find app name
+            String applicationName = guessApplicationName(url);
+            
+            // Find links
+            List<String> foundServicesNames = new LinkedList<String>();
+            Object[] links = cleanHtml.evaluateXPath("//a");
+            changeToAbsolutePath(links, "href", url);
+    
+            for (Object o : links) {
+                TagNode link = (TagNode) o;
+                try {
+                    String ref = new URL(url, link.getAttributeByName("href"))
+                            .toString();
+                    String name = (link.getText() != null) ? link.getText()
+                            .toString() : ref;
+    
+                    // Truncate if name is an URL (serviceName cannot contain slashes)
+                    if (name.contains("/")) {
+                        String[] nameParts = name.split("/}");
+                        name = nameParts[nameParts.length - 1].replaceAll(
+                                "(\\?|\\.|wsdl)", "");
                     }
-                    name = name.replaceAll("([\n\r]|[ ]*WSDL|[ ]*wsdl)", "").trim();
-                    foundServices.add(new FoundService(name, ref, applicationName));
-                    foundServicesNames.add(name);
+    
+                    // Append digits to the link name if it already exists
+                    int i = 1;
+                    if (ref != null && ref.toLowerCase().endsWith("wsdl")) {
+                        while (foundServicesNames.contains(name)) {
+                            name = (i == 1 ? name + i++ : name.substring(0,
+                                    name.length() - 1))
+                                    + i++;
+                        }
+                        name = name.replaceAll("([\n\r]|[ ]*WSDL|[ ]*wsdl)", "").trim();
+                        foundServices.add(new FoundService(name, ref, applicationName));
+                        foundServicesNames.add(name);
+                    }
+    
+                } catch (MalformedURLException e) {
+                    // Nothing (link parsing failure)
                 }
-
-            } catch (MalformedURLException e) {
-                // Nothing (link parsing failure)
             }
+            
         }
 
         return foundServices;
