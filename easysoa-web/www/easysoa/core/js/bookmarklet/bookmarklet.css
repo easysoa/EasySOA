@@ -41,6 +41,7 @@ div.easysoa-form-label {
 	width: 100px;
 	float: left;
 	padding-top: 3px;
+	margin-bottom: 5px;
 }
 
 div#easysoa-login-error {
@@ -51,7 +52,7 @@ div#easysoa-login-error {
 div.easysoa-wsdl-result {
 	font-size: 10pt;
 	float: left;
-	width: 90%;
+	width: 282px;
 	display: block;
 	border: 1px solid grey;
 	margin: 5px;
@@ -85,7 +86,8 @@ div.easysoa-title {
 	border: 1px solid #AAC;
 	background-color: #F0F0FA;
 	border-left-width: 5px;
-	padding: 3px;
+	padding: 5px;
 	width: 288px;
 	cursor: move;
+	margin-bottom: 5px;
 }

@@ -142,27 +142,28 @@ function appendWSDLs(data) {
 function sendWSDL(domElement) {
 	var $domElement = jQuery(domElement);
 	var wsdlToSend = wsdls[$domElement.attr('id')];
-	$domElement.animate({opacity:0.5}, 1000);
-	jQuery.ajax({
-		url : EASYSOA_WEB + '/discovery/service/jsonp',
-		dataType : 'jsonp',
-		data : {
-			'title': wsdlToSend.serviceName,
-			'url': wsdlToSend.serviceURL,
-			'discoveryTypeBrowsing': 'Discovered by ' + username + ' (via bookmarklet)'
-		},
-		success : function(data) {
-			if (data.result == "ok") {
-				jQuery(domElement).css({ 'background-color': '#CD5', 'opacity' : 1 });
+	$domElement.animate({opacity:0.5}, 'fast', function() {
+		jQuery.ajax({
+			url : EASYSOA_WEB + '/discovery/service/jsonp',
+			dataType : 'jsonp',
+			data : {
+				'title': wsdlToSend.serviceName,
+				'url': wsdlToSend.serviceURL,
+				'discoveryTypeBrowsing': 'Discovered by ' + username + ' (via bookmarklet)'
+			},
+			success : function(data) {
+				if (data.result == "ok") {
+					jQuery(domElement).css({ 'background-color': '#CD5', 'opacity' : 1 });
+				}
+				else {
+					console.warn("EasySOA ERROR: ", data.result);
+					jQuery(domElement).css({ 'background-color': '#C77', 'opacity' : 1 });
+				}
+			},
+			error : function(msg) {
+				console.warn("EasySOA ERROR: Request failure - ", msg);
 			}
-			else {
-				console.warn("EasySOA ERROR: ", data.result);
-				jQuery(domElement).css({ 'background-color': '#C77', 'opacity' : 1 });
-			}
-		},
-		error : function(msg) {
-			console.warn("EasySOA ERROR: Request failure - ", msg);
-		}
+		});
 	});
 }
 
