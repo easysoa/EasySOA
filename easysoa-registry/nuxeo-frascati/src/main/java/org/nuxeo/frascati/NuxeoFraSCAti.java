@@ -104,6 +104,7 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 		FraSCAtiCompositeItf componentIntent = null;		
 		FraSCAtiCompositeItf componentParser = null;
 		
+		// first get references to the parser & our intent :
 		for(FraSCAtiCompositeItf composite : composites){	
 			
 			if("parser-intent".equals(composite.getName())){								
@@ -119,6 +120,7 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 			}
 		}
 		if(componentIntent!=null && componentParser!=null){
+			// then programmatically add the observing intent to the parser :
 			
 			ReflectionHelper component  = new ReflectionHelper(ClassLoaderSingleton.classLoader(),
 					"org.objectweb.fractal.api.Component");		
@@ -146,6 +148,7 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 			
 			if(intentController!=null && intentHandler != null){				
 				componentParser.stop();
+				// adding the observing intent to the parser (ScaParser) :
 				intentController.invoke("addFcIntentHandler",
 						new Class<?>[]{intentHandler.getReflectedClass()},
 						new Object[]{intentHandler.get()});
