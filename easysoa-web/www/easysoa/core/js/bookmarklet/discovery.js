@@ -6,6 +6,7 @@ var jQuery, underscore;
 var templates = new Object();
 var wsdls = new Array();
 var username = null;
+var frameDragged = false;
 
 LIBS_POLLING_INTERVAL = 20;
 EASYSOA_WEB = 'http://localhost:8083';
@@ -111,9 +112,14 @@ function runServiceFinder(theUrl) {
 			if (data.foundLinks) {
 				appendWSDLs(data);
 			}
+			else {
+				for (errorKey in data.errors) {
+					console.log("EasySOA ERROR: ", data.errors[errorKey]);
+				}
+			}
 		},
-		error : function(msg) {
-			console.log("EasySOA ERROR: ", msg);
+		error : function(xhr) {
+			console.log("EasySOA ERROR: ", xhr.responseText);
 		}
 	});
 }
@@ -171,17 +177,18 @@ function exit() {
 function initTemplates() {
 	
 	templates['results'] = underscore.template(
-	'<div class="easysoa easysoa-frame" id="easysoa-tpl-results">\
+	'<div class="easysoa-frame" id="easysoa-tpl-results">\
 	  <div class="easysoa-exit" onclick="exit()"></div>\
-      Found WSDLs:<br />\
+	  <div class="easysoa-title">Found WSDLs:</div>\
 	  <span class="easysoa-doc">(click on those you want to submit)</span>\
     </div>');
 	
 	templates['login'] = underscore.template(
 	'<div class="easysoa-frame" id="easysoa-tpl-login">\
+	  <div class="easysoa-title">Login:</div>\
 	  <div class="easysoa-exit" onclick="exit()"></div>\
-	  <div class="easysoa-form-label">User:</div><input type="text" id="easysoa-username" /><br />\
-      <div class="easysoa-form-label">Password:</div><input type="password" id="easysoa-password" /><br />\
+	  <div class="easysoa-form-label">User </div><input type="text" id="easysoa-username" value="Administrator" /><br />\
+      <div class="easysoa-form-label">Password </div><input type="password" id="easysoa-password" value="Administrator" /><br />\
       <input type="submit" id="easysoa-submit" />\
 	  <div id="easysoa-login-error"></div>\
     </div>');
@@ -197,6 +204,25 @@ function runTemplate(name, data) {
 	jQuery('body').append(templates[name](data));
 	jQuery('#easysoa-tpl-' + name).show('fast');
 
+	// Make frames draggables
+	if (name == 'login' || name == 'results') {
+		jQuery('.easysoa-title').mousedown(function() {
+			frameDragged = true;
+		});
+		jQuery(window).mousemove(function(e) {
+			if (frameDragged) {
+				var frame = jQuery('.easysoa-frame');
+				frame.css({
+					left: e.clientX - (frame.width() / 2),
+					top: e.clientY - 20
+				});
+			}
+		});
+		jQuery(window).mouseup(function() {
+			frameDragged = false;
+		});
+	}
+	
 	// Login template handler
 	if (name == 'login') {
 		jQuery('#easysoa-submit').click(function() {

@@ -13,6 +13,13 @@ div.easysoa-frame {
 	text-align: left;
 	max-height: 600px;
 	overflow: auto;
+	color: black;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 .easysoa-doc {
@@ -70,5 +77,15 @@ div.easysoa-exit {
 	width: 16px;
 	height: 16px;
 	float: right;
+	margin: 8px;
 	cursor: pointer;
+}
+
+div.easysoa-title {
+	border: 1px solid #AAC;
+	background-color: #F0F0FA;
+	border-left-width: 5px;
+	padding: 3px;
+	width: 288px;
+	cursor: move;
 }
