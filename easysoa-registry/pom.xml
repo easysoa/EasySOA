@@ -88,7 +88,7 @@
                               <artifactItem>
                                <groupId>xalan</groupId>
                                <artifactId>xalan</artifactId>
-                               <version>2.7.1</version>
+                               <version>2.7.0</version>
                                <outputDirectory>${project.build.directory}/lib</outputDirectory>
                               </artifactItem>
                              </artifactItems>
