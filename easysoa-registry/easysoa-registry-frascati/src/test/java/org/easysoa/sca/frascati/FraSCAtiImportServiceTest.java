@@ -320,7 +320,7 @@ public class FraSCAtiImportServiceTest{
     	String scaFilePath = "src/test/resources/" + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
     	File scaFile = new File(scaFilePath);    	
    	
-    	boolean classNotFoundExceptionThrowed = false;
+    	boolean classNotFoundExceptionThrown = false;
     	
     	// Getting the importer
     	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
@@ -335,10 +335,10 @@ public class FraSCAtiImportServiceTest{
 		try{			
 			importer.importSCA();
 		} catch(Exception e){
-			classNotFoundExceptionThrowed = true;
+			classNotFoundExceptionThrown = true;
 			//e.printStackTrace();
 		}
-		assertTrue(classNotFoundExceptionThrowed);
+		assertTrue(classNotFoundExceptionThrown);
     }
     
 }

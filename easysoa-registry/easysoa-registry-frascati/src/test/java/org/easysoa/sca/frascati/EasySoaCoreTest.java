@@ -78,7 +78,7 @@ public class EasySoaCoreTest
     DocumentModel parentAppliImplModel;
         
     @Test
-    public void setUp() throws ClientException, MalformedURLException {
+    public void testSetUp() throws ClientException, MalformedURLException {
     	// Find or create appli
     	String appliUrl = "http://localhost";
 		parentAppliImplModel = docService.findAppliImpl(session, appliUrl);
