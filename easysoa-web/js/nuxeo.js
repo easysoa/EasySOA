@@ -6,11 +6,11 @@
 // Contact : easysoa-dev@googlegroups.com
 
 var http = require('http');
-var httpProxy = require('http-proxy');
 var url = require('url');
 
 var base64 = require('./lib/base64').base64;
 var settings = require('./settings');
+var proxy = require('./proxy');
 var utils = require('./utils');
 
 /**
@@ -23,13 +23,23 @@ var utils = require('./utils');
 //=============== Model ================
 
 NUXEO_REST_PARSED_URL = url.parse(settings.NUXEO_REST_URL);
+EASYSOA_ROOT_URL_PARSED = url.parse(settings.EASYSOA_ROOT_URL);
 
 var ready = false;
 
 //================ I/O =================
 
 exports.configure = function(webServer) {
-	// Do nothing
+	webServer.get('/nuxeo/discovery*', forwardToNuxeo);
+	webServer.get('/nuxeo/servicefinder*', forwardToNuxeo);
+};
+
+forwardToNuxeo = function(request, response, next) {
+	var parsedUrl = url.parse(request.url);
+	proxy.forwardTo(request, response,
+			EASYSOA_ROOT_URL_PARSED.hostname,
+			EASYSOA_ROOT_URL_PARSED.port,
+			EASYSOA_ROOT_URL_PARSED.path + parsedUrl.path.replace('/nuxeo', ''));
 };
 
 exports.runRestRequest = runRestRequest = function(session, path, method, headers, body, callback) {
@@ -108,7 +118,7 @@ exports.runAutomationDocumentQuery = function(session, query, schemasToInclude, 
 //============= Controller =============
 
 exports.isReady = function() {
-	return true;//return ready;
+	return ready;
 };
 
 exports.areCredentialsValid = areCredentialsValid = function(username, password, callback) {
@@ -122,14 +132,14 @@ exports.areCredentialsValid = areCredentialsValid = function(username, password,
 };
 
 exports.startConnectionChecker = function() {
-	console.log("Checking if Nuxeo is ready...");
+	console.log('Checking if Nuxeo is ready...');
 	checkConnection();
 };
 
 checkConnection = function() {
 	areCredentialsValid('Administrator', 'Administrator', function(valid) {
 		if (valid) {
-			console.log("Nuxeo is ready.");
+			console.log('Nuxeo is ready.');
 			ready = true;
 		}
 		else {

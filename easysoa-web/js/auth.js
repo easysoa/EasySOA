@@ -32,6 +32,7 @@ exports.configure = function(webServer) {
 	webServer.use(authFilter);
 	  
 	// Router configuration
+	webServer.get('/login', login);
 	webServer.post('/login', login);
 	webServer.get('/logout', logout);
 	webServer.get('/userdata', getUserdata);
@@ -64,7 +65,6 @@ login = function(request, response, next) {
 		            		response.end(params.callback + '({result: "ok"})');
 		            	}
 		            	else {
-		            		// FIXME prev always undefined
 		            		response.redirect(params.prev || '/easysoa');
 		            	}
 		            }
@@ -152,11 +152,11 @@ redirectToLoginForm = function(request, response, error, nuxeoNotReady) {
 	if (request.query && request.query.callback) {
 		if (nuxeoNotReady) {
 			response.writeHead(500, JSONP_HEADERS);
-			response.end(credentials.callback + '({result: "error", error: "Internal error: Nuxeo not started"})');
+			response.end(request.query.callback + '({result: "error", error: "Internal error: Nuxeo not started"})');
 		}
 		else {
 			response.writeHead(403, JSONP_HEADERS);
-			response.end(credentials.callback + '({result: "error", error: "Forbidden"})');
+			response.end(request.query.callback + '({result: "error", error: "Forbidden"})');
 		}
 	}
 	else {;

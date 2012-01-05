@@ -23,7 +23,6 @@ var utils = require('./utils');
 
 //============= Initialize ==============
 
-EASYSOA_ROOT_URL_PARSED = url.parse(settings.EASYSOA_ROOT_URL);
 SERVICE_FINDER_IGNORE_REGEXPS = utils.strToRegexp(settings.SERVICE_FINDER_IGNORE);
 
 // =============== Model ================
@@ -58,8 +57,6 @@ saveWSDLs = function(data) {
 
 exports.configure = function(webServer) {
 	// Router configuration
-	webServer.get('/dbb/servicefinder', forwardToNuxeo); // TODO instead, nuxeo/servicefinder
-	webServer.get('/dbb/discovery/environments', forwardToNuxeo); // TODO idem
 	webServer.get('/dbb/clear', clearWSDLs);
 	webServer.get('/dbb/send', sendWSDL);
 
@@ -79,14 +76,6 @@ exports.handleProxyRequest = function(request, response) {
 		findWSDLs(request.url);
 	}
 	
-};
-
-forwardToNuxeo = function(request, response, next) {
-	var parsedUrl = url.parse(request.url);
-	proxy.forwardTo(request, response,
-			EASYSOA_ROOT_URL_PARSED.hostname,
-			EASYSOA_ROOT_URL_PARSED.port,
-			EASYSOA_ROOT_URL_PARSED.path + parsedUrl.path.replace('/dbb', ''));
 };
 
 

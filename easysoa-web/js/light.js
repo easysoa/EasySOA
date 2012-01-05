@@ -5,7 +5,11 @@
 // 
 // Contact : easysoa-dev@googlegroups.com
 
+var url = require('url');
+
+var settings = require('./settings');
 var nuxeo = require('./nuxeo');
+var proxy = require('./proxy');
 
 /**
  * EasySOA light web services
@@ -13,11 +17,22 @@ var nuxeo = require('./nuxeo');
  * Author: Marwane Kalam-Alami
  */
 
+//=========== Initialization ===========
+
+SCAFFOLDING_SERVER_PARSED_URL = url.parse(settings.SCAFFOLDING_SERVER_URL);
+
 //================ I/O =================
 
 exports.configure = function(webServer) {
 	// Router configuration
 	webServer.get('/light/serviceList', serviceList);
+	webServer.get('/scaffoldingProxy', forwardToScaffolder);
+};
+
+forwardToScaffolder = function(request, response, next) {
+	proxy.forwardTo(request, response, 
+			SCAFFOLDING_SERVER_PARSED_URL.hostname,
+			SCAFFOLDING_SERVER_PARSED_URL.port);
 };
 
 //============= Controller =============

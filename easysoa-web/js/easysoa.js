@@ -30,7 +30,7 @@ webServer.configure(function(){
 
   // Request formatting
   webServer.use(express.cookieParser());
-  webServer.use(express.session({ secret: "easysoa-web" }));
+  webServer.use(express.session({ secret: 'easysoa-web' }));
   webServer.use(express.bodyParser());
   
   // Components routing & middleware configuration

@@ -216,7 +216,7 @@ window.AppView = Backbone.View.extend({
                 url: '/dashboard/service/' + fromId + '/linkto/null',
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
-                    // XXX: Page is ometimes reloaded before the update is done ; why?
+                    // XXX: Page is sometimes reloaded before the update is done ; why?
                     setTimeout(location.reload, 300);  
                 },
                 error: function(data) {
@@ -251,7 +251,7 @@ window.AppView = Backbone.View.extend({
                 url: '/dashboard/service/' + serviceId + '/lifecycle/' + lifecycleTransition,
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
-                    // XXX: Page is ometimes reloaded before the update is done ; why?
+                    // XXX: Page is sometimes reloaded before the update is done ; why?
                     setTimeout(location.reload, 300);  
                 },
                 error: function(data) {

@@ -25,7 +25,8 @@ exports.NO_AUTH_NEEDED = [
   '^/easysoa/img/*',
   '^/easysoa/core/img/*',
   '^/easysoa/core/js/bookmarklet/*',
-  '^/intranet/*'
+  '^/intranet/*',
+  '^/scaffoldingProxy/*'
 ];
 
 /* ==============
@@ -35,11 +36,12 @@ exports.NO_AUTH_NEEDED = [
 
 exports.PROXY_PORT = '8081';
 
+exports.SCAFFOLDING_SERVER_URL				= "http://127.0.0.1:8090",
 exports.NUXEO_URL = NUXEO_URL               = 'http://127.0.0.1:8080/nuxeo';
 exports.NUXEO_REST_URL               		= NUXEO_URL + '/site';
 exports.EASYSOA_ROOT_URL = EASYSOA_ROOT_URL = NUXEO_URL + '/site/easysoa';
-exports.EASYSOA_DISCOVERY_PATH               = 'easysoa/discovery/service';
-exports.EASYSOA_SERVICE_FINDER_PATH          = 'easysoa/servicefinder';
+exports.EASYSOA_DISCOVERY_PATH              = 'easysoa/discovery/service';
+exports.EASYSOA_SERVICE_FINDER_PATH         = 'easysoa/servicefinder';
 
 exports.SERVICE_FINDER_IGNORE = [
   '.css',

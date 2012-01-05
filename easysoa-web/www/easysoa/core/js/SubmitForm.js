@@ -96,7 +96,7 @@ $(function() {
       this.environmentSelect.append('<option value="Master">Master</option>');
       var view = this;
       $.ajax({
-        url: '/dbb/discovery/environments',
+        url: '/nuxeo/discovery/environments',
         success: function(data, textStatus, jqXHR) {
             var environments = jQuery.parseJSON(jqXHR.responseText);
             for (i in environments) {

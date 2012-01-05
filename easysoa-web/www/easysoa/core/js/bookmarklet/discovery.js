@@ -106,7 +106,7 @@ function findWSDLs() {
 function runServiceFinder(theUrl) {
 	// Send request to Nuxeo
 	jQuery.ajax({
-		url : EASYSOA_WEB + '/servicefinder/' + theUrl,
+		url : EASYSOA_WEB + '/nuxeo/servicefinder/' + theUrl,
 		dataType : 'jsonp',
 		success : function(data) {
 			if (data.foundLinks) {
@@ -144,7 +144,7 @@ function sendWSDL(domElement) {
 	var wsdlToSend = wsdls[$domElement.attr('id')];
 	$domElement.animate({opacity:0.5}, 'fast', function() {
 		jQuery.ajax({
-			url : EASYSOA_WEB + '/discovery/service/jsonp',
+			url : EASYSOA_WEB + '/nuxeo/discovery/service/jsonp',
 			dataType : 'jsonp',
 			data : {
 				'title': wsdlToSend.serviceName,
