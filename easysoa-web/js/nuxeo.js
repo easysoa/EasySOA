@@ -32,6 +32,7 @@ var ready = false;
 exports.configure = function(webServer) {
 	webServer.get('/nuxeo/discovery*', forwardToNuxeo);
 	webServer.get('/nuxeo/servicefinder*', forwardToNuxeo);
+	webServer.get('/nuxeo/dashboard*', forwardToNuxeo);
 };
 
 forwardToNuxeo = function(request, response, next) {
@@ -101,7 +102,7 @@ exports.runAutomationRequest = runAutomationRequest = function(session, operatio
 
 exports.runAutomationDocumentQuery = function(session, query, schemasToInclude, callback) {
 	if (session.username != null) {
-		nuxeo.runAutomationQuery(
+		runAutomationRequest(
 			session,
 			'Document.Query',
 			{'query': query},
@@ -110,7 +111,7 @@ exports.runAutomationDocumentQuery = function(session, query, schemasToInclude, 
 		);
 	}
 	else {
-		callback(false);
+		callback(false, "Invalid username");
 	}
 };
 

@@ -38,10 +38,10 @@ forwardToScaffolder = function(request, response, next) {
 //============= Controller =============
 
 serviceList = function(request, response, next) {
-	fetchServiceList(request.session, function(data) {
+	fetchServiceList(request.session, function(data, error) {
 		var responseData = new Object();
 		responseData.success = (data !== false);
-		responseData.data = data;
+		responseData.data = data || error;
 		response.write(JSON.stringify(responseData));
 		response.end();
 	});
@@ -53,7 +53,7 @@ fetchServiceList = function(session, callback) {
 			"SELECT * FROM Service WHERE ecm:currentLifeCycleState <> 'deleted'",
 			'dublincore, servicedef',
 			function(data) {
-				if (data) {
+				try {
 					data = JSON.parse(data);
 					result = new Array();
 					for (var documentIndex in data.entries) {
@@ -66,12 +66,13 @@ fetchServiceList = function(session, callback) {
 					}
 					callback(result);
 				}
-				else {
-					callback(false);
+				catch (error) {
+					callback(false, error);
 				}
 			});
     }
     catch (error) {
       console.error("[ERROR] Failed to fetch service list: "+error.stack);
+	  callback(false, error);
     }
 };

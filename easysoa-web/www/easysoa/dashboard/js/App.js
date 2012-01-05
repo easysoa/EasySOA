@@ -54,7 +54,7 @@ window.AppView = Backbone.View.extend({
         if (window.username != undefined) {
             var app = this;
             $.ajax({
-                url: '/dashboard/validators',
+                url: '/nuxeo/dashboard/validators',
                 success: function(data, textStatus, jqXHR) {
                     var names = $.parseJSON(jqXHR.responseText);
                     for (i in names) {
@@ -76,7 +76,7 @@ window.AppView = Backbone.View.extend({
         if (window.username != undefined) {
             var app = this;
             $.ajax({
-                url: '/dashboard/services/' + window.username,
+                url: '/nuxeo/dashboard/services/' + window.username,
                 success: function(data, textStatus, jqXHR) {
                     app.hidePlaceholder();
                     var result = $.parseJSON(jqXHR.responseText);
@@ -123,7 +123,7 @@ window.AppView = Backbone.View.extend({
             if (localServiceModel.get('referencedService').cid == null) {
                 var app = this;
                 $.ajax({
-                    url: '/dashboard/service/' + localServiceModel.get('id') + '/matches',
+                    url: '/nuxeo/dashboard/service/' + localServiceModel.get('id') + '/matches',
                     success: function(data, textStatus, jqXHR) {
                         // If the user didn't click somewhere before
                         if (app.selectedLocal == localServiceModel.cid) {
@@ -194,7 +194,7 @@ window.AppView = Backbone.View.extend({
             var toId = this.services.getByCid(this.selectedReference).get('id');
             var app = this;
             $.ajax({
-                url: '/dashboard/service/' + fromId + '/linkto/' + toId,
+                url: '/nuxeo/dashboard/service/' + fromId + '/linkto/' + toId,
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
                     location.reload();
@@ -213,7 +213,7 @@ window.AppView = Backbone.View.extend({
         if (this.selectedLocal != null && this.services.getByCid(this.selectedLocal).hasReference()) {
             var fromId = this.services.getByCid(this.selectedLocal).get('id');
             $.ajax({
-                url: '/dashboard/service/' + fromId + '/linkto/null',
+                url: '/nuxeo/dashboard/service/' + fromId + '/linkto/null',
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
                     // XXX: Page is sometimes reloaded before the update is done ; why?
@@ -248,7 +248,7 @@ window.AppView = Backbone.View.extend({
             case 'resetService': lifecycleTransition = 'backToProject'; break;
             }
             $.ajax({
-                url: '/dashboard/service/' + serviceId + '/lifecycle/' + lifecycleTransition,
+                url: '/nuxeo/dashboard/service/' + serviceId + '/lifecycle/' + lifecycleTransition,
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
                     // XXX: Page is sometimes reloaded before the update is done ; why?
