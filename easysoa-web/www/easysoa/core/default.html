@@ -15,7 +15,6 @@ $(document).ready(function() {
       if (xhr.responseText.substr(0, 11) != 'javascript:') {
         js = 'javascript:' + js;
       }
-      console.log(escape(js));
       $('#bookmarklet').html('<a href="' + js + '">Find WSDLs</a> <span style="font-size: 12pt"><i>(<b>Warning</b>: Work in progress)</i></span>');
     }
   });

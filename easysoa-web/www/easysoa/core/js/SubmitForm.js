@@ -29,7 +29,7 @@ $(function() {
 			if (this.getURL() != '') {
           this.view.info("Sending request...");
 			    jQuery.ajax({
-			        url: '/send',
+			        url: '/dbb/send',
 			        data: {
 			            'url': this.getURL(),
 			            'servicename': $('#submitService').attr('value'),
@@ -96,7 +96,7 @@ $(function() {
       this.environmentSelect.append('<option value="Master">Master</option>');
       var view = this;
       $.ajax({
-        url: '/discovery/environments',
+        url: '/nuxeo/discovery/environments',
         success: function(data, textStatus, jqXHR) {
             var environments = jQuery.parseJSON(jqXHR.responseText);
             for (i in environments) {

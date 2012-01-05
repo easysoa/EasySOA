@@ -22,7 +22,7 @@ $(function() {
 			if (confirm("Clear all found services?")) {
 				// TODO Use socket.io (doesn't work through the proxy atm)
 				jQuery.ajax({
-					url: '/clear',
+					url: '/dbb/clear',
 				    success: function () {
 				        Descriptors.view.clearAll();
 		            },
