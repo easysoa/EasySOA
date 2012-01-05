@@ -14,7 +14,7 @@ var proxy = require('./proxy');
 var utils = require('./utils');
 
 /**
- * Basic HTTP proxy component, using 'node-http-proxy'.
+ * Nuxeo component, allowing to perform requests to the registry.
  *
  * Author: Marwane Kalam-Alami
  */
