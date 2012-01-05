@@ -85,7 +85,13 @@
             <artifactId>easysoa-registry-api-remote</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>	
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-messaging</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>        
 		<!-- For tests -->
 		<!-- JUnit -->
 		<!-- bring by nuxeo-frascati-test -->
@@ -113,7 +119,7 @@
 			<artifactId>nuxeo-frascati-test</artifactId>
 			<version>0.0-SNAPSHOT</version>
 			<scope>test</scope>
-		</dependency>   
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -465,6 +471,8 @@
 							<artifactItem><groupId>soap</groupId><artifactId>soap</artifactId><version>2.3</version></artifactItem>
 							<artifactItem><groupId>xml-resolver</groupId><artifactId>xml-resolver</artifactId><version>1.2</version></artifactItem>
 							<artifactItem><groupId>xerces</groupId><artifactId>xercesImpl</artifactId><version>2.9.1</version></artifactItem>
+							<!--  -->
+							<artifactItem><groupId>org.easysoa.registry</groupId><artifactId>easysoa-frascati-processor</artifactId><version>0.4-SNAPSHOT</version></artifactItem>							
 						 </artifactItems>
 		              </configuration>
 		            </execution>

@@ -28,8 +28,6 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
@@ -40,7 +38,6 @@ import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.template.Template;
 import org.easysoa.template.TemplateField;
-
 import com.openwide.easysoa.message.CustomField;
 import com.openwide.easysoa.message.CustomFields;
 import com.openwide.easysoa.message.Header;

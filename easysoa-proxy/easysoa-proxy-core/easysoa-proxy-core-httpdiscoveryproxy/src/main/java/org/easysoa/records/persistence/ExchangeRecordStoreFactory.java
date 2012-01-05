@@ -18,12 +18,14 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.records;
+package org.easysoa.records.persistence;
 
+import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 
 /**
- * Factory for Exchange record store
+ * Factory for Exchange record store (File or DB)
+ * At the moment, only instantiate a new ExchangeRecordFileStore
  * @author jguillemotte
  *
  */

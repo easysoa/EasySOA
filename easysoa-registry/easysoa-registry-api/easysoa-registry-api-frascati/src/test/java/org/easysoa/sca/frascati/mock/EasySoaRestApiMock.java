@@ -22,11 +22,14 @@ package org.easysoa.sca.frascati.mock;
 
 import java.io.IOException;
 
-import javax.servlet.GenericServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.GenericServlet;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+//import javax.servlet.ServletRequest;
+//import javax.servlet.ServletResponse;
 
 import org.easysoa.sca.frascati.ApiFrascatiImportServiceTest;
 import org.osoa.sca.annotations.Scope;
@@ -38,7 +41,8 @@ import org.osoa.sca.annotations.Scope;
  */
 @Scope("COMPOSITE")
 @SuppressWarnings("serial")
-public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestMock<ApiFrascatiImportServiceTest> {
+//public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestMock<ApiFrascatiImportServiceTest> {
+public class EasySoaRestApiMock extends HttpServlet implements Servlet, TestMock<ApiFrascatiImportServiceTest> {
 
 	// Test class
 	private ApiFrascatiImportServiceTest test;
@@ -50,7 +54,7 @@ public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestM
 	}
 
 	@Override
-	public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	//String requestContent = new Scanner(req.getInputStream()).useDelimiter("\\A").next();
     	// TODO BUG if req.getInputStream() called above, makes the next one (in checkXXX()) explode
 		// solution : either pass requestContent in addition to req, or a request wrapper using req

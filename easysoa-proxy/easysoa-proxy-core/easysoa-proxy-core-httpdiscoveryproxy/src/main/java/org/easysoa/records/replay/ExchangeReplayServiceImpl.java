@@ -37,11 +37,11 @@ import javax.ws.rs.core.Request;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStoreFactory;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.StoreCollection;
+import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
 import org.easysoa.template.Template;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.setters.CustomParamSetter;

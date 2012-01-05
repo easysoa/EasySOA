@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  */
 @XmlRootElement
+@SuppressWarnings("unchecked")
 public class InMessage implements Message {
 
 	/**

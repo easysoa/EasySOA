@@ -33,7 +33,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.ExchangeRecordStoreArray;
-import org.easysoa.records.ExchangeRecordStoreFactory;
+import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;

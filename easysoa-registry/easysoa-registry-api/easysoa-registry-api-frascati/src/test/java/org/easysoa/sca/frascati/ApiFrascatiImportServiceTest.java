@@ -27,21 +27,21 @@ import static org.mockito.Mockito.verify;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
+import java.util.Date;
+//import java.util.Scanner;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.records.ExchangeRecord;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.frascati.mock.TestMock;
-import org.easysoa.sca.records.ExchangeRecord;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
+import com.openwide.easysoa.message.InMessage;
 
 /**
  * Test class for the FraSCAti SCA importer working with the REST API
@@ -87,6 +87,7 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     
     /**
      * Main test
+     * Use Mockito to check that the service method are well called
      * @throws Exception
      */
     @Test
@@ -115,21 +116,19 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
     	//checkTestSCAComposite(/*...*/);
     }
 
-
-    
     /**
      * Check the recorded exchanges
      * @throws IOException 
      */
     public void checkExchanges() {
     	for(ExchangeRecord record : recordList){
-        	assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().contains("RestSoapProxy.composite"));    		
+    		// TODO : now using messaging api, check that this test still works 
+        	assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().getMessageContent().getContent().contains("RestSoapProxy.composite"));    		
     	}
     }
     
     // add a method to check the recorded exchanges in the order :
     // - eg check record one contains "blabla", record 2 contains "an other blabla" ...
-    
     /**
      * 
      * @throws Exception
@@ -163,16 +162,18 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @param response The <code>ServletResponse</code> response
      * @throws IOException 
      */
-    public void recordExchange(ServletRequest request, ServletResponse response) throws IOException {
-    	
-    	Scanner scan = new Scanner(request.getInputStream()).useDelimiter("\\A");
-    	String next = scan.next();
-    	if(next == null){
-    		next = "";
-    	}
-    	ExchangeRecord record = new ExchangeRecord(next, "");
-    	log.debug("request content : " + record.getInMessage());
-    	recordList.add(record);
+    public void recordExchange(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	/*Scanner scan = new Scanner(request.getInputStream()).useDelimiter("\\A");
+    	if(scan.hasNext()){
+    		String next = scan.next();
+    		if(next == null){
+    			next = "";
+    		}*/
+    		//ExchangeRecord record = new ExchangeRecord(next, "");
+    		ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(request));
+        	log.debug("request content : " + record.getInMessage());
+        	recordList.add(record);
+    	/*}*/
     }
     
 }

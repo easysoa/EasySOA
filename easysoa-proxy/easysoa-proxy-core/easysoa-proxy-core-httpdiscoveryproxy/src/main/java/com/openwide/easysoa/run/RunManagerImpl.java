@@ -24,7 +24,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStoreManager;
-import org.easysoa.records.ExchangeRecordStoreFactory;
+import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.monitoring.MonitoringService;

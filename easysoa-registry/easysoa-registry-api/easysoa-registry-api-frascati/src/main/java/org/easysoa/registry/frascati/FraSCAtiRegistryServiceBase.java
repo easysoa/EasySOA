@@ -24,13 +24,14 @@ import java.io.File;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
+
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 import org.nuxeo.frascati.api.ProcessingModeProxy;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * TODO pb : now wrongly depends on Nuxeo through FraSCAtiServiceItf
@@ -68,6 +69,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 			log.debug("Error catched when trying to load Http discovery proxy !", ex);
 			System.out.println("Error catched when trying to load Http discovery proxy : " + ex.getMessage());
 		}*/
+		frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
 	}
 
 	/**

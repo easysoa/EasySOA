@@ -35,6 +35,9 @@ import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.ow2.frascati.util.FrascatiException;
 
+// TODO : Problem with this class
+// This test in project easysoa-registry-api-frascati must not use Nuxeo classes or features !!
+
 @RunWith(FeaturesRunner.class)
 @Features(FraSCAtiFeature.class)
 public class ApiTestHelperBase {
@@ -49,13 +52,14 @@ public class ApiTestHelperBase {
 	protected static void startMock() {
 		log.info("Services Mock Starting");
 		ParsingProcessingContext context  = null;
+		log.info("frascati = " + frascati);
 		try{
-			context = new ParsingProcessingContext(frascati.newProcessingContext());
+			context = new ParsingProcessingContext(frascati.newProcessingContext(null));
 			frascati.processComposite("src/test/resources/RestApiMock.composite",context);
+			componentList.add(context.getRootComposite());			
 		} catch (NuxeoFraSCAtiException e){
 			log.info(e.getMessage());
 		}
-		componentList.add(context.getRootComposite());
 	}
 	
 	/**
@@ -65,7 +69,11 @@ public class ApiTestHelperBase {
 	protected static void startFraSCAti() {
 		log.info("FraSCATI Starting");
 		componentList =  new ArrayList<Composite>();
+		// TODO : do not use Nuxeo Framework in this test to start Frascati
 		frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
+		log.info("frascati = " + frascati);
+		// Use this code instead. PB FraSCAti is not a FraSCAtiServiceItf ....
+		// FraSCAti frascati = FraSCAti.newFraSCAti();
 	}
 	
 }

@@ -91,6 +91,13 @@
       <version>4.1.1</version>
     </dependency>
     
+    <!-- Messaging api -->
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-messaging</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    
     <!-- Discovery API -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>

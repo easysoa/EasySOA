@@ -13,6 +13,7 @@
         <module>easysoa-registry-api-core</module>
         <module>easysoa-registry-api-local</module>
         <module>easysoa-registry-api-remote</module>
+        <module>easysoa-registry-api-messaging</module>        
     </modules>
     
     <build>
