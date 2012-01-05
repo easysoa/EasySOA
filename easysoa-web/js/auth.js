@@ -7,6 +7,7 @@
 
 var settings = require('./settings');
 var nuxeo = require('./nuxeo');
+var utils = require('./utils');
 
 /**
  * Authentication components, service both the authentication service & filter.
@@ -19,17 +20,10 @@ var nuxeo = require('./nuxeo');
 JSONP_HEADERS = {'Content-Type': 'application/javascript'};
 LOGIN_FORM_PATH = '/easysoa/login.html';
 
-stringToRegexp = function(strings) {
-	var result = [];
-	for (var key in strings) {
-		result.push(new RegExp(strings[key]));
-	}
-	return result;
-};
 var noAuthNeeded = settings.NO_AUTH_NEEDED;
 noAuthNeeded.push(LOGIN_FORM_PATH);
 noAuthNeeded.push('/login');
-NO_AUTH_NEEDED_REGEXP = stringToRegexp(noAuthNeeded);
+NO_AUTH_NEEDED_REGEXP = utils.strToRegexp(noAuthNeeded);
 
 //================ I/O =================
 
@@ -70,11 +64,12 @@ login = function(request, response, next) {
 		            		response.end(params.callback + '({result: "ok"})');
 		            	}
 		            	else {
+		            		// FIXME prev always undefined
 		            		response.redirect(params.prev || '/easysoa');
 		            	}
 		            }
 		            else {
-		            	redirectToLoginForm(request, response);
+		            	redirectToLoginForm(request, response, true);
 		            }
 		        });
 	    	}
@@ -84,17 +79,18 @@ login = function(request, response, next) {
 	    	}
     	}
     	else {
-        	redirectToLoginForm(request, response, true);
+        	redirectToLoginForm(request, response, false, true);
     	}
     }
     else {
     	// No credentials provided
-		var message = "No credentials provided";
     	if (params.callback) {
     		response.writeHead(400, JSONP_HEADERS);
-    		message = params.callback + '(' + message + ')';
+    		response.end(params.callback + '(No credentials provided)');
     	}
-		response.end(message);
+    	else {
+        	redirectToLoginForm(request, response, true);
+    	}
     }
 };
 
@@ -149,10 +145,10 @@ isRequestAuthorized = function(request) {
 };
 
 isAuthenticated = function(request) {
-	return request.session.username != undefined;
+	return request.session && request.session.username;
 };
 
-redirectToLoginForm = function(request, response, nuxeoNotReady) {
+redirectToLoginForm = function(request, response, error, nuxeoNotReady) {
 	if (request.query && request.query.callback) {
 		if (nuxeoNotReady) {
 			response.writeHead(500, JSONP_HEADERS);
@@ -163,9 +159,11 @@ redirectToLoginForm = function(request, response, nuxeoNotReady) {
 			response.end(credentials.callback + '({result: "error", error: "Forbidden"})');
 		}
 	}
-	else {
+	else {;
 		var destinationUrl = LOGIN_FORM_PATH + '?'
 			 + ((request.body && request.body.prev) ? 'prev=' + request.body.prev + '&' : '')
+			 + ((request.url) ? 'prev=' + request.url + '&' : '')
+			 + ((error) ? 'error=true&' : '')
 			 + ((nuxeoNotReady) ? 'nuxeoNotReady=true' : '');
 		response.redirect(destinationUrl);
 	}

@@ -13,6 +13,7 @@ var authComponent = require('./auth');
 var proxyComponent = require('./proxy');
 var dbbComponent = require('./dbb');
 var lightComponent = require('./light');
+var nuxeoComponent = require('./nuxeo');
 
 /**
  * Application entry point.
@@ -36,6 +37,7 @@ webServer.configure(function(){
   authComponent.configure(webServer);
   dbbComponent.configure(webServer);
   lightComponent.configure(webServer);
+  nuxeoComponent.configure(webServer);
   
   // Router
   webServer.use(webServer.router);
@@ -48,6 +50,7 @@ webServer.configure(function(){
 });
 webServer.listen(settings.WEB_PORT);
 
+nuxeoComponent.startConnectionChecker();
 
 /*
  * Set up proxy server

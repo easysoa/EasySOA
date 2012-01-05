@@ -11,6 +11,7 @@ var url = require('url');
 
 var base64 = require('./lib/base64').base64;
 var settings = require('./settings');
+var utils = require('./utils');
 
 /**
  * Basic HTTP proxy component, using 'node-http-proxy'.
@@ -21,48 +22,35 @@ var settings = require('./settings');
 
 //=============== Model ================
 
-NUXEO_AUTOMATION_PARSED_URL = url.parse(settings.NUXEO_AUTOMATION_URL);
+NUXEO_REST_PARSED_URL = url.parse(settings.NUXEO_REST_URL);
 
 var ready = false;
 
 //================ I/O =================
 
-computeAuthorization = function(username, password) {
-    if (username != null && password != null) {
-        return "Basic " + base64.encode(username + ':' + password);
-    }
-    else {
-        return null;
-    }
+exports.configure = function(webServer) {
+	// Do nothing
 };
 
-exports.runAutomationRequest = runAutomationRequest = function(session, operation, params, headers, callback, method) {
+exports.runRestRequest = runRestRequest = function(session, path, method, headers, body, callback) {
 
   // Normalize optional params
-  if (operation == null)
-	  operation = '';
-  if (params == null)
-	  params = '';
-  if (headers == null)
-      headers = {};
-  if (callback == null)
-      callback = function() {};
-    
-  headers['Content-Type'] = 'application/json+nxrequest';
-  headers['Accept'] = 'application/json+nxentity, */*';
-  headers['Authorization'] = computeAuthorization(session.username, session.password);
+  method = method || 'GET';
+  headers = headers || {};
+  body = body || '';
+  callback = callback || (function() {});
+   
+  if (session && session.username) {
+	  headers['Authorization'] = utils.encodeAuthorization(session.username, session.password);
+  }
 
   var requestOptions = {
-	  'port' : NUXEO_AUTOMATION_PARSED_URL.port,
-	  'method' : method || 'POST',
-	  'host' : NUXEO_AUTOMATION_PARSED_URL.hostname,
-	  'path' : NUXEO_AUTOMATION_PARSED_URL.href+'/'+operation,
+	  'port' : NUXEO_REST_PARSED_URL.port,
+	  'method' : method,
+	  'host' : NUXEO_REST_PARSED_URL.hostname,
+	  'path' : NUXEO_REST_PARSED_URL.path + '/' + path,
 	  'headers' : headers
   };
-  
-  var body = new Object();
-  body.params = params;
-  body.context = {};
   
   var nxRequest = http.request(requestOptions, function(response) {
         var responseData = '';
@@ -75,11 +63,30 @@ exports.runAutomationRequest = runAutomationRequest = function(session, operatio
   });
   
   nxRequest.on('error', function(data) {
-    callback(false);
+    callback(false, data);
   });
   nxRequest.write(JSON.stringify(body));
   nxRequest.end();
 
+};
+
+exports.runAutomationRequest = runAutomationRequest = function(session, operation, params, headers, callback, method) {
+	
+  // Normalize optional params (callback is also opt.)
+  operation = operation || '';
+  params = params || '';
+  headers = headers || {};
+  method = method || 'POST';
+      
+  headers['Content-Type'] = 'application/json+nxrequest';
+  headers['Accept'] = 'application/json+nxentity, */*';
+  body = {
+	context: {},
+	params: params
+  };
+
+  runRestRequest(session, 'automation/' + operation,
+		  method || 'POST', headers, body, callback);
 };
 
 exports.runAutomationDocumentQuery = function(session, query, schemasToInclude, callback) {
@@ -104,7 +111,7 @@ exports.isReady = function() {
 	return true;//return ready;
 };
 
-exports.areCredentialsValid = function(username, password, callback) {
+exports.areCredentialsValid = areCredentialsValid = function(username, password, callback) {
 	runAutomationRequest({username: username, password: password},
 		null, null, null,
 		function(data) {
@@ -112,4 +119,22 @@ exports.areCredentialsValid = function(username, password, callback) {
 		},
 		method='GET'
 	);
+};
+
+exports.startConnectionChecker = function() {
+	console.log("Checking if Nuxeo is ready...");
+	checkConnection();
+};
+
+checkConnection = function() {
+	areCredentialsValid('Administrator', 'Administrator', function(valid) {
+		if (valid) {
+			console.log("Nuxeo is ready.");
+			ready = true;
+		}
+		else {
+			console.log("...");
+			setTimeout(checkConnection, 2000);
+		}
+	});
 };
