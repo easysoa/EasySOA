@@ -5,11 +5,12 @@
 // 
 // Contact : easysoa-dev@googlegroups.com
 
-var settings = require('../settings.js');
+var settings = require('./settings');
 var httpProxy = require('http-proxy');
 var url = require('url');
 var socketio = require('socket.io');
-var proxy = require('./proxy.js');
+var proxy = require('./proxy');
+var nuxeo = require('./nuxeo');
 
 /**
  * Discovery by Browsing component, responsible for communicating with the DBB client.
@@ -54,14 +55,14 @@ forwardToNuxeo = function(request, response, next) {
 // ============= Controller =============
 
 initSocketIOConnection = function(socket) {
-	// TODO
-   /* // Notify that Nuxeo is ready
-    if (nuxeoReady) {
+    // Notify that Nuxeo is ready
+    if (nuxeo.isReady()) {
       socket.emit('ready');
-    }*/
+    }
     if (clientWellConfigured) {
       socket.emit('proxyack');
     }
+	// TODO
    /*// Send stored WSDLs
     for (key in wsdlList) {
       socket.emit('wsdl', wsdlList[key]);

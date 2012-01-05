@@ -5,14 +5,14 @@
 // 
 // Contact : easysoa-dev@googlegroups.com
 
-
-var settings = require('../settings.js');
+var settings = require('./settings');
 var http = require('http');
 var express = require('express');
 
-var authComponent = require('./auth.js');
-var proxyComponent = require('./proxy.js');
-var dbbComponent = require('./dbb.js');
+var authComponent = require('./auth');
+var proxyComponent = require('./proxy');
+var dbbComponent = require('./dbb');
+var lightComponent = require('./light');
 
 /**
  * Application entry point.
@@ -35,6 +35,7 @@ webServer.configure(function(){
   // Components routing & middleware configuration
   authComponent.configure(webServer);
   dbbComponent.configure(webServer);
+  lightComponent.configure(webServer);
   
   // Router
   webServer.use(webServer.router);

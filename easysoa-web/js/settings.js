@@ -12,13 +12,15 @@
 
 exports.WEB_PORT = '8083';
 
-exports.WWW_PATH = __dirname + '/www';
+exports.WWW_PATH = __dirname + '/../www';
 
 exports.NO_AUTH_NEEDED = [
-  '^core/img/*',
-  '^core/js/bookmarklet/*',
-  '^img/*',
-  '^index.html$'
+  '^/easysoa[/]?$',
+  '^/easysoa/index.html',
+  '^/easysoa/users.html',
+  '^/easysoa/core/img/*',
+  '^/easysoa/img/*',
+  '^/easysoa/core/js/bookmarklet/*'
 ];
 
 /* ==============
