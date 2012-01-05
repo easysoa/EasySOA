@@ -15,8 +15,8 @@ public class Exchange {
 	// Exchange ID
 	private String exchangeID;
 	// Exchange type
-	private ExchangeType exchangeType;	
-
+	private ExchangeType exchangeType;
+	
 	/**
 	 *	Message types 
 	 */
