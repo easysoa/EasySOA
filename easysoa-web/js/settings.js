@@ -1,39 +1,57 @@
-var settings = {
-    
-    // Port of the HTTP web & proxy servers
-    webPort: "8083",
-    proxyPort: "8081",
-    
-    // Port of the EasySOA Light UI scaffolding server
-    scaffoldingServer: "http://127.0.0.1:8090",
-    
-    // Web root folder
-    webRoot : "../www",
-    
-    // Scrapers to be used to find WSDLs
-    scrapers: [
-      "http://127.0.0.1:8080/nuxeo/site/easysoa/servicefinder/?" // Nuxeo
-    ],
-    
-    // Paths to ignore during scraping
-    ignore: [
-      ".css",
-      ".jpg",
-      ".gif",
-      ".png",
-      ".js",
-      ".ico",
-      ":8080/nuxeo", // Nuxeo (part of EasySOA Core)
-      ":7001", // FraSCAti (part of EasySOA Light)
-    ],
+// EasySOA Web
+// Copyright (c) 2011 Open Wide and others
+// 
+// MIT licensed
+// 
+// Contact : easysoa-dev@googlegroups.com
 
-    // Address of the EasySOA rest services
-    nuxeoEasySOARest: "http://127.0.0.1:8080/nuxeo/site/easysoa",
-        
-    // Address of the REST services on which to send notifications
-    nuxeoDiscovery: "http://127.0.0.1:8080/nuxeo/site/easysoa/discovery/",
-    
-    // Address of the automation services, to test Nuxeo status and the user login
-    nuxeoAutomation: "http://127.0.0.1:8080/nuxeo/site/automation"
+/* ===================
+ * Web server settings
+ * ===================
+ */
 
-};
+exports.WEB_PORT = '8083';
+
+exports.WWW_PATH = __dirname + '/../www';
+
+exports.NO_AUTH_NEEDED = [
+  '^[/]?$',
+  '^/easysoa[/]?$',
+  '^/easysoa/index.html',
+  '^/easysoa/users.html',
+  '^/easysoa/style.css',
+  '^/easysoa/js/*',
+  '^/easysoa/lib/*',
+  '^/easysoa/img/*',
+  '^/easysoa/core/img/*',
+  '^/easysoa/core/js/bookmarklet/*',
+  '^/intranet/*',
+  '^/scaffoldingProxy/*',
+  '^/favicon.ico'
+];
+
+/* ==============
+ * Proxy settings
+ * ==============
+ */
+
+exports.PROXY_PORT = '8081';
+
+exports.SCAFFOLDING_SERVER_URL				= "http://127.0.0.1:8090",
+exports.NUXEO_URL = NUXEO_URL               = 'http://127.0.0.1:8080/nuxeo';
+exports.NUXEO_REST_URL               		= NUXEO_URL + '/site';
+exports.EASYSOA_ROOT_URL = EASYSOA_ROOT_URL = NUXEO_URL + '/site/easysoa';
+exports.EASYSOA_DISCOVERY_PATH              = 'easysoa/discovery/service';
+exports.EASYSOA_SERVICE_FINDER_PATH         = 'easysoa/servicefinder';
+
+exports.SERVICE_FINDER_IGNORE = [
+  '.css',
+  '.jpg',
+  '.gif',
+  '.png',
+  '.js',
+  '.ico',
+  'localhost:7001', // FraSCAti (part of EasySOA Light)
+  '127.0.0.1:7001',
+  NUXEO_URL
+];

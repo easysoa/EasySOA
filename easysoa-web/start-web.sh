@@ -9,4 +9,4 @@ echo "DEPENDENCIES: Service registry (to log in)"
 echo $LINE
 
 cd js
-node web.js
+node easysoa.js
