@@ -10,9 +10,6 @@
   	<name>EasySOA Registry Messaging API</name>
   	<url>http://maven.apache.org</url>
 
-
-
-
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	</properties>
@@ -32,5 +29,22 @@
           	<scope>test</scope>
         </dependency>
   	</dependencies>
+  	
+    <build>    
+        <!-- Plugin management -->
+        <pluginManagement>
+            <plugins>
+                <!-- Compile with Java 1.6 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+           	</plugins>
+    	</pluginManagement>
+	</build>  	
   	
 </project>
