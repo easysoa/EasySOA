@@ -5,10 +5,11 @@
 // 
 // Contact : easysoa-dev@googlegroups.com
 
-var settings = require('./settings');
 var httpProxy = require('http-proxy');
 var url = require('url');
 var socketio = require('socket.io');
+
+var settings = require('./settings');
 var proxy = require('./proxy');
 var nuxeo = require('./nuxeo');
 
@@ -23,6 +24,7 @@ EASYSOA_PARSED_ROOT_URL = url.parse(EASYSOA_ROOT_URL);
 // =============== Model ================
 
 var clientWellConfigured = false; // XXX: Is common to everybody (should be part of a session)
+
 
 // ================ I/O =================
 
@@ -51,6 +53,7 @@ forwardToNuxeo = function(request, response, next) {
 			EASYSOA_PARSED_ROOT_URL.port,
 			EASYSOA_PARSED_ROOT_URL.path + parsedUrl.path.replace('/dbb', ''));
 };
+
 
 // ============= Controller =============
 

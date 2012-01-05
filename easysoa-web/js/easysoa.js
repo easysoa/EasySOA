@@ -5,10 +5,10 @@
 // 
 // Contact : easysoa-dev@googlegroups.com
 
-var settings = require('./settings');
 var http = require('http');
 var express = require('express');
 
+var settings = require('./settings');
 var authComponent = require('./auth');
 var proxyComponent = require('./proxy');
 var dbbComponent = require('./dbb');
