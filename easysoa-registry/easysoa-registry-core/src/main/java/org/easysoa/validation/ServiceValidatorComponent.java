@@ -15,7 +15,6 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
-import org.easysoa.services.LevenshteinDistance;
 import org.easysoa.services.ServiceValidationService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;

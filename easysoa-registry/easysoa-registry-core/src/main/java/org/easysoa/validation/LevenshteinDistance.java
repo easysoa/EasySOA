@@ -1,4 +1,4 @@
-package org.easysoa.services;
+package org.easysoa.validation;
 
 /**
  * 
