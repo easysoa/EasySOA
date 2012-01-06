@@ -89,6 +89,8 @@ public class InMessage implements Message {
 	// private Long headersSize;
 	// private Long bodySize;
 	private CustomFields customFields;
+	
+	private long requestTimeStamp = 0;
 
 	/**
 	 * Default constructor
@@ -292,6 +294,22 @@ public class InMessage implements Message {
 			}
 		}*/
 		return urlBuffer.toString();
+	}
+
+	/**
+	 * Get the timestamp when the request has been received
+	 * @return
+	 */
+	public long getRequestTimeStamp() {
+		return requestTimeStamp;
+	}
+
+	/**
+	 * Set the timestamp
+	 * @param requestTimeStamp
+	 */
+	public void setRequestTimeStamp(long requestTimeStamp) {
+		this.requestTimeStamp = requestTimeStamp;
 	}
 
 	/*public void setCompleteUrl(String completeUrl) {

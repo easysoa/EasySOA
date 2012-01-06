@@ -6,6 +6,7 @@ package com.openwide.easysoa.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
@@ -120,11 +121,15 @@ public class RequestForwarder {
 		setHeaders(inMessage, httpUriRequest);
 		
 		// Send the request
-    	HttpResponse clientResponse = httpClient.execute(httpUriRequest);		
-		
+		Date requestSendDate = new Date();
+		inMessage.setRequestTimeStamp(requestSendDate.getTime());
+		HttpResponse clientResponse = httpClient.execute(httpUriRequest);
+		Date responseSendDate = new Date();
+    	
     	// Get and package the response
     	// TODO set the missing value like timnings ....
     	OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
+    	outMessage.setResponseTimeStamp(responseSendDate.getTime());
     	MessageContent messageContent = new MessageContent();
     	
 		// Read the response message content

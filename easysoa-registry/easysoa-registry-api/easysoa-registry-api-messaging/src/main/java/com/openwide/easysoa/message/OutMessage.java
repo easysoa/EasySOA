@@ -44,6 +44,7 @@ public class OutMessage implements Message {
 	// private Long headersSize = new Long(-1);
 	// private Long bodySize = new Long(-1);
 	private String comment;
+	private long responseTimeStamp = 0;	
 
 	public OutMessage(){}
 
@@ -121,6 +122,14 @@ public class OutMessage implements Message {
 
 	public void setStatusText(String statusText) {
 		this.statusText = statusText;
+	}
+
+	public long getResponseTimeStamp() {
+		return responseTimeStamp;
+	}
+
+	public void setResponseTimeStamp(long responseTimeStamp) {
+		this.responseTimeStamp = responseTimeStamp;
 	}
 	
 }

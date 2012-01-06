@@ -137,4 +137,18 @@ public class ExchangeRecord {
 		this.exchange = exchange;
 	}
 
+	/**
+	 * Return the duration in ms between the request and the response
+	 * @return The time between request and response in ms if the InMessage and OutMessage timestamp are set
+	 * and InMessage timestamp < OutMessage timestamp
+	 */
+	public long getDuration() {
+		if(inMessage.getRequestTimeStamp() < outMessage.getResponseTimeStamp()){
+			return outMessage.getResponseTimeStamp() - inMessage.getRequestTimeStamp(); 
+		} else {
+			return 0;
+		}
+		
+	}	
+	
 }
