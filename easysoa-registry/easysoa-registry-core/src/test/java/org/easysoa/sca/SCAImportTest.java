@@ -33,7 +33,7 @@ import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.sca.xml.XMLScaImporter;
 import org.easysoa.services.CoreServiceTestHelperBase;
 import org.easysoa.services.DocumentService;
-import org.easysoa.test.rest.RepositoryLogger;
+import org.easysoa.test.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.nuxeo.ecm.core.api.ClientException;

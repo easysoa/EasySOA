@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.environments;
+package org.easysoa.beans;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

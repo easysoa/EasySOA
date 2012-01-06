@@ -36,7 +36,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.test.rest.RepositoryLogger;
+import org.easysoa.test.RepositoryLogger;
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;

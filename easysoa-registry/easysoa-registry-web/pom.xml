@@ -1,16 +1,34 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>easysoa-registry-web</artifactId>
+  <name>EasySOA Registry Web</name>
+
+  <parent>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../easysoa-registry-parent/pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+    <!-- EasySOA -->
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-core</artifactId>
+    </dependency>
     
-    <artifactId>easysoa-registry-web</artifactId>
-    <name>EasySOA Registry Web</name>
-    
-	<parent>
-	  <groupId>org.easysoa.registry</groupId>
-	  <artifactId>easysoa-registry-parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
-		<relativePath>../easysoa-registry-parent/pom.xml</relativePath>
-	</parent>
-	
+    <!-- Beans/UI -->
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>

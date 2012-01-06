@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.test.rest;
+package org.easysoa.test;
 
 import org.nuxeo.ecm.core.api.DocumentModel;
 

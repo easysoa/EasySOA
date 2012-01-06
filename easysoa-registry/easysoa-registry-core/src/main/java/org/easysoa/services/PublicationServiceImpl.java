@@ -1,4 +1,4 @@
-package org.easysoa.environments;
+package org.easysoa.services;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -6,7 +6,6 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.PublicationService;
 import org.nuxeo.common.utils.IdUtils;

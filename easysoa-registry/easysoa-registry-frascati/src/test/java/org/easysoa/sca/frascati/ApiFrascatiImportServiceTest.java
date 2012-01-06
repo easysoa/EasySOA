@@ -16,7 +16,7 @@ import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
-import org.easysoa.test.rest.RepositoryLogger;
+import org.easysoa.test.RepositoryLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

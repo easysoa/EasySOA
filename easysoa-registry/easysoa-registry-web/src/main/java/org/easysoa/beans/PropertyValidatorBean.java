@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.properties;
+package org.easysoa.beans;
 
 import java.net.MalformedURLException;
 import java.net.URL;
