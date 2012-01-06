@@ -21,6 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
@@ -60,7 +61,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		assertTrue(response.contains("comment (String) : <input type=\"text\" name=\"comment\" value=\"test\" />"));
 		// Specify the exchangeRecord to use => run/exchangeRecord to get the request 
 		
-		HttpPost postRequest = new HttpPost("http://localhost:8085/replayWithTemplate/Test_Run/1/testTemplate");
+		HttpPost postRequest = new HttpPost("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replayWithTemplate/Test_Run/1/testTemplate");
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("user", "FR3Bourgogne.xml")); // tests HTTP Form-like params (others being HTTP path, query and SOAP)
 		formparams.add(new BasicNameValuePair("param2", "value2"));

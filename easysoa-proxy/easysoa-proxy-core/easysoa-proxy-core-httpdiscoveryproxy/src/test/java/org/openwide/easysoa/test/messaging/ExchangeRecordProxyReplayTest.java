@@ -25,6 +25,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.List;
 
+import javax.xml.ws.WebServiceRef;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -38,8 +40,10 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.records.ExchangeRecord;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.openwide.easysoa.test.mock.meteomock.MeteoMock;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
@@ -56,8 +60,12 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeRecordProxyReplayTest.class.getName());
 
-	@Before
-	public void setUp() throws FrascatiException {
+	// Reference to Meteo Mock service
+    //@WebServiceRef(wsdlLocation="http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/helloservice/hello?wsdl") static MeteoMock service;	
+	
+	//@Before
+	@BeforeClass
+	public static void setUp() throws FrascatiException {
 		// clean the old exchange records files
 		cleanOldFiles();
 		// Start fraSCAti
@@ -68,25 +76,17 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		startMockServices(false);
 	}	
 
+	/**
+	 * This test works with the twitter mock (REST exchanges)
+	 * @throws Exception
+	 */
 	@Test
-	public void testReplay() throws Exception {
-	
-		
-		// TODO : rewrite this test to :
-		// - create a run
-		// - Send request to the proxy
-		// - save the run
-		// - Get the store lit
-		// - get the record list
-		// - replay and check each of the records
+	public void testReplayWithRestMessages() throws Exception {
 
 		DefaultHttpClient httpClient = new DefaultHttpClient();		
 		
 		// Start a new Run
 		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/Test_Run");
-		//BasicHttpParams postRequestParams = new BasicHttpParams();
-		//postRequestParams.setParameter("runName", "Test_Run");
-		//newRunPostRequest.setParams(postRequestParams);
 		assertEquals("Run 'Test_Run' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));
 		
 		// Get the twitter mock set and send requests to the mock through the HTTP proxy
@@ -112,21 +112,21 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		assertEquals("Current run stopped !", httpClient.execute(stopRunPostRequest, new BasicResponseHandler()));
 
 		// get a list of recorded exchange store
-		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecordStorelist");
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordStorelist");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		logger.debug("Exchange record store list response : " + entityResponseString);
 		assertTrue(entityResponseString.contains("Test_Run"));
 		
 		// Get an exchange record
-		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecord/Test_Run/1");
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/Test_Run/1");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		logger.debug("Exchange record response : " + entityResponseString);
 		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));
 		
 		// get a list of recorded exchanges contained in the Test_Run folder
-		httpUriRequest = new HttpGet("http://localhost:8085/getExchangeRecordList/Test_Run");
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/Test_Run");
 		//logger.debug("Sending request");
 		response = httpClient.execute(httpUriRequest);
 		//logger.debug("Reading response");
@@ -143,7 +143,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		ExchangeRecord record = recordList.get(0); 
 		//for(ExchangeRecord record : recordList){
 			originalResponse = record.getOutMessage().getMessageContent().getContent();
-			httpUriRequest = new HttpGet("http://localhost:8085/replay/Test_Run/" + record.getExchange().getExchangeID());
+			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/Test_Run/" + record.getExchange().getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
 			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
@@ -152,6 +152,106 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 			assertEquals(originalResponse, entityResponseString);
 		//}
 	}
+	
+	/**
+	 * This test works with the Meteo mock (SOAP WSDL exchanges)
+	 * @throws Exception
+	 */
+	@Test
+	@Ignore
+	public void testReplayWithSoapMessages() throws Exception {
+		
+		DefaultHttpClient httpClient = new DefaultHttpClient();		
+		
+		// Start a new Run
+		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/Meteo_WSDL_TestRun");
+		assertEquals("Run 'Meteo_WSDL_TestRun' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));		
+		
+		// send requests to the meteo mock through the HTTP proxy
+		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
+		
+/**		
+
+import javax.xml.ws.WebServiceRef;
+import helloservice.endpoint.HelloService;
+import helloservice.endpoint.Hello;
+
+public class HelloClient {
+    @WebServiceRef(wsdlLocation="http://localhost:8080/
+            helloservice/hello?wsdl")
+    static HelloService service;
+
+    public static void main(String[] args) {
+        try {
+            HelloClient client = new HelloClient();
+            client.doTest(args);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void doTest(String[] args) {
+        try {
+            System.out.println("Retrieving the port from
+                     the following service: " + service);
+            Hello port = service.getHelloPort();
+            System.out.println("Invoking the sayHello operation
+                     on the port.");
+
+            String name;
+            if (args.length > 0) {
+                name = args[0];
+            } else {
+                name = "No Name";
+            }
+
+            String response = port.sayHello(name);
+            System.out.println(response);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+		
+**/	
+		// TODO :
+		// OK modifications to have a fully functional soap meteo mock
+		// - use a soap wsdl client in this test to get at least a request/response record for the meteo mock
+		// - check that the exchange record is well created and filled with soap request/response data
+		// - Test the replay function with a soap exchange record
+		
+		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+		UrlMock urlMock = new UrlMock();
+		HttpResponse response;
+		String entityResponseString;
+		HttpUriRequest httpUriRequest;
+		for(String cityName : urlMock.getMeteoMockCities()){
+			/*
+			logger.info("Request send : " + url);
+			httpUriRequest = new HttpGet(url);
+			response = httpProxyClient.execute(httpUriRequest);
+			// Need to read the response body entierely to be able to send another request
+			entityResponseString = ContentReader.read(response.getEntity().getContent());
+			*/
+		}		
+		
+		
+	}
+	
+	/**
+	 * This test do nothing, just wait for a user action to stop the proxy. 
+	 * @throws ClientException
+	 * @throws SOAPException
+	 * @throws IOException
+	 */
+	@Test
+	public final void testWaitUntilRead() throws Exception {
+		logger.info("ExchangeRecordProxyReplayTest started, wait for user action to stop !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		logger.info("ExchangeRecordProxyReplayTest stopped !");
+	}	
 	
     /**
      * Stop FraSCAti components
@@ -166,7 +266,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
     /**
      * Delete the old exchange record file remaining in target path
      */
-    protected void cleanOldFiles(){
+    protected static void cleanOldFiles(){
     	File folder = new File("target/");
     	File[] listOfFiles = folder.listFiles();
     	for (File file : listOfFiles) {

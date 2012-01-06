@@ -122,13 +122,13 @@ public class RequestForwarder {
 		
 		// Send the request
 		Date requestSendDate = new Date();
-		inMessage.setRequestTimeStamp(requestSendDate.getTime());
 		HttpResponse clientResponse = httpClient.execute(httpUriRequest);
 		Date responseSendDate = new Date();
     	
     	// Get and package the response
     	// TODO set the missing value like timnings ....
     	OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
+		inMessage.setRequestTimeStamp(requestSendDate.getTime());
     	outMessage.setResponseTimeStamp(responseSendDate.getTime());
     	MessageContent messageContent = new MessageContent();
     	

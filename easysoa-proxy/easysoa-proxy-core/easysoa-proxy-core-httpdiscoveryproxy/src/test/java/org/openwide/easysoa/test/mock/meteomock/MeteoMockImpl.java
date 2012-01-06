@@ -20,14 +20,35 @@
 
 package org.openwide.easysoa.test.mock.meteomock;
 
+import java.io.File;
+import java.io.FileInputStream;
+import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
 import org.osoa.sca.annotations.Service;
+import com.openwide.easysoa.util.ContentReader;
 
 @Service(MeteoMock.class)
 public class MeteoMockImpl implements MeteoMock {
 
+	// Logger
+	private static Logger logger = Logger.getLogger(MeteoMockImpl.class.getName());
+	
 	@Override
 	public String getTomorrowForecast(String city) {
-		return "Work in progress";
+		// Open the response file with name equals to 'city + MeteoMockResponse.xml'
+		Log.debug("Meteo forecast asked for " + city);
+		String response;
+		try{
+			File xmlResponseFile = new File("src/test/resources/meteoMockMessages/" +  city.toLowerCase() + "MeteoMockResponse.xml");
+			response = ContentReader.read(new FileInputStream(xmlResponseFile));
+			response = response.substring(response.indexOf("<ns1:return>"), response.lastIndexOf("</ns1:return>"));
+		}
+		catch(Exception ex){
+			response = "Sorry, No Meteo forecast for this city was found !";
+			ex.printStackTrace();
+		}
+		logger.debug("response = " + response);
+		return response;
 	}
 
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns1:getTomorrowForecastResponse xmlns:ns1="http://meteomock.mock.test.easysoa.openwide.org/">
+         <ns1:return>Cloudy;Feels Like:45 °F;Barometer:30.36 in and rising rapidly;Humidity:61 %;Visibility:6.21 mi;Dewpoint:32 °F;Wind:N 7 mph;UV Index:--;UV Description:Low;Sunrise:8:20 AM;Sunset:5:11 PM</ns1:return>
+      </ns1:getTomorrowForecastResponse>
+   </soap:Body>
+</soap:Envelope>

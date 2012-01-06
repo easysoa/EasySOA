@@ -238,6 +238,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		logger.debug("recordID " + exchangeRecordID);
 		try {
 			ExchangeRecord record = getExchangeRecord(exchangeStoreName, exchangeRecordID);
+			//
 			Template template = getTemplate(templateName);
 			// get the new parameter values contained in the received request form, How to get unknow parameters ?
 			if(record != null){

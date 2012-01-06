@@ -37,20 +37,14 @@ public class UrlMock {
 	 */
 	private static Logger logger = Logger.getLogger(UrlMock.class.getName());	
 	
-	/**
-	 *  
-	 */
+	//
 	private ArrayList<String> freebooksTestSet;
-	/**
-	 * 
-	 */
+	//
 	private ArrayList<String> iMediaTestSet;
-	/**
-	 * 
-	 */
+	//
 	private ArrayList<String> twitterTestSet;
-	
-	//private ArrayList<String> mockTwitterTestSet;
+	//
+	private ArrayList<String> citiesTestSet;
 	
 	/**
 	 * Variables used by the iMedia data set at init
@@ -157,6 +151,19 @@ public class UrlMock {
 		return twitterTestSet;
 	}
 
+	/**
+	 * A cities test set for Meteo Mock
+	 * @return An <code>ArrayList</code> of city names
+	 */
+	public ArrayList<String> getMeteoMockCities(){
+		// Cities test set for Meteo Mock
+		citiesTestSet = new ArrayList<String>();
+		citiesTestSet.add("Lyon");
+		citiesTestSet.add("Grenoble");
+		citiesTestSet.add("Lille");
+		return citiesTestSet;
+	}
+	
 	/**
 	 * To get the Twitter URL data set
 	 * @return The Twitter URL data set
