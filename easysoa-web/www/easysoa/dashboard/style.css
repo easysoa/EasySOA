@@ -1,22 +1,22 @@
 input[type=button] {
-    font-size: 13pt;
-    padding: 5px;
-    margin: 10px;
+	font-size: 13pt;
+	padding: 5px;
+	margin: 10px;
 }
 
 #headerIntegration {
-  width: 100%;
-  padding-top: 10px;
-  font-size: 14pt;
-  height: 60px;
-  background: url('/easysoa/img/Integration50.png') white;
-  background-repeat: no-repeat;
-  background-position: 20px 10px;
-  border-bottom: 2px solid #444;
+	width: 100%;
+	padding-top: 10px;
+	font-size: 14pt;
+	height: 60px;
+	background: url('/easysoa/img/Integration50.png') white;
+	background-repeat: no-repeat;
+	background-position: 20px 10px;
+	border-bottom: 2px solid #444;
 }
 
 #headerIntegrationContents {
-  padding-left: 330px;
+	padding-left: 330px;
 }
 
 #placeholder {
@@ -26,16 +26,18 @@ input[type=button] {
 #error {
 	display: none;
 	color: darkred;
-    background-color: #FFF5F5;
-    border: 1px solid darkred;
-    padding: 10px;
-    margin: 5px;
-    width: 400px;
+	background-color: #FFF5F5;
+	border: 1px solid darkred;
+	padding: 10px;
+	margin: 5px;
+	width: 400px;
 }
 
-#serviceentries {
+table#serviceentries {
 	width: 70%;
 	background-color: white;
+	border-collapse: collapse;
+	border: 2px solid grey;
 }
 
 .serviceEntryLocalState {
@@ -43,47 +45,46 @@ input[type=button] {
 }
 
 .serviceEntryLocalServiceName {
-    font-size: 11pt;
-    text-decoration: underline;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
-    cursor: pointer;
+	font-size: 11pt;
+	text-decoration: underline;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+	cursor: pointer;
 }
 
 .serviceEntryArrow {
-    text-align: center;
+	text-align: center;
 }
 
 .serviceEntryReferencedServiceName {
-    font-weight: bold;
-    text-decoration: underline;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
-    cursor: pointer;
-    width: 30%;
+	font-weight: bold;
+	text-decoration: underline;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+	cursor: pointer;
+	width: 30%;
 }
 
 .serviceEntryValidationIcon {
-    text-align: center;
+	text-align: center;
 }
 
 .serviceEntryValidationResult {
-    font-size: 10pt;
-    font-family: monospace;
-    text-align: center;
-    position: relative;
+	font-size: 10pt;
+	font-family: monospace;
+	text-align: center;
 }
 
 .serviceEntryValidationResult div {
-    float: right;
-    display: none;
+	float: right;
+	display: none;
 }
 
 .serviceEntryValidationResult .visible {
 	display: block !important;
-    position: absolute;
+	position: absolute;
 	border: 1px solid #AAA;
 	border-radius: 10px;
 	padding: 5px;
@@ -94,11 +95,11 @@ input[type=button] {
 }
 
 .selectedLocal {
-    background-color: #FFA;
+	background-color: #FFA;
 }
 
 .selectedReference {
-    background-color: #FFA;
+	background-color: #FFA;
 }
 
 .correlationResult {
@@ -112,15 +113,17 @@ input[type=button] {
 #actionButtons {
 	width: 70%;
 }
+
 #actionButtons td {
 	background-color: #DDD;
 }
+
 #actionButtons div {
-    float: left;
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-right: 30px;
-    height: 40px;
+	float: left;
+	margin-top: 20px;
+	margin-left: 10px;
+	margin-right: 30px;
+	height: 40px;
 }
 
 .actionButton {
@@ -131,6 +134,7 @@ input[type=button] {
 	font-size: 10pt;
 	margin-left: 20px;
 }
+
 .legend img {
 	height: 15px;
 }

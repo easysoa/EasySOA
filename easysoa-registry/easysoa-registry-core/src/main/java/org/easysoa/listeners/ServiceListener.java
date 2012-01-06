@@ -47,6 +47,7 @@ import org.easysoa.services.HttpDownloaderImpl;
 import org.easysoa.services.ServiceValidationService;
 import org.easysoa.validation.CorrelationMatch;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -69,6 +70,8 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
  */
 public class ServiceListener implements EventListener {
     
+    // XXX Could use some cleanup/refactoring
+    
     private static Log log = LogFactory.getLog(ServiceListener.class);
 
     public void handleEvent(Event event) {
@@ -90,6 +93,17 @@ public class ServiceListener implements EventListener {
         if (!type.equals(DOCTYPE) || doc.isProxy()) {
             return;
         }
+        
+        // Check if we're running validation
+        boolean isRunningValidation;
+        try {
+            DocumentModel oldDoc = session.getDocument(doc.getRef());
+            Boolean wasDirty = (Boolean) oldDoc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
+            Boolean isNowDirty = (Boolean) doc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
+            isRunningValidation = (isNowDirty != null) && (wasDirty != isNowDirty);
+        } catch (ClientException e1) {
+            isRunningValidation = false;
+        }
 
         try {
             
@@ -102,7 +116,7 @@ public class ServiceListener implements EventListener {
             }
 
             // Extract data from WSDL
-            if (fileUrl != null) {
+            if (fileUrl != null && !isRunningValidation) {
                 
                 try {
                     
@@ -261,9 +275,7 @@ public class ServiceListener implements EventListener {
             }
 
             // Make sure the validation is re-run (unless we precisely just changed the validation state)
-            DocumentModel oldDoc = session.getDocument(doc.getRef());
-            Object wasDirty = oldDoc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
-            if (wasDirty == null || wasDirty.equals(doc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY))) {
+            if (!isRunningValidation) {
             	doc.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY, true);
             }
             

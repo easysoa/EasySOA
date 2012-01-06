@@ -32,7 +32,7 @@ var ready = false;
 exports.configure = function(webServer) {
 	webServer.get('/nuxeo/discovery*', forwardToNuxeo);
 	webServer.get('/nuxeo/servicefinder*', forwardToNuxeo);
-	webServer.get('/nuxeo/dashboard*', forwardToNuxeo);
+	webServer.all('/nuxeo/dashboard*', forwardToNuxeo);
 };
 
 forwardToNuxeo = function(request, response, next) {

@@ -58,6 +58,8 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
  */
 public class ServiceAPIListener implements EventListener {
 
+    // XXX Could use some cleanup/refactoring
+    
     private static Log log = LogFactory.getLog(ServiceAPIListener.class);
 
     public void handleEvent(Event event) {

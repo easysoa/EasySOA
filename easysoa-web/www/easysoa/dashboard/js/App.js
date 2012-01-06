@@ -212,6 +212,7 @@ window.AppView = Backbone.View.extend({
     breakReferenceLink: function() {
         if (this.selectedLocal != null && this.services.getByCid(this.selectedLocal).hasReference()) {
             var fromId = this.services.getByCid(this.selectedLocal).get('id');
+            var app = this;
             $.ajax({
                 url: '/nuxeo/dashboard/service/' + fromId + '/linkto/null',
                 type: 'POST',
@@ -247,6 +248,8 @@ window.AppView = Backbone.View.extend({
             case 'removeService': lifecycleTransition = 'delete'; break;
             case 'resetService': lifecycleTransition = 'backToProject'; break;
             }
+            
+            var app = this;
             $.ajax({
                 url: '/nuxeo/dashboard/service/' + serviceId + '/lifecycle/' + lifecycleTransition,
                 type: 'POST',
