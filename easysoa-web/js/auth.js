@@ -23,6 +23,7 @@ LOGIN_FORM_PATH = '/easysoa/login.html';
 var noAuthNeeded = settings.NO_AUTH_NEEDED;
 noAuthNeeded.push(LOGIN_FORM_PATH);
 noAuthNeeded.push('/login');
+noAuthNeeded.push('/userdata');
 NO_AUTH_NEEDED_REGEXP = utils.strToRegexp(noAuthNeeded);
 
 //================ I/O =================
@@ -99,8 +100,7 @@ logout = function(request, response, next) {
     request.session.destroy();
     console.log("[INFO] Session destroyed for: "+username);
 	if (request.query && request.query.callback) {
-		response.writeHead(200, JSONP_HEADERS);
-		message = params.callback + '({result: "ok"})';
+		response.end(request.query.callback + '({result: "ok"})');
 	}
 	else {
 		response.redirect('/easysoa');

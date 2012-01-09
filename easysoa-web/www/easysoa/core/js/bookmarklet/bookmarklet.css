@@ -27,14 +27,20 @@ div.easysoa-frame {
 	color: grey;
 }
 
-div.easysoa-frame input {
+.easysoa-frame input {
 	width: 150px;
 	font-size: 14pt;
 	margin: 3px;
+	background-color: #EEE;
+	border: 1px solid black;
+	border-style: inset;
+	padding: 2px;
 }
 
-div.easysoa-frame input[type=submit] {
+.easysoa-frame input[type=submit] {
 	width: 200px;
+	border: 2px solid grey;
+	border-style: outset;
 }
 
 div.easysoa-form-label {
