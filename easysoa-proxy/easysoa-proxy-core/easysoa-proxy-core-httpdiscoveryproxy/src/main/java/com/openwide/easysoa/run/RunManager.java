@@ -50,7 +50,6 @@ public interface RunManager {
 	 * Delete the run
 	 * @throws Exception If the run cannot be deleted
 	 */
-	//public void deleteRun(String runName) throws Exception;
 	public String delete() throws Exception;
 	
 	/**

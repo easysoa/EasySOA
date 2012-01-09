@@ -25,8 +25,6 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.List;
 
-import javax.xml.ws.WebServiceRef;
-
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -43,12 +41,15 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openwide.easysoa.test.mock.meteomock.MeteoMock;
+import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
+import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
 
+import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.ContentReader;
+import com.openwide.easysoa.util.RequestForwarder;
 
 /**
  * To test the replay function associated with an exchange record discovered by the http discovery proxy 
@@ -59,11 +60,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeRecordProxyReplayTest.class.getName());
-
-	// Reference to Meteo Mock service
-    //@WebServiceRef(wsdlLocation="http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/helloservice/hello?wsdl") static MeteoMock service;	
 	
-	//@Before
 	@BeforeClass
 	public static void setUp() throws FrascatiException {
 		// clean the old exchange records files
@@ -110,7 +107,10 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		// Stop and save the run
 		HttpPost stopRunPostRequest = new HttpPost("http://localhost:8084/run/stop");
 		assertEquals("Current run stopped !", httpClient.execute(stopRunPostRequest, new BasicResponseHandler()));
-
+		// delete the run
+		HttpPost deleteRunPostRequest = new HttpPost("http://localhost:8084/run/delete");
+		assertEquals("Run deleted !", httpClient.execute(deleteRunPostRequest, new BasicResponseHandler()));		
+		
 		// get a list of recorded exchange store
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordStorelist");
 		response = httpClient.execute(httpUriRequest);
@@ -158,7 +158,6 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
 	public void testReplayWithSoapMessages() throws Exception {
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();		
@@ -166,76 +165,65 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		// Start a new Run
 		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/Meteo_WSDL_TestRun");
 		assertEquals("Run 'Meteo_WSDL_TestRun' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));		
+
+		// Set the discovery proxy
+		System.setProperty("http.proxyHost", "localhost");
+		System.setProperty("http.proxyPort", "8082");
 		
-		// send requests to the meteo mock through the HTTP proxy
-		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
-		
-/**		
-
-import javax.xml.ws.WebServiceRef;
-import helloservice.endpoint.HelloService;
-import helloservice.endpoint.Hello;
-
-public class HelloClient {
-    @WebServiceRef(wsdlLocation="http://localhost:8080/
-            helloservice/hello?wsdl")
-    static HelloService service;
-
-    public static void main(String[] args) {
-        try {
-            HelloClient client = new HelloClient();
-            client.doTest(args);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void doTest(String[] args) {
-        try {
-            System.out.println("Retrieving the port from
-                     the following service: " + service);
-            Hello port = service.getHelloPort();
-            System.out.println("Invoking the sayHello operation
-                     on the port.");
-
-            String name;
-            if (args.length > 0) {
-                name = args[0];
-            } else {
-                name = "No Name";
-            }
-
-            String response = port.sayHello(name);
-            System.out.println(response);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
-		
-**/	
-		// TODO :
-		// OK modifications to have a fully functional soap meteo mock
-		// - use a soap wsdl client in this test to get at least a request/response record for the meteo mock
-		// - check that the exchange record is well created and filled with soap request/response data
-		// - Test the replay function with a soap exchange record
-		
-		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
-		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+		// Send the test requests
 		UrlMock urlMock = new UrlMock();
-		HttpResponse response;
-		String entityResponseString;
-		HttpUriRequest httpUriRequest;
 		for(String cityName : urlMock.getMeteoMockCities()){
-			/*
-			logger.info("Request send : " + url);
-			httpUriRequest = new HttpGet(url);
-			response = httpProxyClient.execute(httpUriRequest);
-			// Need to read the response body entierely to be able to send another request
-			entityResponseString = ContentReader.read(response.getEntity().getContent());
-			*/
+			MeteoMock meteoService = new MeteoMock();
+			MeteoMockPortType port = meteoService.getMeteoMockPort();
+			String response = port.getTomorrowForecast(cityName);
+			logger.info("Response for " + cityName + " : " + response);
 		}		
 		
+		// Remove the discovery proxy
+		System.setProperty("http.proxyHost", "");
+		System.setProperty("http.proxyPort", "");
+		
+		// Stop and save the run
+		HttpPost stopRunPostRequest = new HttpPost("http://localhost:8084/run/stop");
+		assertEquals("Current run stopped !", httpClient.execute(stopRunPostRequest, new BasicResponseHandler()));
+		// delete the run
+		HttpPost deleteRunPostRequest = new HttpPost("http://localhost:8084/run/delete");
+		assertEquals("Run deleted !", httpClient.execute(deleteRunPostRequest, new BasicResponseHandler()));		
+		
+		// get a list of recorded exchange store
+		HttpUriRequest httpUriRequest;
+		HttpResponse response;
+		String entityResponseString;		
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordStorelist");
+		response = httpClient.execute(httpUriRequest);
+		entityResponseString = ContentReader.read(response.getEntity().getContent());
+		logger.info("Exchange record store list response : " + entityResponseString);
+		assertTrue(entityResponseString.contains("Meteo_WSDL_TestRun"));
+		
+		// Get an exchange record
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/Meteo_WSDL_TestRun/1");
+		response = httpClient.execute(httpUriRequest);
+		entityResponseString = ContentReader.read(response.getEntity().getContent());
+		logger.info("Exchange record response : " + entityResponseString);
+		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));		
+		
+		// get a list of recorded exchanges contained in the Test_Run folder
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/Meteo_WSDL_TestRun");
+		response = httpClient.execute(httpUriRequest);
+		entityResponseString = ContentReader.read(response.getEntity().getContent());
+
+		// replay one or several exchanges
+		logger.debug("Calling Replay service ...");
+		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		// Check the results
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Meteo_WSDL_TestRun");
+		for(ExchangeRecord record : recordList){
+			RequestForwarder forwarder = new RequestForwarder();
+			OutMessage outMessage = forwarder.send(record.getInMessage());
+			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
+			// Compare the replayed exchange with the original exchange
+			assertEquals(record.getOutMessage().getMessageContent().getContent(), outMessage.getMessageContent().getContent());
+		}		
 		
 	}
 	
@@ -246,6 +234,7 @@ public class HelloClient {
 	 * @throws IOException
 	 */
 	@Test
+	@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("ExchangeRecordProxyReplayTest started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test

@@ -139,17 +139,17 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Re-run done";
 	}*/
 
-	//@Override
-	/*public String deleteRun(String runName) {
+	@Override
+	public String delete() {
 		try {
-			runManager.deleteRun(runName);
+			runManager.delete();
 		}
 		catch(Exception ex){
-			logger.error("Unable to delete the run '" + runName + "'", ex);
-			return ex.getMessage();			
+			logger.error("Unable to delete the run", ex);
+			return ex.getMessage();
 		}
-		return "Run deleted ";		
-	}*/
+		return "Run deleted !";
+	}
 	
 	@Override
 	public void save(){

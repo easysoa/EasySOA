@@ -120,6 +120,9 @@ public class InMessage implements Message {
 	 * @param request The HttpservletRequest
 	 */
 	public InMessage(HttpServletRequest request){
+		
+		// TODO : Check this code : WSDL request are not well recorded !
+		
 		this.method = request.getMethod();
 		// Set the headers
 		this.headers = new Headers();
@@ -144,6 +147,7 @@ public class InMessage implements Message {
 				this.queryString.addQueryParam(new QueryParam(parameterName, parameterValue));
 			}
 		}
+		//
 		this.messageContent = new MessageContent();
 	    StringBuffer requestBody = new StringBuffer();
 	    BufferedReader requestBodyReader = null;

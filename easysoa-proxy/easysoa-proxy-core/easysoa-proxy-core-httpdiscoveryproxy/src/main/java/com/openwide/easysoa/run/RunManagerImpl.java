@@ -246,11 +246,6 @@ public class RunManagerImpl implements RunManager {
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#deleteRun()
 	 */	
-	/*@Override
-	public void deleteRun(String runName) throws Exception {
-		this.runList.remove(getRun(runName));
-	}*/
-	
 	@Override
 	public String delete() throws Exception {
 		currentRun = null;

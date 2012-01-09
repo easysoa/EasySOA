@@ -82,7 +82,7 @@ public class WSDLMessageHandler implements MessageHandler {
         try {
             new NuxeoRegistrationService().registerRestService(service);  
         } catch (Exception e) {
-            logger.error("Failed to register REST service", e);
+            logger.error("Failed to register WSDL service", e);
         }
         
 		return true;
