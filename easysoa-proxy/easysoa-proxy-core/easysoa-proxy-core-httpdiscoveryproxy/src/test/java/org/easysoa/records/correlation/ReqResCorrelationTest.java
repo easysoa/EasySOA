@@ -69,6 +69,10 @@ public class ReqResCorrelationTest {
         fields.put(candidateField.getPath(), candidateField);
     }
     
+
+    ///////////////////////////////
+    // JSON like tests
+    
     @Test
     public void testGet() {
         System.out.println("testGet -");
@@ -230,7 +234,102 @@ public class ReqResCorrelationTest {
 
         correlateWithSubpath(jsonPostExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
     }
+ 
+
+
+    ///////////////////////////////
+    // XML like tests
     
+    @Test
+    public void testGetQueryListWithMoreResultsXMLStyle() {
+        System.out.println("testGetQueryListWithMoreResultsXMLStyle -");
+        HashMap<String,CandidateField> inContentFields = new HashMap<String,CandidateField>();
+        HashMap<String,CandidateField> inQueryFields = new HashMap<String,CandidateField>();
+        HashMap<String,CandidateField> inPathFields = new HashMap<String,CandidateField>();
+        HashMap<String,CandidateField> foundOutFields = new HashMap<String,CandidateField>();
+
+        //String ns = "{http://www.easysoa.com/test}"; // ns is by default
+        
+        putField(inQueryFields, new CandidateField("filter/name", "test1"));
+        putField(inQueryFields, new CandidateField("item/description", "a fine test")); // another way
+        
+        putField(foundOutFields, new CandidateField("0/item/id", "1")); // 0/item/item means the first list element, which is of item type
+        putField(foundOutFields, new CandidateField("0/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("0/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("0/item/second/id", "11")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("0/item/third/id", "1")); // third "wrong" id, found but at lower level
+        
+        putField(foundOutFields, new CandidateField("1/item/id", "2"));
+        putField(foundOutFields, new CandidateField("1/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("1/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("1/item/second/id", "22")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("1/item/third/id", "1")); // third "wrong" id, found but at lower level
+        
+        correlate(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
+        
+        correlateWithSubpath(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
+    }
+
+    @Test
+    public void testGetQueryListWithMoreResultsXMLStyleWithNS() {
+        System.out.println("testGetQueryListWithMoreResultsXMLStyle -");
+        HashMap<String,CandidateField> inContentFields = new HashMap<String,CandidateField>();
+        HashMap<String,CandidateField> inQueryFields = new HashMap<String,CandidateField>();
+        HashMap<String,CandidateField> inPathFields = new HashMap<String,CandidateField>();
+        HashMap<String,CandidateField> foundOutFields = new HashMap<String,CandidateField>();
+
+        //String ns = "{http://www.easysoa.com/test}"; // ns is by default
+        //String fourthNs = "{fourth}"; // fourthNs is implied in fourth
+
+        putField(inQueryFields, new CandidateField("filter/name", "test1"));
+        putField(inQueryFields, new CandidateField("filter/@/name", "test1"));
+        putField(inQueryFields, new CandidateField("item/description", "a fine test")); // another way
+        putField(inQueryFields, new CandidateField("object/name", "test1")); // another way
+        
+        putField(foundOutFields, new CandidateField("0/item/id", "1")); // 0/item/item means the first list element, which is of item type
+        putField(foundOutFields, new CandidateField("0/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("0/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("0/item/second/id", "11")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("0/item/third/id", "1")); // third "wrong" id, found but at lower level
+        putField(foundOutFields, new CandidateField("0/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
+        
+        putField(foundOutFields, new CandidateField("1/item/id", "2"));
+        putField(foundOutFields, new CandidateField("1/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("1/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("1/item/second/id", "22")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("1/item/third/id", "1")); // third "wrong" id, found but at lower level
+        putField(foundOutFields, new CandidateField("1/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
+        
+        putField(foundOutFields, new CandidateField("2/object/id", "3"));
+        putField(foundOutFields, new CandidateField("2/object/name", "test1"));
+        putField(foundOutFields, new CandidateField("2/object/second/id", "22")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("2/object/third/id", "1")); // third "wrong" id, found but at lower level
+        putField(foundOutFields, new CandidateField("2/object/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
+        
+        putField(foundOutFields, new CandidateField("3/filter/id", "4"));
+        putField(foundOutFields, new CandidateField("3/filter/@/name", "test1"));
+        
+        correlate(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
+        
+        correlateWithSubpath(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
+    }
+    
+    
+    
+    //////////////////////////////////////////
+    // correlation and analysis algorithms
+    
+    /**
+     * First correlation algorithm : tries to find correlation
+     *  - if in content, value and path correlations
+     *  - else (otherwise lowered) if in query, value and (path or name) correlations
+     *  - else (otherwise lowered) for all path elements, value correlations
+     * @param jsonExchange
+     * @param inPathFields
+     * @param inQueryFields
+     * @param inContentFields
+     * @param foundOutFields
+     */
     private void correlate(ExchangeRecord jsonExchange, HashMap<String, CandidateField> inPathFields,
             HashMap<String, CandidateField> inQueryFields,
             HashMap<String, CandidateField> inContentFields,
@@ -282,6 +381,17 @@ public class ReqResCorrelationTest {
         correlationLevel.addCorrelation(reqResFieldCorrelation);
     }
 
+    
+    /**
+     * First correlation algorithm result analysis :
+     * computes indicators on fields within single (top) level, then tries to find
+     * if the exchange is like a query (and), post or get on id, and what role those
+     * fields play in this pattern.
+     * 
+     * @param correlationLevelMap
+     * @param inFieldNb
+     * @param outFieldNb
+     */
     private void printCorrelations(HashMap<Integer, CorrelationLevel> correlationLevelMap, int inFieldNb, int outFieldNb) {
         System.out.println("Found correlations, sorted y level :");
         ArrayList<CorrelationLevel> correlationLevels = new ArrayList<CorrelationLevel>(correlationLevelMap.values());
@@ -443,8 +553,22 @@ public class ReqResCorrelationTest {
         }
         return res;
     }
+    
+    
 
     
+    /**
+     * Second correlation algorithm : tries to find correlation
+     *  - if in content, value and (sub)path correlations
+     *  - else (otherwise lowered) if in query, value and (sub)path correlations
+     *  - else (otherwise lowered) for all path elements, value correlations
+     *  
+     * @param jsonExchange
+     * @param inPathFields
+     * @param inQueryFields
+     * @param inContentFields
+     * @param foundOutFields
+     */
     private void correlateWithSubpath(ExchangeRecord jsonExchange, HashMap<String, CandidateField> inPathFields,
             HashMap<String, CandidateField> inQueryFields,
             HashMap<String, CandidateField> inContentFields,
@@ -580,6 +704,15 @@ public class ReqResCorrelationTest {
         }
         return res;
     }
+    
+    
+    
+    
+    
+    
+    
+    ///////////////////////////////////////
+    // slightly OBSOLETE stuff
 
     public void testJsonContent() {
         String trimmedOutContent = jsonGetExchange.getOutMessage().getMessageContent().getContent();
@@ -638,82 +771,11 @@ public class ReqResCorrelationTest {
         }
         return sbuf.toString();
     }
- 
-
-
-    @Test
-    public void testGetQueryListWithMoreResultsXMLStyle() {
-        System.out.println("testGetQueryListWithMoreResultsXMLStyle -");
-        HashMap<String,CandidateField> inContentFields = new HashMap<String,CandidateField>();
-        HashMap<String,CandidateField> inQueryFields = new HashMap<String,CandidateField>();
-        HashMap<String,CandidateField> inPathFields = new HashMap<String,CandidateField>();
-        HashMap<String,CandidateField> foundOutFields = new HashMap<String,CandidateField>();
-
-        //String ns = "{http://www.easysoa.com/test}"; // ns is by default
-        
-        putField(inQueryFields, new CandidateField("filter/name", "test1"));
-        putField(inQueryFields, new CandidateField("item/description", "a fine test")); // another way
-        
-        putField(foundOutFields, new CandidateField("0/item/id", "1")); // 0/item/item means the first list element, which is of item type
-        putField(foundOutFields, new CandidateField("0/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("0/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("0/item/second/id", "11")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("0/item/third/id", "1")); // third "wrong" id, found but at lower level
-        
-        putField(foundOutFields, new CandidateField("1/item/id", "2"));
-        putField(foundOutFields, new CandidateField("1/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("1/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("1/item/second/id", "22")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("1/item/third/id", "1")); // third "wrong" id, found but at lower level
-        
-        correlate(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
-        
-        correlateWithSubpath(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
-    }
-
-    @Test
-    public void testGetQueryListWithMoreResultsXMLStyleWithNS() {
-        System.out.println("testGetQueryListWithMoreResultsXMLStyle -");
-        HashMap<String,CandidateField> inContentFields = new HashMap<String,CandidateField>();
-        HashMap<String,CandidateField> inQueryFields = new HashMap<String,CandidateField>();
-        HashMap<String,CandidateField> inPathFields = new HashMap<String,CandidateField>();
-        HashMap<String,CandidateField> foundOutFields = new HashMap<String,CandidateField>();
-
-        //String ns = "{http://www.easysoa.com/test}"; // ns is by default
-        //String fourthNs = "{fourth}"; // fourthNs is implied in fourth
-
-        putField(inQueryFields, new CandidateField("filter/name", "test1"));
-        putField(inQueryFields, new CandidateField("filter/@/name", "test1"));
-        putField(inQueryFields, new CandidateField("item/description", "a fine test")); // another way
-        putField(inQueryFields, new CandidateField("object/name", "test1")); // another way
-        
-        putField(foundOutFields, new CandidateField("0/item/id", "1")); // 0/item/item means the first list element, which is of item type
-        putField(foundOutFields, new CandidateField("0/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("0/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("0/item/second/id", "11")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("0/item/third/id", "1")); // third "wrong" id, found but at lower level
-        putField(foundOutFields, new CandidateField("0/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
-        
-        putField(foundOutFields, new CandidateField("1/item/id", "2"));
-        putField(foundOutFields, new CandidateField("1/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("1/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("1/item/second/id", "22")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("1/item/third/id", "1")); // third "wrong" id, found but at lower level
-        putField(foundOutFields, new CandidateField("1/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
-        
-        putField(foundOutFields, new CandidateField("2/object/id", "3"));
-        putField(foundOutFields, new CandidateField("2/object/name", "test1"));
-        putField(foundOutFields, new CandidateField("2/object/second/id", "22")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("2/object/third/id", "1")); // third "wrong" id, found but at lower level
-        putField(foundOutFields, new CandidateField("2/object/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
-        
-        putField(foundOutFields, new CandidateField("3/filter/id", "4"));
-        putField(foundOutFields, new CandidateField("3/filter/@/name", "test1"));
-        
-        correlate(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
-        
-        correlateWithSubpath(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
-    }
+    
+    
+    
+    /////////////////////////////////
+    // XML specific OBSOLETE ! "by type" can be done statically, otherwise just like JSON with longer names (due to ns)
 
     @Test
     public void testXMLGet() {

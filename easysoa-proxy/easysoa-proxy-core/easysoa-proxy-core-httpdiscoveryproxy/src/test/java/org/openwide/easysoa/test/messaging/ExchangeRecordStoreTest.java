@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStoreManager;
-import org.easysoa.records.ExchangeRecordStoreArray;
+import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -76,7 +76,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
     	ExchangeRecordStoreManager erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
     	ExchangeRecord exchangeRecord;
 
-    	ExchangeRecordStoreArray recordList = new ExchangeRecordStoreArray("TEST Enviroment");
+    	ExchangeRecordStore recordList = new ExchangeRecordStore("TEST Enviroment");
     	// TODO maybe better to use an other ID generator (ordered) inside the messaging API ?
     	String id;
 
