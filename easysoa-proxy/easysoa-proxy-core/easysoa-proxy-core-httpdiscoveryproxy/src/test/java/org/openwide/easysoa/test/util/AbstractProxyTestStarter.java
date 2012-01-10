@@ -22,7 +22,11 @@ package org.openwide.easysoa.test.util;
 
 import java.util.ArrayList;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
@@ -101,5 +105,39 @@ public abstract class AbstractProxyTestStarter {
 			componentList.add(frascati.processComposite("src/test/resources/nuxeoMockRest.composite", new ProcessingContextImpl()));
 		}
 	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void startNewRun(String runName) throws Exception {
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		// Start a new Run
+		HttpPost newRunPostRequest = new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/start/" + runName);
+		httpClient.execute(newRunPostRequest, new BasicResponseHandler());		
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void stopAndSaveRun() throws Exception {
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		// Stop and save the run
+		HttpPost stopRunPostRequest = new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/stop");
+		httpClient.execute(stopRunPostRequest, new BasicResponseHandler());
+
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void deleteRun() throws Exception {
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		// delete the run
+		HttpPost deleteRunPostRequest = new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/delete");
+		httpClient.execute(deleteRunPostRequest, new BasicResponseHandler());		
+	}	
 	
 }

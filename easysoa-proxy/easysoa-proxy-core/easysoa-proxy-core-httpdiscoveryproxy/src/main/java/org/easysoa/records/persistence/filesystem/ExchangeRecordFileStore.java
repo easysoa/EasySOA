@@ -117,7 +117,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		if(listOfFiles != null){
 			logger.debug("listOfFiles.size = " + listOfFiles.length);
 			for (File file : listOfFiles) {
-				if (file.isFile()) {
+				if (file.isFile() && file.getName().startsWith(EXCHANGE_FILE_PREFIX)) {
 					logger.debug("file name : " + file.getName());
 					if (file.getName().endsWith(FILE_EXTENSION)) {
 						String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));

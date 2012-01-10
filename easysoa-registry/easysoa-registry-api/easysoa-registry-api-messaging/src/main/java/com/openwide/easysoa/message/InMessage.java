@@ -24,9 +24,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.log4j.Logger;
 
 /**
  * HTTP incoming message
@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @SuppressWarnings("unchecked")
 public class InMessage implements Message {
 
+	// Logger
+	private static Logger logger = Logger.getLogger(InMessage.class.getName());
+	
 	/**
 	 * Protocol (http, htpps, ...)
 	 */
@@ -155,17 +158,19 @@ public class InMessage implements Message {
 		try {
 			requestBodyReader = request.getReader();
 		    while(requestBodyReader.ready()){
-		    	requestBodyReader.read(buffer);
-		    	requestBody.append(buffer.rewind());
+		    	int nbCharRead = requestBodyReader.read(buffer);
+		    	requestBody.append(buffer.rewind().toString(), 0, nbCharRead);
 		    }
 			this.messageContent.setContent(requestBody.toString());
 			this.messageContent.setSize(requestBody.length());
 			this.messageContent.setMimeType(request.getContentType());
 		} catch (IOException ex) {
-			//logger.error("Error while reading request body !", ex);
+			logger.warn("Error while reading request body !", ex);
 		} finally {	    
 			try {
-				requestBodyReader.close();
+				if(requestBodyReader != null){
+					requestBodyReader.close();
+				}
 			} catch (IOException ex) {
 				//logger.warn("Error while closing the requestBodyReader !", ex);
 			}

@@ -20,6 +20,9 @@
 
 package org.openwide.easysoa.test.mock.twittermock;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import org.openwide.easysoa.test.util.Utilities;
 
 /**
@@ -46,6 +49,43 @@ public class TwitterMockImpl implements TwitterMock {
 	@Override
 	public String returnStatusesFollowers(String user) {
 		return Utilities.readResponseFile("src/test/resources/twitterMockMessages/statusesFollowersDefaultResponse.xml");
+	}
+
+	@Override
+	public String returnLastTweet(String user) {
+		StringBuffer jsonResponseBuffer = new StringBuffer();
+		jsonResponseBuffer.append("{\"user\":\"");
+		jsonResponseBuffer.append(user);
+		jsonResponseBuffer.append("\"");
+		jsonResponseBuffer.append(",\"lastTweet\":\"This is the last tweet\"}");
+		return jsonResponseBuffer.toString();
+	}
+
+	@Override
+	public String returnSeveralRecentTweet(String user, int tweetNumbers) {
+		Random generator = new Random();
+		ArrayList<String> tweets = new ArrayList<String>();
+		tweets.add("{\"tweet\": \"The last tweet\"}");
+		tweets.add("{\"tweet\": \"Not the first tweet but not the last\"}");
+		tweets.add("{\"tweet\": \"Another tweet\"}");
+		tweets.add("{\"tweet\": \"Maybe the last tweet\"}");
+		StringBuffer jsonResponseBuffer = new StringBuffer();
+		jsonResponseBuffer.append("{\"user\":\"");
+		jsonResponseBuffer.append(user);
+		jsonResponseBuffer.append("\",\"tweets\": [");
+		for(int i=0; i<tweetNumbers; i++){
+			jsonResponseBuffer.append(tweets.get(generator.nextInt(4)));
+			if(i<tweetNumbers){
+				jsonResponseBuffer.append(",");	
+			}
+		}
+		jsonResponseBuffer.append("]}");
+		return jsonResponseBuffer.toString();
+	}
+
+	@Override
+	public String postNewTweet(String user, String tweet) {
+		return "{\"status\":\"ok\",\"message\":\"New tweet succesfully posted\"}";
 	}
 	
 }

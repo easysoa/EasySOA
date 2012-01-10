@@ -109,7 +109,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		assertEquals("Current run stopped !", httpClient.execute(stopRunPostRequest, new BasicResponseHandler()));
 		// delete the run
 		HttpPost deleteRunPostRequest = new HttpPost("http://localhost:8084/run/delete");
-		assertEquals("Run deleted !", httpClient.execute(deleteRunPostRequest, new BasicResponseHandler()));		
+		assertEquals("Run deleted !", httpClient.execute(deleteRunPostRequest, new BasicResponseHandler()));
 		
 		// get a list of recorded exchange store
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordStorelist");

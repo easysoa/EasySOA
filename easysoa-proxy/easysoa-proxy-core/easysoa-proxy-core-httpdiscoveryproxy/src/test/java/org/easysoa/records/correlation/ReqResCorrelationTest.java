@@ -234,8 +234,6 @@ public class ReqResCorrelationTest {
 
         correlateWithSubpath(jsonPostExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
     }
- 
-
 
     ///////////////////////////////
     // XML like tests

@@ -20,9 +20,12 @@
 
 package org.openwide.easysoa.test.mock.twittermock;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 import org.osoa.sca.annotations.Remotable;
 
@@ -35,6 +38,7 @@ import org.osoa.sca.annotations.Remotable;
 @Remotable
 public interface TwitterMock {
 
+	// Original methods
 	@GET
 	@Path("/1/users/show/{user}")
 	public String returnUsersShow(@PathParam("user") String user);	
@@ -47,4 +51,17 @@ public interface TwitterMock {
 	@Path("/1/statuses/followers/{user}")
 	public String returnStatusesFollowers(@PathParam("user") String user);
 
+	// New methods
+	@GET
+	@Path("/1/tweets/lastTweet/{user}")
+	public String returnLastTweet(@PathParam("user") String user);
+
+	@GET
+	@Path("/1/tweets/severalTweets/{user}")
+	public String returnSeveralRecentTweet(@PathParam("user") String user, @QueryParam("tweetNumber") int tweetNumbers);
+	
+	@POST
+	@Path("/1/tweets/postNewTweet")
+	public String postNewTweet(@FormParam("user") String user, @FormParam("tweet") String tweet);
+	
 }
