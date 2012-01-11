@@ -118,14 +118,17 @@ public class RequestForwarder {
 		requestUrlBuffer.append(inMessage.buildCompleteUrl());
 	    if(inMessage.getQueryString() != null){
 	    	requestUrlBuffer.append("?");
+	    	// TODO In case of POST Method, the params have to be in the message content, not in the query itself !
+    		boolean firstParam = true;
 	    	for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
 	    		// for each query param, build name=value and add '&' char
-	    		if("?".equals(requestUrlBuffer.charAt(requestUrlBuffer.length()-1))){
+	    		if(!firstParam){
 		    		requestUrlBuffer.append("&");
 	    		}
 	    		requestUrlBuffer.append(queryParam.getName());
 	    		requestUrlBuffer.append("=");
 	    		requestUrlBuffer.append(queryParam.getValue());
+	    		firstParam = false;
 	    	}
 	    }
 		logger.debug("URL : " + requestUrlBuffer.toString());

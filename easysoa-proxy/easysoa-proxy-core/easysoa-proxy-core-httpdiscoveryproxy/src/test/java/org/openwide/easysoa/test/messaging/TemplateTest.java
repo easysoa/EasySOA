@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateFieldSuggester;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -120,24 +121,25 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		HttpPost postTweetRequest = new HttpPost("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/postNewTweet");
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("user", "toto"));
-		formparams.add(new BasicNameValuePair("tweet", "This is a new Post"));
+		formparams.add(new BasicNameValuePair("tweet", "Beuuaaaaahhhh"));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
-		postTweetRequest.setEntity(entity);		
+		postTweetRequest.setEntity(entity);
 		response = httpProxyClient.execute(postTweetRequest);
-		ContentReader.read(response.getEntity().getContent());		
+		ContentReader.read(response.getEntity().getContent());
 		
 		// Stop, save and delete run
 		stopAndSaveRun();
 		deleteRun();
 		
 		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
+		TemplateBuilder builder = new TemplateBuilder();
 		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 		
 		//List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Meteo_WSDL_TestRun");		
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("TweeterTestRun");
 
 		for(ExchangeRecord record : recordList){
-			suggester.suggest(record);			
+			builder.buildTemplate(suggester.suggest(record), record);
 		}
 	}
 	

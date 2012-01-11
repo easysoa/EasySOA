@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
@@ -49,8 +50,6 @@ public class TemplateFieldSuggester {
 		// from record, Get the inMessage
 		// try to find all the fields (headers, form, ...)
 		// Use the correlation system to detect fields suggest
-		TemplateFieldSuggestions suggestions = new TemplateFieldSuggestions();		
-		TemplateField field = new TemplateField();
 
 		// make 4 hashmaps (for query param fields, for content param fields, for pat param fields and a last for response fields)
 		// then call the correlate method with the record and the four hashmaps to get the suggested fields
@@ -62,14 +61,19 @@ public class TemplateFieldSuggester {
 
 		// seem's that do not work when no outputfields are set in the hashmap
 		CorrelationService correlationService = new CorrelationService();
-		correlationService.correlateWithSubpath(record,
+		return correlationService.correlateWithSubpath(record,
 				getPathParams(record.getInMessage()),
 				getQueryParams(record.getInMessage()),
 				getContentParam(record.getInMessage()),
 				getOutFields(record.getOutMessage()));
 		//
-		suggestions.add(field);
-		return suggestions;
+		/*correlationService.correlate(record,
+				getPathParams(record.getInMessage()),
+				getQueryParams(record.getInMessage()),
+				getContentParam(record.getInMessage()),
+				getOutFields(record.getOutMessage()));
+		*/		
+		//
 	}
 	
 	/**
@@ -94,30 +98,60 @@ public class TemplateFieldSuggester {
 		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
 		// TODO add code here to fill hashmap with output fields
 		// Message content can be very different (json, xml ...)
-		// How to get the output fields with values ????
+		// TODO Add a system to choose the parser corresponding to the out message content
 		logger.debug("outMessage " + outMessage.getMessageContent().getContent());
 		try{
-			//JSONObject jsonObject = new JSONObject();
 			JSONObject jsonOutObject = (JSONObject) JSONSerializer.toJSON(outMessage.getMessageContent().getContent());
-			@SuppressWarnings("unchecked")
-			Iterator<String> keyIterator = jsonOutObject.keys();
-			while(keyIterator.hasNext()){
-				String key = (String)(keyIterator.next());
-				logger.debug("Key in JSON response : " + key);
-				//to get all fields contained in a json object, need to use a recursive method ...
-				//jsonOutObject.get(key)
-			}
+			findJSONOutFields("root", jsonOutObject, -1, fieldMap);
 		}
 		catch(Exception ex){
 			logger.warn("Response is not a JSON string, trying another parser to find output fields");
 		}
-		//{\"user\":\"toto\",\"lastTweet\":\"This is the last tweet\"}
-		CandidateField field1 = new CandidateField("user", "toto");
-		CandidateField field2 = new CandidateField("lastTweet", "This is the last tweet");
-		fieldMap.put("user", field1);
-		fieldMap.put("lastTweet", field2);
 		logger.debug("Out param fields map : " + fieldMap);		
 		return fieldMap;
+	}
+	
+	/**
+	 * Recursive method to fill the OutFieldMap from JSON Datastructure
+	 * @param objectKey
+	 * @param jsonObject
+	 * @param index
+	 * @param fieldMap
+	 */
+	private void findJSONOutFields(String objectKey, Object jsonObject, int index, HashMap<String,CandidateField> fieldMap){
+		if(jsonObject instanceof JSONObject){
+			// Get all the key contained in the object and for each key, get the associated object and call this recursive method
+			logger.debug("Instance of JSONObject found");
+			JSONObject jObject = (JSONObject) jsonObject;
+			@SuppressWarnings("unchecked")
+			Iterator<String> keyIterator = jObject.keys();
+			while(keyIterator.hasNext()){
+				String key = (String)(keyIterator.next());
+				logger.debug("key : " + key);
+				findJSONOutFields(key, jObject.get(key), index, fieldMap);
+			}
+		} else if(jsonObject instanceof JSONArray) {
+			// For each JSONObject contained in the array, call this recursive method
+			logger.debug("Instance of JSONArray found");
+			JSONArray jsonArray = (JSONArray) jsonObject;
+			int objectIndex = 0;
+			for(Object object : jsonArray){
+				findJSONOutFields(objectKey, object, objectIndex, fieldMap);
+				objectIndex++;
+			}
+		} else {
+			// Get the value and add a new CandidateField object in the map
+			logger.debug("Other object found (" + jsonObject.getClass().getName() + ") = " + objectKey + ":" + jsonObject.toString());			
+			String fieldName;
+			if(index > -1){
+				fieldName = index + "/" + objectKey;
+			} else {
+				fieldName = objectKey;
+			}
+			CandidateField field = new CandidateField(fieldName, jsonObject.toString());
+			fieldMap.put(fieldName, field);
+			return;
+		}
 	}
 	
 	/**

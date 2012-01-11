@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Stack;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.template.TemplateField;
+import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
  * This service allows a user to extract correlations from recorded exchanges.
@@ -19,6 +22,9 @@ import org.easysoa.records.ExchangeRecord;
 // TODO REST JAXRS service, web UI
 public class CorrelationService {
 
+	// Logger
+	private static Logger logger = Logger.getLogger(CorrelationService.class.getName());	
+	
 	public CorrelationResult correlate(String exchangeRecordFileStorePath) {
 		return null;
 	}
@@ -275,11 +281,16 @@ public class CorrelationService {
      * @param inContentFields
      * @param foundOutFields
      */
-    public void correlateWithSubpath(ExchangeRecord jsonExchange, HashMap<String, CandidateField> inPathFields,
+    public TemplateFieldSuggestions correlateWithSubpath(ExchangeRecord jsonExchange, HashMap<String, CandidateField> inPathFields,
             HashMap<String, CandidateField> inQueryFields,
             HashMap<String, CandidateField> inContentFields,
             HashMap<String, CandidateField> foundOutFields) {
-        // looking for correlations :
+
+    	// TODO : Add a return type => TemplateFieldSuggestions to store TemplateField objects
+    	// TemplateField is a suggested field found by this method
+    	TemplateFieldSuggestions suggestions = new TemplateFieldSuggestions();
+    	
+    	// looking for correlations :
         int level = 16;
         // if in content, value and path correlations
         ArrayList<Object[]> correlations = new ArrayList<Object[]>();
@@ -298,17 +309,31 @@ public class CorrelationService {
         // else (otherwise lowered) for all path elements, value correlations
         for (CandidateField inPathField : inPathFields.values()) {
             List<CandidateField> foundByValueFields = getFromOutByValue(foundOutFields, inPathField);
+            TemplateField templateField;
             for (CandidateField field : foundByValueFields) {
                 // exact only
                 correlations.add(new Object[]{ level - field.getPath().split("/").length*2, inPathField, field, "byValue" });
+                
+                // Build TemplateField to fill templateFieldSuggestions
+                logger.debug("Candidate field : " + field);
+                templateField = new TemplateField();
+                templateField.setFieldName(field.getName());
+                templateField.setDefaultValue(field.getValue());
+                templateField.setFieldType(field.getType());
+                //templateField.setParamType(Field.);
+                //templateField.setPathParamPosition(pathParamPosition);
+                suggestions.add(templateField);
             }
         }
-
+        
         System.out.println("Found correlations with subpath :");
         for (Object[] correlation : correlations) {
             System.out.println(correlation[0] + "\t" + correlation[1] + "\t" + correlation[2] + "\t" + correlation[3]);
         }
         System.out.println();
+
+        // Returns the suggested fields
+        return suggestions;
     }
 
     private void addCorrelationsFromOutBySubpathAndValue(ArrayList<Object[]> correlations, int level,
