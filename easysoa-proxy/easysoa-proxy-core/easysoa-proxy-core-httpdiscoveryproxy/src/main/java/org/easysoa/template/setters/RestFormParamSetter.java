@@ -27,7 +27,7 @@ public class RestFormParamSetter implements CustomParamSetter {
 	 */
 	@Override
 	public boolean isOkFor(TemplateField templateField) {
-		if(TemplateFieldType.FORM_PARAM.equals(templateField.getParamType())){
+		if(TemplateFieldType.CONTENT_PARAM.equals(templateField.getParamType())){
 			return true;
 		} else {
 			return false;			

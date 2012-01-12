@@ -82,7 +82,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Set the custom values :
 		
 		// For WSDL : re-use the the existing code working in the scaffolder proxy
-		// For Rest : 3 differents cases :
+		// For Rest : 3 different cases :
 		// Form params : get the inMessage content and change the values
 		// Query params : get the complete url and change the values
 		// Path Params : This case is harder, need to know the position of each param in the url ... must be specified in the template OR use the discovery mechanism from HTTP discovery proxy 
@@ -109,7 +109,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		HttpResponse response;
 		HttpGet lastTweetRequest = new HttpGet("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/lastTweet/toto");
 		response = httpProxyClient.execute(lastTweetRequest);
-		// Need to read the response body entierely to be able to send another request
+		// Need to read the response body entirely to be able to send another request
 		ContentReader.read(response.getEntity().getContent());			
 		
 		// Send second request - GET request with path parameters and query parameters
@@ -121,7 +121,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		HttpPost postTweetRequest = new HttpPost("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/postNewTweet");
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("user", "toto"));
-		formparams.add(new BasicNameValuePair("tweet", "Beuuaaaaahhhh"));
+		formparams.add(new BasicNameValuePair("tweet", "This is a tweet test"));
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
 		postTweetRequest.setEntity(entity);
 		response = httpProxyClient.execute(postTweetRequest);

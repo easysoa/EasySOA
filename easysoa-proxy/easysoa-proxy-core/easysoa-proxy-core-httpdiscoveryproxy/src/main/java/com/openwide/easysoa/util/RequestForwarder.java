@@ -127,7 +127,7 @@ public class RequestForwarder {
 	    		}
 	    		requestUrlBuffer.append(queryParam.getName());
 	    		requestUrlBuffer.append("=");
-	    		requestUrlBuffer.append(queryParam.getValue());
+	    		requestUrlBuffer.append(queryParam.getValue().replace(" ", "%20"));
 	    		firstParam = false;
 	    	}
 	    }

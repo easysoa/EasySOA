@@ -99,6 +99,7 @@ public class TemplateFieldSuggester {
 		// TODO add code here to fill hashmap with output fields
 		// Message content can be very different (json, xml ...)
 		// TODO Add a system to choose the parser corresponding to the out message content
+		// Today only a json parser for out message
 		logger.debug("outMessage " + outMessage.getMessageContent().getContent());
 		try{
 			JSONObject jsonOutObject = (JSONObject) JSONSerializer.toJSON(outMessage.getMessageContent().getContent());
@@ -167,6 +168,7 @@ public class TemplateFieldSuggester {
 		while(tokenizer.hasMoreTokens()){
 			String token = tokenizer.nextToken();
 			field = new CandidateField("path." + pathPos, token);
+			field.setKind("PATH_PARAM");
 			fieldMap.put("path." + pathPos, field);
 			pathPos++;
 		}
@@ -184,6 +186,7 @@ public class TemplateFieldSuggester {
 		CandidateField candidateField;
 		for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
 			candidateField = new CandidateField(queryParam.getName(), queryParam.getValue());
+			candidateField.setKind("QUERY_PARAM");
 			fieldMap.put(candidateField.getPath(), candidateField);
 		}
 		logger.debug("Query param fields map : " + fieldMap);		
@@ -203,6 +206,7 @@ public class TemplateFieldSuggester {
 		while(tokenizer.hasMoreTokens()){
 			token = tokenizer.nextToken();
 			candidateField = new CandidateField(token.substring(0, token.indexOf("=")), token.substring(token.indexOf("=")));
+			candidateField.setKind("CONTENT_PARAM");
 			fieldMap.put(candidateField.getPath(), candidateField);
 		}
 		logger.debug("Content param fields map : " + fieldMap);

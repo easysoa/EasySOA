@@ -22,6 +22,7 @@ package com.openwide.easysoa.message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.CharBuffer;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
@@ -57,8 +58,9 @@ public class InMessage implements Message {
 	 */
 	private int port;
 	/**
-	 * Path : only the part after the port number
+	 * Path : only the part after the port number and before the query params
 	 */
+	// TODO : maybe a good idea to store path as an ArrayList of path segments
 	private String path;
 	/**
 	 * Complete url including protocol, server, port, path
@@ -150,13 +152,12 @@ public class InMessage implements Message {
 				this.queryString.addQueryParam(new QueryParam(parameterName, parameterValue));
 			}
 		}
-		//
 		this.messageContent = new MessageContent();
 	    StringBuffer requestBody = new StringBuffer();
 	    BufferedReader requestBodyReader = null;
 	    CharBuffer buffer = CharBuffer.allocate(512); 
 		try {
-			requestBodyReader = request.getReader();
+			requestBodyReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
 		    while(requestBodyReader.ready()){
 		    	int nbCharRead = requestBodyReader.read(buffer);
 		    	requestBody.append(buffer.rewind().toString(), 0, nbCharRead);
@@ -164,7 +165,7 @@ public class InMessage implements Message {
 			this.messageContent.setContent(requestBody.toString());
 			this.messageContent.setSize(requestBody.length());
 			this.messageContent.setMimeType(request.getContentType());
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			logger.warn("Error while reading request body !", ex);
 		} finally {	    
 			try {

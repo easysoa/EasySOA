@@ -36,6 +36,10 @@ public class MessageContent {
 
 	public MessageContent(){
 		this.size = 0L;
+		this.comment = "";
+		this.content = "";
+		this.mimeType = "";
+		this.encoding = "";
 	}
 	
 	/**

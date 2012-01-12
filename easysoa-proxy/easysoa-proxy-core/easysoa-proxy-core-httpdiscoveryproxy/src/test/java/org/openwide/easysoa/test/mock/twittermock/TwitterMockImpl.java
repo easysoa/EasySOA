@@ -72,6 +72,8 @@ public class TwitterMockImpl implements TwitterMock {
 		StringBuffer jsonResponseBuffer = new StringBuffer();
 		jsonResponseBuffer.append("{\"user\":\"");
 		jsonResponseBuffer.append(user);
+		jsonResponseBuffer.append("\",\"tweetNumber\":\"");
+		jsonResponseBuffer.append(tweetNumbers);
 		jsonResponseBuffer.append("\",\"tweets\": [");
 		for(int i=0; i<tweetNumbers; i++){
 			jsonResponseBuffer.append(tweets.get(generator.nextInt(4)));

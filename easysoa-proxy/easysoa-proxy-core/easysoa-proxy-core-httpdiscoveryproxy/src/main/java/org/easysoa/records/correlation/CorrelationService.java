@@ -12,6 +12,7 @@ import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.template.TemplateField;
+import org.easysoa.template.TemplateField.TemplateFieldType;
 import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
@@ -266,9 +267,6 @@ public class CorrelationService {
         return res;
     }
     
-    
-
-    
     /**
      * Second correlation algorithm : tries to find correlation
      *  - if in content, value and (sub)path correlations
@@ -285,10 +283,6 @@ public class CorrelationService {
             HashMap<String, CandidateField> inQueryFields,
             HashMap<String, CandidateField> inContentFields,
             HashMap<String, CandidateField> foundOutFields) {
-
-    	// TODO : Add a return type => TemplateFieldSuggestions to store TemplateField objects
-    	// TemplateField is a suggested field found by this method
-    	TemplateFieldSuggestions suggestions = new TemplateFieldSuggestions();
     	
     	// looking for correlations :
         int level = 16;
@@ -313,29 +307,50 @@ public class CorrelationService {
             for (CandidateField field : foundByValueFields) {
                 // exact only
                 correlations.add(new Object[]{ level - field.getPath().split("/").length*2, inPathField, field, "byValue" });
-                
-                // Build TemplateField to fill templateFieldSuggestions
-                logger.debug("Candidate field : " + field);
-                templateField = new TemplateField();
-                templateField.setFieldName(field.getName());
-                templateField.setDefaultValue(field.getValue());
-                templateField.setFieldType(field.getType());
-                //templateField.setParamType(Field.);
-                //templateField.setPathParamPosition(pathParamPosition);
-                suggestions.add(templateField);
             }
         }
         
+        // TODO : to remove when finished
         System.out.println("Found correlations with subpath :");
         for (Object[] correlation : correlations) {
             System.out.println(correlation[0] + "\t" + correlation[1] + "\t" + correlation[2] + "\t" + correlation[3]);
         }
         System.out.println();
 
-        // Returns the suggested fields
-        return suggestions;
+        // Convert the correlation result into TemplateFieldSuggestions object
+        return convertToSuggestions(correlations);
     }
 
+    /**
+     * Convert the correlation object list in TemplateFieldSuggestions
+     * @param correlations 
+     * @return
+     */
+    private TemplateFieldSuggestions convertToSuggestions(ArrayList<Object[]> correlations) {
+    	TemplateFieldSuggestions suggestions = new TemplateFieldSuggestions();
+    	TemplateField templateField;
+    	for (Object[] correlation : correlations) {
+    		CandidateField inField = (CandidateField)correlation[1];
+    		CandidateField outField = (CandidateField)correlation[2];
+            templateField = new TemplateField();
+            templateField.setFieldName(outField.getName());
+            templateField.setDefaultValue(inField.getValue());
+            templateField.setFieldType(inField.getType());
+            templateField.setParamType(TemplateFieldType.valueOf(inField.getKind()));
+            if("PATH_PARAM".equals(inField.getKind())){
+            	try {
+            		int paramPathPosition = Integer.valueOf(inField.getName().substring(inField.getName().lastIndexOf(".")+1, inField.getName().length()));
+            		templateField.setPathParamPosition(paramPathPosition);
+            	}catch(Exception ex){
+            		// Do nothing, leave simply the attribute empty
+            		logger.debug("Unable to get field position in path", ex);
+            	}
+            }
+            suggestions.add(templateField);
+    	}
+    	return suggestions;
+    }
+    
     private void addCorrelationsFromOutBySubpathAndValue(ArrayList<Object[]> correlations, int level,
             HashMap<String, CandidateField> foundOutFields, HashMap<String, CandidateField> inFields) {
         for (CandidateField inField : inFields.values()) {
@@ -425,11 +440,11 @@ public class CorrelationService {
 
     // exact only
     // TODO substract depth
-    private List<CandidateField> getFromOutByValue(
-            HashMap<String, CandidateField> foundOutFields, CandidateField inPathField) {
+    private List<CandidateField> getFromOutByValue(HashMap<String, CandidateField> foundOutFields, CandidateField inPathField) {
         ArrayList<CandidateField> res = new ArrayList<CandidateField>();
         for (CandidateField outField : foundOutFields.values()) {
             if (outField != null && inPathField.getValue().equals(outField.getValue())) {
+            	outField.setKind(inPathField.getKind());
                 res.add(outField);
             }   
         }

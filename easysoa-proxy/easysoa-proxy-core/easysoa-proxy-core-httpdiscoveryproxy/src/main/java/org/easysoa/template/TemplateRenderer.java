@@ -3,6 +3,8 @@
  */
 package org.easysoa.template;
 
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 
@@ -15,11 +17,14 @@ public class TemplateRenderer {
 	// Logger
 	private static Logger logger = Logger.getLogger(TemplateRenderer.class.getName());	
 	
+	// Structure to store field values
+	private HashMap<String, String> fieldMap;
+	
 	/**
 	 * Default constructor
 	 */
 	public TemplateRenderer(){
-		
+		fieldMap = new HashMap<String, String>();
 	}
 	
 	/**
@@ -35,8 +40,25 @@ public class TemplateRenderer {
 		*/
 		// Load the custom exchangeRecord
 		// for each custom parameter (eg : starting with $ for velocity)
-		// Get the default value and set give it to the template ...
+		// Get the default value and give it to the template using an hashmap
 		
+		// Fill in the field hashmap
+		
+		
+		
+		
+		// Generate here the template for Velocity for instance
+		
+	}
+	
+	/**
+	 * Method to be used in the template for suggested fields
+	 * The Template builder have to use this syntax : $renderer.getFieldValue("fieldName")
+	 * @param fieldName
+	 * @return
+	 */
+	public String getFieldValue(String fieldName){
+		return fieldMap.get(fieldName);
 	}
 	
 }
