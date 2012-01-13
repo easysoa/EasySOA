@@ -5,13 +5,10 @@ package org.easysoa.template;
 
 import java.util.List;
 import java.util.StringTokenizer;
-
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.template.TemplateField.TemplateFieldType;
-
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.QueryParam;
 
@@ -86,8 +83,8 @@ public class TemplateBuilder {
 				String path = record.getInMessage().getPath();
 				// Fastest solution is to replace the value corresponding to the field
 				// TODO : Can be a problem in case of the same value appears several time in the path ...
-				record.getInMessage().setPath(path.replace(field.getDefaultValue(), VARIABLE_BEAN_PREFIX + field.getFieldName() + VARIABLE_BEAN_SUFFIX));
-				// Other solution with a StringTokenizer, need to add a Stringbuffer to appends tokens to be complete
+				record.getInMessage().setPath(path.replace(field.getDefaultValue(), VARIABLE_BEAN_PREFIX + field.getFieldName() + VARIABLE_BEAN_SUFFIX)); // TODO argMap.get(...)
+				// Other solution with a StringTokenizer, need to add a StringBuffer to appends tokens to be complete
 				/*StringTokenizer tokenizer = new StringTokenizer(path, "/");
 				int tokenPosition = 0;
 				while(tokenizer.hasMoreTokens()){
@@ -108,6 +105,7 @@ public class TemplateBuilder {
 			
 			// Store the custom exchange record
 			ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+			// TODO : This path must be configurable
 			fileStore.setStorePath("target/templateTest/");
 			try {
 				fileStore.save(record);

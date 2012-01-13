@@ -52,7 +52,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
 		// Start mock services
 		startMockServices(false);
-	}	
+	}
 	
 	@Test
 	public void replayTemplateWithDefaultValue() throws ClientProtocolException, IOException{
@@ -88,8 +88,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Path Params : This case is harder, need to know the position of each param in the url ... must be specified in the template OR use the discovery mechanism from HTTP discovery proxy 
 		
 		// replay the request with specified values (can be default values)  
-		
-	}
+		}
 	
 	@Test
 	public void templateFieldSuggesterTest() throws Exception {
@@ -143,4 +142,17 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		}
 	}
 	
+	/**
+	 * This test do nothing, just wait for a user action to stop the proxy. 
+	 * @throws ClientException
+	 * @throws SOAPException
+	 * @throws IOException
+	 */
+	@Test
+	public final void testWaitUntilRead() throws Exception {
+		logger.info("TemplateTest started, wait for user action to stop !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		logger.info("TemplateTest stopped !");
+	}
 }

@@ -303,7 +303,6 @@ public class CorrelationService {
         // else (otherwise lowered) for all path elements, value correlations
         for (CandidateField inPathField : inPathFields.values()) {
             List<CandidateField> foundByValueFields = getFromOutByValue(foundOutFields, inPathField);
-            TemplateField templateField;
             for (CandidateField field : foundByValueFields) {
                 // exact only
                 correlations.add(new Object[]{ level - field.getPath().split("/").length*2, inPathField, field, "byValue" });
@@ -323,8 +322,8 @@ public class CorrelationService {
 
     /**
      * Convert the correlation object list in TemplateFieldSuggestions
-     * @param correlations 
-     * @return
+     * @param correlations Correlations
+     * @return A <code>TemplatefieldSuggestions</code> containing the fields detected by correlations
      */
     private TemplateFieldSuggestions convertToSuggestions(ArrayList<Object[]> correlations) {
     	TemplateFieldSuggestions suggestions = new TemplateFieldSuggestions();
@@ -351,6 +350,13 @@ public class CorrelationService {
     	return suggestions;
     }
     
+    /**
+     * 
+     * @param correlations
+     * @param level
+     * @param foundOutFields
+     * @param inFields
+     */
     private void addCorrelationsFromOutBySubpathAndValue(ArrayList<Object[]> correlations, int level,
             HashMap<String, CandidateField> foundOutFields, HashMap<String, CandidateField> inFields) {
         for (CandidateField inField : inFields.values()) {

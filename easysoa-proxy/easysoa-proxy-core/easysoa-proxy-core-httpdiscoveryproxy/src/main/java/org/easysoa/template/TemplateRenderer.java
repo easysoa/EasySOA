@@ -3,19 +3,25 @@
  */
 package org.easysoa.template;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
+import org.osoa.sca.annotations.Reference;
 
 /**
  * @author jguillemotte
  *
  */
-public class TemplateRenderer {
+public class TemplateRenderer implements TemplateProcessorRendererItf {
 
 	// Logger
 	private static Logger logger = Logger.getLogger(TemplateRenderer.class.getName());	
+	
+	@Reference
+    protected TemplateRendererItf template;
 	
 	// Structure to store field values
 	private HashMap<String, String> fieldMap;
@@ -31,7 +37,8 @@ public class TemplateRenderer {
 	 * Render the template to an exploitable HTML form
 	 * @param recordTemplate
 	 */
-	public void render(ExchangeRecord exchangeRecord){
+	//public void render(ExchangeRecord exchangeRecord){
+	public String renderReq(String templatePath/*, String... fieldValues*/) {
 		/**
 		The TemplateRenderer executes a record (request) template by loading its record and rendering 
 		it in the chosen template engine, with template variables set to user provided values first, 
@@ -45,10 +52,13 @@ public class TemplateRenderer {
 		// Fill in the field hashmap
 		
 		
-		
-		
-		// Generate here the template for Velocity for instance
-		
+		// Generate here the template for Velocity*
+		//return "Template renderer test working";
+		return template.renderReq(templatePath, Arrays.asList(new Object[] { "field1value" })); // TODO argMap
+	}
+	
+	public String renderRes(String templatePath){
+		return template.renderRes(templatePath);
 	}
 	
 	/**
