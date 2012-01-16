@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.core.contrib.eventlistener">
 
-  <require>org.easysoa.core.component.init</require>
+  <require>org.easysoa.core.service.EasySOAInitComponent</require>
 
   <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
   

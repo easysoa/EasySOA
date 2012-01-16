@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.rest.contrib.servicefinder" version="1.0">
 
-  <extension target="org.easysoa.rest.servicefinder.ServiceFinderComponent" point="strategies">
+  <extension target="org.easysoa.rest.service.ServiceFinderComponent" point="strategies">
     <strategy>org.easysoa.rest.servicefinder.strategies.ScrapingStrategy</strategy>
     <strategy>org.easysoa.rest.servicefinder.strategies.DirectAccessStrategy</strategy>
     <strategy>org.easysoa.rest.servicefinder.strategies.ContextStrategy</strategy>
