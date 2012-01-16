@@ -6,6 +6,7 @@ package com.openwide.easysoa.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.apache.http.HttpEntity;
@@ -57,12 +58,47 @@ public class RequestForwarder {
 	}
 	
 	/**
-	 * send the request, build an <code>OutMessage</code> with the response
+	 * send the HTTP REST request, build an <code>OutMessage</code> with the response
 	 * @param inMessage The request will be build with this message 
 	 * @throws IOException, ClientProtocolException If a problem occurs 
 	 */
 	// TODO : add a return type corresponding to the response
+	// TODO : works only with HTTP REST Request, need another implementation for SOAP
 	public OutMessage send(InMessage inMessage) throws ClientProtocolException, IOException{
+	//public OutMessage send(Exchange type, InMessage inMessage) throws ClientProtocolException, IOException{		
+		// Case of REST request
+		/*if(inMessage.get){*/
+			return sendRestRequest(inMessage);
+		/*} 
+		// Case of SOAP request
+		else if(){
+			return sendSoapRequest();
+		} 
+		// Unable to find the appriopriate sender
+		else {
+			throw new Exception("Unable to send request, unknow message type !");
+		}*/
+		
+
+	}
+
+	/**
+	 * Send a SOAP request
+	 * @param inMessage The request to send
+	 * @return <code>OutMessage</code> the response as an OutMessage object
+	 */
+	private OutMessage sendSoapRequest(InMessage inMessage){
+		return null;
+	}
+	
+	/**
+	 * Send a REST request
+	 * @param inMessage The request to send
+	 * @return <code>OutMessage</code> the response as an OutMessage object
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */
+	private OutMessage sendRestRequest(InMessage inMessage) throws ClientProtocolException, IOException{
 		// Default HTTP client
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		// Set retry handler
@@ -82,14 +118,17 @@ public class RequestForwarder {
 		requestUrlBuffer.append(inMessage.buildCompleteUrl());
 	    if(inMessage.getQueryString() != null){
 	    	requestUrlBuffer.append("?");
+	    	// TODO In case of POST Method, the params have to be in the message content, not in the query itself !
+    		boolean firstParam = true;
 	    	for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
 	    		// for each query param, build name=value and add '&' char
-	    		if("?".equals(requestUrlBuffer.charAt(requestUrlBuffer.length()-1))){
+	    		if(!firstParam){
 		    		requestUrlBuffer.append("&");
 	    		}
 	    		requestUrlBuffer.append(queryParam.getName());
 	    		requestUrlBuffer.append("=");
-	    		requestUrlBuffer.append(queryParam.getValue());
+	    		requestUrlBuffer.append(queryParam.getValue().replace(" ", "%20"));
+	    		firstParam = false;
 	    	}
 	    }
 		logger.debug("URL : " + requestUrlBuffer.toString());
@@ -151,9 +190,9 @@ public class RequestForwarder {
     	}
     	outMessage.setMessageContent(messageContent);    	
     	// Return response message
-		return outMessage;
+		return outMessage;		
 	}
-
+	
 	/**
 	 * Set headers in the httpMessage
 	 * @param request The request where to get headers

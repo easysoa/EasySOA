@@ -32,6 +32,9 @@ import org.apache.log4j.Logger;
  */
 public class UrlMock {
 
+	// Add a test set for REST requests with parameters (path, query, content ...) :
+	// 
+	
 	/**
 	 * Logger
 	 */
@@ -163,14 +166,6 @@ public class UrlMock {
 		citiesTestSet.add("Lille");
 		return citiesTestSet;
 	}
-	
-	/**
-	 * To get the Twitter URL data set
-	 * @return The Twitter URL data set
-	 */
-	/*public ArrayList<String> getMockTwitterUrlData(){
-		return mockTwitterTestSet;
-	}*/	
 	
 	/**
 	 * Replace template with random numbers

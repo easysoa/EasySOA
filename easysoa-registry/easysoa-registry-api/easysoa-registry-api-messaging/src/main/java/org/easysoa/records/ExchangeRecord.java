@@ -90,6 +90,14 @@ public class ExchangeRecord {
 	}
 	
 	/**
+	 * 
+	 * @param originalRecord
+	 */
+	public ExchangeRecord(ExchangeRecord originalRecord){
+		// Make a deep copy of 
+	}
+	
+	/**
 	 * Set the outgoing message
 	 * @param outMessage The outgoing message
 	 */

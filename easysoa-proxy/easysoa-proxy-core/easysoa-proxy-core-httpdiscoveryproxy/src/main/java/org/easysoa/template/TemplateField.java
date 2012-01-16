@@ -23,7 +23,7 @@ public class TemplateField {
 	private int pathParamPosition;
 	
 	public enum TemplateFieldType {
-		FORM_PARAM,
+		CONTENT_PARAM,
 		QUERY_PARAM,
 		PATH_PARAM,
 		WSDL_PARAM

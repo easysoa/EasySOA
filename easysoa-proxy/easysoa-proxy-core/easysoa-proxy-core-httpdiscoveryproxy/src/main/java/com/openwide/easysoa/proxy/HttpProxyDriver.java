@@ -58,14 +58,13 @@ public interface HttpProxyDriver {
 	public String startNewRun(@PathParam("runName") String runName);
 
 	/**
-	 * Delete the specified run
-	 * @param runName The run name to delete
+	 * Delete the current run
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
-	/*@GET
-	@Path("/deleteRun/{runName}")
-	public String deleteRun(@PathParam("runName") String runName);
-	*/
+	@POST
+	@Path("/run/delete")
+	public String delete();
+
 	/**
 	 * Stop the current run
 	 * @return a <code>String</code> to indicate if the command succeed

@@ -22,7 +22,7 @@ package org.openwide.easysoa.test;
 
 import org.easysoa.EasySOAConstants;
 import org.easysoa.test.EasySOACoreFeature;
-import org.easysoa.test.rest.AbstractRestTest;
+import org.easysoa.test.AbstractRestTest;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
