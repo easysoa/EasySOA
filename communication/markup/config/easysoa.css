@@ -8,11 +8,17 @@ a {
 
 h1 {
   margin-bottom: 30px;
+  font-size: 25pt;
 }
 
 h2 {
   margin-top: 25px;
   margin-bottom: 20px;
+  font-size: 20pt;
+}
+
+h3 {
+  font-size: 17pt;
 }
 
 code {

@@ -14,7 +14,7 @@ Otherwise, see [Installing Pandoc](http://johnmacfarlane.net/pandoc/installing.h
 
 The `run.sh` script converts any Markdown document to a PDF, using a custom template and custom stylesheets. Try:
 
-`./run.sh README README.pdf`
+`./run.sh README` or `./run.sh README README.pdf`
 
 If you put files in the `./in` folder, running `./run.sh` (without any parameters) will convert each file it contains.
 
