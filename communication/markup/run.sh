@@ -21,7 +21,10 @@ else
   pattern="in"
   for input in in/*
   do
-    mk2html2pdf $input out${input#$pattern}.pdf
+    if [[ !($input == in/*~) ]]
+    then
+      mk2html2pdf $input out${input#$pattern}.pdf
+    fi
   done
 fi
 
