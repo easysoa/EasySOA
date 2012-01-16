@@ -18,8 +18,8 @@ mkdir "out" -p
 
 function mk2html2pdf {
   echo "=======" $1 ">" $2
-  pandoc -s $1 -o out/tmp.html --toc --template config/template.html
-  wkhtmltopdf out/tmp.html $2
+  pandoc -s $1 -o .tmp.html --toc --template resources/template.html
+  wkhtmltopdf .tmp.html $2
 }
 
 if [[ $1 ]];
@@ -42,4 +42,4 @@ else
   done
 fi
 
-rm -f out/tmp.html
+rm -f .tmp.html

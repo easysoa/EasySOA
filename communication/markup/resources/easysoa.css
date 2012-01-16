@@ -1,0 +1,111 @@
+body {
+  padding: 20px;
+  max-width: 850px;
+}
+
+h1 {
+  margin-bottom: 30px;
+  font-size: 25pt;
+}
+
+h2 {
+  margin-top: 25px;
+  margin-bottom: 20px;
+  font-size: 20pt;
+}
+
+h3 {
+  font-size: 17pt;
+}
+
+h4 {
+  font-size: 13pt;
+}
+
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #113355;
+}
+
+a:visited {
+  font-weight: bold;
+  color: #113355;
+}
+
+
+code {
+  font-family: monospace;
+  border: 1px solid #BBB;
+  background-color: #EEE;
+  padding: 1px;
+  font-size: 90%;
+}
+
+pre {
+  display: block;
+  border: 1px solid #AAA;
+  background-color: #EEE;
+  margin-bottom: 15px;
+}
+
+pre > code {
+  border: 0;
+  background: none;
+}
+
+hr {
+  margin: 30px 0 10px;
+  border-color: #BBB;
+}
+
+#header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#toc-container {
+  border: 1px solid #DDF;
+  border-left: 2px solid #AAF;
+  background-color: #FAFAFF;
+  padding: 10px;
+  margin-bottom: 50px;
+}
+
+#toc-container > h2 {
+  color: #44A;
+  margin-top: 0;
+  margin-left: 10px;
+}
+
+#TOC > ul > li > a {
+  /* Hide first title in TOC 
+   * (use # for the document title, ## for highest level titles, like in the README) */
+  display: none; 
+}
+
+#TOC li > a {
+  font-size: 110%;
+}
+
+#TOC li li {
+  list-style-type: disc;
+}
+
+#TOC li li li {
+  list-style-type: circle !important;
+}
+
+#TOC li li li li {
+  list-style-type: circle !important;
+}
+
+#TOC a {
+  color: black;
+  font-weight: normal;
+}
+
+#contents li {
+  list-style-type: square;
+  margin-left: 20px;
+}

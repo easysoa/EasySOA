@@ -18,7 +18,7 @@ mkdir "out" -p
 
 function mk2html {
   echo "=======" $1 ">" $2
-  pandoc -s $1 -o $2 --toc --template config/template.html
+  pandoc -s $1 -o $2 --toc --template resources/template.html
 }
 
 if [[ $1 ]];
@@ -41,3 +41,5 @@ else
   done
 fi
 
+cp -r resources out
+rm out/resources/template.html
