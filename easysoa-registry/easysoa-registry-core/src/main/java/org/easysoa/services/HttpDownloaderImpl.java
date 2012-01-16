@@ -27,6 +27,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
@@ -39,6 +41,7 @@ import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
 public class HttpDownloaderImpl implements HttpDownloader {
 
     private HttpClient client = new HttpClient();
+    private UsernamePasswordCredentials credentials = null;
     private URL url;
     private File file = null;
     private byte[] bytes = null;
@@ -50,24 +53,48 @@ public class HttpDownloaderImpl implements HttpDownloader {
     public HttpDownloaderImpl(URL url) {
         this.url = url;
     }
+    
+    /**
+     * XXX Untested
+     */
+    public HttpDownloader setHttpsCredentials(String username, String password) {
+        credentials = new UsernamePasswordCredentials(username, password);
+        return this;
+    }
 
     @Override
 	public boolean isURLAvailable() {
-    	try {
-        	GetMethod getMethod = new GetMethod(url.toString());
+        GetMethod getMethod = null;
+        try {
+        	getMethod = new GetMethod(url.toString());
         	return client.executeMethod(getMethod) == 200;
     	}
     	catch (Exception e) {
     		return false;
+    	}
+    	finally {
+    	    if (getMethod != null) {
+    	        getMethod.releaseConnection();
+    	    }
     	}
     }
     
 	@Override
 	public HttpDownloader download() throws Exception {
     	GetMethod getMethod = new GetMethod(url.toString());
-    	int responseCode = client.executeMethod(getMethod);
-    	if (responseCode == 200) {
-    		this.bytes = getMethod.getResponseBody();
+    	try {
+    	    if (credentials != null) {
+                client.getState().setProxyCredentials(
+                        new AuthScope(url.getHost(), url.getPort()),
+                        credentials);
+    	    }
+        	int responseCode = client.executeMethod(getMethod);
+        	if (responseCode == 200) {
+        		this.bytes = getMethod.getResponseBody();
+        	}
+    	}
+    	finally {
+    	    getMethod.releaseConnection();
     	}
         return this;
     }

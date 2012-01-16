@@ -169,6 +169,10 @@ function sendWSDL(domElement) {
 
 function exit() {
 	jQuery('.easysoa-frame').hide('fast');
+	jQuery.ajax({
+		url : EASYSOA_WEB + '/logout',
+		dataType : 'jsonp'
+	});
 }
 
 /**
@@ -186,8 +190,8 @@ function initTemplates() {
 	
 	templates['login'] = underscore.template(
 	'<div class="easysoa-frame" id="easysoa-tpl-login">\
-	  <div class="easysoa-title">Login:</div>\
 	  <div class="easysoa-exit" onclick="exit()"></div>\
+	  <div class="easysoa-title">Login:</div>\
 	  <div class="easysoa-form-label">User </div><input type="text" id="easysoa-username" value="Administrator" /><br />\
       <div class="easysoa-form-label">Password </div><input type="password" id="easysoa-password" value="Administrator" /><br />\
       <input type="submit" id="easysoa-submit" />\
