@@ -12,11 +12,11 @@ Otherwise, see [Installing Pandoc](http://johnmacfarlane.net/pandoc/installing.h
 
 ## Getting started
 
-The `run.sh` script converts any Markdown document to a PDF, using a custom template and custom stylesheets. Try:
+The `pdf.sh` script converts any Markdown document to a PDF, using a custom template and custom stylesheets. Try:
 
-`./run.sh README` or `./run.sh README README.pdf`
+`./pdf.sh README.md` or `./pdf.sh README.md README.pdf`
 
-If you put files in the `./in` folder, running `./run.sh` (without any parameters) will convert each file it contains.
+If you put files in the `./in` folder, running `./pdf.sh` (without any parameters) will convert each file it contains. The `./html.sh` script works exactly the same way.
 
 ## Basic Pandoc use
 
@@ -28,4 +28,4 @@ Converting an HTML file to PDF:
 
 `wkhtmltopdf HTML_SOURCE PDF_OUTPUT`
 
-For more documentation, see the `run.sh` sources and the [Pandoc User’s Guide](http://johnmacfarlane.net/pandoc/README.html)
+For more documentation, see the `pdf.sh` sources and the [Pandoc User’s Guide](http://johnmacfarlane.net/pandoc/README.html)
