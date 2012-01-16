@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.core.preview.adapter.contrib">
+<component name="org.easysoa.core.contrib.preview.adapter">
 
   <extension target="org.nuxeo.ecm.platform.preview.adapter.PreviewAdapterManagerComponent"
     point="AdapterFactory">

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.core.component.docservice">
+<component name="org.easysoa.core.service.DocumentService">
 
   <implementation class="org.easysoa.services.DocumentServiceImpl" />
 

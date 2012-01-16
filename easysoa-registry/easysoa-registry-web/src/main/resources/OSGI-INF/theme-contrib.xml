@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.web.theme.contrib">
+<component name="org.easysoa.web.contrib.theme">
 
   <require>org.nuxeo.theme.nuxeo.default</require>
   <require>org.nuxeo.theme.nuxeo.virtualnavigation</require>
@@ -11,6 +11,7 @@
       <resource>easysoa.css</resource>
     </view>
 
+    <!-- TODO remove, useless -->
     <!-- Overwrite widgets to disable caching (XXX: doesn't work?) -->
     <view name="nuxeo5 tree explorer" template-engine="jsf-facelets">
       <format-type>widget</format-type>
@@ -31,6 +32,7 @@
     </resource>
   </extension>
 
+  <!-- TODO remove, useless -->
   <extension target="org.nuxeo.theme.services.ThemeService" point="applications">
     <application root="/nuxeo" template-engine="jsf-facelets">
       <resource-caching>

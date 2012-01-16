@@ -19,7 +19,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 public class ServiceFinderComponent extends DefaultComponent {
 
     public static final ComponentName NAME = new ComponentName(
-            ComponentName.DEFAULT_TYPE, ServiceFinderComponent.class.getName());
+            ComponentName.DEFAULT_TYPE, "org.easysoa.rest.service.ServiceFinderComponent");
     public static final String EXTENSTION_POINT_STRATEGIES = "strategies";
 
     private static Log log = LogFactory.getLog(ServiceFinderComponent.class);

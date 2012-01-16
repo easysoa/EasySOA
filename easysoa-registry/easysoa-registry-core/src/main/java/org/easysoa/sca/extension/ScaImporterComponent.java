@@ -39,7 +39,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class ScaImporterComponent extends DefaultComponent {
 
-    public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.sca.extension.ScaImporterComponent");
+    public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.core.service.ScaImporterComponent");
 
     private static Log log = LogFactory.getLog(ScaImporterComponent.class);
 

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.rest.servicefinder.contrib" version="1.0">
+<component name="org.easysoa.rest.contrib.servicefinder" version="1.0">
 
   <extension target="org.easysoa.rest.servicefinder.ServiceFinderComponent" point="strategies">
     <strategy>org.easysoa.rest.servicefinder.strategies.ScrapingStrategy</strategy>

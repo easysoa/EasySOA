@@ -30,7 +30,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 
 public class ServiceValidatorComponent extends DefaultComponent implements ServiceValidationService {
 
-    public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, ServiceValidatorComponent.class.getName());
+    public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.core.service.ServiceValidatorComponent");
     
     public static final String EXTENSION_POINT_VALIDATORS = "validators";
     

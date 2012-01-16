@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.easysoa.rights.contrib">
+<component name="org.easysoa.rest.contrib.rights">
 
   <!-- REST Services available w/o auth -->
   <extension point="openUrl" target="org.nuxeo.ecm.platform.ui.web.auth.service.PluggableAuthenticationService">

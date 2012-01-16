@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.dashboard.gadgets.contrib" version="1.0">
+<component name="org.easysoa.dashboard.contrib.gadgets" version="1.0">
 
   <extension target="org.nuxeo.opensocial.gadgets.service" point="gadget">
 

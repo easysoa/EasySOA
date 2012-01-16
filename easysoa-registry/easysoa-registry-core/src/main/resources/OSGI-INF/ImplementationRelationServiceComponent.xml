@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.core.component.relations">
+<component name="org.easysoa.core.service.ImplementationRelationService">
 
   <implementation class="org.easysoa.services.ImplementationRelationService" />
 

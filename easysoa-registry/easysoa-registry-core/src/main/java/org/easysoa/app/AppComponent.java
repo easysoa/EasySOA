@@ -37,7 +37,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class AppComponent extends DefaultComponent {
 
-    public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.app.extension.AppComponent");
+    public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.core.service.AppComponent");
 
     private static Log log = LogFactory.getLog(AppComponent.class);
 

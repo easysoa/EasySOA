@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.sca.extension.ScaImporterComponent">
+<component name="org.easysoa.core.component.ScaImporterComponent">
 
   <documentation>
     The SCA importer tool allows to register services and API's contained in a SCA composite file.

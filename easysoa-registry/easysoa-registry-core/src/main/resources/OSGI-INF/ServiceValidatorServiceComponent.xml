@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.validation.ServiceValidatorComponent">
+<component name="org.easysoa.core.service.ServiceValidatorComponent">
 
   <documentation>
   <!--

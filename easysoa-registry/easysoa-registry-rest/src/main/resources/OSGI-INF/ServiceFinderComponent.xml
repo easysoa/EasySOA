@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.rest.servicefinder.ServiceFinderComponent">
+<component name="org.easysoa.rest.service.ServiceFinderComponent">
 
   <documentation>
     The service finding tool allows to search for services from a given URL.

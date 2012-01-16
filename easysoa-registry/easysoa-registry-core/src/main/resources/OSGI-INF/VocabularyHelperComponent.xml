@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.core.component.vocabulary">
+<component name="org.easysoa.core.service.VocabularyHelper">
 
   <implementation class="org.easysoa.services.VocabularyHelper" />
 
