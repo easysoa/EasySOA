@@ -17,7 +17,10 @@ The `pdf.sh` script converts any Markdown document to a PDF, using a custom temp
 
 If you put files in the `./in` folder, running `./pdf.sh` (without any parameters) will convert each file it contains. The `./html.sh` script works exactly the same way.
 
-## Basic Pandoc use
+* The first title level (#) should only be used for the document title (just like in this Readme).
+* If your text links to images, their path must be relative to the `markup/` folder.
+
+## How it works: Basic Pandoc use
 
 Converting a Markdown file to HTML (works with other formats too):
 
