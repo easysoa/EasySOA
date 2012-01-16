@@ -4,8 +4,8 @@
 
 On Ubuntu:
 
-`sudo apt-get install pandoc texlive-latex-extra`
- sudo apt-add-repository http://www.ctan.org/tex-archive/macros/latex/contrib/unicode/
+    sudo apt-get install pandoc texlive-latex-extra
+    sudo apt-add-repository http://www.ctan.org/tex-archive/macros/latex/contrib/unicode/
 
 Otherwise, see [Installing Pandoc](http://johnmacfarlane.net/pandoc/installing.html)
 
