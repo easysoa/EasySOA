@@ -10,38 +10,12 @@
       <format-type>widget</format-type>
       <resource>easysoa.css</resource>
     </view>
-
-    <!-- TODO remove, useless -->
-    <!-- Overwrite widgets to disable caching (XXX: doesn't work?) -->
-    <view name="nuxeo5 tree explorer" template-engine="jsf-facelets">
-      <format-type>widget</format-type>
-      <template>incl/easysoa_tree_explorer_with_virtual_nav.xhtml</template>
-      <mode>no-cache</mode><!-- EasySOA -->
-    </view>
-    <view name="nuxeo5 breadcrumbs" template-engine="jsf-facelets">
-      <format-type>widget</format-type>
-      <template>incl/easysoa_breadcrumb_vn.xhtml</template>
-      <mode>no-cache</mode><!-- EasySOA -->
-    </view>
-
   </extension>
 
   <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
     <resource name="easysoa.css">
       <path>css/easysoa.css</path>
     </resource>
-  </extension>
-
-  <!-- TODO remove, useless -->
-  <extension target="org.nuxeo.theme.services.ThemeService" point="applications">
-    <application root="/nuxeo" template-engine="jsf-facelets">
-      <resource-caching>
-        <lifetime>0</lifetime><!-- 36000 -->
-      </resource-caching>
-      <style-caching>
-        <lifetime>0</lifetime><!-- 900 -->
-      </style-caching>
-    </application>
   </extension>
 
 </component>
