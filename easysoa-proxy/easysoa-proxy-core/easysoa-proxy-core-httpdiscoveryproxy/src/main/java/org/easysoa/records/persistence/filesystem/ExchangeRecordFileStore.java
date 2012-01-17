@@ -28,6 +28,8 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
@@ -38,6 +40,8 @@ import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.template.Template;
 import org.easysoa.template.TemplateField;
+import org.easysoa.template.TemplateRecord;
+
 import com.openwide.easysoa.message.CustomField;
 import com.openwide.easysoa.message.CustomFields;
 import com.openwide.easysoa.message.Header;
@@ -74,10 +78,13 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeRecordFileStore.class.getName());
 
-	public final static String FILE_EXTENSION = ".json";
+	public final static String EXCHANGE_FILE_EXTENSION = ".json";
+	public final static String TEMPLATE_FILE_EXTENSION = ".vm";
 	public final static String EXCHANGE_FILE_PREFIX = "excRec_";
 	public final static String IN_MESSAGE_FILE_PREFIX = "inMess_";
 	public final static String OUT_MESSAGE_FILE_PREFIX = "outMess_";
+	public final static String REQ_TEMPLATE_FILE_PREFIX = "reqTemplateRecord_";
+	public final static String RES_TEMPLATE_FILE_PREFIX = "resTemplateRecord_";
 
 	// TODO : Modify the way the path is stored, used ....
 	// Base path = target/
@@ -119,7 +126,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 			for (File file : listOfFiles) {
 				if (file.isFile() && file.getName().startsWith(EXCHANGE_FILE_PREFIX)) {
 					logger.debug("file name : " + file.getName());
-					if (file.getName().endsWith(FILE_EXTENSION)) {
+					if (file.getName().endsWith(EXCHANGE_FILE_EXTENSION)) {
 						String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));
 						logger.debug("record id : " + id);
 						try {
@@ -170,9 +177,9 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 * @throws IOException
 	 */
 	private String save(ExchangeRecord exchangeRecord, String recordPath) throws IOException{
-		File inMEssageFile = new File(recordPath + IN_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + FILE_EXTENSION);
-		File outMessageFile = new File(recordPath + OUT_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + FILE_EXTENSION);
-		File exchangeFile = new File(recordPath + EXCHANGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + FILE_EXTENSION);
+		File inMEssageFile = new File(recordPath + IN_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + EXCHANGE_FILE_EXTENSION);
+		File outMessageFile = new File(recordPath + OUT_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + EXCHANGE_FILE_EXTENSION);
+		File exchangeFile = new File(recordPath + EXCHANGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + EXCHANGE_FILE_EXTENSION);
 		FileWriter inMessFw = new FileWriter(inMEssageFile);
 		FileWriter outMessFw = new FileWriter(outMessageFile);
 		FileWriter exchangeFw = new FileWriter(exchangeFile);
@@ -189,6 +196,34 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		return exchangeRecord.getExchange().getExchangeID();		
 	}
 
+	/**
+	 * 
+	 * @param templateRecord
+	 * @throws IOException 
+	 */
+	public Map<String, String> save(TemplateRecord templateRecord) throws IOException{
+		HashMap<String, String> templateFileMap = new HashMap<String, String>();
+		File runFolder = new File(path);
+		runFolder.mkdir();
+		String reqTemplateFileName = REQ_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
+		String resTemplateFileName = RES_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
+		File reqTemplateRecordFile = new File(path + REQ_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION);
+		File resTemplateRecordFile = new File(path + RES_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION);
+		FileWriter reqTemplateFw = new FileWriter(reqTemplateRecordFile);
+		FileWriter resTemplateFw = new FileWriter(resTemplateRecordFile);
+	    try{
+	    	reqTemplateFw.write(templateRecord.getRequestTemplate());
+	    	templateFileMap.put("reqTemplate", reqTemplateFileName);
+	    	resTemplateFw.write(templateRecord.getResponsetemplate());
+	    	templateFileMap.put("resTemplate", resTemplateFileName);	    	
+	    }
+	    finally{
+	    	reqTemplateFw.close();
+	    	resTemplateFw.close();
+	    }
+	    return templateFileMap;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -224,9 +259,9 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		classMap.put("customFields", CustomFields.class);
 		classMap.put("customFieldList", CustomField.class);
 		classMap.put("messageContent", MessageContent.class);
-		record.setExchange((Exchange) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + EXCHANGE_FILE_PREFIX + recordID + FILE_EXTENSION), Exchange.class, classMap));
-		record.setInMessage((InMessage) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + IN_MESSAGE_FILE_PREFIX + recordID + FILE_EXTENSION), InMessage.class, classMap));
-		record.setOutMessage((OutMessage) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + OUT_MESSAGE_FILE_PREFIX + recordID + FILE_EXTENSION), OutMessage.class, classMap));
+		record.setExchange((Exchange) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + EXCHANGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), Exchange.class, classMap));
+		record.setInMessage((InMessage) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + IN_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), InMessage.class, classMap));
+		record.setOutMessage((OutMessage) JSONObject.toBean(readJSONFile(path + exchangeStoreName + "/" + OUT_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), OutMessage.class, classMap));
 		return record;
 	}
 

@@ -20,6 +20,7 @@
 
 package org.openwide.easysoa.test.util;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.http.client.methods.HttpPost;
@@ -30,6 +31,7 @@ import org.easysoa.EasySOAConstants;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
+import org.ow2.frascati.util.FrascatiClassLoader;
 import org.ow2.frascati.util.FrascatiException;
 
 /**
@@ -86,9 +88,11 @@ public abstract class AbstractProxyTestStarter {
 	 * Start HTTP Proxy
 	 * @throws FrascatiException
 	 */
-	protected static void startHttpDiscoveryProxy(String composite) throws FrascatiException {
+	protected static void startHttpDiscoveryProxy(String composite, URL...urls) throws FrascatiException {
 		logger.info("HTTP Discovery Proxy Starting");
-		componentList.add(frascati.processComposite(composite, new ProcessingContextImpl()));
+		componentList.add(frascati.processComposite(composite,
+				new ProcessingContextImpl(new FrascatiClassLoader(urls))));
+		;
 	}
 	
 	/**

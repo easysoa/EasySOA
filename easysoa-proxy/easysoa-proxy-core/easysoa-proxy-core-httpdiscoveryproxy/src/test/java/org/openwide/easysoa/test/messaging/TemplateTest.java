@@ -6,8 +6,12 @@ package org.openwide.easysoa.test.messaging;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -26,7 +30,11 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateFieldSuggester;
+import org.easysoa.template.TemplateProcessorRendererItf;
+import org.easysoa.template.TemplateRenderer;
+import org.easysoa.template.TemplateRendererItf;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
@@ -49,7 +57,11 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start Http Discovery proxy
-		startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
+		try {
+			startHttpDiscoveryProxy("httpDiscoveryProxy.composite", new URL[] { new URL("file://target") });
+		} catch (MalformedURLException e) {
+			throw new FrascatiException("TemplateTest init error", e);
+		}
 		// Start mock services
 		startMockServices(false);
 	}
@@ -132,13 +144,28 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		
 		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
 		TemplateBuilder builder = new TemplateBuilder();
+		//TemplateRenderer renderer = new TemplateRenderer();
 		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 		
 		//List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Meteo_WSDL_TestRun");		
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("TweeterTestRun");
 
+		// Get the template renderer
+		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
+
+		// Build an HashMap to simulate user provided values
+		HashMap<String, String> fieldMap = new HashMap<String, String>();
+		fieldMap.put("user", "toto");
+		
+		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
-			builder.buildTemplate(suggester.suggest(record), record);
+			// Build the templates with suggested fields
+			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record);
+			// Render the templates and replay the request
+			if(templateFileMap != null){
+				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, fieldMap));
+				// TODO : call the renderRes method for server mock test
+			}
 		}
 	}
 	
@@ -149,6 +176,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws IOException
 	 */
 	@Test
+	@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("TemplateTest started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test

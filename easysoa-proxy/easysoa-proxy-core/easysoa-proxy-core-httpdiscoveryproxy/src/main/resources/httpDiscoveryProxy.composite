@@ -48,6 +48,9 @@
 		<!-- Test for proxy implementation Velocity -->
 		<sca:reference name="compositeTemplates" target="TemplateProcessor/processor" />
 	</sca:component>
+	
+	<!--  for tests -->
+	<sca:service name="processor" promote="TemplateProcessor/processor"/>
 
 	<!-- Test component for proxy implementation Velocity -->
 	<sca:component name="TemplateProcessor">

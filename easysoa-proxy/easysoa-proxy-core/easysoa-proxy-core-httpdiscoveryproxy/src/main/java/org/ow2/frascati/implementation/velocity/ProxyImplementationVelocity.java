@@ -77,7 +77,9 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 		Template template = null;
 		if (parameters.length > pathArgIndex) {
 			Object templatePathFound = parameters[pathArgIndex];
+			System.out.println("templatePathFound = " + templatePathFound);
 			if (templatePathFound instanceof String) {
+				// TODO : change or customize the Frascati velocity ResourceLoader to use the FileResourceLoader to
 				template = this.velocityEngine.getTemplate((String) templatePathFound);
 			}
 		}
@@ -86,6 +88,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 			String name = this.velocityEngine.templateExists(method + ".vm") ? method + ".vm" : this.defaultResource;
 			template = this.velocityEngine.getTemplate(name);
 		}
+		System.out.println(template.getName());
 		System.out.println("VMTEMPLATE = " + template);
 
 		//String name = this.velocityEngine.templateExists(method + ".vm") ? method + ".vm" : this.defaultResource;

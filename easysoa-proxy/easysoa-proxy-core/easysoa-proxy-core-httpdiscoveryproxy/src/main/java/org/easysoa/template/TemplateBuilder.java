@@ -3,13 +3,14 @@
  */
 package org.easysoa.template;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.template.TemplateField.TemplateFieldType;
-import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.QueryParam;
 
 /**
@@ -22,7 +23,8 @@ public class TemplateBuilder {
 	private static Logger logger = Logger.getLogger(TemplateBuilder.class.getName());	
 	
 	// Template expressions segments
-	private final static String VARIABLE_BEAN_PREFIX = "$renderer.getFieldValue(\"";
+	//private final static String VARIABLE_BEAN_PREFIX = "$renderer.getFieldValue(\"";
+	private final static String VARIABLE_BEAN_PREFIX = "$arg1.get(\"";
 	private final static String VARIABLE_BEAN_SUFFIX = "\")";
 	
 	/**
@@ -39,8 +41,9 @@ public class TemplateBuilder {
 	 * @param fieldSuggestions
 	 * @param inMessage
 	 * @return 
+	 * @throws Exception 
 	 */
-	public ExchangeRecord buildTemplate(TemplateFieldSuggestions fieldSuggestions, ExchangeRecord record) throws IllegalArgumentException {
+	public Map<String, String> buildTemplate(TemplateFieldSuggestions fieldSuggestions, ExchangeRecord record) throws Exception {
 		// What to do if the suggested fields are not found in the record InMessage ?? throws an exception, do nothing ?
 		/**
 		The TemplateBuilder applies a selection of TemplateFieldSuggestions on a record (request) 
@@ -51,6 +54,7 @@ public class TemplateBuilder {
 		if(fieldSuggestions == null || record == null){
 			throw new IllegalArgumentException("Parameters fieldSuggestions and originalRecord must not be null !");
 		}
+		Map<String, String> templateFileMap = new HashMap<String, String>();
 		for(TemplateField field : fieldSuggestions){
 			logger.debug("Field to replace in a new custom record : " + field.getFieldName() + " = " + field.getDefaultValue());
 			logger.debug("Field type : " + field.getParamType() + ", position in path : " + field.getPathParamPosition());
@@ -102,19 +106,24 @@ public class TemplateBuilder {
 			} else {
 				logger.debug("Unable to replace value for unknow field type '" + field.getParamType() + "'");
 			}
-			
+		}
+		if(fieldSuggestions != null && fieldSuggestions.size() > 0){
 			// Store the custom exchange record
 			ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 			// TODO : This path must be configurable
-			fileStore.setStorePath("target/templateTest/");
+			// TODO : How to configure Velocity to use a path other that the one configured in the composite file
+			// The composite configured path is in target/classes ...
+			fileStore.setStorePath("target/classes/webContent/templates/");
 			try {
-				fileStore.save(record);
+				templateFileMap = fileStore.save(new TemplateRecord(record));
 			}
 			catch(Exception ex){
-				logger.error("Unable to save the custom record", ex);
+				logger.error("Unable to save the templates", ex);
+				throw ex;
 			}
+			return templateFileMap;			
 		}
-		// 
+		// Returns null if there is not suggested fields
 		return null;
 	}
 	

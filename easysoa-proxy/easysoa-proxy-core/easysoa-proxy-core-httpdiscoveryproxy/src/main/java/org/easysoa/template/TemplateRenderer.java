@@ -3,13 +3,24 @@
  */
 package org.easysoa.template;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+
+import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
+
+import com.openwide.easysoa.message.CustomField;
+import com.openwide.easysoa.message.CustomFields;
+import com.openwide.easysoa.message.Header;
+import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.message.OutMessage;
+import com.openwide.easysoa.util.RequestForwarder;
 
 /**
  * @author jguillemotte
@@ -20,55 +31,53 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 	// Logger
 	private static Logger logger = Logger.getLogger(TemplateRenderer.class.getName());	
 	
-	@Reference
+	@Reference(required = true)
     protected TemplateRendererItf template;
-	
-	// Structure to store field values
-	private HashMap<String, String> fieldMap;
 	
 	/**
 	 * Default constructor
 	 */
 	public TemplateRenderer(){
-		fieldMap = new HashMap<String, String>();
 	}
 	
 	/**
 	 * Render the template to an exploitable HTML form
 	 * @param recordTemplate
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	//public void render(ExchangeRecord exchangeRecord){
-	public String renderReq(String templatePath/*, String... fieldValues*/) {
+	public String renderReq(String templatePath, ExchangeRecord record, Map<String, String> fieldValues) throws Exception {
 		/**
 		The TemplateRenderer executes a record (request) template by loading its record and rendering 
 		it in the chosen template engine, with template variables set to user provided values first, 
 		doing the corresponding request call and returning its result. Note that the TemplateRenderer 
 		can therefore be used (or tested) with hand-defined exchange (request) templates.
 		*/
-		// Load the custom exchangeRecord
-		// for each custom parameter (eg : starting with $ for velocity)
-		// Get the default value and give it to the template using an hashmap
+		logger.debug("Passing in renderReq method !!!");
+
+		// Render the template
+		String renderedTemplate = template.renderReq(templatePath, fieldValues);
+		logger.debug("Rendered template : " + renderedTemplate);
 		
-		// Fill in the field hashmap
-		
-		
-		// Generate here the template for Velocity*
-		//return "Template renderer test working";
-		return template.renderReq(templatePath, Arrays.asList(new Object[] { "field1value" })); // TODO argMap
+		// Call the replay service
+		JSONObject jsonInMessage = (JSONObject) JSONSerializer.toJSON(renderedTemplate);
+		HashMap<String, Class> classMap = new HashMap<String, Class>();
+		classMap.put("headers", Header.class);
+		classMap.put("headerList", Header.class);
+		classMap.put("customFields", CustomFields.class);
+		classMap.put("customFieldList", CustomField.class);		
+		InMessage inMessage = (InMessage) JSONObject.toBean(jsonInMessage, InMessage.class, classMap);
+		RequestForwarder forwarder = new RequestForwarder();
+		OutMessage outMessage =  forwarder.send(inMessage);
+		JSONObject jsonOutMessage = JSONObject.fromObject(outMessage);
+		return jsonOutMessage.toString();
 	}
-	
-	public String renderRes(String templatePath){
-		return template.renderRes(templatePath);
-	}
-	
-	/**
-	 * Method to be used in the template for suggested fields
-	 * The Template builder have to use this syntax : $renderer.getFieldValue("fieldName")
-	 * @param fieldName
-	 * @return
-	 */
-	public String getFieldValue(String fieldName){
-		return fieldMap.get(fieldName);
+
+	public String renderRes(String templatePath, ExchangeRecord record, Map<String, String> fieldValues){
+		// TODO : Complete this method, to be used in a server mock
+		logger.warn("renderRes method not yet entierely implemented, need to be completed !");
+		String renderedTemplate = template.renderRes(templatePath, fieldValues);
+		return renderedTemplate;
 	}
 	
 }
