@@ -5,10 +5,11 @@
 
   <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
   
-   <!--  <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
+    <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
-    </listener>-->
+      <event>documentModified</event>
+    </listener>
     <listener name="serviceapilistener" class="org.easysoa.listeners.ServiceAPIListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>

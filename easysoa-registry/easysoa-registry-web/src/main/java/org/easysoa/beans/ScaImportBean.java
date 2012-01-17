@@ -29,6 +29,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.listeners.AppliImplListener;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
@@ -39,6 +40,7 @@ import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.Scope;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -59,7 +61,7 @@ import org.nuxeo.runtime.api.Framework;
 @Scope(ScopeType.CONVERSATION)
 @Install(precedence = Install.FRAMEWORK)
 public class ScaImportBean {
-
+    
     private static Log log = LogFactory.getLog(ScaImportBean.class);
 
     @In(create = true, required = false)
@@ -79,7 +81,9 @@ public class ScaImportBean {
     private String serviceStackUrl;
 
     @Create
+    @Observer(value = { AppliImplListener.APPLI_IMPL_CHANGED })
     public void init() throws ClientException {
+        
         compositeFile = null;
         documentManager = navigationContext.getOrCreateDocumentManager();
         appliImpls = getAllAppliImplsAsSelectItems(documentManager);
@@ -88,10 +92,7 @@ public class ScaImportBean {
         // by choosing a stack (api server) type (frascati...)
         // (possibly initialized using composite info), then customizing it
     }
-
-    /**
-     * 
-     */
+    
     public void importSCA() {
         if (compositeFile != null) {
             

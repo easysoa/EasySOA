@@ -36,9 +36,11 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.VocabularyHelper;
+import org.jboss.seam.core.Events;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.event.DocumentEventTypes;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -51,6 +53,8 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public class AppliImplListener implements EventListener {
+    
+    public final static String APPLI_IMPL_CHANGED = "appliImplChanged";
 
     private static Log log = LogFactory.getLog(AppliImplListener.class);
 
@@ -62,8 +66,8 @@ public class AppliImplListener implements EventListener {
             return;
         }
         CoreSession session = ctx.getCoreSession();
+        
         DocumentModel appliImplModel = ((DocumentEventContext) ctx).getSourceDocument();
-
         if (appliImplModel == null) {
             return;
         }
@@ -72,20 +76,26 @@ public class AppliImplListener implements EventListener {
             return;
         }
 
-        // Update properties
-        if (maintainInternalProperties(session, appliImplModel)) {
-            setDefaultPropertyValues(session, appliImplModel);
+        if (event.getName().equals(DocumentEventTypes.DOCUMENT_UPDATED)) {
+            Events.instance().raiseEvent(APPLI_IMPL_CHANGED, appliImplModel);
         }
-
-        // Update vocabulary
-        try {
-            updateVocabulary(session,
-                    (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER),
-                    (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT));
-        } catch (ClientException e) {
-            log.error("Failed to fetch Appli. Impl. properties", e);
+        // On document creation / Before modification
+        else {
+            // Update properties
+            if (maintainInternalProperties(session, appliImplModel)) {
+                setDefaultPropertyValues(session, appliImplModel);
+            }
+    
+            // Update vocabulary
+            try {
+                updateVocabulary(session,
+                        (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER),
+                        (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT));
+            } catch (ClientException e) {
+                log.error("Failed to fetch Appli. Impl. properties", e);
+            }
         }
-
+        
     }
 
     private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel) {
