@@ -59,7 +59,8 @@ public class TemplateFieldSuggester {
 		// It is necessary to do some refactoring of correlation package to re-organize methods and classes
 		// eg : these methods will be at better place in a correlation class 
 
-		// seem's that do not work when no outputfields are set in the hashmap
+		// this correlation service return nothing when no outputfields are set in the hashmap
+		// Or when there is no corresponding fields between in parameters and out parameters
 		CorrelationService correlationService = new CorrelationService();
 		return correlationService.correlateWithSubpath(record,
 				getPathParams(record.getInMessage()),
@@ -198,6 +199,8 @@ public class TemplateFieldSuggester {
 	 * @param inMessage <code>InMessage</code> containing query params
 	 * @return An <code>HashMap</code> filled with query parameters
 	 */
+	// TODO : Change this code .... For REST request, content params are processed as query params
+	// For SOAP request, need to add code to parse the xml. 
 	private HashMap<String, CandidateField> getContentParam(InMessage inMessage){
 		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
 		CandidateField candidateField;

@@ -33,8 +33,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Request;
-//import org.apache.cxf.jaxrs.ext.form.Form;
-
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
@@ -42,7 +40,6 @@ import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
-import org.easysoa.template.Template;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.setters.CustomParamSetter;
@@ -51,7 +48,6 @@ import org.easysoa.template.setters.RestPathParamSetter;
 import org.easysoa.template.setters.RestQueryParamSetter;
 import org.easysoa.template.setters.WSDLParamSetter;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.RequestForwarder;
@@ -214,9 +210,18 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		// requires to extract service in request & response
 	}
 
+	@GET
+	@Path("/templates/")
+	//@Produces("")	
+	@Override
+	public String getTemplateRecordList() {
+		// TODO Auto-generated method stub
+		return null;
+	}	
+	
 	// To generate the form with the default values
 	@GET
-	@Path("/getTemplate/{templateName}")
+	@Path("/templates/getTemplate/{templateName}")
 	@Produces("application/json")
 	@Override
 	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception {
@@ -229,7 +234,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	// To process the replay action with the custom parameters
 	@Override
 	@POST
-	@Path("/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
+	@Path("/templates/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
 	//@Consumes("multipart/form-data")
 	@Consumes("application/x-www-form-urlencoded")
 	public String replayWithTemplate(MultivaluedMap<String, String> formData, @PathParam("exchangeStoreName") String exchangeStoreName, @PathParam("exchangeRecordID") String exchangeRecordID, @PathParam("templateName") String templateName) throws Exception {

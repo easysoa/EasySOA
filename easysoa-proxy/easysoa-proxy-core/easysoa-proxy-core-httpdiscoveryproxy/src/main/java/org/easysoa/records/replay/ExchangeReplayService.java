@@ -66,13 +66,17 @@ public interface ExchangeReplayService {
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment);
 	
 	@GET
-	@Path("/getTemplate/{templateName}")
+	@Path("/templates/")
+	//@Produces("")
+	public String getTemplateRecordList();  
+	
+	@GET
+	@Path("/templates/getTemplate/{templateName}")
 	@Produces("application/json")
-	//public Template getTemplate(@PathParam("templateName") String templateName) throws Exception;
 	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception;
 	
 	@POST
-	@Path("/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
+	@Path("/templates/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
 	@Produces("application/json")
 	//@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	//@Consumes("multipart/form-data")

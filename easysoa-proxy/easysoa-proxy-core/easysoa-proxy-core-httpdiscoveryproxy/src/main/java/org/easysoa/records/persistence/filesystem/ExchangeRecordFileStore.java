@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
@@ -333,19 +332,34 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		this.path = path;
 	}
 
-	// TODO : rename to getFLD
-	// TODO : returns a templateSuggestions object
 	@Override
-	//public Template getTemplate(String templateName) throws Exception {
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(String templateFieldSuggestionsName) throws Exception {
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(String fileName) throws Exception {
 		// TODO remove this hard coded path
-		logger.debug("loading template :" + templateFieldSuggestionsName);
-		System.out.println("Template to use : " + System.getProperty("user.dir") + "/src/test/resources/templates/" + templateFieldSuggestionsName + ".fld");
+		logger.debug("loading template :" + fileName);
+		//System.out.println("Template to use : " + System.getProperty("user.dir") + "/src/test/resources/templates/" + templateFieldSuggestionsName + ".fld");
 		HashMap<String, Class> classMap = new HashMap<String, Class>();
 		classMap.put("templateFields", TemplateField.class);
-		//return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(System.getProperty("user.dir") +  "/src/test/resources/templates/" + templateFieldSuggestionsName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class);
-		//return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(System.getProperty("user.dir") +  "/src/test/resources/templates/" + templateFieldSuggestionsName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class);
-		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(System.getProperty("user.dir") +  "/src/test/resources/templates/" + templateFieldSuggestionsName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
+		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(System.getProperty("user.dir") +  "/src/test/resources/templates/" + fileName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
+	}
+	
+	/**
+	 * Returns the name list of the recorded templates
+	 * @return A <code>List</code> containing the name of the template files
+	 */
+	public List<String> getTemplateList(){
+		ArrayList<String> templateFileList = new ArrayList<String>();
+		// TODO : remove this hard coded path
+		File folder = new File("target/classes/webContent/templates/");
+		File[] listOfFiles = folder.listFiles();
+		if(listOfFiles != null){
+			for (File file : listOfFiles) {
+				if (file.isFile() && file.getName().endsWith(TEMPLATE_FILE_EXTENSION)) {
+					logger.debug("file name : " + file.getName());
+					templateFileList.add(file.getName());		
+				}
+			}
+		}
+		return templateFileList;
 	}
 
 }

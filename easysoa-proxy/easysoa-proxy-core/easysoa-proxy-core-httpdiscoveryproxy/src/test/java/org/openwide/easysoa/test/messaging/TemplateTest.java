@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -31,11 +30,12 @@ import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateFieldSuggester;
 import org.easysoa.template.TemplateProcessorRendererItf;
-import org.easysoa.template.TemplateRenderer;
-import org.easysoa.template.TemplateRendererItf;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
+import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
+import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
 
@@ -66,6 +66,12 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		startMockServices(false);
 	}
 	
+	/**
+	 * ReplayTemplateWithDefaultValue : Use the replayTemplate.html velocity HTML template to build a form.
+	 * Only with REST Exchanges
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
 	@Test
 	public void replayTemplateWithDefaultValue() throws ClientProtocolException, IOException{
 		// TODO : Complete this test with 4 kinds of parameters : formParams, pathParams, QueryParams, WSDLParams
@@ -79,7 +85,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		assertTrue(response.contains("comment (String) : <input type=\"text\" name=\"comment\" value=\"test\" />"));
 		// Specify the exchangeRecord to use => run/exchangeRecord to get the request 
 		
-		HttpPost postRequest = new HttpPost("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replayWithTemplate/Test_Run/1/testTemplate");
+		HttpPost postRequest = new HttpPost("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/templates/replayWithTemplate/Test_Run/1/testTemplate");
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("user", "FR3Bourgogne.xml")); // tests HTTP Form-like params (others being HTTP path, query and SOAP)
 		formparams.add(new BasicNameValuePair("param2", "value2"));
@@ -100,12 +106,16 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Path Params : This case is harder, need to know the position of each param in the url ... must be specified in the template OR use the discovery mechanism from HTTP discovery proxy 
 		
 		// replay the request with specified values (can be default values)  
-		}
-	
+	}
+
+	/**
+	 * TemplateFieldSuggester test with REST Exchanges 
+	 * @throws Exception
+	 */
 	@Test
-	public void templateFieldSuggesterTest() throws Exception {
+	public void templateFieldSuggesterRestTest() throws Exception {
 		// Start run
-		startNewRun("TweeterTestRun");
+		startNewRun("TweeterRestTestRun");
 		
 		// Send tweeter mock requests
 		// Get the twitter mock set and send requests to the mock through the HTTP proxy
@@ -145,9 +155,8 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
 		TemplateBuilder builder = new TemplateBuilder();
 		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
-		
-		//List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Meteo_WSDL_TestRun");		
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("TweeterTestRun");
+	
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("TweeterRestTestRun");
 
 		// Get the template renderer
 		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
@@ -169,13 +178,69 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	}
 	
 	/**
+	 * TemplateFieldSuggester test with SOAP Exchanges 
+	 * @throws Exception
+	 */
+	@Test
+	public void templateFieldSuggesterSOAPTest() throws Exception {	
+		
+		// Start run
+		startNewRun("MeteoSoapTestRun");		
+
+		// Set the discovery proxy
+		System.setProperty("http.proxyHost", "localhost");
+		System.setProperty("http.proxyPort", "8082");
+		
+		// Send the test requests
+		UrlMock urlMock = new UrlMock();
+		for(String cityName : urlMock.getMeteoMockCities()){
+			MeteoMock meteoService = new MeteoMock();
+			MeteoMockPortType port = meteoService.getMeteoMockPort();
+			String response = port.getTomorrowForecast(cityName);
+			logger.info("Response for " + cityName + " : " + response);
+		}
+		
+		// Remove the discovery proxy
+		System.setProperty("http.proxyHost", "");
+		System.setProperty("http.proxyPort", "");
+		
+		// Stop, save and delete run
+		stopAndSaveRun();
+		deleteRun();
+
+		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
+		TemplateBuilder builder = new TemplateBuilder();
+		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+	
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("MeteoSoapTestRun");
+
+		// Get the template renderer
+		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
+
+		// Build an HashMap to simulate user provided values
+		HashMap<String, String> fieldMap = new HashMap<String, String>();
+		fieldMap.put("user", "toto");
+		
+		// For each custom record in the list
+		for(ExchangeRecord record : recordList){
+			// Build the templates with suggested fields
+			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record);
+			// Render the templates and replay the request
+			if(templateFileMap != null){
+				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, fieldMap));
+				// TODO : call the renderRes method for server mock test
+			}
+		}		
+	}
+		
+	/**
 	 * This test do nothing, just wait for a user action to stop the proxy. 
 	 * @throws ClientException
 	 * @throws SOAPException
 	 * @throws IOException
 	 */
 	@Test
-	@Ignore
+	//@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("TemplateTest started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test
