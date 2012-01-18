@@ -55,7 +55,7 @@ public class TemplateBuilder {
 			throw new IllegalArgumentException("Parameters fieldSuggestions and originalRecord must not be null !");
 		}
 		Map<String, String> templateFileMap = new HashMap<String, String>();
-		for(TemplateField field : fieldSuggestions){
+		for(TemplateField field : fieldSuggestions.getTemplateFields()){
 			logger.debug("Field to replace in a new custom record : " + field.getFieldName() + " = " + field.getDefaultValue());
 			logger.debug("Field type : " + field.getParamType() + ", position in path : " + field.getPathParamPosition());
 
@@ -107,7 +107,7 @@ public class TemplateBuilder {
 				logger.debug("Unable to replace value for unknow field type '" + field.getParamType() + "'");
 			}
 		}
-		if(fieldSuggestions != null && fieldSuggestions.size() > 0){
+		if(fieldSuggestions != null && fieldSuggestions.getTemplateFields().size() > 0){
 			// Store the custom exchange record
 			ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 			// TODO : This path must be configurable
@@ -116,6 +116,8 @@ public class TemplateBuilder {
 			fileStore.setStorePath("target/classes/webContent/templates/");
 			try {
 				templateFileMap = fileStore.save(new TemplateRecord(record));
+				// Add code to save a fld : containing field suggestions with default values
+				fileStore.save(fieldSuggestions, record.getExchange().getExchangeID());
 			}
 			catch(Exception ex){
 				logger.error("Unable to save the templates", ex);

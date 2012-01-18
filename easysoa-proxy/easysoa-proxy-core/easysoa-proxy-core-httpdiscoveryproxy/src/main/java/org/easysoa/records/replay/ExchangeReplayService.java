@@ -34,6 +34,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.template.Template;
+import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Remotable;
 
 @Remotable
@@ -67,7 +68,8 @@ public interface ExchangeReplayService {
 	@GET
 	@Path("/getTemplate/{templateName}")
 	@Produces("application/json")
-	public Template getTemplate(@PathParam("templateName") String templateName) throws Exception;	
+	//public Template getTemplate(@PathParam("templateName") String templateName) throws Exception;
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception;
 	
 	@POST
 	@Path("/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")

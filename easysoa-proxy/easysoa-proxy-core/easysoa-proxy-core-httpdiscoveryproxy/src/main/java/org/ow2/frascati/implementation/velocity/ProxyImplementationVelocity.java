@@ -65,7 +65,6 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 		context.put(params, parameters);
 		// FIXME: should not be called but @Lifecycle does not work as expected.
 		registerScaProperties();
-
 		// String[] args = new String[] { "parameters" };
 
 		StringWriter sw = new StringWriter();

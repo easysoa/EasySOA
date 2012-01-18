@@ -4,7 +4,8 @@ import java.util.List;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.ExchangeRecordStoreManager;
-import org.easysoa.template.Template;
+import org.easysoa.template.TemplateFieldSuggestions;
+
 import com.openwide.easysoa.run.Run;
 
 /**
@@ -47,7 +48,7 @@ public class ExchangeRecordDBStore implements ExchangeRecordStoreManager {
 	}
 
 	@Override
-	public Template getTemplate(String templateName) throws Exception {
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(String templateName) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

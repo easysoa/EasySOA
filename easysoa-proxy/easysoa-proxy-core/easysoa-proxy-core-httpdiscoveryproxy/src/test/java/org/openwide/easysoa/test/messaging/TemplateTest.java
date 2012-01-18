@@ -144,7 +144,6 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		
 		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
 		TemplateBuilder builder = new TemplateBuilder();
-		//TemplateRenderer renderer = new TemplateRenderer();
 		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 		
 		//List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Meteo_WSDL_TestRun");		

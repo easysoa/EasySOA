@@ -22,7 +22,7 @@
 	<body>
 		<h2>Fields in template : </h2>
 		<form>
-		#foreach( $templateField in $exchangeRecordStoreManager.getTemplate("testTemplate").getTemplateFields() )
+		#foreach( $templateField in $exchangeRecordStoreManager.getTemplateFieldSuggestions("testTemplate").getTemplateFields() )
     		$templateField.getFieldName() ($templateField.getFieldType()) : <input type="text" name="$templateField.getFieldName()" value="$templateField.getDefaultValue()" />
     		<br/>
 		#end

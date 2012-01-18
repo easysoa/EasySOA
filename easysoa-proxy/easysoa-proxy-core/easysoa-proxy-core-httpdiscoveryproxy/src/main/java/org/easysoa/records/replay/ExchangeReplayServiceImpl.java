@@ -44,6 +44,7 @@ import org.easysoa.records.StoreCollection;
 import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
 import org.easysoa.template.Template;
 import org.easysoa.template.TemplateField;
+import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.setters.CustomParamSetter;
 import org.easysoa.template.setters.RestFormParamSetter;
 import org.easysoa.template.setters.RestPathParamSetter;
@@ -218,11 +219,11 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@Path("/getTemplate/{templateName}")
 	@Produces("application/json")
 	@Override
-	public Template getTemplate(@PathParam("templateName") String templateName) throws Exception {
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception {
     	ExchangeRecordStoreManager erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
-    	Template template = erfs.getTemplate(templateName);
-    	logger.debug(template.getTemplateFields().size());
-    	return template;
+    	TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(templateFieldSuggestionsName);
+    	logger.debug(templateFieldSuggest.getTemplateFields().size());
+    	return templateFieldSuggest;
 	}
 
 	// To process the replay action with the custom parameters
@@ -239,7 +240,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		try {
 			ExchangeRecord record = getExchangeRecord(exchangeStoreName, exchangeRecordID);
 			//
-			Template template = getTemplate(templateName);
+			TemplateFieldSuggestions templateFieldSUggestions = getTemplateFieldSuggestions(templateName);
 			// get the new parameter values contained in the received request form, How to get unknow parameters ?
 			if(record != null){
 				logger.debug("Original message URL : " + record.getInMessage().buildCompleteUrl());
@@ -256,7 +257,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 				}*/
 				// Replace the the values for the fields specified in the template
 				// The value to replace can be in PathParam, FormParams or QueryParams, check the paramType in template file				
-				setCustomParams(template, customInMessage, formData);
+				setCustomParams(templateFieldSUggestions, customInMessage, formData);
 				logger.debug("Modified path = " + customInMessage.getPath());
 				
 				// Send the new request and returns the response
@@ -279,11 +280,11 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	 * @param message
 	 * @param mapParams
 	 */
-	private void setCustomParams(Template template, InMessage inMessage, MultivaluedMap<String, String> mapParams){
+	private void setCustomParams(TemplateFieldSuggestions templateFieldSuggestions, InMessage inMessage, MultivaluedMap<String, String> mapParams){
 		// Write the code to set custom parameters
 		// For each templateField described in the template and For each Custom Param setter in the paramSetter list,
 		// call the method isOKFor and if ok call the method setParams
-		for(TemplateField templateField : template.getTemplateFields()){
+		for(TemplateField templateField : templateFieldSuggestions.getTemplateFields()){
 			for(CustomParamSetter paramSetter : paramSetterList){
 				if(paramSetter.isOkFor(templateField)){
 					paramSetter.setParam(templateField, inMessage, mapParams);

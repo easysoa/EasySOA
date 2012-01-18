@@ -1,7 +1,5 @@
-{"templateFields":
-	[
-		{"defaultValue":"test","fieldName":"comment","fieldType":"String", "paramType":"CONTENT_PARAM", "pathParamPosition":""},
-		{"defaultValue":"10","fieldName":"size","fieldType":"int", "paramType":"QUERY_PARAM", "pathParamPosition":""},
-		{"defaultValue":"","fieldName":"user","fieldType":"String", "paramType":"PATH_PARAM", "pathParamPosition":"4"}
-	]
-}
+{"templateFields":[
+	{"defaultValue":"test","fieldName":"comment","fieldType":"String", "paramType":"CONTENT_PARAM", "pathParamPosition":""},
+	{"defaultValue":"10","fieldName":"size","fieldType":"int", "paramType":"QUERY_PARAM", "pathParamPosition":""},
+	{"defaultValue":"","fieldName":"user","fieldType":"String", "paramType":"PATH_PARAM", "pathParamPosition":"4"}
+]}
