@@ -44,7 +44,13 @@ public interface ExchangeRecordStoreManager {
 	 * @return 
 	 * @throws Exception If a problems occurs
 	 */
-	public String save(Run run) throws Exception;
+	public void save(Run run) throws Exception;
+	
+	/**
+	 * Create a store
+	 * @param storeName The store name
+	 */
+	public void createStore(String storeName);
 	
 	/**
 	 * Load an exchange record
@@ -71,6 +77,6 @@ public interface ExchangeRecordStoreManager {
 	 * @param templateName The name of the template to use
 	 * @return A <code>TemplateFieldSuggestion</code>
 	 */
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(String templateName) throws Exception;
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String templateName) throws Exception;
 	
 }

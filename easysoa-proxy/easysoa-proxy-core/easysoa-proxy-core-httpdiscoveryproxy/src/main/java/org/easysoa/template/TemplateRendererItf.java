@@ -16,12 +16,12 @@ public interface TemplateRendererItf {
 	 * @param list 
 	 * @return
 	 */
-	public String renderReq(String path, Map<String, String> argMap);
+	public String renderReq(String path, String runName, Map<String, String> argMap);
 
 	/**
 	 * Render the response
 	 * @return
 	 */
-	public String renderRes(String path, Map<String, String> argMap);
+	public String renderRes(String path, String runName, Map<String, String> argMap);
 	
 }

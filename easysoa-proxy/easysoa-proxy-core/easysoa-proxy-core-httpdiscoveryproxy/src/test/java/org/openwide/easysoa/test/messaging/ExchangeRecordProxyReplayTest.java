@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.records.ExchangeRecord;
+import org.jboss.util.property.PropertyManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -256,7 +257,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
      * Delete the old exchange record file remaining in target path
      */
     protected static void cleanOldFiles(){
-    	File folder = new File("target/");
+    	File folder = new File(PropertyManager.getProperty("path.record.store"));
     	File[] listOfFiles = folder.listFiles();
     	for (File file : listOfFiles) {
             if (file.isFile()) {

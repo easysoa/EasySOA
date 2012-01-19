@@ -21,7 +21,7 @@ public interface TemplateProcessorRendererItf {
 	 * @return The rendered template
 	 * @throws Exception If a problem occurs
 	 */
-	public String renderReq(String templatePath, ExchangeRecord record, Map<String, String> fieldValues) throws Exception;
+	public String renderReq(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues) throws Exception;
 	
 	/**
 	 * Render the response template by replacing template expression by provided values 
@@ -31,5 +31,5 @@ public interface TemplateProcessorRendererItf {
 	 * @return The rendred template
 	 * @throws Exception If a problem occurs
 	 */
-	public String renderRes(String templatePath, ExchangeRecord record, Map<String, String> fieldValues) throws Exception;
+	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues) throws Exception;
 }

@@ -71,9 +71,9 @@ public interface ExchangeReplayService {
 	public String getTemplateRecordList();  
 	
 	@GET
-	@Path("/templates/getTemplate/{templateName}")
+	@Path("/templates/getTemplate/{storeName}/{templateName}")
 	@Produces("application/json")
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception;
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("storeName") String storeName, @PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception;
 	
 	@POST
 	@Path("/templates/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")

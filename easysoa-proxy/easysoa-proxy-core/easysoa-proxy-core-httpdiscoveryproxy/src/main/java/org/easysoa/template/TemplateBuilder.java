@@ -12,6 +12,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.template.TemplateField.TemplateFieldType;
 import com.openwide.easysoa.message.QueryParam;
+import com.openwide.easysoa.proxy.PropertyManager;
 
 /**
  * @author jguillemotte
@@ -24,7 +25,7 @@ public class TemplateBuilder {
 	
 	// Template expressions segments
 	//private final static String VARIABLE_BEAN_PREFIX = "$renderer.getFieldValue(\"";
-	private final static String VARIABLE_BEAN_PREFIX = "$arg1.get(\"";
+	private final static String VARIABLE_BEAN_PREFIX = "$arg2.get(\"";
 	private final static String VARIABLE_BEAN_SUFFIX = "\")";
 	
 	/**
@@ -43,7 +44,7 @@ public class TemplateBuilder {
 	 * @return 
 	 * @throws Exception 
 	 */
-	public Map<String, String> buildTemplate(TemplateFieldSuggestions fieldSuggestions, ExchangeRecord record) throws Exception {
+	public Map<String, String> buildTemplate(TemplateFieldSuggestions fieldSuggestions, ExchangeRecord record, String runName) throws Exception {
 		// What to do if the suggested fields are not found in the record InMessage ?? throws an exception, do nothing ?
 		/**
 		The TemplateBuilder applies a selection of TemplateFieldSuggestions on a record (request) 
@@ -113,8 +114,14 @@ public class TemplateBuilder {
 			// TODO : This path must be configurable
 			// TODO : How to configure Velocity to use a path other that the one configured in the composite file
 			// The composite configured path is in target/classes ...
-			fileStore.setStorePath("target/classes/webContent/templates/");
+			
+			fileStore.setStorePath(PropertyManager.getProperty("path.template.store"));
 			try {
+				// TODO : regroup save operations in a same method in StoreManager
+				// Make a copy of the original record
+				fileStore.createStore(runName);
+				fileStore.setStorePath(PropertyManager.getProperty("path.template.store") + runName + "/");
+				fileStore.save(record);
 				templateFileMap = fileStore.save(new TemplateRecord(record));
 				// Add code to save a fld : containing field suggestions with default values
 				fileStore.save(fieldSuggestions, record.getExchange().getExchangeID());

@@ -35,6 +35,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -45,7 +46,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.template.TemplateField;
+import org.easysoa.template.TemplateFieldSuggestions;
 import org.eclipse.stp.sca.Component;
 import org.eclipse.stp.sca.ComponentReference;
 import org.eclipse.stp.sca.PropertyValue;
@@ -54,6 +58,8 @@ import org.oasisopen.sca.annotation.Reference;
 import org.oasisopen.sca.annotation.Service;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.util.Stream;
+
+import com.openwide.easysoa.proxy.PropertyManager;
 
 /**
  * OW2 FraSCAti implementation template component class for Servlet.
@@ -124,32 +130,79 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 		 * The hack code is triggered when a request is done on /target
 		 * Not the best solution but it works 
          */
-        if(requestedResource.startsWith("/target")){
+        // TODO : find an other way to trigger custom code
+        if(requestedResource.contains("/target")){
         	
         	// Get the list of record template
         	// TODO : remove the ExchangeRecordFileStore and use TemplateDefinitionService
         	ExchangeRecordFileStore excf = new ExchangeRecordFileStore();
-        	List<String> templateFileList = excf.getTemplateList();
+        	excf.setStorePath(PropertyManager.getProperty("path.template.store"));
+        	//List<String> templateFileList = excf.getTemplateList();
+        	List<ExchangeRecordStore> storeList = excf.getExchangeRecordStorelist();
         	
         	// For the resource /target/ : for each record template, send back a html list of links on template.wsdl
         	if(requestedResource.endsWith("/")){
-        		if(templateFileList.size()>0){
+        		if(storeList.size()>0){
         			response.getWriter().println("<html><body><ul>");
-	        		for(String templateFile : templateFileList){
-	        			response.getWriter().println("<li><a href=\"http://localhost:8090/runManager/target/" + templateFile + "?wsdl\">" + templateFile + "</a> </li>");		
+	        		for(ExchangeRecordStore recordStore : storeList){
+	        			response.getWriter().println("<li><a href=\"http://localhost:8090/runManager/target/" + recordStore.getStoreName() + "?wsdl\">" + recordStore.getStoreName() + "</a> </li>");
 	        		}
 	        		response.getWriter().println("</ul></body></html>");
         		}
         	}
-        	else if(requestedResource.endsWith("?wsdl")){
+        	else if("wsdl".equalsIgnoreCase(request.getQueryString())){
         		// Get the FLD file and generate WSDL using XSLT transformation or by calling a velocity template 
-        		/*try {
-        			//String fileName = 
-					//excf.getTemplateFieldSuggestions(requestedResource.substring(requestedResource.lastIndexOf("/"), requestedResource.indexOf("?")));
+        		try {
+        			// Get the store name (last token of requested resource)
+        			String storeName = requestedResource.substring(requestedResource.lastIndexOf("/")+1);
+        			System.out.println("StoreName = " + storeName);
+        			// Get the template files recorded in the store, each template => an operation
+        			List<String> templateList = excf.getTemplateList(storeName);
+        			
+        			/*HashMap<String, List> operationParams = new HashMap<String, List>();
+        			List<TemplateField> requestOperationParams;
+        			List<TemplateField> responseOperationParams;
+        			*/
+        			for(String templateName : templateList){
+        				System.out.println("TemplateName = " + templateName);
+        				String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1, templateName.lastIndexOf("."));
+        				System.out.println("template index = " + templateIndex);
+        				// TODO : change the naming convention for the vm and fld files.
+        				TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, "fieldSuggestions_" +  templateIndex);
+       	            	/*for(TemplateField field : templateSuggestion.getTemplateFields()){
+       	            		
+       	            	}*/       				
+        			}
+        			// How to generate a wsdl (with cxf or with a velocity template) ?
+        			// Call the template to render the WSDL 1.1
+        			Template wsdltemplate = this.velocityEngine.getTemplate("templates/wsdlTemplate.vm");
+        			
+    	            VelocityContext context = new VelocityContext(this.velocityContext);
+    	            // Put the HTTP request and response into the Velocity context.
+    	            context.put("request", request);
+    	            context.put("response", response);
+    	            
+    	            // inject parameters as Velocity variables.
+   	            	context.put("storeName", storeName);
+   	            	context.put("operationList", templateList);
+   	            	// TODO : Add request and response fields structure and pass it to the template, it must have a link with the operation
+   	            	// Build operation params structure
+
+   	            	/*context.put("requestFields", value);
+   	            	context.put("responseFields", value);*/
+        			
+    	            // Process the template.
+   	            	response.setContentType("text/xml");
+    	            OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream());
+    	            wsdltemplate.merge(context, osw);
+    	            osw.flush();
 				} catch (Exception e) {
 					e.printStackTrace();
-				}*/
-        		response.getWriter().println("Not yet implemented. Will return the required WSDL ...");
+				}
+        		//response.getWriter().println("Not yet implemented. Will return the required WSDL ...");
+        	} else if("POST".equalsIgnoreCase(request.getMethod())) {
+        		// Post request
+        		
         	}
         	// Send a default response ...
         	// TODO : change this response
@@ -272,4 +325,5 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
         file.flush();
         file.close();
     }
+    
 }

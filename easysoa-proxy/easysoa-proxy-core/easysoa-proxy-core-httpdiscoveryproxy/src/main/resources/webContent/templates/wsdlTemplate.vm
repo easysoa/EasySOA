@@ -1,0 +1,64 @@
+<definitions name="${storeName}Service"
+   targetNamespace="http://www.easysoa.org/wsdl/${storeName}.wsdl"
+   xmlns="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:tns="http://www.easysoa.org/wsdl/${storeName}.wsdl"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ 
+   #foreach( $operation in $operationList )
+       #renderWSDLMessages($operation)
+   #end
+
+   #renderWSDLPortTypes($storeName $operation)
+
+   <binding name="${storeName}_Binding" type="tns:${storeName}_PortType">
+   <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+   #foreach( $operation in $operationList )
+   		#renderWSDLOperations($operation)
+   #end
+   </binding>
+
+   <service name="${storeName}_Service">
+      <documentation>WSDL File for $storeName Service</documentation>
+      <port binding="tns:${storeName}_Binding" name="${storeName}_Port">
+         <soap:address location="http:localhost:8089/${storeName}/"/>
+      </port>
+   </service>
+</definitions>
+
+#macro ( renderWSDLMessages $operation $requestFields $responseFields )
+   <message name="${operation}Request">
+      <part name="firstName" type="xsd:string"/>
+   </message>
+   <message name="${operation}Response">
+      <part name="greeting" type="xsd:string"/>
+   </message>
+#end
+
+#macro ( renderWSDLPortTypes $storeName $operation)
+   <portType name="${storeName}_PortType">
+   #foreach( $operation in $operationList )
+   		#renderWSDLPortTypeOperation($operation)
+   #end	
+   </portType>
+#end
+
+#macro ( renderWSDLPortTypeOperation $operation )
+	<operation name="$operation">
+    	<input message="tns:${operation}Request"/>
+        <output message="tns:${operation}Response"/>
+	</operation>
+#end
+
+#macro ( renderWSDLOperations $operation )
+   <operation name="$operation">
+      <soap:operation soapAction="$operation"/>
+      <!--<input>
+         <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:helloservice" use="encoded"/>
+      </input>-->
+      <!--<output>
+         <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:examples:helloservice" use="encoded"/>
+      </output>-->
+   </operation>
+   
+#end

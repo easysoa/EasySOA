@@ -28,7 +28,7 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 	}
 	
 	@Override
-	public String renderReq(String templatePath, ExchangeRecord record, Map<String, String> fieldValues) throws Exception {
+	public String renderReq(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues) throws Exception {
 		/**
 		The TemplateRenderer executes a record (request) template by loading its record and rendering 
 		it in the chosen template engine, with template variables set to user provided values first, 
@@ -36,7 +36,7 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		can therefore be used (or tested) with hand-defined exchange (request) templates.
 		*/
 		// Render the template
-		String renderedTemplate = template.renderReq(templatePath, fieldValues);
+		String renderedTemplate = template.renderReq(templatePath, runName, fieldValues);
 		logger.debug("Rendered template : " + renderedTemplate);
 		
 		// Execute the template
@@ -45,10 +45,10 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 	}
 
 	@Override
-	public String renderRes(String templatePath, ExchangeRecord record, Map<String, String> fieldValues){
+	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues){
 		// TODO : Complete this method, to be used in a server mock
 		logger.warn("renderRes method not yet entierely implemented, need to be completed !");
-		String renderedTemplate = template.renderRes(templatePath, fieldValues);
+		String renderedTemplate = template.renderRes(templatePath, runName, fieldValues);
 		return renderedTemplate;
 	}
 	

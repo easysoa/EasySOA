@@ -77,7 +77,7 @@ public class PropertyManager {
 		   if (props == null){
 			   new PropertyManager(PROPERTY_FILE_NAME);
 		   }
-		   value = props.getProperty(propertyName);		   
+		   value = props.getProperty(propertyName);
 	   }
 	   catch(Exception ex){
 		   value = defaultValue;

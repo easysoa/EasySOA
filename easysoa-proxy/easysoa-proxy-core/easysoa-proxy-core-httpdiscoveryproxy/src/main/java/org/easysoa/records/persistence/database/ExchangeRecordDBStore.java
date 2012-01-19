@@ -24,9 +24,8 @@ public class ExchangeRecordDBStore implements ExchangeRecordStoreManager {
 	}
 
 	@Override
-	public String save(Run run) throws Exception {
+	public void save(Run run) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -48,9 +47,14 @@ public class ExchangeRecordDBStore implements ExchangeRecordStoreManager {
 	}
 
 	@Override
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(String templateName) throws Exception {
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String templateName) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void createStore(String storeName) {
+		// TODO Auto-generated method stub
 	}
 
 }

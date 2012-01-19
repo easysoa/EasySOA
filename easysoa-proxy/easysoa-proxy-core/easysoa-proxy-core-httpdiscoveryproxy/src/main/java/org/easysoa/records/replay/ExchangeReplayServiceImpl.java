@@ -221,12 +221,12 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	
 	// To generate the form with the default values
 	@GET
-	@Path("/templates/getTemplate/{templateName}")
+	@Path("/templates/getTemplate/{storeName}/{templateName}")
 	@Produces("application/json")
 	@Override
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception {
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("storeName") String storeName, @PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception {
     	ExchangeRecordStoreManager erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
-    	TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(templateFieldSuggestionsName);
+    	TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(storeName, templateFieldSuggestionsName);
     	logger.debug(templateFieldSuggest.getTemplateFields().size());
     	return templateFieldSuggest;
 	}
@@ -245,7 +245,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		try {
 			ExchangeRecord record = getExchangeRecord(exchangeStoreName, exchangeRecordID);
 			//
-			TemplateFieldSuggestions templateFieldSUggestions = getTemplateFieldSuggestions(templateName);
+			TemplateFieldSuggestions templateFieldSUggestions = getTemplateFieldSuggestions(exchangeStoreName, templateName);
 			// get the new parameter values contained in the received request form, How to get unknow parameters ?
 			if(record != null){
 				logger.debug("Original message URL : " + record.getInMessage().buildCompleteUrl());

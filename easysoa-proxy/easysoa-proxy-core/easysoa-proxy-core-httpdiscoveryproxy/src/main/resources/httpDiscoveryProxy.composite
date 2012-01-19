@@ -69,6 +69,7 @@
 			<sca:interface.java interface="org.easysoa.template.TemplateRendererItf" />
 		</sca:service>
 		<sca:property name="pathArgIndex" type="xsd:int">0</sca:property>
+		<sca:property name="storeIndex" type="xsd:int">1</sca:property>
 	</sca:component>
 	<sca:wire source="TemplateProcessor/template" target="ProxyWSTemplate/template" />	
 

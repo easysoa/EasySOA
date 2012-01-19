@@ -114,8 +114,10 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 */
 	@Test
 	public void templateFieldSuggesterRestTest() throws Exception {
+
+		String runName = "TweeterRestTestRun";
 		// Start run
-		startNewRun("TweeterRestTestRun");
+		startNewRun(runName);
 		
 		// Send tweeter mock requests
 		// Get the twitter mock set and send requests to the mock through the HTTP proxy
@@ -156,7 +158,8 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		TemplateBuilder builder = new TemplateBuilder();
 		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 	
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("TweeterRestTestRun");
+		// Get the exchange record list for the run
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
 
 		// Get the template renderer
 		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
@@ -168,10 +171,10 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
 			// Build the templates with suggested fields
-			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record);
+			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record, runName);
 			// Render the templates and replay the request
 			if(templateFileMap != null){
-				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, fieldMap));
+				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, runName, fieldMap));
 				// TODO : call the renderRes method for server mock test
 			}
 		}
@@ -184,8 +187,9 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	@Test
 	public void templateFieldSuggesterSOAPTest() throws Exception {	
 		
+		String runName = "MeteoSoapTestRun";
 		// Start run
-		startNewRun("MeteoSoapTestRun");		
+		startNewRun(runName);		
 
 		// Set the discovery proxy
 		System.setProperty("http.proxyHost", "localhost");
@@ -212,7 +216,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		TemplateBuilder builder = new TemplateBuilder();
 		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
 	
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("MeteoSoapTestRun");
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
 
 		// Get the template renderer
 		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
@@ -224,10 +228,10 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
 			// Build the templates with suggested fields
-			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record);
+			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record, runName);
 			// Render the templates and replay the request
 			if(templateFileMap != null){
-				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, fieldMap));
+				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, runName, fieldMap));
 				// TODO : call the renderRes method for server mock test
 			}
 		}		

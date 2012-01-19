@@ -50,6 +50,7 @@ import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.PostData;
 import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.message.QueryString;
+import com.openwide.easysoa.proxy.PropertyManager;
 import com.openwide.easysoa.run.Run;
 
 /**
@@ -86,24 +87,20 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	public final static String RES_TEMPLATE_FILE_PREFIX = "resTemplateRecord_";
 	public final static String SUGGESTION_FILE_PREFIX = "fieldSuggestions_";
 
-	// TODO : Modify the way the path is stored, used ....
-	// Base path = target/
-	// customPath = name of ExchangeRecordStore
+	// Path
 	private String path;
 
 	/**
-	 * Default path is target
+	 * Path is set with the value of 'path.record.store' property
 	 */
 	public ExchangeRecordFileStore() {
-		// TODO remove the 'target/' default path
-		this.path = "target/";
+		this.path = PropertyManager.getProperty("path.record.store");
+		logger.debug("exchangeRecordStore default path = " + this.path);
 	}
 
 	/**
 	 * Constructor
-	 * 
-	 * @param path
-	 *            Path where the Exchange record will be stored
+	 * @param path Path where the Exchange record will be stored
 	 */
 	public ExchangeRecordFileStore(String path) {
 		this.path = path;
@@ -114,6 +111,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 * 
 	 * @see org.easysoa.sca.records.ExchangeRecordStore#list()
 	 */
+	// TODO : this method have to return a Run Object
 	@Override
 	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) {
 		// loads all files in path with extension & lists them
@@ -252,16 +250,24 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 * org.easysoa.sca.records.ExchangeRecordStore#save(com.openwide.easysoa.run.Run)
 	 */
 	@Override
-	public String save(Run run) throws Exception {
+	public void save(Run run) throws Exception {
 		// Create the run folder
-		File runFolder = new File(path + "/" + run.getName());
-		runFolder.mkdir();
+		logger.debug("Path to store run = " + path + run.getName());
+		//File runFolder = new File(path + run.getName());
+		//runFolder.mkdirs();
+		createStore(run.getName());
 		for (ExchangeRecord record : run.getExchangeRecordList()) {
-			save(record, path + "/" + run.getName() + "/");
+			save(record, path + run.getName() + "/");
 		}
-		return null;
 	}
 
+	@Override
+	public void createStore(String storeName) {
+		logger.debug("Creating store path : " + path + storeName);
+		File storeFolder = new File(path + storeName);
+		storeFolder.mkdirs();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -293,6 +299,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 * @throws Exception If a problem occurs
 	 */
 	private JSONObject readJSONFile(String filePath) throws Exception {
+		logger.debug("filePath = " + filePath);
 		File file = new File(filePath);
 		FileReader fr = new FileReader(file);
 		JSONObject returnObject;
@@ -333,23 +340,22 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	}
 
 	@Override
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(String fileName) throws Exception {
-		// TODO remove this hard coded path
+	//TODO rename the class templateFieldSuggestion to TemplateField....
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String fileName) throws Exception {
 		logger.debug("loading template :" + fileName);
-		//System.out.println("Template to use : " + System.getProperty("user.dir") + "/src/test/resources/templates/" + templateFieldSuggestionsName + ".fld");
 		HashMap<String, Class> classMap = new HashMap<String, Class>();
 		classMap.put("templateFields", TemplateField.class);
-		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(System.getProperty("user.dir") +  "/src/test/resources/templates/" + fileName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
+		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(path + storeName + "/" + fileName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
 	}
 	
 	/**
 	 * Returns the name list of the recorded templates
 	 * @return A <code>List</code> containing the name of the template files
 	 */
-	public List<String> getTemplateList(){
+	public List<String> getTemplateList(String storeName){
 		ArrayList<String> templateFileList = new ArrayList<String>();
-		// TODO : remove this hard coded path
-		File folder = new File("target/classes/webContent/templates/");
+		// TODO : remove hard coded path
+		File folder = new File(PropertyManager.getProperty("path.template.store") + storeName);
 		File[] listOfFiles = folder.listFiles();
 		if(listOfFiles != null){
 			for (File file : listOfFiles) {

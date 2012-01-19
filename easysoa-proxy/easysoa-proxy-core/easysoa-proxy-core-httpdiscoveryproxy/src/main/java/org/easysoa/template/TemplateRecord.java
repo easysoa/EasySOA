@@ -13,8 +13,8 @@ import net.sf.json.JSONObject;
  */
 public class TemplateRecord {
 
-	public final static String VELOCIMACRO_REQUEST_PREFIX = "#macro ( renderReq $arg0 $arg1 )";
-	public final static String VELOCIMACRO_RESPONSE_PREFIX = "#macro ( renderRes $arg0 $arg1 )";
+	public final static String VELOCIMACRO_REQUEST_PREFIX = "#macro ( renderReq $arg0 $arg1 $arg2 )";
+	public final static String VELOCIMACRO_RESPONSE_PREFIX = "#macro ( renderRes $arg0 $arg1 $arg2 )";
 	public final static String VELOCIMACRO_SUFFIX = "#end";
 
 	private ExchangeRecord customRecord;

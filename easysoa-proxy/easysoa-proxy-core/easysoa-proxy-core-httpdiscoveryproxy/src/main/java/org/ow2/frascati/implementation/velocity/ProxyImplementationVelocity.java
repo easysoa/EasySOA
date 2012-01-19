@@ -50,6 +50,8 @@ import org.oasisopen.sca.annotation.Reference;
 import org.oasisopen.sca.annotation.Service;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 
+import com.openwide.easysoa.proxy.PropertyManager;
+
 /**
  * OW2 FraSCAti implementation template component class for Java proxy.
  * 
@@ -70,16 +72,19 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 		StringWriter sw = new StringWriter();
 
 		// **** EasySOA Hack begin
+		
 		System.out.println("TEST PASSING in ProxyImplementationVelocity Hack");
 		int pathArgIndex = (Integer) context.get("pathArgIndex"); // pathArgIndex has been set as an SCA xsd:int property
+		int storeIndex = (Integer) context.get("storeIndex"); // storeIndex has been set as an SCA xsd:int property
 		System.out.println("pathArgIndex = " + pathArgIndex);
 		Template template = null;
 		if (parameters.length > pathArgIndex) {
 			Object templatePathFound = parameters[pathArgIndex];
+			Object storeNameFound = parameters[storeIndex];
 			System.out.println("templatePathFound = " + templatePathFound);
+			System.out.println("storeNameFound = " + storeNameFound);
 			if (templatePathFound instanceof String) {
-				// TODO : change or customize the Frascati velocity ResourceLoader to use the FileResourceLoader to
-				template = this.velocityEngine.getTemplate((String) templatePathFound);
+				template = this.velocityEngine.getTemplate((String)storeNameFound + "/" + (String) templatePathFound);
 			}
 		}
 		if (template == null) {
