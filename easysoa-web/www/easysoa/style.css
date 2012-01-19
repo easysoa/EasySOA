@@ -10,6 +10,11 @@ body {
 	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
+h1, h2, h3 {
+	clear: both;
+	max-width: 900px;
+}
+
 h1 {
 	padding-top: 20px;
 	margin-bottom: 10px;
@@ -45,13 +50,15 @@ li {
 #headerCore {
   width: 100%;
   padding-top: 10px;
-  padding-left: 280px;
   font-size: 14pt;
   height: 60px;
   background: url('/easysoa/img/Core50.png') white;
   background-repeat: no-repeat;
   background-position: 20px 10px;
   border-bottom: 2px solid #444;
+}
+#headerCoreContents {
+  padding-left: 280px;
 }
 
 #headerWelcome {
@@ -159,6 +166,18 @@ a {
 
 a img {
   border: 0;
+}
+
+fieldset { 
+	max-width: 800px;
+	background-color: #EEE;
+	padding-bottom: 10px;
+}
+
+legend {
+  margin: 5px;
+  font-weight: bold;
+  color: #444;
 }
 
 .more {

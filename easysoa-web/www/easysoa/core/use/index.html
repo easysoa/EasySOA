@@ -2,70 +2,187 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <script type="text/javascript" src="../lib/jquery.js"></script>
-  <script type="text/javascript" src="../lib/underscore.js"></script>
-  <script type="text/javascript" src="../js/common.js"></script>
+  <script type="text/javascript" src="/easysoa/lib/jquery.js"></script>
+  <script type="text/javascript" src="/easysoa/lib/underscore.js"></script>
+  <script type="text/javascript" src="/easysoa/js/common.js"></script>
+  <script type="text/javascript" src="templates.js"></script>
   <title>EasySOA - Using a service (mock)</title>
-  <link rel="stylesheet" href="../style.css" />
-  <style type="text/css">
-    .template, .templateCall {
-      display: none;
-    }
-  </style>
-  <script type="text/javascript">
-  <!--
-    
-    applyTemplate = function(id, data) {
-      var serviceUseTemplate = _.template($('#serviceUseTemplate').html());
-      console.log(serviceUseTemplate(data));
-      $('#'+id).html(serviceUseTemplate(data));
-      $('#'+id).show();
-    }
-  
-    $(document).ready(function() {
-        applyTemplate(1, {
-          hello: "boy"
-        });
-    });
-  
-  -->  
-  </script>
+  <link rel="stylesheet" href="/easysoa/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="headerWelcome">
+<div id="headerCore">
   <a href="/easysoa" id="logoLink">&nbsp;</a>
-  <div id="headerWelcomeContents">
-  <div id="headerUserBar"></div> 
-    Using a service
+  <div id="headerCoreContents">
+    <div id="headerUserBar"></div>
+    <div id="headerBreadcrumbs"><a href="/easysoa/index.html">EasySOA</a> > <b>Core</b> > <b>Service use</b></div>
+    "Pure Air Flowers" service use
   </div>
 </div>
 
-<div id="container" style="width: 100%">
+<div id="container">
   
   <p>&lt;&lt; <a href="javascript: history.go(-1)">Go back to previous page</a></p>
   
-  <script type="text/template" id="serviceUseTemplate">
-    <b><b><b><b><%= hello %></b></b></b></b>
+  <script type="text/template" id="contractTemplate">
+  
+    <% 
+    var typeClass = "";
+    var securityMsg = "";
+    if (data.exists !== false) {
+      typeClass = (data.connector) ? 'existingConnector' : 'existingEndpoint';
+    }
+    if (data.directAccess) {
+      securityMsg = '<span class="warning">Direct access</span>';
+    }
+    else {
+      securityMsg = '<span class="secured">Proxied</span>';
+    }
+    %>
+    
+    <div class="contract">
+     <div class="contractEnvironment">
+     <%= data.environment %>
+     </div>
+     <div class="contractLabel <%= typeClass %>">
+     <%= securityMsg %> |
+     <%= (data.connector) ? data.endpoint : '<b>' + data.endpoint + '</b>' %>
+     <%= (data.connector) ? '| <b>' + data.connector + '</b>' : '' %>
+     </div>
+     <div class="contractButtons">
+     <%
+      var buttons = [];
+      if (data.authorized !== false) {
+        if (data.connector) {
+          /* Connector types */
+          if (data.exists === false) {
+            buttons.push({label: "Create"});
+          }
+          else {
+            if (data.connector.indexOf('Light') != -1) {
+              buttons.push({label: "Go to EasySOA Light"});
+            }
+            else {
+              buttons.push({label: "Download"});
+              buttons.push({label: "Delete"});
+            }
+          }
+        }
+        else {
+          /* Endpoint types */
+          if (data.exists === false) {
+            buttons.push({label: "Create and deploy"});
+          }
+          else {
+            buttons.push({label: "Use with UI scaffolder"});
+            if (data.endpoint.indexOf("Content Automation") != -1) {
+              buttons.push({label: "Use with C.A. playground"});
+            }
+          }
+        }
+      }
+      else {
+        buttons.push({label: "(Unauthorized)", disabled: "true"});
+      }
+      for (key in buttons) {
+        var value = buttons[key];
+        print('<input type="button" value="' + value.label + '" ' + ((value.disabled) ? 'disabled="true" ' : '') + ' /\>');
+      };
+     %>
+     <%
+     if (data.exists !== false) {
+       print('<a class="docLink" href="#">View doc</a>');
+     }
+     %>
+     </div>
+    </div>
   </script>
+  
+  <div class="paramsHeader">
+    <div class="dropdown">
+      <img src="img/role.png" />
+      Role
+      <select>
+        <option>Business user</option>
+        <option>Business architect</option>
+        <option selected="true">Developer</option>
+        <option>Architect</option>
+        <option>IT</option>
+      </select>
+    </div> 
+    <div class="dropdown">
+      <img src="img/environment.png" />
+      Environment
+      <select>
+        <option>Master</option>
+        <option selected="true">Sophie</option>
+      </select>
+    </div>
+  </div>
   
   <table>
       <tr>
-        <th style="width: 30px" colspan="2">"PureAirFlowers order" Service</th>
+        <th style="text-align: left" colspan="2"><a href="#">CRM application</a> / <a href="#">Orders</a> / "PureAirFlowers order" Service</th>
       </tr>
       <tr>
         <td>Description</td>
         <td>Allows to get the order count for a specific client.</td>
       </tr>
       <tr>
-        <td>Direct access</td>
+        <td>Endpoint</td>
         <td>
-          <div id="1"></div>
+          <div id="directAccessContract"></div>
         </td>
       </tr>
+  </table>
   
-  <p>Each user matches a specific user profile. These profiles come with specific rights and slightly different interfaces.</p>
+  <h1>Recommended uses</h1>
   
+  <div id="recommended"></div>
+  
+  <h1>Other uses</h1>
+  
+  <div id="other"></div>
+  
+  <h1>Create new service use</h1>
+  
+  <table class="newUse">
+  <tr>
+    <th>Environment</th>
+    <th>Protocol</th>
+    <th>Connector</th>
+   </tr>
+  <tr>
+    <td>
+      <select>
+        <option>(Choose an environment)</option>
+        <option>Master</option>
+        <option selected="true">Sophie</option>
+      </select>
+    </td>
+    <td>
+      <select>
+        <option>(Choose a protocol)</option>
+        <option selected="true">REST</option>
+        <option>SOAP</option>
+        <option>Content Automation</option>
+      </select>
+    </td>
+    <td>
+      <select>
+        <option selected="true">(Choose a connector)</option>
+        <option>None (web access)</option>
+        <option>Java</option>
+        <option>Javascript</option>
+      </select>
+    </td>
+  </tr>
+  </table>
+  
+  <fieldset id="create">
+    <legend>Results</legend>
+  </fieldset>
   
 </div>
 

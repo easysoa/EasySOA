@@ -1,0 +1,104 @@
+.template, .templateCall {
+  display: none;
+}
+
+.contract {
+  font-size: 85%;
+  float: left;
+  clear: both;
+  margin: 3px;
+}
+
+.contractEnvironment {
+  float: left;
+  padding: 3px;
+  margin-right: 5px;
+  padding-left: 20px;
+  background: url('img/environment.png');
+  background-position: 4px;
+  background-repeat: no-repeat;
+}
+
+.contractLabel {
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 8px;
+  padding: 3px;
+  float: left;
+}
+
+.contractButtons {
+  float: left;
+  padding: 3px;
+  margin-left: 5px;
+}
+
+.contract input {
+  font-size: 85%;
+  margin-right: 5px;
+}
+
+.contract input[disabled] {
+  color: grey;
+}
+
+
+.existingEndpoint {
+  background-color: #BFE9FF;
+}
+
+.existingConnector {
+  background-color: #CCFFCC;
+}
+
+.unauthorized {
+  background-color: #FFCCCC !important;
+}
+
+.warning {
+  color: darkred;
+  padding-left: 20px;
+  background: url('img/warning.png');
+  background-repeat: no-repeat;
+}
+
+.secured {
+  color: darkgreen;
+  padding-left: 20px;
+  background: url('img/secured.gif');
+  background-repeat: no-repeat;
+}
+
+.paramsHeader {
+  height: 60px;
+  padding: 10px;
+}
+
+.dropdown {
+  border: 1px solid gray;
+  border-radius: 8px;
+  float: left;
+  padding: 7px;
+  padding-bottom: 0;
+  margin: 5px;
+  color: #332200;
+  font-weight: bold;
+}
+
+select {
+  font-weight: normal;
+}
+
+.docLink {
+  font-size: 85%;
+  padding-left: 20px;
+  background: url('img/link.png');
+  background-repeat: no-repeat;
+}
+
+table.newUse {
+   width: 300px;
+   border: 1px;
+   margin: 0;
+   margin-bottom: 5px;
+}
