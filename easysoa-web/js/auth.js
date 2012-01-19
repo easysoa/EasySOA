@@ -149,7 +149,11 @@ isAuthenticated = function(request) {
 };
 
 redirectToLoginForm = function(request, response, error, nuxeoNotReady) {
-	if (request.query && request.query.callback) {
+
+	request.body = request.body || {};
+	request.query = request.query || {};
+	
+	if (request.query.callback) {
 		if (nuxeoNotReady) {
 			response.writeHead(500, JSONP_HEADERS);
 			response.end(request.query.callback + '({result: "error", error: "Internal error: Nuxeo not started"})');
@@ -160,9 +164,10 @@ redirectToLoginForm = function(request, response, error, nuxeoNotReady) {
 		}
 	}
 	else {;
+  	var prevPage = request.body.prev || request.query.prev || request.url;
+  	console.log(prevPage);
 		var destinationUrl = LOGIN_FORM_PATH + '?'
-			 + ((request.body && request.body.prev) ? 'prev=' + request.body.prev + '&' : '')
-			 + ((request.url) ? 'prev=' + request.url + '&' : '')
+			 + ((prevPage) ? 'prev=' + prevPage + '&' : '')
 			 + ((error) ? 'error=true&' : '')
 			 + ((nuxeoNotReady) ? 'nuxeoNotReady=true' : '');
 		response.redirect(destinationUrl);

@@ -16,6 +16,7 @@ exports.WWW_PATH = __dirname + '/../www';
 
 exports.NO_AUTH_NEEDED = [
   '^[/]?$',
+  '^/favicon.ico',
   '^/easysoa[/]?$',
   '^/easysoa/index.html',
   '^/easysoa/users.html',
@@ -23,11 +24,10 @@ exports.NO_AUTH_NEEDED = [
   '^/easysoa/js/*',
   '^/easysoa/lib/*',
   '^/easysoa/img/*',
-  '^/easysoa/core/img/*',
-  '^/easysoa/core/js/bookmarklet/*',
+  '^/easysoa/core/dbb/img/*',
+  '^/easysoa/core/dbb/js/bookmarklet/*',
   '^/intranet/*',
-  '^/scaffoldingProxy/*',
-  '^/favicon.ico'
+  '^/scaffoldingProxy/*'
 ];
 
 exports.SCAFFOLDING_SERVER_URL = "http://127.0.0.1:8090";

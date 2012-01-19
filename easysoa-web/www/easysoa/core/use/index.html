@@ -1,0 +1,73 @@
+<doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript" src="../lib/jquery.js"></script>
+  <script type="text/javascript" src="../lib/underscore.js"></script>
+  <script type="text/javascript" src="../js/common.js"></script>
+  <title>EasySOA - Using a service (mock)</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style type="text/css">
+    .template, .templateCall {
+      display: none;
+    }
+  </style>
+  <script type="text/javascript">
+  <!--
+    
+    applyTemplate = function(id, data) {
+      var serviceUseTemplate = _.template($('#serviceUseTemplate').html());
+      console.log(serviceUseTemplate(data));
+      $('#'+id).html(serviceUseTemplate(data));
+      $('#'+id).show();
+    }
+  
+    $(document).ready(function() {
+        applyTemplate(1, {
+          hello: "boy"
+        });
+    });
+  
+  -->  
+  </script>
+</head>
+<body>
+
+<div id="headerWelcome">
+  <a href="/easysoa" id="logoLink">&nbsp;</a>
+  <div id="headerWelcomeContents">
+  <div id="headerUserBar"></div> 
+    Using a service
+  </div>
+</div>
+
+<div id="container" style="width: 100%">
+  
+  <p>&lt;&lt; <a href="javascript: history.go(-1)">Go back to previous page</a></p>
+  
+  <script type="text/template" id="serviceUseTemplate">
+    <b><b><b><b><%= hello %></b></b></b></b>
+  </script>
+  
+  <table>
+      <tr>
+        <th style="width: 30px" colspan="2">"PureAirFlowers order" Service</th>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <td>Allows to get the order count for a specific client.</td>
+      </tr>
+      <tr>
+        <td>Direct access</td>
+        <td>
+          <div id="1"></div>
+        </td>
+      </tr>
+  
+  <p>Each user matches a specific user profile. These profiles come with specific rights and slightly different interfaces.</p>
+  
+  
+</div>
+
+</body>
+</html>
