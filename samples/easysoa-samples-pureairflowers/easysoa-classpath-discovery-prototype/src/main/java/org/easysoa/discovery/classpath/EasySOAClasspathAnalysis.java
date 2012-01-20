@@ -53,43 +53,10 @@ public class EasySOAClasspathAnalysis  {
     private static List<Pattern> matchers = new LinkedList<Pattern>();
     private static boolean logOnly;
     private static String username, password;
+    private static String title = null;
     
-    private static void init() throws FileNotFoundException, IOException {
-
-        Properties props = new Properties();
-        
-        // Load properties from configuration file
-        String propsPath = null;
-        if (new File(PROPERTIES_FILENAME).exists()) {
-            propsPath = PROPERTIES_FILENAME;
-        }
-        else if (new File("target/classes/" + PROPERTIES_FILENAME).exists()) {
-            propsPath = "target/classes/" + PROPERTIES_FILENAME;
-        }
-        if (propsPath != null) {
-            props.load(new FileInputStream(propsPath));
-        }
-        else {
-            logger.warn("No " + PROPERTIES_FILENAME + " found, using default config");
-        }
-
-        // Set discovery settings
-        username = props.getProperty(PROP_USERNAME, "Administrator");
-        password = props.getProperty(PROP_PASSWORD, "Administrator");
-        logOnly = Boolean.parseBoolean(props.getProperty(PROP_LOGONLY, "false"));
-        String matchersProp = props.getProperty(PROP_JARMATCHERS, ".*");
-        String matchersStrings[] = matchersProp.split("\\|");
-        for (String matcherString : matchersStrings) {
-            try {
-                matchers.add(Pattern.compile(matcherString.trim()));
-            }
-            catch (PatternSyntaxException e) {
-                logger.warn("Invalid syntax for pattern '" + matcherString + "' : " + e.getMessage());
-            }
-        }
-            
-        init = true;
-        
+    public static void setAppliImplTitle(String title) {
+        EasySOAClasspathAnalysis.title = title;
     }
     
     public static synchronized void discover(String appliImplUrl) {
@@ -144,7 +111,10 @@ public class EasySOAClasspathAnalysis  {
                 // Send the notification
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(AppliImpl.PROP_URL, appliImplUrl);
-                params.put(AppliImpl.PROP_DESCRIPTION, data);
+                params.put(AppliImpl.PROP_DEPLOYABLES, data);
+                if (title != null) {
+                    params.put(AppliImpl.PROP_TITLE, title);
+                }
                 easySOA.notifyAppliImpl(params);
             }
             else {
@@ -158,6 +128,46 @@ public class EasySOAClasspathAnalysis  {
         }
         
         System.exit(0); // XXX
+    }
+    
+
+    
+    private static void init() throws FileNotFoundException, IOException {
+
+        Properties props = new Properties();
+        
+        // Load properties from configuration file
+        String propsPath = null;
+        if (new File(PROPERTIES_FILENAME).exists()) {
+            propsPath = PROPERTIES_FILENAME;
+        }
+        else if (new File("target/classes/" + PROPERTIES_FILENAME).exists()) {
+            propsPath = "target/classes/" + PROPERTIES_FILENAME;
+        }
+        if (propsPath != null) {
+            props.load(new FileInputStream(propsPath));
+        }
+        else {
+            logger.warn("No " + PROPERTIES_FILENAME + " found, using default config");
+        }
+
+        // Set discovery settings
+        username = props.getProperty(PROP_USERNAME, "Administrator");
+        password = props.getProperty(PROP_PASSWORD, "Administrator");
+        logOnly = Boolean.parseBoolean(props.getProperty(PROP_LOGONLY, "false"));
+        String matchersProp = props.getProperty(PROP_JARMATCHERS, ".*");
+        String matchersStrings[] = matchersProp.split("\\|");
+        for (String matcherString : matchersStrings) {
+            try {
+                matchers.add(Pattern.compile(matcherString.trim()));
+            }
+            catch (PatternSyntaxException e) {
+                logger.warn("Invalid syntax for pattern '" + matcherString + "' : " + e.getMessage());
+            }
+        }
+            
+        init = true;
+        
     }
     
 }

@@ -175,6 +175,9 @@
         <row>
           <widget>appliimpldef_technology</widget>
         </row>
+        <row>
+          <widget>appliimpldef_deployables</widget>
+        </row>
       </rows>
       <widget name="appliimpldef_url" type="text">
         <labels>
@@ -218,6 +221,22 @@
         <fields>
           <field>app:technology</field>
         </fields>
+      </widget>
+      <widget name="appliimpldef_deployables" type="template">
+        <labels>
+          <label mode="any">label.easysoa.appliimpldef.deployables</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>app:deployables</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/deployables_template.xhtml</property>
+        </properties>
       </widget>
     </layout>
 

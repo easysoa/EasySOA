@@ -86,6 +86,22 @@ public class EasySOALocalApi implements EasySOAApiSession {
             }
             
             // Update optional properties
+            if (properties.containsKey(AppliImpl.PROP_DEPLOYABLES)) {
+                // Specific handling for ListProperty 'deployables'
+                List<Map<String, Object>> newDeployablesValue = new LinkedList<Map<String, Object>>();
+                String deployablesString = properties.remove(AppliImpl.PROP_DEPLOYABLES);
+                String[] deployables = deployablesString.split("\n");
+                for (String deployable : deployables) {
+                    Map<String, Object> newDeployableValue = new HashMap<String, Object>();
+                    String deployableName = deployable.replaceAll("-[0-9.]+(-SNAPSHOT)?$", "");
+                    newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLENAME, deployableName);
+                    newDeployableValue.put(
+                            AppliImpl.SUBPROP_DEPLOYABLEVERSION,
+                            deployable.replaceFirst(deployableName, "").substring(1));
+                    newDeployablesValue.add(newDeployableValue);
+                }
+                appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_DEPLOYABLES, newDeployablesValue);
+            }
             setPropertiesIfNotNull(appliImplModel, AppliImpl.SCHEMA, AppliImpl.getPropertyList(), properties);
             setPropertiesIfNotNull(appliImplModel, AppliImpl.FEATURE_SCHEMA, AppliImpl.getFeaturePropertyList(), properties);
             

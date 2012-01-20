@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/appliimpldef/"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:nxs="http://www.nuxeo.org/ecm/schemas/appliimpldef/">
   
   <xs:element name="url" type="xs:string" />
   <xs:element name="uiUrl" type="xs:string" />
@@ -9,6 +10,19 @@
   <xs:element name="provider" type="xs:string" />
   <xs:element name="technology" type="xs:string" />
   <xs:element name="standard" type="xs:string" />
+  
+  <xs:complexType name="deployable">
+    <xs:sequence>
+      <xs:element name="deployableName" type="xs:string" />
+      <xs:element name="deployableVersion" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="deployables">
+    <xs:sequence>
+      <xs:element name="deployable" type="nxs:deployable" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="deployables" type="nxs:deployables" />
   
   <!-- Internal : needed by virtual navigation by server-->
   <xs:element name="serverEntry" type="xs:string" />
