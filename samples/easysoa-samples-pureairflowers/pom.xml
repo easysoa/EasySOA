@@ -16,6 +16,7 @@
 	</licenses>
 
 	<modules>
+		<module>easysoa-classpath-discovery-prototype</module>
 		<module>easysoa-samples-paf-server</module>
 	</modules>
 	
