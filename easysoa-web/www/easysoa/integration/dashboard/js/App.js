@@ -65,6 +65,12 @@ window.AppView = Backbone.View.extend({
                     app.showError("Failed to query validators");
                 }
             });
+            
+            // Set up deployables view
+            var deployablesModel = new DeployablesModel();
+            new DeployablesView(deployablesModel);
+            deployablesModel.setMyEnv(window.username);
+            deployablesModel.setRefEnv('Master');
         }
         else { 
             // Wait for username to be retrieved

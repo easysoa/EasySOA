@@ -138,3 +138,11 @@ table#serviceentries {
 .legend img {
 	height: 15px;
 }
+
+#deployablesEnvironmentsNames {
+  font-size: 85%;
+}
+
+#deployables {
+  margin-top: 30px;
+}

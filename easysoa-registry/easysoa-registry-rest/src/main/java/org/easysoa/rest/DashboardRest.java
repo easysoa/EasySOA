@@ -32,6 +32,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DocumentService;
@@ -179,6 +180,41 @@ public class DashboardRest {
     }
     
     
+    @GET
+    @Path("/deployables/{workspace}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object getDeployablesByWorkspace(@Context HttpServletRequest request,
+            @PathParam("workspace") String workspace) throws Exception {
+        // Init
+        CoreSession session = SessionFactory.getSession(request);
+        DocumentService docService = Framework.getService(DocumentService.class);
+        JSONArray applications = new JSONArray();
+        
+        // Fetch applications
+        DocumentModel workspaceModel = docService.findWorkspace(session, workspace);
+        DocumentModelList appliImplModels = session.getChildren(workspaceModel.getRef());
+        for (DocumentModel appliImplModel : appliImplModels) {
+            JSONObject application = new JSONObject();
+            application.put("title", appliImplModel.getTitle());
+            
+            // Extract application deployables
+            JSONArray deployables = new JSONArray();
+            ListProperty deployablesProp = (ListProperty) appliImplModel.getProperty(AppliImpl.SCHEMA_PREFIX + AppliImpl.PROP_DEPLOYABLES);
+            for (Property deployableProp : deployablesProp.getChildren()) {
+                JSONObject deployable = new JSONObject();
+                deployable.put("deployableName", deployableProp.get(AppliImpl.SUBPROP_DEPLOYABLENAME).getValue());
+                deployable.put("deployableVersion", deployableProp.get(AppliImpl.SUBPROP_DEPLOYABLEVERSION).getValue());
+                deployables.put(deployable);
+            }
+            application.put("deployables", deployables);
+            
+            applications.put(application);
+        }
+        
+        return applications.toString();
+    }
+
+
     @POST
     @Path("/service/{serviceid}/linkto/{referenceid}")
     @Produces(MediaType.APPLICATION_JSON)

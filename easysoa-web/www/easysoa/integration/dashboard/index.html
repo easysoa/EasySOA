@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/easysoa/lib/backbone.js"></script>
 	<script type="text/javascript" src="/easysoa/js/common.js"></script>
     <script type="text/javascript" src="js/Services.js"></script>
+    <script type="text/javascript" src="js/Deployables.js"></script>
     <script type="text/javascript" src="js/App.js"></script>
 </head>
 	
@@ -28,16 +29,16 @@
 <div id="container" style="width: 100%">
     
     <table id="serviceentries">
-    <tr id="serviceentriesheader">
-      <th>State</th>
-      <th>Service name</th>
-      <th></th>
-      <th>Referenced service name</th>
-      <th>Validation state</th>
-    </tr>
-    <tr id="placeholder">
-        <td colspan="4"><img src="/easysoa/img/loading.gif" /></td>
-    </tr>
+      <tr id="serviceentriesheader">
+        <th>State</th>
+        <th>Service name</th>
+        <th></th>
+        <th>Referenced service name</th>
+        <th>Validation state</th>
+      </tr>
+      <tr id="placeholder">
+          <td colspan="4"><img src="/easysoa/img/loading.gif" /></td>
+      </tr>
     </table>
     
     <table id="actionButtons"><tr><td>
@@ -56,7 +57,16 @@
     
     <div id="errorHolder"></div>
     
-    
+    <table id="deployables">
+      <tr id="deployablesHeader">
+        <th colspan="2">Deployables</th>
+      </tr>
+      <tr id="deployablesEnvironmentsNames">
+        <th>My environment</th>
+        <th>Reference environment</th>
+      </tr>
+      <tr id="deployablesContents"></tr>
+    </table>
     
 </div>
 
@@ -122,9 +132,24 @@
     </td>
     <% } %>
 </script>
-  
+
 <script type="text/template" id="correlationresult-template">
     <div class="correlationResult">Possible match (correlation: <%= correlationRate %>%)</div>
+</script>
+
+<script type="text/template" id="envDeployablesTemplate">
+  <td style="vertical-align: top">
+  <% for (key in data) {
+      var app = data[key]; %>
+      <u>Application "<%= app.title %>"</u><br />
+      <ul>
+        <% for (key in app.deployables) {
+            var deployable = app.deployables[key]; %>
+          <li><%= deployable.deployableName %> <i>(<%= deployable.deployableVersion %>)</i>
+        <% } %>
+      </ul>
+  <% } %>
+  </td>
 </script>
 
 <script type="text/template" id="error-template">
