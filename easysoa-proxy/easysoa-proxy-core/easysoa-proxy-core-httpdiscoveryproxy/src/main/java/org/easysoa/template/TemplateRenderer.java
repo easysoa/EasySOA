@@ -49,6 +49,7 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		// TODO : Complete this method, to be used in a server mock
 		logger.warn("renderRes method not yet entierely implemented, need to be completed !");
 		String renderedTemplate = template.renderRes(templatePath, runName, fieldValues);
+
 		return renderedTemplate;
 	}
 	

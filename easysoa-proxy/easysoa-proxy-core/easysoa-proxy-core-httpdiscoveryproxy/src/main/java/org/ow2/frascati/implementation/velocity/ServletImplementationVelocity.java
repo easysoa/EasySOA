@@ -33,10 +33,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.Servlet;
@@ -159,22 +161,39 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
         			// Get the template files recorded in the store, each template => an operation
         			List<String> templateList = excf.getTemplateList(storeName);
         			
-        			/*HashMap<String, List> operationParams = new HashMap<String, List>();
+        			HashMap<String, Map<String, List<TemplateField>>> operationParams = new HashMap<String, Map<String, List<TemplateField>>>();
+        			HashMap<String, List<TemplateField>> paramsList;
         			List<TemplateField> requestOperationParams;
         			List<TemplateField> responseOperationParams;
-        			*/
+        			
         			for(String templateName : templateList){
         				System.out.println("TemplateName = " + templateName);
         				String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1, templateName.lastIndexOf("."));
         				System.out.println("template index = " + templateIndex);
         				// TODO : change the naming convention for the vm and fld files.
+        				
+        				paramsList = new HashMap<String, List<TemplateField>>();
+        				operationParams.put(templateName, paramsList);
+        				requestOperationParams = new ArrayList<TemplateField>();
+        				responseOperationParams = new ArrayList<TemplateField>();
+        				paramsList.put("inputParams", requestOperationParams);
+        				paramsList.put("outputParams", responseOperationParams);
+        				// TODO : Get suggestions for input fields => OK But about the other fields skipped by the correlation, what to do ????
+        				// But also for output fields => NOK => Need to add correlation method or other to generate a 'output field suggestion file' 
         				TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, "fieldSuggestions_" +  templateIndex);
-       	            	/*for(TemplateField field : templateSuggestion.getTemplateFields()){
-       	            		
-       	            	}*/       				
+       	            	for(TemplateField field : templateSuggestion.getTemplateFields()){
+       	            		// TODO : do not set the field type here, the type must be set by the field suggester !!
+       	            		// DOne like that temporary because type is not set in the suggester !!
+       	            		field.setFieldType("string");
+       	            		requestOperationParams.add(field);
+       	            	}
+       	            	// TODO : At the moment, the response is always returned as a string
+       	            	TemplateField responseField = new TemplateField();
+       	            	responseField.setFieldName("response");
+       	            	responseField.setFieldType("string");
+       	            	responseOperationParams.add(responseField);
         			}
-        			// How to generate a wsdl (with cxf or with a velocity template) ?
-        			// Call the template to render the WSDL 1.1
+        			// Call the velocity template to render the WSDL 1.1
         			Template wsdltemplate = this.velocityEngine.getTemplate("templates/wsdlTemplate.vm");
         			
     	            VelocityContext context = new VelocityContext(this.velocityContext);
@@ -185,11 +204,9 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
     	            // inject parameters as Velocity variables.
    	            	context.put("storeName", storeName);
    	            	context.put("operationList", templateList);
-   	            	// TODO : Add request and response fields structure and pass it to the template, it must have a link with the operation
-   	            	// Build operation params structure
 
-   	            	/*context.put("requestFields", value);
-   	            	context.put("responseFields", value);*/
+   	            	// Inject operation params structure
+   	            	context.put("paramFields", operationParams);
         			
     	            // Process the template.
    	            	response.setContentType("text/xml");
@@ -199,9 +216,12 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-        		//response.getWriter().println("Not yet implemented. Will return the required WSDL ...");
         	} else if("POST".equalsIgnoreCase(request.getMethod())) {
         		// Post request
+        		// POST requests a simple implementation of calling these WSDLs (extract service and operation name, 
+        		// then call the TemplateDefinitionService with them to find the template and its .fld, 
+        		// then extract field values as required in.fld from request XML content, 
+        		// then use TemplateExecutor to execute the templated request with these).        		
         		
         	}
         	// Send a default response ...
@@ -210,8 +230,6 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
             	response.getWriter().println("/target resources called : HACK code triggered !");
             	response.getWriter().println("Add code to get a list of HTML links on generated WSDL corresponding to the template records !");        		
         	}
-        	// For the resource /target/templateX.wsdl : returns the corresponding WSDL file with default values generated from the FLD and template files associated to the record.
-        	// ... Next : see issue #73 
         }
         /**
 		 * EASYSOA HACK END

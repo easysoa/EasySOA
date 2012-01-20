@@ -24,7 +24,6 @@ public class TemplateBuilder {
 	private static Logger logger = Logger.getLogger(TemplateBuilder.class.getName());	
 	
 	// Template expressions segments
-	//private final static String VARIABLE_BEAN_PREFIX = "$renderer.getFieldValue(\"";
 	private final static String VARIABLE_BEAN_PREFIX = "$arg2.get(\"";
 	private final static String VARIABLE_BEAN_SUFFIX = "\")";
 	
@@ -38,7 +37,7 @@ public class TemplateBuilder {
 	/**
 	 * Take as parameter to work templateFieldSuggestion and request
 	 * Then returns a template (or a custom exchange record ???) ready to send to the template renderer
-	 * This method produces 2 files : a custom exchangeRecord AND a template to use with
+	 * This method produces several files : a custom exchangeRecord, a template to use with and a fld file to store suggestions
 	 * @param fieldSuggestions
 	 * @param inMessage
 	 * @return 
@@ -111,10 +110,6 @@ public class TemplateBuilder {
 		if(fieldSuggestions != null && fieldSuggestions.getTemplateFields().size() > 0){
 			// Store the custom exchange record
 			ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
-			// TODO : This path must be configurable
-			// TODO : How to configure Velocity to use a path other that the one configured in the composite file
-			// The composite configured path is in target/classes ...
-			
 			fileStore.setStorePath(PropertyManager.getProperty("path.template.store"));
 			try {
 				// TODO : regroup save operations in a same method in StoreManager
