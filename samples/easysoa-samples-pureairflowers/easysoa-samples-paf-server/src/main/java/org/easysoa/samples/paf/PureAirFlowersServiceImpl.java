@@ -18,27 +18,26 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package pureairflowers.clients;
+package org.easysoa.samples.paf;
 
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "pureairflowers.clients.PureAirFlowersClients", serviceName = "PureAirFlowers")
-public class PureAirFlowersClientsImpl implements PureAirFlowersClients {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	public int getOrdersNumber(String clientName) {
-        System.out.println("getOrdersNumber called");
+/**
+ * 
+ * @author jguillemotte
+ * 
+ */
+@WebService(endpointInterface = "org.easysoa.samples.paf.PureAirFlowersService", serviceName = "PureAirFlowers")
+public class PureAirFlowersServiceImpl implements PureAirFlowersService {
+
+    private final static Logger logger = LoggerFactory.getLogger(PureAirFlowersServer.class);
+
+    public int getOrdersNumber(String clientName) {
+        logger.info("getOrdersNumber called");
         return Math.abs(clientName.hashCode() % 50);
     }
 
-	/*public String repeatAfterMe(String text, int iterations) {
-        System.out.println("repeatAfterMe called");		
-		StringBuffer st = new StringBuffer();
-		for(int i = 0; i<iterations; i++){
-			if(st.length() > 0){
-				st.append(" ; ");
-			}
-			st.append(text);
-		}
-		return st.toString();
-	}*/
 }

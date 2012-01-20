@@ -27,19 +27,5 @@
   <import resource="classpath:META-INF/cxf/cxf.xml"/>
   <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
   <import resource="classpath:META-INF/cxf/cxf-extension-http-jetty.xml"/>
-  
-  <!--<jaxws:endpoint id="HelloWorld"
-    	implementor="cxf.test.hw.server.HelloWorldImpl"
-    	address="http://localhost:9001/helloWorld"/>-->
-
-  <!-- bean class="org.apache.cxf.transport.local.LocalTransportFactory" lazy-init="false">
-      <property name="transportIds">
-          <list>
-              <value>http://cxf.apache.org/transports/local</value>
-              <value>http://schemas.xmlsoap.org/soap/http</value>
-              <value>http://schemas.xmlsoap.org/wsdl/soap/http</value>
-          </list>
-      </property>
-  </bean -->
 
 </beans>

@@ -33,7 +33,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.1</version><!--$NO-MVN-MAN-VER$ -->
+                <version>2.2.1</version>
                 <configuration>
                     <!-- Specifies the configuration file of the assembly plugin -->
                     <descriptors>
@@ -66,7 +66,7 @@
                             used to specify that all needed libraries are found under lib/ directory. -->
                             <classpathPrefix>../lib/</classpathPrefix>
 			    			<!-- Specifies the main class of the application -->
-                            <mainClass>pureairflowers.clients.PureAirFlowersServer</mainClass>
+                            <mainClass>org.easysoa.samples.paf.PureAirFlowersServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -106,9 +106,16 @@
 			<version>2.3.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
-			<version>2.5.6</version>
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-log4j12</artifactId>
+		  <version>1.6.4</version>
 		</dependency>
+    
+        <!-- Classpath discovery -->
+        <dependency>
+          <groupId>org.easysoa.samples.paf</groupId>
+          <artifactId>easysoa-classpath-discovery-prototype</artifactId>
+          <version>0.4-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 </project>

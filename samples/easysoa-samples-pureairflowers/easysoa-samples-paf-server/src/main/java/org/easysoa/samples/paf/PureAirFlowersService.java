@@ -18,16 +18,21 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package pureairflowers.clients;
+package org.easysoa.samples.paf;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.WebResult;
 
+/**
+ * 
+ * @author jguillemotte
+ * 
+ */
 @WebService
-public interface PureAirFlowersClients {
+public interface PureAirFlowersService {
 
-	@WebResult(name="ordersNumber")int getOrdersNumber(@WebParam(name="ClientName") String text);
+    @WebResult(name = "ordersNumber")
+    int getOrdersNumber(@WebParam(name = "ClientName") String text);
 
-    //String repeatAfterMe(@WebParam(name="text") String text, @WebParam(name="iterations") int iterations);
 }
