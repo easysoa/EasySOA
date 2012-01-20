@@ -22,7 +22,6 @@ package org.easysoa.discovery.classpath;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,37 +42,88 @@ public class EasySOAClasspathAnalysis  {
     private final static Logger logger = LoggerFactory.getLogger(EasySOAClasspathAnalysis.class);
 
     private final static String PROPERTIES_FILENAME = "discovery.properties";
-    private final static String PROP_LOGONLY = "discovery.logOnly";
+    
+    private final static String PROP_APPLIIMPLURL = "discovery.appliImplUrl";
+    private final static String PROP_APPLIIMPLTITLE = "discovery.appliImplTitle";
+    private final static String PROP_ENVIRONMENT = "discovery.environment";
     private final static String PROP_JARMATCHERS = "discovery.jarMatchers";
     private final static String PROP_USERNAME = "discovery.username";
     private final static String PROP_PASSWORD = "discovery.password";
+    private final static String PROP_LOGONLY = "discovery.logOnly";
     
-    private static boolean init = false, initFailed = false;
+    private boolean initFailed = false;
+    private List<Pattern> matchers = new LinkedList<Pattern>();
+    private boolean logOnly;
+    private String username = null, password = null, environment = null;
+    private String appliImplUrl = null, appliImplTitle = null;
     
-    private static List<Pattern> matchers = new LinkedList<Pattern>();
-    private static boolean logOnly;
-    private static String username, password;
-    private static String title = null;
-    
-    public static void setAppliImplTitle(String title) {
-        EasySOAClasspathAnalysis.title = title;
+    public EasySOAClasspathAnalysis() {
+        
+        try {
+            
+            Properties props = new Properties();
+            
+            // Load properties from configuration file
+            String propsPath = null;
+            if (new File(PROPERTIES_FILENAME).exists()) {
+                propsPath = PROPERTIES_FILENAME;
+            }
+            else if (new File("target/classes/" + PROPERTIES_FILENAME).exists()) {
+                propsPath = "target/classes/" + PROPERTIES_FILENAME;
+            }
+            if (propsPath != null) {
+                props.load(new FileInputStream(propsPath));
+            }
+            else {
+                logger.warn("No " + PROPERTIES_FILENAME + " found, using default config");
+            }
+
+            // Set discovery settings
+            appliImplUrl = props.getProperty(PROP_APPLIIMPLURL);
+            appliImplTitle = props.getProperty(PROP_APPLIIMPLTITLE);
+            environment = props.getProperty(PROP_ENVIRONMENT, "Master");
+            username = props.getProperty(PROP_USERNAME, "Administrator");
+            password = props.getProperty(PROP_PASSWORD, "Administrator");
+            logOnly = Boolean.parseBoolean(props.getProperty(PROP_LOGONLY, "false"));
+            String matchersProp = props.getProperty(PROP_JARMATCHERS, ".*");
+            String matchersStrings[] = matchersProp.split("\\|");
+            for (String matcherString : matchersStrings) {
+                try {
+                    matchers.add(Pattern.compile(matcherString.trim()));
+                }
+                catch (PatternSyntaxException e) {
+                    logger.warn("Invalid syntax for pattern '" + matcherString + "' : " + e.getMessage());
+                }
+            }
+            
+        }
+        catch (Exception e) {
+            logger.error("Failed to initialize classpath discovery", e);
+            initFailed = true;
+        }
+    }
+
+    public void setAppliImplUrl(String url) {
+        this.appliImplUrl = url;
     }
     
-    public static synchronized void discover(String appliImplUrl) {
+    public void setAppliImplTitle(String title) {
+        this.appliImplTitle = title;
+    }
+
+    public void setCredentials(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+    
+    public synchronized void discover() {
 
         if (initFailed) {
             return;
-        }
-        
-        if (!init) {
-            try {
-                init();
-            }
-            catch (Exception e) {
-                logger.error("Failed to initialize classpath discovery", e);
-                initFailed = true;
-                return;
-            }
         }
         
         try {
@@ -112,8 +162,11 @@ public class EasySOAClasspathAnalysis  {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(AppliImpl.PROP_URL, appliImplUrl);
                 params.put(AppliImpl.PROP_DEPLOYABLES, data);
-                if (title != null) {
-                    params.put(AppliImpl.PROP_TITLE, title);
+                if (appliImplTitle != null) {
+                    params.put(AppliImpl.PROP_TITLE, appliImplTitle);
+                }
+                if (environment != null) {
+                    params.put(AppliImpl.PROP_ENVIRONMENT, environment);
                 }
                 easySOA.notifyAppliImpl(params);
             }
@@ -128,46 +181,6 @@ public class EasySOAClasspathAnalysis  {
         }
         
         System.exit(0); // XXX
-    }
-    
-
-    
-    private static void init() throws FileNotFoundException, IOException {
-
-        Properties props = new Properties();
-        
-        // Load properties from configuration file
-        String propsPath = null;
-        if (new File(PROPERTIES_FILENAME).exists()) {
-            propsPath = PROPERTIES_FILENAME;
-        }
-        else if (new File("target/classes/" + PROPERTIES_FILENAME).exists()) {
-            propsPath = "target/classes/" + PROPERTIES_FILENAME;
-        }
-        if (propsPath != null) {
-            props.load(new FileInputStream(propsPath));
-        }
-        else {
-            logger.warn("No " + PROPERTIES_FILENAME + " found, using default config");
-        }
-
-        // Set discovery settings
-        username = props.getProperty(PROP_USERNAME, "Administrator");
-        password = props.getProperty(PROP_PASSWORD, "Administrator");
-        logOnly = Boolean.parseBoolean(props.getProperty(PROP_LOGONLY, "false"));
-        String matchersProp = props.getProperty(PROP_JARMATCHERS, ".*");
-        String matchersStrings[] = matchersProp.split("\\|");
-        for (String matcherString : matchersStrings) {
-            try {
-                matchers.add(Pattern.compile(matcherString.trim()));
-            }
-            catch (PatternSyntaxException e) {
-                logger.warn("Invalid syntax for pattern '" + matcherString + "' : " + e.getMessage());
-            }
-        }
-            
-        init = true;
-        
     }
     
 }

@@ -64,7 +64,7 @@ public class PureAirFlowersServer {
 
             // EasySOA Classpath discovery entry point
             // TODO How can we allow better decoupling?
-            EasySOAClasspathAnalysis.discover("http://localhost:9010");
+            new EasySOAClasspathAnalysis().discover();
             
             serverFactory.create();
             
