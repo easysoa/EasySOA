@@ -60,7 +60,8 @@ public class FormGeneratorTester extends AbstractTest {
 	 * @throws SOAPException
 	 * @throws IOException
 	 */
-	@Test @Ignore
+	@Test
+	@Ignore
 	public final void testWaitUntilRead() throws Exception{
 		logger.info("Scaffolding proxy test started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test

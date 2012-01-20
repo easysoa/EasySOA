@@ -26,7 +26,7 @@
    <service name="${storeName}_Service">
       <documentation>WSDL File for $storeName Service</documentation>
       <port binding="tns:${storeName}_Binding" name="${storeName}_Port">
-         <soap:address location="http:localhost:8089/${storeName}/"/>
+         <soap:address location="http://localhost:8089/runManager/target/processOperation"/>
       </port>
    </service>
 </definitions>

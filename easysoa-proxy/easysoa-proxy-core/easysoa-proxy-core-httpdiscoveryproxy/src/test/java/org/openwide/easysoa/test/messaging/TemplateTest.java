@@ -127,7 +127,6 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 		
-		
 		// Send first request - GET request with only path parameters
 		HttpResponse response;
 		HttpGet lastTweetRequest = new HttpGet("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/lastTweet/toto");

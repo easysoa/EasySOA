@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>easysoa-proxy-core-tests</artifactId>
+	<name>EasySOA Proxy core test project</name>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.easysoa.proxy</groupId>
+		<artifactId>easysoa-proxy-parent</artifactId>
+		<version>0.4-SNAPSHOT</version>
+		<relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>		
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+</project>

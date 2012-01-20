@@ -134,95 +134,97 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
          */
         // TODO : find an other way to trigger custom code
         if(requestedResource.contains("/target")){
-        	
-        	// Get the list of record template
-        	// TODO : remove the ExchangeRecordFileStore and use TemplateDefinitionService
-        	ExchangeRecordFileStore excf = new ExchangeRecordFileStore();
-        	excf.setStorePath(PropertyManager.getProperty("path.template.store"));
-        	//List<String> templateFileList = excf.getTemplateList();
-        	List<ExchangeRecordStore> storeList = excf.getExchangeRecordStorelist();
-        	
-        	// For the resource /target/ : for each record template, send back a html list of links on template.wsdl
-        	if(requestedResource.endsWith("/")){
-        		if(storeList.size()>0){
-        			response.getWriter().println("<html><body><ul>");
-	        		for(ExchangeRecordStore recordStore : storeList){
-	        			response.getWriter().println("<li><a href=\"http://localhost:8090/runManager/target/" + recordStore.getStoreName() + "?wsdl\">" + recordStore.getStoreName() + "</a> </li>");
+        	if("GET".equalsIgnoreCase(request.getMethod())){
+        		System.out.println("GET request received !!");
+	        	// Get the list of record template
+	        	// TODO : remove the ExchangeRecordFileStore and use TemplateDefinitionService
+	        	ExchangeRecordFileStore excf = new ExchangeRecordFileStore();
+	        	excf.setStorePath(PropertyManager.getProperty("path.template.store"));
+	        	//List<String> templateFileList = excf.getTemplateList();
+	        	List<ExchangeRecordStore> storeList = excf.getExchangeRecordStorelist();
+	        	
+	        	// For the resource /target/ : for each record template, send back a html list of links on template.wsdl
+	        	if(requestedResource.endsWith("/")){
+	        		if(storeList.size()>0){
+	        			response.getWriter().println("<html><body><ul>");
+		        		for(ExchangeRecordStore recordStore : storeList){
+		        			response.getWriter().println("<li><a href=\"http://localhost:8090/runManager/target/" + recordStore.getStoreName() + "?wsdl\">" + recordStore.getStoreName() + "</a> </li>");
+		        		}
+		        		response.getWriter().println("</ul></body></html>");
 	        		}
-	        		response.getWriter().println("</ul></body></html>");
-        		}
-        	}
-        	else if("wsdl".equalsIgnoreCase(request.getQueryString())){
-        		// Get the FLD file and generate WSDL using XSLT transformation or by calling a velocity template 
-        		try {
-        			// Get the store name (last token of requested resource)
-        			String storeName = requestedResource.substring(requestedResource.lastIndexOf("/")+1);
-        			System.out.println("StoreName = " + storeName);
-        			// Get the template files recorded in the store, each template => an operation
-        			List<String> templateList = excf.getTemplateList(storeName);
-        			
-        			HashMap<String, Map<String, List<TemplateField>>> operationParams = new HashMap<String, Map<String, List<TemplateField>>>();
-        			HashMap<String, List<TemplateField>> paramsList;
-        			List<TemplateField> requestOperationParams;
-        			List<TemplateField> responseOperationParams;
-        			
-        			for(String templateName : templateList){
-        				System.out.println("TemplateName = " + templateName);
-        				String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1, templateName.lastIndexOf("."));
-        				System.out.println("template index = " + templateIndex);
-        				// TODO : change the naming convention for the vm and fld files.
-        				
-        				paramsList = new HashMap<String, List<TemplateField>>();
-        				operationParams.put(templateName, paramsList);
-        				requestOperationParams = new ArrayList<TemplateField>();
-        				responseOperationParams = new ArrayList<TemplateField>();
-        				paramsList.put("inputParams", requestOperationParams);
-        				paramsList.put("outputParams", responseOperationParams);
-        				// TODO : Get suggestions for input fields => OK But about the other fields skipped by the correlation, what to do ????
-        				// But also for output fields => NOK => Need to add correlation method or other to generate a 'output field suggestion file' 
-        				TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, "fieldSuggestions_" +  templateIndex);
-       	            	for(TemplateField field : templateSuggestion.getTemplateFields()){
-       	            		// TODO : do not set the field type here, the type must be set by the field suggester !!
-       	            		// DOne like that temporary because type is not set in the suggester !!
-       	            		field.setFieldType("string");
-       	            		requestOperationParams.add(field);
-       	            	}
-       	            	// TODO : At the moment, the response is always returned as a string
-       	            	TemplateField responseField = new TemplateField();
-       	            	responseField.setFieldName("response");
-       	            	responseField.setFieldType("string");
-       	            	responseOperationParams.add(responseField);
-        			}
-        			// Call the velocity template to render the WSDL 1.1
-        			Template wsdltemplate = this.velocityEngine.getTemplate("templates/wsdlTemplate.vm");
-        			
-    	            VelocityContext context = new VelocityContext(this.velocityContext);
-    	            // Put the HTTP request and response into the Velocity context.
-    	            context.put("request", request);
-    	            context.put("response", response);
-    	            
-    	            // inject parameters as Velocity variables.
-   	            	context.put("storeName", storeName);
-   	            	context.put("operationList", templateList);
-
-   	            	// Inject operation params structure
-   	            	context.put("paramFields", operationParams);
-        			
-    	            // Process the template.
-   	            	response.setContentType("text/xml");
-    	            OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream());
-    	            wsdltemplate.merge(context, osw);
-    	            osw.flush();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	        	}
+	        	else if("wsdl".equalsIgnoreCase(request.getQueryString())){
+	        		// Get the FLD file and generate WSDL using XSLT transformation or by calling a velocity template 
+	        		try {
+	        			// Get the store name (last token of requested resource)
+	        			String storeName = requestedResource.substring(requestedResource.lastIndexOf("/")+1);
+	        			System.out.println("StoreName = " + storeName);
+	        			// Get the template files recorded in the store, each template => an operation
+	        			List<String> templateList = excf.getTemplateList(storeName);
+	        			
+	        			HashMap<String, Map<String, List<TemplateField>>> operationParams = new HashMap<String, Map<String, List<TemplateField>>>();
+	        			HashMap<String, List<TemplateField>> paramsList;
+	        			List<TemplateField> requestOperationParams;
+	        			List<TemplateField> responseOperationParams;
+	        			
+	        			for(String templateName : templateList){
+	        				System.out.println("TemplateName = " + templateName);
+	        				String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1, templateName.lastIndexOf("."));
+	        				System.out.println("template index = " + templateIndex);
+	        				// TODO : change the naming convention for the vm and fld files.
+	        				
+	        				paramsList = new HashMap<String, List<TemplateField>>();
+	        				operationParams.put(templateName, paramsList);
+	        				requestOperationParams = new ArrayList<TemplateField>();
+	        				responseOperationParams = new ArrayList<TemplateField>();
+	        				paramsList.put("inputParams", requestOperationParams);
+	        				paramsList.put("outputParams", responseOperationParams);
+	        				// TODO : Get suggestions for input fields => OK But about the other fields skipped by the correlation, what to do ????
+	        				// But also for output fields => NOK => Need to add correlation method or other to generate a 'output field suggestion file' 
+	        				TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, "fieldSuggestions_" +  templateIndex);
+	       	            	for(TemplateField field : templateSuggestion.getTemplateFields()){
+	       	            		// TODO : do not set the field type here, the type must be set by the field suggester !!
+	       	            		// DOne like that temporary because type is not set in the suggester !!
+	       	            		field.setFieldType("string");
+	       	            		requestOperationParams.add(field);
+	       	            	}
+	       	            	// TODO : At the moment, the response is always returned as a string
+	       	            	TemplateField responseField = new TemplateField();
+	       	            	responseField.setFieldName("response");
+	       	            	responseField.setFieldType("string");
+	       	            	responseOperationParams.add(responseField);
+	        			}
+	        			// Call the velocity template to render the WSDL 1.1
+	        			Template wsdltemplate = this.velocityEngine.getTemplate("templates/wsdlTemplate.vm");
+	        			
+	    	            VelocityContext context = new VelocityContext(this.velocityContext);
+	    	            // Put the HTTP request and response into the Velocity context.
+	    	            context.put("request", request);
+	    	            context.put("response", response);
+	    	            
+	    	            // inject parameters as Velocity variables.
+	   	            	context.put("storeName", storeName);
+	   	            	context.put("operationList", templateList);
+	
+	   	            	// Inject operation params structure
+	   	            	context.put("paramFields", operationParams);
+	        			
+	    	            // Process the template.
+	   	            	response.setContentType("text/xml");
+	    	            OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream());
+	    	            wsdltemplate.merge(context, osw);
+	    	            osw.flush();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+	        	}
         	} else if("POST".equalsIgnoreCase(request.getMethod())) {
-        		// Post request
-        		// POST requests a simple implementation of calling these WSDLs (extract service and operation name, 
+        		System.out.println("POST request received !!");
+        		// POST requests :  a simple implementation of calling these WSDLs (extract service and operation name, 
         		// then call the TemplateDefinitionService with them to find the template and its .fld, 
         		// then extract field values as required in.fld from request XML content, 
         		// then use TemplateExecutor to execute the templated request with these).        		
-        		
+        		response.getWriter().println("POST request : implementation in progress !");
         	}
         	// Send a default response ...
         	// TODO : change this response
