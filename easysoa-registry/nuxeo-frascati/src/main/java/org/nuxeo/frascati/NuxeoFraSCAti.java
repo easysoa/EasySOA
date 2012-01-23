@@ -553,4 +553,33 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
     	compositeManager = null;
     	frascatiClassLoader = null;
     }
+
+	@Override
+	public void unregisterServlet(URL url) {
+		int port = url.getPort();
+		if(port == -1){
+			port = 80;
+		}
+		ReflectionHelper jettyHTTPServerEngineFactory  = new ReflectionHelper(
+				ClassLoaderSingleton.classLoader(),
+				"org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory");
+		
+		ReflectionHelper busFactory = new ReflectionHelper(
+				ClassLoaderSingleton.classLoader(),
+				"org.apache.cxf.BusFactory");
+		
+		ReflectionHelper bus = new ReflectionHelper(
+				ClassLoaderSingleton.classLoader(),
+				"org.apache.cxf.Bus");
+		
+		bus.set(busFactory.invokeStatic("getDefaultBus"));
+		
+		jettyHTTPServerEngineFactory.set(bus.invoke("getExtension",
+			new Class<?>[]{Class.class},
+			new Object[]{jettyHTTPServerEngineFactory.getReflectedClass()}));
+		
+	    jettyHTTPServerEngineFactory.invoke("destroyForPort",
+	    		new Class<?>[]{int.class},
+	    		new Object[]{port});
+	}
 }

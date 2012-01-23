@@ -202,4 +202,12 @@ public interface FraSCAtiServiceItf {
 	 * 		the observer to add to the observers list
 	 */
 	void addParserIntentObserver(ParserIntentObserver observer);
+	
+	/**
+	 * Allow to unregister a servlet binded by an SCA component
+	 * 
+	 * @param URL
+	 * 		the URL of the servlet to unregister
+	 */
+	void unregisterServlet(URL url);
 }
