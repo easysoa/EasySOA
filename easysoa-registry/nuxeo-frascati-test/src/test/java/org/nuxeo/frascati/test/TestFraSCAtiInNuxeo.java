@@ -2,11 +2,11 @@ package org.nuxeo.frascati.test;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -16,20 +16,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
-import org.nuxeo.frascati.api.AbstractProcessingContext;
 import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
 import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.ow2.frascati.util.reflect.ReflectionHelper;
 
 @RunWith(FeaturesRunner.class)
 @Features(FraSCAtiFeature.class)
 public class TestFraSCAtiInNuxeo {
 
 	private final String scaFilePath = "src/test/resources/" + "helloworld-pojo.composite";
-	
+	private final String scaWSFilePath = "src/test/resources/" + "helloworld-ws-server.composite";
+	private final String scaServletFilePath = "src/test/resources/" + "helloworld-servlet.composite";	
+	private URL servlet1;
+	private URL servlet2;
+	private URL servlet3;
+	private URL webservice;
+		
 	protected static final Logger log = Logger.getLogger(TestFraSCAtiInNuxeo.class.getCanonicalName());
 	
 	private final String STARTED = "STARTED";
@@ -37,6 +41,18 @@ public class TestFraSCAtiInNuxeo {
 	private FraSCAtiCompositeItf fcomponent = null;
 
 	FraSCAtiServiceItf frascatiService = null;
+	
+	public TestFraSCAtiInNuxeo(){
+  		
+		try {	
+			servlet1 = new URL("http://localhost:8081/Hello");
+			servlet2 = new URL("http://localhost:8082/Hello");
+			servlet3 = new URL("http://localhost:8083/Hello");
+			webservice = new URL("http://localhost:9000/HelloService");
+		} catch(MalformedURLException e){
+			e.printStackTrace();
+		}
+	}
 	
 	@Before
 	public void setUp() throws MalformedURLException, ClientException, Exception{
@@ -114,7 +130,40 @@ public class TestFraSCAtiInNuxeo {
 	    assertEquals("helloworld-pojo",testObserver.last().getName());
 	    log.info("... and its name is helloworld-pojo");
     }
+        
+    @Test 
+    public void testUnregisterServlet(){    	  		
+		try {	
+			int n =0;
+			for(;n<=1;n++){
+				frascatiService.processComposite(new File(
+						scaServletFilePath).getAbsolutePath());			
+				frascatiService.remove("helloworld-servlet");
+				fcomponent = null;
+				frascatiService.unregisterServlet(servlet1);
+				frascatiService.unregisterServlet(servlet2);
+				frascatiService.unregisterServlet(servlet3);
+			}
+		} catch (NuxeoFraSCAtiException e) {
+			e.printStackTrace();
+		}		
+    }
     
+    @Test 
+    public void testUnregisterWS(){    	  		
+		try {	
+			int n =0;
+			for(;n<=1;n++){
+				frascatiService.processComposite(
+						new File(scaWSFilePath).getAbsolutePath());			
+				frascatiService.remove("helloworld-ws-server");
+				fcomponent = null;
+				frascatiService.unregisterServlet(webservice);
+			}
+		} catch (NuxeoFraSCAtiException e) {
+			e.printStackTrace();
+		} 			
+    }
     
     @Test
     @Ignore

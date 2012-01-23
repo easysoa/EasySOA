@@ -70,7 +70,8 @@ public class FraSCAtiFeature extends SimpleFeature implements WorkingDirectoryCo
 		    	
 		    	for(File srclib : libs){
 		    		String libName = srclib.getName();
-		    		File destlib = new File(new StringBuilder(frascatiTestLibsPath).append(sep).append(libName).toString());
+		    		File destlib = new File(new StringBuilder(frascatiTestLibsPath).append(
+		    				sep).append(libName).toString());
 		    		try {
 						FileUtils.copy(srclib,destlib);
 					} catch (IOException e) {
