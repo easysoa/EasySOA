@@ -3,15 +3,11 @@
  */
 package org.openwide.easysoa.tests;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -24,7 +20,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openwide.easysoa.tests.helpers.AbstractTestHelper;
 import org.ow2.frascati.util.FrascatiException;
-
 import com.openwide.easysoa.util.ContentReader;
 
 /**
@@ -75,7 +70,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		
 		// Execute an operation and check the result
 	}
-	
+
 	/**
 	 * Create a test run (start a new run with the given name, send the test requests, stop, save and delete the run)
 	 * @param runName The run name

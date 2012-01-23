@@ -35,20 +35,24 @@ public class TwitterMockImpl implements TwitterMock {
 	@Override
 	public String returnUsersShow(String user) {
 		if(user.endsWith(".json")){
-			return Utilities.readResponseFile("src/test/resources/twitterMockMessages/usersShowDefaultResponse.json");
+			//return Utilities.readResponseFile("twitterMockMessages/usersShowDefaultResponse.json");
+			return Utilities.readResponseStream(this.getClass().getResourceAsStream("/twitterMockMessages/usersShowDefaultResponse.json"));
 		} else {
-			return Utilities.readResponseFile("src/test/resources/twitterMockMessages/usersShowDefaultResponse.xml");
+			//return Utilities.readResponseFile("twitterMockMessages/usersShowDefaultResponse.xml");
+			return Utilities.readResponseStream(this.getClass().getResourceAsStream("/twitterMockMessages/usersShowDefaultResponse.xml"));
 		}
 	}
 
 	@Override
 	public String returnStatusesFriends(String user) {
-		return Utilities.readResponseFile("src/test/resources/twitterMockMessages/statusesFriendsDefaultResponse.xml");
+		//return Utilities.readResponseFile("twitterMockMessages/statusesFriendsDefaultResponse.xml");
+		return Utilities.readResponseStream(this.getClass().getResourceAsStream("/twitterMockMessages/statusesFriendsDefaultResponse.xml"));
 	}
 
 	@Override
 	public String returnStatusesFollowers(String user) {
-		return Utilities.readResponseFile("src/test/resources/twitterMockMessages/statusesFollowersDefaultResponse.xml");
+		//return Utilities.readResponseFile("src/main/resources/twitterMockMessages/statusesFollowersDefaultResponse.xml");
+		return Utilities.readResponseStream(this.getClass().getResourceAsStream("/twitterMockMessages/statusesFollowersDefaultResponse.xml"));
 	}
 
 	@Override

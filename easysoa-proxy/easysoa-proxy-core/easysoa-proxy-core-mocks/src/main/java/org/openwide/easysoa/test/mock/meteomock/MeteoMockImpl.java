@@ -20,12 +20,14 @@
 
 package org.openwide.easysoa.test.mock.meteomock;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.CharBuffer;
 import org.apache.log4j.Logger;
-import org.mortbay.log.Log;
 import org.osoa.sca.annotations.Service;
-import com.openwide.easysoa.util.ContentReader;
 
 @Service(MeteoMock.class)
 public class MeteoMockImpl implements MeteoMock {
@@ -36,11 +38,12 @@ public class MeteoMockImpl implements MeteoMock {
 	@Override
 	public String getTomorrowForecast(String city) {
 		// Open the response file with name equals to 'city + MeteoMockResponse.xml'
-		Log.debug("Meteo forecast asked for " + city);
+		logger.debug("Meteo forecast asked for " + city);
 		String response;
 		try{
-			File xmlResponseFile = new File("src/test/resources/meteoMockMessages/" +  city.toLowerCase() + "MeteoMockResponse.xml");
-			response = ContentReader.read(new FileInputStream(xmlResponseFile));
+			//File xmlResponseFile = new File(this.getClass().getResource("meteoMockMessages/" +  city.toLowerCase() + "MeteoMockResponse.xml"));
+			//response = read(new FileInputStream(xmlResponseFile));
+			response = read(this.getClass().getResourceAsStream("/meteoMockMessages/" +  city.toLowerCase() + "MeteoMockResponse.xml"));
 			response = response.substring(response.indexOf("<ns1:return>"), response.lastIndexOf("</ns1:return>"));
 		}
 		catch(Exception ex){
@@ -51,4 +54,20 @@ public class MeteoMockImpl implements MeteoMock {
 		return response;
 	}
 
+	/**
+	 * Read an <code>InputStream</code> and returns it's content as a string
+	 * @param stream The <code>InputStream</code> to read
+	 * @return 
+	 */
+	private String read(InputStream stream) throws Exception {
+	    StringBuffer requestBody = new StringBuffer();
+	    CharBuffer buffer = CharBuffer.allocate(512);
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		while( reader.read(buffer) >= 0 ) {
+			requestBody.append( buffer.flip() );
+			buffer.clear();
+		}
+		return requestBody.toString();
+	}		
+	
 }

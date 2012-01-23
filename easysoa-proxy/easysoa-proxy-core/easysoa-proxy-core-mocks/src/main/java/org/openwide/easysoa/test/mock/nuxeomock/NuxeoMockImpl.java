@@ -46,15 +46,18 @@ public class NuxeoMockImpl implements NuxeoMock {
 		System.out.println("Body request : " + body);
 		// Registry content request
 		if(REGISTRY_REQUEST.equals(body)) {
-			return Utilities.readResponseFile("src/test/resources/nuxeoMockMessages/nuxeoRegistryContent.json");
+			//return Utilities.readResponseFile("nuxeoMockMessages/nuxeoRegistryContent.json");
+			return Utilities.readResponseStream(this.getClass().getResourceAsStream("/nuxeoMockMessages/nuxeoRegistryContent.json"));
 		}
 		// SOAP test request
 		else if(body.contains("dc:title = 'meteo'")){
-			return Utilities.readResponseFile("src/test/resources/nuxeoMockMessages/nuxeoResponseTestSoap.json");
+			//return Utilities.readResponseFile("nuxeoMockMessages/nuxeoResponseTestSoap.json");
+			return Utilities.readResponseStream(this.getClass().getResourceAsStream("/nuxeoMockMessages/nuxeoResponseTestSoap.json"));
 		} 
 		// REST test request
 		else {
-			return Utilities.readResponseFile("src/test/resources/nuxeoMockMessages/nuxeoResponseTestRest.json");
+			//return Utilities.readResponseFile("nuxeoMockMessages/nuxeoResponseTestRest.json");
+			return Utilities.readResponseStream(this.getClass().getResourceAsStream("/nuxeoMockMessages/nuxeoResponseTestRest.json"));			
 		}
 	}
 
