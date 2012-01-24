@@ -75,6 +75,7 @@ public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarte
      * @throws Exception
      */
     @Test
+    @Ignore
     public final void testInfiniteLoopDetection() throws Exception {
 		logger.info("Test Infinite loop detection started !");
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();

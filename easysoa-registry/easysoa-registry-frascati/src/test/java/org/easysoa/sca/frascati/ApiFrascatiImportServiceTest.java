@@ -18,6 +18,7 @@ import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.RepositoryLogger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -100,6 +101,7 @@ public class ApiFrascatiImportServiceTest {
      * @throws Exception If a problem occurs
      */
     @Test
+    @Ignore
     public void testSCAComposite() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project

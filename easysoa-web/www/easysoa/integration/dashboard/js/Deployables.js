@@ -12,7 +12,6 @@ window.DeployablesModel = Backbone.Model.extend({
   setMyEnv: function(envName) {
     var model = this;
     this.fetchEnvDeployables(envName, function(data) {
-       data.environment = envName;
        model.set({'myEnv': data});
        if (model.get('refEnv') && model.view) {
           model.view.render();
@@ -23,7 +22,6 @@ window.DeployablesModel = Backbone.Model.extend({
   setRefEnv: function(envName) {
     var model = this;
     this.fetchEnvDeployables(envName, function(data) {
-       data.environment = envName;
        model.set({'refEnv': data});
        if (model.get('myEnv') && model.view) {
           model.view.render();

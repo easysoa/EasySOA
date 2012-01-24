@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
@@ -69,6 +70,7 @@ public class ProxyStarter extends AbstractProxyTestStarter {
 	 * @throws IOException
 	 */
 	@Test
+	@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("Http Discovery Proxy started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test

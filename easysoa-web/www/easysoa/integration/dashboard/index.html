@@ -141,7 +141,7 @@
   <td style="vertical-align: top">
   <% for (key in data) {
       var app = data[key]; %>
-      <u>Application "<%= app.title %>"</u><br />
+      <p class="appName">Application "<%= app.title %>"</p>
       <ul>
         <% for (key in app.deployables) {
             var deployable = app.deployables[key]; %>

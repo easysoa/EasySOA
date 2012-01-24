@@ -146,3 +146,15 @@ table#serviceentries {
 #deployables {
   margin-top: 30px;
 }
+
+#deployablesContents {
+  font-size: 90%;
+}
+
+#deployablesContents .appName {
+  text-decoration: underline;
+}
+
+#deployablesContents li {
+  margin-bottom: 0;
+}

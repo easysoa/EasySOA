@@ -42,18 +42,20 @@ public class EasySOAClasspathAnalysis  {
     private final static Logger logger = LoggerFactory.getLogger(EasySOAClasspathAnalysis.class);
 
     private final static String PROPERTIES_FILENAME = "discovery.properties";
-    
+
+    private final static String PROP_NUXEOURL = "discovery.nuxeoUrl";
+    private final static String PROP_USERNAME = "discovery.nuxeoUsername";
+    private final static String PROP_PASSWORD = "discovery.nuxeoPassword";
     private final static String PROP_APPLIIMPLURL = "discovery.appliImplUrl";
     private final static String PROP_APPLIIMPLTITLE = "discovery.appliImplTitle";
     private final static String PROP_ENVIRONMENT = "discovery.environment";
     private final static String PROP_JARMATCHERS = "discovery.jarMatchers";
-    private final static String PROP_USERNAME = "discovery.username";
-    private final static String PROP_PASSWORD = "discovery.password";
     private final static String PROP_LOGONLY = "discovery.logOnly";
-    
+   
     private boolean initFailed = false;
     private List<Pattern> matchers = new LinkedList<Pattern>();
     private boolean logOnly;
+    private String nuxeoUrl = null;
     private String username = null, password = null, environment = null;
     private String appliImplUrl = null, appliImplTitle = null;
     
@@ -84,6 +86,7 @@ public class EasySOAClasspathAnalysis  {
             environment = props.getProperty(PROP_ENVIRONMENT, "Master");
             username = props.getProperty(PROP_USERNAME, "Administrator");
             password = props.getProperty(PROP_PASSWORD, "Administrator");
+            nuxeoUrl = props.getProperty(PROP_NUXEOURL, "http://localhost:8080/nuxeo");
             logOnly = Boolean.parseBoolean(props.getProperty(PROP_LOGONLY, "false"));
             String matchersProp = props.getProperty(PROP_JARMATCHERS, ".*");
             String matchersStrings[] = matchersProp.split("\\|");
@@ -129,7 +132,7 @@ public class EasySOAClasspathAnalysis  {
         try {
             
             // Log in to Nuxeo
-            EasySOAApiSession easySOA = EasySOARemoteApiFactory.createRemoteApi(username, password);
+            EasySOAApiSession easySOA = EasySOARemoteApiFactory.createRemoteApi(nuxeoUrl + "/site", username, password);
             
             // Fetch the classpath JARs list
             String[] classPath = System.getProperty("java.class.path").split(File.pathSeparator);

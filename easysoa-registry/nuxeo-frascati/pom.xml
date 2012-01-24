@@ -452,6 +452,14 @@
             <id>FraSCAti - INRIA Repository</id>
             <url>https://frascati-repo.inria.fr/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>FraSCAti Release - INRIA Repository - Nuxeo miror to avoid https issues</id>
+            <url>https://maven.nuxeo.org/nexus/content/groups/thirdparty-releases/</url>
+        </repository>
+        <repository>
+            <id>FraSCAti Snapshot - INRIA Repository - Nuxeo miror to avoid https issues</id>
+            <url>https://maven.nuxeo.org/nexus/content/groups/thirdparty-snapshots/</url>
+        </repository>
     </repositories>
 
 </project>

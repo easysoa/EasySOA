@@ -121,7 +121,7 @@ public class FraSCAtiImportServiceTest{
 	}
 
     @Test
-    //@Ignore    
+    @Ignore    
     public void importSCAZipSimple() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -180,7 +180,7 @@ public class FraSCAtiImportServiceTest{
     /** The following FraSCAti parsing-based import would fail without custom
      * ProcessingContext.loadClass() because of unknown class in zip */
     @Test
-    //@Ignore
+    @Ignore
     public void importSCAZip() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
@@ -252,6 +252,7 @@ public class FraSCAtiImportServiceTest{
      * Test the frascati SCA importer deployed as a Nuxeo extension point
      */
     @Test
+    @Ignore
     public void testFrascatiScaImporter() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project

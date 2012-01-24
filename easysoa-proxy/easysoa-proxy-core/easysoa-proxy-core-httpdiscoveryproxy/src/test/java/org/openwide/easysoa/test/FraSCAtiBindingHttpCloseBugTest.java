@@ -29,6 +29,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 
@@ -51,6 +52,7 @@ public class FraSCAtiBindingHttpCloseBugTest extends AbstractProxyTestStarter {
 	 * @throws Exception 
 	 */
     @Test
+    @Ignore
 	public final void test() throws Exception {
 	   startFraSCAti();
 	   startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite"); // if commented (or no binding.http in it) the test ends fine, else testProxy will block

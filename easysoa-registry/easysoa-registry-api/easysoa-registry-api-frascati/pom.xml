@@ -113,7 +113,7 @@
           <artifactId>nuxeo-runtime-test</artifactId>
           <version>5.4.2-SNAPSHOT</version>
           <scope>test</scope>
-        </dependency>				
+        </dependency>
 		<dependency>
 			<groupId>org.nuxeo</groupId>
 			<artifactId>nuxeo-frascati-test</artifactId>

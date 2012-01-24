@@ -15,8 +15,7 @@ public class TestXSLT extends TestCase {
     public void testXSLT() throws Exception {
         InputStream xmlStream = this.getClass().getResourceAsStream("/wsdl/nuxeoremoting.wsdl");
         assertNotNull(xmlStream);
-        File out = new File(System.getProperty("java.io.tmpdir"), "out.html");
-        out.createNewFile();
+        File out = File.createTempFile("out", ".html");
         OutputStream outStream = new FileOutputStream(out, false);
         WSDLTransformer.generateHtmlView(xmlStream, outStream);
         String html = FileUtils.readFile(out);
