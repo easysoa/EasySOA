@@ -73,6 +73,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws IOException
 	 */
 	@Test
+	@Ignore
 	public void replayTemplateWithDefaultValue() throws ClientProtocolException, IOException{
 		// TODO : Complete this test with 4 kinds of parameters : formParams, pathParams, QueryParams, WSDLParams
 		
@@ -113,6 +114,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
+	@Ignore
 	public void templateFieldSuggesterRestTest() throws Exception {
 
 		String runName = "TweeterRestTestRun";
@@ -184,6 +186,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
+	@Ignore
 	public void templateFieldSuggesterSOAPTest() throws Exception {	
 		
 		String runName = "MeteoSoapTestRun";
@@ -243,7 +246,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws IOException
 	 */
 	@Test
-	//@Ignore
+	@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("TemplateTest started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test
