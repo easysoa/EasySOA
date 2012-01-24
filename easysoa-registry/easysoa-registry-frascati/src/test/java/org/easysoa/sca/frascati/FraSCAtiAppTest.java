@@ -33,6 +33,7 @@ import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
 import org.easysoa.test.EasySOACoreFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
@@ -95,7 +96,7 @@ public class FraSCAtiAppTest{
 	}
 
     @Test
-    //@Ignore    
+    @Ignore    
     public void checkEasySOAApps() throws Exception {
     	// get the Appcomponent with Framework.getCompoenent method
     	AppComponent appComponent = Framework.getService(AppComponent.class);

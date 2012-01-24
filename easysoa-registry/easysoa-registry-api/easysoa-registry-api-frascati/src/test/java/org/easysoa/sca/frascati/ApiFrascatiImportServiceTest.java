@@ -39,6 +39,7 @@ import org.easysoa.sca.frascati.mock.TestMock;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import com.openwide.easysoa.message.InMessage;
@@ -48,7 +49,6 @@ import com.openwide.easysoa.message.InMessage;
  * @author jguillemotte
  *
  */
-@SuppressWarnings("deprecation")
 public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     static final Log log = LogFactory.getLog(ApiFrascatiImportServiceTest.class);
@@ -91,6 +91,7 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testSCAComposite() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project

@@ -9,7 +9,6 @@
 		<copy todir="target/nxserver/plugins" flatten="true">
 			<fileset dir=".">
 				<include name="**/target/*.jar" />
-				<exclude name="**/target/*-jar-with-dependencies.jar" />
 				<exclude name="**/easysoa-registry-api-core/target/*.jar" />
 				<exclude name="**/easysoa-registry-api-remote/target/*.jar" />
 				<exclude name="**/easysoa-registry-dependencies/target/*.jar" />
@@ -18,7 +17,6 @@
 		<mkdir dir="target/lib" />
 		<copy todir="target/lib" flatten="true">
 			<fileset dir=".">
-				<include name="easysoa-registry-dependencies/target/*-jar-with-dependencies.jar" />
                 <include name="easysoa-registry-api/easysoa-registry-api-core/target/*.jar" />
                 <include name="easysoa-registry-api/easysoa-registry-api-remote/target/*.jar" />
                 <exclude name="easysoa-registry-api/easysoa-registry-api-remote/target/*-jar-with-dependencies.jar" />
