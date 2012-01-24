@@ -160,16 +160,23 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        			String storeName = requestedResource.substring(requestedResource.lastIndexOf("/")+1);
 	        			System.out.println("StoreName = " + storeName);
 	        			// Get the template files recorded in the store, each template => an operation
-	        			List<String> templateList = excf.getTemplateList(storeName);
-	        			
+	        			List<String> templateListExt = excf.getTemplateList(storeName);
+        				// Removing template file extension
+	        			// TODO : Do better .....
+	        			List<String> templateList = new ArrayList<String>();
+	        			for(String templateName : templateListExt){
+	        				templateList.add(templateName.substring(0, templateName.lastIndexOf(".")));
+	        			}
 	        			HashMap<String, Map<String, List<TemplateField>>> operationParams = new HashMap<String, Map<String, List<TemplateField>>>();
 	        			HashMap<String, List<TemplateField>> paramsList;
 	        			List<TemplateField> requestOperationParams;
 	        			List<TemplateField> responseOperationParams;
 	        			
 	        			for(String templateName : templateList){
-	        				System.out.println("TemplateName = " + templateName);
-	        				String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1, templateName.lastIndexOf("."));
+	        				//templateName = templateName.substring(0, templateName.lastIndexOf("."));
+	        				//System.out.println("templateName = " + templateName);	        				
+	        				//String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1, templateName.lastIndexOf("."));
+	        				String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1);
 	        				System.out.println("template index = " + templateIndex);
 	        				// TODO : change the naming convention for the vm and fld files.
 	        				

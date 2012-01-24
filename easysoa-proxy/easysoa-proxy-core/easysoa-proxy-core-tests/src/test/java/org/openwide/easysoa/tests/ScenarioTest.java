@@ -48,7 +48,8 @@ public class ScenarioTest extends AbstractTestHelper {
 	private static Logger logger = Logger.getLogger(ScenarioTest.class.getName());
 
 	private static final String TWITTER_TEST_RUN_NAME = "Twitter_test_run";
-	private final static String METEO_TEST_RUN_NAME = "Meteo_test_run";	
+	// Not yet used
+	//private final static String METEO_TEST_RUN_NAME = "Meteo_test_run";	
 	
 	@BeforeClass
 	public static void setUp() throws FrascatiException {
@@ -85,8 +86,9 @@ public class ScenarioTest extends AbstractTestHelper {
 		// Give it to the scaffolding proxy to get the corresponding HTML form
 		sendWSDLToScaffolderProxy(TWITTER_TEST_RUN_NAME);
 		
+		// Generate a client for test wsdl with wsdl2java or frascati
 		// Send a request with scaffolder proxy
-		//
+		// Check the response
 	}
 
 	/**
