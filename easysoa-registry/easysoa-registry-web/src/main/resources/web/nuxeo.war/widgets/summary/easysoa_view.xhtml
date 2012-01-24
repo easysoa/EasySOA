@@ -1,0 +1,83 @@
+<div class="summary" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:rich="http://richfaces.org/rich">
+
+  <table style="clear: left; padding: 10px"><tr>
+
+  <!-- Call it button -->
+  <c:if test="${currentDocument.getType() == 'Service'}">
+    <td style="padding-right: 20px">
+      <c:choose>
+        <c:when test="${currentDocument.getProperty('servicedef', 'fileUrl') != null}">
+          <div style="float: left; padding: 10px; margin-top: -5px; border: 1px solid #AAF;
+                 font-size: 13pt; background-color: #EEFAFF; margin-right: 10px">
+          <!-- TODO: Get URL from a parameter -->
+          <a href="http://localhost:8083/scaffoldingProxy/?wsdlUrl=${currentDocument.getProperty('servicedef', 'fileUrl')}" target="_blank">
+          Call it!
+          </a>
+          </div>
+        </c:when>
+        <c:otherwise>
+          <div style="float: left; padding: 10px; margin-top: -5px; border: 1px solid #DDD;
+                 font-size: 13pt; background-color: #FFF; color: #AAA; margin-right: 10px">
+          Call it!
+          </div>
+        </c:otherwise>
+      </c:choose>
+    </td>
+  </c:if>
+
+  <c:if test="${currentDocument.hasSchema('soacommon')}">
+  <td style="padding-right: 20px">
+    <!-- Notification icons -->
+    <div style="float: left">
+      <ui:include src="easysoa_view_icon.xhtml">
+        <ui:param name="image" value="dtBrowsing"/>
+        <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeBrowsing')}"/>
+        <ui:param name="type" value="Browsing"/>
+      </ui:include>
+    </div>
+    <div style="float: left">
+      <ui:include src="easysoa_view_icon.xhtml">
+        <ui:param name="image" value="dtMonitoring"/>
+        <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeMonitoring')}"/>
+        <ui:param name="type" value="Monitoring"/>
+      </ui:include>
+    </div>
+    <div style="float: left">
+      <ui:include src="easysoa_view_icon.xhtml">
+        <ui:param name="image" value="dtImport"/>
+        <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeImport')}"/>
+        <ui:param name="type" value="Import"/>
+      </ui:include>
+    </div>
+    <div style="float: left">
+      <ui:include src="easysoa_view_icon.xhtml">
+        <ui:param name="image" value="dtDesign"/>
+        <ui:param name="message" value="${currentDocument.getProperty('soacommon', 'discoveryTypeDesign')}"/>
+        <ui:param name="type" value="Design"/>
+      </ui:include>
+    </div>
+  </td>
+  </c:if>
+
+      <td class="boldLabel" style="width: 50px">
+    <h:outputText value="#{messages['label.content.header.currentLifecycleState']}"/>
+      </td>
+      <td style="width: 70px">
+    <h:outputText value="#{messages[currentDocument.currentLifeCycleState]}" />
+      </td>
+      <td class="boldLabel" style="width: 50px">
+    <h:outputText value="#{messages['label.version']}"/>
+      </td>
+      <td style="width: 50px">
+    <h:outputText value="#{currentDocumentVersionInfo.versionLabel}"/>
+      </td>
+
+  </tr></table>
+</div>
