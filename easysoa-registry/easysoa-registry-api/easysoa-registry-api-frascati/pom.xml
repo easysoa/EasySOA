@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.nuxeo.runtime</groupId>
             <artifactId>nuxeo-runtime-bridge</artifactId>
-            <version>5.4.2-SNAPSHOT</version>
+            <version>5.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 		<dependency>
@@ -111,7 +111,7 @@
         <dependency>
           <groupId>org.nuxeo.runtime</groupId>
           <artifactId>nuxeo-runtime-test</artifactId>
-          <version>5.4.2-SNAPSHOT</version>
+          <version>${easysoa.nuxeo.version}</version>
           <scope>test</scope>
         </dependency>
 		<dependency>

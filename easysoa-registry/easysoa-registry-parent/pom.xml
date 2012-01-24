@@ -4,7 +4,7 @@
     <parent>
         <artifactId>nuxeo-features-parent</artifactId>
         <groupId>org.nuxeo.ecm.platform</groupId>
-        <version>5.4.2</version>
+        <version>5.5</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,7 +18,6 @@
     <url>http://maven.apache.org</url>
 
     <properties>
-        <easysoa.nuxeo.version>5.4.2</easysoa.nuxeo.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

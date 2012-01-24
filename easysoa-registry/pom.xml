@@ -5,7 +5,7 @@
   <parent>
     <artifactId>nuxeo-features-parent</artifactId>
     <groupId>org.nuxeo.ecm.platform</groupId>
-    <version>5.4.2</version>
+    <version>5.5</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -15,6 +15,11 @@
   <packaging>pom</packaging>
   <version>0.4-SNAPSHOT</version>
 
+  <properties>
+     <easysoa.nuxeo.version>5.5</easysoa.nuxeo.version>
+     <easysoa.nuxeo-bridge.version>5.5-SNAPSHOT</easysoa.nuxeo-bridge.version>
+  </properties>
+
   <licenses>
     <license>
       <name>The GNU Lesser General Public License, Version 3</name>
@@ -23,7 +28,6 @@
   </licenses>
 
   <modules>
-    <module>nuxeo-runtime-bridge</module>
     <module>easysoa-frascati-shared</module>
     <module>easysoa-frascati-processor</module>
     <module>nuxeo-frascati</module>
@@ -83,7 +87,7 @@
                 <artifactItem>
                   <groupId>org.nuxeo.runtime</groupId>
                   <artifactId>nuxeo-runtime-bridge</artifactId>
-                  <version>5.4.2-SNAPSHOT</version>
+                  <version>5.5-SNAPSHOT</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.nuxeo</groupId>
@@ -192,13 +196,6 @@
                   <version>2.4.2</version>
                 </artifactItem>
     
-                <!-- JSON -->
-                <artifactItem>
-                  <groupId>org.json</groupId>
-                  <artifactId>json</artifactId>
-                  <version>20070829</version>
-                </artifactItem>
-            
                 <!-- FraSCAti in Nuxeo (should be deployed as bundles when stable) -->
                 <artifactItem>
                   <groupId>org.nuxeo.runtime</groupId>
@@ -212,11 +209,12 @@
                 </artifactItem>
                 
                 <!-- Other needed packages -->
+                <!-- removed since Nuxeo comes with 2.3.3 
                 <artifactItem>
                   <groupId>com.sun.xml.bind</groupId>
                   <artifactId>jaxb-impl</artifactId>
                   <version>2.1.6</version>
-                </artifactItem>
+                </artifactItem>-->
                 <artifactItem>
                   <groupId>org.jvnet.jaxb2_commons</groupId>
                   <artifactId>runtime</artifactId>

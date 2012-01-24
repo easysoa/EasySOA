@@ -34,6 +34,7 @@
 	    <fraclet-annotations.version>3.3</fraclet-annotations.version>    
 	    <fractal-adl.version>2.3.1</fractal-adl.version>
 	    <fractal-rmi.version>0.3.6-SNAPSHOT</fractal-rmi.version>
+            <easysoa.nuxeo.version>5.5</easysoa.nuxeo.version>
 	</properties>		
 	
 	
@@ -41,7 +42,7 @@
 		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
 			<artifactId>nuxeo-runtime-bridge</artifactId>
-			<version>5.4.2-SNAPSHOT</version>
+			<version>5.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nuxeo</groupId>
@@ -51,22 +52,22 @@
 		<dependency>  
 			<groupId>org.nuxeo.runtime</groupId>
   			<artifactId>nuxeo-runtime-test</artifactId>
-			<version>5.4.2</version>
+			<version>${easysoa.nuxeo.version}</version>
 		</dependency>				
 	    <dependency>
 	      <groupId>org.nuxeo.ecm.core</groupId>
 	      <artifactId>nuxeo-core-test</artifactId>
-	      <version>5.4.2</version>
+	      <version>${easysoa.nuxeo.version}</version>
 	    </dependency>
 	    <dependency>
 		    <groupId>org.nuxeo.ecm.core</groupId>
   			<artifactId>nuxeo-core-api</artifactId>
-  			<version>5.4.2</version>
+  			<version>${easysoa.nuxeo.version}</version>
 	    </dependency>
 	    <dependency>
 	      <groupId>org.nuxeo.ecm.platform</groupId>
 	      <artifactId>nuxeo-features-test</artifactId>
-	      <version>5.4.2</version>
+	      <version>${easysoa.nuxeo.version}</version>
 	    </dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -87,7 +88,7 @@
 		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
 			<artifactId>nuxeo-runtime-osgi</artifactId>
-			<version>5.4.2</version>
+			<version>${easysoa.nuxeo.version}</version>
 		</dependency>
 		<!-- DEPENDENCIES THAT HAVE TO BE ASSUMED BY THE ISOLATED CLASSLOADER PARENT  -->
 		<dependency>
