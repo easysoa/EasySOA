@@ -122,7 +122,7 @@ public class ServiceListener implements EventListener {
                     
                     // Download file
                     Blob blob = downloadBlob(fileUrl);
-                    if (blob == null && fileUrl != null && !fileUrl.equals(guessFileUrl(url))) {
+                    if (blob == null && !fileUrl.equals(guessFileUrl(url))) {
                     	blob = downloadBlob(guessFileUrl(url));
                     }
                     
