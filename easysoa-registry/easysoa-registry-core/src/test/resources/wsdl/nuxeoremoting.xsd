@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.5-hudson-$BUILD_NUMBER-. -->
+<xs:schema xmlns:tns="http://ws.platform.ecm.nuxeo.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.platform.ecm.nuxeo.org/">
+
+<xs:element name="ClientException" type="tns:ClientException"/>
+
+<xs:element name="connect" type="tns:connect"/>
+
+<xs:element name="connectOnRepository" type="tns:connectOnRepository"/>
+
+<xs:element name="connectOnRepositoryResponse" type="tns:connectOnRepositoryResponse"/>
+
+<xs:element name="connectResponse" type="tns:connectResponse"/>
+
+<xs:element name="disconnect" type="tns:disconnect"/>
+
+<xs:element name="disconnectResponse" type="tns:disconnectResponse"/>
+
+<xs:element name="getChildren" type="tns:getChildren"/>
+
+<xs:element name="getChildrenResponse" type="tns:getChildrenResponse"/>
+
+<xs:element name="getCurrentVersion" type="tns:getCurrentVersion"/>
+
+<xs:element name="getCurrentVersionResponse" type="tns:getCurrentVersionResponse"/>
+
+<xs:element name="getDocument" type="tns:getDocument"/>
+
+<xs:element name="getDocumentACL" type="tns:getDocumentACL"/>
+
+<xs:element name="getDocumentACLResponse" type="tns:getDocumentACLResponse"/>
+
+<xs:element name="getDocumentBlobs" type="tns:getDocumentBlobs"/>
+
+<xs:element name="getDocumentBlobsExt" type="tns:getDocumentBlobsExt"/>
+
+<xs:element name="getDocumentBlobsExtResponse" type="tns:getDocumentBlobsExtResponse"/>
+
+<xs:element name="getDocumentBlobsResponse" type="tns:getDocumentBlobsResponse"/>
+
+<xs:element name="getDocumentLocalACL" type="tns:getDocumentLocalACL"/>
+
+<xs:element name="getDocumentLocalACLResponse" type="tns:getDocumentLocalACLResponse"/>
+
+<xs:element name="getDocumentNoBlobProperties" type="tns:getDocumentNoBlobProperties"/>
+
+<xs:element name="getDocumentNoBlobPropertiesResponse" type="tns:getDocumentNoBlobPropertiesResponse"/>
+
+<xs:element name="getDocumentProperties" type="tns:getDocumentProperties"/>
+
+<xs:element name="getDocumentPropertiesResponse" type="tns:getDocumentPropertiesResponse"/>
+
+<xs:element name="getDocumentResponse" type="tns:getDocumentResponse"/>
+
+<xs:element name="getDocumentSnapshot" type="tns:getDocumentSnapshot"/>
+
+<xs:element name="getDocumentSnapshotExt" type="tns:getDocumentSnapshotExt"/>
+
+<xs:element name="getDocumentSnapshotExtResponse" type="tns:getDocumentSnapshotExtResponse"/>
+
+<xs:element name="getDocumentSnapshotResponse" type="tns:getDocumentSnapshotResponse"/>
+
+<xs:element name="getGroups" type="tns:getGroups"/>
+
+<xs:element name="getGroupsResponse" type="tns:getGroupsResponse"/>
+
+<xs:element name="getRelativePathAsString" type="tns:getRelativePathAsString"/>
+
+<xs:element name="getRelativePathAsStringResponse" type="tns:getRelativePathAsStringResponse"/>
+
+<xs:element name="getRepositoryName" type="tns:getRepositoryName"/>
+
+<xs:element name="getRepositoryNameResponse" type="tns:getRepositoryNameResponse"/>
+
+<xs:element name="getRootDocument" type="tns:getRootDocument"/>
+
+<xs:element name="getRootDocumentResponse" type="tns:getRootDocumentResponse"/>
+
+<xs:element name="getSourceDocument" type="tns:getSourceDocument"/>
+
+<xs:element name="getSourceDocumentResponse" type="tns:getSourceDocumentResponse"/>
+
+<xs:element name="getUsers" type="tns:getUsers"/>
+
+<xs:element name="getUsersResponse" type="tns:getUsersResponse"/>
+
+<xs:element name="getVersions" type="tns:getVersions"/>
+
+<xs:element name="getVersionsResponse" type="tns:getVersionsResponse"/>
+
+<xs:element name="hasPermission" type="tns:hasPermission"/>
+
+<xs:element name="hasPermissionResponse" type="tns:hasPermissionResponse"/>
+
+<xs:element name="listGroups" type="tns:listGroups"/>
+
+<xs:element name="listGroupsResponse" type="tns:listGroupsResponse"/>
+
+<xs:element name="listUsers" type="tns:listUsers"/>
+
+<xs:element name="listUsersResponse" type="tns:listUsersResponse"/>
+
+<xs:element name="uploadDocument" type="tns:uploadDocument"/>
+
+<xs:element name="uploadDocumentResponse" type="tns:uploadDocumentResponse"/>
+
+<xs:complexType name="getGroups">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="parentGroup" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getGroupsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ClientException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="uploadDocument">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="parentUuid" type="xs:string" minOccurs="0"/>
+<xs:element name="type" type="xs:string" minOccurs="0"/>
+<xs:element name="properties" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="uploadDocumentResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentBlobs">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentBlobsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentBlob" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="documentBlob">
+<xs:sequence>
+<xs:element name="blob" type="xs:base64Binary" minOccurs="0"/>
+<xs:element name="encoding" type="xs:string" minOccurs="0"/>
+<xs:element name="extensions" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="mimeType" type="xs:string" minOccurs="0"/>
+<xs:element name="mimetype" type="xs:string" minOccurs="0"/>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="url" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentLocalACL">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentLocalACLResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wsACE" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="wsACE">
+<xs:sequence>
+<xs:element name="granted" type="xs:boolean"/>
+<xs:element name="permission" type="xs:string" minOccurs="0"/>
+<xs:element name="username" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getRelativePathAsString">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getRelativePathAsStringResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentACL">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentACLResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wsACE" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listUsers">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="startIndex" type="xs:int"/>
+<xs:element name="endIndex" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listUsersResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentBlobsExt">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+<xs:element name="useDownloadUrl" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentBlobsExtResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentBlob" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="connect">
+<xs:sequence>
+<xs:element name="userName" type="xs:string" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="connectResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getCurrentVersion">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getCurrentVersionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentDescriptor" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="documentDescriptor">
+<xs:sequence>
+<xs:element name="id" type="xs:string" minOccurs="0"/>
+<xs:element name="title" type="xs:string" minOccurs="0"/>
+<xs:element name="type" type="xs:string" minOccurs="0"/>
+<xs:element name="UUID" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getUsers">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="parentGroup" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getUsersResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listGroups">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="startIndex" type="xs:int"/>
+<xs:element name="endIndex" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listGroupsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentProperties">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentPropertiesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentProperty" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="documentProperty">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="value" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentSnapshot">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentSnapshotResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentSnapshot" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="documentSnapshot">
+<xs:sequence>
+<xs:element name="acl" type="tns:wsACE" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="blobProperties" type="tns:documentBlob" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="noBlobProperties" type="tns:documentProperty" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="pathAsString" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hasPermission">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+<xs:element name="permission" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hasPermissionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentNoBlobProperties">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentNoBlobPropertiesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentProperty" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getVersions">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getVersionsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentDescriptor" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="disconnect">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="disconnectResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getChildren">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getChildrenResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentDescriptor" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getSourceDocument">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getSourceDocumentResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentDescriptor" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getRootDocument">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getRootDocumentResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentDescriptor" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocument">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentDescriptor" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getRepositoryName">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getRepositoryNameResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="connectOnRepository">
+<xs:sequence>
+<xs:element name="userName" type="xs:string" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+<xs:element name="repositoryName" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="connectOnRepositoryResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentSnapshotExt">
+<xs:sequence>
+<xs:element name="sessionId" type="xs:string" minOccurs="0"/>
+<xs:element name="uuid" type="xs:string" minOccurs="0"/>
+<xs:element name="useDownloadURL" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDocumentSnapshotExtResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:documentSnapshot" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
