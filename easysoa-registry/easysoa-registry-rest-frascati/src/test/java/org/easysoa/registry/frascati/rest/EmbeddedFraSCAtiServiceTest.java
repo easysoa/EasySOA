@@ -144,6 +144,7 @@ public class EmbeddedFraSCAtiServiceTest
      * @throws Exception
      */
     @Test
+    @Ignore
     public void test() throws Exception
     {
         testNuxeo(); // tests REST nuxeo
