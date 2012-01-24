@@ -35,7 +35,7 @@
     <module>easysoa-registry-rest</module>
     <module>easysoa-registry-dashboard</module>
     <module>easysoa-registry-frascati</module>
-    <!-- <module>easysoa-registry-rest-frascati</module> -->
+    <module>easysoa-registry-rest-frascati</module>
   </modules>
 
   <!-- ============= -->
@@ -44,39 +44,123 @@
 
   <build>
     <plugins>
-      <!-- Package modules for Nuxeo -->
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <phase>package</phase>
-            <configuration>
-              <tasks>
-                <ant antfile="build.xml">
-                  <target name="dist" />
-                </ant>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      
-      <!-- Dependencies to package with the plugins -->
+      <!-- Package bundle modules for Nuxeo -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-dependencies</id>
+            <id>copy-bundle-dependencies</id>
             <phase>package</phase>
             <goals>
               <goal>copy</goal>
             </goals>
             <configuration>
               <artifactItems>
+                <!-- EasySOA Core -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-local</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-core</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-rest</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-web</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                
+                <!-- FraSCAti in Nuxeo -->
+                <artifactItem>
+                  <groupId>org.nuxeo.runtime</groupId>
+                  <artifactId>nuxeo-runtime-bridge</artifactId>
+                  <version>5.4.2-SNAPSHOT</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.nuxeo</groupId>
+                  <artifactId>nuxeo-frascati</artifactId>
+                  <version>0.0-SNAPSHOT</version>
+                </artifactItem>
+                
+                <!-- FraSCAti-related features -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-frascati</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-rest-frascati</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                
+                <!-- Other EasySOA features -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-dashboard</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/nxserver/plugins</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- Packge library modules & dependencies for Nuxeo -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-lib-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <!-- EasySOA modules -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-core</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-remote</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-frascati</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-messaging</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-frascati-shared</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-frascati-processor</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                
                 <!-- WSDL Parsing & transformation-->
                 <artifactItem>
                   <groupId>org.ow2.easywsdl</groupId>
@@ -91,7 +175,7 @@
                 <artifactItem>
                   <groupId>xalan</groupId>
                   <artifactId>xalan</artifactId>
-                  <version>2.7.1</version>
+                  <version>2.7.0</version>
                 </artifactItem>  
             
                 <!-- HTML parsing -->
