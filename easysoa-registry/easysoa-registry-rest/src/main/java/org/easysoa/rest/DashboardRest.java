@@ -35,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
+import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.ServiceValidationService;
 import org.easysoa.validation.CorrelationMatch;
@@ -192,7 +193,8 @@ public class DashboardRest {
         
         // Fetch applications
         DocumentModel workspaceModel = docService.findWorkspace(session, workspace);
-        DocumentModelList appliImplModels = session.getChildren(workspaceModel.getRef());
+        DocumentModelList appliImplModels = session.getChildren(workspaceModel.getRef(),
+                AppliImpl.DOCTYPE, new DeletedDocumentFilter(), null);
         for (DocumentModel appliImplModel : appliImplModels) {
             JSONObject application = new JSONObject();
             application.put("title", appliImplModel.getTitle());
