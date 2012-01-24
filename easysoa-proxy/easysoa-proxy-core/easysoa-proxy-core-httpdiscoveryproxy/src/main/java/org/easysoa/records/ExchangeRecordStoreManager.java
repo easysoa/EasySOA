@@ -65,12 +65,12 @@ public interface ExchangeRecordStoreManager {
 	 * @param exchangeRecordStoreName The name of the store where the records have to be listed
 	 * @return A list of <code>ExchangeRecord</code>
 	 */
-	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName);
+	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) throws Exception;
 	/**
 	 * Returns a list of Exchange records store
 	 * @return A list of <code>ExchangeRecordStore</code>
 	 */
-	public List<ExchangeRecordStore> getExchangeRecordStorelist();	
+	public List<ExchangeRecordStore> getExchangeRecordStorelist() throws Exception;	
 	
 	/**
 	 * Returns a list of <code>TemplateField</code> specified in the template

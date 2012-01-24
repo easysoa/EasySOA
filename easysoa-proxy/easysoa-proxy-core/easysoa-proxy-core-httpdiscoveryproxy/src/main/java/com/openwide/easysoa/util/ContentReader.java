@@ -29,9 +29,9 @@ public class ContentReader {
 	public static final String read(Reader reader) throws Exception {
 	    StringBuffer requestBody = new StringBuffer();
 	    CharBuffer buffer = CharBuffer.allocate(512); 
-		while(reader.ready()){
-		   	reader.read(buffer);
-		   	requestBody.append(buffer.rewind());
+		while( reader.read(buffer) >= 0 ) {
+			requestBody.append(buffer.flip());
+			buffer.clear();			
 		}
 		requestBody.trimToSize();		
 		//logger.debug("Reader content : " +  requestBody.toString());		

@@ -37,11 +37,11 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		*/
 		// Render the template
 		String renderedTemplate = template.renderReq(templatePath, runName, fieldValues);
-		logger.debug("Rendered template : " + renderedTemplate);
-		
 		// Execute the template
 		TemplateExecutor executor = new TemplateExecutor();
-		return executor.execute(renderedTemplate);
+		// Return only the message content
+		// TODO : Maybe good idea to return the entire response as JSONObject or other format ...
+		return executor.execute(renderedTemplate).getMessageContent().getContent();
 	}
 
 	@Override

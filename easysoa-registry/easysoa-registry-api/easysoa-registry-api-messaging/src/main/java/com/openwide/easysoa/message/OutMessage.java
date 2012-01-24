@@ -33,7 +33,7 @@ public class OutMessage implements Message {
 	/**
 	 * Response fields
 	 */
-	private int status;
+	private int status = 0;
 	private String statusText;
 	private String protocol;
 	private String protocolVersion;
@@ -46,12 +46,21 @@ public class OutMessage implements Message {
 	private String comment;
 	private long responseTimeStamp = 0;	
 
-	public OutMessage(){}
+	public OutMessage(){
+		this.statusText = "";
+		this.protocol = "";
+		this.protocolVersion = "";
+		this.headers = new Headers();
+		this.messageContent = new MessageContent();
+		this.redirectURL = "";
+		this.comment = "";
+	}
 
 	/**
 	 * Out message constructor
 	 */
 	public OutMessage(int status, String statusText) {
+		this();
 		this.status = status;
 		this.statusText = statusText;
 	}

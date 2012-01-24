@@ -21,8 +21,7 @@
 package org.openwide.easysoa.test.mock.twittermock;
 
 import java.util.ArrayList;
-import java.util.Random;
-
+//import java.util.Random;
 import org.openwide.easysoa.test.util.Utilities;
 
 /**
@@ -67,12 +66,16 @@ public class TwitterMockImpl implements TwitterMock {
 
 	@Override
 	public String returnSeveralRecentTweet(String user, int tweetNumbers) {
-		Random generator = new Random();
+		//Random generator = new Random();
+		if(tweetNumbers > 5){
+			tweetNumbers = 5;
+		}
 		ArrayList<String> tweets = new ArrayList<String>();
 		tweets.add("{\"tweet\": \"The last tweet\"}");
 		tweets.add("{\"tweet\": \"Not the first tweet but not the last\"}");
 		tweets.add("{\"tweet\": \"Another tweet\"}");
 		tweets.add("{\"tweet\": \"Maybe the last tweet\"}");
+		tweets.add("{\"tweet\": \"The last tweet\"}");
 		StringBuffer jsonResponseBuffer = new StringBuffer();
 		jsonResponseBuffer.append("{\"user\":\"");
 		jsonResponseBuffer.append(user);
@@ -80,7 +83,8 @@ public class TwitterMockImpl implements TwitterMock {
 		jsonResponseBuffer.append(tweetNumbers);
 		jsonResponseBuffer.append("\",\"tweets\": [");
 		for(int i=0; i<tweetNumbers; i++){
-			jsonResponseBuffer.append(tweets.get(generator.nextInt(4)));
+			//jsonResponseBuffer.append(tweets.get(generator.nextInt(4)));
+			jsonResponseBuffer.append(tweets.get(i));
 			if(i<tweetNumbers){
 				jsonResponseBuffer.append(",");	
 			}

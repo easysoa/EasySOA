@@ -37,7 +37,6 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.records.ExchangeRecord;
-import org.jboss.util.property.PropertyManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -47,8 +46,8 @@ import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
-
 import com.openwide.easysoa.message.OutMessage;
+import com.openwide.easysoa.proxy.PropertyManager;
 import com.openwide.easysoa.util.ContentReader;
 import com.openwide.easysoa.util.RequestForwarder;
 

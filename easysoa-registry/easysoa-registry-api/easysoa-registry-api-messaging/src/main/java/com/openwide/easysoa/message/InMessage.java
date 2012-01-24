@@ -93,7 +93,7 @@ public class InMessage implements Message {
 	
 	// private Long headersSize;
 	// private Long bodySize;
-	private CustomFields customFields;
+	//private CustomFields customFields;
 	
 	private long requestTimeStamp = 0;
 
@@ -106,7 +106,7 @@ public class InMessage implements Message {
 		this.path = "";
 		this.port = -1;
 		this.server = "";
-		this.customFields = new CustomFields();
+		//this.customFields = new CustomFields();
 		this.headers = new Headers();
 		this.messageContent = new MessageContent();
 		this.postData = new PostData();
@@ -157,14 +157,14 @@ public class InMessage implements Message {
 	    BufferedReader requestBodyReader = null;
 	    CharBuffer buffer = CharBuffer.allocate(512); 
 		try {
-			requestBodyReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
-		    while(requestBodyReader.ready()){
-		    	int nbCharRead = requestBodyReader.read(buffer);
-		    	requestBody.append(buffer.rewind().toString(), 0, nbCharRead);
-		    }
-			this.messageContent.setContent(requestBody.toString());
-			this.messageContent.setSize(requestBody.length());
-			this.messageContent.setMimeType(request.getContentType());
+		    requestBodyReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+		    while( requestBodyReader.read(buffer) >= 0 ) {
+			requestBody.append( buffer.flip() );
+			buffer.clear();
+		    }		    
+		    this.messageContent.setContent(requestBody.toString());
+		    this.messageContent.setSize(requestBody.length());
+		    this.messageContent.setMimeType(request.getContentType());
 		} catch (Exception ex) {
 			logger.warn("Error while reading request body !", ex);
 		} finally {	    
@@ -251,13 +251,13 @@ public class InMessage implements Message {
 		this.comment = comment;
 	}
 
-	public CustomFields getCustomFields() {
+	/*public CustomFields getCustomFields() {
 		return customFields;
-	}
+	}*/
 
-	public void setCustomFields(CustomFields customFields) {
+	/*public void setCustomFields(CustomFields customFields) {
 		this.customFields = customFields;
-	}
+	}*/
 
 	public String getPath() {
 		return path;

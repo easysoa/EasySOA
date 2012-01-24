@@ -22,14 +22,15 @@ import com.openwide.easysoa.util.RequestForwarder;
 public class TemplateExecutor {
 
 	/**
-	 * Execute a rendered template and returns the response as a JSON String
+	 * Execute a rendered template and returns the response as an <code>OutMessage</code>
 	 * @param renderedTemplate The rendered template to execute
-	 * @return The response a JSON String
+	 * @return The response as an <code>OutMessage</code>
 	 * @throws Exception If a problem occurs
 	 */
-	public String execute(String renderedTemplate) throws Exception {
+	public OutMessage execute(String renderedTemplate) throws Exception {
 		// Call the replay service
 		JSONObject jsonInMessage = (JSONObject) JSONSerializer.toJSON(renderedTemplate);
+		System.out.println("JSONInMessage : " + jsonInMessage);
 		HashMap<String, Class> classMap = new HashMap<String, Class>();
 		classMap.put("headers", Header.class);
 		classMap.put("headerList", Header.class);
@@ -38,8 +39,7 @@ public class TemplateExecutor {
 		InMessage inMessage = (InMessage) JSONObject.toBean(jsonInMessage, InMessage.class, classMap);
 		RequestForwarder forwarder = new RequestForwarder();
 		OutMessage outMessage =  forwarder.send(inMessage);
-		JSONObject jsonOutMessage = JSONObject.fromObject(outMessage);
-		return jsonOutMessage.toString();
+		return outMessage;
 	}
 	
 }

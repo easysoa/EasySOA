@@ -49,9 +49,7 @@ public class CustomFields {
 
 	/**
 	 * Sets the customFields value.
-	 * 
-	 * @param customFields
-	 *            The customFields to set.
+	 * @param customFields The customFields to set.
 	 */
 	public void setCustomFieldList(Map<String, CustomField> customFields) {
 		this.customFieldList = customFields;

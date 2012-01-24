@@ -31,7 +31,7 @@ public class PostData {
 	//private PostDataParams params;
 	private String data;
 	private String comment;
-	private CustomFields customFields = new CustomFields();
+	//private CustomFields customFields = new CustomFields();
 
 	public PostData(){}
 	
@@ -99,16 +99,16 @@ public class PostData {
 	 * Returns the customFields.
 	 * @return Returns the customFields.
 	 */
-	public CustomFields getCustomFields() {
+	/*public CustomFields getCustomFields() {
 		return customFields;
-	}
+	}*/
 
 	/**
 	 * Sets the customFields.
 	 * @param customFields The customFields to set.
 	 */
-	public void setCustomFields(CustomFields customFields) {
+	/*public void setCustomFields(CustomFields customFields) {
 		this.customFields = customFields;
-	}
+	}*/
 
 }

@@ -59,13 +59,12 @@ public class ExchangeRecord {
 	// Add a setter for a ServletResponse object
 	// Add also constructors/methods for CXF messages
 	// Goal is to obtain a neutral messaging API
-	
 	public ExchangeRecord(){
 		this.setExchange(new Exchange());
 		this.inMessage = new InMessage();
 		this.outMessage = new OutMessage();
 	}
-
+	
 	/**
 	 * Build a new ExchangeRecord object
 	 * @param request The request content
@@ -87,14 +86,6 @@ public class ExchangeRecord {
 	 */
 	public ExchangeRecord(String exchangeID, InMessage inMessage) throws IllegalArgumentException {
 		this(exchangeID, inMessage, null);
-	}
-	
-	/**
-	 * 
-	 * @param originalRecord
-	 */
-	public ExchangeRecord(ExchangeRecord originalRecord){
-		// Make a deep copy of 
 	}
 	
 	/**

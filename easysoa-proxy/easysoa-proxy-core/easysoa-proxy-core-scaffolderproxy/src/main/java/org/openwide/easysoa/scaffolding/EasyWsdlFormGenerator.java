@@ -206,6 +206,9 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 					}
 					// Casting and adding the element in the list
 					if(elementType != null){
+						// TODO : Not all cases are processed here.
+						// In a ComplexType, several subtypes can be found....
+						// all, sequence, choice ...
 						if(elementType instanceof ComplexType){
 							//logger.debug("ComplexType found ...");
 							ComplexType typ = (ComplexType) elementType;
@@ -216,6 +219,12 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 									logger.debug("element found : " + element.getQName().getLocalPart());
 									elementNameList.add(new WSField(element.getQName().getLocalPart(), element.getType().getQName().getLocalPart()));
 								}
+							} else if(typ.getAll() != null){
+								List<Element> elementList =	typ.getAll().getElements();
+								for(Element element : elementList){
+									logger.debug("element found : " + element.getQName().getLocalPart());
+									elementNameList.add(new WSField(element.getQName().getLocalPart(), element.getType().getQName().getLocalPart()));
+								}								
 							}
 						} else if(elementType instanceof SimpleType) {
 							//logger.debug("SimpleType found ...");

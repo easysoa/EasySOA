@@ -3,20 +3,36 @@
  */
 package org.openwide.easysoa.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.template.TemplateBuilder;
+import org.easysoa.template.TemplateFieldSuggester;
+import org.easysoa.template.TemplateProcessorRendererItf;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.tests.helpers.AbstractTestHelper;
 import org.ow2.frascati.util.FrascatiException;
@@ -31,6 +47,9 @@ public class ScenarioTest extends AbstractTestHelper {
 	// Logger
 	private static Logger logger = Logger.getLogger(ScenarioTest.class.getName());
 
+	private static final String TWITTER_TEST_RUN_NAME = "Twitter_test_run";
+	private final static String METEO_TEST_RUN_NAME = "Meteo_test_run";	
+	
 	@BeforeClass
 	public static void setUp() throws FrascatiException {
 		// Start fraSCAti
@@ -47,28 +66,27 @@ public class ScenarioTest extends AbstractTestHelper {
 	 */
 	@Test
 	public void scenarioTest() throws Exception {	
-		
-		String twitterTestRunName = "Twitter_test_run";
-		String meteoTestRunName = "Meteo_test_run";
-
 		// Create the twitter test run
-		createTestRun(twitterTestRunName);
+		createTestRun(TWITTER_TEST_RUN_NAME);
 		
 		// Create the Meteo test run
 		// TODO : For WSDL TESTS
 		//createTestRun(meteoTestRunName);
 		
 		// Call the replay service
+		callReplayService(TWITTER_TEST_RUN_NAME);
 		
 		// Call the TemplateDefinitionService to generate template and fld files
-		
-		// Call the service to get the tore template list
+		callTemplateDefService(TWITTER_TEST_RUN_NAME);
 		
 		// Choose a store and call the service to get the corresponding WSDL
+		getWSDLTemplate(TWITTER_TEST_RUN_NAME);
 		
 		// Give it to the scaffolding proxy to get the corresponding HTML form
+		sendWSDLToScaffolderProxy(TWITTER_TEST_RUN_NAME);
 		
-		// Execute an operation and check the result
+		// Send a request with scaffolder proxy
+		//
 	}
 
 	/**
@@ -122,5 +140,147 @@ public class ScenarioTest extends AbstractTestHelper {
 		response = httpProxyClient.execute(postTweetRequest);
 		ContentReader.read(response.getEntity().getContent());
 	}
+	
+	/**
+	 * Call the replay service
+	 * @throws Exception 
+	 * @throws IllegalStateException 
+	 */
+	private void callReplayService(String runName) throws IllegalStateException, Exception {
+		
+		DefaultHttpClient httpClient = new DefaultHttpClient();		
+		
+		// get a list of recorded exchange store
+		HttpGet httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordStorelist");
+		HttpResponse response = httpClient.execute(httpUriRequest);
+		String entityResponseString = ContentReader.read(response.getEntity().getContent());
+		logger.debug("Exchange record store list response : " + entityResponseString);
+		assertTrue(entityResponseString.contains(runName));
+
+		// get a list of recorded exchanges contained in the Test_Run folder
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/" + runName);
+		//logger.debug("Sending request");
+		response = httpClient.execute(httpUriRequest);
+		//logger.debug("Reading response");
+		entityResponseString = ContentReader.read(response.getEntity().getContent());
+		//logger.debug("Exchange record list response : " + entityResponseString);
+		//assertTrue(entityResponseString.contains("ExchangeID"));		
+		
+		// Get an exchange record
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/" + runName + "/1");
+		response = httpClient.execute(httpUriRequest);
+		entityResponseString = ContentReader.read(response.getEntity().getContent());
+		logger.debug("Exchange record response : " + entityResponseString);
+		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));
+		
+		// replay one or several exchanges
+		logger.debug("Calling Replay service ...");
+		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		
+		String originalResponse;
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
+		//ExchangeRecord record = recordList.get(0); 
+		for(ExchangeRecord record : recordList){
+			originalResponse = record.getOutMessage().getMessageContent().getContent();
+			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/" + runName + "/" + record.getExchange().getExchangeID());
+			response = httpClient.execute(httpUriRequest);
+			entityResponseString = ContentReader.read(response.getEntity().getContent());
+			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
+			
+			// Compare the replayed exchange with the original exchange
+			assertEquals(originalResponse, entityResponseString);
+		}
+	}
+	
+	/**
+	 * Call the template def service
+	 * @throws Exception  
+	 */
+	private void callTemplateDefService(String runName) throws Exception {
+		
+		logger.debug("callTemplateDefService method for store " + runName);
+		System.out.println("callTemplateDefService method for store " + runName);
+		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
+		TemplateBuilder builder = new TemplateBuilder();
+		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+	
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
+
+		// Get the template renderer
+		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
+
+		// Build an HashMap to simulate user provided values
+		HashMap<String, String> fieldMap = new HashMap<String, String>();
+		fieldMap.put("user", "toto");
+		
+		// For each custom record in the list
+		// TODO : seem's there is a problem here, the rendered template is the same for 2 differents cases
+		for(ExchangeRecord record : recordList){
+			// Build the templates with suggested fields
+			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record, runName);
+			// Render the templates and replay the request
+			logger.debug("templateFileMap : " + templateFileMap);
+			System.out.println("templateFileMap : " + templateFileMap);
+			if(templateFileMap != null){
+				String response = processor.renderReq(templateFileMap.get("reqTemplate"), record, runName, fieldMap);
+				logger.debug("returned message from replayed template : " + response);
+				System.out.println("returned message form replayed template : " + response);
+				// TODO : call the renderRes method for server mock test
+				// TODO : add an assert to check the result of the replayed templatized request
+				//assertEquals(record.getOutMessage().getMessageContent().getContent(), response);
+			}
+		}		
+	}
+	
+	/**
+	 * Get the WSDL for the specified store
+	 * @param runName The store name
+	 * @throws Exception 
+	 */
+	private void getWSDLTemplate(String runName) throws Exception {
+		//localhost:8090/runManager/target/TweeterRestTestRun?wsdl
+		DefaultHttpClient httpClient = new DefaultHttpClient();		
+		// get a list of recorded exchange store
+		HttpGet httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + runName + "?wsdl");
+		HttpResponse response = httpClient.execute(httpUriRequest);
+		String entityResponseString = ContentReader.read(response.getEntity().getContent());
+		logger.debug("WSDL for store " + runName + " : " + entityResponseString);
+		System.out.println("WSDL for store " + runName + " : " + entityResponseString);
+		assertTrue(entityResponseString.startsWith("<definitions name=\"Twitter_test_runService\""));
+	}
+	
+	/**
+	 * Send the corresponding store wsdl to the scaffolding proxy to get an HTML form
+	 * @param runName
+	 * @throws Exception 
+	 */
+	private void sendWSDLToScaffolderProxy(String runName) throws Exception {
+		String wsdlTestRequest = "http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + runName + "?wsdl";
+		String scaffoldingProxyRequest = "http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/scaffoldingProxy/?wsdlUrl=";
+		System.out.println("wsdlTestRequest = " + wsdlTestRequest);
+		System.out.println("scaffoldingProxyRequest = " + scaffoldingProxyRequest);
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		// Send a request to generate the HTML form
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpGet request = new HttpGet(scaffoldingProxyRequest + wsdlTestRequest);
+		String form = httpClient.execute(request, responseHandler);
+		logger.debug("Scaffolding proxy response = " + form);
+		System.out.println("Scaffolding proxy response = " + form);
+	}
+	
+	/**
+	 * This test do nothing, just wait for a user action to stop the proxy. 
+	 * @throws ClientException
+	 * @throws SOAPException
+	 * @throws IOException
+	 */
+	@Test
+	//@Ignore
+	public final void testWaitUntilRead() throws Exception {
+		logger.info("TemplateTest started, wait for user action to stop !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		logger.info("TemplateTest stopped !");
+	}	
 	
 }

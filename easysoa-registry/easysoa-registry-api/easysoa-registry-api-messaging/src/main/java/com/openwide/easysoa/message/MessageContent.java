@@ -32,7 +32,7 @@ public class MessageContent {
 	private String content;
 	private String encoding;
 	private String comment;
-	private CustomFields customFields = new CustomFields();
+	//private CustomFields customFields = new CustomFields();
 
 	public MessageContent(){
 		this.size = 0L;
@@ -150,16 +150,16 @@ public class MessageContent {
 	 * Returns the customFields value.
 	 * @return Returns the customFields.
 	 */
-	public CustomFields getCustomFields() {
+	/*public CustomFields getCustomFields() {
 		return customFields;
-	}
+	}*/
 
 	/**
 	 * Sets the customFields.
 	 * @param customFields The customFields to set.
 	 */
-	public void setCustomFields(CustomFields customFields) {
+	/*public void setCustomFields(CustomFields customFields) {
 		this.customFields = customFields;
-	}
+	}*/
 
 }

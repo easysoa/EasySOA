@@ -40,8 +40,8 @@ import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.TemplateRecord;
-import com.openwide.easysoa.message.CustomField;
-import com.openwide.easysoa.message.CustomFields;
+//import com.openwide.easysoa.message.CustomField;
+//import com.openwide.easysoa.message.CustomFields;
 import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;
@@ -113,7 +113,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 */
 	// TODO : this method have to return a Run Object
 	@Override
-	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) {
+	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) throws Exception {
 		// loads all files in path with extension & lists them
 		logger.debug("exchangeRecordStoreName  = " + exchangeRecordStoreName);
 		File folder = new File(path + exchangeRecordStoreName + "/");
@@ -131,6 +131,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 							recordList.add(load(exchangeRecordStoreName, id));
 						} catch (Exception ex) {
 							logger.debug(ex);
+							throw ex;
 						}
 					}
 				}
@@ -182,9 +183,12 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		FileWriter outMessFw = new FileWriter(outMessageFile);
 		FileWriter exchangeFw = new FileWriter(exchangeFile);
 	    try{
-	    	inMessFw.write(JSONObject.fromObject(exchangeRecord.getInMessage()).toString());
-	    	outMessFw.write(JSONObject.fromObject(exchangeRecord.getOutMessage()).toString());
-	    	exchangeFw.write(JSONObject.fromObject(exchangeRecord.getExchange()).toString());
+	    	JSONObject inJSON = JSONObject.fromObject(exchangeRecord.getInMessage());
+	    	inJSON.write(inMessFw);
+	    	JSONObject outJSON = JSONObject.fromObject(exchangeRecord.getOutMessage());
+	    	outJSON.write(outMessFw);
+	    	JSONObject excJSON = JSONObject.fromObject(exchangeRecord.getExchange());
+	    	excJSON.write(exchangeFw);
 	    }
 	    finally{
 	    	inMessFw.close();
@@ -283,9 +287,10 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		classMap.put("postData", PostData.class);
 		classMap.put("headers", Headers.class);
 		classMap.put("headerList", Header.class);
-		classMap.put("customFields", CustomFields.class);
-		classMap.put("customFieldList", CustomField.class);
+		//classMap.put("customFields", CustomFields.class);
+		//classMap.put("customFieldList", CustomField.class);
 		classMap.put("messageContent", MessageContent.class);
+		// Warning : With json-lib version 2.4, the conversion of a JSON structure containing an other JSON structure doesn't work
 		record.setExchange((Exchange) JSONObject.toBean((JSONObject) readJSONFile(path + exchangeStoreName + "/" + EXCHANGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), Exchange.class, classMap));
 		record.setInMessage((InMessage) JSONObject.toBean((JSONObject) readJSONFile(path + exchangeStoreName + "/" + IN_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), InMessage.class, classMap));
 		record.setOutMessage((OutMessage) JSONObject.toBean((JSONObject) readJSONFile(path + exchangeStoreName + "/" + OUT_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), OutMessage.class, classMap));
@@ -304,11 +309,11 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		FileReader fr = new FileReader(file);
 		JSONObject returnObject;
 		try {
-			CharBuffer buffer = CharBuffer.allocate(256);
+			CharBuffer buffer = CharBuffer.allocate(512);
 			StringBuffer jsonStringBuffer = new StringBuffer();
-			while (fr.ready()) {
-				fr.read(buffer);
-				jsonStringBuffer.append(buffer.rewind());
+			while( fr.read(buffer) >= 0 ) {
+				jsonStringBuffer.append(buffer.flip());
+				buffer.clear();			
 			}
 			jsonStringBuffer.trimToSize();
 			returnObject = (JSONObject) JSONSerializer.toJSON(jsonStringBuffer.toString());	

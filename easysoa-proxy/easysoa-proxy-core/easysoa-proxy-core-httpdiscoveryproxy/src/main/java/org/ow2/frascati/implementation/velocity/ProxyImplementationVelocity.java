@@ -92,12 +92,6 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 			String name = this.velocityEngine.templateExists(method + ".vm") ? method + ".vm" : this.defaultResource;
 			template = this.velocityEngine.getTemplate(name);
 		}
-		System.out.println(template.getName());
-		System.out.println("VMTEMPLATE = " + template);
-
-		//String name = this.velocityEngine.templateExists(method + ".vm") ? method + ".vm" : this.defaultResource;
-		//Template template = this.velocityEngine.getTemplate(name);
-		
 		if (!this.velocityEngine.invokeVelocimacro(method, method, args, context, sw)) {
 			template.merge(context, sw);
 		}
