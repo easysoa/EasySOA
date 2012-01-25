@@ -52,7 +52,7 @@ public class ScenarioTest extends AbstractTestHelper {
 	//private final static String METEO_TEST_RUN_NAME = "Meteo_test_run";	
 	
 	@BeforeClass
-	public static void setUp() throws FrascatiException {
+	public static void setUp() throws Exception {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start Http Discovery proxy

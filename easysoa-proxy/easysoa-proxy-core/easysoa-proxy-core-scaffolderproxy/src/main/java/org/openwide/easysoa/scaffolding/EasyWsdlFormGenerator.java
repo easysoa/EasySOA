@@ -155,9 +155,15 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	@Override
 	public String getOutputMessageName(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName method");
+		String name = "";
 		for(BindingOperation bindingOperation : wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getBindingOperations()){
 			if(bindingOperation.getQName().equals(wsOperation.getQName())){
-				return bindingOperation.getOperation().getOutput().getName();
+				name = bindingOperation.getOperation().getOutput().getName();
+				if(name == null){
+					// Case of the response element not directly in operation output but in part tag
+					name = bindingOperation.getOperation().getOutput().getParts().get(0).getElement().getQName().getLocalPart();
+				}
+				return name;
 			}
 		}
 		return "";

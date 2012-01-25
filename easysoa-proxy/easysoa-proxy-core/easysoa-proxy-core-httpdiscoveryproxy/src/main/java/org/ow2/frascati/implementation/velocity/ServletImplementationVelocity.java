@@ -154,7 +154,8 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        		}
 	        	}
 	        	else if("wsdl".equalsIgnoreCase(request.getQueryString())){
-	        		// Get the FLD file and generate WSDL using XSLT transformation or by calling a velocity template 
+	        		// Get the FLD file and generate WSDL using XSLT transformation or by calling a velocity template
+	        		// TODO : If run not found, returns an error message instead of an incomplete WSDL
 	        		try {
 	        			// Get the store name (last token of requested resource)
 	        			String storeName = requestedResource.substring(requestedResource.lastIndexOf("/")+1);
@@ -165,7 +166,10 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        			// TODO : Do better .....
 	        			List<String> templateList = new ArrayList<String>();
 	        			for(String templateName : templateListExt){
-	        				templateList.add(templateName.substring(0, templateName.lastIndexOf(".")));
+	        				// Only the requests are set in the WSDL
+	        				if(templateName.startsWith("req")){
+	        					templateList.add(templateName.substring(0, templateName.lastIndexOf(".")));
+	        				}
 	        			}
 	        			HashMap<String, Map<String, List<TemplateField>>> operationParams = new HashMap<String, Map<String, List<TemplateField>>>();
 	        			HashMap<String, List<TemplateField>> paramsList;

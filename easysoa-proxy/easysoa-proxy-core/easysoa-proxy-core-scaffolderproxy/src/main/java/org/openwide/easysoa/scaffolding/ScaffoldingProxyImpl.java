@@ -71,7 +71,7 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 
 			// alternatives :
 			// 1. Generate xml request for SOAP service, need to have the WSDL File
-			// SOAPUI can be used ... Check if it the good solution ....
+			// SOAPUI can be used ... Check if it is the good solution ....
 			// Lot of dependencies to add manually to use SOAPUI
 			String response = "OK";
 			String url;

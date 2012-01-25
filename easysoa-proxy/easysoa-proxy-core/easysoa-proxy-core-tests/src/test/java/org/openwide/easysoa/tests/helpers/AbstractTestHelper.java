@@ -27,6 +27,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
@@ -98,9 +99,9 @@ public abstract class AbstractTestHelper {
 	/**
 	 * Start the services mock for tests (Meteo mock, twitter mock ...)
 	 * @param withNuxeoMock If true, the Nuxeo mock is started
-	 * @throws FrascatiException if a problem occurs during the start of composites
+	 * @throws Exception 
 	 */
-	protected static void startMockServices(boolean withNuxeoMock) throws FrascatiException {
+	protected static void startMockServices(boolean withNuxeoMock) throws Exception {
 		logger.info("Services Mock Starting");
 		componentList.add(frascati.processComposite("twitterMockRest.composite", new ProcessingContextImpl()));
 		componentList.add(frascati.processComposite("meteoMockSoap.composite", new ProcessingContextImpl()));
@@ -108,6 +109,8 @@ public abstract class AbstractTestHelper {
 		if(withNuxeoMock){
 			componentList.add(frascati.processComposite("nuxeoMockRest.composite", new ProcessingContextImpl()));
 		}
+		// Start tweeter WSDL service mock
+		TwitterTestRunPortType_TwitterTestRunPort_Server.start();
 	}
 	
 	/**
