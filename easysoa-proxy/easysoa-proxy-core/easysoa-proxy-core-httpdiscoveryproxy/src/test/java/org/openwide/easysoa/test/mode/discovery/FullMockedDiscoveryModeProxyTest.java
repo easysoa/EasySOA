@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.openwide.easysoa.test.helpers.DiscoveryModeProxyTestBase;
 import org.openwide.easysoa.test.helpers.FullMockedServiceTestHelper;
 import org.ow2.frascati.util.FrascatiException;
@@ -41,6 +42,7 @@ import org.ow2.frascati.util.FrascatiException;
  * @author jguillemotte
  *
  */
+@Ignore
 public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase {
 
 	/**
