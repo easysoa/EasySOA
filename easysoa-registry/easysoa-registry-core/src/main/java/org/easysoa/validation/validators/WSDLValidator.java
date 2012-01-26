@@ -42,14 +42,14 @@ public class WSDLValidator extends ServiceValidator {
         // Note: delta-based validation would be : ex. if wsdl changed, check it for
         // now only full validation.
         Blob referenceEnvWsdlBlob = (Blob) referenceService.getProperty("file", "content");
-        if (referenceEnvWsdlBlob != null) {
-            Blob wsdlBlob = (Blob) service.getProperty("file", "content");
-            File referenceEnvWsdlFile = File.createTempFile("easysoa", "wsdl");
-            File wsdlFile = File.createTempFile("easysoa", "wsdl");
-            referenceEnvWsdlBlob.transferTo(referenceEnvWsdlFile);
-            wsdlBlob.transferTo(wsdlFile);
+        Blob wsdlBlob = (Blob) service.getProperty("file", "content");
+        if (referenceEnvWsdlBlob != null && wsdlBlob != null) {
             try {
-                if (wsdlBlob != null && !isWsdlCompatibleWith(wsdlFile, referenceEnvWsdlFile)) {
+                File referenceEnvWsdlFile = File.createTempFile("easysoa", "wsdl");
+                referenceEnvWsdlBlob.transferTo(referenceEnvWsdlFile);
+                File wsdlFile = File.createTempFile("easysoa", "wsdl");
+                wsdlBlob.transferTo(wsdlFile);
+                if (!isWsdlCompatibleWith(wsdlFile, referenceEnvWsdlFile)) {
                     errors.add("Service has different WSDL");
                 }
             } catch (WSDLException e) {

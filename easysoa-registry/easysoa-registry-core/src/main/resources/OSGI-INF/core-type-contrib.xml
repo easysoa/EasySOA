@@ -30,7 +30,6 @@
       <schema name="servicedef" />
       <facet name="Commentable" />
       <facet name="Versionable" />
-      <facet name="Indexable" />
       <facet name="Publishable" />
     </doctype>
 
@@ -42,7 +41,6 @@
       <schema name="files" />
       <facet name="Folderish" />
       <facet name="Commentable" />
-      <facet name="Indexable" />
       <facet name="Publishable" />
       <subtypes>
         <type>ServiceAPI</type>
@@ -61,7 +59,6 @@
       <schema name="files" />
       <facet name="Commentable" />
       <facet name="Versionable" />
-      <facet name="Indexable" />
       <facet name="Publishable" />
     </doctype>
 
@@ -74,7 +71,6 @@
       <schema name="files" />
       <facet name="Folderish" />
       <facet name="Commentable" />
-      <facet name="Indexable" />
       <facet name="Publishable" />
       <subtypes>
         <type>ServiceAPI</type>

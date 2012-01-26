@@ -28,15 +28,17 @@ import javax.ws.rs.core.UriInfo;
 
 import junit.framework.Assert;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.rest.servicefinder.ServiceFinderRest;
 import org.easysoa.services.HttpDownloader;
 import org.easysoa.services.HttpDownloaderService;
 import org.easysoa.test.EasySOACoreFeature;
+import org.easysoa.test.StaticWebServer;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -52,15 +54,28 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 @Features({EasySOACoreFeature.class, WebEngineFeature.class})
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @Deploy({"org.easysoa.registry.rest"})
-@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
-    "org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
+@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
     "org.easysoa.registry.rest:OSGI-INF/serviceFinder-contrib.xml"})
-public class ServiceFindersTest {
+public class ServiceFinderTest {
 
-    // TODO: Embed in test a web page containing WSDLs to find
-	private static final String ONLINE_SERVICE_URL = "http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/";
+	private static final String ONLINE_SERVICE_URL = "http://localhost:8222/trip.html";
 
-    static final Log log = LogFactory.getLog(ServiceFindersTest.class);
+    private static Logger logger = Logger.getLogger(ServiceFinderTest.class);
+    
+    private static StaticWebServer webServer;
+    
+    @BeforeClass
+    public static void setUp() throws Exception {
+        webServer = new StaticWebServer(8222, "src/test/resources/www");
+        webServer.start();
+    }
+    
+    @AfterClass
+    public static void tearDown() throws Exception {
+        if (webServer != null) {
+            webServer.stop();
+        }
+    }
     
     @Test
     public void testServiceFinder() throws Exception {
@@ -77,7 +92,7 @@ public class ServiceFindersTest {
         // Check result data
         Assert.assertNotNull(obj);
         JSONObject json = new JSONObject(obj.toString());
-        log.info("Service finder response: "+json.toString(2));
+        logger.info("Service finder response: "+json.toString(2));
         
         JSONObject foundLinks = (JSONObject) json.get("foundLinks");
         Assert.assertNotNull(foundLinks);
@@ -86,8 +101,8 @@ public class ServiceFindersTest {
         // Output found links
         while (it.hasNext()) {
             String linkName = (String) it.next();
-            log.info("Found service: "+linkName);
-            log.info(foundLinks.getString(linkName));
+            logger.info("Found service: "+linkName);
+            logger.info(foundLinks.getString(linkName));
         }
     }
     
@@ -105,9 +120,8 @@ public class ServiceFindersTest {
     	
         // Check result data
         Assert.assertNotNull(obj);
-        JSONObject json = new JSONObject(obj.toString());
-        String response = json.toString(2);
-        log.info("Service finder response: " + response);
+        String response = obj.toString();
+        logger.info("Service finder response: " + response);
         Assert.assertTrue("Malformated JSONP response", response.startsWith("mycallback(") && response.endsWith(")"));
     	
     }

@@ -29,9 +29,10 @@ public class BrowsingContext {
 			// Download the file at the given URL
 	    	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
 	        HttpDownloader file = httpDownloaderService.createHttpDownloader(url);
+	        FileInputStream fis = null;
 	        try {
 		        file.download();
-		        FileInputStream fis = new FileInputStream(file.getFile());
+		        fis = new FileInputStream(file.getFile());
 		        StringBuffer dataBuffer = new StringBuffer();
 		        int c;
 		        while ((c = fis.read()) != -1) {
@@ -43,6 +44,9 @@ public class BrowsingContext {
 	        	data = null;
 	        }
 	        finally {
+	            if (fis != null) {
+	                fis.close();
+	            }
 	        	file.delete();
 	        }
 		}

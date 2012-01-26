@@ -56,6 +56,7 @@ import com.openwide.easysoa.util.RequestForwarder;
  * @author jguillemotte
  *
  */
+@Ignore
 public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 	// Logger

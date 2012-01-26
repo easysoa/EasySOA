@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.nuxeo.common.utils.Base64;
 
 public class RestNotificationRequestImpl implements RestNotificationRequest {
     
@@ -118,7 +119,7 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
         HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
         connection.setRequestMethod(method);
         connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
-        connection.setRequestProperty("Authorization", "Basic " +
+        connection.setRequestProperty("Authorization", "Basic " + 
                 Base64.encodeBytes((username + ":" + password).getBytes()));
         connection.setDoOutput(true);
         
