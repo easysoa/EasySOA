@@ -116,6 +116,7 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 //@Jetty(config="test_jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 //@RepositoryConfig(type=BackendType.H2)
+@Ignore
 public class EmbeddedFraSCAtiServiceTest
 {
 
@@ -144,7 +145,6 @@ public class EmbeddedFraSCAtiServiceTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void test() throws Exception
     {
         testNuxeo(); // tests REST nuxeo

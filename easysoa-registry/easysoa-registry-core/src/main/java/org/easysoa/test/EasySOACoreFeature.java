@@ -33,6 +33,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  *
  */
 @Deploy({
+    "org.easysoa.registry.api.local",
     "org.easysoa.registry.core",
     "org.nuxeo.ecm.actions", // required by easysoa-registry-core contrib
     "org.nuxeo.ecm.platform.forms.layout.client", // required by easysoa-registry-core contrib
