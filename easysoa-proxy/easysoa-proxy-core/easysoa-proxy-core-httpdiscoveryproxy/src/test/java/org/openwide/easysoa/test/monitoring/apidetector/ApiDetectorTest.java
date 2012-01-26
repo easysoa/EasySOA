@@ -22,13 +22,9 @@ package org.openwide.easysoa.test.monitoring.apidetector;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
 import org.junit.Assume;
-
-import com.sun.jersey.api.client.ClientHandlerException;
 
 /**
  * Unit test for simple App.
@@ -76,7 +72,7 @@ public class ApiDetectorTest extends TestCase {
 			urlDetectionCompute();
 			urlDetectionDebugResults();
 		}
-		catch (ClientHandlerException e) {
+		catch (Exception e) {
 			logger.warn("Failed to connect to Nuxeo, aborting test: "+e.getMessage());
 			Assume.assumeNoException(e); 
 		}
@@ -101,7 +97,7 @@ public class ApiDetectorTest extends TestCase {
 			//DiscoveryMonitoringService.getMonitorService(MonitoringMode.VALIDATED);
 			urlDetectionSimulate(new UrlMock().getTwitterUrlData("api.twitter.com"));
 		}
-		catch (ClientHandlerException e) {
+		catch (Exception e) {
 			logger.warn("Failed to connect to Nuxeo, aborting test: "+e.getMessage());
 			Assume.assumeNoException(e);
 		}

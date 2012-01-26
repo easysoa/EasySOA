@@ -258,14 +258,16 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
     protected static void cleanOldFiles(){
     	File folder = new File(PropertyManager.getProperty("path.record.store"));
     	File[] listOfFiles = folder.listFiles();
-    	for (File file : listOfFiles) {
-            if (file.isFile()) {
-            	logger.debug("file name : " + file.getName());
-                if (file.getName().endsWith(".json")) {
-                	logger.debug("Deleting file " + file.getName());
-                	file.delete();
-    	        }
-    	    }
-    	}    	
+    	if(listOfFiles != null){
+	    	for (File file : listOfFiles) {
+	            if (file.isFile()) {
+	            	logger.debug("file name : " + file.getName());
+	                if (file.getName().endsWith(".json")) {
+	                	logger.debug("Deleting file " + file.getName());
+	                	file.delete();
+	    	        }
+	    	    }
+	    	}
+    	}
     }
 }

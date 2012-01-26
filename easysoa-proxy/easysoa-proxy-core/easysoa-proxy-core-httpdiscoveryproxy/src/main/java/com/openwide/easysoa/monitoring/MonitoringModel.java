@@ -64,8 +64,9 @@ public class MonitoringModel {
 
 	/**
 	 * Fill the object with data from Nuxeo
+	 * @throws Exception 
 	 */
-	public void fetchFromNuxeo() {
+	public void fetchFromNuxeo() throws Exception {
 		try {
             soaNodes = new NuxeoRegistrationService().getAllSoaNodes();
             logger.debug("soaNodes size : " + soaNodes.size());

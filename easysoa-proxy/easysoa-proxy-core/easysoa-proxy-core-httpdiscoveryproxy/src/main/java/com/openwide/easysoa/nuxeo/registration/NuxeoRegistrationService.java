@@ -22,11 +22,23 @@
 package com.openwide.easysoa.nuxeo.registration;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthenticationException;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
 import org.easysoa.rest.RestNotificationFactory;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
@@ -40,10 +52,11 @@ import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.proxy.PropertyManager;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.openwide.easysoa.util.ContentReader;
+//import com.sun.jersey.api.client.Client;
+//import com.sun.jersey.api.client.ClientResponse;
+//import com.sun.jersey.api.client.WebResource;
+//import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 /**
  * This class regroups all the method required to send requests to Nuxeo.
@@ -235,8 +248,9 @@ public class NuxeoRegistrationService {
 	/**
 	 * return all soa node registred in Nuxeo
 	 * @return A <code>List</code> of soa <code>Node</code> 
+	 * @throws Exception 
 	 */
-	public List<Node> getAllSoaNodes() {
+	public List<Node> getAllSoaNodes() throws Exception {
 		String query = "SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted' ORDER BY ecm:path";
 		JsonMapper soaNodesJsonMapper = new SoaNodesJsonMapper();
 		try {
@@ -253,9 +267,9 @@ public class NuxeoRegistrationService {
 	 * @param query The query to find objects in Nuxeo
 	 * @param jsonMapper The mapper to map the results in Java objects
 	 * @return A <code>List</code> of soa <code>Node</code>
-	 * @throws JSONException In case of problem
+	 * @throws Exception 
 	 */
-	public List<Node> getAllTo(String query , JsonMapper jsonMapper) throws JSONException {
+	public List<Node> getAllTo(String query , JsonMapper jsonMapper) throws Exception {
 		String res =  sendQuery(query);
 		ArrayList<Node> soaNodes = new ArrayList<Node>();
 		JSONArray resObject = new JSONObject(res).getJSONArray("entries");
@@ -280,8 +294,9 @@ public class NuxeoRegistrationService {
 	 * Queries nuxeo docs
 	 * @param query Query to send
 	 * @return The response send back by Nuxeo
+	 * @throws Exception 
 	 */
-	public String sendQuery(String query){
+	public String sendQuery(String query) throws Exception {
 		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.service"));
 		//urlBuf.append("/");
 	    urlBuf.append("Document.Query"); // operation name
@@ -294,9 +309,8 @@ public class NuxeoRegistrationService {
 		    
 			logger.debug("[sendQuery()] --- Request URL = " + urlBuf.toString());
 			// Send request get registered services
-			Client client = Client.create();
+			/*Client client = Client.create();
 			client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
-			
 			WebResource webResource = client.resource(urlBuf.toString());
 			GenericEntity<String> entity = new GenericEntity<String>(bodyBuf.toString()) {};
 			ClientResponse response = webResource
@@ -305,10 +319,21 @@ public class NuxeoRegistrationService {
 				.accept("application/json+nxentity")
 				.header("X-NXDocumentProperties", "*")
 				.post(ClientResponse.class);
+			*/
 			
-		   	int status = response.getStatus();
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator"));
+			HttpPost postRequest = new HttpPost(urlBuf.toString());
+			postRequest.addHeader(new BasicScheme().authenticate(creds, postRequest));
+			HttpEntity entity = new StringEntity(bodyBuf.toString());
+			postRequest.setEntity(entity);
+			postRequest.addHeader(new BasicHeader("X-NXDocumentProperties", "*"));
+			postRequest.setHeader(new BasicHeader(HTTP.CONTENT_TYPE, "application/json+nxrequest; charset=UTF-8"));
+			HttpResponse response = httpClient.execute(postRequest); 
+					
+		   	int status = response.getStatusLine().getStatusCode();
 		   	logger.debug("[sendQuery()] --- sendQuery response status = " + status);
-			String textEntity = response.getEntity(String.class);
+			String textEntity = ContentReader.read(response.getEntity().getContent());
 			logger.debug("[sendQuery()] --- sendQuery response = " + textEntity);	
 			return textEntity;		
 		} catch (JSONException e) {
@@ -322,8 +347,9 @@ public class NuxeoRegistrationService {
 	 * @param url Nuxeo url
 	 * @param body Message to send
 	 * @return The response send back by Nuxeo
+	 * @throws Exception 
 	 */
-	public boolean deleteQuery(String uid){
+	public boolean deleteQuery(String uid) throws Exception {
 		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.service"));
 	    urlBuf.append("Document.Delete"); // operation name
 
@@ -333,7 +359,7 @@ public class NuxeoRegistrationService {
 		    
 			logger.debug("[deleteQuery()] --- Request URL = " + urlBuf.toString());
 			// Send request get registered services
-			Client client = Client.create();
+			/*Client client = Client.create();
 			client.addFilter(new HTTPBasicAuthFilter(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator")));
 			
 			WebResource webResource = client.resource(urlBuf.toString());
@@ -344,8 +370,18 @@ public class NuxeoRegistrationService {
 				.accept("application/json+nxentity")
 				.header("X-NXDocumentProperties", "*")
 				.post(ClientResponse.class);
-
-			if(response.getStatus() == 204){
+			*/
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator"));
+			HttpPost postRequest = new HttpPost(urlBuf.toString());
+			postRequest.addHeader(new BasicScheme().authenticate(creds, postRequest));
+			HttpEntity entity = new StringEntity(bodyBuf.toString());
+			postRequest.setEntity(entity);
+			postRequest.addHeader(new BasicHeader("X-NXDocumentProperties", "*"));
+			postRequest.setHeader(new BasicHeader(HTTP.CONTENT_TYPE, "application/json+nxrequest; charset=UTF-8"));
+			HttpResponse response = httpClient.execute(postRequest); 			
+			
+			if(response.getStatusLine().getStatusCode() == 204){
 				return true;
 			} else {
 				return false;

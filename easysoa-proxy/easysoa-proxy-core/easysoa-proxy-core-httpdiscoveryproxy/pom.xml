@@ -68,13 +68,14 @@
       <version>1.1.1</version>
     </dependency>
     <!-- for obsolete code in NuxeoRegistrationService -->
-    <dependency>
+    <!--<dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
+	  <version>1.11-b04</version>
+    </dependency>-->
       <!--<version>1.8-ea02</version>-->
       <!--<version>1.11-b02</version>-->
-      <version>1.9-ea07</version>
-    </dependency>
+      <!--<version>1.9-ea07</version>-->    
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -157,7 +158,7 @@
             <!-- We have a problem when we try to execute the 2 full mocked test in the same time -->
             <!-- so temporary solution is to deactivate the full mocked test for validated mode -->
             <exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
-
+            <exclude>**/FullMockedDiscoveryModeProxyTest.java</exclude>
             <!-- These tests require an externel nuxeo to work ! -->
             <exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
             <exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>

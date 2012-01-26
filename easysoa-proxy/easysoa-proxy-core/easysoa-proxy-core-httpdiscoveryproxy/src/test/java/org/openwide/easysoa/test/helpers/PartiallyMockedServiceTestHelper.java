@@ -40,7 +40,7 @@ public class PartiallyMockedServiceTestHelper extends ServiceTestHelperBase {
 	}
 
 	@Override
-	protected String cleanNuxeoRegistry(String urlPattern) throws JSONException {
+	protected String cleanNuxeoRegistry(String urlPattern) throws Exception {
     	String nuxeoResponse = cleanRemoteNuxeoRegistry("%" + EasySOAConstants.TWITTER_MOCK_PORT + "%");
     	assertEquals("{\n  \"entity-type\": \"documents\",\n  \"entries\": []\n}", nuxeoResponse);
 		return nuxeoResponse;

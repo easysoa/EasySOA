@@ -82,6 +82,7 @@ public abstract class AbstractProxyTestStarter {
 				frascati.close(component);
 			}
 		}
+		frascati = null;
 	}
 	
 	/**
@@ -103,11 +104,11 @@ public abstract class AbstractProxyTestStarter {
 	protected static void startMockServices(boolean withNuxeoMock) throws FrascatiException {
 		logger.info("Services Mock Starting");
 		componentList.add(frascati.processComposite("twitterMockRest.composite", new ProcessingContextImpl()));
-		componentList.add(frascati.processComposite("meteoMockSoap.composite", new ProcessingContextImpl()));
 		// start Nuxeo mock
 		if(withNuxeoMock){
 			componentList.add(frascati.processComposite("nuxeoMockRest.composite", new ProcessingContextImpl()));
 		}
+		componentList.add(frascati.processComposite("meteoMockSoap.composite", new ProcessingContextImpl()));		
 	}
 	
 	/**

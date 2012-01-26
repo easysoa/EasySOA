@@ -50,9 +50,10 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	EsperEngine esperEngine; 	
 	
 	/**
+	 * @throws Exception 
 	 * 
 	 */
-	public ValidatedMonitoringService(){
+	public ValidatedMonitoringService() throws Exception{
 		// init & fill it from Nuxeo
 		logger.debug("Mode = VALIDATED !!");
 		//unknownMessagesList = new ArrayDeque<Message>();

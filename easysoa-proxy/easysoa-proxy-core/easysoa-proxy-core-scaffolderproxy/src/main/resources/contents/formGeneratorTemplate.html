@@ -47,7 +47,6 @@
 						var binding = "$formGenerator.getBindingName($endpoint)";
 						var url = "http://localhost:" + $formGenerator.getConstant("REST_SOAP_PROXY_PORT") + "/";
 						url = url + "callService/" + binding + "/" + operation + "/";
-
                         var wsdlUrl = "$wsdlUrl";
 						var serviceName = "$service.getName()";
 						var responseMessage = "$formGenerator.getOutputMessageName($endpoint, $operation)";

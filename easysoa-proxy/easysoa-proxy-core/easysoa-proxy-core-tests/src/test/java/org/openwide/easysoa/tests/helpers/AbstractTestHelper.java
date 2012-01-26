@@ -20,18 +20,15 @@
 
 package org.openwide.easysoa.tests.helpers;
 
-import java.net.URL;
 import java.util.ArrayList;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
-import org.ow2.frascati.util.FrascatiClassLoader;
 import org.ow2.frascati.util.FrascatiException;
 
 /**
@@ -109,8 +106,6 @@ public abstract class AbstractTestHelper {
 		if(withNuxeoMock){
 			componentList.add(frascati.processComposite("nuxeoMockRest.composite", new ProcessingContextImpl()));
 		}
-		// Start tweeter WSDL service mock
-		TwitterTestRunPortType_TwitterTestRunPort_Server.start();
 	}
 	
 	/**

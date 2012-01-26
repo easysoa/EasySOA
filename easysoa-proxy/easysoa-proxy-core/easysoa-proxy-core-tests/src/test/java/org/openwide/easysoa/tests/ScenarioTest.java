@@ -11,11 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -31,11 +29,11 @@ import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateFieldSuggester;
 import org.easysoa.template.TemplateProcessorRendererItf;
+import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.tests.helpers.AbstractTestHelper;
-import org.ow2.frascati.util.FrascatiException;
 import com.openwide.easysoa.util.ContentReader;
 
 /**
@@ -60,6 +58,8 @@ public class ScenarioTest extends AbstractTestHelper {
 		startScaffolderProxy("scaffoldingProxy.composite");
 		// Start mock services
 		startMockServices(false);
+		// Start tweeter WSDL service mock => cxf service
+		TwitterTestRunPortType_TwitterTestRunPort_Server.start();		
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		// Give it to the scaffolding proxy to get the corresponding HTML form
 		sendWSDLToScaffolderProxy(TWITTER_TEST_RUN_NAME);
 		
-		// Generate a client for test wsdl with wsdl2java or frascati
+		// Generate a server for test wsdl with wsdl2java or frascati
 		// Send a request with scaffolder proxy
 		// Check the response
 	}
@@ -161,12 +161,10 @@ public class ScenarioTest extends AbstractTestHelper {
 
 		// get a list of recorded exchanges contained in the Test_Run folder
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/" + runName);
-		//logger.debug("Sending request");
 		response = httpClient.execute(httpUriRequest);
-		//logger.debug("Reading response");
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		//logger.debug("Exchange record list response : " + entityResponseString);
-		//assertTrue(entityResponseString.contains("ExchangeID"));		
+		//assertTrue(entityResponseString.contains("ExchangeID"));
 		
 		// Get an exchange record
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/" + runName + "/1");
@@ -268,6 +266,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		String form = httpClient.execute(request, responseHandler);
 		logger.debug("Scaffolding proxy response = " + form);
 		System.out.println("Scaffolding proxy response = " + form);
+		assertTrue(form.contains("<input class=\"inputField\" name=\"user\" type=\"text\">"));
 	}
 	
 	/**
@@ -277,7 +276,7 @@ public class ScenarioTest extends AbstractTestHelper {
 	 * @throws IOException
 	 */
 	@Test
-	//@Ignore
+	@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("TemplateTest started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test

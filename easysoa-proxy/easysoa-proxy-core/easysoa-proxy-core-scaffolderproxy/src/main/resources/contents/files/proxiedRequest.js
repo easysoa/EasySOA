@@ -54,7 +54,6 @@ function submitForm(form, url, wsdlUrl, serviceName, binding, operation, respons
         function(responseData) {
            for(j=0; j<outputFields.length; j++){
                 var fieldName = outputFields[j].name;
-                var test = eval("responseData.Body." + responseMessage + "." + fieldName);
                 outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
            }
         }

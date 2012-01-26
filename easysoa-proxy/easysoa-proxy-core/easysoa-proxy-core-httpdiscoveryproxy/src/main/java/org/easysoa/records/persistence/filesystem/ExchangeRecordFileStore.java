@@ -58,7 +58,6 @@ import com.openwide.easysoa.run.Run;
  * the file system
  * 
  * @author jguillemotte
- * 
  */
 public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 
@@ -257,8 +256,6 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	public void save(Run run) throws Exception {
 		// Create the run folder
 		logger.debug("Path to store run = " + path + run.getName());
-		//File runFolder = new File(path + run.getName());
-		//runFolder.mkdirs();
 		createStore(run.getName());
 		for (ExchangeRecord record : run.getExchangeRecordList()) {
 			save(record, path + run.getName() + "/");

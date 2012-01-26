@@ -57,14 +57,13 @@ public abstract class ServiceTestHelperBase {
 	 * @param urlPattern
 	 * @throws JSONException
 	 */
-	protected abstract String cleanNuxeoRegistry(String urlPattern) throws JSONException;
-
+	protected abstract String cleanNuxeoRegistry(String urlPattern) throws Exception;
 	 
 	/**
 	 * Cleans registry from nodes having a dc:title, api:url or serv:url like the given one
-	 * @throws JSONException 
+	 * @throws Exception 
 	 */
-	public static String cleanRemoteNuxeoRegistry(String urlPattern) throws JSONException  {
+	public static String cleanRemoteNuxeoRegistry(String urlPattern) throws Exception  {
 		// Not possible NXQL to select only one field, only select * is available ..
 		StringBuffer nuxeoQueryBuf = new StringBuffer("SELECT * FROM Document WHERE ecm:path STARTSWITH '/default-domain/workspaces/' AND ecm:currentLifeCycleState <> 'deleted'");
 		nuxeoQueryBuf.append(" AND (ecm:primaryType = 'Service' OR ecm:primaryType = 'ServiceAPI' OR ecm:primaryType = 'Workspace')");
