@@ -484,7 +484,8 @@
     <repositories>
       <repository>
         <id>FraSCAti - INRIA Repository</id>
-        <url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public/</url>
+        <!--<url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public/</url>-->
+        <url>https://frascati-repo.inria.fr/nexus/content/repositories/ow2-snapshot</url>
       </repository>
       <repository>
         <id>Nuxeo public-snapshot</id>
