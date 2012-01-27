@@ -208,7 +208,7 @@ desc "Builds EasySOA startup monitor app"
 task :startup => [EASYSOA_STARTUP_MONITOR+':mvn']
 
 desc "Builds all needed projects"
-task :buildall => [EASYSOA+':mvn', ':startup']
+task :buildall => [EASYSOA+':mvn', 'startup']
 
 desc "Creates the EasySOA package"
 task :packageall do # TODO Less messy code
