@@ -1,6 +1,7 @@
 Bundle-Name: nuxeo-frascati
 Bundle-SymbolicName: org.nuxeo.frascati;singleton:=true
 Bundle-Vendor: INRIA
-Nuxeo-Require: org.nuxeo.ecm.core.api,org.nuxeo.ecm.core,org.nuxeo.runtime.bridge
+Nuxeo-Require: org.nuxeo.ecm.core.api,
+ org.nuxeo.ecm.core,
+ org.nuxeo.runtime.bridge
 Nuxeo-Component: OSGI-INF/frascati-service.xml
-

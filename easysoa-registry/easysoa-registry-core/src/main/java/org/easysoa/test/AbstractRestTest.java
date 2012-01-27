@@ -29,6 +29,7 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.EasySOAConstants;
 import org.easysoa.api.AutomationHelper;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
@@ -84,9 +85,9 @@ public abstract class AbstractRestTest {
         }
         
         // Read properties
-        String externalNuxeoHost = props.getProperty("externalNuxeoHost");
-        String externalNuxeoPort = props.getProperty("externalNuxeoPort");
-        String embeddedNuxeoPort = props.getProperty("embeddedNuxeoPort");
+        String externalNuxeoHost = props.getProperty("externalNuxeoHost", "localhost");
+        String externalNuxeoPort = props.getProperty("externalNuxeoPort", "8080");
+        String embeddedNuxeoPort = props.getProperty("embeddedNuxeoPort", String.valueOf(EasySOAConstants.NUXEO_TEST_PORT));
         
         String useEmbeddedNuxeoString = props.getProperty("useEmbeddedNuxeo");
         if (useEmbeddedNuxeoString != null && useEmbeddedNuxeoString.equals("false")) {

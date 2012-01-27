@@ -49,18 +49,16 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Features({EasySOACoreFeature.class, WebEngineFeature.class})
+@Jetty(config="target/test-classes/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @Deploy("org.easysoa.registry.rest")
-@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
-@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml",
-    "org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
-    "org.easysoa.registry.rest:OSGI-INF/serviceFinders-contrib.xml"})
+@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
 public class DocumentCreationTest extends AbstractRestTest {
 
 	@Inject CoreSession session;
 
 	@Before
 	public void setUp() throws Exception {
-		setUp(session, "src/test/resources/targetednuxeo.properties");
+		setUp(session, "target/test-classes/targetednuxeo.properties");
 	}
 	
 	/**

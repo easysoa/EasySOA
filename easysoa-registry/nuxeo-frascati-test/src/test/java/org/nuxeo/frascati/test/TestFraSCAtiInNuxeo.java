@@ -24,6 +24,7 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 @RunWith(FeaturesRunner.class)
 @Features(FraSCAtiFeature.class)
+@Ignore
 public class TestFraSCAtiInNuxeo {
 
 	private final String scaFilePath = "src/test/resources/" + "helloworld-pojo.composite";

@@ -18,6 +18,8 @@ public class StartupMonitor {
     
     private static final String EASYSOA_URL = "http://localhost:8083";
     
+    private static final int STARTUP_TIMEOUT = 60000;
+    
     public static void main(String[] args) {
         
         // Port list
@@ -41,12 +43,15 @@ public class StartupMonitor {
         int timeout = 200;
         int up = 0, total = portsToCheck.size();
         print("\n* Checking servers...");
-        while (!portsToCheck.isEmpty() && System.currentTimeMillis() - initialTime < 60000) {
+        while (!portsToCheck.isEmpty() && System.currentTimeMillis() - initialTime < STARTUP_TIMEOUT) {
             for (Integer port : portsToCheck.keySet()) {
                 if (isAvailable("http://localhost:" + port, timeout)) {
                     String label = portsToCheck.remove(port);
                     up++;
                     print(label + " is up... (" + up + "/" + total + ")");
+                }
+                if (System.currentTimeMillis() - initialTime > STARTUP_TIMEOUT) {
+                    break;
                 }
             }
             timeout += 500;

@@ -11,6 +11,7 @@ import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOARemoteDocument;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
+import org.json.JSONObject;
 import org.nuxeo.ecm.automation.client.jaxrs.model.Document;
 import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
 
@@ -66,7 +67,13 @@ public class EasySOARemoteApi implements EasySOAApiSession {
             
             // XXX: Launches a 2nd request, not even secure since request
             // might be treated even before the model is updated
-            return getDocumentById((String) request.send().get("documentId"));
+            JSONObject responseData = request.send();
+            if (responseData != null) {
+                return getDocumentById((String) request.send().get("documentId"));
+            }
+            else {
+                return null;
+            }
         } catch (Exception e) {
             logger.warning(e.getMessage());
             return null;

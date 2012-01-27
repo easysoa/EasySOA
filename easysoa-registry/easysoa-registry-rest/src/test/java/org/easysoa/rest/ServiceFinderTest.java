@@ -48,14 +48,11 @@ import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.Jetty;
-import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 @RunWith(FeaturesRunner.class)
 @Features({EasySOACoreFeature.class, WebEngineFeature.class})
-@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
+@Jetty(config="target/test-classes/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @Deploy({"org.easysoa.registry.rest"})
-@LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/ServiceFinderComponent.xml",
-    "org.easysoa.registry.rest:OSGI-INF/serviceFinder-contrib.xml"})
 public class ServiceFinderTest {
 
 	private static final String ONLINE_SERVICE_URL = "http://localhost:8222/trip.html";
@@ -66,7 +63,7 @@ public class ServiceFinderTest {
     
     @BeforeClass
     public static void setUp() throws Exception {
-        webServer = new StaticWebServer(8222, "src/test/resources/www");
+        webServer = new StaticWebServer(8222, "target/test-classes/www");
         webServer.start();
     }
     

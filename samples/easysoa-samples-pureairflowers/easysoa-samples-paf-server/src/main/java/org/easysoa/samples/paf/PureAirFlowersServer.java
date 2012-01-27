@@ -37,10 +37,12 @@ public class PureAirFlowersServer {
     
     private final static Logger logger = LoggerFactory.getLogger(PureAirFlowersServer.class);
     
+    private boolean useClasspathDiscovery;
+    
     private Server server = null;
     
     public static void main(String args[]) throws Exception {
-        PureAirFlowersServer pafServer = new PureAirFlowersServer();
+        PureAirFlowersServer pafServer = new PureAirFlowersServer(true);
         pafServer.start();
         
         logger.info("To stop the server, type 'Q' and press Enter!");
@@ -51,6 +53,14 @@ public class PureAirFlowersServer {
         
         pafServer.stop();
         System.exit(0);
+    }
+
+    public PureAirFlowersServer() {
+        this(false);
+    }
+
+    public PureAirFlowersServer(boolean useClasspathDiscovery) {
+        this.useClasspathDiscovery = useClasspathDiscovery;
     }
     
     public void start() {
@@ -64,7 +74,9 @@ public class PureAirFlowersServer {
 
             // EasySOA Classpath discovery entry point
             // TODO How can we allow better decoupling?
-            new EasySOAClasspathAnalysis().discover();
+            if (useClasspathDiscovery) {
+                new EasySOAClasspathAnalysis().discover();
+            }
             
             serverFactory.create();
             

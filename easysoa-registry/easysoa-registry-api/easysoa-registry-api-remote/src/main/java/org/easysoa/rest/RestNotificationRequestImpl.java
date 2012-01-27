@@ -132,7 +132,9 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
                 writer.flush();
             }
             finally {
-                writer.close();
+                if (writer  != null) {
+                    writer.close();
+                }
             }
         }
         

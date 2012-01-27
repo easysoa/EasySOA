@@ -37,7 +37,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EasySOAClasspathAnalysis  {
+public class EasySOAClasspathAnalysis implements Runnable {
 
     private final static Logger logger = LoggerFactory.getLogger(EasySOAClasspathAnalysis.class);
 
@@ -52,6 +52,8 @@ public class EasySOAClasspathAnalysis  {
     private final static String PROP_JARMATCHERS = "discovery.jarMatchers";
     private final static String PROP_LOGONLY = "discovery.logOnly";
    
+    private static Object mutex = new Object();
+    
     private boolean initFailed = false;
     private List<Pattern> matchers = new LinkedList<Pattern>();
     private boolean logOnly;
@@ -122,68 +124,94 @@ public class EasySOAClasspathAnalysis  {
     public void setEnvironment(String environment) {
         this.environment = environment;
     }
-    
+
     public synchronized void discover() {
+        new Thread(this).start();
+    }
+    
+    /**
+     * Use discover() instead.
+     */
+    @Override
+    public void run() {
 
         if (initFailed) {
             return;
         }
         
-        try {
-            
-            // Log in to Nuxeo
-            EasySOAApiSession easySOA = EasySOARemoteApiFactory.createRemoteApi(nuxeoUrl + "/site", username, password);
-            
-            // Fetch the classpath JARs list
-            String[] classPath = System.getProperty("java.class.path").split(File.pathSeparator);
-            
-            // Extract the JAR names
-            List<String> jarNames = new LinkedList<String>();
-            for (String jar : classPath) {
-                if (jar.endsWith(".jar")) {
-                    String name = jar.substring(jar.lastIndexOf(File.separator) + 1, jar.length() - 4);
-                    for (Pattern matcher : matchers) {
-                        if (matcher.matcher(name).matches()) {
-                            if (logOnly) {
-                                logger.info("Found: " + name);
-                            }
-                            jarNames.add(name);
-                            break;
+        // Fetch the classpath JARs list
+        String[] classPath = System.getProperty("java.class.path").split(File.pathSeparator);
+        
+        // Extract the JAR names
+        List<String> jarNames = new LinkedList<String>();
+        for (String jar : classPath) {
+            if (jar.endsWith(".jar")) {
+                String name = jar.substring(jar.lastIndexOf(File.separator) + 1, jar.length() - 4);
+                for (Pattern matcher : matchers) {
+                    if (matcher.matcher(name).matches()) {
+                        if (logOnly) {
+                            logger.info("Found: " + name);
                         }
+                        jarNames.add(name);
+                        break;
                     }
                 }
             }
-            
-            if (!logOnly) {
-                // Build a notification for Nuxeo
-                String data = "";
-                for (String jarName : jarNames) {
-                    data += jarName + '\n';
+        }
+
+        boolean tryLater = false;
+        
+        do {
+        
+            synchronized (mutex) {
+                
+                try {
+                    
+                    // Log in to Nuxeo
+                    EasySOAApiSession easySOA = EasySOARemoteApiFactory.createRemoteApi(nuxeoUrl + "/site", username, password);
+                    
+                    if (!logOnly) {
+                        // Build a notification for Nuxeo
+                        String data = "";
+                        for (String jarName : jarNames) {
+                            data += jarName + '\n';
+                        }
+                        
+                        // Send the notification
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put(AppliImpl.PROP_URL, appliImplUrl);
+                        params.put(AppliImpl.PROP_DEPLOYABLES, data);
+                        if (appliImplTitle != null) {
+                            params.put(AppliImpl.PROP_TITLE, appliImplTitle);
+                        }
+                        if (environment != null) {
+                            params.put(AppliImpl.PROP_ENVIRONMENT, environment);
+                        }
+                        easySOA.notifyAppliImpl(params);
+                    }
+                    else {
+                        logger.info("Not sending a discovery notification, as defined in the settings");
+                    }
+                    
+                } catch (IOException e) {
+                    logger.error("Failed to connect to the EasySOA registry: " + e.getMessage());
+                    tryLater = true;
+                } catch (Exception e) {
+                    logger.error("Failed to discover the classpath", e);
                 }
                 
-                // Send the notification
-                Map<String, String> params = new HashMap<String, String>();
-                params.put(AppliImpl.PROP_URL, appliImplUrl);
-                params.put(AppliImpl.PROP_DEPLOYABLES, data);
-                if (appliImplTitle != null) {
-                    params.put(AppliImpl.PROP_TITLE, appliImplTitle);
-                }
-                if (environment != null) {
-                    params.put(AppliImpl.PROP_ENVIRONMENT, environment);
-                }
-                easySOA.notifyAppliImpl(params);
             }
-            else {
-                logger.info("Not sending a discovery notification, as defined in the settings");
-            }
-            
-        } catch (IOException e) {
-            logger.error("Failed to connect to the EasySOA registry, will not discover the classpath: " + e.getMessage());
-        } catch (Exception e) {
-            logger.error("Failed to discover the classpath", e);
-        }
         
-        System.exit(0); // XXX
+            if (tryLater) {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    // Do nothing
+                }
+            }
+        
+        } while (tryLater);
+        
     }
     
 }
