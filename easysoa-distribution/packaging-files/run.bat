@@ -7,6 +7,11 @@ rem Start processes
 echo Starting EasySOA Demo. A browser page will be opened in a few seconds.
 echo Note that the service registry will take between 30s and 2mn to launch.
 
+rem uiScaffolder
+cd frascati
+start "EasySOA Demo - UI Scaffolder Proxy" start-uiScaffolder.bat 2>&1 ^| "..\tee.exe" ..\log\uiScaffolder.log
+cd ..
+
 rem serviceRegistry
 cd serviceRegistry\bin
 start "EasySOA Demo - Service Registry" "Start Nuxeo.bat" 2>&1 ^| tee.exe ..\..\log\serviceRegistry.log
@@ -54,6 +59,5 @@ start "EasySOA Demo - UI Scaffolder Proxy" start-uiScaffolder.bat 2>&1 ^| "..\te
 cd ..
 
 rem sleep 2
-ping -n 3 127.0.0.1 > nul
-
-call explorer "http://127.0.0.1:8083/easysoa/index.html"
+cd startupMonitor
+start-startupMonitor.bat

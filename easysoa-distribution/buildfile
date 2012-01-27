@@ -76,12 +76,21 @@ EASYSOA_PAF = EASYSOA+':samples:easysoa-samples-pureairflowers'
 EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
 EASYSOA_TALEND = EASYSOA+':samples:Talend-Airport-Service'
 EASYSOA_TRAVEL_BACKUP = EASYSOA+':samples:easysoa-samples-smarttravel:easysoa-samples-smarttravel-services-backup'
+EASYSOA_STARTUP_MONITOR = EASYSOA+':easysoa-distribution:easysoa-distribution-startup-monitor'
 
 desc 'EasySOA project - Available options for all EasySOA tasks: "test=no" to skip tests, "offline=yes" to build in offline mode, "withtalend=yes" to include Talend ESB'
 define 'easysoa', :base_dir => '../' do
   
   task :mvn do
     maven(['clean', 'install'], project)
+  end
+  
+  define 'easysoa-distribution' do
+    define 'easysoa-distribution-startup-monitor' do
+	    task :mvn do
+		  maven(['clean', 'install'], project)
+	    end
+    end
   end
       
   define 'easysoa-common' do
@@ -101,12 +110,21 @@ define 'easysoa', :base_dir => '../' do
       task :dist do
       
         PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
-        puts "===== Nuxeo plugins - Deleting =====", PLUGINS_TO_DELETE
+        puts "===== Nuxeo plugins - Deleting ====="
+        puts PLUGINS_TO_DELETE
         rm PLUGINS_TO_DELETE
         
-        puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' =====", FileList[project(EASYSOA_REGISTRY).base_dir+'/target/**/*.jar']
+        puts "===== FraSCAti libs - Deploying to '" + NUXEO_PATH + "' ====="
+        puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar']
+        puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar']
+        cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar'], NUXEO_PATH + '/lib'
+        cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'], NUXEO_PATH + '/lib'
+        
+        puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
+        puts FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*']
         cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], NUXEO_PATH
         
+
       end
       
       task :nuxeoreset do
@@ -186,8 +204,11 @@ task :paf => [EASYSOA_PAF+':mvn']
 desc "Builds the Smart Travel demo and its backup services"
 task :travel => [EASYSOA_TRAVEL+':mvn', EASYSOA_TRAVEL_BACKUP+':mvn']
 
+desc "Builds EasySOA startup monitor app"
+task :startup => [EASYSOA_STARTUP_MONITOR+':mvn']
+
 desc "Builds all needed projects"
-task :buildall => [EASYSOA+':mvn']
+task :buildall => [EASYSOA+':mvn', ':startup']
 
 desc "Creates the EasySOA package"
 task :packageall do # TODO Less messy code
@@ -308,6 +329,10 @@ task :packageall do # TODO Less messy code
   puts "  * Talend Airport service..."
   mkdir PACKAGING_OUTPUT_PATH+'/talend/airportService'
   cp_r FileList[project(EASYSOA_TALEND).base_dir+'/SimpleProvider*/*'], PACKAGING_OUTPUT_PATH+"/talend/airportService"
+  
+  # Copy startup monitor
+  mkdir PACKAGING_OUTPUT_PATH+'/startupMonitor'
+  cp_r FileList[project(EASYSOA_STARTUP_MONITOR).base_dir+'/target/*.jar'], PACKAGING_OUTPUT_PATH+"/startupMonitor"
   
   # Copy packaging files
   puts "Copying packaging files..."

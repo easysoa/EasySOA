@@ -38,6 +38,8 @@ public class EasySOAConstants {
 
 	private static Logger logger = Logger.getLogger(EasySOAConstants.class.getName());
 
+	// Service registry
+    public final static int NUXEO_PORT = 8080;
     public final static int NUXEO_TEST_PORT = 6088;
     
     // HTTP discovery proxy
@@ -51,7 +53,11 @@ public class EasySOAConstants {
 	// Scaffolding proxy
 	public final static int REST_SOAP_PROXY_PORT = 7001;
 	public final static int HTML_FORM_GENERATOR_PORT = 8090;
-	
+
+    // Trip demo
+    public final static int TRIP_SERVICES_PORT = 9000;
+    public final static int TRIP_BACKUP_SERVICES_PORT = 9020;
+    
     // Pure Air Flowers demo
     public final static int PAF_SERVICES_PORT = 9010;
     

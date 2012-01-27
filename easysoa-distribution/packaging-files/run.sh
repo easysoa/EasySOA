@@ -63,14 +63,29 @@ airportservice()
   ./SimpleProvider_run.sh > ../../../log/airportService.log 2>&1
 }
 
+startupmonitor()
+{
+  cd startupMonitor
+  ./start-startupMonitor.sh
+}
+
 # Start processes
-echo "Starting EasySOA Demo. A browser page will be opened in a few seconds."
-echo "If not, please open this page in a browser: http://127.0.0.1:8083/easysoa/."
-echo "NB: The service registry will take between 30s and 2mn to launch."
+echo "Starting the EasySOA Demo. Press any key to stop."
+echo ""
+
+# Prepare to interrupt all running processes
+shutdown()
+{
+  echo "Stopping all servers."
+  ps | awk 'NR>2 { print $1 }' | xargs kill -9 > /dev/null 2>&1
+}
+
+trap shutdown SIGINT SIGTERM
 
 # FIXME The script uses delays to solve dependencies issues,
 # it might not be enough on lower-end computers
 
+startupmonitor &
 serviceregistry &
 esperproxy &
 pafservices &
@@ -81,19 +96,6 @@ airportservice &
 sleep 7 # Let the demo start
 web &
 uiscaffolder &
-sleep 2
-firefox "http://127.0.0.1:8083/easysoa" &
-
-echo "Press any key to stop."
-
-# Prepare to interrupt all running processes
-shutdown()
-{
-  echo "Stopping all servers."
-  ps | awk 'NR>2 { print $1 }' | xargs kill -9 > /dev/null 2>&1
-}
-
-trap shutdown SIGINT SIGTERM
 
 # Wait for a key to be pressed
 read -n 1 -s
