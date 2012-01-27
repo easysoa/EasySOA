@@ -35,7 +35,7 @@ public class ReqResCorrelationTest {
         jsonPostExchange = new ExchangeRecord("id1",
                 new InMessage("POST", "/test"),
                 new OutMessage(200, "{ id: 1, name:'test1', description:'a fine test' }"));
-        jsonPostExchange.getInMessage().setPostData(new PostData("application/javascript", "{ id: 1, name:'test1', description:'a fine test' }", null));
+        jsonPostExchange.getInMessage().setPostData(new PostData("application/javascript", "{ name:'test1', description:'a fine test' }", null));
         jsonGetExchange = new ExchangeRecord("id2",
                 new InMessage("GET", "/test/1"),
                 new OutMessage(200, "{ id: 1, name:'test1', description:'a fine test' }"));
@@ -85,8 +85,8 @@ public class ReqResCorrelationTest {
         
         //putField(inQueryFields, new CandidateField("id", "1")); //jsonGetQueryExchange
         
-        putField(inPathFields, new CandidateField("path.0", "1"));
         putField(inPathFields, new CandidateField("path.0", "test"));
+        putField(inPathFields, new CandidateField("path.1", "1"));
         //...
 
         putField(foundOutFields, new CandidateField("id", "1"));
@@ -247,21 +247,24 @@ public class ReqResCorrelationTest {
         HashMap<String,CandidateField> foundOutFields = new HashMap<String,CandidateField>();
 
         //String ns = "{http://www.easysoa.com/test}"; // ns is by default
-        
+
+        // "filter" query pattern :
         putField(inQueryFields, new CandidateField("filter/name", "test1"));
+        // object field query pattern TODO move :
         putField(inQueryFields, new CandidateField("item/description", "a fine test")); // another way
         
-        putField(foundOutFields, new CandidateField("0/item/id", "1")); // 0/item/item means the first list element, which is of item type
-        putField(foundOutFields, new CandidateField("0/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("0/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("0/item/second/id", "11")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("0/item/third/id", "1")); // third "wrong" id, found but at lower level
+        // returns with "items" root tag :
+        putField(foundOutFields, new CandidateField("items/0/item/id", "1")); // 0/item/item means the first list element, which is of item type
+        putField(foundOutFields, new CandidateField("items/0/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("items/0/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("items/0/item/second/id", "11")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("items/0/item/third/id", "1")); // third "wrong" id, found but at lower level
         
-        putField(foundOutFields, new CandidateField("1/item/id", "2"));
-        putField(foundOutFields, new CandidateField("1/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("1/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("1/item/second/id", "22")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("1/item/third/id", "1")); // third "wrong" id, found but at lower level
+        putField(foundOutFields, new CandidateField("items/1/item/id", "2"));
+        putField(foundOutFields, new CandidateField("items/1/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("items/1/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("items/1/item/second/id", "22")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("items/1/item/third/id", "1")); // third "wrong" id, found but at lower level
         
         correlate(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
         
@@ -279,33 +282,39 @@ public class ReqResCorrelationTest {
         //String ns = "{http://www.easysoa.com/test}"; // ns is by default
         //String fourthNs = "{fourth}"; // fourthNs is implied in fourth
 
+        // "filter" query pattern :
         putField(inQueryFields, new CandidateField("filter/name", "test1"));
         putField(inQueryFields, new CandidateField("filter/@/name", "test1"));
+        // object field query pattern TODO move :
         putField(inQueryFields, new CandidateField("item/description", "a fine test")); // another way
-        putField(inQueryFields, new CandidateField("object/name", "test1")); // another way
+        // object field in filter query pattern TODO move :
+        putField(inQueryFields, new CandidateField("filter/object/name", "test1")); // another way
+
+        // returns with "items" root tag :
+        putField(foundOutFields, new CandidateField("items/0/item/id", "1")); // 0/item/item means the first list element, which is of item type
+        putField(foundOutFields, new CandidateField("items/0/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("items/0/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("items/0/item/second/id", "11")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("items/0/item/third/id", "1")); // third "wrong" id, found but at lower level
+        putField(foundOutFields, new CandidateField("items/0/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
         
-        putField(foundOutFields, new CandidateField("0/item/id", "1")); // 0/item/item means the first list element, which is of item type
-        putField(foundOutFields, new CandidateField("0/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("0/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("0/item/second/id", "11")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("0/item/third/id", "1")); // third "wrong" id, found but at lower level
-        putField(foundOutFields, new CandidateField("0/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
+        putField(foundOutFields, new CandidateField("items/1/item/id", "2"));
+        putField(foundOutFields, new CandidateField("items/1/item/name", "test1"));
+        putField(foundOutFields, new CandidateField("items/1/item/description", "a fine test"));
+        putField(foundOutFields, new CandidateField("items/1/item/second/id", "22")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("items/1/item/third/id", "1")); // third "wrong" id, found but at lower level
+        putField(foundOutFields, new CandidateField("items/1/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
+
+        // returns with "results" root tag TODO move :
+        putField(foundOutFields, new CandidateField("results/2/object/id", "3"));
+        putField(foundOutFields, new CandidateField("results/2/object/name", "test1"));
+        putField(foundOutFields, new CandidateField("results/2/object/second/id", "22")); // second "wrong" id, not found because of value
+        putField(foundOutFields, new CandidateField("results/2/object/third/id", "1")); // third "wrong" id, found but at lower level
+        putField(foundOutFields, new CandidateField("results/2/object/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
         
-        putField(foundOutFields, new CandidateField("1/item/id", "2"));
-        putField(foundOutFields, new CandidateField("1/item/name", "test1"));
-        putField(foundOutFields, new CandidateField("1/item/description", "a fine test"));
-        putField(foundOutFields, new CandidateField("1/item/second/id", "22")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("1/item/third/id", "1")); // third "wrong" id, found but at lower level
-        putField(foundOutFields, new CandidateField("1/item/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
-        
-        putField(foundOutFields, new CandidateField("2/object/id", "3"));
-        putField(foundOutFields, new CandidateField("2/object/name", "test1"));
-        putField(foundOutFields, new CandidateField("2/object/second/id", "22")); // second "wrong" id, not found because of value
-        putField(foundOutFields, new CandidateField("2/object/third/id", "1")); // third "wrong" id, found but at lower level
-        putField(foundOutFields, new CandidateField("2/object/fourth/id", "1")); // fourth "wrong" id, but with wrong ns
-        
-        putField(foundOutFields, new CandidateField("3/filter/id", "4"));
-        putField(foundOutFields, new CandidateField("3/filter/@/name", "test1"));
+        // ?
+        putField(foundOutFields, new CandidateField("items/3/filter/id", "4"));
+        putField(foundOutFields, new CandidateField("items/3/filter/@/name", "test1"));
         
         correlate(jsonGetQueryExchange, inPathFields, inQueryFields, inContentFields, foundOutFields);
         
@@ -449,8 +458,8 @@ public class ReqResCorrelationTest {
                 }
             }
             isAnd = !maxInPathSet.isEmpty()/* && (outFieldNb / ((maxInPathNb == 0) ? 1 : maxInPathNb)) / inFieldNb >= 2*/; // OPTIONAL more result field than query ones ; maxInPathNb = nb of results, outFieldNb / maxInPathNb = nb of fields per item
-            isPost = maxInPathSet.isEmpty() && otherInPathSet.isEmpty() && !singleInPathSet.isEmpty() && outFieldNb / inFieldNb <= 2 & inFieldNb <= outFieldNb;
-            isGetOnId = maxInPathSet.isEmpty() && otherInPathSet.isEmpty() && !singleInPathSet.isEmpty() && outFieldNb / inFieldNb > 2; 
+            isPost = maxInPathSet.isEmpty() && otherInPathSet.isEmpty() && !singleInPathSet.isEmpty() && outFieldNb / inFieldNb < 2 & inFieldNb <= outFieldNb;
+            isGetOnId = maxInPathSet.isEmpty() && otherInPathSet.isEmpty() && !singleInPathSet.isEmpty() && outFieldNb / inFieldNb >= 2; 
             System.out.println("max/other/single/diff: " + maxInPathSet + " ; " + otherInPathSet + " ; " + singleInPathSet + " ; " + inFieldNb + ", " + outFieldNb);
             if (isAnd) {
                 System.out.println("Query (and) ! on [" + maxInPathSet + "] and optional [" + otherInPathSet + " ; " + singleInPathSet + "]");
