@@ -1,7 +1,5 @@
 package org.easysoa.registry.frascati;
 
-import java.net.URL;
-
 //import org.easysoa.app.AppDescriptor;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.nuxeo.frascati.api.FraSCAtiCompositeItf;

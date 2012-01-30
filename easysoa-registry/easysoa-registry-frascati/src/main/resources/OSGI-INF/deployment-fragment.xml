@@ -3,6 +3,7 @@
 
   <require>org.easysoa.registry.core</require>
   <require>org.nuxeo.frascati</require>
+  <require>org.nuxeo.runtime</require>
  
   <install>
   </install>
