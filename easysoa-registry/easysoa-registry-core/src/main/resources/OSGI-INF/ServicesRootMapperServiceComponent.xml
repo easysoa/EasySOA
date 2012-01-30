@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.service.ServicesRootMapperService">
+
+  <implementation class="org.easysoa.services.ServicesRootMapperService" />
+
+  <service>
+    <provide interface="org.easysoa.services.ServicesRootMapperService" />
+  </service>
+
+</component>

@@ -37,6 +37,7 @@ public class Service extends EasySOADoctype {
     public static final String SCHEMA_PREFIX = "serv:";
 
     public static final String PROP_URL = "url";
+    public static final String PROP_URLTEMPLATE = "urlTemplate";
     public static final String PROP_LIGHTURL = "lightUrl";
     public static final String PROP_CALLCOUNT = "callcount";
     public static final String PROP_PARTICIPANTS = "participants";
@@ -68,7 +69,8 @@ public class Service extends EasySOADoctype {
         synchronized (propertyListSync) { // Ensures initialization ended before accessing the list
             if (propertyList == null) {
                 propertyList = new HashMap<String, String>();
-                propertyList.put(PROP_URL, "(mandatory) Service URL.");
+                propertyList.put(PROP_URL, "(mandatory) Service URL");
+                propertyList.put(PROP_URLTEMPLATE, "A template to build the URL from according to the environment");
                 propertyList.put(PROP_CALLCOUNT, "Times the service has been called since last notification");
                 propertyList.put(PROP_PARTICIPANTS, "Consumers & providers of the service");
                 propertyList.put(PROP_HTTPMETHOD, "POST, GET...");

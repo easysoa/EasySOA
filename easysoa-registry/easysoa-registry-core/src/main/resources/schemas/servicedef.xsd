@@ -4,6 +4,7 @@
   xmlns:nxs="http://www.nuxeo.org/ecm/schemas/servicedef/">
 
   <xs:element name="url" type="xs:string" />
+  <xs:element name="urlTemplate" type="xs:string" />
   <xs:element name="lightUrl" type="xs:string" />
   <xs:element name="callcount" type="xs:int" />
   

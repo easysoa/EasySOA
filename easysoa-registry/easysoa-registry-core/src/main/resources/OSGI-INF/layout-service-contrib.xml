@@ -202,6 +202,9 @@
           <widget>servicedef_url</widget>
         </row>
         <row>
+          <widget>servicedef_urlTemplate</widget>
+        </row>
+        <row>
           <widget>servicedef_callcount</widget>
         </row>
         <row>
@@ -223,6 +226,15 @@
           <property name="required">true</property>
           <property name="validator">#{easysoaValidator.validateUrl}</property>
         </properties>
+      </widget>
+      <widget name="servicedef_urlTemplate" type="text">
+        <labels>
+          <label mode="any">label.easysoa.servicedef.urlTemplate</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>serv:urlTemplate</field>
+        </fields>
       </widget>
       <widget name="servicedef_callcount" type="int">
         <labels>

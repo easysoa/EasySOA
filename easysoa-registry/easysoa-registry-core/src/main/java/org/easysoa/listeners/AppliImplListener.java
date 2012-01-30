@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.properties.PropertyNormalizer;
+import org.easysoa.services.ServicesRootMapperService;
 import org.easysoa.services.VocabularyHelper;
 import org.jboss.seam.core.Events;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -77,10 +78,20 @@ public class AppliImplListener implements EventListener {
         }
 
         if (event.getName().equals(DocumentEventTypes.DOCUMENT_UPDATED)) {
+            // Allow beans to update after appli impl. change
             Events.instance().raiseEvent(APPLI_IMPL_CHANGED, appliImplModel);
+            
+            // Trigger URL mapper
+            try {
+                ServicesRootMapperService urlMapper = Framework.getService(ServicesRootMapperService.class);
+                urlMapper.mapUrls(session, appliImplModel);
+            } catch (Exception e) {
+                log.warn("Failed to map URLs of AppliImpl " + appliImplModel.getPathAsString(), e);
+            }
         }
         // On document creation / Before modification
         else {
+            
             // Update properties
             if (maintainInternalProperties(session, appliImplModel)) {
                 setDefaultPropertyValues(session, appliImplModel);
