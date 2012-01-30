@@ -184,7 +184,14 @@
                   <artifactId>htmlcleaner</artifactId>
                   <version>2.2</version>
                 </artifactItem>
-            
+                
+                <!-- HTTP body parsing -->
+                <artifactItem>
+                  <groupId>org.apache.cxf</groupId>
+                  <artifactId>cxf-common-utilities</artifactId>
+                  <version>2.4.2</version>
+                </artifactItem>
+    
                 <!-- JSON -->
                 <artifactItem>
                   <groupId>org.json</groupId>

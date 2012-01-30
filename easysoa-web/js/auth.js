@@ -165,7 +165,6 @@ redirectToLoginForm = function(request, response, error, nuxeoNotReady) {
 	}
 	else {;
   	var prevPage = request.body.prev || request.query.prev || request.url;
-  	console.log(prevPage);
 		var destinationUrl = LOGIN_FORM_PATH + '?'
 			 + ((prevPage) ? 'prev=' + prevPage + '&' : '')
 			 + ((error) ? 'error=true&' : '')

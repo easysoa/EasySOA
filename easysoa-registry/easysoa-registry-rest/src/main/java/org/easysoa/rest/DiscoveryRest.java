@@ -20,6 +20,7 @@
 
 package org.easysoa.rest;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.common.util.UrlUtils;
 import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOALocalApiFactory;
@@ -58,7 +60,6 @@ import org.nuxeo.ecm.webengine.model.view.TemplateView;
 
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.representation.Form;
-import com.sun.jersey.spi.container.ContainerRequest;
 
 @Path("easysoa/discovery")
 public class DiscoveryRest {
@@ -100,9 +101,9 @@ public class DiscoveryRest {
     @Path("/appliimpl")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostAppliImpl(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
+    public Object doPostAppliImpl(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(httpContext);
+        Map<String, String> params = getFormValues(body);
         try {
             EasySOADocument doc = api.notifyAppliImpl(params);
             result.put("documentId", doc.getId());
@@ -141,9 +142,9 @@ public class DiscoveryRest {
     @Path("/api")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostApi(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
+    public Object doPostApi(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(httpContext);
+        Map<String, String> params = getFormValues(body);
         try {
             EasySOADocument doc = api.notifyServiceApi(params);
             result.put("documentId", doc.getId());
@@ -177,9 +178,9 @@ public class DiscoveryRest {
     @Path("/service")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostService(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
+    public Object doPostService(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(httpContext);
+        Map<String, String> params = getFormValues(body.substring(1, body.length() - 1)); // XXX: Why does the body comes in quotes?
         try {
             EasySOADocument doc = api.notifyService(params);
             result.put("documentId", doc.getId());
@@ -237,9 +238,9 @@ public class DiscoveryRest {
     @Path("/servicereference")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostServiceReference(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
+    public Object doPostServiceReference(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(httpContext);
+        Map<String, String> params = getFormValues(body);
         try {
             EasySOADocument doc = api.notifyServiceReference(params);
             result.put("documentId", doc.getId());
@@ -299,11 +300,10 @@ public class DiscoveryRest {
         }
     }
 
-    // TODO Refactoring
-    public static Map<String, String> getFormValues(HttpContext httpContext) {
+    public static Map<String, String> getFormValues(String body) {
         /*
          * When accessing the form the usual way, the returned Form is empty,
-         * and the following Warning is logged. This hack avoids the problem.
+         * and the following Warning is logged. We're parsing the body ourselves instead.
          * 
          * "ATTENTION: A servlet POST request, to the URI ###, contains form
          * parameters in the request body but the request body has been 
@@ -311,15 +311,12 @@ public class DiscoveryRest {
          * Only resource methods using @FormParam will work as expected. Resource methods
          * consuming the request body by other means will not work as expected."
          */
-        Form params = (Form) ((ContainerRequest) httpContext.getRequest()).
-                getProperties().get("com.sun.jersey.api.representation.form");
-        
+        Form structuredParams = getStructuredParams(body, "&", false, false);
+
         // Keep only the first value for each key (instead of a list of values) 
         Map<String, String> map = new HashMap<String, String>();
-        for (Entry<String, List<String>> entry : params.entrySet()) {
-            if (!entry.getValue().isEmpty()) {
-                map.put(entry.getKey(), entry.getValue().get(0));
-            }
+        for (Entry<String, List<String>> entry : structuredParams.entrySet()) {
+            map.put(entry.getKey(), entry.getValue().get(0));
         }
         
         return map;
@@ -360,6 +357,38 @@ public class DiscoveryRest {
             result = callback + '(' + result + ')';
         }
         return result;
+    }
+
+    public static Form getStructuredParams(String query, String sep, boolean decode, boolean decodePlus) {
+
+        // Taken from org.apache.cxf.jaxrs.utils.JAXRSUtils.getStructuredParams()
+        // Could not link to the real one because of a classpath conflict with its dependencies
+        
+        Form queries = new Form();
+        
+        if (query != null && query.length() != 0) {
+            List<String> parts = Arrays.asList(query.split(sep));
+            for (String part : parts) {
+                int index = part.indexOf('=');
+                String name = null;
+                String value = null;
+                if (index == -1) {
+                    name = part;
+                    value = "";
+                } else {
+                    name = part.substring(0, index);
+                    value = index < part.length() ? part.substring(index + 1)
+                            : "";
+                    if (decode || (decodePlus && value.contains("+"))) {
+                        value = (";".equals(sep)) ? UrlUtils.pathDecode(value)
+                                : UrlUtils.urlDecode(value);
+                    }
+                }
+                queries.add(UrlUtils.urlDecode(name), value);
+            }
+        }
+        
+        return queries;
     }
     
 }

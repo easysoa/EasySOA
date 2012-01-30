@@ -45,12 +45,6 @@
       <scope>compile</scope>
     </dependency>
     
-    <!-- REST services -->
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-    </dependency>
-
     <!-- ServiceStats automation -->
     <dependency>
       <groupId>org.nuxeo.ecm.automation</groupId>
@@ -69,6 +63,14 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- HTTP body parsing -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-common-utilities</artifactId>
+      <version>2.4.2</version>
+      <scope>compile</scope>
+    </dependency>
+    
     <!-- Tests -->
     <dependency>
       <groupId>junit</groupId>

@@ -96,10 +96,10 @@ public class ServiceFinderRest {
 
     @POST
     @Path("/")
-    public Object doPost(@Context HttpContext httpContext) throws Exception {
+    public Object doPost(@Context HttpContext httpContext, String body) throws Exception {
     	
     	// Retrieve params
-    	Map<String, String> formValues = DiscoveryRest.getFormValues(httpContext);
+    	Map<String, String> formValues = DiscoveryRest.getFormValues(body);
     	
     	// Find WSDLs
     	BrowsingContext browsingContext = new BrowsingContext(new URL(formValues.get("url")), formValues.get("data"));
