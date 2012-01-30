@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<fragment version="1">
+
+  <require>org.easysoa.registry.core</require>
+  <require>org.nuxeo.frascati</require>
+ 
+  <install>
+  </install>
+
+</fragment>
