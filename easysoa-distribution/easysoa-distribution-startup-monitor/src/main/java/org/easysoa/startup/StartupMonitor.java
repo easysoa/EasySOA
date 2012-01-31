@@ -69,7 +69,7 @@ public class StartupMonitor {
         
         // Open browser
         try {
-            URI easysoaUri = new URI("EASYSOA_URL");
+            URI easysoaUri = new URI(EASYSOA_URL);
             Desktop.getDesktop().browse(easysoaUri);
         } catch (Exception e) {
             print("\nPlease browse to '" + EASYSOA_URL +"' to get started with the demo.");
