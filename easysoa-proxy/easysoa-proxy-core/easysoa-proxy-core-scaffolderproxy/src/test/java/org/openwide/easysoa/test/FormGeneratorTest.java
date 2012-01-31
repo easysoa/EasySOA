@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.matchers.JUnitMatchers;
 import org.ow2.frascati.util.FrascatiException;
@@ -86,6 +87,7 @@ public class FormGeneratorTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
 	public final void testRestSoapProxy() throws ClientProtocolException, IOException{
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		// Send a request to test the rest/soap proxy

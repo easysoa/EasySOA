@@ -49,8 +49,8 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Features({EasySOACoreFeature.class, WebEngineFeature.class})
-@Jetty(config="jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
-@Deploy({"target/test-classes/org.easysoa.registry.rest"})
+@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
+@Deploy({"org.easysoa.registry.rest"})
 @LocalDeploy({"org.easysoa.registry.rest:OSGI-INF/login-contrib.xml"})
 public class DocumentationTest extends AbstractRestTest {
 
@@ -58,7 +58,7 @@ public class DocumentationTest extends AbstractRestTest {
 
 	@Before
 	public void setUp() throws Exception {
-		setUp(session, "target/test-classes/targetednuxeo.properties");
+		setUp(session, "src/test/resources/targetednuxeo.properties");
 	}
 	
 	@Test

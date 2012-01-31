@@ -180,7 +180,11 @@ public class DiscoveryRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Object doPostService(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(body.substring(1, body.length() - 1)); // XXX: Why does the body comes in quotes?
+        if (body != null && body.length() > 2) {
+            // XXX: Why does the body comes in quotes?
+            body = body.substring(1, body.length() - 1);
+        }
+        Map<String, String> params = getFormValues(body); 
         try {
             EasySOADocument doc = api.notifyService(params);
             result.put("documentId", doc.getId());

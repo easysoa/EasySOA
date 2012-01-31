@@ -41,6 +41,8 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
     
     private static Log log = LogFactory.getLog(RestNotificationRequestImpl.class);
     
+    private final static int TIMEOUT = 3000;
+    
     private URL requestUrl;
     private Map<String, String> requestProperties; 
     private String method;
@@ -121,6 +123,8 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
         connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
         connection.setRequestProperty("Authorization", "Basic " + 
                 Base64.encodeBytes((username + ":" + password).getBytes()));
+        connection.setConnectTimeout(TIMEOUT);
+        connection.setReadTimeout(TIMEOUT);
         connection.setDoOutput(true);
         
         // Write request
