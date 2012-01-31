@@ -69,7 +69,9 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 			log.debug("Error catched when trying to load Http discovery proxy !", ex);
 			System.out.println("Error catched when trying to load Http discovery proxy : " + ex.getMessage());
 		}*/
-		frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
+		
+	    // TODO : Disabled for release building, to uncomment when the integration of Frascati in Nuxeo will works better.
+	    //frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
 	}
 
 	/**
