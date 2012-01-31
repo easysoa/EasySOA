@@ -71,6 +71,7 @@
     <!-- ======= -->
     <modules>
         <module>easysoa-common</module>
+        <module>easysoa-distribution</module>
         <module>easysoa-registry</module>
         <module>easysoa-proxy</module>
         <module>samples</module>
