@@ -1,4 +1,4 @@
-package org.easysoa;
+package org.easysoa.startup;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -8,6 +8,8 @@ import java.net.URLConnection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.easysoa.EasySOAConstants;
 
 /**
  * 

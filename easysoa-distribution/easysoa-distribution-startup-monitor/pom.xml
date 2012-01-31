@@ -18,7 +18,6 @@
       <groupId>org.easysoa</groupId>
       <artifactId>easysoa-common</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- Tests -->
