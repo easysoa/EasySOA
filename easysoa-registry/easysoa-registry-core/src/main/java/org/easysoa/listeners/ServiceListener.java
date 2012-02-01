@@ -20,12 +20,18 @@
 
 package org.easysoa.listeners;
 
+import static org.easysoa.doctypes.EasySOADoctype.PROP_DTBROWSING;
+import static org.easysoa.doctypes.EasySOADoctype.PROP_DTDESIGN;
+import static org.easysoa.doctypes.EasySOADoctype.PROP_DTIMPORT;
+import static org.easysoa.doctypes.EasySOADoctype.PROP_DTMONITORING;
+import static org.easysoa.doctypes.EasySOADoctype.SCHEMA_COMMON_PREFIX;
 import static org.easysoa.doctypes.Service.DOCTYPE;
 import static org.easysoa.doctypes.Service.PROP_FILEURL;
-import static org.easysoa.doctypes.Service.PROP_URL;
 import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICE;
 import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICEORIGIN;
+import static org.easysoa.doctypes.Service.PROP_URL;
 import static org.easysoa.doctypes.Service.SCHEMA;
+import static org.easysoa.doctypes.Service.SCHEMA_PREFIX;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +49,7 @@ import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.EventsHelper;
 import org.easysoa.services.HttpDownloaderImpl;
 import org.easysoa.services.ServiceValidationService;
 import org.easysoa.validation.CorrelationMatch;
@@ -93,18 +100,10 @@ public class ServiceListener implements EventListener {
         if (!type.equals(DOCTYPE) || doc.isProxy()) {
             return;
         }
-        
-        // Check if we're running validation
-        boolean isRunningValidation;
-        try {
-            DocumentModel oldDoc = session.getDocument(doc.getRef());
-            Boolean wasDirty = (Boolean) oldDoc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
-            Boolean isNowDirty = (Boolean) doc.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
-            isRunningValidation = (isNowDirty != null) && (wasDirty != isNowDirty);
-        } catch (ClientException e1) {
-            isRunningValidation = false;
-        }
 
+        // Fetch previous version of the document
+        DocumentModel previousDoc = (DocumentModel) event.getContext().getProperties().get("previousDocumentModel");
+        
         try {
             
             // Extract data from document
@@ -116,7 +115,7 @@ public class ServiceListener implements EventListener {
             }
 
             // Extract data from WSDL
-            if (fileUrl != null && !isRunningValidation) {
+            if (fileUrl != null) {
                 
                 try {
                     
@@ -273,11 +272,6 @@ public class ServiceListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, null);
                 }
             }
-
-            // Make sure the validation is re-run (unless we precisely just changed the validation state)
-            if (!isRunningValidation) {
-            	doc.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY, true);
-            }
             
             // Test if the service already exists, delete the other one(s) if necessary
             try {
@@ -302,10 +296,42 @@ public class ServiceListener implements EventListener {
         } catch (Exception e) {
             log.error(e);
         }
+        
+
+        // Fire validation request:
+        // - on creation
+        // - if the URL changed
+        // - after a notification
+        // (TODO Define better when we want to validate a service)
+        try {
+            if (previousDoc == null
+                    || isDifferent(SCHEMA_PREFIX + PROP_URL, doc, previousDoc)
+                    || isDifferent(SCHEMA_COMMON_PREFIX + PROP_DTBROWSING, doc, previousDoc)
+                    || isDifferent(SCHEMA_COMMON_PREFIX + PROP_DTDESIGN, doc, previousDoc)
+                    || isDifferent(SCHEMA_COMMON_PREFIX + PROP_DTIMPORT, doc, previousDoc)
+                    || isDifferent(SCHEMA_COMMON_PREFIX + PROP_DTMONITORING, doc, previousDoc)) {
+                EventsHelper.fireDocumentEvent(session, EventsHelper.EVENTTYPE_VALIDATIONREQUEST, doc);
+            }
+        }
+        catch (Exception e) {
+            log.error("Failed to test ", e);
+        }
+        
 
     }
 
-	private Blob downloadBlob(String url) {
+	private boolean isDifferent(String propXPath, DocumentModel doc, DocumentModel previousDoc) throws ClientException {
+        Object fromDoc = doc.getPropertyValue(propXPath);
+        Object fromPrevDoc = previousDoc.getPropertyValue(propXPath);
+	    if (fromDoc == null) {
+	        return fromPrevDoc != null;
+	    }
+	    else {
+	        return !fromDoc.equals(fromPrevDoc);
+	    }
+    }
+
+    private Blob downloadBlob(String url) {
         try {
             return new HttpDownloaderImpl(new URL(url)).download().getBlob();
         }

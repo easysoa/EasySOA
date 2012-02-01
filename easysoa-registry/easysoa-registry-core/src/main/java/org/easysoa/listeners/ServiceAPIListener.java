@@ -142,8 +142,7 @@ public class ServiceAPIListener implements EventListener {
                                 .getEndpoints().get(0)).getAddress())
                                 .getAuthority();
                         String existingProvider = (String) parentModel
-                                .getProperty(AppliImpl.SCHEMA,
-                                        AppliImpl.PROP_PROVIDER);
+                                .getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
                         if (existingProvider == null
                                 || !provider.equals(existingProvider)) {
                             parentModel.setProperty(AppliImpl.SCHEMA,

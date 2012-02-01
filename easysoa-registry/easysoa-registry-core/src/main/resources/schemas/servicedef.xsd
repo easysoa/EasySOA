@@ -34,7 +34,6 @@
   </xs:complexType>
   
   <xs:element name="isValidated" type="xs:boolean" />
-  <xs:element name="validationStateDirty" type="xs:boolean" />
   <xs:element name="validationState" type="nxs:validationState" />
   
 </xs:schema>

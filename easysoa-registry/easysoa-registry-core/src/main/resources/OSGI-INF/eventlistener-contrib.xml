@@ -3,8 +3,8 @@
 
   <require>org.easysoa.core.service.EasySOAInitComponent</require>
 
+  <!-- Event listeners -->
   <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
-  
     <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
       <event>documentCreated</event>
       <event>beforeDocumentModification</event>
@@ -24,10 +24,13 @@
       <event>beforeDocumentModification</event>
     </listener>
     <listener name="validationlistener" class="org.easysoa.listeners.ValidationListener" order="121">
-      <event>documentCreated</event>
-      <event>documentModified</event>
-    </listener>
-    
+      <event>documentValidationRequest</event>
+    </listener> 
+  </extension>
+
+  <!-- Custom events logging -->
+  <extension target="org.nuxeo.ecm.platform.audit.service.NXAuditEventsService" point="event">
+    <event name="documentValidationRequest" />
   </extension>
   
 </component>

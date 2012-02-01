@@ -50,7 +50,6 @@ public class Service extends EasySOADoctype {
     public static final String PROP_WSDLSERVICENAME = "wsdlServiceName";
     public static final String PROP_WSDLNAMESPACE = "wsdlNamespace";
     public static final String PROP_ISVALIDATED = "isValidated";
-    public static final String PROP_VALIDATIONSTATEDIRTY = "validationStateDirty";
     public static final String PROP_VALIDATIONSTATE = "validationState";
     public static final String SUBPROP_VALIDATORNAME = "validatorName";
     public static final String SUBPROP_ISVALIDATED = "isValidated";

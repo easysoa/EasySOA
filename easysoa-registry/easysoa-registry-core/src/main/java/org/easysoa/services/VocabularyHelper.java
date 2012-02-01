@@ -33,7 +33,6 @@ import org.nuxeo.ecm.directory.DirectoryException;
 import org.nuxeo.ecm.directory.Session;
 import org.nuxeo.ecm.directory.api.DirectoryService;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * Helpers for managing vocabularies.
@@ -41,7 +40,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * @author mkalam-alami
  *
  */
-public class VocabularyHelper extends DefaultComponent {
+public class VocabularyHelper {
 
     public static final String VOCABULARY_APPLICATION = "application";
     public static final String VOCABULARY_ENVIRONMENT = "environment";
@@ -109,8 +108,7 @@ public class VocabularyHelper extends DefaultComponent {
             if (entryExists(session, vocabularyName, entryId)) {
                 return;
             }
-            log.info("New " + vocabularyName + " vocabulary entry: "
-                    + entryName);
+            log.info("New " + vocabularyName + " vocabulary entry: " + entryName);
 
             DirectoryService dirService = (DirectoryService) 
                     Framework.getRuntime().getComponent(DirectoryService.NAME);

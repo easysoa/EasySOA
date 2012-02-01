@@ -24,9 +24,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.Service;
-import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.ServiceValidationService;
@@ -49,53 +46,41 @@ public class ValidationListener implements EventListener {
 
     public void handleEvent(Event event) {
 
-        // Check event type
-        EventContext ctx = event.getContext();
-        if (!(ctx instanceof DocumentEventContext)) {
-            return;
-        }
+        // Init
+        EventContext context = event.getContext();
+        CoreSession session =  context.getCoreSession();
+        DocumentModel doc = ((DocumentEventContext) context).getSourceDocument();
 
-        CoreSession session = ctx.getCoreSession();
-        DocumentModel doc = ((DocumentEventContext) ctx).getSourceDocument();
+        try {
+            // Find workspace
+            DocumentService docService = Framework.getService(DocumentService.class);
+            DocumentModel workspace = docService.getWorkspace(session, doc);
 
-        // Check document type
-        if (doc == null || doc.isProxy()) {
-            return;
-        }
-        String type = doc.getType();
-        if (type.equals(AppliImpl.DOCTYPE) || type.equals(ServiceAPI.DOCTYPE) || type.equals(Service.DOCTYPE)) {
-
-            try {
-                // Find workspace
-                DocumentService docService = Framework.getService(DocumentService.class);
-                DocumentModel workspace = docService.getWorkspace(session, doc);
-
-                // Run validation
-                ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
-                Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
-                List<String> errors;
-                if (wasValidated != null && wasValidated) {
-                    // Validate all child services
-                	errors = validationService.validateServices(session, doc);
-                } else {
-                    // If the environment was not successfully validated,
-                    // re-check all to allow it to become validated
-                	errors = validationService.validateServices(session, workspace);
-                }
-
-                // Update workspace state
-                boolean isNowValidated = (errors.size() == 0);
-                if (wasValidated == null || wasValidated != isNowValidated) {
-	    	        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isNowValidated);
-	    	        session.saveDocument(workspace);
-                }
-
-    	        // Save workspace & all modified services validation states
-    	        session.save();
-                
-            } catch (Exception e) {
-                log.error("Failed to validate " + type, e);
+            // Run validation
+            ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
+            Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
+            List<String> errors;
+            if (wasValidated != null && wasValidated) {
+                // Validate all child services
+            	errors = validationService.validateServices(session, doc);
+            } else {
+                // If the environment was not successfully validated,
+                // re-check all to allow it to become validated
+            	errors = validationService.validateServices(session, workspace);
             }
+
+            // Update workspace state
+            boolean isNowValidated = (errors.size() == 0);
+            if (wasValidated == null || wasValidated != isNowValidated) {
+    	        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isNowValidated);
+    	        session.saveDocument(workspace);
+            }
+
+	        // Save workspace & all modified services validation states
+	        session.save();
+            
+        } catch (Exception e) {
+            log.error("Failed to validate " + doc.getType(), e);
         }
 
     }

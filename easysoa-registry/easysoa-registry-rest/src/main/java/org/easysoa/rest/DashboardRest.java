@@ -37,6 +37,7 @@ import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
+import org.easysoa.services.EventsHelper;
 import org.easysoa.services.ServiceValidationService;
 import org.easysoa.validation.CorrelationMatch;
 import org.easysoa.validation.ServiceValidator;
@@ -177,6 +178,34 @@ public class DashboardRest {
         for (ServiceValidator validator : validators) {
             result.put(validator.getName(), validator.getLabel());
         }
+        return result.toString();
+    }
+
+
+    @POST
+    @Path("/document/{docId}/validate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object getValidators(@Context HttpServletRequest request, @PathParam("docId") String docId) throws Exception {
+        
+        // XXX Untested
+        
+        CoreSession session = SessionFactory.getSession(request);
+        DocumentModel doc = session.getDocument(new IdRef(docId));
+        JSONObject result = new JSONObject();
+        
+        if (doc != null) {
+            try {
+                EventsHelper.fireDocumentEvent(session, EventsHelper.EVENTTYPE_VALIDATIONREQUEST, doc);
+                result.put("result", "ok");
+            }
+            catch (Exception e) {
+                return formatError("Couldn't run validation", e);
+            }
+        }
+        else {
+            return formatError("Document not found");
+        }
+        
         return result.toString();
     }
     

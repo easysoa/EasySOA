@@ -84,6 +84,11 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         return validators;
     }
 
+    /**
+     * Validates the specified document
+     * - If a service, it is validated, but not saved
+     * - If another doctype, all services within the document are validated and saved
+     */
     @Override
     public List<String> validateServices(CoreSession session, DocumentModel model) throws Exception {
 
@@ -114,18 +119,19 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             // Validate services
             if (services != null) {
                 for (DocumentModel service : services) {
-                	Object isValidationStateDirty = service.getProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY);
-                	if (isValidationStateDirty == null || ((Boolean) isValidationStateDirty)) {
-	                    DocumentModel matchingService = null;
-	                    SortedSet<CorrelationMatch> matches = findCorrelatedServices(session, service, referenceServices);
-	                    if (!matches.isEmpty()) {
-	                        matchingService = matches.first().getDocumentModel();
-	                    }
-	                    result = validateService(session, service, matchingService);
-	                    if (!result.isEmpty()) {
-	                        errors.addAll(result);
-	                    }
-                	}
+                    DocumentModel matchingService = null;
+                    SortedSet<CorrelationMatch> matches = findCorrelatedServices(session, service, referenceServices);
+                    if (!matches.isEmpty()) {
+                        matchingService = matches.first().getDocumentModel();
+                    }
+                    
+                    // Run validation on each service, but don't save if we're validating
+                    // only 1 service (will be done after the listener chain)
+                    result = validateService(session, service, matchingService, model != service);
+                    
+                    if (!result.isEmpty()) {
+                        errors.addAll(result);
+                    }
                 }
                 
             }
@@ -145,7 +151,8 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
      * @return A list of errors
      * @throws ClientException 
      */
-    private List<String> validateService(CoreSession session, DocumentModel service, DocumentModel referenceService) throws ClientException {
+    private List<String> validateService(CoreSession session, DocumentModel service,
+            DocumentModel referenceService, boolean save) throws ClientException {
         
         // Init
         List<String> allErrors = new LinkedList<String>();
@@ -184,10 +191,11 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         }
         
         // Update service validation state
-        service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATEDIRTY, false);
         service.setProperty(Service.SCHEMA, Service.PROP_ISVALIDATED, isNowValidated);
         service.setProperty(Service.SCHEMA, Service.PROP_VALIDATIONSTATE, newValidationState);
-        session.saveDocument(service); 
+        if (save) {
+            session.saveDocument(service);
+        }
         
         return allErrors;
     }
