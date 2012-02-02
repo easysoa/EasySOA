@@ -23,8 +23,7 @@ package com.openwide.easysoa.run;
 import java.util.Date;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStoreManager;
-import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.monitoring.MonitoringService;
@@ -278,7 +277,8 @@ public class RunManagerImpl implements RunManager {
 	@Override
 	public String save() throws Exception {
 		// Save the exchangeRecord
-		ExchangeRecordStoreManager erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
+		//ExchangeRecordStoreManager erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
+	    ProxyExchangeRecordFileStore erStore = new ProxyExchangeRecordFileStore();
 		erStore.save(currentRun);
 		currentRun.setStatus(RunStatus.SAVED);
 		return "Run " + currentRun.getName() + " saved !";

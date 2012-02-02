@@ -35,7 +35,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.records.ExchangeRecord;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -56,7 +56,6 @@ import com.openwide.easysoa.util.RequestForwarder;
  * @author jguillemotte
  *
  */
-@Ignore
 public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 	// Logger
@@ -137,7 +136,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 		// replay one or several exchanges
 		logger.debug("Calling Replay service ...");
-		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 		
 		String originalResponse;
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Test_Run");
@@ -215,7 +214,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 		// replay one or several exchanges
 		logger.debug("Calling Replay service ...");
-		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 		// Check the results
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Meteo_WSDL_TestRun");
 		for(ExchangeRecord record : recordList){

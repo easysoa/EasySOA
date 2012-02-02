@@ -9,6 +9,8 @@ import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 
 /**
+ * Render a template (replace the expressions by provided values)
+ * 
  * @author jguillemotte
  *
  */
@@ -27,6 +29,9 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 	public TemplateRenderer(){
 	}
 	
+    /* (non-Javadoc)
+     * @see org.easysoa.template.TemplateProcessorRendererItf#renderReq()
+     */	
 	@Override
 	public String renderReq(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues) throws Exception {
 		/**
@@ -44,6 +49,9 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		return executor.execute(renderedTemplate).getMessageContent().getContent();
 	}
 
+    /* (non-Javadoc)
+     * @see org.easysoa.template.TemplateProcessorRendererItf#renderRes()
+     */ 
 	@Override
 	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues){
 		// TODO : Complete this method, to be used in a server mock

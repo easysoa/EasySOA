@@ -26,7 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateFieldSuggester;
 import org.easysoa.template.TemplateProcessorRendererItf;
@@ -157,7 +157,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		
 		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
 		TemplateBuilder builder = new TemplateBuilder();
-		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 	
 		// Get the exchange record list for the run
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
@@ -216,7 +216,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 
 		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
 		TemplateBuilder builder = new TemplateBuilder();
-		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 	
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
 

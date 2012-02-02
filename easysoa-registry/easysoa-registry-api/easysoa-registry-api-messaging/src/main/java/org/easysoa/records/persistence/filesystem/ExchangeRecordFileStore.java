@@ -28,7 +28,6 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
@@ -36,12 +35,7 @@ import org.easysoa.records.Exchange;
 import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
-import org.easysoa.records.ExchangeRecordStoreManager;
-import org.easysoa.template.TemplateField;
-import org.easysoa.template.TemplateFieldSuggestions;
-import org.easysoa.template.TemplateRecord;
-//import com.openwide.easysoa.message.CustomField;
-//import com.openwide.easysoa.message.CustomFields;
+import org.easysoa.records.ExchangeRecordStoreManagerItf;
 import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;
@@ -50,8 +44,6 @@ import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.PostData;
 import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.message.QueryString;
-import com.openwide.easysoa.proxy.PropertyManager;
-import com.openwide.easysoa.run.Run;
 
 /**
  * Take a ExchangeRecordStoreArray and store the Exchange records as files in
@@ -59,7 +51,7 @@ import com.openwide.easysoa.run.Run;
  * 
  * @author jguillemotte
  */
-public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
+public class ExchangeRecordFileStore implements ExchangeRecordStoreManagerItf {
 
 	// TODO : The Exchange records must be stored in a human readable format :
 	// no serialization but JSON instead.
@@ -77,32 +69,25 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	private static Logger logger = Logger.getLogger(ExchangeRecordFileStore.class.getName());
 
 	public final static String EXCHANGE_FILE_EXTENSION = ".json";
-	public final static String TEMPLATE_FILE_EXTENSION = ".vm";
-	public final static String SUGGESTIONS_FILE_EXTENSION = ".fld";
+	//public final static String TEMPLATE_FILE_EXTENSION = ".vm";
+	//public final static String SUGGESTIONS_FILE_EXTENSION = ".fld";
 	public final static String EXCHANGE_FILE_PREFIX = "excRec_";
 	public final static String IN_MESSAGE_FILE_PREFIX = "inMess_";
 	public final static String OUT_MESSAGE_FILE_PREFIX = "outMess_";
-	public final static String REQ_TEMPLATE_FILE_PREFIX = "reqTemplateRecord_";
-	public final static String RES_TEMPLATE_FILE_PREFIX = "resTemplateRecord_";
-	public final static String SUGGESTION_FILE_PREFIX = "fieldSuggestions_";
+	//public final static String REQ_TEMPLATE_FILE_PREFIX = "reqTemplateRecord_";
+	//public final static String RES_TEMPLATE_FILE_PREFIX = "resTemplateRecord_";
+	//public final static String SUGGESTION_FILE_PREFIX = "fieldSuggestions_";
 
 	// Path
-	private String path;
-
-	/**
-	 * Path is set with the value of 'path.record.store' property
-	 */
-	public ExchangeRecordFileStore() {
-		this.path = PropertyManager.getProperty("path.record.store");
-		logger.debug("exchangeRecordStore default path = " + this.path);
-	}
+	protected String path;
 
 	/**
 	 * Constructor
 	 * @param path Path where the Exchange record will be stored
 	 */
 	public ExchangeRecordFileStore(String path) {
-		this.path = path;
+	    logger.debug("exchangeRecordStore path = " + path);
+	    this.path = path;
 	}
 
 	/*
@@ -174,7 +159,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 * @return
 	 * @throws IOException
 	 */
-	private String save(ExchangeRecord exchangeRecord, String recordPath) throws IOException{
+	protected String save(ExchangeRecord exchangeRecord, String recordPath) throws IOException{
 		File inMEssageFile = new File(recordPath + IN_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + EXCHANGE_FILE_EXTENSION);
 		File outMessageFile = new File(recordPath + OUT_MESSAGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + EXCHANGE_FILE_EXTENSION);
 		File exchangeFile = new File(recordPath + EXCHANGE_FILE_PREFIX + exchangeRecord.getExchange().getExchangeID() + EXCHANGE_FILE_EXTENSION);
@@ -197,71 +182,6 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		return exchangeRecord.getExchange().getExchangeID();		
 	}
 
-	/**
-	 * Save a template record
-	 * @param templateRecord The template record to save
-	 * @throws IOException If a problem occurs
-	 */
-	public Map<String, String> save(TemplateRecord templateRecord) throws IOException {
-		HashMap<String, String> templateFileMap = new HashMap<String, String>();
-		File runFolder = new File(path);
-		runFolder.mkdir();
-		String reqTemplateFileName = REQ_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
-		String resTemplateFileName = RES_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
-		File reqTemplateRecordFile = new File(path + reqTemplateFileName);
-		File resTemplateRecordFile = new File(path + resTemplateFileName);
-		FileWriter reqTemplateFw = new FileWriter(reqTemplateRecordFile);
-		FileWriter resTemplateFw = new FileWriter(resTemplateRecordFile);
-	    try{
-	    	reqTemplateFw.write(templateRecord.getRequestTemplate());
-	    	templateFileMap.put("reqTemplate", reqTemplateFileName);
-	    	resTemplateFw.write(templateRecord.getResponsetemplate());
-	    	templateFileMap.put("resTemplate", resTemplateFileName);	    	
-	    }
-	    finally{
-	    	reqTemplateFw.close();
-	    	resTemplateFw.close();
-	    }
-	    return templateFileMap;
-	}
-	
-	/**
-	 * Save field suggestions
-	 * @param templateFieldSuggestions
-	 * @param recordID
-	 * @throws IOException
-	 */
-	public void save(TemplateFieldSuggestions templateFieldSuggestions, String recordID) throws IOException {
-		File runFolder = new File(path);
-		runFolder.mkdir();
-		String fieldSuggestFileName = SUGGESTION_FILE_PREFIX + recordID + SUGGESTIONS_FILE_EXTENSION;
-		File fieldSuggestFile = new File(path + fieldSuggestFileName);
-		FileWriter fieldSuggestFw = new FileWriter(fieldSuggestFile);
-		try{
-			JSONObject fieldSuggestJSON = JSONObject.fromObject(templateFieldSuggestions);
-			fieldSuggestFw.write(fieldSuggestJSON.toString());
-		}
-		finally{
-			fieldSuggestFw.close();
-		}
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.easysoa.sca.records.ExchangeRecordStore#save(com.openwide.easysoa.run.Run)
-	 */
-	@Override
-	public void save(Run run) throws Exception {
-		// Create the run folder
-		logger.debug("Path to store run = " + path + run.getName());
-		createStore(run.getName());
-		for (ExchangeRecord record : run.getExchangeRecordList()) {
-			save(record, path + run.getName() + "/");
-		}
-	}
-
 	@Override
 	public void createStore(String storeName) {
 		logger.debug("Creating store path : " + path + storeName);
@@ -277,7 +197,8 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	@Override
 	public ExchangeRecord load(String exchangeStoreName, String recordID) throws Exception {
 		ExchangeRecord record = new ExchangeRecord();
-		HashMap<String, Class> classMap = new HashMap<String, Class>();
+		@SuppressWarnings("rawtypes")
+        HashMap<String, Class> classMap = new HashMap<String, Class>();
 		classMap.put("exchangeType", ExchangeType.class);
 		classMap.put("queryString", QueryString.class);
 		classMap.put("queryParams", QueryParam.class);
@@ -288,6 +209,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 		//classMap.put("customFieldList", CustomField.class);
 		classMap.put("messageContent", MessageContent.class);
 		// Warning : With json-lib version 2.4, the conversion of a JSON structure containing an other JSON structure doesn't work
+		// Use a previous version
 		record.setExchange((Exchange) JSONObject.toBean((JSONObject) readJSONFile(path + exchangeStoreName + "/" + EXCHANGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), Exchange.class, classMap));
 		record.setInMessage((InMessage) JSONObject.toBean((JSONObject) readJSONFile(path + exchangeStoreName + "/" + IN_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), InMessage.class, classMap));
 		record.setOutMessage((OutMessage) JSONObject.toBean((JSONObject) readJSONFile(path + exchangeStoreName + "/" + OUT_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION), OutMessage.class, classMap));
@@ -300,7 +222,7 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 * @return A <code>JSONObject</code>
 	 * @throws Exception If a problem occurs
 	 */
-	private JSONObject readJSONFile(String filePath) throws Exception {
+	protected JSONObject readJSONFile(String filePath) throws Exception {
 		logger.debug("filePath = " + filePath);
 		File file = new File(filePath);
 		FileReader fr = new FileReader(file);
@@ -339,35 +261,6 @@ public class ExchangeRecordFileStore implements ExchangeRecordStoreManager {
 	 */
 	public void setStorePath(String path) {
 		this.path = path;
-	}
-
-	@Override
-	//TODO rename the class templateFieldSuggestion to TemplateField....
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String fileName) throws Exception {
-		logger.debug("loading template :" + fileName);
-		HashMap<String, Class> classMap = new HashMap<String, Class>();
-		classMap.put("templateFields", TemplateField.class);
-		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(path + storeName + "/" + fileName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
-	}
-	
-	/**
-	 * Returns the name list of the recorded templates
-	 * @return A <code>List</code> containing the name of the template files
-	 */
-	public List<String> getTemplateList(String storeName){
-		ArrayList<String> templateFileList = new ArrayList<String>();
-		// TODO : remove hard coded path
-		File folder = new File(PropertyManager.getProperty("path.template.store") + storeName);
-		File[] listOfFiles = folder.listFiles();
-		if(listOfFiles != null){
-			for (File file : listOfFiles) {
-				if (file.isFile() && file.getName().endsWith(TEMPLATE_FILE_EXTENSION)) {
-					logger.debug("file name : " + file.getName());
-					templateFileList.add(file.getName());		
-				}
-			}
-		}
-		return templateFileList;
 	}
 
 }

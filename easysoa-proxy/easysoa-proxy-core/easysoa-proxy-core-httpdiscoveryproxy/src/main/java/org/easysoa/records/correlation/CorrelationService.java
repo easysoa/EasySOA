@@ -16,7 +16,8 @@ import org.easysoa.template.TemplateField.TemplateFieldType;
 import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
- * This service allows a user to extract correlations from recorded exchanges.
+ * This service allows to extract correlations fields from recorded exchanges.
+ * 
  * @author jguillemotte
  *
  */

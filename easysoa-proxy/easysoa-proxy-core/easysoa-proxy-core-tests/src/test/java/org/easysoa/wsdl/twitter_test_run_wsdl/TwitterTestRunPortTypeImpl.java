@@ -34,7 +34,7 @@ public class TwitterTestRunPortTypeImpl implements TwitterTestRunPortType {
 	@Override
 	public ReqTemplateRecord2Response reqTemplateRecord2(ReqTemplateRecord2Request body) {
 		ReqTemplateRecord2Response response = new ReqTemplateRecord2Response();
-		// When returning JSON dat, it must be surrounded by extra '"' to avoid the JSON data to be interpreted by display engine
+		// When returning JSON data, it must be surrounded by extra '"' to avoid the JSON data to be interpreted by display engine
 		response.setResponse("\"{\"user\":\"toto\",\"tweetNumber\":\"5\",\"tweets\": [{\"tweet\": \"The last tweet\"},{\"tweet\": \"Not the first tweet but not the last\"},{\"tweet\": \"Another tweet\"},{\"tweet\": \"Maybe the last tweet\"},{\"tweet\": \"The last tweet\"},]}\"");
 		return response;
 	}

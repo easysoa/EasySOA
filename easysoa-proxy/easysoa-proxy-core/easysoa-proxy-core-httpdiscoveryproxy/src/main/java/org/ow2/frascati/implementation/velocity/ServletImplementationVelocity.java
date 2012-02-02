@@ -49,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.easysoa.records.ExchangeRecordStore;
-import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.eclipse.stp.sca.Component;
@@ -138,7 +138,7 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
         		System.out.println("GET request received !!");
 	        	// Get the list of record template
 	        	// TODO : remove the ExchangeRecordFileStore and use TemplateDefinitionService
-	        	ExchangeRecordFileStore excf = new ExchangeRecordFileStore();
+	        	ProxyExchangeRecordFileStore excf = new ProxyExchangeRecordFileStore();
 	        	excf.setStorePath(PropertyManager.getProperty("path.template.store"));
 	        	//List<String> templateFileList = excf.getTemplateList();
 	        	List<ExchangeRecordStore> storeList = excf.getExchangeRecordStorelist();

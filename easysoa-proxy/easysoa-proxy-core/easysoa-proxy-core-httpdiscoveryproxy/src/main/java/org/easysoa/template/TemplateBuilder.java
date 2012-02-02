@@ -6,15 +6,16 @@ package org.easysoa.template;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateField.TemplateFieldType;
 import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.proxy.PropertyManager;
 
 /**
+ * Generate and save request and response templates made from field suggestions, an exchange record and an Exchange store name *
+ *  
  * @author jguillemotte
  *
  */
@@ -35,13 +36,12 @@ public class TemplateBuilder {
 	}
 	
 	/**
-	 * Take as parameter to work templateFieldSuggestion and request
-	 * Then returns a template (or a custom exchange record ???) ready to send to the template renderer
-	 * This method produces several files : a custom exchangeRecord, a template to use with and a fld file to store suggestions
-	 * @param fieldSuggestions
-	 * @param inMessage
-	 * @return 
-	 * @throws Exception 
+	 * Generate templates for request and response part of an exchange record 
+	 * @param fieldSuggestions Fields to replace by template expressions (Velocity expression in this case)
+	 * @param record The exchange record to templatize
+	 * @param runName The store name to save the template 
+	 * @return A <code>Map</code> containing the templates for request and response.
+	 * @throws Exception If a problem occurs
 	 */
 	public Map<String, String> buildTemplate(TemplateFieldSuggestions fieldSuggestions, ExchangeRecord record, String runName) throws Exception {
 		// What to do if the suggested fields are not found in the record InMessage ?? throws an exception, do nothing ?
@@ -109,7 +109,7 @@ public class TemplateBuilder {
 		}
 		if(fieldSuggestions != null && fieldSuggestions.getTemplateFields().size() > 0){
 			// Store the custom exchange record
-			ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+			ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 			fileStore.setStorePath(PropertyManager.getProperty("path.template.store"));
 			try {
 				// TODO : regroup save operations in a same method in StoreManager

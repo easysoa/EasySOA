@@ -22,24 +22,20 @@ package org.easysoa.records.replay;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Request;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.ExchangeRecordStore;
-import org.easysoa.records.ExchangeRecordStoreManager;
 import org.easysoa.records.StoreCollection;
-import org.easysoa.records.persistence.ExchangeRecordStoreFactory;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.setters.CustomParamSetter;
@@ -108,10 +104,9 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) {
 		logger.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
-    	ExchangeRecordStoreManager erfs;
     	List<ExchangeRecord> recordList;
 		try {
-			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
+            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
 			recordList = erfs.getExchangeRecordlist(exchangeRecordStoreName);
 		} catch (Exception ex) {
 			logger.error("An error occurs during the listing of exchanges records", ex);
@@ -127,10 +122,9 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) {
 		logger.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
-    	ExchangeRecordStoreManager erfs;
     	ExchangeRecord record = null;
 		try {
-			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
+            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
 			record = erfs.load(exchangeRecordStoreName, exchangeID);
 		} 
 		catch (Exception ex) {
@@ -146,10 +140,9 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public StoreCollection getExchangeRecordStorelist() {
 		logger.debug("getExchangeRecordStorelist method called ...");
-    	ExchangeRecordStoreManager erfs;
     	List<ExchangeRecordStore> storeList;
     	try{
-    		erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
+            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
     		storeList = erfs.getExchangeRecordStorelist();
     	}
     	catch(Exception ex){
@@ -170,11 +163,10 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 		// ex. on server : http://code.google.com/p/java-diff-utils/
 		logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
 		
-    	ExchangeRecordStoreManager erfs;
 		StringBuffer responseBuffer = new StringBuffer();    	
 		try {
 			Collection<ExchangeRecord> recordList;
-			erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
+		    ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
 			// get the record
 			if(exchangeRecordId==null || "".equals(exchangeRecordId)){
 				recordList = getExchangeRecordlist(exchangeRecordStoreName).getRecords();
@@ -225,7 +217,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@Produces("application/json")
 	@Override
 	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("storeName") String storeName, @PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception {
-    	ExchangeRecordStoreManager erfs = ExchangeRecordStoreFactory.createExchangeRecordStore();
+    	ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
     	TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(storeName, templateFieldSuggestionsName);
     	logger.debug(templateFieldSuggest.getTemplateFields().size());
     	return templateFieldSuggest;

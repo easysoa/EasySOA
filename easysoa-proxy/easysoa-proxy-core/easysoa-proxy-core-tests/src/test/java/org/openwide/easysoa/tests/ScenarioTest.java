@@ -25,7 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateFieldSuggester;
 import org.easysoa.template.TemplateProcessorRendererItf;
@@ -59,6 +59,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		// Start mock services
 		startMockServices(false);
 		// Start tweeter WSDL service mock => cxf service
+		// TODO : replace this hard mocked service with a real time generated service 
 		TwitterTestRunPortType_TwitterTestRunPort_Server.start();		
 	}
 	
@@ -175,7 +176,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		
 		// replay one or several exchanges
 		logger.debug("Calling Replay service ...");
-		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 		
 		String originalResponse;
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
@@ -202,7 +203,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		System.out.println("callTemplateDefService method for store " + runName);
 		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
 		TemplateBuilder builder = new TemplateBuilder();
-		ExchangeRecordFileStore fileStore= new ExchangeRecordFileStore();
+		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 	
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
 

@@ -21,14 +21,10 @@ package org.easysoa.records;
 
 import java.util.List;
 
-import org.easysoa.template.TemplateFieldSuggestions;
-
-import com.openwide.easysoa.run.Run;
-
 /**
  * @author jguillemotte
  */
-public interface ExchangeRecordStoreManager {
+public interface ExchangeRecordStoreManagerItf {
 
 	/**
 	 * Save an exchange record
@@ -37,14 +33,6 @@ public interface ExchangeRecordStoreManager {
 	 * @throws Exception if a problem occurs
 	 */
 	public String save(ExchangeRecord exchangeRecord) throws Exception;
-	
-	/**
-	 * Save a Run
-	 * @param run the <code>Run</code> to save
-	 * @return 
-	 * @throws Exception If a problems occurs
-	 */
-	public void save(Run run) throws Exception;
 	
 	/**
 	 * Create a store
@@ -66,17 +54,11 @@ public interface ExchangeRecordStoreManager {
 	 * @return A list of <code>ExchangeRecord</code>
 	 */
 	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) throws Exception;
+	
 	/**
 	 * Returns a list of Exchange records store
 	 * @return A list of <code>ExchangeRecordStore</code>
 	 */
 	public List<ExchangeRecordStore> getExchangeRecordStorelist() throws Exception;	
-	
-	/**
-	 * Returns a list of <code>TemplateField</code> specified in the template
-	 * @param templateName The name of the template to use
-	 * @return A <code>TemplateFieldSuggestion</code>
-	 */
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String templateName) throws Exception;
 	
 }
