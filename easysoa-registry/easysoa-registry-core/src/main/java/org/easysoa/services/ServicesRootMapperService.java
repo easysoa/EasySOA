@@ -18,7 +18,7 @@ public class ServicesRootMapperService {
     public void mapUrls(CoreSession session, DocumentModel appliImplModel) throws ClientException {
         String servicesRootUrl = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         DocumentModelList serviceModels = session.query("SELECT * FROM Service WHERE ecm:path STARTSWITH '" 
-                + appliImplModel.getPathAsString() + "'");
+                + appliImplModel.getPathAsString() + "' AND ecm:currentLifeCycleState <> 'deleted'");
         for (DocumentModel serviceModel : serviceModels) {
             mapUrl(session, serviceModel, servicesRootUrl);
         }
@@ -33,7 +33,7 @@ public class ServicesRootMapperService {
      */
     private void mapUrl(CoreSession session, DocumentModel serviceModel, String servicesRootUrl) throws ClientException {
         String urlTemplate = (String) serviceModel.getProperty(Service.SCHEMA, Service.PROP_URLTEMPLATE);
-        if (urlTemplate != null) {
+        if (urlTemplate != null && !urlTemplate.isEmpty()) {
             String newUrl = servicesRootUrl + urlTemplate;
             serviceModel.setProperty(Service.SCHEMA, Service.PROP_URL, newUrl);
             session.saveDocument(serviceModel);

@@ -44,6 +44,8 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
 	private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
 
 	private EasySOAApiSession api;
+
+    protected FraSCAtiRegistryServiceItf frascatiRegistryService;
     
 	/**
 	 * Constructor

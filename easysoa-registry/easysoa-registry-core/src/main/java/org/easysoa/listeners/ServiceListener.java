@@ -30,12 +30,12 @@ import static org.easysoa.doctypes.Service.PROP_FILEURL;
 import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICE;
 import static org.easysoa.doctypes.Service.PROP_REFERENCESERVICEORIGIN;
 import static org.easysoa.doctypes.Service.PROP_URL;
+import static org.easysoa.doctypes.Service.PROP_URLTEMPLATE;
 import static org.easysoa.doctypes.Service.SCHEMA;
 import static org.easysoa.doctypes.Service.SCHEMA_PREFIX;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.SortedSet;
@@ -43,9 +43,7 @@ import java.util.SortedSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
-import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
@@ -65,9 +63,7 @@ import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.runtime.api.Framework;
 import org.ow2.easywsdl.wsdl.WSDLFactory;
-import org.ow2.easywsdl.wsdl.api.Binding;
 import org.ow2.easywsdl.wsdl.api.Description;
-import org.ow2.easywsdl.wsdl.api.Endpoint;
 import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
 /**
@@ -150,9 +146,9 @@ public class ServiceListener implements EventListener {
                             doc.setProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE, namespace);
                             
                             // URL extraction
-                            Endpoint firstEndpoint = firstService.getEndpoints().get(0);
+                            /*Endpoint firstEndpoint = firstService.getEndpoints().get(0);
                             url = PropertyNormalizer.normalizeUrl(firstEndpoint.getAddress());
-                            doc.setProperty(SCHEMA, PROP_URL, url);
+                            doc.setProperty(SCHEMA, PROP_URL, url);*/
                             
                             // Service name extraction
                             String serviceName = firstService.getQName().getLocalPart();
@@ -164,8 +160,9 @@ public class ServiceListener implements EventListener {
                             //// Update parent's properties
                             
                             // Supported protocols
+                            // FIXME Triggers infinite loops
                             
-                            if (doc.getParentRef() != null) {
+                           /* if (doc.getParentRef() != null) {
                                 
                                 DocumentModel apiModel = session.getDocument(doc.getParentRef());
                                 String storedProtocol = (String) apiModel.getProperty(
@@ -220,7 +217,7 @@ public class ServiceListener implements EventListener {
                                 }
                                 
                                 session.saveDocument(apiModel);
-                            }
+                            }*/
             
                         } catch (Exception e) {
                             log.warn("WSDL parsing failed: " + e.getMessage());
@@ -239,7 +236,12 @@ public class ServiceListener implements EventListener {
             // Maintain properties
             if (url != null) {
                 try {
-                    doc.setProperty(SCHEMA, PROP_URL, PropertyNormalizer.normalizeUrl(url));
+                    String normalizedUrl = PropertyNormalizer.normalizeUrl(url);
+                    doc.setProperty(SCHEMA, PROP_URL, normalizedUrl);
+                    String urlTemplate = (String) doc.getProperty(SCHEMA, PROP_URLTEMPLATE);
+                    if (urlTemplate == null || urlTemplate.isEmpty()) {
+                        doc.setProperty(SCHEMA, PROP_URLTEMPLATE, new URL(normalizedUrl).getPath());
+                    }
                 } catch (MalformedURLException e) {
                     log.warn("Failed to normalize URL", e);
                 }

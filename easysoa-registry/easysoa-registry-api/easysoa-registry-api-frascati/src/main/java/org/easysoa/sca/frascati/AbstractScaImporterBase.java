@@ -107,7 +107,6 @@ public abstract class AbstractScaImporterBase implements IScaImporter {
 	private String serviceStackUrl;
 	private Stack<String> archiNameStack = new Stack<String>();
 	private Stack<EObject> bindingStack = new Stack<EObject>();
-	protected FraSCAtiRegistryServiceItf frascatiRegistryService;
 	protected BindingVisitorFactory bindingVisitorFactory;
 	
 	/**
