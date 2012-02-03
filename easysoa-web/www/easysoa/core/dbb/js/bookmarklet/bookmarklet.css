@@ -80,7 +80,7 @@ a.easysoa-wsdl-link {
 }
 
 div.easysoa-exit {
-	background: url('http://localhost:8083/easysoa/core/img/close.png');
+	background: url('http://localhost:8083/easysoa/core/dbb/img/close.png');
 	width: 16px;
 	height: 16px;
 	float: right;

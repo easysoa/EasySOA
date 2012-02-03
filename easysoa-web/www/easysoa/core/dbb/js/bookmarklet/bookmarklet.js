@@ -7,7 +7,7 @@ function loadJS(url) {
 	document.getElementsByTagName("head")[0].appendChild(newScript);
 }
 
-loadJS("http://localhost:8083/easysoa/core/js/bookmarklet/discovery.js");
+loadJS("http://localhost:8083/easysoa/core/dbb/js/bookmarklet/discovery.js");
 
 setTimeout(function() {
 	if (!window.EASYSOA_WEB) {

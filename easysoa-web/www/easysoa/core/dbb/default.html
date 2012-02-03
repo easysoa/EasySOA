@@ -8,7 +8,7 @@ $(document).ready(function() {
    * Load bookmarklet script
    */
   $.ajax({
-    url: '/easysoa/core/js/bookmarklet/bookmarklet-min.js',
+    url: '/easysoa/core/dbb/js/bookmarklet/bookmarklet-min.js',
     dataType: 'text', // Prevents JS execution
     success: function(data, status, xhr) {
       var js = escape(xhr.responseText);

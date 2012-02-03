@@ -30,7 +30,7 @@ $(document).ready(function() {
 					}
 				}
 				else {
-					serviceList.append(makeRow('No services known. Why not look for some services using the <a href="/easysoa/core/">Discovery by browsing</a> tool?'));
+					serviceList.append(makeRow('No services known. Why not look for some services using the <a href="/easysoa/core/dbb/index.html">Discovery by browsing</a> tool?'));
 				}
 			}
 			else {

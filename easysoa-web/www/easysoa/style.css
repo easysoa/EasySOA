@@ -47,6 +47,21 @@ li {
     top: 10px;
 }
 
+#headerWelcome {
+  width: 100%;
+  padding-top: 23px;
+  font-size: 14pt;
+  font-weight: bold;
+  height: 47px;
+  background: url('/easysoa/img/Logo.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 15px;
+  border-bottom: 2px solid #444;
+}
+#headerWelcomeContents {
+  padding-left: 220px;
+}
+
 #headerCore {
   width: 100%;
   padding-top: 10px;
@@ -61,19 +76,19 @@ li {
   padding-left: 280px;
 }
 
-#headerWelcome {
+
+#headerLight {
   width: 100%;
-  padding-top: 23px;
+  padding-top: 10px;
   font-size: 14pt;
-  font-weight: bold;
-  height: 47px;
-  background: url('/easysoa/img/Logo.png') white;
+  height: 60px;
+  background: url('/easysoa/img/Light50.png') white;
   background-repeat: no-repeat;
-  background-position: 20px 15px;
+  background-position: 20px 10px;
   border-bottom: 2px solid #444;
 }
-#headerWelcomeContents {
-  padding-left: 220px;
+#headerLightContents {
+  padding-left: 280px;
 }
 
 #headerBreadcrumbs {

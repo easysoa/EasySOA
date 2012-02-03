@@ -32,7 +32,7 @@ function loadCSS(url) {
 
 loadJS(EASYSOA_WEB + '/easysoa/lib/jquery.js');
 loadJS(EASYSOA_WEB + '/easysoa/lib/underscore.js');
-loadCSS(EASYSOA_WEB + '/easysoa/core/js/bookmarklet/bookmarklet.css');
+loadCSS(EASYSOA_WEB + '/easysoa/core/dbb/js/bookmarklet/bookmarklet.css');
 
 /**
  * Core functions
