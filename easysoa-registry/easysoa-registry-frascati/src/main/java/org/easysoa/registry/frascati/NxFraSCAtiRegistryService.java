@@ -96,6 +96,32 @@ public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase imple
 	 */
 	public NxFraSCAtiRegistryService()  {
 		super();
+        // Instantiate OW2 FraSCAti.
+        /*easySOAApp = new FraSCAtiBootstrapApp();
+        easySOAApp.start();*/
+
+        // For test only
+        // Start the HttpDiscoveryProxy in Nuxeo with embedded FraSCAti
+        // does not works because NuxeoFrascati is not yet instanced ....
+        /*
+        log.debug("Trying to load Http discovery proxy !");
+        System.out.println("Trying to load Http discovery proxy !");
+        try {
+            if(easySOAApp.getFrascati() != null){
+                //easySOAApp.getFrascati().processComposite("httpDiscoveryProxy");
+                easySOAApp.getFrascati().processComposite("scaffoldingProxy");
+            } else {
+                log.debug("Unable to get FraSCAti, null returned !");
+                System.out.println("Unable to get FraSCAti, null returned !");
+            }
+        } catch (NuxeoFraSCAtiException ex) {
+            // TODO Auto-generated catch block
+            log.debug("Error catched when trying to load Http discovery proxy !", ex);
+            System.out.println("Error catched when trying to load Http discovery proxy : " + ex.getMessage());
+        }*/
+        
+        // TODO : Disabled for release building, to uncomment when the integration of Frascati in Nuxeo will works better.
+        frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
 	}
 	
 	/*public void setApps(List<EasySOAApp> apps){

@@ -35,9 +35,15 @@ import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.ow2.frascati.util.FrascatiException;
 
-// TODO : Problem with this class
-// This test in project easysoa-registry-api-frascati must not use Nuxeo classes or features !!
 
+/**
+ * TODO PROBLEM This test in project easysoa-registry-api-frascati should
+ * not use Nuxeo classes or features, since registry-api in on not local
+ * to Nuxeo but remote !!
+ * 
+ * @author jguillemotte
+ *
+ */
 @RunWith(FeaturesRunner.class)
 @Features(FraSCAtiFeature.class)
 public class ApiTestHelperBase {
@@ -70,6 +76,7 @@ public class ApiTestHelperBase {
 		log.info("FraSCATI Starting");
 		componentList =  new ArrayList<Composite>();
 		// TODO : do not use Nuxeo Framework in this test to start Frascati
+		// TODO : Remove all nuxeo stuff !!
 		frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
 		log.info("frascati = " + frascati);
 		// Use this code instead. PB FraSCAti is not a FraSCAtiServiceItf ....

@@ -34,7 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.registry.frascati.DiscoveryProcessingContext;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
+import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
 import org.easysoa.sca.frascati.mock.TestMock;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
@@ -42,16 +44,22 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
+import org.ow2.frascati.util.FrascatiException;
+
 import com.openwide.easysoa.message.InMessage;
 
 /**
- * Test class for the FraSCAti SCA importer working with the REST API
+ * Tests FraSCAti SCA "import" & "(runtime startup) discovery" working with the REST EasySOA API,
+ * done from a remote FraSCAti.
+ * 
+ * PROBLEM : injected FraSCAti (gotten from ApiTestHelperBase) is the wrapper and not an actual "remoted" FraSCAti.
+ * 
  * @author jguillemotte
  *
  */
-public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
+public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
-    static final Log log = LogFactory.getLog(ApiFrascatiImportServiceTest.class);
+    static final Log log = LogFactory.getLog(RestApiFrascatiImportServiceTest.class);
     
     // List to record the messages exchanged between client and mock rest api server
     private ArrayList<ExchangeRecord> recordList; 
@@ -78,21 +86,27 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws NuxeoFraSCAtiException  If a problem occurs when the set is done
      */
     @SuppressWarnings("unchecked")
-    protected void setTest(ApiFrascatiImportServiceTest test) throws NuxeoFraSCAtiException {
+    protected void setTest(RestApiFrascatiImportServiceTest test) throws NuxeoFraSCAtiException {
     	System.out.println("composite restApiMock : " + frascati.getComposite("RestApiMock"));
-    	((TestMock<ApiFrascatiImportServiceTest>) frascati.getService(
+    	((TestMock<RestApiFrascatiImportServiceTest>) frascati.getService(
     	            frascati.getComposite("RestApiMock"), "restApiMockServiceJava", TestMock.class)
     	        ).setTest(test);    	    	
     }
     
     /**
-     * Main test
-     * Use Mockito to check that the service method are well called
+     * Tests import of SCA composite file, done from remote FraSCAti.
+     * NOT IMPORTANT since "import" is more of a Nuxeo-side functionality.
+     * PROBLEM : injected FraSCAti is the wrapper and not an actual "remoted" FraSCAti.
+     * 
+     * Within the composite, referenced classes are missing so there should be (non-fatal) warnings.
+     * 
+     * NB. Use Mockito to check that the service method are well called
+     * 
      * @throws Exception
      */
     @Test
-    @Ignore
-    public void testSCAComposite() throws Exception {
+    //@Ignore
+    public void testSCACompositeImport() throws Exception {
     	// SCA composite file to import :
     	// to load a file, we use simply File, since user.dir is set relatively to the project
     	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
@@ -116,16 +130,77 @@ public class ApiFrascatiImportServiceTest extends ApiTestHelperBase {
 		// 
     	//checkTestSCAComposite(/*...*/);
     }
+    
+    /**
+     * Tests import of SCA zip file, done from remote FraSCAti.
+     * NOT IMPORTANT since "import" is more of a Nuxeo-side functionality.
+     * PROBLEM : injected FraSCAti is the wrapper and not an actual "remoted" FraSCAti.
+     * 
+     * All referenced classes are provided within the SCA zip file, so there should be
+     * few (none ?) (non-fatal) warnings.
+     * 
+     * Use Mockito to check that the service method are well called
+     * @throws Exception
+     */
+    @Test
+    //@Ignore
+    public void testSCAZipImport() throws Exception {
+        // SCA composite file to import :
+        // to load a file, we use simply File, since user.dir is set relatively to the project
+        String scaZipFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
+        File scaZipFile = new File(scaZipFilePath);
+        BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
+        ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaZipFile, EasySOAApiFraSCAti.getInstance());
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        // Create a spy importer for Mockito
+        ApiFraSCAtiScaImporter spyImporter = spy(importer);
+        try{
+            // Import the SCA composite
+            spyImporter.importSCAZip();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        // Check the recorded exchanges
+        checkExchanges();
+        // Check with Mockito
+        verify(spyImporter).importSCAComposite();
+        // 
+        //checkTestSCAComposite(/*...*/);
+    }
+    
+    /**
+     * Tests runtime discovery of services when FraSCAti starts an application.
+     * IMPORTANT since it should work in a "remoted" FraSCAti.
+     * PROBLEM : injected FraSCAti is the wrapper and not an actual "remoted" FraSCAti.
+     * 
+     * @throws FrascatiException
+     * @throws Exception
+     */
+    public void testFraSCAtiRuntimeDiscovery() throws FrascatiException, Exception {
+        String scaZipFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
+        File scaZipFile = new File(scaZipFilePath);
+        FraSCAtiRuntimeScaImporterItf runtimeScaImporter = EasySOAApiFraSCAti.getInstance().newRuntimeScaImporter();
+        //DiscoveryProcessingContext pctx = new DiscoveryProcessingContext(this, runtimeScaImporter, scaZipFile.toURI().toURL());
+        ////DiscoveryProcessingContext pctx = nxFraSCAtiRegistryService.newDiscoveryProcessingContext();
+        //Composite myCompositeApplication = nxFraSCAtiRegistryService.getFraSCAti().processComposite("RestSoapProxy.composite", pctx);
+        
+        // Check the recorded exchanges
+        checkExchanges();
+    }
 
     /**
      * Check the recorded exchanges
      * @throws IOException 
      */
     public void checkExchanges() {
+        boolean none = true;
     	for(ExchangeRecord record : recordList){
+    	    none = false;
     		// TODO : now using messaging api, check that this test still works 
         	assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().getMessageContent().getContent().contains("RestSoapProxy.composite"));    		
     	}
+    	assertTrue("There should be at least one exchange after SCA service discovery", none);
     }
     
     // add a method to check the recorded exchanges in the order :

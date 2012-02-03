@@ -90,6 +90,10 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 			compositeManager.set(frascati.invoke("getCompositeManager"));
 		}	
 		frascatiClassLoader.set(frascati.invoke("getClassLoader"));
+		
+		// TODO what about a classloader delegating to nuxeo's if not found ? IMPOSSIBLE because ClassLoader.class are different on both sides
+		// frascati.setClassLoader(new DelegateClassLoader(frascati.getClassLoader(), Thread.currentThread().getCurrentClassLoader()))
+		
 		//Destroy if error
 		if(classLoaderManager.get() == null ||
 				compositeManager.get() == null || 
@@ -105,7 +109,7 @@ public class NuxeoFraSCAti implements Application, FraSCAtiServiceItf {
 		FraSCAtiCompositeItf componentParser = null;
 		
 		// first get references to the parser & our intent :
-		for(FraSCAtiCompositeItf composite : composites){	
+		for(FraSCAtiCompositeItf composite : composites){
 			
 			if("parser-intent".equals(composite.getName())){								
 				componentIntent = composite;

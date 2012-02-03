@@ -22,6 +22,8 @@ package org.easysoa.registry.frascati;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.nuxeo.frascati.api.AbstractProcessingContext;
+import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
 import org.nuxeo.frascati.api.ProcessingModeProxy;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
 import org.nuxeo.runtime.test.runner.Features;
@@ -75,10 +78,23 @@ public class FraSCAtiServiceReadScaTest {
 		
 		Assert.assertTrue(crippledComposite == null);
     }
-
+    
+    @Test
+    public void testReadSCACompositeOK() throws Exception {
+        // SCA composite file to import :
+        String scaFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
+        //File scaFile = new File(scaFilePath);
+        ParsingProcessingContext parsingPCtx = frascatiRegistryService.newParsingProcessingContext();
+        //log.debug("scaFile.toURI().toURL().toString() = " + scaFile.toURI().toURL().toString());
+        //FraSCAtiCompositeItf[] composites = frascatiRegistryService.getFraSCAti().processContribution(scaFile.toURI().toURL().toString(), parsingPCtx);
+        FraSCAtiCompositeItf[] composites = frascatiRegistryService.getFraSCAti().processContribution(scaFilePath, parsingPCtx);
+        
+        Assert.assertTrue(composites != null);
+        Assert.assertTrue(parsingPCtx.getRootComposite() != null);
+    }
 
     /** Rather here than in FraSCAtiService because only public for test purpose */
-    public Composite readComposite(URL compositeUrl, AbstractProcessingContext processingContext) 
+    private Composite readComposite(URL compositeUrl, AbstractProcessingContext processingContext) 
     		throws Exception {
   	  if (processingContext.getRootComposite() != null) {
   		  throw new Exception("Unlawful reuse of processingContext : already has a root composite "

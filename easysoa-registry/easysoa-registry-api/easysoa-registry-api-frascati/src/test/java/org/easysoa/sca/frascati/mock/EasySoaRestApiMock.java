@@ -31,7 +31,7 @@ import javax.servlet.ServletException;
 //import javax.servlet.ServletRequest;
 //import javax.servlet.ServletResponse;
 
-import org.easysoa.sca.frascati.ApiFrascatiImportServiceTest;
+import org.easysoa.sca.frascati.RestApiFrascatiImportServiceTest;
 import org.osoa.sca.annotations.Scope;
 
 /**
@@ -42,13 +42,13 @@ import org.osoa.sca.annotations.Scope;
 @Scope("COMPOSITE")
 @SuppressWarnings("serial")
 //public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestMock<ApiFrascatiImportServiceTest> {
-public class EasySoaRestApiMock extends HttpServlet implements Servlet, TestMock<ApiFrascatiImportServiceTest> {
+public class EasySoaRestApiMock extends HttpServlet implements Servlet, TestMock<RestApiFrascatiImportServiceTest> {
 
 	// Test class
-	private ApiFrascatiImportServiceTest test;
+	private RestApiFrascatiImportServiceTest test;
 
 	@Override
-	public void setTest(ApiFrascatiImportServiceTest test) {
+	public void setTest(RestApiFrascatiImportServiceTest test) {
 		System.out.println("Setting test : " + test);
 		this.test = test;
 	}

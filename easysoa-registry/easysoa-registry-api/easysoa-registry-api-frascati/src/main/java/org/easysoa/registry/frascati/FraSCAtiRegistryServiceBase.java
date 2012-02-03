@@ -28,10 +28,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
 
-import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.nuxeo.frascati.api.FraSCAtiServiceItf;
 import org.nuxeo.frascati.api.ProcessingModeProxy;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * TODO pb : now wrongly depends on Nuxeo through FraSCAtiServiceItf
@@ -42,36 +40,10 @@ import org.nuxeo.runtime.api.Framework;
 public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistryServiceItf {
 
 	private static Log log = LogFactory.getLog(FraSCAtiRegistryServiceBase.class);
-	
-	protected FraSCAtiServiceItf frascati; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti
+    
+    protected FraSCAtiServiceItf frascati; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti ??!!?????
 
 	public FraSCAtiRegistryServiceBase() {
-		// Instantiate OW2 FraSCAti.
-		/*easySOAApp = new FraSCAtiBootstrapApp();
-		easySOAApp.start();*/
-
-		// For test only
-		// Start the HttpDiscoveryProxy in Nuxeo with embedded FraSCAti
-		// does not works because NuxeoFrascati is not yet instanced ....
-		/*
-		log.debug("Trying to load Http discovery proxy !");
-		System.out.println("Trying to load Http discovery proxy !");
-		try {
-			if(easySOAApp.getFrascati() != null){
-				//easySOAApp.getFrascati().processComposite("httpDiscoveryProxy");
-				easySOAApp.getFrascati().processComposite("scaffoldingProxy");
-			} else {
-				log.debug("Unable to get FraSCAti, null returned !");
-				System.out.println("Unable to get FraSCAti, null returned !");
-			}
-		} catch (NuxeoFraSCAtiException ex) {
-			// TODO Auto-generated catch block
-			log.debug("Error catched when trying to load Http discovery proxy !", ex);
-			System.out.println("Error catched when trying to load Http discovery proxy : " + ex.getMessage());
-		}*/
-		
-	    // TODO : Disabled for release building, to uncomment when the integration of Frascati in Nuxeo will works better.
-	    //frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
 	}
 
 	/**
@@ -80,7 +52,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * @param composite the composite to get.
 	 * @return the composite.
 	 */
-	public Object getComposite(String composite) throws NuxeoFraSCAtiException {
+	public Object getComposite(String composite) throws Exception { //TODO prettier ApiException ??
 		return frascati.getComposite(composite);
 	}
 
@@ -103,7 +75,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	/**
 	 * 
 	 */
-	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws NuxeoFraSCAtiException {
+	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws Exception { //TODO prettier ApiException ??
 		return new ParsingProcessingContext(frascati.newProcessingContext(urls));
 	}
 
@@ -155,7 +127,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 			// Process the SCA composite.
 			frascati.processComposite(compositeUrl.toString(), processingContext);
 		} 
-		catch (NuxeoFraSCAtiException fe) {
+		catch (Exception fe) { // NuxeoFraSCAtiException
 			log.error("The number of checking errors is equals to " + processingContext.getErrors());
 			log.error("The number of checking warnings is equals to " + processingContext.getWarnings());
 			log.error(fe);	
@@ -180,7 +152,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * TODO pbs : processContribution() and processComposite() return null in
 	 * check mode, so has to use a separate ProcessingContext for each read (and
 	 * alter each one's classloader)
-	 * 
+	 * s
 	 * @param scaZipFile
 	 * @return
 	 */
