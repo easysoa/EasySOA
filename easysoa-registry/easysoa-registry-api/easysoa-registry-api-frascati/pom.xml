@@ -27,6 +27,8 @@
 	    <fraclet-annotations.version>3.3</fraclet-annotations.version>    
 	    <fractal-adl.version>2.3.1</fractal-adl.version>
 	    <fractal-rmi.version>0.3.6-SNAPSHOT</fractal-rmi.version>
+            <easysoa.nuxeo.version>5.5</easysoa.nuxeo.version>
+            <easysoa.nuxeo-bridge.version>5.5-SNAPSHOT</easysoa.nuxeo-bridge.version>
     </properties>
 
     <dependencies>    	
