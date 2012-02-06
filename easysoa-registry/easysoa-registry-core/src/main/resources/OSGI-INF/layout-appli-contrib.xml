@@ -15,6 +15,9 @@
         <row>
           <widget>appliimpldef_provider</widget>
         </row>
+        <row>
+          <widget>appliimpldef_referenceApp</widget>
+        </row>
       </rows>
       <widget name="appliimpldef_uiUrl" type="text">
         <labels>
@@ -37,13 +40,27 @@
           <field>app:provider</field>
         </fields>
       </widget>
+      <widget name="appliimpldef_referenceApp" type="template">
+        <labels>
+          <label mode="any">label.easysoa.appliimpldef.referenceApp</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>app:referenceApp</field>
+        </fields>
+        <properties widgetMode="view">
+          <property name="template">/widgets/document_path_link_template.xhtml</property>
+        </properties>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+       </widget>
     </layout>
-
 
     <layout name="appliimpldef_spec">
       <templates>
-        <template mode="any">/layouts/layout_easysoa_template.xhtml
-				</template>
+        <template mode="any">/layouts/layout_easysoa_template.xhtml</template>
       </templates>
       <properties mode="any">
         <property name="title">Feature specifications</property>

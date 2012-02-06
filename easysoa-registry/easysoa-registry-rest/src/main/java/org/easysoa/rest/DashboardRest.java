@@ -48,7 +48,9 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.model.Property;
 import org.nuxeo.ecm.core.api.model.PropertyException;
@@ -142,8 +144,8 @@ public class DashboardRest {
             @PathParam("serviceid") String serviceid) throws Exception {
         CoreSession session = SessionFactory.getSession(request);
         DocumentModel worskspaceServiceModel = session.getDocument(new IdRef(serviceid));
-        String referenceId = (String) worskspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
-        DocumentModel referencedServiceModel = (referenceId != null) ? session.getDocument(new IdRef(referenceId)) : null;
+        String referencePath = (String) worskspaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
+        DocumentModel referencedServiceModel = (referencePath != null) ? session.getDocument(new PathRef(referencePath)) : null;
         return getServiceEntry(session.getDocument(new IdRef(serviceid)), referencedServiceModel).toString();
     }
 
@@ -257,10 +259,12 @@ public class DashboardRest {
         DocumentModel localServiceModel = session.getDocument(new IdRef(serviceid));
         if (localServiceModel != null) {
             boolean referenceidIsNull = "null".equals(referenceid);
+            DocumentRef referenceRef = new IdRef(referenceid);
             if (referenceidIsNull || session.exists(new IdRef(referenceid))) {
-                String newReferenceId = null, newReferenceOrigin = null;
+                DocumentModel referenceModel = session.getDocument(referenceRef);
+                String newReferencePath = null, newReferenceOrigin = null;
                 if (!referenceidIsNull) {
-                    newReferenceId = referenceid;
+                    newReferencePath = referenceModel.getPathAsString();
                     newReferenceOrigin = "Manually set";
                     if (localServiceModel.getAllowedStateTransitions().contains("approve")) {
                         localServiceModel.followTransition("approve");
@@ -269,7 +273,7 @@ public class DashboardRest {
                 else if (localServiceModel.getAllowedStateTransitions().contains("backToProject")) {
                     localServiceModel.followTransition("backToProject");
                 }
-                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, newReferenceId);
+                localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, newReferencePath);
                 localServiceModel.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, newReferenceOrigin);
                 session.saveDocument(localServiceModel);
                 session.save();
@@ -342,10 +346,10 @@ public class DashboardRest {
 
     
     private DocumentModelList getLocalServices(DocumentModel environmentServiceModel, DocumentModelList workspaceServiceModels) throws ClientException {
-        String idToMatch = environmentServiceModel.getId();
+        String pathToMatch = environmentServiceModel.getPathAsString();
         DocumentModelList matchingServices = new DocumentModelListImpl();
         for (DocumentModel worskpaceServiceModel : workspaceServiceModels) {
-            if (idToMatch.equals(worskpaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE))) {
+            if (pathToMatch.equals(worskpaceServiceModel.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE))) {
                 matchingServices.add(worskpaceServiceModel);
             }
         }

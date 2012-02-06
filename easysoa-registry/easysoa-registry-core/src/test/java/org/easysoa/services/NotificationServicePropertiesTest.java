@@ -31,7 +31,8 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
 import org.easysoa.api.EasySOALocalApiFactory;
 import org.easysoa.doctypes.Service;
-import org.easysoa.services.DocumentService;
+import org.easysoa.test.StaticWebServer;
+import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,12 +56,23 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
     @Inject CoreSession session;
     
     private EasySOAApiSession api;
+    
+    private StaticWebServer server = null;
 
     @Before
     public void setUp() throws Exception {
+        server = new StaticWebServer(9010, "src/test/resources/www");
+        server.start();
         api = EasySOALocalApiFactory.createLocalApi(session);
   	  	assertNotNull("Cannot get API", api);
   	  	assertNotNull("Cannot get document service component", docService);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (server != null)  {
+            server.stop();
+        }
     }
     
     /**
@@ -105,8 +117,10 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
     @Test
     public void testFileUrl() throws Exception {
 
-    	String wsdlUrl = "http://soatest.parasoft.com/calculator.wsdl",
-    		serviceUrl = "http://ws1.parasoft.com/glue/calculator",
+        // TODO Host WSDL in a local server 
+        
+    	String wsdlUrl = "http://localhost:9010/PureAirFlowers.wsdl",
+    		serviceUrl = "http://localhost:9010/PureAirFlowers",
     		query = "SELECT * FROM Document WHERE serv:url = '"+serviceUrl+"'";
     	
     	// Create Service

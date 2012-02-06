@@ -28,6 +28,7 @@ import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.PublicationService;
+import org.easysoa.services.ServicesRootMapperService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
@@ -38,6 +39,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.runtime.api.Framework;
 
@@ -47,12 +49,12 @@ import org.nuxeo.runtime.api.Framework;
  * @author mkalam-alami
  * 
  */
-@Name("easysoaWorkspaceActions")
+@Name("easysoaEnvironmentActions")
 @Scope(ScopeType.CONVERSATION)
 @Install(precedence = Install.FRAMEWORK)
-public class WorkspaceActionsBean {
+public class EnvironmentActionsBean {
 
-    protected static final Log log = LogFactory.getLog(WorkspaceActionsBean.class);
+    protected static final Log log = LogFactory.getLog(EnvironmentActionsBean.class);
     
     @In(create = true, required = false)
     CoreSession documentManager;
@@ -96,7 +98,7 @@ public class WorkspaceActionsBean {
             // Copy applications and their contents
             DocumentModelList appsToCopy = documentManager.getChildren(currentDocModel.getRef(), AppliImpl.DOCTYPE);
             for (DocumentModel appToCopy : appsToCopy) {
-                copyRecursive(appToCopy.getRef(), newWorkspace.getRef());
+                copyRecursive(appToCopy.getRef(), appToCopy.getPathAsString(), newWorkspace.getRef());
             }
             
             documentManager.save();
@@ -107,19 +109,52 @@ public class WorkspaceActionsBean {
         
     }
     
-    private DocumentModel copyRecursive(DocumentRef from, DocumentRef toFolder) {
+    public void updateApp() throws Exception {
+
+        DocumentModel currentDocModel = navigationContext.getCurrentDocument();
+        if (currentDocModel.getType().equals(AppliImpl.DOCTYPE)) {
+
+            String referenceAppPath = (String) currentDocModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_REFERENCEAPP);
+            DocumentRef referenceAppRef = new PathRef(referenceAppPath);
+            DocumentModel referenceAppModel = documentManager.getDocument(referenceAppRef);
+            if (referenceAppModel != null) {
+                
+                // Replace all app contents by the env. ones
+                // TODO Update appli impl. by replacing documents by those from the reference environment if they are newer.
+                documentManager.removeChildren(currentDocModel.getRef());
+                DocumentModelList referenceAppChildrenModels = documentManager.getChildren(referenceAppRef);
+                for (DocumentModel referenceAppChildModel : referenceAppChildrenModels) {
+                    copyRecursive(referenceAppChildModel.getRef(), referenceAppChildModel.getPathAsString(), currentDocModel.getRef());
+                }
+                
+                // Map URLs
+                ServicesRootMapperService urlMapper = Framework.getService(ServicesRootMapperService.class);
+                urlMapper.mapUrls(documentManager, currentDocModel);
+                
+                documentManager.save();
+            }
+            
+        }
+        
+    }
+    
+    private DocumentModel copyRecursive(DocumentRef from, String fromPath, DocumentRef toFolder) {
         DocumentModel newDoc = null;
         try {
             newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
             if (Service.DOCTYPE.equals(newDoc.getType())) {
-                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, from.toString());
+                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, fromPath);
                 newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Created by copy");
                 newDoc.followTransition("approve");
                 documentManager.saveDocument(newDoc);
             }
+            else if (AppliImpl.DOCTYPE.equals(newDoc.getType())) {
+                newDoc.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_REFERENCEAPP, fromPath);
+                documentManager.saveDocument(newDoc);
+            }
             DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);
             for (DocumentModel child : children) {
-                copyRecursive(child.getRef(), newDoc.getRef());
+                copyRecursive(child.getRef(), child.getPathAsString(), newDoc.getRef());
             }
         }
         catch (Exception e) {

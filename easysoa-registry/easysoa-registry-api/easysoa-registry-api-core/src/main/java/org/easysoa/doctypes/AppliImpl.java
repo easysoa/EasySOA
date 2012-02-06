@@ -51,6 +51,7 @@ public class AppliImpl extends EasySOADoctype {
     public static final String PROP_TECHNOLOGY = "technology";
     public static final String PROP_STANDARD = "standard";
     public static final String PROP_DEPLOYABLES = "deployables";
+    public static final String PROP_REFERENCEAPP = "referenceApp";
     public static final String SUBPROP_DEPLOYABLENAME = "deployableName";
     public static final String SUBPROP_DEPLOYABLEVERSION = "deployableVersion";
     

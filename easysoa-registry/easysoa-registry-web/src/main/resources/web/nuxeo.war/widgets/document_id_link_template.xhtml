@@ -11,7 +11,7 @@
 		<c:choose>
 			<c:when test="${field != null and field != ''}">
 				<c:set var="targetDocumentQuery"
-					value="select * from Document where ecm:path = '${field}'" />
+					value="select * from Document where ecm:uuid = '${field}'" />
 				<nxu:methodResult name="queryResult"
 					value="#{documentManager.query(targetDocumentQuery)}">
 					<c:choose>
@@ -29,7 +29,7 @@
 							</nxu:methodResult>
 						</c:when>
 						<c:otherwise>
-							<i>(moved or deleted service)</i>
+							<i>(deleted service)</i>
 						</c:otherwise>
 					</c:choose>
 				</nxu:methodResult>

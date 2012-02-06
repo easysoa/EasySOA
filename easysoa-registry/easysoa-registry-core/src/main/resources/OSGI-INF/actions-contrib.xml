@@ -34,13 +34,19 @@
     </action>
 
     <!-- Workspace publication button -->
-    <action id="easysoaWorkspacePublish" link="#{easysoaWorkspaceActions.publishCurrentWorkspace}" label="label.easysoa.publishworkspace.button">
+    <action id="easysoaWorkspacePublish" link="#{easysoaEnvironmentActions.publishCurrentWorkspace}" label="label.easysoa.publishworkspace.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isWorkspace</filter-id>
     </action>
-    <action id="easysoaEnvironmentFork" link="#{easysoaWorkspaceActions.forkCurrentEnvironment}" label="label.easysoa.forkworkspace.button">
+    <action id="easysoaEnvironmentFork" link="#{easysoaEnvironmentActions.forkCurrentEnvironment}" label="label.easysoa.forkworkspace.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isSection</filter-id>
+    </action>
+    
+    <!-- AppliImpl update button -->
+    <action id="easysoaAppUpdate" link="#{easysoaEnvironmentActions.updateApp}" label="label.easysoa.updateapp.button">
+      <category>SUBVIEW_UPPER_LIST</category>
+      <filter-id>isAppliImpl</filter-id>
     </action>
 
   </extension>
@@ -62,6 +68,11 @@
     <filter id="isSection">
       <rule grant="true">
         <type>Section</type>
+      </rule>
+    </filter>
+    <filter id="isAppliImpl">
+      <rule grant="true">
+        <type>AppliImpl</type>
       </rule>
     </filter>
   </extension>

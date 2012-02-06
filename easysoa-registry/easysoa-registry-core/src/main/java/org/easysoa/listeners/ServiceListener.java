@@ -56,7 +56,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -257,8 +257,8 @@ public class ServiceListener implements EventListener {
                     doc.setProperty(SCHEMA, PROP_FILEURL, PropertyNormalizer.normalizeUrl(fileUrl));
                 }
             }
-            String referencedService = (String) doc.getProperty(SCHEMA, PROP_REFERENCESERVICE);
-            if (referencedService == null || !session.exists(new IdRef(referencedService))) {
+            String referencedServicePath = (String) doc.getProperty(SCHEMA, PROP_REFERENCESERVICE);
+            if (referencedServicePath == null || !session.exists(new PathRef(referencedServicePath))) {
                 // If no reference or missing, find new reference by correlation
                 DocumentModel newReferenceService = null;
                 ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
@@ -266,7 +266,7 @@ public class ServiceListener implements EventListener {
                 if (correlatedServices != null && !correlatedServices.isEmpty()
                         && correlatedServices.first().getCorrelationRate() > 0.9) {
                     newReferenceService = correlatedServices.first().getDocumentModel();
-                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, newReferenceService.getId());
+                    doc.setProperty(SCHEMA, PROP_REFERENCESERVICE, newReferenceService.getPathAsString());
                     doc.setProperty(SCHEMA, PROP_REFERENCESERVICEORIGIN,
                             "Automatic correlation (" + correlatedServices.first().getCorrelationRateAsPercentageString() + " match)");
                 }

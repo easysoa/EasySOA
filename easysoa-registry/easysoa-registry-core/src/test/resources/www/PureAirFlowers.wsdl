@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="PureAirFlowersServiceService" targetNamespace="http://paf.samples.easysoa.org/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://paf.samples.easysoa.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://paf.samples.easysoa.org/" version="1.0" xmlns:tns="http://paf.samples.easysoa.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="getOrdersNumber" type="tns:getOrdersNumber"/>
+<xs:element name="getOrdersNumberResponse" type="tns:getOrdersNumberResponse"/>
+<xs:complexType name="getOrdersNumber">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClientName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getOrdersNumberResponse">
+    <xs:sequence>
+      <xs:element name="ordersNumber" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getOrdersNumberResponse">
+    <wsdl:part element="tns:getOrdersNumberResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getOrdersNumber">
+    <wsdl:part element="tns:getOrdersNumber" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PureAirFlowersService">
+    <wsdl:operation name="getOrdersNumber">
+      <wsdl:input message="tns:getOrdersNumber" name="getOrdersNumber">
+    </wsdl:input>
+      <wsdl:output message="tns:getOrdersNumberResponse" name="getOrdersNumberResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PureAirFlowersServiceServiceSoapBinding" type="tns:PureAirFlowersService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getOrdersNumber">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getOrdersNumber">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getOrdersNumberResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PureAirFlowersServiceService">
+    <wsdl:port binding="tns:PureAirFlowersServiceServiceSoapBinding" name="PureAirFlowersServicePort">
+      <soap:address location="http://localhost:9010/PureAirFlowers"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

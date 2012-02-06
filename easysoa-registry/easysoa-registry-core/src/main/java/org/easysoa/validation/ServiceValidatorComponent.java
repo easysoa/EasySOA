@@ -21,7 +21,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentInstance;
@@ -228,11 +228,11 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         DocumentModel referenceModel = null;
         
         // Fetch reference service
-        String referenceId = (String) service.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
-        if (referenceId != null) {
-            DocumentRef referenceRef = new IdRef(referenceId);
+        String referencePath = (String) service.getProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE);
+        if (referencePath != null) {
+            DocumentRef referenceRef = new PathRef(referencePath);
             if (session.exists(referenceRef)) {
-                referenceModel = session.getDocument(new IdRef(referenceId));
+                referenceModel = session.getDocument(referenceRef);
                 matches.add(new CorrelationMatch(referenceModel, 1.0));
             }
         }

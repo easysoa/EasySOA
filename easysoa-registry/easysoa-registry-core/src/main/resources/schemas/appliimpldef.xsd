@@ -10,6 +10,7 @@
   <xs:element name="provider" type="xs:string" />
   <xs:element name="technology" type="xs:string" />
   <xs:element name="standard" type="xs:string" />
+  <xs:element name="referenceApp" type="xs:string" />
   
   <xs:complexType name="deployable">
     <xs:sequence>
