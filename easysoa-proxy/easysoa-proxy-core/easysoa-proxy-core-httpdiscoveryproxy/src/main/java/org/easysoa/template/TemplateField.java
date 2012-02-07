@@ -1,5 +1,21 @@
 /**
+ * EasySOA HTTP Proxy
+ * Copyright 2011 Open Wide
  * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
  */
 package org.easysoa.template;
 
@@ -21,6 +37,8 @@ public class TemplateField {
 	private TemplateFieldType paramType;
 	// Template to define the parameter position in url path (eg : /X/X/{param}/X), the first '/' represent the root of the path 
 	private int pathParamPosition;
+	// Indicate if the field have to be processed by the assertion engine
+	private boolean fieldEquality;
 	
 	public enum TemplateFieldType {
 		CONTENT_PARAM,
@@ -30,13 +48,14 @@ public class TemplateField {
 	}
 	
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public TemplateField(){
 		fieldName = "";
 		fieldType = "";
 		defaultValue = "";
 		pathParamPosition = 0;
+		setFieldEquality(true);
 	}
 
 	/**
@@ -118,5 +137,22 @@ public class TemplateField {
 	public void setPathParamPosition(int pathParamPosition) {
 		this.pathParamPosition = pathParamPosition;
 	}
+
+	/**
+     * Returns the field equality
+	 * @return true if the field have to be processed by assertion engine, false otherwise
+	 */
+    public boolean isFieldEquality() {
+        return fieldEquality;
+    }
+
+    /**
+     * Set the field equality
+     * Set to true if the field have to be processed by assertion engine, false otherwise 
+     * @param fieldEquality
+     */
+    public void setFieldEquality(boolean fieldEquality) {
+        this.fieldEquality = fieldEquality;
+    }
 	
 }

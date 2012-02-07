@@ -1,10 +1,27 @@
 /**
+ * EasySOA HTTP Proxy
+ * Copyright 2011 Open Wide
  * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
  */
 package org.easysoa.records.assertions;
 
+import org.apache.log4j.Logger;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
-
+import org.apache.commons.lang.StringUtils;
 import com.openwide.easysoa.message.OutMessage;
 
 /**
@@ -14,9 +31,10 @@ import com.openwide.easysoa.message.OutMessage;
  */
 public class StringAssertion extends AbstractAssertion {
 
+    private static final Logger testReportLogger = Logger.getLogger("testReportLogger");
+    
     // Configuration
     // Assertion algoritm to use
-    // ....
     public enum StringAssertionMethod {LENGTH, DIFF, DISTANCE_LEHVENSTEIN};
     
     private StringAssertionMethod method;
@@ -29,13 +47,24 @@ public class StringAssertion extends AbstractAssertion {
     **/
     
     /**
-     * 
+     * Default constructor using default assertion method length
      * @param id
      */
     public StringAssertion(String id) {
         super(id);
+        this.method = StringAssertionMethod.LENGTH;
     }
 
+    /**
+     * 
+     * @param id
+     * @param method
+     */
+    public StringAssertion(String id, StringAssertionMethod method) {
+        super(id);
+        this.setMethod(method);
+    }    
+    
     /**
      * 
      * @param id
@@ -63,14 +92,20 @@ public class StringAssertion extends AbstractAssertion {
     }
     
     @Override
+    /**
+     * For JSON :
+     * 
+     * For XML :
+     * 
+     */
     public void setConfiguration(String configurationString) throws IllegalArgumentException {
         // TODO : Add assertion configuration
     }    
     
     @Override
     public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage) {
-        // TODO : Never returns null 
         AssertionResult result = null;
+        testReportLogger.info("Using method : " + this.method);        
         // Call the assertion method corresponding to the configuration
         if(method.equals(StringAssertionMethod.LENGTH)){
             result = this.checkLength(originalMessage, replayedMessage);
@@ -78,9 +113,9 @@ public class StringAssertion extends AbstractAssertion {
             result = this.checkDiff(originalMessage, replayedMessage);
         } else if(method.equals(StringAssertionMethod.DISTANCE_LEHVENSTEIN)) {
             result = this.checkLehvensteinDistance(originalMessage, replayedMessage);
-        } else {
-            // TODO throw exception : assertionMethod not Found
         }
+        testReportLogger.info("Assertion result status : " + result.getResultStatus());
+        testReportLogger.info("Assertion result metrics : " + result.getMetrics());
         return result;
     }
     
@@ -92,8 +127,10 @@ public class StringAssertion extends AbstractAssertion {
         AssertionResult result;
         if(originalMessage.getMessageContent().getContent().length() == replayedMessage.getMessageContent().getContent().length()){
             result = new AssertionResult(AssertionResultStatus.OK);
+            result.setMetrics(0);
         } else {
             result = new AssertionResult(AssertionResultStatus.KO);
+            result.setMetrics(Math.abs(originalMessage.getMessageContent().getContent().length() - replayedMessage.getMessageContent().getContent().length()));
         }
         return result;
     }
@@ -103,7 +140,15 @@ public class StringAssertion extends AbstractAssertion {
      * @return
      */
     private AssertionResult checkDiff(OutMessage originalMessage, OutMessage replayedMessage){
-        AssertionResult result = new AssertionResult(AssertionResultStatus.OK);
+        AssertionResult result;
+        String diffMethodResult = StringUtils.difference(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+        if(diffMethodResult.length() == 0){
+            result = new AssertionResult(AssertionResultStatus.OK);
+            result.setMetrics(0);    
+        } else {
+            result = new AssertionResult(AssertionResultStatus.KO);
+            result.setMetrics(diffMethodResult.length());
+        }
         return result;
     }
     
@@ -113,43 +158,14 @@ public class StringAssertion extends AbstractAssertion {
      */
     private AssertionResult checkLehvensteinDistance(OutMessage originalMessage, OutMessage replayedMessage){
         AssertionResult result;
-        int ldMethodResult = lehvensteinDistance(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+        int ldMethodResult = StringUtils.getLevenshteinDistance(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(ldMethodResult == 0){
             result = new AssertionResult(AssertionResultStatus.OK);
         } else {
             result = new AssertionResult(AssertionResultStatus.KO);
-            result.setMetrics(ldMethodResult);
         }
+        result.setMetrics(ldMethodResult);
         return result;
     }
-    
-    /**
-     * Lehvenstein Distance method
-     * @param s
-     * @param t
-     * @return 
-     */
-    public static int lehvensteinDistance(String s, String t) {
-        int n = s.length();
-        int m = t.length();
-     
-        if (n == 0) return m;
-        if (m == 0) return n;
-     
-        int[][] d = new int[n + 1][m + 1];
-     
-        for ( int i = 0; i <= n; d[i][0] = i++ );
-        for ( int j = 1; j <= m; d[0][j] = j++ );
-     
-        for ( int i = 1; i <= n; i++ ) {
-            char sc = s.charAt( i-1 );
-            for (int j = 1; j <= m;j++) {
-                int v = d[i-1][j-1];
-                if ( t.charAt( j-1 ) !=  sc ) v++;
-                d[i][j] = Math.min( Math.min( d[i-1][ j] + 1, d[i][j-1] + 1 ), v );
-            }
-        }
-        return d[n][m];
-    }    
     
 }
