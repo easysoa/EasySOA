@@ -35,6 +35,9 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.StoreCollection;
+import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.records.assertions.StringAssertion;
+import org.easysoa.records.assertions.StringAssertion.StringAssertionMethod;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
@@ -183,6 +186,14 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 				outMessage = requestForwarder.send(record.getInMessage());
 				logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
 				logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
+				// Assertion Engine
+                // TODO : make the assertion engine call configurable
+				// How to change the type of used assertion ?
+				StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
+                assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
+				AssertionEngine engine = new AssertionEngine();
+				engine.executeAssertion(assertion, record.getOutMessage(), outMessage);
+				// End
 				responseBuffer.append(outMessage.getMessageContent().getContent());
 			}
 		}
@@ -261,6 +272,14 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 				RequestForwarder requestForwarder = new RequestForwarder();
 				OutMessage outMessage = requestForwarder.send(customInMessage);
 				
+                // Assertion Engine
+                // TODO : make the assertion engine call configurable				
+                StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
+                assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
+                AssertionEngine engine = new AssertionEngine();
+                engine.executeAssertion(assertion, record.getOutMessage(), outMessage);
+                // End				
+				
 				// TODO : returns only the message content, maybe it's a good idea to return the complete out message
 				return outMessage.getMessageContent().getContent();
 			}
@@ -285,7 +304,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 			for(CustomParamSetter paramSetter : paramSetterList){
 				if(paramSetter.isOkFor(templateField)){
 					paramSetter.setParam(templateField, inMessage, mapParams);
-				}				
+				}
 			}
 		}
 	}

@@ -40,6 +40,8 @@ import org.osoa.sca.annotations.Remotable;
 @Remotable
 public interface ExchangeReplayService {
 	
+    // TODO : add a method to execute or not the assertion engine when a replay method is called
+    
 	@GET
 	@Path("/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

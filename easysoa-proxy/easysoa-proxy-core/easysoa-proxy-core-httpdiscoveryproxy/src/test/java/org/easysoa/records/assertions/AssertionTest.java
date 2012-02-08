@@ -35,6 +35,9 @@ import com.openwide.easysoa.message.OutMessage;
  */
 public class AssertionTest {
 
+    /**
+     * Technical test for assertion engine
+     */
     @Test
     public void stringAssertionTest(){
         

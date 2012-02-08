@@ -259,6 +259,6 @@ public class RequestForwarder {
 	 */
 	public void setForwardHttpSocketTimeoutMs(int forwardHttpSocketTimeoutMs) {
 		this.forwardHttpSocketTimeoutMs = forwardHttpSocketTimeoutMs;
-	}	
+	}
 	
 }

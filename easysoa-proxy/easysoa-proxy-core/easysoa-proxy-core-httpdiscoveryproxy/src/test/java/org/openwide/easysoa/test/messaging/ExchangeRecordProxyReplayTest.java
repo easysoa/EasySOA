@@ -60,7 +60,11 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeRecordProxyReplayTest.class.getName());
-	
+
+	/**
+	 * Clean old test files, start FraSCAti, start the HTTP discovery proxy and the mock services
+	 * @throws FrascatiException
+	 */
 	@BeforeClass
 	public static void setUp() throws FrascatiException {
 		// clean the old exchange records files
@@ -74,6 +78,16 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	}	
 
 	/**
+	 * Functional test for HTTP Discovery proxy, run manager and exchange record store manager with replay
+	 * 
+	 * Scenario :
+	 * - User starts a new run
+	 * - User sends several REST request from Twitter sample
+	 * - User stop, save and delete the run to obtain an exchange store
+	 * - User get the list of exchange store
+	 * - User get data about an exchange record
+	 * - User replay several exchange record
+	 * 
 	 * This test works with the twitter mock (REST exchanges)
 	 * @throws Exception
 	 */
@@ -154,6 +168,17 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	}
 	
 	/**
+    /**
+     * Functional test for HTTP Discovery proxy, run manager and exchange record store manager with replay
+     * 
+     * Scenario :
+     * - User starts a new run
+     * - User sends several SOAP request from Meteo sample
+     * - User stop, save and delete the run to obtain an exchange store
+     * - User get the list of exchange store
+     * - User get data about an exchange record
+     * - User replay several exchange record
+     *
 	 * This test works with the Meteo mock (SOAP WSDL exchanges)
 	 * @throws Exception
 	 */
@@ -223,15 +248,15 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
 			// Compare the replayed exchange with the original exchange
 			assertEquals(record.getOutMessage().getMessageContent().getContent(), outMessage.getMessageContent().getContent());
-		}		
+		}
 		
 	}
 	
 	/**
-	 * This test do nothing, just wait for a user action to stop the proxy. 
-	 * @throws ClientException
-	 * @throws SOAPException
-	 * @throws IOException
+	 * Technical test. 
+	 * This test do nothing, just wait for a user action to stop the proxy.
+	 * 
+	 * @throws Exception If a problem occurs
 	 */
 	@Test
 	@Ignore
@@ -240,7 +265,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		// Just push a key in the console window to stop the test
 		System.in.read();
 		logger.info("ExchangeRecordProxyReplayTest stopped !");
-	}	
+	}
 	
     /**
      * Stop FraSCAti components

@@ -58,6 +58,10 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 
 	// TODO : update to test list and replay services
 
+	/**
+	 * Start FraSCAti and mock services
+	 * @throws FrascatiException
+	 */
 	@Before
 	public void setUp() throws FrascatiException{
 		// Start fraSCAti
@@ -67,6 +71,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 	}
 	
 	/**
+	 * Technical test
 	 * Test the Exchange record API without proxy 
 	 * @throws Exception If a problem occurs
 	 */

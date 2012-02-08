@@ -28,11 +28,14 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
+import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggester;
+import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.TemplateProcessorRendererItf;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mortbay.log.Log;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
@@ -52,6 +55,10 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	// Logger
 	private static Logger logger = Logger.getLogger(TemplateTest.class.getName());
 
+	/**
+	 * Start FraSCAti, HTTP discovery proxy and mock services
+	 * @throws FrascatiException If a problem occurs
+	 */
 	@BeforeClass
 	public static void setUp() throws FrascatiException{
 		// Start fraSCAti
@@ -67,13 +74,19 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	}
 	
 	/**
+	 * Technical test
+	 * 
+	 * - Get the form generated from an exchange record
+	 * - Check that the form contains required fields
+	 * - Send a simulated post request with custom form values
+	 * 
 	 * ReplayTemplateWithDefaultValue : Use the replayTemplate.html velocity HTML template to build a form.
 	 * Only with REST Exchanges
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
 	@Test
-	@Ignore
+	//@Ignore
 	public void replayTemplateWithDefaultValue() throws ClientProtocolException, IOException{
 		// TODO : Complete this test with 4 kinds of parameters : formParams, pathParams, QueryParams, WSDLParams
 		
@@ -110,11 +123,20 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	}
 
 	/**
+     * Functional test for the template engine (working with the ServletImplementationVelocity solution)
+     * 
+     * Scenario :
+     * - Start a new run
+     * - Send Twitter mock request (REST)
+     * - Stop, save and delete the run
+     * - Get a list of exchange records corresponding to the run
+     * - For each record, call the template engine to build and replay the template 
+	 * 
 	 * TemplateFieldSuggester test with REST Exchanges 
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
+	//@Ignore
 	public void templateFieldSuggesterRestTest() throws Exception {
 
 		String runName = "TweeterRestTestRun";
@@ -161,7 +183,6 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	
 		// Get the exchange record list for the run
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
-
 		// Get the template renderer
 		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 
@@ -171,22 +192,32 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
-			// Build the templates with suggested fields
+		    // Build the templates with suggested fields
 			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record, runName);
 			// Render the templates and replay the request
 			if(templateFileMap != null){
-				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, runName, fieldMap));
+			    String replayedResponse = processor.renderReq(templateFileMap.get("reqTemplate"), record, runName, fieldMap);
+				logger.debug("returned message form replayed template : " + replayedResponse);
 				// TODO : call the renderRes method for server mock test
 			}
 		}
 	}
 	
 	/**
+	 * Functional test for the template engine (working with the ServletImplementationVelocity solution)
+	 * 
+	 * Scenario :
+	 * - Start a new run
+	 * - Send meteo mock request (SOAP)
+	 * - Stop, save and delete the run
+	 * - Get a list of exchange records corresponding to the run
+	 * - For each record, call the template engine to build and replay the template
+	 * 
 	 * TemplateFieldSuggester test with SOAP Exchanges 
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
+	//@Ignore
 	public void templateFieldSuggesterSOAPTest() throws Exception {	
 		
 		String runName = "MeteoSoapTestRun";
@@ -236,9 +267,37 @@ public class TemplateTest extends AbstractProxyTestStarter {
 				logger.debug("returned message form replayed template : " + processor.renderReq(templateFileMap.get("reqTemplate"), record, runName, fieldMap));
 				// TODO : call the renderRes method for server mock test
 			}
-		}		
+		}
 	}
-		
+
+	/**
+	 * Test the integration between assertion engine and suggested fields (with fieldEqualize attribute)
+	 * @throws Exception
+	 */
+	@Test
+	public void assertionEngineWithSuggestionfieldTest() throws Exception {
+	    
+	    // Launch a replay, and compare for each field with fieldEquality tag 
+	    // set to true the replayed value with the original value
+	    
+	    // Use the .fld's files generated by the previous test to launch assertions
+	    String runName = "TweeterRestTestRun";
+	    String fileName = "fieldSuggestions_";
+	    ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
+	    fileStore.setStorePath("target/classes/webContent/templates/");
+	    // test only the first fields
+	    for(int i=1; i<3; i++){
+    	    TemplateFieldSuggestions templateFieldSuggestions = fileStore.getTemplateFieldSuggestions(runName, fileName+i);
+    	    for(TemplateField templateField : templateFieldSuggestions.getTemplateFields()) {
+    	        if(templateField.isFieldEquality()){
+    	            Log.debug("FieldName : " + templateField.getFieldName() + ", FieldValue : " + templateField.getDefaultValue());
+    	            
+    	            // TODO : complete the test to launch
+    	        }
+    	    }
+	    }
+	}
+	
 	/**
 	 * This test do nothing, just wait for a user action to stop the proxy. 
 	 * @throws ClientException
