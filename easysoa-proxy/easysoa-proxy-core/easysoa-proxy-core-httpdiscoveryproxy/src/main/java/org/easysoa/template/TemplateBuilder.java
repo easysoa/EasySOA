@@ -36,14 +36,15 @@ public class TemplateBuilder {
 	}
 	
 	/**
-	 * Generate templates for request and response part of an exchange record 
+	 * Generate templates for request and response part of an exchange record
+	 * store in the template store : a customized record AND a velocity macro template 
 	 * @param fieldSuggestions Fields to replace by template expressions (Velocity expression in this case)
 	 * @param record The exchange record to templatize
 	 * @param runName The store name to save the template 
-	 * @return A <code>Map</code> containing the templates for request and response.
+	 * @return a templatized record
 	 * @throws Exception If a problem occurs
 	 */
-	public Map<String, String> buildTemplate(TemplateFieldSuggestions fieldSuggestions, ExchangeRecord record, String runName) throws Exception {
+	public ExchangeRecord templatizeRecord(TemplateFieldSuggestions fieldSuggestions, ExchangeRecord record/*, String runName*/) throws Exception {
 		// What to do if the suggested fields are not found in the record InMessage ?? throws an exception, do nothing ?
 		/**
 		The TemplateBuilder applies a selection of TemplateFieldSuggestions on a record (request) 
@@ -54,7 +55,7 @@ public class TemplateBuilder {
 		if(fieldSuggestions == null || record == null){
 			throw new IllegalArgumentException("Parameters fieldSuggestions and originalRecord must not be null !");
 		}
-		Map<String, String> templateFileMap = new HashMap<String, String>();
+		//Map<String, String> templateFileMap = new HashMap<String, String>();
 		for(TemplateField field : fieldSuggestions.getTemplateFields()){
 			logger.debug("Field to replace in a new custom record : " + field.getFieldName() + " = " + field.getDefaultValue());
 			logger.debug("Field type : " + field.getParamType() + ", position in path : " + field.getPathParamPosition());
@@ -107,28 +108,40 @@ public class TemplateBuilder {
 				logger.debug("Unable to replace value for unknow field type '" + field.getParamType() + "'");
 			}
 		}
-		if(fieldSuggestions != null && fieldSuggestions.getTemplateFields().size() > 0){
+		
+		
+		/*if(fieldSuggestions != null && fieldSuggestions.getTemplateFields().size() > 0){
 			// Store the custom exchange record
-			ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
-			fileStore.setStorePath(PropertyManager.getProperty("path.template.store"));
+			//ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
+			//fileStore.setStorePath(PropertyManager.getProperty("path.template.store"));
 			try {
 				// TODO : regroup save operations in a same method in StoreManager
 				// Make a copy of the original record
-				fileStore.createStore(runName);
-				fileStore.setStorePath(PropertyManager.getProperty("path.template.store") + runName + "/");
-				fileStore.save(record);
-				templateFileMap = fileStore.save(new TemplateRecord(record));
+				//fileStore.createStore(runName);
+				//fileStore.setStorePath(PropertyManager.getProperty("path.template.store") + runName + "/");
+			    // Save customized record
+				//fileStore.save(record);
+				// templateFileMap = fileStore.saveTemplate(new TemplateRecord(record), runName);
 				// Add code to save a fld : containing field suggestions with default values
-				fileStore.save(fieldSuggestions, record.getExchange().getExchangeID());
+				//fileStore.saveFieldSuggestions(fieldSuggestions, runName, record.getExchange().getExchangeID());
 			}
 			catch(Exception ex){
 				logger.error("Unable to save the templates", ex);
 				throw ex;
 			}
 			return templateFileMap;			
-		}
+		}*/
 		// Returns null if there is not suggested fields
-		return null;
+		return record;
+	}
+
+	/**
+	 * Build Velocity template from the templatized record
+	 * @param templatizedRecord templatized record
+	 * @return A velocity template
+	 */
+	public VelocityTemplate buildTemplate(ExchangeRecord templatizedRecord){
+	    return new VelocityTemplate(templatizedRecord);
 	}
 	
 }

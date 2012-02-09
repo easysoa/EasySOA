@@ -5,6 +5,8 @@ package org.easysoa.template;
 
 import java.util.HashMap;
 
+import org.easysoa.records.replay.ExchangeReplayServiceImpl;
+
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import com.openwide.easysoa.message.CustomField;
@@ -39,8 +41,15 @@ public class TemplateExecutor {
 		classMap.put("customFieldList", CustomField.class);		
 		InMessage inMessage = (InMessage) JSONObject.toBean(jsonInMessage, InMessage.class, classMap);
 		RequestForwarder forwarder = new RequestForwarder();
-		// TODO : call the replay engine instead of the forwarder directly. We have to plug the assertion engine on the replay engine
 		OutMessage outMessage =  forwarder.send(inMessage);
+		
+		/**
+		 * 
+		 */
+        // TODO : call the replay engine instead of the forwarder directly. We have to plug the assertion engine on the replay engine		
+        //ExchangeReplayServiceImpl replayService = new ExchangeReplayServiceImpl();
+        //replayService.replay(exchangeRecordStoreName, exchangeRecordId);
+		
 		return outMessage;
 	}
 	

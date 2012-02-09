@@ -37,6 +37,8 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.template.TemplateEngine;
+import org.easysoa.template.TemplateFieldSuggestions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -94,11 +96,13 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	@Test
 	public void testReplayWithRestMessages() throws Exception {
 
+	    String testStoreName = "Test_Run";
+	    
 		DefaultHttpClient httpClient = new DefaultHttpClient();		
 		
 		// Start a new Run
-		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/Test_Run");
-		assertEquals("Run 'Test_Run' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));
+		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/" + testStoreName);
+		assertEquals("Run '" + testStoreName + "' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));
 		
 		// Get the twitter mock set and send requests to the mock through the HTTP proxy
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
@@ -130,17 +134,17 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		logger.debug("Exchange record store list response : " + entityResponseString);
-		assertTrue(entityResponseString.contains("Test_Run"));
+		assertTrue(entityResponseString.contains(testStoreName));
 		
 		// Get an exchange record
-		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/Test_Run/1");
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/" + testStoreName + "/1");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		logger.debug("Exchange record response : " + entityResponseString);
 		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));
 		
 		// get a list of recorded exchanges contained in the Test_Run folder
-		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/Test_Run");
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/" + testStoreName);
 		//logger.debug("Sending request");
 		response = httpClient.execute(httpUriRequest);
 		//logger.debug("Reading response");
@@ -153,18 +157,29 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 		
 		String originalResponse;
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Test_Run");
-		ExchangeRecord record = recordList.get(0); 
-		//for(ExchangeRecord record : recordList){
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
+
+		// Send a request to the replay service
+		for(ExchangeRecord record : recordList){
 			originalResponse = record.getOutMessage().getMessageContent().getContent();
-			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/Test_Run/" + record.getExchange().getExchangeID());
+			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/" + testStoreName + "/" + record.getExchange().getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
 			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
 			
 			// Compare the replayed exchange with the original exchange
 			assertEquals(originalResponse, entityResponseString);
-		//}
+		}
+			
+		// Get suggested fields and generate templates for each exchange record
+	    TemplateEngine templateEngine = new TemplateEngine();
+	    for(ExchangeRecord record : recordList){
+	        // suggestions
+	        TemplateFieldSuggestions fieldSuggestions = templateEngine.suggestFields(record, testStoreName, true);
+	        // templatized record
+	        templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
+	    }
+			
 	}
 	
 	/**
@@ -183,6 +198,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
+	@Ignore
 	public void testReplayWithSoapMessages() throws Exception {
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();		

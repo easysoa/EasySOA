@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
-import org.easysoa.template.TemplateRecord;
+import org.easysoa.template.VelocityTemplate;
 import com.openwide.easysoa.proxy.PropertyManager;
 import com.openwide.easysoa.run.Run;
 
@@ -46,18 +46,28 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 	// Logger
 	private static Logger logger = Logger.getLogger(ProxyExchangeRecordFileStore.class.getName());
 
+	// File extensions
 	public final static String TEMPLATE_FILE_EXTENSION = ".vm";
 	public final static String SUGGESTIONS_FILE_EXTENSION = ".fld";
+	public final static String ASSERTIONS_FILE_EXTENSION = ".asr";
+	// File name prefix
 	public final static String REQ_TEMPLATE_FILE_PREFIX = "reqTemplateRecord_";
 	public final static String RES_TEMPLATE_FILE_PREFIX = "resTemplateRecord_";
 	public final static String SUGGESTION_FILE_PREFIX = "fieldSuggestions_";
 
+	// Template path for fld and asr firle storage
+	private String templatePath;
+	//private String storePath;
+	
 	/**
 	 * Path is set with the value of 'path.record.store' property
 	 */
 	public ProxyExchangeRecordFileStore() {
 		super(PropertyManager.getProperty("path.record.store"));
-		logger.debug("exchangeRecordStore default path = " + this.path);
+	    //this.storePath = PropertyManager.getProperty("path.record.store");
+		this.templatePath = PropertyManager.getProperty("path.template.store");
+		logger.debug("Using property 'path.record.store' for record store path = " + this.path);
+		logger.debug("Using property 'path.template.store' for template store path = " + this.templatePath);
 	}
 
 	/**
@@ -68,6 +78,30 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 	    super(path);
 	}
 
+	/**
+	 * Replace the original method.
+	 * In this method 2 stores are created at the same time : Record store for original exchange records
+	 * and template store for template files, assertions files and customized exchange records
+	 */
+    @Override
+    public void createStore(String storeName) {
+        logger.debug("Creating record store folder : " + path + storeName);
+        File storeFolder = new File(path + storeName);
+        storeFolder.mkdirs();
+        logger.debug("Creating template store folder : " + templatePath + storeName);
+        File templateFolder = new File(templatePath + storeName);
+        templateFolder.mkdirs();
+    }	
+
+    /**
+     * Copy the record files form the original store to the template store
+     * @param recordID
+     * @param storeName
+     */
+    public void makeCopyOfExchangeRecord(String recordID, String storeName){
+        
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -77,23 +111,26 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
     public void save(Run run) throws Exception {
         // Create the run folder
         logger.debug("Path to store run = " + path + run.getName());
+        // Create the store folder
         createStore(run.getName());
+        // Create in the same time the template folder
+        
         for (ExchangeRecord record : run.getExchangeRecordList()) {
             save(record, path + run.getName() + "/");
         }
     }	
 	
 	/**
-	 * Save field suggestions
+	 * Save field suggestions in a fld file
 	 * @param templateFieldSuggestions
 	 * @param recordID
 	 * @throws IOException
 	 */
-	public void save(TemplateFieldSuggestions templateFieldSuggestions, String recordID) throws IOException {
-		File runFolder = new File(path);
-		runFolder.mkdir();
+	public void saveFieldSuggestions(TemplateFieldSuggestions templateFieldSuggestions, String storeName, String recordID) throws IOException {
+		//File runFolder = new File(templatePath);
+		//runFolder.mkdir();
 		String fieldSuggestFileName = SUGGESTION_FILE_PREFIX + recordID + SUGGESTIONS_FILE_EXTENSION;
-		File fieldSuggestFile = new File(path + fieldSuggestFileName);
+		File fieldSuggestFile = new File(templatePath + storeName + "/" + fieldSuggestFileName);
 		FileWriter fieldSuggestFw = new FileWriter(fieldSuggestFile);
 		try{
 			JSONObject fieldSuggestJSON = JSONObject.fromObject(templateFieldSuggestions);
@@ -104,19 +141,29 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 		}
 	}
 	
+	/**
+	 * Save a customized ExchangeRecord in the template store
+	 * @param record
+	 * @param storeName
+	 * @throws Exception 
+	 */
+	public void saveCustomRecord(ExchangeRecord record, String storeName) throws Exception{
+	    this.save(record, templatePath + storeName + "/");
+	}
+	
     /**
      * Save a template record
      * @param templateRecord The template record to save
      * @throws IOException If a problem occurs
      */
-    public Map<String, String> save(TemplateRecord templateRecord) throws IOException {
+    public Map<String, String> saveTemplate(VelocityTemplate templateRecord, String storeName) throws IOException {
         HashMap<String, String> templateFileMap = new HashMap<String, String>();
-        File runFolder = new File(path);
-        runFolder.mkdir();
+        /*File runFolder = new File(path);
+        runFolder.mkdir();*/
         String reqTemplateFileName = REQ_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
         String resTemplateFileName = RES_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
-        File reqTemplateRecordFile = new File(path + reqTemplateFileName);
-        File resTemplateRecordFile = new File(path + resTemplateFileName);
+        File reqTemplateRecordFile = new File(templatePath + "/" + storeName + "/" + reqTemplateFileName);
+        File resTemplateRecordFile = new File(templatePath + "/" + storeName + "/" + resTemplateFileName);
         FileWriter reqTemplateFw = new FileWriter(reqTemplateRecordFile);
         FileWriter resTemplateFw = new FileWriter(resTemplateRecordFile);
         try{

@@ -78,19 +78,6 @@ public class TemplateFieldSuggester {
 	}
 	
 	/**
-	 * Suggest fields to use in a template from a whole exchange record store 
-	 * @param recordStore
-	 * @return
-	 */
-	public TemplateFieldSuggestions suggest(ExchangeRecordStore recordStore){
-		// from record store, for each record
-		for(ExchangeRecord record : recordStore){
-			suggest(record);
-		}
-		return null;
-	}
-	
-	/**
 	 * 
 	 * @param outMessage
 	 * @return

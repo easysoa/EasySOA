@@ -158,6 +158,8 @@ public class StringAssertion extends AbstractAssertion {
      */
     private AssertionResult checkLehvensteinDistance(OutMessage originalMessage, OutMessage replayedMessage){
         AssertionResult result;
+        // TODO : Warning here ! For long messages (more of 5 words, the treatment can be very very long.
+        // See http://fr.wikipedia.org/wiki/Distance_de_Levenshtein#Algorithme_de_Levenshtein => Maybe in this case the best solution is to use an other method or to throw an Exception
         int ldMethodResult = StringUtils.getLevenshteinDistance(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(ldMethodResult == 0){
             result = new AssertionResult(AssertionResultStatus.OK);

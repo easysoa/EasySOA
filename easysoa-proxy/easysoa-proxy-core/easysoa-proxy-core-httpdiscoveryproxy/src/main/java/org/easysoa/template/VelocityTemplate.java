@@ -11,16 +11,16 @@ import net.sf.json.JSONObject;
  * @author jguillemotte
  *
  */
-public class TemplateRecord {
+public class VelocityTemplate {
 
 	public final static String VELOCIMACRO_REQUEST_PREFIX = "#macro ( renderReq $arg0 $arg1 $arg2 )";
-	// TODO CHange the response prefix
+	// TODO Change the response prefix
 	public final static String VELOCIMACRO_RESPONSE_PREFIX = "#macro ( renderRes $arg0 $arg1 $arg2 )";
 	public final static String VELOCIMACRO_SUFFIX = "#end";
 
 	private ExchangeRecord customRecord;
 	
-	public TemplateRecord(ExchangeRecord customRecord){
+	public VelocityTemplate(ExchangeRecord customRecord){
 		this.customRecord = customRecord;
 	}
 	

@@ -155,6 +155,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     	return new StoreCollection(storeList);
 	}	
 	
+	// To replay an exchange record directly without any modifications
 	@Override
 	@Path("/replay/{exchangeRecordStoreName}/{exchangeRecordId}")
 	@Produces("application/json")
@@ -181,19 +182,31 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 			OutMessage outMessage;
 			logger.debug("records number to replay : " + recordList.size());
 			for(ExchangeRecord record : recordList){
-			// Send the request
+		    // Send the request
 				requestForwarder = new RequestForwarder();
 				outMessage = requestForwarder.send(record.getInMessage());
 				logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
 				logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
+				
 				// Assertion Engine
                 // TODO : make the assertion engine call configurable
 				// How to change the type of used assertion ?
+				
+				// Maybe the solution is to pass the pre-configured assertionEngine as parameter (implementing an 'engine' interface)
+				// and then only have to call the 'execute' method...
+				// With this solution, we can execute one or several engines in a predefined order
+				// problem : execute method and parameters .... not the same params for the differents engines ...
+				
+				// How to work with fields in fld files
+				// Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
 				StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
-                assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
+                // Problem with this method when response is big ... treatment is very very long ....
+				// Think there is a bug with this method, more of 5 minutes for a long xml string
+				//assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
 				AssertionEngine engine = new AssertionEngine();
 				engine.executeAssertion(assertion, record.getOutMessage(), outMessage);
 				// End
+				
 				responseBuffer.append(outMessage.getMessageContent().getContent());
 			}
 		}
@@ -234,7 +247,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     	return templateFieldSuggest;
 	}
 
-	// To process the replay action with the custom parameters
+	// To process the replay action with the custom parameters get form HTML generated form
 	@Override
 	@POST
 	@Path("/templates/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")

@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -27,7 +26,9 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
+import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggester;
+import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.TemplateProcessorRendererItf;
 import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
 import org.junit.BeforeClass;
@@ -216,16 +217,14 @@ public class ScenarioTest extends AbstractTestHelper {
 		
 		// For each custom record in the list
 		// TODO : seem's there is a problem here, the rendered template is the same for 2 differents cases
+		TemplateEngine templateEngine = new TemplateEngine();
 		for(ExchangeRecord record : recordList){
-			// Build the templates with suggested fields
-			Map<String, String> templateFileMap = builder.buildTemplate(suggester.suggest(record), record, runName);
+            TemplateFieldSuggestions suggestions = templateEngine.suggestFields(record, runName, true);
+            ExchangeRecord templatizedRecord = templateEngine.generateTemplate(suggestions, record, runName, true);		    
 			// Render the templates and replay the request
-			logger.debug("templateFileMap : " + templateFileMap);
-			System.out.println("templateFileMap : " + templateFileMap);
-			if(templateFileMap != null){
-				String response = processor.renderReq(templateFileMap.get("reqTemplate"), record, runName, fieldMap);
-				logger.debug("returned message from replayed template : " + response);
-				System.out.println("returned message form replayed template : " + response);
+			if(templatizedRecord != null){
+                String replayedResponse = processor.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, runName, fieldMap);
+                logger.debug("returned message form replayed template : " + replayedResponse);
 				// TODO : call the renderRes method for server mock test
 				// TODO : add an assert to check the result of the replayed templatized request
 				//assertEquals(record.getOutMessage().getMessageContent().getContent(), response);
