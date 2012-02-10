@@ -336,7 +336,7 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   
   # Copy packaging files
   puts "Copying packaging files..."
-  cp_rf FileList['packaging-files/*'], PACKAGING_OUTPUT_PATH
+  cp_r FileList['packaging-files/*'], PACKAGING_OUTPUT_PATH
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
