@@ -34,8 +34,6 @@ import static org.easysoa.doctypes.Service.PROP_URLTEMPLATE;
 import static org.easysoa.doctypes.Service.SCHEMA;
 import static org.easysoa.doctypes.Service.SCHEMA_PREFIX;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.SortedSet;
@@ -44,14 +42,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.doctypes.Service;
-import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.EventsHelper;
-import org.easysoa.services.HttpDownloaderImpl;
 import org.easysoa.services.ServiceValidationService;
+import org.easysoa.services.webparsing.WebFileParsingPoolService;
 import org.easysoa.validation.CorrelationMatch;
-import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -62,9 +58,6 @@ import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.runtime.api.Framework;
-import org.ow2.easywsdl.wsdl.WSDLFactory;
-import org.ow2.easywsdl.wsdl.api.Description;
-import org.ow2.easywsdl.wsdl.api.WSDLReader;
 
 /**
  * 
@@ -72,8 +65,6 @@ import org.ow2.easywsdl.wsdl.api.WSDLReader;
  *
  */
 public class ServiceListener implements EventListener {
-    
-    // XXX Could use some cleanup/refactoring
     
     private static Log log = LogFactory.getLog(ServiceListener.class);
 
@@ -101,137 +92,15 @@ public class ServiceListener implements EventListener {
         DocumentModel previousDoc = (DocumentModel) event.getContext().getProperties().get("previousDocumentModel");
         
         try {
-            
-            // Extract data from document
-            String title = (String) doc.getProperty("dublincore", "title");
+
             String url = (String) doc.getProperty(SCHEMA, PROP_URL);
             String fileUrl = (String) doc.getProperty(SCHEMA, PROP_FILEURL);
-            if (fileUrl == null) {
-            	fileUrl = guessFileUrl(url);
+            
+            // Extract information from attached file
+            if (fileUrl != null && (previousDoc == null || isDifferent(SCHEMA_PREFIX + PROP_FILEURL, doc, previousDoc))) {
+                WebFileParsingPoolService webFileParsingPool = Framework.getService(WebFileParsingPoolService.class);
+                webFileParsingPool.append(new URL(fileUrl), doc, "file:content", null);
             }
-
-            // Extract data from WSDL
-            if (fileUrl != null) {
-                
-                try {
-                    
-                    // Download file
-                    Blob blob = downloadBlob(fileUrl);
-                    if (blob == null && !fileUrl.equals(guessFileUrl(url))) {
-                    	blob = downloadBlob(guessFileUrl(url));
-                    }
-                    
-                    if (blob != null) {
-                        
-                        // Save WSDL blob
-                        doc.setProperty("file", "content", blob);
-                        doc.setProperty("file", "filename", ApiUrlProcessor.computeServiceTitle(fileUrl)+".wsdl");
-                        
-                        // Extract file to system for analysis
-                        File tmpFile = File.createTempFile(doc.getId(), null);
-                        blob.transferTo(tmpFile);
-                        
-                        // Analyze WSDL
-                        try {
-            
-                            WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
-                            Description desc = reader.read(tmpFile.toURI().toURL());
-            
-                            // Initialization
-                            org.ow2.easywsdl.wsdl.api.Service firstService = 
-                                (org.ow2.easywsdl.wsdl.api.Service) desc.getServices().get(0);
-                            
-                            // Namespace extraction
-                            String namespace = desc.getTargetNamespace();
-                            doc.setProperty(Service.SCHEMA, Service.PROP_WSDLNAMESPACE, namespace);
-                            
-                            // URL extraction
-                            /*Endpoint firstEndpoint = firstService.getEndpoints().get(0);
-                            url = PropertyNormalizer.normalizeUrl(firstEndpoint.getAddress());
-                            doc.setProperty(SCHEMA, PROP_URL, url);*/
-                            
-                            // Service name extraction
-                            String serviceName = firstService.getQName().getLocalPart();
-                            doc.setProperty(Service.SCHEMA, Service.PROP_WSDLSERVICENAME, serviceName);
-                            if (title == null || title.isEmpty() || title.equals(fileUrl)) {
-                                doc.setProperty("dublincore", "title", serviceName);
-                            }
-                            
-                            //// Update parent's properties
-                            
-                            // Supported protocols
-                            // FIXME Triggers infinite loops
-                            
-                           /* if (doc.getParentRef() != null) {
-                                
-                                DocumentModel apiModel = session.getDocument(doc.getParentRef());
-                                String storedProtocol = (String) apiModel.getProperty(
-                                        ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS);
-                                try {
-                                    String protocol = ((Binding) ((Endpoint) firstService.getEndpoints().get(0))
-                                            .getBinding()).getTransportProtocol();
-                                    if (storedProtocol == null || !storedProtocol.contains(protocol)) {
-                                        if (storedProtocol == null || storedProtocol.isEmpty()) {
-                                            apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS, protocol);
-                                        }
-                                        else {
-                                            apiModel.setProperty(ServiceAPI.SCHEMA, ServiceAPI.PROP_PROTOCOLS,
-                                                    storedProtocol + ", " + protocol);
-                                        }
-                                    }
-                                }
-                                catch (Exception e) {
-                                    log.warn("Failed to extract protocol from WSDL: "+e.getMessage());
-                                }
-        
-                                if (apiModel.getParentRef() != null) {
-                                        
-                                    DocumentModel appliImplModel = session.getDocument(apiModel.getParentRef());
-                                    
-                                    // Server
-                                    String existingServer = (String) appliImplModel.
-                                            getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER);
-                                    String newServer = InetAddress.getByName(
-                                                new URL(firstEndpoint.getAddress()).getHost())
-                                                .getHostAddress();
-                                    if (existingServer == null || !newServer.equals(existingServer)) {
-                                        appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER, newServer);
-                                    }
-                                    
-                                    // Provider
-                                    try {
-                                        String provider = new URL(((Endpoint) firstService.getEndpoints().get(0))
-                                                .getAddress()).getAuthority();
-                                        String existingProvider = (String) appliImplModel
-                                                .getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_PROVIDER);
-                                        if (existingProvider == null || !provider.equals(existingProvider)) {
-                                            appliImplModel.setProperty(AppliImpl.SCHEMA,
-                                                    AppliImpl.PROP_PROVIDER, provider);
-                                        }
-                                    }
-                                    catch(Exception e) {
-                                        // Nothing (authority extraction failed)
-                                    }
-                                    
-                                    session.saveDocument(appliImplModel);
-                                }
-                                
-                                session.saveDocument(apiModel);
-                            }*/
-            
-                        } catch (Exception e) {
-                            log.warn("WSDL parsing failed: " + e.getMessage());
-                        } finally {
-                            tmpFile.delete();
-                        }
-                    }
-            
-                } catch (Exception e) {
-                    log.error("Error while parsing WSDL", e);
-                }
-            }
-            
-            session.save();
             
             // Maintain properties
             if (url != null) {
@@ -331,23 +200,6 @@ public class ServiceListener implements EventListener {
 	    else {
 	        return !fromDoc.equals(fromPrevDoc);
 	    }
-    }
-
-    private Blob downloadBlob(String url) {
-        try {
-            return new HttpDownloaderImpl(new URL(url)).download().getBlob();
-        }
-        catch (IOException e) {
-            log.info("I/O Error while downloading attached WSDL '" + url + "': " + e.getMessage());
-        }
-        catch (Exception e) {
-            log.info("Failed to download attached WSDL '" + url + "': " + e.getMessage());
-        }
-        return null;
-	}
-
-	private String guessFileUrl(String url) {
-		return (url != null) ? url + "?wsdl" : null;
 	}
     
 }

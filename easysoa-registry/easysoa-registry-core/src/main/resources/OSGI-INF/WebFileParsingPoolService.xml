@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.service.WebFileParsingPoolService">
+
+  <documentation>
+    Web file parsing service & extension point
+    @author Marwane Kalam-Alami
+  </documentation>
+  
+  <require>org.easysoa.core.service.HttpDownloaderService</require>
+  
+  <implementation class="org.easysoa.services.webparsing.WebFileParsingPoolServiceImpl" />
+
+  <service>
+    <provide interface="org.easysoa.services.webparsing.WebFileParsingPoolService" />
+  </service>
+  
+  <extension-point name="parsers">
+    <object class="org.easysoa.services.webparsing.WebFileParserDescriptor" />
+  </extension-point>
+
+</component>

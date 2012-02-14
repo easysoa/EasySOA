@@ -3,6 +3,11 @@ package org.easysoa.services;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class HttpDownloaderServiceImpl implements HttpDownloaderService {
 
 	@Override
