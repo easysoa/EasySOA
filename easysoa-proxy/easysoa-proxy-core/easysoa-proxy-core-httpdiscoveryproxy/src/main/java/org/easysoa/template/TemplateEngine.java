@@ -3,8 +3,6 @@
  */
 package org.easysoa.template;
 
-import java.util.Map;
-
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 

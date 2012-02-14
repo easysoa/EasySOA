@@ -19,10 +19,12 @@
  */
 package org.easysoa.records.assertions;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
+import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.template.TemplateFieldSuggestions;
+
 import com.openwide.easysoa.message.OutMessage;
 
 /**
@@ -41,30 +43,31 @@ public class AssertionEngine implements ExecutableEngine {
     // Assertion objects must be configured in this class
     // How to store assertions to execute for a specific field, response ???
     
-    // Several assertions for a single object (length, levendstein ...)
+    // Several assertions for a single object (length, lehvenstein ...)
     // In an hashmap => id key, by default a method add to add a simple string assertion (length)
 
     // asr files to define assertions. how to generate these files
     
     // key is the field key associated to a list of assertions
     // How to do when assertion is processed on the whole response ?
-    private HashMap<String, List<Assertion>> assertionList;
+    // private HashMap<String, List<Assertion>> assertionList;
     
     /**
-     * Add an assertion in the assertion list
-     * @param assertion
+     * Suggest assertions and store them in a 'asr' file.
+     * @param fieldSuggestions 
+     * @param recordID
+     * @param storeName
+     * @return AssertionSuggestions
+     * @throws Exception If a problem occurs during the creation of the 'asr' file
      */
-    public void addAssertion(Assertion assertion){
-        
-    }
-    
-    /**
-     * Add an assertion in the assertion list for an identified field
-     * @param fieldName
-     * @param assertion
-     */
-    public void addAssertion(String fieldName, Assertion assertion){
-        
+    public AssertionSuggestions suggestAssertions(TemplateFieldSuggestions fieldSuggestions, String recordID, String storeName) throws Exception {
+        // Get assertions suggestions
+        AssertionSuggestionService assertionService = new AssertionSuggestionService();
+        AssertionSuggestions suggestions = assertionService.suggestAssertions(fieldSuggestions);
+        // Saving asr file
+        ProxyExchangeRecordFileStore fileStore = new ProxyExchangeRecordFileStore();
+        fileStore.saveAssertionSuggestions(suggestions, recordID, storeName);
+        return suggestions;
     }
     
     /**
@@ -72,12 +75,13 @@ public class AssertionEngine implements ExecutableEngine {
      * @param assertions
      * @return
      */
-    /*public Map<String, AssertionResult> executeAssertions(List<Assertion> assertionList){
-        for(Assertion assertion : assertionList){
-            //executeAssertion(assertion, originalMessage, replayedMessage);
+    public List<AssertionResult> executeAssertions(AssertionSuggestions assertionSuggestions, OutMessage originalMessage, OutMessage replayedMessage){
+        ArrayList<AssertionResult> result = new ArrayList<AssertionResult>();
+        for(Assertion assertion : assertionSuggestions.getAssertions()){
+            result.add(executeAssertion(assertion, originalMessage, replayedMessage));
         }
-        return new HashMap(); // filled for each assertion with the result "OK, KO or Maybe";
-    }*/
+        return result;
+    }
     
     /**
      * Execute one assertion
@@ -87,16 +91,6 @@ public class AssertionEngine implements ExecutableEngine {
     public AssertionResult executeAssertion(Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage){
         AssertionResult result = assertion.check(originalMessage, replayedMessage);
         return result;
-    }
-
-    @Override
-    public Object execute(Object[] params) {
-        // Get the assertion list and check each assertion
-        
-        // return the result as a list of assertion result ....
-        
-        // TODO Auto-generated method stub
-        return null;
     }
     
 }

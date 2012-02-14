@@ -31,7 +31,7 @@ public interface Assertion {
      * Returns the Assertion ID
      * @return The Assertion ID
      */
-    public String getID();    
+    public String getID();
 
     /**
      * Set assertion configuration as JSON String or XML String

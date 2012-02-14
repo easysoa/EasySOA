@@ -29,6 +29,7 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.VelocityTemplate;
@@ -54,6 +55,7 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 	public final static String REQ_TEMPLATE_FILE_PREFIX = "reqTemplateRecord_";
 	public final static String RES_TEMPLATE_FILE_PREFIX = "resTemplateRecord_";
 	public final static String SUGGESTION_FILE_PREFIX = "fieldSuggestions_";
+	public final static String ASSERTIONS_FILE_PREFIX = "assertionSuggestions_";
 
 	// Template path for fld and asr firle storage
 	private String templatePath;
@@ -185,11 +187,12 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 		@SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
 		classMap.put("templateFields", TemplateField.class);
-		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(path + storeName + "/" + fileName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
+		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(templatePath + storeName + "/" + fileName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
 	}
-	
+
 	/**
 	 * Returns the name list of the recorded templates
+	 * @param storeName Name of the store where the template are stored 
 	 * @return A <code>List</code> containing the name of the template files
 	 */
 	public List<String> getTemplateList(String storeName){
@@ -206,6 +209,40 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 			}
 		}
 		return templateFileList;
+	}
+
+	/**
+	 * Load assertion suggestions from JSON ASR file
+	 * @param storeName Name of the store where the assertion suggestions are stored
+	 * @return The Assertion suggestions
+	 * @throws Exception If a problem occurs
+	 */
+	public AssertionSuggestions getAssertionSuggestions(String storeName, String fileName) throws Exception {
+        logger.debug("loading assertion suggestions :" + fileName);
+        @SuppressWarnings("rawtypes")
+        HashMap<String, Class> classMap = new HashMap<String, Class>();
+        //classMap.put("templateFields", TemplateField.class);
+        return (AssertionSuggestions) JSONObject.toBean(readJSONFile(templatePath + storeName + "/" + fileName + ASSERTIONS_FILE_EXTENSION), AssertionSuggestions.class, classMap);	    
+	}
+	
+	/**
+	 * Save assertion suggestions
+	 * @param assertionSuggestions The assertion suggestion to save
+	 * @param recordID The record ID
+	 * @param storeName The store name where the asr file will be saved
+	 * @throws Exception If a problem occurs 
+	 */
+	public void saveAssertionSuggestions(AssertionSuggestions assertionSuggestions, String recordID, String storeName) throws Exception {
+        String assertionSuggestFileName = ASSERTIONS_FILE_PREFIX + recordID + ASSERTIONS_FILE_EXTENSION;
+        File assertionSuggestFile = new File(templatePath + storeName + "/" + assertionSuggestFileName);
+        FileWriter assertionSuggestFw = new FileWriter(assertionSuggestFile);
+        try{
+            JSONObject fieldSuggestJSON = JSONObject.fromObject(assertionSuggestions);
+            assertionSuggestFw.write(fieldSuggestJSON.toString());
+        }
+        finally{
+            assertionSuggestFw.close();
+        }	    
 	}
 
 }

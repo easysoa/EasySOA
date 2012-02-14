@@ -15,6 +15,6 @@ public interface ExecutableEngine {
     * @param params
     * @return The result of the execute method as an <code>Object</code>
     */
-   public Object execute(Object[] params);
+   //public Object execute(Object[] params);
     
 }

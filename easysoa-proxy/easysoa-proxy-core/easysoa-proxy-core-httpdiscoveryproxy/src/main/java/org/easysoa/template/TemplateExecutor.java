@@ -49,7 +49,6 @@ public class TemplateExecutor {
         // TODO : call the replay engine instead of the forwarder directly. We have to plug the assertion engine on the replay engine		
         //ExchangeReplayServiceImpl replayService = new ExchangeReplayServiceImpl();
         //replayService.replay(exchangeRecordStoreName, exchangeRecordId);
-		
 		return outMessage;
 	}
 	

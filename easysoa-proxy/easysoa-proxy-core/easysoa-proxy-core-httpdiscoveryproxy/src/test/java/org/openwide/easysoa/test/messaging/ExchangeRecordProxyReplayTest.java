@@ -25,6 +25,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.List;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -35,8 +37,15 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.records.assertions.AssertionSuggestionService;
+import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.replay.ExchangeReplayService;
+import org.easysoa.records.replay.ExchangeReplayServiceImpl;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.RecordCollection;
+import org.easysoa.records.StoreCollection;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.junit.AfterClass;
@@ -48,6 +57,8 @@ import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
+
+import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.proxy.PropertyManager;
 import com.openwide.easysoa.util.ContentReader;
@@ -96,7 +107,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	@Test
 	public void testReplayWithRestMessages() throws Exception {
 
-	    String testStoreName = "Test_Run";
+	    String testStoreName = "Twitter_Rest_Test_Run";
 	    
 		DefaultHttpClient httpClient = new DefaultHttpClient();		
 		
@@ -170,16 +181,31 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 			// Compare the replayed exchange with the original exchange
 			assertEquals(originalResponse, entityResponseString);
 		}
-			
+		
 		// Get suggested fields and generate templates for each exchange record
 	    TemplateEngine templateEngine = new TemplateEngine();
+	    AssertionEngine assertionEngine = new AssertionEngine();
+    
+	    // Create a ReplaySequencer class to organise to execution of differents engines
+	    // Add boolean variables in property file to enable or disable the execution of engines
+	    
 	    for(ExchangeRecord record : recordList){
-	        // suggestions
+	        // Field suggestions
 	        TemplateFieldSuggestions fieldSuggestions = templateEngine.suggestFields(record, testStoreName, true);
+	        // Assertions suggestions
+	        AssertionSuggestions assertionSuggestions = assertionEngine.suggestAssertions(fieldSuggestions, record.getExchange().getExchangeID(), testStoreName);
 	        // templatized record
 	        templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
+	        // Replaying records
+	        ExchangeReplayService replayService = new ExchangeReplayServiceImpl();
+	        OutMessage replayedMessage = new OutMessage();
+	        MessageContent replayedMessageContent = new MessageContent();
+	        replayedMessage.setMessageContent(replayedMessageContent);
+	        replayedMessageContent.setContent(replayService.replay(testStoreName, record.getExchange().getExchangeID()));
+	        // Executing assertions
+            assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);	        
 	    }
-			
+
 	}
 	
 	/**
@@ -198,14 +224,16 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
+	//@Ignore
 	public void testReplayWithSoapMessages() throws Exception {
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();		
 		
+		String testStoreName = "Meteo_WSDL_TestRun";
+		
 		// Start a new Run
-		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/Meteo_WSDL_TestRun");
-		assertEquals("Run 'Meteo_WSDL_TestRun' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));		
+		HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/" + testStoreName);
+		assertEquals("Run '" + testStoreName + "' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));		
 
 		// Set the discovery proxy
 		System.setProperty("http.proxyHost", "localhost");
@@ -239,17 +267,17 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		logger.info("Exchange record store list response : " + entityResponseString);
-		assertTrue(entityResponseString.contains("Meteo_WSDL_TestRun"));
+		assertTrue(entityResponseString.contains(testStoreName));
 		
 		// Get an exchange record
-		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/Meteo_WSDL_TestRun/1");
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/" + testStoreName + "/1");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 		logger.info("Exchange record response : " + entityResponseString);
 		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));		
 		
 		// get a list of recorded exchanges contained in the Test_Run folder
-		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/Meteo_WSDL_TestRun");
+		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordList/" + testStoreName);
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
 
@@ -257,7 +285,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		logger.debug("Calling Replay service ...");
 		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 		// Check the results
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist("Meteo_WSDL_TestRun");
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
 		for(ExchangeRecord record : recordList){
 			RequestForwarder forwarder = new RequestForwarder();
 			OutMessage outMessage = forwarder.send(record.getInMessage());
@@ -265,6 +293,29 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 			// Compare the replayed exchange with the original exchange
 			assertEquals(record.getOutMessage().getMessageContent().getContent(), outMessage.getMessageContent().getContent());
 		}
+		
+        // Get suggested fields and generate templates for each exchange record
+        TemplateEngine templateEngine = new TemplateEngine();
+        AssertionEngine assertionEngine = new AssertionEngine();
+        // Create a ReplaySequencer class to organise to execution of differents engines
+        // Add boolean variables in property file to enable or disable the execution of engines
+        
+        for(ExchangeRecord record : recordList){
+            // Field suggestions
+            TemplateFieldSuggestions fieldSuggestions = templateEngine.suggestFields(record, testStoreName, true);
+            // Assertions suggestions
+            AssertionSuggestions assertionSuggestions = assertionEngine.suggestAssertions(fieldSuggestions, record.getExchange().getExchangeID(), testStoreName);
+            // templatized record
+            templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
+            // Replaying records
+            ExchangeReplayService replayService = new ExchangeReplayServiceImpl();
+            OutMessage replayedMessage = new OutMessage();
+            MessageContent replayedMessageContent = new MessageContent();
+            replayedMessage.setMessageContent(replayedMessageContent);
+            replayedMessageContent.setContent(replayService.replay(testStoreName, record.getExchange().getExchangeID()));
+            // Executing assertions
+            assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);           
+        }		
 		
 	}
 	

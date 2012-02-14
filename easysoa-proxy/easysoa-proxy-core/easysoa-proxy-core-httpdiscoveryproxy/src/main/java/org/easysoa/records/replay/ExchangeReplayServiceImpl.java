@@ -36,6 +36,7 @@ import org.easysoa.records.RecordCollection;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.StringAssertion;
 import org.easysoa.records.assertions.StringAssertion.StringAssertionMethod;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
