@@ -116,7 +116,7 @@ define 'easysoa', :base_dir => '../' do
         
         puts "===== FraSCAti libs - Deploying to '" + NUXEO_PATH + "' ====="
         puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar']
-        puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar']
+        puts "(+ " + FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'].to_a().length().to_s() + " FraSCAti libs)";
         cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar'], NUXEO_PATH + '/lib'
         cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'], NUXEO_PATH + '/lib'
         
