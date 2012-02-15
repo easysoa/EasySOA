@@ -448,10 +448,22 @@
 	</build>
     
     <repositories>
-        <repository>
+		<!-- For FraSCAti continious integration repository -->
+		<repository>
+			<id>frascati-repo</id>
+			<name>FraSCAti Nexus repository</name>
+			<url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+        <!--<repository>
             <id>FraSCAti - INRIA Repository</id>
             <url>https://frascati-repo.inria.fr/nexus/content/groups/public/</url>
-        </repository>
+        </repository>-->
         <repository>
             <id>FraSCAti Release - INRIA Repository - Nuxeo miror to avoid https issues</id>
             <url>https://maven.nuxeo.org/nexus/content/groups/thirdparty-releases/</url>

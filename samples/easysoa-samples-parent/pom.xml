@@ -31,6 +31,18 @@
 			<name>Frascati repository</name>
 			<url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
 		</repository>
+		<!-- For FraSCAti continious integration repository -->
+		<repository>
+			<id>frascati-repo</id>
+			<name>FraSCAti Nexus repository</name>
+			<url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 		<!-- For ?? -->		
 		<repository>
 			<id>Download.java.net</id>
