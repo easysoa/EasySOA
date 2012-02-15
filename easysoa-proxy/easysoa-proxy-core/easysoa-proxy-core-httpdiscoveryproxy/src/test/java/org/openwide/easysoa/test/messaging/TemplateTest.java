@@ -29,6 +29,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateEngine;
+import org.easysoa.template.TemplateEngineImpl;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggester;
 import org.easysoa.template.TemplateFieldSuggestions;
@@ -191,7 +192,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		HashMap<String, String> fieldMap = new HashMap<String, String>();
 		fieldMap.put("user", "toto");
 		
-		TemplateEngine templateEngine = new TemplateEngine();
+		TemplateEngine templateEngine = new TemplateEngineImpl();
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
 		    TemplateFieldSuggestions suggestions = templateEngine.suggestFields(record, runName, true);
@@ -260,7 +261,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		HashMap<String, String> fieldMap = new HashMap<String, String>();
 		fieldMap.put("user", "toto");
 		
-		TemplateEngine templateEngine = new TemplateEngine();
+		TemplateEngine templateEngine = new TemplateEngineImpl();
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
 	        TemplateFieldSuggestions suggestions = templateEngine.suggestFields(record, runName, true);

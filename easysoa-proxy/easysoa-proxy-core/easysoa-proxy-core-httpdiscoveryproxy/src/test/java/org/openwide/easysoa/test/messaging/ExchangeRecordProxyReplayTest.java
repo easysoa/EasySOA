@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -38,6 +39,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.records.assertions.AssertionEngineImpl;
 import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
@@ -47,6 +49,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.template.TemplateEngine;
+import org.easysoa.template.TemplateEngineImpl;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -183,8 +186,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		}
 		
 		// Get suggested fields and generate templates for each exchange record
-	    TemplateEngine templateEngine = new TemplateEngine();
-	    AssertionEngine assertionEngine = new AssertionEngine();
+	    TemplateEngine templateEngine = new TemplateEngineImpl();
+	    AssertionEngine assertionEngine = new AssertionEngineImpl();
     
 	    // Create a ReplaySequencer class to organise to execution of differents engines
 	    // Add boolean variables in property file to enable or disable the execution of engines
@@ -201,7 +204,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	        OutMessage replayedMessage = new OutMessage();
 	        MessageContent replayedMessageContent = new MessageContent();
 	        replayedMessage.setMessageContent(replayedMessageContent);
-	        replayedMessageContent.setContent(replayService.replay(testStoreName, record.getExchange().getExchangeID()));
+	        Map<String, OutMessage> resultMap= replayService.replay(testStoreName, record.getExchange().getExchangeID());
+	        replayedMessageContent.setContent(resultMap.get(record.getExchange().getExchangeID()).getMessageContent().getContent());
 	        // Executing assertions
             assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);	        
 	    }
@@ -295,8 +299,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		}
 		
         // Get suggested fields and generate templates for each exchange record
-        TemplateEngine templateEngine = new TemplateEngine();
-        AssertionEngine assertionEngine = new AssertionEngine();
+        TemplateEngine templateEngine = new TemplateEngineImpl();
+        AssertionEngine assertionEngine = new AssertionEngineImpl();
         // Create a ReplaySequencer class to organise to execution of differents engines
         // Add boolean variables in property file to enable or disable the execution of engines
         
@@ -312,7 +316,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
             OutMessage replayedMessage = new OutMessage();
             MessageContent replayedMessageContent = new MessageContent();
             replayedMessage.setMessageContent(replayedMessageContent);
-            replayedMessageContent.setContent(replayService.replay(testStoreName, record.getExchange().getExchangeID()));
+            Map<String, OutMessage> resultMap= replayService.replay(testStoreName, record.getExchange().getExchangeID());
+            replayedMessageContent.setContent(resultMap.get(record.getExchange().getExchangeID()).getMessageContent().getContent());
             // Executing assertions
             assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);           
         }		

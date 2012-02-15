@@ -27,6 +27,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateEngine;
+import org.easysoa.template.TemplateEngineImpl;
 import org.easysoa.template.TemplateFieldSuggester;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.TemplateProcessorRendererItf;
@@ -217,7 +218,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		
 		// For each custom record in the list
 		// TODO : seem's there is a problem here, the rendered template is the same for 2 differents cases
-		TemplateEngine templateEngine = new TemplateEngine();
+		TemplateEngine templateEngine = new TemplateEngineImpl();
 		for(ExchangeRecord record : recordList){
             TemplateFieldSuggestions suggestions = templateEngine.suggestFields(record, runName, true);
             ExchangeRecord templatizedRecord = templateEngine.generateTemplate(suggestions, record, runName, true);		    

@@ -35,6 +35,7 @@
 			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
 			<frascati:binding.rest uri="http://localhost:8086/" />
 		</sca:service>
+		<sca:reference name="replayEngine" target="replayEngineComponent" />
 	</sca:component>
 
 	<!-- Client UI for RunManager and Exchange store, Works with velocity -->
@@ -105,6 +106,30 @@
 			<sca:interface.java interface="com.openwide.easysoa.esper.EsperEngine" />
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.esper.EsperEngineImpl" />
+	</sca:component>
+	
+	<!-- Exchange replay service -->
+	<sca:component name="replayEngineComponent">
+		<sca:service name="replayEngineService">
+			<sca:interface.java interface="org.easysoa.records.replay.ReplayEngine" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.records.replay.ReplayEngineImpl" />
+	</sca:component>
+	
+	<!-- Template engine -->
+	<sca:component name="templateEngineComponent">
+		<sca:service name="templateEngineService">
+			<sca:interface.java interface="org.easysoa.template.TemplateEngine" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.template.TemplateEngineImpl" />
+	</sca:component>
+		
+	<!-- Assertion engine -->
+	<sca:component name="assertionEngineComponent">
+		<sca:service name="assertionEngineService">
+			<sca:interface.java interface="org.easysoa.records.assertions.AssertionEngine" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.records.assertions.AssertionEngineImpl" />
 	</sca:component>
 
 </sca:composite>

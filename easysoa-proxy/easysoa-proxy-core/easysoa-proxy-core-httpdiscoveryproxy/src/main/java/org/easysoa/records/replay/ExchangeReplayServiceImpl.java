@@ -20,8 +20,9 @@
 package org.easysoa.records.replay;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -33,10 +34,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
-import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.assertions.AssertionEngine;
-import org.easysoa.records.assertions.AssertionSuggestionService;
+import org.easysoa.records.assertions.AssertionEngineImpl;
 import org.easysoa.records.assertions.StringAssertion;
 import org.easysoa.records.assertions.StringAssertion.StringAssertionMethod;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
@@ -47,6 +47,7 @@ import org.easysoa.template.setters.RestFormParamSetter;
 import org.easysoa.template.setters.RestPathParamSetter;
 import org.easysoa.template.setters.RestQueryParamSetter;
 import org.easysoa.template.setters.WSDLParamSetter;
+import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
@@ -81,12 +82,16 @@ import com.openwide.easysoa.util.RequestForwarder;
 @Scope("composite")
 public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	
+    // SCA Reference to replay engine
+    @Reference
+    public ReplayEngine replayEngine;
+    
 	// Logger
 	private static Logger logger = Logger.getLogger(ExchangeReplayServiceImpl.class.getName());	
 	
 	// TODO Enable the environment data
 	// Running environment
-	private String environment;
+	//private String environment;
 	
 	// Param setter list
 	private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();
@@ -106,35 +111,16 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@GET
 	@Path("/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) {
-		logger.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
-    	List<ExchangeRecord> recordList;
-		try {
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-			recordList = erfs.getExchangeRecordlist(exchangeRecordStoreName);
-		} catch (Exception ex) {
-			logger.error("An error occurs during the listing of exchanges records", ex);
-			recordList = new ArrayList<ExchangeRecord>();
-		}
-		logger.debug("recordedList size = " + recordList.size());
-		return new RecordCollection(recordList);
+	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) throws Exception {
+	    return replayEngine.getExchangeRecordlist(exchangeRecordStoreName);
 	}
 
 	@Override
 	@GET
 	@Path("/getExchangeRecord/{storeName}/{exchangeID}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) {
-		logger.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
-    	ExchangeRecord record = null;
-		try {
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-			record = erfs.load(exchangeRecordStoreName, exchangeID);
-		} 
-		catch (Exception ex) {
-			logger.error("An error occurs during the list");
-		}
-		return record;
+	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) throws Exception {
+	    return replayEngine.getExchangeRecord(exchangeRecordStoreName, exchangeID);
 	}
 	
 	
@@ -142,86 +128,20 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@GET
 	@Path("/getExchangeRecordStorelist")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public StoreCollection getExchangeRecordStorelist() {
-		logger.debug("getExchangeRecordStorelist method called ...");
-    	List<ExchangeRecordStore> storeList;
-    	try{
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-    		storeList = erfs.getExchangeRecordStorelist();
-    	}
-    	catch(Exception ex){
-			logger.error("An error occurs during the listing of exchanges record stores", ex);
-			storeList = new ArrayList<ExchangeRecordStore>();    		
-    	}
-    	return new StoreCollection(storeList);
-	}	
+	public StoreCollection getExchangeRecordStorelist() throws Exception {
+	    return replayEngine.getExchangeRecordStorelist();
+	}
 	
 	// To replay an exchange record directly without any modifications
 	@Override
 	@Path("/replay/{exchangeRecordStoreName}/{exchangeRecordId}")
 	@Produces("application/json")
-	public String replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) {
-		// call remote service using chosen record :
-		// see how to share monit.forward(Message) code (extract it in a Util class), see also scaffolder client
-		// NB. without correlated asserts, test on response are impossible,
-		// however diff is possible (on server or client)
-		// ex. on server : http://code.google.com/p/java-diff-utils/
-		logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
-		
-		StringBuffer responseBuffer = new StringBuffer();    	
-		try {
-			Collection<ExchangeRecord> recordList;
-		    ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-			// get the record
-			if(exchangeRecordId==null || "".equals(exchangeRecordId)){
-				recordList = getExchangeRecordlist(exchangeRecordStoreName).getRecords();
-			} else {
-				recordList = new ArrayList<ExchangeRecord>();
-				recordList.add(erfs.load(exchangeRecordStoreName, exchangeRecordId));			
-			}
-			RequestForwarder requestForwarder;
-			OutMessage outMessage;
-			logger.debug("records number to replay : " + recordList.size());
-			for(ExchangeRecord record : recordList){
-		    // Send the request
-				requestForwarder = new RequestForwarder();
-				outMessage = requestForwarder.send(record.getInMessage());
-				logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
-				logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
-				
-				// Assertion Engine
-                // TODO : make the assertion engine call configurable
-				// How to change the type of used assertion ?
-				
-				// Maybe the solution is to pass the pre-configured assertionEngine as parameter (implementing an 'engine' interface)
-				// and then only have to call the 'execute' method...
-				// With this solution, we can execute one or several engines in a predefined order
-				// problem : execute method and parameters .... not the same params for the differents engines ...
-				
-				// How to work with fields in fld files
-				// Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
-				StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
-                // Problem with this method when response is big ... treatment is very very long ....
-				// Think there is a bug with this method, more of 5 minutes for a long xml string
-				//assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
-				AssertionEngine engine = new AssertionEngine();
-				engine.executeAssertion(assertion, record.getOutMessage(), outMessage);
-				// End
-				
-				responseBuffer.append(outMessage.getMessageContent().getContent());
-			}
-		}
-		catch(Exception ex){
-			responseBuffer.append("A problem occurs during the replay, see logs for more informations !");
-			ex.printStackTrace();
-			logger.error("A problem occurs duringt the replay of exchange record  with id " + exchangeRecordId);
-		}
-		logger.debug("Response : " + responseBuffer.toString());
-		return responseBuffer.toString(); // JSON
+	public Map<String, OutMessage> replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) throws Exception {
+	    return replayEngine.replay(exchangeRecordStoreName, exchangeRecordId);
 	}
 	
 	@Override
-	@Produces("application/json")	
+	@Produces("application/json")
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment) {
 		// LATER
 		// requires to extract service in request & response
@@ -229,7 +149,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 
 	@GET
 	@Path("/templates/")
-	//@Produces("")	
+	//@Produces("")
 	@Override
 	public String getTemplateRecordList() {
 		// TODO Auto-generated method stub
@@ -290,7 +210,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
                 // TODO : make the assertion engine call configurable				
                 StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
                 assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
-                AssertionEngine engine = new AssertionEngine();
+                AssertionEngine engine = new AssertionEngineImpl();
                 engine.executeAssertion(assertion, record.getOutMessage(), outMessage);
                 // End				
 				

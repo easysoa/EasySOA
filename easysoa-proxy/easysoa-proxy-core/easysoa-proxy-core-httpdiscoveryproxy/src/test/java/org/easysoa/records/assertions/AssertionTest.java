@@ -44,7 +44,7 @@ public class AssertionTest {
         StringAssertion assertion = new StringAssertion("StringAssertionTest");
         assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
         
-        AssertionEngine engine = new AssertionEngine();
+        AssertionEngine engine = new AssertionEngineImpl();
         
         // Test for equality
         OutMessage originalMessage = new OutMessage();

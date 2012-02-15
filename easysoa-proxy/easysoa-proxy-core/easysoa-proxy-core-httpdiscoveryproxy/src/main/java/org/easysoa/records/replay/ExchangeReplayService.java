@@ -19,6 +19,8 @@
  */
 package org.easysoa.records.replay;
 
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -37,6 +39,8 @@ import org.easysoa.template.Template;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Remotable;
 
+import com.openwide.easysoa.message.OutMessage;
+
 @Remotable
 public interface ExchangeReplayService {
 	
@@ -45,22 +49,29 @@ public interface ExchangeReplayService {
 	@GET
 	@Path("/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName);
+	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) throws Exception;
 
 	@GET
 	@Path("/getExchangeRecord/{storeName}/{exchangeID}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID);
+	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) throws Exception;
 	
 	@GET
 	@Path("/getExchangeRecordStorelist")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})	
-	public StoreCollection getExchangeRecordStorelist();
+	public StoreCollection getExchangeRecordStorelist() throws Exception;
 	
+	/**
+	 * To replay an exchange record directly without any modifications
+	 * @param exchangeRecordStoreName The store where the record is stored
+	 * @param exchangeRecordId The ID of the record to replay
+	 * @return The response from the replayed exchange request as a JSON string
+	 * @throws Exception 
+	 */
 	@GET
 	@Path("/replay/{exchangeRecordStoreName}/{exchangeRecordId}")	
 	@Produces("application/json")	
-	public String replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId);
+	public Map<String, OutMessage> replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) throws Exception;
 	
 	@POST
 	@Path("/cloneToEnvironment/{anotherEnvironment}")
