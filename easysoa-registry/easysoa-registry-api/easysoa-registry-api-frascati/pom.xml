@@ -482,11 +482,21 @@
     </build>
 
     <repositories>
-      <repository>
+      <!--<repository>
         <id>FraSCAti - INRIA Repository</id>
-        <!--<url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public/</url>-->
         <url>https://frascati-repo.inria.fr/nexus/content/repositories/ow2-snapshot</url>
-      </repository>
+      </repository>-->
+		<repository>
+		<id>frascati-repo</id>
+			<name>FraSCAti Nexus repository</name>
+			<url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>      
       <repository>
         <id>Nuxeo public-snapshot</id>
         <url>https://maven.nuxeo.org/nexus/content/repositories/public-snapshot</url>
