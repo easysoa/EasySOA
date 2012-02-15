@@ -97,7 +97,9 @@ public class ServiceListener implements EventListener {
             String fileUrl = (String) doc.getProperty(SCHEMA, PROP_FILEURL);
             
             // Extract information from attached file
-            if (fileUrl != null && (previousDoc == null || isDifferent(SCHEMA_PREFIX + PROP_FILEURL, doc, previousDoc))) {
+            if (fileUrl != null && (previousDoc == null 
+                    || isDifferent(SCHEMA_PREFIX + PROP_FILEURL, doc, previousDoc)
+                    || doc.getProperty("file:content") == null)) {
                 WebFileParsingPoolService webFileParsingPool = Framework.getService(WebFileParsingPoolService.class);
                 webFileParsingPool.append(new URL(fileUrl), doc, "file:content", null);
             }

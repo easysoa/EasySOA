@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.contrib.webfileparsers">
+
+  <extension target="org.easysoa.core.service.WebFileParsingPoolService" point="parsers">
+    <parser>org.easysoa.services.webparsing.WSDLParser</parser>
+  </extension>
+  
+</component>

@@ -2,11 +2,13 @@
 <component name="org.easysoa.core.service.WebFileParsingPoolService">
 
   <documentation>
-    Web file parsing service & extension point
+  <!-- 
+    Web file parsing service + extension point
     @author Marwane Kalam-Alami
+  -->
   </documentation>
   
-  <require>org.easysoa.core.service.HttpDownloaderService</require>
+<!--   <require>org.easysoa.core.service.HttpDownloaderService</require> -->
   
   <implementation class="org.easysoa.services.webparsing.WebFileParsingPoolServiceImpl" />
 

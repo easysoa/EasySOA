@@ -44,6 +44,7 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     public void activate(ComponentContext context) throws Exception {
         if (parsingPoolThread == null) {
             parsingPoolThread = new Thread(this);
+            parsingPoolThread.setName("WebFileParsingPoolService");
         }
         parsingPoolThread.start();
     }
@@ -67,7 +68,7 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                     parsers.remove(parserDescriptor.implementation);
                 }
                 else if (!parsers.containsKey(parserDescriptor.implementation) && parserDescriptor.enabled) {
-                    Class<?> parserClass = Class.forName(parserDescriptor.implementation);
+                    Class<?> parserClass = Class.forName(parserDescriptor.implementation.trim());
                     WebFileParser newInstance = (WebFileParser) parserClass.newInstance();
                     parsers.put(parserDescriptor.implementation, newInstance);
                 }
@@ -121,7 +122,9 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                 
                 if (empty) {
                     try {
-                        wait();
+                        synchronized (this) {
+                            wait();
+                        }
                     } catch (InterruptedException e) {
                         // Do nothing
                     }
@@ -186,6 +189,9 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
             Map<String, String> options) throws InvalidArgumentException {
         synchronized (parsingPool) {
             parsingPool.push(new WebFileParsingPoolEntry(url, targetModel, storageProp, options));
+            synchronized (this) {
+                notify();  
+            }
         }
     }
 
