@@ -36,11 +36,9 @@
 		</dependency>
 	</dependencies>
 	
-	<pluginRepositories>
+	<!--<pluginRepositories>
 		<pluginRepository>
 			<id>frascati-plugin</id>
-			<!-- Seem's to be offline since 25/01/2012 -->
-			<!--<url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public</url>-->
 			<url>https://frascati-repo.inria.fr/nexus/content/repositories/ow2-snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
@@ -49,7 +47,21 @@
 				<enabled>true</enabled>
 			</releases>
 		</pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories>-->
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>frascati-repo</id>
+			<name>FraSCAti Nexus repository</name>
+			<url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>	
 	
 	<!-- Plugin management -->
 	<build>		
