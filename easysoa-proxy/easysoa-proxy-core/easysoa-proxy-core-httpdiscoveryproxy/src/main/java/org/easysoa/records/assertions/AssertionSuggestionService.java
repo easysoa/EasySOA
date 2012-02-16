@@ -3,6 +3,7 @@
  */
 package org.easysoa.records.assertions;
 
+import org.easysoa.records.assertions.StringAssertion.StringAssertionMethod;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 
@@ -14,6 +15,18 @@ import org.easysoa.template.TemplateFieldSuggestions;
  */
 public class AssertionSuggestionService {
    
+    /**
+     * Suggest default assertions. To be used to check the out message of replayed records without modifications
+     * @return Default <code>AssertionSuggestions</code>
+     */
+    public AssertionSuggestions suggestAssertions(){
+        AssertionSuggestions suggestions = new AssertionSuggestions();
+        // TODO : What assertions to suggest by default ???
+        // lenght, differences ...
+        suggestions.addAssertion(new StringAssertion("assertion_string_length", StringAssertionMethod.LENGTH));
+        return suggestions;
+    }
+    
     /**
      * Suggest assertions 
      * @param fieldSuggestions

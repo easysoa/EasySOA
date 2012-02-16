@@ -43,7 +43,8 @@ public interface Assertion {
     /**
      * Execute the assertion
      * @return
+     * @throws Exception 
      */
     // TODO : Maybe best to change param type : replayed response vs recorded response
-    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage);
+    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/;
 }

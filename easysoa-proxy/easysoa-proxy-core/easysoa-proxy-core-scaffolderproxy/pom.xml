@@ -16,13 +16,6 @@
   <!-- Required for EasyWSDL V3, not used in EasySOA for the moment -->
   <!--<repositories> <repository> <id>ebm</id> <url>http://maven.petalslink.com/public/</url> </repository> </repositories> -->
 
-  <repositories>
-    <repository>
-      <id>apache</id>
-      <url>https://repository.apache.org/content/groups/public/</url>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

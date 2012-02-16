@@ -24,10 +24,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -40,14 +36,11 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.records.assertions.AssertionEngineImpl;
-import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
-import org.easysoa.records.replay.ExchangeReplayService;
-import org.easysoa.records.replay.ExchangeReplayServiceImpl;
+import org.easysoa.records.replay.ReplayEngine;
+import org.easysoa.records.replay.ReplayEngineImpl;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.RecordCollection;
-import org.easysoa.records.StoreCollection;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateEngineImpl;
 import org.easysoa.template.TemplateFieldSuggestions;
@@ -175,10 +168,12 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 		// Send a request to the replay service
 		for(ExchangeRecord record : recordList){
+		//ExchangeRecord record = recordList.get(0);
 			originalResponse = record.getOutMessage().getMessageContent().getContent();
 			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/" + testStoreName + "/" + record.getExchange().getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
+			logger.debug("Original ExchangeRecord response : " + originalResponse);
 			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
 			
 			// Compare the replayed exchange with the original exchange
@@ -200,14 +195,13 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	        // templatized record
 	        templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
 	        // Replaying records
-	        ExchangeReplayService replayService = new ExchangeReplayServiceImpl();
+	        ReplayEngine replayEngine = new ReplayEngineImpl();
 	        OutMessage replayedMessage = new OutMessage();
 	        MessageContent replayedMessageContent = new MessageContent();
 	        replayedMessage.setMessageContent(replayedMessageContent);
-	        Map<String, OutMessage> resultMap= replayService.replay(testStoreName, record.getExchange().getExchangeID());
-	        replayedMessageContent.setContent(resultMap.get(record.getExchange().getExchangeID()).getMessageContent().getContent());
+	        replayedMessageContent.setContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getContent());
 	        // Executing assertions
-            assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);	        
+            assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);  
 	    }
 
 	}
@@ -312,12 +306,11 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
             // templatized record
             templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
             // Replaying records
-            ExchangeReplayService replayService = new ExchangeReplayServiceImpl();
+            ReplayEngine replayEngine = new ReplayEngineImpl();
             OutMessage replayedMessage = new OutMessage();
             MessageContent replayedMessageContent = new MessageContent();
             replayedMessage.setMessageContent(replayedMessageContent);
-            Map<String, OutMessage> resultMap= replayService.replay(testStoreName, record.getExchange().getExchangeID());
-            replayedMessageContent.setContent(resultMap.get(record.getExchange().getExchangeID()).getMessageContent().getContent());
+            replayedMessageContent.setContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getContent());
             // Executing assertions
             assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);           
         }		

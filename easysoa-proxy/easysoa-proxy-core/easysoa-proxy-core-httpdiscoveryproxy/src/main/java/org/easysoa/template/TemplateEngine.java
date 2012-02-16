@@ -3,7 +3,7 @@ package org.easysoa.template;
 import org.easysoa.records.ExchangeRecord;
 
 public interface TemplateEngine {
-
+    
     /**
      * Suggest the fields and generate a fld file
      * @param exchangeRecord The exchange record
@@ -28,6 +28,9 @@ public interface TemplateEngine {
         }
     }*/
 
+    /**
+     * 
+     */
     public abstract void renderTemplate();
 
 }

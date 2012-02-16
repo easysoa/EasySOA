@@ -182,12 +182,12 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
     }	
 	
 	//TODO rename the class templateFieldSuggestion to TemplateField....
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String fileName) throws Exception {
-		logger.debug("loading template :" + fileName);
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String recordID) throws Exception {
+		logger.debug("loading field suggestions for record ID : " + recordID);
 		@SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
 		classMap.put("templateFields", TemplateField.class);
-		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(templatePath + storeName + "/" + fileName + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
+		return (TemplateFieldSuggestions) JSONObject.toBean(readJSONFile(templatePath + storeName + "/" + SUGGESTION_FILE_PREFIX + recordID + SUGGESTIONS_FILE_EXTENSION), TemplateFieldSuggestions.class, classMap);
 	}
 
 	/**

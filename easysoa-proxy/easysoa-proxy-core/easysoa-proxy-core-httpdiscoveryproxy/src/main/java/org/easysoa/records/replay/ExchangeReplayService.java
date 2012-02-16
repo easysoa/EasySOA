@@ -71,7 +71,7 @@ public interface ExchangeReplayService {
 	@GET
 	@Path("/replay/{exchangeRecordStoreName}/{exchangeRecordId}")	
 	@Produces("application/json")	
-	public Map<String, OutMessage> replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) throws Exception;
+	public String replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) throws Exception;
 	
 	@POST
 	@Path("/cloneToEnvironment/{anotherEnvironment}")
@@ -86,8 +86,9 @@ public interface ExchangeReplayService {
 	@GET
 	@Path("/templates/getTemplate/{storeName}/{templateName}")
 	@Produces("application/json")
-	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("storeName") String storeName, @PathParam("templateFieldSuggestionsName") String templateFieldSuggestionsName) throws Exception;
+	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("storeName") String storeName,  @PathParam("recordID") String recordID) throws Exception;
 	
+	/*
 	@POST
 	@Path("/templates/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
 	@Produces("application/json")
@@ -95,5 +96,5 @@ public interface ExchangeReplayService {
 	//@Consumes("multipart/form-data")
 	@Consumes("application/x-www-form-urlencoded")
 	public String replayWithTemplate(MultivaluedMap<String, String> formData, @PathParam("exchangeStoreName") String exchangeStoreName, @PathParam("exchangeRecordID") String exchangeRecordId, @PathParam("templateName") String templateName) throws Exception;	
-	
+	*/
 }

@@ -192,7 +192,7 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        				paramsList.put("outputParams", responseOperationParams);
 	        				// TODO : Get suggestions for input fields => OK But about the other fields skipped by the correlation, what to do ????
 	        				// But also for output fields => NOK => Need to add correlation method or other to generate a 'output field suggestion file' 
-	        				TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, "fieldSuggestions_" +  templateIndex);
+	        				TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, templateIndex);
 	       	            	for(TemplateField field : templateSuggestion.getTemplateFields()){
 	       	            		// TODO : do not set the field type here, the type must be set by the field suggester !!
 	       	            		// DOne like that temporary because type is not set in the suggester !!

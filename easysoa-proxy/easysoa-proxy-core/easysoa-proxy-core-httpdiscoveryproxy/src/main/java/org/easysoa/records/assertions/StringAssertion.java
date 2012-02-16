@@ -103,7 +103,7 @@ public class StringAssertion extends AbstractAssertion {
     }    
     
     @Override
-    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage) {
+    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
         AssertionResult result = null;
         testReportLogger.info("Using method : " + this.method);        
         // Call the assertion method corresponding to the configuration
@@ -155,11 +155,19 @@ public class StringAssertion extends AbstractAssertion {
     /**
      * Method for string distance, Lehvenstein method
      * @return
+     * @throws Exception  
      */
-    private AssertionResult checkLehvensteinDistance(OutMessage originalMessage, OutMessage replayedMessage){
+    private AssertionResult checkLehvensteinDistance(OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
         AssertionResult result;
         // TODO : Warning here ! For long messages (more of 5 words, the treatment can be very very long.
         // See http://fr.wikipedia.org/wiki/Distance_de_Levenshtein#Algorithme_de_Levenshtein => Maybe in this case the best solution is to use an other method or to throw an Exception
+        // At the moment, the length of string are limited to 100 characters, if the langth of one of the two strings to compare is more of this limit, a KO assertion result is returned
+        // with a message explaining the limitation
+        if(originalMessage.getMessageContent().getContent().length() > 100 || replayedMessage.getMessageContent().getContent().length() > 100){
+            //throw new Exception("Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
+            result = new AssertionResult(AssertionResultStatus.KO, "Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
+            return result;
+        }
         int ldMethodResult = StringUtils.getLevenshteinDistance(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(ldMethodResult == 0){
             result = new AssertionResult(AssertionResultStatus.OK);

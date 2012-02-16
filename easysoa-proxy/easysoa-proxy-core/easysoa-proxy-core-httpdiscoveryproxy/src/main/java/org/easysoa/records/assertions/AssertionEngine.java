@@ -20,16 +20,17 @@ public interface AssertionEngine {
 
     /**
      * Executes several assertions
-     * @param assertions
-     * @return
+     * @param assertionsSuggestions The assertions to execute. If this parameter is null, default assertion suggestions will be used. See AssertionSuggestionService class.
+     * @return A <code>List</code> of <code>AssertionResult</code> 
      */
     public abstract List<AssertionResult> executeAssertions(AssertionSuggestions assertionSuggestions, OutMessage originalMessage, OutMessage replayedMessage);
 
     /**
      * Execute one assertion
-     * @param assertion
-     * @return 
+     * @param assertion The assertion to execute
+     * @return The <code>AssertionResult</code>
+     * @throws Exception If a problem occurs during the assertion execution
      */
-    public abstract AssertionResult executeAssertion(Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage);
+    public abstract AssertionResult executeAssertion(Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/;
 
 }

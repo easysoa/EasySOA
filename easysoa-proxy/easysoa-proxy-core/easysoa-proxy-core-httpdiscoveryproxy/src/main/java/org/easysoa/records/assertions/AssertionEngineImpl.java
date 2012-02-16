@@ -71,6 +71,12 @@ public class AssertionEngineImpl implements AssertionEngine {
      */
     @Override
     public List<AssertionResult> executeAssertions(AssertionSuggestions assertionSuggestions, OutMessage originalMessage, OutMessage replayedMessage){
+        if(assertionSuggestions == null){
+            // Using default assertions
+            testReportLogger.warn("assertionSuggestions parameter is null, using default assertion suggestions !");
+            AssertionSuggestionService assertionSuggestionService = new AssertionSuggestionService();
+            assertionSuggestions = assertionSuggestionService.suggestAssertions();
+        }
         ArrayList<AssertionResult> result = new ArrayList<AssertionResult>();
         for(Assertion assertion : assertionSuggestions.getAssertions()){
             result.add(executeAssertion(assertion, originalMessage, replayedMessage));
@@ -82,7 +88,7 @@ public class AssertionEngineImpl implements AssertionEngine {
      * @see org.easysoa.records.assertions.AssertionEngine#executeAssertion(org.easysoa.records.assertions.Assertion, com.openwide.easysoa.message.OutMessage, com.openwide.easysoa.message.OutMessage)
      */
     @Override
-    public AssertionResult executeAssertion(Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage){
+    public AssertionResult executeAssertion(Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
         AssertionResult result = assertion.check(originalMessage, replayedMessage);
         return result;
     }

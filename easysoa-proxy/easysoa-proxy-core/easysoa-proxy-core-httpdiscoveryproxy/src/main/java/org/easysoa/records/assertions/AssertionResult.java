@@ -77,6 +77,14 @@ public class AssertionResult {
     }
     
     /**
+     * 
+     * @param message
+     */
+    public void setMessage(String message){
+        this.message = message;
+    }
+    
+    /**
      * Set metrics
      * @param metrics
      */

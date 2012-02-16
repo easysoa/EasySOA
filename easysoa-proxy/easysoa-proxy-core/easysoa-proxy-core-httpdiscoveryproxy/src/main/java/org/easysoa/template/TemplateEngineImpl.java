@@ -3,8 +3,10 @@
  */
 package org.easysoa.template;
 
+import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.osoa.sca.annotations.Reference;
 
 /**
  * Centralize the call of field suggester, template builder, template renderer in the same class 
@@ -13,6 +15,13 @@ import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
  *
  */
 public class TemplateEngineImpl implements TemplateEngine {
+    
+    // Logger
+    private static Logger logger = Logger.getLogger(TemplateEngineImpl.class.getName());    
+    
+    // SCA Reference to template renderer
+    @Reference
+    TemplateProcessorRendererItf templateRenderer;
     
     // File store
     private ProxyExchangeRecordFileStore fileStore;
@@ -80,6 +89,12 @@ public class TemplateEngineImpl implements TemplateEngine {
     @Override
     public void renderTemplate(){
         // call the template renderer
+        //templaterenderer.renderReq(templatePath, record, runName, fieldValues);
+        if(templateRenderer == null){
+            logger.debug("***** KO templateRenderer is null !!!!");
+        } else {
+            logger.debug("***** OK templateRenderer " + templateRenderer);
+        }
     }
     
     /**

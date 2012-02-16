@@ -46,14 +46,14 @@
     	</sca:service>
 		<sca:reference name="runManager" target="runManagerComponent/runManagerService" />
 		<sca:reference name="exchangeRecordStoreManager" target="exchangeStoreManagerComponent/exchangeStoreManagerService" />
-		<!-- Test for proxy implementation Velocity -->
+		<!-- Proxy implementation Velocity -->
 		<sca:reference name="compositeTemplates" target="TemplateProcessor/processor" />
 	</sca:component>
 	
-	<!--  for tests -->
+	<!--  Template processor -->
 	<sca:service name="processor" promote="TemplateProcessor/processor"/>
 
-	<!-- Test component for proxy implementation Velocity -->
+	<!-- Component for proxy implementation Velocity -->
 	<sca:component name="TemplateProcessor">
 		<sca:implementation.java class="org.easysoa.template.TemplateRenderer" />
 		<sca:service name="processor">
@@ -114,6 +114,8 @@
 			<sca:interface.java interface="org.easysoa.records.replay.ReplayEngine" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.records.replay.ReplayEngineImpl" />
+		<sca:reference name="templateEngine" target="templateEngineComponent" />
+		<sca:reference name="assertionEngine" target="assertionEngineComponent" />
 	</sca:component>
 	
 	<!-- Template engine -->
@@ -122,6 +124,7 @@
 			<sca:interface.java interface="org.easysoa.template.TemplateEngine" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.template.TemplateEngineImpl" />
+		<sca:reference name="templateRenderer" target="TemplateProcessor" />		
 	</sca:component>
 		
 	<!-- Assertion engine -->

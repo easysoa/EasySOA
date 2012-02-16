@@ -4,12 +4,10 @@
 package org.easysoa.records.replay;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
@@ -18,9 +16,21 @@ import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.records.assertions.AssertionEngineImpl;
+import org.easysoa.records.assertions.AssertionSuggestionService;
+import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.records.assertions.StringAssertion;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.template.TemplateEngine;
+import org.easysoa.template.TemplateField;
+import org.easysoa.template.TemplateFieldSuggestions;
+import org.easysoa.template.setters.CustomParamSetter;
+import org.easysoa.template.setters.RestFormParamSetter;
+import org.easysoa.template.setters.RestPathParamSetter;
+import org.easysoa.template.setters.RestQueryParamSetter;
+import org.easysoa.template.setters.WSDLParamSetter;
+import org.osoa.sca.annotations.Reference;
 
+import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.RequestForwarder;
 
@@ -39,10 +49,31 @@ public class ReplayEngineImpl implements ReplayEngine {
     // Hum ... maybe not .. it is possible to generate the template with out to replay
     // On the contrary, it is not possible to execute assertion if the replay has not been replayed 
     
-    // TODO : Add a reference on Assertion engine ???
+    // SCA reference to assertion engine
+    @Reference
+    AssertionEngine assertionEngine;
+    
+    // SCA reference to template engine
+    @Reference
+    TemplateEngine templateEngine;
     
     // Logger
     private static Logger logger = Logger.getLogger(ReplayEngineImpl.class.getName());
+
+    // TODO : To move in template engine
+    // Param setter list
+    private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();    
+
+    /**
+     * Constructor
+     * Set the param setter list
+     */
+    public ReplayEngineImpl(){
+        paramSetterList.add(new RestFormParamSetter());
+        paramSetterList.add(new RestPathParamSetter());
+        paramSetterList.add(new RestQueryParamSetter());
+        paramSetterList.add(new WSDLParamSetter());
+    }    
     
     @Override
     public RecordCollection getExchangeRecordlist(String exchangeRecordStoreName) throws Exception {
@@ -90,7 +121,18 @@ public class ReplayEngineImpl implements ReplayEngine {
     }    
     
     @Override
-    public Map<String,OutMessage> replay(String exchangeRecordStoreName, String exchangeRecordId) throws Exception{
+    public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String recordID) throws Exception {
+        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+        TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(storeName, recordID);
+        logger.debug(templateFieldSuggest.getTemplateFields().size());
+        return templateFieldSuggest;
+    }    
+    
+    /**
+     * Replay a record without any modifications
+     */
+    @Override
+    public OutMessage replay(String exchangeRecordStoreName, String exchangeRecordId) throws Exception{
 
         // call remote service using chosen record :
         // see how to share monit.forward(Message) code (extract it in a Util class), see also scaffolder client
@@ -98,29 +140,33 @@ public class ReplayEngineImpl implements ReplayEngine {
         // however diff is possible (on server or client)
         // ex. on server : http://code.google.com/p/java-diff-utils/
         logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
-        HashMap<String, OutMessage> responseMap = new HashMap<String, OutMessage>();
+        //HashMap<String, OutMessage> responseMap = new HashMap<String, OutMessage>();
+        OutMessage outMessage = new OutMessage();
         try {
-            Collection<ExchangeRecord> recordList;
+            //Collection<ExchangeRecord> recordList;
             ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
             // get the record
             // TODO : if the record is not found, get all the record from the store
             // So need to return a Map of response with record ID as key
-            if(exchangeRecordId==null || "".equals(exchangeRecordId)){
-                recordList = getExchangeRecordlist(exchangeRecordStoreName).getRecords();
-            } else {
-                recordList = new ArrayList<ExchangeRecord>();
-                recordList.add(erfs.load(exchangeRecordStoreName, exchangeRecordId));
+            if(exchangeRecordId == null || "".equals(exchangeRecordId) || exchangeRecordStoreName==null || "".equals(exchangeRecordStoreName)){
+                throw new Exception("Store and record ID must not be null !");
             }
+            ExchangeRecord record = erfs.load(exchangeRecordStoreName, exchangeRecordId);
+            /*if(exchangeRecordId==null || "".equals(exchangeRecordId) ){
+                recordList = getExchangeRecordlist(exchangeRecordStoreName).getRecords();
+            } else {*/
+                //recordList = new ArrayList<ExchangeRecord>();
+                //recordList.add(erfs.load(exchangeRecordStoreName, exchangeRecordId));
+            /*}*/
             RequestForwarder requestForwarder;
-            OutMessage outMessage = new OutMessage();
-            logger.debug("records number to replay : " + recordList.size());
-            for(ExchangeRecord record : recordList){
+            //logger.debug("records number to replay : " + recordList.size());
+            //for(ExchangeRecord record : recordList){
             // Send the request
                 requestForwarder = new RequestForwarder();
                 outMessage = requestForwarder.send(record.getInMessage());
                 logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
                 logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
-                responseMap.put(record.getExchange().getExchangeID(), outMessage);
+                //responseMap.put(record.getExchange().getExchangeID(), outMessage);
                 
                 // Assertion Engine
                 // TODO : make the assertion engine call configurable
@@ -133,20 +179,101 @@ public class ReplayEngineImpl implements ReplayEngine {
                 
                 // How to work with fields in fld files
                 // Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
-                StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
+
+                // TODO : Do not create a new assertion instance here, use generated asr files instead with AssertionEngine
+                //StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
+                
+                // Call assertioSuggestionService not only when a template and fields are available but also to compare replay without modifications)
+                
+                AssertionSuggestionService assertionSuggestionService = new AssertionSuggestionService();
+                
+                // Get default assertions
+                AssertionSuggestions assertionSuggestions = assertionSuggestionService.suggestAssertions();
+                
                 // Problem with this method when response is big ... treatment is very very long ....
                 // Think there is a bug with this method, more of 5 minutes for a long xml string
                 //assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
-                AssertionEngine engine = new AssertionEngineImpl();
-                engine.executeAssertion(assertion, record.getOutMessage(), outMessage);
+                assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), outMessage);
                 // End
+            //}
+            return outMessage;                
+        }
+        catch(Exception ex){
+            logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecordId, ex);
+            throw new Exception("A problem occurs during the replay, see logs for more informations !", ex);
+        }
+    }
+    
+    /*@Override
+    @Deprecated
+    public String replayWithTemplate(MultivaluedMap<String, String> formData, String exchangeStoreName, String exchangeRecordID, String templateName) throws Exception {
+        // get the exchange record inMessage
+        logger.debug("storeName : " + exchangeStoreName);
+        logger.debug("recordID " + exchangeRecordID);
+        try {
+            ExchangeRecord record = getExchangeRecord(exchangeStoreName, exchangeRecordID);
+            //
+            TemplateFieldSuggestions templateFieldSUggestions = getTemplateFieldSuggestions(exchangeStoreName, templateName);
+            // get the new parameter values contained in the received request form, How to get unknow parameters ?
+            if(record != null){
+                logger.debug("Original message URL : " + record.getInMessage().buildCompleteUrl());
+                String content = record.getInMessage().getMessageContent().getContent();
+                logger.debug("Original message content : " + content);
+                // Call a method to replace custom values in request
+                // Make a copy of the InMessage and set the custom parameters
+                InMessage customInMessage = getExchangeRecord(exchangeStoreName, exchangeRecordID).getInMessage();
+
+                // Replace the the values for the fields specified in the template
+                // The value to replace can be in PathParam, FormParams or QueryParams, check the paramType in template file
+                // TODO : move this method setCustomParams in TemplateEngine ...
+                setCustomParams(templateFieldSUggestions, customInMessage, formData);
+                
+                //templateEngine.renderTemplate();
+                
+                logger.debug("Modified path = " + customInMessage.getPath());
+                
+                // Send the new request and returns the response
+                RequestForwarder requestForwarder = new RequestForwarder();
+                OutMessage outMessage = requestForwarder.send(customInMessage);
+                
+                // Calling assertion engine
+                // TODO : make the assertion engine call configurable               
+                StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
+                // Using default length method because Lehvenstein method can be very slow if message is long 
+                //assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
+                // TODO : executing assertions in all cases ???
+                assertionEngine.executeAssertion(assertion, record.getOutMessage(), outMessage);
+                
+                // TODO : returns only the message content, maybe it's a good idea to return the complete out message
+                return outMessage.getMessageContent().getContent();
             }
         }
         catch(Exception ex){
-            logger.warn("A problem occurs duringt the replay of exchange record  with id " + exchangeRecordId, ex);
-            throw new Exception("A problem occurs during the replay, see logs for more informations !", ex);
+            logger.error("An error occurs during the replay of record " + exchangeStoreName + "/" + exchangeRecordID + " with template " + templateName, ex);
+            throw new Exception("An error occurs during the replay of templated record", ex);
         }
-        return responseMap;
-    }
+        return null;
+    }*/
+    
+    /**
+     * Method used in first solution .... Now have to use Custom ProxyImplementationVelocity or ServletImplementationVelocity
+     * @param template
+     * @param message
+     * @param mapParams
+     */
+    // TODO : Move this method in TemplateEngine => in renderer, builder ... ??? 
+    /*@Deprecated
+    private void setCustomParams(TemplateFieldSuggestions templateFieldSuggestions, InMessage inMessage, MultivaluedMap<String, String> mapParams){
+        // Write the code to set custom parameters
+        // For each templateField described in the template and For each Custom Param setter in the paramSetter list,
+        // call the method isOKFor and if ok call the method setParams
+        for(TemplateField templateField : templateFieldSuggestions.getTemplateFields()){
+            for(CustomParamSetter paramSetter : paramSetterList){
+                if(paramSetter.isOkFor(templateField)){
+                    paramSetter.setParam(templateField, inMessage, mapParams);
+                }
+            }
+        }
+    }*/
     
 }
