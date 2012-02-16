@@ -32,7 +32,6 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.services.DocumentService;
 import org.easysoa.properties.PropertyNormalizer;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -41,6 +40,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
@@ -176,6 +176,22 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
         } else {
             return null;
         }
+    }
+    
+
+    @Override
+    public DocumentModelList findServices(CoreSession session,
+            DocumentModel model) throws ClientException {
+        DocumentModelList serviceModels;
+        if (model.getType().equals(Service.DOCTYPE)) {
+            serviceModels = new DocumentModelListImpl();
+            serviceModels.add(model);
+        }
+        else {
+            serviceModels = session.query("SELECT * FROM Service WHERE ecm:path STARTSWITH '" + model.getPathAsString() + "'" +
+            		" AND ecm:currentLifeCycleState <> 'deleted'");
+        }
+        return serviceModels;
     }
 
     public DocumentModel findServiceReference(CoreSession session, String referenceArchiPath) throws ClientException {

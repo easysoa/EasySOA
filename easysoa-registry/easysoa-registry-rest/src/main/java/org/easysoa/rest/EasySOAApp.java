@@ -36,6 +36,7 @@ public class EasySOAApp extends Application {
         result.add(ServiceFinderRest.class);
         result.add(DiscoveryRest.class);
         result.add(DashboardRest.class);
+        result.add(SoapUIConfRest.class);
         return result;
     }
 

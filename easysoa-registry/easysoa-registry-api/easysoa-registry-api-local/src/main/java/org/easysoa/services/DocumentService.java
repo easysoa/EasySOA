@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 
 public interface DocumentService {
@@ -74,6 +75,15 @@ public interface DocumentService {
     public abstract DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException;
 
     public abstract DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException;
+    
+    /**
+     * Find all child services from the given document.
+     * @param session
+     * @param model
+     * @return All child services, or the document itself if the document is a service
+     * @throws ClientException
+     */
+    public abstract DocumentModelList findServices(CoreSession session, DocumentModel model) throws ClientException;
 
     public abstract DocumentModel findServiceReference(CoreSession session, String referenceArchiPath) throws ClientException;
 
