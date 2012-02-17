@@ -50,9 +50,11 @@ public class SoapUIConfRest {
 
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Object doGetSoapUIConf(@Context HttpServletRequest request, 
             @PathParam("id") String docId) throws Exception {
+        
+        docId = docId.replace(".xml", "");
         
         // Init
         CoreSession session = SessionFactory.getSession(request);

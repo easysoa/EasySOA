@@ -59,7 +59,8 @@ public class SoapUIActionsBean {
         redirectionUrl += requestUrl.toString().substring(0, requestUrl.toString().length() - requestUrl.getPath().toString().length()); // Keep host only
         redirectionUrl += "/nuxeo/site/easysoa/soapui/"; // SoapUI service path
         redirectionUrl +=  navigationContext.getCurrentDocument().getId(); // Param: doc ID
-
+        redirectionUrl += ".xml";
+                
         RestHelper.handleRedirect(response, redirectionUrl);
     }
     

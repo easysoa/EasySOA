@@ -9,8 +9,12 @@
 
 	<table style="clear: left; padding: 10px"><tr>
 	
-	<!-- Call it button -->
 	<c:if test="${currentDocument.getType() == 'Service'}">
+	  <!-- Document actions -->
+	  <td>
+		  <ui:include src="/incl/document_actions.xhtml"/>
+	  </td>
+	  <!-- Call it button -->
 		<td style="padding-right: 20px">
 			<c:choose>
 				<c:when test="${currentDocument.getProperty('servicedef', 'fileUrl') != null}">
