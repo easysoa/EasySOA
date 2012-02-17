@@ -1,6 +1,13 @@
 package org.easysoa.template;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.easysoa.records.ExchangeRecord;
+
+import com.openwide.easysoa.message.OutMessage;
 
 public interface TemplateEngine {
     
@@ -29,8 +36,12 @@ public interface TemplateEngine {
     }*/
 
     /**
-     * 
+     * Call the template renderer and replay the templatized record
+     * @param storeName
+     * @param recordID
+     * @param fieldValues
+     * @return the replayed response
      */
-    public abstract void renderTemplate();
+    public abstract OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues) throws Exception;
 
 }

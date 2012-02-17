@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -26,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateEngineImpl;
 import org.easysoa.template.TemplateField;
@@ -42,6 +46,7 @@ import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
 
+import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.ContentReader;
 
 /**
@@ -145,9 +150,9 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	//@Ignore
 	public void templateFieldSuggesterRestTest() throws Exception {
 
-		String runName = "TweeterRestTestRun";
+		String testStoreName = "TweeterRestTestRun";
 		// Start run
-		startNewRun(runName);
+		startNewRun(testStoreName);
 		
 		// Send tweeter mock requests
 		// Get the twitter mock set and send requests to the mock through the HTTP proxy
@@ -186,25 +191,32 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 	
 		// Get the exchange record list for the run
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
 		// Get the template renderer
-		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
+		//TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 
-		// Build an HashMap to simulate user provided values
-		HashMap<String, String> fieldMap = new HashMap<String, String>();
-		fieldMap.put("user", "toto");
+	      // Get the replay engine service
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
 		
-		TemplateEngine templateEngine = new TemplateEngineImpl();
+		// Build an HashMap to simulate user provided values
+		HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
+        ArrayList<String> valueList = new ArrayList<String>();
+        valueList.add("toto");
+        fieldMap.put("user", valueList);		
+		
+		//TemplateEngine templateEngine = new TemplateEngineImpl();
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
-		    TemplateFieldSuggestions suggestions = templateEngine.suggestFields(record, runName, true);
-		    ExchangeRecord templatizedRecord = templateEngine.generateTemplate(suggestions, record, runName, true);
+		    TemplateFieldSuggestions templateFieldsuggestions = replayEngine.getTemplateEngine().suggestFields(record, testStoreName, true);
+		    ExchangeRecord templatizedRecord = replayEngine.getTemplateEngine().generateTemplate(templateFieldsuggestions, record, testStoreName, true);
+		    replayEngine.getAssertionEngine().suggestAssertions(templateFieldsuggestions, record.getExchange().getExchangeID(), testStoreName);
 			// Render the templates and replay the request
-			if(templatizedRecord != null){
+			/*if(templatizedRecord != null){
 			    String replayedResponse = processor.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, runName, fieldMap);
 				logger.debug("returned message form replayed template : " + replayedResponse);
 				// TODO : call the renderRes method for server mock test
-			}
+			}*/
+	        replayEngine.replayWithTemplate(fieldMap, testStoreName, record.getExchange().getExchangeID());
 		}
 	}
 	
@@ -225,9 +237,9 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	//@Ignore
 	public void templateFieldSuggesterSOAPTest() throws Exception {	
 		
-		String runName = "MeteoSoapTestRun";
+		String testStoreName = "MeteoSoapTestRun";
 		// Start run
-		startNewRun(runName);		
+		startNewRun(testStoreName);		
 
 		// Set the discovery proxy
 		System.setProperty("http.proxyHost", "localhost");
@@ -252,26 +264,40 @@ public class TemplateTest extends AbstractProxyTestStarter {
 
 		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 	
-		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
+		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
 
-		// Get the template renderer
-		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
+		// Get the template renderer // TODO do not call this service directly, use replay engine instead
+		//TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
+		
+		// Get the replay engine service
+		ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
 
 		// Build an HashMap to simulate user provided values
-		HashMap<String, String> fieldMap = new HashMap<String, String>();
-		fieldMap.put("user", "toto");
+		HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
+		ArrayList<String> valueList = new ArrayList<String>();
+		valueList.add("toto");
+		fieldMap.put("user", valueList);
 		
-		TemplateEngine templateEngine = new TemplateEngineImpl();
+		//TODO : Cannot call the templateEngine directly because it contains sca references
+		//TemplateEngine templateEngine = new TemplateEngineImpl();
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
-	        TemplateFieldSuggestions suggestions = templateEngine.suggestFields(record, runName, true);
-	        ExchangeRecord templatizedRecord = templateEngine.generateTemplate(suggestions, record, runName, true);
+		    
+		    // TODO : call template and field suggestions methods from replayEngine ????
+		    // Or create a service for template engine ???
+		    TemplateFieldSuggestions templateFieldsuggestions = replayEngine.getTemplateEngine().suggestFields(record, testStoreName, true);
+	        ExchangeRecord templatizedRecord = replayEngine.getTemplateEngine().generateTemplate(templateFieldsuggestions, record, testStoreName, true);
+	        replayEngine.getAssertionEngine().suggestAssertions(templateFieldsuggestions, record.getExchange().getExchangeID(), testStoreName);
 			// Render the templates and replay the request
-			if(templatizedRecord != null){
-                String replayedResponse = processor.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, runName, fieldMap);
+			// TODO : Don not use processor service, use replayEngine.replayWithTemplate method instead
+	        /*if(templatizedRecord != null){
+                String replayedResponse = processor.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, testStoreName, fieldMap);
                 logger.debug("returned message form replayed template : " + replayedResponse);                
 				// TODO : call the renderRes method for server mock test
-			}
+			}*/
+			
+		    //replayEngine.replayWithTemplate(MultivaluedMap<String, String> formData, testStoreName, record.getExchange().getExchangeID());
+	        replayEngine.replayWithTemplate(fieldMap, testStoreName, record.getExchange().getExchangeID());
 		}
 	}
 
@@ -310,7 +336,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws IOException
 	 */
 	@Test
-	//@Ignore
+	@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("TemplateTest started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test

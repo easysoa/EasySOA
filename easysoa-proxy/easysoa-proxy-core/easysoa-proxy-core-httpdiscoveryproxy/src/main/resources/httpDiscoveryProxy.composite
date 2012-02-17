@@ -108,6 +108,9 @@
 		<sca:implementation.java class="com.openwide.easysoa.esper.EsperEngineImpl" />
 	</sca:component>
 	
+	<!--  ReplayEnginn service -->
+	<sca:service name="replayEngineService" promote="replayEngineComponent/replayEngineService"/>	
+	
 	<!-- Exchange replay service -->
 	<sca:component name="replayEngineComponent">
 		<sca:service name="replayEngineService">

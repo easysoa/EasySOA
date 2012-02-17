@@ -3,10 +3,16 @@
  */
 package org.easysoa.template;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
+
+import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Render a template (replace the expressions by provided values)
@@ -33,7 +39,7 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
      * @see org.easysoa.template.TemplateProcessorRendererItf#renderReq()
      */	
 	@Override
-	public String renderReq(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues) throws Exception {
+	public OutMessage renderReq(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception {
 		/**
 		The TemplateRenderer executes a record (request) template by loading its record and rendering 
 		it in the chosen template engine, with template variables set to user provided values first, 
@@ -46,14 +52,14 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		TemplateExecutor executor = new TemplateExecutor();
 		// Return only the message content
 		// TODO : Maybe good idea to return the entire response as JSONObject or other format ...
-		return executor.execute(renderedTemplate).getMessageContent().getContent();
+		return executor.execute(renderedTemplate);
 	}
 
     /* (non-Javadoc)
      * @see org.easysoa.template.TemplateProcessorRendererItf#renderRes()
      */ 
 	@Override
-	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues){
+	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception {
 		// TODO : Complete this method, to be used in a server mock
 		logger.warn("renderRes method not yet entierely implemented, need to be completed !");
 		String renderedTemplate = template.renderRes(templatePath, runName, fieldValues);

@@ -3,9 +3,10 @@
  */
 package org.easysoa.template;
 
+import java.util.List;
 import java.util.Map;
-
 import org.easysoa.records.ExchangeRecord;
+import com.openwide.easysoa.message.OutMessage;
 
 /**
  * @author jguillemotte
@@ -21,7 +22,7 @@ public interface TemplateProcessorRendererItf {
 	 * @return The rendered template
 	 * @throws Exception If a problem occurs
 	 */
-	public String renderReq(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues) throws Exception;
+	public OutMessage renderReq(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception;
 	
 	/**
 	 * Render the response template by replacing template expression by provided values 
@@ -31,5 +32,5 @@ public interface TemplateProcessorRendererItf {
 	 * @return The rendred template
 	 * @throws Exception If a problem occurs
 	 */
-	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, String> fieldValues) throws Exception;
+	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception;
 }

@@ -195,11 +195,13 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	        // templatized record
 	        templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
 	        // Replaying records
-	        ReplayEngine replayEngine = new ReplayEngineImpl();
+	        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
 	        OutMessage replayedMessage = new OutMessage();
 	        MessageContent replayedMessageContent = new MessageContent();
 	        replayedMessage.setMessageContent(replayedMessageContent);
 	        replayedMessageContent.setContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getContent());
+	        // TODO => call replayWithTemplate Method to test the remplate engine
+	        
 	        // Executing assertions
             assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);  
 	    }
@@ -306,7 +308,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
             // templatized record
             templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
             // Replaying records
-            ReplayEngine replayEngine = new ReplayEngineImpl();
+            ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
             OutMessage replayedMessage = new OutMessage();
             MessageContent replayedMessageContent = new MessageContent();
             replayedMessage.setMessageContent(replayedMessageContent);

@@ -1,16 +1,31 @@
 package org.easysoa.records.replay;
 
-import javax.ws.rs.core.MultivaluedMap;
+import java.util.List;
+import java.util.Map;
 
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
+import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 
 import com.openwide.easysoa.message.OutMessage;
 
 public interface ReplayEngine {
 
+    /**
+     * Returns the template engine SCA reference
+     * @return
+     */
+    public TemplateEngine getTemplateEngine();
+    
+    /**
+     * Returns the template engine SCA reference
+     * @return
+     */
+    public AssertionEngine getAssertionEngine();    
+    
     /**
      * Get the exchange record corresponding to the ID and stored in the specified store 
      * @param exchangeRecordStoreName The store where the record is stored
@@ -45,13 +60,23 @@ public interface ReplayEngine {
     public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String templateFieldSuggestionsName) throws Exception;    
     
     /**
-     * Replay an exchange record or all the exchange records stored in a specified store without any modifications
+     * Replay an exchange record without any modifications
      * @param exchangeRecordStoreName The store name where the exchange record is stored
-     * @param exchangeRecordId The ID of the exchange record to replay, if null or empty, all the exchange records are replayed
+     * @param exchangeRecordId The ID of the exchange record to replay
      * @return The <code>Map</code> containing the record id as key and the associated <code>OutMessage</code> as response
      * @throws Exception If a problem occurs 
      */
     public OutMessage replay(String exchangeRecordStoreName, String exchangeRecordId) throws Exception;
+
+    /**
+     * Render and replay a templatized exchange record
+     * @param formData Custom data to use 
+     * @param exchangeStoreName 
+     * @param exchangeRecordID 
+     * @return 
+     * @throws Exception If a problem occurs
+     */
+    public OutMessage replayWithTemplate(Map<String, List<String>> formData, String exchangeStoreName, String exchangeRecordID) throws Exception;
 
     /**
      * Replay a customized exchange record

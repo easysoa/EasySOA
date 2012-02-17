@@ -5,8 +5,8 @@ package org.easysoa.records.replay;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.log4j.Logger;
@@ -15,22 +15,18 @@ import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.assertions.AssertionEngine;
-import org.easysoa.records.assertions.AssertionEngineImpl;
 import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
-import org.easysoa.records.assertions.StringAssertion;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateEngine;
-import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.easysoa.template.TemplateRenderer;
 import org.easysoa.template.setters.CustomParamSetter;
 import org.easysoa.template.setters.RestFormParamSetter;
 import org.easysoa.template.setters.RestPathParamSetter;
 import org.easysoa.template.setters.RestQueryParamSetter;
 import org.easysoa.template.setters.WSDLParamSetter;
 import org.osoa.sca.annotations.Reference;
-
-import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.RequestForwarder;
 
@@ -202,6 +198,51 @@ public class ReplayEngineImpl implements ReplayEngine {
             logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecordId, ex);
             throw new Exception("A problem occurs during the replay, see logs for more informations !", ex);
         }
+    }
+    
+    /**
+     * To replay a customized exchange record using template, field suggestions and assertions files generated before.
+     * @param formData
+     * @param exchangeStoreName
+     * @param exchangeRecordID
+     * @param templateName
+     * @return
+     * @throws Exception
+     */
+    // TODO : Change param structure type
+    // Remove template name, use hte one generated from the record
+    @Override
+    public OutMessage replayWithTemplate(Map<String, List<String>> formData, String exchangeStoreName, String exchangeRecordID) throws Exception {
+        // Load template, assertion file .... 
+        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+        // Field suggestions
+        TemplateFieldSuggestions fieldSuggestions = erfs.getTemplateFieldSuggestions(exchangeStoreName, exchangeRecordID);
+        // Template
+        
+        // Assertions
+        AssertionSuggestions assertionSuggestions = erfs.getAssertionSuggestions(exchangeStoreName, exchangeRecordID);
+        
+        // TODO passing original record ??? Maybe just the the record ID ?
+        // RecordID
+        ExchangeRecord record = erfs.load(exchangeStoreName, exchangeRecordID);
+        
+        // if template or asr files not found, throws an exception
+        // Call the proxy velocity to render and execute the replay with custom params
+        OutMessage replayedResponse = templateEngine.renderTemplateAndReplay(exchangeStoreName, record, formData);
+        // Call assertion engine to execute assertions
+        assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedResponse);
+        
+        return replayedResponse;
+    }
+
+    @Override
+    public TemplateEngine getTemplateEngine() {
+        return this.templateEngine;
+    }
+
+    @Override
+    public AssertionEngine getAssertionEngine() {
+        return this.assertionEngine;
     }
     
     /*@Override

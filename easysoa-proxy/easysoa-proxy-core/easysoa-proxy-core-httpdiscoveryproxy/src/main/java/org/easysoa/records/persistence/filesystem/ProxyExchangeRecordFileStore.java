@@ -217,12 +217,12 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 	 * @return The Assertion suggestions
 	 * @throws Exception If a problem occurs
 	 */
-	public AssertionSuggestions getAssertionSuggestions(String storeName, String fileName) throws Exception {
-        logger.debug("loading assertion suggestions :" + fileName);
+	public AssertionSuggestions getAssertionSuggestions(String storeName, String recordID) throws Exception {
+        logger.debug("loading assertion suggestions :" + ASSERTIONS_FILE_PREFIX + recordID + ASSERTIONS_FILE_EXTENSION);
         @SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
         //classMap.put("templateFields", TemplateField.class);
-        return (AssertionSuggestions) JSONObject.toBean(readJSONFile(templatePath + storeName + "/" + fileName + ASSERTIONS_FILE_EXTENSION), AssertionSuggestions.class, classMap);	    
+        return (AssertionSuggestions) JSONObject.toBean(readJSONFile(templatePath + storeName + "/" + ASSERTIONS_FILE_PREFIX + recordID + ASSERTIONS_FILE_EXTENSION), AssertionSuggestions.class, classMap);	    
 	}
 	
 	/**

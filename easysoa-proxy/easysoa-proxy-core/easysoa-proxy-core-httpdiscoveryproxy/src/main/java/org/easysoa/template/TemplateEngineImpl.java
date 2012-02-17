@@ -3,10 +3,17 @@
  */
 package org.easysoa.template;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.osoa.sca.annotations.Reference;
+
+import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Centralize the call of field suggester, template builder, template renderer in the same class 
@@ -79,22 +86,11 @@ public class TemplateEngineImpl implements TemplateEngine {
     
     /* (non-Javadoc)
      * @see org.easysoa.template.TemplateEngine#renderTemplate()
-     */
-    /*public void generateTemplate( List<ExchangeRecord> exchangeRecordList, boolean generateFile){
-        for(ExchangeRecord record : exchangeRecordList){
-            generateTemplate(record, generateFile);
-        }
-    }*/
-    
+     */    
     @Override
-    public void renderTemplate(){
+    public OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues) throws Exception {
         // call the template renderer
-        //templaterenderer.renderReq(templatePath, record, runName, fieldValues);
-        if(templateRenderer == null){
-            logger.debug("***** KO templateRenderer is null !!!!");
-        } else {
-            logger.debug("***** OK templateRenderer " + templateRenderer);
-        }
+        return templateRenderer.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, storeName, fieldValues);        
     }
     
     /**

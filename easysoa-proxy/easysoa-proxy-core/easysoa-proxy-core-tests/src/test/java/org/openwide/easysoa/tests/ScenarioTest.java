@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.TemplateBuilder;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateEngineImpl;
@@ -36,6 +37,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.tests.helpers.AbstractTestHelper;
+
+import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.ContentReader;
 
 /**
@@ -212,24 +215,32 @@ public class ScenarioTest extends AbstractTestHelper {
 		// Get the template renderer
 		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 
-		// Build an HashMap to simulate user provided values
-		HashMap<String, String> fieldMap = new HashMap<String, String>();
-		fieldMap.put("user", "toto");
+	    // Get the replay engine service
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+		
+        // Build an HashMap to simulate user provided values
+        HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
+        ArrayList<String> valueList = new ArrayList<String>();
+        valueList.add("toto");
+        fieldMap.put("user", valueList);
 		
 		// For each custom record in the list
 		// TODO : seem's there is a problem here, the rendered template is the same for 2 differents cases
-		TemplateEngine templateEngine = new TemplateEngineImpl();
+		//TemplateEngine templateEngine = new TemplateEngineImpl();
 		for(ExchangeRecord record : recordList){
-            TemplateFieldSuggestions suggestions = templateEngine.suggestFields(record, runName, true);
-            ExchangeRecord templatizedRecord = templateEngine.generateTemplate(suggestions, record, runName, true);		    
+            TemplateFieldSuggestions templateFieldsuggestions = replayEngine.getTemplateEngine().suggestFields(record, runName, true);
+            ExchangeRecord templatizedRecord = replayEngine.getTemplateEngine().generateTemplate(templateFieldsuggestions, record, runName, true);
+            replayEngine.getAssertionEngine().suggestAssertions(templateFieldsuggestions, record.getExchange().getExchangeID(), runName);
 			// Render the templates and replay the request
-			if(templatizedRecord != null){
+			/*if(templatizedRecord != null){
                 String replayedResponse = processor.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, runName, fieldMap);
                 logger.debug("returned message form replayed template : " + replayedResponse);
 				// TODO : call the renderRes method for server mock test
 				// TODO : add an assert to check the result of the replayed templatized request
 				//assertEquals(record.getOutMessage().getMessageContent().getContent(), response);
-			}
+			}*/
+            OutMessage replayedMessageresponse = replayEngine.replayWithTemplate(fieldMap, runName, record.getExchange().getExchangeID());
+            // TODO add an assertion to check the replayed response
 		}		
 	}
 	

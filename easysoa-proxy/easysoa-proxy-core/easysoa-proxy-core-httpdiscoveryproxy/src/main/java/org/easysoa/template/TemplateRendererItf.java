@@ -3,6 +3,7 @@
  */
 package org.easysoa.template;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,12 +17,12 @@ public interface TemplateRendererItf {
 	 * @param list 
 	 * @return
 	 */
-	public String renderReq(String path, String runName, Map<String, String> argMap);
+	public String renderReq(String path, String runName, Map<String, List<String>> argMap);
 
 	/**
 	 * Render the response
 	 * @return
 	 */
-	public String renderRes(String path, String runName, Map<String, String> argMap);
+	public String renderRes(String path, String runName, Map<String, List<String>> argMap);
 	
 }
