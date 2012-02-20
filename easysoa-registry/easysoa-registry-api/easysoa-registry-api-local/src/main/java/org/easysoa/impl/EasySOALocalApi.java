@@ -35,6 +35,8 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class EasySOALocalApi implements EasySOAApiSession {
 
+    // TODO Take environment in account everywhere
+    
     private static Log log = LogFactory.getLog(EasySOALocalApi.class);
     
     private CoreSession session;
@@ -195,11 +197,14 @@ public class EasySOALocalApi implements EasySOAApiSession {
 
             // Exctract main fields
             String parentUrl = properties.get(Service.PROP_PARENTURL),
-                title = properties.get(Service.PROP_TITLE);
+                title = properties.get(Service.PROP_TITLE),
+                fileUrl = properties.get(Service.PROP_FILEURL);
             
             // Store URL as file in case of a WSDL
             if (url.toLowerCase().endsWith("?wsdl")) {
-                properties.put(Service.PROP_FILEURL, url);
+                if (fileUrl == null) {
+                    properties.put(Service.PROP_FILEURL, url);
+                }
                 url = url.substring(0, url.length() - 5);
             }
             

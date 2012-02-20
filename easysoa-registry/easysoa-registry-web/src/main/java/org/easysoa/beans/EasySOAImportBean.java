@@ -21,15 +21,19 @@
 package org.easysoa.beans;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.impl.EasySOALocalApi;
 import org.easysoa.listeners.AppliImplListener;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.extension.ScaImporterComponent;
@@ -107,41 +111,60 @@ public class EasySOAImportBean {
         }
     }
     
-    public void runImport() {
+    public String runImport() throws ClientException {
+        
+        DocumentRef documentToOpen = null;
         if ("sca".equals(importType)) {
-            importSCA();
+            documentToOpen = importSCA();
         }
         else if ("soapui".equals(importType)) {
-            importSoapUIConf();
+            documentToOpen = importSoapUIConf();
+        }
+        
+        if (documentToOpen != null) {
+            return navigationContext.navigateToRef(documentToOpen);
+        }
+        else {
+            return null;
         }
     }
 
-    private void importSoapUIConf() {
-        
-        log.info("SOAP UI import");
-        // TODO
-        
+    private DocumentRef importSoapUIConf() {
+        File soapUIConfFile = null;
+        try {
+            soapUIConfFile = transferBlobToFile();
+            if (soapUIConfFile != null) {
+                // Run file parsing
+                EasySOALocalApi api = new EasySOALocalApi(documentManager);
+                EasySOAImportSoapUIParser soapUiParser = new EasySOAImportSoapUIParser(api, targetWorkspaceModel.getTitle());
+                SAXParserFactory factory = SAXParserFactory.newInstance();
+                SAXParser saxParser = factory.newSAXParser();
+                saxParser.parse(soapUIConfFile, soapUiParser);
+                return targetWorkspaceModel.getRef();
+            }
+        } catch (Exception e) {
+            log.error("Failed to import SoapUI configuration", e);
+        } finally {
+            if (soapUIConfFile != null) {
+                soapUIConfFile.delete();
+            }
+        }
+        return null;
     }
 
-    private void importSCA() {
+    private DocumentRef importSCA() {
         
         // by choosing a stack (api server) type (frascati...)
         // (possibly initialized using composite info), then customizing it
         String serviceStackType = "FraSCAti"; // TODO get it from wizard
         String serviceStackUrl = "/"; // TODO get it from wizard
         
-        if (file != null) {
-            
-            File scaFile = null;
-    
-            try {
-                // Transfer composite to temporary file
-                if (file.getFilename().lastIndexOf(".") == -1) {
-                    log.warn("Chosen file has no extension, file type might not be recognized.");
-                }
-                scaFile = File.createTempFile("scaimport", file.getFilename());
-                file.transferTo(scaFile);
-    
+        File scaFile = null;
+
+        try {
+            scaFile = transferBlobToFile();
+
+            if (scaFile != null) {
                 BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(documentManager);
                 IScaImporter importer = Framework.getService(ScaImporterComponent.class).createScaImporter(visitorFactory, scaFile);
     
@@ -158,16 +181,33 @@ public class EasySOAImportBean {
                 }
     
                 importer.importSCA();
-                navigationContext.navigateToRef(appliImplModel.getRef());
-    
-            } catch (Exception e) {
-                log.error("Failed to import SCA", e);
-            } finally {
-                if (scaFile != null) {
-                    scaFile.delete();
-                }
+                
+                return appliImplModel.getRef();
             }
+
+        } catch (Exception e) {
+            log.error("Failed to import SCA", e);
+        } finally {
+            if (scaFile != null) {
+                scaFile.delete();
+            }
+        }
+
+        return null;
+        
+    }
     
+    private File transferBlobToFile() throws IOException {
+        if (file != null) {
+            if (file.getFilename().lastIndexOf(".") == -1) {
+                log.warn("Chosen file has no extension, file type might not be recognized.");
+            }
+            File f = File.createTempFile("scaimport", file.getFilename());
+            file.transferTo(f);
+            return f;
+        }
+        else {
+            return null;
         }
     }
 
