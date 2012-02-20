@@ -113,7 +113,7 @@ public class EasySOAImportBean {
     
     public String runImport() throws ClientException {
         
-        DocumentRef documentToOpen = null;
+        DocumentModel documentToOpen = null;
         if ("sca".equals(importType)) {
             documentToOpen = importSCA();
         }
@@ -122,14 +122,14 @@ public class EasySOAImportBean {
         }
         
         if (documentToOpen != null) {
-            return navigationContext.navigateToRef(documentToOpen);
+            return navigationContext.navigateToDocument(documentToOpen, "view");
         }
         else {
             return null;
         }
     }
 
-    private DocumentRef importSoapUIConf() {
+    private DocumentModel importSoapUIConf() {
         File soapUIConfFile = null;
         try {
             soapUIConfFile = transferBlobToFile();
@@ -140,7 +140,7 @@ public class EasySOAImportBean {
                 SAXParserFactory factory = SAXParserFactory.newInstance();
                 SAXParser saxParser = factory.newSAXParser();
                 saxParser.parse(soapUIConfFile, soapUiParser);
-                return targetWorkspaceModel.getRef();
+                return targetWorkspaceModel;
             }
         } catch (Exception e) {
             log.error("Failed to import SoapUI configuration", e);
@@ -152,7 +152,7 @@ public class EasySOAImportBean {
         return null;
     }
 
-    private DocumentRef importSCA() {
+    private DocumentModel importSCA() {
         
         // by choosing a stack (api server) type (frascati...)
         // (possibly initialized using composite info), then customizing it
@@ -182,7 +182,7 @@ public class EasySOAImportBean {
     
                 importer.importSCA();
                 
-                return appliImplModel.getRef();
+                return appliImplModel;
             }
 
         } catch (Exception e) {
@@ -251,7 +251,12 @@ public class EasySOAImportBean {
     }
 
     public List<SelectItem> getAppliImpls() throws ClientException {
-        return modelsToSelectItems(getAllAppliImpls(documentManager, targetWorkspaceModel.getRef()));
+        if (targetWorkspaceModel != null) {
+            return modelsToSelectItems(getAllAppliImpls(documentManager, targetWorkspaceModel.getRef()));
+        }
+        else {
+            return new ArrayList<SelectItem>();
+        }
     }
 
     public String getImportType() {
