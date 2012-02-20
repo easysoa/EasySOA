@@ -8,6 +8,11 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public interface DocumentService {
 
     /**
@@ -18,7 +23,7 @@ public interface DocumentService {
      * @throws ClientException
      * @throws MalformedURLException
      */
-    public abstract DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException, MalformedURLException;
+    DocumentModel createAppliImpl(CoreSession session, String url) throws ClientException, MalformedURLException;
 
     /**
      * Creates an Appli Impl. in the given workspace.
@@ -30,7 +35,7 @@ public interface DocumentService {
      * @throws ClientException
      * @throws MalformedURLException
      */
-    public abstract DocumentModel createAppliImpl(CoreSession session, String url, String workspace) throws ClientException, MalformedURLException;
+    DocumentModel createAppliImpl(CoreSession session, String url, String workspace) throws ClientException, MalformedURLException;
 
     /**
      * 
@@ -41,7 +46,7 @@ public interface DocumentService {
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public abstract DocumentModel createServiceAPI(CoreSession session, String parentPath, String url) throws ClientException, MalformedURLException;
+    DocumentModel createServiceAPI(CoreSession session, String parentPath, String url) throws ClientException, MalformedURLException;
 
     /**
      * Returns null if the service API doesn't exist.
@@ -53,7 +58,7 @@ public interface DocumentService {
      * @throws ClientException
      * @throws MalformedURLException 
      */
-    public abstract DocumentModel createService(CoreSession session, String parentPath, String url) throws ClientException, MalformedURLException;
+    DocumentModel createService(CoreSession session, String parentPath, String url) throws ClientException, MalformedURLException;
 
     /**
      * Returns null if the service API Impl doesn't exist.
@@ -64,17 +69,17 @@ public interface DocumentService {
      * @return
      * @throws ClientException
      */
-    public abstract DocumentModel createReference(CoreSession session, String parentPath, String title) throws ClientException;
+    DocumentModel createReference(CoreSession session, String parentPath, String title) throws ClientException;
 
-    public abstract DocumentModel findWorkspace(CoreSession session, String name) throws ClientException;
+    DocumentModel findWorkspace(CoreSession session, String name) throws ClientException;
     
-    public abstract DocumentModel findEnvironment(CoreSession session, String name) throws ClientException;
+    DocumentModel findEnvironment(CoreSession session, String name) throws ClientException;
     
-    public abstract DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException;
+    DocumentModel findAppliImpl(CoreSession session, String appliUrl) throws ClientException;
 
-    public abstract DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException;
+    DocumentModel findServiceApi(CoreSession session, String apiUrl) throws ClientException;
 
-    public abstract DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException;
+    DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException;
     
     /**
      * Find all child services from the given document.
@@ -83,9 +88,9 @@ public interface DocumentService {
      * @return All child services, or the document itself if the document is a service
      * @throws ClientException
      */
-    public abstract DocumentModelList findServices(CoreSession session, DocumentModel model) throws ClientException;
+    DocumentModelList findServices(CoreSession session, DocumentModel model) throws ClientException;
 
-    public abstract DocumentModel findServiceReference(CoreSession session, String referenceArchiPath) throws ClientException;
+    DocumentModel findServiceReference(CoreSession session, String referenceArchiPath) throws ClientException;
 
     /**
      * Merges properties from a document to another,
@@ -97,17 +102,19 @@ public interface DocumentService {
      * @return
      * @throws ClientException
      */
-    public abstract boolean mergeDocument(CoreSession session, DocumentModel from, DocumentModel to, boolean overwrite) throws ClientException;
+    boolean mergeDocument(CoreSession session, DocumentModel from, DocumentModel to, boolean overwrite) throws ClientException;
 
-    public abstract String generateDocumentID(DocumentModel doc);
-    
+    String generateDocumentID(DocumentModel doc);
+
+    DocumentModel getDefaultWorkspace(CoreSession session) throws ClientException;
+        
     /**
      * Returns the default Appli Impl., creates it if necessary.
      * @param session
      * @return
      * @throws ClientException
      */
-    public abstract DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException;
+    DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException;
 
     /**
      * Returns the default Appli Impl. in the desired workspace, creates it if necessary.
@@ -116,7 +123,7 @@ public interface DocumentService {
      * @return Never returns null
      * @throws ClientException
      */
-    public abstract DocumentModel getDefaultAppliImpl(CoreSession session, String workspace) throws ClientException;
+    DocumentModel getDefaultAppliImpl(CoreSession session, String workspace) throws ClientException;
     
     /**
      * Returns the workspace in which the current document is.
@@ -125,8 +132,8 @@ public interface DocumentService {
      * @return The workspace or null
      * @throws Exception
      */
-    public abstract DocumentModel getWorkspace(CoreSession session, DocumentModel model) throws ClientException;
+    DocumentModel getWorkspace(CoreSession session, DocumentModel model) throws ClientException;
     
-    public abstract DocumentRef getWorkspaceRoot(CoreSession session) throws ClientException;
+    DocumentRef getWorkspaceRoot(CoreSession session) throws ClientException;
 
 }

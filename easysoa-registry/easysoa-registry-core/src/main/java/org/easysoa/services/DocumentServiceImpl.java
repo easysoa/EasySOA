@@ -228,6 +228,10 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
             return IdUtils.generateStringId();
         }
     }
+    
+    public DocumentModel getDefaultWorkspace(CoreSession session) throws ClientException {
+        return findWorkspace(session, DEFAULT_WORKSPACE);
+    }
 
     public DocumentModel getDefaultAppliImpl(CoreSession session) throws ClientException {
     	return getDefaultAppliImpl(session, DEFAULT_WORKSPACE);

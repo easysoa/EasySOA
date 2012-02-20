@@ -22,14 +22,14 @@
     <action id="TAB_MANAGE" enabled="false" />
     -->
 
-    <!-- SCA Import page -->
-    <action id="easysoaImport" link="sca_import_form" label="label.easysoa.import.link">
+    <!-- Import page -->
+    <action id="easysoaImport" link="easysoa_import_form" label="label.easysoa.import.link">
       <category>USER_SERVICES</category>
      <!--  <filter-id>not_for_business_users"</filter-id> -->
     </action>
 
     <!-- SCA Import button -->
-    <action id="easysoaImportSubmit" link="#{easysoaImport.importSCA}" label="label.easysoa.import.button">
+    <action id="easysoaImportSubmit" link="#{easysoaImport.runImport}" label="label.easysoa.import.button">
       <category>EASYSOA_IMPORT</category>
     </action>
 
