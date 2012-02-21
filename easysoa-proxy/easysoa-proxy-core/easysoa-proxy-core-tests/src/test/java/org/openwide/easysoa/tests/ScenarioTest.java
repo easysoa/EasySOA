@@ -26,12 +26,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.records.replay.ReplayEngine;
-import org.easysoa.template.TemplateBuilder;
-import org.easysoa.template.TemplateEngine;
-import org.easysoa.template.TemplateEngineImpl;
-import org.easysoa.template.TemplateFieldSuggester;
 import org.easysoa.template.TemplateFieldSuggestions;
-import org.easysoa.template.TemplateProcessorRendererItf;
 import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -205,15 +200,9 @@ public class ScenarioTest extends AbstractTestHelper {
 	private void callTemplateDefService(String runName) throws Exception {
 		
 		logger.debug("callTemplateDefService method for store " + runName);
-		System.out.println("callTemplateDefService method for store " + runName);
-		TemplateFieldSuggester suggester = new TemplateFieldSuggester();
-		TemplateBuilder builder = new TemplateBuilder();
 		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
 	
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
-
-		// Get the template renderer
-		TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 
 	    // Get the replay engine service
         ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);

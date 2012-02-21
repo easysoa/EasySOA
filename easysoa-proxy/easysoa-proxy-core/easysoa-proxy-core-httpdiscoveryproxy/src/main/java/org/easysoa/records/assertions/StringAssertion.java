@@ -127,10 +127,10 @@ public class StringAssertion extends AbstractAssertion {
         AssertionResult result;
         if(originalMessage.getMessageContent().getContent().length() == replayedMessage.getMessageContent().getContent().length()){
             result = new AssertionResult(AssertionResultStatus.OK);
-            result.setMetrics(0);
+            result.addMetric("Length", "0");
         } else {
             result = new AssertionResult(AssertionResultStatus.KO);
-            result.setMetrics(Math.abs(originalMessage.getMessageContent().getContent().length() - replayedMessage.getMessageContent().getContent().length()));
+            result.addMetric("Length", String.valueOf(Math.abs(originalMessage.getMessageContent().getContent().length() - replayedMessage.getMessageContent().getContent().length())));
         }
         return result;
     }
@@ -144,10 +144,10 @@ public class StringAssertion extends AbstractAssertion {
         String diffMethodResult = StringUtils.difference(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(diffMethodResult.length() == 0){
             result = new AssertionResult(AssertionResultStatus.OK);
-            result.setMetrics(0);    
+            result.addMetric("Difference", "");    
         } else {
             result = new AssertionResult(AssertionResultStatus.KO);
-            result.setMetrics(diffMethodResult.length());
+            result.addMetric("Difference", diffMethodResult);
         }
         return result;
     }
@@ -174,7 +174,8 @@ public class StringAssertion extends AbstractAssertion {
         } else {
             result = new AssertionResult(AssertionResultStatus.KO);
         }
-        result.setMetrics(ldMethodResult);
+        
+        result.addMetric("Lehvenstein distance", String.valueOf(ldMethodResult));
         return result;
     }
     

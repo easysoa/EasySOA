@@ -35,7 +35,11 @@ import com.openwide.easysoa.message.OutMessage;
  */
 public class AssertionEngineImpl implements AssertionEngine {
     
+    // Specific logger for assertions
     private static final Logger testReportLogger = Logger.getLogger("testReportLogger");
+    
+    // TODO : Reference to log engine
+    // To generate reports about executed assertions
     
     // Add methods to configure Assertions
     // Not here, define a class for each type of assertions

@@ -38,9 +38,7 @@ import com.openwide.easysoa.util.RequestForwarder;
  *
  */
 public class ReplayEngineImpl implements ReplayEngine {
-
-    // put here methods that can be used specifically by other classes or to be referenced as a java component by Frascati 
-    
+   
     // Add code here to organize the work of template engine and assertion engine
     // Hum ... maybe not .. it is possible to generate the template with out to replay
     // On the contrary, it is not possible to execute assertion if the replay has not been replayed 
@@ -52,6 +50,10 @@ public class ReplayEngineImpl implements ReplayEngine {
     // SCA reference to template engine
     @Reference
     TemplateEngine templateEngine;
+    
+    // SCA Reference to log engine
+    //@Reference
+    //LogEngine logEngine;
     
     // Logger
     private static Logger logger = Logger.getLogger(ReplayEngineImpl.class.getName());
@@ -104,7 +106,7 @@ public class ReplayEngineImpl implements ReplayEngine {
     @Override
     public StoreCollection getExchangeRecordStorelist() throws Exception {
         logger.debug("getExchangeRecordStorelist method called ...");
-        List<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();;
+        List<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
         try{
             ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
             storeList = erfs.getExchangeRecordStorelist();
@@ -114,7 +116,7 @@ public class ReplayEngineImpl implements ReplayEngine {
             throw new Exception("An error occurs during the listing of exchanges record stores", ex); 
         }
         return new StoreCollection(storeList);
-    }    
+    }
     
     @Override
     public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String recordID) throws Exception {
@@ -136,7 +138,6 @@ public class ReplayEngineImpl implements ReplayEngine {
         // however diff is possible (on server or client)
         // ex. on server : http://code.google.com/p/java-diff-utils/
         logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
-        //HashMap<String, OutMessage> responseMap = new HashMap<String, OutMessage>();
         OutMessage outMessage = new OutMessage();
         try {
             //Collection<ExchangeRecord> recordList;
@@ -209,7 +210,6 @@ public class ReplayEngineImpl implements ReplayEngine {
      * @return
      * @throws Exception
      */
-    // TODO : Change param structure type
     // Remove template name, use hte one generated from the record
     @Override
     public OutMessage replayWithTemplate(Map<String, List<String>> formData, String exchangeStoreName, String exchangeRecordID) throws Exception {

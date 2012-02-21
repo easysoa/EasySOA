@@ -41,8 +41,8 @@ public class AssertionTest {
     @Test
     public void stringAssertionTest(){
         
-        StringAssertion assertion = new StringAssertion("StringAssertionTest");
-        assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
+        StringAssertion stringAssertion = new StringAssertion("StringAssertionTest");
+        stringAssertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
         
         AssertionEngine engine = new AssertionEngineImpl();
         
@@ -55,22 +55,31 @@ public class AssertionTest {
         replayedContent.setContent("test");
         originalMessage.setMessageContent(originalContent);
         replayedMessage.setMessageContent(replayedContent);
-        AssertionResult result = engine.executeAssertion(assertion, originalMessage, replayedMessage);
+        AssertionResult result = engine.executeAssertion(stringAssertion, originalMessage, replayedMessage);
         assertEquals(AssertionResultStatus.OK, result.getResultStatus());
-        assertEquals(0, result.getMetrics());
+        assertEquals("0", result.getMetrics());
         
         // Test for difference
         originalContent.setContent("one test");
         replayedContent.setContent("another test");
-        result = engine.executeAssertion(assertion, originalMessage, replayedMessage);
+        result = engine.executeAssertion(stringAssertion, originalMessage, replayedMessage);
         assertEquals(AssertionResultStatus.KO, result.getResultStatus());
-        assertEquals(5, result.getMetrics());
+        assertEquals("5", result.getMetrics());
         
         // Test for difference with LENGTH method
-        assertion.setMethod(StringAssertionMethod.LENGTH);
-        result = engine.executeAssertion(assertion, originalMessage, replayedMessage);
+        stringAssertion.setMethod(StringAssertionMethod.LENGTH);
+        result = engine.executeAssertion(stringAssertion, originalMessage, replayedMessage);
         assertEquals(AssertionResultStatus.KO, result.getResultStatus());
-        assertEquals(4, result.getMetrics());
+        assertEquals("4", result.getMetrics());
+        
+        // Test for difference with LCS method
+        Assertion lcsAssertion = new LCSAssertion("lcsAssertiontest");
+        result = engine.executeAssertion(lcsAssertion, originalMessage, replayedMessage);
+        originalContent.setContent("one test");
+        replayedContent.setContent("one test");
+        result = engine.executeAssertion(lcsAssertion, originalMessage, replayedMessage);
+        //assertEquals(AssertionResultStatus.KO, result.getResultStatus());
+        //assertEquals(4, result.getMetrics());        
     }
     
 }

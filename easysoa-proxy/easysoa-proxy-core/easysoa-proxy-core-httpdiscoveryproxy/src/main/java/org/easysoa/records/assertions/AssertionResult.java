@@ -19,6 +19,9 @@
  */
 package org.easysoa.records.assertions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class to store result of assertions
  * 
@@ -39,8 +42,10 @@ public class AssertionResult {
     private String message;
     
     // Metrics
-    // TODO : add metrics inside this class or as an object reference, always an integer ... maybe not
-    private int metrics;
+    // TODO : Only a String is not enougth. To be replaced by an HashMap (Key, string (or object)).
+    // With predifined keys ??? => no 
+    //private String metrics;
+    private Map<String, String> metrics;
     
     /**
      * 
@@ -48,6 +53,7 @@ public class AssertionResult {
      */
     AssertionResult(AssertionResultStatus status){
         this(status, "");
+        this.metrics = new HashMap<String, String>();
     }
     
     /**
@@ -85,10 +91,22 @@ public class AssertionResult {
     }
     
     /**
+     * 
+     * @param metricName
+     * @param metricValue
+     */
+    public void addMetric(String metricName, String metricValue){
+        this.metrics.put(metricName, metricValue);
+    }
+    
+    /**
      * Set metrics
      * @param metrics
      */
-    public void setMetrics(int metrics){
+    /*public void setMetrics(String metrics){
+        this.metrics = metrics;
+    }*/
+    public void setMetrics(Map<String,String> metrics){
         this.metrics = metrics;
     }
     
@@ -96,7 +114,7 @@ public class AssertionResult {
      * Get metrics
      * @return
      */
-    public int getMetrics(){
+    public Map<String,String> getMetrics(){
         return this.metrics;
     }
 

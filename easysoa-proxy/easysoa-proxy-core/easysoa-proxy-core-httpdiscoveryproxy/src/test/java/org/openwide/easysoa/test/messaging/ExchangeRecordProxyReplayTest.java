@@ -37,6 +37,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.records.assertions.AssertionEngineImpl;
 import org.easysoa.records.assertions.AssertionSuggestions;
+import org.easysoa.records.assertions.LCSAssertion;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.records.replay.ReplayEngineImpl;
@@ -203,6 +204,9 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	        // TODO => call replayWithTemplate Method to test the remplate engine
 	        
 	        // Executing assertions
+	        // TODO : Test for LCS assertion with a big message => Out of memory error
+	        // Need to add a limitation to avoid to freeze or block the whole test. 
+	        // assertionSuggestions.addAssertion(new LCSAssertion("LCSAssertion"));
             assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);  
 	    }
 
