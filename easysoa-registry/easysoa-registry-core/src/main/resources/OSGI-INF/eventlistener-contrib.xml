@@ -25,7 +25,10 @@
     </listener>
     <listener name="validationlistener" class="org.easysoa.listeners.ValidationListener" order="121">
       <event>documentValidationRequest</event>
-    </listener> 
+    </listener>
+    <listener name="recursivedeleterlistener" class="org.easysoa.listeners.RecursiveDeleterListener" order="121">
+      <event>lifecycle_transition_event</event>
+    </listener>
   </extension>
 
   <!-- Custom events logging -->

@@ -39,6 +39,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.api.Filter;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.runtime.model.DefaultComponent;
@@ -246,11 +247,14 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
     	DocumentModel workspaceModel = findWorkspace(session, workspace);
     	DocumentModel appliImpl = null;
     	if (workspaceModel != null) {
-            DocumentModelList appliImplList = session.query("SELECT * FROM " + AppliImpl.DOCTYPE + 
-            		" WHERE " + AppliImpl.SCHEMA_PREFIX + AppliImpl.PROP_URL + " = '" + AppliImpl.DEFAULT_APPLIIMPL_URL + 
-            		"' AND ecm:path STARTSWITH '" + workspaceModel.getPathAsString() + "'");
+            DocumentModelList appliImplList = session.getChildren(workspaceModel.getRef(), AppliImpl.DOCTYPE, new DeletedDocumentFilter(), null);
             if (appliImplList != null && !appliImplList.isEmpty()) {
-            	appliImpl = appliImplList.get(0);
+                for (DocumentModel model : appliImplList) {
+                    if (AppliImpl.DEFAULT_APPLIIMPL_URL.equals(model.getProperty(AppliImpl.SCHEMA_PREFIX, AppliImpl.PROP_URL))) {
+                        appliImpl = model;
+                        break;
+                    }
+                }
             }
     	}
     	
@@ -297,7 +301,19 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
 
     private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
         DocumentModelList results = session.query("SELECT * FROM " + type + " WHERE " + 
-        		field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0 AND ecm:isCheckedInVersion = 0");
+        		field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isCheckedInVersion = 0",
+        		new Filter() {
+                    private static final long serialVersionUID = 1L;
+                    public boolean accept(DocumentModel docModel) {
+                        try {
+                            // Filter old versions of document
+                            return docModel.isLatestVersion() || !docModel.hasFacet("Versionable");
+                        } catch (ClientException e) {
+                            return false;
+                        }
+                    }
+                }
+            );
         return (results != null && !results.isEmpty()) ? results.get(0) : null;
     }
 
