@@ -122,7 +122,7 @@ public class EasySOAImportBean {
         }
         
         if (documentToOpen != null) {
-            return navigationContext.navigateToDocument(documentToOpen, "view");
+            return navigationContext.navigateToDocument(documentToOpen, "after-edit");
         }
         else {
             return null;
