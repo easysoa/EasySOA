@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<component
+    name="org.easysoa.ContentTemplateService.contrib">
+
+  <require>org.nuxeo.ecm.platform.content.template.service.ContentTemplateService.defaultContrib</require>
+
+  <extension
+      target="org.nuxeo.ecm.platform.content.template.service.ContentTemplateService"
+      point="factory">
+    <contentFactory
+        name="EasySOAContentFactory"
+        class="org.easysoa.EasySOAContentFactory"/>
+  </extension>
+
+  <extension
+      target="org.nuxeo.ecm.platform.content.template.service.ContentTemplateService"
+      point="factoryBinding">
+
+    <factoryBinding name="RootFactory" factoryName="SimpleTemplateRootFactory" targetType="Root">
+      <acl>
+        <ace principal="Administrator" permission="Everything" granted="true"/>
+        <ace principal="members" permission="Read" granted="true"/>
+      </acl>
+      <template>
+        <templateItem typeName="Domain" id="default-domain" title="EasySOA"
+            description="EasySOA domain"/>
+      </template>
+    </factoryBinding>
+
+    <factoryBinding name="DomainFactory" factoryName="SimpleTemplateFactory" targetType="Domain">
+      <template>
+        <templateItem typeName="WorkspaceRoot" id="workspaces" title="Service Registry"
+            description="Service Registry"/>
+        <templateItem typeName="SectionRoot" id="sections" title="Environments" description="Environments"/>
+        <templateItem typeName="TemplateRoot" id="templates" title="Templates"
+            description="Root of workspaces templates"/>
+      </template>
+    </factoryBinding>
+
+
+    <factoryBinding name="SectionRootFactory" factoryName="SimpleTemplateFactory" targetType="SectionRoot">
+      <template>
+        <templateItem typeName="Section" id="master" title="Master"
+            description="Master"/>
+      </template>
+    </factoryBinding>
+
+    <factoryBinding name="WorkspaceRootFactory" factoryName="EasySOAContentFactory" targetType="WorkspaceRoot">
+      <template>
+      </template>
+    </factoryBinding>
+
+  </extension>
+
+</component>

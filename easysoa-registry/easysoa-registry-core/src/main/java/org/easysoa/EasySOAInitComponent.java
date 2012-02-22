@@ -76,13 +76,13 @@ public class EasySOAInitComponent implements BundleActivator, FrameworkListener 
 
     @Override
     public void frameworkEvent(FrameworkEvent event) {
-        if (event.getType() == FrameworkEvent.STARTED) {
-            try {
-                doInit();
-            } catch (Exception e) {
-                log.error("Unable to start EasySOA init", e);
-            }
-        }
+        //if (event.getType() == FrameworkEvent.STARTED) {
+        //    try {
+        //        doInit();
+        //    } catch (Exception e) {
+        //        log.error("Unable to start EasySOA init", e);
+        //    }
+        //}
     }
 
     @Override

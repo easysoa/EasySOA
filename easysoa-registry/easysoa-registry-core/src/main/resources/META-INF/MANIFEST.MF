@@ -42,4 +42,5 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/preview-adapter-contrib.xml,
  OSGI-INF/ServicesRootMapperServiceComponent.xml,
  OSGI-INF/WebFileParsingPoolService.xml,
- OSGI-INF/webfileparsers-contrib.xml
+ OSGI-INF/webfileparsers-contrib.xml,
+ OSGI-INF/content-template-contrib.xml
