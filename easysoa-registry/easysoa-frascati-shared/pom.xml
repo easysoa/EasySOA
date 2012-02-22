@@ -40,4 +40,11 @@
 		</plugins>
 	</build>
 
+  <repositories>
+    <repository>
+      <id>Nuxeo public repository</id>
+      <url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+    </repository>
+  </repositories>
+
 </project>
