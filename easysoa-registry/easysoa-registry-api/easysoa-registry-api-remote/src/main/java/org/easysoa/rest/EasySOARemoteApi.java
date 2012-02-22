@@ -12,9 +12,9 @@ import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOARemoteDocument;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.json.JSONObject;
+import org.nuxeo.ecm.automation.client.model.Document;
 import org.nuxeo.ecm.automation.client.model.Documents;
-import org.nuxeo.ecm.automation.client.jaxrs.model.Document;
-import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
+
 
 /**
  *

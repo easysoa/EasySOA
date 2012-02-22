@@ -13,7 +13,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.HttpDownloader;
 import org.easysoa.services.HttpDownloaderService;
-import org.jboss.remoting.samples.chat.exceptions.InvalidArgumentException;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -25,22 +24,22 @@ import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
- * 
+ *
  * @author mkalam-alami
  *
  */
 public class WebFileParsingPoolServiceImpl extends DefaultComponent implements Runnable, WebFileParsingPoolService {
 
     private static Log log = LogFactory.getLog(WebFileParsingPoolServiceImpl.class);
-    
+
     public static final String PARSERS_EXTENSIONPOINT = "parsers";
-    
+
     private Thread parsingPoolThread;
     private Deque<WebFileParsingPoolEntry> parsingPool = new LinkedList<WebFileParsingPoolEntry>();
     private Map<String, WebFileParser> parsers = new HashMap<String, WebFileParser>();
 
     private CoreSession coreSession;
-    
+
     @Override
     public void activate(ComponentContext context) throws Exception {
         if (parsingPoolThread == null) {
@@ -49,14 +48,14 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
         }
         parsingPoolThread.start();
     }
-    
+
     @Override
     public void deactivate(ComponentContext context) throws Exception {
         if (parsingPoolThread != null) {
             parsingPoolThread.interrupt();
         }
     }
-    
+
     @Override
     public void registerContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor)
@@ -98,11 +97,11 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
 
     @Override
     public void run() {
-        
+
         LoginContext loginContext = null;
-        
+
         try {
-            
+
             // Log in and gather needed data
             loginContext = Framework.login();
             RepositoryManager mgr = Framework.getService(RepositoryManager.class);
@@ -111,16 +110,16 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                 coreSession = repository.open();
             }
             HttpDownloaderService downloaderService = Framework.getService(HttpDownloaderService.class);
-            
-       
+
+
             while (true) { // Terminates by being interrupted during components' deactivation
-    
+
                 // Blocking step
                 boolean empty;
                 synchronized (parsingPool) {
                     empty = parsingPool.isEmpty();
                 }
-                
+
                 if (empty) {
                     try {
                         synchronized (this) {
@@ -130,7 +129,7 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                         // Do nothing
                     }
                 }
-    
+
                 // Entry processing
                 WebFileParsingPoolEntry entry = null;
                 synchronized (parsingPool) {
@@ -138,38 +137,38 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                         entry = parsingPool.pop();
                     }
                 }
-                
+
                 if (entry != null) {
                     try {
                         // Download
                         HttpDownloader httpDownloader = downloaderService.createHttpDownloader(entry.getUrl());
                         Blob blob = httpDownloader.download().getBlob();
-                        
+
                         // Save blob in content property
                         DocumentModel targetModel = entry.getTargetModel();
                         String storageProp = entry.getStorageProp();
                         if (storageProp != null) {
                             targetModel.getProperty(storageProp).setValue(blob);
                         }
-                        
+
                         // Run through every parser registered
                         for (WebFileParser parser : parsers.values()) {
                             parser.parse(coreSession, blob, targetModel, entry.getOptions());
                         }
-                        
+
                         // Save
                         coreSession.saveDocument(targetModel);
                         coreSession.save();
-                    
+
                     }
                     catch (Exception e) {
                         log.warn("Error while processing parsing pool entry", e);
                     }
-                    
+
                 }
-                
+
             }
-            
+
         } catch (Exception e) {
             log.error("Fatal web parsing pool error", e);
         } finally {
@@ -182,16 +181,16 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                 }
             }
         }
-        
+
     }
-    
+
     @Override
     public void append(URL url, DocumentModel targetModel, String storageProp,
-            Map<String, String> options) throws InvalidArgumentException {
+            Map<String, String> options) throws IllegalArgumentException {
         synchronized (parsingPool) {
             parsingPool.push(new WebFileParsingPoolEntry(url, targetModel, storageProp, options));
             synchronized (this) {
-                notifyAll();  
+                notifyAll();
             }
         }
     }
