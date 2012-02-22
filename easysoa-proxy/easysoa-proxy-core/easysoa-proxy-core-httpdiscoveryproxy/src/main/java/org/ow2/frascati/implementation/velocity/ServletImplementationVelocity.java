@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateField;
@@ -148,7 +149,7 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        		if(storeList.size()>0){
 	        			response.getWriter().println("<html><body><ul>");
 		        		for(ExchangeRecordStore recordStore : storeList){
-		        			response.getWriter().println("<li><a href=\"http://localhost:8090/runManager/target/" + recordStore.getStoreName() + "?wsdl\">" + recordStore.getStoreName() + "</a> </li>");
+		        			response.getWriter().println("<li><a href=\"http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + recordStore.getStoreName() + "?wsdl\">" + recordStore.getStoreName() + "</a> </li>");
 		        		}
 		        		response.getWriter().println("</ul></body></html>");
 	        		}

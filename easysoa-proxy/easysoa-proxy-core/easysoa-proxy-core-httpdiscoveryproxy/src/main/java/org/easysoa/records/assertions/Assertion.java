@@ -19,13 +19,15 @@
  */
 package org.easysoa.records.assertions;
 
+import org.easysoa.logs.ReportLine;
+
 import com.openwide.easysoa.message.OutMessage;
 
 /**
  * 
  * @author jguillemotte
  */
-public interface Assertion {
+public interface Assertion extends ReportLine {
 
     /**
      * Returns the Assertion ID

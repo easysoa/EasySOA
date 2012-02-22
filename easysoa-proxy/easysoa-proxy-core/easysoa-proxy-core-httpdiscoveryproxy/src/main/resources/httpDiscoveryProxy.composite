@@ -119,6 +119,7 @@
 		<sca:implementation.java class="org.easysoa.records.replay.ReplayEngineImpl" />
 		<sca:reference name="templateEngine" target="templateEngineComponent" />
 		<sca:reference name="assertionEngine" target="assertionEngineComponent" />
+		<sca:reference name="logEngine" target="logEngineComponent" />
 	</sca:component>
 	
 	<!-- Template engine -->
@@ -137,5 +138,13 @@
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.records.assertions.AssertionEngineImpl" />
 	</sca:component>
-
+	
+	<!-- Log engine -->
+	<sca:component name="logEngineComponent">
+		<sca:service name="logEngineService">
+			<sca:interface.java interface="org.easysoa.logs.LogEngine" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.logs.LogEngineImpl" />
+	</sca:component>
+	
 </sca:composite>

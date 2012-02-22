@@ -27,6 +27,19 @@ public interface ReplayEngine {
     public AssertionEngine getAssertionEngine();    
     
     /**
+     * 
+     * @param replaySessionName
+     * @throws Exception
+     */
+    public void startReplaySession(String replaySessionName) throws Exception;
+    
+    /**
+     * 
+     * @throws Exception
+     */
+    public void stopReplaySession() throws Exception;
+    
+    /**
      * Get the exchange record corresponding to the ID and stored in the specified store 
      * @param exchangeRecordStoreName The store where the record is stored
      * @param exchangeID The exchange ID to get

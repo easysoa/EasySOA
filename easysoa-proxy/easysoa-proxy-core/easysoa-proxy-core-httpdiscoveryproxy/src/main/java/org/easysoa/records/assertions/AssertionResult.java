@@ -42,10 +42,7 @@ public class AssertionResult {
     private String message;
     
     // Metrics
-    // TODO : Only a String is not enougth. To be replaced by an HashMap (Key, string (or object)).
-    // With predifined keys ??? => no 
-    //private String metrics;
-    private Map<String, String> metrics;
+    private Map<String, Metric> metrics;
     
     /**
      * 
@@ -53,7 +50,7 @@ public class AssertionResult {
      */
     AssertionResult(AssertionResultStatus status){
         this(status, "");
-        this.metrics = new HashMap<String, String>();
+        this.metrics = new HashMap<String, Metric>();
     }
     
     /**
@@ -95,18 +92,24 @@ public class AssertionResult {
      * @param metricName
      * @param metricValue
      */
-    public void addMetric(String metricName, String metricValue){
-        this.metrics.put(metricName, metricValue);
+    public void addMetric(String metricName, String metricValue, String expectedValue, String actualValue){
+        addMetric(metricName, new Metric(metricValue, expectedValue, actualValue));
     }
+
+    /**
+     * 
+     * @param metricName
+     * @param metric
+     */
+    public void addMetric(String metricName, Metric metric){
+        this.metrics.put(metricName, metric);
+    }    
     
     /**
      * Set metrics
      * @param metrics
      */
-    /*public void setMetrics(String metrics){
-        this.metrics = metrics;
-    }*/
-    public void setMetrics(Map<String,String> metrics){
+    public void setMetrics(Map<String,Metric> metrics){
         this.metrics = metrics;
     }
     
@@ -114,7 +117,7 @@ public class AssertionResult {
      * Get metrics
      * @return
      */
-    public Map<String,String> getMetrics(){
+    public Map<String,Metric> getMetrics(){
         return this.metrics;
     }
 

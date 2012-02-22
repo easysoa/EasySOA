@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import org.easysoa.logs.AssertionReport;
+import org.easysoa.logs.Report;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.template.TemplateField;
@@ -57,9 +59,11 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 	public final static String SUGGESTION_FILE_PREFIX = "fieldSuggestions_";
 	public final static String ASSERTIONS_FILE_PREFIX = "assertionSuggestions_";
 
-	// Template path for fld and asr firle storage
+	// Template path for fld and asr file storage
 	private String templatePath;
 	//private String storePath;
+	
+	private String reportPath;
 	
 	/**
 	 * Path is set with the value of 'path.record.store' property
@@ -68,17 +72,20 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 		super(PropertyManager.getProperty("path.record.store"));
 	    //this.storePath = PropertyManager.getProperty("path.record.store");
 		this.templatePath = PropertyManager.getProperty("path.template.store");
+		this.reportPath = PropertyManager.getProperty("path.reports");
+		
 		logger.debug("Using property 'path.record.store' for record store path = " + this.path);
 		logger.debug("Using property 'path.template.store' for template store path = " + this.templatePath);
+		logger.debug("Using property 'path.reports' for reports path = " + this.reportPath);
 	}
 
 	/**
 	 * Constructor
 	 * @param path Path where the Exchange record will be stored
 	 */
-	public ProxyExchangeRecordFileStore(String path) {
+	/*public ProxyExchangeRecordFileStore(String path) {
 	    super(path);
-	}
+	}*/
 
 	/**
 	 * Replace the original method.
@@ -244,5 +251,21 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
             assertionSuggestFw.close();
         }	    
 	}
+
+	/**
+	 * Save an assertion report, using the report name to generate two files corresponding to xml and txt versions
+	 * @param assertionReport The assertion report to save
+	 * @throws Exception If a problem occurs 
+	 */
+    public void saveAssertionReport(Report report) throws Exception {
+        File xmlAssertionReportFile = new File(report.getReportName() + ".xml");
+        FileWriter assertionReportFw = new FileWriter(xmlAssertionReportFile);
+        try{
+            assertionReportFw.write(report.generateXMLReport());
+        }
+        finally{
+            assertionReportFw.close();
+        }
+    }
 
 }

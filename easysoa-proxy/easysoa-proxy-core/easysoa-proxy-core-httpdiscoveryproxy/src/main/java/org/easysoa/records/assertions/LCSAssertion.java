@@ -39,10 +39,10 @@ public class LCSAssertion extends AbstractAssertion {
         String lcsResult = computeLCS(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(lcsResult.equals(originalMessage.getMessageContent().getContent())){
             result = new AssertionResult(AssertionResultStatus.OK);
-            result.addMetric("LCS method", lcsResult);
+            result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         } else {
             result = new AssertionResult(AssertionResultStatus.KO);
-            result.addMetric("LCS method", lcsResult);
+            result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         }
         return result;
     }

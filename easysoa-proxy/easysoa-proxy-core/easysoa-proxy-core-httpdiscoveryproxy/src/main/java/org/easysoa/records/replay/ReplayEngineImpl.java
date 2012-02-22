@@ -10,11 +10,15 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.log4j.Logger;
+import org.easysoa.logs.AssertionReport;
+import org.easysoa.logs.LogEngine;
+import org.easysoa.logs.Report;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.records.assertions.AssertionResult;
 import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
@@ -37,6 +41,7 @@ import com.openwide.easysoa.util.RequestForwarder;
  * @author jguillemotte
  *
  */
+// TODO : add annotation to have a persistence of this object in FraSCAti 
 public class ReplayEngineImpl implements ReplayEngine {
    
     // Add code here to organize the work of template engine and assertion engine
@@ -52,8 +57,8 @@ public class ReplayEngineImpl implements ReplayEngine {
     TemplateEngine templateEngine;
     
     // SCA Reference to log engine
-    //@Reference
-    //LogEngine logEngine;
+    @Reference
+    LogEngine logEngine;
     
     // Logger
     private static Logger logger = Logger.getLogger(ReplayEngineImpl.class.getName());
@@ -62,7 +67,10 @@ public class ReplayEngineImpl implements ReplayEngine {
     // Param setter list
     private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();    
 
-    /**
+    // TODO : 
+    private String replaySessionName;
+    
+    /**+
      * Constructor
      * Set the param setter list
      */
@@ -71,7 +79,31 @@ public class ReplayEngineImpl implements ReplayEngine {
         paramSetterList.add(new RestPathParamSetter());
         paramSetterList.add(new RestQueryParamSetter());
         paramSetterList.add(new WSDLParamSetter());
+        this.replaySessionName = null;
     }    
+    
+    /**
+     * Start a replay session
+     * @param replaySessionName
+     */
+    public void startReplaySession(String replaySessionName) throws Exception {
+        if(replaySessionName == null || "".equals(replaySessionName)){
+            throw new IllegalArgumentException("replaySessionName must not be null or empty");
+        } else {
+            this.replaySessionName = replaySessionName;
+            Report report = new AssertionReport(replaySessionName);
+            logEngine.startLogSession(replaySessionName, report);
+        }
+    }
+    
+    /**
+     * 
+     * @throws Exception
+     */
+    public void stopReplaySession() throws Exception {
+        System.out.println("DEBUG replay session name = " + replaySessionName);
+        logEngine.saveAndRemoveLogSession(replaySessionName);
+    }
     
     @Override
     public RecordCollection getExchangeRecordlist(String exchangeRecordStoreName) throws Exception {
@@ -181,16 +213,25 @@ public class ReplayEngineImpl implements ReplayEngine {
                 //StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
                 
                 // Call assertioSuggestionService not only when a template and fields are available but also to compare replay without modifications)
-                
                 AssertionSuggestionService assertionSuggestionService = new AssertionSuggestionService();
                 
                 // Get default assertions
                 AssertionSuggestions assertionSuggestions = assertionSuggestionService.suggestAssertions();
+                // Execute assertions
+                List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), outMessage);
+                // Generate reports
                 
-                // Problem with this method when response is big ... treatment is very very long ....
-                // Think there is a bug with this method, more of 5 minutes for a long xml string
-                //assertion.setMethod(StringAssertionMethod.DISTANCE_LEHVENSTEIN);
-                assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), outMessage);
+                //AssertionReport report = new AssertionReport(exchangeRecordStoreName + "_report", assertionResults);
+                //logEngine.generateAssertionReport(assertionResults);
+                //logEngine.saveReport(report);
+                logger.debug("replaySessionName : " + replaySessionName);
+                if(replaySessionName != null){
+                    AssertionReport report = (AssertionReport) logEngine.getLogSession(replaySessionName).getReport();
+                    if(report != null){
+                        report.AddAssertionResult(assertionResults);
+                    }
+                }
+                
                 // End
             //}
             return outMessage;                
@@ -230,8 +271,19 @@ public class ReplayEngineImpl implements ReplayEngine {
         // Call the proxy velocity to render and execute the replay with custom params
         OutMessage replayedResponse = templateEngine.renderTemplateAndReplay(exchangeStoreName, record, formData);
         // Call assertion engine to execute assertions
-        assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedResponse);
+        List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedResponse);
         
+        // Generate a report .... for each replayed message ????
+        /*AssertionReport report = new AssertionReport(exchangeStoreName + "_report", assertionResults);
+        if(replaySessionName != null){
+            logEngine.getLogSession(replaySessionName).getReport().
+        }*/
+        if(replaySessionName != null){
+            AssertionReport report = (AssertionReport) logEngine.getLogSession(replaySessionName).getReport();
+            if(report != null){
+                report.AddAssertionResult(assertionResults);
+            }
+        }        
         return replayedResponse;
     }
 

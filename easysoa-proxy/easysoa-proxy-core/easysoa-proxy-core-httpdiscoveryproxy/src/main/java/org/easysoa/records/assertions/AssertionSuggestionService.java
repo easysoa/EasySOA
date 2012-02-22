@@ -32,6 +32,7 @@ public class AssertionSuggestionService {
      * @param fieldSuggestions
      * @return
      */
+    // TODO : rework this method to have a real suggestion service associated with a field name
     public AssertionSuggestions suggestAssertions(TemplateFieldSuggestions fieldSuggestions){
         int i = 0;
         AssertionSuggestions suggestions = new AssertionSuggestions();
@@ -39,6 +40,7 @@ public class AssertionSuggestionService {
         for(TemplateField field : fieldSuggestions.getTemplateFields()){
             // If field equality is true
             if(field.isFieldEquality()){
+                // TODO : How to suggest an other type of assertion ???
                 StringAssertion assertion = new StringAssertion("assertion_" + i + "_" + field.getFieldName());
                 suggestions.addAssertion(assertion);
                 i++;

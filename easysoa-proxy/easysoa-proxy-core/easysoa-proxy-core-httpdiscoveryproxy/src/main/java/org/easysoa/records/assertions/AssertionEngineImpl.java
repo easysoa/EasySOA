@@ -52,10 +52,6 @@ public class AssertionEngineImpl implements AssertionEngine {
 
     // asr files to define assertions. how to generate these files
     
-    // key is the field key associated to a list of assertions
-    // How to do when assertion is processed on the whole response ?
-    // private HashMap<String, List<Assertion>> assertionList;
-    
     /* (non-Javadoc)
      * @see org.easysoa.records.assertions.AssertionEngine#suggestAssertions(org.easysoa.template.TemplateFieldSuggestions, java.lang.String, java.lang.String)
      */

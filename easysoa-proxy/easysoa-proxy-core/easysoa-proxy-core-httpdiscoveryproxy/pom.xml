@@ -147,6 +147,11 @@
     	<artifactId>commons-lang</artifactId>
     	<version>2.6</version>
     </dependency>
+    <dependency>
+    	<groupId>xstream</groupId>
+    	<artifactId>xstream</artifactId>
+    	<version>1.2.2</version>
+    </dependency>
   </dependencies>
 
   <build>

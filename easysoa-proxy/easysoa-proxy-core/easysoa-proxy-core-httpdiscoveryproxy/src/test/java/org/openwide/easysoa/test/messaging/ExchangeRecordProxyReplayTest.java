@@ -187,7 +187,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
     
 	    // Create a ReplaySequencer class to organise to execution of differents engines
 	    // Add boolean variables in property file to enable or disable the execution of engines
-	    
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        replayEngine.startReplaySession(testStoreName + "_replaySession");
 	    for(ExchangeRecord record : recordList){
 	        // Field suggestions
 	        TemplateFieldSuggestions fieldSuggestions = templateEngine.suggestFields(record, testStoreName, true);
@@ -196,7 +197,6 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	        // templatized record
 	        templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
 	        // Replaying records
-	        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
 	        OutMessage replayedMessage = new OutMessage();
 	        MessageContent replayedMessageContent = new MessageContent();
 	        replayedMessage.setMessageContent(replayedMessageContent);
@@ -207,9 +207,9 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	        // TODO : Test for LCS assertion with a big message => Out of memory error
 	        // Need to add a limitation to avoid to freeze or block the whole test. 
 	        // assertionSuggestions.addAssertion(new LCSAssertion("LCSAssertion"));
-            assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);  
+            //assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);  
 	    }
-
+        replayEngine.stopReplaySession();
 	}
 	
 	/**
@@ -303,7 +303,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
         AssertionEngine assertionEngine = new AssertionEngineImpl();
         // Create a ReplaySequencer class to organise to execution of differents engines
         // Add boolean variables in property file to enable or disable the execution of engines
-        
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        replayEngine.startReplaySession(testStoreName + "_replaySession");
         for(ExchangeRecord record : recordList){
             // Field suggestions
             TemplateFieldSuggestions fieldSuggestions = templateEngine.suggestFields(record, testStoreName, true);
@@ -311,16 +312,15 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
             AssertionSuggestions assertionSuggestions = assertionEngine.suggestAssertions(fieldSuggestions, record.getExchange().getExchangeID(), testStoreName);
             // templatized record
             templateEngine.generateTemplate(fieldSuggestions, record, testStoreName, true);
-            // Replaying records
-            ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+            // Replaying records, Assertions are executed in the replay engine
             OutMessage replayedMessage = new OutMessage();
             MessageContent replayedMessageContent = new MessageContent();
             replayedMessage.setMessageContent(replayedMessageContent);
             replayedMessageContent.setContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getContent());
             // Executing assertions
-            assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);           
+            //assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);           
         }		
-		
+        replayEngine.stopReplaySession();
 	}
 	
 	/**
