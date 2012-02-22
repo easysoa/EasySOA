@@ -55,7 +55,7 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class AppliImplListener implements EventListener {
     
-    public final static String APPLI_IMPL_CHANGED = "appliImplChanged";
+    public static final String APPLI_IMPL_CHANGED = "appliImplChanged";
 
     private static Log log = LogFactory.getLog(AppliImplListener.class);
 

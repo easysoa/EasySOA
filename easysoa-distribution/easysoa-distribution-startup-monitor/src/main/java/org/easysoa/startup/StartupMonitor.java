@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 
 /**
@@ -18,11 +19,12 @@ import org.easysoa.EasySOAConstants;
  */
 public class StartupMonitor {
     
+    private static final Logger logger = Logger.getLogger(StartupMonitor.class);
+    
     private static final String EASYSOA_URL = "http://localhost:8083/easysoa";
     private static final int STARTUP_TIMEOUT = 90000;
     private static final String[] BROWSERS = { "firefox", "google-chrome", "opera",
        "epiphany", "konqueror", "conkeror", "midori", "kazehakase", "mozilla" };
-    
     
     public static void main(String[] args) {
         
@@ -112,7 +114,7 @@ public class StartupMonitor {
     }
     
     public static void print(String string) {
-        System.out.println(string);
+        logger.info(string);
     }
 
     /**
@@ -137,8 +139,9 @@ public class StartupMonitor {
             String browser = null;
             for (String b : BROWSERS) {
                 if (browser == null &&  Runtime.getRuntime().exec(
-                        new String[] { "which", b }).getInputStream().read() != -1)
+                        new String[] { "which", b }).getInputStream().read() != -1) {
                     Runtime.getRuntime().exec(new String[] { browser = b, url });
+                }
             }
             if (browser == null) {
                 throw new Exception();

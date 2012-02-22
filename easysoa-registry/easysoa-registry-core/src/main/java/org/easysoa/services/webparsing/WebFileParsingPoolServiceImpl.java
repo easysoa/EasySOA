@@ -1,6 +1,7 @@
 package org.easysoa.services.webparsing;
 
 import java.net.URL;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -32,10 +33,10 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
 
     private static Log log = LogFactory.getLog(WebFileParsingPoolServiceImpl.class);
     
-    public final static String PARSERS_EXTENSIONPOINT = "parsers";
+    public static final String PARSERS_EXTENSIONPOINT = "parsers";
     
     private Thread parsingPoolThread;
-    private LinkedList<WebFileParsingPoolEntry> parsingPool = new LinkedList<WebFileParsingPoolEntry>();
+    private Deque<WebFileParsingPoolEntry> parsingPool = new LinkedList<WebFileParsingPoolEntry>();
     private Map<String, WebFileParser> parsers = new HashMap<String, WebFileParser>();
 
     private CoreSession coreSession;
@@ -190,7 +191,7 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
         synchronized (parsingPool) {
             parsingPool.push(new WebFileParsingPoolEntry(url, targetModel, storageProp, options));
             synchronized (this) {
-                notify();  
+                notifyAll();  
             }
         }
     }

@@ -50,8 +50,8 @@ public abstract class AbstractRestTest {
 
     protected static boolean useEmbeddedNuxeo;
 
-    private final static String AUTH_USERNAME = "Administrator"; // XXX: Hard-coded
-    private final static String AUTH_PASSWORD = "Administrator"; // XXX: Hard-coded
+    private static final String AUTH_USERNAME = "Administrator"; // XXX: Hard-coded
+    private static final String AUTH_PASSWORD = "Administrator"; // XXX: Hard-coded
     
     private static Log log = LogFactory.getLog(AbstractRestTest.class);
     private static AutomationHelper automation = null;

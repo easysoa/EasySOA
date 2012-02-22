@@ -39,45 +39,51 @@ public class EasySOAConstants {
 	private static Logger logger = Logger.getLogger(EasySOAConstants.class.getName());
 
 	// Service registry
-    public final static int NUXEO_PORT = 8080;
-    public final static int NUXEO_TEST_PORT = 6088;
+    public static final int NUXEO_PORT = 8080;
+    public static final int NUXEO_TEST_PORT = 6088;
     
     // HTTP discovery proxy
-    public final static int HTTP_DISCOVERY_PROXY_PORT = 8082;
-    public final static int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8084;
-	public final static int TWITTER_MOCK_PORT = 8088;
-	public final static int METEO_MOCK_PORT = 8085;
-	public final static int EXCHANGE_RECORD_REPLAY_SERVICE_PORT = 8086; 
-	//public final static int NUXEO_MOCK_PORT = 8087;
+    public static final int HTTP_DISCOVERY_PROXY_PORT = 8082;
+    public static final int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8084;
+	public static final int TWITTER_MOCK_PORT = 8088;
+	public static final int METEO_MOCK_PORT = 8085;
+	public static final int EXCHANGE_RECORD_REPLAY_SERVICE_PORT = 8086; 
+	//public static final int NUXEO_MOCK_PORT = 8087;
 	
 	// Scaffolding proxy
-	public final static int REST_SOAP_PROXY_PORT = 7001;
-	public final static int HTML_FORM_GENERATOR_PORT = 8090;
+	public static final int REST_SOAP_PROXY_PORT = 7001;
+	public static final int HTML_FORM_GENERATOR_PORT = 8090;
 
     // Trip demo
-    public final static int TRIP_SERVICES_PORT = 9000;
-    public final static int TRIP_BACKUP_SERVICES_PORT = 9020;
+    public static final int TRIP_SERVICES_PORT = 9000;
+    public static final int TRIP_BACKUP_SERVICES_PORT = 9020;
     
     // Pure Air Flowers demo
-    public final static int PAF_SERVICES_PORT = 9010;
+    public static final int PAF_SERVICES_PORT = 9010;
     
     // Web
-    public final static int WEB_PORT = 8083;
+    public static final int WEB_PORT = 8083;
     
-    private final static Map<String,Object> constantMap = new HashMap<String,Object>();
-    
-    public static final Object get(String constantName) {
-    	return constantMap.get(constantName);
-    }
-    
+    private static final Map<String,Object> CONSTANT_MAP = new HashMap<String,Object>();
     static {
     	for (Field constantField : EasySOAConstants.class.getFields()) {
 			try {
-	    		constantMap.put(constantField.getName(), constantField.get(null));
+	    		CONSTANT_MAP.put(constantField.getName(), constantField.get(null));
 			} catch (Exception e) {
 				logger.error("Error accessing EasySOAConstants field", e);
 			}
     	}
     }
+    
+    /**
+     * Returns any constant value from this class
+     * @param constantName The field name as a string
+     */
+    public static final Object get(String constantName) {
+        return CONSTANT_MAP.get(constantName);
+    }
+    
+    // Hide constructor
+    private EasySOAConstants() {}
     
 }

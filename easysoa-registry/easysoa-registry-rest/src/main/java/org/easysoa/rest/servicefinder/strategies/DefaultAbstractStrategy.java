@@ -47,7 +47,7 @@ public abstract class DefaultAbstractStrategy implements ServiceFinderStrategy {
      * @return The application name or null if neither of the pages has a title tag.
      * @throws Exception 
      */
-    protected static String guessApplicationName(URL url) throws Exception {
+    protected static String guessApplicationName(URL url) throws Exception  {
         URL siteRootUrl = new URL(url.getProtocol() + "://" + url.getHost()
                 + ":" + ((url.getPort() == -1) ? 80 : url.getPort()));
         String applicationName = extractApplicationNameFromUrl(siteRootUrl);

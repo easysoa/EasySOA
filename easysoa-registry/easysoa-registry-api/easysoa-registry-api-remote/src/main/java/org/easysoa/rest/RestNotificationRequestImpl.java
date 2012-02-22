@@ -41,7 +41,7 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
     
     private static Log log = LogFactory.getLog(RestNotificationRequestImpl.class);
     
-    private final static int TIMEOUT = 3000;
+    private static final int TIMEOUT = 3000;
     
     private URL requestUrl;
     private Map<String, String> requestProperties; 

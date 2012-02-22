@@ -42,9 +42,9 @@ import com.google.inject.Inject;
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class NXQLTest {
     
-    private final static String APP_URL = "http://www.myservices.com";
-    private final static String API_URL = "http://www.myservices.com/api";
-    private final static String SERVICE_URL = "http://www.myservices.com/service";
+    private static final String APP_URL = "http://www.myservices.com";
+    private static final String API_URL = "http://www.myservices.com/api";
+    private static final String SERVICE_URL = "http://www.myservices.com/service";
     
     static final Log log = LogFactory.getLog(NXQLTest.class);
 

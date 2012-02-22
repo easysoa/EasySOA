@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -33,7 +32,7 @@ import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 
 /**
  * 
- * @author mdutoo
+ * @author mkalam-alami
  *
  */
 public class RecursiveDeleterListener implements EventListener {
