@@ -12,30 +12,76 @@
         <h1><h:outputText
             value="#{messages['label.easysoa.import.pagetitle']}" /></h1>
 
+      <script type="text/javascript">
+
+        function toggle(value) {
+          if (value == "sca") {
+            jQuery(".scaOnly").show();
+            jQuery(".soapUiOnly").hide();
+          }
+          else if (value == "soapui") {
+            jQuery(".scaOnly").hide();
+            jQuery(".soapUiOnly").show();
+          }
+        }
+
+        jQuery(document).ready(function() {
+          jQuery("input").click(function() {
+            toggle(jQuery(this).attr('value'));
+          });
+          toggle("#{easysoaImport.importType}");
+        });
+
+        </script>
+
+        <div id="content">
+
         <h:form enctype="multipart/form-data">
 
             <table class="dataInput">
                 <tbody>
 
-                    <tr>
+            <tr>
+              <td class="labelColumn"><h:outputText
+                  value="#{messages['label.easysoa.import.file']}" /></td>
+              <td class="fieldColumn"><nxu:inputFile id="fileToImport"
+                  value="#{easysoaImport.file}" editFilename="false" /></td>
+            </tr>
+
+            <tr>
                         <td class="labelColumn"><h:outputText
-                            value="#{messages['label.easysoa.import.file']}" /></td>
-                        <td class="fieldColumn"><nxu:inputFile id="compositeFile"
-                            value="#{easysoaImport.compositeFile}" editFilename="false" /></td>
+                            value="#{messages['label.easysoa.import.type']}" /></td>
+                        <td class="fieldColumn">
+                          <h:selectOneRadio id="importType" value="#{easysoaImport.importType}" onchange="submit()">
+                            <f:selectItem id="sca" itemLabel="SCA composite" itemValue="sca" />
+                            <f:selectItem id="soapui" itemLabel="SOAP UI configuration" itemValue="soapui" />
+                          </h:selectOneRadio>
+                        </td>
                     </tr>
 
                     <tr>
                         <td class="labelColumn"><h:outputText
-                            value="#{messages['label.easysoa.import.parent']}" /></td>
+                            value="#{messages['label.easysoa.import.workspace']}" /></td>
                         <td class="fieldColumn">
 
-                        <h:selectOneMenu value="#{easysoaImport.parentAppliImpl}">
-                            <f:selectItems value="#{easysoaImport.appliImpls}"/>
-                        </h:selectOneMenu> <span style="color: grey">*</span>
+                        <h:selectOneMenu value="#{easysoaImport.targetWorkspace}" onchange="submit()">
+                            <f:selectItems value="#{easysoaImport.getWorkspaces()}"/>
+                        </h:selectOneMenu>
 
                         </td>
                     </tr>
 
+                    <tr class="scaOnly">
+                        <td class="labelColumn"><h:outputText
+                            value="#{messages['label.easysoa.import.appliimpl']}" /></td>
+                        <td class="fieldColumn">
+
+                        <h:selectOneMenu value="#{easysoaImport.targetAppliImpl}">
+                            <f:selectItems value="#{easysoaImport.getAppliImpls()}"/>
+                        </h:selectOneMenu>
+
+                        </td>
+                    </tr>
                     <tr>
                         <td class="labelColumn"></td>
                         <td class="fieldColumn"><nxu:methodResult name="actions"
@@ -48,11 +94,11 @@
                         </nxu:methodResult></td>
                     </tr>
 
-                    <tr>
-                        <td class="fieldColumn" colspan="2" style="color: grey"><i>*If your application doesn't appear, it's a known bug from the demo. Just log out and in again to make it refresh.</i></td>
-                    </tr>
-
                 </tbody>
             </table>
 
+
         </h:form></div>
+
+
+</div>
