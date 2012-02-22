@@ -7,13 +7,13 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.HttpDownloader;
 import org.easysoa.services.HttpDownloaderService;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.repository.Repository;
@@ -22,6 +22,7 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
+import org.nuxeo.runtime.transaction.TransactionHelper;
 
 /**
  *
@@ -38,10 +39,13 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     private Deque<WebFileParsingPoolEntry> parsingPool = new LinkedList<WebFileParsingPoolEntry>();
     private Map<String, WebFileParser> parsers = new HashMap<String, WebFileParser>();
 
-    private CoreSession coreSession;
-
     @Override
     public void activate(ComponentContext context) throws Exception {
+
+    }
+
+    @Override
+    public void applicationStarted(ComponentContext context) throws Exception {
         if (parsingPoolThread == null) {
             parsingPoolThread = new Thread(this);
             parsingPoolThread.setName("WebFileParsingPoolService");
@@ -98,19 +102,9 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     @Override
     public void run() {
 
-        LoginContext loginContext = null;
-
-        try {
-
+            LoginContext loginContext = null;
             // Log in and gather needed data
-            loginContext = Framework.login();
-            RepositoryManager mgr = Framework.getService(RepositoryManager.class);
-            Repository repository = mgr.getDefaultRepository();
-            if (repository != null) {
-                coreSession = repository.open();
-            }
-            HttpDownloaderService downloaderService = Framework.getService(HttpDownloaderService.class);
-
+            HttpDownloaderService downloaderService = Framework.getLocalService(HttpDownloaderService.class);
 
             while (true) { // Terminates by being interrupted during components' deactivation
 
@@ -151,37 +145,46 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                             targetModel.getProperty(storageProp).setValue(blob);
                         }
 
-                        // Run through every parser registered
-                        for (WebFileParser parser : parsers.values()) {
-                            parser.parse(coreSession, blob, targetModel, entry.getOptions());
-                        }
+                        loginContext = Framework.login();
+                        RepositoryManager mgr = Framework.getService(RepositoryManager.class);
+                        Repository repository = mgr.getDefaultRepository();
+                        TransactionHelper.startTransaction();
+                        CoreSession coreSession = null;
+                        try {
+                            if (repository != null) {
+                                coreSession = repository.open();
+                            }
 
-                        // Save
-                        coreSession.saveDocument(targetModel);
-                        coreSession.save();
+                            if (coreSession!=null) {
+                                // Run through every parser registered
+                                for (WebFileParser parser : parsers.values()) {
+                                    parser.parse(coreSession, blob, targetModel, entry.getOptions());
+                                }
+
+                                // Save
+                                coreSession.saveDocument(targetModel);
+                                coreSession.save();
+                            } else {
+                                log.warn("Unable to get CoreSession");
+                            }
+                        } catch (Throwable t) {
+                            log.warn("Error while processing parsing pool entry", t);
+                            TransactionHelper.setTransactionRollbackOnly();
+                            // TODO: handle exception
+                        }
+                        finally {
+                            TransactionHelper.commitOrRollbackTransaction();
+                            CoreInstance.getInstance().close(coreSession);
+                            loginContext.logout();
+                        }
 
                     }
                     catch (Exception e) {
                         log.warn("Error while processing parsing pool entry", e);
                     }
-
                 }
 
             }
-
-        } catch (Exception e) {
-            log.error("Fatal web parsing pool error", e);
-        } finally {
-            // Log out
-            if (loginContext != null) {
-                try {
-                    loginContext.logout();
-                } catch (LoginException e) {
-                    log.warn("Failed to log out", e);
-                }
-            }
-        }
-
     }
 
     @Override
