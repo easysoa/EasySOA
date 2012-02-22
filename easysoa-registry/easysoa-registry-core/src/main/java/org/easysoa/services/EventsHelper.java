@@ -39,7 +39,7 @@ import org.nuxeo.ecm.core.event.Event;
  */
 public class EventsHelper extends DefaultComponent {
 
-    public final static String EVENTTYPE_VALIDATIONREQUEST = "documentValidationRequest";
+    public static final String EVENTTYPE_VALIDATIONREQUEST = "documentValidationRequest";
     
     public static void fireDocumentEvent(CoreSession session, String eventId, DocumentModel doc, Map<String, Serializable> context) throws Exception {
         fireEvent(session, eventId, doc, context);

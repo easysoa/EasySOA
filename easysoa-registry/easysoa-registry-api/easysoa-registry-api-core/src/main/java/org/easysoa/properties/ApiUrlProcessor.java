@@ -43,7 +43,7 @@ public class ApiUrlProcessor {
      * @return
      * @throws MalformedURLException 
      */
-    public final static String computeApiUrl(String appliImplUrl, String apiUrlPath,
+    public static final String computeApiUrl(String appliImplUrl, String apiUrlPath,
             String serviceUrlPath) throws MalformedURLException {
         
         apiUrlPath = PropertyNormalizer.normalizeUrl(apiUrlPath, ERROR_API_URL_API);
@@ -73,13 +73,13 @@ public class ApiUrlProcessor {
                 serviceUrlPath.substring(0, apiPathEndIndex), ERROR_API_URL_API); // TODO http://localhost:9000/hrestSoapProxyWSIntern
     }
     
-    public final static String computeApiUrl(String serviceUrlPath) throws MalformedURLException {
+    public static final String computeApiUrl(String serviceUrlPath) throws MalformedURLException {
         return PropertyNormalizer.normalizeUrl(
                 serviceUrlPath.substring(0, serviceUrlPath.lastIndexOf('/')),
                 ERROR_API_URL_API); 
     }
     
-    public final static String computeAppliImplUrl(String apiUrlPath) throws MalformedURLException {
+    public static final String computeAppliImplUrl(String apiUrlPath) throws MalformedURLException {
         if (apiUrlPath.replace("://", "").lastIndexOf('/') != -1) {
             return PropertyNormalizer.normalizeUrl(
                     apiUrlPath.substring(0, apiUrlPath.lastIndexOf('/')),
@@ -91,7 +91,7 @@ public class ApiUrlProcessor {
         }
     }
 
-    public final static String computeServiceTitle(String serviceUrlPath) throws MalformedURLException {
+    public static final String computeServiceTitle(String serviceUrlPath) throws MalformedURLException {
         String lastUrlPart = serviceUrlPath.substring(serviceUrlPath.lastIndexOf('/')+1);
         return lastUrlPart.replaceAll("(wsdl|WSDL|[^\\w.-])", "");
     }    

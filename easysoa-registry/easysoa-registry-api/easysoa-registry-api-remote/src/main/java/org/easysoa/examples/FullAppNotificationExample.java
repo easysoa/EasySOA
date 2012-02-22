@@ -37,9 +37,9 @@ import org.easysoa.doctypes.ServiceReference;
  */
 public class FullAppNotificationExample {
 
-    private final static String APP_URL = "http://www.myservices.com";
-    private final static String API_URL = "http://www.myservices.com/api";
-    private final static String SERVICE_URL = "http://www.myservices.com/service";
+    private static final String APP_URL = "http://www.myservices.com";
+    private static final String API_URL = "http://www.myservices.com/api";
+    private static final String SERVICE_URL = "http://www.myservices.com/service";
 
     /**
      * Registers an application and a few services to Nuxeo.

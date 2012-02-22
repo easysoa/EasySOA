@@ -25,8 +25,8 @@ public class WebFileParsingPoolEntry {
         this.storageProp = storageProp;
         this.options = options;
         
-        if (options == null) {
-            options = new HashMap<String, String>();
+        if (this.options == null) {
+            this.options = new HashMap<String, String>();
         }
     }
 

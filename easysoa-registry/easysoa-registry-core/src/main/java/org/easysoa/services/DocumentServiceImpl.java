@@ -53,7 +53,7 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
 
     private static Log log = LogFactory.getLog(DocumentServiceImpl.class);
 
-    private final static String DEFAULT_WORKSPACE = "Master";
+    private static final String DEFAULT_WORKSPACE = "Master";
 
     private PathRef workspaceRootRef = new PathRef("/default-domain/workspaces");
 
