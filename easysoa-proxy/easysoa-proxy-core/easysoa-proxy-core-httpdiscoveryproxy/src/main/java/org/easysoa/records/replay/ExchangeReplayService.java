@@ -87,6 +87,14 @@ public interface ExchangeReplayService {
 	@Path("/templates/getTemplate/{storeName}/{templateName}")
 	@Produces("application/json")
 	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("storeName") String storeName,  @PathParam("recordID") String recordID) throws Exception;
+
+	@POST
+	@Path("/startReplaySession/{replaySessionName}")
+    public String startReplaySession(String replaySessionName) throws Exception;
+
+	@POST
+	@Path("/stopReplaySession/")
+	public String stopReplaySession() throws Exception;
 	
 	/*
 	@POST

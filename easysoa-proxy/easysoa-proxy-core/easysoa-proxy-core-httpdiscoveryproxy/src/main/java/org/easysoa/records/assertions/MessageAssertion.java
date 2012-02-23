@@ -33,30 +33,30 @@ public class MessageAssertion extends AbstractAssertion {
     public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage) {
         AssertionResult result;
         boolean assertionResult = true; 
-        HashMap<String, Metric> metrics = new HashMap<String, Metric>(); 
+        HashMap<String, AssertionMetric> metrics = new HashMap<String, AssertionMetric>(); 
         // Assertions on message content
         
         // Message status
         if(originalMessage.getStatus() == replayedMessage.getStatus()){
-            metrics.put("Status message assertion", new Metric(String.valueOf(true), String.valueOf(originalMessage.getStatus()), String.valueOf(replayedMessage.getStatus())));
+            metrics.put("Status message assertion", new AssertionMetric(String.valueOf(true), String.valueOf(originalMessage.getStatus()), String.valueOf(replayedMessage.getStatus())));
         } else {
-            metrics.put("Status message assertion", new Metric(String.valueOf(true), String.valueOf(originalMessage.getStatus()), String.valueOf(replayedMessage.getStatus())));
+            metrics.put("Status message assertion", new AssertionMetric(String.valueOf(true), String.valueOf(originalMessage.getStatus()), String.valueOf(replayedMessage.getStatus())));
             assertionResult = false;
         }
         
         // Mimetype 
         if(originalMessage.getMessageContent().getMimeType().equals(replayedMessage.getMessageContent().getMimeType())){
-            metrics.put("Mimetype message assertion", new Metric(String.valueOf(true), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getMimeType()));
+            metrics.put("Mimetype message assertion", new AssertionMetric(String.valueOf(true), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getMimeType()));
         } else {
-            metrics.put("Mimetype message assertion", new Metric(String.valueOf(false), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getMimeType()));
+            metrics.put("Mimetype message assertion", new AssertionMetric(String.valueOf(false), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getMimeType()));
             assertionResult = false;
         }
 
         // Encoding
         if(originalMessage.getMessageContent().getEncoding().equals(replayedMessage.getMessageContent().getEncoding())){
-            metrics.put("Encoding message assertion", new Metric(String.valueOf(true), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getEncoding()));
+            metrics.put("Encoding message assertion", new AssertionMetric(String.valueOf(true), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getEncoding()));
         } else {
-            metrics.put("Encoding message assertion", new Metric(String.valueOf(false), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getEncoding()));
+            metrics.put("Encoding message assertion", new AssertionMetric(String.valueOf(false), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getEncoding()));
             assertionResult = false;            
         }
         

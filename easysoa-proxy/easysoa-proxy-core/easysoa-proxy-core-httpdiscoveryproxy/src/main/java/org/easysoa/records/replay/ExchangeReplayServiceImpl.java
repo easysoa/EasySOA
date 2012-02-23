@@ -129,6 +129,22 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	    return message.getMessageContent().getContent();
 	}
 	
+	// To start a replay session
+	@Override
+    @Path("/startReplaySession/{replaySessionName}")	
+	public String startReplaySession(@PathParam("replaySessionName") String replaySessionName) throws Exception{
+	    replayEngine.startReplaySession(replaySessionName);
+	    return "Replay session started";
+	}
+	
+    // To stop the current replaySession
+    @Override
+    @Path("/stopReplaySession/")    
+    public String stopReplaySession() throws Exception{
+        replayEngine.stopReplaySession();
+        return "Replay session stopped";
+    }	
+	
 	@Override
 	@Produces("application/json")
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment) {

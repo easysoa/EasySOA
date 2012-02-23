@@ -84,11 +84,6 @@ public class AssertionReport implements Report {
      * Generate a TXT report
      */
     public String generateTXTReport() {
-        // TODO Add serialization to obtain txt format
-        // Find txt serializer =>  
-        // Or call custom toString method (calling sub-elements toString method)
-        // Or ....
-        
         StringBuffer reportString = new StringBuffer();
         reportString.append("Report name : ");
         reportString.append(this.getReportName());
@@ -105,12 +100,11 @@ public class AssertionReport implements Report {
             reportString.append("Assertion message : ");
             reportString.append(assertionResult.getMessage());
             reportString.append("\n");
-            
-            Map<String, Metric> metrics = assertionResult.getMetrics();
+            Map<String, AssertionMetric> metrics = assertionResult.getMetrics();
             Set<String> keySet = metrics.keySet();
             reportString.append("Metrics : \n");
             for(String key : keySet){
-                Metric metric = metrics.get(key);
+                AssertionMetric metric = metrics.get(key);
                 reportString.append("   * ");
                 reportString.append(key);
                 reportString.append(" : ");
@@ -135,8 +129,7 @@ public class AssertionReport implements Report {
      */
     public String generateXMLReport(){
         XStream xstream = new XStream(new StaxDriver());
-        // Optional alias
-        // xstream.alias("person", Person.class);
+        // Optional alias to simplfy the xml=> add // xstream.alias("person", Person.class);
         return xstream.toXML(this);
     }
     

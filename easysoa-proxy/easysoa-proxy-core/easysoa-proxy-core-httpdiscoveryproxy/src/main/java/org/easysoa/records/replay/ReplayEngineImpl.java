@@ -81,7 +81,7 @@ public class ReplayEngineImpl implements ReplayEngine {
     }    
     
     /**
-     * Start a replay session
+     * Start a replay session. The replay session is mainly used to execute assertion and to generate a report containing assertion results.
      * @param replaySessionName
      */
     public void startReplaySession(String replaySessionName) throws Exception {

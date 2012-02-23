@@ -6,7 +6,7 @@ package org.easysoa.records.assertions;
  * @author jguillemotte
  *
  */
-public class Metric {
+public class AssertionMetric {
 
     private String metric;
     
@@ -17,14 +17,14 @@ public class Metric {
     /**
      * 
      */
-    Metric(String metric){
+    AssertionMetric(String metric){
         this(metric, "", "");
     }
 
     /**
      * 
      */
-    Metric(String metric, String expectedValue, String actualValue){
+    AssertionMetric(String metric, String expectedValue, String actualValue){
         this.metric = metric;
         this.expectedValue = expectedValue;
         this.actualValue = actualValue;

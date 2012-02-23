@@ -44,7 +44,7 @@ public class AssertionResult {
     private String message;
     
     // Metrics
-    private Map<String, Metric> metrics;
+    private Map<String, AssertionMetric> metrics;
     
     /**
      * 
@@ -63,7 +63,7 @@ public class AssertionResult {
         this.assertionType = assertionType;
         this.status = status;
         this.message = message;
-        this.metrics = new HashMap<String, Metric>();        
+        this.metrics = new HashMap<String, AssertionMetric>();        
     }    
     
     /**
@@ -96,7 +96,7 @@ public class AssertionResult {
      * @param metricValue
      */
     public void addMetric(String metricName, String metricValue, String expectedValue, String actualValue){
-        addMetric(metricName, new Metric(metricValue, expectedValue, actualValue));
+        addMetric(metricName, new AssertionMetric(metricValue, expectedValue, actualValue));
     }
 
     /**
@@ -104,7 +104,7 @@ public class AssertionResult {
      * @param metricName
      * @param metric
      */
-    public void addMetric(String metricName, Metric metric){
+    public void addMetric(String metricName, AssertionMetric metric){
         this.metrics.put(metricName, metric);
     }    
     
@@ -112,7 +112,7 @@ public class AssertionResult {
      * Set metrics
      * @param metrics
      */
-    public void setMetrics(Map<String,Metric> metrics){
+    public void setMetrics(Map<String,AssertionMetric> metrics){
         this.metrics = metrics;
     }
     
@@ -120,7 +120,7 @@ public class AssertionResult {
      * Get metrics
      * @return
      */
-    public Map<String,Metric> getMetrics(){
+    public Map<String,AssertionMetric> getMetrics(){
         return this.metrics;
     }
 
