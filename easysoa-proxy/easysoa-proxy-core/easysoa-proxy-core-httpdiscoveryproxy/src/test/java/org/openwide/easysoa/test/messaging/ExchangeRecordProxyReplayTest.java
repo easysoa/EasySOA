@@ -102,6 +102,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
+	//@Ignore
 	public void testReplayWithRestMessages() throws Exception {
 
 	    String testStoreName = "Twitter_Rest_Test_Run";

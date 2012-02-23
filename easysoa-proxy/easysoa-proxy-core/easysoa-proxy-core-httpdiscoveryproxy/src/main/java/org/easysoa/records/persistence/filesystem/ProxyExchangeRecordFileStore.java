@@ -257,7 +257,7 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 	 * @param assertionReport The assertion report to save
 	 * @throws Exception If a problem occurs 
 	 */
-    public void saveAssertionReport(Report report) throws Exception {
+    public void saveReport(Report report) throws Exception {
         File xmlAssertionReportFile = new File(report.getReportName() + ".xml");
         FileWriter assertionReportFw = new FileWriter(xmlAssertionReportFile);
         try{

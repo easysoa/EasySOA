@@ -6,9 +6,6 @@ package org.easysoa.records.replay;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.apache.log4j.Logger;
 import org.easysoa.logs.AssertionReport;
 import org.easysoa.logs.LogEngine;
@@ -24,13 +21,13 @@ import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
-import org.easysoa.template.TemplateRenderer;
 import org.easysoa.template.setters.CustomParamSetter;
 import org.easysoa.template.setters.RestFormParamSetter;
 import org.easysoa.template.setters.RestPathParamSetter;
 import org.easysoa.template.setters.RestQueryParamSetter;
 import org.easysoa.template.setters.WSDLParamSetter;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.RequestForwarder;
 
@@ -41,7 +38,8 @@ import com.openwide.easysoa.util.RequestForwarder;
  * @author jguillemotte
  *
  */
-// TODO : add annotation to have a persistence of this object in FraSCAti 
+// TODO : add annotation to have a persistence of this object in FraSCAti
+@Scope("composite")
 public class ReplayEngineImpl implements ReplayEngine {
    
     // Add code here to organize the work of template engine and assertion engine
@@ -89,6 +87,8 @@ public class ReplayEngineImpl implements ReplayEngine {
     public void startReplaySession(String replaySessionName) throws Exception {
         if(replaySessionName == null || "".equals(replaySessionName)){
             throw new IllegalArgumentException("replaySessionName must not be null or empty");
+        } else if(this.replaySessionName != null){
+            throw new IllegalArgumentException("A replaySession is already started, please stop the existing session before starting a new one");
         } else {
             this.replaySessionName = replaySessionName;
             Report report = new AssertionReport(replaySessionName);
@@ -101,8 +101,10 @@ public class ReplayEngineImpl implements ReplayEngine {
      * @throws Exception
      */
     public void stopReplaySession() throws Exception {
-        System.out.println("DEBUG replay session name = " + replaySessionName);
-        logEngine.saveAndRemoveLogSession(replaySessionName);
+        if(replaySessionName != null){
+            logEngine.saveAndRemoveLogSession(replaySessionName);
+            replaySessionName = null;
+        }
     }
     
     @Override

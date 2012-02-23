@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.osoa.sca.annotations.Scope;
 
 /**
  * Implementation for log engine
@@ -14,6 +15,7 @@ import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class LogEngineImpl implements LogEngine {
 
     // Produce specialized logs and reports
