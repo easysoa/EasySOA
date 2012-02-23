@@ -44,10 +44,17 @@ public class EasySOAImportSoapUIParser extends DefaultHandler {
         if (qName.equals("con:interface")) {
             /* Example: <con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="PureAirFlowersServiceService"
             type="wsdl" bindingName="{http://paf.samples.easysoa.org/}PureAirFlowersServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional"
-            definition="http://127.0.0.1:9010/PureAirFlowers?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">*/
+            definition="http://127.0.0.1:9010/PureAirFlowers?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> */
             serviceName = attributes.getValue("name");
             serviceWsdlUrl = attributes.getValue("definition");
             serviceEndpointUrl = null; // Reset binding url
+        }
+        else if (qName.equals("con:mockService")) {
+            /* Example: <con:mockService port="8088" path="/mockPureAirFlowersServiceService" 
+             host="MKALAMALAMI" name="PureAirFlowersServiceService MockService"> */
+            serviceName = attributes.getValue("name");
+            serviceWsdlUrl = null;
+            serviceEndpointUrl = "http://localhost:" + attributes.getValue("port") + attributes.getValue("path"); 
         }
         else if (qName.equals("con:endpoint")) {
             // Example:<con:endpoint>http://localhost:9010/PureAirFlowers</con:endpoint>
@@ -57,7 +64,8 @@ public class EasySOAImportSoapUIParser extends DefaultHandler {
     
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        if (inEndpointTag) {
+        // Note: Only considers the first endpoint tag (filters mocks but might forget some other endpoints)
+        if (inEndpointTag && serviceEndpointUrl == null) {
             serviceEndpointUrl = String.valueOf(ch, start, length);
         }
     }
@@ -67,7 +75,22 @@ public class EasySOAImportSoapUIParser extends DefaultHandler {
         if (qName.equals("con:endpoint")) {
             inEndpointTag = false;
         }
-        else if (qName.equals("con:interface")) {
+        else if (qName.equals("con:interface") || qName.equals("con:mockService")) {
+            
+            // Discover mock app
+            if (qName.equals("con:mockService")) {
+                Map<String, String> properties = new HashMap<String, String>();
+                properties.put(Service.PROP_ENVIRONMENT, workspaceName);
+                properties.put(Service.PROP_TITLE, "SoapUI mocks");
+                properties.put(Service.PROP_URL, "http://localhost");
+                try {
+                    api.notifyAppliImpl(properties);
+                } catch (Exception e) {
+                    log.error("Failed to save Appli. Impl during SoapUI conf. parsing", e);
+                }
+            }
+            
+            // Discover service
             Map<String, String> properties = new HashMap<String, String>();
             properties.put(Service.PROP_ENVIRONMENT, workspaceName);
             properties.put(Service.PROP_TITLE, serviceName);
