@@ -35,6 +35,8 @@ public class AssertionResult {
      */
     public enum AssertionResultStatus {OK, Maybe, KO};
     
+    private Class assertionType;
+    
     // Result status
     private AssertionResultStatus status;
     
@@ -48,9 +50,8 @@ public class AssertionResult {
      * 
      * @param status
      */
-    AssertionResult(AssertionResultStatus status){
-        this(status, "");
-        this.metrics = new HashMap<String, Metric>();
+    AssertionResult(Class assertionType, AssertionResultStatus status){
+        this(assertionType, status, "");
     }
     
     /**
@@ -58,9 +59,11 @@ public class AssertionResult {
      * @param status
      * @param message  //TODO : maybe best to find another param name
      */
-    AssertionResult(AssertionResultStatus status, String message){
+    AssertionResult(Class assertionType, AssertionResultStatus status, String message){
+        this.assertionType = assertionType;
         this.status = status;
         this.message = message;
+        this.metrics = new HashMap<String, Metric>();        
     }    
     
     /**
@@ -121,4 +124,12 @@ public class AssertionResult {
         return this.metrics;
     }
 
+    /**
+     * Get assertion type
+     * @return
+     */
+    public Class getAssertionType(){
+        return this.assertionType;
+    }
+    
 }

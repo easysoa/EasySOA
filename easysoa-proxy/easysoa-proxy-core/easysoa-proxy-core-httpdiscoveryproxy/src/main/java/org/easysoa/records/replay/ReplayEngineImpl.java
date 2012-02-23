@@ -159,7 +159,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(storeName, recordID);
         logger.debug(templateFieldSuggest.getTemplateFields().size());
         return templateFieldSuggest;
-    }    
+    }
     
     /**
      * Replay a record without any modifications

@@ -62,9 +62,9 @@ public class MessageAssertion extends AbstractAssertion {
         
         // Set the assertion result status
         if(assertionResult){
-            result = new AssertionResult(AssertionResultStatus.OK);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
         } else {
-            result = new AssertionResult(AssertionResultStatus.KO);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
         }
         // Set the metrics and returns
         result.setMetrics(metrics);        

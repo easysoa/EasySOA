@@ -5,8 +5,11 @@ package org.easysoa.records.assertions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.easysoa.logs.Report;
+import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -85,7 +88,45 @@ public class AssertionReport implements Report {
         // Find txt serializer =>  
         // Or call custom toString method (calling sub-elements toString method)
         // Or ....
-        return "";
+        
+        StringBuffer reportString = new StringBuffer();
+        reportString.append("Report name : ");
+        reportString.append(this.getReportName());
+        reportString.append("\n");
+        // For each result, write it in the report
+        for(AssertionResult assertionResult : this.assertionResults){
+            reportString.append("---\n");
+            reportString.append("Assertion type : "); 
+            reportString.append(assertionResult.getAssertionType());
+            reportString.append("\n");    
+            reportString.append("Assertion status : ");
+            reportString.append(assertionResult.getResultStatus());
+            reportString.append("\n");
+            reportString.append("Assertion message : ");
+            reportString.append(assertionResult.getMessage());
+            reportString.append("\n");
+            
+            Map<String, Metric> metrics = assertionResult.getMetrics();
+            Set<String> keySet = metrics.keySet();
+            reportString.append("Metrics : \n");
+            for(String key : keySet){
+                Metric metric = metrics.get(key);
+                reportString.append("   * ");
+                reportString.append(key);
+                reportString.append(" : ");
+                reportString.append(metric.getMetric());
+                if(AssertionResultStatus.KO.equals(assertionResult.getResultStatus())){
+                    reportString.append("\n");
+                    reportString.append("Expected value : ");
+                    reportString.append(metric.getExpectedValue());
+                    reportString.append("\n");
+                    reportString.append("Actual value : ");
+                    reportString.append(metric.getActualValue());                    
+                }
+                reportString.append("\n");
+            }
+        }
+        return reportString.toString();
     }
 
     /**

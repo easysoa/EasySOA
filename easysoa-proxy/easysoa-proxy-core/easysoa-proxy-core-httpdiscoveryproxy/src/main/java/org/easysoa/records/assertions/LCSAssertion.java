@@ -38,10 +38,10 @@ public class LCSAssertion extends AbstractAssertion {
         AssertionResult result;
         String lcsResult = computeLCS(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(lcsResult.equals(originalMessage.getMessageContent().getContent())){
-            result = new AssertionResult(AssertionResultStatus.OK);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
             result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         } else {
-            result = new AssertionResult(AssertionResultStatus.KO);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
             result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         }
         return result;
@@ -53,7 +53,7 @@ public class LCSAssertion extends AbstractAssertion {
      * @param current
      * @return
      */
-    public byte[] computeLCS(byte[] source, byte[] current) {
+    private byte[] computeLCS(byte[] source, byte[] current) {
         int M = source.length;
         int N = current.length;
 

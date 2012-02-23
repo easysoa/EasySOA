@@ -126,10 +126,10 @@ public class StringAssertion extends AbstractAssertion {
     private AssertionResult checkLength(OutMessage originalMessage, OutMessage replayedMessage){
         AssertionResult result;
         if(originalMessage.getMessageContent().getContent().length() == replayedMessage.getMessageContent().getContent().length()){
-            result = new AssertionResult(AssertionResultStatus.OK);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
             result.addMetric("Length", "0", String.valueOf(originalMessage.getMessageContent().getContent().length()), String.valueOf(replayedMessage.getMessageContent().getContent().length()));
         } else {
-            result = new AssertionResult(AssertionResultStatus.KO);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
             result.addMetric("Length", String.valueOf(Math.abs(originalMessage.getMessageContent().getContent().length() - replayedMessage.getMessageContent().getContent().length())), String.valueOf(originalMessage.getMessageContent().getContent().length()), String.valueOf(replayedMessage.getMessageContent().getContent().length()));
         }
         return result;
@@ -143,10 +143,10 @@ public class StringAssertion extends AbstractAssertion {
         AssertionResult result;
         String diffMethodResult = StringUtils.difference(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(diffMethodResult.length() == 0){
-            result = new AssertionResult(AssertionResultStatus.OK);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
             result.addMetric("Difference", "", originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());    
         } else {
-            result = new AssertionResult(AssertionResultStatus.KO);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
             result.addMetric("Difference", diffMethodResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         }
         return result;
@@ -165,14 +165,14 @@ public class StringAssertion extends AbstractAssertion {
         // with a message explaining the limitation
         if(originalMessage.getMessageContent().getContent().length() > 100 || replayedMessage.getMessageContent().getContent().length() > 100){
             //throw new Exception("Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
-            result = new AssertionResult(AssertionResultStatus.KO, "Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.KO, "Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
             return result;
         }
         int ldMethodResult = StringUtils.getLevenshteinDistance(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(ldMethodResult == 0){
-            result = new AssertionResult(AssertionResultStatus.OK);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
         } else {
-            result = new AssertionResult(AssertionResultStatus.KO);
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
         }
         result.addMetric("Lehvenstein distance", String.valueOf(ldMethodResult), originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         return result;

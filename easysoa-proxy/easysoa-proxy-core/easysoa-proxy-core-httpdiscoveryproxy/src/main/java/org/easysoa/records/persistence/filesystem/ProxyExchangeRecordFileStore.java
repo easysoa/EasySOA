@@ -258,13 +258,21 @@ public class ProxyExchangeRecordFileStore extends ExchangeRecordFileStore {
 	 * @throws Exception If a problem occurs 
 	 */
     public void saveReport(Report report) throws Exception {
+        // For XML version
         File xmlAssertionReportFile = new File(report.getReportName() + ".xml");
-        FileWriter assertionReportFw = new FileWriter(xmlAssertionReportFile);
+        FileWriter xmlAssertionReportFw = new FileWriter(xmlAssertionReportFile);
+        // For TXT version
+        File txtAssertionReportFile = new File(report.getReportName() + ".txt");
+        FileWriter txtAssertionReportFw = new FileWriter(txtAssertionReportFile);
+        // Write report in files
         try{
-            assertionReportFw.write(report.generateXMLReport());
+            xmlAssertionReportFw.write(report.generateXMLReport());
+            logger.debug("TXT report : " + report.generateTXTReport());
+            txtAssertionReportFw.write(report.generateTXTReport());
         }
         finally{
-            assertionReportFw.close();
+            xmlAssertionReportFw.close();
+            txtAssertionReportFw.close();
         }
     }
 
