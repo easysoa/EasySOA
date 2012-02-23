@@ -36,7 +36,7 @@ import com.openwide.easysoa.message.OutMessage;
 public class AssertionEngineImpl implements AssertionEngine {
     
     // Specific logger for assertions
-    private static final Logger testReportLogger = Logger.getLogger("testReportLogger");
+    private static final Logger reportLogger = Logger.getLogger("reportLogger");
     
     // TODO : Reference to log engine
     // To generate reports about executed assertions
@@ -73,7 +73,7 @@ public class AssertionEngineImpl implements AssertionEngine {
     public List<AssertionResult> executeAssertions(AssertionSuggestions assertionSuggestions, OutMessage originalMessage, OutMessage replayedMessage){
         if(assertionSuggestions == null){
             // Using default assertions
-            testReportLogger.warn("assertionSuggestions parameter is null, using default assertion suggestions !");
+            reportLogger.warn("assertionSuggestions parameter is null, using default assertion suggestions !");
             AssertionSuggestionService assertionSuggestionService = new AssertionSuggestionService();
             assertionSuggestions = assertionSuggestionService.suggestAssertions();
         }

@@ -6,7 +6,7 @@ package org.easysoa.logs;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Scope;
 
 /**
@@ -20,7 +20,9 @@ public class LogEngineImpl implements LogEngine {
 
     // Produce specialized logs and reports
     
-    //private String logSession;
+    // Logger for reports
+    // Specific logger for assertions
+    private static final Logger reportLogger = Logger.getLogger("reportLogger");    
     
     // Log session store 
     private HashMap<String, LogSession> logSessions;
@@ -81,19 +83,5 @@ public class LogEngineImpl implements LogEngine {
     public Set<String> getLogSessions(){
         return this.logSessions.keySet();
     }
-    
-    /*@Override
-    public void saveReport(AssertionReport assertionReport) throws Exception {
-        // Create an assertion report
-        // Must be compatible with Jenkins (or sonar) or other existing reporting system (surefire ?)
-        
-        // Call 2 different serializers : txt and xml to transform assertion object structure in reports
-        // Form xml see xStream
-        
-        // Call the File store
-        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-        erfs.saveAssertionReport(assertionReport);        
-
-    }*/
     
 }

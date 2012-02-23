@@ -31,7 +31,7 @@ import com.openwide.easysoa.message.OutMessage;
  */
 public class StringAssertion extends AbstractAssertion {
 
-    private static final Logger testReportLogger = Logger.getLogger("testReportLogger");
+    private static final Logger reportLogger = Logger.getLogger("reportLogger");
     
     // Configuration
     // Assertion algoritm to use
@@ -105,7 +105,7 @@ public class StringAssertion extends AbstractAssertion {
     @Override
     public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
         AssertionResult result = null;
-        testReportLogger.info("Using method : " + this.method);        
+        reportLogger.info("Using method : " + this.method);        
         // Call the assertion method corresponding to the configuration
         if(method.equals(StringAssertionMethod.LENGTH)){
             result = this.checkLength(originalMessage, replayedMessage);
@@ -114,8 +114,8 @@ public class StringAssertion extends AbstractAssertion {
         } else if(method.equals(StringAssertionMethod.DISTANCE_LEHVENSTEIN)) {
             result = this.checkLehvensteinDistance(originalMessage, replayedMessage);
         }
-        testReportLogger.info("Assertion result status : " + result.getResultStatus());
-        testReportLogger.info("Assertion result metrics : " + result.getMetrics());
+        reportLogger.info("Assertion result status : " + result.getResultStatus());
+        reportLogger.info("Assertion result metrics : " + result.getMetrics());
         return result;
     }
     

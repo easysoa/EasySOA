@@ -3,15 +3,11 @@
  */
 package org.easysoa.template;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 import org.easysoa.template.TemplateField.TemplateFieldType;
 import com.openwide.easysoa.message.QueryParam;
-import com.openwide.easysoa.proxy.PropertyManager;
 
 /**
  * Generate and save request and response templates made from field suggestions, an exchange record and an Exchange store name *

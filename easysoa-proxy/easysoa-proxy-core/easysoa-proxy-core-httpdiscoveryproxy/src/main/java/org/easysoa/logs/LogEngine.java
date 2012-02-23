@@ -3,10 +3,7 @@
  */
 package org.easysoa.logs;
 
-import java.util.List;
 import java.util.Set;
-
-import org.easysoa.records.assertions.AssertionResult;
 
 /**
  * @author jguillemotte

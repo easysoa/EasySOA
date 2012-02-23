@@ -5,13 +5,9 @@ package org.easysoa.template;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
-
 import com.openwide.easysoa.message.OutMessage;
 
 /**

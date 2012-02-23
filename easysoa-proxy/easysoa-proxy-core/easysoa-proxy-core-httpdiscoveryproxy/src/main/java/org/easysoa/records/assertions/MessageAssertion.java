@@ -27,7 +27,6 @@ public class MessageAssertion extends AbstractAssertion {
     @Override
     public void setConfiguration(String configurationString) {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -51,7 +50,7 @@ public class MessageAssertion extends AbstractAssertion {
         } else {
             metrics.put("Mimetype message assertion", new Metric(String.valueOf(false), originalMessage.getMessageContent().getMimeType(), replayedMessage.getMessageContent().getMimeType()));
             assertionResult = false;
-        }        
+        }
 
         // Encoding
         if(originalMessage.getMessageContent().getEncoding().equals(replayedMessage.getMessageContent().getEncoding())){

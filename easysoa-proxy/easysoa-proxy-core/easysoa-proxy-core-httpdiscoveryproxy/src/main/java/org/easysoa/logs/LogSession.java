@@ -3,7 +3,6 @@
  */
 package org.easysoa.logs;
 
-import org.apache.log4j.Logger;
 import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
 
 /**
@@ -16,33 +15,45 @@ import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
  *
  */
 public class LogSession {
-
-    //
-    //private Object logger;
     
-    //
+    // Report
     private Report report;
     
+    /**
+     * Default constructor
+     */
     public LogSession(){
         this(null);
     }
-        
+
+    /**
+     * 
+     * @param report
+     */
     public LogSession(Report report){
         this.report = report;
     }
     
-    /*public Logger getLogger(){
-        return null;
-    }*/
-    
+    /**
+     * 
+     * @param report
+     */
     public void setReport(Report report){
         this.report = report;
     }
     
+    /**
+     * 
+     * @return
+     */
     public Report getReport(){
         return this.report;
     }
     
+    /**
+     * Save the logSession
+     * @throws Exception
+     */
     public void save() throws Exception {
         // Call the File store
         ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
-import org.easysoa.logs.AssertionReport;
 import org.easysoa.logs.LogEngine;
 import org.easysoa.logs.Report;
 import org.easysoa.records.ExchangeRecord;
@@ -15,6 +14,7 @@ import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.records.assertions.AssertionReport;
 import org.easysoa.records.assertions.AssertionResult;
 import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
@@ -97,7 +97,7 @@ public class ReplayEngineImpl implements ReplayEngine {
     }
     
     /**
-     * 
+     * Stop the replay and save the assertion report
      * @throws Exception
      */
     public void stopReplaySession() throws Exception {
@@ -114,7 +114,8 @@ public class ReplayEngineImpl implements ReplayEngine {
         try {
             ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
             recordList = erfs.getExchangeRecordlist(exchangeRecordStoreName);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             logger.error("An error occurs during the listing of exchanges records", ex);
             throw new Exception("An error occurs during the listing of exchanges records", ex);
         }
@@ -129,7 +130,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         try {
             ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
             record = erfs.load(exchangeRecordStoreName, exchangeID);
-        } 
+        }
         catch (Exception ex) {
             logger.error("An error occurs during the list", ex);
             throw new Exception("An error occurs during the loading of exchange record with id " + exchangeID, ex);
@@ -177,66 +178,35 @@ public class ReplayEngineImpl implements ReplayEngine {
             //Collection<ExchangeRecord> recordList;
             ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
             // get the record
-            // TODO : if the record is not found, get all the record from the store
-            // So need to return a Map of response with record ID as key
             if(exchangeRecordId == null || "".equals(exchangeRecordId) || exchangeRecordStoreName==null || "".equals(exchangeRecordStoreName)){
                 throw new Exception("Store and record ID must not be null !");
             }
             ExchangeRecord record = erfs.load(exchangeRecordStoreName, exchangeRecordId);
-            /*if(exchangeRecordId==null || "".equals(exchangeRecordId) ){
-                recordList = getExchangeRecordlist(exchangeRecordStoreName).getRecords();
-            } else {*/
-                //recordList = new ArrayList<ExchangeRecord>();
-                //recordList.add(erfs.load(exchangeRecordStoreName, exchangeRecordId));
-            /*}*/
             RequestForwarder requestForwarder;
-            //logger.debug("records number to replay : " + recordList.size());
-            //for(ExchangeRecord record : recordList){
             // Send the request
-                requestForwarder = new RequestForwarder();
-                outMessage = requestForwarder.send(record.getInMessage());
-                logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
-                logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
-                //responseMap.put(record.getExchange().getExchangeID(), outMessage);
+            requestForwarder = new RequestForwarder();
+            outMessage = requestForwarder.send(record.getInMessage());
+            logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
+            logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
+               
+            // How to work with fields in fld files
+            // Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
                 
-                // Assertion Engine
-                // TODO : make the assertion engine call configurable
-                // How to change the type of used assertion ?
-                
-                // Maybe the solution is to pass the pre-configured assertionEngine as parameter (implementing an 'engine' interface)
-                // and then only have to call the 'execute' method...
-                // With this solution, we can execute one or several engines in a predefined order
-                // problem : execute method and parameters .... not the same params for the differents engines ...
-                
-                // How to work with fields in fld files
-                // Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
-
-                // TODO : Do not create a new assertion instance here, use generated asr files instead with AssertionEngine
-                //StringAssertion assertion = new StringAssertion("assertion_" + record.getExchange().getExchangeID());
-                
-                // Call assertioSuggestionService not only when a template and fields are available but also to compare replay without modifications)
-                AssertionSuggestionService assertionSuggestionService = new AssertionSuggestionService();
-                
-                // Get default assertions
-                AssertionSuggestions assertionSuggestions = assertionSuggestionService.suggestAssertions();
-                // Execute assertions
-                List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), outMessage);
-                // Generate reports
-                
-                //AssertionReport report = new AssertionReport(exchangeRecordStoreName + "_report", assertionResults);
-                //logEngine.generateAssertionReport(assertionResults);
-                //logEngine.saveReport(report);
-                logger.debug("replaySessionName : " + replaySessionName);
-                if(replaySessionName != null){
-                    AssertionReport report = (AssertionReport) logEngine.getLogSession(replaySessionName).getReport();
-                    if(report != null){
-                        report.AddAssertionResult(assertionResults);
-                    }
+            // Call assertioSuggestionService not only when a template and fields are available but also to compare replay without modifications)
+            AssertionSuggestionService assertionSuggestionService = new AssertionSuggestionService();
+            
+            // Get default assertions
+            AssertionSuggestions assertionSuggestions = assertionSuggestionService.suggestAssertions();
+            // Execute assertions
+            List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), outMessage);
+            // Recording assertion result for reporting
+            if(replaySessionName != null){
+                AssertionReport report = (AssertionReport) logEngine.getLogSession(replaySessionName).getReport();
+                if(report != null){
+                    report.AddAssertionResult(assertionResults);
                 }
-                
-                // End
-            //}
-            return outMessage;                
+            }
+            return outMessage;
         }
         catch(Exception ex){
             logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecordId, ex);
@@ -274,18 +244,13 @@ public class ReplayEngineImpl implements ReplayEngine {
         OutMessage replayedResponse = templateEngine.renderTemplateAndReplay(exchangeStoreName, record, formData);
         // Call assertion engine to execute assertions
         List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedResponse);
-        
-        // Generate a report .... for each replayed message ????
-        /*AssertionReport report = new AssertionReport(exchangeStoreName + "_report", assertionResults);
-        if(replaySessionName != null){
-            logEngine.getLogSession(replaySessionName).getReport().
-        }*/
+        // Record assertion result for reporting
         if(replaySessionName != null){
             AssertionReport report = (AssertionReport) logEngine.getLogSession(replaySessionName).getReport();
             if(report != null){
                 report.AddAssertionResult(assertionResults);
             }
-        }        
+        }
         return replayedResponse;
     }
 

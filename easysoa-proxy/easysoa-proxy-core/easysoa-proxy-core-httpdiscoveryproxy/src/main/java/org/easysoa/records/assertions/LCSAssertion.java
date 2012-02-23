@@ -16,7 +16,7 @@ import com.openwide.easysoa.message.OutMessage;
  */
 public class LCSAssertion extends AbstractAssertion {
 
-    private static final Logger testReportLogger = Logger.getLogger("testReportLogger");    
+    private static final Logger reportLogger = Logger.getLogger("reportLogger");    
     
     /**
      * Default constructor

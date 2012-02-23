@@ -13,7 +13,6 @@ import net.sf.json.JSONSerializer;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.correlation.CandidateField;
 import org.easysoa.records.correlation.CorrelationService;
 import com.openwide.easysoa.message.InMessage;

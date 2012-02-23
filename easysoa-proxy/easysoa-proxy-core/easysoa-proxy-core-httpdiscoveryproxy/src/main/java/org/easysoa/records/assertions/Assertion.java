@@ -19,15 +19,13 @@
  */
 package org.easysoa.records.assertions;
 
-import org.easysoa.logs.ReportLine;
-
 import com.openwide.easysoa.message.OutMessage;
 
 /**
  * 
  * @author jguillemotte
  */
-public interface Assertion extends ReportLine {
+public interface Assertion {
 
     /**
      * Returns the Assertion ID
@@ -47,6 +45,5 @@ public interface Assertion extends ReportLine {
      * @return
      * @throws Exception 
      */
-    // TODO : Maybe best to change param type : replayed response vs recorded response
     public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/;
 }

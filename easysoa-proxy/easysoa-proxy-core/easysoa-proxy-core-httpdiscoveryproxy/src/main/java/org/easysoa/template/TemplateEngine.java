@@ -2,11 +2,7 @@ package org.easysoa.template;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.easysoa.records.ExchangeRecord;
-
 import com.openwide.easysoa.message.OutMessage;
 
 public interface TemplateEngine {

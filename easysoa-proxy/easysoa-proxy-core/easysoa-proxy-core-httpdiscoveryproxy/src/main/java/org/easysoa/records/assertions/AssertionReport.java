@@ -1,11 +1,13 @@
 /**
  * 
  */
-package org.easysoa.logs;
+package org.easysoa.records.assertions;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.easysoa.records.assertions.AssertionResult;
+
+import org.easysoa.logs.Report;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
@@ -80,7 +82,10 @@ public class AssertionReport implements Report {
      */
     public String generateTXTReport() {
         // TODO Add serialization to obtain txt format
-        return null;
+        // Find txt serializer =>  
+        // Or call custom toString method (calling sub-elements toString method)
+        // Or ....
+        return "";
     }
 
     /**
@@ -91,7 +96,6 @@ public class AssertionReport implements Report {
         XStream xstream = new XStream(new StaxDriver());
         // Optional alias
         // xstream.alias("person", Person.class);
-        //xstream.alias("phonenumber", PhoneNumber.class);
         return xstream.toXML(this);
     }
     
