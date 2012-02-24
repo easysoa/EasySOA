@@ -32,10 +32,14 @@ public class LCSAssertion extends AbstractAssertion {
     }
 
     @Override
-    // TODO : Add a security to avoid to call the check method with too big messages.
-    // Can generate an OutOfMemory error in this case
     public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage) {
         AssertionResult result;
+        // Limitation to avoid a OutOfMemoryException and log treatment time. LCS method is slow with big messages.
+        if(originalMessage.getMessageContent().getContent().length() > 100 || replayedMessage.getMessageContent().getContent().length() > 100){
+            //throw new Exception("Message length is limited to 100 characters for LCS method to avoid long treatment times");
+            result = new AssertionResult(this.getClass(), AssertionResultStatus.KO, "Message length is limited to 100 characters for LCS method to avoid long treatment times");
+            return result;
+        }
         String lcsResult = computeLCS(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
         if(lcsResult.equals(originalMessage.getMessageContent().getContent())){
             result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);

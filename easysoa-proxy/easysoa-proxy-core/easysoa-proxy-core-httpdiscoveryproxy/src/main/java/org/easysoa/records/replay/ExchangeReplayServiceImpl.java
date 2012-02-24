@@ -19,37 +19,19 @@
  */
 package org.easysoa.records.replay;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
-import org.easysoa.records.assertions.AssertionEngine;
-import org.easysoa.records.assertions.AssertionEngineImpl;
-import org.easysoa.records.assertions.StringAssertion;
-import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
-import org.easysoa.template.setters.CustomParamSetter;
-import org.easysoa.template.setters.RestFormParamSetter;
-import org.easysoa.template.setters.RestPathParamSetter;
-import org.easysoa.template.setters.RestQueryParamSetter;
-import org.easysoa.template.setters.WSDLParamSetter;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.util.RequestForwarder;
 
 /**
  * This service allows a user (ex. through a web UI) to choose, load, replay 

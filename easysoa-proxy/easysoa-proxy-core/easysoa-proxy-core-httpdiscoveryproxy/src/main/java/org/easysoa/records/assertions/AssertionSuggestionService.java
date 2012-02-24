@@ -49,15 +49,4 @@ public class AssertionSuggestionService {
         return suggestions;
     }
     
-    /**
-     * Suggest assertions for an output message, assertions are not only concerning the fields but also headers and/or message content
-     * @param message <code>OutMessage</code>
-     * @return
-     */
-    /*public AssertionSuggestions suggestAssertions(OutMessage message){
-        // TODO : add code
-        return null; 
-    }*/
-    
-    
 }

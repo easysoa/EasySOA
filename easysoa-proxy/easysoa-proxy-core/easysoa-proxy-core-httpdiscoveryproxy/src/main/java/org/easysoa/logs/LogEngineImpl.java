@@ -31,13 +31,19 @@ public class LogEngineImpl implements LogEngine {
         this.logSessions = new HashMap<String, LogSession>();
     }
     
+    /**
+     * 
+     * @param logSessionName Name of log session
+     * @throws Exception If a problem occurs
+     */
     public void startLogSession(String logSessionName) throws Exception {
         startLogSession(logSessionName, null);
     }
-    
+
     /**
-     * 
-     * @param logSessionName
+     * @param logSessionName Name of log session
+     * @param report Report associated to the log session
+     * @throws Exception If a problem occurs
      */
     public void startLogSession(String logSessionName, Report report) throws Exception {
         // Start a new log session

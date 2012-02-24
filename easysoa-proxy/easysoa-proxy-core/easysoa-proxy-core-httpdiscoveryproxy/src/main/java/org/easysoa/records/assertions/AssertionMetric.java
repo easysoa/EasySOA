@@ -78,6 +78,4 @@ public class AssertionMetric {
         this.actualValue = actualValue;
     }
     
-    
-    
 }

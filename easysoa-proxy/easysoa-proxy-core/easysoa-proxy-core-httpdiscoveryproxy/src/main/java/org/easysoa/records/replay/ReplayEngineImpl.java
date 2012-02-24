@@ -191,7 +191,6 @@ public class ReplayEngineImpl implements ReplayEngine {
                
             // How to work with fields in fld files
             // Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
-                
             // Call assertioSuggestionService not only when a template and fields are available but also to compare replay without modifications)
             AssertionSuggestionService assertionSuggestionService = new AssertionSuggestionService();
             
@@ -234,9 +233,6 @@ public class ReplayEngineImpl implements ReplayEngine {
         
         // Assertions
         AssertionSuggestions assertionSuggestions = erfs.getAssertionSuggestions(exchangeStoreName, exchangeRecordID);
-        
-        // TODO passing original record ??? Maybe just the the record ID ?
-        // RecordID
         ExchangeRecord record = erfs.load(exchangeStoreName, exchangeRecordID);
         
         // if template or asr files not found, throws an exception

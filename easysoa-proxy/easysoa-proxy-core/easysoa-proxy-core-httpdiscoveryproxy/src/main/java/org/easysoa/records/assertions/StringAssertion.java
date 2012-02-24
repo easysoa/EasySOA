@@ -161,7 +161,7 @@ public class StringAssertion extends AbstractAssertion {
         AssertionResult result;
         // TODO : Warning here ! For long messages (more of 5 words, the treatment can be very very long.
         // See http://fr.wikipedia.org/wiki/Distance_de_Levenshtein#Algorithme_de_Levenshtein => Maybe in this case the best solution is to use an other method or to throw an Exception
-        // At the moment, the length of string are limited to 100 characters, if the langth of one of the two strings to compare is more of this limit, a KO assertion result is returned
+        // At the moment, the length of string are limited to 100 characters, if the length of one of the two strings to compare is more of this limit, a KO assertion result is returned
         // with a message explaining the limitation
         if(originalMessage.getMessageContent().getContent().length() > 100 || replayedMessage.getMessageContent().getContent().length() > 100){
             //throw new Exception("Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
