@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.nuxeo.runtime</groupId>
 		<artifactId>nuxeo-runtime-parent</artifactId>
-		<version>5.4.2-SNAPSHOT</version>
+		<version>5.5-SNAPSHOT</version>
 		<relativePath>../nuxeo-runtime-parent</relativePath>
 	</parent>
 	<artifactId>nuxeo-runtime-bridge</artifactId>
@@ -20,12 +20,12 @@
 		<dependency>
 			<groupId>org.nuxeo.common</groupId>
 	 		<artifactId>nuxeo-common</artifactId>
-	        <version>5.4.2-SNAPSHOT</version>	
+	        <version>${project.version}</version>	
 		</dependency>
 		<dependency>
 			<groupId>org.nuxeo.runtime</groupId>
 			<artifactId>nuxeo-runtime</artifactId>
-			<version>5.4.2-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>

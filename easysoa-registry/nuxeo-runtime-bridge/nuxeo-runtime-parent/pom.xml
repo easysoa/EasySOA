@@ -11,7 +11,7 @@
   <groupId>org.nuxeo.runtime</groupId>
   <artifactId>nuxeo-runtime-parent</artifactId>
   <name>Nuxeo Runtime Parent</name>
-  <version>5.4.2-SNAPSHOT</version>
+  <version>5.5-SNAPSHOT</version>
   
   <packaging>pom</packaging>
   <description>Nuxeo Runtime: Parent.</description>
