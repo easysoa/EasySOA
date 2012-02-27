@@ -36,16 +36,11 @@
       <filter-id>outSection</filter-id>
     </action>
     -->
-
-    <!-- SCA Import page -->
-<!--
-    <action id="easysoaImport" link="sca_import_form" label="label.easysoa.import.link">
-      <category>USER_SERVICES</category>
-    </action>
+    
+    <!-- SCA Import button -->
     <action id="easysoaImportSubmit" link="#{easysoaImport.runImport}" label="label.easysoa.import.button">
       <category>EASYSOA_IMPORT</category>
     </action>
- -->
 
     <!-- Workspace publication button -->
     <action id="easysoaWorkspacePublish" link="#{easysoaEnvironmentActions.publishCurrentWorkspace}" label="label.easysoa.publishworkspace.button">
