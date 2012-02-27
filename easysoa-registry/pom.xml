@@ -30,7 +30,6 @@
   </properties>
 
   <modules>
-    <module>nuxeo-runtime-bridge</module>
     <module>easysoa-frascati-shared</module>
     <module>easysoa-frascati-processor</module>
     <module>nuxeo-frascati</module>
@@ -43,7 +42,6 @@
     <module>easysoa-registry-frascati</module>
     <module>easysoa-registry-rest-frascati</module>
     <module>nuxeo-packaging</module>
-    <module>nuxeo-runtime-bridge</module>
   </modules>
 
   <dependencies>
