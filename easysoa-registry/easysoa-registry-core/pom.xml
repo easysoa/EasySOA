@@ -141,7 +141,6 @@
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-features-test</artifactId>
-      <version>${easysoa.nuxeo.version}</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
