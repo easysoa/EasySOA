@@ -1,57 +1,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
-
-  <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-  <name>EasySOA HTTP Discovery Proxy</name>
-  <packaging>jar</packaging>
 
   <parent>
     <groupId>org.easysoa.proxy</groupId>
     <artifactId>easysoa-proxy-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
-    <relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
+
+  <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+  <name>EasySOA HTTP Discovery Proxy</name>
+  <packaging>jar</packaging>
 
   <dependencies>
     <!-- frascati -->
     <dependency><!-- base frascati -->
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency><!-- else no frascati class generation -->
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-runtime-factory</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-http</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-rest</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
-	<!-- Required to run velocity web apps -->
+    <!-- Required to run velocity web apps -->
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-velocity</artifactId>
-      <version>${frascati.version}</version>
-    </dependency>    
+    </dependency>
     <!-- to run it with mvn -Prun -->
     <dependency>
       <groupId>org.ow2.frascati.mojo</groupId>
       <artifactId>frascati-launcher-plugin</artifactId>
-      <version>${frascati.version}</version>
       <type>maven-plugin</type>
     </dependency>
 
@@ -59,98 +51,83 @@
     <dependency>
       <groupId>com.espertech</groupId>
       <artifactId>esper</artifactId>
-      <version>4.2.0</version>
     </dependency>
     <!-- java rest webservices -->
     <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>jsr311-api</artifactId>
-      <version>1.1.1</version>
     </dependency>
     <!-- for obsolete code in NuxeoRegistrationService -->
-    <!--<dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
-	  <version>1.11-b04</version>
-    </dependency>-->
-      <!--<version>1.8-ea02</version>-->
-      <!--<version>1.11-b02</version>-->
-      <!--<version>1.9-ea07</version>-->    
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-    <!--<dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20090211</version>
-    </dependency>-->
+    <!-- <dependency> -->
+    <!-- <groupId>com.sun.jersey</groupId> -->
+    <!-- <artifactId>jersey-client</artifactId> -->
+    <!-- </dependency> -->
+    <!-- <dependency> -->
+    <!-- <groupId>org.json</groupId> -->
+    <!-- <artifactId>json</artifactId> -->
+    <!-- </dependency> -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.1.1</version>
     </dependency>
-    
+
     <!-- Messaging api -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-messaging</artifactId>
-      <version>${project.version}</version>
-    </dependency>    
-    
+    </dependency>
+
     <!-- Discovery API -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-remote</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <!-- Configuration constants -->
     <dependency>
       <groupId>org.easysoa</groupId>
       <artifactId>easysoa-common</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
-    <!-- Tests -->
+    <dependency>
+      <groupId>org.eclipse.osgi</groupId>
+      <artifactId>org.eclipse.osgi.services</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+
+    <!-- Test scope -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-mocks</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-core</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-rest</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.osgi</groupId>
       <artifactId>org.eclipse.osgi.services</artifactId>
-      <version>3.2.100.v20100503</version>
     </dependency>
     <dependency>
-    	<groupId>commons-lang</groupId>
-    	<artifactId>commons-lang</artifactId>
-    	<version>2.6</version>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
-    	<groupId>xstream</groupId>
-    	<artifactId>xstream</artifactId>
-    	<version>1.2.2</version>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
     </dependency>
   </dependencies>
 
@@ -159,21 +136,23 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.9</version>
         <configuration>
           <runOrder>alphabetical</runOrder>
           <!--<forkMode>always</forkMode> -->
           <!--<childDelegation>true</childDelegation> -->
           <excludes>
-            <!-- We have a problem when we try to execute the 2 full mocked test in the same time -->
-            <!-- so temporary solution is to deactivate the full mocked test for validated mode -->
+            <!-- We have a problem when we try to execute the 2 full mocked test
+              in the same time -->
+            <!-- so temporary solution is to deactivate the full mocked test for
+              validated mode -->
             <exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
             <exclude>**/FullMockedDiscoveryModeProxyTest.java</exclude>
-            <!-- These tests require an externel nuxeo to work ! -->
+            <!-- These tests require an external nuxeo to work ! -->
             <exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
             <exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
 
-            <!-- these tests should only work when the corresponding bugs are patched : -->
+            <!-- these tests should only work when the corresponding bugs are patched
+              : -->
             <exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
           </excludes>
         </configuration>
@@ -185,7 +164,7 @@
     <profile>
       <id>run</id>
       <build>
-        <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:1.4:exec</defaultGoal>
+        <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin::exec</defaultGoal>
         <plugins>
           <plugin>
             <groupId>org.ow2.frascati.mojo</groupId>
@@ -214,8 +193,11 @@
             <dependencies>
               <!-- other poc deps ? -->
               <!-- other frascati deps ? -->
-              <!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-implementation-fractal</artifactId> 
-                <version>1.4</version> </dependency -->
+              <!-- <dependency> -->
+              <!-- <groupId>org.ow2.frascati</groupId> -->
+              <!-- <artifactId>frascati-implementation-fractal</artifactId> -->
+              <!-- <version>1.4</version> -->
+              <!-- </dependency> -->
             </dependencies>
           </plugin>
         </plugins>

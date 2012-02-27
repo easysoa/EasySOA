@@ -1,29 +1,29 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.easysoa.registry</groupId>
-        <artifactId>easysoa-registry-parent</artifactId>
-        <version>0.4-SNAPSHOT</version>
-        <relativePath>../../easysoa-registry-parent</relativePath>
-    </parent>
-
+  <parent>
     <groupId>org.easysoa.registry.api</groupId>
-    <artifactId>easysoa-registry-api-local</artifactId>
-    <name>EasySOA Registry API Local Implementation</name>
-    
-    <dependencies>
-        <dependency>
-            <groupId>org.easysoa.registry.api</groupId>
-            <artifactId>easysoa-registry-api-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.nuxeo.ecm.core</groupId>
-            <artifactId>nuxeo-core-api</artifactId>
-        </dependency>
-    </dependencies>
-	
+    <artifactId>easysoa-registry-api</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.easysoa.registry.api</groupId>
+  <artifactId>easysoa-registry-api-local</artifactId>
+  <name>EasySOA Registry API Local Implementation</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-api</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>

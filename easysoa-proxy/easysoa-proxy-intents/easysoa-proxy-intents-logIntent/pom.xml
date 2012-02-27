@@ -1,48 +1,43 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>easysoa-proxy-intents-logintent</artifactId>
-	<packaging>jar</packaging>
-	<name>EasySOA Proxy Log Intent</name>
+  <artifactId>easysoa-proxy-intents-logintent</artifactId>
+  <packaging>jar</packaging>
+  <name>EasySOA Proxy Log Intent</name>
 
-	<parent>
-		<groupId>org.easysoa.proxy</groupId>
-		<artifactId>easysoa-proxy-parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
-		<relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>		
-	</parent>
+  <parent>
+    <groupId>org.easysoa.proxy</groupId>
+    <artifactId>easysoa-proxy-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>aopalliance</groupId>
-			<artifactId>aopalliance</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.frascati.tinfi</groupId>
-			<artifactId>frascati-tinfi-runtime</artifactId>
-			<version>1.4.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.frascati.tinfi</groupId>
-			<artifactId>frascati-tinfi-oo</artifactId>
-			<version>1.4.4</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>		
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>aopalliance</groupId>
+      <artifactId>aopalliance</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati.tinfi</groupId>
+      <artifactId>frascati-tinfi-runtime</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati.tinfi</groupId>
+      <artifactId>frascati-tinfi-oo</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>jsr311-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

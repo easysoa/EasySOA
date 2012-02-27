@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<<<<<<< HEAD
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.nuxeo.runtime</groupId>
+		<artifactId>nuxeo-runtime-parent</artifactId>
+		<version>5.5-SNAPSHOT</version>
+		<relativePath>../nuxeo-runtime-parent</relativePath>
+	</parent>
+	<artifactId>nuxeo-runtime-bridge</artifactId>
+	<name>Nuxeo Runtime Bridge</name>
+	<description>Nuxeo Runtime Bridge - load isolated applications in Nuxeo</description>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.common</groupId>
+	 		<artifactId>nuxeo-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime</artifactId>
+		</dependency>
+	</dependencies>
+||||||| merged common ancestors
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.nuxeo.runtime</groupId>
+		<artifactId>nuxeo-runtime-parent</artifactId>
+		<version>5.4.2-SNAPSHOT</version>
+		<relativePath>../nuxeo-runtime-parent</relativePath>
+	</parent>
+	<artifactId>nuxeo-runtime-bridge</artifactId>
+	<name>Nuxeo Runtime Bridge</name>
+	<description>Nuxeo Runtime Bridge - load isolated applications in Nuxeo</description>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.common</groupId>
+	 		<artifactId>nuxeo-common</artifactId>
+	        <version>5.4.2-SNAPSHOT</version>	
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.runtime</groupId>
+			<artifactId>nuxeo-runtime</artifactId>
+			<version>5.4.2-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+=======
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.nuxeo.runtime</groupId>
+    <artifactId>nuxeo-runtime-parent</artifactId>
+    <version>5.4.2-SNAPSHOT</version>
+    <relativePath>../nuxeo-runtime-parent</relativePath>
+  </parent>
+  <artifactId>nuxeo-runtime-bridge</artifactId>
+  <name>Nuxeo Runtime Bridge</name>
+  <description>Nuxeo Runtime Bridge - load isolated applications in Nuxeo</description>
+  <packaging>jar</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.common</groupId>
+      <artifactId>nuxeo-common</artifactId>
+      <version>5.4.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime</artifactId>
+      <version>5.4.2-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+>>>>>>> [#104] - Maven build cleanup
+</project>

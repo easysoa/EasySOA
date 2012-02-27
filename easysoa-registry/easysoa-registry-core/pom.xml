@@ -1,31 +1,30 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.easysoa.registry</groupId>
     <artifactId>easysoa-registry-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
-    <relativePath>../easysoa-registry-parent/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>easysoa-registry-core</artifactId>
   <name>EasySOA Registry Core</name>
 
   <dependencies>
-    <!-- Provided dependencies -->
-	<dependency>
-		<groupId>org.eclipse.stp.sca.domainmodel</groupId>
-		<artifactId>frascati-model</artifactId>
-		<version>2.0.1.2</version>
-		<scope>provided</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.eclipse.emf</groupId>
-		<artifactId>ecore</artifactId>
-		<version>2.4.0</version>
-		<scope>provided</scope>
-	</dependency>		
-	<!-- Easysoa Registry API -->
+    <dependency>
+      <groupId>org.eclipse.stp.sca.domainmodel</groupId>
+      <artifactId>frascati-model</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>ecore</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Easysoa Registry API -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-core</artifactId>
@@ -100,7 +99,6 @@
     <dependency>
       <groupId>org.jdom</groupId>
       <artifactId>jdom</artifactId>
-      <version>1.1</version>
     </dependency>
 
     <!-- for EasySOAServerFeature tests -->
@@ -129,23 +127,20 @@
     <dependency>
       <groupId>org.nuxeo.runtime</groupId>
       <artifactId>nuxeo-runtime-test</artifactId>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-test</artifactId>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-features-test</artifactId>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
 
-    <!-- other embedded test dependencies : -->
+    <!-- other embedded test dependencies: -->
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-platform-types-core</artifactId>
@@ -155,7 +150,7 @@
       <artifactId>nuxeo-core-convert-plugins</artifactId>
     </dependency>
 
-    <!-- for external tests using EasySOACoreFeature : -->
+    <!-- for external tests using EasySOACoreFeature: -->
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-platform-forms-layout-client</artifactId>
@@ -178,25 +173,19 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
+        <!--This plugin's configuration is used to store Eclipse m2e settings only.
+          It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
           <configuration>
             <lifecycleMappingMetadata>
               <pluginExecutions>
                 <pluginExecution>
                   <pluginExecutionFilter>
-                    <groupId>
-                      org.apache.maven.plugins
-                    </groupId>
-                    <artifactId>
-                      maven-nuxeo-plugin
-                    </artifactId>
-                    <versionRange>
-                      [1.0.14,)
-                    </versionRange>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-nuxeo-plugin</artifactId>
+                    <versionRange>[1.0.14,)</versionRange>
                     <goals>
                       <goal>eclipse-version</goal>
                     </goals>
