@@ -11,7 +11,7 @@ require 'shellwords'
 
 ############### CONFIG LOADING
 
-NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.2-tomcat'
+NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-cap-5.5-tomcat'
 TALEND_ESB_PATH = (Buildr.settings.user['talend-esb'] != nil ? Buildr.settings.user['talend-esb']['path'] : nil) || Buildr.settings.build['talend-esb']['path'] || ENV['HOME']+'/talend-esb'
 NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || '/usr/local/bin/'
 FRASCATI_PATH = './deps/frascati'
@@ -315,7 +315,7 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
     puts "Files copy failed: Nuxeo is probably running. Could you please stop it?"
     raise e
   end
-  system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
+  system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
   cp_r FileList['./deps/frascati/lib/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/' # XXX Dirty way of managing FraSCAti dependencies
