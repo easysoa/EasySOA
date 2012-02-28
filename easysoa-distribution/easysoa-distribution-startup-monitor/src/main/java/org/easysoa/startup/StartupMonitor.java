@@ -19,8 +19,6 @@ import org.easysoa.EasySOAConstants;
  */
 public class StartupMonitor {
     
-    private static final Logger logger = Logger.getLogger(StartupMonitor.class);
-    
     private static final String EASYSOA_URL = "http://localhost:8083/easysoa";
     private static final int STARTUP_TIMEOUT = 90000;
     private static final String[] BROWSERS = { "firefox", "google-chrome", "opera",
@@ -114,7 +112,7 @@ public class StartupMonitor {
     }
     
     public static void print(String string) {
-        logger.info(string);
+        System.out.println(string);
     }
 
     /**
