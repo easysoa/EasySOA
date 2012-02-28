@@ -71,6 +71,7 @@ EASYSOA = 'easysoa'
 EASYSOA_COMMON = EASYSOA+':easysoa-common'
 EASYSOA_WEB = EASYSOA+':easysoa-web'
 EASYSOA_REGISTRY = EASYSOA+':easysoa-registry'
+EASYSOA_REGISTRY_PACKAGING = EASYSOA+':easysoa-registry:nuxeo-packaging'
 EASYSOA_PROXY = EASYSOA+':easysoa-proxy'
 EASYSOA_PAF = EASYSOA+':samples:easysoa-samples-pureairflowers'
 EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
@@ -106,33 +107,36 @@ define 'easysoa', :base_dir => '../' do
         maven(['clean', 'install'], project)
       end
       
-      desc 'Send plugins to Nuxeo'
-      task :dist do
-      
-        PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
-        puts "===== Nuxeo plugins - Deleting ====="
-        puts PLUGINS_TO_DELETE
-        rm PLUGINS_TO_DELETE
-        
-        puts "===== FraSCAti libs - Deploying to '" + NUXEO_PATH + "' ====="
-        puts "(TEMPORARILY DISABLED DUE TO NUXEO 5.5 COMPATIBILITY ISSUES)"
-        # FIXME
-        # puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar']
-        # puts "(+ " + FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'].to_a().length().to_s() + " FraSCAti libs)";
-        # cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar'], _(NUXEO_PATH + '/lib/')
-        # cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'], _(NUXEO_PATH + '/lib/')
-        
-        puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
-        puts FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*']
-        cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], _(NUXEO_PATH)
-        
-
-      end
-      
       task :nuxeoreset do
         NUXEO_DATA_PATH = _(NUXEO_PATH + '/nxserver/data');
         puts "Cleaning folder: " + NUXEO_DATA_PATH
         rm_rf NUXEO_DATA_PATH
+      end
+      
+      desc 'EasySOA Registry packaging project'
+      define 'nuxeo-packaging' do
+      
+        desc 'Send plugins to Nuxeo'
+        task :dist do
+        
+          PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
+          puts "===== Nuxeo plugins - Deleting ====="
+          puts PLUGINS_TO_DELETE
+          rm PLUGINS_TO_DELETE
+          
+          puts "===== FraSCAti libs - Deploying to '" + NUXEO_PATH + "' ====="
+          puts "(TEMPORARILY DISABLED DUE TO NUXEO 5.5 COMPATIBILITY ISSUES)"
+          # FIXME
+          # puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar']
+          # puts "(+ " + FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'].to_a().length().to_s() + " FraSCAti libs)";
+          # cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar'], _(NUXEO_PATH + '/lib/')
+          # cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'], _(NUXEO_PATH + '/lib/')
+          
+          puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
+          puts FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*']
+          cp_r FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*'], _(NUXEO_PATH)
+        end
+      
       end
     
   end
@@ -189,7 +193,7 @@ desc "Builds registry components using Maven"
 task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn']
                  
 desc "Deploys registry components"
-task :nx_dist => [EASYSOA_REGISTRY+':dist']
+task :nx_dist => [EASYSOA_REGISTRY_PACKAGING+':dist']
 
 desc "Deploys registry components"
 task :nx_reset => [EASYSOA_REGISTRY+':nuxeoreset']
