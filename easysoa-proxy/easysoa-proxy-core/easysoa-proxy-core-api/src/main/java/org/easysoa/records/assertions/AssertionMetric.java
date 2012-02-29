@@ -8,10 +8,13 @@ package org.easysoa.records.assertions;
  */
 public class AssertionMetric {
 
+    //
     private String metric;
     
+    //
     private String expectedValue;
     
+    //
     private String actualValue;
 
     /**
