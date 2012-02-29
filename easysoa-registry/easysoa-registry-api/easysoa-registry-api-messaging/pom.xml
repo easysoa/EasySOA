@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.easysoa.registry.api</groupId>
   <artifactId>easysoa-registry-api-messaging</artifactId>
   <packaging>jar</packaging>
   <name>EasySOA Registry Messaging API</name>

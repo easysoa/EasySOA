@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.easysoa.registry</groupId>
   <artifactId>easysoa-registry-dashboard</artifactId>
   <name>EasySOA Registry Dashboard</name>
   <description>EasySOA Gadgets</description>

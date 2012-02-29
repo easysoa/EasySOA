@@ -30,21 +30,17 @@
     <!-- </dependency> -->
 
     <!-- Include in the war the FraSCAti Runtime Factory. -->
-    <!-- Why not 1.5-SNAPSHOT ? -->
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-assembly-factory</artifactId>
-      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
-      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
-      <version>1.4</version>
     </dependency>
 
     <!-- to run this example with mvn -Prun -->

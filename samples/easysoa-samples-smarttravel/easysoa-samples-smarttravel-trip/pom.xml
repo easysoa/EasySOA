@@ -397,21 +397,17 @@
     <!-- <groupId>org.ow2.frascati</groupId> -->
     <!-- <artifactId>frascati-explorer-fscript-plugin</artifactId> -->
     <!-- </dependency> -->
-    <!-- Why not 1.5-SNAPSHOT ? -->
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-assembly-factory</artifactId>
-      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
-      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-fractal</artifactId>
-      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>oro</groupId>
@@ -425,7 +421,6 @@
     <dependency>
       <groupId>org.ow2.frascati.mojo</groupId>
       <artifactId>frascati-launcher-plugin</artifactId>
-      <version>1.4</version>
       <type>maven-plugin</type>
     </dependency>
 
@@ -433,7 +428,6 @@
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
-      <version>1.4</version>
     </dependency>
 
     <!-- <dependency> -->

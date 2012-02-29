@@ -10,7 +10,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.easysoa.registry.api</groupId>
   <artifactId>easysoa-registry-api-remote</artifactId>
   <name>EasySOA Registry API Remote Implementation</name>
 

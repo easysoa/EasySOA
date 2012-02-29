@@ -11,7 +11,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.easysoa.registry</groupId>
   <artifactId>easysoa-frascati-processor</artifactId>
   <name>easysoa-frascati-processor</name>
 

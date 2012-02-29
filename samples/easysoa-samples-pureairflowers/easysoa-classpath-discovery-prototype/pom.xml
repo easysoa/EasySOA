@@ -20,6 +20,10 @@
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-remote</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-core</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>

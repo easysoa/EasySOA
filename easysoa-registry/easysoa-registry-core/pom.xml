@@ -40,6 +40,13 @@
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-frascati</artifactId>
+      <!-- m2e compatibility -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.ow2.frascati</groupId>
+          <artifactId>frascati-util-comp</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Nuxeo -->
