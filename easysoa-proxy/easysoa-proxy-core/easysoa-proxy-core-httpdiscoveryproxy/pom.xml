@@ -92,12 +92,26 @@
       <version>4.1.1</version>
     </dependency>
     
+    <!-- Proxy persistence API -->
+    <dependency>
+		<groupId>org.easysoa.proxy</groupId>
+		<artifactId>easysoa-proxy-core-persistence</artifactId>
+		<version>${project.version}</version>
+    </dependency>
+    
+    <!-- Proxy core api -->
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    
     <!-- Messaging api -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-messaging</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
     
     <!-- Discovery API -->
     <dependency>

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.logs.LogEngine;
-import org.easysoa.logs.Report;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.RecordCollection;
@@ -18,7 +17,8 @@ import org.easysoa.records.assertions.AssertionReport;
 import org.easysoa.records.assertions.AssertionResult;
 import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.reports.Report;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.setters.CustomParamSetter;
@@ -68,7 +68,7 @@ public class ReplayEngineImpl implements ReplayEngine {
     // TODO : 
     private String replaySessionName;
     
-    /**+
+    /**
      * Constructor
      * Set the param setter list
      */
@@ -112,7 +112,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
         List<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
         try {
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+            ProxyFileStore erfs = new ProxyFileStore();
             recordList = erfs.getExchangeRecordlist(exchangeRecordStoreName);
         }
         catch (Exception ex) {
@@ -128,7 +128,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
         ExchangeRecord record = null;
         try {
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+            ProxyFileStore erfs = new ProxyFileStore();
             record = erfs.load(exchangeRecordStoreName, exchangeID);
         }
         catch (Exception ex) {
@@ -143,7 +143,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("getExchangeRecordStorelist method called ...");
         List<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
         try{
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+            ProxyFileStore erfs = new ProxyFileStore();
             storeList = erfs.getExchangeRecordStorelist();
         }
         catch(Exception ex){
@@ -155,7 +155,7 @@ public class ReplayEngineImpl implements ReplayEngine {
     
     @Override
     public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String recordID) throws Exception {
-        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+        ProxyFileStore erfs = new ProxyFileStore();
         TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(storeName, recordID);
         logger.debug(templateFieldSuggest.getTemplateFields().size());
         return templateFieldSuggest;
@@ -175,8 +175,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
         OutMessage outMessage = new OutMessage();
         try {
-            //Collection<ExchangeRecord> recordList;
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+            ProxyFileStore erfs = new ProxyFileStore();
             // get the record
             if(exchangeRecordId == null || "".equals(exchangeRecordId) || exchangeRecordStoreName==null || "".equals(exchangeRecordStoreName)){
                 throw new Exception("Store and record ID must not be null !");
@@ -226,15 +225,22 @@ public class ReplayEngineImpl implements ReplayEngine {
     @Override
     public OutMessage replayWithTemplate(Map<String, List<String>> formData, String exchangeStoreName, String exchangeRecordID) throws Exception {
         // Load template, assertion file .... 
-        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+        ProxyFileStore erfs = new ProxyFileStore();
+        
+        // Load exchange record
+        ExchangeRecord record = erfs.load(exchangeStoreName, exchangeRecordID);        
+        
         // Field suggestions
+        // TODO : Do not load the suggestions call the templateEngine to get the suggestions
         TemplateFieldSuggestions fieldSuggestions = erfs.getTemplateFieldSuggestions(exchangeStoreName, exchangeRecordID);
         // Template
         
         // Assertions
+        // TODO : move this method (or only the ASR saving line) in the proxy project
+        // TODO : make a FraSCAti service with fileStore ????  
+        //erfs.saveAssertionSuggestions(suggestions, recordID, storeName);        
         AssertionSuggestions assertionSuggestions = erfs.getAssertionSuggestions(exchangeStoreName, exchangeRecordID);
-        ExchangeRecord record = erfs.load(exchangeStoreName, exchangeRecordID);
-        
+      
         // if template or asr files not found, throws an exception
         // Call the proxy velocity to render and execute the replay with custom params
         OutMessage replayedResponse = templateEngine.renderTemplateAndReplay(exchangeStoreName, record, formData);

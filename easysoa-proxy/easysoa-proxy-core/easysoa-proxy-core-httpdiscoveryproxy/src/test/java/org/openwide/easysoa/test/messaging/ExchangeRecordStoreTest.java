@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 	 */
 	@Test
     public void saveAndReadRecordsTest() throws Exception {
-	    ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+	    ProxyFileStore erfs = new ProxyFileStore();
     	ExchangeRecord exchangeRecord;
 
     	ExchangeRecordStore recordList = new ExchangeRecordStore("TEST Enviroment");

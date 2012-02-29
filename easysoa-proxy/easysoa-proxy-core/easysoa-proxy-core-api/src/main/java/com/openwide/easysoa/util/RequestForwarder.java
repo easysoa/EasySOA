@@ -6,9 +6,7 @@ package com.openwide.easysoa.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
@@ -87,9 +85,9 @@ public class RequestForwarder {
 	 * @param inMessage The request to send
 	 * @return <code>OutMessage</code> the response as an OutMessage object
 	 */
-	private OutMessage sendSoapRequest(InMessage inMessage){
+	/*private OutMessage sendSoapRequest(InMessage inMessage){
 		return null;
-	}
+	}*/
 	
 	/**
 	 * Send a REST request

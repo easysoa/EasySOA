@@ -24,7 +24,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
@@ -176,7 +176,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		
 		// replay one or several exchanges
 		logger.debug("Calling Replay service ...");
-		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
+		ProxyFileStore fileStore= new ProxyFileStore();
 		
 		String originalResponse;
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
@@ -200,7 +200,7 @@ public class ScenarioTest extends AbstractTestHelper {
 	private void callTemplateDefService(String runName) throws Exception {
 		
 		logger.debug("callTemplateDefService method for store " + runName);
-		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
+		ProxyFileStore fileStore= new ProxyFileStore();
 	
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
 

@@ -15,6 +15,12 @@
   	</properties>
 
   	<dependencies>
+        <!-- Easysoa Proxy Persistence API -->        
+	    <dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-persistence</artifactId>
+			<version>${project.version}</version>
+	    </dependency>
   		<!-- Javax servlet -->
         <dependency>
         	<groupId>javax.servlet</groupId>

@@ -22,12 +22,14 @@
 	
 	<modules>
 		<module>easysoa-proxy-parent</module>
+		<module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
+		<module>easysoa-proxy-core/easysoa-proxy-core-api</module>
 		<module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
 		<module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
 		<module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
 		<module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
 		<module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
 		<module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
-	</modules>	
+	</modules>
 	
 </project>

@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.easysoa.logs.Report;
+import org.easysoa.reports.Report;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 

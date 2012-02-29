@@ -3,7 +3,8 @@
  */
 package org.easysoa.logs;
 
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.reports.Report;
 
 /**
  * Contains all the stuff required for a log session
@@ -56,7 +57,7 @@ public class LogSession {
      */
     public void save() throws Exception {
         // Call the File store
-        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+        ProxyFileStore erfs = new ProxyFileStore();
         erfs.saveReport(report);
     }
     

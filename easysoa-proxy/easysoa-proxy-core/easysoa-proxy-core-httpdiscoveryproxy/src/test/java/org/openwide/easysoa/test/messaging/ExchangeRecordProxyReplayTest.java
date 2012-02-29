@@ -37,10 +37,8 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.records.assertions.AssertionEngineImpl;
 import org.easysoa.records.assertions.AssertionSuggestions;
-import org.easysoa.records.assertions.LCSAssertion;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
-import org.easysoa.records.replay.ReplayEngineImpl;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateEngineImpl;
@@ -54,7 +52,6 @@ import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
-
 import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.proxy.PropertyManager;
@@ -163,7 +160,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 		// replay one or several exchanges
 		logger.debug("Calling Replay service ...");
-		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
+		ProxyFileStore fileStore= new ProxyFileStore();
 		
 		String originalResponse;
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
@@ -175,8 +172,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/" + testStoreName + "/" + record.getExchange().getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
-			logger.debug("Original ExchangeRecord response : " + originalResponse);
-			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
+			//logger.debug("Original ExchangeRecord response : " + originalResponse);
+			//logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
 			
 			// Compare the replayed exchange with the original exchange
 			assertEquals(originalResponse, entityResponseString);
@@ -288,13 +285,13 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 		// replay one or several exchanges
 		logger.debug("Calling Replay service ...");
-		ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
+		ProxyFileStore fileStore= new ProxyFileStore();
 		// Check the results
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
 		for(ExchangeRecord record : recordList){
 			RequestForwarder forwarder = new RequestForwarder();
 			OutMessage outMessage = forwarder.send(record.getInMessage());
-			logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
+			//logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
 			// Compare the replayed exchange with the original exchange
 			assertEquals(record.getOutMessage().getMessageContent().getContent(), outMessage.getMessageContent().getContent());
 		}

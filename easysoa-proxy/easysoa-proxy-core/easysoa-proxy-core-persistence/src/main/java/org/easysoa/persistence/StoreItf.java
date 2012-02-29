@@ -17,14 +17,16 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-package org.easysoa.records;
+package org.easysoa.persistence;
 
 import java.util.List;
+
+// TODO : Modify the methods to have generic in/out parameters 
 
 /**
  * @author jguillemotte
  */
-public interface ExchangeRecordStoreManagerItf {
+public interface StoreItf {
 
 	/**
 	 * Save an exchange record
@@ -32,33 +34,27 @@ public interface ExchangeRecordStoreManagerItf {
 	 * @return The id of the stored <code>ExchangeRecord</code>
 	 * @throws Exception if a problem occurs
 	 */
-	public String save(ExchangeRecord exchangeRecord) throws Exception;
+	//public String save(ExchangeRecord exchangeRecord) throws Exception;
 	
 	/**
 	 * Create a store
 	 * @param storeName The store name
 	 */
-	public void createStore(String storeName);
+	public void createStore(String storeName) throws Exception;
 	
 	/**
-	 * Load an exchange record
-	 * @param id The id of the exchange record to load
-	 * @return The corresponding <code>ExchangeRecord</code> or null if the record is not found
-	 * @throws Exception if a problem occurs
+	 * Save a resource and returns the result 
+	 * @param the resource to save containing the file name, the store where the resource must be saved, and the content to save (in file, database ...)
+	 * @return
 	 */
-	public ExchangeRecord load(String path, String id) throws Exception;
-	
+	public String save(StoreResource resource) throws Exception;
+
 	/**
-	 * Returns a list of Exchange records stored in file system or in database
-	 * @param exchangeRecordStoreName The name of the store where the records have to be listed
-	 * @return A list of <code>ExchangeRecord</code>
+	 * Load a ressource and returns the result
+	 * @return The EasySOAResource filled with content, file name, store .... 
 	 */
-	public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) throws Exception;
+	public StoreResource load(String resourceName, String store) throws Exception;
 	
-	/**
-	 * Returns a list of Exchange records store
-	 * @return A list of <code>ExchangeRecordStore</code>
-	 */
-	public List<ExchangeRecordStore> getExchangeRecordStorelist() throws Exception;	
+	//public List<String> getFile
 	
 }

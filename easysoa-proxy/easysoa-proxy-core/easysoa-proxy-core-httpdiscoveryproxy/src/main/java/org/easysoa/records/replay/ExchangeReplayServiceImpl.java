@@ -93,7 +93,6 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	    return replayEngine.getExchangeRecord(exchangeRecordStoreName, exchangeID);
 	}
 	
-	
 	@Override
 	@GET
 	@Path("/getExchangeRecordStorelist")
