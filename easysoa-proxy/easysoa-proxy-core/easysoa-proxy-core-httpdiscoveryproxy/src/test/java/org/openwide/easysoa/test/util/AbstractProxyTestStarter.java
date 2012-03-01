@@ -79,7 +79,8 @@ public abstract class AbstractProxyTestStarter {
 		logger.info("FraSCATI Stopping");
 		if(componentList != null){
 			for(Component component : componentList){
-				frascati.close(component);
+				logger.debug("Closing component : " + component);
+			    frascati.close(component);
 			}
 		}
 		frascati = null;
@@ -91,9 +92,8 @@ public abstract class AbstractProxyTestStarter {
 	 */
 	protected static void startHttpDiscoveryProxy(String composite, URL...urls) throws FrascatiException {
 		logger.info("HTTP Discovery Proxy Starting");
-		componentList.add(frascati.processComposite(composite,
-				new ProcessingContextImpl(new FrascatiClassLoader(urls))));
-		;
+		Component component = frascati.processComposite(composite,new ProcessingContextImpl(new FrascatiClassLoader(urls)));
+		componentList.add(component);
 	}
 	
 	/**
