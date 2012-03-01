@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.persistence.StoreItf;
 import org.easysoa.persistence.StoreResource;
@@ -29,6 +31,36 @@ public class FileStore implements StoreItf {
         storeFolder.mkdirs();
     }
 
+    @Override
+    public List<String> getStoreList(String path){
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+        List<String> storeList = new ArrayList<String>();
+        logger.debug("listOfFiles.size = " + listOfFiles.length);
+        for (File file : listOfFiles) {
+            if (file.isDirectory()) {
+                storeList.add(file.getName());
+            }
+        }
+        return storeList;
+    }
+    
+    @Override
+    public List<StoreResource> getResourceList(String storeName) throws Exception{
+        File folder = new File(storeName);
+        File[] listOfFiles = folder.listFiles();
+        ArrayList<StoreResource> resourceList = new ArrayList<StoreResource>();
+        if(listOfFiles != null){
+            logger.debug("listOfFiles.size = " + listOfFiles.length);
+            for (File file : listOfFiles) {
+                if (file.isFile()) {        
+                    resourceList.add(this.load(file.getName(), storeName));
+                }
+            }
+        }
+        return resourceList;
+    }
+    
     @Override
     public String save(StoreResource resource) throws Exception {
         // check if store exists

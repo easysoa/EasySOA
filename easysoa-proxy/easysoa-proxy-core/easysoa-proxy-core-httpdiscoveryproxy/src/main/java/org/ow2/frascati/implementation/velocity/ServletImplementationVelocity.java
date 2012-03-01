@@ -142,14 +142,14 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        	ProxyFileStore excf = new ProxyFileStore();
 	        	//excf.setStorePath(PropertyManager.getProperty("path.template.store"));
 	        	//List<String> templateFileList = excf.getTemplateList();
-	        	List<ExchangeRecordStore> storeList = excf.getExchangeRecordStorelist();
+	        	List<String> storeList = excf.getExchangeRecordStorelist();
 	        	
 	        	// For the resource /target/ : for each record template, send back a html list of links on template.wsdl
 	        	if(requestedResource.endsWith("/")){
 	        		if(storeList.size()>0){
 	        			response.getWriter().println("<html><body><ul>");
-		        		for(ExchangeRecordStore recordStore : storeList){
-		        			response.getWriter().println("<li><a href=\"http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + recordStore.getStoreName() + "?wsdl\">" + recordStore.getStoreName() + "</a> </li>");
+		        		for(String storeName : storeList){
+		        			response.getWriter().println("<li><a href=\"http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + storeName + "?wsdl\">" + storeName + "</a> </li>");
 		        		}
 		        		response.getWriter().println("</ul></body></html>");
 	        		}

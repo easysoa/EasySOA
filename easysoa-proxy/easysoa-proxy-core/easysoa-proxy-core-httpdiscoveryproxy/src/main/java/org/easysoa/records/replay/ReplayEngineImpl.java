@@ -129,7 +129,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         ExchangeRecord record = null;
         try {
             ProxyFileStore erfs = new ProxyFileStore();
-            record = erfs.load(exchangeRecordStoreName, exchangeID);
+            record = erfs.loadExchangeRecord(exchangeRecordStoreName, exchangeID);
         }
         catch (Exception ex) {
             logger.error("An error occurs during the list", ex);
@@ -144,7 +144,9 @@ public class ReplayEngineImpl implements ReplayEngine {
         List<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
         try{
             ProxyFileStore erfs = new ProxyFileStore();
-            storeList = erfs.getExchangeRecordStorelist();
+            for(String storeName : erfs.getExchangeRecordStorelist()){
+                storeList.add(new ExchangeRecordStore(storeName)) ;
+            }
         }
         catch(Exception ex){
             logger.error("An error occurs during the listing of exchanges record stores", ex);
@@ -180,7 +182,7 @@ public class ReplayEngineImpl implements ReplayEngine {
             if(exchangeRecordId == null || "".equals(exchangeRecordId) || exchangeRecordStoreName==null || "".equals(exchangeRecordStoreName)){
                 throw new Exception("Store and record ID must not be null !");
             }
-            ExchangeRecord record = erfs.load(exchangeRecordStoreName, exchangeRecordId);
+            ExchangeRecord record = erfs.loadExchangeRecord(exchangeRecordStoreName, exchangeRecordId);
             RequestForwarder requestForwarder;
             // Send the request
             requestForwarder = new RequestForwarder();
@@ -228,7 +230,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         ProxyFileStore erfs = new ProxyFileStore();
         
         // Load exchange record
-        ExchangeRecord record = erfs.load(exchangeStoreName, exchangeRecordID);        
+        ExchangeRecord record = erfs.loadExchangeRecord(exchangeStoreName, exchangeRecordID);        
         
         // Field suggestions
         // TODO : Do not load the suggestions call the templateEngine to get the suggestions

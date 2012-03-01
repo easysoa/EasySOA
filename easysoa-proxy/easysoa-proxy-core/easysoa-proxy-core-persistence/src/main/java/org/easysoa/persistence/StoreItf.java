@@ -54,7 +54,19 @@ public interface StoreItf {
 	 * @return The EasySOAResource filled with content, file name, store .... 
 	 */
 	public StoreResource load(String resourceName, String store) throws Exception;
-	
-	//public List<String> getFile
+
+	/**
+	 * Returns the store list from the specified path
+	 * @param path The path where to get the store list
+	 * @return A list containing the store names
+	 */
+    public List<String> getStoreList(String path);
+
+    /**
+     * Returns a list of resources contained in the specified store
+     * @return A list containing <code>StoreResource</code> objects
+     * @throws Exception 
+     */
+    public List<StoreResource> getResourceList(String store) throws Exception;
 	
 }

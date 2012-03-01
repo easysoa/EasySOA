@@ -172,7 +172,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Send second request - GET request with path parameters and query parameters
 		HttpGet severalTweetRequest = new HttpGet("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/severalTweets/toto?tweetNumber=5");
 		response = httpProxyClient.execute(severalTweetRequest);
-		ContentReader.read(response.getEntity().getContent());		
+		ContentReader.read(response.getEntity().getContent());
 		
 		// Send third request - POST request with form parameters
 		HttpPost postTweetRequest = new HttpPost("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/postNewTweet");
@@ -204,7 +204,6 @@ public class TemplateTest extends AbstractProxyTestStarter {
         valueList.add("toto");
         fieldMap.put("user", valueList);		
 		
-		//TemplateEngine templateEngine = new TemplateEngineImpl();
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
 		    TemplateFieldSuggestions templateFieldsuggestions = replayEngine.getTemplateEngine().suggestFields(record, testStoreName, true);

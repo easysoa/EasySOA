@@ -3,6 +3,8 @@
  */
 package org.easysoa.persistence.database;
 
+import java.util.List;
+
 import org.easysoa.persistence.StoreItf;
 import org.easysoa.persistence.StoreResource;
 
@@ -28,6 +30,18 @@ public class DatabaseStore implements StoreItf {
 
     @Override
     public StoreResource load(String resourceName, String store) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<String> getStoreList(String path) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<StoreResource> getResourceList(String store) {
         // TODO Auto-generated method stub
         return null;
     }

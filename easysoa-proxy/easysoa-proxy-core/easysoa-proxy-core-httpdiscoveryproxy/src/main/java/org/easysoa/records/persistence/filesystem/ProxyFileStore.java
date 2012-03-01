@@ -19,8 +19,6 @@
  */
 package org.easysoa.records.persistence.filesystem;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +31,6 @@ import org.easysoa.persistence.StoreResource;
 import org.easysoa.persistence.filesystem.FileStore;
 import org.easysoa.records.Exchange;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.reports.Report;
@@ -77,22 +74,23 @@ public class ProxyFileStore {
     public final static String SUGGESTION_FILE_PREFIX = "fieldSuggestions_";
     public final static String ASSERTIONS_FILE_PREFIX = "assertionSuggestions_";
     
-    // Path
+    // Path for exchange records
     protected String path;
     
-    // Template path for fld and asr file storage
+    // Path for templates (fld) and and assertions (asr)
     private String templatePath;
     
+    // Path for reports
     private String reportPath;
     
-    // For persistence
+    // Generic interface for persistence
     private StoreItf store;
     
     /**
      * Path is set with the value of 'path.record.store' property
      */
     public ProxyFileStore() {
-        // TODO : Must be configurable => StoreFactory or StoreProvider to give a Database store
+        // TODO : Must be configurable => StoreFactory or StoreProvider to provide a file store or a Database store
         store = new FileStore();
         this.path = PropertyManager.getProperty("path.record.store");
         this.templatePath = PropertyManager.getProperty("path.template.store");
@@ -113,16 +111,6 @@ public class ProxyFileStore {
         store.createStore(path + storeName);
         logger.debug("Creating template store folder : " + templatePath + storeName);
         store.createStore(templatePath + storeName);
-    }
-    
-    /**
-     * Copy the record files form the original store to the template store
-     * 
-     * @param recordID
-     * @param storeName
-     */
-    public void makeCopyOfExchangeRecord(String recordID, String storeName) {
-
     }
 
     /**
@@ -247,19 +235,25 @@ public class ProxyFileStore {
      * 
      * @param storeName Name of the store where the template are stored
      * @return A <code>List</code> containing the name of the template files
+     * @throws Exception 
      */
-    public List<String> getTemplateList(String storeName) {
+    public List<String> getTemplateList(String storeName) throws Exception {
         ArrayList<String> templateFileList = new ArrayList<String>();
-        // TODO : remove hard coded path
-        File folder = new File(PropertyManager.getProperty("path.template.store") + storeName);
-        File[] listOfFiles = folder.listFiles();
-        if (listOfFiles != null) {
-            for (File file : listOfFiles) {
+        List<StoreResource> resourceList = store.getResourceList(templatePath + "/" + storeName);
+        //File folder = new File(this.templatePath + storeName);
+        //File[] listOfFiles = folder.listFiles();
+        //if (listOfFiles != null) {
+        /*    for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().endsWith(TEMPLATE_FILE_EXTENSION)) {
                     logger.debug("file name : " + file.getName());
                     templateFileList.add(file.getName());
                 }
             }
+        //}*/
+        for(StoreResource resource : resourceList){
+            if(resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
+                templateFileList.add(resource.getResourceName());
+            }  
         }
         return templateFileList;
     }
@@ -300,47 +294,51 @@ public class ProxyFileStore {
     public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) throws Exception {
         // loads all files in path with extension & lists them
         logger.debug("exchangeRecordStoreName  = " + exchangeRecordStoreName);
-        File folder = new File(path + exchangeRecordStoreName + "/");
-        File[] listOfFiles = folder.listFiles();
+        List<StoreResource> resourceList = store.getResourceList(path + "/" + exchangeRecordStoreName);
+        //File folder = new File(path + exchangeRecordStoreName + "/");
+        //File[] listOfFiles = folder.listFiles();
         ArrayList<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
-        if(listOfFiles != null){
-            logger.debug("listOfFiles.size = " + listOfFiles.length);
-            for (File file : listOfFiles) {
-                if (file.isFile() && file.getName().startsWith(EXCHANGE_FILE_PREFIX)) {
-                    logger.debug("file name : " + file.getName());
-                    if (file.getName().endsWith(EXCHANGE_FILE_EXTENSION)) {
-                        String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));
-                        logger.debug("record id : " + id);
-                        try {
-                            recordList.add(load(exchangeRecordStoreName, id));
-                        } catch (Exception ex) {
-                            logger.debug(ex);
-                            throw ex;
-                        }
-                    }
-                }
+        //if(listOfFiles != null){
+            //logger.debug("listOfFiles.size = " + listOfFiles.length);
+            //for (File file : listOfFiles) {
+                //if (file.isFile() && file.getName().startsWith(EXCHANGE_FILE_PREFIX)) {
+                    //logger.debug("file name : " + file.getName());
+                    //if (file.getName().endsWith(EXCHANGE_FILE_EXTENSION)) {
+                    //    String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));
+                    //    logger.debug("record id : " + id);
+                    //    try {
+                    //        recordList.add(load(exchangeRecordStoreName, id));
+                    //    } catch (Exception ex) {
+                    //        logger.debug(ex);
+                    //        throw ex;
+                    //    }
+                    //}
+                //}
+            //}
+        //} else {
+        //    logger.debug("listOfFiles is null, no records to return !");
+        //}
+        for(StoreResource resource : resourceList){
+            if(resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
+                String id = resource.getResourceName().substring(resource.getResourceName().lastIndexOf("_")+1, resource.getResourceName().lastIndexOf("."));
+                recordList.add(this.loadExchangeRecord(exchangeRecordStoreName, id));                
             }
-        } else {
-            logger.debug("listOfFiles is null, no records to return !");
         }
         return recordList;
     }
 
     /**
-     * 
-     * @return
+     * Returns the list of the exchange record stores
+     * @return A list of ExchangeRecord Stores
      */
-    public List<ExchangeRecordStore> getExchangeRecordStorelist() {
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
-        logger.debug("listOfFiles.size = " + listOfFiles.length);
+    public List<String> getExchangeRecordStorelist() {
+        /*List<String> storeNameList = store.getStoreList(this.path);
         ArrayList<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
-        for (File file : listOfFiles) {
-            if (file.isDirectory()) {
-                storeList.add(new ExchangeRecordStore(file.getName()));
-            }
+        for (String storeName : storeNameList) {
+            storeList.add(new ExchangeRecordStore(storeName));
         }
-        return storeList;
+        return storeList;*/
+        return store.getStoreList(this.path);
     }
 
     /**
@@ -360,7 +358,7 @@ public class ProxyFileStore {
      * @return
      * @throws Exception
      */
-    public ExchangeRecord load(String exchangeStoreName, String recordID) throws Exception {
+    public ExchangeRecord loadExchangeRecord(String exchangeStoreName, String recordID) throws Exception {
         ExchangeRecord record = new ExchangeRecord();
         @SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
