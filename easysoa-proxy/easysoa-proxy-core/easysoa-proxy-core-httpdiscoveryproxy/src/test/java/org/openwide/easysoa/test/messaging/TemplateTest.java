@@ -230,7 +230,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
+	//@Ignore
 	/**
 	 * TODO : There is a bug with this test.
 	 * - When it is started with the other tests, the generated template contains a REST template instead of a soap template
@@ -281,6 +281,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		fieldMap.put("user", valueList);
 		
 		// For each custom record in the list
+		logger.debug("recordList size = " + recordList.size());
 		for(ExchangeRecord record : recordList){
 		    TemplateFieldSuggestions templateFieldsuggestions = replayEngine.getTemplateEngine().suggestFields(record, testStoreName, true);
 	        ExchangeRecord templatizedRecord = replayEngine.getTemplateEngine().generateTemplate(templateFieldsuggestions, record, testStoreName, true);

@@ -240,18 +240,8 @@ public class ProxyFileStore {
     public List<String> getTemplateList(String storeName) throws Exception {
         ArrayList<String> templateFileList = new ArrayList<String>();
         List<StoreResource> resourceList = store.getResourceList(templatePath + "/" + storeName);
-        //File folder = new File(this.templatePath + storeName);
-        //File[] listOfFiles = folder.listFiles();
-        //if (listOfFiles != null) {
-        /*    for (File file : listOfFiles) {
-                if (file.isFile() && file.getName().endsWith(TEMPLATE_FILE_EXTENSION)) {
-                    logger.debug("file name : " + file.getName());
-                    templateFileList.add(file.getName());
-                }
-            }
-        //}*/
         for(StoreResource resource : resourceList){
-            if(resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
+            if(resource.getResourceName().endsWith(TEMPLATE_FILE_EXTENSION)){
                 templateFileList.add(resource.getResourceName());
             }  
         }
@@ -295,31 +285,9 @@ public class ProxyFileStore {
         // loads all files in path with extension & lists them
         logger.debug("exchangeRecordStoreName  = " + exchangeRecordStoreName);
         List<StoreResource> resourceList = store.getResourceList(path + "/" + exchangeRecordStoreName);
-        //File folder = new File(path + exchangeRecordStoreName + "/");
-        //File[] listOfFiles = folder.listFiles();
         ArrayList<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
-        //if(listOfFiles != null){
-            //logger.debug("listOfFiles.size = " + listOfFiles.length);
-            //for (File file : listOfFiles) {
-                //if (file.isFile() && file.getName().startsWith(EXCHANGE_FILE_PREFIX)) {
-                    //logger.debug("file name : " + file.getName());
-                    //if (file.getName().endsWith(EXCHANGE_FILE_EXTENSION)) {
-                    //    String id = file.getName().substring(file.getName().lastIndexOf("_")+1, file.getName().lastIndexOf("."));
-                    //    logger.debug("record id : " + id);
-                    //    try {
-                    //        recordList.add(load(exchangeRecordStoreName, id));
-                    //    } catch (Exception ex) {
-                    //        logger.debug(ex);
-                    //        throw ex;
-                    //    }
-                    //}
-                //}
-            //}
-        //} else {
-        //    logger.debug("listOfFiles is null, no records to return !");
-        //}
         for(StoreResource resource : resourceList){
-            if(resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
+            if(resource.getResourceName().startsWith(EXCHANGE_FILE_PREFIX) && resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
                 String id = resource.getResourceName().substring(resource.getResourceName().lastIndexOf("_")+1, resource.getResourceName().lastIndexOf("."));
                 recordList.add(this.loadExchangeRecord(exchangeRecordStoreName, id, false));                
             }
@@ -332,12 +300,6 @@ public class ProxyFileStore {
      * @return A list of ExchangeRecord Stores
      */
     public List<String> getExchangeRecordStorelist() {
-        /*List<String> storeNameList = store.getStoreList(this.path);
-        ArrayList<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
-        for (String storeName : storeNameList) {
-            storeList.add(new ExchangeRecordStore(storeName));
-        }
-        return storeList;*/
         return store.getStoreList(this.path);
     }
 
