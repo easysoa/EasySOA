@@ -9,6 +9,10 @@
   margin: 3px;
 }
 
+.subscriptions, .subscriptions input {
+  font-size: 85%;
+}
+
 .contractEnvironment {
   float: left;
   padding: 3px;
@@ -41,7 +45,6 @@
 .contract input[disabled] {
   color: grey;
 }
-
 
 .existingEndpoint {
   background-color: #BFE9FF;
