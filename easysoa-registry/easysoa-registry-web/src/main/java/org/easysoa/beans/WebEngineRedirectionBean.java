@@ -35,32 +35,40 @@ import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.platform.ui.web.rest.RestHelper;
 
 /**
- * Publication and forking actions
+ * URL redirection bean 
  * 
  * @author mkalam-alami
  * 
  */
-@Name("soapUiActions")
+@Name("webEngineRedirection")
 @Scope(ScopeType.CONVERSATION)
 @Install(precedence = Install.FRAMEWORK)
-public class SoapUIActionsBean {
+public class WebEngineRedirectionBean {
 
     @In(create = true)
     NavigationContext navigationContext;
 
-    public void downloadConfForCurrentDocument() throws Exception {
-        
+    public void downloadSoapUIConfForCurrentDocument() throws Exception {
+        String path = "/nuxeo/site/easysoa/soapui/"; // SoapUI service path
+        path +=  navigationContext.getCurrentDocument().getId(); // Param: doc ID
+        path += ".xml";
+        redirect(path);
+    }
+    
+    public void downloadPropertiesForCurrentDocument() throws Exception {
+        String path = "/nuxeo/site/easysoa/properties/"; // SoapUI service path
+        path +=  navigationContext.getCurrentDocument().getId(); // Param: doc ID
+        path += ".properties";
+        redirect(path);
+    }
+    
+    private void redirect(String filePath) throws Exception {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
         URL requestUrl = new URL(request.getRequestURL().toString());
-        
-        String redirectionUrl = "";
-        redirectionUrl += requestUrl.toString().substring(0, requestUrl.toString().length() - requestUrl.getPath().toString().length()); // Keep host only
-        redirectionUrl += "/nuxeo/site/easysoa/soapui/"; // SoapUI service path
-        redirectionUrl +=  navigationContext.getCurrentDocument().getId(); // Param: doc ID
-        redirectionUrl += ".xml";
-                
+    	String redirectionUrl = requestUrl.toString().substring(0, requestUrl.toString().length() - requestUrl.getPath().toString().length()) + filePath; // Keep host only
+    	
         RestHelper.handleRedirect(response, redirectionUrl);
     }
     

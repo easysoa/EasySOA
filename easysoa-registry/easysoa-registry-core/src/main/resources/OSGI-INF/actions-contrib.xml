@@ -59,9 +59,15 @@
     </action>
     
     <!-- SoapUi config download link -->
-    <action id="easysoaSoapUiLink" link="#{soapUiActions.downloadConfForCurrentDocument}" label="label.easysoa.soapui.button">
+    <action id="easysoaSoapUiLink" link="#{webEngineRedirection.downloadSoapUIConfForCurrentDocument}" label="label.easysoa.soapui.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isServiceContainer</filter-id>
+    </action>
+    
+    <!-- Properties file download link -->
+    <action id="easysoaPropertiesLink" link="#{webEngineRedirection.downloadPropertiesForCurrentDocument}" label="label.easysoa.properties.button">
+      <category>SUBVIEW_UPPER_LIST</category>
+      <filter-id>isWorkspace</filter-id>
     </action>
 
   </extension>
