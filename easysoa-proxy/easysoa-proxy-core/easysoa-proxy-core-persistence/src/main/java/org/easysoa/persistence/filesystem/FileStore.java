@@ -36,7 +36,6 @@ public class FileStore implements StoreItf {
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         List<String> storeList = new ArrayList<String>();
-        logger.debug("listOfFiles.size = " + listOfFiles.length);
         for (File file : listOfFiles) {
             if (file.isDirectory()) {
                 storeList.add(file.getName());
@@ -51,7 +50,6 @@ public class FileStore implements StoreItf {
         File[] listOfFiles = folder.listFiles();
         ArrayList<StoreResource> resourceList = new ArrayList<StoreResource>();
         if(listOfFiles != null){
-            logger.debug("listOfFiles.size = " + listOfFiles.length);
             for (File file : listOfFiles) {
                 if (file.isFile()) {        
                     resourceList.add(this.load(file.getName(), storeName));
@@ -111,7 +109,6 @@ public class FileStore implements StoreItf {
      * @return true if the store exists, false otherwise
      */
     private boolean storeExists(String storeName){
-        logger.debug("checking if store exists : " + storeName);
         if(storeName == null){
             return false;
         }

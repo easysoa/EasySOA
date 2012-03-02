@@ -67,10 +67,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 		context.put(params, parameters);
 		// FIXME: should not be called but @Lifecycle does not work as expected.
 		registerScaProperties();
-		// String[] args = new String[] { "parameters" };
-
 		StringWriter sw = new StringWriter();
-
 		// **** EasySOA Hack begin
 		System.out.println("TEST PASSING in ProxyImplementationVelocity Hack");
 		int pathArgIndex = (Integer) context.get("pathArgIndex"); // pathArgIndex has been set as an SCA xsd:int property
@@ -84,6 +81,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 			System.out.println("storeNameFound = " + storeNameFound);
 			if (templatePathFound instanceof String) {
 				template = this.velocityEngine.getTemplate((String)storeNameFound + "/" + (String) templatePathFound);
+				System.out.println("template = " + template);
 			}
 		}
 		if (template == null) {
@@ -95,6 +93,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 			template.merge(context, sw);
 		}
 		sw.flush();
+		System.out.println("returned by Proxy Velocity = " + sw.toString());
 		return sw.toString();
 	}
 

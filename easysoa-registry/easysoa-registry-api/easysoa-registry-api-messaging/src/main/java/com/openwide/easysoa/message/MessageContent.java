@@ -111,7 +111,8 @@ public class MessageContent {
 	 * @param text The text to set.
 	 */
 	public void setContent(String content) {
-		this.content = content;
+		content.replace("\"", "\\\"");
+	    this.content = content;
 	}
 
 	/**

@@ -139,14 +139,14 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordStorelist");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
-		logger.debug("Exchange record store list response : " + entityResponseString);
+		//logger.debug("Exchange record store list response : " + entityResponseString);
 		assertTrue(entityResponseString.contains(testStoreName));
 		
 		// Get an exchange record
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/" + testStoreName + "/1");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
-		logger.debug("Exchange record response : " + entityResponseString);
+		//logger.debug("Exchange record response : " + entityResponseString);
 		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));
 		
 		// get a list of recorded exchanges contained in the Test_Run folder
@@ -268,14 +268,14 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecordStorelist");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
-		logger.info("Exchange record store list response : " + entityResponseString);
+		//logger.info("Exchange record store list response : " + entityResponseString);
 		assertTrue(entityResponseString.contains(testStoreName));
 		
 		// Get an exchange record
 		httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/getExchangeRecord/" + testStoreName + "/1");
 		response = httpClient.execute(httpUriRequest);
 		entityResponseString = ContentReader.read(response.getEntity().getContent());
-		logger.info("Exchange record response : " + entityResponseString);
+		//logger.info("Exchange record response : " + entityResponseString);
 		assertTrue(entityResponseString.contains("{\"exchangeRecord\":{\"exchange\":{\"exchangeID\":1"));		
 		
 		// get a list of recorded exchanges contained in the Test_Run folder

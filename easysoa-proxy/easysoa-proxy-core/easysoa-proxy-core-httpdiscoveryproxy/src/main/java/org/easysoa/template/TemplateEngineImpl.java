@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.message.OutMessage;
 
 /**
@@ -17,6 +18,7 @@ import com.openwide.easysoa.message.OutMessage;
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class TemplateEngineImpl implements TemplateEngine {
 
     // Logger

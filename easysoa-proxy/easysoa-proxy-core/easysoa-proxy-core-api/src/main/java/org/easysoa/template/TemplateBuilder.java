@@ -22,7 +22,8 @@ public class TemplateBuilder {
 	
 	// Template expressions segments
 	private final static String VARIABLE_BEAN_PREFIX = "$arg2.get(\"";
-	private final static String VARIABLE_BEAN_SUFFIX = "\")";
+	// TODO Get the first param value of the list, how to get multiple values for the same param ?
+	private final static String VARIABLE_BEAN_SUFFIX = "\").get(0)";
 	
 	/**
 	 * Default constructor

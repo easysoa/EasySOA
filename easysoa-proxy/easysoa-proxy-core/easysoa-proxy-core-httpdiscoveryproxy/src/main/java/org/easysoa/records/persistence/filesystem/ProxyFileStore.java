@@ -321,7 +321,7 @@ public class ProxyFileStore {
         for(StoreResource resource : resourceList){
             if(resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
                 String id = resource.getResourceName().substring(resource.getResourceName().lastIndexOf("_")+1, resource.getResourceName().lastIndexOf("."));
-                recordList.add(this.loadExchangeRecord(exchangeRecordStoreName, id));                
+                recordList.add(this.loadExchangeRecord(exchangeRecordStoreName, id, false));                
             }
         }
         return recordList;
@@ -358,7 +358,13 @@ public class ProxyFileStore {
      * @return
      * @throws Exception
      */
-    public ExchangeRecord loadExchangeRecord(String exchangeStoreName, String recordID) throws Exception {
+    public ExchangeRecord loadExchangeRecord(String exchangeStoreName, String recordID, boolean customizedRecord) throws Exception {
+        String workPath = "";
+        if(customizedRecord){
+            workPath = this.templatePath;
+        } else {
+            workPath = this.path;
+        }
         ExchangeRecord record = new ExchangeRecord();
         @SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
@@ -373,11 +379,11 @@ public class ProxyFileStore {
         classMap.put("messageContent", MessageContent.class);
         // Warning : With json-lib version 2.4, the conversion of a JSON structure containing an other JSON structure doesn't work
         // Use a previous version
-        StoreResource resource = store.load(EXCHANGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION, path + exchangeStoreName);
+        StoreResource resource = store.load(EXCHANGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION, workPath + exchangeStoreName);
         record.setExchange((Exchange) convertJSONToObject(resource.getContent(), Exchange.class, classMap));
-        resource = store.load(IN_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION, path + exchangeStoreName);
+        resource = store.load(IN_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION, workPath + exchangeStoreName);
         record.setInMessage((InMessage) convertJSONToObject(resource.getContent(), InMessage.class, classMap));
-        resource = store.load(OUT_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION, path + exchangeStoreName);
+        resource = store.load(OUT_MESSAGE_FILE_PREFIX + recordID + EXCHANGE_FILE_EXTENSION, workPath + exchangeStoreName);
         record.setOutMessage((OutMessage) convertJSONToObject(resource.getContent(), OutMessage.class, classMap));
         return record;
     }

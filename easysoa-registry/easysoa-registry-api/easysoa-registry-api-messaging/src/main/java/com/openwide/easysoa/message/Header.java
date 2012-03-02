@@ -99,7 +99,11 @@ public class Header {
 	 * @param value
 	 */
 	public void setValue(String value) {
-		this.value = value;
+		if("\"\"".equals(value)){
+		    this.value = "";
+		} else {
+		    this.value = value;
+		}
 	}
 
 	/**
