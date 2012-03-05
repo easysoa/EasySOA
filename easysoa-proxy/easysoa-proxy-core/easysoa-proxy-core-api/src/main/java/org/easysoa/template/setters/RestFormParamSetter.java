@@ -3,14 +3,12 @@
  */
 package org.easysoa.template.setters;
 
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
-
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.apache.log4j.Logger;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateField.TemplateFieldType;
-
 import com.openwide.easysoa.message.InMessage;
 
 /**
@@ -38,7 +36,7 @@ public class RestFormParamSetter implements CustomParamSetter {
 	 * @see org.easysoa.template.CustomParamSetter#setParams()
 	 */
 	@Override
-	public void setParam(TemplateField templateField, InMessage inMessage, MultivaluedMap<String, String> mapParams) {
+	public void setParam(TemplateField templateField, InMessage inMessage, Map<String, List<String>> params) {
 		logger.debug("Set form param for " + templateField.getFieldName());
 		// get message content
 		// Params are stored like queryParams : param=value&param=value ...
@@ -55,7 +53,7 @@ public class RestFormParamSetter implements CustomParamSetter {
 				buffer.append("&");
 			}
 			if(token.startsWith(templateField.getFieldName())){
-				newValue = token.substring(0, token.lastIndexOf("=")) + mapParams.get(templateField.getFieldName()).get(index);
+				newValue = token.substring(0, token.lastIndexOf("=")) + params.get(templateField.getFieldName()).get(index);
 				index++;
 				buffer.append(newValue);
 			} else {

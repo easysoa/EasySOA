@@ -1,9 +1,7 @@
 package org.easysoa.template.setters;
 
-import java.util.StringTokenizer;
-
-import javax.ws.rs.core.MultivaluedMap;
-
+import java.util.List;
+import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateField.TemplateFieldType;
@@ -32,12 +30,12 @@ public class RestQueryParamSetter implements CustomParamSetter {
 	 * @see org.easysoa.template.CustomParamSetter#setParams()
 	 */
 	@Override
-	public void setParam(TemplateField templateField, InMessage inMessage, MultivaluedMap<String, String> mapParams) {
+	public void setParam(TemplateField templateField, InMessage inMessage, Map<String, List<String>> params) {
 		logger.debug("Set query param for " + templateField.getFieldName());
 		int index = 0;
 		for(QueryParam param : inMessage.getQueryString().getQueryParams()){
 			if(param.getName().equals(templateField)){
-				param.setValue(mapParams.get(templateField.getFieldName()).get(index));
+				param.setValue(params.get(templateField.getFieldName()).get(index));
 				index++;
 			}
 		}

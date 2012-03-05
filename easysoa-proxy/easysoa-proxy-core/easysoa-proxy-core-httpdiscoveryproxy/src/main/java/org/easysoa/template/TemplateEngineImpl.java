@@ -3,11 +3,17 @@
  */
 package org.easysoa.template;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.template.setters.CustomParamSetter;
+import org.easysoa.template.setters.RestFormParamSetter;
+import org.easysoa.template.setters.RestPathParamSetter;
+import org.easysoa.template.setters.RestQueryParamSetter;
+import org.easysoa.template.setters.WSDLParamSetter;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.message.OutMessage;
@@ -31,11 +37,17 @@ public class TemplateEngineImpl implements TemplateEngine {
     // File store
     ProxyFileStore fileStore;
     
+    //private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();
+    
     /**
      * 
      */
     public TemplateEngineImpl(){
         this.fileStore = new ProxyFileStore();
+        /*this.paramSetterList.add(new RestFormParamSetter());
+        this.paramSetterList.add(new RestPathParamSetter());
+        this.paramSetterList.add(new RestQueryParamSetter());
+        this.paramSetterList.add(new WSDLParamSetter());*/        
     }
     
     /* (non-Javadoc)
@@ -107,5 +119,24 @@ public class TemplateEngineImpl implements TemplateEngine {
         // Template rendering
         renderTemplate();
     }*/
+    
+    /**
+     * Method used in first solution .... Now have to use Custom ProxyImplementationVelocity or ServletImplementationVelocity
+     * @param template
+     * @param message
+     * @param mapParams
+     */
+    /*private void setCustomParams(TemplateFieldSuggestions templateFieldSuggestions, ExchangeRecord record, Map<String, List<String>> fieldValues){
+        // Write the code to set custom parameters
+        // For each templateField described in the template and For each Custom Param setter in the paramSetter list,
+        // call the method isOKFor and if ok call the method setParams
+        for(TemplateField templateField : templateFieldSuggestions.getTemplateFields()){
+            for(CustomParamSetter paramSetter : paramSetterList){
+                if(paramSetter.isOkFor(templateField)){
+                    paramSetter.setParam(templateField, record.getInMessage(), mapParams);
+                }
+            }
+        }
+    }*/    
     
 }

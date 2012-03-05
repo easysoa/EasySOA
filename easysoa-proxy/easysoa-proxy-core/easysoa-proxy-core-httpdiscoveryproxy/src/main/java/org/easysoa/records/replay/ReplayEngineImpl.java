@@ -58,7 +58,7 @@ public class ReplayEngineImpl implements ReplayEngine {
 
     // TODO : To move in template engine
     // Param setter list
-    private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();    
+    //private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();    
 
     // TODO : 
     private String replaySessionName;
@@ -68,10 +68,10 @@ public class ReplayEngineImpl implements ReplayEngine {
      * Set the param setter list
      */
     public ReplayEngineImpl(){
-        paramSetterList.add(new RestFormParamSetter());
+        /*paramSetterList.add(new RestFormParamSetter());
         paramSetterList.add(new RestPathParamSetter());
         paramSetterList.add(new RestQueryParamSetter());
-        paramSetterList.add(new WSDLParamSetter());
+        paramSetterList.add(new WSDLParamSetter());*/
         this.replaySessionName = null;
     }    
     

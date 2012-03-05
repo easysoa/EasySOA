@@ -3,10 +3,9 @@
  */
 package org.easysoa.template.setters;
 
-import javax.ws.rs.core.MultivaluedMap;
-
+import java.util.List;
+import java.util.Map;
 import org.easysoa.template.TemplateField;
-
 import com.openwide.easysoa.message.InMessage;
 
 /**
@@ -27,6 +26,6 @@ public interface CustomParamSetter {
 	 * @param inMessage
 	 * @param mapParams
 	 */
-	public void setParam(TemplateField templateField, InMessage inMessage, MultivaluedMap<String, String> mapParams);
+	public void setParam(TemplateField templateField, InMessage inMessage, Map<String, List<String>> Params);
 	
 }

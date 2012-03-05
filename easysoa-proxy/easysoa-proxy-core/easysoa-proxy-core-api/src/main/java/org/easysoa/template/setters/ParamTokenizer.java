@@ -3,8 +3,9 @@
  */
 package org.easysoa.template.setters;
 
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
-import javax.ws.rs.core.MultivaluedMap;
 
 /**
  * @author jguillemotte
@@ -20,7 +21,7 @@ public class ParamTokenizer {
 	 * @param mapParams A <code>MultivaluedMap</code> containing one or several values for the fieldName
 	 * @return A parameter <code>String</code> with values replaced for the field name parameter
 	 */
-	public final static String replaceParamValues(String fieldName, String paramString, MultivaluedMap<String, String> mapParams){
+	public final static String replaceParamValues(String fieldName, String paramString, Map<String, List<String>> params){
 		StringBuffer buffer = new StringBuffer();
 		StringTokenizer tokenizer = new StringTokenizer(paramString, "&");
 		String newValue;
@@ -31,7 +32,7 @@ public class ParamTokenizer {
 				buffer.append("&");
 			}
 			if(token.startsWith(fieldName)){
-				newValue = token.substring(0, token.lastIndexOf("=")) + mapParams.get(fieldName).get(index);
+				newValue = token.substring(0, token.lastIndexOf("=")) + params.get(fieldName).get(index);
 				index++;
 				buffer.append(newValue);
 			} else {

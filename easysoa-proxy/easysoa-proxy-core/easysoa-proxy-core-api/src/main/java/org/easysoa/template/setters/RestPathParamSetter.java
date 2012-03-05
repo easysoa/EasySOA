@@ -1,8 +1,8 @@
 package org.easysoa.template.setters;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.apache.log4j.Logger;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import org.easysoa.template.TemplateField;
 import org.easysoa.template.TemplateField.TemplateFieldType;
@@ -30,7 +30,7 @@ public class RestPathParamSetter implements CustomParamSetter {
 	 * @see org.easysoa.template.CustomParamSetter#setParams()
 	 */
 	@Override
-	public void setParam(TemplateField templateField, InMessage inMessage, MultivaluedMap<String, String> mapParams) {
+	public void setParam(TemplateField templateField, InMessage inMessage, Map<String, List<String>> params) {
 		logger.debug("Set path param for " + templateField.getFieldName());
 		String path = inMessage.getPath();
 		logger.debug("path = " + path);
@@ -42,7 +42,7 @@ public class RestPathParamSetter implements CustomParamSetter {
 			buffer.append("/");
 			token = tokenizer.nextToken();
 			if(position == templateField.getPathParamPosition()){
-				buffer.append(mapParams.getFirst(templateField.getFieldName()));
+				buffer.append(params.get(templateField.getFieldName()).get(0));
 			} else {
 				buffer.append(token);
 			}
