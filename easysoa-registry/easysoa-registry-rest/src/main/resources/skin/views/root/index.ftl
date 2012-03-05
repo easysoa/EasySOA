@@ -44,7 +44,7 @@
       padding-left: 280px;
       font-size: 14pt;
       height: 60px;
-      background: url('http://www.easysoa.org/wp-content/themes/easysoa/img/EasySOA-50px.png') white;
+      background: url('/nuxeo/site/easysoa/skin/EasySOA-50px.png') white;
       background-repeat: no-repeat;
       background-position: 20px 10px;
       border-bottom: 2px solid #444;
@@ -56,7 +56,7 @@
       font-size: 14pt;
       font-weight: bold;
       height: 47px;
-      background: url('/easysoa/img/Logo.png') white;
+      background: white;
       background-repeat: no-repeat;
       background-position: 20px 15px;
       border-bottom: 2px solid #444;

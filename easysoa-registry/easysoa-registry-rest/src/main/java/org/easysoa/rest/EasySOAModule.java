@@ -20,26 +20,21 @@
 
 package org.easysoa.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import org.easysoa.rest.servicefinder.ServiceFinderRest;
+import org.nuxeo.ecm.webengine.app.WebEngineModule;
 
-import org.nuxeo.ecm.webengine.model.view.TemplateView;
+public class EasySOAModule extends WebEngineModule {
 
-/**
- * Web root (online documentation)
- * 
- * @author mkalam-alami
- * 
- */
-@Path("easysoa")
-@Produces(MediaType.TEXT_HTML)
-public class EasySOAAppRoot {
-
-    @GET
-    public Object doGet() {
-        return new TemplateView(this, "index.html");
+	@Override
+    public Class<?>[] getWebTypes() {
+        return new Class<?>[] {
+        		EasySOAModuleRoot.class,
+        		ServiceFinderRest.class,
+        		DiscoveryRest.class,
+        		DashboardRest.class,
+        		SoapUIConfRest.class,
+        		PropertiesFileRest.class
+        	};
     }
-
+	
 }

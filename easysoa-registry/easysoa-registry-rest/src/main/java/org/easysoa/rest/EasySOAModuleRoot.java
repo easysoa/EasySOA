@@ -20,25 +20,28 @@
 
 package org.easysoa.rest;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-import javax.ws.rs.core.Application;
+import org.nuxeo.ecm.webengine.model.WebObject;
+import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 
-import org.easysoa.rest.servicefinder.ServiceFinderRest;
+/**
+ * Web root (online documentation)
+ * 
+ * @author mkalam-alami
+ * 
+ */
+@Path("easysoa")
+@Produces(MediaType.TEXT_HTML)
+@WebObject(type = "root")
+public class EasySOAModuleRoot extends ModuleRoot {
 
-public class EasySOAApp extends Application {
-
-    @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> result = new HashSet<Class<?>>();
-        result.add(EasySOAAppRoot.class);
-        result.add(ServiceFinderRest.class);
-        result.add(DiscoveryRest.class);
-        result.add(DashboardRest.class);
-        result.add(SoapUIConfRest.class);
-        result.add(PropertiesFileRest.class);
-        return result;
+    @GET
+    public Object doGet() {
+        return getView("index");
     }
 
 }
