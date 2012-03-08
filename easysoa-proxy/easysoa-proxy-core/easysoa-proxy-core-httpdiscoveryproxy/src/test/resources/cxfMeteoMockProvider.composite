@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance" name="cxfMeteoMockSoap">
+
+	<!-- Meteo mock -->
+	<component name="cxfMeteoMockSoap">
+    	<implementation.java class="org.easysoa.cxf.MeteoMockProvider"/>
+    	<service name="meteoServiceMock">
+			<interface.java interface="javax.xml.ws.Provider" />
+      		<binding.ws uri="http://localhost:8987/meteoMockProvider"/>
+    	</service>	
+	</component>
+
+</composite>

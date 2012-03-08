@@ -29,7 +29,10 @@ public class TemplateBuilder {
 	 * Default constructor
 	 */
 	public TemplateBuilder(){
-		
+        /*this.paramSetterList.add(new RestFormParamSetter());
+        this.paramSetterList.add(new RestPathParamSetter());
+        this.paramSetterList.add(new RestQueryParamSetter());
+        this.paramSetterList.add(new WSDLParamSetter());*/ 		
 	}
 	
 	/**

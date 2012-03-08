@@ -28,7 +28,7 @@ public class RestFormParamSetter implements CustomParamSetter {
 		if(TemplateFieldType.CONTENT_PARAM.equals(templateField.getParamType())){
 			return true;
 		} else {
-			return false;			
+			return false;
 		}
 	}
 

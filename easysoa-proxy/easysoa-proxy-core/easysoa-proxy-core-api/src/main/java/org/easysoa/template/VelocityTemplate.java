@@ -4,7 +4,6 @@
 package org.easysoa.template;
 
 import org.easysoa.records.ExchangeRecord;
-
 import net.sf.json.JSONObject;
 
 /**

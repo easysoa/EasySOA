@@ -298,7 +298,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
     	    }
 	    }
 	}
-	
+
 	/**
 	 * This test do nothing, just wait for a user action to stop the proxy. 
 	 * @throws ClientException

@@ -44,10 +44,6 @@ public class TemplateEngineImpl implements TemplateEngine {
      */
     public TemplateEngineImpl(){
         this.fileStore = new ProxyFileStore();
-        /*this.paramSetterList.add(new RestFormParamSetter());
-        this.paramSetterList.add(new RestPathParamSetter());
-        this.paramSetterList.add(new RestQueryParamSetter());
-        this.paramSetterList.add(new WSDLParamSetter());*/        
     }
     
     /* (non-Javadoc)
