@@ -18,6 +18,7 @@ import org.easysoa.runtime.api.DeployableProvider;
 public class MavenRepository implements DeployableProvider<MavenDeployable, MavenID> {
 
 	private static final String JAR_EXT = "jar";
+	
 	private static final String POM_EXT = "pom";
 	
 	private URL baseUri;

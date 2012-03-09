@@ -41,7 +41,7 @@ public class CopyPasteTest {
 		
 		// Prepare server and deployable
 		CopyPasteServer copyPasteServer = new CopyPasteServer(new File(SERVER_FOLDER));
-		FileDeployable deployable = new FileDeployable(new File(DEPLOYABLE_PATH));
+		FileDeployable deployable = new FileDeployable(DEPLOYABLE_PATH);
 		File deployableTarget = new File(SERVER_FOLDER + DEPLOYABLE_NAME);
 
 		// Add mock listeners

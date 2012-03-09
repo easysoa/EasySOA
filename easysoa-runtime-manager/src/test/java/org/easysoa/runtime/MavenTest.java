@@ -64,7 +64,7 @@ public class MavenTest {
 		// Find deployable
 		MavenDeployable artifact = repository.fetchDeployable(id);
 
-		// Set up a server & deploy on it
+		// Set up a server & deploy the artifact
 		CopyPasteServer server = new CopyPasteServer(new File(SERVER_FOLDER));
 		RuntimeDeploymentService deploymentService = server.getDeploymentService();
 		deploymentService.deploy(artifact);

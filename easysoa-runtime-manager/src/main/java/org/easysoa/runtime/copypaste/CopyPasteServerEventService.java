@@ -10,11 +10,8 @@ import org.easysoa.runtime.api.event.OnUndeployListener;
 
 public class CopyPasteServerEventService implements RuntimeEventService {
 	
-	protected enum EventType {
-		DEPLOY, UNDEPLOY
-	}
-	
 	private List<OnDeployListener> onDeployListeners = new ArrayList<OnDeployListener>();
+	
 	private List<OnUndeployListener> onUndeployListeners = new ArrayList<OnUndeployListener>();
 	
 	public void addOnDeployListener(OnDeployListener listener) {
@@ -36,7 +33,5 @@ public class CopyPasteServerEventService implements RuntimeEventService {
 			listener.onUndeploy(deployable);
 		}
 	}
-	
-	
 	
 }

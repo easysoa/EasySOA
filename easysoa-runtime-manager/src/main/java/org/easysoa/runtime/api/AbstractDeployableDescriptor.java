@@ -3,7 +3,6 @@ package org.easysoa.runtime.api;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Convenience class to build {@link DeployableDescriptor} classes.
  * Handles basic dependencies storage and implements its API.

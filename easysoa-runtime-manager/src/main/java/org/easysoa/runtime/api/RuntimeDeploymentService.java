@@ -3,7 +3,7 @@ package org.easysoa.runtime.api;
 import java.io.IOException;
 
 /**
- * Allows to send or remove deployables
+ * Allows to send or remove deployables.
  * 
  * @author mkalam-alami
  *

@@ -17,6 +17,10 @@ import org.easysoa.runtime.api.AbstractDeployable;
 public class FileDeployable extends AbstractDeployable<URI> {
 
 	private File file;
+
+	public FileDeployable(String filePath) throws FileNotFoundException {
+		this(new File(filePath));
+	}
 	
 	public FileDeployable(File file) throws FileNotFoundException {
 		super(file.toURI(), new FileInputStream(file));

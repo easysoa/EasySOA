@@ -15,7 +15,6 @@ public class CopyPasteServer implements RuntimeServer<CopyPasteServerEventServic
 	
 	private CopyPasteDeploymentService deploymentService;
 	
-	
 	public CopyPasteServer(File deployablesDirectory) {
 		if (!deployablesDirectory.isDirectory()) {
 			if (!deployablesDirectory.exists()) {
