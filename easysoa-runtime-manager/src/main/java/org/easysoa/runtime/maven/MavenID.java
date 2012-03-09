@@ -1,6 +1,11 @@
 package org.easysoa.runtime.maven;
 
-
+/**
+ * Maven deployable (= artifact) identifier
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class MavenID {
 	
 	private String groupId;

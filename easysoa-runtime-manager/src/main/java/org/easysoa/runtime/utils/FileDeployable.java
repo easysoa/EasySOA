@@ -8,6 +8,12 @@ import java.net.URI;
 
 import org.easysoa.runtime.api.AbstractDeployable;
 
+/**
+ * Thin wrapping of files as deployables.
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class FileDeployable extends AbstractDeployable<URI> {
 
 	private File file;
@@ -23,13 +29,7 @@ public class FileDeployable extends AbstractDeployable<URI> {
 
 	@Override
 	public String getFileName() {
-		if (id.getPath().isEmpty()) {
-			return id.getHost();
-		}
-		else {
-			String[] splitPath = id.getPath().split("/");
-			return splitPath[splitPath.length - 1];
-		}
+		return file.getName();
 	}
 	
 	public File getFile() {

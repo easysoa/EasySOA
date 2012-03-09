@@ -1,22 +1,22 @@
 package org.easysoa.runtime;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import static junit.framework.Assert.*;
 
 import org.apache.log4j.Logger;
 import org.codehaus.plexus.util.FileUtils;
 import org.easysoa.runtime.api.DeployableDescriptor;
 import org.easysoa.runtime.api.RuntimeDeploymentService;
 import org.easysoa.runtime.copypaste.CopyPasteServer;
-import org.easysoa.runtime.maven.MavenArtifactDescriptor;
 import org.easysoa.runtime.maven.MavenDeployable;
+import org.easysoa.runtime.maven.MavenDeployableDescriptor;
 import org.easysoa.runtime.maven.MavenID;
-import org.easysoa.runtime.maven.MavenPOMDescriptorProvider;
 import org.easysoa.runtime.maven.MavenRepository;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -47,10 +47,7 @@ public class MavenTest {
 	@Test
 	public void testFindMavenDependencies() throws IOException {
 		// Find artifact descriptor
-		MavenPOMDescriptorProvider pomProvider = repository.fetchPOM(id);
-		List<MavenArtifactDescriptor> artifactDescriptorList = pomProvider.getDeployableDescriptors();
-		assertFalse(artifactDescriptorList.isEmpty());
-		MavenArtifactDescriptor artifactDescriptor = artifactDescriptorList.get(0);
+		MavenDeployableDescriptor artifactDescriptor = repository.fetchDeployableDescriptor(id);
 		logger.info("Found artifact: " + artifactDescriptor.toString());
 
 		// Find its dependencies

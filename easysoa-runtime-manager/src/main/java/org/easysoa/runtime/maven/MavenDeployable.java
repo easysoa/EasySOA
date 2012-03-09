@@ -7,14 +7,20 @@ import java.util.List;
 
 import org.easysoa.runtime.api.AbstractDeployable;
 
+/**
+ * Maven artifact
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class MavenDeployable extends AbstractDeployable<MavenID> {
 
 	public MavenDeployable(MavenID id, InputStream is, InputStream pomIs) throws IOException {
 		super(id, is);
 		
 		// Fetch dependencies by exploring POM
-		MavenPOMDescriptorProvider mavenPOMDescriptorProvider = new MavenPOMDescriptorProvider(new InputStreamReader(pomIs));
-		List<MavenArtifactDescriptor> deployableDescriptors = mavenPOMDescriptorProvider.getDeployableDescriptors();
+		MavenDeployableDescriptorProvider mavenPOMDescriptorProvider = new MavenDeployableDescriptorProvider(new InputStreamReader(pomIs));
+		List<MavenDeployableDescriptor> deployableDescriptors = mavenPOMDescriptorProvider.getDeployableDescriptors();
 		this.dependencies = deployableDescriptors.get(0).getDependencies();
 		pomIs.close();
 	}
