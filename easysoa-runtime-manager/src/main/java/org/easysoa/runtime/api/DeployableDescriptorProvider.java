@@ -8,11 +8,11 @@ import java.util.List;
  * @author mkalam-alami
  *
  */
-public interface DeployableDescriptorProvider<T> {
+public interface DeployableDescriptorProvider<T extends DeployableDescriptor<?>> {
 	
 	/**
 	 * @return A set of descriptors of all found deployables.
 	 */
-	List<DeployableDescriptor<T>> getDeployableDescriptors();
+	List<T> getDeployableDescriptors();
 
 }

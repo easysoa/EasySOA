@@ -1,5 +1,7 @@
 package org.easysoa.runtime.api;
 
+import java.io.IOException;
+
 /**
  * Allows to send or remove deployables
  * 
@@ -8,8 +10,8 @@ package org.easysoa.runtime.api;
  */
 public interface RuntimeDeploymentService {
 
-	boolean deploy(Deployable<?> deployable);
+	boolean deploy(Deployable<?> deployable) throws IOException;
 
-	boolean remove(Deployable<?> deployable);
+	boolean undeploy(Deployable<?> deployable) throws IOException;
 
 }
