@@ -22,7 +22,7 @@ public class MavenRepository implements DeployableProvider<MavenDeployable, Mave
 
 	@Override
 	public MavenDeployable fetchDeployable(MavenID id) throws IOException {
-		return new MavenDeployable(id, getUrl(id, JAR_EXT).openStream());
+		return new MavenDeployable(id, getUrl(id, JAR_EXT).openStream(), getUrl(id, POM_EXT).openStream());
 	}
 	
 	public MavenPOMDescriptorProvider fetchPOM(MavenID id) throws IOException {

@@ -9,9 +9,12 @@ import org.easysoa.runtime.api.RuntimeServer;
 
 public class CopyPasteServer implements RuntimeServer<CopyPasteServerEventService> {
 
+	private File deployablesDirectory;
+	
 	private CopyPasteServerEventService eventService;
 	
 	private CopyPasteDeploymentService deploymentService;
+	
 	
 	public CopyPasteServer(File deployablesDirectory) {
 		if (!deployablesDirectory.isDirectory()) {
@@ -25,8 +28,13 @@ public class CopyPasteServer implements RuntimeServer<CopyPasteServerEventServic
 				throw new InvalidParameterException("Specified file is not a directory");
 			}
 		}
+		this.deployablesDirectory = deployablesDirectory;
 		this.eventService = new CopyPasteServerEventService();
 		this.deploymentService = new CopyPasteDeploymentService(eventService, deployablesDirectory);
+	}
+	
+	public File getDeployablesDirectory() {
+		return deployablesDirectory;
 	}
 	
 	@Override

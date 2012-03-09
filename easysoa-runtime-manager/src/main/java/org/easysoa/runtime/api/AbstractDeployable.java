@@ -1,6 +1,5 @@
 package org.easysoa.runtime.api;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -31,11 +30,6 @@ public abstract class AbstractDeployable<T> extends AbstractDeployableDescriptor
 	@Override
 	public InputStream getInputStream() {
 		return is;
-	}
-
-	@Override
-	public void closeInputStream() throws IOException {
-		is.close();
 	}
 	
 }

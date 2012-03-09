@@ -1,6 +1,5 @@
 package org.easysoa.runtime.api;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -12,15 +11,9 @@ import java.io.InputStream;
 public interface Deployable<T> extends DeployableDescriptor<T> {
 	
 	/**
-	 * @return The deployable as an {@link InputStream}.
+	 * @return The deployable as an {@link InputStream}. Must be closed after use.
 	 */
 	InputStream getInputStream();
-
-	/**
-	 * Closes the deployable <code>InputStream</code>.
-	 * Should always be called once every time a deployable is fetched.
-	 */
-	void closeInputStream() throws IOException;
 	
 	String getFileName();
 	

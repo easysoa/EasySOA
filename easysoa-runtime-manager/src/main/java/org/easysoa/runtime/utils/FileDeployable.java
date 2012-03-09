@@ -10,8 +10,11 @@ import org.easysoa.runtime.api.AbstractDeployable;
 
 public class FileDeployable extends AbstractDeployable<URI> {
 
+	private File file;
+	
 	public FileDeployable(File file) throws FileNotFoundException {
 		super(file.toURI(), new FileInputStream(file));
+		this.file = file;
 	}
 	
 	public FileDeployable(URI id, InputStream is) {
@@ -27,6 +30,10 @@ public class FileDeployable extends AbstractDeployable<URI> {
 			String[] splitPath = id.getPath().split("/");
 			return splitPath[splitPath.length - 1];
 		}
+	}
+	
+	public File getFile() {
+		return file;
 	}
 
 }

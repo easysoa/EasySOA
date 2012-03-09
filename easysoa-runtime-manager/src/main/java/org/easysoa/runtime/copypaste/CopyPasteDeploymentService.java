@@ -1,7 +1,9 @@
 package org.easysoa.runtime.copypaste;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,6 +13,8 @@ import org.easysoa.runtime.api.RuntimeDeploymentService;
 
 public class CopyPasteDeploymentService implements RuntimeDeploymentService {
 
+	private static final int BUFFER_SIZE = 4096;
+	
 	private File deployablesFolder;
 	
 	private CopyPasteServerEventService eventService;
@@ -24,13 +28,15 @@ public class CopyPasteDeploymentService implements RuntimeDeploymentService {
 	public boolean deploy(Deployable<?> deployable) throws IOException {
 		File targetFile = getTargetFile(deployable);
 		if (!targetFile.exists()) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(deployable.getInputStream()));
-			FileWriter writer = new FileWriter(targetFile);
-			String line;
-			while ((line = reader.readLine()) != null) {
-				writer.write(line);
+			BufferedInputStream bis = new BufferedInputStream(deployable.getInputStream());
+			FileOutputStream fos = new FileOutputStream(targetFile);
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int bytes;
+			while ((bytes = bis.read(buffer)) != -1) {
+				fos.write(buffer, 0, bytes);
 			}
-			deployable.closeInputStream();
+			bis.close();
+			fos.close();
 			eventService.onDeploy(deployable);
 			return true;
 		}
