@@ -259,8 +259,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 
 		// forward the message
 		exchangeRecord.setOutMessage(forwarder.send(exchangeRecord.getInMessage()));
-    	logger.debug("clientResponse : " + exchangeRecord.getOutMessage().getMessageContent().getContent());
-    	respOut.write(exchangeRecord.getOutMessage().getMessageContent().getContent());
+    	logger.debug("clientResponse : " + exchangeRecord.getOutMessage().getMessageContent().getRawContent());
+    	respOut.write(exchangeRecord.getOutMessage().getMessageContent().getRawContent());
     	respOut.close();
     	return exchangeRecord;
 	}

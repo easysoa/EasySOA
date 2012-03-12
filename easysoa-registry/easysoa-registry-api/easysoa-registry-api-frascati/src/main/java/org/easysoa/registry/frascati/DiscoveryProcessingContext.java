@@ -27,7 +27,8 @@ import org.eclipse.stp.sca.Composite;
 import org.nuxeo.frascati.NuxeoFraSCAtiException;
 import org.nuxeo.frascati.api.AbstractProcessingContext;
 
-
+// TODO : There is a problem here, AbstractProcessingContext is an interface from the Nuxeo-Frascati project
+// and registry-api-project must be free of nuxeo references .... 
 public class DiscoveryProcessingContext extends AbstractProcessingContext {
 
 	//private FraSCAtiServiceItf fraSCAtiService;

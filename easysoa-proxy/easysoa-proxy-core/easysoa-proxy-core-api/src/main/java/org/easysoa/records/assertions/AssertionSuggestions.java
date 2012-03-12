@@ -4,7 +4,9 @@
 package org.easysoa.records.assertions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An assertion suggestion can contains several assertions
@@ -13,55 +15,35 @@ import java.util.List;
  *
  */
 public class AssertionSuggestions {
-
-    // Field to which assertions will be applied
-    private String referenceField;
+    
+    //  
+    public final static String DEFAULT_REFERENCE_FIELD = "default";
     
     // Assertion list
-    private List<Assertion> assertionList;
+    private Map<String, List<Assertion>> assertionMap;
     
     /**
      * Default constructor
      */
     public AssertionSuggestions(){
-        this("");
+        assertionMap = new HashMap<String, List<Assertion>>();
     }
-    
-    /**
-     * Constructor with reference field
-     */
-    public AssertionSuggestions(String referenceField){
-        this.referenceField = "";
-        assertionList = new ArrayList<Assertion>();
-    }    
-    
-    /**
-     * 
-     * @param referenceField
-     */
-    public void setReferenceField(String referenceField){
-        if(referenceField != null){
-            this.referenceField = referenceField;
-        } else {
-            this.referenceField = "";
-        }
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public String getReferenceField(){
-        return this.referenceField;
-    }
-    
+          
     /**
      * Set the assertion list.
      * @param assertionList The assertion list to set. If this parameter is set to null, a new empty ArrayList is set.
      */
-    public void setAssertions(List<Assertion> assertionList) {
-        if(assertionList == null){
-            this.assertionList = new ArrayList<Assertion>();
+    public void setAssertions(String referenceField, List<Assertion> assertionList) {
+        if(assertionList == null && referenceField != null){
+            // CHeck if the referenceField already exists in the assertionSuggestions
+            // if true => add the assertion list to the existing one
+            if(this.assertionMap.containsKey(referenceField)){
+                
+            }
+            // else create a new entry with refenceField key and list as value
+            else {
+                this.assertionMap.put(referenceField, assertionList);
+            }
         }
     }
     
@@ -70,19 +52,34 @@ public class AssertionSuggestions {
      * @param assertion The assertion to add in the list
      * @throws IllegalArgumentException If the assertion to add is null
      */
-    public void addAssertion(Assertion assertion) throws IllegalArgumentException {
-        if(assertion == null){
-            throw new IllegalArgumentException("assertion must not be null");
+    public void addAssertion(String referenceField, Assertion assertion) throws IllegalArgumentException {
+        if(referenceField == null || assertion == null){
+            throw new IllegalArgumentException("referenceField and assertion params must not be null");
         }
-        this.assertionList.add(assertion);
+        if(this.assertionMap.containsKey(referenceField)){
+            this.assertionMap.get(referenceField).add(assertion);
+        } else {
+            ArrayList<Assertion> assertions = new ArrayList<Assertion>();
+            assertions.add(assertion);
+            this.assertionMap.put(referenceField, assertions);
+        }
     }
     
     /**
-     * Returns the assertion list
-     * @return The assertion list
+     * Returns the assertion map
+     * @return The assertion map
      */
-    public List<Assertion> getAssertions(){
-        return this.assertionList;
+    public Map<String, List<Assertion>> getAssertionMap(){
+        return this.assertionMap;
+    }
+    
+    /**
+     * Returns the assertions for the specified reference field
+     * @param referenceField
+     * @return
+     */
+    public List<Assertion> getAssertions(String referenceField){
+        return this.assertionMap.get(referenceField);
     }
     
 }

@@ -30,7 +30,7 @@ public class MessageAssertion extends AbstractAssertion {
     }
 
     @Override
-    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage) {
+    public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage) {
         AssertionResult result;
         boolean assertionResult = true; 
         HashMap<String, AssertionMetric> metrics = new HashMap<String, AssertionMetric>(); 

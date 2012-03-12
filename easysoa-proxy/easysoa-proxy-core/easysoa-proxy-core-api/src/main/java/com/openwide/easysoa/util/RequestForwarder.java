@@ -132,7 +132,7 @@ public class RequestForwarder {
 		logger.debug("URL : " + requestUrlBuffer.toString());
 	    	
 		// message body
-    	HttpEntity httpEntity = new StringEntity(inMessage.getMessageContent().getContent());
+    	HttpEntity httpEntity = new StringEntity(inMessage.getMessageContent().getRawContent());
 		
 		HttpUriRequest httpUriRequest;
 		// TODO later use a pattern to create them (builder found in a map method -> builder...)
@@ -181,7 +181,7 @@ public class RequestForwarder {
 			 }
 		}
 		while(line != null);
-		messageContent.setContent(responseBuffer.toString());
+		messageContent.setRawContent(responseBuffer.toString());
     	messageContent.setSize(clientResponse.getEntity().getContentLength());
     	if(clientResponse.getEntity().getContentType() != null){
     		messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());

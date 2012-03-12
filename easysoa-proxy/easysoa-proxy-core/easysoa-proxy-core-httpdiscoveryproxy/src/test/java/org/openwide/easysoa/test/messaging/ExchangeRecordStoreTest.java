@@ -112,7 +112,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 				OutMessage outMessage = new OutMessage();
 				MessageContent outMessageContent = new MessageContent();
 				outMessageContent.setSize(response.getEntity().getContentLength());
-				outMessageContent.setContent(ContentReader.read(response.getEntity().getContent()));
+				outMessageContent.setRawContent(ContentReader.read(response.getEntity().getContent()));
 				outMessageContent.setMimeType(response.getEntity().getContentType().getValue());
 				outMessage.setMessageContent(new MessageContent());
 				outMessage.setProtocol(response.getProtocolVersion().getProtocol());

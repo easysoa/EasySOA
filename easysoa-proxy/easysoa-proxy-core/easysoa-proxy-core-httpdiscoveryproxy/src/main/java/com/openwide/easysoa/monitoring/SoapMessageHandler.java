@@ -45,11 +45,11 @@ public class SoapMessageHandler implements MessageHandler {
 	// public boolean isOkFor(Message message) {
 	public boolean isOkFor(ExchangeRecord exchangeRecord) {
 		if(exchangeRecord != null){
-			logger.debug("Message body : " + exchangeRecord.getInMessage().getMessageContent().getContent());
+			logger.debug("Message body : " + exchangeRecord.getInMessage().getMessageContent().getRawContent());
 		}
 		//TODO : Refine the way that a WSDl message is discovered
-		if(exchangeRecord != null && (exchangeRecord.getInMessage().getMessageContent().getContent().toLowerCase().contains("<soap:envelope") 
-				|| exchangeRecord.getInMessage().getMessageContent().getContent().toLowerCase().contains("http://schemas.xmlsoap.org/soap/envelope/"))  
+		if(exchangeRecord != null && (exchangeRecord.getInMessage().getMessageContent().getRawContent().toLowerCase().contains("<soap:envelope") 
+				|| exchangeRecord.getInMessage().getMessageContent().getRawContent().toLowerCase().contains("http://schemas.xmlsoap.org/soap/envelope/"))  
 				&& checkWsdl(exchangeRecord.getInMessage().buildCompleteUrl())){
 			logger.debug("Returns true");
 			return true;

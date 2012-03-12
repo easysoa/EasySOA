@@ -60,6 +60,7 @@ public class TemplateFieldSuggester {
 
 		// this correlation service return nothing when no outputfields are set in the hashmap
 		// Or when there is no corresponding fields between in parameters and out parameters
+	    // => in this case, here we could return all input fields (as a worse case) 
 		CorrelationService correlationService = new CorrelationService();
 		return correlationService.correlateWithSubpath(record,
 				getPathParams(record.getInMessage()),
@@ -87,9 +88,9 @@ public class TemplateFieldSuggester {
 		// Message content can be very different (json, xml ...)
 		// TODO Add a system to choose the parser corresponding to the out message content
 		// Today only a json parser for out message
-		logger.debug("outMessage " + outMessage.getMessageContent().getContent());
+		logger.debug("outMessage " + outMessage.getMessageContent().getRawContent());
 		try{
-			JSONObject jsonOutObject = (JSONObject) JSONSerializer.toJSON(outMessage.getMessageContent().getContent());
+			JSONObject jsonOutObject = (JSONObject) JSONSerializer.toJSON(outMessage.getMessageContent().getRawContent());
 			findJSONOutFields("root", jsonOutObject, -1, fieldMap);
 		}
 		catch(Exception ex){
@@ -190,7 +191,7 @@ public class TemplateFieldSuggester {
 	private HashMap<String, CandidateField> getContentParam(InMessage inMessage){
 		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
 		CandidateField candidateField;
-		StringTokenizer tokenizer = new StringTokenizer(inMessage.getMessageContent().getContent(), "&");
+		StringTokenizer tokenizer = new StringTokenizer(inMessage.getMessageContent().getRawContent(), "&");
 		String token;
 		while(tokenizer.hasMoreTokens()){
 			token = tokenizer.nextToken();

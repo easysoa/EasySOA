@@ -44,7 +44,7 @@ public class RestFormParamSetter implements CustomParamSetter {
 		// replace the substring from = to end		
 		//inMessage.getMessageContent().setContent(ParamTokenizer.replaceParamValues(templateField.getFieldName(), inMessage.getMessageContent().getContent(), mapParams));
 		StringBuffer buffer = new StringBuffer();
-		StringTokenizer tokenizer = new StringTokenizer(inMessage.getMessageContent().getContent(), "&");
+		StringTokenizer tokenizer = new StringTokenizer(inMessage.getMessageContent().getRawContent(), "&");
 		String newValue;
 		int index = 0;
 		while(tokenizer.hasMoreElements()){
@@ -60,7 +60,7 @@ public class RestFormParamSetter implements CustomParamSetter {
 				buffer.append(token);
 			}
 		}
-		inMessage.getMessageContent().setContent(buffer.toString());
+		inMessage.getMessageContent().setRawContent(buffer.toString());
 	}
 
 }

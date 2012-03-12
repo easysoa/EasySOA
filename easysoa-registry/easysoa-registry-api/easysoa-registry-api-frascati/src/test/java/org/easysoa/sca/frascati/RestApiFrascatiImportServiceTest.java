@@ -198,7 +198,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
     	for(ExchangeRecord record : recordList){
     	    none = false;
     		// TODO : now using messaging api, check that this test still works 
-        	assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().getMessageContent().getContent().contains("RestSoapProxy.composite"));    		
+        	assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().getMessageContent().getRawContent().contains("RestSoapProxy.composite"));    		
     	}
     	assertTrue("There should be at least one exchange after SCA service discovery", none);
     }

@@ -182,7 +182,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
 		//ExchangeRecord record = recordList.get(0); 
 		for(ExchangeRecord record : recordList){
-			originalResponse = record.getOutMessage().getMessageContent().getContent();
+			originalResponse = record.getOutMessage().getMessageContent().getRawContent();
 			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/" + runName + "/" + record.getExchange().getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());

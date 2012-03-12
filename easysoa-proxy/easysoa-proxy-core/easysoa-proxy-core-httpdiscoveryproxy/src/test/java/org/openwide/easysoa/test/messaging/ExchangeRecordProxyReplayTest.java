@@ -168,7 +168,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		// Send a request to the replay service
 		for(ExchangeRecord record : recordList){
 		//ExchangeRecord record = recordList.get(0);
-			originalResponse = record.getOutMessage().getMessageContent().getContent();
+			originalResponse = record.getOutMessage().getMessageContent().getRawContent();
 			httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/" + testStoreName + "/" + record.getExchange().getExchangeID());
 			response = httpClient.execute(httpUriRequest);
 			entityResponseString = ContentReader.read(response.getEntity().getContent());
@@ -198,7 +198,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	        OutMessage replayedMessage = new OutMessage();
 	        MessageContent replayedMessageContent = new MessageContent();
 	        replayedMessage.setMessageContent(replayedMessageContent);
-	        replayedMessageContent.setContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getContent());
+	        replayedMessageContent.setRawContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getRawContent());
 	        // TODO => call replayWithTemplate Method to test the remplate engine
 	        
 	        // Executing assertions
@@ -293,7 +293,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 			OutMessage outMessage = forwarder.send(record.getInMessage());
 			//logger.debug("Replayed ExchangeRecord response : " + entityResponseString);
 			// Compare the replayed exchange with the original exchange
-			assertEquals(record.getOutMessage().getMessageContent().getContent(), outMessage.getMessageContent().getContent());
+			assertEquals(record.getOutMessage().getMessageContent().getRawContent(), outMessage.getMessageContent().getRawContent());
 		}
 		
         // Get suggested fields and generate templates for each exchange record
@@ -314,7 +314,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
             OutMessage replayedMessage = new OutMessage();
             MessageContent replayedMessageContent = new MessageContent();
             replayedMessage.setMessageContent(replayedMessageContent);
-            replayedMessageContent.setContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getContent());
+            replayedMessageContent.setRawContent(replayEngine.replay(testStoreName, record.getExchange().getExchangeID()).getMessageContent().getRawContent());
             // Executing assertions
             //assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedMessage);           
         }		

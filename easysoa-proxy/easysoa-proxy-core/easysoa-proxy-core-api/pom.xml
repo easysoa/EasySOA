@@ -26,12 +26,12 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
+		<!-- xstream for report conversion to XML -->
     	<dependency>
     		<groupId>xstream</groupId>
     		<artifactId>xstream</artifactId>
     		<version>1.2.2</version>
     	</dependency>
-    			
 	
 		<!-- Tests -->
 		<!-- junit -->

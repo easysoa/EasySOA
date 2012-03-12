@@ -128,7 +128,7 @@
 			<sca:interface.java interface="org.easysoa.template.TemplateEngine" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.template.TemplateEngineImpl" />
-		<sca:reference name="templateRenderer" target="TemplateProcessor" />		
+		<sca:reference name="templateRenderer" target="TemplateProcessor" />
 	</sca:component>
 		
 	<!-- Assertion engine -->
@@ -137,7 +137,30 @@
 			<sca:interface.java interface="org.easysoa.records.assertions.AssertionEngine" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.records.assertions.AssertionEngineImpl" />
+        <sca:reference multiplicity="0..n" name="assertions">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:reference>		
 	</sca:component>
+	
+	<!-- Message assertion -->
+    <sca:component name="messageAssertion">
+        <sca:service name="message-assertion">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.records.assertions.MessageAssertion" />        
+    </sca:component>
+    <sca:wire source="assertionEngineComponent/assertions" target="messageAssertion/message-assertion" />	
+	
+	<!-- String assertion -->
+    <sca:component name="stringAssertion">
+        <sca:service name="string-assertion">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.records.assertions.StringAssertion" />        
+    </sca:component>
+    <sca:wire source="assertionEngineComponent/assertions" target="stringAssertion/string-assertion" />
+	
+	
 	
 	<!-- Log engine -->
 	<sca:component name="logEngineComponent">

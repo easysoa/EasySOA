@@ -162,7 +162,7 @@ public class InMessage implements Message {
 			requestBody.append( buffer.flip() );
 			buffer.clear();
 		    }		    
-		    this.messageContent.setContent(requestBody.toString());
+		    this.messageContent.setRawContent(requestBody.toString());
 		    this.messageContent.setSize(requestBody.length());
 		    this.messageContent.setMimeType(request.getContentType());
 		} catch (Exception ex) {

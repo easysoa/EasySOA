@@ -107,7 +107,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@Produces("application/json")
 	public String replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) throws Exception {
 	    OutMessage message = replayEngine.replay(exchangeRecordStoreName, exchangeRecordId);
-	    return message.getMessageContent().getContent();
+	    return message.getMessageContent().getRawContent();
 	}
 	
 	// To start a replay session

@@ -21,9 +21,12 @@ package org.easysoa.records.assertions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.osoa.sca.annotations.Reference;
 
 import com.openwide.easysoa.message.OutMessage;
 
@@ -38,6 +41,18 @@ public class AssertionEngineImpl implements AssertionEngine {
     // Specific logger for assertions
     private static final Logger reportLogger = Logger.getLogger("reportLogger");
     
+    // Assertion reference
+    @Reference
+    protected List<Assertion> assertions;
+
+    // TODO : how to make an efficient field assertion system
+    // - First solution : create a special assertion with a field and specific assertion to use
+    // - add a field info in the assertion interface => all the assertion receive the field info. If no field specified, default assertion on entire message content is performed 
+    // Maybe the second solution is the best
+    
+    // Another thing to do : make an assertion class for one mtehod only =>  
+    
+    
     // TODO : Reference to log engine
     // To generate reports about executed assertions
     
@@ -48,7 +63,7 @@ public class AssertionEngineImpl implements AssertionEngine {
     // How to store assertions to execute for a specific field, response ???
     
     // Several assertions for a single object (length, lehvenstein ...)
-    // In an hashmap => id key, by default a method add to add a simple string assertion (length)
+    // In an hashmap => id key, by default a method add a simple string assertion (length)
 
     // asr files to define assertions. how to generate these files
     
@@ -79,8 +94,11 @@ public class AssertionEngineImpl implements AssertionEngine {
             assertionSuggestions = assertionSuggestionService.suggestAssertions();
         }
         ArrayList<AssertionResult> result = new ArrayList<AssertionResult>();
-        for(Assertion assertion : assertionSuggestions.getAssertions()){
-            result.add(executeAssertion(assertion, originalMessage, replayedMessage));
+        Map<String, List<Assertion>> assertionMap = assertionSuggestions.getAssertionMap();
+        for(String referenceField : assertionMap.keySet()){
+            for(Assertion assertion : assertionMap.get(referenceField)){
+                result.add(executeAssertion(referenceField, assertion, originalMessage, replayedMessage));
+            }
         }
         return result;
     }
@@ -89,8 +107,8 @@ public class AssertionEngineImpl implements AssertionEngine {
      * @see org.easysoa.records.assertions.AssertionEngine#executeAssertion(org.easysoa.records.assertions.Assertion, com.openwide.easysoa.message.OutMessage, com.openwide.easysoa.message.OutMessage)
      */
     @Override
-    public AssertionResult executeAssertion(Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
-        AssertionResult result = assertion.check(originalMessage, replayedMessage);
+    public AssertionResult executeAssertion(String referenceField, Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
+        AssertionResult result = assertion.check(referenceField, originalMessage, replayedMessage);
         return result;
     }
     

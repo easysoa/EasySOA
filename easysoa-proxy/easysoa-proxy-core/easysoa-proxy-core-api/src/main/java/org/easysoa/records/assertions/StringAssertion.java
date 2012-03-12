@@ -31,6 +31,8 @@ import com.openwide.easysoa.message.OutMessage;
  */
 public class StringAssertion extends AbstractAssertion {
 
+    // TODO : split the different assertion methods contained in this class in three distinct classes
+    
     private static final Logger reportLogger = Logger.getLogger("reportLogger");
     
     // Configuration
@@ -100,10 +102,10 @@ public class StringAssertion extends AbstractAssertion {
      */
     public void setConfiguration(String configurationString) throws IllegalArgumentException {
         // TODO : Add assertion configuration
-    }    
+    }
     
     @Override
-    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
+    public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
         AssertionResult result = null;
         reportLogger.info("Using method : " + this.method);        
         // Call the assertion method corresponding to the configuration
@@ -125,12 +127,12 @@ public class StringAssertion extends AbstractAssertion {
      */
     private AssertionResult checkLength(OutMessage originalMessage, OutMessage replayedMessage){
         AssertionResult result;
-        if(originalMessage.getMessageContent().getContent().length() == replayedMessage.getMessageContent().getContent().length()){
+        if(originalMessage.getMessageContent().getRawContent().length() == replayedMessage.getMessageContent().getRawContent().length()){
             result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
-            result.addMetric("Length", "0", String.valueOf(originalMessage.getMessageContent().getContent().length()), String.valueOf(replayedMessage.getMessageContent().getContent().length()));
+            result.addMetric("Length", "0", String.valueOf(originalMessage.getMessageContent().getRawContent().length()), String.valueOf(replayedMessage.getMessageContent().getRawContent().length()));
         } else {
             result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
-            result.addMetric("Length", String.valueOf(Math.abs(originalMessage.getMessageContent().getContent().length() - replayedMessage.getMessageContent().getContent().length())), String.valueOf(originalMessage.getMessageContent().getContent().length()), String.valueOf(replayedMessage.getMessageContent().getContent().length()));
+            result.addMetric("Length", String.valueOf(Math.abs(originalMessage.getMessageContent().getRawContent().length() - replayedMessage.getMessageContent().getRawContent().length())), String.valueOf(originalMessage.getMessageContent().getRawContent().length()), String.valueOf(replayedMessage.getMessageContent().getRawContent().length()));
         }
         return result;
     }
@@ -141,13 +143,13 @@ public class StringAssertion extends AbstractAssertion {
      */
     private AssertionResult checkDiff(OutMessage originalMessage, OutMessage replayedMessage){
         AssertionResult result;
-        String diffMethodResult = StringUtils.difference(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+        String diffMethodResult = StringUtils.difference(originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());
         if(diffMethodResult.length() == 0){
             result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
-            result.addMetric("Difference", "", originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());    
+            result.addMetric("Difference", "", originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());    
         } else {
             result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
-            result.addMetric("Difference", diffMethodResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+            result.addMetric("Difference", diffMethodResult, originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());
         }
         return result;
     }
@@ -163,18 +165,18 @@ public class StringAssertion extends AbstractAssertion {
         // See http://fr.wikipedia.org/wiki/Distance_de_Levenshtein#Algorithme_de_Levenshtein => Maybe in this case the best solution is to use an other method or to throw an Exception
         // At the moment, the length of string are limited to 100 characters, if the length of one of the two strings to compare is more of this limit, a KO assertion result is returned
         // with a message explaining the limitation
-        if(originalMessage.getMessageContent().getContent().length() > 100 || replayedMessage.getMessageContent().getContent().length() > 100){
+        if(originalMessage.getMessageContent().getRawContent().length() > 100 || replayedMessage.getMessageContent().getRawContent().length() > 100){
             //throw new Exception("Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
             result = new AssertionResult(this.getClass(), AssertionResultStatus.KO, "Message length is limited to 100 characters for Lehvenstein method to avoid long treatment times");
             return result;
         }
-        int ldMethodResult = StringUtils.getLevenshteinDistance(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+        int ldMethodResult = StringUtils.getLevenshteinDistance(originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());
         if(ldMethodResult == 0){
             result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
         } else {
             result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
         }
-        result.addMetric("Lehvenstein distance", String.valueOf(ldMethodResult), originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+        result.addMetric("Lehvenstein distance", String.valueOf(ldMethodResult), originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());
         return result;
     }
     

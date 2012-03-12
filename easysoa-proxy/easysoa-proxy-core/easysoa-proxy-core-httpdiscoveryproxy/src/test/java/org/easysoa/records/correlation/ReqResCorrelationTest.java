@@ -722,7 +722,7 @@ public class ReqResCorrelationTest {
     // slightly OBSOLETE stuff
 
     public void testJsonContent() {
-        String trimmedOutContent = jsonGetExchange.getOutMessage().getMessageContent().getContent();
+        String trimmedOutContent = jsonGetExchange.getOutMessage().getMessageContent().getRawContent();
         if (trimmedOutContent.startsWith("[") || trimmedOutContent.startsWith("{")) {
             JSONObject jsonOutObject = (JSONObject) JSONSerializer.toJSON(trimmedOutContent);
             HashMap<String,CandidateField> foundOutFields = new HashMap<String,CandidateField>();

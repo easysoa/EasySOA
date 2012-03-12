@@ -182,8 +182,8 @@ public class ReplayEngineImpl implements ReplayEngine {
             // Send the request
             requestForwarder = new RequestForwarder();
             outMessage = requestForwarder.send(record.getInMessage());
-            logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
-            logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
+            logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getRawContent());
+            logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getRawContent());
 
             // How to work with fields in fld files
             // Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...

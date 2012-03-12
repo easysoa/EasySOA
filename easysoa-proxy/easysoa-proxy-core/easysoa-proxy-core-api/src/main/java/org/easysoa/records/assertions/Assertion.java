@@ -32,7 +32,7 @@ public interface Assertion {
      * @return The Assertion ID
      */
     public String getID();
-
+    
     /**
      * Set assertion configuration as JSON String or XML String
      * @param configurationString The configuration as a JSON or XML structure
@@ -41,9 +41,13 @@ public interface Assertion {
     public void setConfiguration(String configurationString);
     
     /**
-     * Execute the assertion
-     * @return
-     * @throws Exception 
+     * Check the assertion
+     * @param fieldName The field on which the assertion will be done. 
+     * If this parameter is empty or null, the assertion will be executed on the entire message content.
+     * @param originalMessage Original message
+     * @param replayedMessage ReplayedMessage
+     * @return An AssertionResult
      */
-    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/;
+    public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/;
+    
 }

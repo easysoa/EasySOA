@@ -15,6 +15,8 @@ import org.easysoa.template.TemplateFieldSuggestions;
  */
 public class AssertionSuggestionService {
    
+    // TODO : Add a configurable list of suggestions to suggest ?
+    
     /**
      * Suggest default assertions. To be used to check the out message of replayed records without modifications
      * @return Default <code>AssertionSuggestions</code>
@@ -23,7 +25,7 @@ public class AssertionSuggestionService {
         AssertionSuggestions suggestions = new AssertionSuggestions();
         // TODO : What assertions to suggest by default ???
         // lenght, differences ...
-        suggestions.addAssertion(new StringAssertion("assertion_string_length", StringAssertionMethod.LENGTH));
+        suggestions.addAssertion(AssertionSuggestions.DEFAULT_REFERENCE_FIELD, new StringAssertion("assertion_string_length", StringAssertionMethod.LENGTH));
         return suggestions;
     }
     
@@ -42,7 +44,7 @@ public class AssertionSuggestionService {
             if(field.isFieldEquality()){
                 // TODO : How to suggest an other type of assertion ???
                 StringAssertion assertion = new StringAssertion("assertion_" + i + "_" + field.getFieldName());
-                suggestions.addAssertion(assertion);
+                suggestions.addAssertion(field.getFieldName(), assertion);
                 i++;
             }
         }

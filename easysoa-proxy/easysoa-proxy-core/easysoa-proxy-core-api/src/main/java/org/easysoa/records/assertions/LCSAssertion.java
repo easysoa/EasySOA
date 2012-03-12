@@ -32,21 +32,21 @@ public class LCSAssertion extends AbstractAssertion {
     }
 
     @Override
-    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage) {
+    public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage) {
         AssertionResult result;
         // Limitation to avoid a OutOfMemoryException and log treatment time. LCS method is slow with big messages.
-        if(originalMessage.getMessageContent().getContent().length() > 100 || replayedMessage.getMessageContent().getContent().length() > 100){
+        if(originalMessage.getMessageContent().getRawContent().length() > 100 || replayedMessage.getMessageContent().getRawContent().length() > 100){
             //throw new Exception("Message length is limited to 100 characters for LCS method to avoid long treatment times");
             result = new AssertionResult(this.getClass(), AssertionResultStatus.KO, "Message length is limited to 100 characters for LCS method to avoid long treatment times");
             return result;
         }
-        String lcsResult = computeLCS(originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
-        if(lcsResult.equals(originalMessage.getMessageContent().getContent())){
+        String lcsResult = computeLCS(originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());
+        if(lcsResult.equals(originalMessage.getMessageContent().getRawContent())){
             result = new AssertionResult(this.getClass(), AssertionResultStatus.OK);
-            result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+            result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());
         } else {
             result = new AssertionResult(this.getClass(), AssertionResultStatus.KO);
-            result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getContent(), replayedMessage.getMessageContent().getContent());
+            result.addMetric("LCS method", lcsResult, originalMessage.getMessageContent().getRawContent(), replayedMessage.getMessageContent().getRawContent());
         }
         return result;
     }

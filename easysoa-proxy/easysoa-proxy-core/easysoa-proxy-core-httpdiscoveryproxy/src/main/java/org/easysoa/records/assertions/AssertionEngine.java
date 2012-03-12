@@ -27,10 +27,11 @@ public interface AssertionEngine {
 
     /**
      * Execute one assertion
+     * @param referenceField The reference field
      * @param assertion The assertion to execute
      * @return The <code>AssertionResult</code>
      * @throws Exception If a problem occurs during the assertion execution
      */
-    public abstract AssertionResult executeAssertion(Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/;
+    public abstract AssertionResult executeAssertion(String referenceField, Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage);
 
 }

@@ -8,12 +8,17 @@ import com.openwide.easysoa.message.OutMessage;
 /**
  * Used to associate a field with an assertion
  * 
- * => why not add directly a field name param in the existing assertions ?
+ * => why not add directly a field name param in the existing assertions ? No bad solution, association of field/assertion must be done outside the assertion
  * 
  * @author jguillemotte
  *
  */
+@Deprecated
 public class FieldAssertion extends AbstractAssertion {
+    
+    
+    // TODO : remove this class : no nedd for a specific field class : The association must be done in assertion engine for instance !
+    
     
     // Field name, the target assertion will be executed on this field 
     private String fieldName;
@@ -31,7 +36,7 @@ public class FieldAssertion extends AbstractAssertion {
     }
 
     @Override
-    public AssertionResult check(OutMessage originalMessage, OutMessage replayedMessage) {
+    public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage) {
         // TODO Auto-generated method stub
         
         // If message content is xml

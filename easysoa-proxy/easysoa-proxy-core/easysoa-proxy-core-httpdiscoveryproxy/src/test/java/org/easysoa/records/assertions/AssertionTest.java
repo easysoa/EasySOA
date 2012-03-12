@@ -51,33 +51,33 @@ public class AssertionTest {
         OutMessage replayedMessage = new OutMessage();
         MessageContent originalContent = new MessageContent();
         MessageContent replayedContent = new MessageContent();
-        originalContent.setContent("test");
-        replayedContent.setContent("test");
+        originalContent.setRawContent("test");
+        replayedContent.setRawContent("test");
         originalMessage.setMessageContent(originalContent);
         replayedMessage.setMessageContent(replayedContent);
-        AssertionResult result = engine.executeAssertion(stringAssertion, originalMessage, replayedMessage);
+        AssertionResult result = engine.executeAssertion(AssertionSuggestions.DEFAULT_REFERENCE_FIELD, stringAssertion, originalMessage, replayedMessage);
         assertEquals(AssertionResultStatus.OK, result.getResultStatus());
         assertEquals("0", result.getMetrics());
         
         // Test for difference
-        originalContent.setContent("one test");
-        replayedContent.setContent("another test");
-        result = engine.executeAssertion(stringAssertion, originalMessage, replayedMessage);
+        originalContent.setRawContent("one test");
+        replayedContent.setRawContent("another test");
+        result = engine.executeAssertion(AssertionSuggestions.DEFAULT_REFERENCE_FIELD, stringAssertion, originalMessage, replayedMessage);
         assertEquals(AssertionResultStatus.KO, result.getResultStatus());
         assertEquals("5", result.getMetrics());
         
         // Test for difference with LENGTH method
         stringAssertion.setMethod(StringAssertionMethod.LENGTH);
-        result = engine.executeAssertion(stringAssertion, originalMessage, replayedMessage);
+        result = engine.executeAssertion(AssertionSuggestions.DEFAULT_REFERENCE_FIELD,stringAssertion, originalMessage, replayedMessage);
         assertEquals(AssertionResultStatus.KO, result.getResultStatus());
         assertEquals("4", result.getMetrics());
         
         // Test for difference with LCS method
         Assertion lcsAssertion = new LCSAssertion("lcsAssertiontest");
-        result = engine.executeAssertion(lcsAssertion, originalMessage, replayedMessage);
-        originalContent.setContent("one test");
-        replayedContent.setContent("one test");
-        result = engine.executeAssertion(lcsAssertion, originalMessage, replayedMessage);
+        result = engine.executeAssertion(AssertionSuggestions.DEFAULT_REFERENCE_FIELD,lcsAssertion, originalMessage, replayedMessage);
+        originalContent.setRawContent("one test");
+        replayedContent.setRawContent("one test");
+        result = engine.executeAssertion(AssertionSuggestions.DEFAULT_REFERENCE_FIELD,lcsAssertion, originalMessage, replayedMessage);
         //assertEquals(AssertionResultStatus.KO, result.getResultStatus());
         //assertEquals(4, result.getMetrics());        
     }
