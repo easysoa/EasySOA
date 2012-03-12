@@ -3,13 +3,19 @@
  */
 package org.easysoa.template;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.template.setters.CustomParamSetter;
+import org.easysoa.template.setters.RestFormParamSetter;
+import org.easysoa.template.setters.RestPathParamSetter;
+import org.easysoa.template.setters.RestQueryParamSetter;
+import org.easysoa.template.setters.WSDLParamSetter;
 import org.osoa.sca.annotations.Reference;
-
+import org.osoa.sca.annotations.Scope;
 import com.openwide.easysoa.message.OutMessage;
 
 /**
@@ -18,8 +24,9 @@ import com.openwide.easysoa.message.OutMessage;
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class TemplateEngineImpl implements TemplateEngine {
-    
+
     // Logger
     private static Logger logger = Logger.getLogger(TemplateEngineImpl.class.getName());    
     
@@ -28,13 +35,15 @@ public class TemplateEngineImpl implements TemplateEngine {
     TemplateProcessorRendererItf templateRenderer;
     
     // File store
-    private ProxyExchangeRecordFileStore fileStore;
+    ProxyFileStore fileStore;
+    
+    //private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();
     
     /**
      * 
      */
     public TemplateEngineImpl(){
-        this.fileStore = new ProxyExchangeRecordFileStore();
+        this.fileStore = new ProxyFileStore();
     }
     
     /* (non-Javadoc)
@@ -44,6 +53,7 @@ public class TemplateEngineImpl implements TemplateEngine {
     public TemplateFieldSuggestions suggestFields(ExchangeRecord exchangeRecord, String storeName, boolean generateFile) throws Exception {
         TemplateFieldSuggester suggester = new TemplateFieldSuggester();
         TemplateFieldSuggestions suggestions = suggester.suggest(exchangeRecord);
+        // TODO : move this line in proxy fileStore
         if(generateFile){
             fileStore.saveFieldSuggestions(suggestions, storeName, exchangeRecord.getExchange().getExchangeID());            
         }
@@ -72,6 +82,7 @@ public class TemplateEngineImpl implements TemplateEngine {
         TemplateBuilder builder = new TemplateBuilder();
         ExchangeRecord templatizedRecord = builder.templatizeRecord(fieldSuggestions, exchangeRecord);
         VelocityTemplate template = builder.buildTemplate(templatizedRecord);
+        // TODO : move this block in proxyFileStore
         if(generateFile){
             // Store the templatized record
             fileStore.saveCustomRecord(templatizedRecord, storeName);
@@ -87,9 +98,12 @@ public class TemplateEngineImpl implements TemplateEngine {
     @Override
     public OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues) throws Exception {
         // call the template renderer
-        return templateRenderer.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, storeName, fieldValues);        
+        //String templatePath = ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION;
+        // TODO : Move the constants
+        String templatePath = "reqTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
+        return templateRenderer.renderReq(templatePath, record, storeName, fieldValues);        
     }
-    
+   
     /**
      * Complete template renderering : field suggestions, template generation and template rendering
      */
@@ -101,5 +115,24 @@ public class TemplateEngineImpl implements TemplateEngine {
         // Template rendering
         renderTemplate();
     }*/
+    
+    /**
+     * Method used in first solution .... Now have to use Custom ProxyImplementationVelocity or ServletImplementationVelocity
+     * @param template
+     * @param message
+     * @param mapParams
+     */
+    /*private void setCustomParams(TemplateFieldSuggestions templateFieldSuggestions, ExchangeRecord record, Map<String, List<String>> fieldValues){
+        // Write the code to set custom parameters
+        // For each templateField described in the template and For each Custom Param setter in the paramSetter list,
+        // call the method isOKFor and if ok call the method setParams
+        for(TemplateField templateField : templateFieldSuggestions.getTemplateFields()){
+            for(CustomParamSetter paramSetter : paramSetterList){
+                if(paramSetter.isOkFor(templateField)){
+                    paramSetter.setParam(templateField, record.getInMessage(), mapParams);
+                }
+            }
+        }
+    }*/    
     
 }

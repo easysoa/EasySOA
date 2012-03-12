@@ -71,6 +71,18 @@
       <artifactId>httpclient</artifactId>
     </dependency>
 
+    <!-- Proxy persistence API -->
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-persistence</artifactId>
+    </dependency>
+
+    <!-- Proxy core api -->
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-api</artifactId>
+    </dependency>
+
     <!-- Messaging api -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>

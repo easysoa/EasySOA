@@ -22,6 +22,8 @@
     <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
     <module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
     <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
+	<module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
+	<module>easysoa-proxy-core/easysoa-proxy-core-api</module>
   </modules>
 
   <repositories>

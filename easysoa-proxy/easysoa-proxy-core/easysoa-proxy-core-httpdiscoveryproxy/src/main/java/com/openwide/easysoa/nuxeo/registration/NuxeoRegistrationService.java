@@ -22,17 +22,11 @@
 package com.openwide.easysoa.nuxeo.registration;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.ws.rs.core.GenericEntity;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
@@ -46,7 +40,6 @@ import org.easysoa.rest.RestNotificationRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.monitoring.soa.Node;

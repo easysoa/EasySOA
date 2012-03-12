@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.easysoa.reports.Report;
 import org.osoa.sca.annotations.Scope;
 
 /**

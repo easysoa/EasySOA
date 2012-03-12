@@ -26,6 +26,7 @@ exports.NO_AUTH_NEEDED = [
   '^/easysoa/img/*',
   '^/easysoa/core/dbb/img/*',
   '^/easysoa/core/dbb/js/bookmarklet/*',
+  '^/easysoa/core/use',
   '^/intranet/*',
   '^/scaffoldingProxy/*'
 ];

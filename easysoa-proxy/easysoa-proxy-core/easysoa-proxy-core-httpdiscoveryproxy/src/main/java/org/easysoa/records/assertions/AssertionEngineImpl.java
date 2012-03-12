@@ -22,7 +22,7 @@ package org.easysoa.records.assertions;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.template.TemplateFieldSuggestions;
 
 import com.openwide.easysoa.message.OutMessage;
@@ -61,14 +61,15 @@ public class AssertionEngineImpl implements AssertionEngine {
         AssertionSuggestionService assertionService = new AssertionSuggestionService();
         AssertionSuggestions suggestions = assertionService.suggestAssertions(fieldSuggestions);
         // Saving asr file
-        ProxyExchangeRecordFileStore fileStore = new ProxyExchangeRecordFileStore();
+        // TODO : move this method (or only the ASR saving line) in the proxy project
+        ProxyFileStore fileStore = new ProxyFileStore(); // TODO : make a FraSCAti service with fileStore ????  
         fileStore.saveAssertionSuggestions(suggestions, recordID, storeName);
         return suggestions;
     }
     
     /* (non-Javadoc)
      * @see org.easysoa.records.assertions.AssertionEngine#executeAssertions(org.easysoa.records.assertions.AssertionSuggestions, com.openwide.easysoa.message.OutMessage, com.openwide.easysoa.message.OutMessage)
-     */
+     */ 
     @Override
     public List<AssertionResult> executeAssertions(AssertionSuggestions assertionSuggestions, OutMessage originalMessage, OutMessage replayedMessage){
         if(assertionSuggestions == null){

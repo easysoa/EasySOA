@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.logs.LogEngine;
-import org.easysoa.logs.Report;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.RecordCollection;
@@ -18,7 +17,8 @@ import org.easysoa.records.assertions.AssertionReport;
 import org.easysoa.records.assertions.AssertionResult;
 import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.reports.Report;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.setters.CustomParamSetter;
@@ -38,13 +38,8 @@ import com.openwide.easysoa.util.RequestForwarder;
  * @author jguillemotte
  *
  */
-// TODO : add annotation to have a persistence of this object in FraSCAti
 @Scope("composite")
 public class ReplayEngineImpl implements ReplayEngine {
-   
-    // Add code here to organize the work of template engine and assertion engine
-    // Hum ... maybe not .. it is possible to generate the template with out to replay
-    // On the contrary, it is not possible to execute assertion if the replay has not been replayed 
     
     // SCA reference to assertion engine
     @Reference
@@ -63,20 +58,20 @@ public class ReplayEngineImpl implements ReplayEngine {
 
     // TODO : To move in template engine
     // Param setter list
-    private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();    
+    //private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();    
 
     // TODO : 
     private String replaySessionName;
     
-    /**+
+    /**
      * Constructor
      * Set the param setter list
      */
     public ReplayEngineImpl(){
-        paramSetterList.add(new RestFormParamSetter());
+        /*paramSetterList.add(new RestFormParamSetter());
         paramSetterList.add(new RestPathParamSetter());
         paramSetterList.add(new RestQueryParamSetter());
-        paramSetterList.add(new WSDLParamSetter());
+        paramSetterList.add(new WSDLParamSetter());*/
         this.replaySessionName = null;
     }    
     
@@ -112,7 +107,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
         List<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
         try {
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+            ProxyFileStore erfs = new ProxyFileStore();
             recordList = erfs.getExchangeRecordlist(exchangeRecordStoreName);
         }
         catch (Exception ex) {
@@ -128,8 +123,8 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
         ExchangeRecord record = null;
         try {
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-            record = erfs.load(exchangeRecordStoreName, exchangeID);
+            ProxyFileStore erfs = new ProxyFileStore();
+            record = erfs.loadExchangeRecord(exchangeRecordStoreName, exchangeID, false);
         }
         catch (Exception ex) {
             logger.error("An error occurs during the list", ex);
@@ -143,8 +138,10 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("getExchangeRecordStorelist method called ...");
         List<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
         try{
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-            storeList = erfs.getExchangeRecordStorelist();
+            ProxyFileStore erfs = new ProxyFileStore();
+            for(String storeName : erfs.getExchangeRecordStorelist()){
+                storeList.add(new ExchangeRecordStore(storeName)) ;
+            }
         }
         catch(Exception ex){
             logger.error("An error occurs during the listing of exchanges record stores", ex);
@@ -155,7 +152,7 @@ public class ReplayEngineImpl implements ReplayEngine {
     
     @Override
     public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String recordID) throws Exception {
-        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+        ProxyFileStore erfs = new ProxyFileStore();
         TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(storeName, recordID);
         logger.debug(templateFieldSuggest.getTemplateFields().size());
         return templateFieldSuggest;
@@ -175,20 +172,19 @@ public class ReplayEngineImpl implements ReplayEngine {
         logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
         OutMessage outMessage = new OutMessage();
         try {
-            //Collection<ExchangeRecord> recordList;
-            ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+            ProxyFileStore erfs = new ProxyFileStore();
             // get the record
             if(exchangeRecordId == null || "".equals(exchangeRecordId) || exchangeRecordStoreName==null || "".equals(exchangeRecordStoreName)){
                 throw new Exception("Store and record ID must not be null !");
             }
-            ExchangeRecord record = erfs.load(exchangeRecordStoreName, exchangeRecordId);
+            ExchangeRecord record = erfs.loadExchangeRecord(exchangeRecordStoreName, exchangeRecordId, false);
             RequestForwarder requestForwarder;
             // Send the request
             requestForwarder = new RequestForwarder();
             outMessage = requestForwarder.send(record.getInMessage());
             logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getContent());
             logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getContent());
-               
+
             // How to work with fields in fld files
             // Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
             // Call assertioSuggestionService not only when a template and fields are available but also to compare replay without modifications)
@@ -226,19 +222,16 @@ public class ReplayEngineImpl implements ReplayEngine {
     @Override
     public OutMessage replayWithTemplate(Map<String, List<String>> formData, String exchangeStoreName, String exchangeRecordID) throws Exception {
         // Load template, assertion file .... 
-        ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
-        // Field suggestions
-        TemplateFieldSuggestions fieldSuggestions = erfs.getTemplateFieldSuggestions(exchangeStoreName, exchangeRecordID);
-        // Template
+        ProxyFileStore proxyFileStore = new ProxyFileStore();
         
-        // Assertions
-        AssertionSuggestions assertionSuggestions = erfs.getAssertionSuggestions(exchangeStoreName, exchangeRecordID);
-        ExchangeRecord record = erfs.load(exchangeStoreName, exchangeRecordID);
+        // Load exchange record
+        ExchangeRecord record = proxyFileStore.loadExchangeRecord(exchangeStoreName, exchangeRecordID, true);        
         
-        // if template or asr files not found, throws an exception
-        // Call the proxy velocity to render and execute the replay with custom params
+        TemplateFieldSuggestions fieldSuggestions = templateEngine.suggestFields(record, exchangeStoreName, true);
+        templateEngine.generateTemplate(fieldSuggestions, record, exchangeStoreName, true);
         OutMessage replayedResponse = templateEngine.renderTemplateAndReplay(exchangeStoreName, record, formData);
         // Call assertion engine to execute assertions
+        AssertionSuggestions assertionSuggestions = assertionEngine.suggestAssertions(fieldSuggestions, record.getExchange().getExchangeID(), exchangeStoreName);
         List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedResponse);
         // Record assertion result for reporting
         if(replaySessionName != null){

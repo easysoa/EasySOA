@@ -14,6 +14,12 @@
   <name>EasySOA Registry Messaging API</name>
 
   <dependencies>
+    <!-- Easysoa Proxy Persistence API -->        
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+	  <artifactId>easysoa-proxy-core-persistence</artifactId>
+    </dependency>
+	<!-- Javax servlet -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>

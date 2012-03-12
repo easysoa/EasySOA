@@ -5,6 +5,8 @@ package org.easysoa.logs;
 
 import java.util.Set;
 
+import org.easysoa.reports.Report;
+
 /**
  * @author jguillemotte
  *

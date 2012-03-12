@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
-import org.easysoa.records.persistence.filesystem.ProxyExchangeRecordFileStore;
+import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 	 */
 	@Test
     public void saveAndReadRecordsTest() throws Exception {
-	    ProxyExchangeRecordFileStore erfs = new ProxyExchangeRecordFileStore();
+	    ProxyFileStore erfs = new ProxyFileStore();
     	ExchangeRecord exchangeRecord;
 
     	ExchangeRecordStore recordList = new ExchangeRecordStore("TEST Enviroment");
@@ -133,7 +133,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
     		try{
     			id = erfs.save(record);
     			logger.debug("record ID = " + id);
-    			exchangeRecord = erfs.load("", id);
+    			exchangeRecord = erfs.loadExchangeRecord("", id, false);
     			logger.debug("Request content from saved record : " + exchangeRecord.getExchange().getExchangeID());
     			// Check the exchange id
     			assertEquals(id, exchangeRecord.getExchange().getExchangeID());
