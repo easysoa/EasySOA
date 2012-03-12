@@ -1,5 +1,6 @@
 package org.easysoa.runtime.api;
 
+
 /**
  * Allows to start/stop the server.
  * 
@@ -8,8 +9,20 @@ package org.easysoa.runtime.api;
  */
 public interface RuntimeControlService {
 
+	enum RuntimeState {
+		STARTING, STARTED,
+		DEPLOYING_DEPLOYABLE, STARTING_DEPLOYABLE,
+		STOPPING_DEPLOYABLE, UNDEPLOYING_DEPLOYABLE,
+		STOPPING, STOPPED
+	}
+	
+	RuntimeState getState();
+	
 	boolean start();
 
 	boolean stop();
 
+	boolean start(Deployable<?> deployable) throws UnsupportedOperationException;
+
+	boolean stop(Deployable<?> deployable) throws UnsupportedOperationException;
 }

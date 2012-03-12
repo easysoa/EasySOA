@@ -1,19 +1,19 @@
 package org.easysoa.runtime.copypaste;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.InvalidParameterException;
 
-import org.easysoa.runtime.api.RuntimeControlService;
+import org.easysoa.runtime.api.Deployable;
 import org.easysoa.runtime.api.RuntimeDeploymentService;
-import org.easysoa.runtime.api.RuntimeServer;
 
-public class CopyPasteServer implements RuntimeServer<CopyPasteServerEventService> {
+public class CopyPasteServer extends CopyPasteServerEventService implements RuntimeDeploymentService {
 
 	private File deployablesDirectory;
 	
-	private CopyPasteServerEventService eventService;
-	
-	private CopyPasteDeploymentService deploymentService;
+	private static final int BUFFER_SIZE = 4096;
 	
 	public CopyPasteServer(File deployablesDirectory) {
 		if (!deployablesDirectory.isDirectory()) {
@@ -28,27 +28,51 @@ public class CopyPasteServer implements RuntimeServer<CopyPasteServerEventServic
 			}
 		}
 		this.deployablesDirectory = deployablesDirectory;
-		this.eventService = new CopyPasteServerEventService();
-		this.deploymentService = new CopyPasteDeploymentService(eventService, deployablesDirectory);
 	}
 	
 	public File getDeployablesDirectory() {
 		return deployablesDirectory;
 	}
+
+	@Override
+	public boolean deploy(Deployable<?> deployable) throws IOException {
+		File targetFile = getTargetFile(deployable);
+		if (!targetFile.exists()) {
+			BufferedInputStream bis = new BufferedInputStream(deployable.getInputStream());
+			FileOutputStream fos = new FileOutputStream(targetFile);
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int bytes;
+			while ((bytes = bis.read(buffer)) != -1) {
+				fos.write(buffer, 0, bytes);
+			}
+			bis.close();
+			fos.close();
+			this.onDeploy(deployable);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean undeploy(Deployable<?> deployable) {
+		File targetFile = getTargetFile(deployable);
+		if (targetFile.exists()) {
+			boolean success = targetFile.delete();
+			if (success) {
+				this.onUndeploy(deployable);
+			}
+			return success;
+		}
+		else {
+			return false;
+		}
+			
+	}
 	
-	@Override
-	public RuntimeControlService getControlService() {
-		return null; // Unsupported
-	}
-
-	@Override
-	public RuntimeDeploymentService getDeploymentService() {
-		return this.deploymentService;
-	}
-
-	@Override
-	public CopyPasteServerEventService getEventService() {
-		return this.eventService;
+	private File getTargetFile(Deployable<?> deployable) {
+		return new File(this.deployablesDirectory.toString() + File.separator + deployable.getFileName());
 	}
 
 }

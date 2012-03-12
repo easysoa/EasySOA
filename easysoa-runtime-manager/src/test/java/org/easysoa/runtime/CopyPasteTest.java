@@ -13,11 +13,9 @@ import java.io.IOException;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.easysoa.runtime.api.Deployable;
-import org.easysoa.runtime.api.RuntimeDeploymentService;
 import org.easysoa.runtime.api.event.OnDeployListener;
 import org.easysoa.runtime.api.event.OnUndeployListener;
 import org.easysoa.runtime.copypaste.CopyPasteServer;
-import org.easysoa.runtime.copypaste.CopyPasteServerEventService;
 import org.easysoa.runtime.utils.FileDeployable;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,19 +45,17 @@ public class CopyPasteTest {
 		// Add mock listeners
 		OnDeployListener onDeployListener = mock(OnDeployListener.class);
 		OnUndeployListener onUndeployListener = mock(OnUndeployListener.class);
-		CopyPasteServerEventService eventService = copyPasteServer.getEventService();
-		eventService.addOnDeployListener(onDeployListener);
-		eventService.addOnUndeployListener(onUndeployListener);
+		copyPasteServer.addOnDeployListener(onDeployListener);
+		copyPasteServer.addOnUndeployListener(onUndeployListener);
 	
 		// Deploy
-		RuntimeDeploymentService deploymentService = copyPasteServer.getDeploymentService();
-		deploymentService.deploy(deployable);
+		copyPasteServer.deploy(deployable);
 		assertTrue(deployableTarget.exists());
 		assertEquals(deployable.getFile().length(), deployableTarget.length());
 		verify(onDeployListener, times(1)).onDeploy((Deployable<?>) any());
 		
 		// Undeploy
-		deploymentService.undeploy(deployable);
+		copyPasteServer.undeploy(deployable);
 		assertFalse(deployableTarget.exists());
 		verify(onUndeployListener, times(1)).onUndeploy((Deployable<?>) any());
 		

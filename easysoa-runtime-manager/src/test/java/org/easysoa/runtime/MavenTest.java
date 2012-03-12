@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.codehaus.plexus.util.FileUtils;
 import org.easysoa.runtime.api.DeployableDescriptor;
-import org.easysoa.runtime.api.RuntimeDeploymentService;
 import org.easysoa.runtime.copypaste.CopyPasteServer;
 import org.easysoa.runtime.maven.MavenDeployable;
 import org.easysoa.runtime.maven.MavenDeployableDescriptor;
@@ -66,20 +65,19 @@ public class MavenTest {
 
 		// Set up a server & deploy the artifact
 		CopyPasteServer server = new CopyPasteServer(new File(SERVER_FOLDER));
-		RuntimeDeploymentService deploymentService = server.getDeploymentService();
-		deploymentService.deploy(artifact);
+		server.deploy(artifact);
 		File targetFile = new File(SERVER_FOLDER + artifact.getFileName());
 		assertTrue(targetFile.exists());
 
 		// Deploy its dependencies
 		for (DeployableDescriptor<?> dependency : artifact.getDependencies()) {
-			deploymentService.deploy(repository.fetchDeployable((MavenID) dependency.getId()));
+			server.deploy(repository.fetchDeployable((MavenID) dependency.getId()));
 			break; // Let's say one dependency is enough, for performance
 		}
 		assertEquals(2, server.getDeployablesDirectory().listFiles().length);
 		
 		// Undeploy
-		deploymentService.undeploy(artifact);
+		server.undeploy(artifact);
 		assertFalse(targetFile.exists());
 	}
 	
