@@ -29,6 +29,7 @@
     <fractal-rmi.version>0.3.6-SNAPSHOT</fractal-rmi.version>
   </properties>
 
+
   <modules>
     <module>easysoa-frascati-shared</module>
     <module>easysoa-frascati-processor</module>
@@ -101,12 +102,11 @@
         <artifactId>frascati-util</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      <!-- Locally installed by org.nuxeo:nuxeo-frascati -->
       <dependency>
         <groupId>org.ow2.frascati</groupId>
         <artifactId>frascati-util-comp</artifactId>
         <version>${frascati.version}</version>
-        <scope>system</scope>
-        <systemPath>${project.basedir}/nuxeo-frascati/resources/frascati-util-comp-${frascati.version}.jar</systemPath>
       </dependency>
       <dependency>
         <groupId>org.ow2.frascati</groupId>
@@ -118,26 +118,17 @@
         <artifactId>helloworld-pojo</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      <!-- Locally installed by org.nuxeo:nuxeo-frascati-test -->
       <dependency>
         <groupId>org.ow2.frascati.examples</groupId>
         <artifactId>frascati-helloworld-servlet</artifactId>
         <version>${frascati.version}</version>
-        <scope>system</scope>
-        <systemPath>${project.basedir}/nuxeo-frascati-test/src/test/resources/frascati-helloworld-servlet-${frascati.version}.jar</systemPath>
       </dependency>
+      <!-- Locally installed by org.nuxeo:nuxeo-frascati-test -->
       <dependency>
         <groupId>org.ow2.frascati.examples</groupId>
         <artifactId>helloworld-ws-server</artifactId>
         <version>${frascati.version}</version>
-        <scope>system</scope>
-        <systemPath>${project.basedir}/nuxeo-frascati-test/src/test/resources/helloworld-ws-server-${frascati.version}.jar</systemPath>
-      </dependency>
-      <dependency>
-        <groupId>org.ow2.frascati</groupId>
-        <artifactId>frascati-util-comp</artifactId>
-        <version>${frascati.version}</version>
-        <scope>system</scope>
-        <systemPath>${project.basedir}/nuxeo-frascati/resources/frascati-util-comp-${frascati.version}.jar</systemPath>
       </dependency>
       <!-- Force org.eclipse.core.runtime version, to make sure it is fetched from
         a valid repository. Otherwise, given our listed repositories, it uses version 3.4.0

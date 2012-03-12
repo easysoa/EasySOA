@@ -201,25 +201,59 @@
       <groupId>org.ow2.frascati.examples</groupId>
       <artifactId>frascati-helloworld-servlet</artifactId>
       <scope>system</scope>
-      <systemPath>${project.basedir}/../nuxeo-frascati-test/src/test/resources/frascati-helloworld-servlet-${frascati.version}.jar</systemPath>
+      <systemPath>${project.basedir}/src/test/resources/frascati-helloworld-servlet-${frascati.version}.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati.examples</groupId>
       <artifactId>helloworld-ws-server</artifactId>
       <scope>system</scope>
-      <systemPath>${project.basedir}/../nuxeo-frascati-test/src/test/resources/helloworld-ws-server-${frascati.version}.jar</systemPath>
+      <systemPath>${project.basedir}/src/test/resources/helloworld-ws-server-${frascati.version}.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-util-comp</artifactId>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../nuxeo-frascati/resources/frascati-util-comp-${frascati.version}.jar</systemPath>
     </dependency>
   </dependencies>
 
   <!-- Plugin management -->
   <build>
     <plugins>
+      <!-- install src/test/resources/frascati-helloworld-servlet-${frascati.version}.jar
+        and src/test/resources/helloworld-ws-server-${frascati.version}.jar in ${localRepository} -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>install-frascati-helloworld-servlet</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>initialize</phase>
+            <configuration>
+              <groupId>org.ow2.frascati.examples</groupId>
+              <artifactId>frascati-helloworld-servlet</artifactId>
+              <version>${frascati.version}</version>
+              <packaging>jar</packaging>
+              <file>${project.basedir}/src/test/resources/frascati-helloworld-servlet-${frascati.version}.jar</file>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install-helloworld-ws-server</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>initialize</phase>
+            <configuration>
+              <groupId>org.ow2.frascati.examples</groupId>
+              <artifactId>helloworld-ws-server</artifactId>
+              <version>${frascati.version}</version>
+              <packaging>jar</packaging>
+              <file>${project.basedir}/src/test/resources/helloworld-ws-server-${frascati.version}.jar</file>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>

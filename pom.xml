@@ -120,11 +120,6 @@
       </dependency>
       <!-- Configuration constants -->
       <dependency>
-        <groupId>org.easysoa</groupId>
-        <artifactId>easysoa-common</artifactId>
-        <version>${easysoa.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.easysoa.registry</groupId>
         <artifactId>easysoa-registry-core</artifactId>
         <version>${easysoa.version}</version>
@@ -162,6 +157,16 @@
       <dependency>
         <groupId>org.easysoa.proxy</groupId>
         <artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-persistence</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-api</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
 
@@ -319,6 +324,7 @@
         <version>1.1.1</version>
       </dependency>
 
+      <!-- Apache HTTP client -->
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
@@ -454,13 +460,6 @@
       </dependency>
       <!-- End of required SOAPUI dependencies -->
 
-      <!-- Apache HTTP client for test -->
-      <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.1.1</version>
-      </dependency>
-
       <!-- Apache CXF for Talend tuto mock -->
       <dependency>
         <groupId>org.apache.cxf</groupId>
@@ -570,12 +569,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-continuation</artifactId>
-        <version>8.0.0.M2</version>
-      </dependency>
-
-      <dependency>
         <groupId>org.codehaus.woodstox</groupId>
         <artifactId>stax2-api</artifactId>
         <version>3.1.1</version>
@@ -634,6 +627,7 @@
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-continuation</artifactId>
+        <!-- <version>8.0.0.M2</version> -->
         <version>7.4.5.v20110725</version>
       </dependency>
       <dependency>
@@ -862,7 +856,7 @@
         <plugin>
           <groupId>org.ow2.frascati.mojo</groupId>
           <artifactId>frascati-compiler-plugin</artifactId>
-          <version>1.5-SNAPSHOT</version>
+          <version>${frascati.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -1008,5 +1002,18 @@
       </snapshots>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>easysoa</id>
+      <name>EasySOA group repository</name>
+      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

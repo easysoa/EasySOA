@@ -79,6 +79,27 @@
           </archive>
         </configuration>
       </plugin>
+      <!-- install resources/frascati-util-comp-${frascati.version}.jar in ${localRepository} -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>install-frascati-util-comp</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>initialize</phase>
+            <configuration>
+              <groupId>org.ow2.frascati</groupId>
+              <artifactId>frascati-util-comp</artifactId>
+              <version>${frascati.version}</version>
+              <packaging>jar</packaging>
+              <file>${project.basedir}/resources/frascati-util-comp-${frascati.version}.jar</file>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>

@@ -18,11 +18,11 @@
 
   <build>
     <plugins>
-      <!-- Package bundle modules for Nuxeo -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
+          <!-- Package bundle modules for Nuxeo -->
           <execution>
             <id>copy-bundle-dependencies</id>
             <phase>package</phase>
@@ -87,14 +87,7 @@
               <outputDirectory>${project.build.directory}/nxserver/plugins</outputDirectory>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-
-      <!-- Package library modules & dependencies for Nuxeo -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
+          <!-- Package library modules & dependencies for Nuxeo -->
           <execution>
             <id>copy-lib-dependencies</id>
             <phase>package</phase>

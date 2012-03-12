@@ -32,8 +32,6 @@
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-util-comp</artifactId>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../nuxeo-frascati/resources/frascati-util-comp-${frascati.version}.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.eclipse.stp.sca.domainmodel</groupId>
