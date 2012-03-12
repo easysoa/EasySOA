@@ -12,24 +12,25 @@ import org.easysoa.api.EasySOADocument;
 import org.easysoa.api.EasySOARemoteDocument;
 import org.easysoa.rest.RestNotificationFactory.RestDiscoveryService;
 import org.json.JSONObject;
-import org.nuxeo.ecm.automation.client.jaxrs.model.Document;
-import org.nuxeo.ecm.automation.client.jaxrs.model.Documents;
+import org.nuxeo.ecm.automation.client.model.Document;
+import org.nuxeo.ecm.automation.client.model.Documents;
+
 
 /**
- * 
+ *
  * @author mkalam-alami
  *
  */
 public class EasySOARemoteApi implements EasySOAApiSession {
-    
+
     private static final String AUTOMATION_URL = "http://localhost:8080/nuxeo/site/automation";
-    
+
     private static Logger logger = Logger.getLogger(EasySOARemoteApi.class.getName());
-    
+
     private RestNotificationFactory notificationFactory;
-    
+
     private AutomationHelper automationHelper;
-    
+
     public EasySOARemoteApi(String username, String password) throws IOException {
         this.notificationFactory = new RestNotificationFactory(username, password);
         this.automationHelper = new AutomationHelper(AUTOMATION_URL, username, password);
@@ -59,12 +60,12 @@ public class EasySOARemoteApi implements EasySOAApiSession {
     public EasySOADocument notifyServiceReference(Map<String, String> properties) {
         return sendRequest(RestDiscoveryService.SERVICEREFERENCE, properties);
     }
-    
+
     private EasySOADocument sendRequest(RestDiscoveryService service, Map<String, String> properties) {
         try {
             RestNotificationRequest request = notificationFactory.createNotification(service);
             request.setProperties(properties);
-            
+
             // XXX: Launches a 2nd request, not even secure since request
             // might be treated even before the model is updated
             JSONObject responseData = request.send();

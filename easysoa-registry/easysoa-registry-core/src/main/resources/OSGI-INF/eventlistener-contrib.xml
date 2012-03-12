@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.core.contrib.eventlistener">
 
-  <require>org.easysoa.core.service.EasySOAInitComponent</require>
-
   <!-- Event listeners -->
   <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
     <listener name="applliimpllistener" class="org.easysoa.listeners.AppliImplListener" order="120">
@@ -35,5 +33,5 @@
   <extension target="org.nuxeo.ecm.platform.audit.service.NXAuditEventsService" point="event">
     <event name="documentValidationRequest" />
   </extension>
-  
+
 </component>

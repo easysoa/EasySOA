@@ -2,43 +2,59 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.easysoa.samples</groupId>
+    <artifactId>easysoa-samples-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
+  </parent>
+
   <groupId>org.easysoa.samples.paf</groupId>
   <artifactId>easysoa-classpath-discovery-prototype</artifactId>
   <name>EasySOA Classpath Discovery prototype (for sample Pure Air Flowers)</name>
-  <version>0.4-SNAPSHOT</version>
   <packaging>jar</packaging>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
   <dependencies>
     <!-- EasySOA Remote client -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-remote</artifactId>
-      <version>${project.version}</version>
     </dependency>
-    
-    <!-- Logging -->
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.nuxeo.ecm.automation</groupId>
+      <artifactId>nuxeo-automation-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <classifier>jdk15</classifier>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.ezmorph</groupId>
+      <artifactId>ezmorph</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.6.4</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.4</version>
     </dependency>
   </dependencies>
 

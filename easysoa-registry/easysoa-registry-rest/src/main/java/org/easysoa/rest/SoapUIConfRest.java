@@ -32,6 +32,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.rest.soapui.SoapUIWSDL;
 import org.easysoa.rest.soapui.SoapUIWSDLFactory;
@@ -48,6 +50,8 @@ import org.nuxeo.runtime.api.Framework;
 @Path("easysoa/soapui")
 public class SoapUIConfRest {
 
+    private static final Log log = LogFactory.getLog(SoapUIConfRest.class);
+    
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
@@ -68,12 +72,16 @@ public class SoapUIConfRest {
         for (DocumentModel serviceModel : serviceModels) {
         
             Blob wsdlBlob = (Blob) serviceModel.getPropertyValue("file:content");
-            File tmpWsdlFile = File.createTempFile(serviceModel.getTitle(), "wsdl");
-            wsdlBlob.transferTo(tmpWsdlFile);
-            SoapUIWSDL newWSDL = wsdlFactory.create(tmpWsdlFile,
-                   (String) serviceModel.getProperty(Service.SCHEMA, Service.PROP_FILEURL));
-            
-            wsdls.add(newWSDL);
+            if (wsdlBlob != null) {
+                File tmpWsdlFile = File.createTempFile(serviceModel.getTitle(), "wsdl");
+                wsdlBlob.transferTo(tmpWsdlFile);
+                SoapUIWSDL newWSDL = wsdlFactory.create(tmpWsdlFile,
+                       (String) serviceModel.getProperty(Service.SCHEMA, Service.PROP_FILEURL));
+                wsdls.add(newWSDL);
+            }
+            else {
+                log.info("Could not generate full SoapUI config: a service WSDL is not available");
+            }
         }
         
         // Render

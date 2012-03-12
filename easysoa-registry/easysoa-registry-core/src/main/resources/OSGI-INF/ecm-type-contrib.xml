@@ -10,6 +10,9 @@
       <icon>/icons/text.png</icon>
       <bigIcon>/icons/note_100.png</bigIcon>
       <default-view>view_documents</default-view>
+      <layouts mode="summary">
+        <layout>easysoa_summary_layout</layout>
+      </layouts>
       <layouts mode="any">
         <layout>heading</layout>
         <layout>files</layout>
@@ -28,6 +31,9 @@
       <bigIcon>/icons/folder_100.png</bigIcon>
       <icon-expanded>/icons/folder_open.gif</icon-expanded>
       <default-view>view_documents</default-view>
+      <layouts mode="summary">
+        <layout>easysoa_summary_layout</layout>
+      </layouts>
       <layouts mode="any">
         <layout>heading</layout>
         <layout>files</layout>
@@ -51,6 +57,9 @@
       <icon>/icons/contextuallink.png</icon>
       <bigIcon>/icons/contextuallink_100.png</bigIcon>
       <default-view>view_documents</default-view>
+      <layouts mode="summary">
+        <layout>easysoa_summary_layout</layout>
+      </layouts>
       <layouts mode="any">
         <!-- Business -->
         <layout>heading</layout>
@@ -70,6 +79,9 @@
       <bigIcon>/icons/workspace_100.png</bigIcon>
       <icon-expanded>/icons/workspace_open.gif</icon-expanded>
       <default-view>view_documents</default-view>
+      <layouts mode="summary">
+        <layout>easysoa_summary_layout</layout>
+      </layouts>
       <layouts mode="any">
         <!-- Business -->
         <layout>heading</layout>
@@ -89,7 +101,7 @@
         <contentView>document_content</contentView>
       </contentViews>
     </type>
-    
+
     <type id="Workspace" coretype="Workspace">
       <layouts mode="any">
         <layout>heading</layout>

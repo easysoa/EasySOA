@@ -43,7 +43,7 @@ String maintenanceMessage = AdminStatusHelper.getMaintenanceMessage();
 
  body {
   font: normal 11px "Lucida Grande", sans-serif;
-  background: url("<%=context%>/img/theme_galaxy/sanfrancisco.jpg") no-repeat scroll center -400px #aaa;
+  background: url("<%=context%>/img/login_bg.png") no-repeat scroll center #aaa;
   color: #343434;
   }
 
@@ -105,7 +105,7 @@ H2 {
   color:red;
   font-size:12px;
  }
- 
+
 .warnMessage, .infoMessage {
   margin:0 0 10px;
 }
@@ -389,7 +389,7 @@ nxthemes css is not used in login.jsp */
                 </td>
               </tr>
               <tr><td colspan="2">
-              <p style="font-size: 11px; text-align: center">A list of the demo users is <a href="http://localhost:8083/easysoa/users.html">available here</a>.</p> 
+              <p style="font-size: 11px; text-align: center">A list of the demo users is <a href="http://localhost:8083/easysoa/users.html">available here</a>.</p>
               </td></tr>
               <tr>
                 <td colspan="2">

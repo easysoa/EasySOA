@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.nuxeo.ecm.opensocial</groupId>
-    <artifactId>nuxeo-opensocial-parent</artifactId>
-    <version>5.4.2</version>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.easysoa.registry</groupId>
   <artifactId>easysoa-registry-dashboard</artifactId>
   <name>EasySOA Registry Dashboard</name>
-  <version>0.4-SNAPSHOT</version>
   <description>EasySOA Gadgets</description>
 
   <dependencies>
@@ -56,32 +56,5 @@
       <artifactId>jsr311-api</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-
-  <!-- ============= -->
-  <!-- Repositories -->
-  <!-- ============= -->
-
-  <repositories>
-
-    <repository>
-      <id>NuxeoNexusPublic</id>
-      <name>Nuxeo Nexus Public (for OpenSocial...)</name>
-      <url>https://maven.nuxeo.org/nexus/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
 </project>

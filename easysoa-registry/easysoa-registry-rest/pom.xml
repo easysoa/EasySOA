@@ -3,15 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>easysoa-registry-rest</artifactId>
-  <name>EasySOA Registry REST</name>
-
   <parent>
     <groupId>org.easysoa.registry</groupId>
     <artifactId>easysoa-registry-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
-    <relativePath>../easysoa-registry-parent/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
+
+  <artifactId>easysoa-registry-rest</artifactId>
+  <name>EasySOA Registry REST</name>
 
   <dependencies>
     <!-- Common deps -->
@@ -44,7 +44,7 @@
       <artifactId>nuxeo-core</artifactId>
       <scope>compile</scope>
     </dependency>
-    
+
     <!-- ServiceStats automation -->
     <dependency>
       <groupId>org.nuxeo.ecm.automation</groupId>
@@ -54,23 +54,19 @@
       <groupId>org.nuxeo.ecm.automation</groupId>
       <artifactId>nuxeo-automation-server</artifactId>
     </dependency>
-    
+
     <!-- Service finders -->
     <dependency>
       <groupId>net.sourceforge.htmlcleaner</groupId>
       <artifactId>htmlcleaner</artifactId>
-      <version>2.2</version>
-      <scope>compile</scope>
     </dependency>
 
     <!-- HTTP body parsing -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-common-utilities</artifactId>
-      <version>2.4.2</version>
-      <scope>compile</scope>
     </dependency>
-    
+
     <!-- Tests -->
     <dependency>
       <groupId>junit</groupId>
@@ -87,12 +83,10 @@
     <dependency>
       <groupId>org.eclipse.osgi</groupId>
       <artifactId>org.eclipse.osgi.services</artifactId>
-      <version>3.2.100.v20100503</version>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.script</groupId>

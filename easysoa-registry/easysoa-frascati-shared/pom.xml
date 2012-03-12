@@ -1,44 +1,31 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-			
-	<groupId>org.easysoa.registry</groupId>
-	<artifactId>easysoa-frascati-shared</artifactId>
-	<name>easysoa-frascati-processor</name>
-	<version>0.4-SNAPSHOT</version>	
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.eclipse.stp.sca</groupId>
-  			<artifactId>sca-model</artifactId>
-			<version>2.0.1.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<!--				
-		<dependency>
-			<groupId>org.ow2.frascati</groupId>
-			<artifactId>frascati-sca-parser</artifactId>
-			<version>1.5-SNAPSHOT</version>	
-			<scope>provided</scope>		
-		</dependency>	
-		-->
-	</dependencies>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
 
-	<!-- Plugin management -->
-	<build>		
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+  <parent>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>easysoa-frascati-shared</artifactId>
+  <name>easysoa-frascati-processor</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.stp.sca</groupId>
+      <artifactId>sca-model</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- <dependency> -->
+    <!-- <groupId>org.ow2.frascati</groupId> -->
+    <!-- <artifactId>frascati-sca-parser</artifactId> -->
+    <!-- <scope>provided</scope> -->
+    <!-- </dependency> -->
+  </dependencies>
 
   <repositories>
     <repository>

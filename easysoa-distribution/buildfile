@@ -11,7 +11,7 @@ require 'shellwords'
 
 ############### CONFIG LOADING
 
-NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-dm-5.4.2-tomcat'
+NUXEO_PATH = (Buildr.settings.user['nuxeo'] != nil ? Buildr.settings.user['nuxeo']['path'] : nil) || Buildr.settings.build['nuxeo']['path'] || ENV['HOME']+'/nuxeo-cap-5.5-tomcat'
 TALEND_ESB_PATH = (Buildr.settings.user['talend-esb'] != nil ? Buildr.settings.user['talend-esb']['path'] : nil) || Buildr.settings.build['talend-esb']['path'] || ENV['HOME']+'/talend-esb'
 NODE_PATH = (Buildr.settings.user['node'] != nil ? Buildr.settings.user['node']['path'] : nil) || '/usr/local/bin/'
 FRASCATI_PATH = './deps/frascati'
@@ -71,6 +71,7 @@ EASYSOA = 'easysoa'
 EASYSOA_COMMON = EASYSOA+':easysoa-common'
 EASYSOA_WEB = EASYSOA+':easysoa-web'
 EASYSOA_REGISTRY = EASYSOA+':easysoa-registry'
+EASYSOA_REGISTRY_PACKAGING = EASYSOA+':easysoa-registry:nuxeo-packaging'
 EASYSOA_PROXY = EASYSOA+':easysoa-proxy'
 EASYSOA_PAF = EASYSOA+':samples:easysoa-samples-pureairflowers'
 EASYSOA_TRAVEL = EASYSOA+':samples:easysoa-samples-smarttravel'
@@ -106,31 +107,36 @@ define 'easysoa', :base_dir => '../' do
         maven(['clean', 'install'], project)
       end
       
-      desc 'Send plugins to Nuxeo'
-      task :dist do
-      
-        PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
-        puts "===== Nuxeo plugins - Deleting ====="
-        puts PLUGINS_TO_DELETE
-        rm PLUGINS_TO_DELETE
-        
-        puts "===== FraSCAti libs - Deploying to '" + NUXEO_PATH + "' ====="
-        puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar']
-        puts "(+ " + FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'].to_a().length().to_s() + " FraSCAti libs)";
-        cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar'], NUXEO_PATH + '/lib'
-        cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'], NUXEO_PATH + '/lib'
-        
-        puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
-        puts FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*']
-        cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], NUXEO_PATH
-        
-
-      end
-      
       task :nuxeoreset do
         NUXEO_DATA_PATH = _(NUXEO_PATH + '/nxserver/data');
         puts "Cleaning folder: " + NUXEO_DATA_PATH
         rm_rf NUXEO_DATA_PATH
+      end
+      
+      desc 'EasySOA Registry packaging project'
+      define 'nuxeo-packaging' do
+      
+        desc 'Send plugins to Nuxeo'
+        task :dist do
+        
+          PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
+          puts "===== Nuxeo plugins - Deleting ====="
+          puts PLUGINS_TO_DELETE
+          rm PLUGINS_TO_DELETE
+          
+          puts "===== FraSCAti libs - Deploying to '" + NUXEO_PATH + "' ====="
+          puts "(TEMPORARILY DISABLED DUE TO NUXEO 5.5 COMPATIBILITY ISSUES)"
+          # FIXME
+          # puts FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar']
+          # puts "(+ " + FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'].to_a().length().to_s() + " FraSCAti libs)";
+          # cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/*.jar'], _(NUXEO_PATH + '/lib/')
+          # cp_r FileList[project(EASYSOA_REGISTRY).base_dir + '/nuxeo-frascati/resources/frascati/lib/*.jar'], _(NUXEO_PATH + '/lib/')
+          
+          puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
+          puts FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*']
+          cp_r FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*'], _(NUXEO_PATH)
+        end
+      
       end
     
   end
@@ -187,7 +193,7 @@ desc "Builds registry components using Maven"
 task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn']
                  
 desc "Deploys registry components"
-task :nx_dist => [EASYSOA_REGISTRY+':dist']
+task :nx_dist => [EASYSOA_REGISTRY_PACKAGING+':dist']
 
 desc "Deploys registry components"
 task :nx_reset => [EASYSOA_REGISTRY+':nuxeoreset']
@@ -270,6 +276,7 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   puts "Copying web services and proxies..."
   puts "  * Needed libraries..."
   cp FileList[project(EASYSOA_REGISTRY).base_dir+"/target/**/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(EASYSOA_REGISTRY).base_dir+"/easysoa-registry-api/easysoa-registry-api-messaging/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-intents/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
@@ -309,7 +316,7 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
     puts "Files copy failed: Nuxeo is probably running. Could you please stop it?"
     raise e
   end
-  system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-dm*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
+  system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
   cp_r FileList['./deps/frascati/lib/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/' # XXX Dirty way of managing FraSCAti dependencies

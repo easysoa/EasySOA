@@ -3,19 +3,78 @@
 
   <require>org.nuxeo.theme.nuxeo.default</require>
   <require>org.nuxeo.theme.nuxeo.virtualnavigation</require>
+  <require>org.nuxeo.ecm.admin.center.theme</require>
 
-  <extension target="org.nuxeo.theme.services.ThemeService" point="views">
-    <!-- EasySOA CSS -->
-    <view name="nuxeo5 includes" template-engine="jsf-facelets" merge="true">
-      <format-type>widget</format-type>
-      <resource>easysoa.css</resource>
-    </view>
+  <extension target="org.nuxeo.theme.styling.service" point="styles">
+    <style name="header">
+      <src>themes/css/header.css</src>
+    </style>
   </extension>
 
-  <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
-    <resource name="easysoa.css">
-      <path>css/easysoa.css</path>
-    </resource>
+  <!-- Register new flavor for EasySOA (collections of presets) -->
+  <extension target="org.nuxeo.theme.styling.service" point="flavors">
+
+    <flavor name="easysoa">
+      <label>label.theme.flavor.nuxeo.default</label>
+      <logo>
+        <path>/img/easysoa/LogoCore50.png</path>
+        <previewPath>/img/easysoa/LogoCore50.png</previewPath>
+        <width>211</width>
+        <height>50</height>
+        <title>EasySOA Core</title>
+      </logo>
+      <presetsList>
+        <presets category="border" src="themes/palettes/easysoa-borders.properties" />
+        <presets category="background" src="themes/palettes/easysoa-backgrounds.properties" />
+        <presets category="font" src="themes/palettes/easysoa-fonts.properties" />
+        <presets category="color" src="themes/palettes/easysoa-colors.properties" />
+      </presetsList>
+      <palettePreview>
+        <colors>
+          <color>#cfecff</color>
+          <color>#70bbff</color>
+          <color>#4e9ae1</color>
+          <color>#fff</color>
+          <color>#fff</color>
+          <color>#0079a6</color>
+          <color>#00416b</color>
+          <color>#332e2e</color>
+          <color>#cfecff</color>
+        </colors>
+      </palettePreview>
+    </flavor>
+  </extension>
+
+  <!--  make easySOA the default flavor -->
+  <extension target="org.nuxeo.theme.styling.service" point="pages">
+     <themePage name="galaxy/popup">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="galaxy/print">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="admin/default">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="userCenter/default">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="galaxy/default">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+  </extension>
+
+    <!-- application settings -->
+  <extension target="org.nuxeo.theme.services.ThemeService" point="applications">
+
+    <application root="${org.nuxeo.ecm.contextPath}" template-engine="jsf-facelets">
+
+      <view id="/view_easysoa.xhtml">
+        <theme>admin/default</theme>
+      </view>
+
+    </application>
+
   </extension>
 
 </component>

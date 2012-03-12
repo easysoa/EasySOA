@@ -8,7 +8,7 @@
 
 nuxeo:
   path: 
-  # To use for packaging. By default $HOME/nuxeo-dm-5.4.2-tomcat
+  # To use for packaging. By default $HOME/nuxeo-cap-5.5-tomcat
   # Specify the path either absolute or relative to the buildfile.
   
 talend-esb:

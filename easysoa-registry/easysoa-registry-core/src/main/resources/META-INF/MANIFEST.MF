@@ -12,6 +12,8 @@ Nuxeo-Require: org.nuxeo.ecm.core.api,
  org.nuxeo.ecm.core.schema,
  org.nuxeo.ecm.directory.api,
  org.easysoa.registry.api.local
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.easysoa.EasySOAInitComponent
 Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/layout-misc-contrib.xml,
  OSGI-INF/layout-api-contrib.xml,
@@ -27,7 +29,6 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/actions-contrib.xml,
  OSGI-INF/lifecycle-contrib.xml,
  OSGI-INF/DocumentServiceComponent.xml,
- OSGI-INF/EasySOAInitComponent.xml,
  OSGI-INF/VocabularyHelperComponent.xml,
  OSGI-INF/ImplementationRelationServiceComponent.xml,
  OSGI-INF/workflow-contrib.xml,
@@ -41,4 +42,5 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/preview-adapter-contrib.xml,
  OSGI-INF/ServicesRootMapperServiceComponent.xml,
  OSGI-INF/WebFileParsingPoolService.xml,
- OSGI-INF/webfileparsers-contrib.xml
+ OSGI-INF/webfileparsers-contrib.xml,
+ OSGI-INF/content-template-contrib.xml

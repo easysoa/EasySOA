@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.easysoa.samples</groupId>
-	<artifactId>easysoa-samples</artifactId>
-	<version>0.4-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>Easysoa Samples Project</name>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<modules>
-		<module>easysoa-samples-parent</module>
-		<module>easysoa-samples-pureairflowers</module>
-		<module>easysoa-samples-smarttravel</module>
-		<!--<module>easysoa-samples-smarttravel-test</module>-->
-	</modules>
-	
+  <groupId>org.easysoa.samples</groupId>
+  <artifactId>easysoa-samples</artifactId>
+  <version>0.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>EasySOA Samples Project</name>
+
+  <modules>
+    <module>easysoa-samples-parent</module>
+    <module>easysoa-samples-pureairflowers</module>
+    <module>easysoa-samples-smarttravel</module>
+    <!--<module>easysoa-samples-smarttravel-test</module> -->
+  </modules>
+
 </project>

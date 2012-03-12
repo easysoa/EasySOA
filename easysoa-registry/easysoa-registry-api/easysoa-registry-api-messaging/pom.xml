@@ -1,72 +1,47 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  	
-  	<modelVersion>4.0.0</modelVersion>
-  	<groupId>org.easysoa.registry.api</groupId>
-  	<artifactId>easysoa-registry-api-messaging</artifactId>
-	<version>0.4-SNAPSHOT</version>
-  	<packaging>jar</packaging>
+  <modelVersion>4.0.0</modelVersion>
 
-  	<name>EasySOA Registry Messaging API</name>
-  	<url>http://maven.apache.org</url>
+  <parent>
+    <groupId>org.easysoa.registry.api</groupId>
+    <artifactId>easysoa-registry-api</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-	<properties>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	</properties>
+  <artifactId>easysoa-registry-api-messaging</artifactId>
+  <packaging>jar</packaging>
+  <name>EasySOA Registry Messaging API</name>
 
-  	<dependencies>
-        <!-- Easysoa Proxy Persistence API -->        
-	    <dependency>
-			<groupId>org.easysoa.proxy</groupId>
-			<artifactId>easysoa-proxy-core-persistence</artifactId>
-			<version>${project.version}</version>
-	    </dependency>
-  		<!-- Javax servlet -->
-        <dependency>
-        	<groupId>javax.servlet</groupId>
-        	<artifactId>servlet-api</artifactId>
-        	<version>2.5</version>
-        </dependency>
-    	<!--<dependency>
-      		<groupId>org.json</groupId>
-      		<artifactId>json</artifactId>
-      		<version>20090211</version>
-    	</dependency>-->      
-    	<dependency>
-      		<groupId>log4j</groupId>
-      		<artifactId>log4j</artifactId>
-      		<version>1.2.16</version>
-    	</dependency>  
-  		<!-- JUnit test -->
-        <dependency>
-        	<groupId>junit</groupId>
-          	<artifactId>junit</artifactId>
-          	<version>4.8.2</version>
-          	<scope>test</scope>
-        </dependency>
-        <dependency>
-        	<groupId>net.sf.json-lib</groupId>
-        	<artifactId>json-lib</artifactId>
-        	<version>2.2.1</version>
-        	<classifier>jdk15</classifier>
-        </dependency>
-  	</dependencies>
-  	
-    <build>    
-        <!-- Plugin management -->
-        <pluginManagement>
-            <plugins>
-                <!-- Compile with Java 1.6 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                    </configuration>
-                </plugin>
-           	</plugins>
-    	</pluginManagement>
-	</build>  	
-  	
+  <dependencies>
+    <!-- Easysoa Proxy Persistence API -->        
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+	  <artifactId>easysoa-proxy-core-persistence</artifactId>
+    </dependency>
+	<!-- Javax servlet -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    <!-- <dependency> -->
+    <!-- <groupId>org.json</groupId> -->
+    <!-- <artifactId>json</artifactId> -->
+    <!-- </dependency> -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <classifier>jdk15</classifier>
+    </dependency>
+  </dependencies>
+
 </project>

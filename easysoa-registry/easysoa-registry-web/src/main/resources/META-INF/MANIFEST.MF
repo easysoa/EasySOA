@@ -15,7 +15,9 @@ Nuxeo-Require: org.nuxeo.runtime,
  org.nuxeo.opensocial.gadgets.core,
  org.easysoa.registry.core
 Nuxeo-Component: OSGI-INF/layout-contrib.xml,
+ OSGI-INF/actions-contrib.xml,
  OSGI-INF/contentviews-contrib.xml,
  OSGI-INF/directorytreemanager-contrib.xml,
  OSGI-INF/directory-ui-contrib.xml,
- OSGI-INF/theme-contrib.xml
+ OSGI-INF/theme-contrib.xml,
+ OSGI-INF/urlservice-contrib.xml
