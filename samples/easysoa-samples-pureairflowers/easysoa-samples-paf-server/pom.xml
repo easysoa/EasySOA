@@ -85,16 +85,22 @@
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>
 
-    <!-- Tests -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-
     <!-- Classpath discovery -->
     <dependency>
       <groupId>org.easysoa.samples.paf</groupId>
       <artifactId>easysoa-classpath-discovery-prototype</artifactId>
+    </dependency>
+
+    <!-- XXX Needed by Apache CXF, but missing from the deps. hierarchy -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-ext</artifactId>
+    </dependency>
+
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 </project>

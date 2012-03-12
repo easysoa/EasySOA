@@ -1,16 +1,16 @@
 
 To build this mock : mvn assembly:assembly
 
-To launch the mock : 
-- Unzip the generated zip "travel-services-backup-1.0-SNAPSHOT-bin.zip" un a folder and unzip it.
-- Go to the bin directory
-- Execute the following command : java -jar travel-services-backup-1.0-SNAPSHOT.jar http://localhost:9020/
+To launch the mock :
+- unzip target/easysoa-samples-smarttravel-services-backup-0.4-SNAPSHOT-bin.zip -d target
+- cd target/easysoa-samples-smarttravel-services-backup-0.4-SNAPSHOT/bin
+- java -jar easysoa-samples-smarttravel-services-backup-0.4-SNAPSHOT.jar http://localhost:9020/
 
 -------
 
 This mock is a modified copy of the meteo-sca-backup to avoid problems due to differences with WSDL signatures (One reason is that FraSCAti ignore JAXWS annotations).
 
-In addition, two other mock are included : 
+In addition, two other mock are included :
 - The currency mock : http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?WSDL
 - The translate mock : http://api.microsofttranslator.com/V1/Soap.svc?WSDL
 
@@ -24,7 +24,7 @@ A Server class with a main method creates an instance of the web service impleme
 The main method need an argument to work : The endpoint to publish the mocked services.
 If the endpoint is not specified, the default value is used : http://localhost:9020/
 
-Services are published to these specifics endpoints (if base address is http://localhost:9020/): 
+Services are published to these specifics endpoints (if base address is http://localhost:9020/):
 
 - Meteo backup : http://localhost:9020/WeatherService
 - Currency backup : http://localhost:9020/CurrencyServerWebService

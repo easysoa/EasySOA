@@ -100,6 +100,15 @@
   <!-- ======================= -->
   <dependencyManagement>
     <dependencies>
+      <!-- Import Nuxeo dependencyManagement -->
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-features-parent</artifactId>
+        <version>5.5</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
       <!-- EasySOA -->
       <dependency>
         <groupId>org.easysoa</groupId>
@@ -329,6 +338,11 @@
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
         <version>4.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.1.4</version>
       </dependency>
 
       <dependency>
@@ -680,14 +694,6 @@
       </dependency>
 
       <!-- Nuxeo -->
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-features-parent</artifactId>
-        <version>5.5</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
       <dependency>
         <groupId>org.nuxeo.ecm.automation</groupId>
         <artifactId>nuxeo-automation-client</artifactId>
