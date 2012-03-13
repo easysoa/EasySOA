@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Turns Nuxeo 5.4.2 into a simple service registry.
+Turns Nuxeo 5.5 into a simple service registry.
 
 ## Repository structure
 
