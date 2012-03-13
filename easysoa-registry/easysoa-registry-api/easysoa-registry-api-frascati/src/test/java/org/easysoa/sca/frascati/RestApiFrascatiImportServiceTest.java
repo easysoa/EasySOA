@@ -255,7 +255,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase
             none = false;
             // TODO : now using messaging api, check that this test still works
             assertTrue("'RestSoapProxy.composite' not found in request", record
-                    .getInMessage().getMessageContent().getContent()
+                    .getInMessage().getMessageContent().getRawContent()
                     .contains("RestSoapProxy.composite"));
         }
         assertTrue(
