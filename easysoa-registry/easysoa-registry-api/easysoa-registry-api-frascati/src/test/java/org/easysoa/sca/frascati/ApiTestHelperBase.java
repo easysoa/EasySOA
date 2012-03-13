@@ -24,63 +24,74 @@ import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.registry.frascati.ParsingProcessingContext;
 import org.eclipse.stp.sca.Composite;
 import org.junit.runner.RunWith;
-import org.nuxeo.frascati.NuxeoFraSCAtiException;
-import org.nuxeo.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.frascati.FraSCAtiServiceException;
+import org.easysoa.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.ow2.frascati.util.FrascatiException;
 
-
 /**
- * TODO PROBLEM This test in project easysoa-registry-api-frascati should
- * not use Nuxeo classes or features, since registry-api in on not local
- * to Nuxeo but remote !!
+ * TODO PROBLEM This test in project easysoa-registry-api-frascati should not
+ * use Nuxeo classes or features, since registry-api in on not local to Nuxeo
+ * but remote !!
  * 
  * @author jguillemotte
- *
+ * 
  */
 @RunWith(FeaturesRunner.class)
 @Features(FraSCAtiFeature.class)
-public class ApiTestHelperBase {
+public class ApiTestHelperBase
+{
 
     static final Log log = LogFactory.getLog(ApiTestHelperBase.class);
-	
-	/** The FraSCAti platform */
+
+    /** The FraSCAti platform */
     protected static FraSCAtiServiceItf frascati;
 
-    protected static ArrayList<Composite> componentList;    
-    
-	protected static void startMock() {
-		log.info("Services Mock Starting");
-		ParsingProcessingContext context  = null;
-		log.info("frascati = " + frascati);
-		try{
-			context = new ParsingProcessingContext(frascati.newProcessingContext(null));
-			frascati.processComposite("src/test/resources/RestApiMock.composite",context);
-			componentList.add(context.getRootComposite());			
-		} catch (NuxeoFraSCAtiException e){
-			log.info(e.getMessage());
-		}
-	}
-	
-	/**
-	 * Start FraSCAti
-	 * @throws FrascatiException 
-	 */
-	protected static void startFraSCAti() {
-		log.info("FraSCATI Starting");
-		componentList =  new ArrayList<Composite>();
-		// TODO : do not use Nuxeo Framework in this test to start Frascati
-		// TODO : Remove all nuxeo stuff !!
-		frascati = Framework.getLocalService(FraSCAtiServiceItf.class);
-		log.info("frascati = " + frascati);
-		// Use this code instead. PB FraSCAti is not a FraSCAtiServiceItf ....
-		// FraSCAti frascati = FraSCAti.newFraSCAti();
-	}
-	
+    protected static ArrayList<Composite> componentList;
+
+    protected static void startMock()
+    {
+        log.info("Services Mock Starting");
+        log.info("frascati = " + frascati);
+        String compositeName = null;
+        try
+        {
+            compositeName = frascati.processComposite(
+                    "src/test/resources/RestApiMock.composite",
+                    FraSCAtiServiceItf.all);
+            
+            componentList.add(frascati.getComposite(compositeName));
+        } catch (FraSCAtiServiceException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Start FraSCAti
+     * 
+     * @throws FrascatiException
+     */
+    protected static void startFraSCAti()
+    {
+
+        log.info("FraSCATI Starting");
+        componentList = new ArrayList<Composite>();
+        // TODO : do not use Nuxeo Framework in this test to start Frascati
+        // TODO : Remove all nuxeo stuff !!
+        frascati = Framework.getLocalService(
+                FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+        log.info("frascati = " + frascati);
+        // Use this code instead. PB FraSCAti is not a FraSCAtiServiceItf ....
+        // FraSCAti frascati = FraSCAti.newFraSCAti();
+    }
+
 }

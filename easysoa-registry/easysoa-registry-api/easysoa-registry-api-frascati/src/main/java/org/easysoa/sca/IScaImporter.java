@@ -26,87 +26,104 @@ import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 
 /**
- * Introduced to ease adding another (notably FraSCAti-based) SCA importer in addition to the
- * original XML-based one.
+ * Introduced to ease adding another (notably FraSCAti-based) SCA importer in
+ * addition to the original XML-based one.
  * 
  * @author mdutoo
- *
+ * 
  */
-public interface IScaImporter {
+public interface IScaImporter
+{
 
-	/**
-	 * Import a SCA
-	 */
-	public void importSCA() throws Exception;
-	
-	/**
-	 * 
-	 * @param appliImplModel
-	 */
-    // TODO Not really a good solution, do better	
-	//public void setParentAppliImpl(DocumentModel appliImplModel);
-	public void setParentAppliImpl(Object appliImplModel);
-	
-	/**
-	 * 
-	 * @param serviceStackType
-	 */
-	public void setServiceStackType(String serviceStackType);
-	
-	/**
-	 * 
-	 * @param serviceStackUrl
-	 */
-	public void setServiceStackUrl(String serviceStackUrl);
-	
-	/**
-	 * Returns the Nuxeo document manager
-	 * @return
-	 */
-    // TODO Not really a good solution, do better
-	//public CoreSession getDocumentManager();
-	//public Object getDocumentManager();
+    /**
+     * Import a SCA
+     */
+    public void importSCA() throws Exception;
+
+    /**
+     * 
+     * @param serviceStackType
+     */
+    public void setServiceStackType(String serviceStackType);
+
+    /**
+     * 
+     * @param serviceStackUrl
+     */
+    public void setServiceStackUrl(String serviceStackUrl);
 
     /**
      * 
      * @return
      */
     public File getCompositeFile();
-    
+
     /**
      * 
      * @return
      */
     public String getServiceStackType();
-    
+
     /**
      * 
      * @return
      */
     public String getServiceStackUrl();
-    
+
     /**
      * 
      * @return
      */
     public String getCurrentArchiName();
-    
+
     /**
      * 
      * @return
      */
     public String toCurrentArchiPath();
+
+    
+
+    public BindingVisitorFactory getBindingVisitorFactory();
+
     
     /**
-     * Returns a model property
-     * @param arg0
-     * @param arg1
+     * Create and return a specific visitor for a SCA Service (including 
+     * SCA ComponentService) Binding
+     *  
      * @return
+     *          a Service Binding visitor
      */
-    public String getModelProperty(String arg0, String arg1) throws Exception;
-    
-    public BindingVisitorFactory getBindingVisitorFactory();
     public ScaVisitor createServiceBindingVisitor();
+
+
+    /**
+     * Create and return a specific visitor for a SCA Reference (including 
+     * SCA ComponentReference) Binding
+     * 
+     * @return
+     *          a Reference Binding visitor
+     */
     public ScaVisitor createReferenceBindingVisitor();
     
+
+    /**
+     * Set the appliImplURL attribute which value is equal to the AppliImpl.URL
+     * property apply to the AppliImpl.SCHEMA store of a DocumentModel object
+     * (Nuxeo)
+     * 
+     * @param appliImplURL
+     *          AppliImpl.URL property value apply to the AppliImpl.SCHEMA store
+     *          of a DocumentModel
+     */
+    public void setAppliImplURL(String appliImplURL);
+    
+    /**
+     * Return the appliImplURL attribute
+     * 
+     * @return
+     *          the appliImplURL
+     */
+    public String getAppliImplURL();
+
 }

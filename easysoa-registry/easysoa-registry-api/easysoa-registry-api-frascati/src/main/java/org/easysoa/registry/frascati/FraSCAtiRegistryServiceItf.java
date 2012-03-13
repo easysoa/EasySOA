@@ -25,7 +25,8 @@ import java.net.URL;
 import java.util.Set;
 
 import org.eclipse.stp.sca.Composite;
-import org.nuxeo.frascati.api.FraSCAtiServiceItf; // TODO pb
+import org.easysoa.frascati.api.FraSCAtiServiceItf; // TODO pb
+import org.easysoa.frascati.api.ScaImporterRecipientItf;
 
 public interface FraSCAtiRegistryServiceItf {
 
@@ -46,20 +47,7 @@ public interface FraSCAtiRegistryServiceItf {
 	 * @throws FrascatiException
 	 */
 	public abstract FraSCAtiServiceItf getFraSCAti();
-
-	/**
-	 * 
-	 */
-	public abstract ParsingProcessingContext newParsingProcessingContext(URL... urls) throws Exception;
-
-	/**
-	 * 
-	 * @param urls
-	 * @return
-	 * @throws FrascatiException
-	 */
-	public abstract DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws Exception;
-
+	
 	/**
 	 * 
 	 * @param compositeUrl
@@ -84,10 +72,10 @@ public interface FraSCAtiRegistryServiceItf {
 	public abstract Set<Composite> readScaZip(File scaZipFile) throws Exception;
 
 	/**
-	 * Returns the default impl of FraSCAtiRuntimeScaImporterItf (for this impl of FraSCAtiServiceItf)
+	 * Returns the default impl of ScaImporterRecipientItf (for this impl of FraSCAtiServiceItf)
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract FraSCAtiRuntimeScaImporterItf newRuntimeScaImporter() throws Exception;
+	public abstract ScaImporterRecipientItf newRuntimeScaImporter() throws Exception;
 
 }

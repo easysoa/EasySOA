@@ -17,40 +17,32 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-
 package org.easysoa.sca.frascati;
 
 import java.io.File;
 
-import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
 import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
+//import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 
 /**
  * Sca Importer (Nuxeo free), uses the Registry API to register services in Nuxeo
+ * 
  * @author jguillemotte
- *
  */
-public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase implements FraSCAtiRuntimeScaImporterItf {
+public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase
+{   
+    /**
+     * Default constructor
+     * 
+     * @throws Exception
+     */
+    public ApiFraSCAtiScaImporter(
+            BindingVisitorFactory bindingVisitorFactory,
+            File compositeFile,
+            FraSCAtiRegistryServiceItf frascatiService) throws Exception
+    {
+        super(bindingVisitorFactory, compositeFile, frascatiService);
+    }
 
-	/**
-	 * Default constructor
-	 * @throws Exception
-	 */
-
-	public ApiFraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory, File compositeFile,
-	        FraSCAtiRegistryServiceItf frascatiService) throws Exception {
-		super(bindingVisitorFactory, compositeFile, frascatiService);
-	}
-
-	@Override
-	public String getModelProperty(String arg0, String arg1) throws Exception {
-		return null;
-	}
-
-	@Override
-	public void setParentAppliImpl(Object appliImplModel) {
-		// Nothing to do here
-	}
-	
 }

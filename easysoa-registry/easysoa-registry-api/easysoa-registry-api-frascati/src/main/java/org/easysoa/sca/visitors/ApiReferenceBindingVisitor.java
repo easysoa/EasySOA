@@ -60,7 +60,8 @@ public class ApiReferenceBindingVisitor extends ApiScaVisitorBase {
 	    properties.put(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
 	    properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
 	    //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));	
-	    properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+	    properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getAppliImplURL());
+	    //.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
         api.notifyServiceReference(properties);
 	    
         // Notify referenced service

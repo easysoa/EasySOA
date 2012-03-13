@@ -28,8 +28,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
 
-import org.nuxeo.frascati.api.FraSCAtiServiceItf;
-import org.nuxeo.frascati.api.ProcessingModeProxy;
+import org.easysoa.frascati.FraSCAtiServiceException;
+import org.easysoa.frascati.api.FraSCAtiServiceItf;
 
 /**
  * TODO pb : now wrongly depends on Nuxeo through FraSCAtiServiceItf
@@ -41,18 +41,21 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 
 	private static Log log = LogFactory.getLog(FraSCAtiRegistryServiceBase.class);
     
-    protected FraSCAtiServiceItf frascati; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti ??!!?????
+        protected FraSCAtiServiceItf frascati; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti ??!!?????
 
+        
 	public FraSCAtiRegistryServiceBase() {
 	}
 
 	/**
 	 * Get an SCA composite.
 	 * 
-	 * @param composite the composite to get.
-	 * @return the composite.
+	 * @param composite 
+	 *     the composite to get.
+	 * @return 
+	 *     the composite.
 	 */
-	public Object getComposite(String composite) throws Exception { //TODO prettier ApiException ??
+	public Composite getComposite(String composite) throws Exception { //TODO prettier ApiException ??
 		return frascati.getComposite(composite);
 	}
 
@@ -66,31 +69,19 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	public FraSCAtiServiceItf getFraSCAti() {
 		return frascati;
 	}
-
-	// //////////////////////////////////////////////
-	// parsing methods
-	// TODO rather move them in a parsing service, and extract calls to FraSCAti
-	// as new methods of FraSCAti service ?
-
-	/**
-	 * 
-	 */
-	public ParsingProcessingContext newParsingProcessingContext(URL... urls) throws Exception { //TODO prettier ApiException ??
-		return new ParsingProcessingContext(frascati.newProcessingContext(urls));
-	}
-
-	/**
-	 * 
-	 * @param urls
-	 * @return
-	 * @throws Exception 
-	 */
-	public DiscoveryProcessingContext newDiscoveryProcessingContext(URL... urls) throws Exception  {
-		// add a parameter to pass the importer
-		FraSCAtiRuntimeScaImporterItf runtimeScaImporter = newRuntimeScaImporter();
-		return new DiscoveryProcessingContext(this, runtimeScaImporter, urls);
-	}
 	
+	/**
+         * 
+         * @param compositeUrl
+         * @param scaZipUrls
+         * @return
+         * @throws Exception
+         */
+        public Composite readComposite(URL compositeUrl, URL... scaZipUrls)   throws Exception {
+                
+                return readComposite(compositeUrl, FraSCAtiServiceItf.all, scaZipUrls);
+        }
+        
 	/**
 	 * 
 	 * @param compositeUrl
@@ -98,45 +89,33 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * @return
 	 * @throws Exception
 	 */
-	public Composite readComposite(URL compositeUrl, URL... scaZipUrls)	throws Exception {
+	public Composite readComposite(URL compositeUrl, int mode, URL... scaZipUrls)	throws Exception {
+	    
+	        if(frascati == null)
+	        {
+	            log.warn("No FraSCAtiService attached to this FraSCAti Registry Service");
+	            return null;
+	        }
 		// Create a processing context with where to find ref'd classes
 		log.debug("composite URL = " + compositeUrl);
 		log.debug("scaZipUrls = " + scaZipUrls);
-		// TODO : if we have a standalone composite file, do not instanciate and start the composite
-		// TODO : change the processing context to discovery processing context
 		
-		//ParsingProcessingContext processingContext = this.newParsingProcessingContext(scaZipUrls);
-		DiscoveryProcessingContext processingContext = this.newDiscoveryProcessingContext(scaZipUrls);
-		
-		// Only parse and check the SCA composite, i.e., don't generate code for
-		// the SCA composite and don't instantiate it.
-		processingContext.setProcessingMode(ProcessingModeProxy.check); // else composite fails to start because ref'd WSDLs are unavailable
-		//processingContext.setProcessingMode(ProcessingModeProxy.parse);
-
-		// TODO : Solve problem here ...
-		// Problem with this mode : class not found exceptions when a single composite is loaded
-		//processingContext.setProcessingMode(ProcessingMode.compile);
-		
-		// Generate Juliac class generation and compilation errors
-		//processingContext.setProcessingMode(ProcessingMode.instantiate);
-		//processingContext.setProcessingMode(ProcessingMode.start);
+		String compositeName = null;
 		
 		try {
-			// Register first => registering fails
-			// Process next
-			// Process the SCA composite.
-			frascati.processComposite(compositeUrl.toString(), processingContext);
+			compositeName = frascati.processComposite(
+			        compositeUrl.toString(), FraSCAtiServiceItf.all,scaZipUrls);
 		} 
-		catch (Exception fe) { // NuxeoFraSCAtiException
-			log.error("The number of checking errors is equals to " + processingContext.getErrors());
-			log.error("The number of checking warnings is equals to " + processingContext.getWarnings());
+		catch (FraSCAtiServiceException fe) { 
+			log.error("The number of checking errors is equals to " + frascati.getErrors());
+			log.error("The number of checking warnings is equals to " + frascati.getWarnings());
 			log.error(fe);	
 		}
 		// TODO feed parsing errors / warnings up to UI ?!
-		log.warn("\nErrors while parsing " + compositeUrl + ":\n" + processingContext.getErrorMessages());
-		log.info("\nWarnings while parsing " + compositeUrl + ":\n" + processingContext.getWarningMessages());
+		log.warn("\nErrors while parsing " + compositeUrl + ":\n" + frascati.getErrorMessages());
+		log.info("\nWarnings while parsing " + compositeUrl + ":\n" + frascati.getWarningMessages());
 		
-		Composite composite = processingContext.getRootComposite();
+		Composite composite = frascati.getComposite(compositeName);
 		
 		if(composite == null){
 			throw new FraSCAtiRegistryException("Composite '" + compositeUrl + "' can not be loaded");

@@ -26,7 +26,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.api.EasySOAApiSession;
-import org.easysoa.doctypes.AppliImpl;
+//import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.properties.ApiUrlProcessor;
@@ -64,7 +64,8 @@ public class ApiServiceBindingVisitor extends ApiScaVisitorBase {
         }
         log.debug("serviceUrl is not null, registering API's and services...");
         //String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-        String appliImplUrl = scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+        String appliImplUrl = scaImporter.getAppliImplURL();
+        //.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         String apiUrl = ApiUrlProcessor.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         // Using default value for API url
 	    

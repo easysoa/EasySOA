@@ -27,7 +27,6 @@ import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
 import org.easysoa.registry.frascati.RestBindingInfoProvider;
 import org.easysoa.registry.frascati.WSBindingInfoProvider;
 import org.easysoa.sca.BindingInfoProvider;
@@ -37,6 +36,7 @@ import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Composite;
+import org.ow2.frascati.util.FrascatiException;
 
 /**
  * ScaImporter using FraSCAti SCA parser
@@ -87,174 +87,235 @@ import org.eclipse.stp.sca.Composite;
  * @author jguillemotte
  *
  */
-public abstract class AbstractScaImporterBase implements IScaImporter {
-
-	public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
-	public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
-	public static final String WSDLINSTANCE_URI = "http://www.w3.org/2004/08/wsdl-instance";
-	//public static final QName SCA_COMPONENT_QNAME = new QName(SCA_URI, "component");
-	//public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
-	//public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
-
-	// Logger
-	private static Log log = LogFactory.getLog(AbstractScaImporterBase.class);
-
-	// Import either a composite file or a composite object
-	protected File compositeFile;
-	protected Composite scaComposite;
-	
-	private String serviceStackType;
-	private String serviceStackUrl;
-	private Stack<String> archiNameStack = new Stack<String>();
-	private Stack<EObject> bindingStack = new Stack<EObject>();
-	protected BindingVisitorFactory bindingVisitorFactory;
-	
-	/**
-	 * List of binding info providers
-	 */
-    private List<BindingInfoProvider> bindingInfoProviders = null;
+public abstract class AbstractScaImporterBase implements IScaImporter
+{
+    public static final String SCA_URI = "http://www.osoa.org/xmlns/sca/1.0";
+    public static final String FRASCATI_URI = "http://frascati.ow2.org/xmlns/sca/1.1";
+    public static final String WSDLINSTANCE_URI = "http://www.w3.org/2004/08/wsdl-instance";
     
-	/**
-	 * Constructor
-	 * @param compositeFile Composite file to import, can be null if this is used as a runtime importer
-	 * @throws FrascatiException 
-	 */
-	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile) {
-		this.bindingVisitorFactory = bindingVisitorFactory;
-		this.compositeFile = compositeFile;
-	}
-	
-	/**
-	 * 
-	 * @param bindingVisitorFactory
-	 * @param scaComposite Composite object to import, can be null if this is used as a runtime importer
-	 * @throws FrascatiException
-	 */
-	public AbstractScaImporterBase(BindingVisitorFactory bindingVisitorFactory, Composite scaComposite){
-		this.bindingVisitorFactory = bindingVisitorFactory;
-		this.scaComposite = scaComposite;		
-	}
+    // public static final QName SCA_COMPONENT_QNAME = new QName(SCA_URI, "component");
+    // public static final QName SCA_SERVICE_QNAME = new QName(SCA_URI, "service");
+    // public static final QName SCA_REFERENCE_QNAME = new QName(SCA_URI, "reference");
+    
+    // Logger
+    private static Log log = LogFactory.getLog(AbstractScaImporterBase.class);
+    
+    // Import either a composite file or a composite object
+    protected File compositeFile;
+    protected Composite scaComposite;
+    private String serviceStackType;
+    private String serviceStackUrl;
+    private Stack<String> archiNameStack = new Stack<String>();
+    private Stack<EObject> bindingStack = new Stack<EObject>();
+    protected BindingVisitorFactory bindingVisitorFactory;
+    /**
+     * List of binding info providers
+     */
+    protected List<BindingInfoProvider> bindingInfoProviders = null;
+    private String appliImplURL;
 
-	public BindingVisitorFactory getBindingVisitorFactory() {
-		return bindingVisitorFactory;
-	}
+    /**
+     * Constructor
+     * 
+     * @param compositeFile
+     *            Composite file to import, can be null if this is used as a runtime
+     *            importer
+     * @throws FrascatiException
+     */
+    public AbstractScaImporterBase(
+            BindingVisitorFactory bindingVisitorFactory,
+            File compositeFile)
+    {
+        this.bindingVisitorFactory = bindingVisitorFactory;
+        this.compositeFile = compositeFile;
+    }
 
+    /**
+     * @param bindingVisitorFactory
+     * @param scaComposite
+     *            Composite object to import, can be null if this is used as a runtime
+     *            importer
+     * @throws FrascatiException
+     */
+    public AbstractScaImporterBase(
+            BindingVisitorFactory bindingVisitorFactory,
+            Composite scaComposite)
+    {
+        this.bindingVisitorFactory = bindingVisitorFactory;
+        this.scaComposite = scaComposite;
+    }
 
-    @Override	
-    public ScaVisitor createServiceBindingVisitor() {
-        // Visitor using Notification API
-    	return bindingVisitorFactory.createServiceBindingVisitor(this);
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.sca.IScaImporter#getBindingVisitorFactory()
+     */
+    public BindingVisitorFactory getBindingVisitorFactory()
+    {
+        return bindingVisitorFactory;
     }
     
     /**
-     * creates and returns a ReferenceBindingVisitor 
+     * Fill the bindingInfoProviders list if it has not been before and 
+     * return  it
+     * 
      * @return
+     *         the bindingInfoProviders list
      */
-    @Override
-    public ScaVisitor createReferenceBindingVisitor() {
-        // Visitor using Notification API
-    	return bindingVisitorFactory.createReferenceBindingVisitor(this);
-    }
-	
-	
-	/**
-	 * Build a list of binding info providers
-	 * @return
-	 */
-    public List<BindingInfoProvider> createBindingInfoProviders() {
-    	if (bindingInfoProviders == null) {
-    		bindingInfoProviders = new ArrayList<BindingInfoProvider>();
+    public List<BindingInfoProvider> createBindingInfoProviders()
+    {
+        if (bindingInfoProviders == null)
+        {
+            bindingInfoProviders = new ArrayList<BindingInfoProvider>();
             bindingInfoProviders.add(new WSBindingInfoProvider(this));
             bindingInfoProviders.add(new RestBindingInfoProvider(this));
-    	}
+        }
         return bindingInfoProviders;
-    }	
+    }
 
-	/**
-	 * 
-	 * @param scaQname 
-	 * @param scaVisitor Binding visitor to register in Nuxeo
-	 * @param bindingInfoProviders Bindings info provider list
-	 */
-	protected void acceptBindingVisitors(Binding binding, ScaVisitor scaVisitor, List<BindingInfoProvider> bindingInfoProviders) {
-        for (BindingInfoProvider bindingInfoProvider : bindingInfoProviders) {
-            if (bindingInfoProvider.isOkFor(binding)) {
-	        	try {
-	                scaVisitor.visit(bindingInfoProvider);
-	            } catch (Exception ex) {
-	            	String errorMessage = "Error when visiting binding " + scaVisitor.getDescription() + " at archi path " + toCurrentArchiPath();
-	            	/*if(compositeFile != null){
-	            			errorMessage = errorMessage + " in SCA composite file " + compositeFile.getFilename();
-	            	}*/
-	                log.error(errorMessage, ex);
-	            }
+    /**
+     * @param scaQname
+     * @param scaVisitor
+     *            Binding visitor to register in Nuxeo
+     * @param bindingInfoProviders
+     *            Bindings info provider list
+     */
+    public void acceptBindingVisitors(Binding binding, ScaVisitor scaVisitor,
+            List<BindingInfoProvider> bindingInfoProviders)
+    {
+        for (BindingInfoProvider bindingInfoProvider : bindingInfoProviders)
+        {
+            if (bindingInfoProvider.isOkFor(binding))
+            {
+                try
+                {
+                    scaVisitor.visit(bindingInfoProvider);
+                } catch (Exception ex)
+                {
+                    String errorMessage =
+                            "Error when visiting binding "
+                                    + scaVisitor.getDescription()
+                                    + " at archi path " + toCurrentArchiPath();
+                    /*
+                     * if(compositeFile != null){ errorMessage = errorMessage +
+                     * " in SCA composite file " + compositeFile.getFilename(); }
+                     */
+                    log.error(errorMessage, ex);
+                }
             }
         }
-	}
+    }
 
-	/**
-	 * 
-	 */
-	public void setServiceStackType(String serviceStackType) {
-		this.serviceStackType = serviceStackType;
-	}
+    /**
+         * 
+         */
+    public void setServiceStackType(String serviceStackType)
+    {
+        this.serviceStackType = serviceStackType;
+    }
 
-	/**
-	 * 
-	 * @param serviceStackUrl
-	 */
-	public void setServiceStackUrl(String serviceStackUrl) {
-		this.serviceStackUrl = serviceStackUrl;
-	}
+    /**
+     * @param serviceStackUrl
+     */
+    public void setServiceStackUrl(String serviceStackUrl)
+    {
+        this.serviceStackUrl = serviceStackUrl;
+    }
 
-	@Override
-	public String getCurrentArchiName() {
-		return getArchiNameStack().peek();
-	}
+    @Override public String getCurrentArchiName()
+    {
+        return getArchiNameStack().peek();
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public EObject getCurrentBinding() {
-		return getBindingStack().peek();
-	}
-	
-	@Override
-	public String toCurrentArchiPath() {
-		StringBuffer sbuf = new StringBuffer();
-		for (String archiName : getArchiNameStack()) {
-			sbuf.append("/");
-			sbuf.append(archiName);
-		}
-		return sbuf.toString();
-	}
+    /**
+     * @return
+     */
+    public EObject getCurrentBinding()
+    {
+        return getBindingStack().peek();
+    }
 
-	@Override
-	public File getCompositeFile() {
-		return compositeFile;
-	}
+    @Override 
+    public String toCurrentArchiPath()
+    {
+        StringBuffer sbuf = new StringBuffer();
+        for (String archiName : getArchiNameStack())
+        {
+            sbuf.append("/");
+            sbuf.append(archiName);
+        }
+        return sbuf.toString();
+    }
 
-	@Override
-	public String getServiceStackType() {
-		return serviceStackType;
-	}
+    @Override 
+    public File getCompositeFile()
+    {
+        return compositeFile;
+    }
 
-	@Override
-	public String getServiceStackUrl() {
-		return serviceStackUrl;
-	}
+    @Override
+    public String getServiceStackType()
+    {
+        return serviceStackType;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public Stack<String> getArchiNameStack() {
-		return archiNameStack;
-	}
+    @Override 
+    public String getServiceStackUrl()
+    {
+        return serviceStackUrl;
+    }
 
-	public Stack<EObject> getBindingStack(){
-		return bindingStack;
-	}
-	
+    /**
+     * @return
+     */
+    public Stack<String> getArchiNameStack()
+    {
+        return archiNameStack;
+    }
+
+    public Stack<EObject> getBindingStack()
+    {
+        return bindingStack;
+    }
+
+    /**
+     *  (non-Javadoc)
+     * @see org.easysoa.sca.IScaImporter#setAppliImplURL(java.lang.String)
+     */
+    public void setAppliImplURL(String appliImplURL)
+    {
+        this.appliImplURL = appliImplURL;
+    }
+
+    /**
+     *  (non-Javadoc)
+     * @see org.easysoa.sca.IScaImporter#getAppliImplURL()
+     */
+    public String getAppliImplURL()
+    {
+        return this.appliImplURL;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.sca.IScaImporter#createServiceBindingVisitor()
+     */
+    public ScaVisitor createServiceBindingVisitor()
+    {
+        // Visitor using Notification API
+        return bindingVisitorFactory.createServiceBindingVisitor(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.sca.IScaImporter#createReferenceBindingVisitor()
+     */
+    public ScaVisitor createReferenceBindingVisitor()
+    {
+        // Visitor using Notification API
+        return bindingVisitorFactory.createReferenceBindingVisitor(this);
+    }
+    
 }
