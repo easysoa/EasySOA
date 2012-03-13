@@ -64,7 +64,8 @@ public class ServiceBindingVisitor extends ScaVisitorBase {
     	
         log.debug("serviceUrl is not null, registering API's and services...");
         //String appliImplUrl = (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
-        String appliImplUrl = scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
+        String appliImplUrl = scaImporter.getAppliImplURL();
+        //        scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL);
         //String apiUrl = discoveryService.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         String apiUrl = ApiUrlProcessor.computeApiUrl(appliImplUrl, scaImporter.getServiceStackUrl(), serviceUrl);
         

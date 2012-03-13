@@ -88,7 +88,8 @@ public class ReferenceBindingVisitor extends ScaVisitorBase {
         properties.put(ServiceReference.PROP_ARCHILOCALNAME, scaImporter.getCurrentArchiName());
         properties.put(ServiceReference.PROP_DTIMPORT, scaImporter.getCompositeFile().getName()); // TODO also upload and link to it ??
         //properties.put(ServiceReference.PROP_PARENTURL, (String) scaImporter.getParentAppliImplModel().getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
-        properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        properties.put(ServiceReference.PROP_PARENTURL, scaImporter.getAppliImplURL());
+        //        scaImporter.getModelProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL));
         EasySOADocument referenceDoc = api.notifyServiceReference(properties);
         referenceModel = documentManager.getDocument(new IdRef(referenceDoc.getId()));
                 

@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
@@ -29,95 +30,131 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 import com.google.inject.Inject;
 
-@LocalDeploy({
-	"org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml"
-})
-public class SCAImportComponentTest extends CoreServiceTestHelperBase {
+@LocalDeploy({ "org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml" })
+public class SCAImportComponentTest extends CoreServiceTestHelperBase
+{
 
     static final Log log = LogFactory.getLog(SCAImportComponentTest.class);
-    
-    @Inject CoreSession session;
 
-    @Inject DocumentService docService;
-    
-    @Inject ResourceService resourceService;
-    
-    @Inject ScaImporterComponent scaImporterComponent;
+    @Inject
+    CoreSession session;
+
+    @Inject
+    DocumentService docService;
+
+    @Inject
+    ResourceService resourceService;
+
+    @Inject
+    ScaImporterComponent scaImporterComponent;
 
     DocumentModel parentAppliImplModel;
-   
+
     @Before
-    public void setUp() throws ClientException, MalformedURLException {
-    	// Find or create appli
-    	String appliUrl = "http://localhost";
-		parentAppliImplModel = docService.findAppliImpl(session, appliUrl);
-		assertEquals(parentAppliImplModel, null);
-		
-		String title = "Test Appli Title";
-		parentAppliImplModel = docService.createAppliImpl(session, appliUrl);
-		parentAppliImplModel.setProperty("dublincore", "title", title);
-		session.saveDocument(parentAppliImplModel);
-		session.save();
-		// NB. created documents are auto deleted at the end, so no need for :
-		// session.removeDocument(parentAppliImplModel.getRef());
-    }    
-    
-    @Test
-    public void testXmlScaImporter() throws Exception {
-    	// SCA composite file to import :
-    	// to load a file, we use simply File, since user.dir is set relatively to the project
-    	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
-    	File scaFile = new File(scaFilePath);    	
-    	
-    	// Getting the importer
-    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
-    	IScaImporter importer = scaImporterComponent.createScaImporter(visitorFactory, scaFile);
-    	// If importer is null, we have a problem
-    	assertNotNull(importer);
-    	
-		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
-		importer.setServiceStackType("FraSCAti");
-		importer.setServiceStackUrl("/");    	
-    	importer.importSCA();
-    	
-    	// Check import results
-    	DocumentModelList resDocList;
-		DocumentModel resDoc;
-		
-		// Log repository
-		new RepositoryLogger(session, "Repository state after import").logAllRepository();
-		
-		// services :
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" +
-				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
-		
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + 
-				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
+    public void setUp() throws ClientException, MalformedURLException
+    {
 
-		// references :
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				ServiceReference.DOCTYPE + "' AND "
-				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-		assertEquals(1, resDocList.size());
+        // Find or create appli
+        String appliUrl = "http://localhost";
+        parentAppliImplModel = docService.findAppliImpl(session, appliUrl);
+        assertEquals(parentAppliImplModel, null);
 
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				ServiceReference.DOCTYPE + "' AND "
-				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());
-		
-		// api :
-		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
-		assertEquals("PureAirFlowers API", apiModel.getTitle());
+        String title = "Test Appli Title";
+        parentAppliImplModel = docService.createAppliImpl(session, appliUrl);
+        parentAppliImplModel.setProperty("dublincore", "title", title);
+        session.saveDocument(parentAppliImplModel);
+        session.save();
+        // NB. created documents are auto deleted at the end, so no need for :
+        // session.removeDocument(parentAppliImplModel.getRef());
     }
-    
+
+    @Test
+    public void testXmlScaImporter() throws Exception
+    {
+
+        // SCA composite file to import :
+        // to load a file, we use simply File, since user.dir is set relatively
+        // to the project
+        String scaFilePath = "src/test/resources/"
+                + "org/easysoa/sca/RestSoapProxy.composite";
+        File scaFile = new File(scaFilePath);
+
+        // Getting the importer
+        BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(
+                session);
+        IScaImporter importer = scaImporterComponent.createScaImporter(
+                visitorFactory, scaFile);
+        // If importer is null, we have a problem
+        assertNotNull(importer);
+
+        importer.setAppliImplURL((String)parentAppliImplModel.getProperty(
+                AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        importer.importSCA();
+
+        // Check import results
+        DocumentModelList resDocList;
+        DocumentModel resDoc;
+
+        // Log repository
+        new RepositoryLogger(session, "Repository state after import")
+                .logAllRepository();
+
+        // services :
+        resDocList = session
+                .query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + Service.DOCTYPE
+                        + "' AND "
+                        + "dc:title"
+                        + " = '"
+                        + "restInterface"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
+        assertEquals(1, resDocList.size());
+        resDoc = resDocList.get(0);
+        assertEquals("/Proxy/restInterface", resDoc.getProperty(
+                EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
+        ;
+
+        resDocList = session
+                .query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + Service.DOCTYPE
+                        + "' AND "
+                        + "dc:title"
+                        + " = '"
+                        + "ProxyService"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
+        assertEquals(1, resDocList.size());
+        resDoc = resDocList.get(0);
+        assertEquals("/ProxyService", resDoc.getProperty(
+                EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
+        ;
+
+        // references :
+        resDocList = session
+                .query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + ServiceReference.DOCTYPE
+                        + "' AND "
+                        + EasySOADoctype.SCHEMA_COMMON_PREFIX
+                        + EasySOADoctype.PROP_ARCHIPATH
+                        + " = '"
+                        + "/Proxy/ws"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
+        assertEquals(1, resDocList.size());
+
+        resDocList = session
+                .query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + ServiceReference.DOCTYPE + "' AND "
+                        + EasySOADoctype.SCHEMA_COMMON_PREFIX
+                        + EasySOADoctype.PROP_ARCHIPATH + " = '"
+                        + "/ProxyUnused/ws"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted'");
+        assertEquals(1, resDocList.size());
+
+        // api :
+        DocumentModel apiModel = docService.findServiceApi(session,
+                "http://127.0.0.1:9010");
+        assertEquals("PureAirFlowers API", apiModel.getTitle());
+    }
+
 }

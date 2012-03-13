@@ -318,16 +318,16 @@ public class XMLScaImporter extends AbstractScaImporterBase {
 		return compositeReader;
 	}
 
-	@Override
-	public String getModelProperty(String arg0, String arg1) throws Exception {
-		return (String) (parentAppliImplModel.getProperty(arg0, arg1)); 
-	}
-
-	@Override
-	public void setParentAppliImpl(Object appliImplModel) {
-		if(appliImplModel instanceof DocumentModel){
-			parentAppliImplModel = (DocumentModel) appliImplModel;
-		}
-	}
+//	@Override
+//	public String getModelProperty(String arg0, String arg1) throws Exception {
+//		return (String) (parentAppliImplModel.getProperty(arg0, arg1)); 
+//	}
+//
+//	@Override
+//	public void setParentAppliImpl(Object appliImplModel) {
+//		if(appliImplModel instanceof DocumentModel){
+//			parentAppliImplModel = (DocumentModel) appliImplModel;
+//		}
+//	}
 
 }
