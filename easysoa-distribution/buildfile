@@ -277,6 +277,7 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   puts "  * Needed libraries..."
   cp FileList[project(EASYSOA_REGISTRY).base_dir+"/target/**/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_REGISTRY).base_dir+"/easysoa-registry-api/easysoa-registry-api-messaging/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
+  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/easysoa-proxy-core-api/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-intents/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
   cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
