@@ -17,6 +17,6 @@ The code is mainly split into 6 projects:
 
 ## Building
 
-You can build these bundles by typing `mvn clean install` from this folder. Then deploy the files by either copying the `target` folder contents to your Nuxeo setup, or [by using Buildr](https://github.com/easysoa/EasySOA/wiki/Releasing-EasySOA).
+You can build these bundles by typing `mvn clean install` from this folder. Then deploy the files by either copying the `nuxeo-packaging/target` folder contents to your Nuxeo setup, or [by using Buildr](https://github.com/easysoa/EasySOA/wiki/Releasing-EasySOA).
 
 See [this repository's wiki](https://github.com/easysoa/EasySOA/wiki) for further information.
