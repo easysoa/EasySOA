@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * EasySOA
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ *-->
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" name="StarterService">
+
+    <reference name="service-reference" promote="starter/service-reference">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
+    </reference>
+    <reference name="starter-container" promote="starter/starter-container">
+        <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+    </reference>
+
+    <component name="starter">
+        <implementation.java class="org.ow2.frascati.assembly.factory.starter.core.Starter" />
+        <service name="starter">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterItf" />
+        </service>
+        <reference name="service-reference">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
+        </reference>
+        <reference name="starter-container">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+        </reference>
+    </component>
+
+</composite>

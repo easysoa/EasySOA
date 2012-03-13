@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.easysoa</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.4-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <frascati.version>1.5-SNAPSHOT</frascati.version>
+        <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
+    </properties>
+
+    <groupId>org.easysoa.frascati</groupId>
+    <artifactId>easysoa-frascati-service</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <name>OW2 FraSCAti SCA Component for EasySOA</name>
+
+    <licenses>
+        <license>
+            <name>The GNU Lesser General Public License, Version 3</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.easysoa.frascati</groupId>
+            <artifactId>easysoa-frascati-service-api</artifactId>
+            <version>0.4-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.osgi</groupId>
+            <artifactId>frascati-starter</artifactId>
+            <version>${frascati.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-assembly-factory</artifactId>
+            <version>${frascati.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-web-explorer-bootstrap</artifactId>
+            <version>${frascati.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>frascati-plugin</id>
+            <!-- Seem's to be offline since 25/01/2012 -->
+            <!--<url>https://frascati-repo.lille.inria.fr/nexus/content/groups/public</url>-->
+            <url>https://frascati-repo.inria.fr/nexus/content/repositories/ow2-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    
+    <!-- Plugin management -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.ow2.frascati.mojo</groupId>
+                    <artifactId>frascati-compiler-plugin</artifactId>
+                    <version>1.5-SNAPSHOT</version>
+                    <executions>
+                        <execution>
+                            <id>compile-composite</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <loggingConfFile>${frascati.logging.properties}</loggingConfFile>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>xerces</groupId>
+                            <artifactId>xercesImpl</artifactId>
+                            <version>2.9.1</version>
+                            <scope>compile</scope>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.ow2.frascati.mojo
+                                        </groupId>
+                                        <artifactId>
+                                            frascati-compiler-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.5-SNAPSHOT,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>compile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.ow2.frascati.mojo</groupId>
+                <artifactId>frascati-compiler-plugin</artifactId>
+                <configuration>
+                    <composite>org/ow2/frascati/assembly/factory/AssemblyFactory</composite>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

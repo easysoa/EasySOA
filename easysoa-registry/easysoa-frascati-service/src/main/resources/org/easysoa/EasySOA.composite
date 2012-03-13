@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * EasySOA
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ *-->
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" name="org.easysoa.EasySOA">
+
+    <service name="frascati-service" promote="frascati-service/frascati-service">
+            <interface.java interface="org.easysoa.frascati.api.FraSCAtiServiceItf" />
+    </service>
+    
+    <service name="initializable" promote="weaver-initializer/initializable">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+    </service>
+    <reference name="classloader-manager" promote="frascati-service/classloader-manager">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.ClassLoaderManager"/>
+    </reference>
+    
+    <reference name="composite-manager"  promote="weaver-initializer/composite-manager frascati-service/composite-manager">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
+    </reference>
+    <reference name="composite-parser" promote="weaver-initializer/composite-parser">
+        <interface.java interface="org.ow2.frascati.parser.api.Parser" />
+    </reference>         
+    <reference name="composite-processor" promote="weaver-initializer/composite-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+    </reference>
+    <reference name="component-processor" promote="weaver-initializer/component-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+    </reference>
+    <reference name="component-service-processor" promote="weaver-initializer/component-service-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+    </reference>
+    <reference name="component-reference-processor" promote="weaver-initializer/component-reference-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+    </reference>
+    <reference name="composite-service-processor" promote="weaver-initializer/service-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+    </reference>
+    <reference name="composite-reference-processor" promote="weaver-initializer/reference-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+    </reference>
+    <reference name="binding-processor" promote="weaver-initializer/binding-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+    </reference>
+    <reference name="sca-binding-processor" promote="weaver-initializer/sca-binding-processor">
+        <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+    </reference>
+
+    <component name="weaver-initializer">
+        <implementation.java class="org.easysoa.frascati.WeaverInitializer" />
+        <service name="initializable">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+        </service>
+        <reference name="composite-manager">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
+        </reference>
+         <reference multiplicity="0..1" name="next-initializable">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+        </reference>
+        <reference name="composite-parser">
+            <interface.java interface="org.ow2.frascati.parser.api.Parser" />
+        </reference>        
+        <reference name="composite-processor">
+                <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference>
+        <reference name="component-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>
+        <reference name="component-service-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>
+        <reference name="component-reference-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>          
+        <reference name="service-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>
+        <reference name="reference-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>   
+        <reference name="binding-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>     
+        <reference name="sca-binding-processor">
+           <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference> 
+        <reference name="parser-intent" target="parser-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processing-intent" target="processing-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-composite-intent" target="processor-composite-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-component-intent" target="processor-component-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-component-reference-intent" target="processor-component-reference-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-component-service-intent" target="processor-component-service-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-reference-intent" target="processor-reference-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-service-intent" target="processor-service-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-binding-intent" target="processor-binding-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <reference name="processor-sca-binding-intent" target="processor-sca-binding-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+    </component>
+
+    <component name="parser-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="parser-intent-observer" target="registry/parser-intent-observer">
+            <interface.java interface="org.easysoa.frascati.api.intent.ParserIntentObserverItf" />
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ParserIntent" />
+    </component>
+
+    <component name="processing-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="component-weaver" target="component-weaver/component-weaver">
+            <interface.java interface="org.easysoa.frascati.api.ComponentWeaverItf" />
+        </reference>
+        <reference name="processing-intent-observer" target="registry/processing-intent-observer">
+            <interface.java interface="org.easysoa.frascati.api.intent.ProcessingIntentObserverItf" />
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessingIntent" />
+    </component>
+    
+    <component name="processor-composite-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-composite/processor-composite-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorCompositeIntent" />
+    </component>
+    
+    <component name="observer-composite">
+        <service name="processor-composite-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorCompositeObserver" />
+    </component>
+    
+        
+    <component name="processor-component-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-component/processor-component-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorComponentIntent" />
+    </component>
+    
+    <component name="observer-component">
+        <service name="processor-component-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorComponentObserver" />
+    </component>
+    
+    <component name="processor-component-reference-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-component-reference/processor-component-reference-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorComponentReferenceIntent" />
+    </component>
+    
+    <component name="observer-component-reference">
+        <service name="processor-component-reference-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorComponentReferenceObserver" />
+    </component>
+    
+    <component name="processor-component-service-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-component-service/processor-component-service-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorComponentServiceIntent" />
+    </component>
+    
+    <component name="observer-component-service">
+        <service name="processor-component-service-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorComponentServiceObserver" />
+    </component>
+    
+    <component name="processor-reference-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-reference/processor-reference-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorReferenceIntent" />
+    </component>
+    
+    <component name="observer-reference">
+        <service name="processor-reference-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorReferenceObserver" />
+    </component>
+    
+    <component name="processor-service-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-service/processor-service-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorServiceIntent" />
+    </component>
+    
+    <component name="observer-service">
+        <service name="processor-service-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorServiceObserver" />
+    </component>
+    
+    <component name="processor-binding-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-binding/processor-binding-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorBindingIntent" />
+    </component>
+    
+    <component name="observer-binding">
+        <service name="processor-binding-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorBindingObserver" />
+    </component>
+    
+    <component name="processor-sca-binding-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="observer" target="observer-sca-binding/processor-sca-binding-observer">
+            <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ProcessorScaBindingIntent" />
+    </component>
+    
+    <component name="observer-sca-binding">
+        <service name="processor-sca-binding-observer">
+                <interface.java interface="org.easysoa.frascati.api.observer.ProcessorObserverItf"/>
+        </service>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.observer.ProcessorScaBindingObserver" />
+    </component>    
+
+    <component name="runtime-sca-importer">    
+        <service name="runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </service>
+        <implementation.java class="org.easysoa.frascati.importer.RuntimeSCAImporter"/>
+    </component>
+    
+    <component name="component-weaver">
+        <service name="component-weaver">
+            <interface.java interface="org.easysoa.frascati.api.ComponentWeaverItf" />
+        </service>
+        <reference name="component-intent" target="component-intent/intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </reference>
+        <implementation.java class="org.easysoa.frascati.ComponentWeaver" />
+    </component>
+
+    <component name="component-intent">
+        <service name="intent">
+            <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler" />
+        </service>
+        <reference name="component-intent-observer" target="registry/component-intent-observer">
+            <interface.java interface="org.easysoa.frascati.api.intent.ComponentIntentObserverItf" />
+        </reference>
+        <implementation.java class="org.easysoa.frascati.intent.ComponentIntent" />
+    </component>
+
+    <component name="registry">
+        <service name="registry">
+            <interface.java interface="org.easysoa.frascati.api.RegistryItf" />
+        </service>
+        <service name="component-intent-observer">
+            <interface.java interface="org.easysoa.frascati.api.intent.ComponentIntentObserverItf" />
+        </service>
+        <service name="processing-intent-observer">
+            <interface.java interface="org.easysoa.frascati.api.intent.ProcessingIntentObserverItf" />
+        </service>
+        <service name="parser-intent-observer">
+            <interface.java interface="org.easysoa.frascati.api.intent.ParserIntentObserverItf" />
+        </service>
+        <implementation.java class="org.easysoa.frascati.Registry" />
+    </component>
+
+    <component name="frascati-service">
+        <service name="frascati-service">
+            <interface.java interface="org.easysoa.frascati.api.FraSCAtiServiceItf" />
+        </service>
+        <reference name="composite-manager">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
+        </reference>
+        <reference name="classloader-manager">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.ClassLoaderManager"/>
+        </reference>
+        <reference name="registry" target="registry/registry">
+            <interface.java interface="org.easysoa.frascati.api.RegistryItf" />
+        </reference>
+        <reference name="runtime-sca-importer" target="runtime-sca-importer/runtime-sca-importer">
+                <interface.java interface="org.easysoa.frascati.api.ScaImporterIntermediaryItf"/>
+        </reference>
+        <implementation.java class="org.easysoa.frascati.FraSCAtiService" />
+    </component>
+
+</composite>

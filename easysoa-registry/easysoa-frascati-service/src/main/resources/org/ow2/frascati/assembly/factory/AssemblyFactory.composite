@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * EasySOA
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ *-->
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+    xmlns:easysoa="org/easysoa"
+    xmlns:starter="org/ow2/frascati/assembly/factory/starter"
+    name="org.ow2.frascati.assembly.factory.AssemblyFactory">  
+  
+    <service name="easysoa-frascati-service" promote="easysoa/frascati-service">
+            <interface.java interface="org.easysoa.frascati.api.FraSCAtiServiceItf" />
+    </service>    
+    <reference name="easysoa-composite-parser" promote="easysoa/composite-parser">
+       <interface.java interface="org.ow2.frascati.parser.api.Parser" />
+    </reference> 
+     
+    <component name="easysoa">    
+         <service name="frascati-service">
+            <interface.java interface="org.easysoa.frascati.api.FraSCAtiServiceItf" />
+        </service> 
+        <service name="initializable">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+        </service>
+        <reference name="composite-parser">
+            <interface.java interface="org.ow2.frascati.parser.api.Parser" />
+        </reference>  
+        <reference name="composite-manager" target="assembly-factory/composite-manager">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
+        </reference>
+        <reference name="classloader-manager" target="assembly-factory/classloader-manager">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.ClassLoaderManager"/>
+        </reference>
+        <reference name="composite-processor" target="sca-composite/composite-processor">
+              <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference>
+        <reference name="component-processor" target="sca-component/component-processor">
+          <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference>
+        <reference name="component-service-processor" target="sca-component-service/component-service-processor">
+           <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference>
+        <reference name="component-reference-processor" target="sca-component-reference/component-reference-processor">
+           <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference>          
+        <reference name="composite-service-processor" target="sca-composite-service/composite-service-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>
+        <reference name="composite-reference-processor" target="sca-composite-reference/composite-reference-processor">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor" />
+        </reference>
+        <reference name="binding-processor" target="sca-binding/binding-processor">
+           <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference>  
+        <reference name="sca-binding-processor" target="sca-binding-sca/binding-processor">
+           <interface.java interface="org.ow2.frascati.assembly.factory.api.Processor"/>
+        </reference>
+        <implementation.composite name="easysoa:EasySOA.composite" />
+    </component>
+    
+    <component name="starter-service">
+        <implementation.composite name="starter:StarterService.composite" />
+        <reference name="starter-container" target="starter-container/starter-container">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+        </reference>
+        <reference name="service-reference" target="assembly-factory/composite-manager">
+            <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
+        </reference>
+    </component>
+
+    <component name="starter-container">
+        <implementation.java class="org.ow2.frascati.assembly.factory.starter.core.StarterContainer" />
+        <service name="starter-container">
+            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+        </service>
+        <reference multiplicity="0..n" name="initializables" target="easysoa/initializable">
+            <interface.java  interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf" />
+        </reference>
+    </component>
+</composite>
