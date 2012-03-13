@@ -18,15 +18,15 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-util-comp</artifactId>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/resources/frascati-util-comp-${frascati.version}.jar</systemPath>
+       <groupId>org.ow2.frascati.osgi</groupId>
+       <artifactId>frascati-osgi-util</artifactId>
+       <version>1.5-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.easysoa.registry</groupId>
-      <artifactId>easysoa-frascati-shared</artifactId>
-      <scope>provided</scope>
+       <groupId>org.easysoa.frascati</groupId>
+       <artifactId>easysoa-frascati-service-api</artifactId>
+       <version>0.4-SNAPSHOT</version>
+       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.runtime</groupId>
@@ -1309,8 +1309,8 @@
                   <version>2.9.1</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-frascati-processor</artifactId>
+                  <groupId>org.easysoa.frascati</groupId>
+                  <artifactId>easysoa-frascati-service</artifactId>
                   <version>0.4-SNAPSHOT</version>
                 </artifactItem>
               </artifactItems>

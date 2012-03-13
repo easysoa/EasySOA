@@ -19,42 +19,46 @@
  */
 package org.nuxeo.frascati.factory;
 
-import org.nuxeo.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * The ClassLoaderSingleton allow to keep a reference to the IsolatedClassLoader 
+ * The ClassLoaderSingleton allow to keep a reference to the IsolatedClassLoader
  * used to instantiate FraSCAti
  */
-public final class ClassLoaderSingleton {
+public final class ClassLoaderSingleton
+{
 
-	private static ClassLoader classLoader;
-	
-	/**
-	 * Defines the ClassLoader instance. If the ClassLoaderSingleton is not null and if the FraSCAtiServiceItf instance
-	 * has been registered by Nuxeo, then this method do nothing
-	 * 
-	 * @param classLoader
-	 * 	the ClassLoader object to set
-	 * @return
-	 * 	the current ClassLoader 
-	 */
-	public static final ClassLoader setClassLoader(ClassLoader classLoader){
-		
-		if(ClassLoaderSingleton.classLoader == null || Framework.getLocalService(FraSCAtiServiceItf.class) == null){
-			ClassLoaderSingleton.classLoader = classLoader;
-		}
-		return ClassLoaderSingleton.classLoader;		
-	}
-	
-	/**
-	 * Returns the current ClassLoader instance
-	 * 
-	 * @return
-	 * 	the current ClassLoader instance
-	 */	
-	public static final ClassLoader classLoader(){
-		return classLoader;
-	}
-	
+    private static ClassLoader classLoader;
+
+    /**
+     * Defines the ClassLoader instance. If the ClassLoaderSingleton is not null
+     * and if the FraSCAtiServiceItf instance has been registered by Nuxeo, then
+     * this method do nothing
+     * 
+     * @param classLoader
+     *            the ClassLoader object to set
+     * @return the current ClassLoader
+     */
+    public static final ClassLoader setClassLoader(ClassLoader classLoader)
+    {
+
+        if (ClassLoaderSingleton.classLoader == null
+                || Framework.getLocalService(FraSCAtiServiceItf.class) == null)
+        {
+            ClassLoaderSingleton.classLoader = classLoader;
+        }
+        return ClassLoaderSingleton.classLoader;
+    }
+
+    /**
+     * Returns the current ClassLoader instance
+     * 
+     * @return the current ClassLoader instance
+     */
+    public static final ClassLoader classLoader()
+    {
+        return classLoader;
+    }
+
 }
