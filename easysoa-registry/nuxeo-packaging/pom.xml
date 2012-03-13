@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.nuxeo</groupId>
+  <artifactId>nuxeo-packaging</artifactId>
+  <name>Packaging helper for Nuxeo</name>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <!-- Package bundle modules for Nuxeo -->
+          <execution>
+            <id>copy-bundle-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <!-- EasySOA Core -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-local</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-core</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-rest</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-web</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+
+                <!-- FraSCAti in Nuxeo -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>org.nuxeo.runtime</groupId> -->
+                <!-- <artifactId>nuxeo-runtime-bridge</artifactId> -->
+                <!-- <version>${easysoa.nuxeo-bridge.version}</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>org.nuxeo</groupId> -->
+                <!-- <artifactId>nuxeo-frascati</artifactId> -->
+                <!-- <version>0.0-SNAPSHOT</version> -->
+                <!-- </artifactItem> -->
+
+                <!-- FraSCAti-related features -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-frascati</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-rest-frascati</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+
+                <!-- Other EasySOA features -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-dashboard</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/nxserver/plugins</outputDirectory>
+            </configuration>
+          </execution>
+          <!-- Package library modules & dependencies for Nuxeo -->
+          <execution>
+            <id>copy-lib-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <!-- EasySOA modules -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-core</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-remote</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-frascati</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-messaging</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-frascati-shared</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-frascati-processor</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+
+                <!-- WSDL Parsing & transformation -->
+                <artifactItem>
+                  <groupId>org.ow2.easywsdl</groupId>
+                  <artifactId>easywsdl-schema</artifactId>
+                  <version>2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.easywsdl</groupId>
+                  <artifactId>easywsdl-wsdl</artifactId>
+                  <version>2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>xalan</groupId>
+                  <artifactId>xalan</artifactId>
+                  <version>2.7.0</version>
+                </artifactItem>
+
+                <!-- HTML parsing -->
+                <artifactItem>
+                  <groupId>net.sourceforge.htmlcleaner</groupId>
+                  <artifactId>htmlcleaner</artifactId>
+                  <version>2.2</version>
+                </artifactItem>
+
+                <!-- HTTP body parsing -->
+                <artifactItem>
+                  <groupId>org.apache.cxf</groupId>
+                  <artifactId>cxf-common-utilities</artifactId>
+                  <version>2.4.2</version>
+                </artifactItem>
+
+                <!-- FraSCAti in Nuxeo (should be deployed as bundles when stable) -->
+                <artifactItem>
+                  <groupId>org.nuxeo.runtime</groupId>
+                  <artifactId>nuxeo-runtime-bridge</artifactId>
+                  <version>5.4.2-SNAPSHOT</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.nuxeo</groupId>
+                  <artifactId>nuxeo-frascati</artifactId>
+                  <version>0.0-SNAPSHOT</version>
+                </artifactItem>
+
+                <!-- Other needed packages -->
+                <!-- removed since Nuxeo comes with 2.3.3 -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.sun.xml.bind</groupId> -->
+                <!-- <artifactId>jaxb-impl</artifactId> -->
+                <!-- <version>2.1.6</version> -->
+                <!-- </artifactItem> -->
+                <artifactItem>
+                  <groupId>org.jvnet.jaxb2_commons</groupId>
+                  <artifactId>runtime</artifactId>
+                  <version>0.2.GA</version>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

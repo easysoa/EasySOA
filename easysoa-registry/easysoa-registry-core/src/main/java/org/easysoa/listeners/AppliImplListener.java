@@ -1,20 +1,20 @@
 /**
  * EasySOA Registry
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -22,11 +22,11 @@ package org.easysoa.listeners;
 
 import static org.easysoa.doctypes.AppliImpl.DEFAULT_ENVIRONMENT;
 import static org.easysoa.doctypes.AppliImpl.DOCTYPE;
-import static org.easysoa.doctypes.AppliImpl.PROP_ENVIRONMENT;
 import static org.easysoa.doctypes.AppliImpl.PROP_SERVER;
 import static org.easysoa.doctypes.AppliImpl.PROP_SERVERENTRY;
 import static org.easysoa.doctypes.AppliImpl.PROP_URL;
 import static org.easysoa.doctypes.AppliImpl.SCHEMA;
+import static org.easysoa.doctypes.EasySOADoctype.PROP_ENVIRONMENT;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,7 +37,6 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.properties.PropertyNormalizer;
 import org.easysoa.services.ServicesRootMapperService;
 import org.easysoa.services.VocabularyHelper;
-import org.jboss.seam.core.Events;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -49,12 +48,12 @@ import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * 
+ *
  * @author mkalam-alami
  *
  */
 public class AppliImplListener implements EventListener {
-    
+
     public static final String APPLI_IMPL_CHANGED = "appliImplChanged";
 
     private static Log log = LogFactory.getLog(AppliImplListener.class);
@@ -67,7 +66,7 @@ public class AppliImplListener implements EventListener {
             return;
         }
         CoreSession session = ctx.getCoreSession();
-        
+
         DocumentModel appliImplModel = ((DocumentEventContext) ctx).getSourceDocument();
         if (appliImplModel == null) {
             return;
@@ -79,8 +78,12 @@ public class AppliImplListener implements EventListener {
 
         if (event.getName().equals(DocumentEventTypes.DOCUMENT_UPDATED)) {
             // Allow beans to update after appli impl. change
-            Events.instance().raiseEvent(APPLI_IMPL_CHANGED, appliImplModel);
-            
+
+            // Removed : this does not make sense
+            // Seam events are request scoped and there is no reason CoreEvent should occurs in the same thread / context
+            // => this can not work for real !!!
+            //Events.instance().raiseEvent(APPLI_IMPL_CHANGED, appliImplModel);
+
             // Trigger URL mapper
             try {
                 ServicesRootMapperService urlMapper = Framework.getService(ServicesRootMapperService.class);
@@ -91,12 +94,12 @@ public class AppliImplListener implements EventListener {
         }
         // On document creation / Before modification
         else {
-            
+
             // Update properties
             if (maintainInternalProperties(session, appliImplModel)) {
                 setDefaultPropertyValues(session, appliImplModel);
             }
-    
+
             // Update vocabulary
             try {
                 updateVocabulary(session,
@@ -106,7 +109,7 @@ public class AppliImplListener implements EventListener {
                 log.error("Failed to fetch Appli. Impl. properties", e);
             }
         }
-        
+
     }
 
     private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel) {
@@ -161,7 +164,7 @@ public class AppliImplListener implements EventListener {
 
             if (!vocService.entryExists(session,
                     VocabularyHelper.VOCABULARY_ENVIRONMENT, environment)) {
-                vocService.addEntry(session, VocabularyHelper.VOCABULARY_ENVIRONMENT, 
+                vocService.addEntry(session, VocabularyHelper.VOCABULARY_ENVIRONMENT,
                         environment, environment);
             }
             if (server != null && !server.isEmpty()

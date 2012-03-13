@@ -1,35 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.easysoa.proxy</groupId>
-	<artifactId>easysoa-proxy</artifactId>
-	<packaging>pom</packaging>
-	<name>EasySOA Proxy Project</name>
-	
-	<licenses>
-		<license>
-			<name>The GNU Lesser General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
-		</license>
-	</licenses>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.easysoa</groupId>
-		<artifactId>parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
-	</parent>
-	
-	<modules>
-		<module>easysoa-proxy-parent</module>
-		<module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
-		<module>easysoa-proxy-core/easysoa-proxy-core-api</module>
-		<module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
-		<module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
-		<module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
-		<module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
-		<module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
-		<module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
-	</modules>
-	
+  <parent>
+    <groupId>org.easysoa</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.easysoa.proxy</groupId>
+  <artifactId>easysoa-proxy-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>EasySOA Proxy Parent</name>
+
+  <modules>
+    <module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
+    <module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
+    <module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
+    <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
+    <module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
+    <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
+	<module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
+	<module>easysoa-proxy-core/easysoa-proxy-core-api</module>
+  </modules>
+
+  <repositories>
+    <!-- For FraSCAti continuous integration repository -->
+    <repository>
+      <id>frascati-repo</id>
+      <name>FraSCAti Nexus repository</name>
+      <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <!-- For ?? -->
+    <!--<repository> <id>Download.java.net</id> <name>Download.java.net repository</name>
+      <url>http://download.java.net/maven/2/</url> </repository> -->
+    <!-- For EMF used in FraSCAti -->
+    <!--<repository> <id>eclipse mirror</id> <name>Eclipse EMF Mirror</name> <url>http://www.openarchitectureware.org/m2</url>
+      </repository> -->
+    <!-- For ?? -->
+    <!--<repository> <id>apache.incubator</id> <url>http://people.apache.org/repo/m2-incubating-repository</url>
+      </repository> -->
+    <!--<repositories> <repository> <id>apache</id> <url>https://repository.apache.org/content/groups/public/</url>
+      </repository> </repositories> -->
+    <!-- For SOAPUI -->
+    <repository>
+      <id>soapui repo</id>
+      <name>Soap ui repo</name>
+      <url>http://www.eviware.com/repository/maven2/</url>
+    </repository>
+  </repositories>
+
+  <!-- Common dependencies -->
+  <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>

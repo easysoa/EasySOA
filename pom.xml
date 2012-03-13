@@ -1,115 +1,1025 @@
 <?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <groupId>org.easysoa</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <version>0.4-SNAPSHOT</version>
 
-    <groupId>org.easysoa</groupId>
-    <artifactId>parent</artifactId>
-    <packaging>pom</packaging>
-    <version>0.4-SNAPSHOT</version>
+  <name>EasySOA Main Project</name>
+  <description>EasySOA is a software for discovering, registering and organizing SOA services.</description>
 
-    <name>EasySOA Main Project</name>
+  <url>http://www.openwide.fr</url>
+  <organization>
+    <name>Openwide</name>
+    <url>http://www.openwide.fr</url>
+  </organization>
 
-    <organization>
-        <name>Openwide</name>
-        <url>http://www.openwide.fr</url>
-    </organization>
+  <licenses>
+    <license>
+      <name>The GNU Lesser General Public License, Version 3</name>
+      <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+    </license>
+  </licenses>
 
-    <description>
-		EasySOA is a software for discovering, registering and organizing SOA services.
-    </description>
-    
-    <!-- ============= -->
-    <!-- Properties    -->
-    <!-- ============= -->
-    <properties>
-		<easysoa.nuxeo.version>5.4.2</easysoa.nuxeo.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    	<!-- FraSCAti must be in version 1.5-SNAPSHOT because Velocity feature is only available in this version at the moment -->
-    	<frascati.version>1.5-SNAPSHOT</frascati.version>
-    	<log4j.version>1.2.16</log4j.version>
-    </properties>
-  
-    <developers>
-        <developer>
-            <id>dutoo</id>
-            <name>Marc Dutoo</name>
-            <email>marc.dutoo@openwide.fr</email>
-            <organization>Openwide</organization>
-            <organizationUrl>http://www.openwide.fr</organizationUrl>
-            <roles>
-                <role>Architect</role>
-                <role>Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>guillemotte</id>
-            <name>Jeremie Guillemotte</name>
-            <email>jeremie.guillemotte@openwide.fr</email>
-            <organization>Openwide</organization>
-            <organizationUrl>http://www.openwide.fr</organizationUrl>
-            <roles>
-                <role>Architect</role>
-                <role>Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>kalam-alami</id>
-            <name>Marwane Kalam-alami</name>
-            <email>marwane.kalam-alami@openwide.fr</email>
-            <organization>Openwide</organization>
-            <organizationUrl>http://www.openwide.fr</organizationUrl>
-            <roles>
-                <role>Architect</role>
-                <role>Developer</role>
-            </roles>
-        </developer>
-    </developers>
-    
-    <!-- ======= -->
-    <!-- Modules -->
-    <!-- ======= -->
-    <modules>
-        <module>easysoa-common</module>
-        <module>easysoa-distribution</module>
-        <module>easysoa-registry</module>
-        <module>easysoa-proxy</module>
-        <module>samples</module>
-    </modules>
-    
-    <!-- ======================= -->
-    <!-- Dependencies management -->
-    <!-- ======================= -->
-    <dependencyManagement>
-      <dependencies>
-        <!-- Test -->
-        <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>4.8.2</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </dependencyManagement>    
-    
-   
-    <!-- ================= -->
-    <!-- Plugin management -->
-    <!-- ================= -->
-    <build>
-      <pluginManagement>
-        <plugins>      
-          <!-- Compile with Java 1.6 -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <source>1.6</source>
-              <target>1.6</target>
-            </configuration>
-          </plugin>
-        </plugins>
-      </pluginManagement>
-    </build>
-    
+  <!-- ========== -->
+  <!-- Properties -->
+  <!-- ========== -->
+  <properties>
+    <easysoa.version>0.4-SNAPSHOT</easysoa.version>
+    <easysoa.nuxeo.version>5.5</easysoa.nuxeo.version>
+    <easysoa.nuxeo-bridge.version>5.5-SNAPSHOT</easysoa.nuxeo-bridge.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- FraSCAti must be in version 1.5-SNAPSHOT because Velocity feature is only
+      available in this version at the moment -->
+    <frascati.version>1.5-SNAPSHOT</frascati.version>
+    <log4j.version>1.2.16</log4j.version>
+    <cxf.version>2.4.2</cxf.version>
+    <tinfi.version>1.4.4</tinfi.version>
+  </properties>
+
+  <developers>
+    <developer>
+      <id>dutoo</id>
+      <name>Marc Dutoo</name>
+      <email>marc.dutoo@openwide.fr</email>
+      <organization>Openwide</organization>
+      <organizationUrl>http://www.openwide.fr</organizationUrl>
+      <roles>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>guillemotte</id>
+      <name>Jeremie Guillemotte</name>
+      <email>jeremie.guillemotte@openwide.fr</email>
+      <organization>Openwide</organization>
+      <organizationUrl>http://www.openwide.fr</organizationUrl>
+      <roles>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>kalam-alami</id>
+      <name>Marwane Kalam-alami</name>
+      <email>marwane.kalam-alami@openwide.fr</email>
+      <organization>Openwide</organization>
+      <organizationUrl>http://www.openwide.fr</organizationUrl>
+      <roles>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- Missing information -->
+  <mailingLists>
+  </mailingLists>
+  <issueManagement>
+  </issueManagement>
+  <ciManagement>
+  </ciManagement>
+
+  <!-- ======= -->
+  <!-- Modules -->
+  <!-- ======= -->
+  <modules>
+    <module>easysoa-common</module>
+    <module>easysoa-distribution</module>
+    <module>easysoa-registry</module>
+    <module>easysoa-proxy</module>
+    <module>samples</module>
+  </modules>
+
+  <!-- ======================= -->
+  <!-- Dependencies management -->
+  <!-- ======================= -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Import Nuxeo dependencyManagement -->
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-features-parent</artifactId>
+        <version>5.5</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- EasySOA -->
+      <dependency>
+        <groupId>org.easysoa</groupId>
+        <artifactId>easysoa-common</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <!-- Messaging api -->
+      <dependency>
+        <groupId>org.easysoa.registry.api</groupId>
+        <artifactId>easysoa-registry-api-messaging</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <!-- Discovery API -->
+      <dependency>
+        <groupId>org.easysoa.registry.api</groupId>
+        <artifactId>easysoa-registry-api-remote</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <!-- Configuration constants -->
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-core</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry.api</groupId>
+        <artifactId>easysoa-registry-api-core</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry.api</groupId>
+        <artifactId>easysoa-registry-api-local</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-rest</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry.api</groupId>
+        <artifactId>easysoa-registry-api-frascati</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-frascati</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-persistence</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-api</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+
+      <!-- frascati -->
+      <dependency><!-- base frascati -->
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-binding-factory</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency><!-- else no frascati class generation -->
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-runtime-factory</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-binding-ws</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-binding-http</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-binding-rest</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <!-- Required to run velocity web apps -->
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-implementation-velocity</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <!-- to run it with mvn -Prun -->
+      <dependency>
+        <groupId>org.ow2.frascati.mojo</groupId>
+        <artifactId>frascati-launcher-plugin</artifactId>
+        <version>${frascati.version}</version>
+        <type>maven-plugin</type>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-implementation-fractal</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.tinfi</groupId>
+        <artifactId>frascati-tinfi-runtime</artifactId>
+        <version>${tinfi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.tinfi</groupId>
+        <artifactId>frascati-tinfi-runtime-api</artifactId>
+        <version>${tinfi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.tinfi</groupId>
+        <artifactId>frascati-tinfi-oo</artifactId>
+        <version>${tinfi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-assembly-factory</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.factory</groupId>
+        <artifactId>frascati-factory-tools</artifactId>
+        <version>1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-explorer-fscript-plugin</artifactId>
+        <version>1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-sca-parser</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.model</groupId>
+        <artifactId>osoa-java-api</artifactId>
+        <version>2.0.1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.model</groupId>
+        <artifactId>sca-model</artifactId>
+        <version>2.0.1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.model</groupId>
+        <artifactId>frascati-model</artifactId>
+        <version>2.0.1.3</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-frascati-shared</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.ow2.easywsdl</groupId>
+        <artifactId>easywsdl-wsdl</artifactId>
+        <version>2.1</version>
+      </dependency>
+      <!-- Don't use this version of EasyWSDL: no support for WSDL 2 yet -->
+      <dependency>
+        <artifactId>easywsdl11-api</artifactId>
+        <groupId>com.ebmwebsourcing.easywsdl</groupId>
+        <version>3.0_40M1</version>
+      </dependency>
+      <dependency>
+        <artifactId>easywsdl11-impl</artifactId>
+        <groupId>com.ebmwebsourcing.easywsdl</groupId>
+        <version>3.0_40M1</version>
+      </dependency>
+      <!-- Apache Woden -->
+      <!-- Alternative solution for parsing WSDL and generate HTML form -->
+      <dependency>
+        <groupId>org.apache.woden</groupId>
+        <artifactId>woden-api</artifactId>
+        <version>1.0M9</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>XmlSchema</artifactId>
+            <groupId>org.apache.ws.commons.schema</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.woden</groupId>
+        <artifactId>woden-impl-dom</artifactId>
+        <version>1.0M9</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.woden</groupId>
+        <artifactId>woden-tool</artifactId>
+        <version>1.0M9</version>
+      </dependency>
+
+      <!-- esper -->
+      <dependency>
+        <groupId>com.espertech</groupId>
+        <artifactId>esper</artifactId>
+        <version>4.2.0</version>
+      </dependency>
+      <!-- java rest webservices -->
+      <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>jsr311-api</artifactId>
+        <version>1.1.1</version>
+      </dependency>
+
+      <!-- Apache HTTP client -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.1.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.osgi</groupId>
+        <artifactId>org.eclipse.osgi.services</artifactId>
+        <version>3.2.100.v20100503</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.6</version>
+      </dependency>
+
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.6.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.6.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.6.1</version>
+      </dependency>
+
+      <!-- for obsolete code in NuxeoRegistrationService -->
+      <!-- <dependency> -->
+      <!-- <groupId>com.sun.jersey</groupId> -->
+      <!-- <artifactId>jersey-client</artifactId> -->
+      <!-- <version>1.11-b04</version> -->
+      <!-- </dependency> -->
+
+      <dependency>
+        <groupId>org.apache.tuscany.sca</groupId>
+        <artifactId>tuscany-sca-all</artifactId>
+        <version>1.6.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>2.7.1</version>
+      </dependency>
+
+      <!-- SOAPUI and required SOAPUI dependencies -->
+      <dependency>
+        <groupId>eviware</groupId>
+        <artifactId>soapui</artifactId>
+        <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
+        <version>4.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>eviware</groupId>
+        <artifactId>soapui-xmlbeans</artifactId>
+        <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
+        <version>4.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlbeans</groupId>
+        <artifactId>xmlbeans</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-cli</groupId>
+        <artifactId>commons-cli</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.juliusdavies</groupId>
+        <artifactId>not-yet-commons-ssl</artifactId>
+        <version>0.3.11</version>
+      </dependency>
+      <dependency>
+        <groupId>xerces</groupId>
+        <artifactId>xercesImpl</artifactId>
+        <version>2.10.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk16</artifactId>
+        <version>1.46</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.8.3</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.jms</groupId>
+        <artifactId>jms</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20090211</version>
+      </dependency>
+      <!-- Use this version of JSON-LIB because version 2.4 have some problems with
+        json within json -->
+      <dependency>
+        <groupId>net.sf.json-lib</groupId>
+        <artifactId>json-lib</artifactId>
+        <version>2.2.1</version>
+        <classifier>jdk15</classifier>
+      </dependency>
+      <dependency>
+        <groupId>xom</groupId>
+        <artifactId>xom</artifactId>
+        <version>1.2.5</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+      <!-- End of required SOAPUI dependencies -->
+
+      <!-- Apache CXF for Talend tuto mock -->
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-api</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-common-utilities</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-bindings-soap</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-bindings-xml</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-core</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-databinding-aegis</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-common</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-http</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-http-jetty</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-local</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-simple</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-databinding-jaxb</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-ws-addr</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-tools-common</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-tools-validator</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-tools-wsdlto-core</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-tools-wsdlto-databinding-jaxb</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-tools-wsdlto-frontend-jaxws</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>aopalliance</groupId>
+        <artifactId>aopalliance</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.woodstox</groupId>
+        <artifactId>stax2-api</artifactId>
+        <version>3.1.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.tuscany.sca</groupId>
+        <artifactId>sca-api</artifactId>
+        <version>0.90-incubating</version>
+      </dependency>
+
+      <dependency>
+        <groupId>oro</groupId>
+        <artifactId>oro</artifactId>
+        <version>2.0.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>3.0.4.RELEASE</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>3.0.4.RELEASE</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>3.0.4.RELEASE</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jdt</groupId>
+        <artifactId>core</artifactId>
+        <version>3.3.0.771</version>
+      </dependency>
+
+      <dependency>
+        <groupId>jetty</groupId>
+        <artifactId>org.mortbay.jetty.plus</artifactId>
+        <version>5.1.10</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty</artifactId>
+        <version>6.1.16</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-util</artifactId>
+        <version>6.1.16</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-continuation</artifactId>
+        <!-- <version>8.0.0.M2</version> -->
+        <version>7.4.5.v20110725</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-http</artifactId>
+        <version>7.4.5.v20110725</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-io</artifactId>
+        <version>7.4.5.v20110725</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-security</artifactId>
+        <version>7.4.5.v20110725</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>7.4.5.v20110725</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-util</artifactId>
+        <version>7.4.5.v20110725</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.stp.sca</groupId>
+        <artifactId>sca-model</artifactId>
+        <version>2.0.1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.stp.sca.domainmodel</groupId>
+        <artifactId>frascati-model</artifactId>
+        <version>2.0.1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>ecore</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+      </dependency>
+
+      <!-- Nuxeo -->
+      <dependency>
+        <groupId>org.nuxeo.ecm.automation</groupId>
+        <artifactId>nuxeo-automation-client</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-features-test</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.opensocial</groupId>
+        <artifactId>nuxeo-opensocial-gadgets-core</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.webengine</groupId>
+        <artifactId>nuxeo-webengine-core</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.core</groupId>
+        <artifactId>nuxeo-core-api</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-platform-mimetype-api</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-platform-ui-web</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.webengine</groupId>
+        <artifactId>nuxeo-webengine-base</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.webengine</groupId>
+        <artifactId>nuxeo-webengine-sites</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.opensocial</groupId>
+        <artifactId>nuxeo-opensocial-spaces</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-platform-userworkspace-api</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>jdom</artifactId>
+        <version>1.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>net.sourceforge.htmlcleaner</groupId>
+        <artifactId>htmlcleaner</artifactId>
+        <version>2.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.code.guice</groupId>
+        <artifactId>guice</artifactId>
+        <version>2.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>xstream</groupId>
+        <artifactId>xstream</artifactId>
+        <version>1.2.2</version>
+      </dependency>
+
+      <!-- Test scope -->
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-mocks</artifactId>
+        <version>${easysoa.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.2</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>1.8.5</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>jmock</groupId>
+        <artifactId>jmock</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <!-- ================= -->
+  <!-- Plugin management -->
+  <!-- ================= -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Compile with Java 1.6 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.3</version>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.3.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.9</version>
+        </plugin>
+        <plugin>
+          <groupId>org.ow2.frascati.mojo</groupId>
+          <artifactId>frascati-launcher-plugin</artifactId>
+          <version>1.4</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.2.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-codegen-plugin</artifactId>
+          <version>2.2.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.ow2.frascati.factory</groupId>
+          <artifactId>frascati-factory-plugin</artifactId>
+          <version>1.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>1.2.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.ow2.frascati.mojo</groupId>
+          <artifactId>frascati-compiler-plugin</artifactId>
+          <version>${frascati.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <scm>
+    <connection>scm:git:git://github.com/easysoa/EasySOA.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:easysoa/EasySOA.git</developerConnection>
+    <url>https://github.com/easysoa/EasySOA</url>
+  </scm>
+
+  <profiles>
+    <!-- Activate that profile for not using -->
+    <profile>
+      <id>without-nuxeo-proxy</id>
+      <repositories>
+        <!-- Required for EasyWSDL V3, not used in EasySOA for the moment -->
+        <!-- <repository> -->
+        <!-- <id>ebm</id> -->
+        <!-- <url>http://maven.petalslink.com/public/</url> -->
+        <!-- </repository> -->
+        <!-- For ?? -->
+        <repository>
+          <id>maven-restlet</id>
+          <name>Public online Restlet repository</name>
+          <url>http://maven.restlet.org</url>
+        </repository>
+        <!-- For FraSCAti (said as deprecated and replaced by http://repository.ow2.org/nexus...) -->
+        <repository>
+          <id>Frascati</id>
+          <name>Frascati repository</name>
+          <url>http://maven.ow2.org/maven2/</url>
+        </repository>
+        <!-- For FraSCAti SNAPSHOT versions -->
+        <repository>
+          <id>ow2-snapshot</id>
+          <url>http://maven.ow2.org/maven2-snapshot</url>
+        </repository>
+        <!-- For FraSCAti continuous integration repository -->
+        <repository>
+          <id>frascati-repo</id>
+          <name>FraSCAti Nexus repository</name>
+          <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+        <!-- For ?? -->
+        <repository>
+          <id>Download.java.net</id>
+          <name>Download.java.net repository</name>
+          <url>http://download.java.net/maven/2/</url>
+        </repository>
+        <!-- For EMF used in FraSCAti: equinox, sca model (?) -->
+        <repository>
+          <id>eclipse mirror</id>
+          <name>Eclipse EMF Mirror</name>
+          <url>http://www.openarchitectureware.org/m2</url>
+        </repository>
+        <!-- For tuscany sca model -->
+        <repository>
+          <id>apache.incubator</id>
+          <url>http://people.apache.org/repo/m2-incubating-repository</url>
+        </repository>
+        <!-- For ?? -->
+        <repository>
+          <id>Nuxeo</id>
+          <name>Nuxeo Public Releases Repository</name>
+          <url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>Nuxeo public-snapshot</id>
+          <url>https://maven.nuxeo.org/nexus/content/repositories/public-snapshot</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+        <!-- For frascati-required jdt core only -->
+        <repository>
+          <id>INRIA gforge</id>
+          <url>http://maven-repo.gforge.inria.fr/releases/</url>
+        </repository>
+        <!-- For JBoss components -->
+        <repository>
+          <id>Sonatype JBoss</id>
+          <url>https://oss.sonatype.org/content/repositories/jboss</url>
+        </repository>
+        <!-- <repository> -->
+        <!-- <id>inria-galaxy-repository</id> -->
+        <!-- <name>INRIA Galaxy Maven Repository</name> -->
+        <!-- <url>http://galaxy.gforge.inria.fr/repository/maven2</url> -->
+        <!-- <releases> -->
+        <!-- <enabled>true</enabled> -->
+        <!-- </releases> -->
+        <!-- <snapshots> -->
+        <!-- <enabled>true</enabled> -->
+        <!-- </snapshots> -->
+        <!-- </repository> -->
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>frascati-repo</id>
+          <name>FraSCAti Nexus repository</name>
+          <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <id>easysoa</id>
+      <name>EasySOA group repository</name>
+      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>easysoa</id>
+      <name>EasySOA group repository</name>
+      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
 </project>

@@ -1,262 +1,192 @@
-<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>nuxeo-features-parent</artifactId>
-    <groupId>org.nuxeo.ecm.platform</groupId>
-    <version>5.4.2</version>
+    <groupId>org.easysoa</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <modelVersion>4.0.0</modelVersion>
   <groupId>org.easysoa.registry</groupId>
-  <artifactId>easysoa-registry</artifactId>
-  <name>EasySOA Registry Project</name>
+  <artifactId>easysoa-registry-parent</artifactId>
   <packaging>pom</packaging>
-  <version>0.4-SNAPSHOT</version>
+  <name>EasySOA Registry Parent</name>
 
-  <licenses>
-    <license>
-      <name>The GNU Lesser General Public License, Version 3</name>
-      <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
-    </license>
-  </licenses>
+  <properties>
+    <asm.version>3.1</asm.version>
+    <explorer.version>1.0</explorer.version>
+    <spring.version>3.0.5.RELEASE</spring.version>
+    <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
+    <juliac.version>2.4</juliac.version>
+    <joram.version>5.5.0</joram.version>
+    <jaxb.version>2.1.13</jaxb.version>
+    <monolog.version>1.8</monolog.version>
+    <julia.version>2.5.2</julia.version>
+    <fraclet-annotations.version>3.3</fraclet-annotations.version>
+    <fractal-adl.version>2.3.1</fractal-adl.version>
+    <fractal-rmi.version>0.3.6-SNAPSHOT</fractal-rmi.version>
+  </properties>
+
 
   <modules>
-    <module>nuxeo-runtime-bridge</module>
     <module>easysoa-frascati-shared</module>
     <module>easysoa-frascati-processor</module>
     <module>nuxeo-frascati</module>
     <module>nuxeo-frascati-test</module>
     <module>easysoa-registry-api</module>
-    <module>easysoa-registry-parent</module>
     <module>easysoa-registry-core</module>
     <module>easysoa-registry-web</module>
     <module>easysoa-registry-rest</module>
     <module>easysoa-registry-dashboard</module>
     <module>easysoa-registry-frascati</module>
     <module>easysoa-registry-rest-frascati</module>
+    <module>nuxeo-packaging</module>
   </modules>
 
-  <!-- ============= -->
-  <!-- Custom tasks -->
-  <!-- ============= -->
+  <dependencies>
+    <dependency>
+      <groupId>org.easysoa</groupId>
+      <artifactId>easysoa-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.easywsdl</groupId>
+      <artifactId>easywsdl-wsdl</artifactId>
+    </dependency>
+
+    <!-- Testing framework dependencies -->
+    <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-datasource</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-platform-directory-types-contrib</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- FraSCAti In Nuxeo Dependencies -->
+      <dependency>
+        <groupId>org.nuxeo.runtime</groupId>
+        <artifactId>nuxeo-runtime-bridge</artifactId>
+        <version>${easysoa.nuxeo-bridge.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo</groupId>
+        <artifactId>nuxeo-frascati</artifactId>
+        <version>0.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo</groupId>
+        <artifactId>nuxeo-frascati-test</artifactId>
+        <version>0.0-SNAPSHOT</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-util</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <!-- Locally installed by org.nuxeo:nuxeo-frascati -->
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-util-comp</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati</groupId>
+        <artifactId>frascati-introspection-api</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.frascati.examples</groupId>
+        <artifactId>helloworld-pojo</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <!-- Locally installed by org.nuxeo:nuxeo-frascati-test -->
+      <dependency>
+        <groupId>org.ow2.frascati.examples</groupId>
+        <artifactId>frascati-helloworld-servlet</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <!-- Locally installed by org.nuxeo:nuxeo-frascati-test -->
+      <dependency>
+        <groupId>org.ow2.frascati.examples</groupId>
+        <artifactId>helloworld-ws-server</artifactId>
+        <version>${frascati.version}</version>
+      </dependency>
+      <!-- Force org.eclipse.core.runtime version, to make sure it is fetched from
+        a valid repository. Otherwise, given our listed repositories, it uses version 3.4.0
+        which leads to a missing dependency (org.eclipse.equinox:app:jar:[1.0.0,2.0.0)):
+        1) org.easysoa.registry:easysoa-registry-frascati:jar:0.4-SNAPSHOT 2) org.eclipse.jdt:core:jar:3.3.0-v_771
+        3) org.eclipse.core:resources:jar:3.3.0-v20070604 4) org.eclipse.core:expressions:jar:3.3.0-v20070606-0010
+        5) org.eclipse.core:runtime:jar:3.4.0 -->
+      <!-- <dependency> -->
+      <!-- <groupId>org.eclipse.core</groupId> -->
+      <!-- <artifactId>runtime</artifactId> -->
+      <!-- <version>3.3.100-v20070530</version> -->
+      <!-- </dependency> -->
+    </dependencies>
+  </dependencyManagement>
 
   <build>
-    <plugins>
-      <!-- Package bundle modules for Nuxeo -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-bundle-dependencies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <!-- EasySOA Core -->
-                <artifactItem>
-                  <groupId>org.easysoa.registry.api</groupId>
-                  <artifactId>easysoa-registry-api-local</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-registry-core</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-registry-rest</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-registry-web</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                
-                <!-- FraSCAti in Nuxeo
-                <artifactItem>
-                  <groupId>org.nuxeo.runtime</groupId>
-                  <artifactId>nuxeo-runtime-bridge</artifactId>
-                  <version>5.4.2-SNAPSHOT</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.nuxeo</groupId>
-                  <artifactId>nuxeo-frascati</artifactId>
-                  <version>0.0-SNAPSHOT</version>
-                </artifactItem> -->
-                
-                <!-- FraSCAti-related features -->
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-registry-frascati</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-registry-rest-frascati</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                
-                <!-- Other EasySOA features -->
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-registry-dashboard</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/nxserver/plugins</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      
-      <!-- Packge library modules & dependencies for Nuxeo -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-lib-dependencies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <!-- EasySOA modules -->
-                <artifactItem>
-                  <groupId>org.easysoa.registry.api</groupId>
-                  <artifactId>easysoa-registry-api-core</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry.api</groupId>
-                  <artifactId>easysoa-registry-api-remote</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry.api</groupId>
-                  <artifactId>easysoa-registry-api-frascati</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry.api</groupId>
-                  <artifactId>easysoa-registry-api-messaging</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-frascati-shared</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-frascati-processor</artifactId>
-                  <version>${project.version}</version>
-                </artifactItem>
-                
-                <!-- WSDL Parsing & transformation-->
-                <artifactItem>
-                  <groupId>org.ow2.easywsdl</groupId>
-                  <artifactId>easywsdl-schema</artifactId>
-                  <version>2.1</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.ow2.easywsdl</groupId>
-                  <artifactId>easywsdl-wsdl</artifactId>
-                  <version>2.1</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>xalan</groupId>
-                  <artifactId>xalan</artifactId>
-                  <version>2.7.0</version>
-                </artifactItem>  
-            
-                <!-- HTML parsing -->
-                <artifactItem>
-                  <groupId>net.sourceforge.htmlcleaner</groupId>
-                  <artifactId>htmlcleaner</artifactId>
-                  <version>2.2</version>
-                </artifactItem>
-                
-                <!-- HTTP body parsing -->
-                <artifactItem>
-                  <groupId>org.apache.cxf</groupId>
-                  <artifactId>cxf-common-utilities</artifactId>
-                  <version>2.4.2</version>
-                </artifactItem>
-    
-                <!-- JSON -->
-                <artifactItem>
-                  <groupId>org.json</groupId>
-                  <artifactId>json</artifactId>
-                  <version>20070829</version>
-                </artifactItem>
-            
-                <!-- FraSCAti in Nuxeo (should be deployed as bundles when stable) -->
-                <artifactItem>
-                  <groupId>org.nuxeo.runtime</groupId>
-                  <artifactId>nuxeo-runtime-bridge</artifactId>
-                  <version>5.4.2-SNAPSHOT</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.nuxeo</groupId>
-                  <artifactId>nuxeo-frascati</artifactId>
-                  <version>0.0-SNAPSHOT</version>
-                </artifactItem>
-                
-                <!-- Other needed packages -->
-                <artifactItem>
-                  <groupId>com.sun.xml.bind</groupId>
-                  <artifactId>jaxb-impl</artifactId>
-                  <version>2.1.6</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.jvnet.jaxb2_commons</groupId>
-                  <artifactId>runtime</artifactId>
-                  <version>0.2.GA</version>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/lib</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only.
+          It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version> <!-- Explicit version number needed to fix an m2e NPE during project import -->
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>net.java.maven-incremental-build</groupId>
+                    <artifactId>incremental-build-plugin</artifactId>
+                    <versionRange>[1.4,)</versionRange>
+                    <goals>
+                      <goal>incremental-build</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.0,)</versionRange>
+                    <goals>
+                      <goal>copy</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
-
-  <!-- ============= -->
-  <!-- Repositories -->
-  <!-- ============= -->
-  <repositories>
-    <repository>
-      <id>Nuxeo</id>
-      <name>Nuxeo Public Releases Repository</name>
-      <url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <!-- For Frascati
-    <repository>
-      <id>Frascati</id>
-      <name>Frascati repository</name>
-      <url>http://maven.ow2.org/maven2/org/ow2/frascati/</url>
-    </repository> -->
-    <!-- For Frascati SNAPSHOT versions
-    <repository>
-      <id>ow2-snapshot</id>
-      <url>http://maven.ow2.org//maven2-snapshot</url>
-    </repository> -->
-  </repositories>
-
 </project>

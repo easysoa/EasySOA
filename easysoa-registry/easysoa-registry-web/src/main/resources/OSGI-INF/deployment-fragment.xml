@@ -43,6 +43,11 @@
   <!-- Pages spécifiques au nouveau mode de navigation virtuelle -->
   <extension target="faces-config#NAVIGATION">
     <navigation-case>
+      <from-outcome>view_easysoa</from-outcome>
+      <to-view-id>/view_easysoa.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
       <from-outcome>application_virtual_navigation</from-outcome>
       <to-view-id>/application_virtual_navigation.xhtml</to-view-id>
       <redirect />
