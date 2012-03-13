@@ -154,8 +154,8 @@ public interface FraSCAtiServiceItf
      * Return the service associated to the component which name is passed on as
      * parameter, with the name and class type also passed on as parameter
      * 
-     * @param componentName
-     *            the name of the component to look the service in
+     * @param compositeName
+     *            the name of the composite to look the service in
      * @param serviceName
      *            the service name
      * @param serviceClass
