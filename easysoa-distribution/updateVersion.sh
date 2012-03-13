@@ -36,7 +36,7 @@ if [ "$1" == "clean" ]; then
 else
 
 	# Clean repository
-	rm -rf easysoa/
+	rm -r easysoa/
 	cd ..
 	mvn clean
 	

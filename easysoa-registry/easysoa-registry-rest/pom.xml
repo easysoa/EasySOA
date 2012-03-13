@@ -89,11 +89,6 @@
       <artifactId>mockito-all</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.script</groupId>
-      <artifactId>script-api</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jetty-plus</artifactId>
     </dependency>
