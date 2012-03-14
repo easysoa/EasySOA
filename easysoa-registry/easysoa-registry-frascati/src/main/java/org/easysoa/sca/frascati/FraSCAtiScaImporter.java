@@ -21,12 +21,18 @@
 package org.easysoa.sca.frascati;
 
 import java.io.File;
+import java.util.List;
 
+import org.easysoa.doctypes.AppliImpl;
+import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
 import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
 import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
+import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
+import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.services.DocumentService;
+import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Composite;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -39,43 +45,66 @@ import org.nuxeo.runtime.api.Framework;
  * @author jguillemotte
  * 
  */
-public class FraSCAtiScaImporter extends FraSCAtiScaImporterBase implements FraSCAtiRuntimeScaImporterItf {
-
-	private DocumentModel parentAppliImplModel;	
-	private CoreSession documentManager;
-	
-	/**
-	 * 
-	 * @param documentManager
-	 * @param compositeFile
-	 * @throws Exception 
-	 * @throws ClientException 
-	 */
-	public FraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory, /*CoreSession documentManager,*/ File compositeFile) throws ClientException, Exception{
-		super(bindingVisitorFactory, compositeFile, Framework.getService(NxFraSCAtiRegistryService.class));
-		if(bindingVisitorFactory instanceof LocalBindingVisitorFactory){
-			this.documentManager = ((LocalBindingVisitorFactory)bindingVisitorFactory).getDocumentManager();
-		}
-		if(documentManager != null){
-			parentAppliImplModel = Framework.getRuntime().getService(DocumentService.class).getDefaultAppliImpl(documentManager);
-		}
-	}
+public class FraSCAtiScaImporter extends ApiRuntimeFraSCAtiScaImporter 
+{
     
-    @Override
-    public void visitComposite(Composite composite){
-    	super.visitComposite(composite);
+    /**
+     * 
+     * @param documentManager
+     * @param compositeFile
+     * @throws Exception
+     * @throws ClientException
+     */
+    public FraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory,
+            File compositeFile) 
+    throws ClientException, Exception
+    {
+        super(bindingVisitorFactory, compositeFile, 
+                Framework.getService(FraSCAtiRegistryServiceItf.class));
+
+        DocumentModel parentAppliImplModel = null;
+        CoreSession documentManager = null;
+        
+        if (bindingVisitorFactory instanceof LocalBindingVisitorFactory)
+        {
+            documentManager = ((LocalBindingVisitorFactory) 
+                    bindingVisitorFactory).getDocumentManager();
+        }
+        if (documentManager != null)
+        {
+            parentAppliImplModel = Framework.getRuntime().getService(
+                 DocumentService.class).getDefaultAppliImpl(documentManager);
+            
+
+            super.setAppliImplURL((String) parentAppliImplModel.getProperty(
+                    AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        }
     }
 
-	@Override
-	public String getModelProperty(String arg0, String arg1) throws Exception {
-		return (String)(parentAppliImplModel.getProperty(arg0, arg1));
-	}
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.frascati.api.ScaImporterRecipientItf
+     * #runtimeServiceBindingVisit()
+     */
+    public void runtimeServiceBindingVisit()
+    {
+        Binding binding = (Binding) getBindingStack().pop();
+        ScaVisitor visitor = createServiceBindingVisitor();
+        List<BindingInfoProvider> bindingInfoProviders = createBindingInfoProviders();
+        acceptBindingVisitors(binding, visitor, bindingInfoProviders);
+    }
 
-	@Override
-	public void setParentAppliImpl(Object appliImplModel) {
-		if(appliImplModel instanceof DocumentModel){
-			parentAppliImplModel = (DocumentModel) appliImplModel;
-		}
-	}
-    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.frascati.api.ScaImporterRecipientItf#runtimeReferenceBindingVisit()
+     */
+    public void runtimeReferenceBindingVisit()
+    {
+        Binding binding = (Binding) getBindingStack().pop();
+        ScaVisitor visitor = createReferenceBindingVisitor();
+        List<BindingInfoProvider> bindingInfoProviders = createBindingInfoProviders();
+        acceptBindingVisitors(binding, visitor, bindingInfoProviders);
+    }
 }

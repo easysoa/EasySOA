@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.eclipse.stp.sca.Composite;
 import org.easysoa.frascati.api.FraSCAtiServiceItf; // TODO pb
-import org.easysoa.frascati.api.ScaImporterRecipientItf;
+import org.easysoa.sca.IScaRuntimeImporter;
 
 public interface FraSCAtiRegistryServiceItf {
 
@@ -72,10 +72,10 @@ public interface FraSCAtiRegistryServiceItf {
 	public abstract Set<Composite> readScaZip(File scaZipFile) throws Exception;
 
 	/**
-	 * Returns the default impl of ScaImporterRecipientItf (for this impl of FraSCAtiServiceItf)
+	 * Returns the default impl of IScaRuntimeImporter (for this impl of FraSCAtiServiceItf)
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract ScaImporterRecipientItf newRuntimeScaImporter() throws Exception;
+	public abstract IScaRuntimeImporter newRuntimeScaImporter() throws Exception;
 
 }

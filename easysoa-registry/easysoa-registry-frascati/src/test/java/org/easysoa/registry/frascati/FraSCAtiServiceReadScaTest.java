@@ -22,20 +22,15 @@ package org.easysoa.registry.frascati;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Set;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.eclipse.stp.sca.Composite;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nuxeo.frascati.NuxeoFraSCAtiException;
-import org.nuxeo.frascati.api.AbstractProcessingContext;
-import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
-import org.nuxeo.frascati.api.ProcessingModeProxy;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -74,7 +69,7 @@ public class FraSCAtiServiceReadScaTest {
 		// reading only until unfound class (then ParserException in AssemblyFactoryManager.processComposite())
 		// therefore not all services read :
 		Composite crippledComposite = readComposite(scaFile.toURI().toURL(),
-				frascatiRegistryService.newParsingProcessingContext());
+		        FraSCAtiServiceItf.check);
 		
 		Assert.assertTrue(crippledComposite == null);
     }
@@ -84,40 +79,27 @@ public class FraSCAtiServiceReadScaTest {
         // SCA composite file to import :
         String scaFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
         //File scaFile = new File(scaFilePath);
-        ParsingProcessingContext parsingPCtx = frascatiRegistryService.newParsingProcessingContext();
+        
         //log.debug("scaFile.toURI().toURL().toString() = " + scaFile.toURI().toURL().toString());
         //FraSCAtiCompositeItf[] composites = frascatiRegistryService.getFraSCAti().processContribution(scaFile.toURI().toURL().toString(), parsingPCtx);
-        FraSCAtiCompositeItf[] composites = frascatiRegistryService.getFraSCAti().processContribution(scaFilePath, parsingPCtx);
+        String[] composites = frascatiRegistryService.getFraSCAti().processContribution(
+                scaFilePath, FraSCAtiServiceItf.check);
         
         Assert.assertTrue(composites != null);
-        Assert.assertTrue(parsingPCtx.getRootComposite() != null);
+        Assert.assertTrue(frascatiRegistryService.getFraSCAti().getComposite(
+                composites[0])!= null);
     }
 
     /** Rather here than in FraSCAtiService because only public for test purpose */
-    private Composite readComposite(URL compositeUrl, AbstractProcessingContext processingContext) 
+    private Composite readComposite(URL compositeUrl, int mode) 
     		throws Exception {
-  	  if (processingContext.getRootComposite() != null) {
-  		  throw new Exception("Unlawful reuse of processingContext : already has a root composite "
-  				  + processingContext.getRootComposite().getName());
-  	  }
-      // Only parse and check the SCA composite, i.e., don't generate code for the SCA composite and don't instantiate it.
-      processingContext.setProcessingMode(ProcessingModeProxy.check); // else composite fails to start because ref'd WSDLs are unavailable      
-      try {
-    	  
-        // Process the SCA composite.
-    	frascatiRegistryService.getFraSCAti().processComposite(compositeUrl.toString(),
-    			processingContext);   
-    	
-      } catch(NuxeoFraSCAtiException fe) {
-      	System.err.println("The number of checking errors is equals to " + processingContext.getErrors());
-      	//for (error : processingContext.getData(key, type)) {
-      	//	
-      	//}
-    	System.err.println("The number of checking warnings is equals to " + processingContext.getWarnings());
-      }
-      Composite parsedComposite = processingContext.getRootComposite();
-      // resetting for next parsing :
-  	  processingContext.setRootComposite(null);
+      
+      String compositeName = null;
+      // Process the SCA composite.
+    compositeName = frascatiRegistryService.getFraSCAti().processComposite(
+            compositeUrl.toString(),mode);
+      Composite parsedComposite = frascatiRegistryService.getFraSCAti().getComposite(
+              compositeName);
   	  
       return parsedComposite;
     }

@@ -30,24 +30,4 @@ public interface IScaRuntimeImporter
     extends ScaImporterRecipientItf, IScaImporter
 {
 
-    /**
-     * 
-     * @return
-     */
-    public ScaVisitor createServiceBindingVisitor();
-
-    /**
-     * 
-     * @return
-     */
-    public ScaVisitor createReferenceBindingVisitor();
-
-    /**
-     * Return the BindingVisitorFactory object associated to the 
-     * current importer
-     * 
-     * @return
-     *          the BindingVisitorFactory
-     */
-    public BindingVisitorFactory getBindingVisitorFactory();
 }

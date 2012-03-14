@@ -171,7 +171,9 @@ public class EasySOAImportBean {
                 DocumentModel appliImplModel = documentManager.getDocument(new IdRef(targetAppliImpl));
                 if (targetAppliImpl != null) {
                     // Add a test here to check if instance of NuxeoFrascatiScaImporter
-                    importer.setParentAppliImpl(appliImplModel);
+                    //importer.setParentAppliImpl(appliImplModel);
+                    importer.setAppliImplURL((String)
+                            appliImplModel.getProperty(AppliImpl.SCHEMA,AppliImpl.PROP_URL));
                 }
                 if (serviceStackType != null) {
                     importer.setServiceStackType(serviceStackType);

@@ -17,7 +17,6 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-
 package org.easysoa.sca.frascati;
 
 import static org.junit.Assert.assertEquals;
@@ -28,6 +27,7 @@ import java.io.File;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
@@ -61,285 +61,363 @@ import com.google.inject.Inject;
 
 /**
  * Tests SCA import with FraSCAti
+ * 
  * @author mdutoo
- *
  */
-
-@RunWith(FeaturesRunner.class)
-@Features({EasySOACoreFeature.class,FraSCAtiFeature.class})
-@Deploy({
-	"org.nuxeo.runtime.datasource",
-	"org.easysoa.registry.frascati",
-    "org.easysoa.registry.core",
-    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
-	"org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
-})
-@LocalDeploy({
-	"org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
-	"org.easysoa.registry.core:test/datasource-contrib.xml" // required because no jetty.naming in deps
-})
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
-public class FraSCAtiImportServiceTest{
-
+@RunWith(FeaturesRunner.class) @Features(
+{ EasySOACoreFeature.class, FraSCAtiFeature.class }) @Deploy(
+{
+        "org.nuxeo.runtime.datasource", "org.easysoa.registry.frascati",
+        "org.easysoa.registry.core",
+        "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else
+                                                                       // no custom
+                                                                       // easysoa
+                                                                       // vocabularies,
+        "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to
+                                                                           // find the
+                                                                           // service
+                                                                           // through the
+                                                                           // Framework
+                                                                           // class
+        "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no
+                                                                    // custom types
+        "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the
+                                                                       // contribution
+                                                                       // below
+        "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to
+                                                                       // enable the
+                                                                       // specific doctype
+                                                                       // listeners
+}) @LocalDeploy(
+{
+        "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
+        "org.easysoa.registry.core:test/datasource-contrib.xml" // required because no
+                                                                // jetty.naming in deps
+}) @RepositoryConfig(type = BackendType.H2, user = "Administrator",
+        init = EasySOARepositoryInit.class) public class FraSCAtiImportServiceTest
+{
     static final Log log = LogFactory.getLog(FraSCAtiImportServiceTest.class);
-
     @Inject CoreSession session;
-
     @Inject DocumentService docService;
-    
     @Inject ResourceService resourceService;
-    
     DocumentModel parentAppliImplModel;
-    
     @Inject ScaImporterComponent scaImporterComponent;
-
     @Inject NxFraSCAtiRegistryService frascatiRegistryService;
-    
-	@Before
-	public void setUp() throws Exception {
 
-		// FraSCAti
-		assertNotNull("Cannot get FraSCAti service component", frascatiRegistryService);
-
-		// Find or create appli
-		String appliUrl = "http://localhost";
-		parentAppliImplModel = docService.findAppliImpl(session, appliUrl);
-		if (parentAppliImplModel == null) {
-			String title = "Test Appli Title";
-			parentAppliImplModel = docService
-					.createAppliImpl(session, appliUrl);
-			parentAppliImplModel.setProperty("dublincore", "title", title);
-			session.saveDocument(parentAppliImplModel);
-			session.save();
-			// NB. created documents are auto deleted at the end, so no need for
-			// :
-			// session.removeDocument(parentAppliImplModel.getRef());
-		}
-	}
-
-    @Test
-    @Ignore    
-    public void importSCAZipSimple() throws Exception {
-    	// SCA composite file to import :
-    	// to load a file, we use simply File, since user.dir is set relatively to the project
-    	String scaFilePath = "src/test/resources/" + "proxy-simple-1.0-SNAPSHOT.jar";
-    	File scaFile = new File(scaFilePath);
-    	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
-    	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	
-    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
-		FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile); // TODO put FileBlob back in orig test
-    	importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
-		importer.setServiceStackType("FraSCAti");
-		importer.setServiceStackUrl("/");
-		importer.importSCAZip();
-
-		DocumentModelList resDocList;
-		DocumentModel resDoc;
-		
-		// Log repository
-		new RepositoryLogger(session, "Repository state after import").logAllRepository();
-		
-		// services :
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
-		
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
-
-		// references :
-		/*resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " 
-				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());
-
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND "
-				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());*/
-		
-		// api :
-		/*
-		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
-		assertEquals("PureAirFlowers API", apiModel.getTitle());*/
-		
+    @Before 
+    public void setUp() throws Exception
+    {
+        // FraSCAti
+        assertNotNull("Cannot get FraSCAti service component",
+                frascatiRegistryService);
+        // Find or create appli
+        String appliUrl = "http://localhost";
+        parentAppliImplModel = docService.findAppliImpl(session, appliUrl);
+        if (parentAppliImplModel == null)
+        {
+            String title = "Test Appli Title";
+            parentAppliImplModel =
+                    docService.createAppliImpl(session, appliUrl);
+            parentAppliImplModel.setProperty("dublincore", "title", title);
+            session.saveDocument(parentAppliImplModel);
+            session.save();
+            // NB. created documents are auto deleted at the end, so no need for
+            // :
+            // session.removeDocument(parentAppliImplModel.getRef());
+        }
     }
-    
-    
-    /** The following FraSCAti parsing-based import would fail without custom
-     * ProcessingContext.loadClass() because of unknown class in zip */
-    @Test
-    @Ignore
-    public void importSCAZip() throws Exception {
-    	// SCA composite file to import :
-    	// to load a file, we use simply File, since user.dir is set relatively to the project
-    	String scaFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
-    	File scaFile = new File(scaFilePath);
-    	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
-    	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
-    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);
-		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
-		importer.setServiceStackType("FraSCAti");
-		importer.setServiceStackUrl("/");
-		importer.importSCAZip();
 
-		DocumentModelList resDocList;
-		DocumentModel resDoc;
-		
-		// Log repository
-		new RepositoryLogger(session, "Repository state after import").logAllRepository();
-		
-		// services :
-		
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + 
-				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
-		
+    @Test 
+    //@Ignore 
+    public void importSCAZipSimple() throws Exception
+    {
+        // SCA composite file to import :
+        // to load a file, we use simply File, since user.dir is set relatively to the
+        // project
+        String scaFilePath =
+                "src/test/resources/" + "proxy-simple-1.0-SNAPSHOT.jar";
+        File scaFile = new File(scaFilePath);
+        // NB. on the opposite, ResourceService does not work (or maybe with additional
+        // contributions ?)
+        // URL a =
+        // resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
+        BindingVisitorFactory visitorFactory =
+                new LocalBindingVisitorFactory(session);
+        FraSCAtiScaImporter importer =
+                new FraSCAtiScaImporter(visitorFactory, scaFile); // TODO put FileBlob
+                                                                  // back in orig test
+        // importer.setParentAppliImpl(session.getDocument(new
+        // IdRef(parentAppliImplModel.getId())));
+        importer.setAppliImplURL((String) parentAppliImplModel.getProperty(
+                AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        importer.importSCAZip();
+        DocumentModelList resDocList;
+        DocumentModel resDoc;
+        // Log repository
+        new RepositoryLogger(session, "Repository state after import")
+                .logAllRepository();
+        // services :
+        resDocList =
+                session.query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + Service.DOCTYPE
+                        + "' AND "
+                        + "dc:title"
+                        + " = '"
+                        + "restInterface"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted'");
+        assertEquals(1, resDocList.size());
+        resDoc = resDocList.get(0);
+        assertEquals("/Proxy/restInterface", resDoc.getProperty(
+                EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
+        resDocList =
+                session.query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + Service.DOCTYPE
+                        + "' AND "
+                        + "dc:title"
+                        + " = '"
+                        + "ProxyService"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted'");
+        assertEquals(1, resDocList.size());
+        resDoc = resDocList.get(0);
+        assertEquals("/ProxyService", resDoc.getProperty(
+                EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
+        // references :
+        /*
+         * resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" +
+         * Service.DOCTYPE + "' AND " + EasySOADoctype.SCHEMA_COMMON_PREFIX +
+         * EasySOADoctype.PROP_ARCHIPATH + " = '" + "ws" +
+         * "' AND ecm:currentLifeCycleState <> 'deleted'"); assertEquals(1,
+         * resDocList.size()); resDocList =
+         * session.query("SELECT * FROM Document WHERE ecm:primaryType = '" +
+         * Service.DOCTYPE + "' AND " + EasySOADoctype.SCHEMA_COMMON_PREFIX +
+         * EasySOADoctype.PROP_ARCHIPATH + " = '" + "/ProxyUnused/ws" +
+         * "' AND ecm:currentLifeCycleState <> 'deleted'"); assertEquals(1,
+         * resDocList.size());
+         */
+        // api :
+        /*
+         * DocumentModel apiModel = docService.findServiceApi(session,
+         * "http://127.0.0.1:9010"); assertEquals("PureAirFlowers API",
+         * apiModel.getTitle());
+         */
     }
-    
-    @Test
-    @Ignore
-    public void testSCAComposite() throws Exception {
-    	// SCA composite file to import :
-    	// to load a file, we use simply File, since user.dir is set relatively to the project
-    	String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
-    	File scaFile = new File(scaFilePath);
-    	// NB. on the opposite, ResourceService does not work (or maybe with additional contributions ?)
-    	//URL a = resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
-    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
-    	FraSCAtiScaImporter importer = new FraSCAtiScaImporter(visitorFactory, scaFile);
-		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
-		importer.setServiceStackType("FraSCAti");
-		importer.setServiceStackUrl("/");
-		try{
-			importer.importSCAComposite();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		DocumentModelList resDocList;
-		DocumentModel resDoc;
-		
-		// Log repository
-		new RepositoryLogger(session, "Repository state after import").logAllRepository();
-		
-		// services :
-		
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + 
-				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
-		
+
+    /**
+     * The following FraSCAti parsing-based import would fail without custom
+     * ProcessingContext.loadClass() because of unknown class in zip
+     */
+    @Test 
+    //@Ignore 
+    public void importSCAZip() throws Exception
+    {
+        // SCA composite file to import :
+        // to load a file, we use simply File, since user.dir is set relatively to the
+        // project
+        String scaFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
+        File scaFile = new File(scaFilePath);
+        // NB. on the opposite, ResourceService does not work (or maybe with additional
+        // contributions ?)
+        // URL a =
+        // resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
+        BindingVisitorFactory visitorFactory =
+                new LocalBindingVisitorFactory(session);
+        FraSCAtiScaImporter importer =
+                new FraSCAtiScaImporter(visitorFactory, scaFile);
+        // importer.setParentAppliImpl(session.getDocument(new
+        // IdRef(parentAppliImplModel.getId())));
+        importer.setAppliImplURL((String) parentAppliImplModel.getProperty(
+                AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        importer.importSCAZip();
+        DocumentModelList resDocList;
+        DocumentModel resDoc;
+        // Log repository
+        new RepositoryLogger(session, "Repository state after import")
+                .logAllRepository();
+        // services :
+        resDocList =
+                session.query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + Service.DOCTYPE
+                        + "' AND "
+                        + "dc:title"
+                        + " = '"
+                        + "restInterface"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
+        assertEquals(1, resDocList.size());
+        resDoc = resDocList.get(0);
+        assertEquals("/Proxy/restInterface", resDoc.getProperty(
+                EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
     }
-    
+
+    @Test 
+    //@Ignore 
+    public void testSCAComposite() throws Exception
+    {
+        // SCA composite file to import :
+        // to load a file, we use simply File, since user.dir is set relatively to the
+        // project
+        String scaFilePath =
+                "src/test/resources/"
+                        + "org/easysoa/sca/RestSoapProxy.composite";
+        File scaFile = new File(scaFilePath);
+        // NB. on the opposite, ResourceService does not work (or maybe with additional
+        // contributions ?)
+        // URL a =
+        // resourceService.getResource("org/easysoa/tests/RestSoapProxy.composite");
+        BindingVisitorFactory visitorFactory =
+                new LocalBindingVisitorFactory(session);
+        FraSCAtiScaImporter importer =
+                new FraSCAtiScaImporter(visitorFactory, scaFile);
+        // importer.setParentAppliImpl(session.getDocument(new
+        // IdRef(parentAppliImplModel.getId())));
+        importer.setAppliImplURL((String) parentAppliImplModel.getProperty(
+                AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        try
+        {
+            importer.importSCAComposite();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        DocumentModelList resDocList;
+        DocumentModel resDoc;
+        // Log repository
+        new RepositoryLogger(session, "Repository state after import")
+                .logAllRepository();
+        // services :
+        resDocList =
+                session.query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + Service.DOCTYPE
+                        + "' AND "
+                        + "dc:title"
+                        + " = '"
+                        + "restInterface"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
+        assertEquals(1, resDocList.size());
+        resDoc = resDocList.get(0);
+        assertEquals("/Proxy/restInterface", resDoc.getProperty(
+                EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));
+    }
+
     /**
      * Test the frascati SCA importer deployed as a Nuxeo extension point
      */
-    @Test
-    @Ignore
-    public void testFrascatiScaImporter() throws Exception {
-    	// SCA composite file to import :
-    	// to load a file, we use simply File, since user.dir is set relatively to the project
-    	//String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
-    	// With this sample, no problem, all the required (specified in the composite file) classes are in a single jar
-    	String scaFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
-
-    	File scaFile = new File(scaFilePath);    	
-   	
-    	// Getting the importer
-    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
-    	IScaImporter importer = scaImporterComponent.createScaImporter(visitorFactory, scaFile);
-    	//IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
-    	// If importer is null, we have a problem
-    	assertNotNull(importer);
-    	
-		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
-		importer.setServiceStackType("FraSCAti");
-		importer.setServiceStackUrl("/");
-    	importer.importSCA();
-    	
-    	// Check import results
-    	DocumentModelList resDocList;
-		DocumentModel resDoc;
-		
-		// Log repository
-		new RepositoryLogger(session, "Repository state after import").logAllRepository();
-		
-		// services :
-		// No corresponding data in the imported sample jar
-		/*resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "restInterface" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/Proxy/restInterface", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;*/
-		
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				Service.DOCTYPE + "' AND " + "dc:title" + " = '" +  "ProxyService" + 
-				"' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-		assertEquals(1, resDocList.size());
-		resDoc = resDocList.get(0);
-		assertEquals("/ProxyService", resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
-
-		// references :
-		resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				ServiceReference.DOCTYPE + "' AND "
-				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/Proxy/ws" + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
-		assertEquals(1, resDocList.size());
-
-		// No corresponding data in the imported sample jar
-		/*resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" + 
-				ServiceReference.DOCTYPE + "' AND "
-				+ EasySOADoctype.SCHEMA_COMMON_PREFIX + EasySOADoctype.PROP_ARCHIPATH
-				+ " = '" +  "/ProxyUnused/ws" + "' AND ecm:currentLifeCycleState <> 'deleted'");
-		assertEquals(1, resDocList.size());*/
-		
-		// api :
-		DocumentModel apiModel = docService.findServiceApi(session, "http://127.0.0.1:9010");
-		assertEquals("PureAirFlowers API", apiModel.getTitle());
-    }    
-    
-    @Test
-    public void testFrascatiClassNotFoundException() throws Exception {
-    	// With this sample, frascati throws a ClassNotFoundException because required classes are in an other jar
-    	String scaFilePath = "src/test/resources/" + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
-    	File scaFile = new File(scaFilePath);    	
-   	
-    	boolean classNotFoundExceptionThrown = false;
-    	
-    	// Getting the importer
-    	BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
-    	IScaImporter importer = scaImporterComponent.createScaImporter(visitorFactory, scaFile);
-    	//IScaImporter importer = scaImporterComponent.createScaImporter(session, scaFile);
-    	// If importer is null, we have a problem
-    	assertNotNull(importer);
-
-		importer.setParentAppliImpl(session.getDocument(new IdRef(parentAppliImplModel.getId())));
-		importer.setServiceStackType("FraSCAti");
-		importer.setServiceStackUrl("/");
-		try{			
-			importer.importSCA();
-		} catch(Exception e){
-			classNotFoundExceptionThrown = true;
-			//e.printStackTrace();
-		}
-		assertTrue(classNotFoundExceptionThrown);
+    @Test 
+    //@Ignore 
+    public void testFrascatiScaImporter() throws Exception
+    {
+        // SCA composite file to import :
+        // to load a file, we use simply File, since user.dir is set relatively to the
+        // project
+        // String scaFilePath = "src/test/resources/" +
+        // "org/easysoa/sca/RestSoapProxy.composite";
+        // With this sample, no problem, all the required (specified in the composite
+        // file) classes are in a single jar
+        String scaFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
+        File scaFile = new File(scaFilePath);
+        // Getting the importer
+        BindingVisitorFactory visitorFactory =
+                new LocalBindingVisitorFactory(session);
+        IScaImporter importer =
+                scaImporterComponent.createScaImporter(visitorFactory, scaFile);
+        // IScaImporter importer = scaImporterComponent.createScaImporter(session,
+        // scaFile);
+        // If importer is null, we have a problem
+        assertNotNull(importer);
+        // importer.setParentAppliImpl(session.getDocument(new
+        // IdRef(parentAppliImplModel.getId())));
+        importer.setAppliImplURL((String) parentAppliImplModel.getProperty(
+                AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        importer.importSCA();
+        // Check import results
+        DocumentModelList resDocList;
+        DocumentModel resDoc;
+        // Log repository
+        new RepositoryLogger(session, "Repository state after import")
+                .logAllRepository();
+        // services :
+        // No corresponding data in the imported sample jar
+        /*
+         * resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" +
+         * Service.DOCTYPE + "' AND " + "dc:title" + " = '" + "restInterface" +
+         * "' AND ecm:currentLifeCycleState <> 'deleted'"); assertEquals(1,
+         * resDocList.size()); resDoc = resDocList.get(0);
+         * assertEquals("/Proxy/restInterface",
+         * resDoc.getProperty(EasySOADoctype.SCHEMA_COMMON,
+         * EasySOADoctype.PROP_ARCHIPATH));;
+         */
+        resDocList =
+                session.query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + Service.DOCTYPE
+                        + "' AND "
+                        + "dc:title"
+                        + " = '"
+                        + "ProxyService"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
+        assertEquals(1, resDocList.size());
+        resDoc = resDocList.get(0);
+        assertEquals("/ProxyService", resDoc.getProperty(
+                EasySOADoctype.SCHEMA_COMMON, EasySOADoctype.PROP_ARCHIPATH));;
+        // references :
+        resDocList =
+                session.query("SELECT * FROM Document WHERE ecm:primaryType = '"
+                        + ServiceReference.DOCTYPE
+                        + "' AND "
+                        + EasySOADoctype.SCHEMA_COMMON_PREFIX
+                        + EasySOADoctype.PROP_ARCHIPATH
+                        + " = '"
+                        + "/Proxy/ws"
+                        + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isProxy = 0");
+        assertEquals(1, resDocList.size());
+        // No corresponding data in the imported sample jar
+        /*
+         * resDocList = session.query("SELECT * FROM Document WHERE ecm:primaryType = '" +
+         * ServiceReference.DOCTYPE + "' AND " + EasySOADoctype.SCHEMA_COMMON_PREFIX +
+         * EasySOADoctype.PROP_ARCHIPATH + " = '" + "/ProxyUnused/ws" +
+         * "' AND ecm:currentLifeCycleState <> 'deleted'"); assertEquals(1,
+         * resDocList.size());
+         */
+        // api :
+        DocumentModel apiModel =
+                docService.findServiceApi(session, "http://127.0.0.1:9010");
+        assertEquals("PureAirFlowers API", apiModel.getTitle());
     }
-    
+
+    @Test 
+    public void testFrascatiClassNotFoundException() throws Exception
+    {
+        // With this sample, frascati throws a ClassNotFoundException because required
+        // classes are in an other jar
+        String scaFilePath =
+                "src/test/resources/"
+                        + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
+        File scaFile = new File(scaFilePath);
+        boolean classNotFoundExceptionThrown = false;
+        // Getting the importer
+        BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(session);
+        IScaImporter importer =
+                scaImporterComponent.createScaImporter(visitorFactory, scaFile);
+        // If importer is null, we have a problem
+        assertNotNull(importer);
+        importer.setAppliImplURL((String) parentAppliImplModel.getProperty(
+                AppliImpl.SCHEMA, AppliImpl.PROP_URL));
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        try
+        {
+            importer.importSCA();
+        } catch (Exception e)
+        {
+            classNotFoundExceptionThrown = true;
+            // e.printStackTrace();
+        }
+        assertTrue(classNotFoundExceptionThrown);
+    }
 }

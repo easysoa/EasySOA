@@ -1,81 +1,73 @@
 package org.easysoa.registry.frascati;
 
 //import org.easysoa.app.AppDescriptor;
-import org.nuxeo.frascati.NuxeoFraSCAtiException;
-import org.nuxeo.frascati.api.FraSCAtiCompositeItf;
+import org.easysoa.frascati.FraSCAtiServiceException;
 import org.nuxeo.runtime.api.Framework;
 
-public class NxFraSCAtiApp implements EasySOAApp {
-	
-	private final static String STARTING_METHOD = "NxFraSCAti";
-	
-	private String appPath;
+public class NxFraSCAtiApp implements EasySOAApp
+{
 
-	//private AppDescriptor appDescriptor;
+    private final static String STARTING_METHOD = "NxFraSCAti";
 
-	private FraSCAtiRegistryServiceBase fraSCAtiService; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti
-	
-	private FraSCAtiCompositeItf composite;
-	
-	/*public NxFraSCAtiApp (AppDescriptor appDescriptor) {
-		this.appDescriptor = appDescriptor;
-	}*/
-	
-	public NxFraSCAtiApp (String appPath) {
-		this.appPath = appPath;
-	}
-	
-	@Override
-	public void start() {
-		NxFraSCAtiRegistryService nxFraSCAtiRegistryService = Framework.getLocalService(NxFraSCAtiRegistryService.class);
-		// TODO start with disco
-		try {
-			DiscoveryProcessingContext pctx = nxFraSCAtiRegistryService.newDiscoveryProcessingContext();
-			nxFraSCAtiRegistryService.getFraSCAti().processComposite(appPath, pctx);
-		} catch (NuxeoFraSCAtiException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+    private String appPath;
 
-	@Override
-	public void stop() {
-		// TODO stop compos
-	}
+    // private AppDescriptor appDescriptor;
 
-	// init
-	/*public void setAppPath(String appPath) {
-		this.appPath = appPath;
-	}*/
+    private FraSCAtiRegistryServiceBase fraSCAtiService; // TODO make it
+                                                         // independent from
+                                                         // nuxeo by
+                                                         // reimplementing it
+                                                         // also directly on top
+                                                         // of FraSCAti
 
-	public String getAppPath() {
-		return appPath;
-	}
+    /*
+     * public NxFraSCAtiApp (AppDescriptor appDescriptor) { this.appDescriptor =
+     * appDescriptor; }
+     */
 
-	public FraSCAtiRegistryServiceBase getFraSCAtiService() {
-		return fraSCAtiService;
-	}
+    public NxFraSCAtiApp(String appPath)
+    {
 
-	// init
-	/*public void setFraSCAtiService(FraSCAtiRegistryServiceBase fraSCAtiService) {
-		this.fraSCAtiService = fraSCAtiService;
-	}*/
+        this.appPath = appPath;
+    }
 
-	public FraSCAtiCompositeItf getComposite() {
-		return composite;
-	}
-	
-	public void SetCompositeItf(FraSCAtiCompositeItf composite){
-		this.composite = composite;
-	}
+    @Override
+    public void start()
+    {
+        NxFraSCAtiRegistryService nxFraSCAtiRegistryService = Framework
+                .getLocalService(NxFraSCAtiRegistryService.class);
+        try
+        {
+            nxFraSCAtiRegistryService.getFraSCAti().processComposite(appPath);
+        } catch (FraSCAtiServiceException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public String getAppId() {
-		return STARTING_METHOD + ":" + appPath; 
-	}
-	
+    @Override
+    public void stop()
+    {
+
+        // TODO stop compos
+    }
+
+    public String getAppPath()
+    {
+
+        return appPath;
+    }
+
+    public FraSCAtiRegistryServiceBase getFraSCAtiService()
+    {
+
+        return fraSCAtiService;
+    }
+
+    @Override
+    public String getAppId()
+    {
+
+        return STARTING_METHOD + ":" + appPath;
+    }
 }

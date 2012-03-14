@@ -22,7 +22,7 @@ package org.easysoa.registry.frascati;
 
 import java.io.File;
 
-import org.easysoa.frascati.api.ScaImporterRecipientItf;
+import org.easysoa.sca.IScaRuntimeImporter;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
 import org.easysoa.sca.frascati.ApiRuntimeFraSCAtiScaImporter;
@@ -67,7 +67,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * @see org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf#
      * newRuntimeScaImporter()
      */
-    public ScaImporterRecipientItf newRuntimeScaImporter() throws Exception
+    public IScaRuntimeImporter newRuntimeScaImporter() throws Exception
     {
         return newRemoteRuntimeScaImporter();
     }
@@ -85,7 +85,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * @return
      * @throws Exception
      */
-    public ScaImporterRecipientItf newRemoteRuntimeScaImporter()
+    public IScaRuntimeImporter newRemoteRuntimeScaImporter()
             throws Exception
     {
         RemoteBindingVisitorFactory apiBindingVisitorFactory = 
