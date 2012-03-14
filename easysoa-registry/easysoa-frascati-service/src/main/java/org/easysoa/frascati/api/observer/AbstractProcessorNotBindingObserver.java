@@ -33,7 +33,7 @@ public abstract class AbstractProcessorNotBindingObserver<T extends EObject>
 extends AbstractProcessorObserver<T>
 {
     /**
-     * Return the name of the object, which is also an {@ŀink EObject}
+     * Return the name of the object, which is also an {@link EObject}
      * 
      * @param t
      *            the object of which the name is to find

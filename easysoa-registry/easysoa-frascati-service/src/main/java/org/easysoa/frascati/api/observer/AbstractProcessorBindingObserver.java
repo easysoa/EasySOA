@@ -29,7 +29,7 @@ import org.eclipse.stp.sca.Binding;
  * @param <T>
  *      the object type handled by the targeted processor which have to extend 
  *      {@link EObject} - Here T extends EObject instead of {@link Binding} to 
- *      be able to extend the {@ŀink AbstractProcessorObserver} class
+ *      be able to extend the {@link AbstractProcessorObserver} class
  */
 public abstract class AbstractProcessorBindingObserver<T extends EObject> 
 extends AbstractProcessorObserver<T>
