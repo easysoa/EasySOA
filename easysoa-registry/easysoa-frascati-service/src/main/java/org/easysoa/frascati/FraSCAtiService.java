@@ -121,6 +121,12 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
             e.printStackTrace();
             throw new FraSCAtiServiceException("Enable to process the '"
                     + contribution + "' contribution");
+            
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            throw new FraSCAtiServiceException("Enable to process the '"
+                    + contribution + "' composite");
         } finally
         {
             Thread.currentThread().setContextClassLoader(current);
@@ -129,7 +135,15 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
             this.errors = processingContext.getErrors();
             this.warnings = processingContext.getWarnings();
         }
-        return registry.getProcessedComponentList().toArray(new String[0]);
+        List<String> processed = registry.getProcessedComponentList();
+        String[] emptyProcessed = new String[0];
+        if(processed != null)
+        {
+            return processed.toArray(emptyProcessed);
+        } else 
+        {
+            return emptyProcessed;
+        }
     }
 
     /**
@@ -176,7 +190,13 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
             e.printStackTrace();
             throw new FraSCAtiServiceException("Enable to process the '"
                     + composite + "' composite");
-        } finally
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            throw new FraSCAtiServiceException("Enable to process the '"
+                    + composite + "' composite");
+        }
+        finally
         {
             Thread.currentThread().setContextClassLoader(current);
             this.warningMessages = processingContext.getWarningMessages();
