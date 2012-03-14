@@ -22,6 +22,10 @@ package org.easysoa.frascati.observer;
 import org.easysoa.frascati.api.observer.AbstractProcessorNotBindingObserver;
 import org.eclipse.stp.sca.ComponentReference;
 
+
+/**
+ * Observer for the FraSCAti's ComponentReference processor
+ */
 public class ProcessorComponentReferenceObserver
 extends AbstractProcessorNotBindingObserver<ComponentReference>
 {

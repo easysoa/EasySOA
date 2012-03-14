@@ -22,14 +22,35 @@ package org.easysoa.frascati.api.observer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
 
+/**
+ * Define the shared code between all {@link Binding} processors 
+ * (@see org.ow2.frascati.assembly.factory.api.Processor) observers
+ * 
+ * @param <T>
+ *      the object type handled by the targeted processor which have to extend 
+ *      {@link EObject} - Here T extends EObject instead of {@link Binding} to 
+ *      be able to extend the {@ŀink AbstractProcessorObserver} class
+ */
 public abstract class AbstractProcessorBindingObserver<T extends EObject> 
 extends AbstractProcessorObserver<T>
-{    
+{   
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.frascati.api.observer.ProcessorObserverItf#checkDo(
+     * java.lang.Object)
+     */
     public void checkDo(T t)
     {
         log.info("checkDo ["+t.getClass()+"]");
     }
     
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.frascati.api.observer.ProcessorObserverItf#checkDone(
+     * java.lang.Object)
+     */
     public void checkDone(T t)
     {
         log.info("checkDone ["+t.getClass()+"]");

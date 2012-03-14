@@ -75,17 +75,20 @@ public interface ScaImporterIntermediaryItf
     void importSCA() throws Exception;
 
     /**
-     * 
+     * Alert that a Service or a ComponentService has been pile up on the 
+     * bindingStack
      */
     void defineServiceDelegate();
 
     /**
-     * 
+     * Alert that a Reference or a ComponentReference has been pile up on the 
+     * bindingStack
      */
     void defineReferenceDelegate();
 
     /**
-     * 
+     * Alert that a Reference (or a ComponentReference) or a Service (
+     * or a ComponentService) has been unstacked of the bindingStack
      */
     void clearDelegate();
     

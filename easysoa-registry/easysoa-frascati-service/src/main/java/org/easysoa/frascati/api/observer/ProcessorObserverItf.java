@@ -21,9 +21,28 @@ package org.easysoa.frascati.api.observer;
 
 import org.osoa.sca.annotations.Service;
 
+/**
+ * A FraSCAti {@link org.ow2.frascati.assembly.factory.api.Processor}
+ * observer definition
+ */
 @Service
 public interface ProcessorObserverItf<T> 
 {
+    /**
+     * A <T> processor observer is informed about the begining of a 
+     * checking process for the <T> object passed on as a parameter
+     * 
+     * @param t
+     *          the <T> object for which a checking has been asked for 
+     */
     void checkDo(T t);
+    
+    /**
+     * A <T> processor observer is informed about the end of a 
+     * checking process for the <T> object passed on as a parameter
+     * 
+     * @param t
+     *          the <T> object for which a checking has been asked for 
+     */
     void checkDone(T t);
 }

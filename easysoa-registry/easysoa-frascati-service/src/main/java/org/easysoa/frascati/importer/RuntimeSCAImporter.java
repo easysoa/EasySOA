@@ -29,9 +29,6 @@ import org.osoa.sca.annotations.Scope;
 import org.osoa.sca.annotations.Service;
 import org.ow2.frascati.util.AbstractLoggeable;
 
-/**
- * @author munilla
- */
 @Scope("COMPOSITE") 
 @Service(ScaImporterIntermediaryItf.class) 
 public class RuntimeSCAImporter

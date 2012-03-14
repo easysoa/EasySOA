@@ -26,11 +26,23 @@ import org.osoa.sca.annotations.Scope;
 import org.osoa.sca.annotations.Service;
 import org.ow2.frascati.util.AbstractLoggeable;
 
+/**
+ * Define the shared code between all processors 
+ * (@see org.ow2.frascati.assembly.factory.api.Processor) observers
+ * 
+ * @param <T>
+ *      the object type handled by the targeted processor which have to extend 
+ *      {@link EObject}
+ */
 @Scope("COMPOSITE")
 @Service(ProcessorObserverItf.class)
 public abstract class AbstractProcessorObserver<T extends EObject> 
 extends AbstractLoggeable implements ProcessorObserverItf<T>
 {
+    /**
+     * In charge of gathering and dispatch outside of the FraSCAti's scope of 
+     * all observers data
+     */
     @Reference(name = "runtime-sca-importer")
     protected ScaImporterIntermediaryItf scaImporter;
 }

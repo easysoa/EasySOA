@@ -27,17 +27,36 @@ import org.ow2.frascati.tinfi.api.IntentHandler;
 import org.ow2.frascati.tinfi.api.IntentJoinPoint;
 import org.ow2.frascati.util.AbstractLoggeable;
 
+/**
+ * Define the shared code between all processor (@see org.ow2.frascati.assembly.factory.api.Processor) 
+ * Intents (@see org.ow2.frascati.tinfi.api.IntentHandler)
+ * 
+ * @param <T>
+ *      the object type handled by the targeted processor
+ * @param <P>
+ *      the processor observer type, which has also to handle the T type of
+ *      object 
+ */
 @Scope("COMPOSITE")
 @Service(IntentHandler.class)
 public abstract class AbstractProcessorIntent<T, P extends ProcessorObserverItf<T>>
         extends AbstractLoggeable implements IntentHandler
 {
+    /**
+     * the observer to inform about processor checking process
+     */
     @Reference(name = "observer")
     protected P observer;
     
     protected T last; 
     protected boolean checked;
-    
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.ow2.frascati.tinfi.api.IntentHandler
+     *      #invoke(org.ow2.frascati.tinfi.api.IntentJoinPoint)
+     */
     public Object invoke(IntentJoinPoint ijp) throws Throwable
     {
         Object ret;

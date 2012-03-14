@@ -22,6 +22,9 @@ package org.easysoa.frascati.observer;
 import org.easysoa.frascati.api.observer.AbstractProcessorNotBindingObserver;
 import org.eclipse.stp.sca.Service;
 
+/**
+ * Observer for the FraSCAti's Service processor
+ */
 public class ProcessorServiceObserver
 extends AbstractProcessorNotBindingObserver<Service>
 {

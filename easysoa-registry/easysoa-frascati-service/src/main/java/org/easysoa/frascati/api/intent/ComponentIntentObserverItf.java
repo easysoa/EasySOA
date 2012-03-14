@@ -21,8 +21,24 @@ package org.easysoa.frascati.api.intent;
 
 import org.osoa.sca.annotations.Service;
 
+/**
+ * A Fractal {@link org.objectweb.fractal.api.Component} observer definition
+ */
 @Service
 public interface ComponentIntentObserverItf
 {
+    /**
+     * An observer of a call of Fractal {@link org.objectweb.fractal.api.Component}
+     * is informed about the nature of this call
+     * 
+     * @param componentName
+     *          the called Fractal {@link org.objectweb.fractal.api.Component}'s 
+     *          name
+     * @param serviceName
+     *          the name of the concerned Fractal {@link org.objectweb.fractal.api.Component}'s 
+     *          interface
+     * @param methodName
+     *          the name of the called method
+     */
     void call(String componentName,String serviceName,String methodName);
 }

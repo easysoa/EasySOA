@@ -22,8 +22,18 @@ package org.easysoa.frascati.api.intent;
 import org.eclipse.stp.sca.Composite;
 import org.osoa.sca.annotations.Service;
 
+/**
+ * A FraSCAti {@link org.ow2.frascati.parser.api.Parser} observer definition
+ */
 @Service
 public interface ParserIntentObserverItf
 {
+    /**
+     * A FraSCAti {@link org.ow2.frascati.parser.api.Parser} observer is 
+     * informed that an SCA {@link Composite} has been parsed. 
+     * 
+     * @param composite
+     *          the SCA {@link Composite} object parsed by FraSCAti 
+     */
     void compositeParsed(Composite composite);
 }

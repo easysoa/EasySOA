@@ -22,7 +22,7 @@ package org.easysoa.frascati;
 /**
  * 
  * An exception thrown by a FraSCAtiServiceItf implementation instance
- * Use to wrap FrascatiException wich is not visible outside of the FraSCAti
+ * Use to wrap FrascatiException which is not visible outside of the FraSCAti
  * context
  */
 public class FraSCAtiServiceException extends Exception
