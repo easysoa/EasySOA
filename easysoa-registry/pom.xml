@@ -31,8 +31,8 @@
 
 
   <modules>
-    <module>easysoa-frascati-shared</module>
-    <module>easysoa-frascati-processor</module>
+    <module>easysoa-frascati-service-api</module>
+    <module>easysoa-frascati-service</module>
     <module>nuxeo-frascati</module>
     <module>nuxeo-frascati-test</module>
     <module>easysoa-registry-api</module>
