@@ -37,9 +37,6 @@ public class Run {
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(Run.class.getName());
-	
-	// Counter for exchange record ID's
-	private long exchangeRecordCounter;
 
 	//
 	public enum RunStatus {
@@ -79,7 +76,6 @@ public class Run {
 		if(name == null){
 			throw new IllegalArgumentException("name parameter must not be null");
 		}
-		this.exchangeRecordCounter = 0;
 		this.name = name;
 		exchangeRecordList = new ArrayDeque<ExchangeRecord>();
 		startDate = null;
@@ -95,8 +91,6 @@ public class Run {
 		if(exchangeRecord == null){
 			throw new IllegalArgumentException("The parameter message must not be null !");
 		}
-		exchangeRecordCounter++;
-		exchangeRecord.getExchange().setExchangeID(Long.toString(exchangeRecordCounter));
 		logger.debug("Adding exchange record in list : " + exchangeRecord);
 		this.exchangeRecordList.add(exchangeRecord);
 	}

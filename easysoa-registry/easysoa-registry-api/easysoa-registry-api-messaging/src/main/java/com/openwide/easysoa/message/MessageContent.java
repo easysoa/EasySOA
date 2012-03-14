@@ -20,12 +20,13 @@
 
 package com.openwide.easysoa.message;
 
+import java.io.StringReader;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
 import com.openwide.easysoa.message.util.ContentChecker;
 import com.openwide.easysoa.message.util.ContentChecker.ContentType;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * Message content
@@ -46,7 +47,7 @@ public class MessageContent {
 	
 	// Contains an XML or JSON JAVA structure of the rawContent 
 	private JSON JSONContent;
-	private Object XMLContent;
+	private XMLEventReader XMLContent;
 	
 	//private CustomFields customFields = new CustomFields();
 
@@ -136,9 +137,20 @@ public class MessageContent {
                 this.JSONContent = JSONSerializer.toJSON(this.rawContent);
 	            this.XMLContent = null;
 	        } else if (ContentType.XML.equals(contentType)) {
-	            XStream xstream = new XStream(new StaxDriver());
-	            this.XMLContent = xstream.fromXML(this.rawContent);
-	            this.JSONContent = null;
+	            try {
+	                XMLInputFactory XMLif=XMLInputFactory.newInstance();
+	                this.XMLContent = XMLif.createXMLEventReader(new StringReader(this.rawContent));
+	            }
+                /*try {
+                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                    this.XMLContent = docBuilder.parse(new InputSource(new StringReader(this.rawContent)));
+                }*/ catch (Exception ex) {
+                    ex.printStackTrace();
+                    this.contentType = ContentType.Undefined;
+                    this.XMLContent = null;    
+                }
+                this.JSONContent = null;                
 	        } else {
 	            this.JSONContent = null;
 	            this.XMLContent = null;
@@ -169,7 +181,7 @@ public class MessageContent {
 	 * returns the content as a generic XML java object. If the raw content is not an XML structure, null is returned 
 	 * @return A generic XML object if the raw content is a valid XML structure, null otherwise
 	 */
-	public Object getXMLContent(){
+	public XMLEventReader getXMLContent(){
 	    return this.XMLContent;
 	}
 	

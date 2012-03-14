@@ -22,6 +22,7 @@ package com.openwide.easysoa.run;
 
 import java.util.Date;
 import org.apache.log4j.Logger;
+import org.easysoa.messages.server.ExchangeNumberGenerator;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.osoa.sca.annotations.Reference;
@@ -64,6 +65,9 @@ public class RunManagerImpl implements RunManager {
 	@Reference
 	MonitoringService monitoringService;
 
+	@Reference
+	ExchangeNumberGenerator exchangeNumberGenerator;
+	
 	/**
 	 * The current run
 	 */
@@ -197,6 +201,7 @@ public class RunManagerImpl implements RunManager {
 		// Get the current run and add a message
 		logger.debug("Recording message : " + exchangeRecord);
 		try{
+		    exchangeRecord.getExchange().setExchangeID(Long.toString(exchangeNumberGenerator.getNextNumber()));
 			this.getCurrentRun().addExchange(exchangeRecord);
 			monitoringService.listen(exchangeRecord);
 		}
