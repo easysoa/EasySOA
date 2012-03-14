@@ -20,11 +20,11 @@
 package org.easysoa.sca;
 
 import org.easysoa.frascati.api.ScaImporterRecipientItf;
-import org.easysoa.sca.visitors.BindingVisitorFactory;
-import org.easysoa.sca.visitors.ScaVisitor;
 
 /**
- * @author christophe
+ * IScaRuntimeImporter define no method ; It's only use to gather 
+ * {@link ScaImporterRecipientItf} which belongs to the FraSCAti context and 
+ * {@link IScaImporter} which belongs to the EasySOA context 
  */
 public interface IScaRuntimeImporter 
     extends ScaImporterRecipientItf, IScaImporter

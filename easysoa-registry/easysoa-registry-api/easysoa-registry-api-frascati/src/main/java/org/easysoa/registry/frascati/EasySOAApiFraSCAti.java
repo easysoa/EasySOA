@@ -36,15 +36,14 @@ import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
 {
     /**
-     *  the EasySOAApiFraSCAti singleton
+     * the EasySOAApiFraSCAti singleton
      */
     private static EasySOAApiFraSCAti instance = null;
 
     /**
      * Return the singleton instance of EasySOAApiFraSCAti
      * 
-     * @return
-     *          the EasySOAApiFraSCAti singleton
+     * @return the EasySOAApiFraSCAti singleton
      */
     public static final EasySOAApiFraSCAti getInstance()
     {
@@ -56,25 +55,28 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
     }
 
     /**
-     * Hidden constructor
-     * Use {@link EasySOAApiFraSCAti#getInstance()} static method instead
+     * Hidden constructor Use {@link EasySOAApiFraSCAti#getInstance()} static
+     * method instead
      */
     protected EasySOAApiFraSCAti()
     {
+
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf#
-     * newRuntimeScaImporter()
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf#newRuntimeScaImporter()
      */
     public IScaRuntimeImporter newRuntimeScaImporter() throws Exception
     {
         return newRemoteRuntimeScaImporter();
     }
-    
-    /* (non-Javadoc)
-     * @see org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf#
-     * newScaImporter()
+
+    /**
+     * @param compositeFile
+     * @return
+     * @throws Exception
      */
     public IScaImporter newScaImporter(File compositeFile) throws Exception
     {
@@ -85,16 +87,13 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * @return
      * @throws Exception
      */
-    public IScaRuntimeImporter newRemoteRuntimeScaImporter()
-            throws Exception
+    public IScaRuntimeImporter newRemoteRuntimeScaImporter() throws Exception
     {
-        RemoteBindingVisitorFactory apiBindingVisitorFactory = 
-                new RemoteBindingVisitorFactory();
-        
-        ApiRuntimeFraSCAtiScaImporter runtimeImporter = 
-                new ApiRuntimeFraSCAtiScaImporter(apiBindingVisitorFactory, 
-                        null, this);
-        
+        RemoteBindingVisitorFactory apiBindingVisitorFactory = new RemoteBindingVisitorFactory();
+
+        ApiRuntimeFraSCAtiScaImporter runtimeImporter = new ApiRuntimeFraSCAtiScaImporter(
+                apiBindingVisitorFactory, null, this);
+
         return runtimeImporter;
     }
 
@@ -106,11 +105,9 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
     public IScaImporter newRemoteScaImporter(File compositeFile)
             throws Exception
     {
-        RemoteBindingVisitorFactory apiBindingVisitorFactory = 
-                new RemoteBindingVisitorFactory();
-        ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = 
-                new ApiFraSCAtiScaImporter(apiBindingVisitorFactory, 
-                        compositeFile, this);
+        RemoteBindingVisitorFactory apiBindingVisitorFactory = new RemoteBindingVisitorFactory();
+        ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(
+                apiBindingVisitorFactory, compositeFile, this);
         return apiFraSCAtiScaImporter;
     }
 
