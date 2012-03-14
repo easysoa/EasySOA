@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.nuxeo</groupId>
       <artifactId>nuxeo-frascati-test</artifactId>
-    </dependency>
+    </dependency> 
   </dependencies>
 
   <build>

@@ -37,17 +37,15 @@ import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
-import org.easysoa.test.EasySOACoreFeature;
+import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.RepositoryLogger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
@@ -55,7 +53,6 @@ import org.nuxeo.runtime.services.resource.ResourceService;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 import com.google.inject.Inject;
 
@@ -64,37 +61,11 @@ import com.google.inject.Inject;
  * 
  * @author mdutoo
  */
-@RunWith(FeaturesRunner.class) @Features(
-{ EasySOACoreFeature.class, FraSCAtiFeature.class }) @Deploy(
-{
-        "org.nuxeo.runtime.datasource", "org.easysoa.registry.frascati",
-        "org.easysoa.registry.core",
-        "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else
-                                                                       // no custom
-                                                                       // easysoa
-                                                                       // vocabularies,
-        "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to
-                                                                           // find the
-                                                                           // service
-                                                                           // through the
-                                                                           // Framework
-                                                                           // class
-        "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no
-                                                                    // custom types
-        "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the
-                                                                       // contribution
-                                                                       // below
-        "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to
-                                                                       // enable the
-                                                                       // specific doctype
-                                                                       // listeners
-}) @LocalDeploy(
-{
-        "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
-        "org.easysoa.registry.core:test/datasource-contrib.xml" // required because no
-                                                                // jetty.naming in deps
-}) @RepositoryConfig(type = BackendType.H2, user = "Administrator",
-        init = EasySOARepositoryInit.class) public class FraSCAtiImportServiceTest
+@RunWith(FeaturesRunner.class) 
+@Features({ EasySOACoreTestFeature.class, FraSCAtiFeature.class }) 
+@Deploy("org.easysoa.registry.frascati")
+@RepositoryConfig(type = BackendType.H2, user = "Administrator", init = EasySOARepositoryInit.class) 
+public class FraSCAtiImportServiceTest
 {
     static final Log log = LogFactory.getLog(FraSCAtiImportServiceTest.class);
     @Inject CoreSession session;

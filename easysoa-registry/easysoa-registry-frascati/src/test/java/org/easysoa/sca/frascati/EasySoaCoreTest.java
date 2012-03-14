@@ -25,7 +25,7 @@ import java.net.MalformedURLException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.DocumentService;
-import org.easysoa.test.EasySOACoreFeature;
+import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,10 +35,8 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.services.resource.ResourceService;
-import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 import com.google.inject.Inject;
 
@@ -49,20 +47,7 @@ import com.google.inject.Inject;
  */
 
 @RunWith(FeaturesRunner.class)
-@Features(EasySOACoreFeature.class)
-@Deploy({
-	"org.nuxeo.runtime.datasource",
-	"org.easysoa.registry.frascati", // deployed auto by dep
-	"org.easysoa.registry.core",//, // deployed auto by dep
-    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
-    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-//    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable the specific doctype listeners
-})
-@LocalDeploy({
-	"org.easysoa.registry.core:org/easysoa/tests/datasource-contrib.xml" // required because no jetty.naming in deps
-})
+@Features(EasySOACoreTestFeature.class)
 @RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
 public class EasySoaCoreTest
 {

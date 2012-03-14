@@ -19,7 +19,7 @@ import org.easysoa.sca.IScaRuntimeImporter;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.services.DocumentService;
-import org.easysoa.test.EasySOACoreFeature;
+import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.easysoa.test.RepositoryLogger;
 import org.junit.Before;
@@ -47,32 +47,12 @@ import com.google.inject.Inject;
  * @author jguillemotte
  */
 @RunWith(FeaturesRunner.class) @Features(
-{ EasySOACoreFeature.class, FraSCAtiFeature.class }) @Deploy(
+{ EasySOACoreTestFeature.class, FraSCAtiFeature.class }) @Deploy(
 {
-        "org.nuxeo.runtime.datasource", "org.easysoa.registry.frascati",
-        "org.easysoa.registry.core", "org.nuxeo.ecm.platform.jbpm.core",
-        "org.nuxeo.ecm.platform.audit", "org.nuxeo.ecm.platform.preview"
-// "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no
-// custom easysoa vocabularies,
-// "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find
-// the service through the Framework class
-// "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom
-// types
-// "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the
-// contribution below
-// "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml" // required to enable
-// the specific doctype listeners
-}) @LocalDeploy(
-{
-// /"org.easysoa.registry.frascati:OSGI-INF/frascati-service.xml", // required else no
-// frascatiService OUTSIDE TEST INJECTIONS
-// "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
-// "org.easysoa.registry.core:OSGI-INF/ServiceValidatorServiceComponent.xml",
-// /"org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml", // would override
-// frascati so no
-// "org.easysoa.registry.frascati:OSGI-INF/sca-importer-frascati-contrib.xml",
-"org.easysoa.registry.core:test/datasource-contrib.xml" // required because no
-                                                        // jetty.naming in deps
+        "org.easysoa.registry.frascati",
+        "org.nuxeo.ecm.platform.jbpm.core",
+        "org.nuxeo.ecm.platform.audit", 
+        "org.nuxeo.ecm.platform.preview"
 })// @Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 @RepositoryConfig(type = BackendType.H2, user = "Administrator",
         init = EasySOARepositoryInit.class) public class LocalApiFrascatiImportServiceTest
