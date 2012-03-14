@@ -1,0 +1,31 @@
+<component name="org.easysoa.web.contrib.actions">
+
+  <require>org.nuxeo.connect.client.actions</require>
+
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService"
+    point="actions">
+
+    <action id="easysoa" link="view_easysoa" label="EasySOA" order="120">
+      <category>MAIN_TABS</category>
+      <filter-id>only_for_manager</filter-id>
+    </action>
+
+    <action id="SCA" link="view_easysoa-fragment.xhtml"
+      label="SCA" order="10">
+      <category>EASYSOA_TAB</category>
+      <filter-id>only_for_manager</filter-id>
+    </action>
+
+    <action id="scaImport" link="/incl/sca/sca_import_form.xhtml"
+      label="Import SCA" order="20">
+      <category>SCA_sub_tab</category>
+      <filter-id>only_for_manager</filter-id>
+    </action>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService"
+    point="filters">
+
+  </extension>
+
+</component>

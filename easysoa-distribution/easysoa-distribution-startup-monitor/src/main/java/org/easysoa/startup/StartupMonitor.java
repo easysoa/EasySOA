@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 
 /**
@@ -18,8 +17,6 @@ import org.easysoa.EasySOAConstants;
  *
  */
 public class StartupMonitor {
-    
-    private static final Logger logger = Logger.getLogger(StartupMonitor.class);
     
     private static final String EASYSOA_URL = "http://localhost:8083/easysoa";
     private static final int STARTUP_TIMEOUT = 90000;
@@ -114,7 +111,7 @@ public class StartupMonitor {
     }
     
     public static void print(String string) {
-        logger.info(string);
+        System.out.println(string);
     }
 
     /**

@@ -2,30 +2,21 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.easysoa.distribution</groupId>
+  <parent>
+    <groupId>org.easysoa.distribution</groupId>
+    <artifactId>easysoa-distribution</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
   <artifactId>easysoa-distribution-startup-monitor</artifactId>
   <name>EasySOA Distribution - Startup Monitor</name>
-  <version>0.4-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
   <dependencies>
-    <!-- EasySOA -->
     <dependency>
       <groupId>org.easysoa</groupId>
       <artifactId>easysoa-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <!-- Tests -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -35,17 +26,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.2</version>
         <configuration>
           <archive>
             <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
           </archive>
         </configuration>
       </plugin>
-      <!-- Compile with Java 1.6 -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3</version>
         <executions>
           <execution>
             <id>default-testCompile</id>
@@ -53,10 +42,6 @@
             <goals>
               <goal>testCompile</goal>
             </goals>
-            <configuration>
-              <source>1.6</source>
-              <target>1.6</target>
-            </configuration>
           </execution>
           <execution>
             <id>default-compile</id>
@@ -64,16 +49,8 @@
             <goals>
               <goal>compile</goal>
             </goals>
-            <configuration>
-              <source>1.6</source>
-              <target>1.6</target>
-            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
       </plugin>
     </plugins>
   </build>

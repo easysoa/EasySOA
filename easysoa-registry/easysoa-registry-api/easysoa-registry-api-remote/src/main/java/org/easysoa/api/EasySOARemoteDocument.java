@@ -2,24 +2,24 @@ package org.easysoa.api;
 
 import java.util.Map;
 
-import org.easysoa.api.exceptions.RepositoryAccessException;
 import org.easysoa.api.exceptions.PropertyNotFoundException;
+import org.easysoa.api.exceptions.RepositoryAccessException;
 import org.easysoa.api.exceptions.SchemaNotFoundException;
-import org.nuxeo.ecm.automation.client.jaxrs.model.Document;
+import org.nuxeo.ecm.automation.client.model.Document;
 
 /**
- * 
+ *
  * @author mkalam-alami
  *
  */
 public class EasySOARemoteDocument implements EasySOADocument {
 
     private Document document;
-    
+
     public EasySOARemoteDocument(Document document) {
         this.document = document;
     }
-    
+
     @Override
     public String getId() throws RepositoryAccessException {
         return document.getId();

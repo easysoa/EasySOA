@@ -6,7 +6,7 @@ Bundle-SymbolicName: org.easysoa.registry.rest;singleton:=true
 Bundle-Vendor: EasySOA Consortium
 Export-Package: org.easysoa.rest.servicefinder.strategies
 Eclipse-LazyStart: true
-Nuxeo-WebModule: org.easysoa.rest.EasySOAApp
+Nuxeo-WebModule: org.easysoa.rest.EasySOAModule;name=easysoa[;extends=base;package=org/easysoa/rest]
 Nuxeo-Require: org.easysoa.registry.core,
  org.easysoa.registry.api.local
 Nuxeo-Component: OSGI-INF/ServiceFinderComponent.xml,

@@ -82,7 +82,7 @@ public class DiscoveryRest {
     @GET
     @Path("/")
     public Object doPostDiscoveryRoot() {
-        return new TemplateView(new EasySOAAppRoot(), "index.html");
+        return new TemplateView(new EasySOAModuleRoot(), "index.html");
     }
 
     @GET

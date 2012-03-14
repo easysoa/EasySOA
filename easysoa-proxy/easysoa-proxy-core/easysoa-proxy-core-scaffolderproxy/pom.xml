@@ -10,11 +10,8 @@
     <groupId>org.easysoa.proxy</groupId>
     <artifactId>easysoa-proxy-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
-    <relativePath>../../easysoa-proxy-parent/pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
-
-  <!-- Required for EasyWSDL V3, not used in EasySOA for the moment -->
-  <!--<repositories> <repository> <id>ebm</id> <url>http://maven.petalslink.com/public/</url> </repository> </repositories> -->
 
   <dependencies>
     <dependency>
@@ -25,61 +22,51 @@
     <dependency>
       <groupId>org.easysoa</groupId>
       <artifactId>easysoa-common</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>
       <artifactId>xalan</artifactId>
-      <version>2.7.1</version>
     </dependency>
-    <!-- FraSCAti Velocity is REQUIRED in this project and only exists in version 1.5-SNAPSHOT at the moment !!! -->
+    <!-- FraSCAti Velocity is REQUIRED in this project and only exists in version
+      1.5-SNAPSHOT at the moment !!! -->
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-velocity</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-fractal</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-http</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-rest</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-runtime-factory</artifactId>
-      <version>${frascati.version}</version>
     </dependency>
     <!-- to run it with mvn -Prun -->
     <dependency>
       <groupId>org.ow2.frascati.mojo</groupId>
       <artifactId>frascati-launcher-plugin</artifactId>
-      <version>${frascati.version}</version>
       <type>maven-plugin</type>
     </dependency>
-    <!-- logs -->
+
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
     </dependency>
 
     <!-- EasyWSDL -->
@@ -87,160 +74,136 @@
     <dependency>
       <groupId>org.ow2.easywsdl</groupId>
       <artifactId>easywsdl-wsdl</artifactId>
-      <version>2.1</version>
     </dependency>
-    <!-- Don't use this version of EasyWSDL : no support for WSDL 2 yet -->
-    <!--<dependency> <artifactId>easywsdl11-api</artifactId> <groupId>com.ebmwebsourcing.easywsdl</groupId> <version>3.0_40M1</version> 
-      </dependency> <dependency> <artifactId>easywsdl11-impl</artifactId> <groupId>com.ebmwebsourcing.easywsdl</groupId> <version>3.0_40M1</version> 
-      </dependency> -->
+    <!-- Don't use this version of EasyWSDL: no support for WSDL 2 yet -->
+    <!-- <dependency> -->
+    <!-- <artifactId>easywsdl11-api</artifactId> -->
+    <!-- <groupId>com.ebmwebsourcing.easywsdl</groupId> -->
+    <!-- </dependency> -->
+    <!-- <dependency> -->
+    <!-- <artifactId>easywsdl11-impl</artifactId> -->
+    <!-- <groupId>com.ebmwebsourcing.easywsdl</groupId> -->
+    <!-- </dependency> -->
 
     <!-- Apache Woden -->
     <!-- Alternative solution for parsing WSDL and generate HTML form -->
     <dependency>
       <groupId>org.apache.woden</groupId>
       <artifactId>woden-api</artifactId>
-      <version>1.0M9</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>XmlSchema</artifactId>
-          <groupId>org.apache.ws.commons.schema</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.woden</groupId>
       <artifactId>woden-impl-dom</artifactId>
-      <version>1.0M9</version>
     </dependency>
     <dependency>
       <groupId>org.apache.woden</groupId>
       <artifactId>woden-tool</artifactId>
-      <version>1.0M9</version>
     </dependency>
 
     <!-- SOAPUI and required SOAPUI dependencies -->
     <dependency>
       <groupId>eviware</groupId>
       <artifactId>soapui</artifactId>
-      <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
-      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>eviware</groupId>
       <artifactId>soapui-xmlbeans</artifactId>
-      <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
-      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.xmlbeans</groupId>
       <artifactId>xmlbeans</artifactId>
-      <version>2.4.0</version>
     </dependency>
     <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
     </dependency>
     <dependency>
       <groupId>commons-cli</groupId>
       <artifactId>commons-cli</artifactId>
-      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>ca.juliusdavies</groupId>
       <artifactId>not-yet-commons-ssl</artifactId>
-      <version>0.3.11</version>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
-      <version>2.10.0</version>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk16</artifactId>
-      <version>1.46</version>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.8.3</version>
     </dependency>
     <dependency>
       <groupId>javax.jms</groupId>
       <artifactId>jms</artifactId>
-      <version>1.1</version>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20090211</version>
     </dependency>
     <dependency>
-      <!-- Use this version of JSON-LIB because version 2.4 have some problems with json within json -->
       <groupId>net.sf.json-lib</groupId>
       <artifactId>json-lib</artifactId>
-      <version>2.2.1</version>
       <classifier>jdk15</classifier>
     </dependency>
     <dependency>
       <groupId>xom</groupId>
       <artifactId>xom</artifactId>
-      <version>1.2.5</version>
     </dependency>
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
-      <version>1.4.4</version>
     </dependency>
     <!-- End of required SOAPUI dependencies -->
-    <!-- Apache CXF for Talend tuto mock -->
 
     <!-- Apache HTTP client for test -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.1.1</version>
     </dependency>
 
+    <!-- Apache CXF for Talend tuto mock -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-api</artifactId>
-      <version>2.4.2</version>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<configuration>
-				<source>1.6</source>
-				<target>1.6</target>
-			</configuration>
-		</plugin>
-        <!-- Configuration of maven-assembly-plugin -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>2.2.1</version><!--$NO-MVN-MAN-VER$ -->
-            <configuration>
-                <!-- Specifies the configuration file of the assembly plugin -->
-                <descriptors>
-                    <descriptor>src/main/resources/assembly/assembly.xml</descriptor>
-                </descriptors>
-            </configuration>
-            <executions>
-			  <execution>
-			    <id>make-assembly</id>
-			    <phase>package</phase>
-			    <goals>
-			      <goal>single</goal>
-			    </goals>
-			  </execution>
-			</executions>
-        </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <!-- Configuration of maven-assembly-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2.1</version><!--$NO-MVN-MAN-VER$ -->
+        <configuration>
+          <!-- Specifies the configuration file of the assembly plugin -->
+          <descriptors>
+            <descriptor>src/main/resources/assembly/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -277,8 +240,11 @@
             <dependencies>
               <!-- other poc deps ? -->
               <!-- other frascati deps ? -->
-              <!-- dependency> <groupId>org.ow2.frascati</groupId> <artifactId>frascati-implementation-fractal</artifactId> 
-                <version>1.4</version> </dependency -->
+              <!-- <dependency> -->
+              <!-- <groupId>org.ow2.frascati</groupId> -->
+              <!-- <artifactId>frascati-implementation-fractal</artifactId> -->
+              <!-- <version>1.4</version> -->
+              <!-- </dependency> -->
             </dependencies>
           </plugin>
         </plugins>

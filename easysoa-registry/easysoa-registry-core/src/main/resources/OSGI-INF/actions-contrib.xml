@@ -22,12 +22,21 @@
     <action id="TAB_MANAGE" enabled="false" />
     -->
 
-    <!-- Import page -->
-    <action id="easysoaImport" link="easysoa_import_form" label="label.easysoa.import.link">
-      <category>USER_SERVICES</category>
-     <!--  <filter-id>not_for_business_users"</filter-id> -->
+    <!-- redefine Content tab for EasySOA Objects-->
+    <action id="TAB_CONTENT_EASYSOA" link="/incl/tabs/easysoa_document_content.xhtml" order="10"
+      label="action.view.content" icon="/icons/file.gif">
+      <category>VIEW_ACTION_LIST</category>
+      <filter-id>view_easysoa_content</filter-id>
     </action>
-
+    <!--
+    <action id="TAB_CONTENT" link="/incl/tabs/document_content.xhtml" order="10"
+      label="action.view.content" icon="/icons/file.gif">
+      <category>VIEW_ACTION_LIST</category>
+      <filter-id>view_content</filter-id>
+      <filter-id>outSection</filter-id>
+    </action>
+    -->
+    
     <!-- SCA Import button -->
     <action id="easysoaImportSubmit" link="#{easysoaImport.runImport}" label="label.easysoa.import.button">
       <category>EASYSOA_IMPORT</category>
@@ -50,9 +59,15 @@
     </action>
     
     <!-- SoapUi config download link -->
-    <action id="easysoaSoapUiLink" link="#{soapUiActions.downloadConfForCurrentDocument}" label="label.easysoa.soapui.button">
+    <action id="easysoaSoapUiLink" link="#{webEngineRedirection.downloadSoapUIConfForCurrentDocument}" label="label.easysoa.soapui.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isServiceContainer</filter-id>
+    </action>
+    
+    <!-- Properties file download link -->
+    <action id="easysoaPropertiesLink" link="#{webEngineRedirection.downloadPropertiesForCurrentDocument}" label="label.easysoa.properties.button">
+      <category>SUBVIEW_UPPER_LIST</category>
+      <filter-id>isWorkspace</filter-id>
     </action>
 
   </extension>
@@ -90,6 +105,27 @@
         <type>Service</type>
       </rule>
     </filter>
+
+    <filter id="view_content">
+      <rule grant="true">
+        <permission>ReadChildren</permission>
+        <facet>Folderish</facet>
+      </rule>
+      <rule grant="false">
+        <type>AppliImpl</type>
+        <type>ServiceAPI</type>
+      </rule>
+    </filter>
+
+    <filter id="view_easysoa_content">
+      <rule grant="true">
+        <permission>ReadChildren</permission>
+        <type>AppliImpl</type>
+        <type>ServiceAPI</type>
+      </rule>
+    </filter>
+
+
   </extension>
 
 </component>

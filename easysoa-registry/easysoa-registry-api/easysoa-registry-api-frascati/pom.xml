@@ -1,506 +1,1357 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
 
-    <!--<parent> <groupId>org.easysoa.registry</groupId> <artifactId>easysoa-registry-parent</artifactId> <version>0.4-SNAPSHOT</version> <relativePath>../easysoa-registry-parent/pom.xml</relativePath> 
-        </parent> -->
-
+  <parent>
     <groupId>org.easysoa.registry.api</groupId>
-    <artifactId>easysoa-registry-api-frascati</artifactId>
-    <name>EasySOA Registry API FraSCAti</name>
+    <artifactId>easysoa-registry-api</artifactId>
     <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <frascati.version>1.5-SNAPSHOT</frascati.version>
-		<asm.version>3.1</asm.version>
-	    <explorer.version>1.0</explorer.version>    
-	    <spring.version>3.0.5.RELEASE</spring.version>
-	    <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>    
-	    <juliac.version>2.4</juliac.version>
-	    <frascati.version>1.5-SNAPSHOT</frascati.version>
-	    <joram.version>5.5.0</joram.version>    
-	    <jaxb.version>2.1.13</jaxb.version>    
-	    <monolog.version>1.8</monolog.version>    
-	    <julia.version>2.5.2</julia.version>    
-	    <tinfi.version>1.4.4</tinfi.version>
-	    <fraclet-annotations.version>3.3</fraclet-annotations.version>    
-	    <fractal-adl.version>2.3.1</fractal-adl.version>
-	    <fractal-rmi.version>0.3.6-SNAPSHOT</fractal-rmi.version>
-    </properties>
+  <artifactId>easysoa-registry-api-frascati</artifactId>
+  <name>EasySOA Registry API FraSCAti</name>
 
-    <dependencies>    	
-		<!-- FraSCAti In Nuxeo Dependencies -->	
-        <dependency>
-            <groupId>org.nuxeo.runtime</groupId>
-            <artifactId>nuxeo-runtime-bridge</artifactId>
-            <version>5.4.2-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-		<dependency>
-			<groupId>org.nuxeo</groupId>
-			<artifactId>nuxeo-frascati</artifactId>
-			<version>0.0-SNAPSHOT</version>
-		</dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-util</artifactId>
-            <version>${frascati.version}</version>    
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-util-comp</artifactId>
-            <version>1.5-SNAPSHOT</version> 
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../../nuxeo-frascati/resources/frascati-util-comp-1.5-SNAPSHOT.jar</systemPath>       
-        </dependency>
-		<!-- Provided dependencies -->
-		<dependency>
-			<groupId>org.eclipse.stp.sca.domainmodel</groupId>
-  			<artifactId>frascati-model</artifactId>
-			<version>2.0.1.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-  			<artifactId>ecore</artifactId>
-			<version>2.4.0</version>
-			<scope>provided</scope>
-		</dependency>
-        <!-- Registry dependencies -->
-        <dependency>
-            <groupId>org.easysoa.registry.api</groupId>
-            <artifactId>easysoa-registry-api-core</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easysoa.registry.api</groupId>
-            <artifactId>easysoa-registry-api-local</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easysoa.registry.api</groupId>
-            <artifactId>easysoa-registry-api-remote</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easysoa.registry.api</groupId>
-            <artifactId>easysoa-registry-api-messaging</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>        
-		<!-- For tests -->
-		<!-- JUnit -->
-		<!-- bring by nuxeo-frascati-test -->
-		<!-- Mockito -->
-        <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>4.8.2</version>
-          <scope>test</scope>
-        </dependency>	  	
-  		<dependency>
-  			<groupId>org.mockito</groupId>
-  			<artifactId>mockito-all</artifactId>
-  			<version>1.8.5</version>
-  			<scope>test</scope>
-  		</dependency>    
-        <dependency>
-          <groupId>org.nuxeo.runtime</groupId>
-          <artifactId>nuxeo-runtime-test</artifactId>
-          <version>5.4.2-SNAPSHOT</version>
-          <scope>test</scope>
-        </dependency>
-		<dependency>
-			<groupId>org.nuxeo</groupId>
-			<artifactId>nuxeo-frascati-test</artifactId>
-			<version>0.0-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>test</scope>
-		</dependency>
-    </dependencies>
+  <dependencies>
+    <!-- FraSCAti In Nuxeo Dependencies -->
+    <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-bridge</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo</groupId>
+      <artifactId>nuxeo-frascati</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-util-comp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.stp.sca.domainmodel</groupId>
+      <artifactId>frascati-model</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>ecore</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Registry dependencies -->
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-local</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-remote</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-messaging</artifactId>
+    </dependency>
 
-    <build>    
-        <!-- Plugin management -->
-        <pluginManagement>
-            <plugins>
-                <!-- Compile with Java 1.6 -->
-                <plugin>
+    <!-- For tests -->
+    <!-- JUnit -->
+    <!-- bring by nuxeo-frascati-test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-test</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo</groupId>
+      <artifactId>nuxeo-frascati-test</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only.
+          It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version> <!-- Explicit version number needed to fix an m2e NPE during project import -->
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                    </configuration>
-                </plugin>
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-                <plugin>
-                	<groupId>org.eclipse.m2e</groupId>
-                	<artifactId>lifecycle-mapping</artifactId>
-                	<version>1.0.0</version>
-                	<configuration>
-                		<lifecycleMappingMetadata>
-                			<pluginExecutions>
-                				<pluginExecution>
-                					<pluginExecutionFilter>
-                						<groupId>
-                							org.apache.maven.plugins
-                						</groupId>
-                						<artifactId>
-                							maven-dependency-plugin
-                						</artifactId>
-                						<versionRange>
-                							[2.0,)
-                						</versionRange>
-                						<goals>
-                							<goal>copy</goal>
-                						</goals>
-                					</pluginExecutionFilter>
-                					<action>
-                						<ignore></ignore>
-                					</action>
-                				</pluginExecution>
-                			</pluginExecutions>
-                		</lifecycleMappingMetadata>
-                	</configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <!-- Specify Manifest location -->
-        <plugins>
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3</version>
-                <!--<configuration>
-                    <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-                    </archive>
-                </configuration>-->
-            </plugin>   
-		 	<plugin>
-		          <groupId>org.apache.maven.plugins</groupId>
-		          <artifactId>maven-dependency-plugin</artifactId>
-		          <version>2.0</version>
-		          <executions>
-		            <execution>
-		              <id>copy-frascati-resources</id>
-		              <phase>generate-resources</phase>
-		              <goals>
-		                <goal>copy</goal>
-		              </goals>
-		              <configuration>
-		                <outputDirectory>${project.basedir}/src/test/resources/frascati/lib</outputDirectory>
-		                <overWriteIfNewer>true</overWriteIfNewer>
-		                <stripVersion>true</stripVersion>  <!-- Remove version number -->
-		                <artifactItems>
-		                	<!--
-							<artifactItem>cglib-2.2.jar</artifactItem>		
-							<artifactItem>classworlds-1.1-alpha-2.jar</artifactItem>		
-							<artifactItem>commons-codec-1.2.jar</artifactItem>
-							<artifactItem>commons-httpclient-3.1.jar</artifactItem>				
-							<artifactItem>connector-1.0.jar</artifactItem>
-							<artifactItem>connector-api-1.5.jar</artifactItem>		
-							<artifactItem>dom4j-1.6.1.jar</artifactItem>			
-							<artifactItem>icu4j-2.6.1.jar</artifactItem>		
-							<artifactItem>jcip-annotations-1.0.jar</artifactItem>	
-							<artifactItem>jms-1.1.jar</artifactItem>		
-							<artifactItem>jobs-3.4.0.jar</artifactItem>
-							<artifactItem>jotm_jrmp_stubs-2.0.10.jar</artifactItem>
-							<artifactItem>jotm-2.0.10.jar</artifactItem>		
-							<artifactItem>json-20090211.jar</artifactItem>
-							<artifactItem>json-lib-2.4-jdk15.jar</artifactItem>			
-							<artifactItem>jta-1.1.jar</artifactItem>
-							<artifactItem>retrotranslator-runtime-1.2.1.jar</artifactItem>
-							<artifactItem>saxon-9.1.0.8-dom.jar</artifactItem>
-							<artifactItem>saxon-9.1.0.8-jdom.jar</artifactItem>
-							<artifactItem>saxon-9.1.0.8.jar</artifactItem>			
-							<artifactItem>sdedit-3.0.5.jar</artifactItem>
-							<artifactItem>serializer-2.7.1.jar</artifactItem>		   
-							<artifactItem>stax-api-1.0-2.jar</artifactItem>
-							<artifactItem>stax-api-1.0.1.jar</artifactItem>
-							<artifactItem>stax2-api-3.0.2.jar</artifactItem>		
-							<artifactItem>stringtemplate-3.2.jar</artifactItem>
-							<artifactItem>woodstox-core-asl-4.1.1.jar</artifactItem>
-							<artifactItem>wsdl4j-1.6.2.jar</artifactItem>
-							<artifactItem>xalan-2.7.1.jar</artifactItem>
-							<artifactItem>xercesImpl-2.9.1.jar</artifactItem>		
-							<artifactItem>xmi-2.4.0.jar</artifactItem>
-							<artifactItem>xmlbeans-2.4.0.jar</artifactItem>
-							<artifactItem>xmlunit-1.3.jar</artifactItem>	
-							-->                 
-							<artifactItem><groupId>aopalliance</groupId><artifactId>aopalliance</artifactId><version>1.0</version></artifactItem> 		
-							<artifactItem><groupId>asm</groupId><artifactId>asm-analysis</artifactId><version>${asm.version}</version></artifactItem>  		
-							<artifactItem><groupId>asm</groupId><artifactId>asm-tree</artifactId><version>${asm.version}</version></artifactItem>
-							<artifactItem><groupId>asm</groupId><artifactId>asm-util</artifactId><version>${asm.version}</version></artifactItem>       
-							<artifactItem><groupId>asm</groupId><artifactId>asm</artifactId><version>${asm.version}</version></artifactItem>       
-							<artifactItem><groupId>com.eaio.uuid</groupId><artifactId>uuid</artifactId><version>3.2</version></artifactItem>
-							<!-- <artifactItem><groupId>com.ebmwebsourcing.easybox</groupId><artifactId>easybox-api</artifactId><version>1.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybox</groupId><artifactId>easybox-impl</artifactId><version>1.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel.extended.service</groupId><artifactId>easybpel.extended.service.activity</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easybpel.extended.activities.configuration</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easybpel.model.bpel.api</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easybpel.model.bpel.impl</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easybpel.xpath.exp.api</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easybpel.xpath.exp.impl</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easyplnk20-api</artifactId><version>3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easyplnk20-impl</artifactId><version>3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easyvprop20-api</artifactId><version>3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easybpel</groupId><artifactId>easyvprop20-impl</artifactId><version>3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easycommons</groupId><artifactId>easycommons-sca-api</artifactId><version>1.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easycommons</groupId><artifactId>easycommons-sca-impl</artifactId><version>1.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easycommons</groupId><artifactId>easycommons-util</artifactId><version>2.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyschema</groupId><artifactId>easyschema10-api</artifactId><version>3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyschema</groupId><artifactId>easyschema10-impl</artifactId><version>3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyschema</groupId><artifactId>xsd2xml</artifactId><version>3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easysoalayer</groupId><artifactId>service-description-layer</artifactId><version>1.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyviper.core</groupId><artifactId>easyviper.core.api</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyviper.core</groupId><artifactId>easyviper.core.impl</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyviper.extended.behaviours.abstractbehaviour</groupId><artifactId>easyviper.extended.behaviours.abstractbehaviour</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyviper.service</groupId><artifactId>easyviper.extended.service.autoflush</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyviper.service</groupId><artifactId>easyviper.extended.service.autotrash</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.easyviper.service</groupId><artifactId>easyviper.extended.service.behaviour</artifactId><version>1.4-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.wsstar</groupId><artifactId>legacy-jaxb-core</artifactId><version>1.3.0-alpha-1</version></artifactItem>
-							<artifactItem><groupId>com.ebmwebsourcing.wsstar</groupId><artifactId>ws-addressing-definition</artifactId><version>1.3.0-alpha-1</version></artifactItem>
-							 --><artifactItem><groupId>com.espertech</groupId><artifactId>esper</artifactId><version>4.3.0</version></artifactItem>
-							<artifactItem><groupId>com.google.guava</groupId><artifactId>guava</artifactId><version>r07</version></artifactItem>
-							<artifactItem><groupId>com.jnaerator</groupId><artifactId>jnaerator-parser</artifactId><version>0.9.4</version></artifactItem>
-							<artifactItem><groupId>com.jnaerator</groupId><artifactId>jnaerator-rococoa-runtime</artifactId><version>0.9.4</version></artifactItem>
-							<artifactItem><groupId>com.jnaerator</groupId><artifactId>jnaerator-runtime</artifactId><version>0.9.4</version></artifactItem>
-							<artifactItem><groupId>com.jnaerator</groupId><artifactId>jnaerator</artifactId><version>0.9.4</version></artifactItem>
-							<artifactItem><groupId>com.nativelibs4java</groupId><artifactId>bridj</artifactId><version>0.1</version></artifactItem>
-							<!--
-							<artifactItem><groupId>com.ochafik</groupId><artifactId>ochafik-swing</artifactId><version>0.9.4</version></artifactItem>
-							<artifactItem><groupId>com.ochafik</groupId><artifactId>ochafik-util</artifactId><version>0.9.4</version></artifactItem>
-							<artifactItem><groupId>com.sun.codemodel</groupId><artifactId>codemodel</artifactId><version>2.2-SNAPSHOT</version></artifactItem>
-							-->
-							<artifactItem><groupId>com.sun.mail</groupId><artifactId>javax.mail</artifactId><version>1.4.4</version></artifactItem>
-							<artifactItem><groupId>com.sun.script.jruby</groupId><artifactId>jruby-engine</artifactId><version>1.1.7</version></artifactItem>
-							<artifactItem><groupId>com.sun.xml.bind</groupId><artifactId>jaxb-impl</artifactId><version>2.1.13</version></artifactItem> 
-							<artifactItem><groupId>commons-beanutils</groupId><artifactId>commons-beanutils</artifactId><version>1.7.0</version></artifactItem>
-							<artifactItem><groupId>commons-cli</groupId><artifactId>commons-cli</artifactId><version>1.2</version></artifactItem>
-							<artifactItem><groupId>commons-collections</groupId><artifactId>commons-collections</artifactId><version>3.2.1</version></artifactItem>
-							<artifactItem><groupId>commons-dbcp</groupId><artifactId>commons-dbcp</artifactId><version>1.2.2</version></artifactItem>
-							<artifactItem><groupId>commons-lang</groupId><artifactId>commons-lang</artifactId><version>2.4</version></artifactItem>
-							<artifactItem><groupId>commons-pool</groupId><artifactId>commons-pool</artifactId><version>1.5.5</version></artifactItem>
-							<artifactItem><groupId>de.schlichtherle.io</groupId><artifactId>truezip</artifactId><version>6.6</version></artifactItem>		
-							<artifactItem><groupId>dtdparser</groupId><artifactId>dtdparser</artifactId><version>1.21</version></artifactItem>
-							<artifactItem><groupId>javax.script</groupId><artifactId>script-api</artifactId><version>1.0</version></artifactItem>			
-							<artifactItem><groupId>javax.xml.bind</groupId><artifactId>jaxb-api</artifactId><version>2.1</version></artifactItem>
-							<artifactItem><groupId>jaxen</groupId><artifactId>jaxen</artifactId><version>1.1.1</version></artifactItem>		
-							<artifactItem><groupId>jdom</groupId><artifactId>jdom</artifactId><version>1.0</version></artifactItem>
-							<artifactItem><groupId>jgraph</groupId><artifactId>jgraph</artifactId><version>fractal</version></artifactItem>		
-							<artifactItem><groupId>jgroups</groupId><artifactId>jgroups-all</artifactId><version>2.2.8</version></artifactItem>
-							<artifactItem><groupId>jline</groupId><artifactId>jline</artifactId><version>0.9.93</version></artifactItem>
-							<artifactItem><groupId>log4j</groupId><artifactId>log4j</artifactId><version>1.2.16</version></artifactItem>
-							<artifactItem><groupId>mysql</groupId><artifactId>mysql-connector-java</artifactId><version>5.1.14</version></artifactItem>
-							<artifactItem><groupId>net.java.dev.jna</groupId><artifactId>jna</artifactId><version>3.2.5</version></artifactItem>
-							<artifactItem><groupId>net.java.dev</groupId><artifactId>js-rhino-engine</artifactId><version>1.6R7</version></artifactItem>
-							<artifactItem><groupId>net.java.dev</groupId><artifactId>jython-engine</artifactId><version>2.2.1</version></artifactItem>		
-							<artifactItem><groupId>net.sf.ezmorph</groupId><artifactId>ezmorph</artifactId><version>1.0.6</version></artifactItem>
-							<artifactItem><groupId>net.sf.saxon</groupId><artifactId>saxonhe</artifactId><version>9.2.0.6</version></artifactItem>
-							<artifactItem><groupId>org.antlr</groupId><artifactId>antlr-runtime</artifactId><version>3.2</version></artifactItem>
-							<artifactItem><groupId>org.apache.geronimo.specs</groupId><artifactId>geronimo-javamail_1.4_spec</artifactId><version>1.7.1</version></artifactItem>
-							<artifactItem><groupId>org.apache.geronimo.specs</groupId><artifactId>geronimo-jms_1.1_spec</artifactId><version>1.1.1</version></artifactItem>
-							<artifactItem><groupId>org.apache.geronimo.specs</groupId><artifactId>geronimo-jms_1.1_spec</artifactId><version>1.1.1</version></artifactItem>
-							<artifactItem><groupId>org.apache.geronimo.specs</groupId><artifactId>geronimo-servlet_3.0_spec</artifactId><version>1.0</version></artifactItem>
-							<artifactItem><groupId>org.apache.geronimo.specs</groupId><artifactId>geronimo-stax-api_1.0_spec</artifactId><version>1.0.1</version></artifactItem>
-							<artifactItem><groupId>org.apache.maven.wagon</groupId><artifactId>wagon-provider-api</artifactId><version>1.0-alpha-5</version></artifactItem>
-							<artifactItem><groupId>org.apache.neethi</groupId><artifactId>neethi</artifactId><version>3.0.1</version></artifactItem>
-							<artifactItem><groupId>org.apache.velocity</groupId><artifactId>velocity</artifactId><version>1.7</version></artifactItem>
-							<artifactItem><groupId>org.apache.velocity</groupId><artifactId>velocity</artifactId><version>1.7</version></artifactItem>
-							<artifactItem><groupId>org.apache.ws.xmlschema</groupId><artifactId>xmlschema-core</artifactId><version>2.0</version></artifactItem>
-							<artifactItem><groupId>org.beanshell</groupId><artifactId>bsh</artifactId><version>2.0b5</version></artifactItem>
-							<artifactItem><groupId>org.codehaus.groovy</groupId><artifactId>groovy-all</artifactId><version>1.6.4</version></artifactItem>
-							<artifactItem><groupId>org.codehaus.jettison</groupId><artifactId>jettison</artifactId><version>1.3</version></artifactItem>
-							<artifactItem><groupId>org.codehaus.plexus</groupId><artifactId>plexus-classworlds</artifactId><version>2.4</version></artifactItem>
-							<artifactItem><groupId>org.codehaus.plexus</groupId><artifactId>plexus-container-default</artifactId><version>1.0-alpha-8</version></artifactItem>
-							<artifactItem><groupId>org.codehaus.plexus</groupId><artifactId>plexus-utils</artifactId><version>1.0.4</version></artifactItem>
-							<artifactItem><groupId>org.eclipse.core</groupId><artifactId>runtime</artifactId><version>3.4.0</version></artifactItem>
-							<artifactItem><groupId>org.eclipse.jdt</groupId><artifactId>core</artifactId><version>3.3.0-v_771</version></artifactItem>
-							<artifactItem><groupId>org.eclipse.stp.sca.csa</groupId><artifactId>oasis-csa-model</artifactId><version>2.0.1.2</version></artifactItem>
-							<artifactItem><groupId>org.eclipse.stp.sca.domainmodel</groupId><artifactId>tuscany-model</artifactId><version>2.0.1.2</version></artifactItem>
-							<artifactItem><groupId>org.eclipse.stp.sca.introspection</groupId><artifactId>sca-model-introspection</artifactId><version>2.0.1.2</version></artifactItem>
-							<artifactItem><groupId>org.jabsorb</groupId><artifactId>jabsorb</artifactId><version>1.3.1</version></artifactItem>
-							<artifactItem><groupId>org.jdesktop</groupId><artifactId>appframework</artifactId><version>1.0.3</version></artifactItem>
-							<artifactItem><groupId>org.jdesktop</groupId><artifactId>swing-worker</artifactId><version>1.1</version></artifactItem>         
-							<artifactItem><groupId>org.jgroups</groupId><artifactId>jgroups</artifactId><version>2.12.1.Final</version></artifactItem>
-							<artifactItem><groupId>org.jruby.extras</groupId><artifactId>bytelist</artifactId><version>1.0.3</version></artifactItem>
-							<artifactItem><groupId>org.jruby</groupId><artifactId>jruby-complete</artifactId><version>1.3.1</version></artifactItem>
-							<artifactItem><groupId>org.jvnet.jaxb2_commons</groupId><artifactId>jaxb2-basics-runtime</artifactId><version>0.5.0</version></artifactItem>
-							<artifactItem><groupId>org.jvnet.jaxb2_commons</groupId><artifactId>jaxb2-basics-tools</artifactId><version>0.5.0</version></artifactItem>
-							<artifactItem><groupId>org.jvnet.jaxb2_commons</groupId><artifactId>jaxb2-basics</artifactId><version>0.5.0</version></artifactItem>
-							<artifactItem><groupId>org.jvnet.jaxb2_commons</groupId><artifactId>runtime</artifactId><version>0.4.1.5</version></artifactItem>
-							<artifactItem><groupId>org.mortbay.jetty</groupId><artifactId>servlet-api</artifactId><version>2.5-20081211</version></artifactItem>
-							<artifactItem><groupId>org.oasis-open.sca.j</groupId><artifactId>sca-caa-apis</artifactId><version>1.1-CD04</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.apollon</groupId><artifactId>apollon-runtime</artifactId><version>1.0</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.binjiu.description</groupId><artifactId>java2upnp</artifactId><version>0.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.binjiu.description</groupId><artifactId>model</artifactId><version>0.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.binjiu.description</groupId><artifactId>upnp2java</artifactId><version>0.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.binjiu.runtime</groupId><artifactId>controlpoint</artifactId><version>0.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.connectors</groupId><artifactId>fractal-bf-connectors-common</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.connectors</groupId><artifactId>fractal-bf-connectors-json-rpc</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.connectors</groupId><artifactId>fractal-bf-connectors-rest-cxf</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.connectors</groupId><artifactId>fractal-bf-connectors-rest-cxf</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.connectors</groupId><artifactId>fractal-bf-connectors-rmi</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.connectors</groupId><artifactId>fractal-bf-connectors-soap-cxf</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf.connectors</groupId><artifactId>fractal-bf-connectors-upnp</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.bf</groupId><artifactId>fractal-bf-core</artifactId><version>${fractal-bf.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fraclet.java</groupId><artifactId>fraclet-annotations</artifactId><version>3.3</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fractaladl</groupId><artifactId>ast-core</artifactId><version>2.3.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fractaladl</groupId><artifactId>fractal-adl</artifactId><version>2.3.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fractaladl</groupId><artifactId>task-deployment</artifactId><version>2.3.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fractaladl</groupId><artifactId>task-framework</artifactId><version>2.3.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fractalexplorer</groupId><artifactId>fractal-explorer</artifactId><version>1.1.4</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fscript</groupId><artifactId>fscript-console</artifactId><version>2.1.3</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.fscript</groupId><artifactId>fscript</artifactId><version>2.1.3</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.julia</groupId><artifactId>julia-asm</artifactId><version>${julia.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.julia</groupId><artifactId>julia-mixins</artifactId><version>${julia.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.julia</groupId><artifactId>julia-runtime</artifactId><version>${julia.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac.osgi</groupId><artifactId>juliac-osgi-bootstrap</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac.osgi</groupId><artifactId>juliac-osgi-membranes-oo</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac.osgi</groupId><artifactId>juliac-osgi-opt-oo</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac.osgi</groupId><artifactId>juliac-osgi-runtime-core</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac.osgi</groupId><artifactId>juliac-osgi-runtime-equinox</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac</groupId><artifactId>juliac-core</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac</groupId><artifactId>juliac-jdt</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac</groupId><artifactId>juliac-oo</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal.juliac</groupId><artifactId>juliac-runtime</artifactId><version>${juliac.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal</groupId><artifactId>fractal-api</artifactId><version>2.0.2</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.fractal</groupId><artifactId>fractal-util</artifactId><version>1.1.2</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>a3-common</artifactId><version>${joram.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>a3-rt</artifactId><version>${joram.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>jcup</artifactId><version>5.3.1</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>jndi-client</artifactId><version>${joram.version}</version></artifactItem>   
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>jndi-server</artifactId><version>${joram.version}</version></artifactItem>    
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>jndi-shared</artifactId><version>${joram.version}</version></artifactItem>   
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>joram-client-jms</artifactId><version>${joram.version}</version></artifactItem>   
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>joram-mom-core</artifactId><version>${joram.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.joram</groupId><artifactId>joram-shared</artifactId><version>${joram.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.monolog</groupId><artifactId>monolog-api</artifactId><version>${monolog.version}</version></artifactItem>		
-							<artifactItem><groupId>org.objectweb.monolog</groupId><artifactId>monolog</artifactId><version>${monolog.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.util.explorer.plugins</groupId><artifactId>explorer-reflector-plugin</artifactId><version>${explorer.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.util.explorer</groupId><artifactId>explorer</artifactId><version>${explorer.version}</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.util.misc</groupId><artifactId>ow-misc</artifactId><version>1.0</version></artifactItem>
-							<artifactItem><groupId>org.objectweb.util</groupId><artifactId>commandline</artifactId><version>1.0</version></artifactItem>
-							<artifactItem><groupId>org.osgi</groupId><artifactId>org.osgi.core</artifactId><version>4.2.0</version></artifactItem>
-							<artifactItem><groupId>org.ow2.easywsdl</groupId><artifactId>easywsdl-schema</artifactId><version>2.1</version></artifactItem>
-							<artifactItem><groupId>org.ow2.easywsdl</groupId><artifactId>easywsdl-wsdl</artifactId><version>2.1</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.factory</groupId><artifactId>frascati-factory-tools</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.gcs</groupId><artifactId>frascati-binding-jgroups</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.gcs</groupId><artifactId>frascati-metamodel-gcs</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.intent</groupId><artifactId>frascati-debug</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.native</groupId><artifactId>frascati-binding-jna</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.native</groupId><artifactId>frascati-interface-native</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.native</groupId><artifactId>frascati-metamodel-native</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.tinfi</groupId><artifactId>frascati-tinfi-membranes-oo</artifactId><version>${tinfi.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.tinfi</groupId><artifactId>frascati-tinfi-mixins</artifactId><version>${tinfi.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.tinfi</groupId><artifactId>frascati-tinfi-oo</artifactId><version>${tinfi.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.tinfi</groupId><artifactId>frascati-tinfi-runtime-api</artifactId><version>${tinfi.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.tinfi</groupId><artifactId>frascati-tinfi-runtime</artifactId><version>${tinfi.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.transaction</groupId><artifactId>frascati-transaction</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.upnp</groupId><artifactId>frascati-binding-upnp</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati.upnp</groupId><artifactId>frascati-metamodel-upnp</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-all-modules</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-assembly-factory</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-factory</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-http</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-jms</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-jms</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-jsonrpc</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-rest</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-rmi</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-ws</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-bootstrap-jdt-rest</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory-julia</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory-juliac-jdt</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory-juliac-tinfi-oo</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory-juliac</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory-tinfi-oo</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-component-factory</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-explorer-api</artifactId><version>${frascati.version}</version></artifactItem>
-							<!--<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-bpel</artifactId><version>${frascati.version}</version></artifactItem>-->
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-fractal</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-osgi-equinox</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-osgi</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-resource</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-script-beanshell</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-script-groovy</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-script-javascript</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-script-jruby</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-script-jython</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-script-xquery</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-script</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-spring</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-implementation-velocity</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-interface-wsdl</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-introspection-api</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-introspection-impl</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-jmx</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-metamodel-frascati</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-metamodel-oasis-csa</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-metamodel-tuscany</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-metamodel-web</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-property-jaxb</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-runtime-factory</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-sca-parser</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-servlet-cxf</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-util-xml</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-util</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-web-explorer-bootstrap</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-web-explorer</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.frascati</groupId><artifactId>frascati-xquery</artifactId><version>${frascati.version}</version></artifactItem>
-							<artifactItem><groupId>org.ow2.jonas.osgi</groupId><artifactId>monolog</artifactId><version>5.1.1</version></artifactItem>
-							<artifactItem><groupId>org.python</groupId><artifactId>jython</artifactId><version>2.2.1</version></artifactItem>
-							<artifactItem><groupId>org.springframework</groupId><artifactId>spring-aop</artifactId><version>${spring.version}</version></artifactItem>
-							<artifactItem><groupId>org.springframework</groupId><artifactId>spring-asm</artifactId><version>${spring.version}</version></artifactItem>
-							<artifactItem><groupId>org.springframework</groupId><artifactId>spring-beans</artifactId><version>${spring.version}</version></artifactItem>
-							<artifactItem><groupId>org.springframework</groupId><artifactId>spring-context</artifactId><version>${spring.version}</version></artifactItem>	    
-							<artifactItem><groupId>org.springframework</groupId><artifactId>spring-core</artifactId><version>${spring.version}</version></artifactItem>
-							<artifactItem><groupId>org.springframework</groupId><artifactId>spring-expression</artifactId><version>${spring.version}</version></artifactItem>	    
-							<artifactItem><groupId>org.springframework</groupId><artifactId>spring-web</artifactId><version>${spring.version}</version></artifactItem>
-							<artifactItem><groupId>org.swinglabs</groupId><artifactId>swing-layout</artifactId><version>1.0.3</version></artifactItem>
-							<artifactItem><groupId>rhino</groupId><artifactId>js</artifactId><version>1.7R1</version></artifactItem>
-							<artifactItem><groupId>soap</groupId><artifactId>soap</artifactId><version>2.3</version></artifactItem>
-							<artifactItem><groupId>xml-resolver</groupId><artifactId>xml-resolver</artifactId><version>1.2</version></artifactItem>
-							<artifactItem><groupId>xerces</groupId><artifactId>xercesImpl</artifactId><version>2.9.1</version></artifactItem>
-							<!--  -->
-							<artifactItem><groupId>org.easysoa.registry</groupId><artifactId>easysoa-frascati-processor</artifactId><version>0.4-SNAPSHOT</version></artifactItem>							
-						 </artifactItems>
-		              </configuration>
-		            </execution>
-		          </executions>
-		        </plugin>    
-        </plugins>
-    </build>
-
-    <repositories>
-      <!--<repository>
-        <id>FraSCAti - INRIA Repository</id>
-        <url>https://frascati-repo.inria.fr/nexus/content/repositories/ow2-snapshot</url>
-      </repository>-->
-		<repository>
-		<id>frascati-repo</id>
-			<name>FraSCAti Nexus repository</name>
-			<url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>      
-      <repository>
-        <id>Nuxeo public-snapshot</id>
-        <url>https://maven.nuxeo.org/nexus/content/repositories/public-snapshot</url>
-      </repository>
-    </repositories>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.0,)</versionRange>
+                    <goals>
+                      <goal>copy</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <!-- Specify Manifest location -->
+    <plugins>
+      <!-- <plugin> -->
+      <!-- <artifactId>maven-jar-plugin</artifactId> -->
+      <!-- <configuration> -->
+      <!-- <archive> -->
+      <!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> -->
+      <!-- </archive> -->
+      <!-- </configuration> -->
+      <!-- </plugin> -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-frascati-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/src/test/resources/frascati/lib</outputDirectory>
+              <overWriteIfNewer>true</overWriteIfNewer>
+              <stripVersion>true</stripVersion>  <!-- Remove version number -->
+              <artifactItems>
+                <!-- <artifactItem>cglib-2.2.jar</artifactItem> -->
+                <!-- <artifactItem>classworlds-1.1-alpha-2.jar</artifactItem> -->
+                <!-- <artifactItem>commons-codec-1.2.jar</artifactItem> -->
+                <!-- <artifactItem>commons-httpclient-3.1.jar</artifactItem> -->
+                <!-- <artifactItem>connector-1.0.jar</artifactItem> -->
+                <!-- <artifactItem>connector-api-1.5.jar</artifactItem> -->
+                <!-- <artifactItem>dom4j-1.6.1.jar</artifactItem> -->
+                <!-- <artifactItem>icu4j-2.6.1.jar</artifactItem> -->
+                <!-- <artifactItem>jcip-annotations-1.0.jar</artifactItem> -->
+                <!-- <artifactItem>jms-1.1.jar</artifactItem> -->
+                <!-- <artifactItem>jobs-3.4.0.jar</artifactItem> -->
+                <!-- <artifactItem>jotm_jrmp_stubs-2.0.10.jar</artifactItem> -->
+                <!-- <artifactItem>jotm-2.0.10.jar</artifactItem> -->
+                <!-- <artifactItem>json-20090211.jar</artifactItem> -->
+                <!-- <artifactItem>json-lib-2.4-jdk15.jar</artifactItem> -->
+                <!-- <artifactItem>jta-1.1.jar</artifactItem> -->
+                <!-- <artifactItem>retrotranslator-runtime-1.2.1.jar</artifactItem> -->
+                <!-- <artifactItem>saxon-9.1.0.8-dom.jar</artifactItem> -->
+                <!-- <artifactItem>saxon-9.1.0.8-jdom.jar</artifactItem> -->
+                <!-- <artifactItem>saxon-9.1.0.8.jar</artifactItem> -->
+                <!-- <artifactItem>sdedit-3.0.5.jar</artifactItem> -->
+                <!-- <artifactItem>serializer-2.7.1.jar</artifactItem> -->
+                <!-- <artifactItem>stax-api-1.0-2.jar</artifactItem> -->
+                <!-- <artifactItem>stax-api-1.0.1.jar</artifactItem> -->
+                <!-- <artifactItem>stax2-api-3.0.2.jar</artifactItem> -->
+                <!-- <artifactItem>stringtemplate-3.2.jar</artifactItem> -->
+                <!-- <artifactItem>woodstox-core-asl-4.1.1.jar</artifactItem> -->
+                <!-- <artifactItem>wsdl4j-1.6.2.jar</artifactItem> -->
+                <!-- <artifactItem>xalan-2.7.1.jar</artifactItem> -->
+                <!-- <artifactItem>xercesImpl-2.9.1.jar</artifactItem> -->
+                <!-- <artifactItem>xmi-2.4.0.jar</artifactItem> -->
+                <!-- <artifactItem>xmlbeans-2.4.0.jar</artifactItem> -->
+                <!-- <artifactItem>xmlunit-1.3.jar</artifactItem> -->
+                <artifactItem>
+                  <groupId>aopalliance</groupId>
+                  <artifactId>aopalliance</artifactId>
+                  <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>asm</groupId>
+                  <artifactId>asm-analysis</artifactId>
+                  <version>${asm.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>asm</groupId>
+                  <artifactId>asm-tree</artifactId>
+                  <version>${asm.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>asm</groupId>
+                  <artifactId>asm-util</artifactId>
+                  <version>${asm.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>asm</groupId>
+                  <artifactId>asm</artifactId>
+                  <version>${asm.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.eaio.uuid</groupId>
+                  <artifactId>uuid</artifactId>
+                  <version>3.2</version>
+                </artifactItem>
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybox</groupId> -->
+                <!-- <artifactId>easybox-api</artifactId> -->
+                <!-- <version>1.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybox</groupId> -->
+                <!-- <artifactId>easybox-impl</artifactId> -->
+                <!-- <version>1.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel.extended.service</groupId> -->
+                <!-- <artifactId>easybpel.extended.service.activity</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easybpel.extended.activities.configuration</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easybpel.model.bpel.api</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easybpel.model.bpel.impl</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easybpel.xpath.exp.api</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easybpel.xpath.exp.impl</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easyplnk20-api</artifactId> -->
+                <!-- <version>3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easyplnk20-impl</artifactId> -->
+                <!-- <version>3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easyvprop20-api</artifactId> -->
+                <!-- <version>3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easybpel</groupId> -->
+                <!-- <artifactId>easyvprop20-impl</artifactId> -->
+                <!-- <version>3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easycommons</groupId> -->
+                <!-- <artifactId>easycommons-sca-api</artifactId> -->
+                <!-- <version>1.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easycommons</groupId> -->
+                <!-- <artifactId>easycommons-sca-impl</artifactId> -->
+                <!-- <version>1.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easycommons</groupId> -->
+                <!-- <artifactId>easycommons-util</artifactId> -->
+                <!-- <version>2.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyschema</groupId> -->
+                <!-- <artifactId>easyschema10-api</artifactId> -->
+                <!-- <version>3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyschema</groupId> -->
+                <!-- <artifactId>easyschema10-impl</artifactId> -->
+                <!-- <version>3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyschema</groupId> -->
+                <!-- <artifactId>xsd2xml</artifactId> -->
+                <!-- <version>3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easysoalayer</groupId> -->
+                <!-- <artifactId>service-description-layer</artifactId> -->
+                <!-- <version>1.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyviper.core</groupId> -->
+                <!-- <artifactId>easyviper.core.api</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyviper.core</groupId> -->
+                <!-- <artifactId>easyviper.core.impl</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyviper.extended.behaviours.abstractbehaviour</groupId> -->
+                <!-- <artifactId>easyviper.extended.behaviours.abstractbehaviour</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyviper.service</groupId> -->
+                <!-- <artifactId>easyviper.extended.service.autoflush</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyviper.service</groupId> -->
+                <!-- <artifactId>easyviper.extended.service.autotrash</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.easyviper.service</groupId> -->
+                <!-- <artifactId>easyviper.extended.service.behaviour</artifactId> -->
+                <!-- <version>1.4-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.wsstar</groupId> -->
+                <!-- <artifactId>legacy-jaxb-core</artifactId> -->
+                <!-- <version>1.3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ebmwebsourcing.wsstar</groupId> -->
+                <!-- <artifactId>ws-addressing-definition</artifactId> -->
+                <!-- <version>1.3.0-alpha-1</version> -->
+                <!-- </artifactItem> -->
+                <artifactItem>
+                  <groupId>com.espertech</groupId>
+                  <artifactId>esper</artifactId>
+                  <version>4.3.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+                  <version>r07</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.jnaerator</groupId>
+                  <artifactId>jnaerator-parser</artifactId>
+                  <version>0.9.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.jnaerator</groupId>
+                  <artifactId>jnaerator-rococoa-runtime</artifactId>
+                  <version>0.9.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.jnaerator</groupId>
+                  <artifactId>jnaerator-runtime</artifactId>
+                  <version>0.9.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.jnaerator</groupId>
+                  <artifactId>jnaerator</artifactId>
+                  <version>0.9.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.nativelibs4java</groupId>
+                  <artifactId>bridj</artifactId>
+                  <version>0.1</version>
+                </artifactItem>
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ochafik</groupId> -->
+                <!-- <artifactId>ochafik-swing</artifactId> -->
+                <!-- <version>0.9.4</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.ochafik</groupId> -->
+                <!-- <artifactId>ochafik-util</artifactId> -->
+                <!-- <version>0.9.4</version> -->
+                <!-- </artifactItem> -->
+                <!-- <artifactItem> -->
+                <!-- <groupId>com.sun.codemodel</groupId> -->
+                <!-- <artifactId>codemodel</artifactId> -->
+                <!-- <version>2.2-SNAPSHOT</version> -->
+                <!-- </artifactItem> -->
+                <artifactItem>
+                  <groupId>com.sun.mail</groupId>
+                  <artifactId>javax.mail</artifactId>
+                  <version>1.4.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.sun.script.jruby</groupId>
+                  <artifactId>jruby-engine</artifactId>
+                  <version>1.1.7</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.sun.xml.bind</groupId>
+                  <artifactId>jaxb-impl</artifactId>
+                  <version>2.1.13</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>commons-beanutils</groupId>
+                  <artifactId>commons-beanutils</artifactId>
+                  <version>1.7.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>commons-cli</groupId>
+                  <artifactId>commons-cli</artifactId>
+                  <version>1.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>commons-collections</groupId>
+                  <artifactId>commons-collections</artifactId>
+                  <version>3.2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>commons-dbcp</groupId>
+                  <artifactId>commons-dbcp</artifactId>
+                  <version>1.2.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>commons-lang</groupId>
+                  <artifactId>commons-lang</artifactId>
+                  <version>2.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>commons-pool</groupId>
+                  <artifactId>commons-pool</artifactId>
+                  <version>1.5.5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>de.schlichtherle.io</groupId>
+                  <artifactId>truezip</artifactId>
+                  <version>6.6</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>dtdparser</groupId>
+                  <artifactId>dtdparser</artifactId>
+                  <version>1.21</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>javax.script</groupId>
+                  <artifactId>script-api</artifactId>
+                  <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>javax.xml.bind</groupId>
+                  <artifactId>jaxb-api</artifactId>
+                  <version>2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jaxen</groupId>
+                  <artifactId>jaxen</artifactId>
+                  <version>1.1.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jdom</groupId>
+                  <artifactId>jdom</artifactId>
+                  <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jgraph</groupId>
+                  <artifactId>jgraph</artifactId>
+                  <version>fractal</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jgroups</groupId>
+                  <artifactId>jgroups-all</artifactId>
+                  <version>2.2.8</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jline</groupId>
+                  <artifactId>jline</artifactId>
+                  <version>0.9.93</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>log4j</groupId>
+                  <artifactId>log4j</artifactId>
+                  <version>1.2.16</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>mysql</groupId>
+                  <artifactId>mysql-connector-java</artifactId>
+                  <version>5.1.14</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>net.java.dev.jna</groupId>
+                  <artifactId>jna</artifactId>
+                  <version>3.2.5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>net.java.dev</groupId>
+                  <artifactId>js-rhino-engine</artifactId>
+                  <version>1.6R7</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>net.java.dev</groupId>
+                  <artifactId>jython-engine</artifactId>
+                  <version>2.2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>net.sf.ezmorph</groupId>
+                  <artifactId>ezmorph</artifactId>
+                  <version>1.0.6</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>net.sf.saxon</groupId>
+                  <artifactId>saxonhe</artifactId>
+                  <version>9.2.0.6</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.antlr</groupId>
+                  <artifactId>antlr-runtime</artifactId>
+                  <version>3.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.geronimo.specs</groupId>
+                  <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                  <version>1.7.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.geronimo.specs</groupId>
+                  <artifactId>geronimo-jms_1.1_spec</artifactId>
+                  <version>1.1.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.geronimo.specs</groupId>
+                  <artifactId>geronimo-jms_1.1_spec</artifactId>
+                  <version>1.1.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.geronimo.specs</groupId>
+                  <artifactId>geronimo-servlet_3.0_spec</artifactId>
+                  <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.geronimo.specs</groupId>
+                  <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                  <version>1.0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.maven.wagon</groupId>
+                  <artifactId>wagon-provider-api</artifactId>
+                  <version>1.0-alpha-5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.neethi</groupId>
+                  <artifactId>neethi</artifactId>
+                  <version>3.0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.velocity</groupId>
+                  <artifactId>velocity</artifactId>
+                  <version>1.7</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.velocity</groupId>
+                  <artifactId>velocity</artifactId>
+                  <version>1.7</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.ws.xmlschema</groupId>
+                  <artifactId>xmlschema-core</artifactId>
+                  <version>2.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.beanshell</groupId>
+                  <artifactId>bsh</artifactId>
+                  <version>2.0b5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.groovy</groupId>
+                  <artifactId>groovy-all</artifactId>
+                  <version>1.6.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.jettison</groupId>
+                  <artifactId>jettison</artifactId>
+                  <version>1.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-classworlds</artifactId>
+                  <version>2.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-container-default</artifactId>
+                  <version>1.0-alpha-8</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-utils</artifactId>
+                  <version>1.0.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.core</groupId>
+                  <artifactId>runtime</artifactId>
+                  <version>3.4.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt</groupId>
+                  <artifactId>core</artifactId>
+                  <version>3.3.0-v_771</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.stp.sca.csa</groupId>
+                  <artifactId>oasis-csa-model</artifactId>
+                  <version>2.0.1.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.stp.sca.domainmodel</groupId>
+                  <artifactId>tuscany-model</artifactId>
+                  <version>2.0.1.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.stp.sca.introspection</groupId>
+                  <artifactId>sca-model-introspection</artifactId>
+                  <version>2.0.1.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jabsorb</groupId>
+                  <artifactId>jabsorb</artifactId>
+                  <version>1.3.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jdesktop</groupId>
+                  <artifactId>appframework</artifactId>
+                  <version>1.0.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jdesktop</groupId>
+                  <artifactId>swing-worker</artifactId>
+                  <version>1.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jgroups</groupId>
+                  <artifactId>jgroups</artifactId>
+                  <version>2.12.1.Final</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jruby.extras</groupId>
+                  <artifactId>bytelist</artifactId>
+                  <version>1.0.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jruby</groupId>
+                  <artifactId>jruby-complete</artifactId>
+                  <version>1.3.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jvnet.jaxb2_commons</groupId>
+                  <artifactId>jaxb2-basics-runtime</artifactId>
+                  <version>0.5.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jvnet.jaxb2_commons</groupId>
+                  <artifactId>jaxb2-basics-tools</artifactId>
+                  <version>0.5.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jvnet.jaxb2_commons</groupId>
+                  <artifactId>jaxb2-basics</artifactId>
+                  <version>0.5.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jvnet.jaxb2_commons</groupId>
+                  <artifactId>runtime</artifactId>
+                  <version>0.4.1.5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.mortbay.jetty</groupId>
+                  <artifactId>servlet-api</artifactId>
+                  <version>2.5-20081211</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.oasis-open.sca.j</groupId>
+                  <artifactId>sca-caa-apis</artifactId>
+                  <version>1.1-CD04</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.apollon</groupId>
+                  <artifactId>apollon-runtime</artifactId>
+                  <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.binjiu.description</groupId>
+                  <artifactId>java2upnp</artifactId>
+                  <version>0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.binjiu.description</groupId>
+                  <artifactId>model</artifactId>
+                  <version>0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.binjiu.description</groupId>
+                  <artifactId>upnp2java</artifactId>
+                  <version>0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.binjiu.runtime</groupId>
+                  <artifactId>controlpoint</artifactId>
+                  <version>0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.connectors</groupId>
+                  <artifactId>fractal-bf-connectors-common</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.connectors</groupId>
+                  <artifactId>fractal-bf-connectors-json-rpc</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.connectors</groupId>
+                  <artifactId>fractal-bf-connectors-rest-cxf</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.connectors</groupId>
+                  <artifactId>fractal-bf-connectors-rest-cxf</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.connectors</groupId>
+                  <artifactId>fractal-bf-connectors-rmi</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.connectors</groupId>
+                  <artifactId>fractal-bf-connectors-soap-cxf</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf.connectors</groupId>
+                  <artifactId>fractal-bf-connectors-upnp</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.bf</groupId>
+                  <artifactId>fractal-bf-core</artifactId>
+                  <version>${fractal-bf.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fraclet.java</groupId>
+                  <artifactId>fraclet-annotations</artifactId>
+                  <version>3.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fractaladl</groupId>
+                  <artifactId>ast-core</artifactId>
+                  <version>2.3.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fractaladl</groupId>
+                  <artifactId>fractal-adl</artifactId>
+                  <version>2.3.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fractaladl</groupId>
+                  <artifactId>task-deployment</artifactId>
+                  <version>2.3.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fractaladl</groupId>
+                  <artifactId>task-framework</artifactId>
+                  <version>2.3.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fractalexplorer</groupId>
+                  <artifactId>fractal-explorer</artifactId>
+                  <version>1.1.4</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fscript</groupId>
+                  <artifactId>fscript-console</artifactId>
+                  <version>2.1.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.fscript</groupId>
+                  <artifactId>fscript</artifactId>
+                  <version>2.1.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.julia</groupId>
+                  <artifactId>julia-asm</artifactId>
+                  <version>${julia.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.julia</groupId>
+                  <artifactId>julia-mixins</artifactId>
+                  <version>${julia.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.julia</groupId>
+                  <artifactId>julia-runtime</artifactId>
+                  <version>${julia.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <artifactId>juliac-osgi-bootstrap</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <artifactId>juliac-osgi-membranes-oo</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <artifactId>juliac-osgi-opt-oo</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <artifactId>juliac-osgi-runtime-core</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <artifactId>juliac-osgi-runtime-equinox</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <artifactId>juliac-core</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <artifactId>juliac-jdt</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <artifactId>juliac-oo</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <artifactId>juliac-runtime</artifactId>
+                  <version>${juliac.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal</groupId>
+                  <artifactId>fractal-api</artifactId>
+                  <version>2.0.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.fractal</groupId>
+                  <artifactId>fractal-util</artifactId>
+                  <version>1.1.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>a3-common</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>a3-rt</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>jcup</artifactId>
+                  <version>5.3.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>jndi-client</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>jndi-server</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>jndi-shared</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>joram-client-jms</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>joram-mom-core</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.joram</groupId>
+                  <artifactId>joram-shared</artifactId>
+                  <version>${joram.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.monolog</groupId>
+                  <artifactId>monolog-api</artifactId>
+                  <version>${monolog.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.monolog</groupId>
+                  <artifactId>monolog</artifactId>
+                  <version>${monolog.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.util.explorer.plugins</groupId>
+                  <artifactId>explorer-reflector-plugin</artifactId>
+                  <version>${explorer.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.util.explorer</groupId>
+                  <artifactId>explorer</artifactId>
+                  <version>${explorer.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.util.misc</groupId>
+                  <artifactId>ow-misc</artifactId>
+                  <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.objectweb.util</groupId>
+                  <artifactId>commandline</artifactId>
+                  <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.osgi</groupId>
+                  <artifactId>org.osgi.core</artifactId>
+                  <version>4.2.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.easywsdl</groupId>
+                  <artifactId>easywsdl-schema</artifactId>
+                  <version>2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.easywsdl</groupId>
+                  <artifactId>easywsdl-wsdl</artifactId>
+                  <version>2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.factory</groupId>
+                  <artifactId>frascati-factory-tools</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.gcs</groupId>
+                  <artifactId>frascati-binding-jgroups</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.gcs</groupId>
+                  <artifactId>frascati-metamodel-gcs</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.intent</groupId>
+                  <artifactId>frascati-debug</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.native</groupId>
+                  <artifactId>frascati-binding-jna</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.native</groupId>
+                  <artifactId>frascati-interface-native</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.native</groupId>
+                  <artifactId>frascati-metamodel-native</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.tinfi</groupId>
+                  <artifactId>frascati-tinfi-membranes-oo</artifactId>
+                  <version>${tinfi.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.tinfi</groupId>
+                  <artifactId>frascati-tinfi-mixins</artifactId>
+                  <version>${tinfi.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.tinfi</groupId>
+                  <artifactId>frascati-tinfi-oo</artifactId>
+                  <version>${tinfi.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.tinfi</groupId>
+                  <artifactId>frascati-tinfi-runtime-api</artifactId>
+                  <version>${tinfi.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.tinfi</groupId>
+                  <artifactId>frascati-tinfi-runtime</artifactId>
+                  <version>${tinfi.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.transaction</groupId>
+                  <artifactId>frascati-transaction</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.upnp</groupId>
+                  <artifactId>frascati-binding-upnp</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati.upnp</groupId>
+                  <artifactId>frascati-metamodel-upnp</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-all-modules</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-assembly-factory</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-factory</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-http</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-jms</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-jms</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-jsonrpc</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-rest</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-rmi</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-binding-ws</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-bootstrap-jdt-rest</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-component-factory-julia</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-component-factory-juliac-jdt</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-component-factory-juliac-tinfi-oo</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-component-factory-juliac</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-component-factory-tinfi-oo</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-component-factory</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-explorer-api</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <!-- <artifactItem> -->
+                <!-- <groupId>org.ow2.frascati</groupId> -->
+                <!-- <artifactId>frascati-implementation-bpel</artifactId> -->
+                <!-- <version>${frascati.version}</version> -->
+                <!-- </artifactItem> -->
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-fractal</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-osgi-equinox</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-osgi</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-resource</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-script-beanshell</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-script-groovy</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-script-javascript</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-script-jruby</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-script-jython</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-script-xquery</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-script</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-spring</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-implementation-velocity</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-interface-wsdl</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-introspection-api</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-introspection-impl</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-jmx</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-metamodel-frascati</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-metamodel-oasis-csa</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-metamodel-tuscany</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-metamodel-web</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-property-jaxb</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-runtime-factory</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-sca-parser</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-servlet-cxf</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-util-xml</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-util</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-web-explorer-bootstrap</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-web-explorer</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.frascati</groupId>
+                  <artifactId>frascati-xquery</artifactId>
+                  <version>${frascati.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.jonas.osgi</groupId>
+                  <artifactId>monolog</artifactId>
+                  <version>5.1.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.python</groupId>
+                  <artifactId>jython</artifactId>
+                  <version>2.2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-aop</artifactId>
+                  <version>${spring.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-asm</artifactId>
+                  <version>${spring.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-beans</artifactId>
+                  <version>${spring.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-context</artifactId>
+                  <version>${spring.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-core</artifactId>
+                  <version>${spring.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-expression</artifactId>
+                  <version>${spring.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-web</artifactId>
+                  <version>${spring.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.swinglabs</groupId>
+                  <artifactId>swing-layout</artifactId>
+                  <version>1.0.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>rhino</groupId>
+                  <artifactId>js</artifactId>
+                  <version>1.7R1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>soap</groupId>
+                  <artifactId>soap</artifactId>
+                  <version>2.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>xml-resolver</groupId>
+                  <artifactId>xml-resolver</artifactId>
+                  <version>1.2</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>xerces</groupId>
+                  <artifactId>xercesImpl</artifactId>
+                  <version>2.9.1</version>
+                </artifactItem>
+                <!-- -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-frascati-processor</artifactId>
+                  <version>0.4-SNAPSHOT</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

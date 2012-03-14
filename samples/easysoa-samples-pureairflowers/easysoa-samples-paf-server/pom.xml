@@ -1,123 +1,106 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.easysoa.samples.paf</groupId>
-	<artifactId>easysoa-samples-paf-server</artifactId>
-	<name>EasySOA Sample Pure Air Flowers Server</name>
-	<packaging>jar</packaging>
+  <parent>
+    <groupId>org.easysoa.samples</groupId>
+    <artifactId>easysoa-samples-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
+  </parent>
 
-	<parent>
-		<groupId>org.easysoa.samples</groupId>
-		<artifactId>easysoa-samples-parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
-		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
-	</parent>
+  <groupId>org.easysoa.samples.paf</groupId>
+  <artifactId>easysoa-samples-paf-server</artifactId>
+  <name>EasySOA Sample Pure Air Flowers Server</name>
+  <packaging>jar</packaging>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cxf.version>2.3.3</cxf.version>
-	</properties>
+  <build>
+    <plugins>
+      <!-- Configuration of maven-assembly-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <!-- Specifies the configuration file of the assembly plugin -->
+          <descriptors>
+            <descriptor>src/main/resources/assembly/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Configuration of maven-jar-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <!-- Configuration of the archiver -->
+          <archive>
+            <!-- Manifest specific configuration -->
+            <manifest>
+              <!-- Classpath is added to the manifest of the created jar file. -->
+              <addClasspath>true</addClasspath>
+              <!-- Configures the classpath prefix. This configuration option is
+                used to specify that all needed libraries are found under lib/ directory. -->
+              <classpathPrefix>../lib/</classpathPrefix>
+              <!-- Specifies the main class of the application -->
+              <mainClass>org.easysoa.samples.paf.PureAirFlowersServer</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-            <!-- Configuration of maven-assembly-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.1</version>
-                <configuration>
-                    <!-- Specifies the configuration file of the assembly plugin -->
-                    <descriptors>
-                        <descriptor>src/main/resources/assembly/assembly.xml</descriptor>
-                    </descriptors>
-                </configuration>
-                <executions>
-				  <execution>
-				    <id>make-assembly</id>
-				    <phase>package</phase>
-				    <goals>
-				      <goal>single</goal>
-				    </goals>
-				  </execution>
-				</executions>
-            </plugin>
-            <!-- Configuration of maven-jar-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-					<!-- Configuration of the archiver -->
-                    <archive>
-						<!-- Manifest specific configuration -->
-		                <manifest>
-							<!-- Classpath is added to the manifest of the created jar file. -->
-                            <addClasspath>true</addClasspath>
-                            <!-- Configures the classpath prefix. This configuration option is 
-                            used to specify that all needed libraries are found under lib/ directory. -->
-                            <classpathPrefix>../lib/</classpathPrefix>
-			    			<!-- Specifies the main class of the application -->
-                            <mainClass>org.easysoa.samples.paf.PureAirFlowersServer</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-		</plugins>
-	</build>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-continuation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http-jetty</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-local</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-continuation</artifactId>
-			<version>8.0.0.M2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http-jetty</artifactId>
-			<version>2.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-local</artifactId>
-			<version>2.3.3</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-log4j12</artifactId>
-		  <version>1.6.4</version>
-		</dependency>
-    
-        <!-- Tests -->
-        <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <scope>test</scope>
-        </dependency>
-    
-        <!-- Classpath discovery -->
-        <dependency>
-          <groupId>org.easysoa.samples.paf</groupId>
-          <artifactId>easysoa-classpath-discovery-prototype</artifactId>
-          <version>0.4-SNAPSHOT</version>
-        </dependency>
-	</dependencies>
+    <!-- Classpath discovery -->
+    <dependency>
+      <groupId>org.easysoa.samples.paf</groupId>
+      <artifactId>easysoa-classpath-discovery-prototype</artifactId>
+    </dependency>
+
+    <!-- XXX Needed by Apache CXF, but missing from the deps. hierarchy -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-ext</artifactId>
+    </dependency>
+
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
 </project>

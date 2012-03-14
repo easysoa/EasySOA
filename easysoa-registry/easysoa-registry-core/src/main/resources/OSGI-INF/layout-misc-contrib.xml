@@ -2,8 +2,9 @@
 <component name="org.easysoa.core.contrib.layout.misc">
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
 
-    <!-- Default summary layout override -->
-    <layout name="default_summary_layout">
+
+    <!-- Remove default summary layout override -->
+    <layout name="default_summary_layout_NO_OVERRIDE">
       <templates>
         <template mode="any">/layouts/layout_summary_template.xhtml</template>
       </templates>
@@ -71,7 +72,7 @@
         </properties>
       </widget>
     </layout>
-    
+
     <!-- Common author information -->
     <layout name="soacommon_author">
       <templates>

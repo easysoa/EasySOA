@@ -1,35 +1,27 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.easysoa.registry.api</groupId>
-    <artifactId>easysoa-registry-api</artifactId>
-    <name>EasySOA Registry API</name>
-    <version>0.0.4-SNAPSHOT</version>
-    <packaging>pom</packaging>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
 
-    <modules>
-        <module>easysoa-registry-api-frascati</module>
-        <module>easysoa-registry-api-core</module>
-        <module>easysoa-registry-api-local</module>
-        <module>easysoa-registry-api-remote</module>
-        <module>easysoa-registry-api-messaging</module>        
-    </modules>
-    
-    <build>
-      <pluginManagement>
-        <plugins>      
-          <!-- Compile with Java 1.6 -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <source>1.6</source>
-              <target>1.6</target>
-            </configuration>
-          </plugin>
-        </plugins>
-      </pluginManagement>
-    </build>
+  <parent>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.easysoa.registry.api</groupId>
+  <artifactId>easysoa-registry-api</artifactId>
+  <name>EasySOA Registry API</name>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>easysoa-registry-api-frascati</module>
+    <module>easysoa-registry-api-core</module>
+    <module>easysoa-registry-api-local</module>
+    <module>easysoa-registry-api-remote</module>
+    <module>easysoa-registry-api-messaging</module>
+  </modules>
 
 </project>
