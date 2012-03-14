@@ -32,7 +32,6 @@ import com.openwide.easysoa.message.OutMessage;
 public class StringAssertion extends AbstractAssertion {
 
     // TODO : split the different assertion methods contained in this class in three distinct classes
-    
     private static final Logger reportLogger = Logger.getLogger("reportLogger");
     
     // Configuration

@@ -51,12 +51,6 @@
         	<version>2.2.1</version>
         	<classifier>jdk15</classifier>
         </dependency>
-		<!-- xstream XML library -->
-    	<dependency>
-    		<groupId>xstream</groupId>
-    		<artifactId>xstream</artifactId>
-    		<version>1.2.2</version>
-    	</dependency>        
   	</dependencies>
   	
     <build>    
