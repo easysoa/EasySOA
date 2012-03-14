@@ -897,8 +897,7 @@
         </repository>
         <!-- For FraSCAti (said as deprecated and replaced by http://repository.ow2.org/nexus...) -->
         <repository>
-          <id>Frascati</id>
-          <name>Frascati repository</name>
+          <id>ow2</id>
           <url>http://maven.ow2.org/maven2/</url>
         </repository>
         <!-- For FraSCAti SNAPSHOT versions -->
@@ -911,12 +910,6 @@
           <id>frascati-repo</id>
           <name>FraSCAti Nexus repository</name>
           <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
         </repository>
         <!-- For ?? -->
         <repository>
@@ -996,6 +989,13 @@
   </profiles>
 
   <repositories>
+    <!-- XXX: Activating temporarily the FraSCAti repository
+    since some dependencies are missing from the Nuxeo mirror repository -->
+    <repository>
+      <id>frascati-repo</id>
+      <name>FraSCAti Nexus repository</name>
+      <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+    </repository>
     <repository>
       <id>easysoa</id>
       <name>EasySOA group repository</name>
