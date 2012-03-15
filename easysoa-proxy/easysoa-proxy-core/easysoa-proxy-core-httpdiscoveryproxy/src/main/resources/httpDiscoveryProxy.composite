@@ -90,7 +90,7 @@
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.run.RunManagerImpl" />
 		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
-		<sca:reference name="exchangeNumberGenertor" target="" />
+		<sca:reference name="exchangeNumberGenerator" target="exchangeNumberGeneratorComponent" />
 	</sca:component>
 	
 	<!-- Exchange record Manager -->
@@ -172,9 +172,9 @@
 	<!-- Exchange number generator -->
 	<sca:component name="exchangeNumberGeneratorComponent">
 		<sca:service name="exchangeNumberGeneratorService">
-			<sca:interface.java interface="org.easysoa.messages.NumberGenerator" />
+			<sca:interface.java interface="org.easysoa.messages.server.NumberGenerator" />
 		</sca:service>
-		<sca:implementation.java class="org.easysoa.messages.ExchangeNumberGenerator" />
+		<sca:implementation.java class="org.easysoa.messages.server.ExchangeNumberGenerator" />
 	</sca:component>
 	
 </sca:composite>

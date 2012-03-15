@@ -22,7 +22,7 @@ package com.openwide.easysoa.run;
 
 import java.util.Date;
 import org.apache.log4j.Logger;
-import org.easysoa.messages.server.ExchangeNumberGenerator;
+import org.easysoa.messages.server.NumberGenerator;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.osoa.sca.annotations.Reference;
@@ -66,7 +66,7 @@ public class RunManagerImpl implements RunManager {
 	MonitoringService monitoringService;
 
 	@Reference
-	ExchangeNumberGenerator exchangeNumberGenerator;
+	NumberGenerator exchangeNumberGenerator;
 	
 	/**
 	 * The current run
