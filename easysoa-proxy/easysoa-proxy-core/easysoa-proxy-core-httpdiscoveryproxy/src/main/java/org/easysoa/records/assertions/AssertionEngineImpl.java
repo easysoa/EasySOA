@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
@@ -107,8 +108,15 @@ public class AssertionEngineImpl implements AssertionEngine {
      * @see org.easysoa.records.assertions.AssertionEngine#executeAssertion(org.easysoa.records.assertions.Assertion, com.openwide.easysoa.message.OutMessage, com.openwide.easysoa.message.OutMessage)
      */
     @Override
-    public AssertionResult executeAssertion(String referenceField, Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
-        AssertionResult result = assertion.check(referenceField, originalMessage, replayedMessage);
+    public AssertionResult executeAssertion(String referenceField, Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage) {
+        AssertionResult result;
+        try{
+            result = assertion.check(referenceField, originalMessage, replayedMessage);
+        }
+        catch(Exception ex){
+            reportLogger.error("Assertion error", ex);
+            result = new AssertionResult(assertion.getClass(), AssertionResultStatus.KO, ex.getMessage());
+        }
         return result;
     }
     

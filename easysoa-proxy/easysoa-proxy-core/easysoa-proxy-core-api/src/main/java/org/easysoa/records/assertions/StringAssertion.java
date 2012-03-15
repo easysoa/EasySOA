@@ -105,6 +105,7 @@ public class StringAssertion extends AbstractAssertion {
     
     @Override
     public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/ {
+        // TODO : modify String assertion to work with referenceField if needed
         AssertionResult result = null;
         reportLogger.info("Using method : " + this.method);        
         // Call the assertion method corresponding to the configuration

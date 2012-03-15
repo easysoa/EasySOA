@@ -21,8 +21,11 @@
 package com.openwide.easysoa.message;
 
 import java.io.StringReader;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
 import com.openwide.easysoa.message.util.ContentChecker;
@@ -47,7 +50,7 @@ public class MessageContent {
 	
 	// Contains an XML or JSON JAVA structure of the rawContent 
 	private JSON JSONContent;
-	private XMLEventReader XMLContent;
+	private Document XMLContent;
 	
 	//private CustomFields customFields = new CustomFields();
 
@@ -137,15 +140,17 @@ public class MessageContent {
                 this.JSONContent = JSONSerializer.toJSON(this.rawContent);
 	            this.XMLContent = null;
 	        } else if (ContentType.XML.equals(contentType)) {
-	            try {
+	            // Alternative solution with stax, not used here because we need to extract sub-trees of the xml document
+	            /*try {
 	                XMLInputFactory XMLif=XMLInputFactory.newInstance();
 	                this.XMLContent = XMLif.createXMLEventReader(new StringReader(this.rawContent));
-	            }
-                /*try {
+	            }*/
+                try {
                     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
                     this.XMLContent = docBuilder.parse(new InputSource(new StringReader(this.rawContent)));
-                }*/ catch (Exception ex) {
+                } 
+	            catch (Exception ex) {
                     ex.printStackTrace();
                     this.contentType = ContentType.Undefined;
                     this.XMLContent = null;    
@@ -181,10 +186,10 @@ public class MessageContent {
 	 * returns the content as a generic XML java object. If the raw content is not an XML structure, null is returned 
 	 * @return A generic XML object if the raw content is a valid XML structure, null otherwise
 	 */
-	public XMLEventReader getXMLContent(){
+	public Document getXMLContent(){
 	    return this.XMLContent;
 	}
-	
+
 	/**
 	 * Returns the encoding.
 	 * @return Returns the encoding.

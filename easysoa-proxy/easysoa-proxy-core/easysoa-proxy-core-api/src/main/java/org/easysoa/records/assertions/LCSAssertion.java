@@ -33,6 +33,7 @@ public class LCSAssertion extends AbstractAssertion {
 
     @Override
     public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage) {
+        // TODO : modify LCS assertion to work with referenceField if needed
         AssertionResult result;
         // Limitation to avoid a OutOfMemoryException and log treatment time. LCS method is slow with big messages.
         if(originalMessage.getMessageContent().getRawContent().length() > 100 || replayedMessage.getMessageContent().getRawContent().length() > 100){

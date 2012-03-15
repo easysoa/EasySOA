@@ -47,7 +47,8 @@ public interface Assertion {
      * @param originalMessage Original message
      * @param replayedMessage ReplayedMessage
      * @return An AssertionResult
+     * @throws Exception If a problem occurs during the assertion check
      */
-    public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage)/* throws Exception*/;
+    public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage) throws Exception;
     
 }

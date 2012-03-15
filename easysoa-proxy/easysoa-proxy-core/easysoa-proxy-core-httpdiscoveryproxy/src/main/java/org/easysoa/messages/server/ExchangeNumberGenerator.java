@@ -24,13 +24,11 @@ public class ExchangeNumberGenerator implements NumberGenerator {
         // TODO : add a persistence to store and retrieve the current message number
     }
     
-    // must be a singleton
-    // Must be synchronized
     /* (non-Javadoc)
      * @see org.easysoa.messages.server.NumberGenerator#getNextNumber()
      */
     @Override
-    public long getNextNumber(){
+    public synchronized long getNextNumber(){
         this.currentMessageNumber++;
         return this.currentMessageNumber;
     }

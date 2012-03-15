@@ -135,7 +135,7 @@ public class AssertionTest {
         // Test for Contains assertion with a valid XML structure
         
         StringBuffer xmlData = new StringBuffer();
-        xmlData.append("<note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body>Don't forget me this weekend!</body></note>");
+        xmlData.append("<note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body><content>Don't forget me this weekend!</content></body></note>");
         AssertionEngine engine = new AssertionEngineImpl();
         OutMessage originalMessage = new OutMessage();
         OutMessage replayedMessage = new OutMessage();
@@ -147,7 +147,7 @@ public class AssertionTest {
         assertEquals(ContentType.XML, originalContent.getContentType());
         originalMessage.setMessageContent(originalContent);
         replayedMessage.setMessageContent(replayedContent);        
-        AssertionResult result = engine.executeAssertion("from", containsAssertion, originalMessage, replayedMessage);
+        AssertionResult result = engine.executeAssertion("body", containsAssertion, originalMessage, replayedMessage);
         assertEquals(AssertionResultStatus.OK, result.getResultStatus());        
     }
         
