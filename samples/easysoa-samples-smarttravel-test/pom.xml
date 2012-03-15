@@ -65,15 +65,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.easysoa.registry</groupId>
+      <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-frascati</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- 1.0-SNAPSHOT ? -->
     <dependency>
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-      <version>1.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
