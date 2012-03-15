@@ -117,16 +117,6 @@
                   <artifactId>easysoa-registry-api-messaging</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-frascati-shared</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-frascati-processor</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
 
                 <!-- WSDL Parsing & transformation -->
                 <artifactItem>
