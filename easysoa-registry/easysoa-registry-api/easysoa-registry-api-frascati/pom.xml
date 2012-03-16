@@ -23,6 +23,32 @@
        <scope>provided</scope>
     </dependency>
     <dependency>
+       <groupId>org.easysoa.frascati</groupId>
+       <artifactId>easysoa-frascati-service</artifactId>
+       <version>0.4-SNAPSHOT</version>
+       <scope>provided</scope>
+    </dependency>    
+    <!-- FraSCAti -->
+    <dependency><!-- base frascati -->
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-factory</artifactId>
+    </dependency>
+    <dependency><!-- else no frascati class generation -->
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-runtime-factory</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-assembly-factory</artifactId>
+    </dependency>    
+    <dependency>
+        <groupId>org.ow2.frascati.osgi</groupId>
+        <artifactId>frascati-starter</artifactId>
+        <version>${frascati.version}</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- Nuxeo -->
+    <dependency>
       <groupId>org.nuxeo.runtime</groupId>
       <artifactId>nuxeo-runtime-bridge</artifactId>
       <scope>provided</scope>

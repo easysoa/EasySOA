@@ -3,32 +3,7 @@
  */
 package org.easysoa.records.assertions;
 
-import java.io.StringWriter;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.util.ContentChecker.ContentType;
@@ -56,12 +31,6 @@ public class ContainsAssertion extends AbstractAssertion {
         // TODO Auto-generated method stub
     }
 
-    // 2 methods : 
-    //- first extract a substring containing the field name and it's value from original message
-    // and check if this substring is contained in the replayed message
-    // Or 
-    // Parse a JSON / XML structure to have a java object structure
-    // And with recursive function, find the field and it associated value .. and check if we have the same field in the replayed structure
     @Override
     public AssertionResult check(String fieldName, OutMessage originalMessage, OutMessage replayedMessage) throws Exception {
         AssertionResult result;

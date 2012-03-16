@@ -35,6 +35,7 @@ public class AssertionResult {
      */
     public enum AssertionResultStatus {OK, Maybe, KO};
     
+    @SuppressWarnings("rawtypes")
     private Class assertionType;
     
     // Result status
@@ -50,7 +51,7 @@ public class AssertionResult {
      * 
      * @param status
      */
-    AssertionResult(Class assertionType, AssertionResultStatus status){
+    AssertionResult(@SuppressWarnings("rawtypes") Class assertionType, AssertionResultStatus status){
         this(assertionType, status, "");
     }
     
@@ -59,7 +60,7 @@ public class AssertionResult {
      * @param status
      * @param message  //TODO : maybe best to find another param name
      */
-    AssertionResult(Class assertionType, AssertionResultStatus status, String message){
+    AssertionResult(@SuppressWarnings("rawtypes") Class assertionType, AssertionResultStatus status, String message){
         this.assertionType = assertionType;
         this.status = status;
         this.message = message;
@@ -128,6 +129,7 @@ public class AssertionResult {
      * Get assertion type
      * @return
      */
+    @SuppressWarnings("rawtypes")
     public Class getAssertionType(){
         return this.assertionType;
     }
