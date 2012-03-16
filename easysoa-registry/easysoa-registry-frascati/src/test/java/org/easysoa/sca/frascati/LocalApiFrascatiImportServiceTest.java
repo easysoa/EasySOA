@@ -97,7 +97,8 @@ import com.google.inject.Inject;
      * @throws Exception
      *             If a problem occurs
      */
-    @Test public void testSCACompositeImport() throws Exception
+    @Test 
+    public void testSCACompositeImport() throws Exception
     {
         // SCA composite file to import :
         // to load a file, we use simply File, since user.dir is set relatively to the
@@ -154,6 +155,7 @@ import com.google.inject.Inject;
      * @throws FrascatiException
      * @throws Exception
      */
+    @Test
     public void testFraSCAtiRuntimeDiscovery() throws FrascatiException,
             Exception
     {
@@ -164,13 +166,10 @@ import com.google.inject.Inject;
                 EasySOAApiFraSCAti.getInstance().newRuntimeScaImporter();
         frascatiRegistryService.getFraSCAti().setScaImporterRecipient(
                 runtimeScaImporter);
-        // DiscoveryProcessingContext pctx = new DiscoveryProcessingContext(this,
-        // runtimeScaImporter, scaZipFile.toURI().toURL());
-        // DiscoveryProcessingContext pctx =
-        // frascatiRegistryService.newDiscoveryProcessingContext(scaZipFile.toURI().toURL());
+
         String myCompositeApplication =
                 frascatiRegistryService.getFraSCAti().processComposite(
-                        "RestSoapProxy.composite", FraSCAtiServiceItf.all,
+                        "RestSoapProxy.composite", FraSCAtiServiceItf.check,
                         scaZipFile.toURI().toURL());
         // services :
         DocumentModelList resDocList =

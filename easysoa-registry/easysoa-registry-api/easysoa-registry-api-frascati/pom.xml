@@ -22,32 +22,33 @@
        <version>0.4-SNAPSHOT</version>
        <scope>provided</scope>
     </dependency>
-    <dependency>
-       <groupId>org.easysoa.frascati</groupId>
-       <artifactId>easysoa-frascati-service</artifactId>
-       <version>0.4-SNAPSHOT</version>
-       <scope>provided</scope>
-    </dependency>    
     <!-- FraSCAti -->
-    <dependency><!-- base frascati -->
+    <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
     </dependency>
-    <dependency><!-- else no frascati class generation -->
+    <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-runtime-factory</artifactId>
     </dependency>
+    <!--
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-assembly-factory</artifactId>
-    </dependency>    
+    </dependency>  
+    -->  
     <dependency>
         <groupId>org.ow2.frascati.osgi</groupId>
         <artifactId>frascati-starter</artifactId>
         <version>${frascati.version}</version>
-        <scope>provided</scope>
+    </dependency>    
+    <dependency>
+       <groupId>org.easysoa.frascati</groupId>
+       <artifactId>easysoa-frascati-service</artifactId>
+       <version>0.4-SNAPSHOT</version>
     </dependency>
     <!-- Nuxeo -->
+    <!--
     <dependency>
       <groupId>org.nuxeo.runtime</groupId>
       <artifactId>nuxeo-runtime-bridge</artifactId>
@@ -70,7 +71,8 @@
       <groupId>org.eclipse.emf</groupId>
       <artifactId>ecore</artifactId>
       <scope>provided</scope>
-    </dependency>
+    </dependency>    
+    -->
     <!-- Registry dependencies -->
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
@@ -88,7 +90,6 @@
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-messaging</artifactId>
     </dependency>
-
     <!-- For tests -->
     <!-- JUnit -->
     <!-- bring by nuxeo-frascati-test -->
@@ -104,10 +105,12 @@
       <groupId>org.nuxeo.runtime</groupId>
       <artifactId>nuxeo-runtime-test</artifactId>
     </dependency>
+    <!--
     <dependency>
       <groupId>org.nuxeo</groupId>
       <artifactId>nuxeo-frascati-test</artifactId>
     </dependency>
+    -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>

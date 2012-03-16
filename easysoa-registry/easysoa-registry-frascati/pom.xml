@@ -26,112 +26,155 @@
   * Contributor(s):
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+ 
+ <!--
   <parent>
     <groupId>org.easysoa.registry</groupId>
     <artifactId>easysoa-registry-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+  -->
 
-  <artifactId>easysoa-registry-frascati</artifactId>
-  <name>EasySOA Registry : Nuxeo-embedded OW2 FraSCAti</name>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-frascati</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <name>EasySOA Registry : Nuxeo-embedded OW2 FraSCAti</name>
 
-  <dependencies>
+    <dependencies>
     <!-- Provided dependencies -->
-    <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-bridge</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-frascati</artifactId>
-      <version>0.4-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-       <groupId>org.easysoa.frascati</groupId>
-       <artifactId>easysoa-frascati-service-api</artifactId>
-       <version>0.4-SNAPSHOT</version>
-       <scope>provided</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.easysoa.registry.api</groupId>
-        <artifactId>easysoa-registry-api-core</artifactId>
-        <version>0.4-SNAPSHOT</version>
-        <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati.model</groupId>
-      <artifactId>frascati-model</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>ecore</artifactId>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.nuxeo.runtime</groupId>
+            <artifactId>nuxeo-runtime-bridge</artifactId>
+            <version>5.4.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo</groupId>
+            <artifactId>nuxeo-frascati</artifactId>
+            <version>0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-frascati</artifactId>
+            <version>0.4-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.ow2.frascati</groupId>
+                    <artifactId>frascati-binding-factory</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ow2.frascati</groupId>
+                    <artifactId>frascati-runtime-factory</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ow2.frascati.osgi</groupId>
+                    <artifactId>frascati-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.easysoa.frascati</groupId>
+                    <artifactId>easysoa-frascati-service</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.frascati</groupId>
+            <artifactId>easysoa-frascati-service-api</artifactId>
+            <version>0.4-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-core</artifactId>
+            <version>0.4-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.model</groupId>
+            <artifactId>frascati-model</artifactId>
+            <version>2.0.1.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>ecore</artifactId>
+            <version>2.4.0</version>
+            <scope>provided</scope>
+        </dependency>
     <!-- EasySOA core deps -->
-    <dependency>
-      <groupId>org.easysoa.registry</groupId>
-      <artifactId>easysoa-registry-core</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry</groupId>
+            <artifactId>easysoa-registry-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    <!--
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-frascati</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.nuxeo</groupId>
-      <artifactId>nuxeo-frascati</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-local</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo</groupId>
-      <artifactId>nuxeo-frascati-test</artifactId>
-    </dependency> 
-  </dependencies>
+    -->
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-local</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo</groupId>
+            <artifactId>nuxeo-frascati-test</artifactId>
+            <version>0.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-  <build>
-    <pluginManagement>
-      <plugins>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.5</source>
+                        <target>1.5</target>
+                    </configuration>
+                </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only.
           It has no influence on the Maven build itself. -->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version> <!-- Explicit version number needed to fix an m2e NPE during project import -->
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-nuxeo-plugin</artifactId>
-                    <versionRange>[1.0.14,)</versionRange>
-                    <goals>
-                      <goal>eclipse-version</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version> <!-- Explicit version number needed to fix an m2e NPE during project import -->
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-nuxeo-plugin</artifactId>
+                                        <versionRange>[1.0.14,)</versionRange>
+                                        <goals>
+                                            <goal>eclipse-version</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>

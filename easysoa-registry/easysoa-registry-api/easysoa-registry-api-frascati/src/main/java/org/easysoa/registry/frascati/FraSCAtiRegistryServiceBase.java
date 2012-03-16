@@ -79,7 +79,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
          */
         public Composite readComposite(URL compositeUrl, URL... scaZipUrls)   throws Exception {
                 
-                return readComposite(compositeUrl, FraSCAtiServiceItf.all, scaZipUrls);
+                return readComposite(compositeUrl, FraSCAtiServiceItf.check, scaZipUrls);
         }
         
 	/**
@@ -104,7 +104,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		
 		try {
 			compositeName = frascati.processComposite(
-			        compositeUrl.toString(), FraSCAtiServiceItf.all,scaZipUrls);
+			        compositeUrl.toString(), mode,scaZipUrls);
 		} 
 		catch (FraSCAtiServiceException fe) { 
 			log.error("The number of checking errors is equals to " + frascati.getErrors());
