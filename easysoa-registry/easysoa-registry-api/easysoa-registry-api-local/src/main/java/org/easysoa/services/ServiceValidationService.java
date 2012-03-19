@@ -23,7 +23,7 @@ public interface ServiceValidationService {
      * @return A list of validation errors
      * @throws Exception
      */
-    List<String> validateServices(CoreSession session, DocumentModel model) throws Exception;
+	boolean validateServices(CoreSession session, DocumentModel model) throws Exception;
 
     /**
      * Finds correlated services from the reference environment of the given service.
