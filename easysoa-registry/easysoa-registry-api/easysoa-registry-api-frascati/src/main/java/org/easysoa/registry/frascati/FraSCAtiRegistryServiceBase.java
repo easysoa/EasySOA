@@ -89,12 +89,14 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * @return
 	 * @throws Exception
 	 */
-	public Composite readComposite(URL compositeUrl, int mode, URL... scaZipUrls)	throws Exception {
+	public Composite readComposite(URL compositeUrl, int mode, URL... scaZipUrls) throws Exception {
 	    
 	        if(frascati == null)
 	        {
-	            log.warn("No FraSCAtiService attached to this FraSCAti Registry Service");
-	            return null;
+	            String msg = "No FraSCAtiService attached to this FraSCAti Registry Service "
+	                    + "when reading composite " + compositeUrl;
+	            log.debug(msg);
+	            throw new Exception(msg);
 	        }
 		// Create a processing context with where to find ref'd classes
 		log.debug("composite URL = " + compositeUrl);

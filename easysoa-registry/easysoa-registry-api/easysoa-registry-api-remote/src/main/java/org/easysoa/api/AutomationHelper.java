@@ -54,7 +54,10 @@ public class AutomationHelper {
             session = client.getSession(username, password);
         }
         catch (Exception e) {
-            log.warn("Failed to create automation session: " + e.getMessage());
+            String msg = "Failed to create automation session for user "
+                    + username + " to Nuxeo url " + nuxeoAutomationUrl;
+            log.debug(msg, e);
+            throw new IOException(msg, e);
         }
     }
 

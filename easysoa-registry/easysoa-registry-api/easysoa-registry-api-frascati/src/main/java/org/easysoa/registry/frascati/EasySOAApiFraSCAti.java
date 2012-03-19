@@ -26,6 +26,7 @@ import org.easysoa.sca.IScaRuntimeImporter;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
 import org.easysoa.sca.frascati.ApiRuntimeFraSCAtiScaImporter;
+import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 
 /**
@@ -60,7 +61,8 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      */
     protected EasySOAApiFraSCAti()
     {
-
+        RemoteFraSCAtiServiceProvider remoteProvider = new RemoteFraSCAtiServiceProvider();
+        this.frascati = remoteProvider.getFraSCAtiService();
     }
 
     /**

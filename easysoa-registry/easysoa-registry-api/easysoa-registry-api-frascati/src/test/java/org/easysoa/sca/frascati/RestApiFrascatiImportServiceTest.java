@@ -163,7 +163,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws Exception
      */
     @Test
-    @Ignore
+    // @Ignore
     public void testSCAZipImport() throws Exception {
 
         // SCA composite file to import :
@@ -220,13 +220,13 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      */
     public void checkExchanges() {
 
-        boolean none = true;
+        boolean atLeastOne = false;
         for (ExchangeRecord record : recordList) {
-            none = false;
+            atLeastOne = true;
             // TODO : now using messaging api, check that this test still works
             assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().getMessageContent().getRawContent().contains("RestSoapProxy.composite"));
         }
-        assertTrue("There should be at least one exchange after SCA service discovery", none);
+        assertTrue("There should be at least one exchange after SCA service discovery", atLeastOne);
     }
 
     // add a method to check the recorded exchanges in the order :

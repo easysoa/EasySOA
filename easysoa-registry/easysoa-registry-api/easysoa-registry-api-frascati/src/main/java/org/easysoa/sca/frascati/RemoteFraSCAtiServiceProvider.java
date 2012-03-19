@@ -29,24 +29,26 @@ public class RemoteFraSCAtiServiceProvider implements
 
     @Override
     public FraSCAtiServiceItf getFraSCAtiService() {
-        if(frascatiService == null){
-            FraSCAti frascati;
-            try {
-                frascati = FraSCAti.newFraSCAti();
-                
-                Component root = frascati.getCompositeManager(
-                        ).getTopLevelDomainComposite();
-                
-                Component af = getComponent(root,
-                        "org.ow2.frascati.FraSCAti/assembly-factory");
-                
-                this.frascatiService = (FraSCAtiServiceItf) 
-                   frascati.getService(af,"easysoa-frascati-service",FraSCAtiServiceItf.class);
-                
-            } catch (FrascatiException ex) {
-                log.error("Unable to get RemoteFraSCAtiService", ex);
-                //ex.printStackTrace();
-                frascatiService = null;
+        synchronized(RemoteFraSCAtiServiceProvider.class) {
+            if(frascatiService == null){
+                FraSCAti frascati;
+                try {
+                    frascati = FraSCAti.newFraSCAti();
+                    
+                    Component root = frascati.getCompositeManager(
+                            ).getTopLevelDomainComposite();
+                    
+                    Component af = getComponent(root,
+                            "org.ow2.frascati.FraSCAti/assembly-factory");
+                    
+                    this.frascatiService = (FraSCAtiServiceItf) 
+                       frascati.getService(af,"easysoa-frascati-service",FraSCAtiServiceItf.class);
+                    
+                } catch (FrascatiException ex) {
+                    log.error("Unable to get RemoteFraSCAtiService", ex);
+                    //ex.printStackTrace();
+                    frascatiService = null;
+                }
             }
         }
         return frascatiService;

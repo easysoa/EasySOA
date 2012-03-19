@@ -76,7 +76,7 @@ public class RestNotificationFactory {
         this.password = password;
         
         // Test connection
-        new URL(nuxeoApisUrl).openConnection();
+        new URL(nuxeoApisUrl).openConnection().connect();
         
         // Store API services URLs
         String discoveryApiUrl = nuxeoApisUrl + API_PATH;
