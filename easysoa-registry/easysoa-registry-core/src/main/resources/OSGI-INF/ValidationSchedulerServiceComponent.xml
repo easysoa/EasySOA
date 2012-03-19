@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.service.ValidationSchedulerComponent">
+
+<documentation>
+  <!--
+    Allows to schedule environment validations. Example contribution:
+    
+    <extension target="org.easysoa.sca.extension.ScaImporterComponent" point="scaImporters">
+        <schedule runName="myRun" targetEnvironment="master" cronExpression="0 0 3 1 * ?">
+    </extension>
+    
+    @author Marwane Kalam-Alami
+  -->
+  </documentation>
+
+  <implementation class="org.easysoa.validation.ValidationSchedulerComponent" />
+  
+  <extension-point name="schedules">
+    <object class="org.easysoa.validation.ValidationScheduleDescriptor" />
+  </extension-point>
+  
+  <!-- Event listener -->
+  <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+    <listener name="ValidationSchedulerEventListener" class="org.easysoa.listeners.ValidationSchedulerEventListener" order="120">
+      <event>onScheduledValidationRequired</event>
+    </listener>
+  </extension>
+  
+</component>

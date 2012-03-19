@@ -109,10 +109,10 @@ public class PublicationServiceImpl implements PublicationService {
             log.error(e);
         }
     }
-
-    public void forkEnvironment(CoreSession session, DocumentModel environmentModel) throws Exception {
+    
+    public void forkEnvironment(CoreSession session, DocumentModel sectionModel) throws Exception {
        
-        if (environmentModel.getType().equals("Section")) {
+        if (sectionModel.getType().equals("Section")) {
 
             // Create destination workspace
         	DocumentService docService = Framework.getService(DocumentService.class);
@@ -120,11 +120,11 @@ public class PublicationServiceImpl implements PublicationService {
                     docService.getWorkspaceRoot(session).toString(),
                     IdUtils.generateStringId(), Workspace.DOCTYPE);
             newWorkspace.setProperty("dublincore", "title", session.getPrincipal().getName());
-            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, environmentModel.getTitle());
+            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, sectionModel.getTitle());
             newWorkspace = session.createDocument(newWorkspace);
             
             // Copy applications and their contents
-            DocumentModelList appsToCopy = session.getChildren(environmentModel.getRef(), AppliImpl.DOCTYPE);
+            DocumentModelList appsToCopy = session.getChildren(sectionModel.getRef(), AppliImpl.DOCTYPE);
             for (DocumentModel appToCopy : appsToCopy) {
                 copyRecursive(session, appToCopy.getRef(), appToCopy.getPathAsString(), newWorkspace.getRef());
             }

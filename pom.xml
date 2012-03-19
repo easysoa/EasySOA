@@ -749,6 +749,11 @@
         <artifactId>nuxeo-platform-userworkspace-api</artifactId>
         <version>${easysoa.nuxeo.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-platform-scheduler-core</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.jdom</groupId>
