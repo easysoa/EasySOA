@@ -22,26 +22,15 @@ package org.easysoa.beans;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.doctypes.Service;
-import org.easysoa.doctypes.Workspace;
-import org.easysoa.services.DeletedDocumentFilter;
-import org.easysoa.services.DocumentService;
 import org.easysoa.services.PublicationService;
-import org.easysoa.services.ServicesRootMapperService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * Publication and forking actions
@@ -61,106 +50,23 @@ public class EnvironmentActionsBean {
 
     @In(create = true)
     NavigationContext navigationContext;
+    
+    @In(create = true)
+    PublicationService publicationService;
 
     public void publishCurrentWorkspace() throws Exception {
-        
-        PublicationService publicationService = Framework.getService(PublicationService.class);
-        DocumentModel currentDocModel = navigationContext.getCurrentDocument();
-        
-        if (currentDocModel.getType().equals(Workspace.DOCTYPE)) {
-            DocumentModelList appModels = documentManager.getChildren(currentDocModel.getRef(), 
-                    AppliImpl.DOCTYPE, new DeletedDocumentFilter(), null);
-            for (DocumentModel appModel : appModels) {
-                publicationService.publish(documentManager, appModel, currentDocModel.getTitle());
-            }
-        }
-        else {
-            throw new Exception("Cannot start publication: current document is not a workspace");
-        }
-        
+    	DocumentModel currentDocument = navigationContext.getCurrentDocument();
+    	publicationService.publish(documentManager, currentDocument, currentDocument.getTitle());
     }
     
     public void forkCurrentEnvironment() throws Exception {
-        
-        DocumentService docService = Framework.getService(DocumentService.class);
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
-        
-        if (currentDocModel.getType().equals("Section")) {
-
-            // Create destination workspace
-            DocumentModel newWorkspace = documentManager.createDocumentModel(
-                    docService.getWorkspaceRoot(documentManager).toString(),
-                    IdUtils.generateStringId(), Workspace.DOCTYPE);
-            newWorkspace.setProperty("dublincore", "title", documentManager.getPrincipal().getName());
-            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, currentDocModel.getTitle());
-            newWorkspace = documentManager.createDocument(newWorkspace);
-            
-            // Copy applications and their contents
-            DocumentModelList appsToCopy = documentManager.getChildren(currentDocModel.getRef(), AppliImpl.DOCTYPE);
-            for (DocumentModel appToCopy : appsToCopy) {
-                copyRecursive(appToCopy.getRef(), appToCopy.getPathAsString(), newWorkspace.getRef());
-            }
-            
-            documentManager.save();
-        }
-        else {
-            throw new Exception("Cannot start fork: current document is not an environment");
-        }
-        
+        publicationService.forkEnvironment(documentManager, currentDocModel);
     }
     
     public void updateApp() throws Exception {
-
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
-        if (currentDocModel.getType().equals(AppliImpl.DOCTYPE)) {
-
-            String referenceAppPath = (String) currentDocModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_REFERENCEAPP);
-            DocumentRef referenceAppRef = new PathRef(referenceAppPath);
-            DocumentModel referenceAppModel = documentManager.getDocument(referenceAppRef);
-            if (referenceAppModel != null) {
-                
-                // Replace all app contents by the env. ones
-                // TODO Update appli impl. by replacing documents by those from the reference environment if they are newer.
-                documentManager.removeChildren(currentDocModel.getRef());
-                DocumentModelList referenceAppChildrenModels = documentManager.getChildren(referenceAppRef);
-                for (DocumentModel referenceAppChildModel : referenceAppChildrenModels) {
-                    copyRecursive(referenceAppChildModel.getRef(), referenceAppChildModel.getPathAsString(), currentDocModel.getRef());
-                }
-                
-                // Map URLs
-                ServicesRootMapperService urlMapper = Framework.getService(ServicesRootMapperService.class);
-                urlMapper.mapUrls(documentManager, currentDocModel);
-                
-                documentManager.save();
-            }
-            
-        }
-        
-    }
-    
-    private DocumentModel copyRecursive(DocumentRef from, String fromPath, DocumentRef toFolder) {
-        DocumentModel newDoc = null;
-        try {
-            newDoc = documentManager.copyProxyAsDocument(from, toFolder, null);
-            if (Service.DOCTYPE.equals(newDoc.getType())) {
-                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, fromPath);
-                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Created by copy");
-                newDoc.followTransition("approve");
-                documentManager.saveDocument(newDoc);
-            }
-            else if (AppliImpl.DOCTYPE.equals(newDoc.getType())) {
-                newDoc.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_REFERENCEAPP, fromPath);
-                documentManager.saveDocument(newDoc);
-            }
-            DocumentModelList children = documentManager.getChildren(from, null, new DeletedDocumentFilter(), null);
-            for (DocumentModel child : children) {
-                copyRecursive(child.getRef(), child.getPathAsString(), newDoc.getRef());
-            }
-        }
-        catch (Exception e) {
-            log.error("Failed to copy document " + from.toString(), e);
-        }
-        return newDoc;
+        publicationService.updateFromReferenceEnvironment(documentManager, currentDocModel);
     }
     
 }
