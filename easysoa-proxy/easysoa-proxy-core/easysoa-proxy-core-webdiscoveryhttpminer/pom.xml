@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>easysoa-proxy-core-webdiscoveryhttpminer</artifactId>
+  <name>Easysoa Web Discovery HTTP Miner</name>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>org.easysoa.proxy</groupId>
+    <artifactId>easysoa-proxy-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+	<!-- Logger -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <!-- Easysoa dependencies -->
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-messaging</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.easysoa.frascati</groupId>
+    	<artifactId>easysoa-frascati-service-api</artifactId>
+    	<version>${easysoa.version}</version>
+    </dependency>    
+
+	<!-- Nuxeo dependencies -->
+	<dependency>
+        <groupId>org.nuxeo.runtime</groupId>
+        <artifactId>nuxeo-runtime-bridge</artifactId>
+        <version>5.4.2-SNAPSHOT</version>
+    	<scope>provided</scope>
+	</dependency>	
+    
+	<!-- FraSCAti dependencies -->
+    
+    <!-- For tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
