@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="composedExchangeHandler">
+
+	<!-- Composed exchange handler -->
+	<sca:component name="composedExchangeHandlerComponent">
+		<sca:service name="composedExchangeHandlerService">
+			<sca:interface.java interface="org.easysoa.records.handlers.ExchangeHandler" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.records.handlers.ComposedExchangeHandler" />
+        <sca:reference multiplicity="0..n" name="exchangeHandlers">
+            <sca:interface.java interface="org.easysoa.records.handlers.ExchangeHandler" />
+        </sca:reference>
+	</sca:component>
+
+	<!-- Exchange record handler -->
+    <sca:component name="exchangeRecordHandler">
+        <sca:service name="exchange-record-handler">
+            <sca:interface.java interface="org.easysoa.records.handlers.ExchangeHandler" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.records.handlers.ExchangeRecordHandler" />        
+    </sca:component>
+    <sca:wire source="composedExchangeHandlerComponent/exchangeHandlers" target="exchangeRecordHandler/exchange-record-handler" />
+
+</sca:composite>

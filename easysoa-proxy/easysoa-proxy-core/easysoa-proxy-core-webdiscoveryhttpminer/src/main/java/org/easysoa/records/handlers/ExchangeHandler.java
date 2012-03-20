@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface ExchangeHandler {
     
     /**
-     * Handle the exchange
+     * Handle an exchange
      * @param request HTTP Servlet request
      * @param response HTTP Servlet response
      */
