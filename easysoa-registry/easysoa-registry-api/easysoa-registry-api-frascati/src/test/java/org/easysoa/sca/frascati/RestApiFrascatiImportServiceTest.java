@@ -85,6 +85,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     @After
     public void tearDown() {
+        stopFraSCAti();
         /*try {
             frascati.remove("RestApiMock");
         } catch (FraSCAtiServiceException e) {
@@ -132,6 +133,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
         ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile, EasySOAApiFraSCAti.getInstance());
 
+        importer.setAppliImplURL("http://localhost"); // choose appli to import in
         importer.setServiceStackType("FraSCAti");
         importer.setServiceStackUrl("/");
         // Create a spy importer for Mockito
@@ -143,8 +145,9 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
             e.printStackTrace();
         }
         // Check the recorded exchanges
-        checkExchanges();
-        // Check with Mockito
+        checkExchanges("RestSoapProxy.composite");
+
+        // Check with Mockito TODO better (mockito mock of client api...), otherwise useless
         verify(spyImporter).importSCAComposite();
         //
         // checkTestSCAComposite(/*...*/);
@@ -173,6 +176,8 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         File scaZipFile = new File(scaZipFilePath);
         BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
         ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaZipFile, EasySOAApiFraSCAti.getInstance());
+
+        importer.setAppliImplURL("http://localhost"); // choose appli to import in
         importer.setServiceStackType("FraSCAti");
         importer.setServiceStackUrl("/");
         // Create a spy importer for Mockito
@@ -184,9 +189,10 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
             e.printStackTrace();
         }
         // Check the recorded exchanges
-        checkExchanges();
-        // Check with Mockito
-        verify(spyImporter).importSCAComposite();
+        checkExchanges("proxy-1.0-SNAPSHOT.jar");
+        
+        // Check with Mockito TODO better (mockito mock of client api...), otherwise useless
+        verify(spyImporter).importSCAZip();
         //
         // checkTestSCAComposite(/*...*/);
     }
@@ -199,6 +205,8 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws FrascatiException
      * @throws Exception
      */
+    @Test
+    @Ignore
     public void testFraSCAtiRuntimeDiscovery() throws FrascatiException, Exception {
 
         String scaZipFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
@@ -210,7 +218,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         frascati.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.all, scaZipFile.toURI().toURL());
 
         // Check the recorded exchanges
-        checkExchanges();
+        checkExchanges("RestSoapProxy.composite");
     }
 
     /**
@@ -218,13 +226,15 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * 
      * @throws IOException
      */
-    public void checkExchanges() {
+    public void checkExchanges(String toLookForInContent) {
+        ///for (ExchangeRecord r : recordList) System.out.println(r.getInMessage().getMessageContent().getRawContent().length());
 
         boolean atLeastOne = false;
         for (ExchangeRecord record : recordList) {
             atLeastOne = true;
             // TODO : now using messaging api, check that this test still works
-            assertTrue("'RestSoapProxy.composite' not found in request", record.getInMessage().getMessageContent().getRawContent().contains("RestSoapProxy.composite"));
+            assertTrue("'" + toLookForInContent + "' not found in request",
+                    record.getInMessage().getMessageContent().getRawContent().contains(toLookForInContent));
         }
         assertTrue("There should be at least one exchange after SCA service discovery", atLeastOne);
     }
