@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 
-
 /**
  * Aggregated message listener
  * only able to use aggregated msg props

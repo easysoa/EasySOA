@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="assertionEngine">
+
+	<!-- Assertion engine -->
+	<sca:component name="assertionEngineComponent">
+		<sca:service name="assertionEngineService">
+			<sca:interface.java interface="org.easysoa.records.assertions.AssertionEngine" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.records.assertions.AssertionEngineImpl" />
+        <sca:reference multiplicity="0..n" name="assertions">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:reference>
+	</sca:component>
+	
+	<!-- Message assertion -->
+    <sca:component name="messageAssertion">
+        <sca:service name="message-assertion">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.records.assertions.MessageAssertion" />        
+    </sca:component>
+    <sca:wire source="assertionEngineComponent/assertions" target="messageAssertion/message-assertion" />	
+	
+	<!-- String assertion -->
+    <sca:component name="stringAssertion">
+        <sca:service name="string-assertion">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.records.assertions.StringAssertion" />        
+    </sca:component>
+    <sca:wire source="assertionEngineComponent/assertions" target="stringAssertion/string-assertion" />
+
+	<!-- LCS assertion -->
+    <sca:component name="lcsAssertion">
+        <sca:service name="lcs-assertion">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.records.assertions.LCSAssertion" />        
+    </sca:component>
+    <sca:wire source="assertionEngineComponent/assertions" target="lcsAssertion/lcs-assertion" />
+
+	<!-- Contains assertion -->
+    <sca:component name="containsAssertion">
+        <sca:service name="contains-assertion">
+            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.records.assertions.ContainsAssertion" />        
+    </sca:component>
+    <sca:wire source="assertionEngineComponent/assertions" target="containsAssertion/contains-assertion" />	
+
+</sca:composite>

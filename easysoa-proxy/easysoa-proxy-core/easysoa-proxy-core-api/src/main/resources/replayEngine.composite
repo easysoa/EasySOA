@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="replayEngine">
+
+	<sca:include name="templateEngine"/>
+	<sca:include name="assertionEngine"/>
+	<sca:include name="logEngine"/>
+
+	<!--  ReplayEngine service -->
+	<sca:service name="replayEngineService" promote="replayEngineComponent/replayEngineService"/>	
+	
+	<!-- Exchange replay service -->
+	<sca:component name="replayEngineComponent">
+		<sca:service name="replayEngineService">
+			<sca:interface.java interface="org.easysoa.records.replay.ReplayEngine" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.records.replay.ReplayEngineImpl" />
+		<sca:reference name="templateEngine" target="templateEngineComponent" />
+		<sca:reference name="assertionEngine" target="assertionEngineComponent" />
+		<sca:reference name="logEngine" target="logEngineComponent" />
+	</sca:component>
+
+</sca:composite>

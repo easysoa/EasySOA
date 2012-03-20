@@ -8,4 +8,4 @@
 			<frascati:binding.rest uri="http://localhost:6088/"/>
 		</sca:service>
 	</sca:component>
-</sca:composite>	
+</sca:composite>

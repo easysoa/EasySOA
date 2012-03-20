@@ -21,6 +21,7 @@
 package com.openwide.easysoa.esper;
 
 import org.apache.log4j.Logger;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Scope;
 import com.espertech.esper.client.Configuration;
@@ -31,7 +32,6 @@ import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 //import com.openwide.easysoa.monitoring.Message;
 import com.openwide.easysoa.monitoring.soa.Node;
-import com.openwide.easysoa.proxy.PropertyManager;
 
 /**
  * Esper engine

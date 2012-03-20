@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.template.TemplateField;
@@ -62,7 +63,6 @@ import org.oasisopen.sca.annotation.Service;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.util.Stream;
 
-import com.openwide.easysoa.proxy.PropertyManager;
 
 /**
  * OW2 FraSCAti implementation template component class for Servlet.

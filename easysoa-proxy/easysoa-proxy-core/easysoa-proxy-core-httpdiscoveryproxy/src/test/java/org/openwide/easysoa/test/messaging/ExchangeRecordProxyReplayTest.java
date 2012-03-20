@@ -34,6 +34,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.records.assertions.AssertionEngineImpl;
 import org.easysoa.records.assertions.AssertionSuggestions;
@@ -54,7 +55,6 @@ import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
 import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.proxy.PropertyManager;
 import com.openwide.easysoa.util.ContentReader;
 import com.openwide.easysoa.util.RequestForwarder;
 

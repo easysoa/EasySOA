@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
+xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
+
+	<sca:include name="exchangeNumberGenerator"/>
+	<!--<sca:include name="templateEngine"/>-->
+	<!--  Replay engine needed to avoid a name conflict with HTTP proxy -->
+	<sca:include name="replayEngine"/>
+	<sca:include name="monitoringService"/>
+	<sca:include name="storeManager"/>
+
+	<!-- Client UI for RunManager and Exchange store, Works with velocity -->
+  	<sca:component name="runManagerUIComponent">
+	    <implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="runManagerUITemplate.html" location="webContent" />
+	    <sca:service name="velocity">
+    		<tuscany:binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/runManager" />
+    	</sca:service>
+		<sca:reference name="runManager" target="runManagerComponent/runManagerService" />
+		<sca:reference name="exchangeRecordStoreManager" target="exchangeStoreManagerComponent/exchangeStoreManagerService" />
+		<!-- Proxy implementation Velocity -->
+		<sca:reference name="compositeTemplates" target="TemplateProcessor/processor" />
+	</sca:component>
+
+	<!-- Run Manager -->
+	<sca:component name="runManagerComponent">
+		<sca:service name="runManagerService">
+			<sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.run.RunManagerImpl" />
+		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
+		<sca:reference name="exchangeNumberGenerator" target="exchangeNumberGeneratorComponent" />
+	</sca:component>
+
+</sca:composite>

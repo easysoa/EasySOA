@@ -45,7 +45,7 @@ import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.PostData;
 import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.message.QueryString;
-import com.openwide.easysoa.proxy.PropertyManager;
+import org.easysoa.properties.PropertyManager;
 import com.openwide.easysoa.run.Run;
 
 /**

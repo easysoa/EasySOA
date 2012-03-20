@@ -77,7 +77,7 @@
       <artifactId>easysoa-proxy-core-persistence</artifactId>
     </dependency>
 
-    <!-- Proxy core api -->
+    <!-- Proxy core API -->
     <dependency>
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-api</artifactId>
@@ -93,6 +93,18 @@
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-remote</artifactId>
+    </dependency>
+
+	<!-- FraSCAti service API -->
+    <dependency>
+    	<groupId>org.easysoa.frascati</groupId>
+    	<artifactId>easysoa-frascati-service</artifactId>
+    	<version>${easysoa.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.easysoa.frascati</groupId>
+    	<artifactId>easysoa-frascati-service-api</artifactId>
+    	<version>${easysoa.version}</version>
     </dependency>
 
     <!-- Configuration constants -->
