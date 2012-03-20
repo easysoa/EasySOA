@@ -74,8 +74,15 @@ public class ApiUrlProcessor {
     }
     
     public static final String computeApiUrl(String serviceUrlPath) throws MalformedURLException {
+        int lastSlashIndex = serviceUrlPath.lastIndexOf('/');
+        int lastProtocolSlashIndex = serviceUrlPath.indexOf('/') + 1;
+        if (lastSlashIndex == lastProtocolSlashIndex) {
+            // if no slash besides protocol, api url is service url
+            return PropertyNormalizer.normalizeUrl(serviceUrlPath, ERROR_API_URL_API); 
+        }
+        // otherwise api url is service url until last slash TODO better for REST (but OK for WS)
         return PropertyNormalizer.normalizeUrl(
-                serviceUrlPath.substring(0, serviceUrlPath.lastIndexOf('/')),
+                serviceUrlPath.substring(0, lastSlashIndex),
                 ERROR_API_URL_API); 
     }
     
