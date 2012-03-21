@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author jguillemotte
  *
  */
-public class ComposedExchangeHandler {
+public class ComposedExchangeHandler implements ExchangeHandler {
 
     // TODO : add configuration in composite file
     
     //@Reference
-    private List<ExchangeHandler> exchangeHandlerList;
+    private List<ExchangeHandler> exchangeHandlers;
 
     /**
      * Handle the exchange. Call the handle method for all handlers from the exchange handler list
@@ -24,8 +24,8 @@ public class ComposedExchangeHandler {
      * @param response HTTP servlet Response
      */
     public void handleExchange(HttpServletRequest request, HttpServletResponse response){
-        if(exchangeHandlerList != null){
-            for(ExchangeHandler handler : exchangeHandlerList){
+        if(exchangeHandlers != null){
+            for(ExchangeHandler handler : exchangeHandlers){
                 handler.handleExchange(request, response);
             }
         }

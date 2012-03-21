@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.stp.sca.Composite;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
@@ -52,7 +53,7 @@ public class ApiTestHelperBase {
     /** The FraSCAti platform */
     protected static FraSCAtiServiceItf frascati;
 
-    protected static ArrayList<Composite> componentList;
+    protected static ArrayList<String> componentCompositeNameList;
 
     protected static void startMock() {
         log.info("Services Mock Starting");
@@ -60,7 +61,7 @@ public class ApiTestHelperBase {
         String compositeName = null;
         try {
             compositeName = frascati.processComposite("src/test/resources/RestApiMock.composite", FraSCAtiServiceItf.all);
-            componentList.add(frascati.getComposite(compositeName));
+            componentCompositeNameList.add(compositeName);
         } catch (FraSCAtiServiceException e) {
             
             e.printStackTrace();
@@ -74,7 +75,7 @@ public class ApiTestHelperBase {
      */
     protected static void startFraSCAti() {
         log.info("FraSCATI Starting");
-        componentList = new ArrayList<Composite>();
+        componentCompositeNameList = new ArrayList<String>();
         // This test doesn't works, unbale to start FraSCAti in remote mode (not
         // in Nuxeo)
         // Need to make a FraSCAtiServiceProvider for remote mode
@@ -87,6 +88,21 @@ public class ApiTestHelperBase {
         // FraSCAti frascati = FraSCAti.newFraSCAti();
         RemoteFraSCAtiServiceProvider remoteProvider = new RemoteFraSCAtiServiceProvider();
         frascati = remoteProvider.getFraSCAtiService();
+    }
+
+    public void stopFraSCAti() {
+        for (String componentCompositeName : componentCompositeNameList) {
+            try {
+                frascati.stop(componentCompositeName);
+            } catch (Exception e) {
+                log.warn("Error stopping composite " + componentCompositeName);
+            }
+            try {
+                frascati.remove(componentCompositeName);
+            } catch (Exception e) {
+                log.warn("Error removing composite " + componentCompositeName);
+            }
+        }
     }
 
 }

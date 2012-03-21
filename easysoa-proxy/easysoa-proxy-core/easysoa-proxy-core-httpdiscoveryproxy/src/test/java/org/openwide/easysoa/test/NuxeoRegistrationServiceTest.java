@@ -43,12 +43,12 @@ import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
  * @author mkalam-alami
  *
  */
-@RunWith(FeaturesRunner.class)
-@Features({EasySOACoreFeature.class, WebEngineFeature.class})
-@Deploy({
+//@RunWith(FeaturesRunner.class)
+//@Features({EasySOACoreFeature.class, WebEngineFeature.class})
+/*@Deploy({
     "org.easysoa.registry.rest"
-})
-@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
+})*/
+//@Jetty(config="src/test/resources/jetty.xml", port=EasySOAConstants.NUXEO_TEST_PORT)
 public class NuxeoRegistrationServiceTest extends AbstractRestTest {
 
     @Inject CoreSession session;

@@ -16,14 +16,15 @@
   <name>EasySOA Proxy Parent</name>
 
   <modules>
+	<module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
+	<module>easysoa-proxy-core/easysoa-proxy-core-api</module>
     <module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
     <module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
     <module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
     <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
     <module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
+	<module>easysoa-proxy-core/easysoa-proxy-core-webdiscoveryhttpminer</module>
     <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
-	<module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
-	<module>easysoa-proxy-core/easysoa-proxy-core-api</module>
   </modules>
 
   <repositories>

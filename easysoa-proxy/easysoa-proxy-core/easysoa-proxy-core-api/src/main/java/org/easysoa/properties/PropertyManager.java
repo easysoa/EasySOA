@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.proxy;
+package org.easysoa.properties;
 
 import java.net.URL;
 import java.util.Properties;

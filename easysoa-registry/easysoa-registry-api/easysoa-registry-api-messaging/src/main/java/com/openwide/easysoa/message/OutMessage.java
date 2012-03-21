@@ -20,7 +20,15 @@
 
 package com.openwide.easysoa.message;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.CharBuffer;
+import java.util.Date;
+import java.util.Enumeration;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.servlet.http.HttpServletResponse;
+import org.easysoa.servlet.http.StatusExposingServletResponse;
 
 /**
  * Outgoing message
@@ -65,7 +73,36 @@ public class OutMessage implements Message {
 		this.statusText = statusText;
 	}
 
-	public String getProtocol() {
+	/*public OutMessage(StatusExposingServletResponse response) {
+        this();
+        this.setStatus(response.getStatus());
+        // TODO : Complete this method
+        //OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
+        MessageContent messageContent = new MessageContent();
+        
+        //response.getResponse().get
+        // Read the response message content
+        InputStreamReader in= new InputStreamReader(response.getEntity().getContent());
+        BufferedReader bin= new BufferedReader(in);
+        StringBuffer responseBuffer = new StringBuffer();
+        String line;
+        do{
+             line = bin.readLine();
+             if(line != null){
+                 responseBuffer.append(line);
+             }
+        }
+        while(line != null);
+            messageContent.setRawContent(responseBuffer.toString());
+            messageContent.setSize(clientResponse.getEntity().getContentLength());
+            if(clientResponse.getEntity().getContentType() != null){
+                messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
+            }
+            outMessage.setMessageContent(messageContent);  
+        }
+    }*/
+
+    public String getProtocol() {
 		return protocol;
 	}
 

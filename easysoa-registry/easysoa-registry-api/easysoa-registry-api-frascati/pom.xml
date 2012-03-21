@@ -31,6 +31,18 @@
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-runtime-factory</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-http</artifactId> <!-- required for EasySOA Core mock -->
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-ws</artifactId> <!-- required by import test sca samples -->
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-rest</artifactId> <!-- required by import test sca samples -->
+    </dependency>
     <!--
     <dependency>
       <groupId>org.ow2.frascati</groupId>

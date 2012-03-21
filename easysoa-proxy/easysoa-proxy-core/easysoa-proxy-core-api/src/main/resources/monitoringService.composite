@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="monitoringService">
+
+	<sca:include name="esperEngine"/>
+
+	<!-- Monitoring service -->
+	<sca:component name="monitoringServiceComponent">
+		<sca:service name="monitoringServiceService">
+			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.monitoring.DiscoveryMonitoringService" />
+		<sca:reference name="esperEngine" target="esperEngineComponent" />
+	</sca:component>
+
+</sca:composite>

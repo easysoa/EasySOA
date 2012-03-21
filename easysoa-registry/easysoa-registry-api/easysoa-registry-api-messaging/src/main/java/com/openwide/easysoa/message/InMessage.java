@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
 import java.util.Enumeration;
+
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.log4j.Logger;
@@ -127,7 +129,6 @@ public class InMessage implements Message {
 	public InMessage(HttpServletRequest request){
 		
 		// TODO : Check this code : WSDL request are not well recorded !
-		
 		this.method = request.getMethod();
 		// Set the headers
 		this.headers = new Headers();

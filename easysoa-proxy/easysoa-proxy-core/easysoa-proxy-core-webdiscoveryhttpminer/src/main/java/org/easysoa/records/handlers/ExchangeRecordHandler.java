@@ -13,6 +13,7 @@ import org.nuxeo.runtime.api.Framework;
 
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
+import com.openwide.easysoa.run.RunManager;
 
 /**
  * @author jguillemotte
@@ -35,10 +36,16 @@ public class ExchangeRecordHandler implements ExchangeHandler {
         record.setOutMessage(outMessage);
         
         // Call runManager to register the exchange record
-        FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-        
-        //RunManager runManager = (RunManager) frascati.getService(compositeName, "runManagerService", RunManager.class);
-        //runManager.
+        try{
+            // Get the service
+            FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+            RunManager runManager = (RunManager) frascati.getService("runManager", "runManagerService", RunManager.class);
+            runManager.record(record);
+        }
+        catch(Exception ex) {
+            // TODO add a better error gestion
+            ex.printStackTrace();
+        }
         
     }
 
