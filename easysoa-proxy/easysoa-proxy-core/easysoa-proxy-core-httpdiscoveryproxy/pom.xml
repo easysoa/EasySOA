@@ -96,7 +96,7 @@
     </dependency>
 
 	<!-- FraSCAti service API -->
-    <dependency>
+    <!-- dependency>
     	<groupId>org.easysoa.frascati</groupId>
     	<artifactId>easysoa-frascati-service</artifactId>
     	<version>${easysoa.version}</version>
@@ -105,7 +105,7 @@
     	<groupId>org.easysoa.frascati</groupId>
     	<artifactId>easysoa-frascati-service-api</artifactId>
     	<version>${easysoa.version}</version>
-    </dependency>
+    </dependency -->
 
     <!-- Configuration constants -->
     <dependency>
@@ -131,7 +131,7 @@
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-mocks</artifactId>
     </dependency>
-    <dependency>
+    <!-- dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-core</artifactId>
       <scope>test</scope>
@@ -140,7 +140,7 @@
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-rest</artifactId>
       <scope>test</scope>
-    </dependency>
+    </dependency -->
     <dependency>
       <groupId>xstream</groupId>
       <artifactId>xstream</artifactId>
