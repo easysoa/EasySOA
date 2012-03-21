@@ -31,6 +31,7 @@ import org.jboss.seam.annotations.Scope;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * Publication and forking actions
@@ -51,22 +52,28 @@ public class EnvironmentActionsBean {
     @In(create = true)
     NavigationContext navigationContext;
     
-    @In(create = true)
-    PublicationService publicationService;
+    PublicationService publicationService = null;
 
     public void publishCurrentWorkspace() throws Exception {
     	DocumentModel currentDocument = navigationContext.getCurrentDocument();
-    	publicationService.publish(documentManager, currentDocument, currentDocument.getTitle());
+    	getPublicationService().publish(documentManager, currentDocument, currentDocument.getTitle());
     }
     
     public void forkCurrentEnvironment() throws Exception {
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
-        publicationService.forkEnvironment(documentManager, currentDocModel);
+        getPublicationService().forkEnvironment(documentManager, currentDocModel);
     }
     
     public void updateApp() throws Exception {
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
-        publicationService.updateFromReferenceEnvironment(documentManager, currentDocModel);
+        getPublicationService().updateFromReferenceEnvironment(documentManager, currentDocModel);
+    }
+    
+    private PublicationService getPublicationService() throws Exception {
+    	if (publicationService == null) {
+    		publicationService = Framework.getService(PublicationService.class);
+    	}
+    	return publicationService;
     }
     
 }

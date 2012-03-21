@@ -129,6 +129,9 @@ public class PublicationServiceImpl implements PublicationService {
                 copyRecursive(session, appToCopy.getRef(), appToCopy.getPathAsString(), newWorkspace.getRef());
             }
             
+            // Trigger validation
+            EventsHelper.fireDocumentEvent(session, EventsHelper.EVENTTYPE_VALIDATIONREQUEST, newWorkspace);
+            
             session.save();
         }
         else {

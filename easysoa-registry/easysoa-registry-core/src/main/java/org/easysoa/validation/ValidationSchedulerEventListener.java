@@ -8,6 +8,7 @@ import org.easysoa.services.PublicationService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.repository.RepositoryManager;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.runtime.api.Framework;
@@ -39,23 +40,29 @@ public class ValidationSchedulerEventListener implements EventListener {
 		try {
 		
 			// Init
-			CoreSession session = event.getContext().getCoreSession();
-			String environmentName = (String) event.getContext().getProperty("category"); // (see ValidationSchedulerComponent.registerContribution()
+			CoreSession session = Framework.getService(RepositoryManager.class).getDefaultRepository().open();
+			String environmentName = (String) event.getContext().getProperty("eventCategory"); // (see ValidationSchedulerComponent.registerContribution()
 			String tmpWorkspace = "tmp" + environmentName + System.currentTimeMillis();
 			
 			// Fork existing environment
 			DocumentModel environmentModel = docService.findEnvironment(session, environmentName);
-			publicationService.forkEnvironment(session, environmentModel); // TODO add param tmpWorkspace
+			if (environmentModel != null) {
+				publicationService.forkEnvironment(session, environmentModel); // TODO add param tmpWorkspace
+				
+				// Validate temporary environment
+				DocumentModel tmpWorkspaceModel = docService.findWorkspace(session, tmpWorkspace);
+				serviceValidatorService.validateServices(session, tmpWorkspaceModel);
+				
+				// Remove temporary environment
+				session.removeDocument(tmpWorkspaceModel.getRef());
+				
+				// Create report
+				// TODO
 			
-			// Validate temporary environment
-			DocumentModel tmpWorkspaceModel = docService.findWorkspace(session, tmpWorkspace);
-			serviceValidatorService.validateServices(session, tmpWorkspaceModel);
-			
-			// Remove temporary environment
-			session.removeDocument(tmpWorkspaceModel.getRef());
-			
-			// Create report
-			// TODO
+			}
+			else {
+				log.error("Failed to run scheduled validation: environment '" + environmentName + "' doesn't exist");
+			}
 			
 		
 		}

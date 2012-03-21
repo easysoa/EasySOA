@@ -1,8 +1,8 @@
 package org.easysoa.validation;
 
 import org.nuxeo.common.xmap.annotation.XObject;
+import org.nuxeo.ecm.platform.scheduler.core.interfaces.SchedulerRegistry;
 import org.nuxeo.ecm.platform.scheduler.core.service.ScheduleImpl;
-import org.nuxeo.ecm.platform.scheduler.core.service.SchedulerRegistryService;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
@@ -19,10 +19,10 @@ public class ValidationSchedulerComponent extends DefaultComponent {
 	
 	public static final String SCHEDULE_EVENT = "onScheduledValidationRequired"; 
 	
-	private SchedulerRegistryService schedulerRegistryService;
+	private SchedulerRegistry schedulerRegistry;
 
 	public ValidationSchedulerComponent() throws Exception {
-		schedulerRegistryService = Framework.getService(SchedulerRegistryService.class);
+		schedulerRegistry = Framework.getService(SchedulerRegistry.class);
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class ValidationSchedulerComponent extends DefaultComponent {
 			throws Exception {
 		if (EXTENSION_POINT_SCHEDULES.equals(extensionPoint)) {
 			ValidationScheduleDescriptor descriptor = (ValidationScheduleDescriptor) contribution;
-            synchronized (schedulerRegistryService) {
+            synchronized (schedulerRegistry) {
 				ScheduleImpl schedule = new ScheduleImpl();
 				schedule.id = descriptor.runName + "-"
 						+ descriptor.targetEnvironment + "-"
@@ -40,7 +40,7 @@ public class ValidationSchedulerComponent extends DefaultComponent {
 				schedule.cronExpression = descriptor.cronExpression;
 				schedule.eventCategory = descriptor.targetEnvironment; // Half-hack to pass the environment as an event parameter
 				schedule.eventId = SCHEDULE_EVENT;
-				schedulerRegistryService.registerSchedule(schedule);
+				schedulerRegistry.registerSchedule(schedule);
             }
         }
 	}
