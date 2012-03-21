@@ -11,7 +11,8 @@ Nuxeo-Require: org.nuxeo.ecm.core.api,
  org.nuxeo.ecm.core,
  org.nuxeo.ecm.core.schema,
  org.nuxeo.ecm.directory.api,
- org.easysoa.registry.api.local
+ org.easysoa.registry.api.local,
+ org.nuxeo.ecm.platform.scheduler.core
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.easysoa.EasySOAInitComponent
 Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
@@ -43,4 +44,6 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/ServicesRootMapperServiceComponent.xml,
  OSGI-INF/WebFileParsingPoolService.xml,
  OSGI-INF/webfileparsers-contrib.xml,
- OSGI-INF/content-template-contrib.xml
+ OSGI-INF/content-template-contrib.xml,
+ OSGI-INF/ValidationSchedulerServiceComponent.xml,
+ OSGI-INF/validationscheduler-contrib.xml
