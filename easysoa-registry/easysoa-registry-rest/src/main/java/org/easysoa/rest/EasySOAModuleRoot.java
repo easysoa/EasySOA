@@ -34,12 +34,12 @@ import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
  * @author mkalam-alami
  * 
  */
-@Path("easysoa")
+@WebObject(type = "EasySOA")
 @Produces(MediaType.TEXT_HTML)
-@WebObject(type = "root")
+@Path("easysoa")
 public class EasySOAModuleRoot extends ModuleRoot {
 
-    @GET
+	@GET
     public Object doGet() {
         return getView("index");
     }

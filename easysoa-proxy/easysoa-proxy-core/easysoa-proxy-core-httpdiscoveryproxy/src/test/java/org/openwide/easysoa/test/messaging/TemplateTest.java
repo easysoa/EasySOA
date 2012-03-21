@@ -32,7 +32,7 @@ import org.easysoa.template.TemplateFieldSuggestions;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mortbay.log.Log;
+import org.openwide.easysoa.test.ProxyStarter;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
@@ -293,7 +293,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
     	    TemplateFieldSuggestions templateFieldSuggestions = fileStore.getTemplateFieldSuggestions(runName, String.valueOf(i));
     	    for(TemplateField templateField : templateFieldSuggestions.getTemplateFields()) {
     	        if(templateField.isFieldEquality()){
-    	            Log.debug("FieldName : " + templateField.getFieldName() + ", FieldValue : " + templateField.getDefaultValue());
+    	            logger.debug("FieldName : " + templateField.getFieldName() + ", FieldValue : " + templateField.getDefaultValue());
     	        }
     	    }
 	    }

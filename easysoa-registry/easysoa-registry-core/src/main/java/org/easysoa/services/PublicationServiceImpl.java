@@ -6,6 +6,7 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.doctypes.Workspace;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.PublicationService;
 import org.nuxeo.common.utils.IdUtils;
@@ -42,6 +43,13 @@ public class PublicationServiceImpl implements PublicationService {
             }
 
             // Document publication (creates a proxy of the latest version of the document and its children, at the target location)
+            if (Workspace.DOCTYPE.equals(model.getType())) {
+            	DocumentModelList appModels = session.getChildren(model.getRef(), 
+                        AppliImpl.DOCTYPE, new DeletedDocumentFilter(), null);
+                for (DocumentModel appModel : appModels) {
+                	publishAppliImpl(session, appModel, targetEnvironment);
+                }
+            }
             if (AppliImpl.DOCTYPE.equals(model.getType())) {
                 publishAppliImpl(session, model, targetEnvironment);
             }
@@ -101,7 +109,65 @@ public class PublicationServiceImpl implements PublicationService {
             log.error(e);
         }
     }
+    
+    public void forkEnvironment(CoreSession session, DocumentModel sectionModel) throws Exception {
+       
+        if (sectionModel.getType().equals("Section")) {
 
+            // Create destination workspace
+        	DocumentService docService = Framework.getService(DocumentService.class);
+            DocumentModel newWorkspace = session.createDocumentModel(
+                    docService.getWorkspaceRoot(session).toString(),
+                    IdUtils.generateStringId(), Workspace.DOCTYPE);
+            newWorkspace.setProperty("dublincore", "title", session.getPrincipal().getName());
+            newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, sectionModel.getTitle());
+            newWorkspace = session.createDocument(newWorkspace);
+            
+            // Copy applications and their contents
+            DocumentModelList appsToCopy = session.getChildren(sectionModel.getRef(), AppliImpl.DOCTYPE);
+            for (DocumentModel appToCopy : appsToCopy) {
+                copyRecursive(session, appToCopy.getRef(), appToCopy.getPathAsString(), newWorkspace.getRef());
+            }
+            
+            // Trigger validation
+            EventsHelper.fireDocumentEvent(session, EventsHelper.EVENTTYPE_VALIDATIONREQUEST, newWorkspace);
+            
+            session.save();
+        }
+        else {
+            throw new Exception("Cannot start fork: current document is not an environment");
+        }
+        
+    }
+
+    public void updateFromReferenceEnvironment(CoreSession session, DocumentModel appliImplModel) throws Exception {
+        if (appliImplModel.getType().equals(AppliImpl.DOCTYPE)) {
+
+            String referenceAppPath = (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_REFERENCEAPP);
+            DocumentRef referenceAppRef = new PathRef(referenceAppPath);
+            DocumentModel referenceAppModel = session.getDocument(referenceAppRef);
+            if (referenceAppModel != null) {
+                
+                // Replace all app contents by the env. ones
+                // TODO Update appli impl. by replacing documents by those from the reference environment if they are newer.
+            	session.removeChildren(appliImplModel.getRef());
+                DocumentModelList referenceAppChildrenModels = session.getChildren(referenceAppRef);
+                for (DocumentModel referenceAppChildModel : referenceAppChildrenModels) {
+                    copyRecursive(session, referenceAppChildModel.getRef(),
+                    		referenceAppChildModel.getPathAsString(), appliImplModel.getRef());
+                }
+                
+                // Map URLs
+                ServicesRootMapperService urlMapper = Framework.getService(ServicesRootMapperService.class);
+                urlMapper.mapUrls(session, appliImplModel);
+                
+                session.save();
+            }
+            
+        }
+        
+    }
+    
     private DocumentModel findParentProxy(CoreSession session, DocumentModel model, DocumentModel targetEnvironment) throws PropertyException, ClientException {
         // Init doctype-specific info
         String doctypeToFind, urlField;
@@ -217,6 +283,31 @@ public class PublicationServiceImpl implements PublicationService {
         for (DocumentModel proxy : proxies) {
             session.removeDocument(proxy.getRef());
         }
+    }
+    
+    private DocumentModel copyRecursive(CoreSession session, DocumentRef from, String fromPath, DocumentRef toFolder) {
+        DocumentModel newDoc = null;
+        try {
+            newDoc = session.copyProxyAsDocument(from, toFolder, null);
+            if (Service.DOCTYPE.equals(newDoc.getType())) {
+                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICE, fromPath);
+                newDoc.setProperty(Service.SCHEMA, Service.PROP_REFERENCESERVICEORIGIN, "Created by copy");
+                newDoc.followTransition("approve");
+                session.saveDocument(newDoc);
+            }
+            else if (AppliImpl.DOCTYPE.equals(newDoc.getType())) {
+                newDoc.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_REFERENCEAPP, fromPath);
+                session.saveDocument(newDoc);
+            }
+            DocumentModelList children = session.getChildren(from, null, new DeletedDocumentFilter(), null);
+            for (DocumentModel child : children) {
+                copyRecursive(session, child.getRef(), child.getPathAsString(), newDoc.getRef());
+            }
+        }
+        catch (Exception e) {
+            log.error("Failed to copy document " + from.toString(), e);
+        }
+        return newDoc;
     }
 
 }

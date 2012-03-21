@@ -20,8 +20,6 @@
 
 package org.easysoa.listeners;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Workspace;
@@ -59,20 +57,19 @@ public class ValidationListener implements EventListener {
             // Run validation
             ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
             Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
-            List<String> errors;
+            boolean isValidated;
             if (wasValidated != null && wasValidated) {
                 // Validate all child services
-            	errors = validationService.validateServices(session, doc);
+            	isValidated = validationService.validateServices(session, doc);
             } else {
                 // If the environment was not successfully validated,
                 // re-check all to allow it to become validated
-            	errors = validationService.validateServices(session, workspace);
+            	isValidated = validationService.validateServices(session, workspace);
             }
 
             // Update workspace state
-            boolean isNowValidated = (errors.size() == 0);
-            if (wasValidated == null || wasValidated != isNowValidated) {
-    	        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isNowValidated);
+            if (wasValidated == null || wasValidated != isValidated) {
+    	        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isValidated);
     	        session.saveDocument(workspace);
             }
 

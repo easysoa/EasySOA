@@ -28,6 +28,11 @@ import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
 
+/**
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class ServiceValidatorComponent extends DefaultComponent implements ServiceValidationService {
 
     public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.core.service.ServiceValidatorComponent");
@@ -90,7 +95,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
      * - If another doctype, all services within the document are validated and saved
      */
     @Override
-    public List<String> validateServices(CoreSession session, DocumentModel model) throws Exception {
+    public boolean validateServices(CoreSession session, DocumentModel model) throws Exception {
 
         // Find model's workspace and reference environment
         DocumentService docService = Framework.getService(DocumentService.class);
@@ -102,7 +107,8 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
 
         // Start validation
         DocumentModelList services = null;
-        List<String> result, errors = new LinkedList<String>();
+        ValidationResult validationResult = new ValidationResult();
+        boolean everythingPassed = true;
         
         if (referenceEnv != null) {
 
@@ -127,10 +133,10 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
                     
                     // Run validation on each service, but don't save if we're validating
                     // only 1 service (will be done after the listener chain)
-                    result = validateService(session, service, matchingService, model != service);
+                    validationResult = validateService(session, service, matchingService, model != service);
                     
-                    if (!result.isEmpty()) {
-                        errors.addAll(result);
+                    if (everythingPassed && !validationResult.isValidationPassed()) {
+                    	everythingPassed = false;
                     }
                 }
                 
@@ -138,10 +144,10 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
 
         }
         else {
-            errors.add("No valid reference environment");
+            throw new ClientException("No valid reference environment");
         }
 
-        return errors;
+        return everythingPassed;
     }
     
     /**
@@ -151,11 +157,11 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
      * @return A list of errors
      * @throws ClientException 
      */
-    private List<String> validateService(CoreSession session, DocumentModel service,
+    private ValidationResult validateService(CoreSession session, DocumentModel service,
             DocumentModel referenceService, boolean save) throws ClientException {
         
         // Init
-        List<String> allErrors = new LinkedList<String>();
+    	ValidationResult result = new ValidationResult();
         List<Map<String, Object>> newValidationState = new LinkedList<Map<String, Object>>(); 
         boolean isNowValidated = true;
 		
@@ -169,6 +175,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
                         isNowValidated = isNowValidated && validatorErrors.isEmpty();
                         
                         // Fill validation state
+                        result.add(validator.getName(), validatorErrors.isEmpty(), formatErrors(validatorErrors));
                         Map<String, Object> validatorResult = new HashMap<String, Object>();
                         validatorResult.put(Service.SUBPROP_VALIDATORNAME, validator.getName());
                         validatorResult.put(Service.SUBPROP_ISVALIDATED, validatorErrors.isEmpty());
@@ -176,18 +183,19 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
                         newValidationState.add(validatorResult);
                         
                     } catch (Exception e) {
-                        
                         // Ignore validator
+                        result.add(validator.getName(), true, "(ignored)");
                         Map<String, Object> validatorResult = new HashMap<String, Object>();
                         validatorResult.put(Service.SUBPROP_VALIDATORNAME, validator.getName());
                         validatorResult.put(Service.SUBPROP_VALIDATIONLOG, "(ignored)");
+                        validatorResult.put(Service.SUBPROP_ISVALIDATED, true);
                         newValidationState.add(validatorResult);
                     }
                 }
             }
         }
         else {
-            allErrors.add("Service has no reference service.");
+            throw new ClientException("Service has no reference service.");
         }
         
         // Update service validation state
@@ -197,7 +205,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             session.saveDocument(service);
         }
         
-        return allErrors;
+        return result;
     }
     
     private String formatErrors(List<String> errors) {

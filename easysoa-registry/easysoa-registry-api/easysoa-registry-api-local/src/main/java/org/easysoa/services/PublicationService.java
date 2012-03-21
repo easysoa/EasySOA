@@ -31,5 +31,9 @@ public interface PublicationService {
      * @param doc
      */
     void unpublish(CoreSession session, DocumentModel model);
+    
+    public void forkEnvironment(CoreSession session, DocumentModel sectionModel) throws Exception;
 
+	public void updateFromReferenceEnvironment(CoreSession session, DocumentModel appliImplModel) throws Exception;
+    
 }
