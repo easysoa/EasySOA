@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.HttpDownloader;
 import org.easysoa.services.HttpDownloaderService;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -165,10 +166,10 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                                 coreSession.saveDocument(targetModel);
                                 coreSession.save();
                             } else {
-                                log.warn("Unable to get CoreSession");
+                                throw new ClientException("Unable to get CoreSession");
                             }
                         } catch (Throwable t) {
-                            log.warn("Error while processing parsing pool entry", t);
+                            log.warn("Error while processing parsing pool entry: " + t.getMessage());
                             TransactionHelper.setTransactionRollbackOnly();
                             // TODO: handle exception
                         }

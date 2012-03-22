@@ -60,11 +60,11 @@ public class ValidationListener implements EventListener {
             boolean isValidated;
             if (wasValidated != null && wasValidated) {
                 // Validate all child services
-            	isValidated = validationService.validateServices(session, doc);
+            	isValidated = validationService.validateServices(session, doc).isEveryValidationPassed();
             } else {
                 // If the environment was not successfully validated,
                 // re-check all to allow it to become validated
-            	isValidated = validationService.validateServices(session, workspace);
+            	isValidated = validationService.validateServices(session, workspace).isEveryValidationPassed();
             }
 
             // Update workspace state

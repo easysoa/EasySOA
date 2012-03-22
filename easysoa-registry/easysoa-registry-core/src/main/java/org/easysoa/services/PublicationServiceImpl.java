@@ -110,16 +110,15 @@ public class PublicationServiceImpl implements PublicationService {
         }
     }
     
-    public void forkEnvironment(CoreSession session, DocumentModel sectionModel) throws Exception {
+    public DocumentModel forkEnvironment(CoreSession session, DocumentModel sectionModel, String newWorkspaceName) throws Exception {
        
         if (sectionModel.getType().equals("Section")) {
-
             // Create destination workspace
         	DocumentService docService = Framework.getService(DocumentService.class);
             DocumentModel newWorkspace = session.createDocumentModel(
                     docService.getWorkspaceRoot(session).toString(),
                     IdUtils.generateStringId(), Workspace.DOCTYPE);
-            newWorkspace.setProperty("dublincore", "title", session.getPrincipal().getName());
+            newWorkspace.setProperty("dublincore", "title", newWorkspaceName);
             newWorkspace.setProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT, sectionModel.getTitle());
             newWorkspace = session.createDocument(newWorkspace);
             
@@ -133,6 +132,8 @@ public class PublicationServiceImpl implements PublicationService {
             EventsHelper.fireDocumentEvent(session, EventsHelper.EVENTTYPE_VALIDATIONREQUEST, newWorkspace);
             
             session.save();
+            
+            return newWorkspace;
         }
         else {
             throw new Exception("Cannot start fork: current document is not an environment");

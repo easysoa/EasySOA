@@ -5,6 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.PublicationService;
+import org.easysoa.services.ServiceValidationService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -20,7 +21,7 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class ValidationSchedulerEventListener implements EventListener {
 
-	private ServiceValidatorComponent serviceValidatorService;
+	private ServiceValidationService serviceValidationService;
 
 	private PublicationService publicationService;
 	
@@ -29,7 +30,7 @@ public class ValidationSchedulerEventListener implements EventListener {
     private static Log log = LogFactory.getLog(ValidationSchedulerEventListener.class);
     
 	public ValidationSchedulerEventListener() throws Exception {
-		serviceValidatorService = Framework.getService(ServiceValidatorComponent.class);
+		serviceValidationService = Framework.getService(ServiceValidationService.class);
 		publicationService = Framework.getService(PublicationService.class);
 		docService = Framework.getService(DocumentService.class);
 	}
@@ -42,21 +43,36 @@ public class ValidationSchedulerEventListener implements EventListener {
 			// Init
 			CoreSession session = Framework.getService(RepositoryManager.class).getDefaultRepository().open();
 			String environmentName = (String) event.getContext().getProperty("eventCategory"); // (see ValidationSchedulerComponent.registerContribution()
-			String tmpWorkspace = "tmp" + environmentName + System.currentTimeMillis();
+			String tmpWorkspaceName = "tmp" + environmentName + System.currentTimeMillis();
 			
 			// Fork existing environment
 			DocumentModel environmentModel = docService.findEnvironment(session, environmentName);
 			if (environmentModel != null) {
-				publicationService.forkEnvironment(session, environmentModel); // TODO add param tmpWorkspace
+				DocumentModel tmpWorkspaceModel = null;
+				ValidationResultList validationResults = null;
 				
-				// Validate temporary environment
-				DocumentModel tmpWorkspaceModel = docService.findWorkspace(session, tmpWorkspace);
-				serviceValidatorService.validateServices(session, tmpWorkspaceModel);
-				
-				// Remove temporary environment
-				session.removeDocument(tmpWorkspaceModel.getRef());
+				try {
+					// Create temporary environment
+					tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
+					
+					// Run discovery replay
+					// TODO
+					
+					// Validate temporary environment
+					validationResults = serviceValidationService.validateServices(session, tmpWorkspaceModel); 
+				}
+				catch (Exception e) {
+					log.error("Failed to run scheduled validation", e);
+				}
+				finally {
+					if (tmpWorkspaceModel != null) {
+						// Remove temporary environment
+						session.removeDocument(tmpWorkspaceModel.getRef());
+					}
+				}
 				
 				// Create report
+				DocumentModel workspaceModel = docService.findWorkspace(session, environmentName);
 				// TODO
 			
 			}

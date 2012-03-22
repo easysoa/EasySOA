@@ -5,6 +5,7 @@ import java.util.SortedSet;
 
 import org.easysoa.validation.CorrelationMatch;
 import org.easysoa.validation.ServiceValidator;
+import org.easysoa.validation.ValidationResultList;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
@@ -23,7 +24,7 @@ public interface ServiceValidationService {
      * @return A list of validation errors
      * @throws Exception
      */
-	boolean validateServices(CoreSession session, DocumentModel model) throws Exception;
+	ValidationResultList validateServices(CoreSession session, DocumentModel model) throws Exception;
 
     /**
      * Finds correlated services from the reference environment of the given service.

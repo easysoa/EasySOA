@@ -32,8 +32,8 @@ public interface PublicationService {
      */
     void unpublish(CoreSession session, DocumentModel model);
     
-    public void forkEnvironment(CoreSession session, DocumentModel sectionModel) throws Exception;
+    DocumentModel forkEnvironment(CoreSession session, DocumentModel sectionModel, String newWorkspaceName) throws Exception;
 
-	public void updateFromReferenceEnvironment(CoreSession session, DocumentModel appliImplModel) throws Exception;
+	void updateFromReferenceEnvironment(CoreSession session, DocumentModel appliImplModel) throws Exception;
     
 }

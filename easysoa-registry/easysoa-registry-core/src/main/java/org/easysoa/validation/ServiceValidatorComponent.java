@@ -95,7 +95,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
      * - If another doctype, all services within the document are validated and saved
      */
     @Override
-    public boolean validateServices(CoreSession session, DocumentModel model) throws Exception {
+    public ValidationResultList validateServices(CoreSession session, DocumentModel model) throws Exception {
 
         // Find model's workspace and reference environment
         DocumentService docService = Framework.getService(DocumentService.class);
@@ -107,8 +107,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
 
         // Start validation
         DocumentModelList services = null;
-        ValidationResult validationResult = new ValidationResult();
-        boolean everythingPassed = true;
+        ValidationResultList validationResultList = new ValidationResultList();
         
         if (referenceEnv != null) {
 
@@ -131,13 +130,11 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
                         matchingService = matches.first().getDocumentModel();
                     }
                     
-                    // Run validation on each service, but don't save if we're validating
-                    // only 1 service (will be done after the listener chain)
-                    validationResult = validateService(session, service, matchingService, model != service);
+                    // Run validation on each service, but:
+                    // "model != service" => don't save if we're validating only 1 service (will be done after the listener chain)
+                    ValidationResult validationResult = validateService(session, service, matchingService, model != service);
                     
-                    if (everythingPassed && !validationResult.isValidationPassed()) {
-                    	everythingPassed = false;
-                    }
+                    validationResultList.add(validationResult);
                 }
                 
             }
@@ -147,7 +144,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             throw new ClientException("No valid reference environment");
         }
 
-        return everythingPassed;
+        return validationResultList;
     }
     
     /**

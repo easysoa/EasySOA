@@ -61,7 +61,7 @@ public class EnvironmentActionsBean {
     
     public void forkCurrentEnvironment() throws Exception {
         DocumentModel currentDocModel = navigationContext.getCurrentDocument();
-        getPublicationService().forkEnvironment(documentManager, currentDocModel);
+        getPublicationService().forkEnvironment(documentManager, currentDocModel, documentManager.getPrincipal().getName());
     }
     
     public void updateApp() throws Exception {
