@@ -62,10 +62,14 @@ public class EasySOADoctype {
      * Returns a map containing all properties from the SCHEMA_COMMON schema,
      * with a short description.
      */
-    public static Map<String, String> getCommonPropertyList() {
+    public static Map<String, String> getCommonPropertyList(String doctype) {
         synchronized (commonPropertySync) { // Ensures initialization ended before accessing the list
             if (commonPropertyList == null) {
                 commonPropertyList = new HashMap<String, String>();
+                commonPropertyList.put(PROP_ENVIRONMENT, "The target environment (defaults to '" + Workspace.DEFAULT_ENVIRONMENT + "')");
+                if (!AppliImpl.DOCTYPE.equals(doctype)) {
+                	commonPropertyList.put(PROP_PARENTURL, "The parent URL, in order to help classification.");
+                }
                 commonPropertyList.put(PROP_ARCHIPATH, "Reference Path in architecture if known.");
                 commonPropertyList.put(PROP_ARCHILOCALNAME, "Reference local name in architecture if known.");
                 commonPropertyList.put(PROP_DTBROWSING, "Notes about browsing-specific notifications." +

@@ -120,7 +120,7 @@ public class DiscoveryRest {
     public Object doGetAppliImpl() throws JSONException {
         result = new JSONObject();
         JSONObject params = new JSONObject();
-        Map<String, String> commonDef = getCommonPropertiesDocumentation();
+        Map<String, String> commonDef = getCommonPropertiesDocumentation(AppliImpl.DOCTYPE);
         for (Entry<String, String> entry : commonDef.entrySet()) {
             params.put(entry.getKey(), entry.getValue());
         }
@@ -161,7 +161,7 @@ public class DiscoveryRest {
     public Object doGetApi() throws JSONException {
         result = new JSONObject();
         JSONObject params = new JSONObject();
-        Map<String, String> commonDef = getCommonPropertiesDocumentation();
+        Map<String, String> commonDef = getCommonPropertiesDocumentation(ServiceAPI.DOCTYPE);
         for (Entry<String, String> entry : commonDef.entrySet()) {
             params.put(entry.getKey(), entry.getValue());
         }
@@ -201,7 +201,7 @@ public class DiscoveryRest {
     public Object doGetService() throws JSONException {
         result = new JSONObject();
         JSONObject params = new JSONObject();
-        Map<String, String> commonDef = getCommonPropertiesDocumentation();
+        Map<String, String> commonDef = getCommonPropertiesDocumentation(Service.DOCTYPE);
         for (Entry<String, String> entry : commonDef.entrySet()) {
             params.put(entry.getKey(), entry.getValue());
         }
@@ -261,7 +261,7 @@ public class DiscoveryRest {
     public Object doGetServiceReference() throws JSONException {
         result = new JSONObject();
         JSONObject params = new JSONObject();
-        Map<String, String> commonDef = getCommonPropertiesDocumentation();
+        Map<String, String> commonDef = getCommonPropertiesDocumentation(ServiceReference.DOCTYPE);
         for (Entry<String, String> entry : commonDef.entrySet()) {
             params.put(entry.getKey(), entry.getValue());
         }
@@ -326,14 +326,14 @@ public class DiscoveryRest {
         return map;
     }
 
-    private Map<String, String> getCommonPropertiesDocumentation() throws JSONException {
+    private Map<String, String> getCommonPropertiesDocumentation(String doctype) throws JSONException {
         if (commonPropertiesDocumentation == null) {
             commonPropertiesDocumentation = new HashMap<String, String>();
             Map<String, String> dcPropertyList = EasySOADoctype.getDublinCorePropertyList();
             for (Entry<String, String> entry : dcPropertyList.entrySet()) {
                 commonPropertiesDocumentation.put(entry.getKey(), entry.getValue());
             }
-            Map<String, String> commonPropertyList = EasySOADoctype.getCommonPropertyList();
+            Map<String, String> commonPropertyList = EasySOADoctype.getCommonPropertyList(doctype);
             for (Entry<String, String> entry : commonPropertyList.entrySet()) {
                 commonPropertiesDocumentation.put(entry.getKey(), entry.getValue());
             }

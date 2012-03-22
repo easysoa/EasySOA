@@ -20,13 +20,11 @@
 
 package org.easysoa.listeners;
 
-import static org.easysoa.doctypes.AppliImpl.DEFAULT_ENVIRONMENT;
 import static org.easysoa.doctypes.AppliImpl.DOCTYPE;
 import static org.easysoa.doctypes.AppliImpl.PROP_SERVER;
 import static org.easysoa.doctypes.AppliImpl.PROP_SERVERENTRY;
 import static org.easysoa.doctypes.AppliImpl.PROP_URL;
 import static org.easysoa.doctypes.AppliImpl.SCHEMA;
-import static org.easysoa.doctypes.EasySOADoctype.PROP_ENVIRONMENT;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -94,25 +92,26 @@ public class AppliImplListener implements EventListener {
         }
         // On document creation / Before modification
         else {
-
-            // Update properties
-            if (maintainInternalProperties(session, appliImplModel)) {
-                setDefaultPropertyValues(session, appliImplModel);
-            }
-
-            // Update vocabulary
-            try {
-                updateVocabulary(session,
-                        (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER),
-                        (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_ENVIRONMENT));
-            } catch (ClientException e) {
-                log.error("Failed to fetch Appli. Impl. properties", e);
-            }
+        	try {
+	            DocumentModel parentModel = session.getDocument(appliImplModel.getParentRef());
+	        	String environment = parentModel.getTitle();
+	        	
+	            // Update vocabulary
+	            updateVocabulary(session,
+	                        (String) appliImplModel.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_SERVER),
+	                        parentModel.getTitle());
+	            
+	            // Update properties
+	        	maintainInternalProperties(session, appliImplModel, environment);
+        	}
+        	catch (Exception e) {
+        		log.error("Failed to maintain internal AppliImpl. properties", e);
+        	}
         }
 
     }
 
-    private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel) {
+    private boolean maintainInternalProperties(CoreSession session, DocumentModel appliImplModel, String environment) {
         try {
             String url = (String) appliImplModel.getProperty(SCHEMA, PROP_URL);
             String server = (String) appliImplModel.getProperty(SCHEMA,
@@ -127,7 +126,7 @@ public class AppliImplListener implements EventListener {
                     appliImplModel.setProperty(SCHEMA, PROP_SERVER, server);
                     appliImplModel.setProperty(
                             SCHEMA, PROP_SERVERENTRY, // Internal (for virtual navigation)
-                            appliImplModel.getProperty(SCHEMA, PROP_ENVIRONMENT) + "/" + server);
+                            environment + "/" + server);
                 } catch (MalformedURLException e) {
                     log.warn("Failed to normalize URL '" + url + "'");
                 }
@@ -140,25 +139,8 @@ public class AppliImplListener implements EventListener {
 
     }
 
-    private boolean setDefaultPropertyValues(CoreSession session, DocumentModel appliImplModel) {
-        try { // Default environment
-            String environment = (String) appliImplModel.getProperty(SCHEMA, PROP_ENVIRONMENT);
-            if (environment == null || environment.isEmpty()) {
-                appliImplModel.setProperty(SCHEMA, PROP_ENVIRONMENT, DEFAULT_ENVIRONMENT);
-            }
-        } catch (Exception e) {
-            log.error("Failed to set default environment value", e);
-            return false;
-        }
-        return true;
-    }
-
     private boolean updateVocabulary(CoreSession session, String server, String environment) {
         try {
-            // TODO: Update on document deletion
-            if (environment == null) {
-                environment = DEFAULT_ENVIRONMENT;
-            }
 
             VocabularyHelper vocService = Framework.getRuntime().getService(VocabularyHelper.class);
 

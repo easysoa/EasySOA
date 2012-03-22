@@ -17,6 +17,7 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.doctypes.Workspace;
 import org.easysoa.properties.ApiUrlProcessor;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -76,7 +77,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             DocumentModel appliImplModel = docService.findAppliImpl(session, url);
             if (appliImplModel == null) {
                 String title = (properties.get("title") != null) ? properties.get("title") : properties.get(AppliImpl.PROP_URL);
-                String workspace = (properties.get(Service.PROP_ENVIRONMENT) != null) ? properties.get(Service.PROP_ENVIRONMENT) : "Master";
+                String workspace = (properties.get(Service.PROP_ENVIRONMENT) != null) ? properties.get(Service.PROP_ENVIRONMENT) : Workspace.DEFAULT_ENVIRONMENT;
                 appliImplModel = docService.createAppliImpl(session, url, workspace);
                 appliImplModel.setProperty("dublincore", "title", title);
                 appliImplModel = session.saveDocument(appliImplModel);
@@ -384,7 +385,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
                     setPropertyIfNotNull(model, schema, key, value);
                 }
                 // EasySOA specific properties
-                else if (EasySOADoctype.getCommonPropertyList().containsKey(key)) {
+                else if (EasySOADoctype.getCommonPropertyList(model.getType()).containsKey(key)) {
                     setPropertyIfNotNull(model, EasySOADoctype.SCHEMA_COMMON, key, value);
                 }
                 // Dublin Core properties
