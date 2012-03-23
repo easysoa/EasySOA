@@ -55,11 +55,10 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
 	/**
 	 * Initialize one time the remote systems for the test
 	 * FraSCAti and HTTP discovery Proxy ...
-	 * @throws FrascatiException, InterruptedException 
-	 * @throws JSONException 
+	 * @throws Exception 
 	 */
     @BeforeClass
-	public static void setUp() throws FrascatiException, InterruptedException, JSONException {
+	public static void setUp() throws Exception {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   // Clean Nuxeo registery, No clean here, validated mode require a filled registry to work ! Run the PartiallyMockedDiscoveryModeProxy test first !
 	   //cleanNuxeoRegistery();

@@ -13,7 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.log4j.Logger;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
@@ -38,6 +38,8 @@ public class ExchangeRecordServletFilter implements Filter {
     //@Inject
     //NxFraSCAtiRegistryService frascatiRegistryService;    
     
+    private static Logger logger = Logger.getLogger(ExchangeRecordServletFilter.class.getClass());    
+    
     // TODO : use the filterConfig instead of static string for run mane prefix
     public final static String HANDLER_RUN_NAME_PREFIX = "handler_run_"; 
     
@@ -53,7 +55,7 @@ public class ExchangeRecordServletFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
-        
+        logger.debug("INIT called for ExchangeRecordServletFilter !!");
         //filterConfig.getInitParameter("HANDLER_RUN_NAME_PREFIX");
         try {
             FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
@@ -72,12 +74,13 @@ public class ExchangeRecordServletFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        logger.debug("Entering in doFilter method for ExchangeRecordServletFilter !!");
         // Filtering HTTP requests only for registering exchanges
         if(request instanceof HttpServletRequest){ 
-            //StatusExposingServletResponse sevResponse = new StatusExposingServletResponse((HttpServletResponse)response);
-            chain.doFilter(request, response);
+            StatusExposingServletResponse sevResponse = new StatusExposingServletResponse((HttpServletResponse)response);
+            chain.doFilter(request, sevResponse);
             if(exchangeHandler != null){
-                exchangeHandler.handleExchange((HttpServletRequest)request, (HttpServletResponse)response);
+                exchangeHandler.handleExchange((HttpServletRequest)request, (HttpServletResponse)sevResponse);
             }
         }
         else {

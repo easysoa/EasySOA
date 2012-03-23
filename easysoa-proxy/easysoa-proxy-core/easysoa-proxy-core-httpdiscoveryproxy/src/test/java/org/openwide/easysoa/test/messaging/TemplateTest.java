@@ -53,10 +53,10 @@ public class TemplateTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Start FraSCAti, HTTP discovery proxy and mock services
-	 * @throws FrascatiException If a problem occurs
+	 * @throws Exception 
 	 */
 	@BeforeClass
-	public static void setUp() throws FrascatiException{
+	public static void setUp() throws Exception{
 		// Start fraSCAti
 		startFraSCAti();
 		// Start Http Discovery proxy

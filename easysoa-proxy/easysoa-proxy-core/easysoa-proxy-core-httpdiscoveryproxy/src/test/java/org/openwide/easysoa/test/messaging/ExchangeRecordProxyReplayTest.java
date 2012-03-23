@@ -34,6 +34,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.records.assertions.AssertionEngineImpl;
@@ -70,10 +71,10 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Clean old test files, start FraSCAti, start the HTTP discovery proxy and the mock services
-	 * @throws FrascatiException
+	 * @throws Exception 
 	 */
 	@BeforeClass
-	public static void setUp() throws FrascatiException {
+	public static void setUp() throws Exception {
 		// clean the old exchange records files
 		cleanOldFiles();
 		// Start fraSCAti

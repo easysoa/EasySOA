@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.Endpoint;
 import org.apache.log4j.Logger;
+import org.easysoa.frascati.FraSCAtiServiceException;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,10 +27,10 @@ public class CxfProviderDispatcherTest extends AbstractProxyTestStarter {
 
     /**
      * Start FraSCAti, HTTP discovery proxy and mock services
-     * @throws FrascatiException If a problem occurs
+     * @throws Exception 
      */
     @BeforeClass
-    public static void setUp() throws FrascatiException{
+    public static void setUp() throws Exception{
         // Start fraSCAti
         startFraSCAti();
         // Start mock services
@@ -57,10 +58,11 @@ public class CxfProviderDispatcherTest extends AbstractProxyTestStarter {
     /**
      * Test inside Frascati
      * @throws FrascatiException, IOException, SOAPException If a problem occurs
+     * @throws FraSCAtiServiceException 
      */
     @Test
     @Ignore
-    public void cxfProviderTestInFraSCAti() throws FrascatiException, IOException, SOAPException{
+    public void cxfProviderTestInFraSCAti() throws FrascatiException, IOException, SOAPException, FraSCAtiServiceException{
         // Start the CXF Meteo mock provider in FraSCAti
         // PB with FraSCAti : the port name and the service are the interface name (+ prefix or suffix)
         // JAX-WS annotations are not used in FraSCAti 
@@ -75,10 +77,12 @@ public class CxfProviderDispatcherTest extends AbstractProxyTestStarter {
     /**
      * Start the CXF Meteo Mock provider
      * @throws FrascatiException If a problem occurs
+     * @throws FraSCAtiServiceException 
      */
-    private void startCxfMeteoMockProvider() throws FrascatiException {
+    private void startCxfMeteoMockProvider() throws FrascatiException, FraSCAtiServiceException {
         logger.info("Services Mock Starting");
-        this.componentList.add(this.frascati.processComposite("cxfMeteoMockProvider.composite", new ProcessingContextImpl()));        
+        //this.componentList.add(this.frascati.processComposite("cxfMeteoMockProvider.composite", new ProcessingContextImpl()));
+        this.componentList.add(this.frascati.processComposite("cxfMeteoMockProvider.composite"));
     }
     
     /**

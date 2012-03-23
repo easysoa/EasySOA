@@ -1,0 +1,17 @@
+<web-app id='/'>
+
+  <filter>
+    <filter-name>exchangeRecordServletFilter</filter-name>
+    <filter-class>org.easysoa.records.filters.ExchangeRecordServletFilter</filter-class>
+    <!--<init-param>
+      <param-name>title</param-name>
+      <param-value>Hello, World</param-value>
+    </init-param>-->
+  </filter>
+
+  <filter-mapping>
+    <filter-name>exchangeRecordServletFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+</web-app>

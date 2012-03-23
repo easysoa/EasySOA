@@ -60,10 +60,10 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Start FraSCAti and mock services
-	 * @throws FrascatiException
+	 * @throws Exception 
 	 */
 	@Before
-	public void setUp() throws FrascatiException{
+	public void setUp() throws Exception{
 		// Start fraSCAti
 		startFraSCAti();
 		// Start mock services

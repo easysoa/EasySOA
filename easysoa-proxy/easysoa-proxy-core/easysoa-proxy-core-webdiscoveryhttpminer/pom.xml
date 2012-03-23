@@ -36,21 +36,61 @@
     	<version>${easysoa.version}</version>
     </dependency>    
 
+
+    <!-- For tests -->
 	<!-- Nuxeo dependencies -->
 	<dependency>
         <groupId>org.nuxeo.runtime</groupId>
         <artifactId>nuxeo-runtime-bridge</artifactId>
         <version>5.4.2-SNAPSHOT</version>
-    	<scope>provided</scope>
-	</dependency>	
-    
+    	<scope>test</scope>
+	</dependency>
+	<dependency>
+    	<groupId>org.nuxeo.ecm.core</groupId>
+        <artifactId>nuxeo-core-test</artifactId>
+        <scope>test</scope>
+	</dependency>
+    <dependency>
+    	<groupId>org.nuxeo.ecm.core</groupId>
+        <artifactId>nuxeo-core-api</artifactId>
+        <scope>test</scope>
+	</dependency>
+    <dependency>
+    	<groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-features-test</artifactId>
+        <scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.nuxeo</groupId>
+    	<artifactId>nuxeo-frascati-test</artifactId>
+    	<version>0.0-SNAPSHOT</version>
+    	<scope>test</scope>	
+    </dependency>
 	<!-- FraSCAti dependencies -->
     
-    <!-- For tests -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
+    </dependency>
+
+    <!--<dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-rest</artifactId>
+      <scope>test</scope>
+    </dependency>-->
+
+    <dependency>
+    	<groupId>org.mortbay.jetty</groupId>
+    	<artifactId>jetty-servlet-tester</artifactId>
+    	<version>6.1.26</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.nuxeo</groupId>
+    	<artifactId>nuxeo-frascati</artifactId>
+    	<version>0.0-SNAPSHOT</version>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
 

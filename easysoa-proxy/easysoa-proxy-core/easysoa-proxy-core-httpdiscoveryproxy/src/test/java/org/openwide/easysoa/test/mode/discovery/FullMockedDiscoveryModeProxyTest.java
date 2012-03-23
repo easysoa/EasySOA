@@ -53,11 +53,10 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	/**
 	 * Initialize one time the remote systems for the test
 	 * FraSCAti and HTTP discovery Proxy ...
-	 * @throws FrascatiException, InterruptedException 
-	 * @throws JSONException 
+	 * @throws Exception 
 	 */
     @BeforeClass
-	public static void setUp() throws FrascatiException, InterruptedException, JSONException {
+	public static void setUp() throws Exception {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   serviceTestHelper = new FullMockedServiceTestHelper();
 	   // Clean Nuxeo registery

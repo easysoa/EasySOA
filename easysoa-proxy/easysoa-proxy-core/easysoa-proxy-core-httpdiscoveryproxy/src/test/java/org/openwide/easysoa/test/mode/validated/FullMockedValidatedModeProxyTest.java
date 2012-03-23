@@ -58,11 +58,10 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
 	/**
 	 * Initialize one time the remote systems for the test
 	 * FraSCAti and HTTP discovery Proxy ...
-	 * @throws FrascatiException, InterruptedException 
-	 * @throws JSONException 
+	 * @throws Exception 
 	 */
     @BeforeClass
-	public static void setUp() throws FrascatiException, InterruptedException, JSONException {
+	public static void setUp() throws Exception {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   // Clean Nuxeo registery
 	   // Mocked so don't need to clean

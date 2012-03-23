@@ -76,8 +76,6 @@ public class RequestForwarder {
 		else {
 			throw new Exception("Unable to send request, unknow message type !");
 		}*/
-		
-
 	}
 
 	/**

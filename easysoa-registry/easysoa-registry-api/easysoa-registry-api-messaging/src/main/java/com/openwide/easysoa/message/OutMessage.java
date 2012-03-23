@@ -23,6 +23,7 @@ package com.openwide.easysoa.message;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.CharBuffer;
 import java.util.Date;
 import java.util.Enumeration;
@@ -73,16 +74,31 @@ public class OutMessage implements Message {
 		this.statusText = statusText;
 	}
 
-	/*public OutMessage(StatusExposingServletResponse response) {
+	public OutMessage(HttpServletResponse response) {
         this();
-        this.setStatus(response.getStatus());
-        // TODO : Complete this method
-        //OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
+        if(response instanceof StatusExposingServletResponse){
+            StatusExposingServletResponse sevResponse = (StatusExposingServletResponse) response;
+            this.setStatus(sevResponse.getStatus());
+        }/* else {
+            // How to get the status ???
+        }*/
         MessageContent messageContent = new MessageContent();
+        try {
+            // trying to get response content
+            PrintWriter writer =response.getWriter();
+        }
+        catch(Exception ex){
+            try {
+                response.getOutputStream();  
+            }
+            catch(Exception exc){
+                
+            }
+        }
+        this.setMessageContent(messageContent);
         
-        //response.getResponse().get
         // Read the response message content
-        InputStreamReader in= new InputStreamReader(response.getEntity().getContent());
+        /*InputStreamReader in= new InputStreamReader(response. .getEntity().getContent());
         BufferedReader bin= new BufferedReader(in);
         StringBuffer responseBuffer = new StringBuffer();
         String line;
@@ -99,8 +115,8 @@ public class OutMessage implements Message {
                 messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
             }
             outMessage.setMessageContent(messageContent);  
-        }
-    }*/
+        }*/
+    }
 
     public String getProtocol() {
 		return protocol;
