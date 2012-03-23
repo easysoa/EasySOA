@@ -40,6 +40,9 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     private Deque<WebFileParsingPoolEntry> parsingPool = new LinkedList<WebFileParsingPoolEntry>();
     private Map<String, WebFileParser> parsers = new HashMap<String, WebFileParser>();
 
+    private CoreSession coreSession = null;
+    private LoginContext loginContext = null;
+    
     @Override
     public void activate(ComponentContext context) throws Exception {
 
@@ -58,6 +61,12 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     public void deactivate(ComponentContext context) throws Exception {
         if (parsingPoolThread != null) {
             parsingPoolThread.interrupt();
+        }
+        if (coreSession != null) {
+        	CoreInstance.getInstance().close(coreSession);
+        }
+        if (loginContext != null) {
+        	loginContext.logout();
         }
     }
 
@@ -103,7 +112,6 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     @Override
     public void run() {
 
-            LoginContext loginContext = null;
             // Log in and gather needed data
             HttpDownloaderService downloaderService = Framework.getLocalService(HttpDownloaderService.class);
 
@@ -146,12 +154,14 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                             targetModel.getProperty(storageProp).setValue(blob);
                         }
 
-                        loginContext = Framework.login();
-                        RepositoryManager mgr = Framework.getService(RepositoryManager.class);
-                        Repository repository = mgr.getDefaultRepository();
-                        TransactionHelper.startTransaction();
-                        CoreSession coreSession = null;
                         try {
+                        	
+                            loginContext = Framework.login();
+                            RepositoryManager mgr = Framework.getService(RepositoryManager.class);
+                            Repository repository = mgr.getDefaultRepository();
+                            TransactionHelper.startTransaction();
+                            coreSession = null;
+                            
                             if (repository != null) {
                                 coreSession = repository.open();
                             }
@@ -172,16 +182,17 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                             log.warn("Error while processing parsing pool entry: " + t.getMessage());
                             TransactionHelper.setTransactionRollbackOnly();
                             // TODO: handle exception
-                        }
-                        finally {
+                        } finally {
                             TransactionHelper.commitOrRollbackTransaction();
-                            CoreInstance.getInstance().close(coreSession);
-                            loginContext.logout();
+                            if (coreSession != null) {
+	                            CoreInstance.getInstance().close(coreSession);
+	                        }
+                            if (loginContext != null) {
+                            	loginContext.logout();
+                            }
                         }
-
-                    }
-                    catch (Exception e) {
-                        log.warn("Error while processing parsing pool entry", e);
+                    } catch (Exception e) {
+                        log.warn("Error while downloading file: " + e.getMessage());
                     }
                 }
 

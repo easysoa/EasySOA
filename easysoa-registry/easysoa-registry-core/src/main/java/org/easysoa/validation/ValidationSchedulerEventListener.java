@@ -7,12 +7,15 @@ import org.easysoa.services.DocumentService;
 import org.easysoa.services.PublicationService;
 import org.easysoa.services.ServiceValidationService;
 import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.repository.Repository;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.transaction.TransactionHelper;
 
 /**
  * 
@@ -26,9 +29,11 @@ public class ValidationSchedulerEventListener implements EventListener {
 	private PublicationService publicationService;
 	
 	private DocumentService docService;
-
+	
+	private CoreSession session = null;
+	
     private static Log log = LogFactory.getLog(ValidationSchedulerEventListener.class);
-    
+	
 	public ValidationSchedulerEventListener() throws Exception {
 		serviceValidationService = Framework.getService(ServiceValidationService.class);
 		publicationService = Framework.getService(PublicationService.class);
@@ -38,10 +43,15 @@ public class ValidationSchedulerEventListener implements EventListener {
 	@Override
 	public void handleEvent(Event event) throws ClientException {
 		
+		synchronized(log) {
+		
 		try {
 		
 			// Init
-			CoreSession session = Framework.getService(RepositoryManager.class).getDefaultRepository().open();
+	        RepositoryManager mgr = Framework.getService(RepositoryManager.class);
+	        Repository repository = mgr.getDefaultRepository();
+	        TransactionHelper.startTransaction();
+	        session = repository.open();
 			String environmentName = (String) event.getContext().getProperty("eventCategory"); // (see ValidationSchedulerComponent.registerContribution()
 			String tmpWorkspaceName = "tmp" + environmentName + System.currentTimeMillis();
 			
@@ -50,7 +60,7 @@ public class ValidationSchedulerEventListener implements EventListener {
 			if (environmentModel != null) {
 				DocumentModel tmpWorkspaceModel = null;
 				ValidationResultList validationResults = null;
-				
+
 				try {
 					// Create temporary environment
 					tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
@@ -80,11 +90,19 @@ public class ValidationSchedulerEventListener implements EventListener {
 				log.error("Failed to run scheduled validation: environment '" + environmentName + "' doesn't exist");
 			}
 			
-		
 		}
 		
 		catch (Exception e) {
 			log.error("Failed to run scheduled validation", e);
+		}
+		
+		finally {
+	        TransactionHelper.commitOrRollbackTransaction();
+	        if (session != null) {
+	            CoreInstance.getInstance().close(session);
+	        }
+		}
+		
 		}
 	}
 	

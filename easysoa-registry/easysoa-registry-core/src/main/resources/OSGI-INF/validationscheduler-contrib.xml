@@ -5,7 +5,7 @@
   
   <extension target="org.easysoa.core.service.ValidationSchedulerComponent" point="schedules">
     <!-- For Cron examples, see: http://www.quartz-scheduler.org/docs/tutorials/crontrigger.html -->
-    <schedule runName="myRun" targetEnvironment="Master" cronExpression="0 0/2 * * * ?" />
+<!--     <schedule runName="myRun" targetEnvironment="Master" cronExpression="0 * * * * ?" /> -->
   </extension>
   
 </component>

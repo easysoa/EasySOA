@@ -40,7 +40,8 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.nuxeo.ecm.directory.sql",
     "org.nuxeo.ecm.directory.api", // all required, else no dirService
     "org.nuxeo.ecm.platform.types.core",
-    "org.nuxeo.ecm.core.convert.plugins"
+    "org.nuxeo.ecm.core.convert.plugins",
+    "org.nuxeo.ecm.platform.scheduler.core"
 })
 @Features(CoreFeature.class)
 public class NuxeoFeatureBase extends SimpleFeature {

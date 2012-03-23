@@ -301,7 +301,7 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
 
     private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
         DocumentModelList results = session.query("SELECT * FROM " + type + " WHERE " + 
-        		field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isCheckedInVersion = 0",
+        		field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isCheckedInVersion = 0"/*,
         		new Filter() {
                     private static final long serialVersionUID = 1L;
                     public boolean accept(DocumentModel docModel) {
@@ -312,7 +312,7 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
                             return false;
                         }
                     }
-                }
+                }*/ // FIXME
             );
         return (results != null && !results.isEmpty()) ? results.get(0) : null;
     }

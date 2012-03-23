@@ -54,27 +54,31 @@ public class ValidationListener implements EventListener {
             DocumentService docService = Framework.getService(DocumentService.class);
             DocumentModel workspace = docService.getWorkspace(session, doc);
 
-            // Run validation
             ServiceValidationService validationService = Framework.getService(ServiceValidationService.class);
-            Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
-            boolean isValidated;
-            if (wasValidated != null && wasValidated) {
-                // Validate all child services
-            	isValidated = validationService.validateServices(session, doc).isEveryValidationPassed();
-            } else {
-                // If the environment was not successfully validated,
-                // re-check all to allow it to become validated
-            	isValidated = validationService.validateServices(session, workspace).isEveryValidationPassed();
-            }
+            boolean hasReferenceEnvironment = workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_REFERENCEDENVIRONMENT) != null;
 
-            // Update workspace state
-            if (wasValidated == null || wasValidated != isValidated) {
-    	        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isValidated);
-    	        session.saveDocument(workspace);
-            }
-
-	        // Save workspace & all modified services validation states
-	        session.save();
+            // Run validation
+            if (hasReferenceEnvironment) {
+		        Boolean wasValidated = (Boolean) workspace.getProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED);
+		        boolean isValidated;
+		        if (wasValidated != null && wasValidated) {
+		            // Validate all child services
+		        	isValidated = validationService.validateServices(session, doc).isEveryValidationPassed();
+		        } else {
+		            // If the environment was not successfully validated,
+		            // re-check all to allow it to become validated
+		        	isValidated = validationService.validateServices(session, workspace).isEveryValidationPassed();
+		        }
+		
+		        // Update workspace state
+		        if (wasValidated == null || wasValidated != isValidated) {
+			        workspace.setProperty(Workspace.SCHEMA, Workspace.PROP_ISVALIDATED, isValidated);
+			        session.saveDocument(workspace);
+		        }
+		        
+		        // Save workspace & all modified services validation states
+		        session.save();
+		    }
             
         } catch (Exception e) {
             log.error("Failed to validate " + doc.getType(), e);
