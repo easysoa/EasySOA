@@ -80,6 +80,7 @@
     
     <doctype extends="Folder" name="Workspace">
       <schema name="workspacedef" />
+      <schema name="files" />
       <subtypes>
         <type>AppliImpl</type>
       </subtypes>
