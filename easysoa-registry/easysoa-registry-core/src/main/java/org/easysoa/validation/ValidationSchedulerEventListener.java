@@ -4,7 +4,7 @@ package org.easysoa.validation;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +25,6 @@ import org.nuxeo.ecm.core.api.repository.RepositoryManager;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.management.Resource;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
 import freemarker.template.Configuration;
@@ -114,14 +113,40 @@ public class ValidationSchedulerEventListener implements EventListener {
 				if (freemarkerCfg != null) {
 					// Create report
 			        Template tpl = freemarkerCfg.getTemplate(VALIDATION_REPORT_TEMPLATE);
+			        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+			        for (ValidationResult validationResult : validationResults) {
+				        List<Map<String, Object>> validatorsResults = new ArrayList<Map<String, Object>>();
+				        for (ValidatorResult validatorResult : validationResult) {
+					        Map<String, Object> paramsOneValidator = new HashMap<String, Object>();
+					        paramsOneValidator.put("validationSuccess", validatorResult.isValidated() ? "passed" : "failed");
+					        paramsOneValidator.put("validatorName", validatorResult.getValidatorName());
+					        paramsOneValidator.put("validationLog", validatorResult.getValidationLog());
+					        validatorsResults.add(paramsOneValidator);
+				        }
+				        Map<String, Object> paramsOneResult = new HashMap<String, Object>();
+				        paramsOneResult.put("validatorsResults", validatorsResults);
+				        paramsOneResult.put("validationSuccess", validationResult.isValidationPassed() ? "passed" : "failed");
+				        paramsOneResult.put("serviceName", validationResult.getServiceName());
+				        results.add(paramsOneResult);
+			        }
 			        Map<String, Object> params = new HashMap<String, Object>();
-			        params.put("user", "Bob");
+			        List<String> validatorsNames = new ArrayList<String>();
+			        for (ValidatorResult validatorResult : validationResults.get(0)) {
+			        	validatorsNames.add(validatorResult.getValidatorName());
+			        }
+			        params.put("results", results);
+			        params.put("validatorsNames", validatorsNames);
+			        params.put("validationSuccess", validationResults.isEveryValidationPassed() ? "passed" : "failed");
+			        params.put("date", new Date());
+			        params.put("runName", "TODO"); // TODO
+			        params.put("environmentName", environmentName);
+			        
 			        StringWriter writer = new StringWriter();
 			        tpl.process(params, writer);
 			        writer.flush();
 			        String reportAsString = writer.getBuffer().toString();
 	
-					// Save report
+					// Save report | TODO if too much files, remove the older ones
 					DocumentModel workspaceModel = docService.findWorkspace(session, environmentName);
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> files = (List<Map<String, Object>>) workspaceModel.getProperty("files", "files");
@@ -132,7 +157,6 @@ public class ValidationSchedulerEventListener implements EventListener {
 					files.add(newFile);
 					workspaceModel.setProperty("files", "files", files);
 					session.saveDocument(workspaceModel);
-					
 				}
 			
 			}

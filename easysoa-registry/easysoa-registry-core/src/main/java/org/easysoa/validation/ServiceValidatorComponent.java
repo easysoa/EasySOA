@@ -158,7 +158,7 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
             DocumentModel referenceService, boolean save) throws ClientException {
         
         // Init
-    	ValidationResult result = new ValidationResult();
+    	ValidationResult result = new ValidationResult(service.getTitle());
         List<Map<String, Object>> newValidationState = new LinkedList<Map<String, Object>>(); 
         boolean isNowValidated = true;
 		

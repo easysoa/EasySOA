@@ -1,6 +1,6 @@
 package org.easysoa.validation;
 
-public class ValidationResultItem {
+public class ValidatorResult {
 
 	String validatorName;
 	
@@ -8,7 +8,7 @@ public class ValidationResultItem {
 	
 	String validationLog;
 
-	public ValidationResultItem(String validatorName, boolean isValidated, String validationLog) {
+	public ValidatorResult(String validatorName, boolean isValidated, String validationLog) {
 		this.validatorName = validatorName;
 		this.isValidated = isValidated;
 		this.validationLog = validationLog;
