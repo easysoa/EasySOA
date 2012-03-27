@@ -34,21 +34,29 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  *
  */
 @Deploy({
-    "org.easysoa.registry.core",
-    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
-    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
-    "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
-    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
-    "org.easysoa.registry.core:OSGI-INF/lifecycle-contrib.xml",
-    "org.easysoa.registry.core:OSGI-INF/EasySOAInitComponent.xml", // required by the contribution below
-    "org.easysoa.registry.core:OSGI-INF/HttpDownloaderService.xml",
-    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml", // required to enable the specific doctype listeners
-    "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
-    "org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml",
-    "org.easysoa.registry.core:OSGI-INF/ServiceValidatorServiceComponent.xml",
-    "org.easysoa.registry.core:OSGI-INF/servicevalidators-contrib.xml",
-    "org.easysoa.registry.core:OSGI-INF/PublicationServiceComponent.xml",
-    "org.nuxeo.runtime.datasource"
+    "org.nuxeo.runtime.datasource",
+    "org.easysoa.registry.core"
+//    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
+//    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies
+//    "org.easysoa.registry.core:OSGI-INF/users-contrib.xml",
+//    "org.easysoa.registry.core:OSGI-INF/HttpDownloaderService.xml",
+//    "org.easysoa.registry.core:OSGI-INF/eventlistener-contrib.xml", // required to enable the specific doctype listeners
+//    "org.easysoa.registry.core:OSGI-INF/lifecycle-contrib.xml",
+//    "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
+//    "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
+//    "org.easysoa.registry.core:OSGI-INF/ImplementationRelationServiceComponent.xml",
+//    "org.easysoa.registry.core:OSGI-INF/workflow-contrib.xml",
+//    "org.easysoa.registry.core:OSGI-INF/ScaImporterComponent.xml",
+//    "org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml",
+//    "org.easysoa.registry.core:OSGI-INF/PublicationServiceComponent.xml",
+//    "org.easysoa.registry.core:OSGI-INF/ServiceValidatorServiceComponent.xml",
+//    "org.easysoa.registry.core:OSGI-INF/servicevalidators-contrib.xml",
+//    "org.easysoa.registry.core:OSGI-INF/ServicesRootMapperServiceComponent.xml",
+//    //"org.easysoa.registry.core:OSGI-INF/AppComponent.xml",
+//    "org.easysoa.registry.core:OSGI-INF/WebFileParsingPoolService.xml",
+//    "org.easysoa.registry.core:OSGI-INF/webfileparsers-contrib.xml",
+//    "org.easysoa.registry.core:OSGI-INF/ValidationSchedulerServiceComponent.xml",
+//    "org.easysoa.registry.core:OSGI-INF/validationscheduler-contrib.xml"
 })
 @Features(NuxeoFeatureBase.class)
 @LocalDeploy("org.easysoa.registry.core:test/datasource-contrib.xml")

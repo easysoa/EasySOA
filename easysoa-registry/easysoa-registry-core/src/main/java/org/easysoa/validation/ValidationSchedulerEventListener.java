@@ -59,7 +59,7 @@ public class ValidationSchedulerEventListener implements EventListener {
 			freemarkerCfg.setDirectoryForTemplateLoading(new File(TEMPLATES_FOLDER));
 	    	freemarkerCfg.setObjectWrapper(new DefaultObjectWrapper());
 		} catch (IOException e) {
-			log.error("Failed to initialize templating configuration, no validation reports will be produced.", e);
+			log.error("Failed to initialize templating configuration, no validation reports will be produced: " + e.getMessage());
 		}
     }
     

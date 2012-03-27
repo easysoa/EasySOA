@@ -48,7 +48,7 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Features(EasySOACoreTestFeature.class)
-@RepositoryConfig(type=BackendType.H2, user = "Administrator", init=EasySOARepositoryInit.class)
+@RepositoryConfig(init=EasySOARepositoryInit.class)
 public class VocabularyServiceTest extends CoreServiceTestHelperBase {
 
     static final Log log = LogFactory.getLog(VocabularyServiceTest.class);

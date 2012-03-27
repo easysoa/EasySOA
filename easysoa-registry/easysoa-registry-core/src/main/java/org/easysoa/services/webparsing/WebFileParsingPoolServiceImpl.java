@@ -45,7 +45,6 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     
     @Override
     public void activate(ComponentContext context) throws Exception {
-
     }
 
     @Override
@@ -165,19 +164,18 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
                             if (repository != null) {
                                 coreSession = repository.open();
                             }
-
-                            if (coreSession!=null) {
+                            if (coreSession != null) {
                                 // Run through every parser registered
                                 for (WebFileParser parser : parsers.values()) {
                                     parser.parse(coreSession, blob, targetModel, entry.getOptions());
                                 }
-
                                 // Save
                                 coreSession.saveDocument(targetModel);
                                 coreSession.save();
                             } else {
                                 throw new ClientException("Unable to get CoreSession");
                             }
+                            
                         } catch (Throwable t) {
                             log.warn("Error while processing parsing pool entry: " + t.getMessage());
                             TransactionHelper.setTransactionRollbackOnly();

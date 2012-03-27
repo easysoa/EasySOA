@@ -15,6 +15,10 @@ public class StaticWebServer {
     
     private int port;
     private Server server;
+
+    public StaticWebServer(int port) {
+    	this(port, "src/test/resources/www");
+    }
     
     public StaticWebServer(int port, String pathToFileRoot) {
         this.port = port;
@@ -22,14 +26,16 @@ public class StaticWebServer {
         this.server.addHandler(new StaticWebServerHandler(pathToFileRoot));
     }
 
-    public void start() throws Exception {
+    public StaticWebServer start() throws Exception {
         this.server.start();
         logger.info("Jetty test server started on port " + this.port);
+        return this;
     }
 
-    public void stop() throws Exception {
+    public StaticWebServer stop() throws Exception {
         this.server.stop();
         logger.info("Jetty test server stopped");
+        return this;
     }
     
 }
