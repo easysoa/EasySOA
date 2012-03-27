@@ -249,6 +249,7 @@ public class RemoteFraSCAtiServiceProvider implements
         @Override
         public void addURL(URL url)
         {
+            log.debug("adding url to load : " + url);
             super.addURL(url);
         }
     }

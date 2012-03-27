@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -255,7 +256,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 
 		// Build a new exchangeRecord and set the in message
 		// TODO what id to use ? TimeStamp ? generated UUID ??		
-		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(request));
+		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(new HttpMessageRequestWrapper(request)));
 
 		// forward the message
 		exchangeRecord.setOutMessage(forwarder.send(exchangeRecord.getInMessage()));

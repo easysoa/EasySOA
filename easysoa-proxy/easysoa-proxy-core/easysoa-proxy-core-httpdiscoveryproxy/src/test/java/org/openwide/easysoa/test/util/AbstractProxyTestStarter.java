@@ -77,7 +77,8 @@ public abstract class AbstractProxyTestStarter {
 		componentList =  new ArrayList<String>();
 		// TODO replace this code by new RemoteFrascatiServiceProvider
 		//frascati = FraSCAti.newFraSCAti();
-		RemoteFraSCAtiServiceProvider serviceProvider = new RemoteFraSCAtiServiceProvider(new File("../../../easysoa-distribution/easysoa/frascati/lib"));
+		File frascatiLibFolder = new File("../../../easysoa-distribution/easysoa/frascati/lib");
+		RemoteFraSCAtiServiceProvider serviceProvider = new RemoteFraSCAtiServiceProvider(frascatiLibFolder);
 		frascati = serviceProvider.getFraSCAtiService();
 	}
 	

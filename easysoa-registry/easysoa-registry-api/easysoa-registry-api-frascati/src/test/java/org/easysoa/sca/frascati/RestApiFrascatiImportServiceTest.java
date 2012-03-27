@@ -41,6 +41,7 @@ import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.frascati.mock.TestMock;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
+import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -292,7 +293,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
          * = ""; }
          */
         // ExchangeRecord record = new ExchangeRecord(next, "");
-        ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(request));
+        ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(new HttpMessageRequestWrapper(request)));
         log.debug("request content : " + record.getInMessage());
         recordList.add(record);
         /* } */

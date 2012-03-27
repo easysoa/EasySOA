@@ -101,6 +101,11 @@
 		<artifactId>easysoa-remote-frascati</artifactId>
 		<version>${easysoa.version}</version>
 	</dependency>
+    <dependency>
+    	<groupId>org.ow2.frascati.osgi</groupId>
+    	<artifactId>frascati-starter</artifactId>
+    	<version>1.5-SNAPSHOT</version>
+    </dependency>
 
 	<!-- FraSCAti service API -->
     <dependency>
