@@ -64,7 +64,7 @@ public class SoapUIConfRest {
         CoreSession session = SessionFactory.getSession(request);
         DocumentModel requestedDocumentModel = session.getDocument(new IdRef(docId));
         DocumentService docService = Framework.getService(DocumentService.class);
-        DocumentModelList serviceModels = docService.findServices(session, requestedDocumentModel);
+        DocumentModelList serviceModels = docService.findChildren(session, requestedDocumentModel, Service.DOCTYPE);
         
         // Set up params (= WSDLs)
         List<SoapUIWSDL> wsdls = new ArrayList<SoapUIWSDL>();

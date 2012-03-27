@@ -82,13 +82,14 @@ public interface DocumentService {
     DocumentModel findService(CoreSession session, String url) throws ClientException, MalformedURLException;
     
     /**
-     * Find all child services from the given document.
+     * Find all child documents from the given model.
      * @param session
      * @param model
+     * @param doctype A specific doctype to look for, or null for everything
      * @return All child services, or the document itself if the document is a service
      * @throws ClientException
      */
-    DocumentModelList findServices(CoreSession session, DocumentModel model) throws ClientException;
+    public DocumentModelList findChildren(CoreSession session, DocumentModel model, String doctype) throws ClientException;
 
     DocumentModel findServiceReference(CoreSession session, String referenceArchiPath) throws ClientException;
 

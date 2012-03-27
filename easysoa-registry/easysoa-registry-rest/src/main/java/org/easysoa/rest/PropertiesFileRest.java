@@ -32,6 +32,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.easysoa.doctypes.Service;
+import org.easysoa.doctypes.ServiceReference;
 import org.easysoa.services.DocumentService;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -64,12 +65,17 @@ public class PropertiesFileRest {
         CoreSession session = SessionFactory.getSession(request);
         DocumentModel requestedDocumentModel = session.getDocument(new IdRef(docId));
         DocumentService docService = Framework.getService(DocumentService.class);
-        DocumentModelList serviceModels = docService.findServices(session, requestedDocumentModel);
+        DocumentModelList serviceModels = docService.findChildren(session, requestedDocumentModel, Service.DOCTYPE);
+        DocumentModelList serviceRefsModels = docService.findChildren(session, requestedDocumentModel, ServiceReference.DOCTYPE);
         
         // Gather properties
         Properties properties = new Properties();
         for (DocumentModel serviceModel : serviceModels) {
         	properties.put(serviceModel.getTitle(), (String) serviceModel.getProperty(Service.SCHEMA, Service.PROP_URL));
+        }
+        for (DocumentModel serviceRefModel : serviceRefsModels) {
+        	properties.put(serviceRefModel.getTitle(), (String) serviceRefModel.getProperty(
+        			ServiceReference.SCHEMA, ServiceReference.PROP_REFURL));
         }
         
         // Render
