@@ -4,7 +4,6 @@
 package org.easysoa.records.filters;
 
 import java.io.IOException;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,16 +13,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
-import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.handlers.ComposedExchangeHandler;
 import org.easysoa.records.handlers.ExchangeHandler;
-import org.easysoa.servlet.http.StatusExposingServletResponse;
+import org.easysoa.servlet.http.HttpMessageRequestWrapper;
+import org.easysoa.servlet.http.HttpMessageResponseWrapper;
 import org.nuxeo.runtime.api.Framework;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.run.RunManager;
 
 //import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
@@ -77,10 +72,11 @@ public class ExchangeRecordServletFilter implements Filter {
         logger.debug("Entering in doFilter method for ExchangeRecordServletFilter !!");
         // Filtering HTTP requests only for registering exchanges
         if(request instanceof HttpServletRequest){ 
-            StatusExposingServletResponse sevResponse = new StatusExposingServletResponse((HttpServletResponse)response);
-            chain.doFilter(request, sevResponse);
+            HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper((HttpServletRequest)request);
+            HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper((HttpServletResponse)response);
+            chain.doFilter(requestWrapper, responseWrapper);
             if(exchangeHandler != null){
-                exchangeHandler.handleExchange((HttpServletRequest)request, (HttpServletResponse)sevResponse);
+                exchangeHandler.handleExchange(requestWrapper, responseWrapper);
             }
         }
         else {
@@ -91,8 +87,6 @@ public class ExchangeRecordServletFilter implements Filter {
     @Override
     public void destroy() {
         filterConfig = null;
-
-        //TODO : stop the run and save the records
         if(runManager != null){
             try {
                 runManager.stop();

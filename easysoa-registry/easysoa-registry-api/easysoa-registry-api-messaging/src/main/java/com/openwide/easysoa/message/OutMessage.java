@@ -20,16 +20,8 @@
 
 package com.openwide.easysoa.message;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.nio.CharBuffer;
-import java.util.Date;
-import java.util.Enumeration;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.servlet.http.HttpServletResponse;
-import org.easysoa.servlet.http.StatusExposingServletResponse;
+import org.easysoa.servlet.http.HttpMessageResponseWrapper;
 
 /**
  * Outgoing message
@@ -74,48 +66,19 @@ public class OutMessage implements Message {
 		this.statusText = statusText;
 	}
 
-	public OutMessage(HttpServletResponse response) {
+	/**
+	 * 
+	 * @param response
+	 */
+	public OutMessage(HttpMessageResponseWrapper response) {
         this();
-        if(response instanceof StatusExposingServletResponse){
-            StatusExposingServletResponse sevResponse = (StatusExposingServletResponse) response;
-            this.setStatus(sevResponse.getStatus());
-        }/* else {
-            // How to get the status ???
-        }*/
+        this.setStatus(response.getStatus());
         MessageContent messageContent = new MessageContent();
-        try {
-            // trying to get response content
-            PrintWriter writer =response.getWriter();
-        }
-        catch(Exception ex){
-            try {
-                response.getOutputStream();  
-            }
-            catch(Exception exc){
-                
-            }
-        }
+        messageContent.setRawContent(response.getMessageContent());
+        messageContent.setEncoding(response.getCharacterEncoding());
+        messageContent.setMimeType(response.getContentType());
+        messageContent.setSize(response.getMessageContent().length());
         this.setMessageContent(messageContent);
-        
-        // Read the response message content
-        /*InputStreamReader in= new InputStreamReader(response. .getEntity().getContent());
-        BufferedReader bin= new BufferedReader(in);
-        StringBuffer responseBuffer = new StringBuffer();
-        String line;
-        do{
-             line = bin.readLine();
-             if(line != null){
-                 responseBuffer.append(line);
-             }
-        }
-        while(line != null);
-            messageContent.setRawContent(responseBuffer.toString());
-            messageContent.setSize(clientResponse.getEntity().getContentLength());
-            if(clientResponse.getEntity().getContentType() != null){
-                messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
-            }
-            outMessage.setMessageContent(messageContent);  
-        }*/
     }
 
     public String getProtocol() {

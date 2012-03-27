@@ -59,7 +59,6 @@ public class NuxeoFrascatiServletFilterTest {
     @Test
     public void ServletFilterTest() throws ClientProtocolException, IOException{
         // Trigger the Servlet filter
-
         DefaultHttpClient httpClient = new DefaultHttpClient();     
         
         // Send a test request
