@@ -754,6 +754,11 @@
         <artifactId>nuxeo-platform-scheduler-core</artifactId>
         <version>${easysoa.nuxeo.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.nuxeo.runtime</groupId>
+        <artifactId>nuxeo-runtime-bridge</artifactId>
+        <version>${easysoa.nuxeo-bridge.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.jdom</groupId>
