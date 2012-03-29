@@ -1,6 +1,6 @@
 package org.easysoa.runtime.api;
 
-public interface Runtime<T extends Deployable<?>, U extends RuntimeEventService> {
+public interface RuntimeServer<T extends Deployable<?>, U extends RuntimeEventService> {
 	
 	public RuntimeControlService getControlService();
 

@@ -1,11 +1,11 @@
 package org.easysoa.runtime.frascati;
 
-import org.easysoa.runtime.api.Runtime;
+import org.easysoa.runtime.api.RuntimeServer;
 import org.easysoa.runtime.api.RuntimeControlService;
 import org.easysoa.runtime.api.RuntimeDeployableService;
 import org.easysoa.runtime.api.RuntimeEventService;
 
-public class FraSCAtiRuntime implements Runtime<FraSCAtiDeployable, RuntimeEventService> {
+public class FraSCAtiRuntime implements RuntimeServer<FraSCAtiDeployable, RuntimeEventService> {
 
 	private FraSCAtiControlService controlService;
 	

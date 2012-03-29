@@ -16,18 +16,20 @@ import org.easysoa.runtime.api.event.OnDeployListener;
 import org.easysoa.runtime.api.event.OnUndeployListener;
 import org.easysoa.runtime.copypaste.CopyPasteServer;
 import org.easysoa.runtime.utils.FileDeployable;
+import org.easysoa.runtime.utils.FileProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.nuxeo.common.utils.FileUtils;
+
 
 public class CopyPasteTest {
 
 	//private static Logger logger = Logger.getLogger(CopyPasteTest.class);
 	
 	private static final String ROOT = "target/test-classes/";
+	private static final String FILE_PROVIDER_FOLDER = ROOT + "files/";
 	private static final String SERVER_FOLDER = ROOT + "server/";
 	private static final String DEPLOYABLE_NAME = "hello.jar";
-	private static final String DEPLOYABLE_PATH = ROOT + DEPLOYABLE_NAME;
 
 	@Before
 	public void clearServer() throws IOException {
@@ -39,7 +41,8 @@ public class CopyPasteTest {
 		
 		// Prepare server and deployable
 		CopyPasteServer copyPasteServer = new CopyPasteServer(new File(SERVER_FOLDER));
-		FileDeployable deployable = new FileDeployable(DEPLOYABLE_PATH);
+		FileProvider fileProvider = new FileProvider(FILE_PROVIDER_FOLDER);
+		FileDeployable deployable = fileProvider.fetchDeployable(DEPLOYABLE_NAME);
 		File deployableTarget = new File(SERVER_FOLDER + DEPLOYABLE_NAME);
 
 		// Add mock listeners
