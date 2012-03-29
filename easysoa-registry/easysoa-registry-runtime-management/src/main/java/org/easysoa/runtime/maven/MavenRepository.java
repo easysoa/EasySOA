@@ -5,8 +5,11 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.InvalidParameterException;
-import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.easysoa.DomainInit;
+import org.easysoa.runtime.api.DeployableDescriptorProvider;
 import org.easysoa.runtime.api.DeployableProvider;
 
 /**
@@ -15,13 +18,26 @@ import org.easysoa.runtime.api.DeployableProvider;
  * @author mkalam-alami
  *
  */
-public class MavenRepository implements DeployableProvider<MavenDeployable, MavenID> {
+public class MavenRepository implements DeployableProvider<MavenDeployable, MavenID>, 
+		DeployableDescriptorProvider<MavenDeployableDescriptor, MavenID> {
 
 	private static final String JAR_EXT = "jar";
 	
 	private static final String POM_EXT = "pom";
-	
+
+	private static final String DEFAULT_REPOSITORY = "http://search.maven.org/remotecontent?filepath=";
+
+    private static Log log = LogFactory.getLog(DomainInit.class);
+    
 	private URL baseUri;
+	
+	public MavenRepository() {
+		try {
+			this.baseUri = new URL(DEFAULT_REPOSITORY);
+		} catch (MalformedURLException e) {
+			log.error("Default repository URL is invalid", e);
+		}
+	}
 	
 	public MavenRepository(URL url) {
 		this.baseUri = url;
@@ -41,9 +57,7 @@ public class MavenRepository implements DeployableProvider<MavenDeployable, Mave
 		catch (IOException e) {
 			throw new IOException("Could not download POM for specified artifact", e);
 		}
-		MavenDeployableDescriptorProvider mavenPOMDescriptorProvider = new MavenDeployableDescriptorProvider(inputStreamReader);
-		List<MavenDeployableDescriptor> deployableDescriptors = mavenPOMDescriptorProvider.getDeployableDescriptors();
-		return deployableDescriptors.get(0);
+		return new MavenPom(inputStreamReader).getDeployableDescriptor();
 	}
 	
 	private URL getUrl(MavenID id, String extension) {

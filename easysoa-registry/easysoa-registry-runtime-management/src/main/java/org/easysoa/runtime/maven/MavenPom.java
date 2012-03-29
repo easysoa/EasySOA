@@ -1,8 +1,6 @@
 package org.easysoa.runtime.maven;
 
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
@@ -16,18 +14,17 @@ import org.easysoa.runtime.api.DeployableDescriptorProvider;
  * @author mkalam-alami
  *
  */
-public class MavenDeployableDescriptorProvider implements DeployableDescriptorProvider<MavenDeployableDescriptor> {
+public class MavenPom {
 
-	List<MavenDeployableDescriptor> descriptors = new ArrayList<MavenDeployableDescriptor>();
+	MavenDeployableDescriptor descriptor;
 	
 	Model model;
 	
 	/**
-	 * Parses the specified POM to extract exactly one deployable descriptor,
-	 * being the one matching the project's artifact.
+	 * Parses the specified POM to extract the deployable descriptor matching the project's artifact.
 	 * @param pomReader
 	 */
-	protected MavenDeployableDescriptorProvider(Reader pomReader) {
+	protected MavenPom(Reader pomReader) {
 		try {
 			MavenXpp3Reader mavenReader = new MavenXpp3Reader();
 			this.model = mavenReader.read(pomReader);
@@ -44,7 +41,7 @@ public class MavenDeployableDescriptorProvider implements DeployableDescriptorPr
 						dependency.getVersion())));
 			}
 			projectDescriptor.setAllDependenciesKnown(true);
-			descriptors.add(projectDescriptor);
+			descriptor = projectDescriptor;
 		} catch (Exception e) {
 			// TODO Handle exceptions correctly
 			e.printStackTrace();
@@ -55,9 +52,8 @@ public class MavenDeployableDescriptorProvider implements DeployableDescriptorPr
 	 * Returns exactly one descriptor for the deployable matching this project's POM.
 	 * All dependencies for this descriptor will be provided.
 	 */
-	@Override
-	public List<MavenDeployableDescriptor> getDeployableDescriptors() {
-		return descriptors;
+	public MavenDeployableDescriptor getDeployableDescriptor() {
+		return descriptor;
 	}
 	
 	public Model getPomModel() {

@@ -1,6 +1,7 @@
 package org.easysoa.runtime.api;
 
-import java.util.List;
+import java.io.IOException;
+
 
 /**
  * Source of information regarding deployables.
@@ -8,11 +9,13 @@ import java.util.List;
  * @author mkalam-alami
  *
  */
-public interface DeployableDescriptorProvider<T extends DeployableDescriptor<?>> {
-	
+public interface DeployableDescriptorProvider<T extends DeployableDescriptor<U>, U> {
+
 	/**
-	 * @return A set of descriptors of all found deployables.
+	 * The deployable descriptor matching the requested ID.
+	 * @param id The deployable ID
+	 * @return The matching descriptor or null
 	 */
-	List<T> getDeployableDescriptors();
+	T fetchDeployableDescriptor(U id) throws IOException;
 
 }

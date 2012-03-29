@@ -3,7 +3,6 @@ package org.easysoa.runtime.maven;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import org.easysoa.runtime.api.AbstractDeployable;
 
@@ -19,9 +18,9 @@ public class MavenDeployable extends AbstractDeployable<MavenID> {
 		super(id, is);
 		
 		// Fetch dependencies by exploring POM
-		MavenDeployableDescriptorProvider mavenPOMDescriptorProvider = new MavenDeployableDescriptorProvider(new InputStreamReader(pomIs));
-		List<MavenDeployableDescriptor> deployableDescriptors = mavenPOMDescriptorProvider.getDeployableDescriptors();
-		this.dependencies = deployableDescriptors.get(0).getDependencies();
+		MavenPom mavenPom = new MavenPom(new InputStreamReader(pomIs));
+		MavenDeployableDescriptor deployableDescriptor = mavenPom.getDeployableDescriptor();
+		this.dependencies = deployableDescriptor.getDependencies();
 		pomIs.close();
 	}
 	

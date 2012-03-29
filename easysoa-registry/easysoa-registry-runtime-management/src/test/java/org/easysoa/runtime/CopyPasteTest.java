@@ -11,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import java.io.File;
 import java.io.IOException;
 
-import org.codehaus.plexus.util.FileUtils;
 import org.easysoa.runtime.api.Deployable;
 import org.easysoa.runtime.api.event.OnDeployListener;
 import org.easysoa.runtime.api.event.OnUndeployListener;
@@ -19,6 +18,7 @@ import org.easysoa.runtime.copypaste.CopyPasteServer;
 import org.easysoa.runtime.utils.FileDeployable;
 import org.junit.Before;
 import org.junit.Test;
+import org.nuxeo.common.utils.FileUtils;
 
 public class CopyPasteTest {
 
@@ -31,7 +31,7 @@ public class CopyPasteTest {
 
 	@Before
 	public void clearServer() throws IOException {
-		FileUtils.deleteDirectory(SERVER_FOLDER);
+		FileUtils.deleteTree(new File(SERVER_FOLDER));
 	}
 	
 	@Test

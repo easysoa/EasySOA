@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.plexus.util.FileUtils;
 import org.easysoa.runtime.api.DeployableDescriptor;
 import org.easysoa.runtime.copypaste.CopyPasteServer;
 import org.easysoa.runtime.maven.MavenDeployable;
@@ -20,6 +19,7 @@ import org.easysoa.runtime.maven.MavenRepository;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.nuxeo.common.utils.FileUtils;
 
 public class MavenTest {
 
@@ -40,7 +40,7 @@ public class MavenTest {
 	
 	@Before
 	public void clearServer() throws IOException {
-		FileUtils.deleteDirectory(SERVER_FOLDER);
+		FileUtils.deleteTree(new File(SERVER_FOLDER));
 	}
 	
 	@Test
