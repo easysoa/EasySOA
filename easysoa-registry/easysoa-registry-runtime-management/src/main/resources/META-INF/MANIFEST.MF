@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: mkalam-alami
+Build-Jdk: 1.6.0_24
+Bundle-ManifestVersion: 2
+Bundle-Name: easysoa-registry-runtime-management
+Bundle-SymbolicName: org.easysoa.registry.runtimemanagement;singleton:=true
+Bundle-Vendor: EasySOA Consortium
+Nuxeo-Require: org.easysoa.registry.core
+Nuxeo-Component: 
