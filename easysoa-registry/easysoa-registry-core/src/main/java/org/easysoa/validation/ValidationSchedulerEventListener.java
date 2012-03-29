@@ -151,7 +151,7 @@ public class ValidationSchedulerEventListener implements EventListener {
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> files = (List<Map<String, Object>>) workspaceModel.getProperty("files", "files");
 					Map<String, Object> newFile = new HashMap<String, Object>();
-					newFile.put("filename", "Validation report - " + new Date(System.currentTimeMillis()).toString());
+					newFile.put("filename", "Validation report - " + new Date(System.currentTimeMillis()).toString() + ".html");
 					newFile.put("file", new StringBlob(reportAsString));
 	
 					files.add(newFile);
