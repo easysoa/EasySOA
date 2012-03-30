@@ -18,12 +18,11 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class RuntimeManagementService extends DefaultComponent {
 
-	Map<String, DeployableProvider<?, ?>> deployableProviders = new HashMap<String, DeployableProvider<?, ?>>();
+	Map<String, DeployableProvider<?>> deployableProviders = new HashMap<String, DeployableProvider<?>>();
 	
 	// TODO Transform into extension point(s)
 	@Override
 	public void activate(ComponentContext context) throws Exception {
-		
 		
 		/*
 		 <deployableProvider>
@@ -34,7 +33,7 @@ public class RuntimeManagementService extends DefaultComponent {
 		 </deployableProvider>
 		 */
 		URL mavenRepositoryUrl = new URL("http://search.maven.org/remotecontent?filepath=");
-		DeployableProvider<?, ?> mavenRepository = new MavenRepository(mavenRepositoryUrl);
+		DeployableProvider<?> mavenRepository = new MavenRepository(mavenRepositoryUrl);
 		deployableProviders.put("Maven Repository", mavenRepository);
 		
 	}
@@ -43,7 +42,7 @@ public class RuntimeManagementService extends DefaultComponent {
 		return deployableProviders.keySet();
 	}
 	
-	public DeployableProvider<?, ?> getDeployableProvider(String name) {
+	public DeployableProvider<?> getDeployableProvider(String name) {
 		return deployableProviders.get(name);
 	}
 	

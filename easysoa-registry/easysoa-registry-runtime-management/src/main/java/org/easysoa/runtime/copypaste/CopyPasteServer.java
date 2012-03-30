@@ -17,8 +17,8 @@ import org.easysoa.runtime.api.RuntimeDeployableService;
 import org.easysoa.runtime.utils.FileDeployable;
 
 public class CopyPasteServer extends CopyPasteServerEventService implements 
-	RuntimeServer<FileDeployable, CopyPasteServerEventService>,
-	RuntimeDeployableService<FileDeployable> {
+	RuntimeServer<Deployable<?>, CopyPasteServerEventService>,
+	RuntimeDeployableService<Deployable<?>> {
 	
 	private static final int BUFFER_SIZE = 4096;
 
@@ -46,7 +46,7 @@ public class CopyPasteServer extends CopyPasteServerEventService implements
 	}
 
 	@Override
-	public boolean deploy(FileDeployable deployable) throws IOException {
+	public boolean deploy(Deployable<?> deployable) throws IOException {
 		File targetFile = getTargetFile(deployable);
 		if (!targetFile.exists()) {
 			BufferedInputStream bis = new BufferedInputStream(deployable.getInputStream());
@@ -67,7 +67,7 @@ public class CopyPasteServer extends CopyPasteServerEventService implements
 	}
 
 	@Override
-	public boolean undeploy(FileDeployable deployable) {
+	public boolean undeploy(Deployable<?> deployable) {
 		File targetFile = getTargetFile(deployable);
 		if (targetFile.exists()) {
 			boolean success = targetFile.delete();
@@ -83,9 +83,9 @@ public class CopyPasteServer extends CopyPasteServerEventService implements
 	}
 
 	@Override
-	public List<FileDeployable> getDeployedDeployables() {
+	public List<Deployable<?>> getDeployedDeployables() {
 		File[] files = deployablesDirectory.listFiles();
-		List<FileDeployable> result = new LinkedList<FileDeployable>();
+		List<Deployable<?>> result = new LinkedList<Deployable<?>>();
 		for (File file : files) {
 			try {
 				result.add(new FileDeployable(file));
@@ -101,12 +101,12 @@ public class CopyPasteServer extends CopyPasteServerEventService implements
 	}
 
 	@Override
-	public boolean start(FileDeployable deployable) throws UnsupportedOperationException {
+	public boolean start(Deployable<?> deployable) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException("Can't start copy/paste server");
 	}
 
 	@Override
-	public boolean stop(FileDeployable deployable) throws UnsupportedOperationException {
+	public boolean stop(Deployable<?> deployable) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException("Can't stop copy/paste server");
 	}
 
@@ -116,7 +116,7 @@ public class CopyPasteServer extends CopyPasteServerEventService implements
 	}
 
 	@Override
-	public RuntimeDeployableService<FileDeployable> getDeployableService() {
+	public RuntimeDeployableService<Deployable<?>> getDeployableService() {
 		return this;
 	}
 

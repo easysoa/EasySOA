@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface RuntimeDeployableService<T extends Deployable<?>> {
 
-	boolean deploy(T deployable) throws IOException;
+	boolean deploy(Deployable<?> deployable) throws IOException;
 
-	boolean undeploy(T deployable) throws IOException;
+	boolean undeploy(Deployable<?> deployable) throws IOException;
 
-	boolean start(T deployable) throws UnsupportedOperationException;
+	boolean start(Deployable<?> deployable) throws UnsupportedOperationException;
 
-	boolean stop(T deployable) throws UnsupportedOperationException;
+	boolean stop(Deployable<?> deployable) throws UnsupportedOperationException;
 	
 	List<T> getDeployedDeployables();
 	

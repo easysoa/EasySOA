@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import junit.framework.Assert;
+
 import org.easysoa.runtime.api.DeployableController;
 import org.easysoa.runtime.copypaste.CopyPasteServer;
 import org.easysoa.runtime.maven.MavenDeployableDescriptor;
@@ -49,6 +51,9 @@ public class DeployableControllerTest {
 		deployableController.deploy(FILE_DEPLOYABLE_NAME); 
 		
 		deployableController.startServer();
+		
+		// Should be 9, but 2 dependencies lack their version number (unsupported right now)
+		Assert.assertTrue(new File(SERVER_FOLDER).list().length >= 7);
 		
 	}
 	

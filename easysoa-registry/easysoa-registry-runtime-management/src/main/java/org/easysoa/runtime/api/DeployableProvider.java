@@ -8,13 +8,13 @@ import java.io.IOException;
  * @author mkalam-alami
  *
  */
-public interface DeployableProvider<T extends Deployable<?>, U> {
+public interface DeployableProvider<T extends Deployable<?>> {
 	
 	/**
 	 * Retrieves the specified deployable 
 	 * @param descriptor
 	 * @return
 	 */
-	T fetchDeployable(U id) throws IOException;
+	T fetchDeployable(Object id) throws IOException;
 
 }

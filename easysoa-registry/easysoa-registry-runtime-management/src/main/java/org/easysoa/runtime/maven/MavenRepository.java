@@ -18,7 +18,7 @@ import org.easysoa.runtime.api.DeployableProvider;
  * @author mkalam-alami
  *
  */
-public class MavenRepository implements DeployableProvider<MavenDeployable, MavenID>, 
+public class MavenRepository implements DeployableProvider<MavenDeployable>, 
 		DeployableDescriptorProvider<MavenDeployableDescriptor, MavenID> {
 
 	private static final String JAR_EXT = "jar";
@@ -44,15 +44,31 @@ public class MavenRepository implements DeployableProvider<MavenDeployable, Mave
 	}
 
 	@Override
-	public MavenDeployable fetchDeployable(MavenID id) throws IOException {
-		return new MavenDeployable(id, getUrl(id, JAR_EXT).openStream(), getUrl(id, POM_EXT).openStream());
+	public MavenDeployable fetchDeployable(Object id) throws IOException {
+		if (id instanceof MavenID) {
+			MavenID mavenId = (MavenID) id;
+			URL jarUrl = getUrl(mavenId, JAR_EXT);
+			if (jarUrl != null) {
+				URL pomUrl = getUrl(mavenId, POM_EXT);
+				if (pomUrl != null) {
+					return new MavenDeployable(mavenId, jarUrl.openStream(), pomUrl.openStream());
+				}
+			}
+		}
+		return null;
 	}
 	
 	public MavenDeployableDescriptor fetchDeployableDescriptor(MavenID id) throws IOException {
 		// Use POM as a DeployableDescriptorProvider to find deployable's dependencies
 		InputStreamReader inputStreamReader;
 		try {
-			inputStreamReader = new InputStreamReader(getUrl(id, POM_EXT).openStream());
+			URL pomUrl = getUrl(id, POM_EXT);
+			if (pomUrl != null) {
+				inputStreamReader = new InputStreamReader(pomUrl.openStream());
+			}
+			else {
+				return null;
+			}
 		}
 		catch (IOException e) {
 			throw new IOException("Could not download POM for specified artifact", e);
@@ -62,6 +78,10 @@ public class MavenRepository implements DeployableProvider<MavenDeployable, Mave
 	
 	private URL getUrl(MavenID id, String extension) {
 		try {
+			if (id.getVersion() == null) { // XXX Managed versions are unsupported
+				log.warn("Ignoring artifact " + id.toString() + " as its version number is missing");
+				return null;
+			}
 			return new URL(baseUri.toString() 
 					+ id.getGroupId().replace('.', '/')
 					+ "/" + id.getArtifactId()
