@@ -25,6 +25,10 @@ public class CopyPasteServer extends CopyPasteServerEventService implements
 	private static Logger logger = Logger.getLogger(CopyPasteServer.class);
 	
 	private File deployablesDirectory;
+
+	public CopyPasteServer(String deployablesDirectory) {
+		this(new File(deployablesDirectory));
+	}
 	
 	public CopyPasteServer(File deployablesDirectory) {
 		if (!deployablesDirectory.isDirectory()) {
