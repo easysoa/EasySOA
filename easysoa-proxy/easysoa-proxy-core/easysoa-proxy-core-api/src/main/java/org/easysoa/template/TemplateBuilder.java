@@ -6,7 +6,7 @@ package org.easysoa.template;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.template.TemplateField.TemplateFieldType;
+import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
 import com.openwide.easysoa.message.QueryParam;
 
 /**
@@ -56,7 +56,7 @@ public class TemplateBuilder {
 			throw new IllegalArgumentException("Parameters fieldSuggestions and originalRecord must not be null !");
 		}
 		//Map<String, String> templateFileMap = new HashMap<String, String>();
-		for(TemplateField field : fieldSuggestions.getTemplateFields()){
+		for(AbstractTemplateField field : fieldSuggestions.getTemplateFields()){
 			logger.debug("Field to replace in a new custom record : " + field.getFieldName() + " = " + field.getDefaultValue());
 			logger.debug("Field type : " + field.getParamType() + ", position in path : " + field.getPathParamPosition());
 

@@ -79,7 +79,7 @@ public class FraSCAtiAppTest{
 	}
 
     @Test
-    @Ignore    
+    //@Ignore    
     public void checkEasySOAApps() throws Exception {
     	// get the Appcomponent with Framework.getCompoenent method
     	AppComponent appComponent = Framework.getService(AppComponent.class);

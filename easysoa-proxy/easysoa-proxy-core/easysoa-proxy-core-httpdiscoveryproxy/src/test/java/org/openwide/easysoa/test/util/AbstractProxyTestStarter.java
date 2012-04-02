@@ -66,7 +66,7 @@ public abstract class AbstractProxyTestStarter {
     public static String getInvokingClassName() {
     	return Thread.currentThread().getStackTrace()[1].getClassName();
     }
-	
+
 	/**
 	 * Start FraSCAti
 	 * @throws Exception 

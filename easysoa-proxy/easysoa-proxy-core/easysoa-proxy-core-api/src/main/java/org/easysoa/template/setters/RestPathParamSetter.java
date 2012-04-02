@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import org.easysoa.template.TemplateField;
-import org.easysoa.template.TemplateField.TemplateFieldType;
+import org.easysoa.template.AbstractTemplateField;
+import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
 
 import com.openwide.easysoa.message.InMessage;
 
@@ -18,7 +18,7 @@ public class RestPathParamSetter implements CustomParamSetter {
 	 * @see org.easysoa.template.CustomParamSetter#isOkFor()
 	 */
 	@Override
-	public boolean isOkFor(TemplateField templateField) {
+	public boolean isOkFor(AbstractTemplateField templateField) {
 		if(TemplateFieldType.PATH_PARAM.equals(templateField.getParamType())){
 			return true;
 		} else {
@@ -30,7 +30,7 @@ public class RestPathParamSetter implements CustomParamSetter {
 	 * @see org.easysoa.template.CustomParamSetter#setParams()
 	 */
 	@Override
-	public void setParam(TemplateField templateField, InMessage inMessage, Map<String, List<String>> params) {
+	public void setParam(AbstractTemplateField templateField, InMessage inMessage, Map<String, List<String>> params) {
 		logger.debug("Set path param for " + templateField.getFieldName());
 		String path = inMessage.getPath();
 		logger.debug("path = " + path);

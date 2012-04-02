@@ -27,19 +27,63 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public class TemplateField {
+public abstract class AbstractTemplateField {
 	
-	private String fieldName;
-	private String fieldType;
-	private String defaultValue;
+    // TODO : Best solution to adapt this class for simulation ??
+    // - Add attributes fields to differentiate input/output fields or for specific input/output data ??
+    // - Or create specific InputTemplateField and OutputTemplateField class, extending abstractTemplateField class ???
+    
+    // Possible to use a common path filed for input and output ??
+    // Maybe using a mask
+    
+    // TODO to have a working simulation engine :
+    
+    // - Try to use and adapt the template engine : this engine wotks only with input at the moment.
+    // think it is possible to make some modifications to have a template engine working also for outputs
+    
+    // Suggestion engine : same pb, work only for inputs.
+    
+    // First step => make modifications to TemplateField and associated classes to have a working model for input/output fields
+   
+    // Question : how to find the required field value to replace (by template expression or by value) in different data format ?
+    // path, query params, form ..., response content (can contains JSON, XML simple text ....)
+    // 
+    
+    // 
+    //req(Extraction) Path, 
+    //res(ReplaceForTemplatization) Path, 
+    
+    /*(req)foundValue, 
+    (resFoundValue NOALLCURRENTCORRELATIONSHAVEEQUALVALUE)
+    
+    correlationLevel 
+    */        
+    
+    // How to add templatefields in updated fld template files ?
+    // Time remaining before the end of the day : 1 hour and 15 minutes !
+    
+    // Field name
+	protected String fieldName;
+	// Field type : string, int .... (not very important at the moment, all the data can be treated as string)
+	// TODO : Maybe better to change the type to indicate an input our output field ???
+	protected String fieldType;
+	// Field default value
+	protected String defaultValue;
 	// Type of parameter : formParam, queryParam, pathParam for rest ... or wsdlParam for ws services
 	// In case of pathParam, we need to have the param position in the URL => See HTTP discovery proxy system to discover and registering app, services, api's
-	private TemplateFieldType paramType;
+	protected TemplateFieldType paramType;
 	// Template to define the parameter position in url path (eg : /X/X/{param}/X), the first '/' represent the root of the path 
-	private int pathParamPosition;
-	// Indicate if the field have to be processed by the assertion engine
 	private boolean fieldEquality;
-	
+
+	/*
+    (fields { (name/id), req(Extraction)Path, res(ReplaceForTemplatization)Path, (req)foundValue, (resFoundValueNOALLCURRENTCORRELATIONSHAVEEQUALVALUE), correlLevel }, resTemplate)
+	 */
+
+	/**
+	 * 
+	 * @author jguillemotte
+	 *
+	 */
 	public enum TemplateFieldType {
 		CONTENT_PARAM,
 		QUERY_PARAM,
@@ -50,11 +94,10 @@ public class TemplateField {
 	/**
 	 * Default constructor
 	 */
-	public TemplateField(){
+	public AbstractTemplateField(){
 		fieldName = "";
 		fieldType = "";
 		defaultValue = "";
-		pathParamPosition = 0;
 		setFieldEquality(true);
 	}
 
@@ -123,22 +166,6 @@ public class TemplateField {
 	}
 
 	/**
-	 * 
-	 * @return
-	 */
-	public int getPathParamPosition() {
-		return pathParamPosition;
-	}
-
-	/**
-	 * Number to define the parameter position in url path (eg : for http://localhost:8088/1/users/show/FR3Aquitaine.xml, the param user correspond to number 4 (FR3Aquitaine.xml)), the first '/' represent the root of the path. 
-	 * @param pathParamPosition
-	 */
-	public void setPathParamPosition(int pathParamPosition) {
-		this.pathParamPosition = pathParamPosition;
-	}
-
-	/**
      * Returns the field equality
 	 * @return true if the field have to be processed by assertion engine, false otherwise
 	 */
@@ -155,4 +182,6 @@ public class TemplateField {
         this.fieldEquality = fieldEquality;
     }
 	
+    public abstract int getPathParamPosition();
+    public abstract void setPathParamPosition(int pathParamPosition);
 }

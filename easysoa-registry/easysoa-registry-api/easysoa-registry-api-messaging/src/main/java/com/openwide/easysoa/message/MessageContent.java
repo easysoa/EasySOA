@@ -47,7 +47,7 @@ public class MessageContent {
 	private ContentType contentType;
     private String encoding;
 	private String comment;
-	
+
 	// Contains an XML or JSON JAVA structure of the rawContent 
 	private JSON JSONContent;
 	private Document XMLContent;
@@ -222,6 +222,22 @@ public class MessageContent {
 		this.comment = comment;
 	}
 
+	/**
+	 * Return true if the message content is a JSON structure
+     * @return true if the message content is an JSON structure, false otherwise
+	 */
+	public boolean isJSONContent(){
+	    return this.JSONContent != null;
+	}
+	
+	/**
+	 * Return true if the message content is an XML structure
+	 * @return true if the message content is an XML structure, false otherwise
+	 */
+	public boolean isXMLContent(){
+	    return this.XMLContent != null;
+	}
+	
 	/**
 	 * Returns the customFields value.
 	 * @return Returns the customFields.

@@ -99,16 +99,85 @@
 			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-core</artifactId>
 		</dependency>
-    <!--
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-frascati</artifactId>
-    </dependency>
-    -->
+    <!--<dependencies>-->
+    <!-- Provided dependencies -->
+        <dependency>
+            <groupId>org.nuxeo.runtime</groupId>
+            <artifactId>nuxeo-runtime-bridge</artifactId>
+            <version>5.4.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo</groupId>
+            <artifactId>nuxeo-frascati</artifactId>
+            <version>0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-frascati</artifactId>
+            <version>0.4-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.ow2.frascati</groupId>
+                    <artifactId>frascati-binding-factory</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ow2.frascati</groupId>
+                    <artifactId>frascati-runtime-factory</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ow2.frascati.osgi</groupId>
+                    <artifactId>frascati-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.easysoa.frascati</groupId>
+                    <artifactId>easysoa-frascati-service</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.frascati</groupId>
+            <artifactId>easysoa-frascati-service-api</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.easysoa.registry.api</groupId>
             <artifactId>easysoa-registry-api-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.model</groupId>
+            <artifactId>frascati-model</artifactId>
+            <version>2.0.1.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>ecore</artifactId>
+            <version>2.4.0</version>
+            <scope>provided</scope>
+        </dependency>-->
+    	<!-- EasySOA core deps -->
+        <dependency>
+            <groupId>org.easysoa.registry</groupId>
+            <artifactId>easysoa-registry-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    	<!--
+    	<dependency>
+      		<groupId>org.easysoa.registry.api</groupId>
+      		<artifactId>easysoa-registry-api-frascati</artifactId>
+    	</dependency>
+    	-->
+        <!--<dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>-->
         <dependency>
             <groupId>org.easysoa.registry.api</groupId>
             <artifactId>easysoa-registry-api-local</artifactId>

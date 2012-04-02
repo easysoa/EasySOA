@@ -3,8 +3,10 @@
  */
 package org.easysoa.template;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sf.json.JSONArray;
@@ -15,6 +17,10 @@ import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.correlation.CandidateField;
 import org.easysoa.records.correlation.CorrelationService;
+import org.easysoa.template.parsers.JSONParser;
+import org.easysoa.template.parsers.TemplateParser;
+import org.easysoa.template.parsers.XMLParser;
+
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.QueryParam;
@@ -44,7 +50,7 @@ public class TemplateFieldSuggester {
 	 * Suggest fields to use in a template from an exchange record
 	 * @return 
 	 */
-	// TODO :  Establish correlations whit only one record ??? seem's to not work very well
+	// TODO :  Establish correlations with only one record ??? seem's to not work very well
 	public TemplateFieldSuggestions suggest(ExchangeRecord record){
 		// from record, Get the inMessage
 		// try to find all the fields (headers, form, ...)
@@ -63,18 +69,17 @@ public class TemplateFieldSuggester {
 	    // => in this case, here we could return all input fields (as a worse case) 
 		CorrelationService correlationService = new CorrelationService();
 		return correlationService.correlateWithSubpath(record,
-				getPathParams(record.getInMessage()),
-				getQueryParams(record.getInMessage()),
-				getContentParam(record.getInMessage()),
-				getOutFields(record.getOutMessage()));
-		//
+				getInputPathParams(record.getInMessage()),
+				getInputQueryParams(record.getInMessage()),
+				getInputContentParam(record.getInMessage()),
+				getOutputFields(record.getOutMessage()));
+
 		/*correlationService.correlate(record,
 				getPathParams(record.getInMessage()),
 				getQueryParams(record.getInMessage()),
 				getContentParam(record.getInMessage()),
 				getOutFields(record.getOutMessage()));
 		*/		
-		//
 	}
 	
 	/**
@@ -82,16 +87,34 @@ public class TemplateFieldSuggester {
 	 * @param outMessage
 	 * @return
 	 */
-	private HashMap<String, CandidateField> getOutFields(OutMessage outMessage){
+	private HashMap<String, CandidateField> getOutputFields(OutMessage outMessage){
 		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
 		// TODO add code here to fill hashmap with output fields
 		// Message content can be very different (json, xml ...)
 		// TODO Add a system to choose the parser corresponding to the out message content
 		// Today only a json parser for out message
 		logger.debug("outMessage " + outMessage.getMessageContent().getRawContent());
+		List<TemplateParser> templateParserList = new ArrayList<TemplateParser>();
+		templateParserList.add(new JSONParser());
+		templateParserList.add(new XMLParser());
+		// TODO : Add a parser for simple text content
 		try{
-			JSONObject jsonOutObject = (JSONObject) JSONSerializer.toJSON(outMessage.getMessageContent().getRawContent());
-			findJSONOutFields("root", jsonOutObject, -1, fieldMap);
+		    for(TemplateParser parser : templateParserList){
+		        if(parser.canParse(outMessage)){
+		            parser.parse(outMessage, fieldMap);
+		            break;
+		        }
+		    }
+		    // If message content is a JSON
+			/*if(outMessage.getMessageContent().isJSONContent()){
+			    JSONParser jsonParser = new JSONParser();
+			    jsonParser.parse(outMessage, fieldMap);
+			} 
+			// if message structure is an XML structure
+			else if(outMessage.getMessageContent().isXMLContent()){
+			    XMLParser xmlParser = new XMLParser();
+			    xmlParser.parse(outMessage, fieldmap);
+			}*/
 		}
 		catch(Exception ex){
 			logger.warn("Response is not a JSON string, trying another parser to find output fields");
@@ -107,7 +130,7 @@ public class TemplateFieldSuggester {
 	 * @param index
 	 * @param fieldMap
 	 */
-	private void findJSONOutFields(String objectKey, Object jsonObject, int index, HashMap<String,CandidateField> fieldMap){
+	/*private void findJSONOutFields(String objectKey, Object jsonObject, int index, HashMap<String,CandidateField> fieldMap){
 		if(jsonObject instanceof JSONObject){
 			// Get all the key contained in the object and for each key, get the associated object and call this recursive method
 			logger.debug("Instance of JSONObject found");
@@ -141,14 +164,14 @@ public class TemplateFieldSuggester {
 			fieldMap.put(fieldName, field);
 			return;
 		}
-	}
+	}*/
 	
 	/**
 	 * 
 	 * @param inMessage
 	 * @return
 	 */
-	private HashMap<String, CandidateField> getPathParams(InMessage inMessage){
+	private HashMap<String, CandidateField> getInputPathParams(InMessage inMessage){
 		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
 		CandidateField field;
 		StringTokenizer tokenizer = new StringTokenizer(inMessage.getPath(), "/");
@@ -169,7 +192,7 @@ public class TemplateFieldSuggester {
 	 * @param inMessage <code>InMessage</code> containing query params
 	 * @return An <code>HashMap</code> filled with query parameters 
 	 */
-	private HashMap<String, CandidateField> getQueryParams(InMessage inMessage){
+	private HashMap<String, CandidateField> getInputQueryParams(InMessage inMessage){
 		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
 		CandidateField candidateField;
 		for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
@@ -188,7 +211,7 @@ public class TemplateFieldSuggester {
 	 */
 	// TODO : Change this code .... For REST request, content params are processed as query params
 	// For SOAP request, need to add code to parse the xml. 
-	private HashMap<String, CandidateField> getContentParam(InMessage inMessage){
+	private HashMap<String, CandidateField> getInputContentParam(InMessage inMessage){
 		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
 		CandidateField candidateField;
 		StringTokenizer tokenizer = new StringTokenizer(inMessage.getMessageContent().getRawContent(), "&");

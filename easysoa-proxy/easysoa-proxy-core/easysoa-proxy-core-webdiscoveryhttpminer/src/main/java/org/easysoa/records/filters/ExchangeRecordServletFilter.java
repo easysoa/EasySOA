@@ -62,8 +62,8 @@ public class ExchangeRecordServletFilter implements Filter {
             runManager.start(HANDLER_RUN_NAME_PREFIX + System.currentTimeMillis());
         }
         catch(Exception ex){
-            // TODO : add a better error gestion
             ex.printStackTrace();
+            logger.debug("An error occurs during the initialization of the filter", ex);
         }
      }
 
@@ -76,7 +76,12 @@ public class ExchangeRecordServletFilter implements Filter {
             HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper((HttpServletResponse)response);
             chain.doFilter(requestWrapper, responseWrapper);
             if(exchangeHandler != null){
-                exchangeHandler.handleExchange(requestWrapper, responseWrapper);
+                try {
+                    exchangeHandler.handleExchange(requestWrapper, responseWrapper);
+                }
+                catch(Exception ex){
+                    logger.error("An error occurs during the exchange handling", ex);
+                }
             }
         }
         else {
@@ -94,8 +99,8 @@ public class ExchangeRecordServletFilter implements Filter {
                 runManager.delete();
             }
             catch(Exception ex){
-                // TODO : Add a better error gestion
                 ex.printStackTrace();
+                logger.debug("An error occurs during the creation of the echange record store", ex);
             }
         }
     }

@@ -185,10 +185,7 @@ public class RemoteFraSCAtiServiceProvider implements
         }
         for(Object o : subComponents)
         {
-            Object nameController = componentClass.getDeclaredMethod(
-               "getFcInterface",new Class<?>[]{String.class}).invoke(
-                currentComponent,"name-controller");
-            
+            Object nameController = componentClass.getDeclaredMethod("getFcInterface",new Class<?>[]{String.class}).invoke(o,"name-controller");            
             
             String name = (String) nameControllerClass.getDeclaredMethod("getFcName",
                    (Class<?>[])null).invoke(nameController,(Object[])null);

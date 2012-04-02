@@ -34,7 +34,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.reports.Report;
-import org.easysoa.template.TemplateField;
+import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.VelocityTemplate;
 import com.openwide.easysoa.message.Header;
@@ -210,7 +210,7 @@ public class ProxyFileStore {
         // Transform the resource in TemplteFieldSuggestions
         @SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
-        classMap.put("templateFields", TemplateField.class);
+        classMap.put("templateFields", AbstractTemplateField.class);
         return (TemplateFieldSuggestions) convertJSONToObject(resource.getContent(), TemplateFieldSuggestions.class, classMap); 
     }
     

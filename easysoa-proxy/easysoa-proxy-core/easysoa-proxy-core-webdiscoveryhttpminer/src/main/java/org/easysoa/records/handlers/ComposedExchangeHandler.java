@@ -3,7 +3,6 @@
  */
 package org.easysoa.records.handlers;
 
-import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,9 +22,9 @@ public class ComposedExchangeHandler implements ExchangeHandler {
      * Handle the exchange. Call the handle method for all handlers from the exchange handler list
      * @param request HTTP Servlet request
      * @param response HTTP servlet Response
-     * @throws IOException 
+     * @throws Exception 
      */
-    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception{
         if(exchangeHandlers != null){
             for(ExchangeHandler handler : exchangeHandlers){
                 handler.handleExchange(request, response);

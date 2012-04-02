@@ -52,7 +52,8 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.template.TemplateField;
+import org.easysoa.template.AbstractTemplateField;
+import org.easysoa.template.OutputTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.eclipse.stp.sca.Component;
 import org.eclipse.stp.sca.ComponentReference;
@@ -172,10 +173,10 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        					templateList.add(templateName.substring(0, templateName.lastIndexOf(".")));
 	        				}
 	        			}
-	        			HashMap<String, Map<String, List<TemplateField>>> operationParams = new HashMap<String, Map<String, List<TemplateField>>>();
-	        			HashMap<String, List<TemplateField>> paramsList;
-	        			List<TemplateField> requestOperationParams;
-	        			List<TemplateField> responseOperationParams;
+	        			HashMap<String, Map<String, List<AbstractTemplateField>>> operationParams = new HashMap<String, Map<String, List<AbstractTemplateField>>>();
+	        			HashMap<String, List<AbstractTemplateField>> paramsList;
+	        			List<AbstractTemplateField> requestOperationParams;
+	        			List<AbstractTemplateField> responseOperationParams;
 	        			
 	        			for(String templateName : templateList){
 	        				//templateName = templateName.substring(0, templateName.lastIndexOf("."));
@@ -185,23 +186,23 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
 	        				System.out.println("template index = " + templateIndex);
 	        				// TODO : change the naming convention for the vm and fld files.
 	        				
-	        				paramsList = new HashMap<String, List<TemplateField>>();
+	        				paramsList = new HashMap<String, List<AbstractTemplateField>>();
 	        				operationParams.put(templateName, paramsList);
-	        				requestOperationParams = new ArrayList<TemplateField>();
-	        				responseOperationParams = new ArrayList<TemplateField>();
+	        				requestOperationParams = new ArrayList<AbstractTemplateField>();
+	        				responseOperationParams = new ArrayList<AbstractTemplateField>();
 	        				paramsList.put("inputParams", requestOperationParams);
 	        				paramsList.put("outputParams", responseOperationParams);
 	        				// TODO : Get suggestions for input fields => OK But about the other fields skipped by the correlation, what to do ????
 	        				// But also for output fields => NOK => Need to add correlation method or other to generate a 'output field suggestion file' 
 	        				TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, templateIndex);
-	       	            	for(TemplateField field : templateSuggestion.getTemplateFields()){
+	       	            	for(AbstractTemplateField field : templateSuggestion.getTemplateFields()){
 	       	            		// TODO : do not set the field type here, the type must be set by the field suggester !!
 	       	            		// DOne like that temporary because type is not set in the suggester !!
 	       	            		field.setFieldType("string");
 	       	            		requestOperationParams.add(field);
 	       	            	}
 	       	            	// TODO : At the moment, the response is always returned as a string
-	       	            	TemplateField responseField = new TemplateField();
+	       	            	AbstractTemplateField responseField = new OutputTemplateField();
 	       	            	responseField.setFieldName("response");
 	       	            	responseField.setFieldType("string");
 	       	            	responseOperationParams.add(responseField);

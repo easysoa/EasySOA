@@ -18,8 +18,8 @@ public interface ExchangeHandler {
      * Handle an exchange
      * @param request HTTP Servlet request
      * @param response HTTP Servlet response
-     * @throws IOException 
+     * @throws Exception 
      */
-    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception;
     
 }

@@ -72,7 +72,9 @@ public class OutMessage implements Message {
 	 */
 	public OutMessage(HttpMessageResponseWrapper response) {
         this();
+        // Setting status
         this.setStatus(response.getStatus());
+        // Setting Message content
         MessageContent messageContent = new MessageContent();
         messageContent.setRawContent(response.getMessageContent());
         messageContent.setEncoding(response.getCharacterEncoding());

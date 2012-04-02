@@ -18,13 +18,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 public class TemplateFieldSuggestions {
 
 	// List of template fields
-	private List<TemplateField> templateFields;
+	private List<AbstractTemplateField> templateFields;
 
 	/**
 	 * Constructor
 	 */
 	public TemplateFieldSuggestions() {
-		this.templateFields = new ArrayList<TemplateField>();
+		this.templateFields = new ArrayList<AbstractTemplateField>();
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class TemplateFieldSuggestions {
 	 * @param templateField
 	 * @throws IllegalArgumentException If templateField is null
 	 */
-	public void add(TemplateField templateField) throws IllegalArgumentException {
+	public void add(AbstractTemplateField templateField) throws IllegalArgumentException {
 		if(templateField == null){
 			throw new IllegalArgumentException("templateField must not be null !");
 		}
@@ -45,7 +45,7 @@ public class TemplateFieldSuggestions {
 	 */
     @XmlElement(name="TemplateField")
     @XmlElementWrapper(name="templateFields")
-	public List<TemplateField> getTemplateFields() {
+	public List<AbstractTemplateField> getTemplateFields() {
 		return templateFields;
 	}
 
@@ -53,7 +53,7 @@ public class TemplateFieldSuggestions {
 	 * 
 	 * @param templateFields
 	 */
-	public void setTemplateFields(List<TemplateField> templateFields) {
+	public void setTemplateFields(List<AbstractTemplateField> templateFields) {
 		this.templateFields = templateFields;
 	}	
 }

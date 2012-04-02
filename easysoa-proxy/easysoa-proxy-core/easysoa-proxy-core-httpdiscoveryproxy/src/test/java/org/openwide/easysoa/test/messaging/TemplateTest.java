@@ -27,7 +27,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
-import org.easysoa.template.TemplateField;
+import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -291,7 +291,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	    // test only the first fields
 	    for(int i=1; i<3; i++){
     	    TemplateFieldSuggestions templateFieldSuggestions = fileStore.getTemplateFieldSuggestions(runName, String.valueOf(i));
-    	    for(TemplateField templateField : templateFieldSuggestions.getTemplateFields()) {
+    	    for(AbstractTemplateField templateField : templateFieldSuggestions.getTemplateFields()) {
     	        if(templateField.isFieldEquality()){
     	            logger.debug("FieldName : " + templateField.getFieldName() + ", FieldValue : " + templateField.getDefaultValue());
     	        }

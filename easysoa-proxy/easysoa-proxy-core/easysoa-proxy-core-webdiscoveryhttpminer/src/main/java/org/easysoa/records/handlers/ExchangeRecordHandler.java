@@ -27,7 +27,8 @@ public class ExchangeRecordHandler implements ExchangeHandler {
      * @see org.easysoa.records.handlers.ExchangeHandler#handleExchange(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     @Override
-    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // Builds a new Exchange record with data contained in request and response
         ExchangeRecord record = new ExchangeRecord();
         HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper(request);
         HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper(response);
@@ -35,17 +36,11 @@ public class ExchangeRecordHandler implements ExchangeHandler {
         OutMessage outMessage = new OutMessage(responseWrapper);
         record.setInMessage(inMessage);
         record.setOutMessage(outMessage);
-        // Call runManager to register the exchange record
-        try{
-            // Get the service
-            FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-            RunManager runManager = (RunManager) frascati.getService("runManager", "runManagerService", RunManager.class);
-            runManager.record(record);
-        }
-        catch(Exception ex) {
-            // TODO add a better error gestion
-            ex.printStackTrace();
-        }
+        // Get the service
+        FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+        RunManager runManager = (RunManager) frascati.getService("runManager", "runManagerService", RunManager.class);
+        // Call runManager to register the exchange record 
+        runManager.record(record);
     }
 
 }

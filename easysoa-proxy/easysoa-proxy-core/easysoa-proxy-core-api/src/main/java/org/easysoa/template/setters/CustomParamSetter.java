@@ -5,7 +5,7 @@ package org.easysoa.template.setters;
 
 import java.util.List;
 import java.util.Map;
-import org.easysoa.template.TemplateField;
+import org.easysoa.template.AbstractTemplateField;
 import com.openwide.easysoa.message.InMessage;
 
 /**
@@ -23,7 +23,7 @@ public interface CustomParamSetter {
 	 * Check if the CustomParamSetter is able  
 	 * @return
 	 */
-	public boolean isOkFor(TemplateField templateField);
+	public boolean isOkFor(AbstractTemplateField templateField);
 	
 	/**
 	 * Set the param
@@ -31,6 +31,6 @@ public interface CustomParamSetter {
 	 * @param inMessage
 	 * @param mapParams
 	 */
-	public void setParam(TemplateField templateField, InMessage inMessage, Map<String, List<String>> Params);
+	public void setParam(AbstractTemplateField templateField, InMessage inMessage, Map<String, List<String>> Params);
 	
 }

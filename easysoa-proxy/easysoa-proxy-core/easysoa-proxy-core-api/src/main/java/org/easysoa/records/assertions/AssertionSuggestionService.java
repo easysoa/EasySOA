@@ -4,7 +4,7 @@
 package org.easysoa.records.assertions;
 
 import org.easysoa.records.assertions.StringAssertion.StringAssertionMethod;
-import org.easysoa.template.TemplateField;
+import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
@@ -39,7 +39,7 @@ public class AssertionSuggestionService {
         int i = 0;
         AssertionSuggestions suggestions = new AssertionSuggestions();
         // 
-        for(TemplateField field : fieldSuggestions.getTemplateFields()){
+        for(AbstractTemplateField field : fieldSuggestions.getTemplateFields()){
             // If field equality is true
             if(field.isFieldEquality()){
                 // TODO : How to suggest an other type of assertion ???

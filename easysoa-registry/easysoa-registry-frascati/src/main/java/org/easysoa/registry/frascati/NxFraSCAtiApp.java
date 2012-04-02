@@ -31,6 +31,7 @@ public class NxFraSCAtiApp implements EasySOAApp
         this.appPath = appPath;
     }
 
+    //@Override
     public void start()
     {
         NxFraSCAtiRegistryService nxFraSCAtiRegistryService = Framework
@@ -44,6 +45,7 @@ public class NxFraSCAtiApp implements EasySOAApp
         }
     }
 
+    //@Override
     public void stop()
     {
 
@@ -67,4 +69,5 @@ public class NxFraSCAtiApp implements EasySOAApp
 
         return STARTING_METHOD + ":" + appPath;
     }
+
 }

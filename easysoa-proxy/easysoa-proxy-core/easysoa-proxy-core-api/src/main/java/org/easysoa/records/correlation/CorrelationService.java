@@ -11,8 +11,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.template.TemplateField;
-import org.easysoa.template.TemplateField.TemplateFieldType;
+import org.easysoa.template.AbstractTemplateField;
+import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
+import org.easysoa.template.InputTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
@@ -107,7 +108,7 @@ public class CorrelationService {
      * @param outFieldNb
      */
     private void printCorrelations(HashMap<Integer, CorrelationLevel> correlationLevelMap, int inFieldNb, int outFieldNb) {
-        System.out.println("Found correlations, sorted y level :");
+        logger.debug("Found correlations, sorted y level :");
         ArrayList<CorrelationLevel> correlationLevels = new ArrayList<CorrelationLevel>(correlationLevelMap.values());
         Collections.sort(correlationLevels, new Comparator<CorrelationLevel>() {
             @Override
@@ -121,10 +122,10 @@ public class CorrelationService {
         ArrayList<String> andInPathes, orOutPathes = null;
         for (CorrelationLevel correlationLevel : correlationLevels) {
             //int levelCorrelationNb = correlationLevel.getCorrelations().size();
-            System.out.println();
-            System.out.println(correlationLevel.getLevel() + ":");
+            logger.debug("");
+            logger.debug(correlationLevel.getLevel() + ":");
             for (ReqResFieldCorrelation correlation : correlationLevel.getCorrelations()) {
-                System.out.println("\t" + correlation.getInField() + "\t" + correlation.getOutField() + "\t" + correlation.getInfo());
+                logger.debug("\t" + correlation.getInField() + "\t" + correlation.getOutField() + "\t" + correlation.getInfo());
             }
             
             // TODO better : all in SQL & SQL queries, or datamining...
@@ -167,13 +168,13 @@ public class CorrelationService {
             isAnd = !maxInPathSet.isEmpty()/* && (outFieldNb / ((maxInPathNb == 0) ? 1 : maxInPathNb)) / inFieldNb >= 2*/; // OPTIONAL more result field than query ones ; maxInPathNb = nb of results, outFieldNb / maxInPathNb = nb of fields per item
             isPost = maxInPathSet.isEmpty() && otherInPathSet.isEmpty() && !singleInPathSet.isEmpty() && outFieldNb / inFieldNb <= 2 & inFieldNb <= outFieldNb;
             isGetOnId = maxInPathSet.isEmpty() && otherInPathSet.isEmpty() && !singleInPathSet.isEmpty() && outFieldNb / inFieldNb > 2; 
-            System.out.println("max/other/single/diff: " + maxInPathSet + " ; " + otherInPathSet + " ; " + singleInPathSet + " ; " + inFieldNb + ", " + outFieldNb);
+            logger.debug("max/other/single/diff: " + maxInPathSet + " ; " + otherInPathSet + " ; " + singleInPathSet + " ; " + inFieldNb + ", " + outFieldNb);
             if (isAnd) {
-                System.out.println("Query (and) ! on [" + maxInPathSet + "] and optional [" + otherInPathSet + " ; " + singleInPathSet + "]");
+                logger.debug("Query (and) ! on [" + maxInPathSet + "] and optional [" + otherInPathSet + " ; " + singleInPathSet + "]");
             } else if (isPost) {
-                System.out.println("post ! computed fields (including ids) are [out pathes which are not in correlations]");
+                logger.debug("post ! computed fields (including ids) are [out pathes which are not in correlations]");
             } else if (isGetOnId) {
-                System.out.println("get on id ! id is [" + singleInPathSet + "]");
+                logger.debug("get on id ! id is [" + singleInPathSet + "]");
             }
             
             // for OR
@@ -311,14 +312,14 @@ public class CorrelationService {
         }
         
         // TODO : to remove when finished
-        System.out.println("Found correlations with subpath :");
+        logger.debug("Found correlations with subpath : ");
         for (Object[] correlation : correlations) {
-            System.out.println(correlation[0] + "\t" + correlation[1] + "\t" + correlation[2] + "\t" + correlation[3]);
+            logger.debug(correlation[0] + "\t" + correlation[1] + "\t" + correlation[2] + "\t" + correlation[3]);
         }
-        System.out.println();
+        logger.debug("");
 
         // Convert the correlation result into TemplateFieldSuggestions object
-        return convertToSuggestions(correlations);
+        return convertToInputTemplateFieldSuggestions(correlations);
     }
 
     /**
@@ -326,13 +327,13 @@ public class CorrelationService {
      * @param correlations Correlations
      * @return A <code>TemplatefieldSuggestions</code> containing the fields detected by correlations
      */
-    private TemplateFieldSuggestions convertToSuggestions(ArrayList<Object[]> correlations) {
+    private TemplateFieldSuggestions convertToInputTemplateFieldSuggestions(ArrayList<Object[]> correlations) {
     	TemplateFieldSuggestions suggestions = new TemplateFieldSuggestions();
-    	TemplateField templateField;
+    	InputTemplateField templateField;
     	for (Object[] correlation : correlations) {
     		CandidateField inField = (CandidateField)correlation[1];
     		CandidateField outField = (CandidateField)correlation[2];
-            templateField = new TemplateField();
+            templateField = new InputTemplateField();
             templateField.setFieldName(outField.getName());
             templateField.setDefaultValue(inField.getValue());
             templateField.setFieldType(inField.getType());
@@ -350,6 +351,7 @@ public class CorrelationService {
     	}
     	return suggestions;
     }
+
     
     /**
      * 
