@@ -3,6 +3,8 @@
 
   <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewExtensionPoint/org.nuxeo.ecm.platform.types.TypeService--types</documentation>
 
+  <require>org.nuxeo.ecm.platform.types</require>
+
   <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
 
     <type id="Service" coretype="Service">

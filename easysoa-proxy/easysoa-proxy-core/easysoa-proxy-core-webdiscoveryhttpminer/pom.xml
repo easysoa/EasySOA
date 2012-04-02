@@ -42,6 +42,7 @@
 	<dependency>
         <groupId>org.nuxeo.runtime</groupId>
         <artifactId>nuxeo-runtime-bridge</artifactId>
+        <version>5.5-SNAPSHOT</version>
     	<scope>test</scope>
 	</dependency>
 	<dependency>

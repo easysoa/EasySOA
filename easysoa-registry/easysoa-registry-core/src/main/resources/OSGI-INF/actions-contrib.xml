@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.core.contrib.actions">
 
+  <require>org.nuxeo.ecm.platform.actions</require>
   <!-- Rights by groups (XXX: Doesn't work) -->
   <!--<extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
     <filter id="not_for_business_users">
@@ -36,7 +37,7 @@
       <filter-id>outSection</filter-id>
     </action>
     -->
-    
+
     <!-- SCA Import button -->
     <action id="easysoaImportSubmit" link="#{easysoaImport.runImport}" label="label.easysoa.import.button">
       <category>EASYSOA_IMPORT</category>
@@ -51,19 +52,19 @@
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isSection</filter-id>
     </action>
-    
+
     <!-- AppliImpl update button -->
     <action id="easysoaAppUpdate" link="#{easysoaEnvironmentActions.updateApp}" label="label.easysoa.updateapp.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isAppliImpl</filter-id>
     </action>
-    
+
     <!-- SoapUi config download link -->
     <action id="easysoaSoapUiLink" link="#{webEngineRedirection.downloadSoapUIConfForCurrentDocument}" label="label.easysoa.soapui.button">
       <category>SUBVIEW_UPPER_LIST</category>
       <filter-id>isServiceContainer</filter-id>
     </action>
-    
+
     <!-- Properties file download link -->
     <action id="easysoaPropertiesLink" link="#{webEngineRedirection.downloadPropertiesForCurrentDocument}" label="label.easysoa.properties.button">
       <category>SUBVIEW_UPPER_LIST</category>
@@ -112,6 +113,7 @@
         <facet>Folderish</facet>
       </rule>
       <rule grant="false">
+        <type>Workspace</type>
         <type>AppliImpl</type>
         <type>ServiceAPI</type>
       </rule>
@@ -120,11 +122,11 @@
     <filter id="view_easysoa_content">
       <rule grant="true">
         <permission>ReadChildren</permission>
+        <type>Workspace</type>
         <type>AppliImpl</type>
         <type>ServiceAPI</type>
       </rule>
     </filter>
-
 
   </extension>
 
