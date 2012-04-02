@@ -32,11 +32,6 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
-import org.objectweb.fractal.api.Component;
-import org.ow2.frascati.FraSCAti;
-import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
-import org.ow2.frascati.util.FrascatiClassLoader;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * Abstract Proxy Test Starter. Launch FraSCAti and the HTTP Discovery Proxy.
@@ -86,7 +81,7 @@ public abstract class AbstractProxyTestStarter {
 	 * 
 	 * @throws FrascatiException
 	 */
-	protected static void stopFraSCAti() throws FrascatiException{
+	protected static void stopFraSCAti() throws Exception{
 		logger.info("FraSCATI Stopping");
 		if(componentList != null){
 			//for(Component component : componentList){
@@ -104,7 +99,7 @@ public abstract class AbstractProxyTestStarter {
 	 * @throws FrascatiException
 	 * @throws FraSCAtiServiceException 
 	 */
-	protected static void startHttpDiscoveryProxy(String composite, URL...urls) throws FrascatiException, FraSCAtiServiceException {
+	protected static void startHttpDiscoveryProxy(String composite, URL...urls) throws Exception {
 		logger.info("HTTP Discovery Proxy Starting");
 		//Component component = frascati.processComposite(composite,new ProcessingContextImpl(new FrascatiClassLoader(urls)));
 		String component = frascati.processComposite(composite, FraSCAtiServiceItf.all ,urls);
@@ -117,7 +112,7 @@ public abstract class AbstractProxyTestStarter {
 	 * @throws FrascatiException if a problem occurs during the start of composites
 	 * @throws FraSCAtiServiceException 
 	 */
-	protected static void startMockServices(boolean withNuxeoMock) throws FrascatiException, FraSCAtiServiceException {
+	protected static void startMockServices(boolean withNuxeoMock) throws Exception {
 		logger.info("Services Mock Starting");
 		//componentList.add(frascati.processComposite("twitterMockRest.composite", new ProcessingContextImpl()));
 		componentList.add(frascati.processComposite("twitterMockRest.composite"));

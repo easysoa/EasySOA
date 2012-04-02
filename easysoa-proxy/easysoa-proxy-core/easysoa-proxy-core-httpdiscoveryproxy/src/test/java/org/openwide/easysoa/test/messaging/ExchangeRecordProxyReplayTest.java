@@ -34,7 +34,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.records.assertions.AssertionEngineImpl;
@@ -53,7 +52,6 @@ import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.ow2.frascati.util.FrascatiException;
 import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.ContentReader;
@@ -342,7 +340,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
      * @throws FrascatiException
      */
     @AfterClass
-    public static void cleanUp() throws FrascatiException{
+    public static void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }	

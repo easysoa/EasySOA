@@ -38,7 +38,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.ow2.frascati.util.FrascatiException;
 import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;
@@ -151,7 +150,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
      * @throws FrascatiException
      */
     @AfterClass
-    public static void cleanUp() throws FrascatiException{
+    public static void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }	

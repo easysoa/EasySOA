@@ -21,14 +21,11 @@
 package org.openwide.easysoa.test;
 
 import org.apache.log4j.Logger;
-import org.easysoa.frascati.FraSCAtiServiceException;
-import org.json.JSONException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * HTTP Discovery Proxy Test Starter.
@@ -58,7 +55,7 @@ public class ProxyStarter extends AbstractProxyTestStarter {
      * @throws FrascatiException
      */
     @AfterClass
-    public static void cleanUp() throws FrascatiException{
+    public static void cleanUp() throws Exception {
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }

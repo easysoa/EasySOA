@@ -37,7 +37,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -79,7 +78,7 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
      * @throws FrascatiException
      */
     @AfterClass
-    public static void cleanUp() throws FrascatiException{
+    public static void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }    

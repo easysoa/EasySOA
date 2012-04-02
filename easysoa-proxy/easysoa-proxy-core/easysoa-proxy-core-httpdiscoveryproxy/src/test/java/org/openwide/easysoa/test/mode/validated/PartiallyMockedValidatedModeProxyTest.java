@@ -32,7 +32,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -40,7 +39,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.ow2.frascati.util.FrascatiException;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 import org.easysoa.EasySOAConstants;
 
@@ -75,7 +73,7 @@ public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStar
      * @throws FrascatiException
      */
     @AfterClass
-    public static void cleanUp() throws FrascatiException{
+    public static void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }    

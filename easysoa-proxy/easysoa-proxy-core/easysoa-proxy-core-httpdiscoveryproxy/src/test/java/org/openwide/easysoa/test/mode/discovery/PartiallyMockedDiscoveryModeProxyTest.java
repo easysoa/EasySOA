@@ -22,13 +22,11 @@ package org.openwide.easysoa.test.mode.discovery;
 
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.json.JSONException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openwide.easysoa.test.helpers.DiscoveryModeProxyTestBase;
 import org.openwide.easysoa.test.helpers.PartiallyMockedServiceTestHelper;
 import org.openwide.easysoa.test.helpers.ServiceTestHelperBase;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * Complete test suite of HTTP Discovery Proxy
@@ -74,7 +72,7 @@ public class PartiallyMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTes
      * @throws FrascatiException
      */
     @AfterClass
-    public static void cleanUp() throws FrascatiException{
+    public static void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }
