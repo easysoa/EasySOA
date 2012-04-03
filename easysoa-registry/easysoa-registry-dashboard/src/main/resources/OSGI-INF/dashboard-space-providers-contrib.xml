@@ -2,6 +2,9 @@
 <component name="org.easysoa.dashboard.contrib.spaceproviders" version="1.0">
 
   <require>org.nuxeo.ecm.user.center.dashboard.opensocial.spaceprovider</require>
+  
+  <!-- Override the Social Collab space providers -->
+  <require>org.nuxeo.ecm.social.workspace.spaceprovider</require>
 
   <extension target="org.nuxeo.ecm.spaces.core.spacemanager.service" point="spaceProviders">
     <spaceProvider name="userDashboardSpaceProvider">

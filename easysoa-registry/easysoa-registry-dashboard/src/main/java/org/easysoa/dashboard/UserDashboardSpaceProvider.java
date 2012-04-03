@@ -58,6 +58,7 @@ import org.nuxeo.ecm.spaces.api.AbstractSpaceProvider;
 import org.nuxeo.ecm.spaces.api.Space;
 import org.nuxeo.ecm.spaces.api.SpaceManager;
 import org.nuxeo.ecm.spaces.api.exceptions.SpaceException;
+import org.nuxeo.ecm.spaces.helper.WebContentHelper;
 import org.nuxeo.opensocial.container.server.webcontent.api.WebContentAdapter;
 import org.nuxeo.opensocial.container.shared.webcontent.OpenSocialData;
 import org.nuxeo.opensocial.container.shared.webcontent.WebContentData;
@@ -105,13 +106,14 @@ public class UserDashboardSpaceProvider extends AbstractSpaceProvider {
             DocumentModel existingSpace = session.getDocument(spaceRef);
             return existingSpace.getAdapter(Space.class);
         } else {
-
-            // EasySOA: Create default dashboard
-            DefaultDashboardSpaceCreator spaceCreator = new DefaultDashboardSpaceCreator(session, parameters);
-            spaceCreator.runUnrestricted();
-            if (spaceCreator.defaultDashboardSpaceRef != null) {
-                Space space = session.getDocument(spaceCreator.defaultDashboardSpaceRef)
-                        .getAdapter(Space.class);
+            // copy the existing one from /management
+            DefaultDashboardSpaceCopy defaultDashboardSpaceCopy = new DefaultDashboardSpaceCopy(
+                    session, parameters, userWorkspacePath);
+            defaultDashboardSpaceCopy.runUnrestricted();
+            if (defaultDashboardSpaceCopy.copiedSpaceRef != null) {
+                Space space = session.getDocument(
+                        defaultDashboardSpaceCopy.copiedSpaceRef).getAdapter(
+                        Space.class);
                 if (space != null) {
                     i18nGadgets(space, session, parameters);
                     return space;
@@ -210,6 +212,12 @@ public class UserDashboardSpaceProvider extends AbstractSpaceProvider {
                 session.saveDocument(newSpace);
                 session.save();
                 copiedSpaceRef = newSpace.getRef();
+                
+                // EasySOA: Add service stats gadget
+                Space copiedSpace = spaceManager.getSpaceFromId(newSpace.getId(), session);
+                WebContentHelper.createOpenSocialGadget(copiedSpace, session, null,
+                        "servicestats", 0, 0, 0);
+                
             }
         }
 
