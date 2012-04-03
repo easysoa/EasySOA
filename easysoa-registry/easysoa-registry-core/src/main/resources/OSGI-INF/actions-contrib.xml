@@ -73,8 +73,8 @@
 
   </extension>
 
-  <!-- Enable "new" button for custom folder types -->
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
+    <!-- Enable "new" button for custom folder types -->
     <filter id="create">
       <rule grant="true">
         <type>Workspace</type>
@@ -82,6 +82,8 @@
         <type>ServiceAPI</type>
       </rule>
     </filter>
+    
+    <!-- Filters for specific document types -->
     <filter id="isWorkspace">
       <rule grant="true">
         <type>Workspace</type>
