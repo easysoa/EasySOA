@@ -6,12 +6,12 @@
   <extension target="org.nuxeo.ecm.directory.ui.DirectoryUIManager" point="directories">
 
     <directory name="application" layout="vocabulary" sortField="label" />
-    <directory name="environment" layout="vocabulary" sortField="label">
-      <deleteConstraint class="org.nuxeo.ecm.directory.api.ui.HierarchicalDirectoryUIDeleteConstraint">
-        <property name="targetDirectory">server</property>
-        <property name="targetDirectoryField">parent</property>
-      </deleteConstraint>
-    </directory>
+<!--     <directory name="environment" layout="vocabulary" sortField="label"> -->
+<!--       <deleteConstraint class="org.nuxeo.ecm.directory.api.ui.HierarchicalDirectoryUIDeleteConstraint"> -->
+<!--         <property name="targetDirectory">server</property> -->
+<!--         <property name="targetDirectoryField">parent</property> -->
+<!--       </deleteConstraint> -->
+<!--     </directory> -->
     <directory name="server" layout="server_vocabulary" sortField="label" />
 
   </extension>

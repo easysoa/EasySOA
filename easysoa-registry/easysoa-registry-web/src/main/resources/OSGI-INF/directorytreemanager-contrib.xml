@@ -16,11 +16,11 @@
       <directory>application</directory>
     </directoryTree>
 
-    <directoryTree name="byLocationNavigation" label="label.easysoa.navlocation" contentView="byLocationContentView"
-      field="location" schema="querynav2" outcome="location_virtual_navigation">
-      <directory>environment</directory>
-      <directory>server</directory>
-    </directoryTree>
+<!--     <directoryTree name="byLocationNavigation" label="label.easysoa.navlocation" contentView="byLocationContentView" -->
+<!--       field="location" schema="querynav2" outcome="location_virtual_navigation"> -->
+<!--       <directory>environment</directory> -->
+<!--       <directory>server</directory> -->
+<!--     </directoryTree> -->
 
     <directoryTree name="byFeatureNavigation" label="label.easysoa.navfeature" contentView="byFeatureContentView"
       field="location" schema="querynav2" outcome="feature_virtual_navigation" enabled="true">

@@ -108,11 +108,18 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>workspacedef</layout>
+        <layout>files</layout>
       </layouts>
-      <!--  Needed to override 'edit mode'-specific conf -->
+      <!-- We need to override mode-specific configurations -->
+      <layouts mode="view">
+        <layout>heading</layout>
+        <layout>workspacedef</layout>
+        <layout>files</layout>
+      </layouts>
       <layouts mode="edit">
         <layout>heading</layout>
         <layout>workspacedef</layout>
+        <layout>files</layout>
       </layouts>
       <subtypes>
         <type>AppliImpl</type>
