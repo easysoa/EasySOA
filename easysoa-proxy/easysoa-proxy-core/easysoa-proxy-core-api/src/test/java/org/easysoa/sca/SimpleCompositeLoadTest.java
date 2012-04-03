@@ -37,24 +37,29 @@ public class SimpleCompositeLoadTest {
     }
     
     @Test
-    public void loadLogEngineComposite() throws FrascatiException{
+    public void loadLogEngineComposite() throws FrascatiException {
         componentList.add(frascati.processComposite("logEngine", new ProcessingContextImpl()));
     }
     
     @Test
-    public void loadEsperEngineComposite() throws FrascatiException{
+    public void loadEsperEngineComposite() throws FrascatiException {
         componentList.add(frascati.processComposite("esperEngine", new ProcessingContextImpl()));
     }
     
     @Test
-    public void loadStoreManager() throws FrascatiException{
+    public void loadStoreManager() throws FrascatiException {
         componentList.add(frascati.processComposite("storeManager", new ProcessingContextImpl()));
-    }    
+    }
 
     @Test
-    public void loadExchangeNumberGeneratorComposite() throws FrascatiException{
+    public void loadExchangeNumberGeneratorComposite() throws FrascatiException {
         componentList.add(frascati.processComposite("exchangeNumberGenerator", new ProcessingContextImpl()));
-    }    
+    }
+    
+    @Test
+    public void loadCorrelatioEngineComposite() throws FrascatiException {
+        componentList.add(frascati.processComposite("correlationEngine", new ProcessingContextImpl()));
+    }
     
     @AfterClass
     public static void endTest() throws FrascatiException{

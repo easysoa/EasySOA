@@ -1,3 +1,23 @@
+/**
+ * EasySOA Proxy core
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
+
 package org.easysoa.records.correlation;
 
 import java.util.ArrayList;
@@ -17,20 +37,23 @@ import org.easysoa.template.InputTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
- * This service allows to extract correlations fields from recorded exchanges.
+ * Implementation of CorrelationEngine interface
  * 
  * @author jguillemotte
  *
  */
+// TODO : Huge refactoring to simplify this class
 // TODO REST JAXRS service, web UI
-public class CorrelationService {
+public class CorrelationEngineImpl implements CorrelationEngine {
 
 	// Logger
-	private static Logger logger = Logger.getLogger(CorrelationService.class.getName());	
+	private static Logger logger = Logger.getLogger(CorrelationEngineImpl.class.getName());	
 	
+	/**
 	public CorrelationResult correlate(String exchangeRecordFileStorePath) {
 		return null;
-	}
+	}*/
+	
     //////////////////////////////////////////
     // correlation and analysis algorithms
     
@@ -84,6 +107,11 @@ public class CorrelationService {
     }
 
 
+    /**
+     * 
+     * @param correlationLevels
+     * @param reqResFieldCorrelation
+     */
     private void putCorrelation(
             HashMap<Integer, CorrelationLevel> correlationLevels,
             ReqResFieldCorrelation reqResFieldCorrelation) {
@@ -95,7 +123,6 @@ public class CorrelationService {
         }
         correlationLevel.addCorrelation(reqResFieldCorrelation);
     }
-
     
     /**
      * First correlation algorithm result analysis :
@@ -119,7 +146,7 @@ public class CorrelationService {
         
         
         boolean isAnd, isPost, isGetOnId, isOr = false;
-        ArrayList<String> andInPathes, orOutPathes = null;
+        //ArrayList<String> andInPathes, orOutPathes = null;
         for (CorrelationLevel correlationLevel : correlationLevels) {
             //int levelCorrelationNb = correlationLevel.getCorrelations().size();
             logger.debug("");
@@ -199,7 +226,7 @@ public class CorrelationService {
         }
     }
 
-    private void printCorrelations(ArrayList<ReqResFieldCorrelation> correlations) {
+    /*private void printCorrelations(ArrayList<ReqResFieldCorrelation> correlations) {
         System.out.println("Found correlations, sorted y level :");
         Collections.sort(correlations, new Comparator<ReqResFieldCorrelation>() {
             @Override
@@ -211,8 +238,15 @@ public class CorrelationService {
             System.out.println(correlation.getLevel() + "\t" + correlation.getInField()
                     + "\t" + correlation.getOutField() + "\t" + correlation.getInfo());
         }
-    }
+    }*/
 
+    /**
+     * 
+     * @param correlationLevels
+     * @param level
+     * @param foundOutFields
+     * @param inFields
+     */
     private void addCorrelationsFromOutByPathOrNameAndValue(HashMap<Integer, CorrelationLevel> correlationLevels, int level,
             HashMap<String, CandidateField> foundOutFields, HashMap<String, CandidateField> inFields) {
         for (CandidateField inField : inFields.values()) {
@@ -240,6 +274,12 @@ public class CorrelationService {
         }
     }
 
+    /**
+     * 
+     * @param foundOutFields
+     * @param inQueryField
+     * @return
+     */
     // TODO also substract place number in out
     // TODO also contains (or more comparison)
     // TODO also contains (or more)
@@ -254,6 +294,12 @@ public class CorrelationService {
         return res;
     }
 
+    /**
+     * 
+     * @param foundOutFields
+     * @param inQueryField
+     * @return
+     */
     // TODO also contains (or more comparison)
     // TODO substract depth
     private List<CandidateField> getFromOutByNameAndValue(
@@ -270,6 +316,10 @@ public class CorrelationService {
     }
     
     /**
+     * ----------------------------------------------------------------------------------------------------------
+     */
+    
+    /**
      * Second correlation algorithm : tries to find correlation
      *  - if in content, value and (sub)path correlations
      *  - else (otherwise lowered) if in query, value and (sub)path correlations
@@ -281,6 +331,7 @@ public class CorrelationService {
      * @param inContentFields
      * @param foundOutFields
      */
+    @Override
     public TemplateFieldSuggestions correlateWithSubpath(ExchangeRecord jsonExchange, HashMap<String, CandidateField> inPathFields,
             HashMap<String, CandidateField> inQueryFields,
             HashMap<String, CandidateField> inContentFields,
@@ -311,7 +362,7 @@ public class CorrelationService {
             }
         }
         
-        // TODO : to remove when finished
+        // Only for debug
         logger.debug("Found correlations with subpath : ");
         for (Object[] correlation : correlations) {
             logger.debug(correlation[0] + "\t" + correlation[1] + "\t" + correlation[2] + "\t" + correlation[3]);
@@ -331,13 +382,17 @@ public class CorrelationService {
     	TemplateFieldSuggestions suggestions = new TemplateFieldSuggestions();
     	InputTemplateField templateField;
     	for (Object[] correlation : correlations) {
+    	    int level = (Integer)correlation[0];
     		CandidateField inField = (CandidateField)correlation[1];
     		CandidateField outField = (CandidateField)correlation[2];
-            templateField = new InputTemplateField();
+            // TODO : Returns only ImputTemplateFields at the moment
+    		// Make modifications to returns also OutputTemplateFields
+    		templateField = new InputTemplateField();
             templateField.setFieldName(outField.getName());
             templateField.setDefaultValue(inField.getValue());
             templateField.setFieldType(inField.getType());
             templateField.setParamType(TemplateFieldType.valueOf(inField.getKind()));
+            templateField.setCorrelationLevel(level);
             if("PATH_PARAM".equals(inField.getKind())){
             	try {
             		int paramPathPosition = Integer.valueOf(inField.getName().substring(inField.getName().lastIndexOf(".")+1, inField.getName().length()));
@@ -351,7 +406,6 @@ public class CorrelationService {
     	}
     	return suggestions;
     }
-
     
     /**
      * 
@@ -447,8 +501,14 @@ public class CorrelationService {
         return level;
     }
 
+    /**
+     * 
+     * @param foundOutFields
+     * @param inPathField
+     * @return
+     */
     // exact only
-    // TODO substract depth
+    // TODO substract depth    
     private List<CandidateField> getFromOutByValue(HashMap<String, CandidateField> foundOutFields, CandidateField inPathField) {
         ArrayList<CandidateField> res = new ArrayList<CandidateField>();
         for (CandidateField outField : foundOutFields.values()) {
@@ -480,6 +540,12 @@ public class CorrelationService {
         }
     }*/
     
+    /**
+     * 
+     * @param jsonObject
+     * @param foundFields
+     * @param pathStack
+     */
     public void visit(JSONObject jsonObject, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         for (Object key : jsonObject.keySet()) {
             Object obj = jsonObject.get(key);
@@ -489,6 +555,12 @@ public class CorrelationService {
         }
     }
 
+    /**
+     * 
+     * @param jsonArray
+     * @param foundFields
+     * @param pathStack
+     */
     public void visit(JSONArray jsonArray, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         for (int i = 0; i < jsonArray.size(); i++) {
             Object jsonArrayObj = jsonArray.get(i);
@@ -498,6 +570,12 @@ public class CorrelationService {
         }
     }
     
+    /**
+     * 
+     * @param obj
+     * @param foundFields
+     * @param pathStack
+     */
     private void visitAny(Object obj, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         if (obj instanceof JSONObject) {
             visit((JSONObject) obj, foundFields, pathStack);
@@ -509,11 +587,22 @@ public class CorrelationService {
         }
     }
     
+    /**
+     * 
+     * @param obj
+     * @param foundFields
+     * @param pathStack
+     */
     private void putCandidateFields(Object obj, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         CandidateField candidateField = new CandidateField(toPath(pathStack), String.valueOf(obj));
         foundFields.put(candidateField.getPath(), candidateField);
     }
 
+    /**
+     * 
+     * @param pathStack
+     * @return
+     */
     public String toPath(Stack<Object> pathStack) {
         StringBuffer sbuf = new StringBuffer();
         for (Object pathElt : pathStack) {

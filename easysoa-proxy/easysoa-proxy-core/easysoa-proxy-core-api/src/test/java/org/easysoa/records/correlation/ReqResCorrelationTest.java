@@ -736,6 +736,12 @@ public class ReqResCorrelationTest {
         }
     }
     
+    /**
+     * 
+     * @param jsonObject
+     * @param foundFields
+     * @param pathStack
+     */
     public void visit(JSONObject jsonObject, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         for (Object key : jsonObject.keySet()) {
             Object obj = jsonObject.get(key);
@@ -745,6 +751,12 @@ public class ReqResCorrelationTest {
         }
     }
 
+    /**
+     * 
+     * @param jsonArray
+     * @param foundFields
+     * @param pathStack
+     */
     public void visit(JSONArray jsonArray, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         for (int i = 0; i < jsonArray.size(); i++) {
             Object jsonArrayObj = jsonArray.get(i);
@@ -754,6 +766,12 @@ public class ReqResCorrelationTest {
         }
     }
     
+    /**
+     * 
+     * @param obj
+     * @param foundFields
+     * @param pathStack
+     */
     private void visitAny(Object obj, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         if (obj instanceof JSONObject) {
             visit((JSONObject) obj, foundFields, pathStack);
@@ -765,11 +783,22 @@ public class ReqResCorrelationTest {
         }
     }
     
+    /**
+     * 
+     * @param obj
+     * @param foundFields
+     * @param pathStack
+     */
     private void putCandidateFields(Object obj, HashMap<String, CandidateField> foundFields, Stack<Object> pathStack) {
         CandidateField candidateField = new CandidateField(toPath(pathStack), String.valueOf(obj));
         foundFields.put(candidateField.getPath(), candidateField);
     }
 
+    /**
+     * 
+     * @param pathStack
+     * @return
+     */
     public String toPath(Stack<Object> pathStack) {
         StringBuffer sbuf = new StringBuffer();
         for (Object pathElt : pathStack) {

@@ -1,5 +1,5 @@
 /**
- * EasySOA Registry
+ * EasySOA Proxy Core
  * Copyright 2011 Open Wide
  * 
  * This program is free software: you can redistribute it and/or modify

@@ -42,20 +42,15 @@ public abstract class AbstractTemplateField {
     // think it is possible to make some modifications to have a template engine working also for outputs
     
     // Suggestion engine : same pb, work only for inputs.
-    
     // First step => make modifications to TemplateField and associated classes to have a working model for input/output fields
    
     // Question : how to find the required field value to replace (by template expression or by value) in different data format ?
     // path, query params, form ..., response content (can contains JSON, XML simple text ....)
     // 
-    
-    // 
     //req(Extraction) Path, 
     //res(ReplaceForTemplatization) Path, 
-    
     /*(req)foundValue, 
     (resFoundValue NOALLCURRENTCORRELATIONSHAVEEQUALVALUE)
-    
     correlationLevel 
     */        
     
@@ -74,12 +69,14 @@ public abstract class AbstractTemplateField {
 	protected TemplateFieldType paramType;
 	// Template to define the parameter position in url path (eg : /X/X/{param}/X), the first '/' represent the root of the path 
 	private boolean fieldEquality;
+	// Correlation level : higher is better
+	protected int correlationLevel;
 
 	/*
     (fields { (name/id), req(Extraction)Path, res(ReplaceForTemplatization)Path, (req)foundValue, (resFoundValueNOALLCURRENTCORRELATIONSHAVEEQUALVALUE), correlLevel }, resTemplate)
 	 */
 
-	/**
+    /**
 	 * 
 	 * @author jguillemotte
 	 *
@@ -182,6 +179,22 @@ public abstract class AbstractTemplateField {
         this.fieldEquality = fieldEquality;
     }
 	
+    /**
+     * 
+     * @return
+     */
+    public int getCorrelationLevel() {
+        return correlationLevel;
+    }
+
+    /**
+     * 
+     * @param correlationLevel
+     */
+    public void setCorrelationLevel(int correlationLevel) {
+        this.correlationLevel = correlationLevel;
+    }    
+    
     public abstract int getPathParamPosition();
     public abstract void setPathParamPosition(int pathParamPosition);
 }

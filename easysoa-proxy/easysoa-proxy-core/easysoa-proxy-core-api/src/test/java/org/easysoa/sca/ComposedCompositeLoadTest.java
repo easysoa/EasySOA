@@ -65,6 +65,11 @@ public class ComposedCompositeLoadTest {
         componentList.add(frascati.processComposite("runManager", new ProcessingContextImpl()));
     }    
     
+    @Test
+    public void loadSimulationEngineComposite() throws FrascatiException {
+        componentList.add(frascati.processComposite("simulationEngine", new ProcessingContextImpl()));
+    }
+    
     @After
     public void endTest() throws FrascatiException{
         for(Component component : componentList){

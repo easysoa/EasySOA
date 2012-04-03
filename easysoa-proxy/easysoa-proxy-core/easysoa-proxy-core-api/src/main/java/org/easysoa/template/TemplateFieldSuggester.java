@@ -16,7 +16,8 @@ import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.correlation.CandidateField;
-import org.easysoa.records.correlation.CorrelationService;
+import org.easysoa.records.correlation.CorrelationEngineImpl;
+import org.easysoa.records.correlation.FieldExtractor;
 import org.easysoa.template.parsers.JSONParser;
 import org.easysoa.template.parsers.TemplateParser;
 import org.easysoa.template.parsers.XMLParser;
@@ -43,7 +44,7 @@ public class TemplateFieldSuggester {
 	 * Default constructor
 	 */
 	public TemplateFieldSuggester(){
-		
+		// Nothing to do here
 	}
 
 	/**
@@ -66,13 +67,14 @@ public class TemplateFieldSuggester {
 
 		// this correlation service return nothing when no outputfields are set in the hashmap
 		// Or when there is no corresponding fields between in parameters and out parameters
-	    // => in this case, here we could return all input fields (as a worse case) 
-		CorrelationService correlationService = new CorrelationService();
+	    // => in this case, here we could return all input fields (as a worse case)
+	    FieldExtractor extractor = new FieldExtractor();
+		CorrelationEngineImpl correlationService = new CorrelationEngineImpl();
 		return correlationService.correlateWithSubpath(record,
-				getInputPathParams(record.getInMessage()),
-				getInputQueryParams(record.getInMessage()),
-				getInputContentParam(record.getInMessage()),
-				getOutputFields(record.getOutMessage()));
+				extractor.getInputPathParams(record.getInMessage()),
+				extractor.getInputQueryParams(record.getInMessage()),
+				extractor.getInputContentParam(record.getInMessage()),
+				extractor.getOutputFields(record.getOutMessage()));
 
 		/*correlationService.correlate(record,
 				getPathParams(record.getInMessage()),
@@ -80,47 +82,6 @@ public class TemplateFieldSuggester {
 				getContentParam(record.getInMessage()),
 				getOutFields(record.getOutMessage()));
 		*/		
-	}
-	
-	/**
-	 * 
-	 * @param outMessage
-	 * @return
-	 */
-	private HashMap<String, CandidateField> getOutputFields(OutMessage outMessage){
-		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
-		// TODO add code here to fill hashmap with output fields
-		// Message content can be very different (json, xml ...)
-		// TODO Add a system to choose the parser corresponding to the out message content
-		// Today only a json parser for out message
-		logger.debug("outMessage " + outMessage.getMessageContent().getRawContent());
-		List<TemplateParser> templateParserList = new ArrayList<TemplateParser>();
-		templateParserList.add(new JSONParser());
-		templateParserList.add(new XMLParser());
-		// TODO : Add a parser for simple text content
-		try{
-		    for(TemplateParser parser : templateParserList){
-		        if(parser.canParse(outMessage)){
-		            parser.parse(outMessage, fieldMap);
-		            break;
-		        }
-		    }
-		    // If message content is a JSON
-			/*if(outMessage.getMessageContent().isJSONContent()){
-			    JSONParser jsonParser = new JSONParser();
-			    jsonParser.parse(outMessage, fieldMap);
-			} 
-			// if message structure is an XML structure
-			else if(outMessage.getMessageContent().isXMLContent()){
-			    XMLParser xmlParser = new XMLParser();
-			    xmlParser.parse(outMessage, fieldmap);
-			}*/
-		}
-		catch(Exception ex){
-			logger.warn("Response is not a JSON string, trying another parser to find output fields");
-		}
-		logger.debug("Out param fields map : " + fieldMap);		
-		return fieldMap;
 	}
 	
 	/**
@@ -166,63 +127,5 @@ public class TemplateFieldSuggester {
 		}
 	}*/
 	
-	/**
-	 * 
-	 * @param inMessage
-	 * @return
-	 */
-	private HashMap<String, CandidateField> getInputPathParams(InMessage inMessage){
-		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
-		CandidateField field;
-		StringTokenizer tokenizer = new StringTokenizer(inMessage.getPath(), "/");
-		int pathPos = 0;
-		while(tokenizer.hasMoreTokens()){
-			String token = tokenizer.nextToken();
-			field = new CandidateField("path." + pathPos, token);
-			field.setKind("PATH_PARAM");
-			fieldMap.put("path." + pathPos, field);
-			pathPos++;
-		}
-		logger.debug("Path param fields map : " + fieldMap);
-		return fieldMap;
-	}
-	
-	/**
-	 * Take the query params from <code>InMessage</code> and fill an HashMap with them. 
-	 * @param inMessage <code>InMessage</code> containing query params
-	 * @return An <code>HashMap</code> filled with query parameters 
-	 */
-	private HashMap<String, CandidateField> getInputQueryParams(InMessage inMessage){
-		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
-		CandidateField candidateField;
-		for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
-			candidateField = new CandidateField(queryParam.getName(), queryParam.getValue());
-			candidateField.setKind("QUERY_PARAM");
-			fieldMap.put(candidateField.getPath(), candidateField);
-		}
-		logger.debug("Query param fields map : " + fieldMap);		
-		return fieldMap;
-	}
-	
-	/**
-	 * Take the content params (eg : HTML form POST params) from <code>InMessage</code> and fill an HashMap with them. 
-	 * @param inMessage <code>InMessage</code> containing query params
-	 * @return An <code>HashMap</code> filled with query parameters
-	 */
-	// TODO : Change this code .... For REST request, content params are processed as query params
-	// For SOAP request, need to add code to parse the xml. 
-	private HashMap<String, CandidateField> getInputContentParam(InMessage inMessage){
-		HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
-		CandidateField candidateField;
-		StringTokenizer tokenizer = new StringTokenizer(inMessage.getMessageContent().getRawContent(), "&");
-		String token;
-		while(tokenizer.hasMoreTokens()){
-			token = tokenizer.nextToken();
-			candidateField = new CandidateField(token.substring(0, token.indexOf("=")), token.substring(token.indexOf("=")));
-			candidateField.setKind("CONTENT_PARAM");
-			fieldMap.put(candidateField.getPath(), candidateField);
-		}
-		logger.debug("Content param fields map : " + fieldMap);
-		return fieldMap;
-	}
+
 }

@@ -20,33 +20,27 @@
 
 package org.easysoa.simulation;
 
-import java.util.List;
+import java.util.Comparator;
 
-import org.easysoa.records.ExchangeRecord;
+import org.easysoa.template.AbstractTemplateField;
 
 /**
+ * Comparator to sort template field in decreasing order using correlation level
  * 
  * @author jguillemotte
  *
  */
-public interface SimulationEngine {
+public class DecreasingCorrelationLevelComparator implements Comparator<AbstractTemplateField> {
 
-    /**
-     * Get a simulation store from suggestions
-     * @return A simulation store
-     */
-    public SimulationStore getSimulationStoreFromSuggestion(List<ExchangeRecord> exchangeRecordList);
-    
-    /**
-     * Get an existing simulation store
-     * @return A simulation store
-     */
-    public SimulationStore getExistingSimulationStore(String storeName, String recordID);
-    
-    /**
-     * 
-     * @param simulationStore
-     */
-    public void simulate(SimulationStore simulationStore);
-    
+    @Override
+    public int compare(AbstractTemplateField o1, AbstractTemplateField o2) {
+        if(o1.getCorrelationLevel() < o2.getCorrelationLevel()){
+            return 1;
+        } else if(o1.getCorrelationLevel() > o2.getCorrelationLevel()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
 }

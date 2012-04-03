@@ -1,5 +1,5 @@
 /**
- * EasySOA Proxy Core
+ * EasySOA Proxy core
  * Copyright 2011 Open Wide
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,35 +18,34 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.simulation;
+package org.easysoa.records.correlation;
 
-import java.util.List;
+import java.util.HashMap;
 
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
+ * Correlation engine interface for SCA component
  * 
  * @author jguillemotte
  *
  */
-public interface SimulationEngine {
+public interface CorrelationEngine {
 
     /**
-     * Get a simulation store from suggestions
-     * @return A simulation store
+     * Returns a list of template fields found by a correlation mechanism
+     * @param jsonExchange
+     * @param inPathFields
+     * @param inQueryFields
+     * @param inContentFields
+     * @param foundOutFields
+     * @return
      */
-    public SimulationStore getSimulationStoreFromSuggestion(List<ExchangeRecord> exchangeRecordList);
-    
-    /**
-     * Get an existing simulation store
-     * @return A simulation store
-     */
-    public SimulationStore getExistingSimulationStore(String storeName, String recordID);
-    
-    /**
-     * 
-     * @param simulationStore
-     */
-    public void simulate(SimulationStore simulationStore);
+    // TODO : The input / output field extraction must be done in the correlation engine
+    public TemplateFieldSuggestions correlateWithSubpath(ExchangeRecord jsonExchange, HashMap<String, CandidateField> inPathFields,
+            HashMap<String, CandidateField> inQueryFields,
+            HashMap<String, CandidateField> inContentFields,
+            HashMap<String, CandidateField> foundOutFields);
     
 }
