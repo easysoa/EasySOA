@@ -37,7 +37,6 @@ import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.ow2.frascati.util.FrascatiException;
 import com.openwide.easysoa.util.ContentReader;
 
 /**
@@ -63,7 +62,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		try {
 			startHttpDiscoveryProxy("httpDiscoveryProxy.composite", new URL[] { new URL("file://target") });
 		} catch (MalformedURLException e) {
-			throw new FrascatiException("TemplateTest init error", e);
+			throw new Exception("TemplateTest init error", e);
 		}
 		// Start mock services
 		startMockServices(false);
