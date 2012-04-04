@@ -52,6 +52,11 @@
                   <artifactId>easysoa-registry-web</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-runtime-management</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
 
                 <!-- FraSCAti in Nuxeo -->
                 <!-- <artifactItem> -->

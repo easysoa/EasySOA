@@ -69,7 +69,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             throws ClientException, MalformedURLException {
         
         // Check mandatory field
-        String url = properties.get(Service.PROP_URL);
+        String url = properties.get(AppliImpl.PROP_URL);
         if (url != null && !url.isEmpty()) {
             
             // Find or create document
@@ -111,7 +111,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
         
         }
         else {
-            throw new ClientException("Appli name or root services URL not informed");
+            throw new ClientException("Appli impl. URL not informed");
         }
     }
 

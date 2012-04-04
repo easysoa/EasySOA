@@ -7,5 +7,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: easysoa-registry-runtime-management
 Bundle-SymbolicName: org.easysoa.registry.runtimemanagement;singleton:=true
 Bundle-Vendor: EasySOA Consortium
+Bundle-Category: web
 Nuxeo-Require: org.easysoa.registry.core
-Nuxeo-Component: 
+Nuxeo-Component: OSGI-INF/actions-contrib.xml

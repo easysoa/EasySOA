@@ -26,7 +26,11 @@
   </xs:complexType>
   <xs:element name="deployables" type="nxs:deployables" />
   
-  <!-- Internal : needed by virtual navigation by server-->
+  <!-- Runtime management -->
+  <xs:element name="deployableProvider" type="xs:string" />
+  <xs:element name="runtimeServer" type="xs:string" />
+  
+  <!-- Internal : needed by virtual navigation by location -->
   <xs:element name="serverEntry" type="xs:string" />
     
 </xs:schema>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.runtimemanagement.contrib.actions">
+
+  <require>org.nuxeo.ecm.platform.actions</require>
+
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
+  
+    <action id="runtimeManagementDeploy" link="#{runtimeManagement.deploy}" label="Deploy">
+      <category>EASYSOA_RUNTIME_MANAGEMENT</category>
+    </action>
+    <action id="runtimeManagementStart" link="#{runtimeManagement.start}" label="Start">
+      <category>EASYSOA_RUNTIME_MANAGEMENT</category>
+    </action>
+    <action id="runtimeManagementStop" link="#{runtimeManagement.stop}" label="Stop">
+      <category>EASYSOA_RUNTIME_MANAGEMENT</category>
+    </action>
+    
+  </extension>
+  
+</component>

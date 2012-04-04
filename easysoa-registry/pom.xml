@@ -37,6 +37,7 @@
     <module>nuxeo-frascati-test</module>
     <module>easysoa-registry-api</module>
     <module>easysoa-registry-core</module>
+    <module>easysoa-registry-runtime-management</module>
     <module>easysoa-registry-web</module>
     <module>easysoa-registry-rest</module>
     <module>easysoa-registry-dashboard</module>

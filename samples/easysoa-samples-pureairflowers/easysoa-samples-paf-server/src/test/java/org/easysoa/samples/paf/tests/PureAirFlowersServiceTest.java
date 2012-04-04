@@ -38,6 +38,8 @@ import org.slf4j.LoggerFactory;
 public class PureAirFlowersServiceTest {
 
     private final static Logger logger = LoggerFactory.getLogger(PureAirFlowersServiceTest.class);
+
+    private final static boolean USE_CLASSPATH_DISCOVERY = true;
     
     private static PureAirFlowersServer server;
     
@@ -45,7 +47,7 @@ public class PureAirFlowersServiceTest {
     
     @BeforeClass
     public static void setUp() {
-        server = new PureAirFlowersServer();
+        server = new PureAirFlowersServer(USE_CLASSPATH_DISCOVERY);
         server.start();
         
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
