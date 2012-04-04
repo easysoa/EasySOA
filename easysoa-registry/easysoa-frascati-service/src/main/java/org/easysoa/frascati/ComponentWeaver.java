@@ -89,8 +89,17 @@ implements ComponentWeaverItf
         }
         LifeCycleController lcController =
            (LifeCycleController) component.getFcInterface("lifecycle-controller");
-        TinfiComponentInterceptor<?> tci = (TinfiComponentInterceptor<?>)(
+        
+        TinfiComponentInterceptor<?> tci = null;
+        
+        try{
+            tci = (TinfiComponentInterceptor<?>)(
                 (ComponentInterface)lcController).getFcItfImpl();
+        } catch(ClassCastException e)
+        {
+            log.log(Level.WARNING,"Enable to weave the 'component'");
+            return;
+        }
         Method method = LifeCycleController.class.getMethod("startFc");
         tci.addIntentHandler(componentIntent, method);
         method = LifeCycleController.class.getMethod("stopFc");
