@@ -42,7 +42,8 @@ public class  MeteoMockProvider implements Provider<SOAPMessage> {
                 SOAPMessage response = mf.createMessage();
                 SOAPBody respBody = response.getSOAPBody();
                 Name bodyName;
-                if(requestBody.getFirstChild().getNextSibling().getLocalName().equals("getTomorrowForecast")){                
+                if(requestBody.getFirstChild().getNextSibling().getLocalName().equals("getTomorrowForecast"))
+                {
                     bodyName = sf.createName("getTomorrowForecastResponse");
                 } else if(requestBody.getFirstChild().getNextSibling().getLocalName().equals("invoke")){
                     bodyName = sf.createName("invokeResponse");
@@ -55,9 +56,13 @@ public class  MeteoMockProvider implements Provider<SOAPMessage> {
                 response.saveChanges();
                 return response;
             }
-        }
-        catch(SOAPException soapEx){
+        } catch(SOAPException soapEx)
+        {
             logger.error("An error occurs !", soapEx);
+            
+        } catch (Exception e)
+        {
+            logger.error("An error occurs !", e);
         }
         return null;
     }
