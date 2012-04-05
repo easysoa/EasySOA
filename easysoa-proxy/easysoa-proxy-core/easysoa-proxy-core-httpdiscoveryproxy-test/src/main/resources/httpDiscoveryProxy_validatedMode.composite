@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
+	name="httpDiscoveryProxy">
+
+	<!-- HTTP Proxy -->
+	<!-- Run with mode : Validated -->
+	<sca:component name="httpProxyService">
+		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
+		<!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
+		<sca:service name="httpServiceInput">
+			<sca:interface.java interface="javax.servlet.Servlet" />
+			<tuscany:binding.http uri="http://localhost:8082/" />
+		</sca:service>
+    	<sca:reference name="runManager" target="runManagerComponent" />
+    	<sca:property name="proxyPort">8082</sca:property>
+    	<sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
+    	<sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>    	
+	</sca:component>
+
+	<!-- HTTP Client to drive the proxy -->
+	<sca:component name="httpProxyDriver">
+		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpProxyDriverImpl" />
+		<sca:service name="httpServiceDriver">
+			<sca:interface.java interface="com.openwide.easysoa.proxy.HttpProxyDriver" />
+			<frascati:binding.rest uri="http://localhost:8084/" />
+		</sca:service>
+		<sca:reference name="runManager" target="runManagerComponent" />
+	</sca:component>
+
+	<!-- Exchange replay service -->
+	<sca:component name="exchangeReplayServiceComponent">
+		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
+		<sca:service name="exchangeReplayService">
+			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
+			<frascati:binding.rest uri="http://localhost:8086/" />
+		</sca:service>
+	</sca:component>	
+
+	<!-- Client UI for RunManager and Exchange store, Works with velocity -->
+  	<sca:component name="runManagerUIComponent">
+	    <implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="runManagerUITemplate.html" location="webContent" />
+	    <sca:service name="velocity">
+    		<tuscany:binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/runManager" />
+    	</sca:service>
+		<sca:reference name="runManager" target="runManagerComponent/runManagerService" />
+		<sca:reference name="exchangeRecordStoreManager" target="exchangeStoreManagerComponent/exchangeStoreManagerService" />
+	</sca:component>
+
+	<!-- Monitoring service -->
+	<sca:component name="monitoringServiceComponent">
+		<sca:service name="monitoringServiceService">
+			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.monitoring.ValidatedMonitoringService" />
+		<sca:reference name="esperEngine" target="esperEngineComponent" />		
+	</sca:component>
+
+	<!-- Run Manager -->
+	<sca:component name="runManagerComponent">
+		<sca:service name="runManagerService">
+			<sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.run.RunManagerImpl" />
+		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
+	</sca:component>
+	
+	<!-- Exchange record Manager -->
+	<sca:component name="exchangeStoreManagerComponent">
+		<sca:service name="exchangeStoreManagerService">
+			<!--<sca:interface.java interface="org.easysoa.records.ExchangeRecordStoreManager" />-->
+			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
+		</sca:service>
+		<!--<sca:implementation.java class="org.easysoa.records.persistence.filesystem.ExchangeRecordFileStore" />-->
+		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
+	</sca:component>	
+	
+	<!-- Esper Engine -->
+	<sca:component name="esperEngineComponent">
+		<sca:service name="esperEngineService">
+			<sca:interface.java interface="com.openwide.easysoa.esper.EsperEngine" />
+		</sca:service>
+		<sca:implementation.java class="com.openwide.easysoa.esper.EsperEngineImpl" />
+	</sca:component>
+
+</sca:composite>
