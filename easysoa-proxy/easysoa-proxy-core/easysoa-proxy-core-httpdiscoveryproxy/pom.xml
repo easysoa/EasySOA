@@ -1,62 +1,63 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.easysoa.proxy</groupId>
-    <artifactId>easysoa-proxy-parent</artifactId>
-    <version>0.4-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+    <parent>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-parent</artifactId>
+        <version>0.4-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
 
-  <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-  <name>EasySOA HTTP Discovery Proxy</name>
-  <packaging>jar</packaging>
+    <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+    <name>EasySOA HTTP Discovery Proxy</name>
+    <packaging>jar</packaging>
 
-  <dependencies>
+    <dependencies>
     <!-- frascati -->
-    <dependency><!-- base frascati -->
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-factory</artifactId>
-    </dependency>
-    <dependency><!-- else no frascati class generation -->
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-runtime-factory</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-ws</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-http</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-rest</artifactId>
-    </dependency>
+        <dependency><!-- base frascati -->
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-factory</artifactId>
+        </dependency>
+        <dependency><!-- else no frascati class generation -->
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-runtime-factory</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-ws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-rest</artifactId>
+        </dependency>
     <!-- Required to run velocity web apps -->
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-implementation-velocity</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-implementation-velocity</artifactId>
+        </dependency>
     <!-- to run it with mvn -Prun -->
-    <dependency>
-      <groupId>org.ow2.frascati.mojo</groupId>
-      <artifactId>frascati-launcher-plugin</artifactId>
-      <type>maven-plugin</type>
-    </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.mojo</groupId>
+            <artifactId>frascati-launcher-plugin</artifactId>
+            <type>maven-plugin</type>
+        </dependency>
 
     <!-- esper -->
-    <dependency>
-      <groupId>com.espertech</groupId>
-      <artifactId>esper</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>com.espertech</groupId>
+            <artifactId>esper</artifactId>
+        </dependency>
     <!-- java rest webservices -->
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+        </dependency>
     <!-- for obsolete code in NuxeoRegistrationService -->
     <!-- <dependency> -->
     <!-- <groupId>com.sun.jersey</groupId> -->
@@ -66,84 +67,84 @@
     <!-- <groupId>org.json</groupId> -->
     <!-- <artifactId>json</artifactId> -->
     <!-- </dependency> -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 
     <!-- Proxy persistence API -->
-    <dependency>
-      <groupId>org.easysoa.proxy</groupId>
-      <artifactId>easysoa-proxy-core-persistence</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.easysoa.proxy</groupId>
+            <artifactId>easysoa-proxy-core-persistence</artifactId>
+        </dependency>
 
     <!-- Proxy core API -->
-    <dependency>
-      <groupId>org.easysoa.proxy</groupId>
-      <artifactId>easysoa-proxy-core-api</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.easysoa.proxy</groupId>
+            <artifactId>easysoa-proxy-core-api</artifactId>
+        </dependency>
 
     <!-- Messaging api -->
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-messaging</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-messaging</artifactId>
+        </dependency>
 
     <!-- Discovery API -->
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-remote</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-remote</artifactId>
+        </dependency>
 
 	<!-- Remote Frascati -->
-	<dependency>
-		<groupId>org.easysoa.registry.api</groupId>
-		<artifactId>easysoa-remote-frascati</artifactId>
-		<version>${easysoa.version}</version>
-	</dependency>
-    <dependency>
-    	<groupId>org.ow2.frascati.osgi</groupId>
-    	<artifactId>frascati-starter</artifactId>
-    	<version>1.5-SNAPSHOT</version>
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-remote-frascati</artifactId>
+            <version>${easysoa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.osgi</groupId>
+            <artifactId>frascati-starter</artifactId>
+            <version>1.5-SNAPSHOT</version>
     	<!--<scope>test</scope>-->
-    </dependency>
+        </dependency>
 
 	<!-- FraSCAti service API -->
-    <dependency>
-    	<groupId>org.easysoa.frascati</groupId>
-    	<artifactId>easysoa-frascati-service</artifactId>
-    	<version>${easysoa.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.easysoa.frascati</groupId>
-    	<artifactId>easysoa-frascati-service-api</artifactId>
-    	<version>${easysoa.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>org.easysoa.frascati</groupId>
+            <artifactId>easysoa-frascati-service</artifactId>
+            <version>${easysoa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.frascati</groupId>
+            <artifactId>easysoa-frascati-service-api</artifactId>
+            <version>${easysoa.version}</version>
+        </dependency>
 
     <!-- Configuration constants -->
-    <dependency>
-      <groupId>org.easysoa</groupId>
-      <artifactId>easysoa-common</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.easysoa</groupId>
+            <artifactId>easysoa-common</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.eclipse.osgi</groupId>
-      <artifactId>org.eclipse.osgi.services</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.eclipse.osgi</groupId>
+            <artifactId>org.eclipse.osgi.services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
 
     <!-- Test scope -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.proxy</groupId>
-      <artifactId>easysoa-proxy-core-mocks</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.proxy</groupId>
+            <artifactId>easysoa-proxy-core-mocks</artifactId>
+        </dependency>
     <!--<dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-core</artifactId>
@@ -154,72 +155,127 @@
       <artifactId>easysoa-registry-rest</artifactId>
       <scope>test</scope>
     </dependency>-->
-    <dependency>
-      <groupId>xstream</groupId>
-      <artifactId>xstream</artifactId>
-    </dependency>
-  </dependencies>
+        <dependency>
+            <groupId>xstream</groupId>
+            <artifactId>xstream</artifactId>
+        </dependency>
+    </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <runOrder>alphabetical</runOrder>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.5</source>
+                        <target>1.5</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <runOrder>alphabetical</runOrder>
           <!--<forkMode>always</forkMode> -->
           <!--<childDelegation>true</childDelegation> -->
-          <excludes>
+                    <excludes>
             <!-- We have a problem when we try to execute the 2 full mocked test
               in the same time -->
             <!-- so temporary solution is to deactivate the full mocked test for
               validated mode -->
-            <exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
-            <exclude>**/FullMockedDiscoveryModeProxyTest.java</exclude>
+                        <exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
+                        <exclude>**/FullMockedDiscoveryModeProxyTest.java</exclude>
             <!-- These tests require an external nuxeo to work ! -->
-            <exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
-            <exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
+                        <exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
+                        <exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
 
             <!-- these tests should only work when the corresponding bugs are patched
               : -->
-            <exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+                        <exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.ow2.frascati.mojo</groupId>
+                <artifactId>frascati-compiler-plugin</artifactId>
+                <version>1.5-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>compile-composite</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <loggingConfFile>${frascati.logging.properties}</loggingConfFile>
+                    <composite>httpDiscoveryProxy.composite</composite>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>xerces</groupId>
+                        <artifactId>xercesImpl</artifactId>
+                        <version>2.9.1</version>
+                        <scope>compile</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.easysoa.proxy</groupId>
+                        <artifactId>easysoa-proxy-core-api</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency> 
+                          <!-- THIS DEPENDENCY MUST BE ACCESSIBLE TO FRASCATI -->
+                         <groupId>org.apache.httpcomponents</groupId>
+                         <artifactId>httpclient</artifactId>
+                         <version>4.1.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                      <outputDirectory>${project.basedir}/../../../easysoa-distribution/easysoa/frascati/lib</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-  <profiles>
-    <profile>
-      <id>run</id>
-      <build>
-        <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin::exec</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>org.ow2.frascati.mojo</groupId>
-            <artifactId>frascati-launcher-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <executable>java</executable>
-              <arguments>
-              </arguments>
+    <profiles>
+        <profile>
+            <id>run</id>
+            <build>
+                <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin::exec</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.ow2.frascati.mojo</groupId>
+                        <artifactId>frascati-launcher-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                            </arguments>
               <!--<loggingConfFile>${logging.conf.file}</loggingConfFile> -->
               <!--<composite>${composite.file}</composite> -->
               <!--<service>${service.name}</service> -->
               <!--<method>${method.name}</method> -->
               <!--<methodParams>${method.params}</methodParams> -->
-              <composite>src/main/resources/httpDiscoveryProxy</composite>
+                            <composite>src/main/resources/httpDiscoveryProxy</composite>
               <!-- useFscript>true</useFscript -->
-              <useFscript>false</useFscript>
-            </configuration>
-            <dependencies>
+                            <useFscript>false</useFscript>
+                        </configuration>
+                        <dependencies>
               <!-- other poc deps ? -->
               <!-- other frascati deps ? -->
               <!-- <dependency> -->
@@ -227,35 +283,35 @@
               <!-- <artifactId>frascati-implementation-fractal</artifactId> -->
               <!-- <version>1.4</version> -->
               <!-- </dependency> -->
-            </dependencies>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>integration-tests</id>
-      <build>
-        <defaultGoal>install</defaultGoal>
-        <plugins>
-          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>surefire-night-test</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-                <configuration>
-                  <excludes>
-                    <exclude>none</exclude>
-                  </excludes>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>integration-tests</id>
+            <build>
+                <defaultGoal>install</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>surefire-night-test</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>none</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

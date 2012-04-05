@@ -44,7 +44,7 @@ public class HttpResponseHandler implements ResponseHandler<String> {
 	 */
 	private Logger logger = Logger.getLogger(HttpResponseHandler.class.getName());	
 	
-	@Override
+	
 	public String handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
 		Header contentEncodingHeader = response.getFirstHeader("Content-Encoding");		
 		StringBuffer responseBuffer = new StringBuffer();

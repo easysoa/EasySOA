@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
-	name="httpDiscoveryProxy">
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+    xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy"
+>
 
-	<sca:include name="runManager"/>
+    <sca:include name="runManager" />
 	<!--<sca:include name="replayEngine"/>-->
 
 	<!-- HTTP Proxy -->
 	<!-- Run with default mode : Discovery -->
-	<sca:component name="httpProxyService">
-		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
+    <sca:component name="httpProxyService">
+        <sca:implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
 		<!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
-		<sca:service name="httpServiceInput">
-			<sca:interface.java interface="javax.servlet.Servlet" />
-			<tuscany:binding.http uri="http://localhost:8082/" />
-		</sca:service>
-    	<sca:reference name="runManager" target="runManagerComponent" />
-    	<sca:property name="proxyPort">8082</sca:property>
-    	<sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
-    	<sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>
-	</sca:component>
+        <sca:service name="httpServiceInput">
+            <sca:interface.java interface="javax.servlet.Servlet" />
+            <tuscany:binding.http uri="http://localhost:8082/" />
+        </sca:service>
+        <sca:reference name="runManager" target="runManagerComponent">
+            <sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
+        </sca:reference>
+        <sca:property name="proxyPort">8082</sca:property>
+        <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
+        <sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>
+    </sca:component>
 
 	<!-- HTTP Client to drive the proxy -->
-	<sca:component name="httpProxyDriver">
-		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpProxyDriverImpl" />
-		<sca:service name="httpServiceDriver">
-			<sca:interface.java interface="com.openwide.easysoa.proxy.HttpProxyDriver" />
-			<frascati:binding.rest uri="http://localhost:8084/" />
-		</sca:service>
-		<sca:reference name="runManager" target="runManagerComponent" />
-	</sca:component>
+    <sca:component name="httpProxyDriver">
+        <sca:implementation.java
+            class="com.openwide.easysoa.proxy.HttpProxyDriverImpl" />
+        <sca:service name="httpServiceDriver">
+            <sca:interface.java interface="com.openwide.easysoa.proxy.HttpProxyDriver" />
+            <frascati:binding.rest uri="http://localhost:8084/" />
+        </sca:service>
+        <sca:reference name="runManager" target="runManagerComponent">
+            <sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
+        </sca:reference>
+    </sca:component>
 	
 	<!-- Exchange replay service -->
 	<!--<sca:component name="exchangeReplayServiceComponent">
@@ -179,5 +185,5 @@
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.messages.server.ExchangeNumberGenerator" />
 	</sca:component>-->
-	
+
 </sca:composite>

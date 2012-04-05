@@ -52,7 +52,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		ProxyConfigurator.configure();
 	}	
 	
-	@Override
+	
 	public String returnUseInformations(UriInfo ui) {
 		logger.debug("Returning help informations");
 		StringBuffer help = new StringBuffer();
@@ -70,7 +70,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return help.toString();
 	}
 
-	@Override
+	
 	public String startNewRun(String runName) {
 		logger.debug("Starting a new run !");
 		try{
@@ -82,7 +82,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Run '" + runName + "' started !";
 	}
 
-	@Override
+	
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
 		try {
@@ -96,7 +96,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Current run stopped !";
 	}
 
-	@Override
+	
 	@Deprecated
 	// TODO Modify this method to change the monitoring mode
 	// Method not used at the current time.
@@ -139,7 +139,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Re-run done";
 	}*/
 
-	@Override
+	
 	public String delete() {
 		try {
 			runManager.delete();
@@ -151,7 +151,7 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Run deleted !";
 	}
 	
-	@Override
+	
 	public void save(){
 		// TODO  add code to save the current run in a specifed folder.
 		// Each exchangeRecord contained in the run is saved in a JSON file
