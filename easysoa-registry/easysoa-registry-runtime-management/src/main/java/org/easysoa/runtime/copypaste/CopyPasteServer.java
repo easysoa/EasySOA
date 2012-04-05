@@ -129,4 +129,9 @@ public class CopyPasteServer extends CopyPasteServerEventService implements
 		return this;
 	}
 
+	@Override
+	public String getName() {
+		return "Folder " + deployablesDirectory.getPath();
+	}
+
 }

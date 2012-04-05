@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.runtime.service.RuntimeManagementService">
+
+  <description>
+  <!-- 
+    Service for accessing all registered:
+    * runtime servers (application servers that host deployables)
+    * deployable providers (datasources to provide these deployables)
+    
+    @author mkalam-alami
+  -->
+  </description>
+
+  <implementation class="org.easysoa.runtime.service.RuntimeManagementService" />
+
+  <service>
+    <provide interface="org.easysoa.runtime.service.RuntimeManagementService" />
+  </service>
+  
+</component>

@@ -27,5 +27,10 @@ public class FraSCAtiRuntime implements RuntimeServer<FraSCAtiDeployable, Runtim
 	public RuntimeEventService getEventService() {
 		return null;
 	}
+
+	@Override
+	public String getName() {
+		return "FraSCAti";
+	}
 	
 }

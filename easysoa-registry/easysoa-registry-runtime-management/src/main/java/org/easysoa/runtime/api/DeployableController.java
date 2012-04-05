@@ -24,11 +24,21 @@ public class DeployableController {
 		this.deploySupported = runtime.getDeployableService() != null;
 		this.controlSupported = runtime.getControlService() != null;
 	}
+	
+	public RuntimeServer<?, ?> getRuntime() {
+		return runtime;
+	}
 
 	public void addDeployableProvider(DeployableProvider<?> deployableProvider) {
 		deployableProviders.add(deployableProvider);
 	}
 
+	/**
+	 * Deploys the deployable of given ID
+	 * @param id
+	 * @return The deployed deployable, or null if none was found or the deployment failed
+	 * @throws IOException
+	 */
 	public Deployable<?> deploy(Object id) throws IOException {
 		Deployable<?> deployable = null;
 		if (this.deploySupported) {
@@ -65,6 +75,15 @@ public class DeployableController {
 	public boolean startServer() {
 		if (this.controlSupported) {
 			return runtime.getControlService().start();
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean stopServer() {
+		if (this.controlSupported) {
+			return runtime.getControlService().stop();
 		}
 		else {
 			return false;

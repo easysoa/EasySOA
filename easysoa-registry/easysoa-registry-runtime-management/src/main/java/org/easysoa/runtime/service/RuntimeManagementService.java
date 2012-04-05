@@ -20,9 +20,9 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class RuntimeManagementService extends DefaultComponent {
 
-	Map<String, DeployableProvider<?>> deployableProviders = new HashMap<String, DeployableProvider<?>>();
+	private Map<String, DeployableProvider<?>> deployableProviders = new HashMap<String, DeployableProvider<?>>();
 	
-	Map<String, RuntimeServer<?, ?>> runtimeServers = new HashMap<String, RuntimeServer<?, ?>>();
+	private Map<String, RuntimeServer<?, ?>> runtimeServers = new HashMap<String, RuntimeServer<?, ?>>();
 	
 	// TODO Transform into extension point(s)
 	@Override
@@ -63,11 +63,11 @@ public class RuntimeManagementService extends DefaultComponent {
 		return deployableProviders.get(name);
 	}
 	
-	public Set<String> geAllRuntimeServersNames() {
+	public Set<String> getAllRuntimeServersNames() {
 		return runtimeServers.keySet();
 	}
 
-	public RuntimeServer<?, ?> geRuntimeServer(String name) {
+	public RuntimeServer<?, ?> getRuntimeServer(String name) {
 		return runtimeServers.get(name);
 	}
 	

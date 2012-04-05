@@ -36,23 +36,30 @@
   <!-- Runtime management buttons -->
   <c:if test="${currentDocument.getType() == 'AppliImpl'}">
     <td style="padding-right: 20px">
-      <div style="float: left; padding: 10px; margin-top: -5px; border: 1px solid #AAF;
-                 font-size: 11pt; background-color: #EEFAFF; margin-right: 10px">
-          <div style="float: left; padding-right: 10px">
-	          FraSCati server<br />
-	          <span style="font-family: monospace; font-weight: bold">
-	          (<h:outputText value="#{runtimeManagement.getState()}" />)
-	          </span>
-          </div>
-          <nxu:methodResult name="actions" value="#{webActions.getActionsList('EASYSOA_RUNTIME_MANAGEMENT')}">
+      <div style="float: left; padding: 10px; margin-top: -5px; border: 1px solid #AAF; 
+          font-size: 11pt; background-color: #EEFAFF; margin-right: 10px">
+        <c:choose>
+          <c:when test="${runtimeManagement.isEnoughDeployableInformationProvided()}">
+            <div style="float: left; padding-right: 10px">
+             <h:outputText value="#{runtimeManagement.getRuntimeName()}" /><br />
+              <span style="font-family: monospace; font-weight: bold">
+                (<h:outputText value="#{runtimeManagement.getState()}" />)
+              </span>
+            </div>
+            <nxu:methodResult name="actions" value="#{webActions.getActionsList('EASYSOA_RUNTIME_MANAGEMENT')}">
               <nxu:dataList layout="simple" var="action" value="#{actions}" rowIndexVar="row" rowCountVar="rowCount">
-                  <nxh:commandButton value="#{messages[action.label]}" action="#{action.getLink()}" />
+                <nxh:commandButton value="#{messages[action.label]}" action="#{action.getLink()}" />
               </nxu:dataList>
-          </nxu:methodResult>
+            </nxu:methodResult>
+          </c:when>
+          <c:otherwise>
+            <i>(Runtime not managed)</i>
+          </c:otherwise>
+        </c:choose>
       </div>
     </td>
   </c:if>
-  
+
   <c:if test="${currentDocument.hasSchema('soacommon')}">
   <td style="padding-right: 20px">
     <!-- Notification icons -->

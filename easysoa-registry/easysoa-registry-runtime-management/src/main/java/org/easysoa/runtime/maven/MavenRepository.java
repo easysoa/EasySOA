@@ -45,8 +45,22 @@ public class MavenRepository implements DeployableProvider<MavenDeployable>,
 
 	@Override
 	public MavenDeployable fetchDeployable(Object id) throws IOException {
+		
+		// Translate ID
+		MavenID mavenId = null;
 		if (id instanceof MavenID) {
-			MavenID mavenId = (MavenID) id;
+			mavenId = (MavenID) id;
+		}
+		else if (id instanceof String) {
+			// Supports MavenIDs in string format: "group:artifact:version"
+			String[] mavenIdTokens = ((String) id).split("\\:");
+			if (mavenIdTokens.length == 3) {
+				mavenId = new MavenID(mavenIdTokens[0], mavenIdTokens[1], mavenIdTokens[2]);
+			}
+		}
+		
+		// Fetch deployable
+		if (mavenId != null) {
 			URL jarUrl = getUrl(mavenId, JAR_EXT);
 			if (jarUrl != null) {
 				URL pomUrl = getUrl(mavenId, POM_EXT);
@@ -55,6 +69,7 @@ public class MavenRepository implements DeployableProvider<MavenDeployable>,
 				}
 			}
 		}
+		
 		return null;
 	}
 	
