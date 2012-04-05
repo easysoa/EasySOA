@@ -21,9 +21,18 @@ package org.easysoa.sca.frascati;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandlerFactory;
+import java.util.Set;
+
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,8 +52,12 @@ public class RemoteFraSCAtiServiceProvider implements
     
     private static Log log = LogFactory.getLog(RemoteFraSCAtiServiceProvider.class);
     private FraSCAtiServiceItf frascatiService;
+    private Object frascati;
     private UpdatableURLClassLoader icl;
     
+    private Class<?> componentClass = null;
+    private Class<?> lifecycleClass = null;
+    private Object factory = null;
     
     /**
      * Constructor 
@@ -87,8 +100,7 @@ public class RemoteFraSCAtiServiceProvider implements
         
         //Define a new URLClassLoader using a parent which allow to find shared 
         //classes
-        icl = new UpdatableURLClassLoader(new URL[0],
-                getClass().getClassLoader());
+        icl = new UpdatableURLClassLoader(getClass().getClassLoader());
         
         for(File library : libraries)
         {
@@ -97,14 +109,22 @@ public class RemoteFraSCAtiServiceProvider implements
         
         Class<?> frascatiClass = icl.loadClass("org.ow2.frascati.FraSCAti");
         
-        Object frascati = frascatiClass.getDeclaredMethod("newFraSCAti",
+        ClassLoader current = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(icl);
+        
+        frascati = frascatiClass.getDeclaredMethod("newFraSCAti",
                 new Class<?>[]{ClassLoader.class}).invoke(null,
                         new Object[]{icl});
         
+        Thread.currentThread().setContextClassLoader(current);
+        
         Class<?> managerClass = icl.loadClass(
                 "org.ow2.frascati.assembly.factory.api.CompositeManager");
-
-        Class<?> componentClass = icl.loadClass(
+        
+        lifecycleClass = icl.loadClass(
+                "org.objectweb.fractal.api.control.LifeCycleController");
+        
+        componentClass = icl.loadClass(
                 "org.objectweb.fractal.api.Component");
         
         Object manager = frascatiClass.getDeclaredMethod(
@@ -113,7 +133,7 @@ public class RemoteFraSCAtiServiceProvider implements
         Object component = managerClass.getDeclaredMethod(
                 "getTopLevelDomainComposite").invoke(manager);
         
-        Object factory = getComponent(component,
+        factory = getComponent(component,
                 "org.ow2.frascati.FraSCAti/assembly-factory");
        
         frascatiService = (FraSCAtiServiceItf)
@@ -185,7 +205,8 @@ public class RemoteFraSCAtiServiceProvider implements
         }
         for(Object o : subComponents)
         {
-            Object nameController = componentClass.getDeclaredMethod("getFcInterface",new Class<?>[]{String.class}).invoke(o,"name-controller");            
+            Object nameController = componentClass.getDeclaredMethod("getFcInterface",
+                    new Class<?>[]{String.class}).invoke(o,"name-controller");
             
             String name = (String) nameControllerClass.getDeclaredMethod("getFcName",
                    (Class<?>[])null).invoke(nameController,(Object[])null);
@@ -208,7 +229,52 @@ public class RemoteFraSCAtiServiceProvider implements
 
         return frascatiService;
     }
-
+    
+    /**
+     * @throws Exception 
+     * 
+     */
+    public void stopFraSCAtiService() throws Exception
+    {
+            MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+            ObjectName name;
+            try
+            {
+                name = new ObjectName("SCA domain:name0=*,*");
+                Set<ObjectName> names = mbs.queryNames(name, name);
+                for (ObjectName objectName : names)
+                {
+                    mbs.unregisterMBean(objectName);
+                }
+                mbs.unregisterMBean(new ObjectName(
+                        "org.ow2.frascati.jmx:name=FrascatiJmx"));
+            } catch (MalformedObjectNameException e)
+            {
+                // e.printStackTrace();
+            } catch (NullPointerException e)
+            {
+                // e.printStackTrace();
+            } catch (MBeanRegistrationException e)
+            {
+                // e.printStackTrace();
+            } catch (InstanceNotFoundException e)
+            {
+                // e.printStackTrace();
+            }
+            
+            Object lifeCycleController = componentClass.getDeclaredMethod(
+                    "getFcInterface", new Class<?>[]{String.class}).invoke(
+                            factory,new Object[]{"lifecycle-controller"});
+            
+            lifecycleClass.getDeclaredMethod("stopFc").invoke(
+                    lifeCycleController);
+            
+            frascatiService = null;
+            frascati = null;
+            icl = null;
+            Runtime.getRuntime().runFinalization();
+            System.gc();
+        }
     
     /**
      * An URLClassLoader which allow to use the addURL method
@@ -220,36 +286,22 @@ public class RemoteFraSCAtiServiceProvider implements
          * @param parent
          * @param factory
          */
-        public UpdatableURLClassLoader(URL[] urls, ClassLoader parent,
-                URLStreamHandlerFactory factory)
+        public UpdatableURLClassLoader(ClassLoader parent)
         {
-            super(urls, parent, factory);
+            super(new URL[0], parent);
         }
 
         /**
-         * @param urls
-         * @param parent
+         * @param url
          */
-        public UpdatableURLClassLoader(URL[] urls, ClassLoader parent)
-        {
-            super(urls, parent);
-        }
-
-        /**
-         * @param urls
-         */
-        public UpdatableURLClassLoader(URL[] urls)
-        {
-            super(urls);
-        }
-        
         @Override
         public void addURL(URL url)
         {
-            log.debug("adding url to load : " + url);
+            //log.debug("adding url to load : " + url);
             super.addURL(url);
         }
     }
-    
+
+   
 
 }
