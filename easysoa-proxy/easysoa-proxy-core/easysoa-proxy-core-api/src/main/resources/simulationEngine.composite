@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="simulationEngine">
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
+    xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="simulationEngine"
+>
 
+ <sca:include name="correlationEngine"/>
+ 
 	<!-- Simulation engine -->
-	<sca:component name="simulationEngineComponent">
-		<sca:service name="simulationEngineService">
-			<sca:interface.java interface="org.easysoa.simulation.SimulationEngine" />
-		</sca:service>
-		<sca:implementation.java class="org.easysoa.simulation.SimulationEngineImpl" />
-		<sca:reference name="correlationEngine" target="correlationEngineComponent" />
-	</sca:component>
-	
+    <sca:component name="simulationEngineComponent">
+        <sca:service name="simulationEngineService">
+            <sca:interface.java interface="org.easysoa.simulation.SimulationEngine" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.simulation.SimulationEngineImpl" />
+        <sca:reference name="correlationEngine" target="correlationEngineComponent">
+            <sca:interface.java interface="org.easysoa.records.correlation.CorrelationEngine" />
+        </sca:reference>
+    </sca:component>
+
 </sca:composite>
