@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.easysoa.runtime.api.DeployableProvider;
 import org.easysoa.runtime.api.RuntimeServer;
-import org.easysoa.runtime.copypaste.CopyPasteServer;
 import org.easysoa.runtime.maven.MavenRepository;
+import org.easysoa.runtime.utils.FakeStartableCopyPasteServer;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.DefaultComponent;
 
@@ -44,13 +44,13 @@ public class RuntimeManagementService extends DefaultComponent {
 		/*
 		 <runtimeServer>
 		   <name>Test Server</name>
-		   <type>copyPasteServer</type>
+		   <type>fakeStartableCopyPasteServer</type>
 		   <params>
 		     <path>./nxserver/nuxeo.war/testServer</path>
 		   </params>
 		 </runtimeServer>
 		 */
-		CopyPasteServer testServer = new CopyPasteServer("./nxserver/nuxeo.war/testServer");
+		FakeStartableCopyPasteServer testServer = new FakeStartableCopyPasteServer("./nxserver/nuxeo.war/testServer");
 		runtimeServers.put("Test Server", testServer);
 		
 	}
