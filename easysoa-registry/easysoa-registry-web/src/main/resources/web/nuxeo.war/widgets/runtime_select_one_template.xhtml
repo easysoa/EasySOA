@@ -1,0 +1,21 @@
+<f:subview xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:nxu="http://nuxeo.org/nxweb/util" id="#{widget.id}">
+
+  <c:choose>
+  
+    <c:when test="#{widget.mode == 'edit' || widget.mode == 'create'}">
+      <h:selectOneMenu value="#{field}" id="#{widget.id}">
+        <nxu:selectItems value="#{runtimeManagement.getSelectItems(widget.properties.type)}" var="item"
+          itemValue="#{item}" itemLabel="#{item}" />
+      </h:selectOneMenu>
+    </c:when>
+    
+    <c:otherwise>
+      <h:outputText value="#{field}" />
+    </c:otherwise>
+    
+  </c:choose>
+
+</f:subview>

@@ -1,7 +1,9 @@
 package org.easysoa.runtime.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +13,6 @@ import org.easysoa.runtime.api.DeployableController;
 import org.easysoa.runtime.api.DeployableProvider;
 import org.easysoa.runtime.api.RuntimeControlService;
 import org.easysoa.runtime.api.RuntimeServer;
-import org.nuxeo.runtime.api.Framework;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
@@ -22,6 +23,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * 
@@ -139,6 +141,18 @@ public class RuntimeManagementBean {
 
 	public boolean isEnoughDeployableInformationProvided() throws ClientException {
 		return isEnoughDeployableInformationProvided(navigationContext.getCurrentDocument());
+	}
+	
+	public Set<String> getSelectItems(String type) throws Exception {
+		Set<String> result = new HashSet<String>();
+		result.add("");
+		if ("deployableProvider".equals(type)) {
+			result.addAll(getRuntimeManagementService().getAllDeployableProvidersNames());
+		}
+		else if ("runtimeServer".equals(type)) {
+			result.addAll(getRuntimeManagementService().getAllRuntimeServersNames());
+		}
+		return result;
 	}
 	
 	private boolean isEnoughDeployableInformationProvided(DocumentModel appliImplModel) throws ClientException {

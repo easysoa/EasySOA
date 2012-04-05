@@ -55,7 +55,7 @@ public class RuntimeManagementService extends DefaultComponent {
 		
 	}
 	
-	public Set<String> geAllDeployableProvidersNames() {
+	public Set<String> getAllDeployableProvidersNames() {
 		return deployableProviders.keySet();
 	}
 	

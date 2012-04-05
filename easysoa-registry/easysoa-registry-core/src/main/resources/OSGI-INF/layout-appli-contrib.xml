@@ -70,7 +70,7 @@
           <widget>appliimpldef_runtimeServer</widget>
         </row>
       </rows>
-      <widget name="appliimpldef_deployableProvider" type="text">
+      <widget name="appliimpldef_deployableProvider" type="template">
         <labels>
           <label mode="any">label.easysoa.appliimpldef.deployableProvider</label>
         </labels>
@@ -78,8 +78,14 @@
         <fields>
           <field>app:deployableProvider</field>
         </fields>
+        <properties widgetMode="any">
+          <property name="template">
+            /widgets/runtime_select_one_template.xhtml
+          </property>
+          <property name="type">deployableProvider</property>
+        </properties>
       </widget>
-      <widget name="appliimpldef_runtimeServer" type="text">
+      <widget name="appliimpldef_runtimeServer" type="template">
         <labels>
           <label mode="any">label.easysoa.appliimpldef.runtimeServer</label>
         </labels>
@@ -87,6 +93,12 @@
         <fields>
           <field>app:runtimeServer</field>
         </fields>
+        <properties widgetMode="any">
+          <property name="template">
+            /widgets/runtime_select_one_template.xhtml
+          </property>
+          <property name="type">runtimeServer</property>
+        </properties>
       </widget>
     </layout>
     
