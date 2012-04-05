@@ -35,18 +35,23 @@ public interface SimulationEngine {
      * Get a simulation store from suggestions
      * @return A simulation store
      */
-    public SimulationStore getSimulationStoreFromSuggestion(List<ExchangeRecord> exchangeRecordList);
+    public SimulationStore getSimulationStoreFromSuggestion(String storeName, List<ExchangeRecord> exchangeRecordList);
     
     /**
      * Get an existing simulation store
      * @return A simulation store
+     * @throws Exception 
      */
-    public SimulationStore getExistingSimulationStore(String storeName, String recordID);
+    public SimulationStore getExistingSimulationStore(String storeName, String recordID) throws Exception;
     
     /**
-     * 
-     * @param simulationStore
+     * Process a simulation
+     * @param inputRecord The input exchange record
+     * @param simulationStore The simulation store to use for data matching
+     * @param method The simulation method to use
+     * @return A exchange record containing the simulated response
+     * @throws Exception If a problem occurs
      */
-    public void simulate(SimulationStore simulationStore);
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method) throws Exception;
     
 }

@@ -22,7 +22,7 @@ public class WSDLParamSetter implements CustomParamSetter {
 	 */
 	@Override
 	public boolean isOkFor(AbstractTemplateField templateField) {
-		if(TemplateFieldType.WSDL_PARAM.equals(templateField.getParamType())){
+		if(TemplateFieldType.IN_WSDL_PARAM.equals(templateField.getParamType())){
 			return true;
 		} else {
 			return false;

@@ -21,15 +21,16 @@
 package org.easysoa.simulation;
 
 import java.util.List;
-
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.correlation.CorrelationEngine;
 import org.easysoa.records.correlation.FieldExtractor;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.simulation.SimulationStore.OrderingMethod;
+import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+
+import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Simulation engine
@@ -43,8 +44,13 @@ public class SimulationEngineImpl implements SimulationEngine {
     @Reference
     CorrelationEngine correlationEngine;
     
+    @Reference
+    TemplateEngine templateEngine;
+    
     //@Reference
     ProxyFileStore fileStore;
+
+    List<SimulationMethod> simulationMethodList;
     
     /**
      * 
@@ -54,44 +60,35 @@ public class SimulationEngineImpl implements SimulationEngine {
     }
     
     @Override
-    public SimulationStore getSimulationStoreFromSuggestion(List<ExchangeRecord> exchangeRecordList) {
-        SimulationStore store = new SimulationStore();
+    public SimulationStore getSimulationStoreFromSuggestion(String storeName, List<ExchangeRecord> exchangeRecordList) {
+        SimulationStore store = new SimulationStore(storeName);
         FieldExtractor extractor = new FieldExtractor();
         for(ExchangeRecord exchangeRecord : exchangeRecordList){
-            //TODO : How to deal with template suggestions to have output templates
             TemplateFieldSuggestions suggestions = correlationEngine.correlateWithSubpath(exchangeRecord, 
                     extractor.getInputPathParams(exchangeRecord.getInMessage()), 
                     extractor.getInputQueryParams(exchangeRecord.getInMessage()),
                     extractor.getInputContentParam(exchangeRecord.getInMessage()),
                     extractor.getOutputFields(exchangeRecord.getOutMessage()));
+            store.addRecordSuggestions(exchangeRecord, suggestions);
         }
         return store;
     }
 
     @Override
-    public SimulationStore getExistingSimulationStore(String storeName, String recordID) {
-        //fileStore.getTemplateFieldSuggestions(storeName, recordID);
-        return null;
-    }
-
-    /**
-     * Match
-     */
-    private boolean match(){
-        // check for each suggestion if match
-        /*for(){
-            
-        }*/
-        return false;
+    public SimulationStore getExistingSimulationStore(String storeName, String recordID) throws Exception {
+        return fileStore.loadSimulationStore(storeName);
     }
 
     @Override
-    public void simulate(SimulationStore simulationStore/*, SimulationMethod method*/) {
-        // Sorting store by decreasing correlation level
-        simulationStore.orderBy(OrderingMethod.DECREASING_CORRELATION_LEVEL);
-        // 
-        
-        
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method) throws Exception {
+        // Call the correlation engine to get field suggestions for input record
+        FieldExtractor extractor = new FieldExtractor();
+        TemplateFieldSuggestions inputSuggestions = correlationEngine.correlateWithSubpath(inputRecord,
+                extractor.getInputPathParams(inputRecord.getInMessage()), 
+                extractor.getInputQueryParams(inputRecord.getInMessage()),
+                extractor.getInputContentParam(inputRecord.getInMessage()),
+                extractor.getOutputFields(inputRecord.getOutMessage()));
+        return method.simulate(inputRecord, inputSuggestions, simulationStore, templateEngine);
     }
 
 }

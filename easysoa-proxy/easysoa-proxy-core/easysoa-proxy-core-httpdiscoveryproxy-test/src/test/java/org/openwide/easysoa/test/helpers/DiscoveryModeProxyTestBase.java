@@ -22,13 +22,9 @@ package org.openwide.easysoa.test.helpers;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.soap.SOAPException;
-
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -48,7 +44,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.openwide.easysoa.test.util.Utilities;
 
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 

@@ -21,6 +21,7 @@ package org.easysoa.records.persistence.filesystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONObject;
@@ -34,6 +35,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.reports.Report;
+import org.easysoa.simulation.SimulationStore;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.VelocityTemplate;
@@ -168,7 +170,6 @@ public class ProxyFileStore {
 
     /**
      * Save a customized ExchangeRecord in the template store
-     * 
      * @param record
      * @param storeName
      * @throws Exception
@@ -350,6 +351,48 @@ public class ProxyFileStore {
         return record;
     }
 
+    /**
+     * Save a simulation store
+     * @param simulationStore The simulation store to save
+     */
+    public void saveSimulationStore(SimulationStore simulationStore){
+        Iterator<ExchangeRecord> recordIterator = simulationStore.getRecordList().keySet().iterator() ;
+        while(recordIterator.hasNext()){
+            ExchangeRecord record = recordIterator.next();
+            // TODO : have to complete this method
+            
+            // Saving the record
+            
+            // Saving the field suggestions
+            //StoreResource fieldSuggestionsResource = new StoreResource("", , );
+            //store.save(fieldSuggestionsResource);
+        }
+    }
+    
+    /**
+     * Load a SimulationStore
+     * @param storeName The simulation store to load
+     * @return A SimulationStore
+     * @throws Exception If a problem occurs during the loading
+     */
+    public SimulationStore loadSimulationStore(String storeName) throws Exception {
+        logger.debug("loading simulation store :" + storeName);
+        List<StoreResource> resourceList = store.getResourceList(path + "/" + storeName);
+        
+        // TODO : have to complete these method
+        /*SimulationStore simulStore = new SimulationStore();
+        for(StoreResource resource : resourceList){
+            if(resource.getResourceName().endsWith(TEMPLATE_FILE_EXTENSION)){
+                //String id = resource.getResourceName().substring(resource.getResourceName().lastIndexOf("_")+1, resource.getResourceName().lastIndexOf("."));
+                HashMap<String, Class> classMap = new HashMap<String, Class>();
+                //AbstractTemplateField field = (AbstractTemplateField) convertJSONToObject(resource.getContent(), AbstractTemplateField.class, classMap);
+                simulStore.addRecordSuggestions(record, suggestions);                
+            }
+        }
+        return simulStore;*/
+        return null;
+    }    
+    
     /**
      * Convert a JSON string in the corresponding Java object
      * @param jsonString The JSON String to convert

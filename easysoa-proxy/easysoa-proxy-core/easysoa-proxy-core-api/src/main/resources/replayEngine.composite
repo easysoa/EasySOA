@@ -19,4 +19,14 @@
 		<sca:reference name="logEngine" target="logEngineComponent" />
 	</sca:component>
 
+	<!-- Exchange replay service -->
+	<sca:component name="exchangeReplayServiceComponent">
+		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
+		<sca:service name="exchangeReplayService">
+			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
+			<frascati:binding.rest uri="http://localhost:8086/" />
+		</sca:service>
+		<sca:reference name="replayEngine" target="replayEngineComponent" />
+	</sca:component>
+
 </sca:composite>
