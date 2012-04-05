@@ -60,9 +60,6 @@ public class  MeteoMockProvider implements Provider<SOAPMessage> {
         {
             logger.error("An error occurs !", soapEx);
             
-        } catch (Exception e)
-        {
-            logger.error("An error occurs !", e);
         }
         return null;
     }

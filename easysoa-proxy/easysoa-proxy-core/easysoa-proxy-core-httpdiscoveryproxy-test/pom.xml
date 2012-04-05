@@ -271,13 +271,33 @@
             <!-- These tests require an external nuxeo to work ! -->
             <exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
             <exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
-
-            <!-- these tests should only work when the corresponding bugs are patched
-              : -->
+            <!-- these tests should only work when the corresponding bugs are patched: -->
             <exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
           </excludes>
         </configuration>
       </plugin>
+        <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.5</version>
+            <executions>
+                <execution>
+                    <id>copy-resources</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${project.basedir}/target/classes/webContent</outputDirectory>
+                        <resources>
+                            <resource>
+                                <directory>${project.basedir}/src/main/resources/webContent</directory>
+                                <filtering>true</filtering>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>      
     </plugins>
   </build>
 

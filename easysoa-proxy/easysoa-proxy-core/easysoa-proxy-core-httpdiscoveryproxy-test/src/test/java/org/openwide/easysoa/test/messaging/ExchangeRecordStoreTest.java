@@ -33,6 +33,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -149,8 +150,8 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
      * Stop FraSCAti components
      * @throws FrascatiException
      */
-    @AfterClass
-    public static void cleanUp() throws Exception{
+    @After
+    public void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }	

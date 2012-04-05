@@ -1,20 +1,15 @@
 package org.easysoa.cxf;
 
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.util.Set;
 
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.Endpoint;
 
 import org.apache.log4j.Logger;
 import org.easysoa.frascati.FraSCAtiServiceException;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,12 +33,22 @@ public class CxfProviderDispatcherTest extends AbstractProxyTestStarter {
      * Start FraSCAti, HTTP discovery proxy and mock services
      * @throws Exception 
      */
-    @BeforeClass
-    public static void setUp() throws Exception{
+    /**
+     * Start FraSCAti, HTTP discovery proxy and mock services
+     * @throws Exception 
+     */
+    @Before
+    public void setUp() throws Exception{
         // Start fraSCAti
         startFraSCAti();
         // Start mock services
         //startMockServices(false);
+    }  
+    
+    
+    @After
+    public void tearDown() throws Exception{
+        stopFraSCAti();
     }    
     
     /**

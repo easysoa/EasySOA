@@ -21,7 +21,9 @@
 package org.openwide.easysoa.test.mode.discovery;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.openwide.easysoa.test.helpers.DiscoveryModeProxyTestBase;
@@ -53,8 +55,8 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	 * FraSCAti and HTTP discovery Proxy ...
 	 * @throws Exception 
 	 */
-    @BeforeClass
-	public static void setUp() throws Exception {
+        @Before
+	public void setUp() throws Exception {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   serviceTestHelper = new FullMockedServiceTestHelper();
 	   // Clean Nuxeo registery
@@ -63,7 +65,7 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
-	   startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
+	   //startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
 	   // Start services mock
 	   try{
 		   startMockServices(true);
@@ -77,8 +79,8 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
      * Stop FraSCAti components
      * @throws FrascatiException
      */
-    @AfterClass
-    public static void cleanUp() throws Exception{
+    @After
+    public void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }

@@ -20,21 +20,16 @@
 
 package org.openwide.easysoa.test;
 
-import java.lang.management.ManagementFactory;
-import java.util.Set;
+import java.io.IOException;
 
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
+import javax.xml.soap.SOAPException;
 
 import org.apache.log4j.Logger;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
+import org.ow2.frascati.util.FrascatiException;
 
 /**
  * HTTP Discovery Proxy Test Starter. Just launch the proxy in FraSCAti and wait
@@ -55,10 +50,9 @@ public class ProxyStarter extends AbstractProxyTestStarter
      * 
      * @throws Exception
      */
-    @BeforeClass
-    public static void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-
         logger.info("Launching FraSCAti and HTTP Discovery Proxy");
         startFraSCAti();
         startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
@@ -69,38 +63,11 @@ public class ProxyStarter extends AbstractProxyTestStarter
      * 
      * @throws FrascatiException
      */
-    @AfterClass
-    public static void cleanUp() throws Exception
+    @After
+    public void cleanUp() throws Exception
     {
-
         logger.info("Stopping FraSCAti...");
         stopFraSCAti();
-
-        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name;
-        try
-        {
-            name = new ObjectName("SCA domain:name0=*,*");
-            Set<ObjectName> names = mbs.queryNames(name, name);
-            for (ObjectName objectName : names)
-            {
-                mbs.unregisterMBean(objectName);
-            }
-            mbs.unregisterMBean(new ObjectName(
-                    "org.ow2.frascati.jmx:name=FrascatiJmx"));
-        } catch (MalformedObjectNameException e)
-        {
-            // e.printStackTrace();
-        } catch (NullPointerException e)
-        {
-            // e.printStackTrace();
-        } catch (MBeanRegistrationException e)
-        {
-            // e.printStackTrace();
-        } catch (InstanceNotFoundException e)
-        {
-            // e.printStackTrace();
-        }
     }
 
     /**

@@ -21,24 +21,18 @@
 package org.openwide.easysoa.test.util;
 
 import java.io.File;
-import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Set;
-
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
+import org.ow2.frascati.util.FrascatiException;
 
 /**
  * Abstract Proxy Test Starter. Launch FraSCAti and the HTTP Discovery Proxy.
@@ -49,15 +43,14 @@ public abstract class AbstractProxyTestStarter
     /**
      * Logger
      */
-    private static final Logger logger = Logger
-            .getLogger(getInvokingClassName());
+    private static final Logger logger = Logger.getLogger(
+            getInvokingClassName());
 
-    /** The FraSCAti platform */
-    // protected static FraSCAti frascati;
-    protected static FraSCAtiServiceItf frascati;
+    protected static FraSCAtiServiceItf frascati = null;
 
-    // protected static ArrayList<Component> componentList;
-    protected static ArrayList<String> componentList;
+    protected static RemoteFraSCAtiServiceProvider serviceProvider = null;
+    
+    protected static ArrayList<String> componentList = null;
 
     static
     {
@@ -81,67 +74,44 @@ public abstract class AbstractProxyTestStarter
      * 
      * @throws Exception
      */
-    protected static void startFraSCAti() throws Exception
+    protected void startFraSCAti() throws Exception
     {
-
-        logger.info("FraSCATI Starting");
-        // componentList = new ArrayList<Component>();
-        componentList = new ArrayList<String>();
-        // TODO replace this code by new RemoteFrascatiServiceProvider
-        // frascati = FraSCAti.newFraSCAti();
-        File frascatiLibFolder = new File(
-                "../../../easysoa-distribution/easysoa/frascati/lib");
-        RemoteFraSCAtiServiceProvider serviceProvider = new RemoteFraSCAtiServiceProvider(
-                frascatiLibFolder);
-        frascati = serviceProvider.getFraSCAtiService();
+        if(frascati == null)
+        {
+            logger.info("FraSCATI Starting");
+            componentList = new ArrayList<String>();
+            
+            File frascatiLibFolder = new File(
+                    "../../../easysoa-distribution/easysoa/frascati/lib");
+            
+            serviceProvider = new RemoteFraSCAtiServiceProvider(frascatiLibFolder);
+            frascati = serviceProvider.getFraSCAtiService();
+        }
     }
 
     /**
      * 
      * @throws FrascatiException
      */
-    protected static void stopFraSCAti() throws Exception
+    protected void stopFraSCAti() throws Exception
     {
-
-        logger.info("FraSCATI Stopping");
-        if (componentList != null)
+        if(frascati != null)
         {
-            // for(Component component : componentList){
-            for (String component : componentList)
-            {
-                logger.debug("Closing component : " + component);
-                frascati.stop(component);
-                // frascati.close(component);
+            logger.info("FraSCATI Stopping");
+            if (componentList != null)
+              {
+                  // for(Component component : componentList){
+                  for (String component : componentList)
+                  {
+                      logger.debug("Closing component : " + component);
+                      frascati.stop(component);
+               }
             }
+            serviceProvider.stopFraSCAtiService();
+            frascati = null;
+            serviceProvider = null;
+            componentList = null;
         }
-
-        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name;
-        try
-        {
-            name = new ObjectName("SCA domain:name0=*,*");
-            Set<ObjectName> names = mbs.queryNames(name, name);
-            for (ObjectName objectName : names)
-            {
-                mbs.unregisterMBean(objectName);
-            }
-            mbs.unregisterMBean(new ObjectName(
-                    "org.ow2.frascati.jmx:name=FrascatiJmx"));
-
-        } catch (MalformedObjectNameException e)
-        {
-            // e.printStackTrace();
-        } catch (NullPointerException e)
-        {
-            // e.printStackTrace();
-        } catch (MBeanRegistrationException e)
-        {
-            // e.printStackTrace();
-        } catch (InstanceNotFoundException e)
-        {
-            // e.printStackTrace();
-        }
-        frascati = null;
     }
 
     /**
@@ -153,7 +123,6 @@ public abstract class AbstractProxyTestStarter
     protected static void startHttpDiscoveryProxy(String composite, URL... urls)
             throws Exception
     {
-
         logger.info("HTTP Discovery Proxy Starting");
         // Component component = frascati.processComposite(composite,new
         // ProcessingContextImpl(new FrascatiClassLoader(urls)));
@@ -199,7 +168,6 @@ public abstract class AbstractProxyTestStarter
      */
     public void startNewRun(String runName) throws Exception
     {
-
         DefaultHttpClient httpClient = new DefaultHttpClient();
         // Start a new Run
         HttpPost newRunPostRequest = new HttpPost("http://localhost:"
@@ -214,7 +182,6 @@ public abstract class AbstractProxyTestStarter
      */
     public void stopAndSaveRun() throws Exception
     {
-
         DefaultHttpClient httpClient = new DefaultHttpClient();
         // Stop and save the run
         HttpPost stopRunPostRequest = new HttpPost("http://localhost:"
@@ -230,7 +197,6 @@ public abstract class AbstractProxyTestStarter
      */
     public void deleteRun() throws Exception
     {
-
         DefaultHttpClient httpClient = new DefaultHttpClient();
         // delete the run
         HttpPost deleteRunPostRequest = new HttpPost("http://localhost:"

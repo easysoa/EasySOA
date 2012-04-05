@@ -44,7 +44,9 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateEngineImpl;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -71,14 +73,14 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	 * Clean old test files, start FraSCAti, start the HTTP discovery proxy and the mock services
 	 * @throws Exception 
 	 */
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		// clean the old exchange records files
 		cleanOldFiles();
 		// Start fraSCAti
 		startFraSCAti();
 		// Start HTTP proxy
-		startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
+		//startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
 		// Start mock services
 		startMockServices(false);
 	}	
@@ -339,8 +341,8 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
      * Stop FraSCAti components
      * @throws FrascatiException
      */
-    @AfterClass
-    public static void cleanUp() throws Exception{
+    @After
+    public void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
     }	

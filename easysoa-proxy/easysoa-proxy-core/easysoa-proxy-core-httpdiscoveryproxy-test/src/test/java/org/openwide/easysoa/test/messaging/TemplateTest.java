@@ -29,6 +29,7 @@ import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -54,18 +55,18 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * Start FraSCAti, HTTP discovery proxy and mock services
 	 * @throws Exception 
 	 */
-	@BeforeClass
-	public static void setUp() throws Exception{
+	@Before
+	public void setUp() throws Exception{
 		// Start fraSCAti
 		startFraSCAti();
 		// Start Http Discovery proxy
-		try {
-			startHttpDiscoveryProxy("httpDiscoveryProxy.composite", new URL[] { new URL("file://target") });
-		} catch (MalformedURLException e) {
-			throw new Exception("TemplateTest init error", e);
-		}
+//		try {
+//			//startHttpDiscoveryProxy("httpDiscoveryProxy.composite", new URL[] { new URL("file://target") });
+//		} catch (MalformedURLException e) {
+//			throw new Exception("TemplateTest init error", e);
+//		}
 		// Start mock services
-		startMockServices(false);
+		//startMockServices(false);
 	}
 	
 	/**
