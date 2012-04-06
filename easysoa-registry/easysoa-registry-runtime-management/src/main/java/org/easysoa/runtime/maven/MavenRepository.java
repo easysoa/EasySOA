@@ -1,5 +1,6 @@
 package org.easysoa.runtime.maven;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -65,7 +66,13 @@ public class MavenRepository implements DeployableProvider<MavenDeployable>,
 			if (jarUrl != null) {
 				URL pomUrl = getUrl(mavenId, POM_EXT);
 				if (pomUrl != null) {
-					return new MavenDeployable(mavenId, jarUrl.openStream(), pomUrl.openStream());
+					try {
+						return new MavenDeployable(mavenId, jarUrl.openStream(), pomUrl.openStream());
+					}
+					catch (FileNotFoundException e) {
+						// Deployable not available on this repository
+						return null;
+					}
 				}
 			}
 		}

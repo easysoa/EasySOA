@@ -26,6 +26,13 @@
         <property name="url">http://search.maven.org/remotecontent?filepath=</property>
       </properties>
     </deployableProvider>
+    <deployableProvider>
+      <name>EasySOA Maven Repository (Nuxeo.org)</name>
+      <type>mavenRepository</type>
+      <properties>
+        <property name="url">http://maven.nuxeo.org/nexus/content/groups/easysoa/</property>
+      </properties>
+    </deployableProvider>
   </extension>
 
 </component>
