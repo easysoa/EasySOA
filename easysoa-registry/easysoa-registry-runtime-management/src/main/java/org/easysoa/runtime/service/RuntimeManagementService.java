@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.runtime.api.DeployableProvider;
 import org.easysoa.runtime.api.RuntimeServer;
+import org.easysoa.runtime.copypaste.CopyPasteServer;
 import org.easysoa.runtime.maven.MavenRepository;
 import org.easysoa.runtime.utils.FakeStartableCopyPasteServer;
-import org.nuxeo.runtime.model.ComponentContext;
+import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 
@@ -19,40 +22,59 @@ import org.nuxeo.runtime.model.DefaultComponent;
  *
  */
 public class RuntimeManagementService extends DefaultComponent {
+    
+	private static final String DEPLOYABLE_PROVIDERS_EXTENSIONPOINT = "deployableProviders";
+	
+	private static final String RUNTIME_SERVERS_EXTENSIONPOINT = "runtimeServers";
 
+    private static final Log log = LogFactory.getLog(RuntimeManagementService.class);
+    
 	private Map<String, DeployableProvider<?>> deployableProviders = new HashMap<String, DeployableProvider<?>>();
 	
 	private Map<String, RuntimeServer<?, ?>> runtimeServers = new HashMap<String, RuntimeServer<?, ?>>();
-	
-	// TODO Transform into extension point(s)
+
 	@Override
-	public void activate(ComponentContext context) throws Exception {
+	public void registerContribution(Object contribution,
+			String extensionPoint, ComponentInstance contributor)
+			throws Exception {
 		
-		/*
-		 <deployableProvider>
-		   <name>Global Maven Repository</name>
-		   <type>mavenRepository</type>
-		   <params>
-		     <url>http://search.maven.org/remotecontent?filepath=</url>
-		   </params>
-		 </deployableProvider>
-		 */
-		URL mavenRepositoryUrl = new URL("http://search.maven.org/remotecontent?filepath=");
-		DeployableProvider<?> mavenRepository = new MavenRepository(mavenRepositoryUrl);
-		deployableProviders.put("Maven Repository", mavenRepository);
+		if (DEPLOYABLE_PROVIDERS_EXTENSIONPOINT.equals(extensionPoint)) {
+			DeployableProviderDescriptor deployableProviderDescriptor = (DeployableProviderDescriptor) contribution;
+			DeployableProvider<?> newProvider = null;
+			
+			// TODO Move to extension point "deployableProviderTypes"
+			if ("mavenRepository".equals(deployableProviderDescriptor.type)) {
+				URL mavenRepositoryUrl = new URL(deployableProviderDescriptor.properties.get("url"));
+				newProvider = new MavenRepository(mavenRepositoryUrl);
+			}
+			else {
+				log.error("Unknown type '" + deployableProviderDescriptor.type + "'");
+			}
+			
+			if (newProvider != null) {
+				deployableProviders.put(deployableProviderDescriptor.name, newProvider);
+			}
+		}
 		
-		/*
-		 <runtimeServer>
-		   <name>Test Server</name>
-		   <type>fakeStartableCopyPasteServer</type>
-		   <params>
-		     <path>./nxserver/nuxeo.war/testServer</path>
-		   </params>
-		 </runtimeServer>
-		 */
-		FakeStartableCopyPasteServer testServer = new FakeStartableCopyPasteServer("./nxserver/nuxeo.war/testServer");
-		runtimeServers.put("Test Server", testServer);
-		
+		else if (RUNTIME_SERVERS_EXTENSIONPOINT.equals(extensionPoint)) {
+			RuntimeServerDescriptor runtimeServerDescriptor = (RuntimeServerDescriptor) contribution;
+			RuntimeServer<?, ?> newRuntimeServer = null;
+
+			// TODO Move to extension point "runtimeServerTypes"
+			if ("copyPasteServer".equals(runtimeServerDescriptor.type)) {
+				newRuntimeServer = new CopyPasteServer(runtimeServerDescriptor.properties.get("path"));
+			}
+			else if ("fakeStartableCopyPasteServer".equals(runtimeServerDescriptor.type)) {
+				newRuntimeServer = new FakeStartableCopyPasteServer(runtimeServerDescriptor.properties.get("path"));
+			}
+			else {
+				log.error("Unknown type '" + runtimeServerDescriptor.type + "'");
+			}
+			
+			if (newRuntimeServer != null) {
+				runtimeServers.put(runtimeServerDescriptor.name, newRuntimeServer);
+			}
+		}
 	}
 	
 	public Set<String> getAllDeployableProvidersNames() {

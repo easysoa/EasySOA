@@ -17,4 +17,12 @@
     <provide interface="org.easysoa.runtime.service.RuntimeManagementService" />
   </service>
   
+  <extension-point name="deployableProviders">
+    <object class="org.easysoa.runtime.service.DeployableProviderDescriptor" />
+  </extension-point>
+  
+  <extension-point name="runtimeServers">
+    <object class="org.easysoa.runtime.service.RuntimeServerDescriptor" />
+  </extension-point>
+  
 </component>

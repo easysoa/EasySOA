@@ -10,4 +10,5 @@ Bundle-Vendor: EasySOA Consortium
 Bundle-Category: web
 Nuxeo-Require: org.easysoa.registry.core
 Nuxeo-Component: OSGI-INF/actions-contrib.xml,
- OSGI-INF/RuntimeManagementService.xml
+ OSGI-INF/RuntimeManagementService.xml,
+ OSGI-INF/runtimemanagement-defaults-contrib.xml

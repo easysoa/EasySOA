@@ -73,7 +73,7 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     public void registerContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor)
             throws Exception {
-        if (extensionPoint.equals(PARSERS_EXTENSIONPOINT)) {
+        if (PARSERS_EXTENSIONPOINT.equals(extensionPoint)) {
             try {
                 // Register/remove web file parser
                 WebFileParserDescriptor parserDescriptor = (WebFileParserDescriptor) contribution;
@@ -95,7 +95,7 @@ public class WebFileParsingPoolServiceImpl extends DefaultComponent implements R
     public void unregisterContribution(Object contribution,
             String extensionPoint, ComponentInstance contributor)
             throws Exception {
-        if (extensionPoint.equals(PARSERS_EXTENSIONPOINT)) {
+        if (PARSERS_EXTENSIONPOINT.equals(extensionPoint)) {
             try {
                 // Unregister web file parser
                 WebFileParserDescriptor parserDescriptor = (WebFileParserDescriptor) contribution;

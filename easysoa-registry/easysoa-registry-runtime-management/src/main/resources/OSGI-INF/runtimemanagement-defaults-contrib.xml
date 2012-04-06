@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.runtimemanagement.contrib.runtimemanagement">
+
+  <extension target="org.easysoa.runtime.service.RuntimeManagementService" point="runtimeServers">
+    <runtimeServer>
+      <name>Test Server</name>
+      <type>copyPasteServer</type>
+      <properties>
+        <property name="path">./nxserver/nuxeo.war/testServer</property>
+      </properties>
+    </runtimeServer>
+    <runtimeServer>
+      <name>Startable Test Server</name>
+      <type>fakeStartableCopyPasteServer</type>
+      <properties>
+        <property name="path">./nxserver/nuxeo.war/testStartableServer</property>
+      </properties>
+    </runtimeServer>
+  </extension>
+
+  <extension target="org.easysoa.runtime.service.RuntimeManagementService" point="deployableProviders">
+    <deployableProvider>
+      <name>Global Maven Repository</name>
+      <type>mavenRepository</type>
+      <properties>
+        <property name="url">http://search.maven.org/remotecontent?filepath=</property>
+      </properties>
+    </deployableProvider>
+  </extension>
+
+</component>
