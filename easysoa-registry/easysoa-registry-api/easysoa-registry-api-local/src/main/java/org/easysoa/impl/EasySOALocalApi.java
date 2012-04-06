@@ -91,11 +91,14 @@ public class EasySOALocalApi implements EasySOAApiSession {
                 String[] deployables = deployablesString.split("\n");
                 for (String deployable : deployables) {
                     Map<String, Object> newDeployableValue = new HashMap<String, Object>();
-                    String deployableName = deployable.replaceAll("-[0-9.]+(-SNAPSHOT)?$", "");
-                    newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLENAME, deployableName);
-                    newDeployableValue.put(
-                            AppliImpl.SUBPROP_DEPLOYABLEVERSION,
-                            deployable.replaceFirst(deployableName, "").substring(1));
+                    String[] deployableInfos = deployable.split("\\|");
+                    newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLEID, deployableInfos[0]);
+                    if (deployableInfos.length > 1) {
+                    	newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLENAME, deployableInfos[1]);
+                    }
+                    if (deployableInfos.length > 2) {
+                    	newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLEVERSION, deployableInfos[2]);
+                    }
                     newDeployablesValue.add(newDeployableValue);
                 }
                 appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_DEPLOYABLES, newDeployablesValue);

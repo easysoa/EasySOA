@@ -174,7 +174,9 @@ public class EasySOAClasspathAnalysis implements Runnable {
                         // Build a notification for Nuxeo
                         String data = "";
                         for (String jarName : jarNames) {
-                            data += jarName + '\n';
+                            String deployableName = jarName.replaceAll("-[0-9.]+(-SNAPSHOT)?$", "");
+                            String deployableVersion = jarName.replaceFirst(deployableName, "").substring(1);
+                            data += deployableName + '|' + deployableName + '|' + deployableVersion + '\n';
                         }
                         
                         // Send the notification

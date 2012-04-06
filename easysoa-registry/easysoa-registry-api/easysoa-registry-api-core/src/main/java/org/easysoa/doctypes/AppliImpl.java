@@ -49,13 +49,13 @@ public class AppliImpl extends EasySOADoctype {
     public static final String PROP_PROVIDER = "provider";
     public static final String PROP_TECHNOLOGY = "technology";
     public static final String PROP_STANDARD = "standard";
-    public static final String PROP_DEPLOYABLES = "deployables";
     public static final String PROP_REFERENCEAPP = "referenceApp";
+	public static final String PROP_DEPLOYABLEPROVIDER = "deployableProvider";
+	public static final String PROP_RUNTIMESERVER = "runtimeServer";
+    public static final String PROP_DEPLOYABLES = "deployables";
     public static final String SUBPROP_DEPLOYABLEID = "deployableId";
     public static final String SUBPROP_DEPLOYABLENAME = "deployableName";
     public static final String SUBPROP_DEPLOYABLEVERSION = "deployableVersion";
-	public static final String PROP_DEPLOYABLEPROVIDER = "deployableProvider";
-	public static final String PROP_RUNTIMESERVER = "runtimeServer";
     
     // Feature-specific properties
     public static final String PROP_DOMAIN = "domain";
@@ -85,6 +85,10 @@ public class AppliImpl extends EasySOADoctype {
             propertyList.put(PROP_PROVIDER, "Company that provides these services.");
             propertyList.put(PROP_TECHNOLOGY, "Services implementation technology.");
             propertyList.put(PROP_STANDARD, "Protocol standard if applicable.");
+            propertyList.put(PROP_DEPLOYABLES, "A list of the application's deployables. Format: id|name|version\\nid|...");
+            propertyList.put(PROP_REFERENCEAPP, "Protocol standard if applicable.");
+            propertyList.put(PROP_DEPLOYABLEPROVIDER, "The name of the deployable provider to attach to this application.");
+            propertyList.put(PROP_RUNTIMESERVER, "The name of the runtime server to attach to this application");
         }
         return propertyList;
     }
