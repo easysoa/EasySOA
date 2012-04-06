@@ -112,12 +112,19 @@ public class RemoteFraSCAtiServiceProvider implements
         ClassLoader current = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(icl);
         
-        frascati = frascatiClass.getDeclaredMethod("newFraSCAti",
-                new Class<?>[]{ClassLoader.class}).invoke(null,
-                        new Object[]{icl});
-        
-        Thread.currentThread().setContextClassLoader(current);
-        
+        try
+        {
+        frascati = frascatiClass.getDeclaredMethod("newFraSCAti").invoke(null);
+//                ,
+//                new Class<?>[]{ClassLoader.class}).invoke(null,
+//                        new Object[]{icl});
+        } catch(Exception e)
+        {
+            throw e;
+        } finally
+        {
+            Thread.currentThread().setContextClassLoader(current);
+        }
         Class<?> managerClass = icl.loadClass(
                 "org.ow2.frascati.assembly.factory.api.CompositeManager");
         
