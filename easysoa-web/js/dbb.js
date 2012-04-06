@@ -136,7 +136,7 @@ sendWSDL = function(request, response, next) {
 		request.session,
 		settings.EASYSOA_DISCOVERY_PATH,
 		'POST',
-		null,
+		{'Content-Type':'application/x-www-form-urlencoded'},
 		body,
 		function(data, error) {
 			if (data) {

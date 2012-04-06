@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -96,10 +97,10 @@ public class ServiceFinderRest {
 
     @POST
     @Path("/")
-    public Object doPost(@Context HttpContext httpContext, String body) throws Exception {
+    public Object doPost(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
     	
     	// Retrieve params
-    	Map<String, String> formValues = DiscoveryRest.getFormValues(body);
+    	Map<String, String> formValues = DiscoveryRest.getFirstValues(request.getParameterMap());
     	
     	// Find WSDLs
     	BrowsingContext browsingContext = new BrowsingContext(new URL(formValues.get("url")), formValues.get("data"));
