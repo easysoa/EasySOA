@@ -82,10 +82,11 @@ public abstract class AbstractTemplateField {
 	 *
 	 */
 	public enum TemplateFieldType {
-		CONTENT_PARAM,
-		QUERY_PARAM,
-		PATH_PARAM,
-		WSDL_PARAM
+		IN_CONTENT_PARAM,
+		IN_QUERY_PARAM,
+		IN_PATH_PARAM,
+		IN_WSDL_PARAM,
+		OUT_PARAM
 	}
 	
 	/**

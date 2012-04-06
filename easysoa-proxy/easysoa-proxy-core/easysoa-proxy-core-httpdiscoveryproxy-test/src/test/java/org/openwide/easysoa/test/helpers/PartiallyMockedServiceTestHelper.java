@@ -23,8 +23,6 @@ package org.openwide.easysoa.test.helpers;
 import static org.junit.Assert.assertEquals;
 
 import org.easysoa.EasySOAConstants;
-import org.json.JSONException;
-
 
 /**
  * ServiceTestHelper for PartiallyMocked mock setup

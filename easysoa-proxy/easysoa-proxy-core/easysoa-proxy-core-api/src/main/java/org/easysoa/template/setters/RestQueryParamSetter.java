@@ -19,7 +19,7 @@ public class RestQueryParamSetter implements CustomParamSetter {
 	 */
 	@Override
 	public boolean isOkFor(AbstractTemplateField templateField) {
-		if(TemplateFieldType.QUERY_PARAM.equals(templateField.getParamType())){
+		if(TemplateFieldType.IN_QUERY_PARAM.equals(templateField.getParamType())){
 			return true;
 		} else {
 			return false;

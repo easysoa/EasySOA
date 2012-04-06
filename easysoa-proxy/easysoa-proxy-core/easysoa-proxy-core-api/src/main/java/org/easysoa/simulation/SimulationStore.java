@@ -20,46 +20,82 @@
 
 package org.easysoa.simulation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.template.OutputTemplateField;
+import org.easysoa.template.TemplateFieldSuggestions;
 
 /**
+ * A simulation store is 
+ * 
  * @author jguillemotte
  *
  */
 public class SimulationStore {
 
     /**
-     * 
+     * Ordering methods
      * @author jguillemotte
      *
      */
     public enum OrderingMethod {
         DECREASING_CORRELATION_LEVEL
     }
+
+    // Store name
+    private String storeName;
     
-    // TODO : What to use here ?? templatized exchange record list or templateSuggestions ??
-    private List<OutputTemplateField> fieldList;
+    // A map to associate records with templateFieldSuggestions
+    private Map<ExchangeRecord, TemplateFieldSuggestions> recordList;
     
     /**
      * 
+     * @param storeName
+     * @throws IllegalArgumentException
      */
-    public SimulationStore(){
-        fieldList = new ArrayList<OutputTemplateField>();
+    public SimulationStore(String storeName) throws IllegalArgumentException {
+        if(storeName == null || "".equals(storeName)){
+            throw new IllegalArgumentException("StoreName parameter must not be null or empty");
+        }
+        this.storeName = storeName;
+        recordList = new HashMap<ExchangeRecord, TemplateFieldSuggestions>();
     }
-
+   
+    /**
+     * 
+     * @return
+     */
+    public String getStoreName(){
+       return this.storeName; 
+    }
+    
     /**
      * Sort and order the store
      * @param ordering
      */
     public void orderBy(OrderingMethod ordering){
         if(OrderingMethod.DECREASING_CORRELATION_LEVEL.equals(ordering)){
-            Collections.sort(fieldList, new DecreasingCorrelationLevelComparator());
+            //Collections.sort(fieldList, new DecreasingCorrelationLevelComparator());
         }
+    }
+    
+    /**
+     * Add a record and suggestions values in the store
+     * @param record The exchange record to add
+     * @param suggestions The associated field template suggestions
+     */
+    public void addRecordSuggestions(ExchangeRecord record, TemplateFieldSuggestions suggestions){
+        if(record != null && suggestions != null){
+            this.recordList.put(record, suggestions);
+        }        
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Map<ExchangeRecord, TemplateFieldSuggestions> getRecordList(){
+        return this.recordList;
     }
     
 }

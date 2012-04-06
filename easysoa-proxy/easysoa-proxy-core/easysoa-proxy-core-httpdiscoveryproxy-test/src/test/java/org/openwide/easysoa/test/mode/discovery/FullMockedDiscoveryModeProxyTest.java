@@ -42,7 +42,7 @@ import org.openwide.easysoa.test.helpers.FullMockedServiceTestHelper;
  * @author jguillemotte
  *
  */
-@Ignore
+//@Ignore
 public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase {
 
 	/**

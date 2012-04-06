@@ -28,12 +28,7 @@ public class TemplateBuilder {
 	/**
 	 * Default constructor
 	 */
-	public TemplateBuilder(){
-        /*this.paramSetterList.add(new RestFormParamSetter());
-        this.paramSetterList.add(new RestPathParamSetter());
-        this.paramSetterList.add(new RestQueryParamSetter());
-        this.paramSetterList.add(new WSDLParamSetter());*/ 		
-	}
+	public TemplateBuilder(){}
 	
 	/**
 	 * Generate templates for request and response part of an exchange record
@@ -55,7 +50,6 @@ public class TemplateBuilder {
 		if(fieldSuggestions == null || record == null){
 			throw new IllegalArgumentException("Parameters fieldSuggestions and originalRecord must not be null !");
 		}
-		//Map<String, String> templateFileMap = new HashMap<String, String>();
 		for(AbstractTemplateField field : fieldSuggestions.getTemplateFields()){
 			logger.debug("Field to replace in a new custom record : " + field.getFieldName() + " = " + field.getDefaultValue());
 			logger.debug("Field type : " + field.getParamType() + ", position in path : " + field.getPathParamPosition());
@@ -75,7 +69,7 @@ public class TemplateBuilder {
 			// No information about this is available in the correlationField ... Need to use templateField like bean with data concerning the param type (and position)
 			
 			// Replace the parameter values with template expressions
-			if(TemplateFieldType.QUERY_PARAM.equals(field.getParamType())){
+			if(TemplateFieldType.IN_QUERY_PARAM.equals(field.getParamType())){
 				// TODO : Can be a problem in case of the same value appears several time in the query, for instance check boxes ...
 				List<QueryParam> paramList = record.getInMessage().getQueryString().getQueryParams();
 				for(QueryParam param : paramList){
@@ -84,7 +78,7 @@ public class TemplateBuilder {
 						break;
 					}
 				}
-			} else if(TemplateFieldType.PATH_PARAM.equals(field.getParamType())){
+			} else if(TemplateFieldType.IN_PATH_PARAM.equals(field.getParamType())){
 				String path = record.getInMessage().getPath();
 				// Fastest solution is to replace the value corresponding to the field
 				// TODO : Can be a problem in case of the same value appears several time in the path ...
@@ -100,9 +94,9 @@ public class TemplateBuilder {
 					}
 					tokenPosition++;
 				}*/
-			} else if(TemplateFieldType.CONTENT_PARAM.equals(field.getParamType())){
+			} else if(TemplateFieldType.IN_CONTENT_PARAM.equals(field.getParamType())){
 				// TODO : To implements
-			} else if(TemplateFieldType.WSDL_PARAM.equals(field.getParamType())){
+			} else if(TemplateFieldType.IN_WSDL_PARAM.equals(field.getParamType())){
 				// TODO : To implements
 			} else {
 				logger.debug("Unable to replace value for unknow field type '" + field.getParamType() + "'");

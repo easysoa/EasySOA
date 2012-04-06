@@ -19,7 +19,7 @@ public class RestPathParamSetter implements CustomParamSetter {
 	 */
 	@Override
 	public boolean isOkFor(AbstractTemplateField templateField) {
-		if(TemplateFieldType.PATH_PARAM.equals(templateField.getParamType())){
+		if(TemplateFieldType.IN_PATH_PARAM.equals(templateField.getParamType())){
 			return true;
 		} else {
 			return false;
