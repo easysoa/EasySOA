@@ -9,7 +9,7 @@ FIND_OPTIONS=$5
 HEADER_FILE=header_file.txt
 sed -e s/PROJECT_NAME/"$PROJECT_NAME"/ $HEADER_TEMPLATE > $HEADER_FILE
 
-find $ROOT_PATH -name "$FILE_PATTERN" $FIND_OPTIONS -print > files
+find $ROOT_PATH -name "$FILE_PATTERN" $FIND_OPTIONS -print | xargs grep --files-without-match "googlegroups" > files
 
 echo About to apply header to `wc -l files` like \"$FILE_PATTERN\" below $ROOT_PATH :
 cat $HEADER_FILE
