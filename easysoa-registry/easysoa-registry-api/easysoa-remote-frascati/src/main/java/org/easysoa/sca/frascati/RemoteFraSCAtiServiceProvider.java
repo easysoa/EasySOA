@@ -22,11 +22,10 @@ package org.easysoa.sca.frascati;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.management.ManagementFactory;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLStreamHandlerFactory;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
@@ -34,8 +33,6 @@ import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 
@@ -50,7 +47,9 @@ public class RemoteFraSCAtiServiceProvider implements
     public static final String REMOTE_FRASCATI_LIBRARIES_BASEDIR = 
             "org.easysoa.remote.frascati.libraries.basedir";
     
-    private static Log log = LogFactory.getLog(RemoteFraSCAtiServiceProvider.class);
+    private static Logger log = Logger.getLogger(
+            RemoteFraSCAtiServiceProvider.class.getCanonicalName());
+    
     private FraSCAtiServiceItf frascatiService;
     private Object frascati;
     private UpdatableURLClassLoader icl;
