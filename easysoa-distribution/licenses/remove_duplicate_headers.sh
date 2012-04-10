@@ -11,7 +11,7 @@ LINES_TO_REMOVE=$((`wc -l $3 | awk '{print $1}'` + 1))
 FILES_TO_PATCH=.tmp_filelist
 PATCHED=.tmp_patchedfile
 
-find $TARGET_PATH -iname $FILES_TO_TEST | xargs pcregrep -Ml "googlegroups[^C]*Copyright" > $FILES_TO_PATCH
+find $TARGET_PATH -iname $FILES_TO_TEST | xargs pcregrep -Ml "googlegroups[^2]*2011" > $FILES_TO_PATCH
 
 echo "=============> About to remove the first $LINES_TO_REMOVE first lines to:"
 cat $FILES_TO_PATCH
