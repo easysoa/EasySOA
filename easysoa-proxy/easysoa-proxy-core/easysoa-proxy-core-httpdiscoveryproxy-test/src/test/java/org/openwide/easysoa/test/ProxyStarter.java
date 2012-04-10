@@ -29,7 +29,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * HTTP Discovery Proxy Test Starter. Just launch the proxy in FraSCAti and wait

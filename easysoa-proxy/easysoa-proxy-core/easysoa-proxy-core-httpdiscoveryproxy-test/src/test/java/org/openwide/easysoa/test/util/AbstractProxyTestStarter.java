@@ -21,9 +21,11 @@
 package org.openwide.easysoa.test.util;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -32,14 +34,14 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
-import org.ow2.frascati.util.FrascatiException;
+import org.easysoa.sca.frascati.test.RemoteFraSCAtiServiceProviderTest;
 
 /**
  * Abstract Proxy Test Starter. Launch FraSCAti and the HTTP Discovery Proxy.
  */
-public abstract class AbstractProxyTestStarter
+public abstract class AbstractProxyTestStarter 
+    extends RemoteFraSCAtiServiceProviderTest
 {
-
     /**
      * Logger
      */
@@ -51,6 +53,8 @@ public abstract class AbstractProxyTestStarter
     protected static RemoteFraSCAtiServiceProvider serviceProvider = null;
     
     protected static ArrayList<String> componentList = null;
+    
+    protected File lib;
 
     static
     {
@@ -78,13 +82,27 @@ public abstract class AbstractProxyTestStarter
     {
         if(frascati == null)
         {
+            char sep = File.separatorChar;
+            configure();
+            
+            StringBuilder srcBuilder = new StringBuilder("target").append(
+                    sep).append("test-classes").append(sep).append(
+                            "easysoa-proxy-core-httpdiscoveryproxy.jar");
+            
+            File srcFile = new File(srcBuilder.toString());
+            
+            FileUtils.copyFileToDirectory(srcFile.getAbsoluteFile(), 
+                    remoteFrascatiLibDir);
+            
+            StringBuilder libBuilder = new StringBuilder(
+                    remoteFrascatiLibDir.getAbsolutePath()).append(sep).append(
+                         "easysoa-proxy-core-httpdiscoveryproxy.jar");
+            
+            lib = new File(libBuilder.toString());
+            
             logger.info("FraSCATI Starting");
             componentList = new ArrayList<String>();
-            
-            File frascatiLibFolder = new File(
-                    "../../../easysoa-distribution/easysoa/frascati/lib");
-            
-            serviceProvider = new RemoteFraSCAtiServiceProvider(frascatiLibFolder);
+            serviceProvider = new RemoteFraSCAtiServiceProvider(null);
             frascati = serviceProvider.getFraSCAtiService();
         }
     }
@@ -107,6 +125,11 @@ public abstract class AbstractProxyTestStarter
                       frascati.stop(component);
                }
             }
+            if(lib.exists() && lib.delete())
+            {
+                log.info("Library " + lib.getName() + " has been deleted");
+            }
+            lib = null;
             serviceProvider.stopFraSCAtiService();
             frascati = null;
             serviceProvider = null;

@@ -34,7 +34,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * This class contains two tests for CXF Provider/Dispatcher API
