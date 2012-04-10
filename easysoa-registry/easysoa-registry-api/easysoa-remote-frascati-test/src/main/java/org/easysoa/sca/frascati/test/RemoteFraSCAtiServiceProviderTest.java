@@ -47,6 +47,7 @@ public class RemoteFraSCAtiServiceProviderTest
         if (!remoteFrascatiLibDir.exists())
         {
             log.warning("Enable to retrieve the 'easysoa-remote-frascati' directory");
+            remoteFrascatiLibDir = null;
             return;
         }
 
@@ -57,13 +58,16 @@ public class RemoteFraSCAtiServiceProviderTest
                 remoteFrascatiLibDir.getAbsolutePath()).append(sep).append(
                         "resources").append(sep).append("frascati").append(
                                 sep).append("lib");
-
+        
+        String remoteFrascatiLibDirPath = libs.toString();
+        remoteFrascatiLibDir = new File(remoteFrascatiLibDirPath);
+        
         log.info("Remote FraSCAti libraries directory : "
-                + libs.toString());
+                + remoteFrascatiLibDirPath );
         
         System.setProperty(
                 RemoteFraSCAtiServiceProvider.REMOTE_FRASCATI_LIBRARIES_BASEDIR,
-                libs.toString());
+                remoteFrascatiLibDirPath);
     }
 
     
