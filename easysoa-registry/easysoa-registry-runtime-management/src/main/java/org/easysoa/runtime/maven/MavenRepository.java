@@ -1,5 +1,26 @@
+/**
+ * EasySOA Registry
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
+
 package org.easysoa.runtime.maven;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -45,16 +66,37 @@ public class MavenRepository implements DeployableProvider<MavenDeployable>,
 
 	@Override
 	public MavenDeployable fetchDeployable(Object id) throws IOException {
+		
+		// Translate ID
+		MavenID mavenId = null;
 		if (id instanceof MavenID) {
-			MavenID mavenId = (MavenID) id;
+			mavenId = (MavenID) id;
+		}
+		else if (id instanceof String) {
+			// Supports MavenIDs in string format: "group:artifact:version"
+			String[] mavenIdTokens = ((String) id).split("\\:");
+			if (mavenIdTokens.length == 3) {
+				mavenId = new MavenID(mavenIdTokens[0], mavenIdTokens[1], mavenIdTokens[2]);
+			}
+		}
+		
+		// Fetch deployable
+		if (mavenId != null) {
 			URL jarUrl = getUrl(mavenId, JAR_EXT);
 			if (jarUrl != null) {
 				URL pomUrl = getUrl(mavenId, POM_EXT);
 				if (pomUrl != null) {
-					return new MavenDeployable(mavenId, jarUrl.openStream(), pomUrl.openStream());
+					try {
+						return new MavenDeployable(mavenId, jarUrl.openStream(), pomUrl.openStream());
+					}
+					catch (FileNotFoundException e) {
+						// Deployable not available on this repository
+						return null;
+					}
 				}
 			}
 		}
+		
 		return null;
 	}
 	

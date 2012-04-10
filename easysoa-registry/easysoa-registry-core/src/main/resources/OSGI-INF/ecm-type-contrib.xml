@@ -89,6 +89,7 @@
         <layout>heading</layout>
         <layout>files</layout>
         <layout>appliimpldef_common</layout>
+        <layout>appliimpldef_runtimemanagement</layout>
         <layout>soacommon_author</layout>
         <!-- Technical -->
         <layout>appliimpldef_tech</layout>
@@ -109,6 +110,9 @@
         <layout>heading</layout>
         <layout>workspacedef</layout>
         <layout>files</layout>
+      </layouts>
+      <layouts mode="summary">
+        <layout>easysoa_summary_layout</layout>
       </layouts>
       <!-- We need to override mode-specific configurations -->
       <layouts mode="view">

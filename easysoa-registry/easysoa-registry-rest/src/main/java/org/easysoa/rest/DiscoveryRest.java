@@ -101,9 +101,9 @@ public class DiscoveryRest {
     @Path("/appliimpl")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostAppliImpl(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
+    public Object doPostAppliImpl(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(body);
+        Map<String, String> params = getFirstValues(request.getParameterMap());
         try {
             EasySOADocument doc = api.notifyAppliImpl(params);
             result.put("documentId", doc.getId());
@@ -142,9 +142,9 @@ public class DiscoveryRest {
     @Path("/api")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostApi(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
+    public Object doPostApi(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(body);
+        Map<String, String> params = getFirstValues(request.getParameterMap());
         try {
             EasySOADocument doc = api.notifyServiceApi(params);
             result.put("documentId", doc.getId());
@@ -178,13 +178,9 @@ public class DiscoveryRest {
     @Path("/service")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Object doPostService(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
+    public Object doPostService(@Context HttpContext httpContext, @Context HttpServletRequest request) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        if (body != null && body.length() > 2) {
-            // XXX: Why does the body comes in quotes?
-            body = body.substring(1, body.length() - 1);
-        }
-        Map<String, String> params = getFormValues(body); 
+        Map<String, String> params = getFirstValues(request.getParameterMap()); 
         try {
             EasySOADocument doc = api.notifyService(params);
             result.put("documentId", doc.getId());
@@ -220,14 +216,7 @@ public class DiscoveryRest {
     public Object doGetServiceJSONP(@Context HttpContext httpContext, @Context HttpServletRequest request,
             @QueryParam("callback") String callback) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, List<String>> multiValuedParams = httpContext.getRequest().getQueryParameters();
-        Map<String, String> params = new HashMap<String, String>();
-        for (Entry<String, List<String>> entry : multiValuedParams.entrySet()) {
-            List<String> value = entry.getValue();
-            if (value != null) {
-                params.put(entry.getKey(), value.get(value.size() - 1));
-            }
-        }
+        Map<String, String> params = getFirstValues2(httpContext.getRequest().getQueryParameters());
         try {
             EasySOADocument doc = api.notifyService(params);
             result.put("documentId", doc.getId());
@@ -244,7 +233,7 @@ public class DiscoveryRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Object doPostServiceReference(@Context HttpContext httpContext, @Context HttpServletRequest request, String body) throws Exception {
         EasySOAApiSession api = EasySOALocalApiFactory.createLocalApi(SessionFactory.getSession(request));
-        Map<String, String> params = getFormValues(body);
+        Map<String, String> params = getFirstValues(request.getParameterMap());
         try {
             EasySOADocument doc = api.notifyServiceReference(params);
             result.put("documentId", doc.getId());
@@ -282,7 +271,59 @@ public class DiscoveryRest {
         return getFormattedResult();
     }
 
-    /**
+    public static Form getStructuredParams(String query, String sep, boolean decode, boolean decodePlus) {
+	
+	    // Taken from org.apache.cxf.jaxrs.utils.JAXRSUtils.getStructuredParams()
+	    // Could not link to the real one because of a classpath conflict with its dependencies
+	    
+	    Form queries = new Form();
+	    
+	    if (query != null && query.length() != 0) {
+	        List<String> parts = Arrays.asList(query.split(sep));
+	        for (String part : parts) {
+	            int index = part.indexOf('=');
+	            String name = null;
+	            String value = null;
+	            if (index == -1) {
+	                name = part;
+	                value = "";
+	            } else {
+	                name = part.substring(0, index);
+	                value = index < part.length() ? part.substring(index + 1)
+	                        : "";
+	                if (decode || (decodePlus && value.contains("+"))) {
+	                    value = (";".equals(sep)) ? UrlUtils.pathDecode(value)
+	                            : UrlUtils.urlDecode(value);
+	                }
+	            }
+	            queries.add(UrlUtils.urlDecode(name), value);
+	        }
+	    }
+	    
+	    return queries;
+	}
+
+	public static Map<String, String> getFirstValues(Map<String, String[]> multivaluedMap) {
+	    Map<String, String> map = new HashMap<String, String>();
+	    for (Entry<String, String[]> entry : multivaluedMap.entrySet()) {
+	    	if (entry.getValue().length > 0) {
+	    		map.put(entry.getKey(), entry.getValue()[0]);
+	    	}
+	    }
+	    return map;
+	}
+
+	public static Map<String, String> getFirstValues2(Map<String, List<String>> multivaluedMap) {
+	    Map<String, String> map = new HashMap<String, String>();
+	    for (Entry<String, List<String>> entry : multivaluedMap.entrySet()) {
+	    	if (!entry.getValue().isEmpty()) {
+	    		map.put(entry.getKey(), entry.getValue().get(0));
+	    	}
+	    }
+	    return map;
+	}
+
+	/**
      * Appends an error to a JSON object (in the "result" item)
      * @param json
      * @param msg
@@ -304,27 +345,6 @@ public class DiscoveryRest {
         }
     }
 
-    public static Map<String, String> getFormValues(String body) {
-        /*
-         * When accessing the form the usual way, the returned Form is empty,
-         * and the following Warning is logged. We're parsing the body ourselves instead.
-         * 
-         * "ATTENTION: A servlet POST request, to the URI ###, contains form
-         * parameters in the request body but the request body has been 
-         * consumed by the servlet or a servlet filter accessing the request parameters.
-         * Only resource methods using @FormParam will work as expected. Resource methods
-         * consuming the request body by other means will not work as expected."
-         */
-        Form structuredParams = getStructuredParams(body, "&", false, false);
-
-        // Keep only the first value for each key (instead of a list of values) 
-        Map<String, String> map = new HashMap<String, String>();
-        for (Entry<String, List<String>> entry : structuredParams.entrySet()) {
-            map.put(entry.getKey(), entry.getValue().get(0));
-        }
-        
-        return map;
-    }
 
     private Map<String, String> getCommonPropertiesDocumentation(String doctype) throws JSONException {
         if (commonPropertiesDocumentation == null) {
@@ -361,38 +381,6 @@ public class DiscoveryRest {
             result = callback + '(' + result + ')';
         }
         return result;
-    }
-
-    public static Form getStructuredParams(String query, String sep, boolean decode, boolean decodePlus) {
-
-        // Taken from org.apache.cxf.jaxrs.utils.JAXRSUtils.getStructuredParams()
-        // Could not link to the real one because of a classpath conflict with its dependencies
-        
-        Form queries = new Form();
-        
-        if (query != null && query.length() != 0) {
-            List<String> parts = Arrays.asList(query.split(sep));
-            for (String part : parts) {
-                int index = part.indexOf('=');
-                String name = null;
-                String value = null;
-                if (index == -1) {
-                    name = part;
-                    value = "";
-                } else {
-                    name = part.substring(0, index);
-                    value = index < part.length() ? part.substring(index + 1)
-                            : "";
-                    if (decode || (decodePlus && value.contains("+"))) {
-                        value = (";".equals(sep)) ? UrlUtils.pathDecode(value)
-                                : UrlUtils.urlDecode(value);
-                    }
-                }
-                queries.add(UrlUtils.urlDecode(name), value);
-            }
-        }
-        
-        return queries;
     }
     
 }

@@ -52,6 +52,11 @@
                   <artifactId>easysoa-registry-web</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-runtime-management</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
 
                 <!-- FraSCAti in Nuxeo -->
                 <!-- <artifactItem> -->
@@ -158,12 +163,22 @@
                 <artifactItem>
                   <groupId>org.nuxeo.runtime</groupId>
                   <artifactId>nuxeo-runtime-bridge</artifactId>
-                  <version>5.5-SNAPSHOT</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.nuxeo</groupId>
                   <artifactId>nuxeo-frascati</artifactId>
                   <version>0.0-SNAPSHOT</version>
+                </artifactItem>
+                
+                <!-- Runtime management -->    
+                <artifactItem>
+                  <groupId>org.apache.maven</groupId>
+                  <artifactId>maven-model</artifactId>
+                  <version>2.2.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-utils</artifactId>
                 </artifactItem>
 
                 <!-- Other needed packages -->

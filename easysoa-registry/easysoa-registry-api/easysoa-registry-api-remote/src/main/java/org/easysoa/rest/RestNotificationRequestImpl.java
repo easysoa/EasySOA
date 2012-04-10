@@ -76,6 +76,7 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
         
         // Prepare request
         String body = method.equals("POST") ? computeRequestBody() : null;
+        log.error(body);
         String logString = "url= "+requestUrl+", body: "+body;
         
         // Send
@@ -94,7 +95,7 @@ public class RestNotificationRequestImpl implements RestNotificationRequest {
             // Check result, throw error if necessary
             if (!result.has("parameters") // Notification doc 
                     && (!result.has("result") || !result.getString("result").equals("ok"))) { // Notification result
-                log.warn("Failure: "+logString);
+                log.warn("Notification failure: " + logString);
                 throw new Exception("Request result is not as expected: '"+result.getString("result")+"'");
             }
             log.info("OK: "+logString);

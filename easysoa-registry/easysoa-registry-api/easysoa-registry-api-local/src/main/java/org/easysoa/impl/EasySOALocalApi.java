@@ -1,3 +1,23 @@
+/**
+ * EasySOA Registry
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
+
 package org.easysoa.impl;
 
 import java.net.MalformedURLException;
@@ -69,7 +89,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             throws ClientException, MalformedURLException {
         
         // Check mandatory field
-        String url = properties.get(Service.PROP_URL);
+        String url = properties.get(AppliImpl.PROP_URL);
         if (url != null && !url.isEmpty()) {
             
             // Find or create document
@@ -91,11 +111,14 @@ public class EasySOALocalApi implements EasySOAApiSession {
                 String[] deployables = deployablesString.split("\n");
                 for (String deployable : deployables) {
                     Map<String, Object> newDeployableValue = new HashMap<String, Object>();
-                    String deployableName = deployable.replaceAll("-[0-9.]+(-SNAPSHOT)?$", "");
-                    newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLENAME, deployableName);
-                    newDeployableValue.put(
-                            AppliImpl.SUBPROP_DEPLOYABLEVERSION,
-                            deployable.replaceFirst(deployableName, "").substring(1));
+                    String[] deployableInfos = deployable.split("\\|");
+                    newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLEID, deployableInfos[0]);
+                    if (deployableInfos.length > 1) {
+                    	newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLENAME, deployableInfos[1]);
+                    }
+                    if (deployableInfos.length > 2) {
+                    	newDeployableValue.put(AppliImpl.SUBPROP_DEPLOYABLEVERSION, deployableInfos[2]);
+                    }
                     newDeployablesValue.add(newDeployableValue);
                 }
                 appliImplModel.setProperty(AppliImpl.SCHEMA, AppliImpl.PROP_DEPLOYABLES, newDeployablesValue);
@@ -111,7 +134,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
         
         }
         else {
-            throw new ClientException("Appli name or root services URL not informed");
+            throw new ClientException("Appli impl. URL not informed");
         }
     }
 

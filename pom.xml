@@ -104,7 +104,7 @@
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-features-parent</artifactId>
-        <version>5.5</version>
+        <version>${easysoa.nuxeo.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

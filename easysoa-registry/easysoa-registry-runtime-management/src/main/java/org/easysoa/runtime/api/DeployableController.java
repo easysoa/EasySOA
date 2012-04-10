@@ -1,3 +1,23 @@
+/**
+ * EasySOA Registry
+ * Copyright 2011 Open Wide
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Contact : easysoa-dev@googlegroups.com
+ */
+
 package org.easysoa.runtime.api;
 
 import java.io.IOException;
@@ -24,11 +44,21 @@ public class DeployableController {
 		this.deploySupported = runtime.getDeployableService() != null;
 		this.controlSupported = runtime.getControlService() != null;
 	}
+	
+	public RuntimeServer<?, ?> getRuntime() {
+		return runtime;
+	}
 
 	public void addDeployableProvider(DeployableProvider<?> deployableProvider) {
 		deployableProviders.add(deployableProvider);
 	}
 
+	/**
+	 * Deploys the deployable of given ID
+	 * @param id
+	 * @return The deployed deployable, or null if none was found or the deployment failed
+	 * @throws IOException
+	 */
 	public Deployable<?> deploy(Object id) throws IOException {
 		Deployable<?> deployable = null;
 		if (this.deploySupported) {
@@ -65,6 +95,15 @@ public class DeployableController {
 	public boolean startServer() {
 		if (this.controlSupported) {
 			return runtime.getControlService().start();
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean stopServer() {
+		if (this.controlSupported) {
+			return runtime.getControlService().stop();
 		}
 		else {
 			return false;

@@ -4,8 +4,9 @@
 
     <table style="width: 400px">
         <tr>
-            <th>Jar name</th>
+            <th>Name</th>
             <th>Version #</th>
+            <th>ID</th>
         </tr>
         <c:choose>
             <c:when test="${field.getChildren().size() > 0}">
@@ -13,12 +14,13 @@
                     <tr>
                         <td><h:outputText value="${entry.get('deployableName').getValue()}" /></td>
                         <td><h:outputText value="${entry.get('deployableVersion').getValue()}" /></td>
+                        <td><h:outputText value="${entry.get('deployableId').getValue()}" /></td>
                     </tr>
                 </c:forEach>
             </c:when>
             <c:otherwise>
                 <tr>
-                    <td colspan="2" style="text-align: center">No deployables discovered.</td>
+                    <td colspan="3" style="text-align: center">No deployables discovered.</td>
                 </tr>
             </c:otherwise>
         </c:choose>

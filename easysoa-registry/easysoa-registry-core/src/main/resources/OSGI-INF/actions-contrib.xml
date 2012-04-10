@@ -2,14 +2,6 @@
 <component name="org.easysoa.core.contrib.actions">
 
   <require>org.nuxeo.ecm.platform.actions</require>
-  <!-- Rights by groups (XXX: Doesn't work) -->
-  <!--<extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
-    <filter id="not_for_business_users">
-      <rule grant="true">
-        <condition>#{!userSession.getCurrentNuxeoPrincipal().getGroups().contains("Business User")}</condition>
-      </rule>
-    </filter>
-  </extension> -->
 
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
 
@@ -29,14 +21,6 @@
       <category>VIEW_ACTION_LIST</category>
       <filter-id>view_easysoa_content</filter-id>
     </action>
-    <!--
-    <action id="TAB_CONTENT" link="/incl/tabs/document_content.xhtml" order="10"
-      label="action.view.content" icon="/icons/file.gif">
-      <category>VIEW_ACTION_LIST</category>
-      <filter-id>view_content</filter-id>
-      <filter-id>outSection</filter-id>
-    </action>
-    -->
 
     <!-- SCA Import button -->
     <action id="easysoaImportSubmit" link="#{easysoaImport.runImport}" label="label.easysoa.import.button">

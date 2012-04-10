@@ -44,17 +44,28 @@ forwardToNuxeo = function(request, response, next) {
 };
 
 exports.runRestRequest = runRestRequest = function(session, path, method, headers, body, callback) {
-
   // Normalize optional params
-  method = method || 'GET';
-  headers = headers || {};
-  body = body || '';
-  callback = callback || (function() {});
-   
+  var method = method || 'GET';
+  var headers = headers || {};
+  var callback = callback || (function() {});
+  var bodyString = '';
+  if (body) {
+    if (typeof body != 'string') {
+      bodyString = JSON.stringify(body);
+    }
+    else {
+      bodyString = body;
+    }
+  }
+  
+  // Set headers
   if (session && session.username) {
 	  headers['Authorization'] = utils.encodeAuthorization(session.username, session.password);
+	  if (bodyString) {
+	    headers['Content-Length'] = bodyString.length;
+	  }
   }
-
+  
   var requestOptions = {
 	  'port' : NUXEO_REST_PARSED_URL.port,
 	  'method' : method,
@@ -64,20 +75,20 @@ exports.runRestRequest = runRestRequest = function(session, path, method, header
   };
   
   var nxRequest = http.request(requestOptions, function(response) {
-        var responseData = '';
-        response.on('data', function(data) {
-              responseData += data;
-          });
+    var responseData = '';
+    response.on('data', function(data) {
+      responseData += data;
+    });
 		response.on('end', function() {
-            callback(responseData);
+      callback(responseData);
 		});
   });
   
   nxRequest.on('error', function(data) {
     callback(false, data);
   });
-  nxRequest.write(JSON.stringify(body));
-  nxRequest.end();
+  
+  nxRequest.end(bodyString);
 
 };
 
