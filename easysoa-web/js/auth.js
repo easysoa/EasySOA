@@ -1,5 +1,5 @@
 // EasySOA Web
-// Copyright (c) 2011 -2012Open Wide and others
+// Copyright (c) 2011 -2012 Open Wide and others
 // 
 // MIT licensed
 // 
