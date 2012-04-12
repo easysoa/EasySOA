@@ -57,7 +57,7 @@ public class FieldExtractor {
         while(tokenizer.hasMoreTokens()){
             String token = tokenizer.nextToken();
             field = new CandidateField("path." + pathPos, token);
-            field.setKind("PATH_PARAM");
+            field.setKind("IN_PATH_PARAM");
             fieldMap.put("path." + pathPos, field);
             pathPos++;
         }
@@ -75,7 +75,7 @@ public class FieldExtractor {
         CandidateField candidateField;
         for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
             candidateField = new CandidateField(queryParam.getName(), queryParam.getValue());
-            candidateField.setKind("QUERY_PARAM");
+            candidateField.setKind("IN_QUERY_PARAM");
             fieldMap.put(candidateField.getPath(), candidateField);
         }
         logger.debug("Query param fields map : " + fieldMap);       
@@ -97,7 +97,7 @@ public class FieldExtractor {
         while(tokenizer.hasMoreTokens()){
             token = tokenizer.nextToken();
             candidateField = new CandidateField(token.substring(0, token.indexOf("=")), token.substring(token.indexOf("=")));
-            candidateField.setKind("CONTENT_PARAM");
+            candidateField.setKind("IN_CONTENT_PARAM");
             fieldMap.put(candidateField.getPath(), candidateField);
         }
         logger.debug("Content param fields map : " + fieldMap);

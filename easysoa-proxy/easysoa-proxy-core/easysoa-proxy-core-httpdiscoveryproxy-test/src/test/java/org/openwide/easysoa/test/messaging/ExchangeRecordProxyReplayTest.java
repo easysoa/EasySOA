@@ -80,9 +80,9 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start HTTP proxy
-		//startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
+		startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
 		// Start mock services
-		startMockServices(false);
+		startMockServices(false, true, true);
 	}	
 
 	/**

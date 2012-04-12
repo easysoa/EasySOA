@@ -67,7 +67,7 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start mock services
-		startMockServices(false);
+		startMockServices(false, true, true);
 	}
 	
 	/**

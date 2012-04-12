@@ -56,12 +56,12 @@ public class FraSCAtiBindingHttpCloseBugTest extends AbstractProxyTestStarter {
     //@Ignore
 	public final void test() throws Exception {
        startFraSCAti();
-       startMockServices(false);
+       startMockServices(false, true, true);
 	   //startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite"); // if commented (or no binding.http in it) the test ends fine, else testProxy will block
 	   testProxy(); // First test works fine
 	   stopFraSCAti();
 	   startFraSCAti();
-       startMockServices(false);
+       startMockServices(false, true, true);
 	   //startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
 	   testProxy(); // Second test blocks on server-side in SCALifeCycleControllerImpl.incrementFcInvocationCounter() line: 440 because component in stopped state
 	   stopFraSCAti();

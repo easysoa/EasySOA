@@ -22,7 +22,8 @@
     <module>easysoa-registry-api-local</module>
     <module>easysoa-registry-api-remote</module>
     <module>easysoa-registry-api-messaging</module>
-    <module>easysoa-remote-frascati</module>    
+    <module>easysoa-remote-frascati</module>
+    <module>easysoa-remote-frascati-test</module>
   </modules>
 
 </project>

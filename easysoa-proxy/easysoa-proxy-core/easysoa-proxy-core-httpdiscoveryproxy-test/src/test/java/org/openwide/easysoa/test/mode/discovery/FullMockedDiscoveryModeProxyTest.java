@@ -68,7 +68,7 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	   //startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
 	   // Start services mock
 	   try{
-		   startMockServices(true);
+		   startMockServices(true, true, true);
 	   }
 	   catch(Exception ex){
 		   logger.warn(ex);

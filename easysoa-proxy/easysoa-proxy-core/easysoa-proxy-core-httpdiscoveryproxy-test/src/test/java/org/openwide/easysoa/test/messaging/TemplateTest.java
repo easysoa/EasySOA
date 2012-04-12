@@ -49,6 +49,7 @@ import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -333,4 +334,14 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		System.in.read();
 		logger.info("TemplateTest stopped !");
 	}
+	
+    /**
+     * Stop FraSCAti components
+     * @throws FrascatiException
+     */
+    @After
+    public void cleanUp() throws Exception{
+        logger.info("Stopping FraSCAti...");
+        stopFraSCAti();
+    }	
 }

@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.objectweb.fractal.api.Component;
 import org.ow2.frascati.FraSCAti;

@@ -71,7 +71,7 @@ public class PartiallyMockedDiscoveryModeProxyTest extends
         // Start HTTP Proxy
         // startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
         // Start services mock
-        startMockServices(false);
+        startMockServices(false, true, true);
     }
 
     /**

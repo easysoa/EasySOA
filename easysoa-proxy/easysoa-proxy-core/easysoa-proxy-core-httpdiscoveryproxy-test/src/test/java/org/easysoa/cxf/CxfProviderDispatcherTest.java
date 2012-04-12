@@ -52,10 +52,6 @@ public class CxfProviderDispatcherTest extends AbstractProxyTestStarter {
      * Start FraSCAti, HTTP discovery proxy and mock services
      * @throws Exception 
      */
-    /**
-     * Start FraSCAti, HTTP discovery proxy and mock services
-     * @throws Exception 
-     */
     @Before
     public void setUp() throws Exception{
         // Start fraSCAti
@@ -113,8 +109,8 @@ public class CxfProviderDispatcherTest extends AbstractProxyTestStarter {
      */
     private void startCxfMeteoMockProvider() throws FraSCAtiServiceException {
         logger.info("Services Mock Starting");
-        //this.componentList.add(this.frascati.processComposite("cxfMeteoMockProvider.composite", new ProcessingContextImpl()));
-        this.componentList.add(this.frascati.processComposite("src/test/resources/cxfMeteoMockProvider.composite"));
+        this.componentList.add(this.frascati.processComposite("cxfMeteoMockProvider.composite"));
+        //this.componentList.add(this.frascati.processComposite("src/test/resources/cxfMeteoMockProvider.composite"));
     }
     
     /**

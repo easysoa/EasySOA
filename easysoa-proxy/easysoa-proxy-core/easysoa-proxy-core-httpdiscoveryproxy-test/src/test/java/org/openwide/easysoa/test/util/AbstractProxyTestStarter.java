@@ -134,6 +134,8 @@ public abstract class AbstractProxyTestStarter
             frascati = null;
             serviceProvider = null;
             componentList = null;
+            // Call the garbage collector
+            System.gc();
         }
     }
 
@@ -143,9 +145,7 @@ public abstract class AbstractProxyTestStarter
      * @throws FrascatiException
      * @throws FraSCAtiServiceException
      */
-    protected static void startHttpDiscoveryProxy(String composite, URL... urls)
-            throws Exception
-    {
+    protected static void startHttpDiscoveryProxy(String composite, URL... urls) throws Exception {
         logger.info("HTTP Discovery Proxy Starting");
         // Component component = frascati.processComposite(composite,new
         // ProcessingContextImpl(new FrascatiClassLoader(urls)));
@@ -163,34 +163,25 @@ public abstract class AbstractProxyTestStarter
      *             if a problem occurs during the start of composites
      * @throws FraSCAtiServiceException
      */
-    protected static void startMockServices(boolean withNuxeoMock)
-            throws Exception
-    {
-
+    protected static void startMockServices(boolean withNuxeoMock, boolean withTwitterMock, boolean withMeteoMock) throws Exception {
         logger.info("Services Mock Starting");
-        // componentList.add(frascati.processComposite("twitterMockRest.composite",
-        // new ProcessingContextImpl()));
-        componentList.add(frascati
-                .processComposite("twitterMockRest.composite"));
-        // start Nuxeo mock
-        if (withNuxeoMock)
-        {
-            // componentList.add(frascati.processComposite("nuxeoMockRest.composite",
-            // new ProcessingContextImpl()));
-            componentList.add(frascati
-                    .processComposite("nuxeoMockRest.composite"));
+        if(withTwitterMock){
+            componentList.add(frascati.processComposite("twitterMockRest.composite"));
         }
-        // componentList.add(frascati.processComposite("meteoMockSoap.composite",
-        // new ProcessingContextImpl()));
-        componentList.add(frascati.processComposite("meteoMockSoap.composite"));
+        // start Nuxeo mock
+        if (withNuxeoMock){
+            componentList.add(frascati.processComposite("nuxeoMockRest.composite"));
+        }
+        if(withMeteoMock){
+            componentList.add(frascati.processComposite("meteoMockSoap.composite"));
+        }
     }
 
     /**
      * 
      * @throws Exception
      */
-    public void startNewRun(String runName) throws Exception
-    {
+    public void startNewRun(String runName) throws Exception {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         // Start a new Run
         HttpPost newRunPostRequest = new HttpPost("http://localhost:"
@@ -203,8 +194,7 @@ public abstract class AbstractProxyTestStarter
      * 
      * @throws Exception
      */
-    public void stopAndSaveRun() throws Exception
-    {
+    public void stopAndSaveRun() throws Exception {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         // Stop and save the run
         HttpPost stopRunPostRequest = new HttpPost("http://localhost:"
@@ -218,8 +208,7 @@ public abstract class AbstractProxyTestStarter
      * 
      * @throws Exception
      */
-    public void deleteRun() throws Exception
-    {
+    public void deleteRun() throws Exception {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         // delete the run
         HttpPost deleteRunPostRequest = new HttpPost("http://localhost:"

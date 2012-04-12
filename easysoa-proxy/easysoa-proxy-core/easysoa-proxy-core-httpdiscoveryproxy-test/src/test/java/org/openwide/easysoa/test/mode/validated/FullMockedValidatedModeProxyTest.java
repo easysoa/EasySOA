@@ -75,7 +75,7 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter
         // Start HTTP Proxy
         startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy_validatedMode.composite");
         // Start services mock
-        startMockServices(true);
+        startMockServices(true, true, true);
     }
 
     /**
