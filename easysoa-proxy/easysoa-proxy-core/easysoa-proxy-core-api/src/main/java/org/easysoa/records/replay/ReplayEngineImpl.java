@@ -39,6 +39,7 @@ import org.easysoa.records.assertions.AssertionSuggestionService;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.reports.Report;
+import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.setters.CustomParamSetter;
@@ -68,6 +69,10 @@ public class ReplayEngineImpl implements ReplayEngine {
     // SCA reference to template engine
     @Reference
     TemplateEngine templateEngine;
+    
+    // SCA reference to simulation engine
+    @Reference
+    SimulationEngine simulationEngine;
     
     // SCA Reference to log engine
     @Reference
@@ -271,6 +276,11 @@ public class ReplayEngineImpl implements ReplayEngine {
     @Override
     public AssertionEngine getAssertionEngine() {
         return this.assertionEngine;
+    }
+    
+    @Override
+    public SimulationEngine getSimulationEngine() {
+        return this.simulationEngine;
     }
     
     /*@Override

@@ -44,8 +44,8 @@ public class SimulationEngineImpl implements SimulationEngine {
     @Reference
     CorrelationEngine correlationEngine;
     
-    @Reference
-    TemplateEngine templateEngine;
+    //@Reference
+    //TemplateEngine templateEngine;
     
     //@Reference
     ProxyFileStore fileStore;
@@ -80,7 +80,7 @@ public class SimulationEngineImpl implements SimulationEngine {
     }
 
     @Override
-    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method) throws Exception {
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine) throws Exception {
         // Call the correlation engine to get field suggestions for input record
         FieldExtractor extractor = new FieldExtractor();
         TemplateFieldSuggestions inputSuggestions = correlationEngine.correlateWithSubpath(inputRecord,

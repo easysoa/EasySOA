@@ -27,6 +27,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.records.assertions.AssertionEngine;
+import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 
@@ -110,6 +111,12 @@ public interface ReplayEngine {
      * @throws Exception If a problem occurs
      */
     public OutMessage replayWithTemplate(Map<String, List<String>> formData, String exchangeStoreName, String exchangeRecordID) throws Exception;
+
+    /**
+     * Returns the simulation engine
+     * @return The simulation engine
+     */
+    public SimulationEngine getSimulationEngine();
 
     /**
      * Replay a customized exchange record

@@ -127,9 +127,6 @@ public class SimpleSimulationMethod implements SimulationMethod {
                 
             }
         }
-        
-        
-        
 
         /*for each exchange in simulStore {
             try to match all fields together (AND) (*)

@@ -21,10 +21,8 @@
 package org.openwide.easysoa.test.util;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -134,8 +132,6 @@ public abstract class AbstractProxyTestStarter
             frascati = null;
             serviceProvider = null;
             componentList = null;
-            // Call the garbage collector
-            System.gc();
         }
     }
 
@@ -147,8 +143,6 @@ public abstract class AbstractProxyTestStarter
      */
     protected static void startHttpDiscoveryProxy(String composite, URL... urls) throws Exception {
         logger.info("HTTP Discovery Proxy Starting");
-        // Component component = frascati.processComposite(composite,new
-        // ProcessingContextImpl(new FrascatiClassLoader(urls)));
         String component = frascati.processComposite(composite,
                 FraSCAtiServiceItf.all, urls);
         componentList.add(component);
@@ -201,7 +195,6 @@ public abstract class AbstractProxyTestStarter
                 + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT
                 + "/run/stop");
         httpClient.execute(stopRunPostRequest, new BasicResponseHandler());
-
     }
 
     /**

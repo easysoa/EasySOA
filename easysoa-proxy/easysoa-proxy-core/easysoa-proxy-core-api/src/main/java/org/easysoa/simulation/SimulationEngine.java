@@ -23,6 +23,7 @@ package org.easysoa.simulation;
 import java.util.List;
 
 import org.easysoa.records.ExchangeRecord;
+import org.easysoa.template.TemplateEngine;
 
 /**
  * 
@@ -49,9 +50,10 @@ public interface SimulationEngine {
      * @param inputRecord The input exchange record
      * @param simulationStore The simulation store to use for data matching
      * @param method The simulation method to use
+     * @param templateEngine the template engine to use
      * @return A exchange record containing the simulated response
      * @throws Exception If a problem occurs
      */
-    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method) throws Exception;
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine) throws Exception;
     
 }

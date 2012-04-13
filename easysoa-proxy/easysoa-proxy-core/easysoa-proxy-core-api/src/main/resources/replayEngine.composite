@@ -4,6 +4,7 @@
 	<sca:include name="templateEngine"/>
 	<sca:include name="assertionEngine"/>
 	<sca:include name="logEngine"/>
+	<sca:include name="simulationEngine"/>
 
 	<!--  ReplayEngine service -->
 	<sca:service name="replayEngineService" promote="replayEngineComponent/replayEngineService"/>	
@@ -17,6 +18,7 @@
 		<sca:reference name="templateEngine" target="templateEngineComponent" />
 		<sca:reference name="assertionEngine" target="assertionEngineComponent" />
 		<sca:reference name="logEngine" target="logEngineComponent" />
+		<sca:reference name="simulationEngine" target="simulationEngineComponent" />
 	</sca:component>
 
 	<!-- Exchange replay service -->
