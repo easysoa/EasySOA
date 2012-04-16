@@ -19,7 +19,7 @@
     <dependency>
        <groupId>org.easysoa.frascati</groupId>
        <artifactId>easysoa-frascati-service-api</artifactId>
-       <version>0.4-SNAPSHOT</version>
+       <version>${project.version}</version>
        <scope>provided</scope>
     </dependency>
     <!-- FraSCAti -->
@@ -55,9 +55,9 @@
         <version>${frascati.version}</version>
     </dependency>
     <dependency>
-       <groupId>org.easysoa.frascati</groupId>
-       <artifactId>easysoa-frascati-service</artifactId>
-       <version>0.4-SNAPSHOT</version>
+        <groupId>org.easysoa.frascati</groupId>
+        <artifactId>easysoa-frascati-service</artifactId>
+	    <version>${project.version}</version>
     </dependency>
     <!-- Nuxeo -->
     <!--
@@ -126,6 +126,14 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
+    </dependency>
+
+	<!-- For tests -->    
+    <dependency>
+        <groupId>org.easysoa.registry.api</groupId>
+        <artifactId>easysoa-remote-frascati-test</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
     </dependency>
   </dependencies>
 

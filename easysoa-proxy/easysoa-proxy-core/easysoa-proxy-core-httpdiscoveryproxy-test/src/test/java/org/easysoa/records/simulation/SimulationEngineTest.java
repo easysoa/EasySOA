@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-
 import com.openwide.easysoa.util.ContentReader;
 
 /**
@@ -49,10 +48,13 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         // Start HTTP proxy
         startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
         // Start mocks
-        // Start mock services
         startMockServices(false, true, true);        
     }
     
+    /**
+     * Test the simulation engine
+     * @throws Exception If a problem occurs
+     */
     @Test
     public void simulationEngineTest() throws Exception {
         // Creates a simulation set
@@ -77,7 +79,7 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
             logger.info("Request send : " + url);           
             httpUriRequest = new HttpGet(url);
             response = httpProxyClient.execute(httpUriRequest);
-            // Need to read the response body entierely to be able to send another request
+            // Need to read the response body entirely to be able to send another request
             ContentReader.read(response.getEntity().getContent());           
         }
 
@@ -98,9 +100,11 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         SimulationStore simulationStore = simulationEngine.getSimulationStoreFromSuggestion("testSimulationStore", recordList);
         for(ExchangeRecord record : recordList){
            ExchangeRecord simulatedResponse = simulationEngine.simulate(record, simulationStore, new SimpleSimulationMethod(), replayEngine.getTemplateEngine());
+           // Works but the test data set is not appropriated
+           // Find a data set with output fields to really check the simulation engine 
            logger.debug("Simulated response = " +  simulatedResponse.getOutMessage().getMessageContent().getRawContent());
         }
-        
+
     }
     
     @After

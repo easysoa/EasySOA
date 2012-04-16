@@ -28,12 +28,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.records.ExchangeRecord;
@@ -43,11 +40,15 @@ import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.nuxeo.runtime.test.runner.Features;
+//import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.ow2.frascati.util.FrascatiException;
-
 import com.openwide.easysoa.message.InMessage;
 
 /**
@@ -60,20 +61,19 @@ import com.openwide.easysoa.message.InMessage;
  * @author jguillemotte
  * 
  */
+//@RunWith(FeaturesRunner.class)
 public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
-    static final Log log = LogFactory.getLog(RestApiFrascatiImportServiceTest.class);
+    static final Logger logger = Logger.getLogger(RestApiFrascatiImportServiceTest.class);
 
-    // List to record the messages exchanged between client and mock rest api
-    // server
+    // List to record the messages exchanged between client and mock rest api server
     private ArrayList<ExchangeRecord> recordList;
 
     // Boolean to indicate if the test is mocked or not
     boolean mockedTest = true;
 
     @Before
-    public void setUp() throws FraSCAtiServiceException {
-
+    public void setUp() throws Exception {
         // init record list
         recordList = new ArrayList<ExchangeRecord>();
         // Start fraSCAti
@@ -86,12 +86,13 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     @After
     public void tearDown() {
-        stopFraSCAti();
         /*try {
+            frascati.stop("RestApiMock");
             frascati.remove("RestApiMock");
         } catch (FraSCAtiServiceException e) {
             e.printStackTrace();
         }*/
+        stopFraSCAti();
     }
 
     /**
@@ -106,7 +107,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      */
     @SuppressWarnings("unchecked")
     protected void setTest(RestApiFrascatiImportServiceTest test) throws FraSCAtiServiceException {
-        System.out.println("composite restApiMock : " + frascati.getComposite("RestApiMock"));
+        logger.debug("composite restApiMock : " + frascati.getComposite("RestApiMock"));
         ((TestMock<RestApiFrascatiImportServiceTest>) frascati.getService("RestApiMock", "restApiMockServiceJava", TestMock.class)).setTest(test);
     }
 
@@ -131,16 +132,20 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         // to the project
         String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
         File scaFile = new File(scaFilePath);
+        logger.debug("Creating instance of ApiFracSCAtiScaImporter");
         BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
+        logger.debug("Creating instance of ApiFracSCAtiScaImporter");
         ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile, EasySOAApiFraSCAti.getInstance());
 
         importer.setAppliImplURL("http://localhost"); // choose appli to import in
         importer.setServiceStackType("FraSCAti");
         importer.setServiceStackUrl("/");
         // Create a spy importer for Mockito
+        logger.debug("Creating mockito spy importer");
         ApiFraSCAtiScaImporter spyImporter = spy(importer);
         try {
             // Import the SCA composite
+            logger.debug("Importing composite");
             spyImporter.importSCAComposite();
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,14 +233,10 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws IOException
      */
     public void checkExchanges(String toLookForInContent) {
-        ///for (ExchangeRecord r : recordList) System.out.println(r.getInMessage().getMessageContent().getRawContent().length());
-
         boolean atLeastOne = false;
         for (ExchangeRecord record : recordList) {
             atLeastOne = true;
-            // TODO : now using messaging api, check that this test still works
-            assertTrue("'" + toLookForInContent + "' not found in request",
-                    record.getInMessage().getMessageContent().getRawContent().contains(toLookForInContent));
+            assertTrue("'" + toLookForInContent + "' not found in request", record.getInMessage().getMessageContent().getRawContent().contains(toLookForInContent));
         }
         assertTrue("There should be at least one exchange after SCA service discovery", atLeastOne);
     }
@@ -277,26 +278,14 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     /**
      * Record a REST exchange to be checked
-     * 
-     * @param request
-     *            The <code>ServletRequest</code> request
-     * @param response
-     *            The <code>ServletResponse</code> response
+     * @param request The <code>ServletRequest</code> request
+     * @param response The <code>ServletResponse</code> response
      * @throws IOException
      */
     public void recordExchange(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        /*
-         * Scanner scan = new
-         * Scanner(request.getInputStream()).useDelimiter("\\A");
-         * if(scan.hasNext()){ String next = scan.next(); if(next == null){ next
-         * = ""; }
-         */
-        // ExchangeRecord record = new ExchangeRecord(next, "");
         ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(new HttpMessageRequestWrapper(request)));
         log.debug("request content : " + record.getInMessage());
         recordList.add(record);
-        /* } */
     }
 
 }

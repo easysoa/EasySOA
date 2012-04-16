@@ -26,22 +26,18 @@ import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 
 /**
- * Sca Importer (Nuxeo free), uses the Registry API to register services in Nuxeo
+ * Sca Importer (Nuxeo free), uses the Registry API to register services in
+ * Nuxeo
  * 
  * @author jguillemotte
  */
-public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase
-{   
+public class ApiFraSCAtiScaImporter extends FraSCAtiScaImporterBase {
     /**
      * Default constructor
      * 
      * @throws Exception
      */
-    public ApiFraSCAtiScaImporter(
-            BindingVisitorFactory bindingVisitorFactory,
-            File compositeFile,
-            FraSCAtiRegistryServiceItf frascatiService) throws Exception
-    {
+    public ApiFraSCAtiScaImporter(BindingVisitorFactory bindingVisitorFactory, File compositeFile, FraSCAtiRegistryServiceItf frascatiService) throws Exception {
         super(bindingVisitorFactory, compositeFile, frascatiService);
     }
 
