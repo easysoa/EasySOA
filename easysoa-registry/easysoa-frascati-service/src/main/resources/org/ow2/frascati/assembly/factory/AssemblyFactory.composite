@@ -20,7 +20,7 @@
  *-->
 <composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
     xmlns:easysoa="org/easysoa"
-    xmlns:starter="org/ow2/frascati/assembly/factory/starter"
+    xmlns:starter="org/ow2/frascati/starter"
     name="org.ow2.frascati.assembly.factory.AssemblyFactory">  
   
     <service name="easysoa-frascati-service" promote="easysoa/frascati-service">
@@ -35,7 +35,7 @@
             <interface.java interface="org.easysoa.frascati.api.FraSCAtiServiceItf" />
         </service> 
         <service name="initializable">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+            <interface.java interface="org.ow2.frascati.starter.api.InitializableItf"/>
         </service>
         <reference name="composite-parser">
             <interface.java interface="org.ow2.frascati.parser.api.Parser" />
@@ -76,7 +76,7 @@
     <component name="starter-service">
         <implementation.composite name="starter:StarterService.composite" />
         <reference name="starter-container" target="starter-container/starter-container">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+            <interface.java interface="org.ow2.frascati.starter.api.StarterContainerItf" />
         </reference>
         <reference name="service-reference" target="assembly-factory/composite-manager">
             <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
@@ -84,12 +84,12 @@
     </component>
 
     <component name="starter-container">
-        <implementation.java class="org.ow2.frascati.assembly.factory.starter.core.StarterContainer" />
+        <implementation.java class="org.ow2.frascati.starter.core.StarterContainer" />
         <service name="starter-container">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+            <interface.java interface="org.ow2.frascati.starter.api.StarterContainerItf" />
         </service>
         <reference multiplicity="0..n" name="initializables" target="easysoa/initializable">
-            <interface.java  interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf" />
+            <interface.java  interface="org.ow2.frascati.starter.api.InitializableItf" />
         </reference>
     </component>
 </composite>

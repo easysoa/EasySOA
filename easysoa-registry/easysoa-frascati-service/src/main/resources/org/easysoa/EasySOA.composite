@@ -25,7 +25,7 @@
     </service>
     
     <service name="initializable" promote="weaver-initializer/initializable">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+            <interface.java interface="org.ow2.frascati.starter.api.InitializableItf"/>
     </service>
     <reference name="classloader-manager" promote="frascati-service/classloader-manager">
         <interface.java interface="org.ow2.frascati.assembly.factory.api.ClassLoaderManager"/>
@@ -65,13 +65,13 @@
     <component name="weaver-initializer">
         <implementation.java class="org.easysoa.frascati.WeaverInitializer" />
         <service name="initializable">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+            <interface.java interface="org.ow2.frascati.starter.api.InitializableItf"/>
         </service>
         <reference name="composite-manager">
             <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
         </reference>
          <reference multiplicity="0..1" name="next-initializable">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.InitializableItf"/>
+            <interface.java interface="org.ow2.frascati.starter.api.InitializableItf"/>
         </reference>
         <reference name="composite-parser">
             <interface.java interface="org.ow2.frascati.parser.api.Parser" />

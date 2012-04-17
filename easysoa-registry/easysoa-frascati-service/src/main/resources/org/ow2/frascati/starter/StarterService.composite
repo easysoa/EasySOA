@@ -24,19 +24,19 @@
         <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
     </reference>
     <reference name="starter-container" promote="starter/starter-container">
-        <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+        <interface.java interface="org.ow2.frascati.starter.api.StarterContainerItf" />
     </reference>
 
     <component name="starter">
-        <implementation.java class="org.ow2.frascati.assembly.factory.starter.core.Starter" />
+        <implementation.java class="org.ow2.frascati.starter.core.Starter" />
         <service name="starter">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterItf" />
+            <interface.java interface="org.ow2.frascati.starter.api.StarterItf" />
         </service>
         <reference name="service-reference">
             <interface.java interface="org.ow2.frascati.assembly.factory.api.CompositeManager" />
         </reference>
         <reference name="starter-container">
-            <interface.java interface="org.ow2.frascati.assembly.factory.starter.api.StarterContainerItf" />
+            <interface.java interface="org.ow2.frascati.starter.api.StarterContainerItf" />
         </reference>
     </component>
 

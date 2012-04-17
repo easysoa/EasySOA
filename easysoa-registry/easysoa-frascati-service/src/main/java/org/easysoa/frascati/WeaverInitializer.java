@@ -38,7 +38,7 @@ import org.osoa.sca.annotations.Service;
 import org.ow2.frascati.assembly.factory.api.CompositeManager;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.Processor;
-import org.ow2.frascati.assembly.factory.starter.api.InitializableItf;
+import org.ow2.frascati.starter.api.InitializableItf;
 import org.ow2.frascati.parser.api.Parser;
 import org.ow2.frascati.parser.api.ParsingContext;
 import org.ow2.frascati.tinfi.TinfiComponentInterceptor;
@@ -222,7 +222,7 @@ public class WeaverInitializer extends AbstractLoggeable implements
      * {@inheritDoc}
      * 
      * @see
-     * org.ow2.frascati.assembly.factory.starter.api.InitializableItf#initialize
+     * org.ow2.frascati.starter.api.InitializableItf#initialize
      * ()
      */
     public void initialize()
@@ -299,7 +299,7 @@ public class WeaverInitializer extends AbstractLoggeable implements
     /**
      * {@inheritDoc}
      * 
-     * @see org.ow2.frascati.assembly.factory.starter.api.InitializableItf#
+     * @see org.ow2.frascati.starter.api.InitializableItf#
      * getNextInitializable()
      */
     public InitializableItf getNextInitializable()
