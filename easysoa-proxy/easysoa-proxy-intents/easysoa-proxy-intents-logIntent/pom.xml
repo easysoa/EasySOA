@@ -22,14 +22,18 @@
       <groupId>aopalliance</groupId>
       <artifactId>aopalliance</artifactId>
     </dependency>
+    
     <dependency>
       <groupId>org.ow2.frascati.tinfi</groupId>
-      <artifactId>frascati-tinfi-runtime</artifactId>
+      <artifactId>frascati-tinfi-runtime-api</artifactId>
+      <version>${tinfi.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati.tinfi</groupId>
       <artifactId>frascati-tinfi-oo</artifactId>
+      <version>${tinfi.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>jsr311-api</artifactId>

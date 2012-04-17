@@ -110,17 +110,17 @@
                 <groupId>org.easysoa.samples.smarttravel</groupId>
                 <artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
                 <version>0.4-SNAPSHOT</version>
-              </dependency>
+              </dependency>              
               <dependency>
                 <groupId>org.ow2.frascati</groupId>
                 <artifactId>frascati-binding-factory</artifactId>
-                <version>1.4</version>
+                <version>${frascati.version}</version>
               </dependency>
               <dependency>
                 <groupId>org.ow2.frascati</groupId>
                 <artifactId>frascati-implementation-fractal</artifactId>
-                <version>1.4</version>
-              </dependency>
+                <version>${frascati.version}</version>
+              </dependency>              
             </dependencies>
           </plugin>
         </plugins>
@@ -391,23 +391,22 @@
     <dependency>
       <groupId>org.ow2.frascati.factory</groupId>
       <artifactId>frascati-factory-tools</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
-    <!-- to run this example with mvn -Pexplorer -->
-    <!-- <dependency> -->
-    <!-- <groupId>org.ow2.frascati</groupId> -->
-    <!-- <artifactId>frascati-explorer-fscript-plugin</artifactId> -->
-    <!-- </dependency> -->
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-assembly-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-fractal</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>oro</groupId>
@@ -418,18 +417,19 @@
     <!-- <artifactId>frascati-factory-plugin</artifactId> -->
     <!-- <type>maven-plugin</type> -->
     <!-- </dependency> -->
+    <!--
     <dependency>
       <groupId>org.ow2.frascati.mojo</groupId>
       <artifactId>frascati-launcher-plugin</artifactId>
       <type>maven-plugin</type>
     </dependency>
-
-    <!-- OW2 FraSCAti SCA Bindings -->
+	-->
+    <!-- OW2 FraSCAti SCA Bindings -->    
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
-
     <!-- <dependency> -->
     <!-- <groupId>org.ow2.frascati</groupId> -->
     <!-- <artifactId>frascati-binding-http</artifactId> -->

@@ -40,6 +40,11 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * the EasySOAApiFraSCAti singleton
      */
     private static EasySOAApiFraSCAti instance = null;
+    
+    /**
+     * The remote FraSCAti provider;
+     */
+    private RemoteFraSCAtiServiceProvider remoteProvider;
 
     /**
      * Return the singleton instance of EasySOAApiFraSCAti
@@ -56,13 +61,38 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
     }
 
     /**
+     * Stop the EasySOAApiFraSCAti singleton
+     */
+    public static final void killInstance()
+    {
+        try
+        {
+            instance.remoteProvider.stopFraSCAtiService();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        instance.remoteProvider = null;
+        instance.frascati = null;
+        instance = null;
+    }
+    
+    /**
      * Hidden constructor Use {@link EasySOAApiFraSCAti#getInstance()} static
      * method instead
      */
     protected EasySOAApiFraSCAti()
     {
-        RemoteFraSCAtiServiceProvider remoteProvider = new RemoteFraSCAtiServiceProvider();
-        this.frascati = remoteProvider.getFraSCAtiService();
+        try
+        {
+            remoteProvider = new RemoteFraSCAtiServiceProvider(null);
+            this.frascati = remoteProvider.getFraSCAtiService();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**

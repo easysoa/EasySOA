@@ -36,7 +36,6 @@ import org.easysoa.sca.visitors.ScaVisitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Binding;
 import org.eclipse.stp.sca.Composite;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * ScaImporter using FraSCAti SCA parser
@@ -120,7 +119,6 @@ public abstract class AbstractScaImporterBase implements IScaImporter
      * @param compositeFile
      *            Composite file to import, can be null if this is used as a runtime
      *            importer
-     * @throws FrascatiException
      */
     public AbstractScaImporterBase(
             BindingVisitorFactory bindingVisitorFactory,
@@ -135,8 +133,6 @@ public abstract class AbstractScaImporterBase implements IScaImporter
      * @param scaComposite
      *            Composite object to import, can be null if this is used as a runtime
      *            importer
-     * @throws FrascatiException
-     */
     public AbstractScaImporterBase(
             BindingVisitorFactory bindingVisitorFactory,
             Composite scaComposite)

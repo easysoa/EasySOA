@@ -542,7 +542,7 @@
                 <artifactItem>
                   <groupId>org.eclipse.jdt</groupId>
                   <artifactId>core</artifactId>
-                  <version>3.3.0-v_771</version>
+                  <version>3.3.0.771</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.ow2.frascati.model</groupId>

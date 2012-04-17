@@ -33,14 +33,17 @@
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-assembly-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
 
     <!-- to run this example with mvn -Prun -->

@@ -12,7 +12,7 @@
     <version>0.4-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-
+   
 	<dependencies>
     	<!-- Messaging api -->
     	<dependency>
@@ -66,39 +66,55 @@
 			<groupId>org.apache.tuscany.sca</groupId>
 			<artifactId>tuscany-sca-all</artifactId>
 		</dependency>
-		
-    	<dependency><!-- base frascati -->
+		<!-- TEST DEPENDENCIES -->
+    	<dependency>
       		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-binding-factory</artifactId>
-			<scope>test</scope>      		
-    	</dependency>
-    	<dependency><!-- else no frascati class generation -->
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-runtime-factory</artifactId>
+      		<version>${frascati.version}</version>
 			<scope>test</scope>      		
     	</dependency>
     	<dependency>
       		<groupId>org.ow2.frascati</groupId>
+      		<artifactId>frascati-runtime-factory</artifactId>
+      		<version>${frascati.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+        			<groupId>org.eclipse.jdt</groupId>
+        			<artifactId>core</artifactId>
+				</exclusion>
+			</exclusions>      		
+    	</dependency>
+    	<dependency>
+        	<groupId>org.eclipse.jdt</groupId>
+        	<artifactId>core</artifactId>
+        	<version>3.3.0.771</version>
+        	<scope>test</scope>
+    	</dependency>
+    	<dependency>
+      		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-binding-ws</artifactId>
+      		<version>${frascati.version}</version>
 			<scope>test</scope>      		
     	</dependency>
     	<dependency>
       		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-binding-http</artifactId>
+      		<version>${frascati.version}</version>
 			<scope>test</scope>      		
     	</dependency>
     	<dependency>
       		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-binding-rest</artifactId>
+      		<version>${frascati.version}</version>
 			<scope>test</scope>      		
     	</dependency>
-    	<!-- Required to run velocity web apps -->
     	<dependency>
       		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-implementation-velocity</artifactId>
+      		<version>${frascati.version}</version>
 			<scope>test</scope>
     	</dependency>		
-		
 	</dependencies>
 
 </project>

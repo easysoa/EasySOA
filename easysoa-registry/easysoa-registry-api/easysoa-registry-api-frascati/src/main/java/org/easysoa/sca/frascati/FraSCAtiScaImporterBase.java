@@ -52,7 +52,6 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
      * @param compositeFile
      *            Composite file to import, can be null if this is used as a
      *            runtime importer
-     * @throws FrascatiException
      * @throws ClientException
      */
     public FraSCAtiScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile, FraSCAtiRegistryServiceItf frascatiRegistryService) {

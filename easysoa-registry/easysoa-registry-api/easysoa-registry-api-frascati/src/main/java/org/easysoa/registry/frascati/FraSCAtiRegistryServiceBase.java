@@ -41,8 +41,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 
 	private static Log log = LogFactory.getLog(FraSCAtiRegistryServiceBase.class);
     
-    protected FraSCAtiServiceItf frascati; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti ??!!?????
-
+        protected FraSCAtiServiceItf frascati; // TODO make it independent from nuxeo by reimplementing it also directly on top of FraSCAti ??!!?????
         
 	public FraSCAtiRegistryServiceBase() {
 	}

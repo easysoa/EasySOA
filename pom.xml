@@ -38,6 +38,7 @@
     <log4j.version>1.2.16</log4j.version>
     <cxf.version>2.4.2</cxf.version>
     <tinfi.version>1.4.4</tinfi.version>
+    <model.version>2.0.1.3</model.version>
   </properties>
 
   <developers>
@@ -107,6 +108,12 @@
         <version>${easysoa.nuxeo.version}</version>
         <type>pom</type>
         <scope>import</scope>
+        <exclusions>
+        	<exclusion>
+        		<groupId>org.eclipse.jdt</groupId>
+        		<artifactId>core</artifactId>
+        	</exclusion>
+        </exclusions>
       </dependency>
 
       <!-- EasySOA -->
@@ -180,12 +187,13 @@
       </dependency>
 
       <!-- frascati -->
-      <dependency><!-- base frascati -->
+      <!--
+      <dependency>
         <groupId>org.ow2.frascati</groupId>
         <artifactId>frascati-binding-factory</artifactId>
         <version>${frascati.version}</version>
       </dependency>
-      <dependency><!-- else no frascati class generation -->
+      <dependency>
         <groupId>org.ow2.frascati</groupId>
         <artifactId>frascati-runtime-factory</artifactId>
         <version>${frascati.version}</version>
@@ -205,13 +213,17 @@
         <artifactId>frascati-binding-rest</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      -->
       <!-- Required to run velocity web apps -->
+      <!--
       <dependency>
         <groupId>org.ow2.frascati</groupId>
         <artifactId>frascati-implementation-velocity</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      -->
       <!-- to run it with mvn -Prun -->
+      <!--
       <dependency>
         <groupId>org.ow2.frascati.mojo</groupId>
         <artifactId>frascati-launcher-plugin</artifactId>
@@ -273,13 +285,12 @@
         <artifactId>frascati-model</artifactId>
         <version>2.0.1.3</version>
       </dependency>
-
       <dependency>
         <groupId>org.easysoa.registry</groupId>
         <artifactId>easysoa-frascati-shared</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
-
+	 -->
       <dependency>
         <groupId>org.ow2.easywsdl</groupId>
         <artifactId>easywsdl-wsdl</artifactId>
@@ -615,13 +626,13 @@
         <artifactId>spring-context</artifactId>
         <version>3.0.4.RELEASE</version>
       </dependency>
-
+	  <!--
       <dependency>
         <groupId>org.eclipse.jdt</groupId>
         <artifactId>core</artifactId>
         <version>3.3.0.771</version>
       </dependency>
-
+	  -->
       <dependency>
         <groupId>jetty</groupId>
         <artifactId>org.mortbay.jetty.plus</artifactId>
@@ -669,13 +680,12 @@
         <artifactId>jetty-util</artifactId>
         <version>7.4.5.v20110725</version>
       </dependency>
-
+	  <!-- 
       <dependency>
         <groupId>org.eclipse.stp.sca</groupId>
         <artifactId>sca-model</artifactId>
         <version>2.0.1.2</version>
       </dependency>
-
       <dependency>
         <groupId>org.eclipse.stp.sca.domainmodel</groupId>
         <artifactId>frascati-model</artifactId>
@@ -686,7 +696,7 @@
         <artifactId>ecore</artifactId>
         <version>2.4.0</version>
       </dependency>
-
+	  -->
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>

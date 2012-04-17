@@ -15,126 +15,106 @@
   <name>EasySOA Registry API FraSCAti</name>
 
   <dependencies>
-    <!-- FraSCAti In Nuxeo Dependencies -->
-    <dependency>
-       <groupId>org.easysoa.frascati</groupId>
-       <artifactId>easysoa-frascati-service-api</artifactId>
-       <version>${project.version}</version>
-       <scope>provided</scope>
-    </dependency>
-    <!-- FraSCAti -->
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-factory</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-runtime-factory</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-http</artifactId> <!-- required for EasySOA Core mock -->
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-ws</artifactId> <!-- required by import test sca samples -->
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-binding-rest</artifactId> <!-- required by import test sca samples -->
-    </dependency>
-    <!--
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-assembly-factory</artifactId>
-    </dependency>  
-    -->  
-    <dependency>
-        <groupId>org.ow2.frascati.osgi</groupId>
-        <artifactId>frascati-starter</artifactId>
-        <version>${frascati.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.easysoa.frascati</groupId>
-        <artifactId>easysoa-frascati-service</artifactId>
-	    <version>${project.version}</version>
-    </dependency>
-    <!-- Nuxeo -->
-    <!--
-    <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-bridge</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo</groupId>
-      <artifactId>nuxeo-frascati</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-util</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati.model</groupId>
-      <artifactId>frascati-model</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>ecore</artifactId>
-      <scope>provided</scope>
-    </dependency>    
-    -->
-    <!-- Registry dependencies -->
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-local</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-remote</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.registry.api</groupId>
-      <artifactId>easysoa-registry-api-messaging</artifactId>
-    </dependency>
-    <!-- For tests -->
-    <!-- JUnit -->
-    <!-- bring by nuxeo-frascati-test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-test</artifactId>
-    </dependency>
-    <!--
-    <dependency>
-      <groupId>org.nuxeo</groupId>
-      <artifactId>nuxeo-frascati-test</artifactId>
-    </dependency>
-    -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-    </dependency>
-
-	<!-- For tests -->    
-    <dependency>
-        <groupId>org.easysoa.registry.api</groupId>
-        <artifactId>easysoa-remote-frascati-test</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
-    </dependency>
-  </dependencies>
+	<!-- FraSCAti In Nuxeo Dependencies -->
+	<dependency>
+		<groupId>org.easysoa.frascati</groupId>
+		<artifactId>easysoa-frascati-service-api</artifactId>
+		<version>${project.version}</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.easysoa.registry.api</groupId>
+		<artifactId>easysoa-remote-frascati</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+	<dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>ecore</artifactId>
+            <version>2.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.model</groupId>
+            <artifactId>frascati-model</artifactId>
+            <version>${model.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.model</groupId>
+            <artifactId>sca-model</artifactId>
+            <version>${model.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.model</groupId>
+            <artifactId>osoa-java-api</artifactId>
+            <version>${model.version}</version>
+            <scope>provided</scope>
+        </dependency>	
+	<!-- FraSCAti -->
+	<!-- 
+		<dependency><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-factory</artifactId></dependency> 
+		<dependency><groupId>org.ow2.frascati</groupId><artifactId>frascati-runtime-factory</artifactId></dependency> 
+		<dependency><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-http</artifactId></dependency> 
+		<dependency><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-ws</artifactId></dependency> 
+		<dependency><groupId>org.ow2.frascati</groupId><artifactId>frascati-binding-rest</artifactId></dependency> 
+		<dependency><groupId>org.ow2.frascati</groupId><artifactId>frascati-assembly-factory</artifactId></dependency> 
+		<dependency><groupId>org.ow2.frascati.osgi</groupId><artifactId>frascati-starter</artifactId><version>${frascati.version}</version></dependency> 
+		<dependency><groupId>org.easysoa.frascati</groupId><artifactId>easysoa-frascati-service</artifactId><version>${project.version}</version></dependency> -->
+	<!-- Nuxeo -->
+	<!-- 
+		<dependency><groupId>org.nuxeo.runtime</groupId><artifactId>nuxeo-runtime-bridge</artifactId><scope>provided</scope></dependency> 
+		<dependency><groupId>org.nuxeo</groupId><artifactId>nuxeo-frascati</artifactId></dependency>
+		<dependency><groupId>org.ow2.frascati</groupId><artifactId>frascati-util</artifactId></dependency> 
+		<dependency><groupId>org.ow2.frascati.model</groupId><artifactId>frascati-model</artifactId><scope>provided</scope></dependency> 
+		<dependency><groupId>org.eclipse.emf</groupId><artifactId>ecore</artifactId><scope>provided</scope></dependency> 
+	-->
+	<!-- Registry dependencies -->
+	<dependency>
+		<groupId>org.easysoa.registry.api</groupId>
+		<artifactId>easysoa-registry-api-core</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.easysoa.registry.api</groupId>
+		<artifactId>easysoa-registry-api-local</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.easysoa.registry.api</groupId>
+		<artifactId>easysoa-registry-api-remote</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.easysoa.registry.api</groupId>
+		<artifactId>easysoa-registry-api-messaging</artifactId>
+	</dependency>
+	<!-- For tests -->
+	<!-- JUnit -->
+	<!-- bring by nuxeo-frascati-test -->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-all</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.nuxeo.runtime</groupId>
+		<artifactId>nuxeo-runtime-test</artifactId>
+	</dependency>
+	<!--
+	<dependency><groupId>org.nuxeo</groupId><artifactId>nuxeo-frascati-test</artifactId></dependency> 
+	-->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+	</dependency>
+	<!-- For tests -->
+	<dependency>
+		<groupId>org.easysoa.registry.api</groupId>
+		<artifactId>easysoa-remote-frascati-test</artifactId>
+		<version>${project.version}</version>
+		<scope>test</scope>
+	</dependency>
+</dependencies>
 
 </project>

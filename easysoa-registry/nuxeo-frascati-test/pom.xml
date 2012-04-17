@@ -70,25 +70,29 @@
         <dependency>
             <groupId>org.ow2.frascati.osgi</groupId>
             <artifactId>frascati-osgi-util</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>${frascati.version}</version>
             <scope>provided</scope>
         </dependency>
     <!-- DEPENDENCIES THAT HAVE TO BE ASSUMED BY THE ISOLATED CLASSLOADER PARENT -->
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>ecore</artifactId>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.ow2.frascati.model</groupId>
             <artifactId>frascati-model</artifactId>
+            <version>${model.version}</version>
         </dependency>
         <dependency>
             <groupId>org.ow2.frascati.model</groupId>
             <artifactId>sca-model</artifactId>
+            <version>${model.version}</version>
         </dependency>
         <dependency>
             <groupId>org.ow2.frascati.model</groupId>
             <artifactId>osoa-java-api</artifactId>
+            <version>${model.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>

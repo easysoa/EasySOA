@@ -44,7 +44,6 @@ public interface FraSCAtiRegistryServiceItf {
 	 * FraSCAtiService methods calling them.
 	 * 
 	 * @return
-	 * @throws FrascatiException
 	 */
 	public abstract FraSCAtiServiceItf getFraSCAti();
 	

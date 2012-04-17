@@ -25,6 +25,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.management.InstanceNotFoundException;
@@ -306,8 +307,99 @@ public class RemoteFraSCAtiServiceProvider implements
             //log.debug("adding url to load : " + url);
             super.addURL(url);
         }
+        
+        /**
+         * {@inheritDoc}
+         * 
+         * @see java.lang.ClassLoader#loadClass(java.lang.String, boolean)
+         */
+        protected synchronized Class<?> loadClass(String name, boolean resolve)
+                throws ClassNotFoundException
+        {
+            // First, check if the class has already been loaded
+
+            boolean regular = false;
+            Class<?> clazz = findLoadedClass(name);
+
+            if (clazz != null)
+            {
+                return clazz;
+            }
+            if (name.startsWith("java.") || name.startsWith("javax.")
+                    || name.startsWith("org.w3c.")
+                    || name.startsWith("org.apache.log4j"))
+            {
+                regular = true;
+                if (getParent() != null)
+                {
+                    try
+                    {
+                        clazz = getParent().loadClass(name);
+                        
+                    } catch (ClassNotFoundException e)
+                    {
+                        log.log(Level.CONFIG,
+                                "'" + name + "' class not found using the parent classloader");
+                    }
+                }
+            }
+            if (clazz == null)
+            {
+                try
+                {
+                    clazz = findClass(name);
+
+                } catch (ClassNotFoundException e)
+                {
+                    log.log(Level.CONFIG,
+                            "'" + name  + "' class not found using the classloader classpath");
+                }
+                if (clazz == null && !regular && getParent() != null)
+                {
+                        clazz = getParent().loadClass(name);
+                }
+            }
+            if (clazz == null)
+            {
+                throw new ClassNotFoundException(name);
+            }
+            if (resolve)
+            {
+                resolveClass(clazz);
+            }
+            return clazz;
+        }
+                     
+        /**
+         * {@inheritDoc}
+         * 
+         * @see java.lang.ClassLoader#getResource(java.lang.String)
+         */
+        @Override
+        public URL getResource(String name) 
+        {
+            URL url = null;
+            boolean regular = false;
+            
+            if (name.startsWith("java.") || name.startsWith("javax.")
+                    || name.startsWith("org.w3c.")
+                    || name.startsWith("org.apache.log4j"))
+            {
+                regular = true;
+                if (getParent() != null)
+                {
+                   url = getParent().getResource(name);
+                }
+            } 
+            if(url == null)
+            {
+                url = findResource(name);
+            }
+            if (url==null && !regular && getParent() != null)
+            {
+               url = getParent().getResource(name);
+            }
+            return url;
+        }
     }
-
-   
-
 }

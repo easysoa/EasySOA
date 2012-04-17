@@ -87,13 +87,15 @@
 		<dependency>
 			<groupId>org.ow2.frascati.model</groupId>
 			<artifactId>frascati-model</artifactId>
+			<version>${model.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>ecore</artifactId>
-			<scope>provided</scope>
-		</dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>ecore</artifactId>
+            <version>2.4.0</version>
+            <scope>provided</scope>
+        </dependency>
 		<!-- EasySOA core deps -->
 		<dependency>
 			<groupId>org.easysoa.registry</groupId>

@@ -15,39 +15,37 @@
     <packaging>jar</packaging>
 
     <dependencies>
-    <!-- frascati -->
-        <dependency><!-- base frascati -->
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-binding-factory</artifactId>
-        </dependency>
-        <dependency><!-- else no frascati class generation -->
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-runtime-factory</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-binding-ws</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-binding-http</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-binding-rest</artifactId>
-        </dependency>
-    <!-- Required to run velocity web apps -->
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-implementation-velocity</artifactId>
-        </dependency>
-    <!-- to run it with mvn -Prun -->
-        <dependency>
-            <groupId>org.ow2.frascati.mojo</groupId>
-            <artifactId>frascati-launcher-plugin</artifactId>
-            <type>maven-plugin</type>
-        </dependency>
-
+    	
+                    <dependency>
+			            <groupId>org.ow2.frascati</groupId>
+			            <artifactId>frascati-runtime-factory</artifactId>
+			            <version>${frascati.version}</version>
+			        </dependency>
+                    <dependency>
+			            <groupId>org.ow2.frascati</groupId>
+			            <artifactId>frascati-binding-factory</artifactId>
+			            <version>${frascati.version}</version>
+			        </dependency>
+			        <dependency>
+			            <groupId>org.ow2.frascati</groupId>
+			            <artifactId>frascati-binding-ws</artifactId>
+			            <version>${frascati.version}</version>
+			        </dependency>
+			        <dependency>
+			            <groupId>org.ow2.frascati</groupId>
+			            <artifactId>frascati-binding-http</artifactId>
+			            <version>${frascati.version}</version>
+			        </dependency>
+			        <dependency>
+			            <groupId>org.ow2.frascati</groupId>
+			            <artifactId>frascati-binding-rest</artifactId>
+			            <version>${frascati.version}</version>
+			        </dependency>
+			        <dependency>
+			            <groupId>org.ow2.frascati</groupId>
+			            <artifactId>frascati-implementation-velocity</artifactId>
+			            <version>${frascati.version}</version>
+			        </dependency>
     <!-- esper -->
         <dependency>
             <groupId>com.espertech</groupId>
@@ -103,22 +101,10 @@
             <version>${easysoa.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.ow2.frascati.osgi</groupId>
-            <artifactId>frascati-starter</artifactId>
-            <version>1.5-SNAPSHOT</version>
-    	<!--<scope>test</scope>-->
-        </dependency>
-
-	<!-- FraSCAti service API -->
-        <dependency>
-            <groupId>org.easysoa.frascati</groupId>
-            <artifactId>easysoa-frascati-service</artifactId>
-            <version>${easysoa.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.easysoa.frascati</groupId>
             <artifactId>easysoa-frascati-service-api</artifactId>
             <version>${easysoa.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     <!-- Configuration constants -->

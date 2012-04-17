@@ -32,38 +32,38 @@
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-velocity</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-fractal</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-http</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-rest</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-runtime-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
-    <!-- to run it with mvn -Prun -->
-    <dependency>
-      <groupId>org.ow2.frascati.mojo</groupId>
-      <artifactId>frascati-launcher-plugin</artifactId>
-      <type>maven-plugin</type>
-    </dependency>
-
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>

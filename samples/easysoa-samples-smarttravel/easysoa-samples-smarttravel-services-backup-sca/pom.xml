@@ -35,19 +35,23 @@
     <!-- <artifactId>frascati-assembly-factory</artifactId> -->
     <!-- <version>1.4</version> -->
     <!-- </dependency> -->
-
-    <dependency><!-- base frascati -->
+	
+    <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
-    <dependency><!-- else no frascati class generation -->
+    <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-runtime-factory</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
+      <version>${frascati.version}</version>
     </dependency>
+    
     <!-- <dependency> -->
     <!-- <groupId>org.ow2.frascati</groupId> -->
     <!-- <artifactId>frascati-binding-http</artifactId> -->

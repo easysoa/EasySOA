@@ -99,12 +99,15 @@
         <version>0.0-SNAPSHOT</version>
         <scope>test</scope>
       </dependency>
+      <!--
       <dependency>
         <groupId>org.ow2.frascati</groupId>
         <artifactId>frascati-util</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      -->
       <!-- Locally installed by org.nuxeo:nuxeo-frascati -->
+      <!--
       <dependency>
         <groupId>org.ow2.frascati</groupId>
         <artifactId>frascati-util-comp</artifactId>
@@ -120,18 +123,23 @@
         <artifactId>helloworld-pojo</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      -->
       <!-- Locally installed by org.nuxeo:nuxeo-frascati-test -->
+      <!--
       <dependency>
         <groupId>org.ow2.frascati.examples</groupId>
         <artifactId>frascati-helloworld-servlet</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      -->
       <!-- Locally installed by org.nuxeo:nuxeo-frascati-test -->
+      <!--
       <dependency>
         <groupId>org.ow2.frascati.examples</groupId>
         <artifactId>helloworld-ws-server</artifactId>
         <version>${frascati.version}</version>
       </dependency>
+      -->
       <!-- Force org.eclipse.core.runtime version, to make sure it is fetched from
         a valid repository. Otherwise, given our listed repositories, it uses version 3.4.0
         which leads to a missing dependency (org.eclipse.equinox:app:jar:[1.0.0,2.0.0)):
