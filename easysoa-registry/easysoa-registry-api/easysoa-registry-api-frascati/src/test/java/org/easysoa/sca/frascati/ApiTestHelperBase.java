@@ -20,19 +20,14 @@
 
 package org.easysoa.sca.frascati;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.stp.sca.Composite;
-import org.junit.After;
-import org.junit.runner.RunWith;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.frascati.test.RemoteFraSCAtiServiceProviderTest;
-import org.ow2.frascati.util.FrascatiException;
 
 /**
  * 
@@ -44,46 +39,28 @@ public class ApiTestHelperBase extends RemoteFraSCAtiServiceProviderTest {
     static final Log log = LogFactory.getLog(ApiTestHelperBase.class);
 
     /** The FraSCAti platform */
-    protected static FraSCAtiServiceItf frascati;
-
-    protected static RemoteFraSCAtiServiceProvider serviceProvider = null;    
-    
-    protected static ArrayList<String> componentList;
+    protected static FraSCAtiServiceItf frascati = null;   
+    protected static EasySOAApiFraSCAti easy = null;
+    protected static ArrayList<String> componentList = null;
 
     protected static void startMock() {
+        
         log.info("Services Mock Starting");
         log.info("frascati = " + frascati);
+        
         String compositeName = null;
+        
         try {
-            compositeName = frascati.processComposite("src/test/resources/RestApiMock.composite", FraSCAtiServiceItf.all);
+            
+            compositeName = frascati.processComposite(
+                    "src/test/resources/RestApiMock.composite", FraSCAtiServiceItf.all);
             componentList.add(compositeName);
+            
         } catch (FraSCAtiServiceException e) {
             
             e.printStackTrace();
         }
     }
-
-    /**
-     * Start FraSCAti
-     * 
-     * @throws FrascatiException
-     */
-    /*protected static void startFraSCAti() {
-        log.info("FraSCATI Starting");
-        componentCompositeNameList = new ArrayList<String>();
-        // This test doesn't works, unbale to start FraSCAti in remote mode (not
-        // in Nuxeo)
-        // Need to make a FraSCAtiServiceProvider for remote mode
-        // TODO : do not use Nuxeo Framework in this test to start Frascati
-        // TODO : Remove all nuxeo stuff !!
-        // frascati =
-        // Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-        //log.info("frascati = " + frascati);
-        // Use this code instead. PB FraSCAti is not a FraSCAtiServiceItf ....
-        // FraSCAti frascati = FraSCAti.newFraSCAti();
-         RemoteFraSCAtiServiceProvider remoteProvider = new RemoteFraSCAtiServiceProvider();
-         frascati = remoteProvider.getFraSCAtiService();
-     }*/
     
     /**
      * Start FraSCAti
@@ -91,31 +68,19 @@ public class ApiTestHelperBase extends RemoteFraSCAtiServiceProviderTest {
      * @throws Exception
      */
     protected void startFraSCAti() throws Exception {
-        if(frascati == null) {
+        
+        if(easy == null) {
             //char sep = File.separatorChar;
             configure();
-            /*          
-            StringBuilder srcBuilder = new StringBuilder("target").append(
-                    sep).append("test-classes").append(sep).append(
-                            "easysoa-proxy-core-httpdiscoveryproxy.jar");
-            
-            File srcFile = new File(srcBuilder.toString());
-            FileUtils.copyFileToDirectory(srcFile.getAbsoluteFile(), remoteFrascatiLibDir);
-            
-            StringBuilder libBuilder = new StringBuilder(
-                    remoteFrascatiLibDir.getAbsolutePath()).append(sep).append(
-                         "easysoa-proxy-core-httpdiscoveryproxy.jar");
-                        
-            lib = new File(libBuilder.toString());
-            */
             log.info("FraSCATI Starting");
             componentList = new ArrayList<String>();
-            serviceProvider = new RemoteFraSCAtiServiceProvider();
-            frascati = serviceProvider.getFraSCAtiService();
+            easy = EasySOAApiFraSCAti.getInstance();            
+            frascati = easy.getFraSCAti();
         }
     }    
     
      public void stopFraSCAti() {
+         
         for (String componentCompositeName : componentList) {
             try {
                 frascati.stop(componentCompositeName);
@@ -128,6 +93,9 @@ public class ApiTestHelperBase extends RemoteFraSCAtiServiceProviderTest {
                 log.warn("Error removing composite " + componentCompositeName);
             }
         }
+        
+        EasySOAApiFraSCAti.killInstance();
+        easy = null;
         frascati = null;
     }
 

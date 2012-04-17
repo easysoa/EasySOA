@@ -26,10 +26,18 @@ import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.cxf.BusFactory;
+import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine;
+import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory;
 import org.apache.log4j.Logger;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
@@ -39,16 +47,17 @@ import org.easysoa.sca.frascati.mock.TestMock;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
+import org.eclipse.jetty.server.Handler;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.nuxeo.runtime.test.runner.Features;
-//import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.ow2.frascati.util.FrascatiException;
+import org.nuxeo.ecm.automation.client.OperationRequest;
+import org.nuxeo.ecm.automation.client.Session;
+import org.nuxeo.ecm.automation.client.jaxrs.impl.HttpAutomationClient;
+
 import com.openwide.easysoa.message.InMessage;
 
 /**
@@ -65,7 +74,9 @@ import com.openwide.easysoa.message.InMessage;
 public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     static final Logger logger = Logger.getLogger(RestApiFrascatiImportServiceTest.class);
-
+    
+    private static final String AUTOMATION_URL = "http://localhost:8080/nuxeo/site/automation";
+    
     // List to record the messages exchanged between client and mock rest api server
     private ArrayList<ExchangeRecord> recordList;
 
@@ -85,14 +96,37 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
     }
 
     @After
-    public void tearDown() {
-        /*try {
-            frascati.stop("RestApiMock");
-            frascati.remove("RestApiMock");
-        } catch (FraSCAtiServiceException e) {
-            e.printStackTrace();
-        }*/
+    public void tearDown() throws Exception {
+        
+        logger.info("***********************************");
+        logger.info("Try to delete registered documents");
+        HttpAutomationClient client = new HttpAutomationClient(AUTOMATION_URL);
+        Session session = client.getSession("Administrator", "Administrator");
+        OperationRequest request = session.newRequest("Document.Query");
+        request.setHeader("X-NXDocumentProperties", "*");
+        request.set("query", "DELETE * FROM Document");
+        logger.info(request.execute());
+        session.close();
+        client.shutdown();
+        
         stopFraSCAti();
+        
+        JettyHTTPServerEngineFactory jettyFactory =
+            BusFactory.getDefaultBus().getExtension(JettyHTTPServerEngineFactory.class);
+        
+        JettyHTTPServerEngine jettyServer = jettyFactory.retrieveJettyHTTPServerEngine(8080);
+        Collection<Object> beans = jettyServer.getServer().getBeans();
+        
+        if(beans != null)
+        {
+            for(Object bean : beans)
+            {
+                logger.info("*********** Removing bean : " + bean + "***********");
+                jettyServer.getServer().removeBean(bean);
+            }
+        }
+        jettyFactory.destroyForPort(8080);
+        logger.info("***********************************");
     }
 
     /**
@@ -124,7 +158,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws Exception
      */
     @Test
-    // @Ignore
+    //@Ignore
     public void testSCACompositeImport() throws Exception {
 
         // SCA composite file to import :
@@ -135,7 +169,8 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         logger.debug("Creating instance of ApiFracSCAtiScaImporter");
         BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
         logger.debug("Creating instance of ApiFracSCAtiScaImporter");
-        ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile, EasySOAApiFraSCAti.getInstance());
+        ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile, 
+                EasySOAApiFraSCAti.getInstance());
 
         importer.setAppliImplURL("http://localhost"); // choose appli to import in
         importer.setServiceStackType("FraSCAti");
@@ -172,7 +207,7 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws Exception
      */
     @Test
-    // @Ignore
+    //@Ignore
     public void testSCAZipImport() throws Exception {
 
         // SCA composite file to import :
@@ -181,7 +216,8 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         String scaZipFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
         File scaZipFile = new File(scaZipFilePath);
         BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
-        ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaZipFile, EasySOAApiFraSCAti.getInstance());
+        ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaZipFile, 
+                EasySOAApiFraSCAti.getInstance());
 
         importer.setAppliImplURL("http://localhost"); // choose appli to import in
         importer.setServiceStackType("FraSCAti");
@@ -212,16 +248,17 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * @throws Exception
      */
     @Test
-    @Ignore
-    public void testFraSCAtiRuntimeDiscovery() throws FrascatiException, Exception {
+    //@Ignore
+    public void testFraSCAtiRuntimeDiscovery() throws Exception {
 
         String scaZipFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
         File scaZipFile = new File(scaZipFilePath);
 
-        ApiRuntimeFraSCAtiScaImporter runtimeScaImporter = (ApiRuntimeFraSCAtiScaImporter) EasySOAApiFraSCAti.getInstance().newRuntimeScaImporter();
+        ApiRuntimeFraSCAtiScaImporter runtimeScaImporter = (ApiRuntimeFraSCAtiScaImporter) 
+        EasySOAApiFraSCAti.getInstance().newRuntimeScaImporter();
 
         frascati.setScaImporterRecipient(runtimeScaImporter);
-        frascati.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.all, scaZipFile.toURI().toURL());
+        frascati.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, scaZipFile.toURI().toURL());
 
         // Check the recorded exchanges
         checkExchanges("RestSoapProxy.composite");
