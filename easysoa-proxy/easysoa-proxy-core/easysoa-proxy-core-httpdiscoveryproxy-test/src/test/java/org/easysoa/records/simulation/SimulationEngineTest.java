@@ -98,6 +98,8 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         
         // Send a request to the replay service
         SimulationStore simulationStore = simulationEngine.getSimulationStoreFromSuggestion("testSimulationStore", recordList);
+        fileStore.saveSimulationStore(simulationStore);
+        
         for(ExchangeRecord record : recordList){
            ExchangeRecord simulatedResponse = simulationEngine.simulate(record, simulationStore, new SimpleSimulationMethod(), replayEngine.getTemplateEngine());
            // Works but the test data set is not appropriated

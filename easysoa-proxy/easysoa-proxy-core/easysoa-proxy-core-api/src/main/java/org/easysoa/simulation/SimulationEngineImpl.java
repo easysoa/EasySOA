@@ -21,6 +21,8 @@
 package org.easysoa.simulation;
 
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.correlation.CorrelationEngine;
 import org.easysoa.records.correlation.FieldExtractor;
@@ -41,6 +43,9 @@ import com.openwide.easysoa.message.OutMessage;
 @Scope("composite")
 public class SimulationEngineImpl implements SimulationEngine {
 
+    // Logger
+    private static Logger logger = Logger.getLogger(SimulationEngineImpl.class.getName());    
+    
     @Reference
     CorrelationEngine correlationEngine;
     

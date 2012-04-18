@@ -354,18 +354,17 @@ public class ProxyFileStore {
     /**
      * Save a simulation store
      * @param simulationStore The simulation store to save
+     * @throws Exception  If a problem occurs
      */
-    public void saveSimulationStore(SimulationStore simulationStore){
+    public void saveSimulationStore(SimulationStore simulationStore) throws Exception {
         Iterator<ExchangeRecord> recordIterator = simulationStore.getRecordList().keySet().iterator() ;
+        String recordID;
         while(recordIterator.hasNext()){
             ExchangeRecord record = recordIterator.next();
-            // TODO : have to complete this method
-            
-            // Saving the record
-            
-            // Saving the field suggestions
-            //StoreResource fieldSuggestionsResource = new StoreResource("", , );
-            //store.save(fieldSuggestionsResource);
+            TemplateFieldSuggestions suggestions = simulationStore.getRecordList().get(record);
+            // Saving the records contained in the store
+            recordID = this.save(record, path + "/" + simulationStore.getStoreName());
+            this.saveFieldSuggestions(suggestions, simulationStore.getStoreName(), recordID);
         }
     }
     
@@ -378,20 +377,19 @@ public class ProxyFileStore {
     public SimulationStore loadSimulationStore(String storeName) throws Exception {
         logger.debug("loading simulation store :" + storeName);
         List<StoreResource> resourceList = store.getResourceList(path + "/" + storeName);
-        
-        // TODO : have to complete these method
-        /*SimulationStore simulStore = new SimulationStore();
+        SimulationStore simulStore = new SimulationStore(storeName);
         for(StoreResource resource : resourceList){
-            if(resource.getResourceName().endsWith(TEMPLATE_FILE_EXTENSION)){
-                //String id = resource.getResourceName().substring(resource.getResourceName().lastIndexOf("_")+1, resource.getResourceName().lastIndexOf("."));
-                HashMap<String, Class> classMap = new HashMap<String, Class>();
-                //AbstractTemplateField field = (AbstractTemplateField) convertJSONToObject(resource.getContent(), AbstractTemplateField.class, classMap);
+            if(resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
+                String recordID = resource.getResourceName().substring(resource.getResourceName().lastIndexOf("_")+1, resource.getResourceName().lastIndexOf("."));
+                ExchangeRecord record = this.loadExchangeRecord(storeName, recordID, false);
+                //HashMap<String, Class> classMap = new HashMap<String, Class>();
+                TemplateFieldSuggestions suggestions = this.getTemplateFieldSuggestions(storeName, recordID);
+                //TemplateFieldSuggestions suggestions = (TemplateFieldSuggestions) convertJSONToObject(resource.getContent(), TemplateFieldSuggestions.class, classMap);
                 simulStore.addRecordSuggestions(record, suggestions);                
             }
         }
-        return simulStore;*/
-        return null;
-    }    
+        return simulStore;
+    }
     
     /**
      * Convert a JSON string in the corresponding Java object

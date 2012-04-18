@@ -27,14 +27,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.simulation.SimulationMethod;
 import org.easysoa.simulation.SimulationStore;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
-
 import com.openwide.easysoa.message.OutMessage;
 
 /**
@@ -43,6 +42,9 @@ import com.openwide.easysoa.message.OutMessage;
  */
 public class SimpleSimulationMethod implements SimulationMethod {
 
+    // Logger
+    private static Logger logger = Logger.getLogger(SimpleSimulationMethod.class.getName());        
+    
     @Override
     public String getName(){
         return "SimpleSimulationMethod"; 
@@ -88,41 +90,40 @@ public class SimpleSimulationMethod implements SimulationMethod {
      * @return
      */
     private boolean matchSome(TemplateFieldSuggestions inputSuggestions, TemplateFieldSuggestions recordedSuggestions){
-        
+        // TODO Complete this method
         return false;
     }
     
     @Override
     public ExchangeRecord simulate(ExchangeRecord inputRecord, TemplateFieldSuggestions inputSuggestions, SimulationStore store, TemplateEngine templateEngine) throws Exception {
         ExchangeRecord outputRecord = new ExchangeRecord();
-        // Sorting store by decreasing correlation level
-        //for(AbstractTemplateField templateField : simulationStore.getTemplateList()){
-            // TODO : put each simulation algo in specific class implementing a common interface
-            //if(SimulationMethod. method){
-                
-            //}            
-        //}
-        //simulationStore.orderBy(OrderingMethod.DECREASING_CORRELATION_LEVEL);        
-        
         // for each record in the list
         Iterator<ExchangeRecord> recordKeyIterator = store.getRecordList().keySet().iterator();
         while(recordKeyIterator.hasNext()){
             ExchangeRecord record = recordKeyIterator.next();
             TemplateFieldSuggestions recordedSuggestions = store.getRecordList().get(record);
             if(matchAll(inputSuggestions, recordedSuggestions)){
+                logger.debug("All field matching, processing template");
                 // get output values from recorded suggestions in the param list for rendering
-                
                 //recordedSuggestions.getTemplateFields()
                 Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();
                 // TODO : complete these method to give the template engine the values to use 
+                
                 
                 OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
                 inputRecord.setOutMessage(outMessage);
                 // If there are several matching records in the store, take the first one
                 break;
             } else if(matchSome(inputSuggestions, recordedSuggestions)) {
+                logger.debug("some field matching, processing template");
+                Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();
+                // TODO : complete these method to give the template engine the values to use 
                 
+                
+                OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
+                inputRecord.setOutMessage(outMessage);
             } else {
+                logger.debug("No mathing fields found ...");
                 // ordering field suggestions by correlation level
                 
             }
@@ -143,4 +144,8 @@ public class SimpleSimulationMethod implements SimulationMethod {
         return inputRecord;
     }
 
+    /*private OutMessage render(TemplateEngine templateEngine){
+        return templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
+    }*/
+    
 }
