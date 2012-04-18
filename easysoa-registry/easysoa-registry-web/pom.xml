@@ -13,6 +13,10 @@
   <artifactId>easysoa-registry-web</artifactId>
   <name>EasySOA Registry Web</name>
 
+  <build>
+    <sourceDirectory>src/main/seam</sourceDirectory>
+  </build>
+  
   <dependencies>
     <!-- EasySOA -->
     <dependency>
@@ -30,5 +34,5 @@
       <artifactId>jsf-api</artifactId>
     </dependency>
   </dependencies>
-
+  
 </project>
