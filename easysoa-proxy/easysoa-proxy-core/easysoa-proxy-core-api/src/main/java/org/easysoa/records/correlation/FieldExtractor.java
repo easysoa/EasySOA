@@ -111,15 +111,10 @@ public class FieldExtractor {
      */
     public HashMap<String, CandidateField> getOutputFields(OutMessage outMessage){
         HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
-        // TODO add code here to fill hashmap with output fields
-        // Message content can be very different (json, xml ...)
-        // TODO Add a system to choose the parser corresponding to the out message content
-        // Today only a json parser for out message
         logger.debug("outMessage " + outMessage.getMessageContent().getRawContent());
         List<TemplateParser> templateParserList = new ArrayList<TemplateParser>();
         templateParserList.add(new JSONParser());
         templateParserList.add(new XMLParser());
-        // TODO : Add a parser for simple text content
         try{
             for(TemplateParser parser : templateParserList){
                 if(parser.canParse(outMessage)){
@@ -127,19 +122,9 @@ public class FieldExtractor {
                     break;
                 }
             }
-            // If message content is a JSON
-            /*if(outMessage.getMessageContent().isJSONContent()){
-                JSONParser jsonParser = new JSONParser();
-                jsonParser.parse(outMessage, fieldMap);
-            } 
-            // if message structure is an XML structure
-            else if(outMessage.getMessageContent().isXMLContent()){
-                XMLParser xmlParser = new XMLParser();
-                xmlParser.parse(outMessage, fieldmap);
-            }*/
         }
         catch(Exception ex){
-            logger.warn("Response is not a JSON string, trying another parser to find output fields");
+            logger.warn("An error occurs during the parsing of message content to find output fields", ex);
         }
         logger.debug("Out param fields map : " + fieldMap);     
         return fieldMap;
