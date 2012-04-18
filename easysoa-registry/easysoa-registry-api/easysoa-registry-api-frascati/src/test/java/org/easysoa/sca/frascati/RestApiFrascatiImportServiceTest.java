@@ -97,19 +97,8 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     @After
     public void tearDown() throws Exception {
-        
-        logger.info("***********************************");
-        logger.info("Try to delete registered documents");
-        HttpAutomationClient client = new HttpAutomationClient(AUTOMATION_URL);
-        Session session = client.getSession("Administrator", "Administrator");
-        OperationRequest request = session.newRequest("Document.Query");
-        request.setHeader("X-NXDocumentProperties", "*");
-        request.set("query", "DELETE * FROM Document");
-        logger.info(request.execute());
-        session.close();
-        client.shutdown();
-        
-        stopFraSCAti();
+              
+        stopFraSCAti();     
         
         JettyHTTPServerEngineFactory jettyFactory =
             BusFactory.getDefaultBus().getExtension(JettyHTTPServerEngineFactory.class);
@@ -121,12 +110,10 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         {
             for(Object bean : beans)
             {
-                logger.info("*********** Removing bean : " + bean + "***********");
                 jettyServer.getServer().removeBean(bean);
             }
         }
         jettyFactory.destroyForPort(8080);
-        logger.info("***********************************");
     }
 
     /**
@@ -254,10 +241,21 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         String scaZipFilePath = "src/test/resources/" + "proxy-1.0-SNAPSHOT.jar";
         File scaZipFile = new File(scaZipFilePath);
 
-        ApiRuntimeFraSCAtiScaImporter runtimeScaImporter = (ApiRuntimeFraSCAtiScaImporter) 
+        ApiRuntimeFraSCAtiScaImporter importer = (ApiRuntimeFraSCAtiScaImporter) 
         EasySOAApiFraSCAti.getInstance().newRuntimeScaImporter();
-
-        frascati.setScaImporterRecipient(runtimeScaImporter);
+        
+        importer.setAppliImplURL("http://localhost"); // choose appli to import in
+        importer.setServiceStackType("FraSCAti");
+        importer.setServiceStackUrl("/");
+        importer.compositeFile = new File("RestSoapProxy.composite"){
+            
+            public String getName()
+            {
+                return "RestSoapProxy.composite";
+            }
+        };
+        
+        frascati.setScaImporterRecipient(importer);
         frascati.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, scaZipFile.toURI().toURL());
 
         // Check the recorded exchanges
