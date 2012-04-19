@@ -21,7 +21,7 @@
 /**
  * 
  */
-package org.easysoa.records.handlers;
+package com.openwide.easysoa.exchangehandler;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jguillemotte
  *
  */
-public interface ExchangeHandler {
+public interface HttpExchangeHandler {
     
     /**
      * Handle an exchange

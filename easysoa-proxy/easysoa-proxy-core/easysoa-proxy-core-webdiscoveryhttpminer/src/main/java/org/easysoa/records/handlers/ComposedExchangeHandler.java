@@ -27,16 +27,18 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
+
 /**
  * @author jguillemotte
  *
  */
-public class ComposedExchangeHandler implements ExchangeHandler {
+public class ComposedExchangeHandler implements HttpExchangeHandler {
 
     // TODO : add configuration in composite file
     
     //@Reference
-    private List<ExchangeHandler> exchangeHandlers;
+    private List<HttpExchangeHandler> exchangeHandlers;
 
     /**
      * Handle the exchange. Call the handle method for all handlers from the exchange handler list
@@ -46,7 +48,7 @@ public class ComposedExchangeHandler implements ExchangeHandler {
      */
     public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception{
         if(exchangeHandlers != null){
-            for(ExchangeHandler handler : exchangeHandlers){
+            for(HttpExchangeHandler handler : exchangeHandlers){
                 handler.handleExchange(request, response);
             }
         }

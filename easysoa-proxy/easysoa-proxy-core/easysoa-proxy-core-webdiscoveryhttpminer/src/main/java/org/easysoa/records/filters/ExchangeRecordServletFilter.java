@@ -35,10 +35,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
-import org.easysoa.records.handlers.ExchangeHandler;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.easysoa.servlet.http.HttpMessageResponseWrapper;
 import org.nuxeo.runtime.api.Framework;
+
+import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
 import com.openwide.easysoa.run.RunManager;
 
 //import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
@@ -65,7 +66,7 @@ public class ExchangeRecordServletFilter implements Filter {
     private RunManager runManager;
 
     // Exchange handler
-    private ExchangeHandler exchangeHandler;
+    private HttpExchangeHandler exchangeHandler;
     
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -75,7 +76,7 @@ public class ExchangeRecordServletFilter implements Filter {
         try {
             FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
             // Get run manager and exchange handler services
-            exchangeHandler = (ExchangeHandler) frascati.getService("composedExchangeHandler", "composedExchangeHandlerService", ExchangeHandler.class);
+            exchangeHandler = (HttpExchangeHandler) frascati.getService("composedExchangeHandler", "composedExchangeHandlerService", HttpExchangeHandler.class);
             runManager = (RunManager) frascati.getService("runManager", "runManagerService", RunManager.class);
             // Start a new run
             // TODO : Maybe best to use a better name            
