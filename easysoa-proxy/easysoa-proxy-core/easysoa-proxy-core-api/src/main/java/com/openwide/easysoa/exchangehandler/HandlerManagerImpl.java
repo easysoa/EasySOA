@@ -2,7 +2,6 @@ package com.openwide.easysoa.exchangehandler;
 
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.util.log.Log;
 import org.osoa.sca.annotations.Reference;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;

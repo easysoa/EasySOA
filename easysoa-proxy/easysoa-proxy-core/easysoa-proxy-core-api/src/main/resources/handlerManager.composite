@@ -11,13 +11,13 @@
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.exchangehandler.HandlerManagerImpl"/>
 		<sca:reference multiplicity="0..n" name="handlers">
-			<sca:interface.java interface="com.openwide.easysoa.exchangehandler.MessageExchangeHandler"/>
+			<sca:interface.java interface="com.openwide.easysoa.exchangehandler.MessageHandler"/>
 		</sca:reference>
 	</sca:component>
 
 	<sca:component name="recordHandlerComponent">
 		<sca:service name="recordHandlerService">
-			<sca:interface.java interface="com.openwide.easysoa.exchangehandler.MessageExchangeHandler" />
+			<sca:interface.java interface="com.openwide.easysoa.exchangehandler.MessageHandler" />
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.exchangehandler.MessageRecordHandler" />
         <sca:reference name="runManager" target="runManagerComponent/runManagerService"></sca:reference>
