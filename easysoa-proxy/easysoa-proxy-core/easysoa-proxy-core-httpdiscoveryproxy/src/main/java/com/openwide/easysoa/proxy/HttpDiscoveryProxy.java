@@ -62,9 +62,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	@Reference
 	HandlerManager handlerManager;
     //public RunManager runManager;
-	//public MonitoringService monitoringService;
 	
-	// Port the proxy use.
+	// Port the proxy use (used in proxy loop detection).
 	@Property
 	public int proxyPort;
 	

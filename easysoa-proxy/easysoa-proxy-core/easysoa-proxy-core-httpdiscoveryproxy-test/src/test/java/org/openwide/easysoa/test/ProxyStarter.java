@@ -54,7 +54,7 @@ public class ProxyStarter extends AbstractProxyTestStarter
     {
         logger.info("Launching FraSCAti and HTTP Discovery Proxy");
         startFraSCAti();
-        startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
+        startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
     }
 
     /**

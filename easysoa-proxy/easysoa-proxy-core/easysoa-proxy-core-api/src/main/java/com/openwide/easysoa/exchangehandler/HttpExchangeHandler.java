@@ -18,12 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package com.openwide.easysoa.exchangehandler;
-
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

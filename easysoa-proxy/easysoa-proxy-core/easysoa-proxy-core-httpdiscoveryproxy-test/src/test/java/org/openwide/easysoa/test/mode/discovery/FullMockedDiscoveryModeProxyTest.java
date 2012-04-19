@@ -55,7 +55,7 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	 * FraSCAti and HTTP discovery Proxy ...
 	 * @throws Exception 
 	 */
-        @Before
+    @Before
 	public void setUp() throws Exception {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   serviceTestHelper = new FullMockedServiceTestHelper();
@@ -65,7 +65,7 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
-	   //startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
+	   startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
 	   // Start services mock
 	   try{
 		   startMockServices(true, true, true);

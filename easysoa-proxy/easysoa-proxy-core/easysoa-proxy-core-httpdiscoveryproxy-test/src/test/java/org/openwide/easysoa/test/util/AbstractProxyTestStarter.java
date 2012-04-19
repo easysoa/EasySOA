@@ -83,9 +83,8 @@ public abstract class AbstractProxyTestStarter
             char sep = File.separatorChar;
             configure();
             
-            StringBuilder srcBuilder = new StringBuilder("target").append(
-                    sep).append("test-classes").append(sep).append(
-                            "easysoa-proxy-core-httpdiscoveryproxy.jar");
+            StringBuilder srcBuilder = new StringBuilder("target").append(sep).append("test-classes").append(sep).append("easysoa-proxy-core-httpdiscoveryproxy.jar");
+            //StringBuilder srcBuilder = new StringBuilder("target").append(sep).append(sep).append("easysoa-proxy-core-httpdiscoveryproxy.jar");
             
             File srcFile = new File(srcBuilder.toString());
             

@@ -63,6 +63,7 @@ public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarte
      * @throws JSONException
      */
     @Test
+    @Ignore
     public final void testCleanNuxeoRegistry() throws Exception {
     	serviceTestHelper.cleanNuxeoRegistry("%" + EasySOAConstants.TWITTER_MOCK_PORT + "%");
     }
