@@ -38,7 +38,8 @@ import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.run.RunManager;
 
 /**
- * Exchange record handler : register a record from HttpServletRequest and HttpServletResponse  
+ * Exchange record handler : register a record from HttpServletRequest and HttpServletResponse
+ * To be used in embedded Nuxeo FraSCAti 
  * 
  * @author jguillemotte
  */
@@ -46,9 +47,9 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
 
     public NuxeoMessageExchangeRecordHandler() throws FraSCAtiServiceException{
         super();
-     // Get the service
+        // Get the service
         FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-       this.setRunManager((RunManager) frascati.getService("runManager", "runManagerService", RunManager.class));
+        this.setRunManager((RunManager) frascati.getService("runManager", "runManagerService", RunManager.class));
     }
 
     /* (non-Javadoc)
@@ -61,7 +62,7 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
         HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper(response);
         InMessage inMessage = new InMessage(requestWrapper);
         OutMessage outMessage = new OutMessage(responseWrapper);
-        this.handleExchange(inMessage, outMessage);
+        this.handleMessage(inMessage, outMessage);
     }
 
 }

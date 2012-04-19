@@ -1,6 +1,8 @@
 package com.openwide.easysoa.exchangehandler;
 
 import org.easysoa.records.ExchangeRecord;
+import org.osoa.sca.annotations.Reference;
+
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.run.RunManager;
@@ -10,8 +12,9 @@ import com.openwide.easysoa.run.RunManager;
  * @author jguillemotte
  *
  */
-public class MessageRecordHandler implements MessageExchangeHandler {
+public class MessageRecordHandler implements MessageHandler {
 
+    @Reference
     protected RunManager runManager;
     
     /**
@@ -25,12 +28,13 @@ public class MessageRecordHandler implements MessageExchangeHandler {
      * 
      * @param runManager
      */
+    // TODO : Find an other way to init runManager. When done, remove this setter
     public void setRunManager(RunManager runManager){
         this.runManager = runManager;
     }
     
     @Override
-    public void handleExchange(InMessage inMessage, OutMessage outMessage) throws Exception {
+    public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
         // Builds a new Exchange record with data contained in request and response
         ExchangeRecord record = new ExchangeRecord();
         record.setInMessage(inMessage);
