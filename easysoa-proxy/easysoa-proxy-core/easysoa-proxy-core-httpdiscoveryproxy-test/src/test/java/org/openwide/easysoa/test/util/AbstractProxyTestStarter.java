@@ -143,14 +143,19 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
     protected void cleanJetty(int port){
         JettyHTTPServerEngineFactory jettyFactory = BusFactory.getDefaultBus().getExtension(JettyHTTPServerEngineFactory.class);
         JettyHTTPServerEngine jettyServer = jettyFactory.retrieveJettyHTTPServerEngine(port);
-        Collection<Object> beans = jettyServer.getServer().getBeans();
-        if(beans != null){
-            for(Object bean : beans){
-                logger.debug("Removing Jetty bean for port " + port);
-                jettyServer.getServer().removeBean(bean);
+        try {
+            Collection<Object> beans = jettyServer.getServer().getBeans();
+            if(beans != null){
+                for(Object bean : beans){
+                    logger.debug("Removing Jetty bean for port " + port);
+                    jettyServer.getServer().removeBean(bean);
+                }
             }
+            jettyFactory.destroyForPort(port);
         }
-        jettyFactory.destroyForPort(port);        
+        catch(Exception ex){
+            logger.warn("No beans found for app deployed on Jetty port " + port);
+        }
     }    
     
     /**
