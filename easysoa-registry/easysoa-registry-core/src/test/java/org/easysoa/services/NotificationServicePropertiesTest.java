@@ -118,9 +118,9 @@ public class NotificationServicePropertiesTest extends CoreServiceTestHelperBase
 
         // TODO Host WSDL in a local server 
         
-    	String wsdlUrl = "http://localhost:9010/PureAirFlowers.wsdl",
-    		serviceUrl = "http://localhost:9010/PureAirFlowers",
-    		query = "SELECT * FROM Document WHERE serv:url = '"+serviceUrl+"'";
+    	String wsdlUrl = "http://localhost:9010/PureAirFlowers.wsdl";
+//    		serviceUrl = "http://localhost:9010/PureAirFlowers",
+//    		query = "SELECT * FROM Document WHERE serv:url = '"+serviceUrl+"'";
     	
     	// Create Service
     	Map<String, String> properties = new HashMap<String, String>();
