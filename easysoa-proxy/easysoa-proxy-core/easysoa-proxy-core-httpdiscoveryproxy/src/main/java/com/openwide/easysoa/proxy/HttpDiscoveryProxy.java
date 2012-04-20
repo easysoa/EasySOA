@@ -167,7 +167,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	infiniteLoopDetection(request);	    	
 	    	// Listening the message
 	    	ExchangeRecord exchangeRecord = forward(request, response); 
-	    //	runManager.record(exchangeRecord);
+	    	//runManager.record(exchangeRecord);
 	    	this.handlerManager.handle(exchangeRecord.getInMessage(), exchangeRecord.getOutMessage());
 	    	
 	    }

@@ -22,6 +22,7 @@ package org.openwide.easysoa.test.helpers;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.soap.SOAPException;
@@ -209,7 +210,18 @@ public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarte
 	@Test
 	// TODO problem, cannot execute all tests at the same time, eg with Maven because some services are not well closed in Frascati
 	public final void testSoapDiscoveryMode() throws Exception {
-		logger.info("Test SOAP Discovery mode started !");
+		
+	    String soapRequestContent = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:met=\"http://meteomock.mock.test.easysoa.openwide.org/\">"
+	            + "<soapenv:Header/>"
+	            + "<soapenv:Body>"
+	            + "<met:getTomorrowForecast>"
+	            + "<!--Optional:-->"
+	            + "<met:arg0>Lyon</met:arg0>"
+	            +"</met:getTomorrowForecast>"
+	            + "</soapenv:Body>"
+	            +"</soapenv:Envelope>";
+	    
+	    logger.info("Test SOAP Discovery mode started !");
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();		
 		
 		String runName = "SOAPDiscoveryTestRun";
@@ -228,9 +240,11 @@ public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarte
 		assertEquals("Run '" + runName + "' started !", resp);
 		
 		//FileInputStream fis = new FileInputStream(new File("src/test/resources/meteoMockMessages/meteoMockRequest.xml"));
-		InputStream is = this.getClass().getResourceAsStream("src/test/resources/meteoMockMessages/meteoMockRequest.xml");		
+		//InputStream is = this.getClass().getResourceAsStream("src/test/resources/meteoMockMessages/meteoMockRequest.xml");
+		InputStream in = new ByteArrayInputStream(soapRequestContent.getBytes()); 
+		
 		BasicHttpEntity soapRequest = new BasicHttpEntity();
-		soapRequest.setContent(is);
+		soapRequest.setContent(in);
 		// HTTP proxy Client
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();		
 		// Set client to use the HTTP Discovery Proxy
