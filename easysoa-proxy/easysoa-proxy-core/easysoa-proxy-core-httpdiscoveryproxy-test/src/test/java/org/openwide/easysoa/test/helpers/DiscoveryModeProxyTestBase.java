@@ -114,6 +114,7 @@ public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarte
 	 * @throws ClientException, SOAPException, IOException in case of error
 	 */
 	@Test
+	//@Ignore
 	public final void testRestDiscoveryMode() throws Exception {
 		logger.info("Test REST Discovery mode started !");
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -255,6 +256,7 @@ public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarte
 		httpPost.setEntity(soapRequest);
 		//httpPost.setHeader("Content-Type", "text/xml");
 		try {
+		    logger.debug("Sending SOAP request " + httpPost);
 			String response = httpProxyClient.execute(httpPost, responseHandler);		
 			logger.info(response);
 		}

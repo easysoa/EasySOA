@@ -20,11 +20,14 @@
 
 package org.openwide.easysoa.test.mode.discovery;
 
+import java.util.Collection;
+import org.apache.cxf.BusFactory;
+import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine;
+import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.openwide.easysoa.test.helpers.DiscoveryModeProxyTestBase;
 import org.openwide.easysoa.test.helpers.FullMockedServiceTestHelper;
@@ -83,6 +86,33 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
     public void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
+    	// Clean Jetty for twitter mock
+    	cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
+    	// Clean Jetty for meteo mock
+    	cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
+    	// Clean Jetty for Nuxeo mock
+    	cleanJetty(EasySOAConstants.NUXEO_TEST_PORT);
+    	// Clean Easysoa proxy
+    	cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+    	cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+    	cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
+    }
+
+    /**
+     * Remove the Jetty deployed apps to avoid blocking tests
+     * @param port The port where the Jetty application is deployed 
+     */
+    private void cleanJetty(int port){
+        JettyHTTPServerEngineFactory jettyFactory = BusFactory.getDefaultBus().getExtension(JettyHTTPServerEngineFactory.class);
+        JettyHTTPServerEngine jettyServer = jettyFactory.retrieveJettyHTTPServerEngine(port);
+        Collection<Object> beans = jettyServer.getServer().getBeans();
+        if(beans != null){
+            for(Object bean : beans){
+                logger.debug("Removing Jetty bean for port " + port);
+                jettyServer.getServer().removeBean(bean);
+            }
+        }
+        jettyFactory.destroyForPort(port);        
     }
     
 }

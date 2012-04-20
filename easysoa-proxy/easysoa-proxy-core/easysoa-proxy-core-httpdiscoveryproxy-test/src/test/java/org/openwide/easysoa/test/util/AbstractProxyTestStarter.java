@@ -37,8 +37,7 @@ import org.easysoa.sca.frascati.test.RemoteFraSCAtiServiceProviderTest;
 /**
  * Abstract Proxy Test Starter. Launch FraSCAti and the HTTP Discovery Proxy.
  */
-public abstract class AbstractProxyTestStarter 
-    extends RemoteFraSCAtiServiceProviderTest
+public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProviderTest
 {
     /**
      * Logger
@@ -46,11 +45,9 @@ public abstract class AbstractProxyTestStarter
     private static final Logger logger = Logger.getLogger(
             getInvokingClassName());
 
-    protected static FraSCAtiServiceItf frascati = null;
-
-    protected static RemoteFraSCAtiServiceProvider serviceProvider = null;
-    
-    protected static ArrayList<String> componentList = null;
+    protected FraSCAtiServiceItf frascati = null;
+    protected RemoteFraSCAtiServiceProvider serviceProvider = null;
+    protected ArrayList<String> componentList = null;
     
     protected File lib;
 
@@ -140,7 +137,7 @@ public abstract class AbstractProxyTestStarter
      * @throws FrascatiException
      * @throws FraSCAtiServiceException
      */
-    protected static void startHttpDiscoveryProxy(String composite, URL... urls) throws Exception {
+    protected void startHttpDiscoveryProxy(String composite, URL... urls) throws Exception {
         logger.info("HTTP Discovery Proxy Starting");
         String component = frascati.processComposite(composite,
                 FraSCAtiServiceItf.all, urls);
@@ -156,7 +153,7 @@ public abstract class AbstractProxyTestStarter
      *             if a problem occurs during the start of composites
      * @throws FraSCAtiServiceException
      */
-    protected static void startMockServices(boolean withNuxeoMock, boolean withTwitterMock, boolean withMeteoMock) throws Exception {
+    protected void startMockServices(boolean withNuxeoMock, boolean withTwitterMock, boolean withMeteoMock) throws Exception {
         logger.info("Services Mock Starting");
         if(withTwitterMock){
             componentList.add(frascati.processComposite("twitterMockRest.composite"));
