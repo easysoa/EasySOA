@@ -23,9 +23,7 @@ package org.openwide.easysoa.test.mode.validated;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-
 import javax.xml.soap.SOAPException;
-
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -39,9 +37,7 @@ import org.easysoa.EasySOAConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
@@ -73,7 +69,7 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter
         // Start fraSCAti
         startFraSCAti();
         // Start HTTP Proxy
-        startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy_validatedMode.composite");
+        startHttpDiscoveryProxy("httpDiscoveryProxy_validatedMode.composite");
         // Start services mock
         startMockServices(true, true, true);
     }
@@ -84,10 +80,19 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter
      * @throws FrascatiException
      */
     @After
-    public void cleanUp() throws Exception
-    {
+    public void cleanUp() throws Exception {
         logger.info("Stopping FraSCAti...");
         stopFraSCAti();
+        // Clean Jetty for twitter mock
+        cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
+        // Clean Jetty for meteo mock
+        cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
+        // Clean Jetty for Nuxeo mock
+        cleanJetty(EasySOAConstants.NUXEO_TEST_PORT);
+        // Clean Easysoa proxy
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+        cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);        
     }
 
     @Test
@@ -191,9 +196,7 @@ public class FullMockedValidatedModeProxyTest extends AbstractProxyTestStarter
      */
     @Test
     @Ignore
-    public final void testWaitUntilRead() throws Exception
-    {
-
+    public final void testWaitUntilRead() throws Exception {
         logger.info("Test waiting for user action to stop !");
         // Just push a key in the console window to stop the test
         System.in.read();

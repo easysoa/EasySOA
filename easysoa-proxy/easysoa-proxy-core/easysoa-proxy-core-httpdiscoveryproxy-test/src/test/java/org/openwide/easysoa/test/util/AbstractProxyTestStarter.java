@@ -23,7 +23,12 @@ package org.openwide.easysoa.test.util;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.cxf.BusFactory;
+import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine;
+import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -131,6 +136,23 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
         }
     }
 
+    /**
+     * Remove the Jetty deployed apps to avoid blocking tests
+     * @param port The port where the Jetty application is deployed 
+     */
+    protected void cleanJetty(int port){
+        JettyHTTPServerEngineFactory jettyFactory = BusFactory.getDefaultBus().getExtension(JettyHTTPServerEngineFactory.class);
+        JettyHTTPServerEngine jettyServer = jettyFactory.retrieveJettyHTTPServerEngine(port);
+        Collection<Object> beans = jettyServer.getServer().getBeans();
+        if(beans != null){
+            for(Object bean : beans){
+                logger.debug("Removing Jetty bean for port " + port);
+                jettyServer.getServer().removeBean(bean);
+            }
+        }
+        jettyFactory.destroyForPort(port);        
+    }    
+    
     /**
      * Start HTTP Proxy
      * 
