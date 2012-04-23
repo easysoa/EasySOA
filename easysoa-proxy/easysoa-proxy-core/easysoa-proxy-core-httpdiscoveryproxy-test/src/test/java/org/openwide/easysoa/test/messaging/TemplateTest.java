@@ -81,13 +81,13 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Start fraSCAti
 		startFraSCAti();
 		// Start Http Discovery proxy
-//		try {
-//			//startHttpDiscoveryProxy("httpDiscoveryProxy.composite", new URL[] { new URL("file://target") });
-//		} catch (MalformedURLException e) {
-//			throw new Exception("TemplateTest init error", e);
-//		}
+		try {
+			startHttpDiscoveryProxy("httpDiscoveryProxy.composite", new URL[] { new URL("file://target") });
+		} catch (MalformedURLException e) {
+			throw new Exception("TemplateTest init error", e);
+		}
 		// Start mock services
-		//startMockServices(false);
+		startMockServices(true, true, true);
 	}
 	
 	/**
@@ -343,5 +343,15 @@ public class TemplateTest extends AbstractProxyTestStarter {
     public void cleanUp() throws Exception{
         logger.info("Stopping FraSCAti...");
         stopFraSCAti();
+        // Clean Jetty for twitter mock
+        cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
+        // Clean Jetty for meteo mock
+        cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
+        // Clean Jetty for meteo mock
+        cleanJetty(EasySOAConstants.NUXEO_TEST_PORT);
+        // Clean Easysoa proxy
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+        cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);            
     }	
 }

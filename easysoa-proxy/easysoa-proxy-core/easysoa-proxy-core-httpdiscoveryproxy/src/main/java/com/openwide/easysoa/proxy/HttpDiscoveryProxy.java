@@ -36,6 +36,8 @@ import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+
+import com.openwide.easysoa.exchangehandler.HandlerManager;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.run.RunManager;
 import com.openwide.easysoa.util.RequestForwarder;
@@ -58,10 +60,10 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	
 	// Reference on monitoring service
 	@Reference
-	public RunManager runManager;
-	//public MonitoringService monitoringService;
+	HandlerManager handlerManager;
+    //public RunManager runManager;
 	
-	// Port the proxy use.
+	// Port the proxy use (used in proxy loop detection).
 	@Property
 	public int proxyPort;
 	
@@ -165,7 +167,9 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	infiniteLoopDetection(request);	    	
 	    	// Listening the message
 	    	ExchangeRecord exchangeRecord = forward(request, response); 
-	    	runManager.record(exchangeRecord);
+	    	//runManager.record(exchangeRecord);
+	    	this.handlerManager.handle(exchangeRecord.getInMessage(), exchangeRecord.getOutMessage());
+	    	
 	    }
 	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client

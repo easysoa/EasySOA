@@ -154,6 +154,10 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
     public void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
+        // Clean Jetty for twitter mock
+        cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
+        // Clean Jetty for meteo mock
+        cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
     }	
 	
 }

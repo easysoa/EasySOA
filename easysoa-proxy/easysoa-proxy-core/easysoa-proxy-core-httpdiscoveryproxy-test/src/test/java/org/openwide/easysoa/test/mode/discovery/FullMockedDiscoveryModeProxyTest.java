@@ -21,10 +21,9 @@
 package org.openwide.easysoa.test.mode.discovery;
 
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.openwide.easysoa.test.helpers.DiscoveryModeProxyTestBase;
 import org.openwide.easysoa.test.helpers.FullMockedServiceTestHelper;
@@ -55,7 +54,7 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	 * FraSCAti and HTTP discovery Proxy ...
 	 * @throws Exception 
 	 */
-        @Before
+    @Before
 	public void setUp() throws Exception {
 	   logger.info("Launching FraSCAti and HTTP Discovery Proxy");
 	   serviceTestHelper = new FullMockedServiceTestHelper();
@@ -65,7 +64,7 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
 	   // Start fraSCAti
 	   startFraSCAti();
 	   // Start HTTP Proxy
-	   //startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
+	   startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
 	   // Start services mock
 	   try{
 		   startMockServices(true, true, true);
@@ -83,6 +82,16 @@ public class FullMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase
     public void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
+    	// Clean Jetty for twitter mock
+    	cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
+    	// Clean Jetty for meteo mock
+    	cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
+    	// Clean Jetty for Nuxeo mock
+    	cleanJetty(EasySOAConstants.NUXEO_TEST_PORT);
+    	// Clean Easysoa proxy
+    	cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+    	cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+    	cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
     }
     
 }

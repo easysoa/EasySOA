@@ -62,7 +62,7 @@ import org.nuxeo.ecm.platform.ui.web.api.WebActions;
  */
 @Name("easysoaViews")
 @Scope(CONVERSATION)
-public class EAsySOAViewManager implements Serializable {
+public class EasySOAViewManager implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

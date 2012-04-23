@@ -18,40 +18,23 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
-package org.easysoa.records.handlers;
+package com.openwide.easysoa.exchangehandler;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
 
 /**
  * @author jguillemotte
  *
  */
-public class ComposedExchangeHandler implements HttpExchangeHandler {
-
-    // TODO : add configuration in composite file
+public interface HttpExchangeHandler {
     
-    //@Reference
-    private List<HttpExchangeHandler> exchangeHandlers;
-
     /**
-     * Handle the exchange. Call the handle method for all handlers from the exchange handler list
+     * Handle an exchange
      * @param request HTTP Servlet request
-     * @param response HTTP servlet Response
+     * @param response HTTP Servlet response
      * @throws Exception 
      */
-    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        if(exchangeHandlers != null){
-            for(HttpExchangeHandler handler : exchangeHandlers){
-                handler.handleExchange(request, response);
-            }
-        }
-    }
-
+    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    
 }

@@ -43,15 +43,12 @@ import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
-public class PartiallyMockedValidatedModeProxyTest extends
-        AbstractProxyTestStarter
-{
-
+public class PartiallyMockedValidatedModeProxyTest extends AbstractProxyTestStarter {
+    
     /**
      * Logger
      */
-    private static Logger logger = Logger
-            .getLogger(FullMockedValidatedModeProxyTest.class.getName());
+    private static Logger logger = Logger.getLogger(FullMockedValidatedModeProxyTest.class.getName());
 
     /**
      * Initialize one time the remote systems for the test FraSCAti and HTTP
@@ -70,7 +67,7 @@ public class PartiallyMockedValidatedModeProxyTest extends
         // Start fraSCAti
         startFraSCAti();
         // Start HTTP Proxy
-        startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy_validatedMode.composite");
+        startHttpDiscoveryProxy("httpDiscoveryProxy_validatedMode.composite");
         // Start services mock
         startMockServices(false, true, true);
     }
@@ -81,10 +78,17 @@ public class PartiallyMockedValidatedModeProxyTest extends
      * @throws FrascatiException
      */
     @After
-    public void cleanUp() throws Exception
-    {
+    public void cleanUp() throws Exception {
         logger.info("Stopping FraSCAti...");
         stopFraSCAti();
+        // Clean Jetty for twitter mock
+        cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
+        // Clean Jetty for meteo mock
+        cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
+        // Clean Easysoa proxy
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+        cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);        
     }
 
     @Test

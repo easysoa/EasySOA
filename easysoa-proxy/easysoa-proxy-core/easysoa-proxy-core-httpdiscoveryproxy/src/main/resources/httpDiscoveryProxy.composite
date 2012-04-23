@@ -5,8 +5,8 @@
     xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy"
 >
 
-    <sca:include name="runManager" />
-	<!--<sca:include name="replayEngine"/>-->
+    <!-- <sca:include name="runManager" />-->
+	<sca:include name="handlerManager"/>
 
 	<!-- HTTP Proxy -->
 	<!-- Run with default mode : Discovery -->
@@ -17,9 +17,13 @@
             <sca:interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
-        <sca:reference name="runManager" target="runManagerComponent">
+      <!--  <sca:reference name="runManager" target="runManagerComponent">
             <sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
         </sca:reference>
+         --> 
+         <sca:reference name="handlerManager" target = "handleManagerComponent" >
+         	<sca:interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
+         </sca:reference>
         <sca:property name="proxyPort">8082</sca:property>
         <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
         <sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>

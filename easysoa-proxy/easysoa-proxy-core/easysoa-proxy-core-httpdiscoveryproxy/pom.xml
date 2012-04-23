@@ -271,12 +271,12 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                       <outputDirectory>${project.basedir}/../../../easysoa-distribution/easysoa/frascati/lib</outputDirectory>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

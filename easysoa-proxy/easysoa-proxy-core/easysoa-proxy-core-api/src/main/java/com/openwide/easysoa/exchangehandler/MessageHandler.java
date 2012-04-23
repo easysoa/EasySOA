@@ -17,29 +17,18 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
+package com.openwide.easysoa.exchangehandler;
 
-/**
- * 
- */
-package org.easysoa.records.handlers;
+import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.message.OutMessage;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-/**
- * @author jguillemotte
- *
- */
-public interface ExchangeHandler {
-    
+public interface MessageHandler {
     /**
      * Handle an exchange
-     * @param request HTTP Servlet request
-     * @param response HTTP Servlet response
+     * @param  messagein incoming message
+     * @param  messageout outgoing message
      * @throws Exception 
      */
-    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception;
     
 }

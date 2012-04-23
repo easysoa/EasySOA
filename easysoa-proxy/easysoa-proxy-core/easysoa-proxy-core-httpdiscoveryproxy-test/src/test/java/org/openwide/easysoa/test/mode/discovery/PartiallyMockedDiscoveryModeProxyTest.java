@@ -23,9 +23,7 @@ package org.openwide.easysoa.test.mode.discovery;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.openwide.easysoa.test.helpers.DiscoveryModeProxyTestBase;
 import org.openwide.easysoa.test.helpers.PartiallyMockedServiceTestHelper;
 import org.openwide.easysoa.test.helpers.ServiceTestHelperBase;
@@ -41,15 +39,12 @@ import org.openwide.easysoa.test.helpers.ServiceTestHelperBase;
  * @author jguillemotte
  * 
  */
-public class PartiallyMockedDiscoveryModeProxyTest extends
-        DiscoveryModeProxyTestBase
-{
+public class PartiallyMockedDiscoveryModeProxyTest extends DiscoveryModeProxyTestBase {
 
     /**
      * Logger
      */
-    private static Logger logger = Logger
-            .getLogger(FullMockedDiscoveryModeProxyTest.class.getName());
+    private static Logger logger = Logger.getLogger(FullMockedDiscoveryModeProxyTest.class.getName());
 
     /**
      * Initialize one time the remote systems for the test FraSCAti and HTTP
@@ -64,12 +59,11 @@ public class PartiallyMockedDiscoveryModeProxyTest extends
         logger.info("Launching FraSCAti and HTTP Discovery Proxy");
         serviceTestHelper = new PartiallyMockedServiceTestHelper();
         // Clean Nuxeo registery
-        ServiceTestHelperBase.cleanRemoteNuxeoRegistry("%"
-                + EasySOAConstants.TWITTER_MOCK_PORT + "%");
+        ServiceTestHelperBase.cleanRemoteNuxeoRegistry("%" + EasySOAConstants.TWITTER_MOCK_PORT + "%");
         // Start fraSCAti
         startFraSCAti();
         // Start HTTP Proxy
-        // startHttpDiscoveryProxy("src/main/resources/httpDiscoveryProxy.composite");
+        startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
         // Start services mock
         startMockServices(false, true, true);
     }
@@ -80,10 +74,17 @@ public class PartiallyMockedDiscoveryModeProxyTest extends
      * @throws FrascatiException
      */
     @After
-    public void cleanUp() throws Exception
-    {
+    public void cleanUp() throws Exception {
         logger.info("Stopping FraSCAti...");
         stopFraSCAti();
+        // Clean Jetty for twitter mock
+        cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
+        // Clean Jetty for meteo mock
+        cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
+        // Clean Easysoa proxy
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+        cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);        
     }
 
 }
