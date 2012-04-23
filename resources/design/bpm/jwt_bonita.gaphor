@@ -1,0 +1,3301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gaphor xmlns="http://gaphor.sourceforge.net/model" version="3.0" gaphor-version="0.15.0">
+<Package id="4167e7a2-8541-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[Workflows in EasySOA]]></val>
+</name>
+<nestedPackage>
+<reflist>
+<ref refid="4455b76a-8563-11e1-b7e2-bc305b9da339"/>
+<ref refid="3ced3da2-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</nestedPackage>
+</Package>
+<Diagram id="187f4dde-8542-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[Decentralized]]></val>
+</name>
+<package>
+<ref refid="4455b76a-8563-11e1-b7e2-bc305b9da339"/>
+</package>
+<canvas>
+<item type="InteractionItem" id="1b22836c-8542-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 33.0, 36.0)</val>
+</matrix>
+<width>
+<val>936.0</val>
+</width>
+<height>
+<val>695.0</val>
+</height>
+<subject>
+<ref refid="1b2258ec-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<item type="LifelineItem" id="1a490970-8542-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 217.0, 164.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>211.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="25137a02-8542-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 796.0, 165.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="251373b8-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>481.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="342135de-8542-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 70.0, 166.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>466.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="7e758702-8542-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 496.0, 161.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="7e75809a-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>445.0</val>
+</lifetime-length>
+</item>
+</item>
+<item type="MessageItem" id="3a99c5de-8542-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="3a9a81ea-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 153.0, 355.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>1</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (147.0, -1.0)]</val>
+</points>
+<head-connection>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="1a490970-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="aa049d72-8542-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="aa058246-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 153.0, 311.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>1</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (147.0, -4.0)]</val>
+</points>
+<head-connection>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="1a490970-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="b00bd488-8542-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="b00cb6b4-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 153.0, 487.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>1</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (426.0, -3.0)]</val>
+</points>
+<head-connection>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="7e758702-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="b5c106e6-8542-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="b5c1e854-8542-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 153.0, 520.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (726.0, -2.0)]</val>
+</points>
+<head-connection>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="25137a02-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="bcb60488-8542-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="e038f732-8563-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 879.0, 607.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (-300.0, 0.0)]</val>
+</points>
+<head-connection>
+<ref refid="25137a02-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="7e758702-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="CommentItem" id="d2dac7fc-8543-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 229.0, 119.0)</val>
+</matrix>
+<width>
+<val>142.0</val>
+</width>
+<height>
+<val>42.0</val>
+</height>
+<subject>
+<ref refid="d2dabf64-8543-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentLineItem" id="d9e5b124-8543-11e1-b7e2-bc305b9da339">
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 298.4140625, 161.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (5.5859375, 39.0)]</val>
+</points>
+<head-connection>
+<ref refid="d2dac7fc-8543-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="1a490970-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="CommentLineItem" id="df6db90c-8543-11e1-b7e2-bc305b9da339">
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 889.0, 159.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (-8.5859375, 42.0)]</val>
+</points>
+<head-connection>
+<ref refid="3d88beee-8565-11e1-a56f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="25137a02-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="31e3827a-8544-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="31e47bb2-8544-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 153.0, 279.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (147.0, -3.0)]</val>
+</points>
+<head-connection>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="1a490970-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="91711116-8545-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="9171f2ca-8545-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 153.0, 561.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (726.0, -2.0)]</val>
+</points>
+<head-connection>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="25137a02-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="a9cda774-8545-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="a9ce86a8-8545-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 153.0, 387.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (147.0, -1.0)]</val>
+</points>
+<head-connection>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="1a490970-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="CommentItem" id="8f6168ce-8547-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 644.0, 657.0)</val>
+</matrix>
+<width>
+<val>130.0</val>
+</width>
+<height>
+<val>52.0</val>
+</height>
+<subject>
+<ref refid="8f6160ea-8547-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentLineItem" id="9d7d6d9a-8547-11e1-b7e2-bc305b9da339">
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 685.0, 607.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (29.0, 50.0)]</val>
+</points>
+<head-connection>
+<ref refid="bcb60488-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="8f6168ce-8547-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="98000154-8563-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="9800f208-8563-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 300.0, 417.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (279.0, -2.0)]</val>
+</points>
+<head-connection>
+<ref refid="1a490970-8542-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="7e758702-8542-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="CommentItem" id="3d88beee-8565-11e1-a56f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 828.0, 114.0)</val>
+</matrix>
+<width>
+<val>99.0</val>
+</width>
+<height>
+<val>45.0</val>
+</height>
+<subject>
+<ref refid="3d88b69c-8565-11e1-a56f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+</canvas>
+</Diagram>
+<Lifeline id="1a48faca-8542-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="3c257b32-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="ab4ae57e-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="32df0578-8544-11e1-b7e2-bc305b9da339"/>
+<ref refid="9801e686-8563-11e1-b7e2-bc305b9da339"/>
+<ref refid="abcde39a-8563-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="1b2258ec-8542-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Modeler]]></val>
+</name>
+<ownedComment>
+<reflist>
+<ref refid="d2dabf64-8543-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</ownedComment>
+<presentation>
+<reflist>
+<ref refid="1a490970-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Interaction id="1b2258ec-8542-11e1-b7e2-bc305b9da339">
+<lifeline>
+<reflist>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="251373b8-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="7e75809a-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</lifeline>
+<name>
+<val><![CDATA[Create a workflow in decentralized mode]]></val>
+</name>
+<package>
+<ref refid="4455b76a-8563-11e1-b7e2-bc305b9da339"/>
+</package>
+<presentation>
+<reflist>
+<ref refid="1b22836c-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Interaction>
+<Lifeline id="251373b8-8542-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="2539044a-8563-11e1-b7e2-bc305b9da339"/>
+<ref refid="d309d39c-8563-11e1-b7e2-bc305b9da339"/>
+<ref refid="e039e94e-8563-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="1b2258ec-8542-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Console]]></val>
+</name>
+<ownedComment>
+<reflist>
+<ref refid="3d88b69c-8565-11e1-a56f-bc305b9da339"/>
+</reflist>
+</ownedComment>
+<presentation>
+<reflist>
+<ref refid="25137a02-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Lifeline id="34212f94-8542-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="3a9b76ea-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="aa066b66-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="b00db5e6-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="31e59c54-8544-11e1-b7e2-bc305b9da339"/>
+<ref refid="2538f270-8563-11e1-b7e2-bc305b9da339"/>
+<ref refid="abcdd01c-8563-11e1-b7e2-bc305b9da339"/>
+<ref refid="d309c000-8563-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="1b2258ec-8542-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[User]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="342135de-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="3a9a81ea-8542-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Export]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="3a99c5de-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="3c257b32-8542-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="3a9b76ea-8542-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="3a9b76ea-8542-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="3a9a81ea-8542-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="3c257b32-8542-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="3a9a81ea-8542-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Lifeline id="7e75809a-8542-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="b1ef4e06-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="99970684-8563-11e1-b7e2-bc305b9da339"/>
+<ref refid="e193acd0-8563-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="1b2258ec-8542-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[EasySOA Core]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="7e758702-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="aa058246-8542-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Edit]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="aa049d72-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="ab4ae57e-8542-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="aa066b66-8542-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="aa066b66-8542-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="aa058246-8542-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="ab4ae57e-8542-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="aa058246-8542-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="b00cb6b4-8542-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Annotate]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="b00bd488-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="b1ef4e06-8542-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="b00db5e6-8542-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="b00db5e6-8542-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="b00cb6b4-8542-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="b1ef4e06-8542-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="7e75809a-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="b00cb6b4-8542-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="b5c1e854-8542-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Import]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="b5c106e6-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="2539044a-8563-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="2538f270-8563-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<Comment id="d2dabf64-8543-11e1-b7e2-bc305b9da339">
+<annotatedElement>
+<reflist>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</annotatedElement>
+<body>
+<val><![CDATA[JWT, Bonita Studio, ...]]></val>
+</body>
+<presentation>
+<reflist>
+<ref refid="d2dac7fc-8543-11e1-b7e2-bc305b9da339"/>
+<ref refid="be15a51e-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Comment>
+<Comment id="dd4fc3fe-8543-11e1-b7e2-bc305b9da339">
+<annotatedElement>
+<reflist>
+<ref refid="0ae75ae6-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</annotatedElement>
+<body>
+<val><![CDATA[Bonita engine, ...]]></val>
+</body>
+<presentation>
+<reflist>
+<ref refid="c34f8edc-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Comment>
+<Message id="31e47bb2-8544-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Create]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="31e3827a-8544-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="32df0578-8544-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="31e59c54-8544-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="31e59c54-8544-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="31e47bb2-8544-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="32df0578-8544-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="31e47bb2-8544-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Diagram id="5ea8829c-8544-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[Centralized]]></val>
+</name>
+<package>
+<ref refid="4455b76a-8563-11e1-b7e2-bc305b9da339"/>
+</package>
+<canvas>
+<item type="InteractionItem" id="e5fc2e88-8544-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 138.0, 49.0)</val>
+</matrix>
+<width>
+<val>1010.0</val>
+</width>
+<height>
+<val>725.0</val>
+</height>
+<subject>
+<ref refid="e5fc163c-8544-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<item type="LifelineItem" id="e45cfd0a-8544-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 85.0, 134.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>504.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="08c781ec-8545-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 227.0, 133.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>512.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="0e3bfc16-8545-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 420.0, 131.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="0e3bf504-8545-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>503.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="0ae763a6-8564-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 590.0, 130.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="0ae75ae6-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>510.0</val>
+</lifetime-length>
+</item>
+</item>
+<item type="MessageItem" id="13161ffe-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="13170248-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 273.0, 264.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (142.0, 1.0)]</val>
+</points>
+<head-connection>
+<ref refid="e45cfd0a-8544-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="08c781ec-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="1c6c6fd6-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="1c6d50c2-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 273.0, 289.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (142.0, 1.0)]</val>
+</points>
+<head-connection>
+<ref refid="e45cfd0a-8544-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="08c781ec-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="1efd2eb6-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="1efe28d4-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 273.0, 319.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (142.0, 0.0)]</val>
+</points>
+<head-connection>
+<ref refid="e45cfd0a-8544-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="08c781ec-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="26306f36-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="263131dc-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 273.0, 348.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (142.0, -1.0)]</val>
+</points>
+<head-connection>
+<ref refid="e45cfd0a-8544-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="08c781ec-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="436f03be-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="436fecd4-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 415.0, 369.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (193.0, -2.0)]</val>
+</points>
+<head-connection>
+<ref refid="08c781ec-8545-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="0e3bfc16-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="51184ea8-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="51193390-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 273.0, 404.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (335.0, -2.0)]</val>
+</points>
+<head-connection>
+<ref refid="e45cfd0a-8544-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="0e3bfc16-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="534b0bfc-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="534bee0a-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 273.0, 442.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (335.0, -2.0)]</val>
+</points>
+<head-connection>
+<ref refid="e45cfd0a-8544-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="0e3bfc16-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="6973aa9c-8564-11e1-b7e2-bc305b9da339">
+<subject>
+<ref refid="6974717a-8564-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 608.0, 462.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (170.0, -2.0)]</val>
+</points>
+<head-connection>
+<ref refid="0e3bfc16-8545-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="0ae763a6-8564-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="CommentItem" id="be15a51e-8564-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 364.0, 96.0)</val>
+</matrix>
+<width>
+<val>142.0</val>
+</width>
+<height>
+<val>42.0</val>
+</height>
+<subject>
+<ref refid="d2dabf64-8543-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentItem" id="c34f8edc-8564-11e1-b7e2-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 728.0, 94.0)</val>
+</matrix>
+<width>
+<val>118.0</val>
+</width>
+<height>
+<val>42.0</val>
+</height>
+<subject>
+<ref refid="dd4fc3fe-8543-11e1-b7e2-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentLineItem" id="cc2f4cd6-8564-11e1-b7e2-bc305b9da339">
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 424.0, 138.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (12.0, 44.0)]</val>
+</points>
+<head-connection>
+<ref refid="be15a51e-8564-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="08c781ec-8545-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="CommentLineItem" id="cfe51fea-8564-11e1-b7e2-bc305b9da339">
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 769.0, 179.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (7.0, -43.0)]</val>
+</points>
+<head-connection>
+<ref refid="0ae763a6-8564-11e1-b7e2-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="c34f8edc-8564-11e1-b7e2-bc305b9da339"/>
+</tail-connection>
+</item>
+</canvas>
+</Diagram>
+<Lifeline id="e45cf3aa-8544-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="1318155c-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="1c6e3730-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="1eff29dc-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="26322452-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="511a1a4e-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="534d106e-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="e5fc163c-8544-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[User]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="e45cfd0a-8544-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Interaction id="e5fc163c-8544-11e1-b7e2-bc305b9da339">
+<lifeline>
+<reflist>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+<ref refid="0e3bf504-8545-11e1-b7e2-bc305b9da339"/>
+<ref refid="0ae75ae6-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</lifeline>
+<name>
+<val><![CDATA[Create a workflow in centralized mode]]></val>
+</name>
+<package>
+<ref refid="4455b76a-8563-11e1-b7e2-bc305b9da339"/>
+</package>
+<presentation>
+<reflist>
+<ref refid="e5fc2e88-8544-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Interaction>
+<Lifeline id="08c77aee-8545-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="1453b764-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="1d127af2-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="1fc2f560-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="2928f712-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="43711168-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="e5fc163c-8544-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Modeler]]></val>
+</name>
+<ownedComment>
+<reflist>
+<ref refid="d2dabf64-8543-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</ownedComment>
+<presentation>
+<reflist>
+<ref refid="08c781ec-8545-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Lifeline id="0e3bf504-8545-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="4461f57e-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="520db7c6-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="543ccd98-8564-11e1-b7e2-bc305b9da339"/>
+<ref refid="69756bac-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="e5fc163c-8544-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[EasySOA Core]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="0e3bfc16-8545-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="9171f2ca-8545-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Choose source]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="91711116-8545-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="d309d39c-8563-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="d309c000-8563-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<Message id="a9ce86a8-8545-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Choose target]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="a9cda774-8545-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="abcde39a-8563-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="abcdd01c-8563-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<Comment id="8f6160ea-8547-11e1-b7e2-bc305b9da339">
+<annotatedElement>
+<reflist>
+<ref refid="e038f732-8563-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</annotatedElement>
+<body>
+<val><![CDATA[Not shown:
+format negociation]]></val>
+</body>
+<presentation>
+<reflist>
+<ref refid="8f6168ce-8547-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Comment>
+<MessageOccurrenceSpecification id="2538f270-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="b5c1e854-8542-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="2539044a-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="251373b8-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="b5c1e854-8542-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Package id="4455b76a-8563-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[Use]]></val>
+</name>
+<ownedClassifier>
+<reflist>
+<ref refid="1b2258ec-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="e5fc163c-8544-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</ownedClassifier>
+<ownedDiagram>
+<reflist>
+<ref refid="187f4dde-8542-11e1-b7e2-bc305b9da339"/>
+<ref refid="5ea8829c-8544-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</ownedDiagram>
+<package>
+<ref refid="4167e7a2-8541-11e1-b7e2-bc305b9da339"/>
+</package>
+</Package>
+<Message id="9800f208-8563-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[update(id,model)]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="98000154-8563-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="99970684-8563-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="9801e686-8563-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="9801e686-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="9800f208-8563-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="99970684-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="7e75809a-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="9800f208-8563-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="abcdd01c-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="a9ce86a8-8545-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="abcde39a-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="1a48faca-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="a9ce86a8-8545-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="d309c000-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="34212f94-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="9171f2ca-8545-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="d309d39c-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="251373b8-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="9171f2ca-8545-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="e038f732-8563-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[retrieve(id):model]]></val>
+</name>
+<ownedComment>
+<reflist>
+<ref refid="8f6160ea-8547-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</ownedComment>
+<presentation>
+<reflist>
+<ref refid="bcb60488-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="e193acd0-8563-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="e039e94e-8563-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="e039e94e-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="251373b8-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="e038f732-8563-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="e193acd0-8563-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="7e75809a-8542-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="e038f732-8563-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Lifeline id="0ae75ae6-8564-11e1-b7e2-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="6ac5d780-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="e5fc163c-8544-11e1-b7e2-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Engine]]></val>
+</name>
+<ownedComment>
+<reflist>
+<ref refid="dd4fc3fe-8543-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</ownedComment>
+<presentation>
+<reflist>
+<ref refid="0ae763a6-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="13170248-8564-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Create]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="13161ffe-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="1453b764-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="1318155c-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="1318155c-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="13170248-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="1453b764-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="13170248-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="1c6d50c2-8564-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Edit]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="1c6c6fd6-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="1d127af2-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="1c6e3730-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="1c6e3730-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="1c6d50c2-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="1d127af2-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="1c6d50c2-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="1efe28d4-8564-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Export]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="1efd2eb6-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="1fc2f560-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="1eff29dc-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="1eff29dc-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="1efe28d4-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="1fc2f560-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="1efe28d4-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="263131dc-8564-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Choose target]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="26306f36-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="2928f712-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="26322452-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="26322452-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="263131dc-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="2928f712-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="263131dc-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="436fecd4-8564-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[update(id,model)]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="436f03be-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="4461f57e-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="43711168-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="43711168-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="08c77aee-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="436fecd4-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="4461f57e-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="0e3bf504-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="436fecd4-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="51193390-8564-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Annotate]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="51184ea8-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="520db7c6-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="511a1a4e-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="511a1a4e-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="51193390-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="520db7c6-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="0e3bf504-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="51193390-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="534bee0a-8564-11e1-b7e2-bc305b9da339">
+<messageSort>
+<val><![CDATA[asynchCall]]></val>
+</messageSort>
+<name>
+<val><![CDATA[Deploy]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="534b0bfc-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="543ccd98-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="534d106e-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="534d106e-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="e45cf3aa-8544-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="534bee0a-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="543ccd98-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="0e3bf504-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="534bee0a-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="6974717a-8564-11e1-b7e2-bc305b9da339">
+<name>
+<val><![CDATA[deploy(model)]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="6973aa9c-8564-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="6ac5d780-8564-11e1-b7e2-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="69756bac-8564-11e1-b7e2-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="69756bac-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="0e3bf504-8545-11e1-b7e2-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="6974717a-8564-11e1-b7e2-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="6ac5d780-8564-11e1-b7e2-bc305b9da339">
+<covered>
+<ref refid="0ae75ae6-8564-11e1-b7e2-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="6974717a-8564-11e1-b7e2-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Comment id="3d88b69c-8565-11e1-a56f-bc305b9da339">
+<annotatedElement>
+<reflist>
+<ref refid="251373b8-8542-11e1-b7e2-bc305b9da339"/>
+</reflist>
+</annotatedElement>
+<body>
+<val><![CDATA[Bonita UX, ...]]></val>
+</body>
+<presentation>
+<reflist>
+<ref refid="3d88beee-8565-11e1-a56f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Comment>
+<Package id="3ced3da2-856a-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[Interaction JWT/Bonita]]></val>
+</name>
+<ownedClassifier>
+<reflist>
+<ref refid="722a5432-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="844de5c0-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="cf19c664-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="3b7ff020-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</ownedClassifier>
+<ownedDiagram>
+<reflist>
+<ref refid="41d7c58a-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</ownedDiagram>
+<package>
+<ref refid="4167e7a2-8541-11e1-b7e2-bc305b9da339"/>
+</package>
+</Package>
+<Diagram id="41d7c58a-856a-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[interaction JWT avec Bonita]]></val>
+</name>
+<package>
+<ref refid="3ced3da2-856a-11e1-a96f-bc305b9da339"/>
+</package>
+<canvas>
+<item type="MessageItem" id="57fcb71c-856a-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="57fd62ca-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 183.0, 187.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (166.0, -1.0)]</val>
+</points>
+<head-connection>
+<ref refid="4e685044-856a-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="51f958ac-856a-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="InteractionItem" id="722a7bce-856a-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 66.0, 49.0)</val>
+</matrix>
+<width>
+<val>392.0</val>
+</width>
+<height>
+<val>252.0</val>
+</height>
+<subject>
+<ref refid="722a5432-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<item type="LifelineItem" id="4e685044-856a-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 67.0, 45.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="4e683ef6-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>114.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="51f958ac-856a-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 233.0, 44.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="51f94fd8-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>116.0</val>
+</lifetime-length>
+</item>
+</item>
+<item type="InteractionItem" id="844dffb0-856a-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 528.0, 43.0)</val>
+</matrix>
+<width>
+<val>425.0</val>
+</width>
+<height>
+<val>252.0</val>
+</height>
+<subject>
+<ref refid="844de5c0-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<item type="LifelineItem" id="8ef898a8-856a-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 53.0, 38.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="8ef88ff2-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>138.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="97d23812-856a-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 313.0, 37.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="97d22f66-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>140.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="c7ba71e6-856c-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 162.0, 37.0)</val>
+</matrix>
+<width>
+<val>144.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="c7ba66c4-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>138.0</val>
+</lifetime-length>
+</item>
+</item>
+<item type="MessageItem" id="a297d144-856a-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="a29884ea-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 631.0, 160.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (131.0, 2.0)]</val>
+</points>
+<head-connection>
+<ref refid="8ef898a8-856a-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="c7ba71e6-856c-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="InteractionItem" id="cf19e018-856a-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 39.0, 351.0)</val>
+</matrix>
+<width>
+<val>447.0</val>
+</width>
+<height>
+<val>383.0</val>
+</height>
+<subject>
+<ref refid="cf19c664-856a-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<item type="LifelineItem" id="78a79a08-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 194.0, 33.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="78a79148-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>282.8984375</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="7c6bf51c-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 61.0, 33.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="7c6beb80-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>291.8984375</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="89a4f652-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 324.0, 33.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="89a4ecfc-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>278.8984375</val>
+</lifetime-length>
+</item>
+</item>
+<item type="MessageItem" id="8608e8aa-856b-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="86099cc8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 150.0, 465.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (133.0, -0.8984375)]</val>
+</points>
+<head-connection>
+<ref refid="7c6bf51c-856b-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="78a79a08-856b-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="90385888-856b-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="90390e2c-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 283.0, 491.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (130.0, 2.0)]</val>
+</points>
+<head-connection>
+<ref refid="78a79a08-856b-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="89a4f652-856b-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="cf5f4436-856b-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="cf5ffb88-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 183.0, 223.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (166.0, -1.8984375)]</val>
+</points>
+<head-connection>
+<ref refid="4e685044-856a-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="51f958ac-856a-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="d49952c0-856b-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="d49a0896-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 631.0, 208.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (131.0, 1.0)]</val>
+</points>
+<head-connection>
+<ref refid="8ef898a8-856a-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="c7ba71e6-856c-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="CommentItem" id="d9b5f2e0-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 81.0, 156.0)</val>
+</matrix>
+<width>
+<val>77.0</val>
+</width>
+<height>
+<val>41.0</val>
+</height>
+<subject>
+<ref refid="d9b5e8b8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentItem" id="e078c846-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 76.0, 208.0)</val>
+</matrix>
+<width>
+<val>90.0</val>
+</width>
+<height>
+<val>43.0</val>
+</height>
+<subject>
+<ref refid="e078bfb8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentItem" id="e9f5e142-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 544.0, 141.0)</val>
+</matrix>
+<width>
+<val>77.0</val>
+</width>
+<height>
+<val>41.0</val>
+</height>
+<subject>
+<ref refid="d9b5e8b8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentItem" id="ec6e344c-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 534.0, 192.0)</val>
+</matrix>
+<width>
+<val>90.0</val>
+</width>
+<height>
+<val>43.0</val>
+</height>
+<subject>
+<ref refid="e078bfb8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentItem" id="edba3f08-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 48.0, 532.0)</val>
+</matrix>
+<width>
+<val>90.0</val>
+</width>
+<height>
+<val>43.0</val>
+</height>
+<subject>
+<ref refid="e078bfb8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentItem" id="f56da9f6-856b-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 59.0, 446.0)</val>
+</matrix>
+<width>
+<val>77.0</val>
+</width>
+<height>
+<val>41.0</val>
+</height>
+<subject>
+<ref refid="d9b5e8b8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="MessageItem" id="0e57f020-856c-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="0e58a812-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 150.0, 548.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (133.0, 1.0)]</val>
+</points>
+<head-connection>
+<ref refid="7c6bf51c-856b-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="78a79a08-856b-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="34aac2e8-856c-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="34ab9056-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 283.0, 573.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (130.0, 2.0)]</val>
+</points>
+<head-connection>
+<ref refid="78a79a08-856b-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="89a4f652-856b-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="InteractionItem" id="3b8009f2-856c-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 531.0, 353.8984375)</val>
+</matrix>
+<width>
+<val>421.0</val>
+</width>
+<height>
+<val>388.0</val>
+</height>
+<subject>
+<ref refid="3b7ff020-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<item type="LifelineItem" id="53f015e0-856c-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 75.0, 35.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="53f00e42-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>272.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="57ddecae-856c-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 183.0, 34.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="57dde63c-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>270.0</val>
+</lifetime-length>
+</item>
+<item type="LifelineItem" id="5db41108-856c-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 294.0, 34.0)</val>
+</matrix>
+<width>
+<val>100.0</val>
+</width>
+<height>
+<val>50.0</val>
+</height>
+<subject>
+<ref refid="5db40938-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<lifetime-length>
+<val>268.0</val>
+</lifetime-length>
+</item>
+</item>
+<item type="CommentItem" id="6500ea12-856c-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 544.0, 456.0)</val>
+</matrix>
+<width>
+<val>77.0</val>
+</width>
+<height>
+<val>41.0</val>
+</height>
+<subject>
+<ref refid="d9b5e8b8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="CommentItem" id="6e843206-856c-11e1-a96f-bc305b9da339">
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 539.0, 563.0)</val>
+</matrix>
+<width>
+<val>90.0</val>
+</width>
+<height>
+<val>43.0</val>
+</height>
+<subject>
+<ref refid="e078bfb8-856b-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+</item>
+<item type="MessageItem" id="71b9d264-856c-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="71ba7aca-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 656.0, 467.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (108.0, 1.0)]</val>
+</points>
+<head-connection>
+<ref refid="53f015e0-856c-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="57ddecae-856c-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="7953bce2-856c-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="7954655c-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 764.0, 491.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (111.0, 2.0)]</val>
+</points>
+<head-connection>
+<ref refid="57ddecae-856c-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="5db41108-856c-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="7fab4722-856c-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="7fabf654-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 764.0, 583.8984375)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (111.0, 2.0)]</val>
+</points>
+<head-connection>
+<ref refid="57ddecae-856c-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="5db41108-856c-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="e4073f6e-856c-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="e407e9f0-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 762.0, 179.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (129.0, 1.0)]</val>
+</points>
+<head-connection>
+<ref refid="c7ba71e6-856c-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="97d23812-856a-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+<item type="MessageItem" id="e81898f0-856c-11e1-a96f-bc305b9da339">
+<subject>
+<ref refid="e8194110-856c-11e1-a96f-bc305b9da339"/>
+</subject>
+<show_stereotypes_attrs>
+<val>0</val>
+</show_stereotypes_attrs>
+<matrix>
+<val>(1.0, 0.0, 0.0, 1.0, 762.0, 228.0)</val>
+</matrix>
+<orthogonal>
+<val>0</val>
+</orthogonal>
+<horizontal>
+<val>0</val>
+</horizontal>
+<points>
+<val>[(0.0, 0.0), (129.0, 0.0)]</val>
+</points>
+<head-connection>
+<ref refid="c7ba71e6-856c-11e1-a96f-bc305b9da339"/>
+</head-connection>
+<tail-connection>
+<ref refid="97d23812-856a-11e1-a96f-bc305b9da339"/>
+</tail-connection>
+</item>
+</canvas>
+</Diagram>
+<Lifeline id="4e683ef6-856a-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="57fe142c-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="cf60b8e8-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="722a5432-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[JWT]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="4e685044-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Lifeline id="51f94fd8-856a-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="5a3d5504-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="cffe3d70-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="722a5432-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Bonita UX]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="51f958ac-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="57fd62ca-856a-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="57fcb71c-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="5a3d5504-856a-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="57fe142c-856a-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="57fe142c-856a-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="4e683ef6-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="57fd62ca-856a-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="5a3d5504-856a-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="51f94fd8-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="57fd62ca-856a-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Interaction id="722a5432-856a-11e1-a96f-bc305b9da339">
+<lifeline>
+<reflist>
+<ref refid="4e683ef6-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="51f94fd8-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</lifeline>
+<name>
+<val><![CDATA[Adaptation au produit]]></val>
+</name>
+<package>
+<ref refid="3ced3da2-856a-11e1-a96f-bc305b9da339"/>
+</package>
+<presentation>
+<reflist>
+<ref refid="722a7bce-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Interaction>
+<Interaction id="844de5c0-856a-11e1-a96f-bc305b9da339">
+<lifeline>
+<reflist>
+<ref refid="8ef88ff2-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="97d22f66-856a-11e1-a96f-bc305b9da339"/>
+<ref refid="c7ba66c4-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</lifeline>
+<name>
+<val><![CDATA[Utilisation des standards]]></val>
+</name>
+<package>
+<ref refid="3ced3da2-856a-11e1-a96f-bc305b9da339"/>
+</package>
+<presentation>
+<reflist>
+<ref refid="844dffb0-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Interaction>
+<Lifeline id="8ef88ff2-856a-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="dc4bbe58-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="e04356b0-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="844de5c0-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[JWT]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="8ef898a8-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Lifeline id="97d22f66-856a-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="e4f45c5e-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="e8de8fce-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="844de5c0-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Bonita UX]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="97d23812-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="a29884ea-856a-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.xpdl]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="a297d144-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="dc4bd2b2-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="dc4bbe58-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<Interaction id="cf19c664-856a-11e1-a96f-bc305b9da339">
+<lifeline>
+<reflist>
+<ref refid="78a79148-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="7c6beb80-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="89a4ecfc-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</lifeline>
+<name>
+<val><![CDATA[Insertion dans le produit]]></val>
+</name>
+<package>
+<ref refid="3ced3da2-856a-11e1-a96f-bc305b9da339"/>
+</package>
+<presentation>
+<reflist>
+<ref refid="cf19e018-856a-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Interaction>
+<Lifeline id="78a79148-856b-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="887195b0-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="9039c24a-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="111c2a42-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="34ac45dc-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="cf19c664-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[JWT]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="78a79a08-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Lifeline id="7c6beb80-856b-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="860a532a-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="0e5964b4-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="cf19c664-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Bonita Studio]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="7c6bf51c-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="86099cc8-856b-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="8608e8aa-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="887195b0-856b-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="860a532a-856b-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="860a532a-856b-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="7c6beb80-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="86099cc8-856b-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="887195b0-856b-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="78a79148-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="86099cc8-856b-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Lifeline id="89a4ecfc-856b-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="9162682a-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="354fbfd2-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="cf19c664-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Bonita UX]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="89a4f652-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="90390e2c-856b-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="90385888-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="9162682a-856b-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="9039c24a-856b-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="9039c24a-856b-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="78a79148-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="90390e2c-856b-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="9162682a-856b-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="89a4ecfc-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="90390e2c-856b-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="cf5ffb88-856b-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="cf5f4436-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="cffe3d70-856b-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="cf60b8e8-856b-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="cf60b8e8-856b-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="4e683ef6-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="cf5ffb88-856b-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="cffe3d70-856b-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="51f94fd8-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="cf5ffb88-856b-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="d49a0896-856b-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.xpdl]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="d49952c0-856b-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="e0436b28-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="e04356b0-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<Comment id="d9b5e8b8-856b-11e1-a96f-bc305b9da339">
+<body>
+<val><![CDATA[Création]]></val>
+</body>
+<presentation>
+<reflist>
+<ref refid="d9b5f2e0-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="e9f5e142-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="f56da9f6-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="6500ea12-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Comment>
+<Comment id="e078bfb8-856b-11e1-a96f-bc305b9da339">
+<body>
+<val><![CDATA[Mise à jour]]></val>
+</body>
+<presentation>
+<reflist>
+<ref refid="e078c846-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="ec6e344c-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="edba3f08-856b-11e1-a96f-bc305b9da339"/>
+<ref refid="6e843206-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Comment>
+<Message id="0e58a812-856c-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="0e57f020-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="111c2a42-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="0e5964b4-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="0e5964b4-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="7c6beb80-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="0e58a812-856c-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="111c2a42-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="78a79148-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="0e58a812-856c-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="34ab9056-856c-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="34aac2e8-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="354fbfd2-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="34ac45dc-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="34ac45dc-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="78a79148-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="34ab9056-856c-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="354fbfd2-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="89a4ecfc-856b-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="34ab9056-856c-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Interaction id="3b7ff020-856c-11e1-a96f-bc305b9da339">
+<lifeline>
+<reflist>
+<ref refid="53f00e42-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="57dde63c-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="5db40938-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</lifeline>
+<name>
+<val><![CDATA[Initialisation seulement]]></val>
+</name>
+<package>
+<ref refid="3ced3da2-856a-11e1-a96f-bc305b9da339"/>
+</package>
+<presentation>
+<reflist>
+<ref refid="3b8009f2-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Interaction>
+<Lifeline id="53f00e42-856c-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="71bb2290-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="3b7ff020-856c-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[JWT]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="53f015e0-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Lifeline id="57dde63c-856c-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="72ea02b2-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="7954f800-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="7facb1e8-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="3b7ff020-856c-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Bonita Studio]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="57ddecae-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Lifeline id="5db40938-856c-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="7a0e988c-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="80a5a456-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="3b7ff020-856c-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Bonita UX]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="5db41108-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<Message id="71ba7aca-856c-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.xpdl]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="71b9d264-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="72ea02b2-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="71bb2290-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="71bb2290-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="53f00e42-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="71ba7aca-856c-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="72ea02b2-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="57dde63c-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="71ba7aca-856c-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="7954655c-856c-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="7953bce2-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="7a0e988c-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="7954f800-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="7954f800-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="57dde63c-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="7954655c-856c-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="7a0e988c-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="5db40938-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="7954655c-856c-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="7fabf654-856c-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="7fab4722-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="80a5a456-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="7facb1e8-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="7facb1e8-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="57dde63c-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="7fabf654-856c-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="80a5a456-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="5db40938-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="7fabf654-856c-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Lifeline id="c7ba66c4-856c-11e1-a96f-bc305b9da339">
+<coveredBy>
+<reflist>
+<ref refid="dc4bd2b2-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="e0436b28-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="e40888f6-856c-11e1-a96f-bc305b9da339"/>
+<ref refid="e819f402-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</coveredBy>
+<interaction>
+<ref refid="844de5c0-856a-11e1-a96f-bc305b9da339"/>
+</interaction>
+<name>
+<val><![CDATA[Outil de conversion
+(Bonita studio, plugin, ...)]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="c7ba71e6-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+</Lifeline>
+<MessageOccurrenceSpecification id="dc4bbe58-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="8ef88ff2-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="a29884ea-856a-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="dc4bd2b2-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="c7ba66c4-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="a29884ea-856a-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="e04356b0-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="8ef88ff2-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="d49a0896-856b-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="e0436b28-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="c7ba66c4-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="d49a0896-856b-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="e407e9f0-856c-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="e4073f6e-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="e4f45c5e-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="e40888f6-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="e40888f6-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="c7ba66c4-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="e407e9f0-856c-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="e4f45c5e-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="97d22f66-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="e407e9f0-856c-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+<Message id="e8194110-856c-11e1-a96f-bc305b9da339">
+<name>
+<val><![CDATA[*.bar]]></val>
+</name>
+<presentation>
+<reflist>
+<ref refid="e81898f0-856c-11e1-a96f-bc305b9da339"/>
+</reflist>
+</presentation>
+<receiveEvent>
+<ref refid="e8de8fce-856c-11e1-a96f-bc305b9da339"/>
+</receiveEvent>
+<sendEvent>
+<ref refid="e819f402-856c-11e1-a96f-bc305b9da339"/>
+</sendEvent>
+</Message>
+<MessageOccurrenceSpecification id="e819f402-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="c7ba66c4-856c-11e1-a96f-bc305b9da339"/>
+</covered>
+<sendMessage>
+<ref refid="e8194110-856c-11e1-a96f-bc305b9da339"/>
+</sendMessage>
+</MessageOccurrenceSpecification>
+<MessageOccurrenceSpecification id="e8de8fce-856c-11e1-a96f-bc305b9da339">
+<covered>
+<ref refid="97d22f66-856a-11e1-a96f-bc305b9da339"/>
+</covered>
+<receiveMessage>
+<ref refid="e8194110-856c-11e1-a96f-bc305b9da339"/>
+</receiveMessage>
+</MessageOccurrenceSpecification>
+</gaphor>
