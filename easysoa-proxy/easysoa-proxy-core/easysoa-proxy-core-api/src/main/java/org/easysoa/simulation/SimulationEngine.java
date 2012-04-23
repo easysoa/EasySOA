@@ -21,6 +21,7 @@
 package org.easysoa.simulation;
 
 import java.util.List;
+import java.util.Map;
 
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.template.TemplateEngine;
@@ -54,6 +55,7 @@ public interface SimulationEngine {
      * @return A exchange record containing the simulated response
      * @throws Exception If a problem occurs
      */
-    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine) throws Exception;
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine, Map<String, List<String>> fieldValues)
+            throws Exception;
     
 }

@@ -4,7 +4,11 @@
 package org.easysoa.records.simulation;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -101,10 +105,12 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         fileStore.saveSimulationStore(simulationStore);
         
         for(ExchangeRecord record : recordList){
-           ExchangeRecord simulatedResponse = simulationEngine.simulate(record, simulationStore, new SimpleSimulationMethod(), replayEngine.getTemplateEngine());
-           // Works but the test data set is not appropriated
-           // Find a data set with output fields to really check the simulation engine 
-           logger.debug("Simulated response = " +  simulatedResponse.getOutMessage().getMessageContent().getRawContent());
+            Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();             
+            // TODO : add test for field values
+            ExchangeRecord simulatedResponse = simulationEngine.simulate(record, simulationStore, new SimpleSimulationMethod(), replayEngine.getTemplateEngine(), fieldValues);
+            // Works but the test data set is not appropriated
+            // Find a data set with output fields to really check the simulation engine 
+            logger.debug("Simulated response = " +  simulatedResponse.getOutMessage().getMessageContent().getRawContent());
         }
 
     }
