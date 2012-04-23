@@ -14,7 +14,7 @@ var base64 = require('./lib/base64').base64;
  */
 
 exports.encodeAuthorization = function(username, password) {
-    if (username != null && password != null) {
+    if (username !== null && password !== null) {
         return "Basic " + base64.encode(username + ':' + password);
     }
     else {
@@ -24,7 +24,6 @@ exports.encodeAuthorization = function(username, password) {
 
 exports.strToRegexp = function(strings) {
 	if (!(strings instanceof Array)) {
-		console.log(typeof strings),
 		strings = [ strings ];
 	}
 	var result = [];
