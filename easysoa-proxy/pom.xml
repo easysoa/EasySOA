@@ -25,6 +25,7 @@
     <module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
 	<module>easysoa-proxy-core/easysoa-proxy-core-webdiscoveryhttpminer</module>
     <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
+    <module>handlers/easysoa-proxy-handlers-event-test</module>
   </modules>
 
   <repositories>
