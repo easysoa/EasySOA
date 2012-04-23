@@ -82,6 +82,21 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- Import Nuxeo dependencyManagement -->
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-features-parent</artifactId>
+        <version>${easysoa.nuxeo.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+        <exclusions>
+        	<exclusion>
+        		<groupId>org.eclipse.jdt</groupId>
+        		<artifactId>core</artifactId>
+        	</exclusion>
+        </exclusions>
+      </dependency>
+      
       <!-- FraSCAti In Nuxeo Dependencies -->
       <dependency>
         <groupId>org.nuxeo.runtime</groupId>
