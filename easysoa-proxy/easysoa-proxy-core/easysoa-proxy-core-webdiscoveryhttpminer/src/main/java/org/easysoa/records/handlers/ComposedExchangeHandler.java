@@ -35,6 +35,7 @@ import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
  */
 public class ComposedExchangeHandler implements HttpExchangeHandler {
 
+    // TODO : remove this and use the class HandlerManager in core-api module
     // TODO : add configuration in composite file
     
     //@Reference

@@ -79,13 +79,12 @@ public class NuxeoFrascatiServletFilterTest {
     @Test
     public void ServletFilterTest() throws ClientProtocolException, IOException{
         // Trigger the Servlet filter
-        DefaultHttpClient httpClient = new DefaultHttpClient();     
-        
+        DefaultHttpClient httpClient = new DefaultHttpClient();
         // Send a test request
-        HttpGet newTestRequest = new HttpGet("http://localhost:18000/");
+        HttpGet newTestRequest = new HttpGet("http://localhost:18000/frascati-web-explorer");
         String response = httpClient.execute(newTestRequest, new BasicResponseHandler());
         logger.debug("Test request response  : " + response);
-        //assertEquals("Run '" + testStoreName + "' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));
+        assertTrue(response.contains("<title>OW2 FraSCAti Web Explorer</title>"));
     }
     
     /**
