@@ -38,8 +38,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
+import org.openwide.easysoa.test.util.UrlMock;
 
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 

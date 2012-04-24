@@ -23,6 +23,9 @@
  */
 package org.easysoa.simulation;
 
+import java.util.List;
+import java.util.Map;
+
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
@@ -45,6 +48,7 @@ public interface SimulationMethod {
      * @param templateEngine 
      * @throws Exception 
      */
-    public ExchangeRecord simulate(ExchangeRecord inputRecord, TemplateFieldSuggestions inputSuggestions, SimulationStore store, TemplateEngine templateEngine) throws Exception;
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, TemplateFieldSuggestions inputSuggestions, SimulationStore store, TemplateEngine templateEngine, Map<String, List<String>> fieldValues)
+            throws Exception;
     
 }

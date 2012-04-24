@@ -17,7 +17,7 @@
         <sca:service name="message-assertion">
             <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
         </sca:service>
-        <sca:implementation.java class="org.easysoa.records.assertions.MessageAssertion" />        
+        <sca:implementation.java class="org.easysoa.records.assertions.MessageAssertion" />
     </sca:component>
     <sca:wire source="assertionEngineComponent/assertions" target="messageAssertion/message-assertion" />	
 	

@@ -31,7 +31,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
 import org.easysoa.template.InputTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
@@ -465,7 +464,7 @@ public class CorrelationEngineImpl implements CorrelationEngine {
                 int outDepth = outField.getPath().split("/").length - matchingInFieldSubPathDepth;
                 correlations.add(new Object[]{ level - outDepth*2 + 2*(matchingInFieldSubPathDepth - 1), inField, outField, "byPartialPathAndValue" });
                 foundAtLeastOne = true;
-            }   
+            }
         }
         if (foundAtLeastOne) {
             // either hit hard on level or even stop there

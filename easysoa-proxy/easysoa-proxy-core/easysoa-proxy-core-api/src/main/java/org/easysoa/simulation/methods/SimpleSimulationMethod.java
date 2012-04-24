@@ -66,7 +66,7 @@ public class SimpleSimulationMethod implements SimulationMethod {
     
     /**
      * Match all fields suggestions
-     * @return
+     * @return True if all fields match, false otherwise
      */
     private boolean matchAll(TemplateFieldSuggestions inputSuggestions, TemplateFieldSuggestions recordedSuggestions){
         boolean matchAll = true;
@@ -74,7 +74,6 @@ public class SimpleSimulationMethod implements SimulationMethod {
             // find the corresponding field in recorded suggestions
             for(AbstractTemplateField recordedField : recordedSuggestions.getTemplateFields()){
                 // Match field name and field value
-                //if(inputField.getFieldName().equals(recordedField.getFieldName()) && inputField.getDefaultValue().equals(recordedField.getDefaultValue())){
                 if(match(inputField, recordedField)){
                     matchAll = matchAll & true;
                 } else {
@@ -82,21 +81,30 @@ public class SimpleSimulationMethod implements SimulationMethod {
                 }
             }
         }
-        return false;
+        logger.debug("returning " + matchAll);
+        return matchAll;
     }
     
     /**
      * Match some field suggestions
-     * @return
+     * @return True if at least one match is found, false otherwise
      */
     private boolean matchSome(TemplateFieldSuggestions inputSuggestions, TemplateFieldSuggestions recordedSuggestions){
-        // TODO Complete this method
-        return false;
+        boolean matchSome = false;
+        for(AbstractTemplateField inputField : inputSuggestions.getTemplateFields()){
+            for(AbstractTemplateField recordedField : recordedSuggestions.getTemplateFields()){
+                if(match(inputField, recordedField)){
+                    matchSome = true;
+                }
+            }
+        }
+        logger.debug("returning " + matchSome);
+        return matchSome;
     }
     
     @Override
-    public ExchangeRecord simulate(ExchangeRecord inputRecord, TemplateFieldSuggestions inputSuggestions, SimulationStore store, TemplateEngine templateEngine) throws Exception {
-        ExchangeRecord outputRecord = new ExchangeRecord();
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, TemplateFieldSuggestions inputSuggestions, SimulationStore store, TemplateEngine templateEngine, Map<String, List<String>> fieldValues) throws Exception {
+        //ExchangeRecord outputRecord = new ExchangeRecord();
         // for each record in the list
         Iterator<ExchangeRecord> recordKeyIterator = store.getRecordList().keySet().iterator();
         while(recordKeyIterator.hasNext()){
@@ -105,27 +113,17 @@ public class SimpleSimulationMethod implements SimulationMethod {
             if(matchAll(inputSuggestions, recordedSuggestions)){
                 logger.debug("All field matching, processing template");
                 // get output values from recorded suggestions in the param list for rendering
-                //recordedSuggestions.getTemplateFields()
-                Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();
-                // TODO : complete these method to give the template engine the values to use 
-                
-                
                 OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
                 inputRecord.setOutMessage(outMessage);
                 // If there are several matching records in the store, take the first one
                 break;
             } else if(matchSome(inputSuggestions, recordedSuggestions)) {
                 logger.debug("some field matching, processing template");
-                Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();
-                // TODO : complete these method to give the template engine the values to use 
-                
-                
                 OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
                 inputRecord.setOutMessage(outMessage);
             } else {
-                logger.debug("No mathing fields found ...");
+                logger.debug("No matching fields found ...");
                 // ordering field suggestions by correlation level
-                
             }
         }
 
@@ -143,9 +141,5 @@ public class SimpleSimulationMethod implements SimulationMethod {
         */
         return inputRecord;
     }
-
-    /*private OutMessage render(TemplateEngine templateEngine){
-        return templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
-    }*/
     
 }

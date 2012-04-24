@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" name="helloworld-pojo" xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance">
+
+    <service name="r" promote="client/r"/>
+
+    <component name="client">
+        <implementation.java class="org.easysoa.proxy.core.event.implementations.Client"/>
+        <reference name="tw">
+            <!-- interface.java interface="org.easysoa.proxy.core.event.generated.PureAirFlowersService"/ -->
+            <interface.java interface="org.easysoa.samples.paf.PureAirFlowersService"/>
+            <binding.ws wsdli:wsdlLocation="http://localhost:9010/PureAirFlowers?wsdl"
+                    wsdlElement="generated.event.core.proxy.easysoa.org#wsdl.port(PureAirFlowersServiceService/PureAirFlowersServicePort)"/>
+           	<!-- binding.ws uri="http://localhost:9010/PureAirFlowers"/ --><!-- DOESN'T WORK maybe because of JAXWS problem #23 ? -->
+        </reference>
+
+       
+        <service name="r" requires="monintent" >
+            <interface.java interface="java.lang.Runnable"/>
+        </service>
+
+        <reference name="printService" >
+            <interface.java interface="org.easysoa.proxy.core.event.implementations.ActionInterface"/>
+        </reference>
+        
+        <reference name="distrib">
+            <interface.java interface="org.easysoa.proxy.core.event.implementations.ActionInterface"/>
+        </reference>
+
+    </component>
+
+    <component name="server">
+        <implementation.java class="org.easysoa.proxy.core.event.implementations.Server"/>
+        <service name="serverservice">
+            <interface.java interface="org.easysoa.proxy.core.event.implementations.ActionInterface"/>
+        </service>
+    </component>
+
+    <component name="distributeur">
+        <implementation.java class="org.easysoa.proxy.core.event.implementations.Distributeur"/>
+        <service name="distributeurservice"  requires="monintent" >
+            <interface.java interface="org.easysoa.proxy.core.event.implementations.ActionInterface"/>
+        </service>
+    </component>
+
+    <wire source="client/distrib" target="distributeur/distributeurservice" />
+    <wire source="client/printService" target="server/serverservice" />
+
+
+</composite>

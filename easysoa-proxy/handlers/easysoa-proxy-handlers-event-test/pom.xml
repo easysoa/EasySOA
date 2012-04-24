@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<modelVersion>4.0.0</modelVersion>
+
+  <artifactId>easysoa-proxy-handlers-event-test</artifactId>
+  <name>Easysoa Proxy Handlers Event Test</name>
+
+  <description>Pour tester le monitoring d'un seul service</description>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>org.easysoa.proxy</groupId>
+    <artifactId>easysoa-proxy-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
+  </parent>
+
+
+  <!-- Common dependencies -->
+  <dependencies>
+  	<dependency>
+	  <groupId>org.easysoa.samples.paf</groupId>
+	  <artifactId>easysoa-samples-paf-server</artifactId>
+	  <version>0.4-SNAPSHOT</version>
+  	</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- to run this example with mvn -Prun -->
+    <dependency>
+      <groupId>org.ow2.frascati.factory</groupId>
+      <artifactId>frascati-factory-tools</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <!-- to run this example with mvn -Pexplorer -->
+    <!-- <dependency> -->
+    <!-- <groupId>org.ow2.frascati</groupId> -->
+    <!-- <artifactId>frascati-explorer-fscript-plugin</artifactId> -->
+    <!-- </dependency> -->
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-assembly-factory</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-factory</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+    <!-- dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-implementation-fractal</artifactId>
+    </dependency -->
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+    </dependency>
+    <!-- <dependency> -->
+    <!-- <groupId>org.ow2.frascati.factory</groupId> -->
+    <!-- <artifactId>frascati-factory-plugin</artifactId> -->
+    <!-- <type>maven-plugin</type> -->
+    <!-- </dependency> -->
+    <dependency>
+      <groupId>org.ow2.frascati.mojo</groupId>
+      <artifactId>frascati-launcher-plugin</artifactId>
+      <type>maven-plugin</type>
+      <version>${frascati.version}</version>
+    </dependency>
+
+    <!-- OW2 FraSCAti SCA Bindings -->
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-binding-ws</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+  </dependencies>
+  
+  <groupId>org.easysoa.proxy</groupId>
+</project>

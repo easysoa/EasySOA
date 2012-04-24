@@ -21,7 +21,7 @@
 package org.easysoa.simulation;
 
 import java.util.List;
-
+import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.correlation.CorrelationEngine;
@@ -31,7 +31,6 @@ import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.message.OutMessage;
 
 /**
@@ -85,7 +84,7 @@ public class SimulationEngineImpl implements SimulationEngine {
     }
 
     @Override
-    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine) throws Exception {
+    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine, Map<String, List<String>> fieldValues) throws Exception {
         // Call the correlation engine to get field suggestions for input record
         FieldExtractor extractor = new FieldExtractor();
         TemplateFieldSuggestions inputSuggestions = correlationEngine.correlateWithSubpath(inputRecord,
@@ -93,7 +92,7 @@ public class SimulationEngineImpl implements SimulationEngine {
                 extractor.getInputQueryParams(inputRecord.getInMessage()),
                 extractor.getInputContentParam(inputRecord.getInMessage()),
                 extractor.getOutputFields(inputRecord.getOutMessage()));
-        return method.simulate(inputRecord, inputSuggestions, simulationStore, templateEngine);
+        return method.simulate(inputRecord, inputSuggestions, simulationStore, templateEngine, fieldValues);
     }
 
 }

@@ -17,7 +17,7 @@
             <sca:interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
-      <!--  <sca:reference name="runManager" target="runManagerComponent">
+        <!--<sca:reference name="runManager" target="runManagerComponent">
             <sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
         </sca:reference>
          --> 

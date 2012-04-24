@@ -1,0 +1,12 @@
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" name="monintent">
+  
+  <service name="intent" promote="primitiveIntentHandler/monintentservice"/>
+  
+  <component name="primitiveIntentHandler">
+     <service name="monintentservice">
+       <interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler"/>
+     </service>
+    <implementation.java class="org.easysoa.proxy.core.event.implementations.MonIntent"/>
+  </component>
+  
+</composite>

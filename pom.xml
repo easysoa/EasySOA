@@ -102,7 +102,8 @@
   <dependencyManagement>
     <dependencies>
       <!-- Import Nuxeo dependencyManagement -->
-      <dependency>
+      <!-- NO else Nuxeo's jdt core (NXP-* version) is brought in proxy-* and conflicts with FraSCAti -->
+      <!-- dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-features-parent</artifactId>
         <version>${easysoa.nuxeo.version}</version>
@@ -114,7 +115,7 @@
         		<artifactId>core</artifactId>
         	</exclusion>
         </exclusions>
-      </dependency>
+      </dependency -->
 
       <!-- EasySOA -->
       <dependency>
@@ -185,7 +186,12 @@
         <artifactId>easysoa-proxy-core-api</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-test-simple-event-proxy</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+   
       <!-- frascati -->
       <!--
       <dependency>

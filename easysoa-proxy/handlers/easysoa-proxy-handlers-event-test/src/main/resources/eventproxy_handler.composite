@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance" name="SimpleEventProxy" targetNamespace="http://easysoa.org/easysoa-test-simple-event-proxy">
+  <component name="Organiser">
+    <service name="OrganiserService"/>
+    <reference name="Target">
+      <binding.ws wsdlElement="http://localhost:9010/PureAirFlowers/#wsdl.port(PureAirFlowersServiceService/PureAirFlowersServicePort)" wsdli:wsdlLocation="http://localhost:9010/PureAirFlowers?wsdl"/>
+    </reference>
+    <reference name="OrganiserReference"/>
+  </component>
+  <component name="ServicesHandler">
+    <service name="ProxyHandlerService"/>
+  </component>
+  <wire source="Organiser/OrganiserReference" target="ServicesHandler/ProxyHandlerService"/>
+</composite>

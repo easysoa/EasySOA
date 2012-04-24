@@ -23,7 +23,7 @@
     	<dependency>
       		<groupId>org.easysoa.registry.api</groupId>
       		<artifactId>easysoa-registry-api-remote</artifactId>
-    	</dependency>    	
+    	</dependency>
     	<!-- log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
@@ -78,13 +78,19 @@
       		<artifactId>frascati-runtime-factory</artifactId>
       		<version>${frascati.version}</version>
 			<scope>test</scope>
+			<!-- -->
+			<!-- NOT REQUIRED ANYMORE since always use FraSCAtiService when in Nuxeo -->
+			<!-- exclude and replace FraSCAti's jdt core by Nuxeo's (1) -->
+			<!--  -->
 			<exclusions>
 				<exclusion>
         			<groupId>org.eclipse.jdt</groupId>
         			<artifactId>core</artifactId>
 				</exclusion>
-			</exclusions>      		
+			</exclusions>
     	</dependency>
+    	<!--  -->
+		<!-- exclude and replace FraSCAti's jdt core by Nuxeo's (2) -->
     	<dependency>
         	<groupId>org.eclipse.jdt</groupId>
         	<artifactId>core</artifactId>
