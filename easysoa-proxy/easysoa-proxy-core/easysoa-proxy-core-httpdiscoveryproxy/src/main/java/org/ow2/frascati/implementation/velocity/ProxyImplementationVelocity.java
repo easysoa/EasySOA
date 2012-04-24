@@ -90,8 +90,8 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 		StringWriter sw = new StringWriter();
 		// **** EasySOA Hack begin
 		System.out.println("TEST PASSING in ProxyImplementationVelocity Hack");
-		int pathArgIndex = (Integer) context.get("pathArgIndex"); // pathArgIndex has been set as an SCA xsd:int property
-		int storeIndex = (Integer) context.get("storeIndex"); // storeIndex has been set as an SCA xsd:int property
+		int pathArgIndex = Integer.parseInt((String) context.get("pathArgIndex")); // pathArgIndex has been set as an SCA xsd:int property
+		int storeIndex = Integer.parseInt((String) context.get("storeIndex")); // storeIndex has been set as an SCA xsd:int property
 		System.out.println("pathArgIndex = " + pathArgIndex);
 		Template template = null;
 		if (parameters.length > pathArgIndex) {
