@@ -25,6 +25,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.Assume;
+import org.openwide.easysoa.test.util.UrlMock;
 
 /**
  * Unit test for simple App.

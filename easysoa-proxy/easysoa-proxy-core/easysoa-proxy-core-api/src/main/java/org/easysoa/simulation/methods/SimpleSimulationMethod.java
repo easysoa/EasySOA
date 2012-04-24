@@ -74,7 +74,6 @@ public class SimpleSimulationMethod implements SimulationMethod {
             // find the corresponding field in recorded suggestions
             for(AbstractTemplateField recordedField : recordedSuggestions.getTemplateFields()){
                 // Match field name and field value
-                //if(inputField.getFieldName().equals(recordedField.getFieldName()) && inputField.getDefaultValue().equals(recordedField.getDefaultValue())){
                 if(match(inputField, recordedField)){
                     matchAll = matchAll & true;
                 } else {

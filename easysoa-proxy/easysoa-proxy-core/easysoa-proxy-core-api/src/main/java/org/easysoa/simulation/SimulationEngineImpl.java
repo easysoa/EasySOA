@@ -22,7 +22,6 @@ package org.easysoa.simulation;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.correlation.CorrelationEngine;
@@ -32,7 +31,6 @@ import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.message.OutMessage;
 
 /**

@@ -57,8 +57,9 @@ import org.junit.Test;
 import org.openwide.easysoa.test.ProxyStarter;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
-import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
+import org.openwide.easysoa.test.util.UrlMock;
+
 import com.openwide.easysoa.util.ContentReader;
 
 /**

@@ -37,8 +37,9 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
+import org.openwide.easysoa.test.util.UrlMock;
+
 import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;

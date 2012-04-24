@@ -28,8 +28,9 @@ import org.easysoa.simulation.methods.SimpleSimulationMethod;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openwide.easysoa.test.monitoring.apidetector.UrlMock;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
+import org.openwide.easysoa.test.util.UrlMock;
+
 import com.openwide.easysoa.util.ContentReader;
 
 /**
@@ -46,7 +47,7 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
      * @throws Exception 
      */
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         // Start FraSCAti
         startFraSCAti();
         // Start HTTP proxy
