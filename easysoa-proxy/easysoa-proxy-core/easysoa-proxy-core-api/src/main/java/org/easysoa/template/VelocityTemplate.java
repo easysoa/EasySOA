@@ -45,7 +45,15 @@ public class VelocityTemplate {
 	
 	public String getRequestTemplate(){
 		JSONObject jsonRecord = JSONObject.fromObject(customRecord.getInMessage());
-		return VELOCIMACRO_REQUEST_PREFIX + "\n" + jsonRecord.toString().replace("\\\"", "\"") + "\n" + VELOCIMACRO_SUFFIX; 
+		String jsonString;
+		if(customRecord.getInMessage().getMessageContent().isXMLContent()){
+		    // If the request raw content contains SOAP, no need to remove escaped characters
+		    jsonString = jsonRecord.toString();
+		} else {
+		    // Otherwise, if it contains JSON raw content, we have to replace escaped characters in template expression to avoid an error
+            jsonString = jsonRecord.toString().replace("\\\"", "\"");		    
+		}
+		return VELOCIMACRO_REQUEST_PREFIX + "\n" + jsonString + "\n" + VELOCIMACRO_SUFFIX; 
 	}
 	
 	public String getrecordID(){
@@ -54,6 +62,6 @@ public class VelocityTemplate {
 	
 	public String getResponsetemplate(){
 		JSONObject jsonRecord = JSONObject.fromObject(customRecord.getOutMessage());
-		return VELOCIMACRO_RESPONSE_PREFIX + "\n" + jsonRecord.toString().replace("\\\"", "\"") + "\n" + VELOCIMACRO_SUFFIX;
+		return VELOCIMACRO_RESPONSE_PREFIX + "\n" + jsonRecord.toString()/*.replace("\\\"", "\"")*/ + "\n" + VELOCIMACRO_SUFFIX;
 	}
 }

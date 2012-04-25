@@ -64,6 +64,7 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		*/
 		// Render the template
 		String renderedTemplate = template.renderReq(templatePath, runName, fieldValues);
+		logger.debug("Rendered template : " + renderedTemplate);
 		// Execute the template
 		TemplateExecutor executor = new TemplateExecutor();
 		// Return only the message content
@@ -79,7 +80,8 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		// TODO : Complete this method, to be used in a server mock
 		logger.warn("renderRes method not yet entierely implemented, need to be completed !");
 		String renderedTemplate = template.renderRes(templatePath, runName, fieldValues);
-
+		logger.debug("Rendered template : " + renderedTemplate);
+		// TODO a template a template executor for response => do not call the request forwarder
 		return renderedTemplate;
 	}
 	

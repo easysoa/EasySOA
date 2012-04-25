@@ -37,6 +37,7 @@ import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.reports.Report;
 import org.easysoa.simulation.SimulationStore;
 import org.easysoa.template.AbstractTemplateField;
+import org.easysoa.template.InputTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.VelocityTemplate;
 import com.openwide.easysoa.message.Header;
@@ -92,7 +93,6 @@ public class ProxyFileStore {
      * Path is set with the value of 'path.record.store' property
      */
     public ProxyFileStore() {
-        // TODO : Must be configurable => StoreFactory or StoreProvider to provide a file store or a Database store
         store = new FileStore();
         this.path = PropertyManager.getProperty("path.record.store");
         this.templatePath = PropertyManager.getProperty("path.template.store");
@@ -189,9 +189,11 @@ public class ProxyFileStore {
         String reqTemplateFileName = REQ_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
         String resTemplateFileName = RES_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
         resource = new StoreResource(reqTemplateFileName, templatePath + "/" + storeName, templateRecord.getRequestTemplate());
+        //resource = new StoreResource(reqTemplateFileName, templatePath + "/" + storeName, JSONObject.fromObject(templateRecord.getRequestTemplate()).toString());
         store.save(resource);
         templateFileMap.put("reqTemplate", reqTemplateFileName);
         resource = new StoreResource(resTemplateFileName, templatePath + "/" + storeName, templateRecord.getResponsetemplate());
+        //resource = new StoreResource(resTemplateFileName, templatePath + "/" + storeName, JSONObject.fromObject(templateRecord.getResponsetemplate()).toString());
         store.save(resource);
         templateFileMap.put("resTemplate", resTemplateFileName);
         return templateFileMap;
@@ -208,7 +210,7 @@ public class ProxyFileStore {
         logger.debug("loading field suggestions for record ID : " + recordID);
         // Getting the resource
         StoreResource resource = store.load(SUGGESTION_FILE_PREFIX + recordID + SUGGESTIONS_FILE_EXTENSION, templatePath + storeName);
-        // Transform the resource in TemplteFieldSuggestions
+        // Transform the resource in TemplateFieldSuggestions
         @SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
         classMap.put("templateFields", AbstractTemplateField.class);

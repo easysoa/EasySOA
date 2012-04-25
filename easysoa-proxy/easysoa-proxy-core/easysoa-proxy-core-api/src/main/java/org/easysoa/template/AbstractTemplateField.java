@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public abstract class AbstractTemplateField {
+//public abstract class AbstractTemplateField {
+public class AbstractTemplateField {
 	
     // TODO : Best solution to adapt this class for simulation ??
     // - Add attributes fields to differentiate input/output fields or for specific input/output data ??
@@ -72,6 +73,8 @@ public abstract class AbstractTemplateField {
 	// Correlation level : higher is better
 	protected int correlationLevel;
 
+    private int pathParamPosition;
+	
 	/*
     (fields { (name/id), req(Extraction)Path, res(ReplaceForTemplatization)Path, (req)foundValue, (resFoundValueNOALLCURRENTCORRELATIONSHAVEEQUALVALUE), correlLevel }, resTemplate)
 	 */
@@ -97,6 +100,7 @@ public abstract class AbstractTemplateField {
 		fieldType = "";
 		defaultValue = "";
 		setFieldEquality(true);
+		pathParamPosition = 0;
 	}
 
 	/**
@@ -144,7 +148,8 @@ public abstract class AbstractTemplateField {
 	 * @param defaultValue
 	 */
 	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
+	    // Need to remove escape double quotes to avoid problem with some JSON libs
+		this.defaultValue = defaultValue.replace("\"", "\\\"");
 	}
 
 	/**
@@ -196,6 +201,22 @@ public abstract class AbstractTemplateField {
         this.correlationLevel = correlationLevel;
     }    
     
-    public abstract int getPathParamPosition();
-    public abstract void setPathParamPosition(int pathParamPosition);
+    //public abstract int getPathParamPosition();
+    //public abstract void setPathParamPosition(int pathParamPosition);
+    /**
+     * 
+     * @return
+     */
+    public int getPathParamPosition() {
+        return pathParamPosition;
+    }
+
+    /**
+     * Number to define the parameter position in url path (eg : for http://localhost:8088/1/users/show/FR3Aquitaine.xml, the param user correspond to number 4 (FR3Aquitaine.xml)), the first '/' represent the root of the path. 
+     * @param pathParamPosition
+     */
+    public void setPathParamPosition(int pathParamPosition) {
+        this.pathParamPosition = pathParamPosition;
+    }    
+    
 }

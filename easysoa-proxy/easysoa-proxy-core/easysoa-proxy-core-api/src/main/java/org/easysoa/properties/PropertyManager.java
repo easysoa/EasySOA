@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
  */
 public class PropertyManager {
 	
+    // TODO : Make this property file name configurable ??
 	public static final String PROPERTY_FILE_NAME = "httpDiscoveryProxy.properties";
 	
 	/**

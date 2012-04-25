@@ -24,6 +24,9 @@ import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import net.sf.json.JSON;
@@ -38,6 +41,9 @@ import com.openwide.easysoa.message.util.ContentChecker.ContentType;
  */
 public class MessageContent {
 
+    // Logger
+    private static Logger logger = Logger.getLogger(MessageContent.class.getName());
+    
     // TODO : change the content attribute to rawContent and add a generic java parsed content.
     // need 2 different java methods for JSON and XML ....
     
@@ -132,12 +138,19 @@ public class MessageContent {
 	 */
 	public void setRawContent(String rawContent) {
 	    if(rawContent != null){
-	        rawContent.replace("\"", "\\\"");
+	        // Need to remove escape double quotes to avoid problem with some JSON libs
+	        ////StringUtils.replaceChars(rawContent, "\"", "\\\"");
+	        ///rawContent.replaceAll("\"","\\\\\"");
+	        //this.rawContent = rawContent.replaceAll("\"","\\\\\"");
 	        this.rawContent = rawContent;
+            /*logger.debug("RawContent before replace => " + this.rawContent);	        
+	        this.rawContent.replace("\"", "\\\"");
+	        logger.debug("RawContent after replace => " + this.rawContent);*/
+	        
 	        // Check the content type
 	        this.contentType = ContentChecker.checkJsonXmlContent(rawContent);
 	        if (ContentType.JSON.equals(contentType)) {
-                this.JSONContent = JSONSerializer.toJSON(this.rawContent);
+                this.JSONContent = JSONSerializer.toJSON(rawContent); // this.rawContent
 	            this.XMLContent = null;
 	        } else if (ContentType.XML.equals(contentType)) {
 	            // Alternative solution with stax, not used here because we need to extract sub-trees of the xml document
@@ -148,7 +161,7 @@ public class MessageContent {
                 try {
                     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-                    this.XMLContent = docBuilder.parse(new InputSource(new StringReader(this.rawContent)));
+                    this.XMLContent = docBuilder.parse(new InputSource(new StringReader(rawContent))); // this.rawContent
                 } 
 	            catch (Exception ex) {
                     ex.printStackTrace();
