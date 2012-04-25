@@ -254,7 +254,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         
         TemplateFieldSuggestions fieldSuggestions = templateEngine.suggestFields(record, exchangeStoreName, true);
         templateEngine.generateTemplate(fieldSuggestions, record, exchangeStoreName, true);
-        OutMessage replayedResponse = templateEngine.renderTemplateAndReplay(exchangeStoreName, record, formData);
+        OutMessage replayedResponse = templateEngine.renderTemplateAndReplay(exchangeStoreName, record, formData, false);
         // Call assertion engine to execute assertions
         AssertionSuggestions assertionSuggestions = assertionEngine.suggestAssertions(fieldSuggestions, record.getExchange().getExchangeID(), exchangeStoreName);
         List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), replayedResponse);

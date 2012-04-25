@@ -52,5 +52,5 @@ public interface TemplateProcessorRendererItf {
 	 * @return The rendred template
 	 * @throws Exception If a problem occurs
 	 */
-	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception;
+	public OutMessage renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception;
 }

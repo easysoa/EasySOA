@@ -58,7 +58,7 @@ public class SimpleSimulationMethod implements SimulationMethod {
     private boolean match(AbstractTemplateField inputField, AbstractTemplateField recordedField){
         boolean match = false;
         // Match all fields
-        if(inputField.getFieldName().equals(recordedField.getFieldName()) && inputField.getDefaultValue().equals(recordedField.getDefaultValue())){
+        if(recordedField.getFieldName().equals(inputField.getFieldName()) && recordedField.getDefaultValue().equals(inputField.getDefaultValue()) && recordedField.getFieldType().equals(inputField.getFieldType())){
             match = true;
         }
         return match;
@@ -73,7 +73,7 @@ public class SimpleSimulationMethod implements SimulationMethod {
         for(AbstractTemplateField inputField : inputSuggestions.getTemplateFields()){
             // find the corresponding field in recorded suggestions
             for(AbstractTemplateField recordedField : recordedSuggestions.getTemplateFields()){
-                // Match field name and field value
+                // Match field name and field value and field type !!
                 if(match(inputField, recordedField)){
                     matchAll = matchAll & true;
                 } else {
@@ -113,13 +113,13 @@ public class SimpleSimulationMethod implements SimulationMethod {
             if(matchAll(inputSuggestions, recordedSuggestions)){
                 logger.debug("All field matching, processing template");
                 // get output values from recorded suggestions in the param list for rendering
-                OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
+                OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues, true);
                 inputRecord.setOutMessage(outMessage);
                 // If there are several matching records in the store, take the first one
                 break;
             } else if(matchSome(inputSuggestions, recordedSuggestions)) {
                 logger.debug("some field matching, processing template");
-                OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues);
+                OutMessage outMessage = templateEngine.renderTemplateAndReplay(store.getStoreName(), inputRecord, fieldValues, true);
                 inputRecord.setOutMessage(outMessage);
             } else {
                 logger.debug("No matching fields found ...");

@@ -53,11 +53,12 @@ public interface TemplateEngine {
 
     /**
      * Call the template renderer and replay the templatized record
-     * @param storeName
-     * @param recordID
-     * @param fieldValues
+     * @param storeName The store name
+     * @param recordID The record id
+     * @param fieldValues The custom user field values
+     * @param simulation true if we are in simulation mode, false otherwise
      * @return the replayed response
      */
-    public abstract OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues) throws Exception;
+    public abstract OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues, boolean simulation) throws Exception;
 
 }

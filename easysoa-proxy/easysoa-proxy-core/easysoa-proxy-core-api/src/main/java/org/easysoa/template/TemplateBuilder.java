@@ -118,34 +118,26 @@ public class TemplateBuilder {
 				// TODO : To implements
 			} else if(TemplateFieldType.IN_WSDL_PARAM.equals(field.getParamType())){
 				// TODO : To implements
-			} else {
+			} else if(TemplateFieldType.OUT_PARAM.equals(field.getParamType())){
+			    String rawContent = record.getOutMessage().getMessageContent().getRawContent();
+			    
+			    /*if(){
+			        // raw content is SOAP XML content (use directly the dom document ??)
+			        //record.getOutMessage().getMessageContent().getXMLContent().
+			        
+			    } else if() {
+			        // raw content is JSON content
+			        //record.getOutMessage().getMessageContent().getJSONContent().
+			        
+			    } else {
+			        // raw content is another content type as HTML form content
+			        
+			    }*/
+			}
+			else {
 				logger.debug("Unable to replace value for unknow field type '" + field.getParamType() + "'");
 			}
 		}
-		
-		
-		/*if(fieldSuggestions != null && fieldSuggestions.getTemplateFields().size() > 0){
-			// Store the custom exchange record
-			//ProxyExchangeRecordFileStore fileStore= new ProxyExchangeRecordFileStore();
-			//fileStore.setStorePath(PropertyManager.getProperty("path.template.store"));
-			try {
-				// TODO : regroup save operations in a same method in StoreManager
-				// Make a copy of the original record
-				//fileStore.createStore(runName);
-				//fileStore.setStorePath(PropertyManager.getProperty("path.template.store") + runName + "/");
-			    // Save customized record
-				//fileStore.save(record);
-				// templateFileMap = fileStore.saveTemplate(new TemplateRecord(record), runName);
-				// Add code to save a fld : containing field suggestions with default values
-				//fileStore.saveFieldSuggestions(fieldSuggestions, runName, record.getExchange().getExchangeID());
-			}
-			catch(Exception ex){
-				logger.error("Unable to save the templates", ex);
-				throw ex;
-			}
-			return templateFileMap;			
-		}*/
-		// Returns null if there is not suggested fields
 		return record;
 	}
 

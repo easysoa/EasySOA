@@ -116,12 +116,19 @@ public class TemplateEngineImpl implements TemplateEngine {
      * @see org.easysoa.template.TemplateEngine#renderTemplate()
      */    
     @Override
-    public OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues) throws Exception {
+    public OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues, boolean simulation) throws Exception {
         // call the template renderer
         //String templatePath = ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION;
         // TODO : Move the constants
-        String templatePath = "reqTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
-        return templateRenderer.renderReq(templatePath, record, storeName, fieldValues);        
+        // TODO : call the renderReq Method in case of replay engine, renderRes otherwise
+        String templatePath;
+        if(simulation){
+            templatePath = "resTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
+            return templateRenderer.renderRes(templatePath, record, storeName, fieldValues);
+        } else {
+            templatePath = "reqTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
+            return templateRenderer.renderReq(templatePath, record, storeName, fieldValues);            
+        }
     }
    
     /**

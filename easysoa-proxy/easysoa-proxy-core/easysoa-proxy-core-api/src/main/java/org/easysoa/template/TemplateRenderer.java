@@ -66,7 +66,7 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 		String renderedTemplate = template.renderReq(templatePath, runName, fieldValues);
 		logger.debug("Rendered template : " + renderedTemplate);
 		// Execute the template
-		TemplateExecutor executor = new TemplateExecutor();
+		TemplateExecutor executor = new RequestTemplateExecutor();
 		// Return only the message content
 		// TODO : Maybe good idea to return the entire response as JSONObject or other format ...
 		return executor.execute(renderedTemplate);
@@ -76,13 +76,14 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
      * @see org.easysoa.template.TemplateProcessorRendererItf#renderRes()
      */ 
 	@Override
-	public String renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception {
+	public OutMessage renderRes(String templatePath, ExchangeRecord record, String runName, Map<String, List<String>> fieldValues) throws Exception {
 		// TODO : Complete this method, to be used in a server mock
 		logger.warn("renderRes method not yet entierely implemented, need to be completed !");
 		String renderedTemplate = template.renderRes(templatePath, runName, fieldValues);
 		logger.debug("Rendered template : " + renderedTemplate);
 		// TODO a template a template executor for response => do not call the request forwarder
-		return renderedTemplate;
+		TemplateExecutor executor = new ResponseTemplateExecutor();
+		return executor.execute(renderedTemplate);
 	}
 	
 }

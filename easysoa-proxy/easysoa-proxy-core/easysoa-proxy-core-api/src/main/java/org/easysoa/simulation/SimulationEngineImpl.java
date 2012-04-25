@@ -84,15 +84,16 @@ public class SimulationEngineImpl implements SimulationEngine {
     }
 
     @Override
-    public ExchangeRecord simulate(ExchangeRecord inputRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine, Map<String, List<String>> fieldValues) throws Exception {
+    public ExchangeRecord simulate(ExchangeRecord exchangeRecord, SimulationStore simulationStore, SimulationMethod method, TemplateEngine templateEngine, Map<String, List<String>> fieldValues) throws Exception {
         // Call the correlation engine to get field suggestions for input record
         FieldExtractor extractor = new FieldExtractor();
-        TemplateFieldSuggestions inputSuggestions = correlationEngine.correlateWithSubpath(inputRecord,
-                extractor.getInputPathParams(inputRecord.getInMessage()), 
-                extractor.getInputQueryParams(inputRecord.getInMessage()),
-                extractor.getInputContentParam(inputRecord.getInMessage()),
-                extractor.getOutputFields(inputRecord.getOutMessage()));
-        return method.simulate(inputRecord, inputSuggestions, simulationStore, templateEngine, fieldValues);
+        TemplateFieldSuggestions fieldSuggestions = correlationEngine.correlateWithSubpath(exchangeRecord,
+                extractor.getInputPathParams(exchangeRecord.getInMessage()), 
+                extractor.getInputQueryParams(exchangeRecord.getInMessage()),
+                extractor.getInputContentParam(exchangeRecord.getInMessage()),
+                extractor.getOutputFields(exchangeRecord.getOutMessage()));
+        templateEngine.generateTemplate(fieldSuggestions, exchangeRecord, simulationStore.getStoreName(), true);
+        return method.simulate(exchangeRecord, fieldSuggestions, simulationStore, templateEngine, fieldValues);
     }
 
 }
