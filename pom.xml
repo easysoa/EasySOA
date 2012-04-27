@@ -126,9 +126,19 @@
       <!-- EasySOA projects - Proxy APIs -->
       <dependency>
         <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-api</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
         <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
+	    <dependency>
+	      <groupId>org.easysoa.proxy</groupId>
+	      <artifactId>easysoa-proxy-core-persistence</artifactId>
+        <version>${easysoa.version}</version>
+	    </dependency>
       
       <!-- Nuxeo APIs -->
       <dependency>
@@ -140,6 +150,13 @@
         <groupId>org.nuxeo.ecm.core</groupId>
         <artifactId>nuxeo-core-api</artifactId>
         <version>${easysoa.nuxeo.version}</version>
+      </dependency>
+      
+      <!-- Esper -->
+      <dependency>
+        <groupId>com.espertech</groupId>
+        <artifactId>esper</artifactId>
+        <version>4.2.0</version>
       </dependency>
       
       <!-- OSGI -->

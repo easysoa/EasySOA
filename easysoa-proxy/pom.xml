@@ -38,17 +38,7 @@
       <!-- EasySOA Proxy Projects -->
       <dependency>
         <groupId>org.easysoa.proxy</groupId>
-        <artifactId>easysoa-proxy-core-api</artifactId>
-        <version>${easysoa.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.easysoa.proxy</groupId>
         <artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
-        <version>${easysoa.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.easysoa.proxy</groupId>
-        <artifactId>easysoa-proxy-core-persistence</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
       <dependency>
@@ -58,13 +48,6 @@
         <scope>test</scope>
       </dependency>
     
-      <!-- Esper -->
-      <dependency>
-        <groupId>com.espertech</groupId>
-        <artifactId>esper</artifactId>
-        <version>4.2.0</version>
-      </dependency>
-      
       <!-- Java REST WebServices -->
       <dependency>
         <groupId>javax.ws.rs</groupId>
