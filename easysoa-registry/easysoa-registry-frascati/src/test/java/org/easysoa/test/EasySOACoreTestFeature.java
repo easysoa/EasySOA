@@ -35,7 +35,7 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  */
 @Deploy({
     "org.easysoa.registry.core",
-    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
+    /*"org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies,
     "org.easysoa.registry.core:OSGI-INF/DocumentServiceComponent.xml", // required to find the service through the Framework class
     "org.easysoa.registry.core:OSGI-INF/VocabularyHelperComponent.xml", // idem
     "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
@@ -47,7 +47,12 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.easysoa.registry.core:OSGI-INF/sca-importer-xml-contrib.xml",
     "org.easysoa.registry.core:OSGI-INF/ServiceValidatorServiceComponent.xml",
     "org.easysoa.registry.core:OSGI-INF/servicevalidators-contrib.xml",
-    "org.easysoa.registry.core:OSGI-INF/PublicationServiceComponent.xml",
+    "org.easysoa.registry.core:OSGI-INF/PublicationServiceComponent.xml",*/
+    "org.nuxeo.ecm.platform.types.core",
+    "org.nuxeo.ecm.actions",
+    "org.nuxeo.ecm.platform.forms.layout.core",
+    "org.nuxeo.ecm.platform.forms.layout.client",
+    "org.nuxeo.ecm.platform.content.template",
     "org.nuxeo.runtime.datasource"
 })
 @Features(NuxeoFeatureBase.class)

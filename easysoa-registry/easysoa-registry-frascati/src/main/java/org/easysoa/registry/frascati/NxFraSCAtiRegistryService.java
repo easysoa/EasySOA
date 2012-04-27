@@ -78,26 +78,24 @@ import org.nuxeo.runtime.model.Extension;
  *         ?!! -->
  * 
  */
-public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase 
-implements org.nuxeo.runtime.model.Component, Adaptable {
-	
-	// Service component
-	public static final ComponentName NAME = new ComponentName("org.easysoa.registry.frascati.FraSCAtiServiceComponent");
+public class NxFraSCAtiRegistryService extends FraSCAtiRegistryServiceBase implements org.nuxeo.runtime.model.Component, Adaptable {
 
-	// Logger
+    // Service component
+    public static final ComponentName NAME = new ComponentName("org.easysoa.registry.frascati.FraSCAtiServiceComponent");
+
+    // Logger
     private static Log log = LogFactory.getLog(NxFraSCAtiRegistryService.class);
-	
-	// Nuxeo Core session
-	private CoreSession documentManager;
-	
-	// List of Easy SOA Apps
-	private List<EasySOAApp> apps;
-	
-	/**
+
+    // Nuxeo Core session
+    private CoreSession documentManager;
+
+    // List of Easy SOA Apps
+    private List<EasySOAApp> apps;
+
+    /**
          * 
          */
-    public NxFraSCAtiRegistryService()
-    {
+    public NxFraSCAtiRegistryService() {
 
         super();
         // Instantiate OW2 FraSCAti.
@@ -126,8 +124,7 @@ implements org.nuxeo.runtime.model.Component, Adaptable {
 
         // TODO : Disabled for release building, to uncomment when the
         // integration of Frascati in Nuxeo will works better.
-        frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class)
-                .getFraSCAtiService();
+        frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
     }
 
     /*
@@ -136,25 +133,20 @@ implements org.nuxeo.runtime.model.Component, Adaptable {
 
     /**
      * TODO LATER Move in FraSCAtiAppManager, use EasySOAApp as parameter,
-     * remember them to allow to list & stop them 
-     * TODO LATER possibly make it async, wrap CoreSession in an 
-     * EasySOAIdentity which will have other things (ex. user/pass, jaas...) 
-     * on client side
+     * remember them to allow to list & stop them TODO LATER possibly make it
+     * async, wrap CoreSession in an EasySOAIdentity which will have other
+     * things (ex. user/pass, jaas...) on client side
      * 
      * @param scaAppUrl
      * @param documentManager
      * @return
      * @throws Exception
      */
-    public String[] startScaApp(URL scaAppUrl, CoreSession documentManager)
-            throws Exception
-    {
+    public String[] startScaApp(URL scaAppUrl, CoreSession documentManager) throws Exception {
         this.setDocumentManager(documentManager);
-        IScaRuntimeImporter runtimeImporter = (IScaRuntimeImporter) 
-                newRuntimeScaImporter();
+        IScaRuntimeImporter runtimeImporter = (IScaRuntimeImporter) newRuntimeScaImporter();
         this.frascati.setScaImporterRecipient(runtimeImporter);
-        String[] compositeNames = this.frascati.processContribution(scaAppUrl
-                .toString());
+        String[] compositeNames = this.frascati.processContribution(scaAppUrl.toString());
         this.frascati.setScaImporterRecipient(null);
         return compositeNames;
     }
@@ -165,46 +157,35 @@ implements org.nuxeo.runtime.model.Component, Adaptable {
      * @return
      * @throws Exception
      */
-    public IScaRuntimeImporter newRuntimeScaImporter(
-            CoreSession documentManager) throws Exception
-    {
-        LocalBindingVisitorFactory nxBindingVisitorFactory = 
-                new LocalBindingVisitorFactory(documentManager);
-        IScaRuntimeImporter fraSCAtiScaImporter = (IScaRuntimeImporter)
-                new FraSCAtiScaImporter(nxBindingVisitorFactory, null);
+    public IScaRuntimeImporter newRuntimeScaImporter(CoreSession documentManager) throws Exception {
+        LocalBindingVisitorFactory nxBindingVisitorFactory = new LocalBindingVisitorFactory(documentManager);
+        IScaRuntimeImporter fraSCAtiScaImporter = (IScaRuntimeImporter) new FraSCAtiScaImporter(nxBindingVisitorFactory, null);
         return fraSCAtiScaImporter;
     }
-    
 
-    public IScaRuntimeImporter newRuntimeScaImporter(File compositeFile) 
-            throws Exception
-    {
-        return newLocalScaImporter(documentManager,compositeFile);
+    public IScaRuntimeImporter newRuntimeScaImporter(File compositeFile) throws Exception {
+        return newLocalScaImporter(documentManager, compositeFile);
     }
-    
-    public IScaRuntimeImporter newRuntimeScaImporter()
-    {
-        try
-        {
-            return newRuntimeScaImporter(new File("."){
-                
+
+    public IScaRuntimeImporter newRuntimeScaImporter() {
+        try {
+            return newRuntimeScaImporter(new File(".") {
+
                 /**
                  * Generated default serial ID
                  */
                 private static final long serialVersionUID = 1L;
 
-                public String getName()
-                {
+                public String getName() {
                     return "SCA Runtime Import";
                 }
             });
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    
+
     /**
      * 
      * @param documentManager
@@ -212,28 +193,22 @@ implements org.nuxeo.runtime.model.Component, Adaptable {
      * @return
      * @throws Exception
      */
-    public IScaRuntimeImporter newLocalScaImporter(CoreSession documentManager,
-            File compositeFile) throws Exception
-    {
+    public IScaRuntimeImporter newLocalScaImporter(CoreSession documentManager, File compositeFile) throws Exception {
 
-        LocalBindingVisitorFactory nxBindingVisitorFactory = new LocalBindingVisitorFactory(
-             documentManager);
-        IScaRuntimeImporter  fraSCAtiScaImporter = (IScaRuntimeImporter)
-             new FraSCAtiScaImporter(nxBindingVisitorFactory, compositeFile);
+        LocalBindingVisitorFactory nxBindingVisitorFactory = new LocalBindingVisitorFactory(documentManager);
+        IScaRuntimeImporter fraSCAtiScaImporter = (IScaRuntimeImporter) new FraSCAtiScaImporter(nxBindingVisitorFactory, compositeFile);
         return fraSCAtiScaImporter;
     }
 
-    public void activate(ComponentContext context) throws Exception
-    {
-        this.frascati = Framework.getLocalService(
-                FraSCAtiServiceProviderItf.class).getFraSCAtiService(); 
-        
-        // TODO : don't call  it in constructor else too early
+    public void activate(ComponentContext context) throws Exception {
+        this.frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+
+        // TODO : don't call it in constructor else too early
 
         /*
          * AppComponent appComponent = Framework.getService(AppComponent.class);
-         * // Too early, AppComponent not yet started 
-         * this.apps = appComponent.getApps();
+         * // Too early, AppComponent not yet started this.apps =
+         * appComponent.getApps();
          */
 
         log.debug("Starting components");
@@ -241,153 +216,111 @@ implements org.nuxeo.runtime.model.Component, Adaptable {
         // Start the HttpDiscoveryProxy in Nuxeo with embedded FraSCAti
         // log.debug("Trying to load Http discovery proxy !");
         // System.out.println("Trying to load Http discovery proxy (NxFrascatiRegistryService.activate method)!");
-        try
-        {
-            if (this.frascati != null)
-            {
+        try {
+            if (this.frascati != null) {
                 // this.frascati.processComposite("../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/src/main/resources/httpDiscoveryProxy.composite");
                 // easySOAApp.getFrascati().processContribution("../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT.jar");
                 // easySOAApp.getFrascati().processComposite("scaffoldingProxy");
 
                 // Start EasySOAApps
                 // TODO : Apps variable still null at the moment, How to set ?
-                if (apps != null)
-                {
-                    for (EasySOAApp easySOAApp : apps)
-                    {
-                        try
-                        {
+                if (apps != null) {
+                    for (EasySOAApp easySOAApp : apps) {
+                        try {
                             easySOAApp.start();
-                        } catch (Exception ex)
-                        {
-                            log.error(
-                                    "An error occurs during the start of EasySOAApp",
-                                    ex);
+                        } catch (Exception ex) {
+                            log.error("An error occurs during the start of EasySOAApp", ex);
                         }
                     }
                 }
 
-            } else
-            {
+            } else {
                 log.debug("Unable to get FraSCAti, null returned !");
                 System.out.println("Unable to get FraSCAti, null returned !");
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             // TODO Auto-generated catch block
-            log.debug("Error catched when trying to load the EasySOA apps !",
-                    ex);
-            System.out
-                    .println("Error catched when trying to load the EasySOA apps  : "
-                            + ex.getMessage());
+            log.debug("Error catched when trying to load the EasySOA apps !", ex);
+            System.out.println("Error catched when trying to load the EasySOA apps  : " + ex.getMessage());
         }
 
     }
 
-    public void deactivate(ComponentContext context) throws Exception
-    {
+    public void deactivate(ComponentContext context) throws Exception {
         log.debug("Closing components");
-        
-        if (apps != null)
-        {
-            for (EasySOAApp easySOAApp : apps)
-            {
-                try
-                {
+
+        if (apps != null) {
+            for (EasySOAApp easySOAApp : apps) {
+                try {
                     easySOAApp.stop();
-                } catch (Exception ex)
-                {
-                    log.error("An error occurs during the stop of EasySOAApp",
-                            ex);
+                } catch (Exception ex) {
+                    log.error("An error occurs during the stop of EasySOAApp", ex);
                 }
             }
         }
 
-        ((Application)Framework.getLocalService(
-                FraSCAtiServiceProviderItf.class)).destroy();
+        ((Application) Framework.getLocalService(FraSCAtiServiceProviderItf.class)).destroy();
     }
 
-    public void registerExtension(Extension extension) throws Exception
-    {
+    public void registerExtension(Extension extension) throws Exception {
 
         Object[] contribs = extension.getContributions();
-        if (contribs == null)
-        {
+        if (contribs == null) {
             return;
         }
-        for (Object contrib : contribs)
-        {
-            registerContribution(contrib, extension.getExtensionPoint(),
-                    extension.getComponent());
+        for (Object contrib : contribs) {
+            registerContribution(contrib, extension.getExtensionPoint(), extension.getComponent());
         }
     }
 
-    public void unregisterExtension(Extension extension) throws Exception
-    {
+    public void unregisterExtension(Extension extension) throws Exception {
         Object[] contribs = extension.getContributions();
-        if (contribs == null)
-        {
+        if (contribs == null) {
             return;
         }
-        for (Object contrib : contribs)
-        {
-            unregisterContribution(contrib, extension.getExtensionPoint(),
-                    extension.getComponent());
+        for (Object contrib : contribs) {
+            unregisterContribution(contrib, extension.getExtensionPoint(), extension.getComponent());
         }
     }
 
-    public void registerContribution(Object contribution,
-            String extensionPoint, ComponentInstance contributor)
-            throws Exception
-    {
+    public void registerContribution(Object contribution, String extensionPoint, ComponentInstance contributor) throws Exception {
 
-        log.debug("NxFrascatiRegistryService debug (contribution) : "
-                + contribution);
-        log.debug("NxFrascatiRegistryService debug (extensionPoint) : "
-                + extensionPoint);
-        log.debug("NxFrascatiRegistryService debug (contributor) : "
-                + contributor);
+        log.debug("NxFrascatiRegistryService debug (contribution) : " + contribution);
+        log.debug("NxFrascatiRegistryService debug (extensionPoint) : " + extensionPoint);
+        log.debug("NxFrascatiRegistryService debug (contributor) : " + contributor);
     }
 
-    public void unregisterContribution(Object contribution,
-            String extensionPoint, ComponentInstance contributor)
-            throws Exception
-    {
-        log.debug("NxFrascatiRegistryService debug (contribution) : "
-                + contribution);
-        log.debug("NxFrascatiRegistryService debug (extensionPoint) : "
-                + extensionPoint);
-        log.debug("NxFrascatiRegistryService debug (contributor) : "
-                + contributor);
+    public void unregisterContribution(Object contribution, String extensionPoint, ComponentInstance contributor) throws Exception {
+        log.debug("NxFrascatiRegistryService debug (contribution) : " + contribution);
+        log.debug("NxFrascatiRegistryService debug (extensionPoint) : " + extensionPoint);
+        log.debug("NxFrascatiRegistryService debug (contributor) : " + contributor);
     }
 
-    public <T> T getAdapter(Class<T> adapter)
-    {
+    public <T> T getAdapter(Class<T> adapter) {
         return adapter.cast(this);
     }
 
-    public void applicationStarted(ComponentContext context) throws Exception
-    {
+    public void applicationStarted(ComponentContext context) throws Exception {
         // do nothing by default
     }
 
-    public CoreSession getDocumentManager()
-    {
+    public CoreSession getDocumentManager() {
         return documentManager;
     }
 
-    public void setDocumentManager(CoreSession documentManager)
-    {
+    public void setDocumentManager(CoreSession documentManager) {
         this.documentManager = documentManager;
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf#newScaImporter(java.io.File)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf#newScaImporter
+     * (java.io.File)
      */
-    public IScaImporter newScaImporter(File compositeFile) throws Exception
-    {
-        return new ApiFraSCAtiScaImporter(
-                new LocalBindingVisitorFactory(documentManager),compositeFile,this);
+    public IScaImporter newScaImporter(File compositeFile) throws Exception {
+        return new ApiFraSCAtiScaImporter(new LocalBindingVisitorFactory(documentManager), compositeFile, this);
     }
 
 }

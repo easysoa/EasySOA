@@ -65,7 +65,7 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class) 
 @Features({ EasySOACoreTestFeature.class, FraSCAtiFeature.class }) 
-@Deploy("org.easysoa.registry.frascati")
+@Deploy({ "org.easysoa.registry.frascati" })
 @RepositoryConfig(type = BackendType.H2, user = "Administrator", init = EasySOARepositoryInit.class) 
 public class FraSCAtiImportServiceTest
 {

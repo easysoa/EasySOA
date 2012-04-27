@@ -189,6 +189,53 @@
             <artifactId>nuxeo-frascati-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--<dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+			<version>0.4-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>-->
+	    <!-- esper -->
+	    <dependency>
+	      <groupId>com.espertech</groupId>
+	      <artifactId>esper</artifactId>
+	      <scope>test</scope>
+	    </dependency>
+	    <!-- java rest webservices -->
+	    <dependency>
+	      <groupId>javax.ws.rs</groupId>
+	      <artifactId>jsr311-api</artifactId>
+	      <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.apache.httpcomponents</groupId>
+	      <artifactId>httpclient</artifactId>
+	      <scope>test</scope>
+	    </dependency>
+	    <!-- Proxy persistence API -->
+	    <dependency>
+	      <groupId>org.easysoa.proxy</groupId>
+	      <artifactId>easysoa-proxy-core-persistence</artifactId>
+	      <scope>test</scope>
+	    </dependency>
+	    <!-- Proxy core API -->
+	    <dependency>
+	      <groupId>org.easysoa.proxy</groupId>
+	      <artifactId>easysoa-proxy-core-api</artifactId>
+	      <scope>test</scope>
+	    </dependency>
+	    <!-- Messaging api -->
+	    <dependency>
+	      <groupId>org.easysoa.registry.api</groupId>
+	      <artifactId>easysoa-registry-api-messaging</artifactId>
+	      <scope>test</scope>      
+	    </dependency>
+	    <!-- Discovery API -->
+	    <dependency>
+	      <groupId>org.easysoa.registry.api</groupId>
+	      <artifactId>easysoa-registry-api-remote</artifactId>
+	      <scope>test</scope>      
+	    </dependency>		
     </dependencies>
 
     <build>

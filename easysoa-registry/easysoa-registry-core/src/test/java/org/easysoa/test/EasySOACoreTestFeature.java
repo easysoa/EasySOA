@@ -34,8 +34,13 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  *
  */
 @Deploy({
-    "org.nuxeo.runtime.datasource",
-    "org.easysoa.registry.core"
+    "org.easysoa.registry.core",
+    "org.nuxeo.ecm.platform.types.core", // can't see it ?! "service:org.easysoa.core.contrib.ecmtypes requires [service:org.nuxeo.ecm.platform.types]"
+    "org.nuxeo.ecm.actions", // can't see it ?! "service:org.easysoa.core.contrib.actions requires [service:org.nuxeo.ecm.platform.actions]"
+    "org.nuxeo.ecm.platform.forms.layout.core",
+    "org.nuxeo.ecm.platform.forms.layout.client",
+    "org.nuxeo.ecm.platform.content.template",
+    "org.nuxeo.runtime.datasource"
 //    "org.easysoa.registry.core:OSGI-INF/core-type-contrib.xml", // required, else no custom types
 //    "org.easysoa.registry.core:OSGI-INF/vocabularies-contrib.xml", // required, else no custom easysoa vocabularies
 //    "org.easysoa.registry.core:OSGI-INF/users-contrib.xml",

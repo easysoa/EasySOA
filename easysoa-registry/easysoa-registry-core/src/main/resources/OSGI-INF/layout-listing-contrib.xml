@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="org.easysoa.core.contrib.layout.listing">
 
-  <require>org.nuxeo.ecm.platform.forms.layouts.webapp.listing</require>
+  <require>org.nuxeo.ecm.platform.forms.layout.WebLayoutManager</require>
 
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgettypes">
     <widgetType name="listing_soa_url">

@@ -70,8 +70,6 @@ public class RemoteFraSCAtiServiceProviderTest
                 remoteFrascatiLibDirPath);
     }
 
-    
-    
     /**
      * Search for the directory which name is passed on as a parameter. The
      * first occurrence is returned

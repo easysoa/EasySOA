@@ -27,6 +27,7 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
@@ -41,7 +42,7 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
-import com.google.inject.Inject;
+//import com.google.inject.Inject;
 
 /**
  * Tests SCA read with FraSCAti
@@ -50,7 +51,7 @@ import com.google.inject.Inject;
  * 
  */
 @RunWith(FeaturesRunner.class)
-@Features({ FraSCAtiFeature.class })
+@Features({/*EasySOACoreTestFeature.class,*/ FraSCAtiFeature.class})
 public class FraSCAtiServiceReadScaTest {
 
     static final Log log = LogFactory.getLog(FraSCAtiServiceReadScaTest.class);
@@ -70,7 +71,7 @@ public class FraSCAtiServiceReadScaTest {
      * fails without custom ProcessingContext.loadClass()
      */
     @Test
-    @Ignore
+    //@Ignore
     public void testReadSCACompositeFailsOnClassNotFound() throws Exception {
 
         // SCA composite file to import :
@@ -121,9 +122,8 @@ public class FraSCAtiServiceReadScaTest {
 
             //parsedComposite = frascatiRegistryService.getFraSCAti().getComposite(compositeName);
             parsedComposite = frascatiService.getComposite(compositeName);
-
-        } catch (FraSCAtiServiceException e) {
-
+        } catch (FraSCAtiServiceException ex) {
+            log.warn(ex);
         }
         return parsedComposite;
     }

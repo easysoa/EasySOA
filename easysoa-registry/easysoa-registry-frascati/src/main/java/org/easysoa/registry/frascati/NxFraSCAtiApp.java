@@ -24,16 +24,25 @@ package org.easysoa.registry.frascati;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.nuxeo.runtime.api.Framework;
 
-public class NxFraSCAtiApp implements EasySOAApp
-{
+/**
+ * 
+ * What to do with this class ?
+ * Do we have to update this class to work with the new FraSCAti Nuxeo embedded architecture ?
+ * 
+ * Think it is better to have a independent EasysoaApp class that can be used in remote or in embedded frascati
+ *
+ */
+public class NxFraSCAtiApp implements EasySOAApp {
 
+    // Starting method : in this case corresponding to Nuxeo FraSCAti method
     private final static String STARTING_METHOD = "NxFraSCAti";
 
+    // Application composite path
     private String appPath;
 
     // private AppDescriptor appDescriptor;
 
-    private FraSCAtiRegistryServiceBase fraSCAtiService; // TODO make it
+    //private FraSCAtiRegistryServiceBase fraSCAtiService; // TODO make it
                                                          // independent from
                                                          // nuxeo by
                                                          // reimplementing it
@@ -45,48 +54,55 @@ public class NxFraSCAtiApp implements EasySOAApp
      * appDescriptor; }
      */
 
-    public NxFraSCAtiApp(String appPath)
-    {
-
+    /**
+     * Constructor
+     * @param appPath The application composite path
+     */
+    public NxFraSCAtiApp(String appPath) {
         this.appPath = appPath;
     }
 
-    //@Override
-    public void start()
-    {
-        NxFraSCAtiRegistryService nxFraSCAtiRegistryService = Framework
-                .getLocalService(NxFraSCAtiRegistryService.class);
-        try
-        {
+    /**
+     * Start the composite
+     */
+    // TODO : do not call the Nuxeo framework in this method
+    // 
+    public void start() {
+        NxFraSCAtiRegistryService nxFraSCAtiRegistryService = Framework.getLocalService(NxFraSCAtiRegistryService.class);
+        try {
             nxFraSCAtiRegistryService.getFraSCAti().processComposite(appPath);
-        } catch (FraSCAtiServiceException e)
-        {
+        } catch (FraSCAtiServiceException e) {
             e.printStackTrace();
         }
     }
 
-    //@Override
-    public void stop()
-    {
-
+    // @Override
+    public void stop() {
         // TODO stop compos
     }
 
-    public String getAppPath()
-    {
-
+    /**
+     * 
+     * @return
+     */
+    public String getAppPath() {
         return appPath;
     }
 
-    public FraSCAtiRegistryServiceBase getFraSCAtiService()
-    {
+    /**
+     * 
+     * @return
+     */
+    /*public FraSCAtiRegistryServiceBase getFraSCAtiService() {
+        //return fraSCAtiService;
+        return null;
+    }*/
 
-        return fraSCAtiService;
-    }
-
-    public String getAppId()
-    {
-
+    /**
+     * Returns the application ID
+     * @return The application ID
+     */
+    public String getAppId() {
         return STARTING_METHOD + ":" + appPath;
     }
 
