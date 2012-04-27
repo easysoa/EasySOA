@@ -219,7 +219,6 @@
             <plugin>
                 <groupId>org.ow2.frascati.mojo</groupId>
                 <artifactId>frascati-compiler-plugin</artifactId>
-                <version>1.5-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>compile-composite</id>

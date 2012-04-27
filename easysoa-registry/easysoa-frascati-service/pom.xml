@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
->
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -11,14 +10,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <properties>
-        <frascati.version>1.5-SNAPSHOT</frascati.version>
-        <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
-    </properties>
-
     <groupId>org.easysoa.frascati</groupId>
     <artifactId>easysoa-frascati-service</artifactId>
-    <version>0.4-SNAPSHOT</version>
     <name>OW2 FraSCAti SCA Component for EasySOA</name>
 
     <licenses>
@@ -27,6 +20,11 @@
             <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
         </license>
     </licenses>
+
+    <properties>
+        <frascati.version>1.5-SNAPSHOT</frascati.version>
+        <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
+    </properties>
 
     <dependencies>
         <dependency>

@@ -15,6 +15,8 @@
   <name>EasySOA Registry Parent</name>
 
   <properties>
+    <easysoa.nuxeo-frascati.version>0.0-SNAPSHOT</easysoa.nuxeo-frascati.version>
+    <jetty.version>7.4.5.v20110725</jetty.version>
     <asm.version>3.1</asm.version>
     <explorer.version>1.0</explorer.version>
     <spring.version>3.0.5.RELEASE</spring.version>
@@ -65,12 +67,6 @@
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-platform-directory-types-contrib</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-      <version>1.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -130,6 +126,11 @@
         <version>${easysoa.version}</version>
       </dependency>
       <dependency>
+         <groupId>org.easysoa.frascati</groupId>
+         <artifactId>easysoa-frascati-service-api</artifactId>
+         <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.easysoa.registry</groupId>
         <artifactId>easysoa-registry-core</artifactId>
         <version>${easysoa.version}</version>
@@ -149,45 +150,44 @@
       <dependency>
         <groupId>org.nuxeo</groupId>
         <artifactId>nuxeo-frascati</artifactId>
-        <version>${easysoa.nuxeo.frascati.version}</version>
+        <version>${easysoa.nuxeo-frascati.version}</version>
       </dependency>
       <dependency>
         <groupId>org.nuxeo</groupId>
         <artifactId>nuxeo-frascati-test</artifactId>
-        <version>${easysoa.nuxeo.frascati.version}</version>
+        <version>${easysoa.nuxeo-frascati.version}</version>
       </dependency>
       
       <!-- Jetty -->
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-continuation</artifactId>
-        <!-- <version>8.0.0.M2</version> -->
-        <version>7.4.5.v20110725</version>
+        <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-http</artifactId>
-        <version>7.4.5.v20110725</version>
+        <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-io</artifactId>
-        <version>7.4.5.v20110725</version>
+        <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-security</artifactId>
-        <version>7.4.5.v20110725</version>
+        <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
-        <version>7.4.5.v20110725</version>
+        <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-util</artifactId>
-        <version>7.4.5.v20110725</version>
+        <version>${jetty.version}</version>
       </dependency>
       
       <!-- Apache CXF -->
@@ -304,6 +304,13 @@
         <groupId>com.google.code.guice</groupId>
         <artifactId>guice</artifactId>
         <version>2.0</version>
+      </dependency>
+      
+      <!-- Other -->
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>ecore</artifactId>
+        <version>2.4.0</version>
       </dependency>
       
     </dependencies>
