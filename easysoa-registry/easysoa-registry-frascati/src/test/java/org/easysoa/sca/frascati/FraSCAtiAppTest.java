@@ -33,17 +33,14 @@ import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
 import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.test.EasySOARepositoryInit;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 import com.google.inject.Inject;
 

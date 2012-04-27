@@ -23,28 +23,10 @@
  */
 package org.easysoa.template;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.correlation.CandidateField;
 import org.easysoa.records.correlation.CorrelationEngineImpl;
 import org.easysoa.records.correlation.FieldExtractor;
-import org.easysoa.template.parsers.JSONParser;
-import org.easysoa.template.parsers.TemplateParser;
-import org.easysoa.template.parsers.XMLParser;
-
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.message.QueryParam;
 
 /**
  * This class suggest fields to use from 

@@ -55,7 +55,6 @@ import org.nuxeo.frascati.test.FraSCAtiFeature;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.LocalDeploy;
 import org.ow2.frascati.util.FrascatiException;
 
 import com.google.inject.Inject;

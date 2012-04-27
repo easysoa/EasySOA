@@ -25,15 +25,12 @@ import java.util.List;
 
 import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
-import org.easysoa.registry.frascati.FraSCAtiRuntimeScaImporterItf;
-import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
 import org.easysoa.sca.visitors.ScaVisitor;
 import org.easysoa.services.DocumentService;
 import org.eclipse.stp.sca.Binding;
-import org.eclipse.stp.sca.Composite;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;

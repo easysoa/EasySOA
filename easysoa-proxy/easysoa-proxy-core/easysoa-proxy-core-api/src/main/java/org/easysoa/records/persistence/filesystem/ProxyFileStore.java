@@ -19,27 +19,31 @@
  */
 package org.easysoa.records.persistence.filesystem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+
 import org.apache.log4j.Logger;
 import org.easysoa.persistence.StoreItf;
 import org.easysoa.persistence.StoreResource;
 import org.easysoa.persistence.filesystem.FileStore;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.Exchange;
-import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.Exchange.ExchangeType;
+import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.reports.Report;
 import org.easysoa.simulation.SimulationStore;
 import org.easysoa.template.AbstractTemplateField;
-import org.easysoa.template.InputTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.template.VelocityTemplate;
+
 import com.openwide.easysoa.message.Header;
 import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;
@@ -48,7 +52,6 @@ import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.PostData;
 import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.message.QueryString;
-import org.easysoa.properties.PropertyManager;
 import com.openwide.easysoa.run.Run;
 
 /**

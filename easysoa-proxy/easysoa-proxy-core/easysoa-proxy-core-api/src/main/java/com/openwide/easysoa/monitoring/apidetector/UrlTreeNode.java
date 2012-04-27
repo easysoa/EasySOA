@@ -24,10 +24,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
-
-import com.openwide.easysoa.monitoring.Message;
 
 @SuppressWarnings("serial")
 public class UrlTreeNode extends DefaultMutableTreeNode{

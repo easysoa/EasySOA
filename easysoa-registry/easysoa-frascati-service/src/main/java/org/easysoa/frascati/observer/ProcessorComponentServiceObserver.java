@@ -20,7 +20,6 @@
 package org.easysoa.frascati.observer;
 
 import org.easysoa.frascati.api.observer.AbstractProcessorNotBindingObserver;
-import org.eclipse.stp.sca.ComponentReference;
 import org.eclipse.stp.sca.ComponentService;
 
 /**

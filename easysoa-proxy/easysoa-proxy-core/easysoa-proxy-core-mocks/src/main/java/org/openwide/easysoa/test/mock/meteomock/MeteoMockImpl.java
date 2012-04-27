@@ -21,11 +21,10 @@
 package org.openwide.easysoa.test.mock.meteomock;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
+
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Service;
 

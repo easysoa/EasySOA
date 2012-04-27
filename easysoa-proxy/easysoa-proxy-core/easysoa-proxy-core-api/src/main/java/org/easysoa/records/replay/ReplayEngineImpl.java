@@ -26,6 +26,7 @@ package org.easysoa.records.replay;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.easysoa.logs.LogEngine;
 import org.easysoa.records.ExchangeRecord;
@@ -42,13 +43,9 @@ import org.easysoa.reports.Report;
 import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
-import org.easysoa.template.setters.CustomParamSetter;
-import org.easysoa.template.setters.RestFormParamSetter;
-import org.easysoa.template.setters.RestPathParamSetter;
-import org.easysoa.template.setters.RestQueryParamSetter;
-import org.easysoa.template.setters.WSDLParamSetter;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.RequestForwarder;
 
