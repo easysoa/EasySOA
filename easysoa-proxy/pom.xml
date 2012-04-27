@@ -16,17 +16,184 @@
   <name>EasySOA Proxy Parent</name>
 
   <modules>
-	<module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
-	<module>easysoa-proxy-core/easysoa-proxy-core-api</module>
-    <module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
-    <module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
-    <module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
-    <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
-    <module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
-	<module>easysoa-proxy-core/easysoa-proxy-core-webdiscoveryhttpminer</module>
-    <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
-    <module>handlers/easysoa-proxy-handlers-event-test</module>
+  <module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
+  <module>easysoa-proxy-core/easysoa-proxy-core-api</module>
+  <module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
+  <module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
+  <module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
+  <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
+  <module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
+  <module>easysoa-proxy-core/easysoa-proxy-core-webdiscoveryhttpminer</module>
+  <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
+  <module>handlers/easysoa-proxy-handlers-event-test</module>
   </modules>
+  
+  
+  <!-- ======================= -->
+  <!-- Dependencies management -->
+  <!-- ======================= -->
+  <dependencyManagement>
+    <dependencies>
+    
+      <!-- EasySOA Proxy Projects -->
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-api</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-persistence</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-mocks</artifactId>
+        <version>${easysoa.version}</version>
+        <scope>test</scope>
+      </dependency>
+    
+      <!-- Esper -->
+      <dependency>
+        <groupId>com.espertech</groupId>
+        <artifactId>esper</artifactId>
+        <version>4.2.0</version>
+      </dependency>
+      
+      <!-- Java REST WebServices -->
+      <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>jsr311-api</artifactId>
+        <version>1.1.1</version>
+      </dependency>
+      
+      <!-- Apache CXF -->
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-api</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+    
+      <!-- SCA -->
+      <dependency>
+        <groupId>org.apache.tuscany.sca</groupId>
+        <artifactId>tuscany-sca-all</artifactId>
+        <version>1.6.2</version>
+      </dependency>
+    
+      <!-- Apache Woden: Alternative solution for parsing WSDL and generate HTML form -->
+      <dependency>
+        <groupId>org.apache.woden</groupId>
+        <artifactId>woden-api</artifactId>
+        <version>1.0M9</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>XmlSchema</artifactId>
+            <groupId>org.apache.ws.commons.schema</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.woden</groupId>
+        <artifactId>woden-impl-dom</artifactId>
+        <version>1.0M9</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.woden</groupId>
+        <artifactId>woden-tool</artifactId>
+        <version>1.0M9</version>
+      </dependency>
+      
+      <!-- Miscellaneous -->
+      <dependency>
+        <groupId>aopalliance</groupId>
+        <artifactId>aopalliance</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>oro</groupId>
+        <artifactId>oro</artifactId>
+        <version>2.0.8</version>
+      </dependency>
+      
+      <!-- SOAPUI and required SOAPUI dependencies -->
+      <dependency>
+        <groupId>eviware</groupId>
+        <artifactId>soapui</artifactId>
+        <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
+        <version>4.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>eviware</groupId>
+        <artifactId>soapui-xmlbeans</artifactId>
+        <!-- version>4.5.0-SNAPSHOT</version --><!-- also works -->
+        <version>4.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-cli</groupId>
+        <artifactId>commons-cli</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.8.3</version>
+      </dependency>
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>2.7.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlbeans</groupId>
+        <artifactId>xmlbeans</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>xerces</groupId>
+        <artifactId>xercesImpl</artifactId>
+        <version>2.10.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk16</artifactId>
+        <version>1.46</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.jms</groupId>
+        <artifactId>jms</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>xom</groupId>
+        <artifactId>xom</artifactId>
+        <version>1.2.5</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
+        <version>1.4.4</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.juliusdavies</groupId>
+        <artifactId>not-yet-commons-ssl</artifactId>
+        <version>0.3.11</version>
+      </dependency>
+      
+    </dependencies>
+  </dependencyManagement>
+
+
 
   <repositories>
     <!-- For FraSCAti continuous integration repository -->
