@@ -20,7 +20,7 @@ var oa = new OAuth("http://localhost:8080/nuxeo/oauth/request-token", // Request
 	"nodetest", // Consumer secret (must be registered to Nuxeo)
 	"1", // OAuth version (/!\ Nuxeo parses it as an integer, "1.0A" is invalid)
 	"http://localhost:8001/afterlogin", // Callback
-	"HMAC-SHA1" // Signature type (Nuxeo supports both RSA/HMAC, but this api only supports HMAC
+	"HMAC-SHA1" // Signature type (Nuxeo supports both RSA/HMAC, but this api only supports HMAC)
 );
 
 /*var nuxeoLoginOptions = {
