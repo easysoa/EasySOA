@@ -36,8 +36,7 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 public class DiscoveryProxyAppTest {
 
     private final String resourcePath = "src/test/resources/";
-    // TODO : have the proxy jar copied in the src/test/resources folder to work ...
-    // Add a command in pom to have a fresh version automatically copied in the folder
+
     private final String proxyCompositePath = resourcePath + "easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT.jar";
     
     protected FraSCAtiServiceItf frascatiService = null;    
@@ -81,7 +80,8 @@ public class DiscoveryProxyAppTest {
         assertEquals("Current run stopped !", response);
         log.info("stop run : " + response);
         //response = httpProxyDriverClient.execute(new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/save"), responseHandler);
-        response = httpProxyDriverClient.execute(new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/delete"), responseHandler);        
+        response = httpProxyDriverClient.execute(new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/delete"), responseHandler);
+        
     }
     
     @After

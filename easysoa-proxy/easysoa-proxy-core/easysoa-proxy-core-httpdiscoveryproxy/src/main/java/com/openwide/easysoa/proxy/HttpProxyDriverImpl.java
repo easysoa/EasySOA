@@ -61,11 +61,11 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
      */
     public HttpProxyDriverImpl(){
         try {
-            propertyManager = new ProxyPropertyManager(ProxyPropertyManager.PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + ProxyPropertyManager.PROPERTY_FILE_NAME));
+            propertyManager = new ProxyPropertyManager();
         } catch (Exception ex) {
             logger.warn("Error when loading the property manager, trying another method");
             try{
-                propertyManager = new ProxyPropertyManager();
+                propertyManager = new ProxyPropertyManager(ProxyPropertyManager.PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + ProxyPropertyManager.PROPERTY_FILE_NAME));                
             } catch(Exception exc){
                 logger.error("Error when loading the property manager", exc);                
             }
@@ -107,7 +107,8 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		logger.debug("Stopping the current run !");
 		try {
 			runManager.stop();
-			runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+			// Registering is now done in save method
+			//runManager.getMonitoringService().registerDetectedServicesToNuxeo();
 		}
 		catch(Exception ex){
 			logger.error("Unable to stop the current run", ex);
@@ -170,9 +171,10 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Run deleted !";
 	}
 	
-	public void save(){
-		// TODO  add code to save the current run in a specifed folder.
-		// Each exchangeRecord contained in the run is saved in a JSON file
+	public void save() throws Exception{
+	    // Register and save at the same time, maybe best to have 2 separated methods ...
+	    runManager.save();
+	    runManager.getMonitoringService().registerDetectedServicesToNuxeo();
 	}
 
 }

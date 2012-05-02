@@ -103,9 +103,10 @@ public interface HttpProxyDriver {
 	
 	/**
 	 * Save the current run
+	 * @throws Exception 
 	 */
 	@POST
 	@Path("/run/save")
-	public void save();
+	public void save() throws Exception;
 		
 }
