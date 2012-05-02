@@ -61,7 +61,9 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	// Reference on monitoring service
 	@Reference
 	HandlerManager handlerManager;
-    //public RunManager runManager;
+	
+	// Property manager
+	public static PropertyManager propertyManager;
 	
 	// Port the proxy use (used in proxy loop detection).
 	@Property
@@ -83,10 +85,21 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 */
 	static {
 		ProxyConfigurator.configure();
-		try {
-            PropertyManager propertyManager = new ProxyPropertyManager();
+	}
+	
+	/**
+	 * Constructor
+	 */
+	public HttpDiscoveryProxy(){
+        try {
+            propertyManager = new ProxyPropertyManager(ProxyPropertyManager.PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + ProxyPropertyManager.PROPERTY_FILE_NAME));
         } catch (Exception ex) {
-            logger.error("Error when loading the property manager", ex);
+            logger.warn("Error when loading the property manager, trying another method");
+            try{
+                propertyManager = new ProxyPropertyManager();
+            } catch(Exception exc){
+                logger.error("Error when loading the property manager", exc);                
+            }
         }
 	}
 	

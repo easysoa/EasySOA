@@ -20,6 +20,8 @@
 
 package org.easysoa.properties;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 import org.apache.log4j.Logger;
@@ -54,17 +56,48 @@ public abstract class PropertyManager {
 	 * @throws Exception If the property file cannot be loaded
 	 */
 	protected PropertyManager(String propsFileName) throws Exception {
+	    logger.debug("Creates a new PropertyManager ....");
 	    propertiesFileName = propsFileName;
 		properties = load(propsFileName);
 		propertyManager = this;
 	}
 	
 	/**
+	 * 
+	 * @param propsFileName
+	 * @param propsFileStream
+	 * @throws Exception
+	 */
+	protected PropertyManager(String propsFileName, InputStream propsFileStream) throws Exception {
+        logger.debug("Creates a new PropertyManager ....");
+        propertiesFileName = propsFileName;
+        properties = load(propsFileStream);
+        propertyManager = this;
+	}
+	
+	/**
 	 * Returns the properties file name
-	 * @return The propeties file name
+	 * @return The properties file name
 	 */
 	public String getPropertiesFileName() {
 	    return propertiesFileName;
+	}
+	
+	/**
+	 * Load a property file form an input stream
+	 * @param propsFileStream The input stream containing the property file
+	 * @return 
+	 * @throws IOException If a problem occurs
+	 */
+	protected Properties load(InputStream propsFileStream) throws Exception{
+	    logger.debug("Loading property file form input stream : '" + propsFileStream +  "'");   
+	    Properties props = new Properties();
+	    if(propsFileStream != null){
+	        props.load(propsFileStream);
+	    } else {
+	        throw new Exception("Unable to load the property file from a null input stream");
+	    }
+	    return props;	    
 	}
 	
    /**
@@ -74,11 +107,22 @@ public abstract class PropertyManager {
     * @throws Exception If the property file cannot be loaded
     */
    protected Properties load(String propsFileName) throws Exception {
+       logger.debug("Loading property file  '" + propsFileName +  "'");
        Properties props = new Properties();
        // FIXME : there is a problem here with the property file load when PropertyManager is called from a Nuxeo embedded FraSCAti 
        URL url = PropertyManager.class.getClassLoader().getResource(propsFileName);
-       logger.debug("Property file url : " + url.toString());
-       props.load(url.openStream());
+       if(url != null){
+           logger.debug("Property file url : " + url.toString());
+           props.load(url.openStream());
+       } else {
+           // Resource not found, trying another method
+           InputStream propFileInputStream = this.getClass().getResourceAsStream(propsFileName);
+           if(propFileInputStream != null){
+               props.load(propFileInputStream);
+           } else {
+               throw new Exception("Unable to load the property file named " + propsFileName);
+           }
+       }
        return props;
    }
    

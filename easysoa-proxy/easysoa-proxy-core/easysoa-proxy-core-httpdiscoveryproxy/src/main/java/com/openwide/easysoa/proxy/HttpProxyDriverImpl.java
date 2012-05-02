@@ -23,9 +23,11 @@ package com.openwide.easysoa.proxy;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.log4j.Logger;
+import org.easysoa.properties.PropertyManager;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
+import com.openwide.easysoa.proxy.properties.ProxyPropertyManager;
 import com.openwide.easysoa.run.RunManager;
 
 /**
@@ -41,18 +43,38 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	 */
 	private static Logger logger = Logger.getLogger(HttpProxyDriverImpl.class.getName());
 	
+    // Property manager
+    public static PropertyManager propertyManager;	
+	
 	/**
 	 * 	Reference on monitoring service 
 	 */
 	@Reference
 	RunManager runManager;
-	//MonitoringService monitoringService;
 	
 	static {
 		ProxyConfigurator.configure();
-	}	
+	}
 	
+    /**
+     * Constructor
+     */
+    public HttpProxyDriverImpl(){
+        try {
+            propertyManager = new ProxyPropertyManager(ProxyPropertyManager.PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + ProxyPropertyManager.PROPERTY_FILE_NAME));
+        } catch (Exception ex) {
+            logger.warn("Error when loading the property manager, trying another method");
+            try{
+                propertyManager = new ProxyPropertyManager();
+            } catch(Exception exc){
+                logger.error("Error when loading the property manager", exc);                
+            }
+        }
+    }
 	
+    /**
+     * 
+     */
 	public String returnUseInformations(UriInfo ui) {
 		logger.debug("Returning help informations");
 		StringBuffer help = new StringBuffer();
@@ -70,7 +92,6 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return help.toString();
 	}
 
-	
 	public String startNewRun(String runName) {
 		logger.debug("Starting a new run !");
 		try{
@@ -82,7 +103,6 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Run '" + runName + "' started !";
 	}
 
-	
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
 		try {
@@ -139,7 +159,6 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		return "Re-run done";
 	}*/
 
-	
 	public String delete() {
 		try {
 			runManager.delete();
@@ -150,7 +169,6 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 		}
 		return "Run deleted !";
 	}
-	
 	
 	public void save(){
 		// TODO  add code to save the current run in a specifed folder.
