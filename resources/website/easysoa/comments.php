@@ -7,7 +7,7 @@
 
 <?php foreach ($comments as $comment) : ?>
 
-<div class="comment">
+<div class="comment"><a id="comment-<?php comment_id(); ?>"></a>
 <?php if (function_exists('get_avatar')) {  
   $gravatar = get_avatar($comment,$size='48');
   if ($gravatar != "") { echo "<div class='gravatarside'>".$gravatar."</div>"; }
@@ -38,9 +38,9 @@
 <p class="loggedin">You are logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?action=logout" title="Log out">Log out</a>.</p>
 
 <?php else : ?>
-<p><label for="author">Name:</label><br />
+<p><label for="author">Name: <span style="color: darkred; text-decoration: none">*</span></label><br />
 <input type="text" name="author" id="author" value="<?php echo $comment_author; ?>" tabindex="1" /></p>
-<p><label for="email">E-mail:</label><br />
+<p><label for="email">E-mail: <span style="color: darkred">*</span></label><br />
 <input type="text" name="email" id="email" value="<?php echo $comment_author_email; ?>" tabindex="2" /></p>
 <p><label for="url">URL:</label><br />
 <input type="text" name="url" id="url" value="<?php echo $comment_author_url; ?>" tabindex="3" /></p>
@@ -48,11 +48,25 @@
 <?php endif; ?>
 <p><label for="comment">Message:</label><br />
 <textarea name="comment" id="comment" cols="45" rows="4" tabindex="4"></textarea></p>
-<p><input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />
-<input type="submit" name="submit" value="Submit!" class="button" tabindex="5" /></p>
+
+<?php /*Catcha plugin manual integration
+<?php if ( function_exists( 'cptch_display_captcha_custom' ) ) : ?>
+<p class="cptch_block"><label for="url">Captcha: <span style="color: darkred; text-decoration: none">*</span></label><br />
+<?php echo cptch_display_captcha_custom(); ?>
+</p>
+<?php endif; ?> */ ?>
+
+<input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />
+<input type="submit" name="submit" value="Submit!" class="button" tabindex="5" />
 <p><?php do_action('comment_form', $post->ID); ?></p>
+
+<?php if (!$user_ID) : ?>
+<p style="padding-top: 0; padding-bottom: 0"><span style="color: darkred; font-size: 11px">* <i>Required</i></span></p>
+<?php endif; ?>
+
 </form>
 </div>
+
 
 <?php endif; ?>
 <?php endif; ?>

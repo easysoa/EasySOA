@@ -4,7 +4,7 @@
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
 <h2><?php edit_post_link('[e]','<b>','</b> '); ?><?php the_title(); ?></h2>
-<p class="timestamp"><?php the_time('j F, Y (H:i)') ?> | <?php the_category(', ') ?> | By: <?php the_author(); ?></p>
+<p class="timestamp"><?php the_time('j F, Y (H:i)') ?> | <?php the_category(', ') ?> | By <?php the_author(); ?></p>
 <div class="contenttext">
 <?php the_content('<p>Read more &raquo;</p>'); ?>
 </div>
