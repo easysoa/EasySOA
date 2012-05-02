@@ -15,28 +15,25 @@
   <artifactId>nuxeo-frascati</artifactId>
   <name>nuxeo-frascati</name>
   <version>0.0-SNAPSHOT</version>
-
+  
   <dependencies>
-    <dependency>
-       <groupId>org.ow2.frascati.osgi</groupId>
-       <artifactId>frascati-osgi-util</artifactId>
-       <version>1.5-SNAPSHOT</version>
-    </dependency>
+    <!-- EasySOA -->
     <dependency>
        <groupId>org.easysoa.frascati</groupId>
        <artifactId>easysoa-frascati-service-api</artifactId>
-       <version>0.4-SNAPSHOT</version>
        <scope>provided</scope>
     </dependency>
+    
+    <!-- FraSCAti -->
     <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-bridge</artifactId>
-      <scope>provided</scope>
+       <groupId>org.ow2.frascati.osgi</groupId>
+       <artifactId>frascati-osgi-util</artifactId>
+       <version>${frascati.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>ecore</artifactId>
-      <version>2.4.0</version>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-introspection-api</artifactId>
+      <version>${frascati.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -45,25 +42,23 @@
       <version>${model.version}</version>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- Nuxeo -->
     <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http</artifactId>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-bridge</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http-jetty</artifactId>
-      <scope>provided</scope>
-    </dependency>
+    
+    <!-- Other -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-introspection-api</artifactId>
-      <version>${frascati.version}</version>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>ecore</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>

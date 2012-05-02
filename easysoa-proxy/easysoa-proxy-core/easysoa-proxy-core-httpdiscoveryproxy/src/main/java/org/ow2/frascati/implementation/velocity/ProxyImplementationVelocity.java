@@ -62,7 +62,6 @@ import javax.ws.rs.QueryParam;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.easysoa.properties.PropertyManager;
 import org.eclipse.stp.sca.Component;
 import org.eclipse.stp.sca.ComponentReference;
 import org.eclipse.stp.sca.PropertyValue;

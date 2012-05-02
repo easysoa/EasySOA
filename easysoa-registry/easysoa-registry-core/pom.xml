@@ -14,17 +14,16 @@
 
   <dependencies>
     <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>ecore</artifactId>
-            <version>2.4.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.frascati.model</groupId>
-            <artifactId>frascati-model</artifactId>
-            <version>${model.version}</version>
-            <scope>provided</scope>
-        </dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>ecore</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.frascati.model</groupId>
+      <artifactId>frascati-model</artifactId>
+      <version>${model.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
     <!-- Easysoa Registry API -->
     <dependency>
@@ -107,7 +106,7 @@
       <artifactId>jdom</artifactId>
     </dependency>
 
-    <!-- for EasySOAServerFeature tests -->
+    <!-- For EasySOAServerFeature tests -->
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jetty</artifactId>
@@ -145,8 +144,8 @@
       <artifactId>nuxeo-features-test</artifactId>
       <scope>compile</scope>
     </dependency>
-
-    <!-- other embedded test dependencies: -->
+    
+    <!-- Other embedded test dependencies -->
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-platform-types-core</artifactId>
@@ -156,7 +155,7 @@
       <artifactId>nuxeo-core-convert-plugins</artifactId>
     </dependency>
 
-    <!-- for external tests using EasySOACoreFeature: -->
+    <!-- for external tests using EasySOACoreFeature -->
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-platform-forms-layout-client</artifactId>

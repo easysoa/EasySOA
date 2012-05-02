@@ -1,0 +1,33 @@
+
+h2 Total errors count: #{totalErrorsCount}
+
+h3.tableTitle Detailed report:
+
+div#accordionReport.accordion
+
+	each item, i in report
+		unless (item.errors.length < 1)
+			div.accordion-group
+				div.accordion-heading
+					a.accordion-toggle(href='#collapse_' + i, data-toggle='collapse')
+						span.badge.badge-error.errorsCount #{item.errors.length}
+						h4.filename(data-filename='' + item.formattedFilename) #{item.file}
+				div.accordion-body.collapse(id='collapse_' + i)
+					div.accordion-inner					
+							table.table.table-striped.table-bordered.table-condensed
+								thead
+									tr
+										th Line
+										th Column
+										th Message
+										th Context
+								tbody
+									each err in item.errors
+										unless !err
+											tr
+												td #{err.line}
+												td #{err.character}
+												td #{err.reason}
+												td #{err.evidence}
+
+	

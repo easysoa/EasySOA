@@ -26,11 +26,9 @@ import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,16 +45,9 @@ import org.easysoa.sca.frascati.mock.TestMock;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
-import org.eclipse.jetty.server.Handler;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.nuxeo.ecm.automation.client.OperationRequest;
-import org.nuxeo.ecm.automation.client.Session;
-import org.nuxeo.ecm.automation.client.jaxrs.impl.HttpAutomationClient;
 
 import com.openwide.easysoa.message.InMessage;
 

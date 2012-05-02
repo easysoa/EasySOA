@@ -25,11 +25,9 @@ import java.io.Reader;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.easysoa.runtime.api.DeployableDescriptorProvider;
 
 /**
- * Handles POM files as {@link DeployableDescriptorProvider}s.
- * Allows to extract all dependencies of a deployable.
+ * Handles POM files to extract all dependencies of a deployable.
  * 
  * @author mkalam-alami
  *

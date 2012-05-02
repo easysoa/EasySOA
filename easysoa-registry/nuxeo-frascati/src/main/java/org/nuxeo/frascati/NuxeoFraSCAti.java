@@ -57,7 +57,6 @@ implements Application, FraSCAtiServiceProviderItf
      * 
      * @throws NuxeoFraSCAtiException
      */
-    @SuppressWarnings("unchecked") 
     public NuxeoFraSCAti() throws NuxeoFraSCAtiException
     {
 

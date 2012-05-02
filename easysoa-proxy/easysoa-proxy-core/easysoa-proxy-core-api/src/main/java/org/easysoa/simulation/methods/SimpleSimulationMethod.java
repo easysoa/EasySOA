@@ -23,10 +23,10 @@
  */
 package org.easysoa.simulation.methods;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.simulation.SimulationMethod;
@@ -34,6 +34,7 @@ import org.easysoa.simulation.SimulationStore;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
+
 import com.openwide.easysoa.message.OutMessage;
 
 /**

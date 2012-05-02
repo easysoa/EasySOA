@@ -42,8 +42,6 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
-//import com.google.inject.Inject;
-
 /**
  * Tests SCA read with FraSCAti
  * 

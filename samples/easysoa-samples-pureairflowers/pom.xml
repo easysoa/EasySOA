@@ -2,10 +2,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.easysoa.samples</groupId>
+    <artifactId>easysoa-samples-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../easysoa-samples-parent/pom.xml</relativePath>
+  </parent>
+  
   <groupId>org.easysoa.samples.paf</groupId>
   <artifactId>easysoa-samples-paf-parent</artifactId>
   <name>EasySOA Sample Pure Air Flowers Parent</name>
-  <version>0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <licenses>
@@ -20,4 +26,41 @@
     <module>easysoa-samples-paf-server</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <!-- Apache CXF & Jetty -->
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-local</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-http</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-http-jetty</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-tools-wsdlto-frontend-jaxws</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-continuation</artifactId>
+        <!-- <version>8.0.0.M2</version> -->
+        <version>7.4.5.v20110725</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
 </project>

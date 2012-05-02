@@ -37,11 +37,9 @@ import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.exchangehandler.HandlerManager;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.proxy.properties.ProxyPropertyManager;
-import com.openwide.easysoa.run.RunManager;
 import com.openwide.easysoa.util.RequestForwarder;
 
 /**

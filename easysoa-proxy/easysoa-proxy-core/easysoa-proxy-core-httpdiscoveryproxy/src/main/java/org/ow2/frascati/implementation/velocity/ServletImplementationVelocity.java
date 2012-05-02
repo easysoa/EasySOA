@@ -69,8 +69,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.properties.PropertyManager;
-import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.OutputTemplateField;
