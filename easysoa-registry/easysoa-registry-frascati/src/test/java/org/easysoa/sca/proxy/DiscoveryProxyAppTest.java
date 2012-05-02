@@ -86,7 +86,7 @@ public class DiscoveryProxyAppTest {
     
     @After
     public void tearDown() {
-        //
+        // Nothing to do
     }
     
 }

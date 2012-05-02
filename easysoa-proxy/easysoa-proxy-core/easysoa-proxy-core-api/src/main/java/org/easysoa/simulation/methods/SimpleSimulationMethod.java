@@ -59,7 +59,7 @@ public class SimpleSimulationMethod implements SimulationMethod {
     private boolean match(AbstractTemplateField inputField, AbstractTemplateField recordedField){
         boolean match = false;
         // Match all fields
-        if(recordedField.getFieldName().equals(inputField.getFieldName()) && recordedField.getDefaultValue().equals(inputField.getDefaultValue()) && recordedField.getFieldType().equals(inputField.getFieldType())){
+        if(inputField.getFieldName().equals(recordedField.getFieldName()) && inputField.getDefaultValue().equals(recordedField.getDefaultValue()) && inputField.getFieldType().equals(recordedField.getFieldType())){
             match = true;
         }
         return match;
