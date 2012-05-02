@@ -33,9 +33,6 @@ import org.apache.log4j.Logger;
  */
 public abstract class PropertyManager {
 	
-    // TODO : Make this property file name configurable
-	//public static final String PROPERTY_FILE_NAME = "httpDiscoveryProxy.properties";
-	
 	/**
 	 * Logger
 	 */
@@ -109,7 +106,6 @@ public abstract class PropertyManager {
    protected Properties load(String propsFileName) throws Exception {
        logger.debug("Loading property file  '" + propsFileName +  "'");
        Properties props = new Properties();
-       // FIXME : there is a problem here with the property file load when PropertyManager is called from a Nuxeo embedded FraSCAti 
        URL url = PropertyManager.class.getClassLoader().getResource(propsFileName);
        if(url != null){
            logger.debug("Property file url : " + url.toString());
@@ -144,12 +140,9 @@ public abstract class PropertyManager {
     * @param defaultValue The default value
     * @return The value corresponding to the property, the default value if a problem occurs
     */
-   public /*static*/ String getProperty(String propertyName, String defaultValue) {
+   public String getProperty(String propertyName, String defaultValue) {
 	   String value;
 	   try{
-		   /*if (properties == null){
-			   new PropertyManager(PROPERTY_FILE_NAME);
-		   }*/
 		   value = properties.getProperty(propertyName);
 	   }
 	   catch(Exception ex){
@@ -165,12 +158,9 @@ public abstract class PropertyManager {
     * @param propertyName The property name
     * @return The value corresponding to the property, null if a problem occurs
     */
-   public /*static*/ String getProperty(String propertyName) {
+   public String getProperty(String propertyName) {
 	   String value = null;
 	   try{
-		   /*if (properties == null){
-			   new PropertyManager(PROPERTY_FILE_NAME);
-		   }*/
 		   value = properties.getProperty(propertyName);		   
 	   }
 	   catch(Exception ex){
