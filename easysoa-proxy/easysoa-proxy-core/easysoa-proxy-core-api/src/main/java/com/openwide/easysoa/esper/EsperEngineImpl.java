@@ -54,8 +54,9 @@ public class EsperEngineImpl implements EsperEngine {
 	
 	/**
 	 * Initialize the engine, registering listeners and EPL statements 
+	 * @throws Exception  
 	 */
-	public EsperEngineImpl(){
+	public EsperEngineImpl() throws Exception {
 		// Esper configuration
 		Configuration cepConfig = new Configuration();
         
@@ -73,11 +74,12 @@ public class EsperEngineImpl implements EsperEngine {
     	// Add statement & listener
     	//logger.debug("Registering EPL statement :" + PropertyManager.getProperty("esper.message.listener.statement"));
     	//EPStatement cepStatementMessage = esperAdmin.createEPL(PropertyManager.getProperty("esper.message.listener.statement"));
-    	logger.debug("Registering EPL statement :" + PropertyManager.getProperty("esper.exchange.listener.statement"));
-    	EPStatement cepStatementMessage = esperAdmin.createEPL(PropertyManager.getProperty("esper.exchange.listener.statement"));    	
+    	PropertyManager propertyManager = PropertyManager.getPropertyManager();
+    	logger.debug("Registering EPL statement :" + propertyManager.getProperty("esper.exchange.listener.statement"));
+    	EPStatement cepStatementMessage = esperAdmin.createEPL(propertyManager.getProperty("esper.exchange.listener.statement"));    	
     	cepStatementMessage.addListener(new MessageListener());
-    	logger.debug("Registering EPL statement :" + PropertyManager.getProperty("esper.node.listener.statement"));
-    	EPStatement cepStatementNode = esperAdmin.createEPL(PropertyManager.getProperty("esper.node.listener.statement"));
+    	logger.debug("Registering EPL statement :" + propertyManager.getProperty("esper.node.listener.statement"));
+    	EPStatement cepStatementNode = esperAdmin.createEPL(propertyManager.getProperty("esper.node.listener.statement"));
     	cepStatementNode.addListener(new NodeListener());    	
 	}
 

@@ -26,8 +26,6 @@ import javax.swing.tree.DefaultTreeModel;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 
-import com.openwide.easysoa.monitoring.Message;
-
 @SuppressWarnings("serial")
 public class UrlTree extends DefaultTreeModel {
 

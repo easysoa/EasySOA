@@ -29,28 +29,42 @@ import org.apache.log4j.Logger;
  * @author jguillemotte
  *
  */
-public class PropertyManager {
+public abstract class PropertyManager {
 	
-    // TODO : Make this property file name configurable ??
-	public static final String PROPERTY_FILE_NAME = "httpDiscoveryProxy.properties";
+    // TODO : Make this property file name configurable
+	//public static final String PROPERTY_FILE_NAME = "httpDiscoveryProxy.properties";
 	
 	/**
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(PropertyManager.class.getName());
 
-	/**
-	 * Properties
-	 */
-	private static Properties props = null;
+	// Property manager
+	private static PropertyManager propertyManager; 
+	
+	// Properties
+	private static Properties properties = null;
+
+	// Properties file name
+	private static String propertiesFileName;
 	
 	/**
 	 * 
 	 * @param propsName The property file name
 	 * @throws Exception If the property file cannot be loaded
 	 */
-	private PropertyManager(String propsFileName) throws Exception {
-		props = PropertyManager.load(propsFileName);
+	protected PropertyManager(String propsFileName) throws Exception {
+	    propertiesFileName = propsFileName;
+		properties = load(propsFileName);
+		propertyManager = this;
+	}
+	
+	/**
+	 * Returns the properties file name
+	 * @return The propeties file name
+	 */
+	public String getPropertiesFileName() {
+	    return propertiesFileName;
 	}
 	
    /**
@@ -59,26 +73,40 @@ public class PropertyManager {
     * @return Properties
     * @throws Exception If the property file cannot be loaded
     */
-   private static Properties load(String propsFileName) throws Exception {
+   protected Properties load(String propsFileName) throws Exception {
        Properties props = new Properties();
+       // FIXME : there is a problem here with the property file load when PropertyManager is called from a Nuxeo embedded FraSCAti 
        URL url = PropertyManager.class.getClassLoader().getResource(propsFileName);
+       logger.debug("Property file url : " + url.toString());
        props.load(url.openStream());
        return props;
    }
-
+   
+   /**
+    * Get the current instance of property manager
+    * @return The current instance of property manager
+    * @throws Exception If the property manager is not properly initialized
+    */
+   public static PropertyManager getPropertyManager() throws Exception {
+       if(propertyManager == null){
+           throw new Exception("Property manager is not properly initialized !");
+       }
+       return propertyManager;
+   }
+   
    /**
     * Returns a property value
     * @param propertyName The property name
     * @param defaultValue The default value
     * @return The value corresponding to the property, the default value if a problem occurs
     */
-   public static String getProperty(String propertyName, String defaultValue) {
+   public /*static*/ String getProperty(String propertyName, String defaultValue) {
 	   String value;
 	   try{
-		   if (props == null){
+		   /*if (properties == null){
 			   new PropertyManager(PROPERTY_FILE_NAME);
-		   }
-		   value = props.getProperty(propertyName);
+		   }*/
+		   value = properties.getProperty(propertyName);
 	   }
 	   catch(Exception ex){
 		   value = defaultValue;
@@ -93,13 +121,13 @@ public class PropertyManager {
     * @param propertyName The property name
     * @return The value corresponding to the property, null if a problem occurs
     */
-   public static String getProperty(String propertyName) {
+   public /*static*/ String getProperty(String propertyName) {
 	   String value = null;
 	   try{
-		   if (props == null){
+		   /*if (properties == null){
 			   new PropertyManager(PROPERTY_FILE_NAME);
-		   }
-		   value = props.getProperty(propertyName);		   
+		   }*/
+		   value = properties.getProperty(propertyName);		   
 	   }
 	   catch(Exception ex){
 		   logger.error("An error occurs during the load of properties : " + ex.getMessage());

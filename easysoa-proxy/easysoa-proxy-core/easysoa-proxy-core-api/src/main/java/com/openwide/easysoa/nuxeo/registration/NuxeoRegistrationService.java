@@ -21,7 +21,6 @@
 
 package com.openwide.easysoa.nuxeo.registration;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.HttpEntity;
@@ -65,10 +64,11 @@ public class NuxeoRegistrationService {
 	
 	private static RestNotificationFactory factory = null;
 
-    public NuxeoRegistrationService() throws IOException {
-        factory = new RestNotificationFactory(PropertyManager.getProperty("nuxeo.rest.service"),
-        		PropertyManager.getProperty("nuxeo.auth.login", "Administrator"),
-        		PropertyManager.getProperty("nuxeo.auth.password", "Administrator"));
+    public NuxeoRegistrationService() throws Exception {
+        PropertyManager propertyManager = PropertyManager.getPropertyManager();
+        factory = new RestNotificationFactory(propertyManager.getProperty("nuxeo.rest.service"),
+                propertyManager.getProperty("nuxeo.auth.login", "Administrator"),
+                propertyManager.getProperty("nuxeo.auth.password", "Administrator"));
     }
 
     /**
@@ -290,7 +290,7 @@ public class NuxeoRegistrationService {
 	 * @throws Exception 
 	 */
 	public String sendQuery(String query) throws Exception {
-		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.service"));
+		StringBuffer urlBuf = new StringBuffer(PropertyManager.getPropertyManager().getProperty("nuxeo.automation.service"));
 		//urlBuf.append("/");
 	    urlBuf.append("Document.Query"); // operation name
 
@@ -315,7 +315,7 @@ public class NuxeoRegistrationService {
 			*/
 			
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator"));
+			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(PropertyManager.getPropertyManager().getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getPropertyManager().getProperty("nuxeo.auth.password", "Administrator"));
 			HttpPost postRequest = new HttpPost(urlBuf.toString());
 			postRequest.addHeader(new BasicScheme().authenticate(creds, postRequest));
 			HttpEntity entity = new StringEntity(bodyBuf.toString());
@@ -343,7 +343,7 @@ public class NuxeoRegistrationService {
 	 * @throws Exception 
 	 */
 	public boolean deleteQuery(String uid) throws Exception {
-		StringBuffer urlBuf = new StringBuffer(PropertyManager.getProperty("nuxeo.automation.service"));
+		StringBuffer urlBuf = new StringBuffer(PropertyManager.getPropertyManager().getProperty("nuxeo.automation.service"));
 	    urlBuf.append("Document.Delete"); // operation name
 
 	    try {
@@ -365,7 +365,7 @@ public class NuxeoRegistrationService {
 				.post(ClientResponse.class);
 			*/
 			DefaultHttpClient httpClient = new DefaultHttpClient();
-			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(PropertyManager.getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getProperty("nuxeo.auth.password", "Administrator"));
+			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(PropertyManager.getPropertyManager().getProperty("nuxeo.auth.login", "Administrator"), PropertyManager.getPropertyManager().getProperty("nuxeo.auth.password", "Administrator"));
 			HttpPost postRequest = new HttpPost(urlBuf.toString());
 			postRequest.addHeader(new BasicScheme().authenticate(creds, postRequest));
 			HttpEntity entity = new StringEntity(bodyBuf.toString());

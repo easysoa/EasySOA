@@ -38,15 +38,19 @@ public class WSDLMessageHandler implements MessageHandler {
 	private static Logger logger = Logger.getLogger(WSDLMessageHandler.class.getName());
 	
 	@Override
-	//public boolean isOkFor(Message message) {
 	public boolean isOkFor(ExchangeRecord exchangeRecord) {
-		//if(message != null){
 		boolean returnValue = false;
 		if(exchangeRecord != null){
-			//return message.getParameters().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"));
-			//return 
+		    String pattern;
+		    try {
+		         pattern = PropertyManager.getPropertyManager().getProperty("proxy.wsdl.request.detect", ".*?wsdl");
+		    }
+		    catch (Exception ex){
+		        logger.warn("An error occurs when getting the 'proxy.wsdl.request.detect' value, using default value => .*?wsdl", ex);
+		        pattern = ".*?wsdl";
+		    }
 			for(QueryParam queryParam: exchangeRecord.getInMessage().getQueryString().getQueryParams()){
-				if(queryParam.getName().toLowerCase().matches(PropertyManager.getProperty("proxy.wsdl.request.detect"))){
+				if(queryParam.getName().toLowerCase().matches(pattern)){
 					return true;
 				}
 			}

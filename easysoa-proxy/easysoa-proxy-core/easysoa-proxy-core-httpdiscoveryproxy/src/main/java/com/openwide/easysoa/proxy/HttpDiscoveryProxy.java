@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.osoa.sca.annotations.Property;
@@ -39,6 +40,7 @@ import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.exchangehandler.HandlerManager;
 import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.proxy.properties.ProxyPropertyManager;
 import com.openwide.easysoa.run.RunManager;
 import com.openwide.easysoa.util.RequestForwarder;
 
@@ -83,8 +85,13 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 */
 	static {
 		ProxyConfigurator.configure();
+		try {
+            PropertyManager propertyManager = new ProxyPropertyManager();
+        } catch (Exception ex) {
+            logger.error("Error when loading the property manager", ex);
+        }
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */

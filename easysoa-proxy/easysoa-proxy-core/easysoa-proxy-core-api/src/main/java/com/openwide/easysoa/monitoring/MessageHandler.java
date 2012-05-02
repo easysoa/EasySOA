@@ -30,6 +30,7 @@ public interface MessageHandler {
 	 * return if the message can be handled by this handler
 	 * @param message The message to handle 
 	 * @return True if the message can be handled, false otherwise
+	 * @throws Exception 
 	 */
 	//public boolean isOkFor(Message message);
 	public boolean isOkFor(ExchangeRecord exchangeRecord);

@@ -20,8 +20,6 @@
 
 package com.openwide.easysoa.esper;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
@@ -30,7 +28,6 @@ import com.openwide.easysoa.monitoring.apidetector.UrlTreeNodeEvent;
 import com.openwide.easysoa.monitoring.soa.Api;
 import com.openwide.easysoa.monitoring.soa.Appli;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
-
 
 /**
  * Triggered on every node update (LATER could be triggered on run end event)
@@ -97,8 +94,8 @@ public class UrlTreeEventListener implements UpdateListener {
                         node.setRegistered();
                     }
                 }
-            } catch (IOException e) {
-                logger.error("Failed to register node", e);
+            } catch (Exception ex) {
+                logger.error("Failed to register node", ex);
             }
             
 			// Service detection

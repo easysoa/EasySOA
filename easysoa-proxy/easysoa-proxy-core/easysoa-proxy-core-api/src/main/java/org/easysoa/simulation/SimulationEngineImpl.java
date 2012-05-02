@@ -31,7 +31,6 @@ import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Simulation engine
