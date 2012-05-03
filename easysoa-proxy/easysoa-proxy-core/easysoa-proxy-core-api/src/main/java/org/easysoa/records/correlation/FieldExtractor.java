@@ -50,7 +50,6 @@ public class FieldExtractor {
      * @return An <code>HashMap</code> filled with query parameters
      */
     public HashMap<String, CandidateField> getInputPathParams(InMessage inMessage){
-        logger.debug("Extracting path param fields ");
         HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
         CandidateField field;
         StringTokenizer tokenizer = new StringTokenizer(inMessage.getPath(), "/");
@@ -72,7 +71,6 @@ public class FieldExtractor {
      * @return An <code>HashMap</code> filled with query parameters 
      */
     public HashMap<String, CandidateField> getInputQueryParams(InMessage inMessage){
-        logger.debug("Extracting query param fields ");
         HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
         CandidateField candidateField;
         for(QueryParam queryParam : inMessage.getQueryString().getQueryParams()){
@@ -92,7 +90,6 @@ public class FieldExtractor {
     // TODO : Change this code .... For REST request, content params are processed as query params
     // For SOAP request, need to add code to parse the xml. 
     public HashMap<String, CandidateField> getInputContentParam(InMessage inMessage){
-        logger.debug("Extracting content param fields ");
         HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
         CandidateField candidateField;
         StringTokenizer tokenizer = new StringTokenizer(inMessage.getMessageContent().getRawContent(), "&");
@@ -113,12 +110,16 @@ public class FieldExtractor {
      * @return
      */
     public HashMap<String, CandidateField> getOutputFields(OutMessage outMessage){
-        logger.debug("Extracting output fields ");
         HashMap<String,CandidateField> fieldMap = new HashMap<String,CandidateField>();
-        //logger.debug("outMessage " + outMessage.getMessageContent().getRawContent());
+        // TODO add code here to fill hashmap with output fields
+        // Message content can be very different (json, xml ...)
+        // TODO Add a system to choose the parser corresponding to the out message content
+        // Today only a json parser for out message
+        logger.debug("Output field extraction ...");
         List<TemplateParser> templateParserList = new ArrayList<TemplateParser>();
         templateParserList.add(new JSONParser());
         templateParserList.add(new XMLParser());
+        // TODO : Add a parser for simple text content
         try{
             for(TemplateParser parser : templateParserList){
                 if(parser.canParse(outMessage)){
@@ -126,9 +127,19 @@ public class FieldExtractor {
                     break;
                 }
             }
+            // If message content is a JSON
+            /*if(outMessage.getMessageContent().isJSONContent()){
+                JSONParser jsonParser = new JSONParser();
+                jsonParser.parse(outMessage, fieldMap);
+            } 
+            // if message structure is an XML structure
+            else if(outMessage.getMessageContent().isXMLContent()){
+                XMLParser xmlParser = new XMLParser();
+                xmlParser.parse(outMessage, fieldmap);
+            }*/
         }
         catch(Exception ex){
-            logger.warn("An error occurs during the parsing of message content to find output fields", ex);
+            logger.warn("An error occurs during the output fields extraction", ex);
         }
         logger.debug("Out param fields map : " + fieldMap);     
         return fieldMap;

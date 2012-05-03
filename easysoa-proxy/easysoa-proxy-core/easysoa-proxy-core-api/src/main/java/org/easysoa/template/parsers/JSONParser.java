@@ -26,14 +26,15 @@ package org.easysoa.template.parsers;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+import org.easysoa.records.correlation.CandidateField;
+import org.easysoa.template.TemplateFieldSuggester;
+
+import com.openwide.easysoa.message.OutMessage;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
-
-import org.apache.log4j.Logger;
-import org.easysoa.records.correlation.CandidateField;
-
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * @author jguillemotte
@@ -46,11 +47,13 @@ public class JSONParser implements TemplateParser {
     
     @Override
     public boolean canParse(OutMessage outMessage) {
+        logger.debug("Out message contains JSON => " + outMessage.getMessageContent().isJSONContent());
         return outMessage.getMessageContent().isJSONContent();
     }
     
     @Override
     public HashMap<String,CandidateField> parse(OutMessage outMessage, HashMap<String,CandidateField> fieldMap) {
+        logger.debug("Parsing JSON message");        
         JSONObject jsonOutObject = (JSONObject) JSONSerializer.toJSON(outMessage.getMessageContent().getRawContent());
         findJSONOutFields("root", jsonOutObject, -1, fieldMap);
         return fieldMap;
