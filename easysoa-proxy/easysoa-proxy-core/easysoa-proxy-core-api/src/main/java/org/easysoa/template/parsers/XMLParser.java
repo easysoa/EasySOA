@@ -24,11 +24,11 @@
 package org.easysoa.template.parsers;
 
 import java.util.HashMap;
-
 import org.apache.log4j.Logger;
 import org.easysoa.records.correlation.CandidateField;
-import org.easysoa.records.correlation.FieldExtractor;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.openwide.easysoa.message.OutMessage;
 
@@ -51,10 +51,18 @@ public class XMLParser implements TemplateParser {
     public HashMap<String, CandidateField> parse(OutMessage outMessage, HashMap<String, CandidateField> fieldMap) {
         logger.debug("Parsing XML message");
         Document content = outMessage.getMessageContent().getXMLContent();
-        // TODO Add code to extract out fields
-
-        // How to parse the message and extract the output fields ...
-        
+        // Get each field from the XML content and add it in the HashMap ....
+        NodeList nodeList = content.getElementsByTagName("*");
+        // Node contains childs, can be considered as output field
+        if(nodeList.getLength() > 0){
+            for(int index=0; index<nodeList.getLength(); index++){
+                Node node = nodeList.item(index);
+                if(node.hasChildNodes() && node.getChildNodes().getLength() == 1){
+                    CandidateField field = new CandidateField(node.getNodeName(), node.getTextContent());
+                    fieldMap.put(node.getNodeName(), field);                    
+                }
+            }
+        }
         return fieldMap;
     }
 

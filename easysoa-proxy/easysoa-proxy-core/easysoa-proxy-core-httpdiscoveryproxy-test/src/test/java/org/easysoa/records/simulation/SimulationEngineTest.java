@@ -104,6 +104,7 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         // Send a request to the replay service
         logger.debug("Getting simulation store ...");
         SimulationStore simulationStore = simulationEngine.getSimulationStoreFromSuggestion("testSimulationStore", recordList);
+        fileStore.saveSimulationStore(simulationStore);
         for(ExchangeRecord record : recordList){
             Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();
             // TODO : add test for field values            
