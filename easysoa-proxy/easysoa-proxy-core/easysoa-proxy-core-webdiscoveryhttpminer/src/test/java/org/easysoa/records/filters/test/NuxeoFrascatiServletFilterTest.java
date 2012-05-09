@@ -18,9 +18,6 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package org.easysoa.records.filters.test;
 
 import static org.junit.Assert.*;
@@ -28,35 +25,35 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-import org.easysoa.EasySOAConstants;
+import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
-import org.easysoa.records.filters.ExchangeRecordServletFilter;
-import org.junit.After;
+import org.easysoa.test.ScaTestComponent;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nuxeo.ecm.webengine.test.WebEngineFeature;
+import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.Jetty;
+import org.nuxeo.ecm.platform.test.PlatformFeature;
 
 /**
  * @author jguillemotte
  *
  */
 @RunWith(FeaturesRunner.class)
-@Features(FraSCAtiFeature.class)
+@Features({FraSCAtiFeature.class, PlatformFeature.class})
+@Deploy({ "org.nuxeo.ecm.automation.core",
+    "org.nuxeo.ecm.automation.features",
+    "org.nuxeo.ecm.platform.web.common", "org.nuxeo.ecm.platform.login", "org.nuxeo.ecm.platform.usermanager"})
 public class NuxeoFrascatiServletFilterTest {
 
     /**
@@ -70,12 +67,35 @@ public class NuxeoFrascatiServletFilterTest {
     
     @BeforeClass
     public static void setUp() throws Exception {
-        //frascatiService = (FraSCAtiServiceItf) Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+        
+        // When nuxeo service is available, pass it to the FraSCAti component
+        // - Maybe the best is to have a wrapped to avoid Nuxeo dependencies in pure FraSCAti components
+        // - Or to use a 'proxy" FraSCAti component
+        // In Easysoa, we have to get the registry service
+        
+        // Getting the FraSCAti service interface
         frascatiService = (FraSCAtiServiceItf) Framework.getService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
         assertNotNull(frascatiService);
         frascatiService.processComposite("composedExchangeHandler");
+        frascatiService.processComposite("scaTestComponent");
     }
 
+    /**
+     * Test the communication between a frascati service and a Nuxeo service
+     * @throws FraSCAtiServiceException  
+     */
+    @Test
+    public void scaComponentTest() throws Exception {
+        // Getting a Pure Nuxeo service to test it in a FraSCAti easysoa component
+        UserManager usrManager = Framework.getService(UserManager.class);
+        assertNotNull(usrManager);
+        usrManager.authenticate("administrator", "administrator");
+        logger.debug("Getting anonymous user ID : " + usrManager.getDefaultGroup());
+        
+        ScaTestComponent scaComponent = frascatiService.getService("scaTestComponent", "scaService", ScaTestComponent.class);
+        logger.debug("Getting user ID from frascati SCA component : " + scaComponent.testMethod(usrManager));         
+    }
+    
     @Test
     public void ServletFilterTest() throws ClientProtocolException, IOException{
         // Trigger the Servlet filter

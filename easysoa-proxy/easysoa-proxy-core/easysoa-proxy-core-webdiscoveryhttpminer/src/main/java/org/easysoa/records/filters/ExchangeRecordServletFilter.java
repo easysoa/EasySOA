@@ -109,7 +109,7 @@ public class ExchangeRecordServletFilter implements Filter {
             chain.doFilter(request, response);
         }
     }
-
+    
     @Override
     public void destroy() {
         filterConfig = null;

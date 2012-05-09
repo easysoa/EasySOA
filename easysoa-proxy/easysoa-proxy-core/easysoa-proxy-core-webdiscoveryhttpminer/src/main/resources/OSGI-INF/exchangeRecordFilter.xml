@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.records.filters">
 	<extension target="org.nuxeo.ecm.platform.web.common.requestcontroller.service.RequestControllerService" point="filterConfig">
-    	<filterConfig name="filterName" transactional="true" synchonize="true" cached="true" private="true" cachetime="3600">
+    	<filterConfig name="filterName" transactional="true" synchronize="true" cached="true" private="true" cachetime="3600">
    			<pattern>/*</pattern>
    		</filterConfig>
 	</extension>  
