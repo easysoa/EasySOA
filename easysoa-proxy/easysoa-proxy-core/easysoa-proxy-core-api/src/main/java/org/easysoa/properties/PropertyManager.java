@@ -31,13 +31,16 @@ import org.apache.log4j.Logger;
  * @author jguillemotte
  *
  */
-public abstract class PropertyManager {
+public class PropertyManager {
 	
 	/**
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(PropertyManager.class.getName());
 
+    // Default property file name
+    public static final String DEFAULT_PROPERTY_FILE_NAME = "defaultProperties.properties";
+	
 	// Property manager
 	private static PropertyManager propertyManager; 
 	
@@ -52,7 +55,7 @@ public abstract class PropertyManager {
 	 * @param propsName The property file name
 	 * @throws Exception If the property file cannot be loaded
 	 */
-	protected PropertyManager(String propsFileName) throws Exception {
+	public PropertyManager(String propsFileName) throws Exception {
 	    logger.debug("Creates a new PropertyManager ....");
 	    propertiesFileName = propsFileName;
 		properties = load(propsFileName);
@@ -65,7 +68,7 @@ public abstract class PropertyManager {
 	 * @param propsFileStream
 	 * @throws Exception
 	 */
-	protected PropertyManager(String propsFileName, InputStream propsFileStream) throws Exception {
+	public PropertyManager(String propsFileName, InputStream propsFileStream) throws Exception {
         logger.debug("Creates a new PropertyManager ....");
         propertiesFileName = propsFileName;
         properties = load(propsFileStream);

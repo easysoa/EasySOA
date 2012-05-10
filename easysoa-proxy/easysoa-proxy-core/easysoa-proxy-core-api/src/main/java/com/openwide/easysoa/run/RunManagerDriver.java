@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.proxy;
+package com.openwide.easysoa.run;
 
 import org.osoa.sca.annotations.Remotable;
 import javax.ws.rs.GET;
@@ -36,7 +36,7 @@ import javax.ws.rs.core.UriInfo;
  *
  */
 @Remotable
-public interface HttpProxyDriver {
+public interface RunManagerDriver {
 
 	/**
 	 * Returns a help text with the available commands

@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.proxy;
+package org.easysoa.configurator;
 
 import org.apache.log4j.PropertyConfigurator;
 
@@ -34,10 +34,11 @@ public class ProxyConfigurator {
 	/**
 	 * Call only one time
 	 * Configuration of logger
+	 * @param clazz the class to use to get resources with the class loader mechanism
 	 */
-	public static void configure(){
+	public static void configure(@SuppressWarnings("rawtypes") Class clazz){
 		if(!configuratorAlreadyCalled){
-			PropertyConfigurator.configure(HttpDiscoveryProxy.class.getClassLoader().getResource("log4j.properties"));
+			PropertyConfigurator.configure(clazz.getClassLoader().getResource("log4j.properties"));
 			configuratorAlreadyCalled = true;
 		}
 	}

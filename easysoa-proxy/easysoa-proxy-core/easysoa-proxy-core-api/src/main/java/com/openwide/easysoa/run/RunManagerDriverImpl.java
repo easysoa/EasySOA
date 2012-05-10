@@ -18,17 +18,18 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.proxy;
+package com.openwide.easysoa.run;
 
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.log4j.Logger;
+import org.easysoa.configurator.ProxyConfigurator;
 import org.easysoa.properties.PropertyManager;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.proxy.properties.ProxyPropertyManager;
-import com.openwide.easysoa.run.RunManager;
+//import com.openwide.easysoa.proxy.ProxyConfigurator;
+//import com.openwide.easysoa.proxy.properties.ProxyPropertyManager;
 
 /**
  * HttpProxyDriver implementation
@@ -36,12 +37,12 @@ import com.openwide.easysoa.run.RunManager;
  *
  */
 @Scope("composite")
-public class HttpProxyDriverImpl implements HttpProxyDriver {
+public class RunManagerDriverImpl implements RunManagerDriver {
 	
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(HttpProxyDriverImpl.class.getName());
+	private static Logger logger = Logger.getLogger(RunManagerDriverImpl.class.getName());
 	
     // Property manager
     public static PropertyManager propertyManager;	
@@ -52,20 +53,23 @@ public class HttpProxyDriverImpl implements HttpProxyDriver {
 	@Reference
 	RunManager runManager;
 	
+	// Have to refactor these impl to have a run manager driver independant of proxy
+	// how to have a configurator and property manager separated between the proxy and the run manager but using the same property file ...
+	
 	static {
-		ProxyConfigurator.configure();
+		ProxyConfigurator.configure(RunManagerDriverImpl.class);
 	}
 	
     /**
      * Constructor
      */
-    public HttpProxyDriverImpl(){
+    public RunManagerDriverImpl(){
         try {
-            propertyManager = new ProxyPropertyManager();
+            propertyManager = new PropertyManager("");
         } catch (Exception ex) {
             logger.warn("Error when loading the property manager, trying another method");
             try{
-                propertyManager = new ProxyPropertyManager(ProxyPropertyManager.PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + ProxyPropertyManager.PROPERTY_FILE_NAME));                
+                propertyManager = new PropertyManager(PropertyManager.DEFAULT_PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + PropertyManager.DEFAULT_PROPERTY_FILE_NAME));                
             } catch(Exception exc){
                 logger.error("Error when loading the property manager", exc);                
             }

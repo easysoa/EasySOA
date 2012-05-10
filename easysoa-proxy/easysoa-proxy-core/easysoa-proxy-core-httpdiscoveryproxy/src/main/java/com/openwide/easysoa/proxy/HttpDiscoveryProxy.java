@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
+import org.easysoa.configurator.ProxyConfigurator;
 import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
@@ -84,7 +85,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 * Log system initialization
 	 */
 	static {
-		ProxyConfigurator.configure();
+		ProxyConfigurator.configure(HttpDiscoveryProxy.class);
 	}
 	
 	/**
