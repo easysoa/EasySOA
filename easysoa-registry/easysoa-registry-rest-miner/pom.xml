@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.easysoa.registry</groupId>
+    <artifactId>easysoa-registry-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>easysoa-registry-rest-miner</artifactId>
+  <name>EasySOA Registry REST Requests Miner</name>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <!-- Logger -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <!-- Import Nuxeo dependencyManagement -->
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-features-parent</artifactId>
+      <version>${easysoa.nuxeo.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jdt</groupId>
+          <artifactId>core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- EasySOA dependencies -->
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-messaging</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.frascati</groupId>
+      <artifactId>easysoa-frascati-service-api</artifactId>
+    </dependency>
+    <!-- Nuxeo dependencies -->
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-api</artifactId>
+    </dependency>
+    <!-- FraSCAti dependencies -->
+    <dependency>
+      <groupId>org.nuxeo</groupId>
+      <artifactId>nuxeo-frascati</artifactId>
+    </dependency>
+
+    <!-- For tests -->
+    <!-- Nuxeo dependencies -->
+    <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-bridge</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-features-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo</groupId>
+      <artifactId>nuxeo-frascati-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jetty-servlet-tester</artifactId>
+      <version>6.1.26</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

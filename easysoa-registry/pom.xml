@@ -42,6 +42,7 @@
     <module>easysoa-registry-runtime-management</module>
     <module>easysoa-registry-web</module>
     <module>easysoa-registry-rest</module>
+    <module>easysoa-registry-rest-miner</module>
     <module>easysoa-registry-dashboard</module>
     <module>easysoa-registry-frascati</module>
     <module>easysoa-registry-rest-frascati</module>

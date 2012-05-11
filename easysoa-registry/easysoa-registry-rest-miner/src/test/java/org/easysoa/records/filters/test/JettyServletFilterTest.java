@@ -23,18 +23,10 @@
  */
 package org.easysoa.records.filters.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import org.easysoa.records.filters.ExchangeRecordServletFilter;
+import org.easysoa.records.filters.ExchangeRecordServletFilterImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +76,7 @@ public class JettyServletFilterTest {
     public void setUp() throws Exception {
         tester = new ServletTester();
         tester.setContextPath("/webApp");
-        tester.addFilter(ExchangeRecordServletFilter.class, "/*", 0);
+        tester.addFilter(ExchangeRecordServletFilterImpl.class, "/*", 0);
         tester.addServlet(DefaultServlet.class, "/");
         tester.start();
     }

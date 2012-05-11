@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Version: 0.4-SNAPSHOT
+Bundle-Name: easysoa-registry-rest-miner
+Bundle-SymbolicName: org.easysoa.registry.restminer;singleton:=true
+Bundle-Vendor: EasySOA Consortium
+Eclipse-LazyStart: true
+Nuxeo-Require: org.easysoa.registry.rest
+Nuxeo-Component: OSGI-INF/ExchangeRecordServletFilter.xml
