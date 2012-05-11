@@ -64,8 +64,7 @@ public class FraSCAtiScaImporter extends ApiRuntimeFraSCAtiScaImporter
         
         if (bindingVisitorFactory instanceof LocalBindingVisitorFactory)
         {
-            documentManager = ((LocalBindingVisitorFactory) 
-                    bindingVisitorFactory).getDocumentManager();
+            documentManager = ((LocalBindingVisitorFactory) bindingVisitorFactory).getDocumentManager();
         }
         if (documentManager != null)
         {

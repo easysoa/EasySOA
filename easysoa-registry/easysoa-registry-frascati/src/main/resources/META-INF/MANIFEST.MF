@@ -12,6 +12,5 @@ Nuxeo-Require: org.nuxeo.ecm.core.api,
  org.nuxeo.ecm.core,
  org.easysoa.registry.core,
  org.nuxeo.frascati
-Nuxeo-Component: OSGI-INF/easysoaapp-frascati-contrib.xml,
- OSGI-INF/nuxeo-frascati-service.xml,
+Nuxeo-Component: OSGI-INF/frascati-apps-component.xml,
  OSGI-INF/sca-importer-frascati-contrib.xml

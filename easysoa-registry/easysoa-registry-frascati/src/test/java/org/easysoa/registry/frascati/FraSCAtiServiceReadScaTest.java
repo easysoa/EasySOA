@@ -27,14 +27,12 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.test.EasySOACoreTestFeature;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.eclipse.stp.sca.Composite;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.frascati.test.FraSCAtiFeature;

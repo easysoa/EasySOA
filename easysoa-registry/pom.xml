@@ -45,7 +45,7 @@
     <module>easysoa-registry-rest-miner</module>
     <module>easysoa-registry-dashboard</module>
     <module>easysoa-registry-frascati</module>
-    <module>easysoa-registry-rest-frascati</module>
+    <!--<module>easysoa-registry-rest-frascati</module>-->
     <module>nuxeo-packaging</module>
   </modules>
 

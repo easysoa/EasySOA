@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.frascati.FraSCAtiApps">
+
+  <require>org.nuxeo.frascati.service</require>
+
+  <documentation>
+  <!-- 
+    The extension point of this component allows to start FraSCAti apps on startup,
+    by specifying a jar location and its .composite filename. Example:
+    
+    <extension target="org.easysoa.registry.frascati.FraSCAtiApps" point="apps">
+      <app>
+          <jarPath>./frascati/apps/app.jar</jarPath>
+          <compositeName>myComposite</compositeName>
+      </app>
+    </extension>
+    
+    @author mkalam-alami
+   -->
+  </documentation>
+
+  <implementation class="org.easysoa.registry.frascati.FraSCAtiAppComponent" />
+
+  <extension-point name="apps">
+    <object class="org.easysoa.registry.frascati.FraSCAtiAppDescriptor" />
+  </extension-point>
+  
+</component>

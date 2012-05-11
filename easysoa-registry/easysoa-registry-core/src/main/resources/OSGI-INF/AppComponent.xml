@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.core.service.AppComponent">
-
+<!-- 
   <documentation>
     App management component
     @author Jeremie guillemotte
@@ -15,5 +15,5 @@
   <extension-point name="apps">
     <object class="org.easysoa.app.AppDescriptor" />
   </extension-point>
-
+ -->
 </component>

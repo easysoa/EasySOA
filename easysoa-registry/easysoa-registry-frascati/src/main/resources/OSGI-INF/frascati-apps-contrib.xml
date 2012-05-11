@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.frascati.FraSCAtiApps.contrib">
+
+  <extension target="org.easysoa.registry.frascati.FraSCAtiApps" point="apps">
+    <app name="EasySOA Proxy Core HTTM Monitoring Proxy">
+      <jarPath>./frascati/apps/app.jar</jarPath>
+      <compositeName>myComposite</compositeName>
+    </app>
+  </extension>
+
+</component>
