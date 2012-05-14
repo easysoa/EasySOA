@@ -25,22 +25,22 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.UUID;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
+import org.easysoa.configurator.ProxyConfigurator;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.exchangehandler.HandlerManager;
 import com.openwide.easysoa.message.InMessage;
+import com.openwide.easysoa.proxy.properties.ProxyPropertyManager;
 import com.openwide.easysoa.util.RequestForwarder;
 
 /**
@@ -62,7 +62,9 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	// Reference on monitoring service
 	@Reference
 	HandlerManager handlerManager;
-    //public RunManager runManager;
+	
+	// Property manager
+	public static PropertyManager propertyManager;
 	
 	// Port the proxy use (used in proxy loop detection).
 	@Property
@@ -83,9 +85,25 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 * Log system initialization
 	 */
 	static {
-		ProxyConfigurator.configure();
+		ProxyConfigurator.configure(HttpDiscoveryProxy.class);
 	}
-
+	
+	/**
+	 * Constructor
+	 */
+	public HttpDiscoveryProxy(){
+        try {
+            propertyManager = new ProxyPropertyManager();
+        } catch (Exception ex) {
+            logger.warn("Error when loading the property manager, trying another method");
+            try{
+                propertyManager = new ProxyPropertyManager(ProxyPropertyManager.PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + ProxyPropertyManager.PROPERTY_FILE_NAME));                
+            } catch(Exception exc){
+                logger.error("Error when loading the property manager", exc);                
+            }
+        }
+	}
+	
 	/* (non-Javadoc)
 	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */

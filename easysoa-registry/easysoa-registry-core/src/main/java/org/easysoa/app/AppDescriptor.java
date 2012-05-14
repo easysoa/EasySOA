@@ -28,6 +28,7 @@ import org.nuxeo.common.xmap.annotation.XObject;
  * 
  * @author jguillemotte
  */
+@Deprecated
 @XObject("EasySOAApp")
 public class AppDescriptor {
 

@@ -22,7 +22,6 @@ package com.openwide.easysoa.monitoring.apidetector;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.log4j.Logger;

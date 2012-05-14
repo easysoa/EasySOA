@@ -20,6 +20,8 @@
 
 package org.easysoa.properties;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 import org.apache.log4j.Logger;
@@ -31,26 +33,71 @@ import org.apache.log4j.Logger;
  */
 public class PropertyManager {
 	
-    // TODO : Make this property file name configurable ??
-	public static final String PROPERTY_FILE_NAME = "httpDiscoveryProxy.properties";
-	
 	/**
 	 * Logger
 	 */
 	private static Logger logger = Logger.getLogger(PropertyManager.class.getName());
 
-	/**
-	 * Properties
-	 */
-	private static Properties props = null;
+    // Default property file name
+    public static final String DEFAULT_PROPERTY_FILE_NAME = "defaultProperties.properties";
+	
+	// Property manager
+	private static PropertyManager propertyManager; 
+	
+	// Properties
+	private static Properties properties = null;
+
+	// Properties file name
+	private static String propertiesFileName;
 	
 	/**
 	 * 
 	 * @param propsName The property file name
 	 * @throws Exception If the property file cannot be loaded
 	 */
-	private PropertyManager(String propsFileName) throws Exception {
-		props = PropertyManager.load(propsFileName);
+	public PropertyManager(String propsFileName) throws Exception {
+	    logger.debug("Creates a new PropertyManager ....");
+	    propertiesFileName = propsFileName;
+		properties = load(propsFileName);
+		propertyManager = this;
+	}
+	
+	/**
+	 * 
+	 * @param propsFileName
+	 * @param propsFileStream
+	 * @throws Exception
+	 */
+	public PropertyManager(String propsFileName, InputStream propsFileStream) throws Exception {
+        logger.debug("Creates a new PropertyManager ....");
+        propertiesFileName = propsFileName;
+        properties = load(propsFileStream);
+        propertyManager = this;
+	}
+	
+	/**
+	 * Returns the properties file name
+	 * @return The properties file name
+	 */
+	public String getPropertiesFileName() {
+	    return propertiesFileName;
+	}
+	
+	/**
+	 * Load a property file form an input stream
+	 * @param propsFileStream The input stream containing the property file
+	 * @return 
+	 * @throws IOException If a problem occurs
+	 */
+	protected Properties load(InputStream propsFileStream) throws Exception{
+	    logger.debug("Loading property file form input stream : '" + propsFileStream +  "'");   
+	    Properties props = new Properties();
+	    if(propsFileStream != null){
+	        props.load(propsFileStream);
+	    } else {
+	        throw new Exception("Unable to load the property file from a null input stream");
+	    }
+	    return props;	    
 	}
 	
    /**
@@ -59,26 +106,47 @@ public class PropertyManager {
     * @return Properties
     * @throws Exception If the property file cannot be loaded
     */
-   private static Properties load(String propsFileName) throws Exception {
+   protected Properties load(String propsFileName) throws Exception {
+       logger.debug("Loading property file  '" + propsFileName +  "'");
        Properties props = new Properties();
        URL url = PropertyManager.class.getClassLoader().getResource(propsFileName);
-       props.load(url.openStream());
+       if(url != null){
+           logger.debug("Property file url : " + url.toString());
+           props.load(url.openStream());
+       } else {
+           // Resource not found, trying another method
+           InputStream propFileInputStream = this.getClass().getResourceAsStream(propsFileName);
+           if(propFileInputStream != null){
+               props.load(propFileInputStream);
+           } else {
+               throw new Exception("Unable to load the property file named " + propsFileName);
+           }
+       }
        return props;
    }
-
+   
+   /**
+    * Get the current instance of property manager
+    * @return The current instance of property manager
+    * @throws Exception If the property manager is not properly initialized
+    */
+   public static PropertyManager getPropertyManager() throws Exception {
+       if(propertyManager == null){
+           throw new Exception("Property manager is not properly initialized !");
+       }
+       return propertyManager;
+   }
+   
    /**
     * Returns a property value
     * @param propertyName The property name
     * @param defaultValue The default value
     * @return The value corresponding to the property, the default value if a problem occurs
     */
-   public static String getProperty(String propertyName, String defaultValue) {
+   public String getProperty(String propertyName, String defaultValue) {
 	   String value;
 	   try{
-		   if (props == null){
-			   new PropertyManager(PROPERTY_FILE_NAME);
-		   }
-		   value = props.getProperty(propertyName);
+		   value = properties.getProperty(propertyName);
 	   }
 	   catch(Exception ex){
 		   value = defaultValue;
@@ -93,13 +161,10 @@ public class PropertyManager {
     * @param propertyName The property name
     * @return The value corresponding to the property, null if a problem occurs
     */
-   public static String getProperty(String propertyName) {
+   public String getProperty(String propertyName) {
 	   String value = null;
 	   try{
-		   if (props == null){
-			   new PropertyManager(PROPERTY_FILE_NAME);
-		   }
-		   value = props.getProperty(propertyName);		   
+		   value = properties.getProperty(propertyName);		   
 	   }
 	   catch(Exception ex){
 		   logger.error("An error occurs during the load of properties : " + ex.getMessage());

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<fragment version="1">
+
+  <extension target="web#AUTH-FILTER">
+
+    <filter>
+      <display-name>Exchange record Servlet filter</display-name>
+      <filter-name>ExchangeRecordServletFilter</filter-name>
+      <filter-class>org.easysoa.records.filters.ExchangeRecordServletFilterImpl</filter-class>
+    </filter>
+    <filter-mapping>
+      <filter-name>ExchangeRecordServletFilter</filter-name>
+      <url-pattern>/site/easysoa/*</url-pattern>
+      <dispatcher>REQUEST</dispatcher>
+      <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+  </extension>
+
+</fragment>

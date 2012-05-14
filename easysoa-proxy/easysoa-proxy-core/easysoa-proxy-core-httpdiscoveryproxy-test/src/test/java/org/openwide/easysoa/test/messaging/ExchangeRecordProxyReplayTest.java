@@ -360,7 +360,16 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
      * Delete the old exchange record file remaining in target path
      */
     protected static void cleanOldFiles(){
-    	File folder = new File(PropertyManager.getProperty("path.record.store"));
+        String storePath;
+        try{
+            storePath = PropertyManager.getPropertyManager().getProperty("path.record.store");
+        }
+        catch(Exception ex){
+            logger.error("Unable to get 'path.record.store' property value, check PropertyManager init", ex);
+            storePath = "target/stores/";
+            logger.error("Using default value : " + storePath);
+        }
+        File folder = new File(storePath);
     	File[] listOfFiles = folder.listFiles();
     	if(listOfFiles != null){
 	    	for (File file : listOfFiles) {

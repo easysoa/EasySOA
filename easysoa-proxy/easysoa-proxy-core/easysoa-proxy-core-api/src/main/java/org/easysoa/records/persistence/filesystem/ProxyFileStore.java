@@ -97,12 +97,17 @@ public class ProxyFileStore {
      */
     public ProxyFileStore() {
         store = new FileStore();
-        this.path = PropertyManager.getProperty("path.record.store");
-        this.templatePath = PropertyManager.getProperty("path.template.store");
-        this.reportPath = PropertyManager.getProperty("path.reports");
-        logger.debug("Using property 'path.record.store' for record store path = " + this.path);
-        logger.debug("Using property 'path.template.store' for template store path = " + this.templatePath);
-        logger.debug("Using property 'path.reports' for reports path = " + this.reportPath);
+        try {
+            this.path = PropertyManager.getPropertyManager().getProperty("path.record.store");
+            this.templatePath = PropertyManager.getPropertyManager().getProperty("path.template.store");
+            this.reportPath = PropertyManager.getPropertyManager().getProperty("path.reports");
+            logger.debug("Using property 'path.record.store' for record store path = " + this.path);
+            logger.debug("Using property 'path.template.store' for template store path = " + this.templatePath);
+            logger.debug("Using property 'path.reports' for reports path = " + this.reportPath);
+        }
+        catch(Exception ex){
+            logger.error("An error occurs during the ProxyFileStore initialization", ex);
+        }
     }
 
     /**

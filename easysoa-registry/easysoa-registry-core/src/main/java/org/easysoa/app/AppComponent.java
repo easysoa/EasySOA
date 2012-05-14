@@ -35,6 +35,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * 
  * @author jguillemotte
  */
+@Deprecated
 public class AppComponent extends DefaultComponent {
 
     public static final ComponentName NAME = new ComponentName(ComponentName.DEFAULT_TYPE, "org.easysoa.core.service.AppComponent");

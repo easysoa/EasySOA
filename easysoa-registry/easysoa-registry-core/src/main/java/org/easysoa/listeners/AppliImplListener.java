@@ -118,7 +118,8 @@ public class AppliImplListener implements EventListener {
                     PROP_SERVER);
 
             // Maintain internal properties
-            if (url != null && !url.isEmpty() && (server == null || server.isEmpty())) {
+            if (url != null && !url.isEmpty() && !AppliImpl.DEFAULT_APPLIIMPL_URL.equals(url)
+            		&& (server == null || server.isEmpty())) {
                 try {
                     url = PropertyNormalizer.normalizeUrl(url);
                     appliImplModel.setProperty(SCHEMA, PROP_URL, url);

@@ -49,6 +49,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-rest-miner</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
                   <artifactId>easysoa-registry-web</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
@@ -59,16 +64,16 @@
                 </artifactItem>
 
                 <!-- FraSCAti in Nuxeo -->
-                <!-- <artifactItem> -->
-                <!-- <groupId>org.nuxeo.runtime</groupId> -->
-                <!-- <artifactId>nuxeo-runtime-bridge</artifactId> -->
-                <!-- <version>${easysoa.nuxeo-bridge.version}</version> -->
-                <!-- </artifactItem> -->
-                <!-- <artifactItem> -->
-                <!-- <groupId>org.nuxeo</groupId> -->
-                <!-- <artifactId>nuxeo-frascati</artifactId> -->
-                <!-- <version>0.0-SNAPSHOT</version> -->
-                <!-- </artifactItem> -->
+                <artifactItem>
+                  <groupId>org.nuxeo.runtime</groupId>
+                  <artifactId>nuxeo-runtime-bridge</artifactId>
+                  <version>${easysoa.nuxeo-bridge.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.nuxeo</groupId>
+                  <artifactId>nuxeo-frascati</artifactId>
+                  <version>${easysoa.nuxeo-frascati.version}</version>
+                </artifactItem>
 
                 <!-- FraSCAti-related features -->
                 <artifactItem>
@@ -101,7 +106,7 @@
             </goals>
             <configuration>
               <artifactItems>
-                <!-- EasySOA modules -->
+                <!-- EasySOA APIs -->
                 <artifactItem>
                   <groupId>org.easysoa.registry.api</groupId>
                   <artifactId>easysoa-registry-api-core</artifactId>
@@ -120,6 +125,16 @@
                 <artifactItem>
                   <groupId>org.easysoa.registry.api</groupId>
                   <artifactId>easysoa-registry-api-messaging</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.proxy</groupId>
+                  <artifactId>easysoa-proxy-core-api</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.frascati</groupId>
+                  <artifactId>easysoa-frascati-service-api</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
 
@@ -182,19 +197,66 @@
                 </artifactItem>
 
                 <!-- Other needed packages -->
-                <!-- removed since Nuxeo comes with 2.3.3 -->
-                <!-- <artifactItem> -->
-                <!-- <groupId>com.sun.xml.bind</groupId> -->
-                <!-- <artifactId>jaxb-impl</artifactId> -->
-                <!-- <version>2.1.6</version> -->
-                <!-- </artifactItem> -->
                 <artifactItem>
                   <groupId>org.jvnet.jaxb2_commons</groupId>
                   <artifactId>runtime</artifactId>
                   <version>0.2.GA</version>
                 </artifactItem>
+                <artifactItem>
+                    <!-- Needed by api-messaging -->
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-io</artifactId>
+                    <version>1.3.2</version>
+                </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- Package FraSCAti libs & apps separately -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <executions>
+          <execution>
+            <id>copy-frascati-resources</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>${basedir}/../nuxeo-frascati/resources</directory>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <!-- Package bundle modules for Nuxeo -->
+          <execution>
+            <id>copy-frascati-apps</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/frascati/apps</outputDirectory>
+                <artifactItems>
+                    <artifactItem>
+                      <groupId>org.easysoa.proxy</groupId>
+                      <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+                      <version>${easysoa.version}</version>
+                    </artifactItem>
+                </artifactItems>
             </configuration>
           </execution>
         </executions>

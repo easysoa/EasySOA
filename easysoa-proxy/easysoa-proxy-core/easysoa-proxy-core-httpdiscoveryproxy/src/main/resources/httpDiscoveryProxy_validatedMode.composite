@@ -3,6 +3,8 @@
 	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
 	name="httpDiscoveryProxy">
 
+	<!-- DEPRECATED - To be updated -->
+
 	<!-- HTTP Proxy -->
 	<!-- Run with mode : Validated -->
 	<sca:component name="httpProxyService">

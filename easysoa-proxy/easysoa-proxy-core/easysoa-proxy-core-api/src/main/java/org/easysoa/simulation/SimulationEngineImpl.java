@@ -41,7 +41,7 @@ import org.osoa.sca.annotations.Scope;
  */
 @Scope("composite")
 public class SimulationEngineImpl implements SimulationEngine {
-
+    
     // Logger
     private static Logger logger = Logger.getLogger(SimulationEngineImpl.class.getName());    
     
@@ -68,6 +68,7 @@ public class SimulationEngineImpl implements SimulationEngine {
         SimulationStore store = new SimulationStore(storeName);
         FieldExtractor extractor = new FieldExtractor();
         for(ExchangeRecord exchangeRecord : exchangeRecordList){
+            logger.debug("Extracting fields for Exchange record " + exchangeRecord.getExchange().getExchangeID());
             TemplateFieldSuggestions suggestions = correlationEngine.correlateWithSubpath(exchangeRecord, 
                     extractor.getInputPathParams(exchangeRecord.getInMessage()), 
                     extractor.getInputQueryParams(exchangeRecord.getInMessage()),
@@ -95,5 +96,4 @@ public class SimulationEngineImpl implements SimulationEngine {
         templateEngine.generateTemplate(fieldSuggestions, exchangeRecord, simulationStore.getStoreName(), true);
         return method.simulate(exchangeRecord, fieldSuggestions, simulationStore, templateEngine, fieldValues);
     }
-
 }

@@ -20,13 +20,10 @@
 
 package com.openwide.easysoa.monitoring;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.monitoring.apidetector.UrlTree;
 import com.openwide.easysoa.monitoring.apidetector.UrlTreeNode;
@@ -103,8 +100,8 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 		NuxeoRegistrationService nrs = null;
         try {
             nrs = new NuxeoRegistrationService();
-        } catch (IOException e) {
-            logger.error("Failed to create Nuxeo registration service", e);
+        } catch (Exception ex) {
+            logger.error("Failed to create Nuxeo registration service", ex);
             return;
         }
 		

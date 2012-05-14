@@ -1,0 +1,156 @@
+/*
+Theme Name: EasySOA
+Version: 1.0
+Author: Marwane Kalam-Alami
+*/
+
+/*
+Color-list:
+- Light backgrounds: #FFF (white), #E5E5E5 (light grey), #DCF1FA (light blue-grey), #8D8 (flashy green), #AEA (light flashy green)
+- Dark backgrounds: #555
+- Light texts: #FFF, #335A8B (links)
+- Dark texts: #111 (menus), #111 (content)
+- Borders: #496 (dark green), #CCC (light grey)
+*/
+
+* { margin: 0; padding: 0; }
+body { background-color: #DCF1FA; font: 15px Arial, Helvetica, FreeSans, sans-serif; color: #111; }
+h2 { background-color: #555; color: #FFF; font-size: 15px; font-weight: normal; padding: 7px; margin-bottom: 15px; }
+a { text-decoration: none; color: #335A8B; font-weight: bold; }
+h2 a { color: #FFF; }
+h3 { font-size: 16px; padding: 5px 0 5px 15px; }
+h3 a { margin-top: -20px }
+h4 { font-size: 17px; font-weight: normal; padding: 20px; padding-top: 5px }
+p { margin-bottom: 8px; text-align: justify }
+table { width: 95%; margin: auto; border-collapse:collapse; margin-bottom: 20px }
+td { padding: 7px; border: 1px solid #DDD }
+ul { margin-left: 30px; margin-bottom: 5px }
+li { list-style-type: square; padding-left: 5px; margin-left: 10px }
+p object { border: 1px solid #DDD; } /* For videos */
+a img { border: 0 }
+
+
+#top { font-size: 13px; width: 100%; height: 68px; background: url('img/menuTopBg.png'); overflow: hidden; }
+#top .link { font-size: 13px; float: left; color: #123; background-color: #8D8; margin-top: 16px; padding-top: 6px; padding-left: 20px;
+  padding-right: 20px; text-align: center; height: 24px; display: block; border: 1px solid #496; margin-left: -1px; }
+#top .link:hover { background-color: #AEA; }
+#top a { font-weight: normal; }
+#top h2 { display: none }
+#topWidgets { float: right; height: 40px; margin-top: 10px; overflow: hidden; width: 24%; }
+#topWidgets li { list-style-type: none; }
+.topWidget { float: right; padding-left: 20px; padding-right: 20px; border-right: 1px solid #335A8B; text-align: right; }
+.topWidget:first-child { border: none }
+.topWidget form { line-height: 43px }
+.topWidget ul { margin-top: 5px }
+#topMenuWrap { float: left; width: 75%; }
+/*#topMenu { margin: auto; width: 680px; height: 65px; z-index: 2; padding-left: 18% }*/
+#topMenu { font: 13px Verdana, Arial, sans-serif; margin: auto; width: 900px; height: 65px; z-index: 2; padding-left: 6% }
+#topLogo { float: left; padding-top: 10px; margin-right: 50px; }
+#topLinks { float: left; width: 60%; text-align: center; }
+
+#bottom {  font: 13px Verdana, Arial, sans-serif; width: 100%; height: 250px; border-top: 2px solid #555; }
+#bottomContent { margin: auto; padding-left: 30px; width: 900px; text-align: left; }
+#bottomContent > div { list-style-type: none; float: left; width: 250px; height: 150px; border-left: 1px solid #555; margin: 15px; padding-left: 10px; }
+#bottomContent .menu { list-style-type: none; font-weight: bold; }
+#bottomContent .sub-menu { list-style-type: none; margin-left: 15px; }
+#bottomContent li a { width: 100%; display: block }
+#bottomContent h3 { padding-left: 0; }
+
+#center { background: url('img/contentBg.png') #AACCDD; background-repeat: repeat-x; }
+#content { min-width: 600px; max-width: 930px; margin: auto; overflow: auto; padding-bottom: 20px }
+#content ul { margin-right: 30px; text-align: justify }
+.contenttext img { border: 1px solid #CCC; margin: 8px; }
+.contenttext  img.wp-smiley { border-width: 0px; margin: 0; }
+
+#left { width: 68%; background-color: #FFF; color: #111; border: 1px solid #666; border-top: 0; float: left;
+  border-bottom-left-radius: 20px; -moz-border-bottom-left-radius: 20px; -webkit-border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px; -moz-border-bottom-right-radius: 20px; -webkit-border-bottom-right-radius: 20px; } 
+#left div div { padding: 10px } 
+#left p { padding: 20px; padding-top: 5px; padding-bottom: 5px; line-height: 20px; }
+#right {  font: 13px Verdana, Arial, sans-serif; width: 30%; background-color: #FFF; border: 1px solid #666; border-top: 0; float: left; margin-left: 10px;
+  border-bottom-left-radius: 20px; -moz-border-bottom-left-radius: 20px; -webkit-border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px; -moz-border-bottom-right-radius: 20px; -webkit-border-bottom-right-radius: 20px; }
+#right ul {  margin-left: 5px; margin-bottom: 15px; }
+#right li {  list-style-type: square; margin-left: 25px; }
+#right .widget_categoryposts li {  list-style-type: none; margin-left: 15px; padding-left: 8px; border-left: 2px solid #335A8B; margin-bottom: 15px }
+#right form { padding: 10px; }
+
+.timestamp { background-color: #e5e5e5; font-size: 12px; margin-top: 5px; }
+.contenttext { padding-bottom: 20px }
+.comment { padding-bottom: 10px }
+.gravatarside { width: 50px; float: left }
+.commenticon { color: #234; font-size: 12px; background-color: #e5e5e5 }
+.postmeta { background-color: #DCF1FA; width: 150px; float: right; text-align: right; line-height: 17px !important; font-size: 11px }
+.post { overflow: auto }
+.widget_links { margin-bottom: 15px; }
+.meta_enhanced h2 { display: none }
+.alignleft { float: left }
+.alignright { float: right }
+.aligncenter { margin: auto }
+.syntaxhighlighter { padding: 0 !important; border: 1px solid #E5E5E5; }
+.wp-caption-text { font-size: 11px; background-color: #E5E5E5; font-style: italic; margin-right:10px; margin-top: -5px; border: 1px solid #CCC; margin-right: 8px }
+.cat-post-item { padding-right: 10px; }
+.noborder { border: 0 !important; }
+
+#postnav { overflow: auto; clear: both; }
+#postnav p { width: 45%; float: left; text-align: right; padding: 0; padding-left: 5px; }
+#postnav p:first-child { text-align: left; }
+#menu-top-links a { font-weight: normal; }
+#menu-top-links li { list-style-type: none; }
+#menu-top-links { margin-left: 0; line-height: 15px; }
+
+/* Forms */
+#commentform input[type='submit'] { margin-left: 30px; margin-top: 10px; padding: 5px }
+#commentform input[type='text'] { width: 300px }
+#commentform textarea { padding: 5px; width: 95%; height: 100px; }
+#commentform label { font-weight: bold; padding-left: 10px; }
+
+/* JavaScript menus */
+.dropdown { float:left; margin-top: 16px; }
+.dropdown dt { color: #123; background-color: #8D8; padding-top: 6px; padding-left: 20px; padding-right: 20px; height: 24px; cursor:pointer; border: 1px solid #496; margin-left: -1px; }
+.dropdown dt:hover { background-color: #AEA; }
+.dropdown dd { position:absolute; overflow:hidden; width:208px; display:none; z-index:200; opacity:0; margin-top: -1px; }
+.dropdown ul { width:204px; border:1px solid #496; list-style:none; margin: 0 }
+.dropdown li { display:inline; margin: 0; padding: 0 }
+.dropdown a, .dropdown a:active, .dropdown a:visited {display:block; padding:5px; color: #145; text-decoration:none; background:#FFF; width:194px}
+.dropdown a:hover { background: #AEA; color:#000 }
+.dropdown .underline { border-bottom:1px solid #496 }
+.dropdown li:last-child .underline { border: none }
+
+.minilogo { width: 45% !important; float: left; margin-bottom: 7px; }
+.highlight { font-size: 120%; font-weight: bold; color: #379 }
+
+/* Syntax Highlighter overrides */
+.syntaxhighlighter .line { font-size: 10pt !important; }
+
+/* Footnotes plugin overrides */
+ol.footnotes { margin-left: 30px; margin-top: 20px; }
+
+/* Small-screens/mobiles compatibility */  
+
+@media only screen and (max-width: 920px) {
+  #topWidgets { display: none }
+}
+
+@media only screen and (max-width: 790px) {
+  #right { display: none; }
+  #left { width: 100% !important; border: 0 !important; }
+  #bottom > div > div:last-child { display: none }
+  #top .link { padding: 6px; }
+  .dropdown dt { padding: 6px; }
+  .dropdown a, .dropdown a:active, .dropdown a:visited { width: 100px }
+  .dropdown ul { width: 110px; }
+}
+
+@media only screen and (max-device-width: 480px) {
+  #right { display: none; }
+  #left { width: 100% !important; border: 0 !important; }
+  #bottom > div > div:last-child { display: none }
+  #top .link { padding: 6px; }
+  .dropdown dt { padding: 6px; }
+  #topWidgets { display: none }
+  
+  /* Font sizes */
+  body, #bottom, #topMenu, #top .link, #left p, #menu-top-links { font-size: 30px; line-height: 35px !important; }
+  h1, h2, h3, h4 { font-size: 35px; }
+}

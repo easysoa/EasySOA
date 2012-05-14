@@ -58,7 +58,7 @@ public class TemplateEngineImpl implements TemplateEngine {
     /**
      * 
      */
-    public TemplateEngineImpl(){
+    public TemplateEngineImpl() {
         this.fileStore = new ProxyFileStore();
     }
     

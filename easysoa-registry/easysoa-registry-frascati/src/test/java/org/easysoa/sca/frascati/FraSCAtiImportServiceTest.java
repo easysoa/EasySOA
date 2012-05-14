@@ -31,7 +31,6 @@ import org.easysoa.doctypes.AppliImpl;
 import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceReference;
-import org.easysoa.registry.frascati.NxFraSCAtiRegistryService;
 import org.easysoa.sca.IScaImporter;
 import org.easysoa.sca.extension.ScaImporterComponent;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
@@ -61,6 +60,7 @@ import com.google.inject.Inject;
  * 
  * @author mdutoo
  */
+//TODO Update with new API
 @RunWith(FeaturesRunner.class) 
 @Features({ EasySOACoreTestFeature.class, FraSCAtiFeature.class }) 
 @Deploy({ "org.easysoa.registry.frascati" })
@@ -73,14 +73,13 @@ public class FraSCAtiImportServiceTest
     @Inject ResourceService resourceService;
     DocumentModel parentAppliImplModel;
     @Inject ScaImporterComponent scaImporterComponent;
-    @Inject NxFraSCAtiRegistryService frascatiRegistryService;
+   // @Inject NxFraSCAtiRegistryService frascatiRegistryService;
 
     @Before 
     public void setUp() throws Exception
     {
         // FraSCAti
-        assertNotNull("Cannot get FraSCAti service component",
-                frascatiRegistryService);
+        //assertNotNull("Cannot get FraSCAti service component", frascatiRegistryService);
         // Find or create appli
         String appliUrl = "http://localhost";
         parentAppliImplModel = docService.findAppliImpl(session, appliUrl);

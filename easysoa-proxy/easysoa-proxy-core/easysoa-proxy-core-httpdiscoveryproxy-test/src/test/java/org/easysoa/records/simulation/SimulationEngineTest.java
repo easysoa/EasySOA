@@ -47,7 +47,7 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
      * @throws Exception 
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception{
         // Start FraSCAti
         startFraSCAti();
         // Start HTTP proxy
@@ -102,12 +102,12 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         SimulationEngine simulationEngine = replayEngine.getSimulationEngine();
         
         // Send a request to the replay service
+        logger.debug("Getting simulation store ...");
         SimulationStore simulationStore = simulationEngine.getSimulationStoreFromSuggestion("testSimulationStore", recordList);
         fileStore.saveSimulationStore(simulationStore);
-        
         for(ExchangeRecord record : recordList){
-            Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();             
-            // TODO : add test for field values
+            Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();
+            // TODO : add test for field values            
             ExchangeRecord simulatedResponse = simulationEngine.simulate(record, simulationStore, new SimpleSimulationMethod(), replayEngine.getTemplateEngine(), fieldValues);
             // Works but the test data set is not appropriated
             // Find a data set with output fields to really check the simulation engine 
