@@ -22,27 +22,13 @@
        <groupId>org.easysoa.frascati</groupId>
        <artifactId>easysoa-frascati-service-api</artifactId>
        <scope>provided</scope>
-    </dependency>
-    
+    </dependency>    
+    <dependency>
+    	<groupId>org.easysoa.registry.api</groupId>
+  		<artifactId>easysoa-remote-frascati</artifactId>
+    	<version>0.4-SNAPSHOT</version>
+    </dependency>    
     <!-- FraSCAti -->
-    <dependency>
-       <groupId>org.ow2.frascati.osgi</groupId>
-       <artifactId>frascati-osgi-util</artifactId>
-       <version>${frascati.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-introspection-api</artifactId>
-      <version>${frascati.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati.model</groupId>
-      <artifactId>sca-model</artifactId>
-      <version>${model.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
     <!-- Nuxeo -->
     <dependency>
       <groupId>org.nuxeo.runtime</groupId>
@@ -50,17 +36,6 @@
       <scope>provided</scope>
     </dependency>
     
-    <!-- Other -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>ecore</artifactId>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -1239,6 +1214,11 @@
                   <artifactId>frascati-starter</artifactId>
                   <version>${frascati.version}</version>
                 </artifactItem>
+                <artifactItem>
+		           <groupId>org.ow2.frascati.osgi</groupId>
+		           <artifactId>frascati-osgi-util</artifactId>
+		           <version>${frascati.version}</version>
+            	</artifactItem>
                 <artifactItem>
                   <groupId>org.ow2.jonas.osgi</groupId>
                   <artifactId>monolog</artifactId>

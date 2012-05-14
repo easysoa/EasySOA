@@ -19,78 +19,45 @@
  */
 package org.nuxeo.frascati;
 
-import java.lang.management.ManagementFactory;
-import java.util.Set;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
-import org.easysoa.frascati.api.FraSCAtiServiceItf;
-import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
-import org.nuxeo.frascati.factory.ClassLoaderSingleton;
+import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
 import org.nuxeo.runtime.bridge.Application;
-import org.ow2.frascati.util.reflect.ReflectionHelper;
 
 
 /**
- * Implementation of the FraSCAtiServiceProviderItf interface 
- * NuxeoFraSCAti allow to instantiate an new FraSCAti instance in Nuxeo
+ * NuxeoFraSCAti is a RemoteFraSCAtiServiceProvider in a Nuxeo Context
  */
-public class NuxeoFraSCAti
-implements Application, FraSCAtiServiceProviderItf
+public class NuxeoFraSCAti extends RemoteFraSCAtiServiceProvider implements Application
 {
-
     Logger log = Logger.getLogger(NuxeoFraSCAti.class.getCanonicalName());
-
-    private ReflectionHelper frascati = new ReflectionHelper(
-            ClassLoaderSingleton.classLoader(), "org.ow2.frascati.FraSCAti");
-
-    private FraSCAtiServiceItf frascatiService;
+    private static File EMPTY_LIB_DIRECTORY; 
+    static
+    {
+        try
+        {
+            File tmpDir = File.createTempFile("nuxeo_frascati", ".tmp");
+            tmpDir.delete();
+            tmpDir.getParentFile();
+            EMPTY_LIB_DIRECTORY = new File(tmpDir.getAbsolutePath() + 
+                    File.separator + "nuxeo_frascati");
+            EMPTY_LIB_DIRECTORY.mkdir();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }        
+    }
     
     /**
      * Constructor
-     * 
-     * @throws NuxeoFraSCAtiException
+     * @throws Exception 
      */
-    public NuxeoFraSCAti() throws NuxeoFraSCAtiException
+    public NuxeoFraSCAti() throws Exception
     {
-
-        log.log(Level.INFO, "new FraSCAti instance initialisation");
-        frascati.set(frascati.invokeStatic("newFraSCAti"));
-
-        if (frascati.get() != null)
-        {
-            ReflectionHelper compositeManager  = new ReflectionHelper(
-                    ClassLoaderSingleton.classLoader(),
-                    "org.ow2.frascati.assembly.factory.api.CompositeManager");
-            
-            compositeManager.set(frascati.invoke("getCompositeManager"));                        
-            
-            ReflectionHelper component = new ReflectionHelper(
-                    ClassLoaderSingleton.classLoader(),
-                    "org.objectweb.fractal.api.Component");
-
-            component.set(compositeManager.invoke("getTopLevelDomainComposite"));
-            
-            component = getComponent(component,
-                    "org.ow2.frascati.FraSCAti/assembly-factory");
-           
-            frascatiService = (FraSCAtiServiceItf) frascati.invoke("getService",
-                    new Class<?>[]{component.getReflectedClass(), 
-                    String.class,Class.class},
-                    new Object[]{component.get(),"easysoa-frascati-service", 
-                    FraSCAtiServiceItf.class});
-        }
-    }
-
-    public FraSCAtiServiceItf getFraSCAtiService()
-    {
-        return frascatiService;
+        super(EMPTY_LIB_DIRECTORY);
     }
     
     /*
@@ -115,127 +82,12 @@ implements Application, FraSCAtiServiceProviderItf
      */
     public void destroy()
     {
-        if(frascati == null)
-        {
-            return;
-        }
-        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name;
         try
         {
-            name = new ObjectName("SCA domain:name0=*,*");
-            Set<ObjectName> names = mbs.queryNames(name, name);
-            for (ObjectName objectName : names)
-            {
-                mbs.unregisterMBean(objectName);
-            }
-            mbs.unregisterMBean(new ObjectName(
-                    "org.ow2.frascati.jmx:name=FrascatiJmx"));
-        } catch (MalformedObjectNameException e)
+            super.stopFraSCAtiService();
+        } catch (Exception e)
         {
-            // e.printStackTrace();
-        } catch (NullPointerException e)
-        {
-            // e.printStackTrace();
-        } catch (MBeanRegistrationException e)
-        {
-            // e.printStackTrace();
-        } catch (InstanceNotFoundException e)
-        {
-            // e.printStackTrace();
+            log.log(Level.WARNING,e.getMessage(),e);
         }
-        
-        ReflectionHelper compositeManager  = new ReflectionHelper(
-                ClassLoaderSingleton.classLoader(),
-                "org.ow2.frascati.assembly.factory.api.CompositeManager");
-        
-        compositeManager.set(frascati.invoke("getCompositeManager"));
-        
-        ReflectionHelper component = new ReflectionHelper(
-                ClassLoaderSingleton.classLoader(),
-                "org.objectweb.fractal.api.Component");
-        
-        component.set(compositeManager.invoke("getTopLevelDomainComposite"));
-        
-        component =  getComponent(component,
-                "org.ow2.frascati.FraSCAti/assembly-factory");
-        
-        ReflectionHelper lifeCycleController = new ReflectionHelper(
-                ClassLoaderSingleton.classLoader(),
-                "org.objectweb.fractal.api.control.LifeCycleController");
-        
-        lifeCycleController.set(component.invoke("getFcInterface",
-                new Class<?>[]{String.class},
-                new Object[]{"lifecycle-controller"}));
-        
-        lifeCycleController.invoke("stopFc");
-        
-        frascati = null;
-        frascatiService = null;
-    }
-    
-    private ReflectionHelper getComponent(ReflectionHelper currentComponent,
-            String componentPath)
-    {
-        String[] componentPathElements = componentPath.split("/");
-        String lookFor = componentPathElements[0];
-        String next = null;
-        
-        if(componentPathElements.length>1)
-        {
-            int n = 1;
-            StringBuilder nextSB = new StringBuilder();
-            for(;n<componentPathElements.length;n++)
-            {
-                nextSB.append(componentPathElements[n]);
-                if(n<componentPathElements.length - 1)
-                {
-                    nextSB.append("/");
-                }
-            }
-            next = nextSB.toString();
-        }        
-        ReflectionHelper contentController = new ReflectionHelper(
-                ClassLoaderSingleton.classLoader(),
-                "org.objectweb.fractal.api.control.ContentController");
-        
-        contentController.set(currentComponent.invoke("getFcInterface",
-                new Class<?>[]{String.class},
-                new Object[]{"content-controller"}));        
-
-        ReflectionHelper component = new ReflectionHelper(
-                ClassLoaderSingleton.classLoader(),
-                "org.objectweb.fractal.api.Component");
-
-        ReflectionHelper nameController = new ReflectionHelper(
-                ClassLoaderSingleton.classLoader(),
-                "org.objectweb.fractal.api.control.NameController");
-        
-        Object[] subComponents = (Object[]) 
-                contentController.invoke("getFcSubComponents");
-        
-        if(subComponents == null)
-        {
-            return null;
-        }
-        for(Object o : subComponents)
-        {
-            component.set(o);
-            nameController.set(component.invoke("getFcInterface",
-                    new Class<?>[]{String.class},
-                    new Object[]{"name-controller"}));
-            String name = (String) nameController.invoke("getFcName");
-            if(lookFor.equals(name))
-            {
-                if(next == null || next.length() ==0)
-                {
-                    return component;
-                } else 
-                {
-                    return getComponent(component,next);
-                }
-            }
-        }
-        return null;
     }
 }
