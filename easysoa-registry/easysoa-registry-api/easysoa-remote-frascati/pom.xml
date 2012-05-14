@@ -1178,6 +1178,11 @@
                   <version>${frascati.version}</version>
                 </artifactItem>
                 <artifactItem>
+		           <groupId>org.ow2.frascati.osgi</groupId>
+		           <artifactId>frascati-osgi-util</artifactId>
+		           <version>${frascati.version}</version>
+            	</artifactItem>
+                <artifactItem>
                   <groupId>org.ow2.jonas.osgi</groupId>
                   <artifactId>monolog</artifactId>
                   <version>5.1.1</version>
