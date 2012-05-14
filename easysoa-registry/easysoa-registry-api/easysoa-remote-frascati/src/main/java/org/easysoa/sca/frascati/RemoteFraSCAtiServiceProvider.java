@@ -98,15 +98,15 @@ public class RemoteFraSCAtiServiceProvider implements
                     
                 });
         
-        //Define a new URLClassLoader using a parent which allow to find shared 
-        //classes
-        icl = new UpdatableURLClassLoader(getClass().getClassLoader());
-        
-        for(File library : libraries)
+        //Define a new URLClassLoader using a parent which allow to find shared classes
+        icl = new UpdatableURLClassLoader(Thread.currentThread().getContextClassLoader());
+        if(libraries != null)
         {
-           icl.addURL(library.toURI().toURL()); 
+            for(File library : libraries)
+            {
+               icl.addURL(library.toURI().toURL()); 
+            }
         }
-        
         Class<?> frascatiClass = icl.loadClass("org.ow2.frascati.FraSCAti");
         
         ClassLoader current = Thread.currentThread().getContextClassLoader();
@@ -115,8 +115,7 @@ public class RemoteFraSCAtiServiceProvider implements
         try
         {
         frascati = frascatiClass.getDeclaredMethod("newFraSCAti").invoke(null);
-//                ,
-//                new Class<?>[]{ClassLoader.class}).invoke(null,
+//                ,new Class<?>[]{ClassLoader.class}).invoke(null,
 //                        new Object[]{icl});
         } catch(Exception e)
         {
