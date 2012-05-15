@@ -227,7 +227,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}</outputDirectory>
+              <outputDirectory>${project.build.directory}/nxserver</outputDirectory>
               <resources>          
                 <resource>
                   <directory>${basedir}/../nuxeo-frascati/resources</directory>
@@ -249,7 +249,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/frascati/apps</outputDirectory>
+              <outputDirectory>${project.build.directory}/nxserver/frascati/apps</outputDirectory>
                 <artifactItems>
                     <artifactItem>
                       <groupId>org.easysoa.proxy</groupId>
