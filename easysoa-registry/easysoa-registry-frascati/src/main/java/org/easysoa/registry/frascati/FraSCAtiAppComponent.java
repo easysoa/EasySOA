@@ -37,6 +37,7 @@ public class FraSCAtiAppComponent extends DefaultComponent {
 
 	@Override
 	public void activate(ComponentContext context) throws Exception {
+	    // TODO : there is a problem here, this method is called to early, frascati service is not yet initialized
 		try {
 	        frascatiService = (FraSCAtiServiceItf) Framework.getLocalService(
 	        		FraSCAtiServiceProviderItf.class).getFraSCAtiService();
@@ -56,7 +57,6 @@ public class FraSCAtiAppComponent extends DefaultComponent {
 			frascatiService.remove(value);
 		}
 	}
-	
 	
 	@Override
 	public void registerContribution(Object contribution,
