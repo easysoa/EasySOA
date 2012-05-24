@@ -34,6 +34,10 @@
       <groupId>org.nuxeo.runtime</groupId>
       <artifactId>nuxeo-runtime-bridge</artifactId>
       <scope>provided</scope>
+    </dependency>    
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-event</artifactId>
     </dependency>
     
   </dependencies>

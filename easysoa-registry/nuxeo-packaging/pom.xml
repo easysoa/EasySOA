@@ -173,17 +173,6 @@
                   <artifactId>cxf-common-utilities</artifactId>
                   <version>2.4.2</version>
                 </artifactItem>
-
-                <!-- FraSCAti in Nuxeo (should be deployed as bundles when stable) -->
-                <artifactItem>
-                  <groupId>org.nuxeo.runtime</groupId>
-                  <artifactId>nuxeo-runtime-bridge</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.nuxeo</groupId>
-                  <artifactId>nuxeo-frascati</artifactId>
-                  <version>0.0-SNAPSHOT</version>
-                </artifactItem>
                 
                 <!-- Required dependencies for FraSCAti in Nuxeo -->
 				<artifactItem>
@@ -319,6 +308,9 @@
               <resources>          
                 <resource>
                   <directory>${basedir}/../nuxeo-frascati/resources</directory>
+                  <excludes>
+                    <exclude>**/frascati-web-explorer*</exclude>
+                  </excludes>
                 </resource>
               </resources>
             </configuration>
@@ -357,27 +349,31 @@
           </execution>
         </executions>
       </plugin>
-      
+    
+      <!-- Package FraSCAti apps -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <dependencies>
+            <dependency>
+                <groupId>ant-contrib</groupId>
+                <artifactId>ant-contrib</artifactId>
+                <version>20020829</version>
+            </dependency>
+        </dependencies>
         <executions>
-          <!-- Package bundle modules for Nuxeo -->
           <execution>
-            <id>copy-frascati-apps</id>
+            <id>unpack</id>
             <phase>package</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>run</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/nxserver/frascati/apps</outputDirectory>
-                <artifactItems>
-                    <artifactItem>
-                      <groupId>org.easysoa.proxy</groupId>
-                      <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-                      <version>${easysoa.version}</version>
-                    </artifactItem>
-                </artifactItems>
+                <target>
+                    <!-- List the FraSCAti applications to export here (separated by ','s) -->
+                    <property name="frascati.applications" value="${basedir}/../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip" />
+                    <ant antfile="build.xml" target="unzip-apps" />
+                </target>
             </configuration>
           </execution>
         </executions>

@@ -11,6 +11,9 @@ public class FraSCAtiAppDescriptor {
     
     @XNode("jarPath")
 	public String jarPath;
+    
+    @XNode("libsPath")
+    public String libsPath;
 
     @XNode("compositeName")
 	public String compositeName; 

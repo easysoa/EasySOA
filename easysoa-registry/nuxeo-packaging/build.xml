@@ -1,0 +1,17 @@
+<project name="Nuxeo Packaging : Unzip FraSCAti applications" basedir=".">
+
+  <description>
+    Target to unzip all specified FraSCAti applications
+  </description>
+  
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
+  <target name="unzip-apps">
+    <foreach list="${frascati.applications}" param="application" target="unzip-app" />
+  </target>
+
+  <target name="unzip-app">
+    <unzip src="${application}" dest="target/nxserver/frascati/apps" />
+  </target>
+
+</project>

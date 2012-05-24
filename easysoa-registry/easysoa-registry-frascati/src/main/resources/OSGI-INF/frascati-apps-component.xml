@@ -10,7 +10,7 @@
     
     <extension target="org.easysoa.registry.frascati.FraSCAtiApps" point="apps">
       <app>
-          <jarPath>./frascati/apps/app.jar</jarPath>
+          <jarPath>nxserver/frascati/apps/app.jar</jarPath>
           <compositeName>myComposite</compositeName>
       </app>
     </extension>

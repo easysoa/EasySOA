@@ -29,7 +29,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.nuxeo.common.Environment;
+import org.nuxeo.ecm.core.event.EventProducer;
 import org.nuxeo.frascati.NuxeoFraSCAti;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.bridge.Application;
 import org.nuxeo.runtime.bridge.ApplicationDescriptor;
 import org.nuxeo.runtime.bridge.ApplicationFactory;
@@ -115,7 +117,13 @@ public class FraSCAtiFactory implements ApplicationFactory
         {
             log.log(Level.WARNING, "No ApplicationDescriptor found");
         }
+        
         NuxeoFraSCAti service = new NuxeoFraSCAti();
+        
+        // Notify Nuxeo that NuxeoFraSCAti has been launched
+        EventProducer eventProducer = Framework.getService(EventProducer.class);
+        eventProducer.fireEvent(new NuxeoFraSCAtiStartedEvent(service.getFraSCAtiService()));
+        
         return service;
     }
 }
