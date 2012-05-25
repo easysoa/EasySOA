@@ -11,6 +11,7 @@
   </target>
 
   <target name="unzip-app">
+  	<echo message="Unzipping app ${application}..."/>
     <unzip src="${application}" dest="target/nxserver/frascati/apps" />
   </target>
 
