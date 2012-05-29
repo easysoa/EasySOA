@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="templateEngine">
+
+	<!-- Template engine -->
+	<sca:component name="templateEngineComponent">
+		<sca:service name="templateEngineService">
+			<sca:interface.java interface="org.easysoa.template.TemplateEngine" />
+		</sca:service>
+		<sca:implementation.java class="org.easysoa.template.TemplateEngineImpl" />
+		<sca:reference name="templateRenderer" target="TemplateProcessor" />
+	</sca:component>
+
+	<!--  Template processor -->
+	<sca:service name="processor" promote="TemplateProcessor/processor"/>
+
+	<!-- Component for proxy implementation Velocity -->
+	<sca:component name="TemplateProcessor">
+		<sca:implementation.java class="org.easysoa.template.TemplateRenderer" />
+		<sca:service name="processor">
+			<sca:interface.java interface="org.easysoa.template.TemplateProcessorRendererItf" />
+		</sca:service>
+		<sca:reference name="template">
+			<sca:interface.java interface="org.easysoa.template.TemplateRendererItf" />
+		</sca:reference>
+	</sca:component>
+
+	<sca:component name="ProxyWSTemplate">
+		<implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="webContent/templates" default="template.vm" />
+		<sca:service name="template">
+			<sca:interface.java interface="org.easysoa.template.TemplateRendererItf" />
+		</sca:service>
+		<sca:property name="pathArgIndex">0</sca:property> <!--type="xsd:int"-->
+		<sca:property name="storeIndex">1</sca:property> <!--type="xsd:int"-->
+	</sca:component>
+	<sca:wire source="TemplateProcessor/template" target="ProxyWSTemplate/template" />
+
+</sca:composite>
