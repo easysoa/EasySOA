@@ -44,6 +44,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
@@ -79,7 +80,8 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 */
 	@Before
 	public void setUp() throws Exception{
-		// Start fraSCAti
+	    PropertyManager propertyManager = new PropertyManager("httpDiscoveryProxy.properties", this.getClass().getResourceAsStream("/" + "httpDiscoveryProxy.properties"));
+	    // Start fraSCAti
 		startFraSCAti();
 		// Start Http Discovery proxy
 		try {

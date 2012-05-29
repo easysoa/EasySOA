@@ -30,6 +30,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
@@ -65,7 +66,8 @@ public class ExchangeRecordStoreTest extends AbstractProxyTestStarter {
 	 */
 	@Before
 	public void setUp() throws Exception{
-		// Start fraSCAti
+	    PropertyManager propertyManager = new PropertyManager("httpDiscoveryProxy.properties", this.getClass().getResourceAsStream("/" + "httpDiscoveryProxy.properties"));
+	    // Start fraSCAti
 		startFraSCAti();
 		// Start mock services
 		startMockServices(false, true, true);
