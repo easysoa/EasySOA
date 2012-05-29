@@ -76,6 +76,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	 */
 	@Before
 	public void setUp() throws Exception {
+	    PropertyManager propertyManager = new PropertyManager("httpDiscoveryProxy.properties", this.getClass().getResourceAsStream("/" + "httpDiscoveryProxy.properties"));
 		// clean the old exchange records files
 		cleanOldFiles();
 		// Start fraSCAti
