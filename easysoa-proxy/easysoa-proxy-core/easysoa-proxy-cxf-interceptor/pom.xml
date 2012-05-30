@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>easysoa-proxy-cxf-interceptor</artifactId>
+  <name>EasySOA Proxy core cxf interceptor</name>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>org.easysoa.proxy</groupId>
+    <artifactId>easysoa-proxy-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+  	<!-- Apache CXF -->
+  	<dependency>
+	  <groupId>org.apache.cxf</groupId>
+	  <artifactId>cxf-api</artifactId>
+	  <scope>compile</scope>
+  	</dependency>
+  	<dependency>
+	  <groupId>org.apache.cxf</groupId>
+	  <artifactId>cxf-rt-frontend-simple</artifactId>
+	  <version>${cxf.version}</version>
+	  <scope>compile</scope>
+  	</dependency>
+  	<dependency>
+	  <groupId>org.apache.xmlgraphics</groupId>
+	  <artifactId>batik-ext</artifactId>
+	  <version>1.7</version>
+	  <scope>compile</scope>
+  	</dependency>
+  
+  	<!-- Easysoa proxy core API -->
+  	<dependency>
+	  <groupId>org.easysoa.proxy</groupId>
+	  <artifactId>easysoa-proxy-core-api</artifactId>
+	  <scope>compile</scope>  	
+  	</dependency>
+  
+  	<!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
