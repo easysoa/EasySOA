@@ -207,32 +207,9 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<runOrder>alphabetical</runOrder>
-					<!--<forkMode>always</forkMode> -->
-					<!--<childDelegation>true</childDelegation> -->
-					<excludes>
-						<!-- We have a problem when we try to execute the 2 full mocked test 
-							in the same time -->
-						<!-- so temporary solution is to deactivate the full mocked test for 
-							validated mode -->
-						<exclude>**/FullMockedValidatedModeProxyTest.java</exclude>
-						<exclude>**/FullMockedDiscoveryModeProxyTest.java</exclude>
-						<!-- These tests require an external nuxeo to work ! -->
-						<exclude>**/PartiallyMockedDiscoveryModeProxyTest.java</exclude>
-						<exclude>**/PartiallyMockedValidatedModeProxyTest.java</exclude>
-
-						<!-- these tests should only work when the corresponding bugs are patched 
-							: -->
-						<exclude>**/FraSCAtiBindingHttpCloseBugTest.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.ow2.frascati.mojo</groupId>
 				<artifactId>frascati-compiler-plugin</artifactId>
+				<version>1.5-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<id>compile-composite</id>
@@ -243,8 +220,10 @@
 					</execution>
 				</executions>
 				<configuration>
+					<composites>
+						<composite>httpDiscoveryProxy</composite>
+					</composites>
 					<loggingConfFile>${frascati.logging.properties}</loggingConfFile>
-					<composite>httpDiscoveryProxy.composite</composite>
 					<lifecycleMappingMetadata>
 						<pluginExecutions>
 							<pluginExecution>
@@ -277,6 +256,11 @@
 						<version>${project.version}</version>
 					</dependency>
 					<dependency>
+						<groupId>org.easysoa.proxy</groupId>
+						<artifactId>easysoa-proxy-core-api-frascati</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+					<dependency>
 						<!-- THIS DEPENDENCY MUST BE ACCESSIBLE TO FRASCATI -->
 						<groupId>org.apache.httpcomponents</groupId>
 						<artifactId>httpclient</artifactId>
@@ -284,10 +268,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<!--<plugin> <artifactId>maven-jar-plugin</artifactId> <configuration> 
-				<outputDirectory>${project.basedir}/../../../easysoa-distribution/easysoa/frascati/lib</outputDirectory> 
-				</configuration> </plugin> -->
-			<!-- Packaging of jar with dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
