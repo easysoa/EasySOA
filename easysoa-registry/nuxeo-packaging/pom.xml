@@ -388,7 +388,7 @@
       </plugin>
     
       <!-- Package FraSCAti apps -->
-      <plugin>
+     <!-- <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.7</version>
@@ -408,15 +408,15 @@
             </goals>
             <configuration>
                 <target>
-                    <!-- List the FraSCAti applications to export here (separated by ','s) 
+                     List the FraSCAti applications to export here (separated by ','s) 
                     FIXME Requires easysoa-proxy-core-httpdiscoveryproxy to be built before, doesn't match the reactor order
-                    <property name="frascati.applications" value="${basedir}/../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip" />-->
+                    <property name="frascati.applications" value="${basedir}/../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip" />
                     <ant antfile="build.xml" target="unzip-apps" />
                 </target>
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 
