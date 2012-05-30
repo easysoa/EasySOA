@@ -21,6 +21,8 @@ package org.easysoa.frascati;
 
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
@@ -70,6 +72,8 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
     @Reference(name = "runtime-sca-importer")
     private ScaImporterIntermediaryItf runtimeSCAImporter;
 
+    private static Logger logger = Logger.getLogger(FraSCAtiService.class.getCanonicalName());
+    
     private List<String> warningMessages;
     private List<String> errorMessages;
     private int errors;
@@ -118,13 +122,13 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
 
         } catch (ManagerException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE,e.getMessage(),e);
             throw new FraSCAtiServiceException("Enable to process the '"
                     + contribution + "' contribution");
             
         }catch(Exception e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE,e.getMessage(),e);
             throw new FraSCAtiServiceException("Enable to process the '"
                     + contribution + "' composite");
         } finally
@@ -167,38 +171,28 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
     public String processComposite(String composite, int processingMode,
             URL... urls) throws FraSCAtiServiceException
     {
-        EasySOAProcessingContext processingContext = 
-                new EasySOAProcessingContext(classLoaderManager.getClassLoader());
-        FrascatiClassLoader fcl = 
-                (FrascatiClassLoader)processingContext.getClassLoader();
-        if(urls != null)
-        {
-          for(URL url : urls)
-          {
-              fcl.addUrl(url);
-          }
-        }
+        FrascatiClassLoader classLoader = new FrascatiClassLoader(
+                urls!=null?urls:new URL[0] , classLoaderManager.getClassLoader());
+        EasySOAProcessingContext processingContext = new EasySOAProcessingContext(
+                classLoader);
         processingContext.setProcessingMode(resovleProcessingMode(processingMode));
-        ClassLoader current = Thread.currentThread().getContextClassLoader();
         try
         {   
-            Thread.currentThread().setContextClassLoader(fcl);
-            Component component = compositeManager.processComposite(
-                    new QName(composite),processingContext);
+            compositeManager.processComposite(new QName(composite),processingContext);
+            
         } catch (ManagerException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE,e.getMessage(),e);
             throw new FraSCAtiServiceException("Enable to process the '"
                     + composite + "' composite");
         } catch(Exception e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE,e.getMessage(),e);
             throw new FraSCAtiServiceException("Enable to process the '"
                     + composite + "' composite");
         }
         finally
         {
-            Thread.currentThread().setContextClassLoader(current);
             this.warningMessages = processingContext.getWarningMessages();
             this.errorMessages = processingContext.getErrorMessages();
             this.errors = processingContext.getErrors();
