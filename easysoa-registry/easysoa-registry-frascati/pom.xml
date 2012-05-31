@@ -216,6 +216,12 @@
 	      <artifactId>easysoa-proxy-core-api</artifactId>
 	      <scope>test</scope>
 	    </dependency>
+	    <dependency>
+	      <groupId>org.easysoa.proxy</groupId>
+	      <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+	      <version>${project.version}</version>
+	      <scope>test</scope>
+	    </dependency>
 	    <!-- Messaging api -->
 	    <dependency>
 	      <groupId>org.easysoa.registry.api</groupId>
