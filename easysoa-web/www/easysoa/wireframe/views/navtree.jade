@@ -1,0 +1,32 @@
+#navtree
+  #navtreetitle Applications browsing
+    img(src='/img/arrowr.png')
+  
+  script(type='text/javascript')
+    $(document).ready(function() {
+       var data = [
+        { label: 'CRM Application',
+          children: [
+            { label: 'Top-level services'},
+            { label: 'Functional services'},
+            { label: 'CRUD services',
+              children: [
+                { label: 'Client service', id: 1 },
+                { label: 'Activities service' },
+                { label: 'SalesOrders service' }
+              ] }
+          ] },
+         { label: 'HR Application' }
+       ];
+       var $tree = $("#navtreecontents");
+       
+       $tree.tree({
+         data: data,
+         autoOpen: true,
+         selectable: true
+       });
+       var node = $tree.tree('getNodeById', 1);
+       $tree.tree('selectNode', node, true);
+    });
+  #navtreecontents
+    li test

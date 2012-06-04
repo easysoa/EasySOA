@@ -1,0 +1,69 @@
+#contents
+  include navtree
+  
+  #doccontents
+    #breadcrumbs
+      a(href='#', style='font-size: 10pt') CRM Application > CRUD Services > Client Service
+    h1 Endpoint 
+      b Client Service 
+      echo : Clients
+    h2
+      echo Definition : 
+      a(href='#') Client Service def 
+      echo | Implementation : 
+      a(href='#') Client service JAX-RS
+      
+    .contentbox(style='width: 100%; float: left')
+      .title Endpoint information
+      h3 Service description
+      p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      h3 Real endpoint
+      p http://api.mycompany.com/crm/client 
+      
+    .contentbox(style='width: 100%; float: left')
+      .title Recommended clients
+      
+    .contentbox(style='width: 100%; float: left')
+      .title Other clients
+      
+    .contentbox(style='width: 100%; float: left')
+      .title Create new client
+      
+      form.all
+        fieldset(style='float: left; width 30%')
+          legend Target environment
+          select
+            option Master
+            option Staging
+            option Bob's
+        fieldset(style='float: left; width 30%')
+          legend Protocol
+          select
+            option REST
+            option SOAP
+            option Content Automation
+        fieldset(style='float: left; width 30%')
+          legend Connector
+          select
+            option (Any)
+            option None (web client)
+            option Java
+            option JavaScript
+      
+      fieldset
+        legend
+          b Search results
+        ul
+          li 
+            img(src='img/secured.gif') 
+            img(src='img/world.png') 
+            b  &nbsp;REST endpoint 
+            input(type='button', value='Create') 
+            input(type='button', value='Create and deploy')
+          li 
+            img(src='img/application.png') 
+            echo  &nbsp;REST endpoint / <b>Javascript connector</b> 
+            input(type='button', value='Create') 
+          
+          
+include lefttabs

@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='style.css')
+    link(rel='stylesheet', href='jqtree.css')
+    title EasySOA Wireframe
+    script(type='text/javascript', src='/easysoa/lib/jquery.js')
+    script(type='text/javascript', src='/easysoa/wireframe/scripts/tree.jquery.js')
+  body
+    #header
+      #header1
+       #userbox Bob | Developer | CRM Team 
+         img(src='img/menu.png')
+       img#logo(src='img/easysoa.png')
+      #header2
+        .bigtab(style='float: right; width: 120px') Administration
+          img(src='img/arrowr.png')
+        .bigtab Home
+          #notificationicon 2
+        .bigtabspacer 
+        .bigtab.open(style='width: 380px')
+          .bigtabtext Registry
+          .bigtabsep
+          .bigtabtext(style="background-color: white; border: 2px solid #88D; border-width: 0 2px 0 2px")
+            a(href='#') Master 
+            img(src='img/world.png')
+          .bigtabsep.small
+          .bigtabtext
+            a(href='#') Staging
+            img(src='img/world.png')
+          .bigtabsep.small
+          .bigtabtext
+            a(href='#') Bob's  
+            img(src='img/user.png')
+          .bigtabsep
+          .bigtabtext
+            a(href='#') Settings 
+            img(src='img/settings.png')
+          img(src='img/arrowl.png')
+        .bigtabspacer 
+        .bigtab(style='width: 90px') Discovery
+          img(src='img/arrowr.png')
+        .bigtab Studio
+        
+    != body

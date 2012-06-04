@@ -14,6 +14,7 @@ var proxyComponent = require('./proxy');
 var dbbComponent = require('./dbb');
 var lightComponent = require('./light');
 var nuxeoComponent = require('./nuxeo');
+var wireframe = require('./wireframe');
 
 /**
  * Application entry point.
@@ -48,6 +49,7 @@ webServer.configure(function(){
   webServer.use(express.directory(settings.WWW_PATH));
     
 });
+wireframe.configure(webServer);
 webServer.listen(settings.WEB_PORT);
 
 nuxeoComponent.startConnectionChecker();

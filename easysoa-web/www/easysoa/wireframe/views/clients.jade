@@ -1,0 +1,106 @@
+#contents
+  include navtree
+  
+  #doccontents
+    #breadcrumbs
+      a(href='#', style='font-size: 10pt') CRM Application > CRUD Services > Client Service
+    h1 Endpoint 
+      b Client Service 
+      echo : Clients
+    h2
+      echo Definition : 
+      a(href='#') Client Service def 
+      echo | Implementation : 
+      a(href='#') Client service JAX-RS
+      
+    .contentbox
+      .title Endpoint information
+      h3 Service description
+      p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      h3 Real endpoint
+      p 
+        img(src='img/world.png') 
+        echo  &nbsp;<b>http://api.mycompany.com/crm/client </b> | 
+        img(src='img/warning.png')
+        i &nbsp;Direct access 
+        input(type='button', value='Unauthorized', disabled='disabled')  
+      
+    .contentbox
+      .title Recommended clients
+          
+      ul(style='margin-top: 10px')
+        li 
+          img(src='img/world.png') 
+          echo  &nbsp;<b>Content Automation</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Use with scaffolder') 
+          input(type='button', value='Use with C.A. playground') 
+        li 
+          img(src='img/application.png') 
+          echo  &nbsp;Content Automation / <b>Studio scripting</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Go to Studio') 
+          
+    .contentbox
+      .title Other clients
+      
+      ul(style='margin-top: 10px')
+        li 
+          img(src='img/world.png') 
+          echo  &nbsp;<b>SOAP endpoint</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Use with UI scaffolder') 
+        li 
+          img(src='img/application.png') 
+          echo  &nbsp;SOAP endpoint / <b>Java connector</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Download') 
+            
+    .contentbox
+      .title Create new client
+      
+      form.all
+        fieldset(style='float: left; width 30%')
+          legend Target environment
+          select
+            option Master
+            option Staging
+            option Bob's
+        fieldset(style='float: left; width 30%')
+          legend Protocol
+          select
+            option REST
+            option SOAP
+            option Content Automation
+        fieldset(style='float: left; width 30%')
+          legend Connector
+          select
+            option (Any)
+            option None (web client)
+            option Java
+            option JavaScript
+      
+      fieldset
+        legend
+          b Search results
+        ul
+          li 
+            img(src='img/world.png') 
+            echo &nbsp;<b>REST endpoint</b> |
+            img(src='img/secured.gif')
+            i Proxied 
+            input(type='button', value='Create') 
+            input(type='button', value='Create and deploy')
+          li 
+            img(src='img/application.png') 
+            echo  &nbsp;REST endpoint / <b>Javascript connector</b> |
+            img(src='img/secured.gif')
+            i Proxied 
+            input(type='button', value='Create') 
+          
+          
+include lefttabs
