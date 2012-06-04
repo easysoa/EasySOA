@@ -1,0 +1,69 @@
+script(type='text/javascript')
+  $(document).ready(function() {
+    var $tab = $('#tab-discovery');
+    $('#tab-discovery-link').click(function() {
+      $('#tab-discovery-contents').toggle();
+      var $arrow = $('#tab-discovery-arrow');
+      $arrow.toggle();
+      if ($arrow.is(':visible')) {
+        $tab.css({width: '90px'});
+      } else {
+        $tab.css({width: '380px'});
+      }
+    });
+  });
+    
+#header1
+ #userbox Bob | Developer | CRM Team 
+   img(src='img/menu.png')
+ a.works(href='./')
+   img#logo(src='img/easysoa.png')
+ 
+#header2
+  .bigtab(style='float: right; width: 120px') Administration
+    img(src='img/arrowr.png')
+    
+  .bigtab Home
+    #notificationicon 2
+  .bigtabspacer 
+  
+  .bigtab.open(style='width: 380px')
+    .bigtabtext Registry
+    .bigtabsep
+    .bigtabtext(style="background-color: white; border: 2px solid #88D; border-width: 0 2px 0 2px")
+      a.works(href='./environment') Master 
+      img(src='img/world.png')
+    .bigtabsep.small
+    .bigtabtext
+      a.works(href='./environment') Staging
+      img(src='img/world.png')
+    .bigtabsep.small
+    .bigtabtext
+      a.works(href='./environment') Bob's  
+      img(src='img/user.png')
+    .bigtabsep
+    .bigtabtext
+      a(href='#') Settings 
+      img(src='img/settings.png')
+    img(src='img/arrowl.png')
+  .bigtabspacer 
+    
+  #tab-discovery.bigtab(style='width: 90px; cursor: pointer')
+    #tab-discovery-link.bigtabtext Discovery
+    img#tab-discovery-arrow(src='img/arrowr.png', style='float: left')
+    #tab-discovery-contents(style='display: none; float: left; width: auto')
+      .bigtabsep
+      .bigtabtext(style='width: 90px')
+        a(href='#', style='width: 90px') Web browsing
+        img(src='img/arrow.png')
+      .bigtabsep.small
+      .bigtabtext(style='width: 90px')
+        a(href='#', style='width: 90px') File import
+        img(src='img/import.png')
+      .bigtabsep.small
+      .bigtabtext(style='width: 90px')
+        a(href='#', style='width: 90px') SCM import
+        img(src='img/sync.png')
+    
+  .bigtab
+    a.works(href='./studio') Studio

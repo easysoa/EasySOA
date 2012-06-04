@@ -25,7 +25,7 @@ ul.tree li {
 }
 
 ul.tree .toggler {
-	background-image: url(icons.png);
+	background-image: url(../img/icons.png);
 	background-repeat: no-repeat;
 	background-position: -8px 0;
 	width: 8px;

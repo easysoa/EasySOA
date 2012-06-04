@@ -1,0 +1,44 @@
+script(type='text/javascript')
+  window.selectedId = 0
+
+#contents(style='height: 650px')
+  
+  #breadcrumbs
+    a(href='#', style='font-size: 10pt') Environment Master > Validation
+      
+  include navtree
+  
+  #doccontents
+    h1 Environment 
+      b Master
+      
+    .contentbox(style='float: left; width: 100%')
+      .title Validation summary
+      
+      table
+        tr
+          th(style='min-width: 200px') Service name
+          th State
+          th(style='min-width: 200px') Message
+          th Last validation
+        tr
+          td Client service
+          td
+            img(src='img/green.png')
+          td OK
+          td Yesterday, 11:00
+        tr
+          td Client service
+          td
+            img(src='img/green.png')
+          td OK
+          td Yesterday, 11:00
+        tr
+          td Client service
+          td
+            img(src='img/green.png')
+          td OK
+          td Yesterday, 11:00
+    
+      
+include lefttabs_env

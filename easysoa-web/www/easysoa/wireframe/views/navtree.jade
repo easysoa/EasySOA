@@ -1,6 +1,9 @@
 #navtree
+
+  #navtreetitle(style='background-color: #EEE') Environment Master
+  
   #navtreetitle Applications browsing
-    img(src='/img/arrowr.png')
+    img(src='img/arrowr.png')
   
   script(type='text/javascript')
     $(document).ready(function() {
@@ -25,8 +28,16 @@
          autoOpen: true,
          selectable: true
        });
-       var node = $tree.tree('getNodeById', 1);
-       $tree.tree('selectNode', node, true);
+       var _selectedId = (window.selectedId !== undefined) ? window.selectedId : 1;
+       var node = $tree.tree('getNodeById', _selectedId);
+       if (node != null) {
+        $tree.tree('selectNode', node, true);
+       }
+       
+       $("#navtreecontents .title").click(function() {
+        window.location = './';
+       });
+       
     });
   #navtreecontents
     li test

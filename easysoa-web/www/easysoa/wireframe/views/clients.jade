@@ -1,9 +1,11 @@
-#contents
+#contents(style='height: 600px')
+
+  #breadcrumbs
+      a(href='#', style='font-size: 10pt') Environment Master > CRM Application > CRUD Services > Client Service
+      
   include navtree
   
   #doccontents
-    #breadcrumbs
-      a(href='#', style='font-size: 10pt') CRM Application > CRUD Services > Client Service
     h1 Endpoint 
       b Client Service 
       echo : Clients
@@ -14,53 +16,14 @@
       a(href='#') Client service JAX-RS
       
     .contentbox
-      .title Endpoint information
-      h3 Service description
-      p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      h3 Real endpoint
-      p 
-        img(src='img/world.png') 
-        echo  &nbsp;<b>http://api.mycompany.com/crm/client </b> | 
-        img(src='img/warning.png')
-        i &nbsp;Direct access 
-        input(type='button', value='Unauthorized', disabled='disabled')  
+      .title Real endpoint
+      img(src='img/world.png') 
+      echo  &nbsp;<b>http://api.mycompany.com/crm/client </b> | 
+      img(src='img/warning.png')
+      i &nbsp;Direct access 
+      input(type='button', value='Unauthorized', disabled='disabled')  
       
-    .contentbox
-      .title Recommended clients
-          
-      ul(style='margin-top: 10px')
-        li 
-          img(src='img/world.png') 
-          echo  &nbsp;<b>Content Automation</b> |
-          img(src='img/secured.gif')
-          i Proxied 
-          input(type='button', value='Use with scaffolder') 
-          input(type='button', value='Use with C.A. playground') 
-        li 
-          img(src='img/application.png') 
-          echo  &nbsp;Content Automation / <b>Studio scripting</b> |
-          img(src='img/secured.gif')
-          i Proxied 
-          input(type='button', value='Go to Studio') 
-          
-    .contentbox
-      .title Other clients
-      
-      ul(style='margin-top: 10px')
-        li 
-          img(src='img/world.png') 
-          echo  &nbsp;<b>SOAP endpoint</b> |
-          img(src='img/secured.gif')
-          i Proxied 
-          input(type='button', value='Use with UI scaffolder') 
-        li 
-          img(src='img/application.png') 
-          echo  &nbsp;SOAP endpoint / <b>Java connector</b> |
-          img(src='img/secured.gif')
-          i Proxied 
-          input(type='button', value='Download') 
-            
-    .contentbox
+    .contentbox(style='float: right; width: 47%')
       .title Create new client
       
       form.all
@@ -103,4 +66,39 @@
             input(type='button', value='Create') 
           
           
-include lefttabs
+    .contentbox(style='float: left; width: 47%')
+      .title Recommended clients
+          
+      ul(style='margin-top: 10px')
+        li 
+          img(src='img/world.png') 
+          echo  &nbsp;<b>Content Automation</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Use with scaffolder') 
+          input(type='button', value='Use with C.A. playground') 
+        li 
+          img(src='img/application.png') 
+          echo  &nbsp;Content Automation / <b>Studio scripting</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Go to Studio') 
+          
+    .contentbox(style='float: left; width: 47%')
+      .title Other clients
+      
+      ul(style='margin-top: 10px')
+        li 
+          img(src='img/world.png') 
+          echo  &nbsp;<b>SOAP endpoint</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Use with UI scaffolder') 
+        li 
+          img(src='img/application.png') 
+          echo  &nbsp;SOAP endpoint / <b>Java connector</b> |
+          img(src='img/secured.gif')
+          i Proxied 
+          input(type='button', value='Download') 
+            
+include lefttabs_serv

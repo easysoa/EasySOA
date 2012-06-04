@@ -1,0 +1,59 @@
+script(type='text/javascript')
+  window.selectedId = 0
+
+#contents(style='height: 650px')
+  
+  #breadcrumbs
+    a(href='#', style='font-size: 10pt') Environment Master
+      
+  include navtree
+  
+  #doccontents
+    h1 Environment 
+      b Master
+      
+    .contentbox(style='float: left; width: 100%')
+      .title <a class="works" href="./envvalidation">Validation</a> summary
+      
+      h3 Statistics
+      table
+        tr
+          td Total services
+          td
+          td 12
+          td 
+        tr
+          td Total services to validate
+          td
+            
+          td 8
+          td
+        tr
+          td Successfully validated services
+          td 
+            img(src='img/green.png')
+          td 7
+          td Last check: Yesterday, 11:00
+        tr
+          td Failed validation
+          td 
+            img(src='img/red.png')
+          td 1
+          td Last check: Yesterday, 11:00
+       
+      h3 Error reports
+      table
+       tr
+        td
+          img(src='img/red.png', style='height: 16px')
+        td <a href="#">MyBuggyService</a>
+        td Service is unavailable.
+    
+    .contentbox(style='float: left; width: 100%')
+      .title <a href="#">Servers</a> summary
+    
+    .contentbox(style='float: left; width: 100%')
+      .title <a href="#">URLs configuration</a> summary
+          
+      
+include lefttabs_env
