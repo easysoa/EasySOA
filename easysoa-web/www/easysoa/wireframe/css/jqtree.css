@@ -82,7 +82,7 @@ ul.tree li.ghost span {
 }
 
 ul.tree li.ghost span.circle {
-	background-image: url(icons.png);
+	background-image: url(img/icons.png);
 	background-repeat: no-repeat;
 	background-position: 0 -8px;
 	height: 8px;
