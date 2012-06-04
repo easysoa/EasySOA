@@ -6,14 +6,18 @@ body
 
 a
   text-decoration none
-  color darkblue
-  cursor default
-
-a.works
-  cursor pointer 
-  
-a.works:hover
   font-weight bold
+  color darkblue
+
+a.fake
+  font-weight normal
+  text-decoration none
+  cursor default
+  
+a.fake:hover
+  text-decoration none
+  
+a:hover
   text-decoration underline
 
 header
@@ -109,6 +113,7 @@ h2
   
 #breadcrumbs
   border-bottom 1px solid grey
+  font-size: 10pt
   
 #lefttabs
   position absolute
@@ -118,22 +123,27 @@ h2
   padding-top 15px
   margin-right 7px
   
-#lefttab
-  width 80px
+.lefttab
+  width 100px
   border 2px solid black
   padding 5px
-  margin-bottom: 10px
+  margin-bottom 10px
   background-color white
   
+.lefttabspacer
+  width 80px
+  height 20px
+  font-size 10pt
+  color grey
+
 #contents
   position relative
   right 0
   border 2px solid black
-  border-bottom 0
   margin 5px
   min-height 500px
   padding 10px
-  margin-left 102px
+  margin-left 122px
   background-color white
   
 #navtree
@@ -170,6 +180,16 @@ h2
   font-size 12pt
   font-weight bold
   font-style italic
+
+.contentbox ul
+  width 100%
+  margin-top -5px
+  padding-left 10px
+  margin-bottom 0
+
+.contentbox li
+  width 100%
+  list-style-type none
   
 .third
   width 30%
@@ -186,16 +206,6 @@ h2
 .threequarters
   width 74%
   float left
-
-.contentbox ul
-  width 100%
-  margin-top -5px
-  padding-left 10px
-  margin-bottom 0
-
-.contentbox li
-  width 100%
-  list-style-type none
   
 .all
   width 100%
@@ -217,3 +227,4 @@ h2
 td, th
   border 1px solid #CCC
   padding 3px
+  

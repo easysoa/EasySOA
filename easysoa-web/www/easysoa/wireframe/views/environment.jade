@@ -1,10 +1,10 @@
 script(type='text/javascript')
   window.selectedId = 0
 
-#contents(style='height: 650px')
+#contents(style='height: 750px')
   
   #breadcrumbs
-    a(href='#', style='font-size: 10pt') Environment Master
+    a.fake(href='#') Environment Master
       
   include navtree
   
@@ -12,7 +12,7 @@ script(type='text/javascript')
     h1 Environment 
       b Master
       
-    .contentbox(style='float: left; width: 100%')
+    .contentbox
       .title <a class="works" href="./envvalidation">Validation</a> summary
       
       h3 Statistics
@@ -46,14 +46,46 @@ script(type='text/javascript')
        tr
         td
           img(src='img/red.png', style='height: 16px')
-        td <a href="#">MyBuggyService</a>
+        td <a href="#" class="fake">MyBuggyService</a>
         td Service is unavailable.
     
-    .contentbox(style='float: left; width: 100%')
-      .title <a href="#">Servers</a> summary
-    
-    .contentbox(style='float: left; width: 100%')
-      .title <a href="#">URLs configuration</a> summary
+    .contentbox
+      .title <a href="#" class="fake">Servers</a> summary
+      
+      table
+        tr
+          th Server name
+          th Hosted deployables
+          th State
+        tr
+          td CRM Core server
+          td 
+            a.fake(href='#') MyDeployable1
+            br
+            a.fake(href='#') MyDeployable2
+            br
+            a.fake(href='#') MyDeployable3
+          td
+            img(src='img/green.png', style='height: 16px')
+            echo Running
+        tr
+          td CRM API server
+          td 
+            a.fake(href='#') MyDeployable4
+            br
+            a.fake(href='#') MyDeployable5
+          td
+            img(src='img/green.png', style='height: 16px')
+            echo Running
           
+    
+    .contentbox
+      .title <a href="#" class="fake">URLs configuration</a> summary
+          
+      p 
+        img(src='img/warning.png') 
+        echo &nbsp;<b>Warning:</b> <u>1 Endpoint</u> has no match in this environment. 
+      p
+        a.fake(href='#') Click here to edit the URLs configuration.
       
 include lefttabs_env

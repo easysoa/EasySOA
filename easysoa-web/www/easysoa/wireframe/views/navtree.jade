@@ -2,7 +2,8 @@
 
   #navtreetitle(style='background-color: #EEE') Environment Master
   
-  #navtreetitle Applications browsing
+  #navtreetitle
+    a.fake(href='#') Browsing by app. layers
     img(src='img/arrowr.png')
   
   script(type='text/javascript')
@@ -19,7 +20,12 @@
                 { label: 'SalesOrders service' }
               ] }
           ] },
-         { label: 'HR Application' }
+        { label: 'HR Application',
+          children: [
+            { label: 'Top-level services'},
+            { label: 'Functional services'},
+            { label: 'CRUD services' }
+          ] }
        ];
        var $tree = $("#navtreecontents");
        
@@ -35,7 +41,7 @@
        }
        
        $("#navtreecontents .title").click(function() {
-        window.location = './';
+        window.location = './endpoint';
        });
        
     });

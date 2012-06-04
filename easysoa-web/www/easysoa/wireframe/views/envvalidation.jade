@@ -4,7 +4,7 @@ script(type='text/javascript')
 #contents(style='height: 650px')
   
   #breadcrumbs
-    a(href='#', style='font-size: 10pt') Environment Master > Validation
+    a.fake(href='#') Environment Master > Validation
       
   include navtree
   
@@ -12,7 +12,7 @@ script(type='text/javascript')
     h1 Environment 
       b Master
       
-    .contentbox(style='float: left; width: 100%')
+    .contentbox
       .title Validation summary
       
       table
@@ -21,24 +21,24 @@ script(type='text/javascript')
           th State
           th(style='min-width: 200px') Message
           th Last validation
+          th Actions
+        each n in new Array(7)
+          tr
+            td Client service
+            td
+              img(src='img/green.png')
+            td OK
+            td Yesterday, 11:00
+            td
+              img(src='img/run.png', style='margin-right: 5px')
+              img(src='img/settings.png')
         tr
-          td Client service
+          td MyBuggyService
           td
-            img(src='img/green.png')
-          td OK
+            img(src='img/red.png')
+          td Service is unavailable.
           td Yesterday, 11:00
-        tr
-          td Client service
           td
-            img(src='img/green.png')
-          td OK
-          td Yesterday, 11:00
-        tr
-          td Client service
-          td
-            img(src='img/green.png')
-          td OK
-          td Yesterday, 11:00
-    
-      
+            img(src='img/run.png', style='margin-right: 5px')
+            img(src='img/settings.png')
 include lefttabs_env
