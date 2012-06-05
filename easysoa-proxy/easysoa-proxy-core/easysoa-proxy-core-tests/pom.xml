@@ -27,6 +27,26 @@
       <artifactId>easysoa-proxy-core-mocks</artifactId>
       <scope>compile</scope>
     </dependency>
+    <!-- Messaging api -->
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-messaging</artifactId>
+    </dependency>  
+    <!-- Proxy persistence API -->
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-persistence</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-api</artifactId>
+      <version>${easysoa.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+      <version>${easysoa.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>

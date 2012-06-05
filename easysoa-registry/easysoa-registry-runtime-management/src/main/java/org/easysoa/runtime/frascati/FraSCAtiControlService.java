@@ -20,19 +20,41 @@
 
 package org.easysoa.runtime.frascati;
 
+import org.easysoa.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.runtime.api.RuntimeControlService;
+import org.nuxeo.runtime.api.Framework;
 
+/**
+ * 
+ * @author jguillemotte
+ *
+ */
 public class FraSCAtiControlService implements RuntimeControlService {
 
 	@Override
 	public RuntimeState getState() {
-		// TODO Auto-generated method stub
-		return null;
+	    // Check if the Frascati service is availble from the Nuxeo Framework
+	    // Unable to return the states STARTING and STOPPING
+	    RuntimeState state;
+	    try {
+	        FraSCAtiServiceItf frascatiService = (FraSCAtiServiceItf) Framework.getService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+	        if(frascatiService != null){
+	            state = RuntimeState.STARTED;
+	        } else {
+	            state = RuntimeState.STOPPED;
+	        }
+	    }
+	    catch(Exception ex){
+	        // TODO : log an error or a warning
+	        state = RuntimeState.STOPPED;
+	    }
+		return state;
 	}
 
 	@Override
 	public boolean start() {
-		// TODO Auto-generated method stub
+	    // TODO : How to start FraSCAti in Nuxeo by code ?
 		return false;
 	}
 

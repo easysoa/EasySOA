@@ -78,7 +78,11 @@ public class NuxeoFrascatiServletFilterTest {
         // Getting the FraSCAti service interface
         frascatiService = (FraSCAtiServiceItf) Framework.getService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
         assertNotNull(frascatiService);
+        // Start the composed exchange handler
         frascatiService.processComposite("composedExchangeHandler");
+        // Start the run manager
+        frascatiService.processComposite("runManager");
+        // Start a SCA test component
         frascatiService.processComposite("scaTestComponent");
     }
 

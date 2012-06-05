@@ -103,6 +103,11 @@
         <artifactId>easysoa-proxy-core-mocks</artifactId>
     </dependency>
     <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+        <version>${easysoa.version}</version>
+    </dependency>    
+    <dependency>
         <groupId>xstream</groupId>
         <artifactId>xstream</artifactId>
     </dependency>

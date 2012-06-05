@@ -20,6 +20,13 @@
       <artifactId>easysoa-registry-core</artifactId>
     </dependency>
     
+    <!-- FraSCAti service -->
+    <dependency>
+      <groupId>org.easysoa.frascati</groupId>
+      <artifactId>easysoa-frascati-service-api</artifactId>
+      <version>${easysoa.version}</version>
+	</dependency>
+    
     <!-- Maven environments -->
     <dependency>
       <groupId>org.apache.maven</groupId>

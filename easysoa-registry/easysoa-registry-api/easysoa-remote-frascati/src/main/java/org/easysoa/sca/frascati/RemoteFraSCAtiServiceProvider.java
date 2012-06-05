@@ -71,6 +71,11 @@ public class RemoteFraSCAtiServiceProvider implements
      */
     public RemoteFraSCAtiServiceProvider(File librariesDirectory) throws Exception
     {
+        // Required for Frascati Web explorer
+        // If this property is not set, the following error is throwed '<sca:component name="WebExplorer"> - <sca:implementation> must be defined'
+        // See discussion at https://groups.google.com/forum/#!msg/easysoa-dev/LE66ptRLL3A/kSSzJrIMzMcJ
+        System.setProperty("org.ow2.frascati.bootstrap", "org.ow2.frascati.bootstrap.FraSCAtiWebExplorer");
+        
         if(librariesDirectory == null)
         {
             String librariesDirectoryProp = System.getProperty(

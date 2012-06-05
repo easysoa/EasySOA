@@ -179,7 +179,6 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
         try
         {   
             compositeManager.processComposite(new QName(composite),processingContext);
-            
         } catch (ManagerException e)
         {
             logger.log(Level.SEVERE,e.getMessage(),e);

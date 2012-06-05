@@ -3,6 +3,7 @@ package org.easysoa.registry.frascati;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,14 +20,16 @@ import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
 
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 /**
- * 
- * Component that allows the deployment of FraSCAti apps on startup through
- * simple XML contributions.
- * 
- * @author mkalam-alami
- * 
- */
+*
+* Component that allows the deployment of FraSCAti apps on startup through
+* simple XML contributions.
+*
+* @author mkalam-alami
+*
+*/
 public class FraSCAtiAppComponent extends DefaultComponent implements EventListener {
 
     private static final String APP_EXTENSION_POINT = "apps";
@@ -39,8 +42,8 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
 
 
     /**
-     * Stores composite instance keys in order to be able to stop them.
-     */
+* Stores composite instance keys in order to be able to stop them.
+*/
     private Map<FraSCAtiAppDescriptor, String> compositeInstances = new HashMap<FraSCAtiAppDescriptor, String>();
 
     public void handleEvent(Event event) throws ClientException {
@@ -118,14 +121,21 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
     }
 
     private URL[] filesToUrls(File jarFile, File[] libFiles) throws MalformedURLException {
-        URL[] urls = new URL[libFiles.length + 1];
-        int i = 0;
-        
-        urls[i++] = jarFile.toURI().toURL();
-        for (File libFile : libFiles) { 
-            urls[i++] = libFile.getAbsoluteFile().toURI().toURL();
+        //URL[] urls = new URL[libFiles.length + 1];
+        ArrayList<URL> urlList = new ArrayList<URL>();  
+        //int i = 0;
+          
+        //urls[i++] = jarFile.toURI().toURL();
+        urlList.add(jarFile.toURI().toURL());
+        for (File libFile : libFiles) {
+            if(libFile.getName().endsWith(".jar")){
+                //urls[i++] = libFile.getAbsoluteFile().toURI().toURL();
+                urlList.add(libFile.getAbsoluteFile().toURI().toURL());
+            }
         };
-        return urls;
+        URL[] urls = new URL[urlList.size()];
+        return urlList.toArray(urls);
+        //return urls;
     }
 
 }
