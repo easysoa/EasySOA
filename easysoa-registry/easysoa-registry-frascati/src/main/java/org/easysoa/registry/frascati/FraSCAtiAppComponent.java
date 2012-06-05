@@ -3,6 +3,7 @@ package org.easysoa.registry.frascati;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,14 +20,16 @@ import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
 
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 /**
- * 
- * Component that allows the deployment of FraSCAti apps on startup through
- * simple XML contributions.
- * 
- * @author mkalam-alami
- * 
- */
+*
+* Component that allows the deployment of FraSCAti apps on startup through
+* simple XML contributions.
+*
+* @author mkalam-alami
+*
+*/
 public class FraSCAtiAppComponent extends DefaultComponent implements EventListener {
 
     private static final String APP_EXTENSION_POINT = "apps";
@@ -39,8 +42,8 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
 
 
     /**
-     * Stores composite instance keys in order to be able to stop them.
-     */
+* Stores composite instance keys in order to be able to stop them.
+*/
     private Map<FraSCAtiAppDescriptor, String> compositeInstances = new HashMap<FraSCAtiAppDescriptor, String>();
 
     public void handleEvent(Event event) throws ClientException {

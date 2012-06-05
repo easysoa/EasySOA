@@ -132,11 +132,66 @@
                   <version>${easysoa.version}</version>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.easysoa.proxy</groupId>
+                  <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.easysoa.frascati</groupId>
                   <artifactId>easysoa-frascati-service-api</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
-
+				<artifactItem>
+                  <groupId>org.easysoa.proxy</groupId>
+                  <artifactId>easysoa-proxy-core-persistence</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+				<!--<artifactItem>
+                  <groupId>org.easysoa.proxy</groupId>
+                  <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>-->
+                <!--  These 2 following jar libs must be removed from nxserver/lib folder to avoid a compatibility error -->               
+				<artifactItem>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+					<version>4.1.1</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+					<version>4.1.1</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.json</groupId>
+					<artifactId>json</artifactId>
+					<version>20090211</version>				
+				</artifactItem>
+				<artifactItem>
+					<groupId>net.sf.ezmorph</groupId>
+					<artifactId>ezmorph</artifactId>
+					<version>1.0.4</version>				
+				</artifactItem>
+				<artifactItem>
+					<groupId>commons-collections</groupId>
+					<artifactId>commons-collections</artifactId>
+					<version>3.2.1</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>commons-beanutils</groupId>
+					<artifactId>commons-beanutils</artifactId>
+					<version>1.8.3</version>
+				</artifactItem>				
+				
+                <!-- To also add : httpdiscoveryproxy.jar in server/lib ???? -->
+                <!-- Is there a problem in classpath isolation ? -->
+                
+				<!-- Esper -->
+                <artifactItem>
+                  <groupId>com.espertech</groupId>
+                  <artifactId>esper</artifactId>
+                  <version>4.2.0</version>
+                </artifactItem>
                 <!-- WSDL Parsing & transformation -->
                 <artifactItem>
                   <groupId>org.ow2.easywsdl</groupId>

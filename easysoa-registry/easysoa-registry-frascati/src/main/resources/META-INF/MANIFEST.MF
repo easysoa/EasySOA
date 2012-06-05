@@ -9,8 +9,8 @@ Bundle-Name: easysoa-registry-frascati
 Bundle-SymbolicName: org.easysoa.registry.frascati;singleton:=true
 Bundle-Vendor: INRIA
 Nuxeo-Require: org.nuxeo.ecm.core.api,
- org.nuxeo.ecm.core,
- org.easysoa.registry.core,
+ org.nuxeo.ecm.core
+Require-Bundle: org.easysoa.registry.core,
  org.nuxeo.frascati
 Nuxeo-Component: OSGI-INF/frascati-apps-component.xml,
  OSGI-INF/frascati-apps-contrib.xml,

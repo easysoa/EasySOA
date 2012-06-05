@@ -204,7 +204,8 @@ public class RequestForwarder {
     	if(clientResponse.getEntity().getContentType() != null){
     		messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
     	}
-    	outMessage.setMessageContent(messageContent);    	
+    	outMessage.setMessageContent(messageContent);
+    	messageContent.setEncoding(clientResponse.getEntity().getContentEncoding().getValue());
     	// Return response message
 		return outMessage;		
 	}

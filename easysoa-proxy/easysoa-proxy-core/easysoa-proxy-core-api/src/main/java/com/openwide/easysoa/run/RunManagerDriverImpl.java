@@ -88,10 +88,13 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		help.append("<P><H1>HTTP Proxy Driver</H1></P>");
 		help.append("<P><H2>How to use :</H2></P>");
 		help.append("<P><UL>");
-		help.append("<LI>To start a new proxy run : /startNewRun/{runName}</LI>");
-		help.append("<LI>To stop the current proxy run : /stopCurrentRun</LI>");
-		help.append("<LI>To get the run list : /getOrderedRunNames</LI>");
-		help.append("<LI>To re-run a run : /reRun/{runName}</LI>");
+		help.append("<LI>To start a new proxy run : /run/start/{runName}</LI>");
+		help.append("<LI>To stop the current proxy run : /run/stop</LI>");
+		//help.append("<LI>To get the run list : /getOrderedRunNames</LI>");
+		//help.append("<LI>To re-run a run : /reRun/{runName}</LI>");
+		// TODO  add a method to get the current run name
+		help.append("<LI>To delete the current run : /run/delete</LI>");
+		help.append("<LI>To save the current run : /run/save</LI>");
 		help.append("</UL></P></BODY></HTML>");
 		return help.toString();
 	}

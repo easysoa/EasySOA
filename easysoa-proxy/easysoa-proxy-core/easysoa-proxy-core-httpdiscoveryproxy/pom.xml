@@ -21,7 +21,7 @@
 	</properties>
 	
 	<dependencies>
-		<dependency>
+		<dependency> 
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-runtime-factory</artifactId>
 			<version>${frascati.version}</version>

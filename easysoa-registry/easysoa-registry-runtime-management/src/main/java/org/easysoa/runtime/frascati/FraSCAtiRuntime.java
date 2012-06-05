@@ -27,8 +27,11 @@ import org.easysoa.runtime.api.RuntimeEventService;
 
 public class FraSCAtiRuntime implements RuntimeServer<FraSCAtiDeployable, RuntimeEventService> {
 
-	private FraSCAtiControlService controlService;
+    private FraSCAtiControlService controlService;
 	
+    /**
+     * 
+     */
 	public FraSCAtiRuntime() {
 		this.controlService = new FraSCAtiControlService();
 	}
@@ -40,17 +43,24 @@ public class FraSCAtiRuntime implements RuntimeServer<FraSCAtiDeployable, Runtim
 
 	@Override
 	public RuntimeDeployableService<FraSCAtiDeployable> getDeployableService() {
-		return null;
+		
+	    
+	    
+	    
+	    return null;
 	}
 
 	@Override
 	public RuntimeEventService getEventService() {
-		return null;
+		
+	    
+	    
+	    return null;
 	}
 
 	@Override
 	public String getName() {
 		return "FraSCAti";
 	}
-	
+
 }

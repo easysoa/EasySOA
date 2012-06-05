@@ -12,9 +12,8 @@ import javax.ws.rs.Path;
  */
 public interface ServerTest {
 
-    // Original methods
     @GET
-    @Path("/test")
+    //@Path("/test")
     public String testMethod();
     
 }
