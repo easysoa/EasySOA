@@ -107,31 +107,31 @@ define 'easysoa', :base_dir => '../' do
         maven(['clean', 'install'], project)
       end
       
-      task :nuxeoreset do
+      task :nuxeoclean do
         NUXEO_DATA_PATH = _(NUXEO_PATH + '/nxserver/data');
         puts "Cleaning folder: " + NUXEO_DATA_PATH
         rm_rf NUXEO_DATA_PATH
       end
       
-      desc 'EasySOA Registry packaging project'
-      define 'nuxeo-packaging' do
-      
-        desc 'Send plugins to Nuxeo'
-        task :dist do
-        
-          PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
-          puts "===== Nuxeo plugins - Deleting ====="
-          puts PLUGINS_TO_DELETE
-          rm PLUGINS_TO_DELETE
-
-          puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
-          puts FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*']
-          cp_r FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*'], _(NUXEO_PATH)
-        end
-      
-      end
-    
   end
+  
+  desc 'EasySOA Registry packaging project'
+  define 'easysoa-registry-packaging' do
+  
+    desc 'Send plugins to Nuxeo'
+    task :dist do
+    
+      PLUGINS_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
+      puts "===== Nuxeo plugins - Deleting ====="
+      puts PLUGINS_TO_DELETE
+      rm PLUGINS_TO_DELETE
+
+      puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
+      puts FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*']
+      cp_r FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*'], _(NUXEO_PATH)
+    end
+  end
+  
   
   define 'easysoa-web' do
     # Nothing
@@ -181,6 +181,9 @@ end
 desc "Builds registry components using Maven"
 task :common => [EASYSOA_COMMON+':mvn']
 
+desc "Resets the data of a Nuxeo setup" # TODO Clean the whole setup (plugins/libs/etc.)
+task :nx_clean => [EASYSOA_REGISTRY+':nuxeoclean']
+                
 desc "Builds registry components using Maven"
 task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn']
                  
