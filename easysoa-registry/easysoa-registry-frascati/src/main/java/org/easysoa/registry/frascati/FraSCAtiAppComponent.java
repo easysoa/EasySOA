@@ -123,7 +123,9 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
         
         urls[i++] = jarFile.toURI().toURL();
         for (File libFile : libFiles) { 
-            urls[i++] = libFile.getAbsoluteFile().toURI().toURL();
+            if (libFile.getName().endsWith(".jar")) {
+                urls[i++] = libFile.getAbsoluteFile().toURI().toURL();
+            }
         };
         return urls;
     }

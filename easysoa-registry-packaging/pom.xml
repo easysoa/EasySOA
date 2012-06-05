@@ -343,7 +343,7 @@
               <outputDirectory>${project.build.directory}/nxserver</outputDirectory>
               <resources>          
                 <resource>
-                  <directory>${basedir}/easysoa-registry/nuxeo-frascati/resources</directory>
+                  <directory>${basedir}/../easysoa-registry/nuxeo-frascati/resources</directory>
                   <excludes>
                     <exclude>**/frascati-web-explorer*</exclude>
                   </excludes>
