@@ -121,21 +121,15 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
     }
 
     private URL[] filesToUrls(File jarFile, File[] libFiles) throws MalformedURLException {
-        //URL[] urls = new URL[libFiles.length + 1];
         ArrayList<URL> urlList = new ArrayList<URL>();  
-        //int i = 0;
-          
-        //urls[i++] = jarFile.toURI().toURL();
         urlList.add(jarFile.toURI().toURL());
         for (File libFile : libFiles) {
             if(libFile.getName().endsWith(".jar")){
-                //urls[i++] = libFile.getAbsoluteFile().toURI().toURL();
                 urlList.add(libFile.getAbsoluteFile().toURI().toURL());
             }
         };
         URL[] urls = new URL[urlList.size()];
         return urlList.toArray(urls);
-        //return urls;
     }
 
 }
