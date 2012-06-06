@@ -126,7 +126,7 @@ define 'easysoa', :base_dir => '../' do
       puts FILES_TO_DELETE
       puts NUXEO_PATH+'/nxserver/frascati/'
       rm FILES_TO_DELETE
-      rm_r _(NUXEO_PATH+'/nxserver/frascati/')
+      rm_rf _(NUXEO_PATH+'/nxserver/frascati/')
 
       puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
       puts FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*']

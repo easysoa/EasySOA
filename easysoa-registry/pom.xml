@@ -36,6 +36,7 @@
     <module>easysoa-frascati-service-api</module>
     <module>easysoa-frascati-service</module>
     <module>nuxeo-frascati</module>
+    <module>nuxeo-frascati-hack</module>
     <module>nuxeo-frascati-test</module>
     <module>easysoa-registry-api</module>
     <module>easysoa-registry-core</module>

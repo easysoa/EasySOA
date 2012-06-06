@@ -6,7 +6,7 @@ import org.nuxeo.common.xmap.annotation.XObject;
 @XObject("app")
 public class FraSCAtiAppDescriptor {
 
-    @XNode("name")
+    @XNode("@name")
 	public String name;
     
     @XNode("jarPath")

@@ -73,6 +73,11 @@
                   <artifactId>nuxeo-frascati</artifactId>
                   <version>${easysoa.nuxeo-frascati.version}</version>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.nuxeo</groupId>
+                  <artifactId>nuxeo-frascati-hack</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
 
                 <!-- FraSCAti-related features -->
                 <artifactItem>
@@ -399,9 +404,6 @@
               <resources>          
                 <resource>
                   <directory>${basedir}/../easysoa-registry/nuxeo-frascati/resources</directory>
-                  <excludes>
-                    <exclude>**/frascati-web-explorer*</exclude>
-                  </excludes>
                 </resource>
               </resources>
             </configuration>
