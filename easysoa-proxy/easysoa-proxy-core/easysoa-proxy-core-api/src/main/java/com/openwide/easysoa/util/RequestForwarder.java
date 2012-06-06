@@ -205,7 +205,7 @@ public class RequestForwarder {
     		messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
     	}
     	outMessage.setMessageContent(messageContent);
-    	messageContent.setEncoding(clientResponse.getEntity().getContentEncoding().getValue());
+    	//messageContent.setEncoding(clientResponse.getEntity().getContentEncoding().getValue());
     	// Return response message
 		return outMessage;		
 	}
