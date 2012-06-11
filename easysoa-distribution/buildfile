@@ -22,11 +22,7 @@ PACKAGING_OUTPUT_PATH = 'easysoa'
 PACKAGING_OUTPUT_ARCHIVE = 'easysoa-demo-'+RELEASE_VERSION+'.tar.gz';
 
 # URLs
-ESPER_VERSION = "4.3.0"
-FRASCATI_VERSION = "1.5-SNAPSHOT"
-ESPER_DOWNLOAD_URL = 'http://mirrors.ibiblio.org/pub/mirrors/maven2/com/espertech/esper/' + ESPER_VERSION + '/esper-' + ESPER_VERSION + '.jar'
-NODE_WIN_DOWNLOAD_URL = 'http://nodejs.org/dist/v0.6.1/node.exe'
-FRASCATI_DOWNLOAD_URL = 'http://www.easysoa.org/download/dev/frascati-runtime-' + FRASCATI_VERSION + '-bin.zip'
+NODE_WIN_DOWNLOAD_URL = 'http://nodejs.org/dist/latest/node.exe'
 
 # Generated
 MANIFEST_RELATIVE_PATH = 'src/main/resources/META-INF/MANIFEST.MF'
@@ -247,56 +243,15 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
     raise "Files copy failed: Node location seems invalid (binary not found)"
   end
   
-  # Download/extract FraSCAti if necessary
-  if !File.exist?(FRASCATI_PATH) 
-    if !File.exist?('deps/frascati-runtime-'+FRASCATI_VERSION+'-bin.zip')
-      puts 'FraSCAti not found, downloading it...'
-      system 'wget', FRASCATI_DOWNLOAD_URL # XXX Linux/Cygwin-dependent
-      mv 'frascati-runtime-'+FRASCATI_VERSION+'-bin.zip','./deps'
-    end
-    puts 'Extracting FraSCAti...'
-    system 'unzip', '-q', '-o', './deps/frascati-runtime-'+FRASCATI_VERSION+'-bin.zip' # XXX Linux/Cygwin-dependent
-    mv 'frascati-runtime-'+FRASCATI_VERSION, './deps/frascati'
-    rm_rf FileList['./deps/frascati/doc', './deps/frascati/examples', './deps/frascati/README', './deps/frascati/RELEASE_NOTES']
-  end
-  if !File.exist?(ESPER_DEP_PATH)
-    puts 'Esper not found, downloading it...'
-    system 'wget', ESPER_DOWNLOAD_URL # XXX Linux/Cygwin-dependent
-    mv './esper-'+ESPER_VERSION+'.jar', ESPER_DEP_PATH
-  end
-
-  # Deploy FraSCAti
-  puts 'Copying FraSCAti...'
-  FileUtils.cp_r FRASCATI_PATH, PACKAGING_OUTPUT_PATH
-  
   # Copy web services and proxies
-  puts "Copying web services and proxies..."
-  puts "  * Needed libraries..."
-  cp FileList[project(EASYSOA_REGISTRY).base_dir+"/target/**/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_REGISTRY).base_dir+"/easysoa-registry-api/easysoa-registry-api-messaging/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/easysoa-proxy-core-api/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-intents/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-currency-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-meteo-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-summary-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps' # Conflicting with the Light trip proxy if put in lib/
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-translate-model/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  
-  puts "  * FraSCAti applications..."
-  cp FileList[project(EASYSOA_PROXY).base_dir+"/easysoa-proxy-core/*/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  cp FileList[project(EASYSOA_TRAVEL).base_dir+"/easysoa-samples-smarttravel-trip/target/*.jar"], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  system 'unzip', '-q', '-o', FileList[project(EASYSOA_PROXY).base_dir+'/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
-  rm FileList['tmp/easysoa-proxy-core-scaffolderproxy*/lib/frascati*'] # Filter FraSCAti dependencies (already provided in the distribution)
-  mv FileList['tmp/easysoa-proxy-core-scaffolderproxy*/lib/*'], PACKAGING_OUTPUT_PATH+'/frascati/lib'
-  mv FileList['tmp/easysoa-proxy-core-scaffolderproxy*/bin/*'], PACKAGING_OUTPUT_PATH+'/frascati/sca-apps'
-  
-  puts "  * PAF services..."
+  puts "Copying PureAirFlowers web services..."
   rm_rf 'tmp'
   mkdir_p 'tmp'
   mkdir_p PACKAGING_OUTPUT_PATH+'/pafServices'
   system 'unzip', '-q', '-o', FileList[project(EASYSOA_PAF).base_dir+'/easysoa-samples-paf-server/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
   mv FileList['tmp/easysoa-samples-paf-server*/*'], PACKAGING_OUTPUT_PATH+'/pafServices'
   
-  puts "  * Travel backup services..."
+  puts "Copying SmartTravel backup web services..."
   mkdir_p PACKAGING_OUTPUT_PATH+'/travelBackup'  
   system 'unzip', '-q', '-o', FileList[project(EASYSOA_TRAVEL_BACKUP).base_dir+'/target/*-bin.zip'].to_s, '-d', 'tmp' # XXX Linux-dependent
   cp_r FileList['tmp/easysoa-samples-smarttravel-services-backup*/*'], PACKAGING_OUTPUT_PATH+'/travelBackup/'
@@ -334,6 +289,7 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   puts "  * Talend Airport service..."
   mkdir PACKAGING_OUTPUT_PATH+'/talend/airportService'
   cp_r FileList[project(EASYSOA_TALEND).base_dir+'/SimpleProvider*/*'], PACKAGING_OUTPUT_PATH+"/talend/airportService"
+  
   
   # Copy startup monitor
   mkdir PACKAGING_OUTPUT_PATH+'/startupMonitor'
