@@ -205,9 +205,10 @@ public class RequestForwarder {
     		messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
     	}
     	outMessage.setMessageContent(messageContent);
+    	// TODO : There is an encoding problem when returning the response and when the encoding is not ISO-8859 ....
     	//messageContent.setEncoding(clientResponse.getEntity().getContentEncoding().getValue());
     	// Return response message
-		return outMessage;		
+		return outMessage;
 	}
 	
 	/**

@@ -31,6 +31,7 @@ public class ProxyInterceptorTest {
     // Logger
     private static Logger logger = Logger.getLogger(ProxyInterceptorTest.class.getName());
     
+    //
     private Server server;
     
     @Before
@@ -51,7 +52,7 @@ public class ProxyInterceptorTest {
     @Test
     public void InterceptorTest() throws IllegalStateException, Exception {
         // send a request to trigger the interceptor
-        DefaultHttpClient httpClient = new DefaultHttpClient();     
+        DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpUriRequest httpUriRequest;
         httpUriRequest = new HttpGet("http://localhost:9910/?wsdl");
         HttpResponse response = httpClient.execute(httpUriRequest);

@@ -117,13 +117,13 @@ public class RunManagerImpl implements RunManager {
 	 */	
 	public boolean isAutoSave() {
 		return autoSave;
-	}	
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getCurrentRun()
 	 */
 	@Override
-	public Run getCurrentRun() throws Exception{
+	public Run getCurrentRun() throws Exception {
 		if(currentRun == null && autoStart){
 			// TODO add a better unique id
 			Date startDate = new Date();

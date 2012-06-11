@@ -36,6 +36,18 @@ public interface ExchangeReplayService {
 	
     // TODO : add a method to execute or not the assertion engine when a replay method is called
     
+    /**
+     * Returns a help text with the available commands
+     * @param ui Context UriInfo
+     * @return The <code>String</code> help text
+     */
+    // TODO in case of error, return the user informations
+    @GET
+    @Path("/")
+    //@Consumes("*/*")
+    //@Produces({MediaType.TEXT_PLAIN})
+    public String returnInformations();
+    
 	@GET
 	@Path("/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -70,7 +82,6 @@ public interface ExchangeReplayService {
 	
 	@GET
 	@Path("/templates/")
-	//@Produces("")
 	public String getTemplateRecordList();  
 	
 	@GET

@@ -88,17 +88,17 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		help.append("<P><H1>HTTP Proxy Driver</H1></P>");
 		help.append("<P><H2>How to use :</H2></P>");
 		help.append("<P><UL>");
-		help.append("<LI>To start a new proxy run : /run/start/{runName}</LI>");
-		help.append("<LI>To stop the current proxy run : /run/stop</LI>");
-		//help.append("<LI>To get the run list : /getOrderedRunNames</LI>");
-		//help.append("<LI>To re-run a run : /reRun/{runName}</LI>");
-		// TODO  add a method to get the current run name
-		help.append("<LI>To delete the current run : /run/delete</LI>");
-		help.append("<LI>To save the current run : /run/save</LI>");
+		help.append("<LI>To start a new proxy run (POST operation) : /run/start/{runName}</LI>");
+		help.append("<LI>To stop the current proxy run (POST operation) : /run/stop</LI>");
+		help.append("<LI>To delete the current run (POST operation) : /run/delete</LI>");
+		help.append("<LI>To save the current run (POST operation) : /run/save</LI>");
 		help.append("</UL></P></BODY></HTML>");
 		return help.toString();
 	}
 
+	/**
+	 * Start a new run
+	 */
 	public String startNewRun(String runName) {
 		logger.debug("Starting a new run !");
 		try{
@@ -110,6 +110,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		return "Run '" + runName + "' started !";
 	}
 
+	/**
+	 * Stop the current run
+	 */
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
 		try {
@@ -167,6 +170,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		return "Re-run done";
 	}*/
 
+	/**
+	 * Delete the current run
+	 */
 	public String delete() {
 		try {
 			runManager.delete();
@@ -178,6 +184,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		return "Run deleted !";
 	}
 	
+	/**
+	 * Save the current run
+	 */
 	public void save() throws Exception{
 	    // Register and save at the same time, maybe best to have 2 separated methods ...
 	    runManager.save();

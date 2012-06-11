@@ -13,6 +13,7 @@ import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.ExchangeRecord;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
+import com.openwide.easysoa.message.QueryString;
 
 /**
  * CXF interceptor. Works as the HTTP discovery proxy : listen the HTTP exchanges and record them as files. 
@@ -49,23 +50,30 @@ public class CXFProxyInterceptor extends AbstractPhaseInterceptor<Message> {
         // and then build an ExchangeRecord
         ExchangeRecord exchangeRecord = new ExchangeRecord();
         Exchange exchange = new Exchange();
-        InMessage inMessage = new InMessage();
+        InMessage inMessage = new InMessage((String)message.get("org.apache.cxf.request.method"), (String)message.get("org.apache.cxf.message.Message.QUERY_STRING"));
         OutMessage outMessage = new OutMessage();
         exchangeRecord.setInMessage(inMessage);
         exchangeRecord.setOutMessage(outMessage);
-        //exchange.setExchangeID(exchangeID);
-        
+
+        logger.debug("Displaying message keys ....");
+        for(String key : message.keySet()){
+            logger.debug("Key : " + key);
+        }
+       
         /*if(message.){
             exchange.setExchangeType(ExchangeType.REST);
         } else {
             exchange.setExchangeType(ExchangeType.SOAP);
         }*/
-     
+
+        // The interceptor will be used :
+        // - in remote client or server .. so it must have a system to talk with a remote easysoa
+        // - in easysoa  .. no need to use a remote link to the run manager, only thing to do is to have reference on run manager
+        
         // How to get the run manager ??
         // Run manager is a sca component designed to run on Frascati
         // Send the exchange to a remote API using REST or SOAP protocols ? 
         // Goal of this interceptor is to be plugged on an external system.
-        
     }
 
 }
