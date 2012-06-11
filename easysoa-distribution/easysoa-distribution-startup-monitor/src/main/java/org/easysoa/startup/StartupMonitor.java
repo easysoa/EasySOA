@@ -20,10 +20,8 @@ public class StartupMonitor {
     
     private static final String EASYSOA_URL = "http://localhost:8083/easysoa";
     private static final int STARTUP_TIMEOUT = 90000;
-    private static final String[] BROWSERS = { "firefox", "google-chrome", "opera",
-       "epiphany", "konqueror", "conkeror", "midori", "kazehakase", "mozilla" };
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         // Port list
         Map<Integer, String> portsToCheck = new ConcurrentHashMap<Integer, String>();
@@ -51,6 +49,11 @@ public class StartupMonitor {
                     String label = portsToCheck.remove(port);
                     up++;
                     print(label + " is up... (" + up + "/" + total + ")");
+                   
+                    // Launch easysoa-web when Nuxeo is ready
+                   /* if (port == EasySOAConstants.NUXEO_PORT) {
+                        launchEasySOAWeb();
+                    }*/
                 }
                 if (System.currentTimeMillis() - initialTime > STARTUP_TIMEOUT) {
                     break;
@@ -70,12 +73,42 @@ public class StartupMonitor {
         
         // Open browser
         try {
-            openBrowser();
+            BrowserHelper.openBrowser(EASYSOA_URL);
         } catch (Exception e) {
             print("\nPlease browse to '" + EASYSOA_URL +"' to get started with the demo.");
         }
         
     }
+    
+    /*private static void launchEasySOAWeb() throws IOException {
+        String command = "./web/start-web.sh";
+        if ("Windows".equals(System.getProperty("os.name"))) {
+            command = windowsify(command);
+        }
+        ProcessBuilder pb = new ProcessBuilder(command);
+        
+        if (System.getProperty("user.dir").endsWith("easysoa-distribution-startup-monitor")) {
+            pb.directory(new File(System.getProperty("user.dir").replace("easysoa-distribution-startup-monitor", "easysoa")));
+        }
+        
+        Process start;
+        try {
+            start = pb.start();
+            Thread.sleep(1000);
+            BufferedReader bufferedReader = new java.io.BufferedReader(new java.io.InputStreamReader(start.getInputStream()));
+            while (bufferedReader.ready()) {
+                print(bufferedReader.readLine());
+            }
+        } catch (Exception e) {
+            throw new IOException("Failed to start easysoa-web (command: " + command + ")", e);
+        }
+    }
+
+    private static String windowsify(String command) {
+        String result = command.replace(".sh", ".bat");
+        result = result.replaceFirst("\\.\\/", "");
+        return result;
+    }*/
 
     private static void trySleep(int ms) {
         try {
@@ -114,36 +147,5 @@ public class StartupMonitor {
         System.out.println(string);
     }
 
-    /**
-     * Opens the specified web page in the user's default browser
-     * (Desktop.browse() doesn't work correctly with Ubuntu 11.10)
-     * @throws Exception 
-     */
-    public static void openBrowser() throws Exception {
-
-        // Source: http://www.centerkey.com/java/browser/
-        
-        String url = EASYSOA_URL;
-
-        String osName = System.getProperty("os.name");
-        if (osName.startsWith("Mac OS")) {
-            Class.forName("com.apple.eio.FileManager")
-                    .getDeclaredMethod("openURL", new Class[] { String.class })
-                    .invoke(null, new Object[] { url });
-        } else if (osName.startsWith("Windows"))
-            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
-        else { // assume Unix or Linux
-            String browser = null;
-            for (String b : BROWSERS) {
-                if (browser == null &&  Runtime.getRuntime().exec(
-                        new String[] { "which", b }).getInputStream().read() != -1) {
-                    Runtime.getRuntime().exec(new String[] { browser = b, url });
-                }
-            }
-            if (browser == null) {
-                throw new Exception();
-            }
-        }
-    }
 
 }
