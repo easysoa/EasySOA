@@ -258,7 +258,8 @@
 		                        <goal>copy-resources</goal>
 		                    </goals>
 		                    <configuration>
-		                        <outputDirectory>${project.basedir}/src/test/resources</outputDirectory>
+		                        <!--<outputDirectory>${project.basedir}/src/test/resources</outputDirectory>-->
+		                        <outputDirectory>${project.basedir}/target</outputDirectory>
 		                        <resources>
 		                            <resource>
 		                                <directory>${project.basedir}/../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target</directory>

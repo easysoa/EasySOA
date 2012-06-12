@@ -19,6 +19,8 @@ bin/
 .settings/
 nxsqldirectory/
 
+easysoa-registry/easysoa-registry-frascati/src/test/resources/easysoa-proxy-core-httpdiscoveryproxy-*.jar
+
 # Distribution files
 easysoa-distribution/easysoa/
 easysoa-distribution/deps/
