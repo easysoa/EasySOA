@@ -48,15 +48,15 @@ public interface ReplayEngine {
     public AssertionEngine getAssertionEngine();    
     
     /**
-     * 
+     * Starts a replay session
      * @param replaySessionName
-     * @throws Exception
+     * @throws Exception If a problem occurs
      */
     public void startReplaySession(String replaySessionName) throws Exception;
     
     /**
-     * 
-     * @throws Exception
+     * Stop a replay session
+     * @throws Exception If a problem occurs
      */
     public void stopReplaySession() throws Exception;
     

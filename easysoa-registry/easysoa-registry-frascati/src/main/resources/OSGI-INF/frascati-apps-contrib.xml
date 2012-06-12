@@ -7,6 +7,12 @@
       <libsPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT/lib</libsPath>
       <compositeName>httpDiscoveryProxy</compositeName>
     </app>
+    
+    <app name="EasySOA Proxy core Scaffolding Proxy">
+      <jarPath>nxserver/frascati/apps/easysoa-proxy-core-scaffolderproxy-0.4-SNAPSHOT/bin/easysoa-proxy-core-scaffolderproxy-0.4-SNAPSHOT.jar</jarPath>
+      <libsPath>nxserver/frascati/apps/easysoa-proxy-core-scaffolderproxy-0.4-SNAPSHOT/lib</libsPath>
+      <compositeName>scaffoldingProxy_monitored</compositeName>
+    </app>
   </extension>
 
 </component>
