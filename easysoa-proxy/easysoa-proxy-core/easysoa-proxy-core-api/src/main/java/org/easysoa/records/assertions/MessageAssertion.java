@@ -26,6 +26,7 @@ package org.easysoa.records.assertions;
 import java.util.HashMap;
 
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
+import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.message.OutMessage;
 
@@ -38,6 +39,8 @@ import com.openwide.easysoa.message.OutMessage;
  * @author jguillemotte
  *
  */
+
+@Scope("composite")
 public class MessageAssertion extends AbstractAssertion {
 
     public MessageAssertion(String id) {

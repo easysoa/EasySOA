@@ -28,6 +28,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.message.OutMessage;
 
 /**
@@ -36,6 +38,8 @@ import com.openwide.easysoa.message.OutMessage;
  * @author jguillemotte
  *
  */
+
+@Scope("composite")
 public class TemplateRenderer implements TemplateProcessorRendererItf {
 
 	// Logger

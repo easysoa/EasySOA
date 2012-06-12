@@ -28,6 +28,7 @@ import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.message.OutMessage;
 
@@ -37,6 +38,9 @@ import com.openwide.easysoa.message.OutMessage;
  * @author jguillemotte
  *
  */
+
+
+@Scope("composite")
 public class AssertionEngineImpl implements AssertionEngine {
     
     // Specific logger for assertions
