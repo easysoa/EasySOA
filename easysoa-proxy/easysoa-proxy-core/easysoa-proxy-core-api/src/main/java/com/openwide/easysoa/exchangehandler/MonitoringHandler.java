@@ -19,9 +19,13 @@
  */
 package com.openwide.easysoa.exchangehandler;
 
+import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 
+
+@Scope("composite")
 public class MonitoringHandler implements MessageHandler {
 
     @Override

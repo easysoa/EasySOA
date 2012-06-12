@@ -22,9 +22,13 @@ package com.openwide.easysoa.exchangehandler;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 
+
+@Scope("composite")
 public class HandlerManagerImpl implements HandlerManager {
 
     /**
@@ -47,6 +51,5 @@ public class HandlerManagerImpl implements HandlerManager {
             }
         }    
     }
-    
     
 }
