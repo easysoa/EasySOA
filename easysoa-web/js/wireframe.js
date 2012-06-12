@@ -1,5 +1,6 @@
 var fs = require('fs');
 var stylus = require('stylus');
+var url = require('url');
 
 var settings = require('./settings');
 
@@ -18,9 +19,10 @@ exports.configure = function(webServer) {
     });
   });
   webServer.get(WIREFRAME_PATH + '/*', function(request, result, next) {
-    var page = request.url.replace(WIREFRAME_PATH, '').substr(1) || 'index';
+    var parsedUrl = url.parse(request.url);
+    var page = parsedUrl.pathname.replace(WIREFRAME_PATH, '').substr(1) || 'index';
     if (page.indexOf('/') == -1) {
-      result.render(page + '.jade');
+      result.render(page + '.jade', {param: parsedUrl.query});
     }
     else {
       next();
