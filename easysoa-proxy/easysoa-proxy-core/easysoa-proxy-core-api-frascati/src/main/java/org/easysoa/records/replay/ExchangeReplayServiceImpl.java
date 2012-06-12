@@ -93,9 +93,9 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
         help.append("<P><H1>Exchange replay service</H1></P>");
         help.append("<P><H2>How to use :</H2></P>");
         help.append("<P><UL>");
-        help.append("<LI>To get the record store list (GET operation) : /store/getExchangeRecordStorelist</LI>");
-        help.append("<LI>To get a record list (GET operation) : /store/getExchangeRecordList/{storeName}</LI>");
-        help.append("<LI>To get a specific record (GET operation) : /store/getExchangeRecord/{storeName}/{exchangeID}</LI>");
+        help.append("<LI>To get the record store list (GET operation) : /getExchangeRecordStorelist</LI>");
+        help.append("<LI>To get a record list (GET operation) : /getExchangeRecordList/{storeName}</LI>");
+        help.append("<LI>To get a specific record (GET operation) : /getExchangeRecord/{storeName}/{exchangeID}</LI>");
         help.append("<LI>To start a replay session : /startReplaySession/{replaySessionName}</LI>");
         help.append("<LI>To replay an exchange record directly without any modifications (GET operation) : /replay/{exchangeRecordStoreName}/{exchangeRecordId}</LI>");
         help.append("<LI>To stop the current replaySession : /stopReplaySession</LI>");
@@ -106,7 +106,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 
 	@Override
 	@GET
-	@Path("store/getExchangeRecordList/{storeName}")
+	@Path("/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) throws Exception {
 	    return replayEngine.getExchangeRecordlist(exchangeRecordStoreName);
@@ -114,7 +114,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 
 	@Override
 	@GET
-	@Path("store/getExchangeRecord/{storeName}/{exchangeID}")
+	@Path("/getExchangeRecord/{storeName}/{exchangeID}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) throws Exception {
 	    return replayEngine.getExchangeRecord(exchangeRecordStoreName, exchangeID);
@@ -122,7 +122,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 
 	@Override
 	@GET
-	@Path("store/getExchangeRecordStorelist")
+	@Path("/getExchangeRecordStorelist")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public StoreCollection getExchangeRecordStorelist() throws Exception {
 	    return replayEngine.getExchangeRecordStorelist();
