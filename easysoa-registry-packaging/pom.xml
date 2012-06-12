@@ -358,18 +358,6 @@
 					<version>7.4.5.v20110725</version>
 				</artifactItem>
                
-                <!-- SCA Intents required by Easysoa Scaffolding proxy -->
-                <artifactItem>
-					<groupId>org.easysoa.proxy</groupId>
-					<artifactId>easysoa-proxy-intents-fuseintent</artifactId>
-					<version>${easysoa.version}</version>                
-                </artifactItem>
-                <artifactItem>
-					<groupId>org.easysoa.proxy</groupId>
-					<artifactId>easysoa-proxy-intents-logintent</artifactId>
-					<version>${easysoa.version}</version>                
-                </artifactItem>
-               
                 <!-- Runtime management -->    
                 <artifactItem>
                   <groupId>org.apache.maven</groupId>
@@ -397,6 +385,30 @@
               <outputDirectory>${project.build.directory}/lib</outputDirectory>
             </configuration>
           </execution>
+          <!-- Copy intents jars in Frascati/lib folder -->
+          <execution>
+            <id>copy-intent-jars</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <!-- Intents required by scaffolding proxy -->
+                <artifactItem>
+					<groupId>org.easysoa.proxy</groupId>
+					<artifactId>easysoa-proxy-intents-fuseintent</artifactId>
+					<version>${easysoa.version}</version>                
+                </artifactItem>
+                <artifactItem>
+					<groupId>org.easysoa.proxy</groupId>
+					<artifactId>easysoa-proxy-intents-logintent</artifactId>
+					<version>${easysoa.version}</version>                
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/nxserver/frascati/lib</outputDirectory>
+            </configuration>
+          </execution>          
         </executions>
       </plugin>
       
