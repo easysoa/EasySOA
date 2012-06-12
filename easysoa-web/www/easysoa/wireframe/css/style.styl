@@ -4,21 +4,8 @@ body
   background-color #EEF5FA
   margin 0
 
-a
-  text-decoration none
-  font-weight bold
-  color darkblue
 
-a.fake
-  font-weight normal
-  text-decoration none
-  cursor default
-  
-a.fake:hover
-  text-decoration none
-  
-a:hover
-  text-decoration underline
+// Header
 
 header
   background-color white
@@ -49,7 +36,10 @@ header
   height 20px
   border 1px solid red
   border-radius 10px
-  
+
+
+// Header tabs
+
 .bigtab
   float left
   border 2px solid black
@@ -98,27 +88,42 @@ header
   margin-top 0
   height 20px
   
-h1
-  margin-bottom 0
-  font-weight normal
-  
-h2
-  margin-top 0
-  font-size 12pt
-  font-weight normal
   
 #doccontents
-  margin-left 230px
   padding 10px
   
 #breadcrumbs
   border-bottom 1px solid grey
   font-size: 10pt
+
+
+// Navigation tree
+
+#navtree
+  position absolute
+  min-height 500px
+  border 2px solid #000
+  background-color #EFF
+  width 200px
+  float left
+  top 118px
+  left 10px
   
+#navtreetitle
+  border-bottom 2px solid #58A
+  padding 5px
+  text-align center
+
+#navtreecontents
+  padding 5px
+
+
+// Left tabs
+
 #lefttabs
   position absolute
   top 105px
-  left 10px
+  left 220px
   width 80px
   padding-top 15px
   margin-right 7px
@@ -135,33 +140,16 @@ h2
   height 20px
   font-size 10pt
   color grey
+  
+  
+// Contents
 
 #contents
-  position relative
-  right 0
   border 2px solid black
-  margin 5px
+  margin 5px 5px 5px 332px
   min-height 500px
   padding 10px
-  margin-left 122px
   background-color white
-  
-#navtree
-  position relative
-  min-height 500px
-  border 2px solid black
-  width 220px
-  float left
-  background-color white
-  top 10px
-  
-#navtreetitle
-  border-bottom 2px solid black
-  padding 5px
-  text-align center
-
-#navtreecontents
-  padding 5px
 
 .contentbox
   border 1px solid black
@@ -190,6 +178,9 @@ h2
 .contentbox li
   width 100%
   list-style-type none
+  
+  
+// Div convenience classes
   
 .third
   width 30%
@@ -224,7 +215,35 @@ h2
   border 1px solid #999
   padding 5px
 
+
+// Tags customization
+
 td, th
   border 1px solid #CCC
   padding 3px
   
+h1
+  margin-bottom 0
+  font-weight normal
+  
+h2
+  margin-top 0
+  font-size 12pt
+  font-weight normal
+  
+a
+  text-decoration none
+  font-weight bold
+  color darkblue
+
+a.fake
+  font-weight normal
+  text-decoration none
+  cursor default
+  
+a.fake:hover
+  text-decoration none
+  
+a:hover
+  text-decoration underline
+
