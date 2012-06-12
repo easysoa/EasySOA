@@ -96,16 +96,17 @@ public class SubscriptionWebserviceImpl implements ISubscriptionWebService {
     }
 
     /**
-     * TODO doesn't work yet
+     * To return the Id subscription 
      * 
      */
     
-    @POST	
+    @GET	
     @Path("/subscriptions/{subscriptionId}")
     @Produces({"application/xml", "application/json"})
-    public boolean updateSubscription(Subscription subscription, @PathParam("subscriptionId") String subscriptionId) {
+    public Subscription updateSubscription(Subscription subscription, @PathParam("subscriptionId") Integer subscriptionId) {
             // LATER
-            return true;
+            return this.subscriptions.getSubscriptions().get(subscriptionId);
+            
     }
 
     /**
