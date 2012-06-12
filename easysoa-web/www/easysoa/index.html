@@ -4,10 +4,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>EasySOA - Welcome Page</title>
 	<script type="text/javascript" src="lib/jquery.js"></script>
-	<script type="text/javascript" src="lib/tabber/tabber-minimized.js"></script>
+	<script type="text/javascript" src="lib/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 	<link rel="stylesheet" href="lib/tabber/tabber-easysoa.css" type="text/css" media="screen" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/start/jquery-ui.css" />
   <style type="text/css">
     #shortcuts {
       width: 35%;
@@ -34,12 +35,13 @@
       float: right;
       font-size: 10pt;
       margin-top: -15px;
+      border-right: 
     }
     
     #presentation {
       width: 40%;
       padding: 20px;
-      border-left: 1px solid #024;
+      border-left: 1px solid #BBB;
       float: left;
     } 
     
@@ -142,10 +144,19 @@
     
     <h1><b>First time user</b>? Take the tour!</h1>
    
-   <div class="tabber">
-
-      <div class="tabbertab" title="For the Business user">
-          
+   <script type="text/javascript">
+    $(document).ready(function(){
+      $('#accordion').accordion({
+        collapsible: true,
+        active: false,
+        autoHeight: false
+      });
+    });
+   </script>
+    <div id="accordion">
+    
+      <h3><a href="#">For the Business user</a></h3>
+      <div>
           <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (enable only the HTTP protocol) and remove any proxy exceptions. In case something goes wrong during the demo, you can check the <a href="https://github.com/easysoa/EasySOA/wiki/Demo-v0.3-doc#wiki-troubleshooting">troubleshooting page</a>.</p>
            
           <h2><div>Step 1</div> Discover services in your intranet</h2>
@@ -179,8 +190,12 @@
           <div class="loginInfoBox">For more advanced features, including services monitoring and architecture files import, please see the second demo scenario.</div>
 
       </div>
-      <div class="tabbertab" title="For Developers & IT staff">
-				  
+
+
+
+      
+      <h3><a href="#">For Developers & IT staff</a></h3>
+      <div>
           <p>This scenario is based on another demo SOA, called "Smart Travel". This time, we will take the role of a developer who wants to map the SOA contents.</p>
           
           <h2><div>Step 1</div> Import the SOA architecture</h2>
@@ -214,9 +229,9 @@
           <h2>Conclusion</h2>
 
           <p>These two demos show you various ways to use and interact with EasySOA and its cross-cutting model. But the ambitions of EasySOA go further than what you just saw: services creation, more collaborative features, but also the configuration of the monitoring component, an all-in-one architecture... So stay tuned! Thanks for testing EasySOA!</p>
-          
       </div>
-  </div>
+      
+    </div>
 
   </div>
 </div>
