@@ -23,10 +23,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 
+/**
+ * To handle message
+ * @author fntangke
+ *
+ */
 
 @Scope("composite")
 public class HandlerManagerImpl implements HandlerManager {

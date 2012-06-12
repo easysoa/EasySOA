@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"-->
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" 
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" 
+xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" name="servicesToLaunchMock">
+
+	<!-- minimal Discovery proxy with Event handler -->
+	
+    <component name="httpProxyService">
+        <implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
+		<!--<service name="httpServiceInput" requires="esperIntent"> -->
+        <service name="httpServiceInput">
+            <interface.java interface="javax.servlet.Servlet" />
+            <tuscany:binding.http uri="http://localhost:8082/" />
+        </service>
+         <reference name="handlerManager" target="handleManagerComponent" >
+         	<interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
+         </reference>
+        <property name="proxyPort">8082</property>
+        <property name="forwardHttpConnexionTimeoutMs">30000</property>
+        <property name="forwardHttpSocketTimeoutMs">30000</property>
+    </component>
+
+	<component name="handleManagerComponent">
+		<service name="handlerManagerService">
+			<interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
+		</service>
+		<implementation.java class="com.openwide.easysoa.exchangehandler.HandlerManagerImpl"/>
+		<reference multiplicity="0..n" name="handlers">
+			<interface.java interface="com.openwide.easysoa.exchangehandler.MessageHandler"/>
+		</reference>
+	</component>
+	
+	<service name="IEventMessageHandler" promote="eventMessageHandlerComponent/IEventMessageHandler"/>
+	
+	
+	<component name="eventMessageHandlerComponent">
+		<service name="HandlerService">
+			<interface.java interface="com.openwide.easysoa.exchangehandler.MessageHandler" />
+		</service>
+		<service name="IEventMessageHandler">
+			<interface.java interface="org.easysoa.proxy.handler.event.admin.IEventMessageHandler" />
+		</service>
+	
+        <property name="forwardHttpConnexionTimeoutMs">30000</property>
+        <property name="forwardHttpSocketTimeoutMs">30000</property>
+		
+		<implementation.java class="org.easysoa.proxy.handler.event.admin.EventMessageHandlerImpl" />
+		
+	</component>
+    
+    
+    
+    <component name ="subscriptionWebserviceComponent">
+		<service name="ISubscriptionWebService">
+			<interface.java interface="org.easysoa.proxy.handler.event.admin.ISubscriptionWebService"/>
+				<frascati:binding.rest uri="http://localhost:8084/SubscriptionWebService/" />
+		</service>
+         
+         <implementation.java class="org.easysoa.proxy.handler.event.admin.SubscriptionWebserviceImpl" ></implementation.java>
+         
+    	<reference name="eventMessageHandler" target="eventMessageHandlerComponent" >
+    		<interface.java interface="org.easysoa.proxy.handler.event.admin.IEventMessageHandler" />
+        </reference>
+    </component>
+    
+   
+
+
+
+	<!-- a few (Nuxeo) services to listen to -->
+
+	<component name="service1ToListenMock">
+		<implementation.java class="org.easysoa.test.mock.nuxeo.EasySoaRestApiMock" />
+		<service name="RestApiMockHTTP">
+			<interface.java interface="javax.servlet.Servlet" />
+			<tuscany:binding.http uri="http://localhost:8080/"/>			
+		</service>	
+	</component>
+
+	<component name="service2ToListenMock">
+		<implementation.java class="org.easysoa.test.mock.nuxeo.EasySoaRestApiMock" />
+		<service name="RestApiMockHTTP">
+			<interface.java interface="javax.servlet.Servlet" />
+			<tuscany:binding.http uri="http://localhost:8080/another"/>			
+		</service>	
+	</component>
+    
+
+	<!-- a few (Nuxeo) services to launch -->
+
+	<service name="service1ToLaunchMockRecordsProvider" promote="service1ToLaunchMock/RecordsProvider"/>
+	<component name="service1ToLaunchMock">
+		<implementation.java class="org.easysoa.test.mock.nuxeo.EasySoaRestApiMock" />
+		<service name="RestApiMockHTTP">
+			<interface.java interface="javax.servlet.Servlet" />
+    		<!--<frascati:binding.rest uri="http://localhost:8080/"/>-->
+			<tuscany:binding.http uri="http://localhost:8081/"/>			
+		</service>
+		<service name="RecordsProvider">
+			<interface.java interface="org.easysoa.test.mock.nuxeo.RecordsProvider"/>
+		</service>		
+	</component>
+
+	<service name="service2ToLaunchMockRecordsProvider" promote="service2ToLaunchMock/RecordsProvider"/>
+	<component name="service2ToLaunchMock">
+		<implementation.java class="org.easysoa.test.mock.nuxeo.EasySoaRestApiMock" />
+		<service name="RestApiMockHTTP">
+			<interface.java interface="javax.servlet.Servlet" />
+    		<!--<frascati:binding.rest uri="http://localhost:8080/"/>-->
+			<tuscany:binding.http uri="http://localhost:8080/2"/>			
+		</service>
+		<service name="RecordsProvider">
+			<interface.java interface="org.easysoa.test.mock.nuxeo.RecordsProvider"/>
+		</service>		
+	</component>
+
+	<service name="service3ToLaunchMockRecordsProvider" promote="service3ToLaunchMock/RecordsProvider"/>
+	<component name="service3ToLaunchMock">
+		<implementation.java class="org.easysoa.test.mock.nuxeo.EasySoaRestApiMock" />
+		<service name="RestApiMockHTTP">
+			<interface.java interface="javax.servlet.Servlet" />
+    		<!--<frascati:binding.rest uri="http://localhost:8080/"/>-->
+			<tuscany:binding.http uri="http://localhost:8080/3"/>			
+		</service>
+		<service name="RecordsProvider">
+			<interface.java interface="org.easysoa.test.mock.nuxeo.RecordsProvider"/>
+		</service>		
+	</component>
+	
+</composite>
