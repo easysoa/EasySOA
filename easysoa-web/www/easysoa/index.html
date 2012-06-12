@@ -72,6 +72,21 @@
 	    font-size: 13pt !important;
     }
     
+    #presentation.fullscreen {
+      position: absolute;
+      width: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #FFF;
+    }
+    
+    #presentation.fullscreen h3, #presentation.fullscreen div {
+      max-width: none;
+    }
+    
+    
   </style>
 </head>
 <body>
@@ -142,10 +157,13 @@
     
     Welcome to <b>EasySOA</b> Core & Light!
     
-    <h1><b>First time user</b>? Take the tour!</h1>
+    <h1><img id="fullscreen" src="img/fullscreen.png" style="margin-right: 10px; cursor: pointer" /><b>First time user</b>? Take the tour!</h1>
    
    <script type="text/javascript">
     $(document).ready(function(){
+      $('#fullscreen').click(function() {
+        $('#presentation').toggleClass('fullscreen');
+      });
       $('#accordion').accordion({
         collapsible: true,
         active: false,
@@ -153,6 +171,7 @@
       });
     });
    </script>
+   
     <div id="accordion">
     
       <h3><a href="#">For the Business user</a></h3>
