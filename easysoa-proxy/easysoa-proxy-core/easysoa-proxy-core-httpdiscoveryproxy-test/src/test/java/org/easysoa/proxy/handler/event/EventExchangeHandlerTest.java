@@ -21,15 +21,12 @@
 package org.easysoa.proxy.handler.event;
 
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.soap.SOAPException;
-
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -51,7 +48,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
-
 
 /**
  * Complete test suite of HTTP Discovery Proxy
@@ -79,16 +75,16 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
 	 * FraSCAti and HTTP discovery Proxy ...
 	 * @throws Exception 
 	 */
-        @Before
-	public void setUp() throws Exception {
-    	
-	   logger.info("Launching FraSCAti and REST mock");
-	   // Start fraSCAti
-	   startFraSCAti();
-	   // Start HTTP Proxy
-	   startHttpDiscoveryProxy("servicesToLaunchMock.composite");
-	//   startHttpDiscoveryProxy(composite, urls)
-        }
+    @Before
+    public void setUp() throws Exception {
+
+        logger.info("Launching FraSCAti and REST mock");
+        // Start fraSCAti
+        startFraSCAti();
+        // Start HTTP Proxy
+        startHttpDiscoveryProxy("servicesToLaunchMock.composite");
+    //   startHttpDiscoveryProxy(composite, urls)
+    }
     
     @Test
     public void testEmpty() throws ClientProtocolException, IOException, FraSCAtiServiceException {
@@ -110,7 +106,7 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
         //	eventMessageHandler.updateSubscription(subscription, subscriptionId)
     	//frascati.g
         
-    //    Subscriptions subscriptions = frascati.getService("servicesToLaunchMock", "ISubscriptionWebService", ISubscriptionWebService.class).getSubscriptions();
+        //Subscriptions subscriptions = frascati.getService("servicesToLaunchMock", "ISubscriptionWebService", ISubscriptionWebService.class).getSubscriptions();
 
     	String eventMessageHandlerAdminUrl = "http://localhost:8084/subscriptions";
     	
