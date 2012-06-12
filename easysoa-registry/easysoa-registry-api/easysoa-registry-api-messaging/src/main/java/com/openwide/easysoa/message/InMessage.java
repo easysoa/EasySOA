@@ -115,6 +115,11 @@ public class InMessage implements Message {
 		this.queryString = new QueryString();
 	}
 	
+	/**
+	 * 
+	 * @param method HTTP method
+	 * @param path 
+	 */
 	public InMessage(String method, String path){
 		this.method = method;
 		this.path = path;

@@ -69,7 +69,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 	@Property
 	String defaultWsdl;
 	
-	@Override
+	//@Override
 	public String updateWsdl(String wsdlSource) throws Exception {
 		// Hack for Talend airport sample
 		if(wsdlSource == null || "".equals(wsdlSource)){
@@ -113,7 +113,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 		return wsdlSource;
 	}
 
-	@Override
+	//@Override
 	public List<WSService> getServices() {
 		logger.debug("Entering in getServiceName method");
 		ArrayList<WSService> serviceList = new ArrayList<WSService>();		
@@ -126,7 +126,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 		return serviceList;
 	}
 
-	@Override
+	//@Override
 	public List<WSEndpoint> getEndpoints(WSService wsService) {
 		ArrayList<WSEndpoint> endpointsList = new ArrayList<WSEndpoint>();
 		for(int i=0; i< wsdlDescription.getServices().length; i++){
@@ -140,13 +140,13 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 		return endpointsList;
 	}
 
-	@Override
+	//@Override
 	public String getBindingName(WSEndpoint wsEndpoint) {
 		Endpoint endpoint = wsdlDescription.getServices()[0].getEndpoint(new NCName(wsEndpoint.getName()));
 		return endpoint.getName().toString();
 	}
 
-	@Override
+	//@Override
 	public List<WSOperation> getOperations(WSEndpoint wsEndpoint) {
 		logger.debug("Entering in getOperations");
 		ArrayList<WSOperation> wsOperationList = new ArrayList<WSOperation>();
@@ -157,13 +157,13 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 		return wsOperationList;
 	}
 
-	@Override
+	//@Override
 	public String getOperationName(WSOperation wsOperation) {
 		logger.debug("Entering in getOperationName");
 		return wsOperation.getName();
 	}
 
-	@Override
+	//@Override
 	public String getOutputMessageName(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName");
 		BindingOperation operation = getBindingOperation(wsEndpoint, wsOperation);
@@ -177,14 +177,14 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 		return "";
 	}
 
-	@Override
+	//@Override
 	public List<WSField> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName");
 		BindingOperation operation = getBindingOperation(wsEndpoint, wsOperation);
 		return getFields(operation, Direction.IN);
 	}
 
-	@Override
+	//@Override
 	public List<WSField> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName");
 		BindingOperation operation = getBindingOperation(wsEndpoint, wsOperation);				
@@ -259,7 +259,7 @@ public class WodenFormGenerator implements TemplateFormGeneratorInterface {
 		}
 	}
 
-	@Override
+	//@Override
 	public Object getConstant(String constantName){
 		return EasySOAConstants.get(constantName);
 	}

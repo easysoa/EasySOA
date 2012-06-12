@@ -72,7 +72,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 	@Property
 	String defaultWsdl;
 	
-	@Override
+	//@Override
 	public String updateWsdl(String wsdlSource) throws Exception {
 	    
 		// Hack for Talend airport sample
@@ -99,7 +99,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 		return wsdlUrl.toString();
 	}
 
-	@Override
+	//@Override
 	public List<WSService> getServices(){
 		logger.debug("Entering in getServiceName method");
 		ArrayList<WSService> serviceList = new ArrayList<WSService>();
@@ -111,7 +111,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 		return serviceList;
 	}
 	
-	@Override
+	//@Override
 	public List<WSEndpoint> getEndpoints(WSService wsService) {
 		logger.debug("Entering in getEndpoints method");
 		ArrayList<WSEndpoint> endpointList = new ArrayList<WSEndpoint>();
@@ -130,13 +130,13 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 		return endpointList;
 	}
 	
-	@Override
+	//@Override
 	public String getBindingName(WSEndpoint wsEndpoint){
 		logger.debug("Entering in getBindingName method");				
 		return wsdlDescription.getServices().get(0).getEndpoint(wsEndpoint.getName()).getBinding().getQName().getLocalPart();
 	}
 	
-	@Override
+	//@Override
 	public List<WSOperation> getOperations(WSEndpoint wsEndpoint){
 		logger.debug("Entering in getOperations method");
 		ArrayList<WSOperation> wsOperationList = new ArrayList<WSOperation>();
@@ -146,13 +146,13 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 		return wsOperationList;
 	}
 	
-	@Override
+	//@Override
 	public String getOperationName(WSOperation wsOperation) {
 		logger.debug("Entering in getOperatioName method");
 		return wsOperation.getName();
 	}
 
-	@Override
+	//@Override
 	public String getOutputMessageName(WSEndpoint wsEndpoint, WSOperation wsOperation) {
 		logger.debug("Entering in getOutputMessageName method");
 		String name = "";
@@ -169,7 +169,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 		return "";
 	}	
 	
-	@Override
+	//@Override
 	public List<WSField> getInputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) throws XmlException {
 		logger.debug("Entering in getInputFields method");
 		List<Part> partList = new ArrayList<Part>();
@@ -181,7 +181,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 		return getFields(partList);
 	}
 	
-	@Override
+	//@Override
 	public List<WSField> getOutputFields(WSEndpoint wsEndpoint, WSOperation wsOperation) throws XmlException {
 		logger.debug("Entering in getOutputFields method");	
 		List<Part> partList = new ArrayList<Part>();
@@ -245,7 +245,7 @@ public class EasyWsdlFormGenerator implements TemplateFormGeneratorInterface  {
 		return elementNameList;
 	}
 
-	@Override
+	//@Override
 	public Object getConstant(String constantName){
 		return EasySOAConstants.get(constantName);
 	}

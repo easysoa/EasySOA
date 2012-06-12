@@ -3,7 +3,6 @@ package org.easysoa.registry.frascati;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +18,6 @@ import org.nuxeo.frascati.factory.NuxeoFraSCAtiStartedEvent;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
-
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 /**
 *
@@ -121,15 +118,14 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
     }
 
     private URL[] filesToUrls(File jarFile, File[] libFiles) throws MalformedURLException {
-        ArrayList<URL> urlList = new ArrayList<URL>();  
-        urlList.add(jarFile.toURI().toURL());
-        for (File libFile : libFiles) {
-            if(libFile.getName().endsWith(".jar")){
-                urlList.add(libFile.getAbsoluteFile().toURI().toURL());
+        List<URL> urls = new LinkedList<URL>();
+        urls.add(jarFile.toURI().toURL());
+        for (File libFile : libFiles) { 
+            if (libFile.getName().endsWith(".jar")) {
+                urls.add(libFile.toURI().toURL());
             }
         };
-        URL[] urls = new URL[urlList.size()];
-        return urlList.toArray(urls);
+        return urls.toArray(new URL[0]);
     }
 
 }

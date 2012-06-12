@@ -20,6 +20,11 @@
 
 package com.openwide.easysoa.run;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.log4j.Logger;
@@ -82,23 +87,28 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	public String returnUseInformations(UriInfo ui) {
 		logger.debug("Returning help informations");
 		StringBuffer help = new StringBuffer();
-		help.append("<HTML><HEAD><TITLE>");
-		help.append("HTTP Proxy Driver commands");
-		help.append("</TITLE></HEAD><BODY>");
-		help.append("<P><H1>HTTP Proxy Driver</H1></P>");
-		help.append("<P><H2>How to use :</H2></P>");
-		help.append("<P><UL>");
-		help.append("<LI>To start a new proxy run : /run/start/{runName}</LI>");
-		help.append("<LI>To stop the current proxy run : /run/stop</LI>");
-		//help.append("<LI>To get the run list : /getOrderedRunNames</LI>");
-		//help.append("<LI>To re-run a run : /reRun/{runName}</LI>");
-		// TODO  add a method to get the current run name
-		help.append("<LI>To delete the current run : /run/delete</LI>");
-		help.append("<LI>To save the current run : /run/save</LI>");
-		help.append("</UL></P></BODY></HTML>");
+		InputStream is = this.getClass().getResourceAsStream("/webContent/index.html");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		try {
+            while(br.ready()) {
+                help.append(br.readLine() + '\n');
+            }
+        } catch (IOException e) {
+            logger.error("Failed to read main page HTML data", e);
+        }
+		finally {
+		    try {
+                br.close();
+            } catch (IOException e) {
+                logger.error("Failed to close main page input stream", e);
+            }
+		}
 		return help.toString();
 	}
 
+	/**
+	 * Start a new run
+	 */
 	public String startNewRun(String runName) {
 		logger.debug("Starting a new run !");
 		try{
@@ -110,6 +120,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		return "Run '" + runName + "' started !";
 	}
 
+	/**
+	 * Stop the current run
+	 */
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
 		try {
@@ -167,6 +180,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		return "Re-run done";
 	}*/
 
+	/**
+	 * Delete the current run
+	 */
 	public String delete() {
 		try {
 			runManager.delete();
@@ -178,10 +194,14 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		return "Run deleted !";
 	}
 	
-	public void save() throws Exception{
+	/**
+	 * Save the current run
+	 */
+	public String save() throws Exception {
 	    // Register and save at the same time, maybe best to have 2 separated methods ...
-	    runManager.save();
+	    String result = runManager.save();
 	    runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+	    return result;
 	}
 
 }

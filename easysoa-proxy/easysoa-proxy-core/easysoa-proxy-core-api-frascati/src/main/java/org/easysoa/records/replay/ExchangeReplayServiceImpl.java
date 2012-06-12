@@ -19,6 +19,7 @@
  */
 package org.easysoa.records.replay;
 
+//import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -77,9 +78,35 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	 */
 	public ExchangeReplayServiceImpl(){}
 	
+    /**
+     * Returns use informations
+     */
+    @Override
+    @GET
+    @Path("/")
+    public String returnInformations() {
+        logger.debug("Returning help informations");
+        StringBuffer help = new StringBuffer();
+        help.append("<HTML><HEAD><TITLE>");
+        help.append("Exchange replay service commands");
+        help.append("</TITLE></HEAD><BODY>");
+        help.append("<P><H1>Exchange replay service</H1></P>");
+        help.append("<P><H2>How to use :</H2></P>");
+        help.append("<P><UL>");
+        help.append("<LI>To get the record store list (GET operation) : /store/getExchangeRecordStorelist</LI>");
+        help.append("<LI>To get a record list (GET operation) : /store/getExchangeRecordList/{storeName}</LI>");
+        help.append("<LI>To get a specific record (GET operation) : /store/getExchangeRecord/{storeName}/{exchangeID}</LI>");
+        help.append("<LI>To start a replay session : /startReplaySession/{replaySessionName}</LI>");
+        help.append("<LI>To replay an exchange record directly without any modifications (GET operation) : /replay/{exchangeRecordStoreName}/{exchangeRecordId}</LI>");
+        help.append("<LI>To stop the current replaySession : /stopReplaySession</LI>");
+        help.append("<LI>To generate a form template form with the default values : /templates/getTemplate/{storeName}/{templateName}");
+        help.append("</UL></P></BODY></HTML>");
+        return help.toString();
+    }
+
 	@Override
 	@GET
-	@Path("/getExchangeRecordList/{storeName}")
+	@Path("store/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) throws Exception {
 	    return replayEngine.getExchangeRecordlist(exchangeRecordStoreName);
@@ -87,15 +114,15 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 
 	@Override
 	@GET
-	@Path("/getExchangeRecord/{storeName}/{exchangeID}")
+	@Path("store/getExchangeRecord/{storeName}/{exchangeID}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) throws Exception {
 	    return replayEngine.getExchangeRecord(exchangeRecordStoreName, exchangeID);
 	}
-	
+
 	@Override
 	@GET
-	@Path("/getExchangeRecordStorelist")
+	@Path("store/getExchangeRecordStorelist")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public StoreCollection getExchangeRecordStorelist() throws Exception {
 	    return replayEngine.getExchangeRecordStorelist();
@@ -124,7 +151,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     public String stopReplaySession() throws Exception{
         replayEngine.stopReplaySession();
         return "Replay session stopped";
-    }	
+    }
 	
 	@Override
 	@Produces("application/json")
@@ -135,7 +162,6 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 
 	@GET
 	@Path("/templates/")
-	//@Produces("")
 	@Override
 	public String getTemplateRecordList() {
 		// TODO Auto-generated method stub
@@ -150,16 +176,16 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	public TemplateFieldSuggestions getTemplateFieldSuggestions(@PathParam("storeName") String storeName, @PathParam("recordID") String recordID) throws Exception {
     	return replayEngine.getTemplateFieldSuggestions(storeName, recordID);
 	}
-
+    
 	// To process the replay action with the custom parameters get form HTML generated form
 	/*@Override
 	@POST
 	@Path("/templates/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
 	//@Consumes("multipart/form-data")
 	@Consumes("application/x-www-form-urlencoded")
+	// How to pass the form params to the method ? there can be a lot of params ??
 	public String replayWithTemplate(MultivaluedMap<String, String> formData, @PathParam("exchangeStoreName") String exchangeStoreName, @PathParam("exchangeRecordID") String exchangeRecordID, @PathParam("templateName") String templateName) throws Exception {
 	    return replayEngine.replayWithTemplate(formData, exchangeStoreName, exchangeRecordID, templateName);
 	}*/
-
 	
 }

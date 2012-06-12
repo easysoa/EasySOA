@@ -13,13 +13,6 @@ serviceregistry()
   ./serviceRegistry/bin/nuxeoctl console > log/serviceRegistry.log 2>&1
 }
 
-esperproxy()
-{
-  touch log/esperProxy.log
-  cd frascati
-  ./start-esperProxy.sh > ../log/esperProxy.log 2>&1
-}
-
 web()
 {
   touch log/web.log
@@ -40,20 +33,6 @@ travelbackup()
   touch log/travelBackup.log
   cd travelBackup
   ./start-travelBackup.sh > ../log/travelBackup.log 2>&1
-}
-
-traveldemo()
-{
-  touch log/travelDemo.log
-  cd frascati
-  ./start-travelDemo.sh > ../log/travelDemo.log 2>&1
-}
-
-uiscaffolder()
-{
-  touch log/uiScaffolder.log
-  cd frascati
-  ./start-uiScaffolder.sh > ../log/uiScaffolder.log 2>&1
 }
 
 airportservice()
@@ -87,15 +66,11 @@ trap shutdown SIGINT SIGTERM
 
 startupmonitor &
 serviceregistry &
-esperproxy &
 pafservices &
 travelbackup &
-sleep 3 # Let the servers start
-traveldemo &
 airportservice &
-sleep 7 # Let the demo start
+sleep 10 # Let the demo start
 web &
-uiscaffolder &
 
 # Wait for a key to be pressed
 read -n 1 -s

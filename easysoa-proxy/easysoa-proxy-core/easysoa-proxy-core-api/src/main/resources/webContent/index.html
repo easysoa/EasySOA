@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<title>HTTP Proxy Driver commands</title>
+<script type="text/javascript" src="http://localhost:8083/easysoa/lib/jquery.js"></script>
+<link rel="stylesheet" href="http://localhost:8083/easysoa/style.css" />
+<style type="text/css">
+code {
+    font-size: 80%;
+    font-weight: normal;
+    margin-left: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="headerWelcome">
+  <div id="headerWelcomeContents">
+  <div id="headerUserBar"></div>
+    HTTP Proxy Driver commands
+  </div>
+</div>
+
+<div id="container" style="width: 100%">
+
+    <h1>Command result</h1>
+    
+    <textarea readonly="readonly" style="width: 100%; max-width: 800px; height: 50px; font-size: 15pt"></textarea>
+
+    <h1>Available commands</h1>
+        
+    <h2>Start a new proxy run <code>[POST] /run/start/{runName}</code></h2>
+    Run name : <input id="runName" type="text" value="" style="width: 100px" /> <input id="newRun" type="submit" value="Start new run" />
+    <script type="text/javascript">
+    function initNewRun(callback) {
+        $('#newRun').click(function() {
+            $.post('/run/start/' + $('#runName').val()).success(callback).error(callback);
+        });
+    }
+    </script>
+
+    <h2>Stop the current proxy run <code>[POST] /run/stop</code></h2>
+    <input id="stopRun" type="submit" value="Stop current run" />
+    <script type="text/javascript">
+    function initStopRun(callback) {
+        $('#stopRun').click(function() {
+            $.post('/run/stop/').success(callback).error(callback);
+        });
+    }
+    </script>
+    
+    <h2>Save the current run <code>[POST] /run/save</code></h2>
+    <input id="saveRun" type="submit" value="Save run" />
+    <script type="text/javascript">
+    function initSaveRun(callback) {
+        $('#saveRun').click(function() {
+            $.post('/run/save/').success(callback).error(callback);
+        });
+    }
+    </script>
+    
+    <h2>Delete the current run <code>[POST] /run/delete</code></h2>
+    <input id="deleteRun" type="submit" value="Delete run" />
+    <script type="text/javascript">
+    function initDeleteRun(callback) {
+        $('#deleteRun').click(function() {
+            $.post('/run/delete/').success(callback).error(callback);
+        });
+    }
+    </script>
+    
+    <h2>Change the monitoring mode <code>[POST] /setMonitoringMode/{mode}</code></h2>
+    New mode : <input id="newMode" type="text" value="" style="width: 100px" /> <input id="setMonitoringMode" type="submit" value="Get run list" />
+    <script type="text/javascript">
+    function initChangeMode(callback) {
+        $('#setMonitoringMode').click(function() {
+            $.post('/setMonitoringMode/' + $('#newMode').val()).success(callback).error(callback);
+        });
+    }
+    </script>
+    
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var $out = $('textarea');
+        var trace = function(data) {
+            $out.html(JSON.stringify(data));
+        };
+        initNewRun(trace);
+        initStopRun(trace);
+        initSaveRun(trace);
+        initDeleteRun(trace);
+        initChangeMode(trace);
+    });
+    </script>
+ 
+</div>
+
+</body>
+</html>

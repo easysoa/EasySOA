@@ -36,18 +36,30 @@ public interface ExchangeReplayService {
 	
     // TODO : add a method to execute or not the assertion engine when a replay method is called
     
+    /**
+     * Returns a help text with the available commands
+     * @param ui Context UriInfo
+     * @return The <code>String</code> help text
+     */
+    // TODO in case of error, return the user informations
+    @GET
+    @Path("/")
+    //@Consumes("*/*")
+    //@Produces({MediaType.TEXT_PLAIN})
+    public String returnInformations();
+    
 	@GET
-	@Path("/getExchangeRecordList/{storeName}")
+	@Path("/store/getExchangeRecordList/{storeName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public RecordCollection getExchangeRecordlist(@PathParam("storeName") String exchangeRecordStoreName) throws Exception;
 
 	@GET
-	@Path("/getExchangeRecord/{storeName}/{exchangeID}")
+	@Path("/store/getExchangeRecord/{storeName}/{exchangeID}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) throws Exception;
 	
 	@GET
-	@Path("/getExchangeRecordStorelist")
+	@Path("/store/getExchangeRecordStorelist")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})	
 	public StoreCollection getExchangeRecordStorelist() throws Exception;
 	
@@ -70,7 +82,6 @@ public interface ExchangeReplayService {
 	
 	@GET
 	@Path("/templates/")
-	//@Produces("")
 	public String getTemplateRecordList();  
 	
 	@GET

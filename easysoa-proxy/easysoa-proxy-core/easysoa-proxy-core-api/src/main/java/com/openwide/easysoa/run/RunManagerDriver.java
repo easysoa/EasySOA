@@ -78,7 +78,7 @@ public interface RunManagerDriver {
 	 * @param mode The monitoring mode
 	 * @return a <code>String</code> to indicate if the command succeed
 	 */
-	@GET
+	@POST
 	@Path("/setMonitoringMode/{mode}")
 	public String setMonitoringMode(@PathParam("mode") String mode);
 	
@@ -107,6 +107,6 @@ public interface RunManagerDriver {
 	 */
 	@POST
 	@Path("/run/save")
-	public void save() throws Exception;
+	public String save() throws Exception;
 		
 }
