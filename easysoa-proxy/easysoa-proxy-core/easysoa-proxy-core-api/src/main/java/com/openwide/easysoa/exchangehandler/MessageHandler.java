@@ -22,6 +22,11 @@ package com.openwide.easysoa.exchangehandler;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 
+/**
+ * 
+ * @author fntangke
+ */
+
 public interface MessageHandler {
     /**
      * Handle an exchange

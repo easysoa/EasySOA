@@ -18,13 +18,16 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package org.easysoa.sca.frascati.mock;
+package org.easysoa.test.mock.nuxeo;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -35,26 +38,47 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.easysoa.sca.frascati.RestApiFrascatiImportServiceTest;
+import org.apache.log4j.Logger;
+import org.easysoa.records.ExchangeRecord;
+import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.osoa.sca.annotations.Scope;
 
+import com.openwide.easysoa.message.InMessage;
+
 /**
- * Rest API mock server to work with local tests
- * @author jguillemotte
+ * Base mock of the EasySOA Core registry (actually of Nuxeo Content Automation).
+ * Override it to customize responses.
+ * @author mdutoo
  *
  */
+
 @Scope("COMPOSITE")
 @SuppressWarnings("serial")
-//public class EasySoaRestApiMock extends GenericServlet implements Servlet, TestMock<ApiFrascatiImportServiceTest> {
-public class EasySoaRestApiMock extends HttpServlet implements Servlet, TestMock<RestApiFrascatiImportServiceTest> {
+public class EasySoaRestApiMock extends HttpServlet implements Servlet, RecordsProvider {
+	
+    protected static final Logger log = Logger.getLogger(EasySoaRestApiMock.class);
 
-	// Test class
-	private RestApiFrascatiImportServiceTest test;
+    // List to record the messages exchanged between client and mock rest api server
+    private ArrayList<ExchangeRecord> records = new ArrayList<ExchangeRecord>();
 
 	@Override
-	public void setTest(RestApiFrascatiImportServiceTest test) {
-		System.out.println("Setting test : " + test);
-		this.test = test;
+	public List<ExchangeRecord> getRecords() {
+		return this.records;
+	}
+	
+	/**
+	 * Override to set up more specific response, if not an empty OK one.
+	 * NB. ca't do request-specific test assertions here, because failures wouldn't
+	 * go back up to the test execution thread because it is not the same
+	 * as this server thread.
+	 * @param request
+	 * @param response
+	 */
+	protected void handleExchange(HttpServletRequest request, HttpServletResponse response) {
+		// doing request-specific test assertions if any
+    	// setting up response
+    	// (nothing to do, default status is 200 - OK
+		//response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	}
 
 	@Override
@@ -105,21 +129,26 @@ public class EasySoaRestApiMock extends HttpServlet implements Servlet, TestMock
             
         } else if (request.getPathInfo().startsWith("nuxeo/site/easysoa")) {
 
-            // providing nice responses to easysoa discovery client
+            // Record all messages for later check & assertions using getRecords()
+            this.recordExchange(request);
 
-            // TODO : Call a 'record' method with the request and response.
-            // Record all messages and then call a method to check the recorded messages        
-            test.recordExchange(request, response);
+        	// callback to let the test do any request-specific assertions and specify custom responses
+            this.handleExchange(request, response);
 
-            // here, call methods on test containing asserts related to each use case of the mock, ex:
-            // if isCaseOne(req) then test.checkCaseOne(req, res)...        
-            /*try{
-                test.checkCaseOne(req, res);                
-            }
-            catch(Exception ex){
-                throw new ServletException(ex.getMessage());
-            }*/    
         }
 	}
+
+    /**
+     * Record a REST exchange to be checked later by the test using getRecords()
+     * @param request The <code>ServletRequest</code> request
+     * @param response The <code>ServletResponse</code> response
+     * @throws IOException
+     */
+    private void recordExchange(HttpServletRequest request) throws IOException {
+    	// recording exchange
+        ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(new HttpMessageRequestWrapper(request)));
+        log.debug("request content : " + record.getInMessage());
+        this.records.add(record);
+    }
 
 }

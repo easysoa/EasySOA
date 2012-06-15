@@ -33,7 +33,7 @@ public class EasyWSDLServiceHelper implements WsdlServiceHelper {
 	//private static Logger logger = Logger.getLogger(EasyWSDLServiceHelper.class.getClass());	
 	
 	//TODO Finish this alternative solution with EasyWSDL
-	@Override
+	//@Override
 	public String callService(String wsdlUrl, String binding, String wsldOperation, HashMap<String, List<String>> paramList) throws Exception {
 		/*
 		WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();

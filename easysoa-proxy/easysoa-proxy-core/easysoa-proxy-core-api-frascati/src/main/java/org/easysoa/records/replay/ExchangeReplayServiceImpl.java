@@ -84,8 +84,6 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     @Override
     @GET
     @Path("/")
-    //@Consumes("*/*")
-    //@Produces({MediaType.TEXT_PLAIN})
     public String returnInformations() {
         logger.debug("Returning help informations");
         StringBuffer help = new StringBuffer();
@@ -104,8 +102,8 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
         help.append("<LI>To generate a form template form with the default values : /templates/getTemplate/{storeName}/{templateName}");
         help.append("</UL></P></BODY></HTML>");
         return help.toString();
-    } 	
-	
+    }
+
 	@Override
 	@GET
 	@Path("/getExchangeRecordList/{storeName}")
@@ -121,7 +119,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	public ExchangeRecord getExchangeRecord(@PathParam("storeName") String exchangeRecordStoreName, @PathParam("exchangeID") String exchangeID) throws Exception {
 	    return replayEngine.getExchangeRecord(exchangeRecordStoreName, exchangeID);
 	}
-	
+
 	@Override
 	@GET
 	@Path("/getExchangeRecordStorelist")
@@ -153,7 +151,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     public String stopReplaySession() throws Exception{
         replayEngine.stopReplaySession();
         return "Replay session stopped";
-    }	
+    }
 	
 	@Override
 	@Produces("application/json")
@@ -185,9 +183,9 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
 	@Path("/templates/replayWithTemplate/{exchangeStoreName}/{exchangeRecordID}/{templateName}")
 	//@Consumes("multipart/form-data")
 	@Consumes("application/x-www-form-urlencoded")
+	// How to pass the form params to the method ? there can be a lot of params ??
 	public String replayWithTemplate(MultivaluedMap<String, String> formData, @PathParam("exchangeStoreName") String exchangeStoreName, @PathParam("exchangeRecordID") String exchangeRecordID, @PathParam("templateName") String templateName) throws Exception {
 	    return replayEngine.replayWithTemplate(formData, exchangeStoreName, exchangeRecordID, templateName);
 	}*/
-
 	
 }

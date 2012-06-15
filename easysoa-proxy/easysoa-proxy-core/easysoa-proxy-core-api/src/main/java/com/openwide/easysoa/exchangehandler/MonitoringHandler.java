@@ -19,19 +19,22 @@
  */
 package com.openwide.easysoa.exchangehandler;
 
+import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 
+/**
+ * Implementation of the message handler for the serviceToLaunch.composite
+ * @author fntangke
+ *
+ */
+
+@Scope("composite")
 public class MonitoringHandler implements MessageHandler {
 
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
-        
-        
-        
     }
-
-
-
 
 }

@@ -21,6 +21,7 @@ package org.easysoa.records.assertions;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
+import org.osoa.sca.annotations.Scope;
 import org.apache.commons.lang.StringUtils;
 import com.openwide.easysoa.message.OutMessage;
 
@@ -29,6 +30,8 @@ import com.openwide.easysoa.message.OutMessage;
  * 
  * @author jguillemotte
  */
+
+@Scope("composite")
 public class StringAssertion extends AbstractAssertion {
 
     // TODO : split the different assertion methods contained in this class in three distinct classes

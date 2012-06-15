@@ -22,6 +22,8 @@ package com.openwide.easysoa.exchangehandler;
 import org.apache.log4j.Logger;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
+
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.run.RunManager;
@@ -31,6 +33,7 @@ import com.openwide.easysoa.run.RunManager;
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class MessageRecordHandler implements MessageHandler {
 
     /**

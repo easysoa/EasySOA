@@ -26,30 +26,22 @@ import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine;
 import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory;
-import org.apache.log4j.Logger;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
-import org.easysoa.sca.frascati.mock.TestMock;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
-import org.easysoa.servlet.http.HttpMessageRequestWrapper;
+import org.easysoa.test.mock.nuxeo.RecordsProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.openwide.easysoa.message.InMessage;
 
 /**
  * Tests FraSCAti SCA "import" & "(runtime startup) discovery" working with the
@@ -63,27 +55,18 @@ import com.openwide.easysoa.message.InMessage;
  */
 //@RunWith(FeaturesRunner.class)
 public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
-
-    static final Logger logger = Logger.getLogger(RestApiFrascatiImportServiceTest.class);
     
     private static final String AUTOMATION_URL = "http://localhost:8080/nuxeo/site/automation";
-    
-    // List to record the messages exchanged between client and mock rest api server
-    private ArrayList<ExchangeRecord> recordList;
 
     // Boolean to indicate if the test is mocked or not
     boolean mockedTest = true;
 
     @Before
     public void setUp() throws Exception {
-        // init record list
-        recordList = new ArrayList<ExchangeRecord>();
         // Start fraSCAti
         startFraSCAti();
         // Start the mock service composite
-        startMock();
-        // Set the test class : Mockito
-        setTest(this);
+        startMock(); // NB. this reinits the record list before each test
     }
 
     @After
@@ -108,22 +91,6 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
     }
 
     /**
-     * Set the ApiFrascatiImportServiceTest in the RestApiMock. When the
-     * EasySoaRestApiMock receive a request, it calls the check method
-     * corresponding to the received request
-     * 
-     * @param test
-     *            ApiFrascatiImportServiceTest
-     * @throws NuxeoFraSCAtiException
-     *             If a problem occurs when the set is done
-     */
-    @SuppressWarnings("unchecked")
-    protected void setTest(RestApiFrascatiImportServiceTest test) throws FraSCAtiServiceException {
-        logger.debug("composite restApiMock : " + frascati.getComposite("RestApiMock"));
-        ((TestMock<RestApiFrascatiImportServiceTest>) frascati.getService("RestApiMock", "restApiMockServiceJava", TestMock.class)).setTest(test);
-    }
-
-    /**
      * Tests import of SCA composite file, done from remote FraSCAti. NOT
      * IMPORTANT since "import" is more of a Nuxeo-side functionality. PROBLEM :
      * injected FraSCAti is the wrapper and not an actual "remoted" FraSCAti.
@@ -144,9 +111,9 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         // to the project
         String scaFilePath = "src/test/resources/" + "org/easysoa/sca/RestSoapProxy.composite";
         File scaFile = new File(scaFilePath);
-        logger.debug("Creating instance of ApiFracSCAtiScaImporter");
+        log.debug("Creating instance of ApiFracSCAtiScaImporter");
         BindingVisitorFactory bindingVisitorFactory = new RemoteBindingVisitorFactory();
-        logger.debug("Creating instance of ApiFracSCAtiScaImporter");
+        log.debug("Creating instance of ApiFracSCAtiScaImporter");
         ApiFraSCAtiScaImporter importer = new ApiFraSCAtiScaImporter(bindingVisitorFactory, scaFile, 
                 EasySOAApiFraSCAti.getInstance());
 
@@ -154,11 +121,11 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
         importer.setServiceStackType("FraSCAti");
         importer.setServiceStackUrl("/");
         // Create a spy importer for Mockito
-        logger.debug("Creating mockito spy importer");
+        log.debug("Creating mockito spy importer");
         ApiFraSCAtiScaImporter spyImporter = spy(importer);
         try {
             // Import the SCA composite
-            logger.debug("Importing composite");
+        	log.debug("Importing composite");
             spyImporter.importSCAComposite();
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,12 +222,16 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
 
     /**
      * Check the recorded exchanges
+     * @throws FraSCAtiServiceException 
      * 
      * @throws IOException
      */
-    public void checkExchanges(String toLookForInContent) {
+    public static void checkExchanges(String toLookForInContent) throws FraSCAtiServiceException {
+    	log.debug("checkExchanges() - composite restApiMock : " + frascati.getComposite("RestApiMock"));
+        List<ExchangeRecord> records = frascati.getService("RestApiMock", "RecordsProvider", RecordsProvider.class).getRecords();
+        
         boolean atLeastOne = false;
-        for (ExchangeRecord record : recordList) {
+        for (ExchangeRecord record : records) {
             atLeastOne = true;
             assertTrue("'" + toLookForInContent + "' not found in request", record.getInMessage().getMessageContent().getRawContent().contains(toLookForInContent));
         }
@@ -301,17 +272,5 @@ public class RestApiFrascatiImportServiceTest extends ApiTestHelperBase {
      * assertTrue(requestContent.contains("RestSoapPoxy.composite"));
      * res.getOutputStream().println("OK"); //checkCaseOne==true; }
      */
-
-    /**
-     * Record a REST exchange to be checked
-     * @param request The <code>ServletRequest</code> request
-     * @param response The <code>ServletResponse</code> response
-     * @throws IOException
-     */
-    public void recordExchange(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(new HttpMessageRequestWrapper(request)));
-        log.debug("request content : " + record.getInMessage());
-        recordList.add(record);
-    }
 
 }

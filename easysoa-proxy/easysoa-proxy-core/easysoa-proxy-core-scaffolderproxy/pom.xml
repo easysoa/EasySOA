@@ -204,6 +204,66 @@
           </execution>
         </executions>
       </plugin>
+			<plugin>
+				<groupId>org.ow2.frascati.mojo</groupId>
+				<artifactId>frascati-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compile-composite</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<composites>
+						<composite>scaffoldingProxy_monitored</composite>
+					</composites>
+					<loggingConfFile>${frascati.logging.properties}</loggingConfFile>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>org.ow2.frascati.mojo</groupId>
+									<artifactId>frascati-compiler-plugin</artifactId>
+									<versionRange>1.5-SNAPSHOT</versionRange>
+									<phase>compile-composite</phase>
+									<goals>
+										<goal>generate-sources</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore />
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+				<dependencies>
+					<!--<dependency>
+						<groupId>xerces</groupId>
+						<artifactId>xercesImpl</artifactId>
+						<version>2.9.1</version>
+						<scope>compile</scope>
+					</dependency>-->
+					<!--<dependency>
+						<groupId>org.easysoa.proxy</groupId>
+						<artifactId>easysoa-proxy-core-api</artifactId>
+						<version>${project.version}</version>
+					</dependency>-->
+					<!--<dependency>
+						<groupId>org.easysoa.proxy</groupId>
+						<artifactId>easysoa-proxy-core-api-frascati</artifactId>
+						<version>${project.version}</version>
+					</dependency>-->
+					<!--<dependency>
+						<groupId>org.apache.httpcomponents</groupId>
+						<artifactId>httpclient</artifactId>
+						<version>4.1.1</version>
+					</dependency>-->
+				</dependencies>
+			</plugin>      
     </plugins>
   </build>
 

@@ -380,6 +380,30 @@
               <outputDirectory>${project.build.directory}/lib</outputDirectory>
             </configuration>
           </execution>
+          <!-- Copy intents jars in Frascati/lib folder -->
+          <execution>
+            <id>copy-intent-jars</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <!-- Intents required by scaffolding proxy -->
+                <artifactItem>
+					<groupId>org.easysoa.proxy</groupId>
+					<artifactId>easysoa-proxy-intents-fuseintent</artifactId>
+					<version>${easysoa.version}</version>                
+                </artifactItem>
+                <artifactItem>
+					<groupId>org.easysoa.proxy</groupId>
+					<artifactId>easysoa-proxy-intents-logintent</artifactId>
+					<version>${easysoa.version}</version>                
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/nxserver/frascati/lib</outputDirectory>
+            </configuration>
+          </execution>          
         </executions>
       </plugin>
       
@@ -439,6 +463,7 @@
       </plugin>
     
       <!-- Package FraSCAti apps -->
+      <!-- Package HTTP discovery proxy -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -460,7 +485,7 @@
             <configuration>
                 <target>
                     <!-- List the FraSCAti applications to export here (separated by ','s) -->
-                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip" />
+                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip" />
                     <ant antfile="build.xml" target="unzip-apps" />
                 </target>
             </configuration>

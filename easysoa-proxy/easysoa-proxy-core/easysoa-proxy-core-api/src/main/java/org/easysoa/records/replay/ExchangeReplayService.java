@@ -71,18 +71,18 @@ public interface ExchangeReplayService {
 	 * @throws Exception 
 	 */
 	@GET
-	@Path("/replay/{exchangeRecordStoreName}/{exchangeRecordId}")	
-	@Produces("application/json")	
+	@Path("/replay/{exchangeRecordStoreName}/{exchangeRecordId}")
+	@Produces("application/json")
 	public String replay(@PathParam("exchangeRecordStoreName") String exchangeRecordStoreName, @PathParam("exchangeRecordId") String exchangeRecordId) throws Exception;
 	
 	@POST
 	@Path("/cloneToEnvironment/{anotherEnvironment}")
-	@Produces("application/json")	
+	@Produces("application/json")
 	public void cloneToEnvironment(@PathParam("anotherEnvironment") String anotherEnvironment);
 	
 	@GET
 	@Path("/templates/")
-	public String getTemplateRecordList();  
+	public String getTemplateRecordList();
 	
 	@GET
 	@Path("/templates/getTemplate/{storeName}/{templateName}")

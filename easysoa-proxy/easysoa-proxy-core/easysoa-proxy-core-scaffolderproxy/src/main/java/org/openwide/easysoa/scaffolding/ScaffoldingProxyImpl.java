@@ -60,7 +60,7 @@ public class ScaffoldingProxyImpl implements ScaffoldingProxy {
 	 */
 	private static Logger logger = Logger.getLogger(ScaffoldingProxyImpl.class.getClass());
 	
-	@Override
+	//@Override
 	public Response redirectRestToSoap(HttpContext httpContext, HttpServletRequest servletRequest){
 		logger.debug("Entering in redirectRestToSoap method !");
 		

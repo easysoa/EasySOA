@@ -35,7 +35,8 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 @Features({ FraSCAtiFeature.class }) 
 public class DiscoveryProxyAppTest {
 
-    private final String resourcePath = "src/test/resources/";
+    //private final String resourcePath = "src/test/resources/";
+    private final String resourcePath = "target/";
 
     private final String proxyCompositePath = resourcePath + "easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT.jar";
     

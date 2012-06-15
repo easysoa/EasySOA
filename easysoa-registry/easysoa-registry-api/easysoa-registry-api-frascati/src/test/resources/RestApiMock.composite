@@ -3,17 +3,16 @@
 <composite xmlns="http://www.osoa.org/xmlns/sca/1.0" 
 xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" 
 xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" name="RestApiMock">
-	<service name="restApiMockService" promote="restApiMockComponent/restApiMockInterface"/>	
-	<service name="restApiMockServiceJava" promote="restApiMockComponent/restApiMockInterfaceJava"/>
+	<service name="RecordsProvider" promote="restApiMockComponent/RecordsProvider"/>
 	<component name="restApiMockComponent">
-		<implementation.java class="org.easysoa.sca.frascati.mock.EasySoaRestApiMock" />
-		<service name="restApiMockInterface">
+		<implementation.java class="org.easysoa.test.mock.nuxeo.EasySoaRestApiMock" />
+		<service name="RestApiMockHTTP">
 			<interface.java interface="javax.servlet.Servlet" />
     		<!--<frascati:binding.rest uri="http://localhost:8080/"/>-->
 			<tuscany:binding.http uri="http://localhost:8080/"/>			
 		</service>
-		<service name="restApiMockInterfaceJava">
-			<interface.java interface="org.easysoa.sca.frascati.mock.TestMock"/>
+		<service name="RecordsProvider">
+			<interface.java interface="org.easysoa.test.mock.nuxeo.RecordsProvider"/>
 		</service>		
 	</component>
 </composite>
