@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<composite name="pafSample" xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1">
+
+  <component name="pafServer">
+    <implementation.java class="org.easysoa.samples.paf.PureAirFlowersServiceImpl" />
+    <service name="pureAirFlowers">
+      <interface.java interface="org.easysoa.samples.paf.PureAirFlowersService"/>
+      <binding.ws uri="http://localhost:9010/PureAirFlowers/"/>
+      <!-- wsdlElement="http://localhost:9010#wsdl.port(PureAirFlowers/PureAirFlowers)" -->
+    </service>
+  </component>
+
+</composite>
