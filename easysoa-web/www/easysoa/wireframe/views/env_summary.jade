@@ -1,3 +1,8 @@
+include navtree
+
+h1.title Environment 
+  b Master
+      
 script(type='text/javascript')
   window.selectedId = 0
 
@@ -5,15 +10,11 @@ script(type='text/javascript')
   
   #breadcrumbs
     a.fake(href='#') Environment Master
-      
-  include navtree
   
   #doccontents
-    h1 Environment 
-      b Master
       
     .contentbox
-      .title <a class="works" href="./envvalidation">Validation</a> summary
+      .title <a class="works" href="./env_validation">Validation</a> summary
       
       h3 Statistics
       table
@@ -88,4 +89,4 @@ script(type='text/javascript')
       p
         a.fake(href='#') Click here to edit the URLs configuration.
       
-include lefttabs_env
+include lefttabs

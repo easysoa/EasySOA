@@ -1,0 +1,37 @@
+#contents.wide
+
+  #doccontents
+  
+    if param == 'dbb'
+    
+      #breadcrumbs Wizard > Discovery > By browsing
+      h1 Found it.
+      p
+        a(href='dbb') Click here to access Discovery by Browsing!
+      p To find it next time, just Click the "Discovery" menu, then choose "Web browsing".
+    
+    else if param == 'test'
+    
+      #breadcrumbs Wizard > Discovery
+      h1 OK for discovery. What do you want to use?
+      ul.wizard
+        li
+          a(href='?dbb') An <u>intelligent browser</u> to look for my web services online
+        li
+          a.fake(href='#') Something to <u>import</u> my web services online
+        li
+          a.fake(href='#') Something to <u>import documentation</u> online
+    
+    else
+    
+      #breadcrumbs Wizard
+      h1 What do you want to do?
+      ul.wizard
+        li
+          a(href='?test') <u>Discover</u> more information to add in EasySOA
+        li
+          a.fake(href='#') <u>Use</u> one of my web services
+        li
+          a.fake(href='#') <u>Create</u> a new web service
+        li
+          a.fake(href='#') <u>View</u> the current state of my services

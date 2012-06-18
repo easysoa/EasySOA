@@ -1,15 +1,17 @@
+include navtree
+  
+h1.title Endpoint 
+  b Client Service
+      
 #contents(style='height: 700px')
-
+  
   #breadcrumbs
     a.fake(href='#') Environment Master > CRM Application > CRUD Services > Client Service
-    
-  include navtree
   
   #doccontents
-    h1 Endpoint 
-      b Client Service
     h2
-      echo Definition : 
+      echo Version <b>1.2b</b> 
+      echo | Definition : 
       a.fake(href='#') Client Service def 
       echo | Implementation : 
       a.fake(href='#') Client service JAX-RS
@@ -127,4 +129,4 @@
        .all
          a.fake(href='#') Add comment...
       
-include lefttabs_serv
+include lefttabs

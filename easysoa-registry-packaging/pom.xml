@@ -73,11 +73,6 @@
                   <artifactId>nuxeo-frascati</artifactId>
                   <version>${easysoa.nuxeo-frascati.version}</version>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.nuxeo</groupId>
-                  <artifactId>nuxeo-frascati-hack</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
 
                 <!-- FraSCAti-related features -->
                 <artifactItem>
