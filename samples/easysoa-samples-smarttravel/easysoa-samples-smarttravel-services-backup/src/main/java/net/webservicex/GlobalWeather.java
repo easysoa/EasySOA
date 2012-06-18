@@ -56,9 +56,11 @@ public class GlobalWeather extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("http://www.webservicex.net/globalweather.asmx?wsdl");
+            //url = new URL("http://www.webservicex.net/globalweather.asmx?wsdl");
+            url = new URL("http://localhost:9020/WeatherService/?wsdl");
         } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from http://www.webservicex.net/globalweather.asmx?wsdl");
+            //System.err.println("Can not initialize the default wsdl from http://www.webservicex.net/globalweather.asmx?wsdl");
+            System.err.println("Can not initialize the default wsdl from http://localhost:9020/WeatherService/?wsdl");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;

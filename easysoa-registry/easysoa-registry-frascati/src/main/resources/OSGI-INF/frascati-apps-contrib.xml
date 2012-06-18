@@ -21,21 +21,17 @@
     </app>
     
     <!-- Smart travel sample disabled. There is a problem with the samples generated with wsdl2java tool and FraSCAti (service name, parameter names, see issue 23 on Github -->
-    <!--
     <app name="EasySOA Smart Travel Services backup">
       <jarPath>nxserver/frascati/apps/easysoa-samples-smarttravel-services-backup-sca-0.4-SNAPSHOT/bin/easysoa-samples-smarttravel-services-backup-sca-0.4-SNAPSHOT.jar</jarPath>
       <libsPath>nxserver/frascati/apps/easysoa-samples-smarttravel-services-backup-sca-0.4-SNAPSHOT/lib</libsPath>
       <compositeName>services-backup-sca</compositeName>
     </app>
-    -->
     
-    <!--
     <app name="EasySOA Smart Travel Trip sample">
       <jarPath>nxserver/frascati/apps/easysoa-samples-smarttravel-trip-0.4-SNAPSHOT/bin/easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar</jarPath>
       <libsPath>nxserver/frascati/apps/easysoa-samples-smarttravel-trip-0.4-SNAPSHOT/lib</libsPath>
 	  <compositeName>smart-travel-mock-services</compositeName>
     </app>
-    -->
   </extension>
 
 </component>

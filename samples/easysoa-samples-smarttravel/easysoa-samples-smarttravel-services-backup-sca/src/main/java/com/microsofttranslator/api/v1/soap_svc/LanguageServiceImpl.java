@@ -35,13 +35,13 @@ import java.util.logging.Logger;
  * 
  */
 
-@javax.jws.WebService(
+/*@javax.jws.WebService(
                       serviceName = "SoapService",
                       portName = "BasicHttpBinding_LanguageService",
                       targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc",
                       //wsdlLocation = "file:microsoftTranslatorWebService.test.wsdl",
                       endpointInterface = "com.microsofttranslator.api.v1.soap_svc.LanguageService")
-                      
+*/
 public class LanguageServiceImpl implements LanguageService {
 
     private static final Logger LOG = Logger.getLogger(LanguageServiceImpl.class.getName());

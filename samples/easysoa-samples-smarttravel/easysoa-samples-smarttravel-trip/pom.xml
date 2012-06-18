@@ -15,6 +15,30 @@
     <relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
   </parent>
 
+  <build>
+    <plugins>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-assembly-plugin</artifactId>
+		<configuration>
+		  <!-- Specifies the configuration file of the assembly plugin -->
+		  <descriptors>
+		    <descriptor>src/main/resources/assembly/assembly.xml</descriptor>
+		  </descriptors>
+		</configuration>
+		<executions>
+		  <execution>
+			<id>make-assembly</id>
+			<phase>package</phase>
+			<goals>
+			  <goal>single</goal>
+			</goals>
+		  </execution>
+	    </executions>
+      </plugin>
+    </plugins>
+  </build>			 
+
   <profiles>
     <profile>
       <id>run</id>
@@ -153,7 +177,7 @@
     </profile>
 
     <!-- Package this application and its dependencies in a single executable jar. -->
-    <profile>
+    <!--<profile>
       <id>pack</id>
       <build>
         <defaultGoal>package</defaultGoal>
@@ -167,10 +191,10 @@
                 <goals>
                   <goal>shade</goal>
                 </goals>
-                <configuration>
+                <configuration>-->
                   <!-- It is required to exclude jar-signing related files from the
                     shaded jar to avoid SecurityException errors -->
-                  <filters>
+                  <!--<filters>
                     <filter>
                       <artifact>org.eclipse.core:contenttype</artifact>
                       <excludes>
@@ -326,9 +350,9 @@
                         <Built-By>Galaxy</Built-By>
                         <Created-By>Apache Maven</Created-By>
                         <Archiver-Version>Plexus Archiver</Archiver-Version>
-                        <Main-Class>org.ow2.frascati.factory.ManifestLauncher</Main-Class>
+                        <Main-Class>org.ow2.frascati.factory.ManifestLauncher</Main-Class>-->
                         <!--<mainComposite>smart-travel-qos</mainComposite> -->
-                        <mainComposite>smart-travel</mainComposite>
+                        <!--<mainComposite>smart-travel</mainComposite>
                       </manifestEntries>
                     </transformer>
                   </transformers>
@@ -345,7 +369,7 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
+    </profile>-->
   </profiles>
 
   <dependencyManagement>

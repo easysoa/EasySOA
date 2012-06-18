@@ -5,8 +5,10 @@
 	<component name="meteoComponentBackup">
 		<implementation.java class="net.webservicex.GlobalWeatherSoapImpl1" />
 		<service name="meteoServiceBackup">
-			<interface.java interface="net.webservicex.GlobalWeatherSoap"/>
-			<binding.ws uri="http://localhost:9020/WeatherService" />
+			<interface.java interface="net.webservicex.GlobalWeatherSoap" />
+			<binding.ws uri="http://localhost:9020/WeatherService" wsdlElement="http://www.webserviceX.NET#wsdl.port(GlobalWeather/GlobalWeatherSoap)" />
+			<!-- New wsdlElement to use -->
+			<!--<binding.ws uri="/Weather" wsdlElement="http://www.webserviceX.NET#wsdl.port(GlobalWeather/GlobalWeatherSoap)" />-->
 		</service>
 	</component>
 
@@ -14,7 +16,7 @@
 		<implementation.java class="de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoapImpl1" />
 		<service name="currencyServiceBackup">
 			<interface.java interface="de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoap"/>
-			<binding.ws uri="http://localhost:9020/CurrencyService" />
+			<binding.ws uri="http://localhost:9020/CurrencyService" wsdlElement="http://www.daenet.de/webservices/CurrencyServer#wsdl.port(CurrencyServerWebService/CurrencyServerWebServiceSoap)" />
 		</service>
 	</component>
 	
@@ -22,7 +24,7 @@
 		<implementation.java class="com.microsofttranslator.api.v1.soap_svc.LanguageServiceImpl" />
 		<service name="translateServiceBackup">
 			<interface.java interface="com.microsofttranslator.api.v1.soap_svc.LanguageService"/>
-			<binding.ws uri="http://localhost:9020/TranslateService" />
+			<binding.ws uri="http://localhost:9020/TranslateService" wsdlElement="http://api.microsofttranslator.com/v1/soap.svc#wsdl.port(SoapService/BasicHttpBindingLanguageService)" />
 		</service>
 	</component>
 

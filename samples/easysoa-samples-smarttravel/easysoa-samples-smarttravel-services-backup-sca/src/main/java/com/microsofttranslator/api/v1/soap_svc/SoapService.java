@@ -29,7 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.WebEndpoint;
-import javax.xml.ws.WebServiceClient;
+//import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
 import javax.xml.ws.Service;
 
@@ -41,9 +41,10 @@ import javax.xml.ws.Service;
  */
 
 
-@WebServiceClient(name = "SoapService", 
+/*@WebServiceClient(name = "SoapService", 
                   //wsdlLocation = "file:microsoftTranslatorWebService.test.wsdl",
-                  targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc") 
+                  targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc")
+*/
 public class SoapService extends Service {
 
     public final static URL WSDL_LOCATION;

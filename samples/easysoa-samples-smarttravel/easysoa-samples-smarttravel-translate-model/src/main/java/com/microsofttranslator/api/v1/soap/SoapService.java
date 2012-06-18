@@ -48,7 +48,8 @@ public class SoapService extends Service {
 
     public final static URL WSDL_LOCATION;
     public final static QName SERVICE = new QName("http://api.microsofttranslator.com/v1/soap.svc", "SoapService");
-    public final static QName BasicHttpBindingLanguageService = new QName("http://api.microsofttranslator.com/v1/soap.svc", "BasicHttpBinding_LanguageService");
+    //public final static QName BasicHttpBindingLanguageService = new QName("http://api.microsofttranslator.com/v1/soap.svc", "BasicHttpBinding_LanguageService");
+    public final static QName BasicHttpBindingLanguageService = new QName("http://api.microsofttranslator.com/v1/soap.svc", "BasicHttpBindingLanguageService");
     static {
         URL url = null;
         try {
@@ -77,7 +78,7 @@ public class SoapService extends Service {
      * @return
      *     returns LanguageService
      */
-    @WebEndpoint(name = "BasicHttpBinding_LanguageService")
+    //@WebEndpoint(name = "BasicHttpBinding_LanguageService")
     public LanguageService getBasicHttpBindingLanguageService() {
         return super.getPort(BasicHttpBindingLanguageService, LanguageService.class);
     }
@@ -89,7 +90,7 @@ public class SoapService extends Service {
      * @return
      *     returns LanguageService
      */
-    @WebEndpoint(name = "BasicHttpBinding_LanguageService")
+    //@WebEndpoint(name = "BasicHttpBinding_LanguageService")
     public LanguageService getBasicHttpBindingLanguageService(WebServiceFeature... features) {
         return super.getPort(BasicHttpBindingLanguageService, LanguageService.class, features);
     }
