@@ -82,8 +82,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
     /**
      * {@inheritDoc}
      * 
-     * @see org.easysoa.frascati.api.FraSCAtiServiceItf#getComposite(java.lang.String
-     *      )
+     * @see org.easysoa.frascati.api.FraSCAtiServiceItf#getComposite(java.lang.String)
      */
     public Composite getComposite(String compositeName)
             throws FraSCAtiServiceException

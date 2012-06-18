@@ -21,7 +21,6 @@
 package org.easysoa.samples.paf;
 
 import javax.jws.WebService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

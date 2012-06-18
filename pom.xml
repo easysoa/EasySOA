@@ -97,8 +97,8 @@
     <module>easysoa-distribution</module>
     <module>easysoa-registry</module>
     <module>easysoa-proxy</module>
-    <module>easysoa-registry-packaging</module>
     <module>samples</module>
+    <module>easysoa-registry-packaging</module>    
   </modules>
 
   <dependencyManagement>

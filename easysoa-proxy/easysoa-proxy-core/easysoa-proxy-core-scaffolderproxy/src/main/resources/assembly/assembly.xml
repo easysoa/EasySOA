@@ -10,7 +10,7 @@
     <!-- Add dependencies to zip package under lib directory -->
     <dependencySets>
         <dependencySet>
-       	<outputDirectory>lib</outputDirectory>
+       	    <outputDirectory>lib</outputDirectory>
             <excludes>
         		<exclude>org.easysoa.proxy:easysoa-proxy-core-scaffolderproxy</exclude>
             </excludes>
@@ -18,14 +18,6 @@
         </dependencySet>
     </dependencySets>
     <fileSets>
-        <!-- add startup scripts to the root directory of zip package 
-        <fileSet>
-            <directory>etc</directory>
-            <outputDirectory></outputDirectory>
-            <includes>
-                <include>start-pafServices.*</include>
-            </includes>
-        </fileSet>-->
         <fileSet>
             <directory>target</directory>
             <outputDirectory>bin</outputDirectory>
