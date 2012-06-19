@@ -6,8 +6,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 		<title>EasySOA Core - Service</title>
-        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/jquery-1.6.4.min.js"></script>
-        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/proxiedRequest.js"></script>
+		<script type="text/javascript" src="http://localhost:18000/scaffoldingProxy/files/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="http://localhost:18000/scaffoldingProxy/files/proxiedRequest.js"></script>
+        <!--<script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/jquery-1.6.4.min.js"></script>-->
+        <!--<script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/proxiedRequest.js"></script>-->
 		<link href="/easysoa/style.css" rel="stylesheet">
 	</head>
 	<body>
@@ -51,7 +53,7 @@
 						var serviceName = "$service.getName()";
 						var responseMessage = "$formGenerator.getOutputMessageName($endpoint, $operation)";
 						var outputFields = getElementsByClass('outputField', document.$formGenerator.getOperationName($operation)_$formGenerator.getBindingName($endpoint), '*')
-						
+						// Submit the form to call the web service
 						submitForm(form, url, wsdlUrl, serviceName, binding, operation, responseMessage, outputFields);
 					}
 					</script>				
