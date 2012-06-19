@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.xml.namespace.QName;
 
@@ -50,9 +51,9 @@ public class Registry extends AbstractLoggeable implements
         ComponentIntentObserverItf, ProcessingIntentObserverItf,
         ParserIntentObserverItf, RegistryItf
 {
-
-    QName processingQName = null;
-    CompositeEntry compositeEntry = null;
+    
+    Stack<QName> processingComposites = null; 
+    Stack<CompositeEntry> compositeEntries = null;
     List<String> processed;
     Map<String, CompositeEntry> registryEntries = null;
 
@@ -61,6 +62,8 @@ public class Registry extends AbstractLoggeable implements
      */
     public Registry()
     {
+        processingComposites = new Stack<QName>();
+        compositeEntries = new Stack<CompositeEntry>();
         registryEntries = new HashMap<String, CompositeEntry>();
     }
 
@@ -83,8 +86,8 @@ public class Registry extends AbstractLoggeable implements
      */
     public void startProcessing(QName qname)
     {
-        log.info("start Processing " + qname);
-        processingQName = qname;
+        log.severe("start Processing " + qname);
+        processingComposites.push(qname);
         processed = new ArrayList<String>();
     }
 
@@ -97,19 +100,33 @@ public class Registry extends AbstractLoggeable implements
     {
         if (qname == null)
         {
-            log.warning("Error : no processing name");
+            log.severe("Error : no processing name");
 
-        } else if (!processingQName.equals(qname))
+        }else if(processingComposites.size()==0 || !qname.getLocalPart().equals(
+                processingComposites.peek().getLocalPart()))
         {
-            log.warning("Error : processing name different "
-                    + "from the one define to start");
-        } else
+            log.severe("Stop processing of '" + qname + "' composite but '" 
+                    + (processingComposites.size()==0?"null":processingComposites.peek().getLocalPart())
+                            + "' was expected");
+            
+            while(processingComposites.size()>0 &&
+                    !qname.getLocalPart().equals(processingComposites.peek().getLocalPart()))
+            {
+                QName processingCompositeError = processingComposites.pop();
+                log.severe("Processing '" + processingCompositeError + "' composite error");
+                if(registryEntries.remove(processingCompositeError.getLocalPart()) != null)
+                {
+                    log.severe("'" + processingCompositeError.getLocalPart() + 
+                            "' CompositeEntry removed from the Registry");
+                }
+            }
+            
+        }else
         {
-            log.info("stop Processing " + qname);
-            processingQName = null;
-            processed.add(compositeEntry.name);
-            registryEntries.put(compositeEntry.name, compositeEntry);
-            compositeEntry = null;
+            log.severe("stop Processing " + qname);            
+            String processedComposite = processingComposites.pop().getLocalPart();
+            registryEntries.put(processedComposite, compositeEntries.pop());
+            processed.add(processedComposite);  
         }
     }
 
@@ -119,10 +136,14 @@ public class Registry extends AbstractLoggeable implements
      * @see org.easysoa.frascati.api.intent.ParserIntentObserverItf#compositeParsed(org.eclipse.stp.sca.Composite)
      */
     public void compositeParsed(Composite composite)
-    {
-        if (processingQName != null)
+    {        
+        if (processingComposites.size()>0)
         {
-            compositeEntry = new CompositeEntry(composite);
+            compositeEntries.push(new CompositeEntry(composite));
+            
+        } else
+        {
+            log.severe("no qname registered for '" + composite.getName() + "' composite");
         }
     }
 
@@ -134,14 +155,14 @@ public class Registry extends AbstractLoggeable implements
      */
     public void componentAdded(Component component)
     {
-        if (compositeEntry != null && component != null)
+        if (compositeEntries.size()>0 && component != null)
         {
             try
             {
                 String componentName = ((NameController) component
                         .getFcInterface("name-controller")).getFcName();
-                System.out.println(compositeEntry.name+"ADD["+componentName+"]");
-                compositeEntry.addComponent(componentName, component);
+                
+                compositeEntries.peek().addComponent(componentName, component);
 
             } catch (NoSuchInterfaceException e)
             {
