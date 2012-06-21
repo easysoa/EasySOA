@@ -333,6 +333,26 @@
 					<version>${easysoa.version}</version>
 				</artifactItem>
 				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>				
+				<artifactItem>
 					<groupId>org.eclipse.emf</groupId>
 					<artifactId>ecore</artifactId>
 					<version>2.4.0</version>
@@ -531,7 +551,7 @@
             <configuration>
                 <target>
                     <!-- List the FraSCAti applications to export here (separated by ','s) -->
-                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip" />
+                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/target/easysoa-samples-smarttravel-trip-${easysoa.version}-bin.zip" />
                     <!-- List including the samples Pure Air Flowers and Smart travel : Disabled because the samples are not working in FraSCAti -->
                     <!--<property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-services-backup-sca/target/easysoa-samples-smarttravel-services-backup-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/target/easysoa-samples-smarttravel-trip-${easysoa.version}-bin.zip" />-->
                     <ant antfile="build.xml" target="unzip-apps" />
