@@ -1,5 +1,4 @@
 // EasySOA Web
-// Copyright (c) 2011 -2012 Open Wide and others
 // 
 // MIT licensed
 // 
@@ -60,6 +59,9 @@ fetchServiceList = function(session, callback) {
 						entry = new Object();
 						entry.title = document.properties['dc:title'];
 						entry.url = document.properties['serv:url'];
+						if (document.properties['serv:fileUrl'] === null) {
+						  document.properties['serv:fileUrl'] = entry.url + '?wsdl';
+						}
 						entry.lightUrl = '/scaffoldingProxy/?wsdlUrl=' + document.properties['serv:fileUrl'];
 						result.push(entry);
 					}
