@@ -45,8 +45,8 @@
   </component>-->
   
   <!-- Rest Soap Proxy (with Fuse & Logging intents) -->
-  <!--<component name="restSoapProxyComponent" requires="autoRearmFuse log">-->
-  <component name="restSoapProxyComponent">
+  <component name="restSoapProxyComponent" requires="autoRearmFuse log">
+  <!--<component name="restSoapProxyComponent">-->
     <implementation.java class="org.openwide.easysoa.scaffolding.ScaffoldingProxyImpl"/>
     <service name="restInterface">
       <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
@@ -55,8 +55,8 @@
 	<reference name="wsdlServiceHelper" target="wsdlServiceHelperComponent/wsdlServiceHelperService" />
   </component>
   <!-- Rest binding for Rest / Soap proxy -->
-  <!--<service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface" requires="log">-->
-  <service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">
+  <service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface" requires="log">
+  <!--<service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">-->
     <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
     <frascati:binding.rest uri="http://localhost:7001/"/>
   </service>
