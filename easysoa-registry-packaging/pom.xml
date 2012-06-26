@@ -73,11 +73,6 @@
                   <artifactId>nuxeo-frascati</artifactId>
                   <version>${easysoa.nuxeo-frascati.version}</version>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.nuxeo</groupId>
-                  <artifactId>nuxeo-frascati-hack</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
 
                 <!-- FraSCAti-related features -->
                 <artifactItem>
@@ -261,9 +256,34 @@
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-rt-frontend-jaxws</artifactId>
+					<version>2.4.2</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-rt-databinding-jaxb</artifactId>
+					<version>2.4.2</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-rt-ws-addr</artifactId>
+					<version>2.4.2</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-rt-frontend-simple</artifactId>
+					<version>2.4.2</version>
+				</artifactItem>	
+				<artifactItem>
+					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-bindings-xml</artifactId>
 					<version>2.4.2</version>
-				</artifactItem>				
+				</artifactItem>
+			    <artifactItem>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-rt-bindings-soap</artifactId>
+					<version>2.4.2</version>
+				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-core</artifactId>
@@ -272,8 +292,23 @@
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-api</artifactId>
-					<version>2.4.2</version>				
+					<version>2.4.2</version>
 				</artifactItem>
+				<artifactItem>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-rt-databinding-aegis</artifactId>
+					<version>2.4.2</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-tools-common</artifactId>
+					<version>2.4.2</version>
+				</artifactItem>				
+				<artifactItem>
+					<groupId>org.apache.ws.xmlschema</groupId>
+					<artifactId>xmlschema-core</artifactId>
+					<version>2.0</version>
+				</artifactItem>				
 				<!-- pb with this lib, the same in nxserver/lib but got a conflict when the 2 are present : linkage error -->
 				<!-- solution to check is to remove the one in nxserver/lib folder -->
 				<artifactItem>
@@ -297,6 +332,26 @@
 					<artifactId>easysoa-frascati-service-api</artifactId>
 					<version>${easysoa.version}</version>
 				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>				
 				<artifactItem>
 					<groupId>org.eclipse.emf</groupId>
 					<artifactId>ecore</artifactId>
@@ -357,6 +412,12 @@
 					<artifactId>jetty-util</artifactId>
 					<version>7.4.5.v20110725</version>
 				</artifactItem>
+               
+                <artifactItem>
+                	<groupId>xom</groupId>
+                	<artifactId>xom</artifactId>
+                	<version>1.2.5</version>
+                </artifactItem>
                
                 <!-- Runtime management -->    
                 <artifactItem>
@@ -490,7 +551,9 @@
             <configuration>
                 <target>
                     <!-- List the FraSCAti applications to export here (separated by ','s) -->
-                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip" />
+                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/target/easysoa-samples-smarttravel-trip-${easysoa.version}-bin.zip" />
+                    <!-- List including the samples Pure Air Flowers and Smart travel : Disabled because the samples are not working in FraSCAti -->
+                    <!--<property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-services-backup-sca/target/easysoa-samples-smarttravel-services-backup-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/target/easysoa-samples-smarttravel-trip-${easysoa.version}-bin.zip" />-->
                     <ant antfile="build.xml" target="unzip-apps" />
                 </target>
             </configuration>

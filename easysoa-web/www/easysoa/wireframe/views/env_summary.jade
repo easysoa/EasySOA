@@ -1,0 +1,92 @@
+include navtree
+
+h1.title Environment 
+  b Master
+      
+script(type='text/javascript')
+  window.selectedId = 0
+
+#contents(style='height: 750px')
+  
+  #breadcrumbs
+    a.fake(href='#') Environment Master
+  
+  #doccontents
+      
+    .contentbox
+      .title <a class="works" href="./env_validation">Validation</a> summary
+      
+      h3 Statistics
+      table
+        tr
+          td Total services
+          td
+          td 12
+          td 
+        tr
+          td Total services to validate
+          td
+            
+          td 8
+          td
+        tr
+          td Successfully validated services
+          td 
+            img(src='img/green.png')
+          td 7
+          td Last check: Yesterday, 11:00
+        tr
+          td Failed validation
+          td 
+            img(src='img/red.png')
+          td 1
+          td Last check: Yesterday, 11:00
+       
+      h3 Error reports
+      table
+       tr
+        td
+          img(src='img/red.png', style='height: 16px')
+        td <a href="#" class="fake">MyBuggyService</a>
+        td Service is unavailable.
+    
+    .contentbox
+      .title <a href="#" class="fake">Servers</a> summary
+      
+      table
+        tr
+          th Server name
+          th Hosted deployables
+          th State
+        tr
+          td CRM Core server
+          td 
+            a.fake(href='#') MyDeployable1
+            br
+            a.fake(href='#') MyDeployable2
+            br
+            a.fake(href='#') MyDeployable3
+          td
+            img(src='img/green.png', style='height: 16px')
+            echo Running
+        tr
+          td CRM API server
+          td 
+            a.fake(href='#') MyDeployable4
+            br
+            a.fake(href='#') MyDeployable5
+          td
+            img(src='img/green.png', style='height: 16px')
+            echo Running
+          
+    
+    .contentbox
+      .title <a href="#" class="fake">URLs configuration</a> summary
+          
+      p 
+        img(src='img/warning.png') 
+        echo &nbsp;<b>Warning:</b> <u>1 Endpoint</u> has no match in this environment. 
+      p
+        a.fake(href='#') Click here to edit the URLs configuration.
+      
+include lefttabs

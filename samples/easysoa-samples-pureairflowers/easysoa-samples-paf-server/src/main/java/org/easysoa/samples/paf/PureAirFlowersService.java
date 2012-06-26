@@ -29,7 +29,7 @@ import javax.jws.WebResult;
  * @author jguillemotte
  * 
  */
-@WebService
+@WebService // This annotation is a problem when we try to run this mock in Frascati
 public interface PureAirFlowersService {
     
     @WebResult(name = "ordersNumber")

@@ -1,10 +1,21 @@
 #navtree
 
-  #navtreetitle(style='background-color: #EEE') Environment Master
+  script(type='text/javascript')
+    $(document).ready(function() {
+      $('#navtreetitle').click(function() {
+        $('#navhierarchy').toggle(300);
+        $('#navoptions').toggle(300);
+        $('img#closed').toggle();
+        $('img#open').toggle();
+        $('#navtree').toggleClass('navoptionsmode', 300);
+      });
+    });
   
-  #navtreetitle
-    a.fake(href='#') Browsing by app. layers
-    img(src='img/arrowr.png')
+  #navtreetitle(style='background-color: white')
+    a#browsing(href='#') App. layers browsing
+    img#closed(src='img/arrowr.png')
+    img#open(src='img/arrowd.png', style='display: none')
+  
   
   script(type='text/javascript')
     $(document).ready(function() {
@@ -27,7 +38,7 @@
             { label: 'CRUD services' }
           ] }
        ];
-       var $tree = $("#navtreecontents");
+       var $tree = $("#navhierarchy");
        
        $tree.tree({
          data: data,
@@ -40,10 +51,47 @@
         $tree.tree('selectNode', node, true);
        }
        
-       $("#navtreecontents .title").click(function() {
-        window.location = './endpoint';
+       $("#navhierarchy .title").click(function() {
+        window.location = './endp_summary';
        });
        
     });
-  #navtreecontents
-    li test
+  #navhierarchy.navtreecontents
+  
+  
+  
+  script(type='text/javascript')
+    $(document).ready(function() {
+      $('#navoptions a').click(function() {
+        $('#navtreetitle').trigger('click');
+      });
+    });
+  
+  #navoptions.navtreecontents(style='display: none')
+    p Choose a browsing view...
+    
+    h3 Default views
+    
+    ul
+      li
+        a.fake(href='#') By Service
+      li
+        a.fake(href='#') By Implementation
+      li
+        a.fake(href='#') By Endpoint
+    
+    
+    h3 Custom hierarchies
+    
+    ul
+      li
+        a.fake(href='#') Application layers
+      li
+        a.fake(href='#') Servers
+      li
+        a.fake(href='#') Projects
+      li
+        a.fake(href='#') Business domains
+      li
+        input(type='button', value='Create...', style='font-size: 9pt')
+      

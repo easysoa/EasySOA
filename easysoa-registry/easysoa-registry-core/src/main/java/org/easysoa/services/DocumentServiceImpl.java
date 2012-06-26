@@ -245,7 +245,7 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
             DocumentModelList appliImplList = session.getChildren(workspaceModel.getRef(), AppliImpl.DOCTYPE, new DeletedDocumentFilter(), null);
             if (appliImplList != null && !appliImplList.isEmpty()) {
                 for (DocumentModel model : appliImplList) {
-                    if (AppliImpl.DEFAULT_APPLIIMPL_URL.equals(model.getProperty(AppliImpl.SCHEMA_PREFIX, AppliImpl.PROP_URL))) {
+                    if (AppliImpl.DEFAULT_APPLIIMPL_URL.equals(model.getProperty(AppliImpl.SCHEMA, AppliImpl.PROP_URL))) {
                         appliImpl = model;
                         break;
                     }

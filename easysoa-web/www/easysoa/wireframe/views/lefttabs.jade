@@ -1,0 +1,34 @@
+#lefttabs
+
+  if page.indexOf('endp_') == 0
+  
+    .lefttab(style='border-right-color: white; z-index: 1000') 
+      a(href='./endp_summary').works Summary
+      
+    .lefttabspacer Common
+    
+    .lefttab Documentation
+    .lefttab Collaboration
+    .lefttab 
+      a(href='./endp_clients').works Clients
+      
+    .lefttabspacer Technical
+      
+    .lefttab Validation
+    .lefttab Proxies
+    .lefttab Deployment
+    .lefttab Notifications
+    .lefttab Data export
+    
+    
+  else if page.indexOf('env_') == 0
+  
+    .lefttab
+      a(href='./env_summary') Summary
+    
+    .lefttabspacer Technical
+      
+    .lefttab
+      a(href='./env_validation') Validation
+    .lefttab Servers
+    .lefttab URLs configuration

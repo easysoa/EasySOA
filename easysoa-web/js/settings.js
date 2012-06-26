@@ -20,7 +20,7 @@ exports.NO_AUTH_NEEDED = [
   '^/easysoa[/]?$',
   '^/easysoa/index.html',
   '^/easysoa/users.html',
-  '^/easysoa/style.css',
+  '^/easysoa/css/*',
   '^/easysoa/js/*',
   '^/easysoa/lib/*',
   '^/easysoa/img/*',

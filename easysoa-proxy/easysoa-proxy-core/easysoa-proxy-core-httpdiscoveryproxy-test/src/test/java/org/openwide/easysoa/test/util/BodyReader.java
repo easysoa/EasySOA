@@ -32,6 +32,21 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+
+/**
+ * The MessageBodyReader interface represents a contract for a provider that supports the conversion of a stream to a Java type. 
+ * To add a MessageBodyReader implementation, annotate the implementation class with @Provider. 
+ * A MessageBodyReader implementation may be annotated with @Consumes to restrict the media types for which it will be considered suitable. 
+ * 
+ * This class is designed to convert the incoming stream to a String object.
+ * It works only with 'Nuxeo' streams ("application/json+nxrequest; charset=UTF-8") 
+ * 
+ * This class is called automatically by Jersey, thanks to the @provider annotation
+ * 
+ * @author jguillemotte
+ *
+ */
+
 @Consumes("application/json+nxrequest; charset=UTF-8")
 @Provider
 public class BodyReader implements MessageBodyReader<String> {

@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Version: 0.4-SNAPSHOT
-Bundle-Name: nuxeo-frascati-hack
-Bundle-SymbolicName: org.nuxeo.frascati.hack;singleton:=true
-Bundle-Vendor: INRIA
-Nuxeo-Require: org.nuxeo.frascati
-Nuxeo-Component: OSGI-INF/nonjarscleanup-component.xml

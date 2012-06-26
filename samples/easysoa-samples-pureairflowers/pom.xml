@@ -24,6 +24,7 @@
   <modules>
     <module>easysoa-classpath-discovery-prototype</module>
     <module>easysoa-samples-paf-server</module>
+    <module>easysoa-samples-paf-server-sca</module>
   </modules>
 
   <dependencyManagement>

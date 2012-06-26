@@ -4,21 +4,8 @@ body
   background-color #EEF5FA
   margin 0
 
-a
-  text-decoration none
-  font-weight bold
-  color darkblue
 
-a.fake
-  font-weight normal
-  text-decoration none
-  cursor default
-  
-a.fake:hover
-  text-decoration none
-  
-a:hover
-  text-decoration underline
+// Header
 
 header
   background-color white
@@ -49,7 +36,10 @@ header
   height 20px
   border 1px solid red
   border-radius 10px
-  
+
+
+// Header tabs
+
 .bigtab
   float left
   border 2px solid black
@@ -98,27 +88,48 @@ header
   margin-top 0
   height 20px
   
-h1
-  margin-bottom 0
-  font-weight normal
-  
-h2
-  margin-top 0
-  font-size 12pt
-  font-weight normal
   
 #doccontents
-  margin-left 230px
   padding 10px
   
 #breadcrumbs
   border-bottom 1px solid grey
   font-size: 10pt
+
+
+// Navigation tree
+
+#navtree
+  position absolute
+  top 112px
+  bottom 0
+  border-right 2px solid #000
+  padding 0 2px 0 0
+  width 210px
+  min-height 500px
+  background-color white
   
+#navtree.navoptionsmode
+  background-color #DEF
+  
+#navtreetitle
+  border 2px solid #555
+  border-radius 5px
+  padding 5px
+  text-align center
+  width 180px
+  margin 10px
+
+.navtreecontents
+  margin 10px
+  width 180px
+  
+// Left tabs
+
 #lefttabs
   position absolute
-  top 105px
-  left 10px
+  top 160px
+  left 225px
   width 80px
   padding-top 15px
   margin-right 7px
@@ -135,34 +146,19 @@ h2
   height 20px
   font-size 10pt
   color grey
+  
+  
+// Contents
 
 #contents
-  position relative
-  right 0
   border 2px solid black
-  margin 5px
-  min-height 500px
+  margin 5px 5px 5px 337px
   padding 10px
-  margin-left 122px
   background-color white
   
-#navtree
-  position relative
-  min-height 500px
-  border 2px solid black
-  width 220px
-  float left
-  background-color white
-  top 10px
+#contents.wide
+  margin-left 5px
   
-#navtreetitle
-  border-bottom 2px solid black
-  padding 5px
-  text-align center
-
-#navtreecontents
-  padding 5px
-
 .contentbox
   border 1px solid black
   padding 10px
@@ -190,6 +186,9 @@ h2
 .contentbox li
   width 100%
   list-style-type none
+  
+  
+// Div convenience classes
   
 .third
   width 30%
@@ -224,7 +223,46 @@ h2
   border 1px solid #999
   padding 5px
 
+
+// Special pages
+
+.wizard
+  font-size 18pt
+  line-height 28pt
+
+
+// Tags customization
+
 td, th
   border 1px solid #CCC
   padding 3px
   
+h1
+  margin-bottom 0
+  font-weight normal
+  
+h1.title
+  margin-top 15px
+  margin-left 338px
+  
+h2
+  margin-top 0
+  font-size 12pt
+  font-weight normal
+  
+a
+  text-decoration none
+  font-weight bold
+  color darkblue
+
+a.fake
+  font-weight normal
+  text-decoration none
+  cursor default
+  
+a.fake:hover
+  text-decoration none
+  
+a:hover
+  text-decoration underline
+

@@ -1,0 +1,44 @@
+include navtree
+
+h1.title Environment 
+  b Master 
+  echo : Validation
+  
+script(type='text/javascript')
+  window.selectedId = 0
+      
+#contents
+  
+  #breadcrumbs
+    a.fake(href='#') Environment Master > Validation
+      
+  #doccontents
+      
+    table
+      tr
+        th(style='min-width: 200px') Service name
+        th State
+        th(style='min-width: 200px') Message
+        th Last validation
+        th Actions
+      each n in new Array(7)
+        tr
+          td Client service
+          td
+            img(src='img/green.png')
+          td OK
+          td Yesterday, 11:00
+          td
+            img(src='img/run.png', style='margin-right: 5px')
+            img(src='img/settings.png')
+      tr
+        td MyBuggyService
+        td
+          img(src='img/red.png')
+        td Service is unavailable.
+        td Yesterday, 11:00
+        td
+          img(src='img/run.png', style='margin-right: 5px')
+          img(src='img/settings.png')
+            
+include lefttabs

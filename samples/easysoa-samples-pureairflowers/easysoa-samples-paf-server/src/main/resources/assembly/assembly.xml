@@ -11,6 +11,9 @@
     <dependencySets>
         <dependencySet>
             <outputDirectory>lib</outputDirectory>
+			<excludes>
+        		<exclude>org.easysoa.samples.paf:easysoa-samples-paf-server</exclude>
+            </excludes>
             <unpack>false</unpack>
         </dependencySet>
     </dependencySets>

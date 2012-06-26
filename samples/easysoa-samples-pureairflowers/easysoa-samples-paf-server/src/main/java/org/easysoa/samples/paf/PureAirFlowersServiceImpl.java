@@ -22,7 +22,6 @@ package org.easysoa.samples.paf;
 
 import java.util.Hashtable;
 import javax.jws.WebService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
