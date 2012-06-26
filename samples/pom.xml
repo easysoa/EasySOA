@@ -11,7 +11,6 @@
 
   <groupId>org.easysoa.samples</groupId>
   <artifactId>easysoa-samples</artifactId>
-  <version>0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>EasySOA Samples Project</name>
 
@@ -19,6 +18,7 @@
     <module>easysoa-samples-parent</module>
     <module>easysoa-samples-pureairflowers</module>
     <module>easysoa-samples-smarttravel</module>
+    <module>easysoa-samples-events</module>
     <!--<module>easysoa-samples-smarttravel-test</module> -->
   </modules>
 

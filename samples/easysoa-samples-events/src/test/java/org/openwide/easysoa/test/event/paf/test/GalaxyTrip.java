@@ -1,5 +1,5 @@
 /**
- * EasySOA Proxy
+ * EasySOA Samples - Smart Travel
  * Copyright 2011 Open Wide
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -17,12 +17,21 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-package com.openwide.easysoa.exchangehandler;
 
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
+package org.openwide.easysoa.test.event.paf.test;
 
-public interface HandlerManager {
-    public void handle(InMessage inMessage, OutMessage outMessage) throws Exception;
-    
+/**
+ * Interface of the orchestration component. 
+ */
+public interface GalaxyTrip {
+ 
+	/**
+	 * Trip service main method
+	 * @param activity 
+	 * @param userSentence
+	 * @param rateTreshold
+	 * @return Return the trip response
+	 */
+	public String process( String activity, String userSentence, double rateTreshold);
+	
 }

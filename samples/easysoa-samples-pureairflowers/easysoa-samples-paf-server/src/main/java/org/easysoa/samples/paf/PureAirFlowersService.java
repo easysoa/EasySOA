@@ -31,8 +31,11 @@ import javax.jws.WebResult;
  */
 @WebService
 public interface PureAirFlowersService {
-
+    
     @WebResult(name = "ordersNumber")
     int getOrdersNumber(@WebParam(name = "ClientName") String text);
 
+    @WebResult(name = "addOrder")
+    int addOrder(@WebParam(name="orderNb") Integer valeur, @WebParam(name = "ClientName") String text);
+    
 }

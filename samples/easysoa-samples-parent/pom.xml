@@ -23,7 +23,15 @@
         <version>${easysoa.version}</version>
       </dependency>
       
+
       <!-- Smart Travel -->
+      <dependency>
+          
+  	<groupId>org.easysoa.samples.smarttravel</groupId>
+  	<artifactId>easysoa-samples-events</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>org.easysoa.samples.smarttravel</groupId>
         <artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
@@ -54,7 +62,8 @@
         <artifactId>easysoa-samples-smarttravel-services-backup</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
-      
+
+
       <!-- SmartTravel dependencies - Spring -->
       <dependency>
         <groupId>org.springframework</groupId>

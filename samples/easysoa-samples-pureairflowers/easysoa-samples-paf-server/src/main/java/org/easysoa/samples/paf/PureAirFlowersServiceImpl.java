@@ -20,24 +20,32 @@
 
 package org.easysoa.samples.paf;
 
+import java.util.Hashtable;
 import javax.jws.WebService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
  * @author jguillemotte
- * 
  */
 @WebService(endpointInterface = "org.easysoa.samples.paf.PureAirFlowersService", serviceName = "PureAirFlowers")
 public class PureAirFlowersServiceImpl implements PureAirFlowersService {
-
+    
+    private Hashtable<String, Integer> inventory =  new Hashtable<String, Integer>();
     private final static Logger logger = LoggerFactory.getLogger(PureAirFlowersServer.class);
-
+    
+    @Override
     public int getOrdersNumber(String clientName) {
+        
+        if (this.inventory.get(clientName)==null)
         logger.info("getOrdersNumber called");
-        return Math.abs(clientName.hashCode() % 50);
+        //return Math.abs(clientName.hashCode() % 50);
+        return this.inventory.get(clientName);
     }
-
+    @Override
+    public int addOrder(Integer valeur, String text) {
+        this.inventory.put(text, valeur);
+        return 1;
+    }
 }

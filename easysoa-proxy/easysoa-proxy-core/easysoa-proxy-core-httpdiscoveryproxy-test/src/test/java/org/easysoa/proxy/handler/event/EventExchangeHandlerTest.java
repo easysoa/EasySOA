@@ -20,13 +20,14 @@
 
 package org.easysoa.proxy.handler.event;
 
-import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.soap.SOAPException;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -40,7 +41,6 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
-import org.easysoa.proxy.handler.event.admin.Subscriptions;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.test.mock.nuxeo.RecordsProvider;
 import org.junit.After;
@@ -50,19 +50,11 @@ import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 
 /**
- * Complete test suite of HTTP Discovery Proxy
- * - Starts FraSCATi and the HTTP Discovery Proxy
- * - Test the infinite loop detection feature (OK)
- * - Test the clean Nuxeo registry (OK)
- * - Test the Discovery mode for REST requests (OK) includes re-run test 
- * - Test the Discovery mode for SOAP requests (OK) no re-run test
- * - Test the Validated mode for REST requests (TODO)
- * - Test the validated mode for SOAP requests (TODO)
+ * Tests Event exchange handler
  *
- * @author jguillemotte
+ * @author fntangke
  *
  */
-//@Ignore
 public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
 
 	/**
@@ -198,7 +190,7 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
     }
 
     /**
-     * This test do nothing, just wait for a user action to stop the proxy.
+     * This test does nothing, just wait for a user action to stop the proxy.
      * 
      * @throws ClientException
      * @throws SOAPException
@@ -223,16 +215,13 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
     public void cleanUp() throws Exception{
     	logger.info("Stopping FraSCAti...");
     	stopFraSCAti();
-    	// Clean Jetty for twitter mock
-    	cleanJetty(EasySOAConstants.TWITTER_MOCK_PORT);
-    	// Clean Jetty for meteo mock
-    	cleanJetty(EasySOAConstants.METEO_MOCK_PORT);
-    	// Clean Jetty for Nuxeo mock
-    	cleanJetty(EasySOAConstants.NUXEO_TEST_PORT);
     	// Clean Easysoa proxy
     	cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
-    	cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
-    	cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
+    	//cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+    	//cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
+        // Clean (nuxeo) mocks
+        cleanJetty(8080);
+        cleanJetty(8081);
     }
     
 }

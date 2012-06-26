@@ -103,7 +103,10 @@ public class OrchestrationImpl implements Trip {
 
 		return "Non trouvé";
 	}
-
+	
+	/**
+	 * 
+	 */
 	public String process(String activity, String userSentence,
 			double rateTreshold) {
 		double exchangeRate;
