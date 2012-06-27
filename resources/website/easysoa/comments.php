@@ -49,16 +49,9 @@
 <p><label for="comment">Message:</label><br />
 <textarea name="comment" id="comment" cols="45" rows="4" tabindex="4"></textarea></p>
 
-<?php /*Catcha plugin manual integration
-<?php if ( function_exists( 'cptch_display_captcha_custom' ) ) : ?>
-<p class="cptch_block"><label for="url">Captcha: <span style="color: darkred; text-decoration: none">*</span></label><br />
-<?php echo cptch_display_captcha_custom(); ?>
-</p>
-<?php endif; ?> */ ?>
-
 <input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />
-<input type="submit" name="submit" value="Submit!" class="button" tabindex="5" />
 <p><?php do_action('comment_form', $post->ID); ?></p>
+<input type="submit" name="submit" value="Submit!" class="button" tabindex="5" style="margin-bottom: 15px" />
 
 <?php if (!$user_ID) : ?>
 <p style="padding-top: 0; padding-bottom: 0"><span style="color: darkred; font-size: 11px">* <i>Required</i></span></p>
