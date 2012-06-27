@@ -146,6 +146,26 @@
                   <artifactId>easysoa-proxy-core-persistence</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.samples.smarttravel</groupId>
+                  <artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
+				  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.samples.smarttravel</groupId>
+                  <artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
+				  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.samples.smarttravel</groupId>
+                  <artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.samples.smarttravel</groupId>
+                  <artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>               
 				<!--<artifactItem>
                   <groupId>org.easysoa.proxy</groupId>
                   <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>

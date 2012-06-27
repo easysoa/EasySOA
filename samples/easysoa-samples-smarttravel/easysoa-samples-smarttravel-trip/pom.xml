@@ -111,31 +111,6 @@
             </configuration>
             <dependencies>
               <dependency>
-                <groupId>org.easysoa.samples.smarttravel</groupId>
-                <artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
-                <version>0.4-SNAPSHOT</version>
-              </dependency>
-              <dependency>
-                <groupId>org.easysoa.samples.smarttravel</groupId>
-                <artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
-                <version>0.4-SNAPSHOT</version>
-              </dependency>
-              <!-- <dependency> -->
-              <!-- <groupId>org.easysoa.samples.smarttravel</groupId> -->
-              <!-- <artifactId>easysoa-meteo-sca-backup</artifactId> -->
-              <!-- <version>0.3-SNAPSHOT</version> -->
-              <!-- </dependency> -->
-              <dependency>
-                <groupId>org.easysoa.samples.smarttravel</groupId>
-                <artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
-                <version>0.4-SNAPSHOT</version>
-              </dependency>
-              <dependency>
-                <groupId>org.easysoa.samples.smarttravel</groupId>
-                <artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
-                <version>0.4-SNAPSHOT</version>
-              </dependency>              
-              <dependency>
                 <groupId>org.ow2.frascati</groupId>
                 <artifactId>frascati-binding-factory</artifactId>
                 <version>${frascati.version}</version>
@@ -388,18 +363,22 @@
     <dependency>
       <groupId>org.easysoa.samples.smarttravel</groupId>
       <artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.samples.smarttravel</groupId>
       <artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.samples.smarttravel</groupId>
       <artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.samples.smarttravel</groupId>
       <artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.tuscany.sca</groupId>
@@ -416,21 +395,25 @@
       <groupId>org.ow2.frascati.factory</groupId>
       <artifactId>frascati-factory-tools</artifactId>
       <version>${frascati.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-assembly-factory</artifactId>
       <version>${frascati.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
       <version>${frascati.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-implementation-fractal</artifactId>
       <version>${frascati.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>oro</groupId>
@@ -453,6 +436,7 @@
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
       <version>${frascati.version}</version>
+      <scope>provided</scope>
     </dependency>
     <!-- <dependency> -->
     <!-- <groupId>org.ow2.frascati</groupId> -->

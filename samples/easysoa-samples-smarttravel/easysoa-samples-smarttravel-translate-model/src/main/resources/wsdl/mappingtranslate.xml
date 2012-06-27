@@ -4,8 +4,14 @@
     xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
     xmlns:jaxb="http://java.sun.com/xml/ns/jaxb">
 
-    <jaxws:bindings
+    <!--<jaxws:bindings
      node="wsdl:definitions/wsdl:service[@name='Soap']/wsdl:port[@name='BasicHttpBinding_LanguageService']">
          <jaxws:class name="BasicHttpBinding_LanguageService"/>
-    </jaxws:bindings>
+    </jaxws:bindings>-->
+    
+    <jaxws:bindings
+     node="wsdl:definitions/wsdl:service[@name='SoapService']/wsdl:port[@name='BasicHttpBindingLanguageService']">
+         <jaxws:class name="BasicHttpBindingLanguageService"/>
+    </jaxws:bindings>    
+    
 </jaxws:bindings>

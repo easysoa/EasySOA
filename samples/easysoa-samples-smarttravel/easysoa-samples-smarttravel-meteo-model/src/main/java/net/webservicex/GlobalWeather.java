@@ -42,8 +42,8 @@ import javax.xml.ws.Service;
 
 
 @WebServiceClient(name = "GlobalWeather", 
-                  wsdlLocation = "wsdl/meteo.wsdl",
-                  targetNamespace = "http://www.webserviceX.NET") 
+                  //wsdlLocation = "wsdl/meteo.wsdl",
+                  targetNamespace = "http://www.webserviceX.NET")
 public class GlobalWeather extends Service {
 
     public final static URL WSDL_LOCATION;
@@ -55,9 +55,11 @@ public class GlobalWeather extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/meteo-model/src/main/resources/wsdl/meteo.wsdl");
+            //url = new URL("file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/meteo-model/src/main/resources/wsdl/meteo.wsdl");
+            url = new URL("http://localhost:9020/CurrencyService/?wsdl");
         } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/meteo-model/src/main/resources/wsdl/meteo.wsdl");
+            //System.err.println("Can not initialize the default wsdl from file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/meteo-model/src/main/resources/wsdl/meteo.wsdl");
+            System.err.println("Can not initialize the default wsdl from 'http://localhost:9020/CurrencyService/?wsdl'");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;

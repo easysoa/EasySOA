@@ -52,7 +52,7 @@
     <sca:binding.ws wsdlElement="http://www.daenet.de/webservices/CurrencyServer#wsdl.port(CurrencyServerWebService/CurrencyServerWebServiceSoap)" wsdli:wsdlLocation="http://localhost:9020/CurrencyService?wsdl"/>
   </sca:reference>
   <!-- sca:reference name="Translate_Phrase_ref" promote="Galaxy_System_orchestrationComponent/Translate_Phrase_genService_ref">
-    <sca:binding.ws wsdlElement="hhttp://api.microsofttranslator.com/v1/soap.svc#wsdl.port(Soap/BasicHttpBindingLanguageService)" wsdli:wsdlLocation="http://api.microsofttranslator.com/V1/Soap.svc?WSDL"/>
+    <sca:binding.ws wsdlElement="http://api.microsofttranslator.com/v1/soap.svc#wsdl.port(Soap/BasicHttpBindingLanguageService)" wsdli:wsdlLocation="http://api.microsofttranslator.com/V1/Soap.svc?WSDL"/>
   </sca:reference -->
   <sca:reference name="Translate_Phrase_ref" promote="Galaxy_System_orchestrationComponent/Translate_Phrase_genService_ref">
     <!--<sca:binding.ws wsdlElement="http://api.microsofttranslator.com/v1/soap.svc#wsdl.port(SoapService/BasicHttpBindingLanguageService)" wsdli:wsdlLocation="http://api.microsofttranslator.com/V1/Soap.svc?WSDL"/>-->

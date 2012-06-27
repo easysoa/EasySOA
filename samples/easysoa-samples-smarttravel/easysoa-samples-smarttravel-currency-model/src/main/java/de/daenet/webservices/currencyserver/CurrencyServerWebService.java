@@ -42,8 +42,8 @@ import javax.xml.ws.Service;
 
 
 @WebServiceClient(name = "CurrencyServerWebService", 
-                  wsdlLocation = "wsdl/currencyserverwebservice.wsdl",
-                  targetNamespace = "http://www.daenet.de/webservices/CurrencyServer") 
+                  //wsdlLocation = "wsdl/currencyserverwebservice.wsdl",
+                  targetNamespace = "http://www.daenet.de/webservices/CurrencyServer")
 public class CurrencyServerWebService extends Service {
 
     public final static URL WSDL_LOCATION;
@@ -55,9 +55,11 @@ public class CurrencyServerWebService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/currency-model/src/main/resources/wsdl/currencyserverwebservice.wsdl");
+            //url = new URL("file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/currency-model/src/main/resources/wsdl/currencyserverwebservice.wsdl");
+            url = new URL("http://localhost:9020/CurrencyService/?wsdl");
         } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/currency-model/src/main/resources/wsdl/currencyserverwebservice.wsdl");
+            //System.err.println("Can not initialize the default wsdl from file:/Users/veleno/workspace/galaxy-svn/demoj1-scenario1/trunk/currency-model/src/main/resources/wsdl/currencyserverwebservice.wsdl");
+            System.err.println("Can not initialize the default wsdl from 'http://localhost:9020/CurrencyService/?wsdl'");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;

@@ -7,8 +7,10 @@
     <groupId>org.easysoa.samples</groupId>
     <artifactId>easysoa-samples-parent</artifactId>
     <version>0.4-SNAPSHOT</version>
+   <!-- MERLE -->
     <relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
-  </parent>
+   <!-- -->
+   </parent>
   
   <groupId>org.easysoa.samples.smarttravel</groupId>
   <artifactId>easysoa-samples-smarttravel-services-backup-sca</artifactId>
@@ -37,6 +39,22 @@
     <!-- </dependency> -->
 	
     <dependency>
+      <groupId>org.easysoa.samples.smarttravel</groupId>
+      <artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.samples.smarttravel</groupId>
+      <artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.samples.smarttravel</groupId>
+      <artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
+      <scope>provided</scope>
+	</dependency>	
+	
+    <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-factory</artifactId>
       <version>${frascati.version}</version>
@@ -49,6 +67,12 @@
     <dependency>
       <groupId>org.ow2.frascati</groupId>
       <artifactId>frascati-binding-ws</artifactId>
+      <version>${frascati.version}</version>
+    </dependency>
+<!-- MERLE -->
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-interface-wsdl</artifactId>
       <version>${frascati.version}</version>
     </dependency>
     
@@ -152,6 +176,26 @@
 					</execution>
 				</executions>
 			</plugin>      
+
+<!-- MERLE -->
+        <!-- Compile the SCA composite. -->
+        <plugin>
+          <groupId>org.ow2.frascati.mojo</groupId>
+          <artifactId>frascati-compiler-plugin</artifactId>
+          <version>${frascati.version}</version>
+          <executions>
+            <execution>
+              <id>compile-composite</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <composite>services-backup-sca.composite</composite>
+          </configuration>
+        </plugin>
     </plugins>
   </build>
 

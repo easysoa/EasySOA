@@ -35,13 +35,13 @@ import java.util.logging.Logger;
  * 
  */
 
-@javax.jws.WebService(
+/*@javax.jws.WebService(
                       serviceName = "CurrencyServerWebService",
                       portName = "CurrencyServerWebServiceSoap12",
                       targetNamespace = "http://www.daenet.de/webservices/CurrencyServer",
                       wsdlLocation = "http://www.currencyserver.de/webservice/currencyserverwebservice.asmx?wsdl",
                       endpointInterface = "de.daenet.webservices.currencyserver.CurrencyServerWebServiceSoap")
-                      
+*/                      
 public class CurrencyServerWebServiceSoapImpl implements CurrencyServerWebServiceSoap {
 
     private static final Logger LOG = Logger.getLogger(CurrencyServerWebServiceSoapImpl.class.getName());

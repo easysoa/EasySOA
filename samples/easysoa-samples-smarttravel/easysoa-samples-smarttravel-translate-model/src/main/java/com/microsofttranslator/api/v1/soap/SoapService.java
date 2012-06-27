@@ -42,8 +42,9 @@ import javax.xml.ws.Service;
 
 
 @WebServiceClient(name = "SoapService", 
-                  wsdlLocation = "http://api.microsofttranslator.com/V1/Soap.svc?WSDL",
+                  //wsdlLocation = "http://api.microsofttranslator.com/V1/Soap.svc?WSDL",
                   targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc") 
+
 public class SoapService extends Service {
 
     public final static URL WSDL_LOCATION;
@@ -53,9 +54,11 @@ public class SoapService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("http://api.microsofttranslator.com/V1/Soap.svc?WSDL");
-        } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from http://api.microsofttranslator.com/V1/Soap.svc?WSDL");
+            //url = new URL("http://api.microsofttranslator.com/V1/Soap.svc?WSDL");
+            url = new URL("http://localhost:9020/WeatherService/?wsdl");
+        } catch (Exception ex) {
+            //System.err.println("Can not initialize the default wsdl from http://api.microsofttranslator.com/V1/Soap.svc?WSDL");
+            System.err.println("Can not initialize the default wsdl from 'http://localhost:9020/WeatherService/?wsdl'");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;
@@ -79,20 +82,25 @@ public class SoapService extends Service {
      *     returns LanguageService
      */
     //@WebEndpoint(name = "BasicHttpBinding_LanguageService")
+    @WebEndpoint(name = "BasicHttpBindingLanguageService")
     public LanguageService getBasicHttpBindingLanguageService() {
-        return super.getPort(BasicHttpBindingLanguageService, LanguageService.class);
+        //return super.getPort(BasicHttpBindingLanguageService, LanguageService.class);
+        return super.getPort(new QName("http://api.microsofttranslator.com/v1/soap.svc", "BasicHttpBindingLanguageService"), LanguageService.class);
     }
 
     /**
      * 
      * @param features
-     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.
+     *     Supported features not in the <code>features</code> parameter will have their default values.
      * @return
      *     returns LanguageService
      */
     //@WebEndpoint(name = "BasicHttpBinding_LanguageService")
+    @WebEndpoint(name = "BasicHttpBindingLanguageService")
     public LanguageService getBasicHttpBindingLanguageService(WebServiceFeature... features) {
-        return super.getPort(BasicHttpBindingLanguageService, LanguageService.class, features);
+        //return super.getPort(BasicHttpBindingLanguageService, LanguageService.class, features);
+        return super.getPort(new QName("http://api.microsofttranslator.com/v1/soap.svc", "BasicHttpBindingLanguageService"), LanguageService.class, features);
     }
 
 }

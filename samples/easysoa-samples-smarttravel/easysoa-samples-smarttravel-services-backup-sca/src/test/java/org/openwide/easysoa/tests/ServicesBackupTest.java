@@ -38,12 +38,12 @@ import org.ow2.frascati.FraSCAti;
  * @author mdutoo
  *
  */
-public class ServicesBackupTestStarter {
+public class ServicesBackupTest {
 
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(ServicesBackupTestStarter.class.getClass());	
+	private static Logger logger = Logger.getLogger(ServicesBackupTest.class.getClass());	
 
 	/** The FraSCAti platform */
     private static FraSCAti frascati;

@@ -43,7 +43,8 @@ import javax.xml.ws.Service;
 
 @WebServiceClient(name = "SoapService", 
                   //wsdlLocation = "file:microsoftTranslatorWebService.test.wsdl",
-                  targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc") 
+                  targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc")
+
 public class SoapService extends Service {
 
     public final static URL WSDL_LOCATION;

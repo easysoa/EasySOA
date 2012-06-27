@@ -35,13 +35,6 @@ import java.util.logging.Logger;
  * 
  */
 
-/*@javax.jws.WebService(
-                      serviceName = "GlobalWeather",
-                      portName = "GlobalWeatherSoap",
-                      targetNamespace = "http://www.webserviceX.NET",
-                      //wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
-                      endpointInterface = "net.webservicex.GlobalWeatherSoap")
-*/
 public class GlobalWeatherSoapImpl1 implements GlobalWeatherSoap {
 
     private static final Logger LOG = Logger.getLogger(GlobalWeatherSoapImpl.class.getName());

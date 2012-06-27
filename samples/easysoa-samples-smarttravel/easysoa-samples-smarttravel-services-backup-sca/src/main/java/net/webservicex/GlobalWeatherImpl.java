@@ -32,7 +32,7 @@ import java.util.Random;
 
 //@Scope("COMPOSITE")
 //@Service(interfaces={net.webservicex.IGlobalWeather.class})
-public class GlobalWeatherImpl implements IGlobalWeather {
+public class GlobalWeatherImpl { //implements IGlobalWeather {
 
 	// ////////////////////////////////////////////////////
 	// Fields

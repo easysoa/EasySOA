@@ -35,13 +35,13 @@ import java.util.logging.Logger;
  * 
  */
 
-@javax.jws.WebService(
+/*@javax.jws.WebService(
                       serviceName = "GlobalWeather",
                       portName = "GlobalWeatherHttpPost",
                       targetNamespace = "http://www.webserviceX.NET",
                       //wsdlLocation = "http://www.webservicex.net/globalweather.asmx?wsdl",
                       endpointInterface = "net.webservicex.GlobalWeatherHttpPost")
-                      
+*/          
 public class GlobalWeatherHttpPostImpl implements GlobalWeatherHttpPost {
 
     private static final Logger LOG = Logger.getLogger(GlobalWeatherHttpPostImpl.class.getName());

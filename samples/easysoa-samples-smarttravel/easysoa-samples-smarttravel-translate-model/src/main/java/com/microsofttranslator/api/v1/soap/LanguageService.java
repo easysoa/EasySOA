@@ -36,7 +36,7 @@ import javax.xml.ws.ResponseWrapper;
  * 
  */
  
-@WebService(targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc", name = "LanguageService")
+/*@WebService(targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc", name = "LanguageService")*/
 @XmlSeeAlso({ObjectFactory.class,com.microsoft.schemas._2003._10.serialization.ObjectFactory.class,com.microsoft.schemas._2003._10.serialization.arrays.ObjectFactory.class})
 public interface LanguageService {
 

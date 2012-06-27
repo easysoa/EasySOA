@@ -30,6 +30,7 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.WebEndpoint;
 //import javax.xml.ws.WebServiceClient;
+import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
 import javax.xml.ws.Service;
 
@@ -41,10 +42,10 @@ import javax.xml.ws.Service;
  */
 
 
-/*@WebServiceClient(name = "SoapService", 
+@WebServiceClient(name = "SoapService", 
                   //wsdlLocation = "file:microsoftTranslatorWebService.test.wsdl",
                   targetNamespace = "http://api.microsofttranslator.com/v1/soap.svc")
-*/
+
 public class SoapService extends Service {
 
     public final static URL WSDL_LOCATION;
@@ -54,9 +55,11 @@ public class SoapService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:microsoftTranslatorWebService.test.wsdl");
+            //url = new URL("file:microsoftTranslatorWebService.test.wsdl");
+            url = new URL("http://localhost:9020/TranslateService/?wsdl");
         } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from file:microsoftTranslatorWebService.test.wsdl");
+            //System.err.println("Can not initialize the default wsdl from file:microsoftTranslatorWebService.test.wsdl");
+            System.err.println("Can not initialize the default wsdl from 'http://localhost:9020/TranslateService/?wsdl'");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;
