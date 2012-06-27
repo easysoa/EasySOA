@@ -1,0 +1,121 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.easysoa.samples</groupId>
+        <artifactId>easysoa-samples-parent</artifactId>
+        <version>0.4-SNAPSHOT</version>
+        <relativePath>../easysoa-samples-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>easysoa-samples-events</artifactId>
+    <name>EasySOA Sample Events</name>
+    <packaging>jar</packaging>
+
+    <licenses>
+        <license>
+        <name>The GNU Lesser General Public License, Version 3</name>
+        <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+        </license>
+    </licenses>
+
+  <!-- ============= -->
+  <!-- Repositories. -->
+  <!-- ============= -->
+
+  <repositories>
+    <!-- repository> <id>inria-galaxy-repository</id> <name>INRIA Galaxy Maven Repository</name>
+      <url>http://galaxy.gforge.inria.fr/repository/maven2</url> <releases> <enabled>true</enabled>
+      </releases> <snapshots> <enabled>true</enabled> </snapshots> </repository -->
+  </repositories>
+
+  <!-- ============ -->
+  <!-- Distribution -->
+  <!-- ============ -->
+
+    
+    <dependencies>
+    
+	    <dependency>
+	        <groupId>org.easysoa.proxy</groupId>
+	        <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>org.apache.httpcomponents</groupId>
+	      <artifactId>httpclient</artifactId>
+	    </dependency>
+	
+	    <!-- Proxy persistence API -->
+	    <dependency>
+	      <groupId>org.easysoa.proxy</groupId>
+	      <artifactId>easysoa-proxy-core-persistence</artifactId>
+	    </dependency>
+	
+	    <!-- Proxy core API -->
+	    <dependency>
+	      <groupId>org.easysoa.proxy</groupId>
+	      <artifactId>easysoa-proxy-core-api</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>org.easysoa.proxy</groupId>
+	      <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+	      <version>${project.version}</version>
+	    </dependency>
+	
+	    <!-- Messaging api -->
+	    <dependency>
+	      <groupId>org.easysoa.registry.api</groupId>
+	      <artifactId>easysoa-registry-api-messaging</artifactId>
+	    </dependency>
+	     
+	    <!-- FraSCAti (bindings) -->
+	  	<dependency>
+	   		<groupId>org.ow2.frascati</groupId>
+	   		<artifactId>frascati-binding-rest</artifactId>
+	   		<version>${frascati.version}</version>
+			<scope>test</scope>      		
+	 	</dependency>
+	   <dependency>
+			<groupId>org.ow2.frascati</groupId>
+	   		<artifactId>frascati-binding-http</artifactId>
+	   		<version>${frascati.version}</version>
+			<scope>test</scope>      		
+	   </dependency>
+        
+
+    <!-- Other samples -->
+        <dependency>
+            <groupId>org.easysoa.samples.paf</groupId>
+            <artifactId>easysoa-samples-paf-server</artifactId>
+	   		<version>${easysoa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.samples.smarttravel</groupId>
+            <artifactId>easysoa-samples-smarttravel-trip</artifactId>
+        </dependency>
+    
+        
+    </dependencies>
+    
+
+
+  <distributionManagement>
+    <repository>
+      <id>easysoa</id>
+      <name>EasySOA Maven repository</name>
+      <url>TODO</url>
+    </repository>
+  </distributionManagement>
+
+  <!-- ======= -->
+  <!-- Modules -->
+  <!-- ======= -->
+
+  <modules>
+  </modules>
+
+</project>

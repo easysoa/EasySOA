@@ -18,11 +18,6 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-
-/*
- * 
- */
-
 package net.webservicex;
 
 import java.net.MalformedURLException;

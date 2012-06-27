@@ -19,7 +19,6 @@
  */
 package org.easysoa.frascati;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.xml.namespace.QName;
@@ -29,23 +28,22 @@ import org.eclipse.stp.sca.BindingType;
 import org.eclipse.stp.sca.ComponentReference;
 import org.eclipse.stp.sca.ComponentService;
 import org.eclipse.stp.sca.Composite;
+import org.oasisopen.sca.ServiceReference;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.julia.ComponentInterface;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import org.osoa.sca.annotations.Service;
-import org.ow2.frascati.assembly.factory.api.CompositeManager;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.Processor;
 import org.ow2.frascati.starter.api.InitializableItf;
 import org.ow2.frascati.parser.api.Parser;
 import org.ow2.frascati.parser.api.ParsingContext;
 import org.ow2.frascati.tinfi.TinfiComponentInterceptor;
-import org.ow2.frascati.tinfi.TinfiComponentInterface;
 import org.ow2.frascati.tinfi.api.IntentHandler;
-import org.ow2.frascati.tinfi.oasis.ServiceReferenceImpl;
 import org.ow2.frascati.util.AbstractLoggeable;
+import org.ow2.frascati.util.reference.ServiceReferenceUtil;
 
 @Scope("COMPOSITE")
 @Service(InitializableItf.class)
@@ -63,17 +61,11 @@ public class WeaverInitializer extends AbstractLoggeable implements
     //list of service references and intent handlers to weave together
     //those object will allow to notice each event relative to the processing or 
     //parsing processes
-    @Reference(name = "composite-manager")
-    private CompositeManager compositeManager;
-    
     @Reference(name = "composite-parser")
     private Parser<Composite> parser;
    
     @Reference(name = "parser-intent")
     private IntentHandler parserIntent;
-  
-    @Reference(name = "processing-intent")
-    private IntentHandler processingIntent;
 
     @Reference(name = "composite-processor")
     private Processor<org.eclipse.stp.sca.Composite> processorComposite;
@@ -126,93 +118,6 @@ public class WeaverInitializer extends AbstractLoggeable implements
     // -------------------------------------------------------------------------
     // Internal methods.
     // -------------------------------------------------------------------------
-    /**
-     * Return the tinfi membrane separating the object passed on as parameter of
-     * the root component
-     * 
-     * @param o
-     *            the object "to peel"
-     * @return the membrane separating of the root component
-     */
-    private Object getNextMembrane(Object o)
-    {
-
-        if (o == null)
-        {
-            return o;
-        }
-        if (o instanceof ServiceReferenceImpl)
-        {
-            return ((ServiceReferenceImpl<?>) o)._getDelegate();
-        } else if (o instanceof TinfiComponentInterceptor)
-        {
-            return ((TinfiComponentInterceptor<?>) o).getFcItfDelegate();
-        } else if (o instanceof TinfiComponentInterface)
-        {
-            return ((TinfiComponentInterface<?>) o).getFcItfImpl();
-        }
-        return null;
-    }
-
-    /**
-     * Return the last TinfiInterceptor before the Component from the object
-     * passed on as a parameter
-     * 
-     * @param o
-     *            the object "to peel"
-     * @return the membrane separating of the root component
-     */
-    private Object getInterceptor(Object o)
-    {
-
-        // Follow the track of the root component by collecting successively
-        // Tinfi's interfaces and interceptors
-        Object membrane = o;
-        Object interceptor = null;
-        while (membrane != null)
-        {
-            interceptor = membrane;
-            membrane = getNextMembrane(membrane);
-        }
-        return interceptor;
-    }
-
-    /**
-     * Return the root component associated to the object passed on as parameter 
-     * 
-     * @param o
-     *          the object "to peel"
-     * @return 
-     *          the root component
-     */
-    private Component getRootComponent(Object o)
-    {
-        Object interceptor = getInterceptor(o);
-        try
-        {
-            Method method = TinfiComponentInterceptor.class
-                    .getDeclaredMethod("getFcComponent");
-            method.setAccessible(true);
-            Component component = (Component) method.invoke(interceptor);
-            return component;
-        } catch (SecurityException e)
-        {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        } catch (InvocationTargetException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     // -------------------------------------------------------------------------
     // Public methods.
@@ -232,16 +137,16 @@ public class WeaverInitializer extends AbstractLoggeable implements
         try
         {
             //list of service references to weave the intents with
-            Object[] serviceReferences = new Object[] { compositeManager,
-                    compositeManager, parser, processorComposite,
+            Object[] serviceReferences = new Object[] { 
+                    parser, processorComposite,
                     processorComponent, processorComponentReference,
                     processorComponentService, processorReference,
                     processorService, processorBinding, scaProcessorBinding };
 
             //list of targeted interfaces name for each service references 
             //respectively
-            String[] interfaces = new String[] { "composite-manager",
-                    "composite-manager", "composite-parser",
+            String[] interfaces = new String[] { 
+                    "composite-parser",
                     "composite-processor", "component-processor",
                     "component-reference-processor",
                     "component-service-processor",
@@ -251,8 +156,8 @@ public class WeaverInitializer extends AbstractLoggeable implements
             
             //list of intent handlers to weave with each service references
             //respectively
-            IntentHandler[] handlers = new IntentHandler[] { processingIntent,
-                    processingIntent, parserIntent, processorCompositeIntent,
+            IntentHandler[] handlers = new IntentHandler[] { 
+                    parserIntent, processorCompositeIntent,
                     processorComponentIntent,
                     processorComponentReferenceIntent,
                     processorComponentServiceIntent, processorReferenceIntent,
@@ -265,21 +170,14 @@ public class WeaverInitializer extends AbstractLoggeable implements
             //parse method for the Parser
             Method parse = Parser.class.getDeclaredMethod("parse",
                     new Class<?>[] { QName.class, ParsingContext.class });
-            //processComposite method for the CompositeManager 
-            Method process = CompositeManager.class.getDeclaredMethod(
-                    "processComposite", new Class<?>[] { QName.class,
-                            ProcessingContext.class });
-            //removeComposite method for the CompositeManager
-            Method remove = CompositeManager.class.getDeclaredMethod(
-                    "removeComposite", new Class<?>[] { String.class });
             //list of methods associated to intent handlers respectively
-            Method[] methods = new Method[] { process, remove, parse, check,
-                    check, check, check, check, check, check, check };
+            Method[] methods = new Method[] {
+                    parse, check, check, check, check, check, check, check, check };
 
             int n = 0;
             for (; n < serviceReferences.length; n++)
             {
-                component = getRootComponent(serviceReferences[n]);
+                component = ServiceReferenceUtil.getRootComponent((ServiceReference<?>) serviceReferences[n]);
                 tci = (TinfiComponentInterceptor<?>) ((ComponentInterface) component
                         .getFcInterface(interfaces[n])).getFcItfImpl();
                 tci.addIntentHandler(handlers[n], methods[n]);

@@ -24,6 +24,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
+import javax.xml.soap.SOAPException;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -100,5 +102,20 @@ public class FormGeneratorTest extends AbstractTest {
 		// Compare the result with the expected one
 		assertEquals("{\"Body\":{\"getPriceResponse\":{\"return\":\"250.0\"}}}", resp);
 	}
+	
+    /**
+     * Wait for an user action to stop the test 
+     * @throws ClientException
+     * @throws SOAPException
+     * @throws IOException
+     */
+    @Test
+    @Ignore
+    public final void testWaitUntilRead() throws Exception {
+        logger.info("Scaffolding proxy test started, wait for user action to stop !");
+        // Just push a key in the console window to stop the test
+        System.in.read();
+        logger.info("Scaffolding proxy test stopped !");
+    }	
 	
 }

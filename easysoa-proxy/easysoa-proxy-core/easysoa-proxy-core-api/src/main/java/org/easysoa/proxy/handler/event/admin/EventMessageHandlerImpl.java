@@ -4,12 +4,23 @@
  */
 package org.easysoa.proxy.handler.event.admin;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpHost;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.handler.event.*;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -21,7 +32,7 @@ import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.util.RequestForwarder;
 
 /**
- * To handle and perform the steps between the inMessage's reception and te calls (of the web service to launch) 
+ * To handle and perform the steps between the inMessage's reception and the calls (of the web service to launch) 
  * @author fntangke
  */
 
@@ -33,7 +44,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
     @Property
 	private int forwardHttpSocketTimeoutMs;
     
-	private Map<String, List<String>> listenedServiceUrlToServicesToLaunchUrlMap;
+	private Map<String, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<String, List<String>>();
     
     public EventMessageHandlerImpl(){
     }
@@ -78,12 +89,15 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
             forwardedInMessage.setPort(serviceToLaunchUrl.getPort());
             forwardedInMessage.setPath(serviceToLaunchUrl.getPath()); // TODO LATER handle services that may have different URLs ex. REST
 
-            // call it TODO LATER async using a threaded Queue Worker
+            // call it TODO LATER async using a threaded Queue Worker     
             OutMessage forwardedOutMessage = forwarder.send(forwardedInMessage);
+            
+            // Save the result
             launchresults.add(forwardedOutMessage);
         }
     }
 
+    
     /**
      * @return the forwardHttpConnexionTimeoutMs
      */

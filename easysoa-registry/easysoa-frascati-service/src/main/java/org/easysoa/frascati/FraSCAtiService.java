@@ -20,22 +20,30 @@
 package org.easysoa.frascati;
 
 import java.net.URL;
+//import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
-import org.easysoa.frascati.api.RegistryItf;
+//import org.easysoa.frascati.api.RegistryItf;
 import org.easysoa.frascati.api.ScaImporterIntermediaryItf;
 import org.easysoa.frascati.api.ScaImporterRecipientItf;
+//import org.easysoa.frascati.api.intent.ComponentIntentObserverItf;
+import org.easysoa.frascati.api.intent.ParserIntentObserverItf;
+//import org.easysoa.frascati.api.intent.ProcessingIntentObserverItf;
 import org.easysoa.frascati.processor.EasySOAProcessingContext;
 import org.eclipse.stp.sca.Composite;
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
+import org.objectweb.fractal.api.control.ContentController;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.control.LifeCycleController;
+import org.objectweb.fractal.api.control.NameController;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 import org.osoa.sca.annotations.Service;
@@ -53,12 +61,12 @@ import org.ow2.frascati.util.FrascatiClassLoader;
  *
  */
 @Scope("COMPOSITE")
-@Service(FraSCAtiServiceItf.class)
+@Service(interfaces = { FraSCAtiServiceItf.class, ParserIntentObserverItf.class })
 public class FraSCAtiService 
-extends AbstractLoggeable implements FraSCAtiServiceItf
+extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
 {
-    @Reference(name = "registry")
-    private RegistryItf registry;
+//    @Reference(name = "registry")
+//    private RegistryItf registry;
 
     @Reference(name = "composite-manager")
     private CompositeManager compositeManager;
@@ -76,6 +84,8 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
     
     private List<String> warningMessages;
     private List<String> errorMessages;
+    private Map<String,Composite> compositesMap;
+    
     private int errors;
     private int warnings;
 
@@ -87,8 +97,11 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
     public Composite getComposite(String compositeName)
             throws FraSCAtiServiceException
     {
-        Composite composite = registry.getComposite(compositeName);
-        return composite;
+        if(getComponent(compositeName) != null )
+        {
+            return compositesMap.get(compositeName);
+        } 
+        return null;    
     }
 
     /**
@@ -102,8 +115,8 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
     {
         EasySOAProcessingContext processingContext = 
             new EasySOAProcessingContext(classLoaderManager.getClassLoader());
-        FrascatiClassLoader fcl = 
-                (FrascatiClassLoader)processingContext.getClassLoader();
+        
+        FrascatiClassLoader fcl = (FrascatiClassLoader)processingContext.getClassLoader();
         if(urls != null)
         {
           for(URL url : urls)
@@ -112,11 +125,14 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
           }
         }
         processingContext.setProcessingMode(resovleProcessingMode(processingMode));
+        
         ClassLoader current = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(fcl);        
+        Thread.currentThread().setContextClassLoader(fcl); 
+        
+        Component[] components;        
         try
         {
-            compositeManager.processContribution(contribution,
+            components = compositeManager.processContribution(contribution,
                     processingContext);
 
         } catch (ManagerException e)
@@ -138,14 +154,27 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
             this.errors = processingContext.getErrors();
             this.warnings = processingContext.getWarnings();
         }
-        List<String> processed = registry.getProcessedComponentList();
-        String[] emptyProcessed = new String[0];
-        if(processed != null)
+        if(components != null && components.length>0)
         {
-            return processed.toArray(emptyProcessed);
+            String[] processed = new String[components.length];
+            int currentComponentIndex = 0;
+            for(;currentComponentIndex<components.length;currentComponentIndex++)
+            {
+                try{
+                    processed[currentComponentIndex] = ((NameController)components[
+                       currentComponentIndex].getFcInterface(
+                        "name-controller")).getFcName();
+                    
+                } catch(NoSuchInterfaceException e)
+                {
+                    log.log(Level.WARNING,e.getMessage());
+                }
+            }
+            return processed;
+            
         } else 
         {
-            return emptyProcessed;
+            return new String[0];
         }
     }
 
@@ -175,9 +204,12 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
         EasySOAProcessingContext processingContext = new EasySOAProcessingContext(
                 classLoader);
         processingContext.setProcessingMode(resovleProcessingMode(processingMode));
+        Component component = null;
         try
         {   
-            compositeManager.processComposite(new QName(composite),processingContext);
+            component = compositeManager.processComposite(new QName(composite),
+                    processingContext);
+            
         } catch (ManagerException e)
         {
             logger.log(Level.SEVERE,e.getMessage(),e);
@@ -196,7 +228,19 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
             this.errors = processingContext.getErrors();
             this.warnings = processingContext.getWarnings();
         }
-        return registry.getProcessedComponentList().get(0);
+        if(component != null)
+        {
+            try{
+                
+                return ((NameController)component.getFcInterface(
+                    "name-controller")).getFcName();
+                
+            } catch(NoSuchInterfaceException e)
+            {
+                log.log(Level.WARNING,e.getMessage());
+            }
+        }
+        return null;
     }
 
     /**
@@ -218,7 +262,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
      */
     public String state(String compositeName)
     {
-        Component component = registry.getComponent(compositeName);
+        Component component = getComponent(compositeName);
         if (component != null)
         {
             try
@@ -230,7 +274,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
                 
             } catch (NoSuchInterfaceException e)
             {
-                e.printStackTrace();
+                log.log(Level.WARNING,e.getMessage(),e);
             }
         }
         return null;
@@ -243,7 +287,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
      */
     public void start(String componentName)
     {
-        Component component = registry.getComponent(componentName);
+        Component component = getComponent(componentName);
         if (component != null)
         {
             try
@@ -272,7 +316,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
      */
     public void stop(String componentName)
     {
-        Component component = registry.getComponent(componentName);
+        Component component = getComponent(componentName);
         if (component != null)
         {
             try
@@ -307,6 +351,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
         try
         {
             compositeManager.removeComposite(componentName);
+            
         } catch (ManagerException e)
         {
             e.printStackTrace();
@@ -326,8 +371,23 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
             String serviceName, Class<T> serviceClass)
             throws FraSCAtiServiceException
     {
-        return registry.getService(componentName, serviceName,
-                serviceClass);
+        Component component = getComponent(componentName);
+        if(component != null)
+        {
+            try
+            {
+                return (T)component.getFcInterface(serviceName);
+                
+            } catch (NoSuchInterfaceException e)
+            {
+                log.log(Level.WARNING,e.getMessage(),e);
+            }
+        } else 
+        {
+            log.log(Level.WARNING,"Component '" + componentName + "' not found");
+            
+        }
+        return null;
     }
 
     /**
@@ -347,7 +407,6 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
      */
     public int getErrors()
     {
-        
         return errors;
     }
     
@@ -410,5 +469,66 @@ extends AbstractLoggeable implements FraSCAtiServiceItf
     public void setScaImporterRecipient(ScaImporterRecipientItf recipient)
     {
         this.runtimeSCAImporter.setScaImporterRecipient(recipient);
+    }
+    
+    /**
+     * Return the {@link Component} which name is passed on as a parameter if 
+     * it exists in the ScaDomain (Top Level Domain Component of FraSCAti)
+     * 
+     * @param componentName
+     *          the name of the {@link Component} to return
+     * @return
+     *          the {@link Component} if it exists, null otherwise
+     */
+    private Component getComponent(String componentName) 
+    {
+        try
+        {
+           ContentController contentController =  (ContentController) 
+               compositeManager.getTopLevelDomainComposite(
+                   ).getFcInterface("content-controller");
+           
+           Component[] components = contentController.getFcSubComponents();
+           int currentComponentIndex = 0;
+           
+           for(;currentComponentIndex<components.length;currentComponentIndex++)
+           {
+               try{
+                   Component component = components[currentComponentIndex];
+                   if(componentName.equals(((NameController)component.getFcInterface(
+                       "name-controller")).getFcName()))
+                       {
+                        return component;
+                       }
+                   
+               } catch(NoSuchInterfaceException e)
+               {
+                   log.log(Level.WARNING,e.getMessage());
+               }
+           }
+            
+        } catch (NoSuchInterfaceException e)
+        {
+           log.log(Level.WARNING,e.getMessage(),e);
+        }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see org.easysoa.frascati.api.intent.ParserIntentObserverItf#
+     * compositeParsed(org.eclipse.stp.sca.Composite)
+     */
+    public void compositeParsed(Composite composite)
+    {
+        if(compositesMap == null)
+        {
+            compositesMap = new HashMap<String,Composite>();
+        }
+        if(composite != null)
+        {
+            compositesMap.put(composite.getName(),composite);
+        }
     }
 }

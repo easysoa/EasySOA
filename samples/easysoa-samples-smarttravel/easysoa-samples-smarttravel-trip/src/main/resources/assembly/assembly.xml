@@ -26,8 +26,5 @@
                 <include>*.jar</include>
             </includes>
         </fileSet>
-    </fileSets>	
+    </fileSets>  
 </assembly>
-
-
-

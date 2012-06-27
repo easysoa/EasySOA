@@ -52,7 +52,8 @@ public class EasySOAConstants {
 	
 	// Scaffolding proxy
 	public static final int REST_SOAP_PROXY_PORT = 7001;
-	public static final int HTML_FORM_GENERATOR_PORT = 8090;
+	//public static final int HTML_FORM_GENERATOR_PORT = 8090;
+	public static final int HTML_FORM_GENERATOR_PORT = 18000;
 
     // Trip demo
     public static final int TRIP_SERVICES_PORT = 9000;

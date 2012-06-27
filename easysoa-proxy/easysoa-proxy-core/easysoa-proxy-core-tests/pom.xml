@@ -65,6 +65,42 @@
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
     </dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-velocity</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-fractal</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>    
+    
   </dependencies>
 
 </project>
