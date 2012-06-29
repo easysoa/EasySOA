@@ -45,7 +45,6 @@
     <dependency>
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-api-frascati</artifactId>
-      <scope>compile</scope>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -62,6 +61,27 @@
       <groupId>org.nuxeo</groupId>
       <artifactId>nuxeo-frascati</artifactId>
     </dependency>
+
+	<!-- Problem with this, if present, duplicated problem during composite start -->
+	<!-- else, if no present, missing velocity frascati generated classes -->
+	<!--<dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-assembly-factory</artifactId>
+      <version>${frascati.version}</version>
+      <scope>test</scope>
+    </dependency>
+	<dependency>
+	  <groupId>org.ow2.frascati</groupId>
+	  <artifactId>frascati-runtime-factory</artifactId>
+	  <version>${frascati.version}</version>
+	  <scope>test</scope>
+	</dependency>
+    <dependency>
+      <groupId>org.ow2.frascati</groupId>
+      <artifactId>frascati-implementation-velocity</artifactId>
+      <version>${frascati.version}</version>
+      <scope>provided</scope>
+    </dependency>-->
 
     <!-- For tests -->
     <!-- Nuxeo dependencies -->
@@ -102,5 +122,114 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.5</source>
+						<target>1.5</target>
+					</configuration>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.ow2.frascati.mojo
+                						</groupId>
+										<artifactId>
+											frascati-compiler-plugin
+                						</artifactId>
+										<versionRange>
+											[1.5-SNAPSHOT,)
+                						</versionRange>
+										<goals>
+											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			<!--<plugin>
+				<groupId>org.ow2.frascati.mojo</groupId>
+				<artifactId>frascati-compiler-plugin</artifactId>
+				<version>1.5-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>compile-composite</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<composites>
+						<composite>composedExchangeHandler</composite>
+						<composite>runManager</composite>
+					</composites>
+					<loggingConfFile>${frascati.logging.properties}</loggingConfFile>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>org.ow2.frascati.mojo</groupId>
+									<artifactId>frascati-compiler-plugin</artifactId>
+									<versionRange>1.5-SNAPSHOT</versionRange>
+									<phase>compile-composite</phase>
+									<goals>
+										<goal>generate-sources</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore />
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>xerces</groupId>
+						<artifactId>xercesImpl</artifactId>
+						<version>2.9.1</version>
+						<scope>compile</scope>
+					</dependency>
+					<dependency>
+						<groupId>org.easysoa.proxy</groupId>
+						<artifactId>easysoa-proxy-core-api</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.easysoa.proxy</groupId>
+						<artifactId>easysoa-proxy-core-api-frascati</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.httpcomponents</groupId>
+						<artifactId>httpclient</artifactId>
+						<version>4.1.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>-->
+			</plugins>			
+		</pluginManagement>
+		</build>
 
 </project>
