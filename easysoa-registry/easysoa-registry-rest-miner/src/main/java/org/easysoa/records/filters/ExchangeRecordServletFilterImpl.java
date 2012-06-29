@@ -49,6 +49,8 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 
 	private static Logger logger = Logger.getLogger(ExchangeRecordServletFilterImpl.class);
 
+	private static ExchangeRecordServletFilterImpl singleton = null;
+	
 	// Filter configuration
 	// private FilterConfig filterConfig;
 
@@ -58,6 +60,7 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// this.filterConfig = filterConfig;
+	    singleton = this;
 	}
 
 	@Override
@@ -87,16 +90,29 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	public void destroy() {
 		// Nothing to do
 	}
-
+	
 	public void start(HttpExchangeHandler exchangeHandler)
 			throws ClientException {
-		logger.info("Starting mining with handler "	+ exchangeHandler.toString());
-		this.exchangeHandler = exchangeHandler;
+	    // NOTE: We probably can't make start() and stop() static
+	    // as the caller will be in a separate classloader.
+	    
+		if (singleton != null) {
+	        logger.info("Starting mining with handler " + exchangeHandler.toString());
+		    singleton.exchangeHandler = exchangeHandler;
+		}
+		else {
+		    logger.warn("Can't start mining, the filter is not ready yet");
+		}
 	}
 
 	public void stop() {
-		logger.info("Stopping mining");
-		this.exchangeHandler = null;
+        if (singleton != null) {
+            logger.info("Stopping mining");
+            singleton.exchangeHandler = null;
+        }
+        else {
+            logger.info("Nothing to stop, the filter is not ready yet");
+        }
 	}
 
 }

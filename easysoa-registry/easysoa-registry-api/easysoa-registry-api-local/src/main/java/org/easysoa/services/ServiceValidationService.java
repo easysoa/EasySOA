@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 import org.easysoa.validation.CorrelationMatch;
+import org.easysoa.validation.ExchangeReplayController;
 import org.easysoa.validation.ServiceValidator;
 import org.easysoa.validation.ValidationResultList;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -62,5 +63,13 @@ public interface ServiceValidationService {
      * @return The actual validator list: it should be read only
      */
     List<ServiceValidator> getValidators();
+    
+    /**
+     * Sets the instance of ExchangeReplayController to be used by the scheduled validation,
+     * in order to replay exchanges.
+     */
+    void setExchangeReplayController(ExchangeReplayController exchangeReplayController);
+    
+    ExchangeReplayController getExchangeReplayController();
     
 }
