@@ -63,6 +63,8 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
     
     private static List<ServiceValidator> validators = new LinkedList<ServiceValidator>();
 
+    private ExchangeReplayController exchangeReplayController;
+
     @Override
     public void registerContribution(Object contribution, String extensionPoint, ComponentInstance contributor) throws Exception {
         if (EXTENSION_POINT_VALIDATORS.equals(extensionPoint)) {
@@ -107,6 +109,15 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
 
     public List<ServiceValidator> getValidators() {
         return validators;
+    }
+
+    public ExchangeReplayController getExchangeReplayController() {
+        return exchangeReplayController;
+    }
+
+    @Override
+    public void setExchangeReplayController(ExchangeReplayController exchangeReplayController) {
+        this.exchangeReplayController = exchangeReplayController;
     }
 
     /**
@@ -323,5 +334,6 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         }
         return services;
     }
+
     
 }
