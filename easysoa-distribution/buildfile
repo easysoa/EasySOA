@@ -114,9 +114,12 @@ define 'easysoa', :base_dir => '../' do
   desc 'EasySOA Registry packaging project'
   define 'easysoa-registry-packaging' do
   
+      task :mvn do
+        maven(['clean', 'install'], project)
+      end
+      
     desc 'Send plugins to Nuxeo'
     task :dist do
-    
       FILES_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*.jar'), _(NUXEO_PATH+'/lib/easysoa-*.jar')]
       puts "===== Nuxeo plugins - Deleting ====="
       puts FILES_TO_DELETE
@@ -128,6 +131,17 @@ define 'easysoa', :base_dir => '../' do
       puts FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*']
       cp_r FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*'], _(NUXEO_PATH)
     end
+    
+    desc 'Send plugins to Nuxeo (except FraSCAti components)'
+    task :dist_core => [:dist] do
+      FILES_TO_DELETE = FileList[_(NUXEO_PATH+'/nxserver/plugins/*frascati*.jar'), _(NUXEO_PATH+'/nxserver/plugins/nuxeo-runtime-bridge*.jar')]
+      puts "===== Nuxeo plugins - Deleting FraSCAti-related files ====="
+      puts FILES_TO_DELETE
+      puts NUXEO_PATH+'/nxserver/frascati/'
+      rm FILES_TO_DELETE
+      rm_rf _(NUXEO_PATH+'/nxserver/frascati/')
+    end
+    
   end
   
   
@@ -183,10 +197,13 @@ desc "Resets the data of a Nuxeo setup" # TODO Clean the whole setup (plugins/li
 task :nx_clean => [EASYSOA_REGISTRY+':nuxeoclean']
                 
 desc "Builds registry components using Maven"
-task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn']
+task :nx_mvn => ['common', EASYSOA_REGISTRY+':mvn', EASYSOA_REGISTRY_PACKAGING+':mvn']
                  
 desc "Deploys registry components"
 task :nx_dist => [EASYSOA_REGISTRY_PACKAGING+':dist']
+
+desc "Deploys registry components (except FraSCAti's)"
+task :nx_dist_core => [EASYSOA_REGISTRY_PACKAGING+':dist_core']
 
 desc "Deploys registry components"
 task :nx_reset => [EASYSOA_REGISTRY+':nuxeoreset']
@@ -207,7 +224,7 @@ desc "Builds EasySOA startup monitor app"
 task :startup => [EASYSOA_STARTUP_MONITOR+':mvn']
 
 desc "Builds all needed projects"
-task :buildall => [EASYSOA+':mvn']
+task :buildall => [EASYSOA+':mvn', 'nx_dist']
 
 desc "Creates the EasySOA package"
 task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code

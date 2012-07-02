@@ -101,8 +101,11 @@ public class ValidationSchedulerEventListener implements EventListener {
 	        Repository repository = mgr.getDefaultRepository();
 	        TransactionHelper.startTransaction();
 	        session = repository.open();
-			String environmentName = (String) event.getContext().getProperty("eventCategory"); // (see ValidationSchedulerComponent.registerContribution()
-			String tmpWorkspaceName = "tmp" + environmentName + System.currentTimeMillis();
+	        
+			String[] eventData = ((String) event.getContext().getProperty("eventCategory")).split("-"); // (see ValidationSchedulerComponent.registerContribution()
+			String runName = eventData[0], environmentName = eventData[1];
+			
+			String tmpWorkspaceName = "tmp" +  + System.currentTimeMillis();
 			
 			// Fork existing environment
 			DocumentModel environmentModel = docService.findEnvironment(session, environmentName);
@@ -115,7 +118,11 @@ public class ValidationSchedulerEventListener implements EventListener {
 					tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
 					
 					// Run discovery replay
-					// TODO
+					ExchangeReplayController exchangeReplayController = serviceValidationService.getExchangeReplayController();
+					if (exchangeReplayController == null) {
+					    throw new NullPointerException("No exchange replay controller available");
+					}
+					exchangeReplayController.replayRecord(runName, environmentName);
 					
 					// Validate temporary environment
 					validationResults = serviceValidationService.validateServices(session, tmpWorkspaceModel); 

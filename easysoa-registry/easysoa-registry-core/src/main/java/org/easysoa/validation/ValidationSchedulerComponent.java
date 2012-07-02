@@ -52,13 +52,14 @@ public class ValidationSchedulerComponent extends DefaultComponent {
 		if (EXTENSION_POINT_SCHEDULES.equals(extensionPoint)) {
 			ValidationScheduleDescriptor descriptor = (ValidationScheduleDescriptor) contribution;
             synchronized (schedulerRegistry) {
+                String eventInfo = descriptor.runName + "-"
+                        + descriptor.targetEnvironment + "-"
+                        + descriptor.cronExpression.hashCode();
 				ScheduleImpl schedule = new ScheduleImpl();
-				schedule.id = descriptor.runName + "-"
-						+ descriptor.targetEnvironment + "-"
-						+ descriptor.cronExpression.hashCode();
+				schedule.id = eventInfo;
 				schedule.username = "Administrator";
+                schedule.eventCategory = eventInfo;
 				schedule.cronExpression = descriptor.cronExpression;
-				schedule.eventCategory = descriptor.targetEnvironment; // Half-hack to pass the environment as an event parameter
 				schedule.eventId = SCHEDULE_EVENT;
 				schedulerRegistry.registerSchedule(schedule);
             }

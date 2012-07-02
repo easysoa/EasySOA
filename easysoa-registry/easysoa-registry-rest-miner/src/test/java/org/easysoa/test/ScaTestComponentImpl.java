@@ -13,8 +13,7 @@ public class ScaTestComponentImpl implements ScaTestComponent {
 
     @Override
     public String testMethod(UserManager userManager) throws Exception {
-        userManager.authenticate("administrator", "administrator");
-        return userManager.getDefaultGroup();
+        return String.valueOf(userManager.getUserIds().size());
     }
 
 }

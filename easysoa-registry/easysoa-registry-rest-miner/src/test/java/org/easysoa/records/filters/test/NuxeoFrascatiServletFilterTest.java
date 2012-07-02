@@ -20,10 +20,11 @@
 
 package org.easysoa.records.filters.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -39,6 +40,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.frascati.test.FraSCAtiFeature;
 import org.nuxeo.runtime.api.Framework;
@@ -55,7 +57,10 @@ import org.nuxeo.ecm.platform.test.PlatformFeature;
 @Features({FraSCAtiFeature.class, PlatformFeature.class})
 @Deploy({ "org.nuxeo.ecm.automation.core",
     "org.nuxeo.ecm.automation.features",
-    "org.nuxeo.ecm.platform.web.common", "org.nuxeo.ecm.platform.login", "org.nuxeo.ecm.platform.usermanager"})
+    "org.nuxeo.ecm.platform.web.common", 
+    "org.nuxeo.ecm.platform.login", 
+    "org.nuxeo.ecm.platform.usermanager",
+    "org.nuxeo.ecm.core.event"})
 public class NuxeoFrascatiServletFilterTest {
 
     /**
@@ -81,25 +86,55 @@ public class NuxeoFrascatiServletFilterTest {
         // Start the composed exchange handler
         frascatiService.processComposite("composedExchangeHandler");
         // Start the run manager
-        frascatiService.processComposite("runManager");
+        // No need to start the runManager in this test !!
+        //frascatiService.processComposite("runManager");
         // Start a SCA test component
         frascatiService.processComposite("scaTestComponent");
     }
 
     /**
      * Test the communication between a frascati service and a Nuxeo service
-     * @throws FraSCAtiServiceException  
+     * @throws FraSCAtiServiceException If a problem occurs
      */
     @Test
     public void scaComponentTest() throws Exception {
         // Getting a Pure Nuxeo service to test it in a FraSCAti easysoa component
         UserManager usrManager = Framework.getService(UserManager.class);
         assertNotNull(usrManager);
-        usrManager.authenticate("administrator", "administrator");
-        logger.debug("Getting anonymous user ID : " + usrManager.getDefaultGroup());
         
+        // Getting the user list
+        List<String> userList = usrManager.getUserIds();        
+        logger.debug("Registered users for test : " + userList.size());
+        for(String user : userList){
+            logger.debug("User id : " + user);
+        }
+        // List must contains 1 user        
+        assertEquals(1, userList.size());
+        
+        // Adding a new user
+        DocumentModel userModel = usrManager.getBareUserModel();
+        String schemaName = usrManager.getUserSchemaName();
+        userModel.setProperty(schemaName, "username", "user");
+        userModel.setProperty(schemaName, "password", "Foo");
+        ArrayList<String> groups = new ArrayList<String>();
+        groups.add("administrators");
+        userModel.setProperty("user", "groups", groups);
+        userModel = usrManager.createUser(userModel);        
+        // Getting the user list
+        userList = usrManager.getUserIds();        
+        logger.debug("Registered users for test : " + userList.size());
+        for(String user : userList){
+            logger.debug("User id : " + user);
+        }        
+        // List must contains 2 users
+        assertEquals(2, userList.size());
+        
+        // Passing nuxeo component to Frascati sca component
         ScaTestComponent scaComponent = frascatiService.getService("scaTestComponent", "scaService", ScaTestComponent.class);
-        logger.debug("Getting user ID from frascati SCA component : " + scaComponent.testMethod(usrManager));         
+        // Call test method
+        String testResult = scaComponent.testMethod(usrManager);
+        assertEquals("2", testResult);
+        logger.debug("Test method result (calling a nuxeo component method in a frascati sca component) : " + testResult);
     }
     
     @Test

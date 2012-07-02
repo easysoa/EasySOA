@@ -32,7 +32,7 @@ exports.NO_AUTH_NEEDED = [
   '^/scaffoldingProxy/*'
 ];
 
-exports.SCAFFOLDING_SERVER_URL = "http://127.0.0.1:8090";
+exports.SCAFFOLDING_SERVER_URL = "http://127.0.0.1:18000";
 
 /* ==============
  * Proxy settings
