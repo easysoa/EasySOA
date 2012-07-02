@@ -26,6 +26,24 @@ public class CodeDiscoveryMojo extends AbstractMojo {
      * @required
      */
     private File sourcesDirectory;
+
+    /**
+     * @parameter expression="${project.groupId}"
+     * @required
+     */
+    private String groupId;
+    
+    /**
+     * @parameter expression="${project.artifactId}"
+     * @required
+     */
+    private String artifactId;
+    
+    /**
+     * @parameter expression="${project.version}"
+     * @required
+     */
+    private String version;
     
     public void execute() throws MojoExecutionException {
         
@@ -50,7 +68,8 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         // Check JAX-WS annotation
         if (c.isInterface() && hasAnnotation(c, "javax.jws.WebService")) {
             // Extract WS info
-            classInfo.append("WebService " + c.getName() + "\n");
+            classInfo.append("\nWebService " + c.getName() + "\n");
+            classInfo.append("[ID='" + groupId + ":" + artifactId + "," + c.getFullyQualifiedName() + "', VERSION='" + version + "']\n");
             classInfo.append("----------------------------\n");
             
             // Exctract operations info
