@@ -1,16 +1,18 @@
 package org.easysoa.discovery.code;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
+import org.easysoa.discovery.code.handler.ClassHandler;
+import org.easysoa.discovery.code.handler.JaxRSClassHandler;
+import org.easysoa.discovery.code.handler.JaxWSClassHandler;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.AbstractBaseJavaEntity;
-import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.JavaSource;
 
 /**
@@ -21,11 +23,16 @@ import com.thoughtworks.qdox.model.JavaSource;
 public class CodeDiscoveryMojo extends AbstractMojo {
 
     /**
-     * Location of the sources directory.
-     * @parameter expression="${project.basedir}/src"
+     * @parameter expression="${project.name}"
      * @required
      */
-    private File sourcesDirectory;
+    private String name;
+    
+    /**
+     * @parameter expression="${project.basedir}"
+     * @required
+     */
+    private File projectDirectory;
 
     /**
      * @parameter expression="${project.groupId}"
@@ -44,64 +51,32 @@ public class CodeDiscoveryMojo extends AbstractMojo {
      * @required
      */
     private String version;
+
+    private Map<String, ClassHandler> availableHandlers = new HashMap<String, ClassHandler>();
     
     public void execute() throws MojoExecutionException {
         
+        // Init
+        DeliverableInfo projectInfo = new DeliverableInfo(name, projectDirectory, groupId, artifactId, version);
+        this.availableHandlers.put("JAX-WS", new JaxWSClassHandler());
+        this.availableHandlers.put("JAX-RS", new JaxRSClassHandler());
+        Log log = getLog();
+        
         // Configure parser
         JavaDocBuilder builder = new JavaDocBuilder();
-        builder.addSourceTree(sourcesDirectory);
+        builder.addSourceTree(this.projectDirectory);
         
         // Iterate through classes
         JavaSource[] sources = builder.getSources();
         for (JavaSource source : sources) {
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
-                analyzeClass(c);
+                for (ClassHandler handler : availableHandlers.values()) {
+                    handler.handleClass(c, projectInfo, log);
+                }
             }
         }
         
     }
 
-    private void analyzeClass(JavaClass c) {
-        StringBuilder classInfo = new StringBuilder();
-        
-        // Check JAX-WS annotation
-        if (c.isInterface() && hasAnnotation(c, "javax.jws.WebService")) {
-            // Extract WS info
-            classInfo.append("\nWebService " + c.getName() + "\n");
-            classInfo.append("[ID='" + groupId + ":" + artifactId + "," + c.getFullyQualifiedName() + "', VERSION='" + version + "']\n");
-            classInfo.append("----------------------------\n");
-            
-            // Exctract operations info
-            for (JavaMethod method : c.getMethods()) {
-                if (hasAnnotation(method, "javax.jws.WebResult")) {
-                    Annotation webResultAnn = getAnnotation(method, "javax.jws.WebResult");
-                    classInfo.append("* Operation " + webResultAnn.getProperty("name") + "\n");
-                    
-                    // Extract parameters info
-                    for (JavaParameter parameter : method.getParameters()) {
-                        Annotation webParamAnn = getAnnotation(parameter, "javax.jws.WebParam");
-                        classInfo.append("  " + webParamAnn.getProperty("name").getParameterValue()
-                                + " : " + parameter.getType().toString() + "\n");
-                    }
-                }
-            }
-            classInfo.append("----------------------------\n\n");
-        }
-        
-        getLog().info(classInfo.toString());
-    }
-    
-    private boolean hasAnnotation(AbstractBaseJavaEntity entity, String fullyQualifiedAnnotationName) {
-        return getAnnotation(entity, fullyQualifiedAnnotationName) != null;
-    }
-    
-    private Annotation getAnnotation(AbstractBaseJavaEntity entity, String fullyQualifiedAnnotationName) {
-        for (Annotation annotation : entity.getAnnotations()) {
-            if (fullyQualifiedAnnotationName.equals(annotation.getType().getFullyQualifiedName())) {
-                return annotation;
-            }
-        }
-        return null;
-    }
 }

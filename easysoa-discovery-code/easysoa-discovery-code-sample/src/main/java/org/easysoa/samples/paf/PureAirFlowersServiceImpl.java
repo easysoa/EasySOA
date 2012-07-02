@@ -42,6 +42,7 @@ public class PureAirFlowersServiceImpl implements PureAirFlowersService {
         //return Math.abs(clientName.hashCode() % 50);
         return this.inventory.get(clientName);
     }
+    
     @Override
     public int addOrder(Integer valeur, String text) {
         this.inventory.put(text, valeur);
