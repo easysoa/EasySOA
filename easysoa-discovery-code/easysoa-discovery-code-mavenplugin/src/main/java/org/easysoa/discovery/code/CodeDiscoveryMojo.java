@@ -1,6 +1,7 @@
 package org.easysoa.discovery.code;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,10 +58,17 @@ public class CodeDiscoveryMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         
         // Init
-        DeliverableInfo projectInfo = new DeliverableInfo(name, projectDirectory, groupId, artifactId, version);
+        Log log = getLog();
         this.availableHandlers.put("JAX-WS", new JaxWSClassHandler());
         this.availableHandlers.put("JAX-RS", new JaxRSClassHandler());
-        Log log = getLog();
+        MavenDeliverable mavenDeliverable;
+        try {
+            mavenDeliverable = new MavenDeliverable(name,
+                    projectDirectory.toURI().toURL(), groupId, artifactId, version);
+        } catch (MalformedURLException e) {
+            log.error("Failed to convert project location to URL", e);
+            mavenDeliverable = new MavenDeliverable(name, null, groupId, artifactId, version);
+        }
         
         // Configure parser
         JavaDocBuilder builder = new JavaDocBuilder();
@@ -72,7 +80,7 @@ public class CodeDiscoveryMojo extends AbstractMojo {
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
                 for (ClassHandler handler : availableHandlers.values()) {
-                    handler.handleClass(c, projectInfo, log);
+                    handler.handleClass(c, mavenDeliverable, log);
                 }
             }
         }

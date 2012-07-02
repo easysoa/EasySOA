@@ -1,9 +1,9 @@
 package org.easysoa.discovery.code.handler;
 
 import org.apache.maven.plugin.logging.Log;
-import org.easysoa.discovery.code.DeliverableInfo;
+import org.easysoa.discovery.code.MavenDeliverable;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.code.ServiceImplInfo;
+import org.easysoa.discovery.rest.model.ServiceImpl;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
@@ -16,13 +16,13 @@ public class JaxRSClassHandler implements ClassHandler {
         "javax.ws.rs.HEAD", "javax.ws.rs.OPTIONS"
       };
 
-    public void handleClass(JavaClass c, DeliverableInfo deliverableInfo, Log log) {
+    public void handleClass(JavaClass c, MavenDeliverable deliverableInfo, Log log) {
         StringBuilder classInfo = new StringBuilder();
         
         // Check JAX-WS annotation
         if (ParsingUtils.hasAnnotation(c, ANN_PATH)) {
             // Extract WS info
-            ServiceImplInfo serviceInfo = new ServiceImplInfo(deliverableInfo,
+            ServiceImpl serviceInfo = new ServiceImpl(deliverableInfo,
                     "JAX-RS", c.getFullyQualifiedName());
             classInfo.append("Rest WebService " + c.getName() + "\n");
             classInfo.append("[ID='" + serviceInfo.getId() + "', VERSION='" + serviceInfo.getVersion() + "']\n");

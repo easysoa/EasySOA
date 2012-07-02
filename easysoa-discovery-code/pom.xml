@@ -6,7 +6,7 @@
   <packaging>pom</packaging>
   
   <modules>
-<!--     <module>easysoa-discovery-rest-client</module> -->
+    <module>easysoa-discovery-rest-client</module>
     <module>easysoa-discovery-code-mavenplugin</module>
     <module>easysoa-discovery-code-sample</module>
   </modules>
