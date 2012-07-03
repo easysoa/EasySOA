@@ -20,13 +20,23 @@
 
 package com.openwide.easysoa.run;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.easysoa.messages.server.NumberGenerator;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+/*
+import org.easysoa.records.filters.ExchangeRecordServletFilter;
+import org.easysoa.records.handlers.NuxeoMessageExchangeRecordHandler;
+import org.easysoa.records.service.ExchangeRecordServletFilterService;
+import org.easysoa.records.service.ExchangeRecordServletFilterServiceImpl;
+*/
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
+//import com.openwide.easysoa.exchangehandler.MessageHandler;
 import com.openwide.easysoa.monitoring.MonitoringService;
 import com.openwide.easysoa.run.Run.RunStatus;
 
@@ -67,6 +77,9 @@ public class RunManagerImpl implements RunManager {
 
 	@Reference
 	NumberGenerator exchangeNumberGenerator;
+	
+	// List of event receiver
+	private List<RunManagerEventReceiver> runManagerEventReceiverList = new ArrayList<RunManagerEventReceiver>();
 	
 	/**
 	 * The current run
@@ -119,6 +132,16 @@ public class RunManagerImpl implements RunManager {
 		return autoSave;
 	}
 	
+	/**
+	 * Register a new event receiver
+	 * @param eventReceiver The RunManagerEventReciver to register
+	 */
+	public void addEventReceiver(RunManagerEventReceiver eventReceiver){
+	    if(eventReceiver != null){
+	        runManagerEventReceiverList.add(eventReceiver);
+	    }
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getCurrentRun()
 	 */
@@ -139,12 +162,29 @@ public class RunManagerImpl implements RunManager {
 	 */
 	@Override
 	public String start(String runName) throws Exception {
+	    
+	    /*try{
+            ExchangeRecordServletFilterService filterService = new ExchangeRecordServletFilterServiceImpl();
+            ExchangeRecordServletFilter filter = filterService.getExchangeRecordServletFilter();
+	        filter.start(new NuxeoMessageExchangeRecordHandler());
+	    } catch(Exception ex){
+	        logger.error("Unable to call start method of ExchangeRecordServletFilter", ex);
+	    }*/
+	    
 		StringBuffer error = new StringBuffer();
 		if(currentRun == null && checkUniqueRunName(runName)){
 			currentRun = new Run(runName);
 			currentRun.setStartDate(new Date());
 			currentRun.setStatus(RunStatus.RUNNING);
-			return "Run " + runName + " started !";
+		    for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
+		        try {
+		            eventReceiver.receiveEvent(RunManagerEvent.START);
+			    }
+		        catch(Exception ex) {
+		            logger.error("Cannot send event to event receiver : " + eventReceiver.getEventReceiverName(), ex);
+		        }
+		    }
+            return "Run " + runName + " started !";
 		} else {
 			error.append("Unable to start a new run. ");
 			if(currentRun != null){
@@ -170,6 +210,14 @@ public class RunManagerImpl implements RunManager {
 			if(autoSave){
 				save();
 			}
+            for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
+                try {
+                    eventReceiver.receiveEvent(RunManagerEvent.STOP);
+                }
+                catch(Exception ex) {
+                    logger.error("Cannot send event to event receiver : " + eventReceiver.getEventReceiverName(), ex);
+                }
+            }			
 			response = "Run " + currentRun.getName() + " stopped !";
 		} else {
 			throw new Exception("There is no current run to stop !");

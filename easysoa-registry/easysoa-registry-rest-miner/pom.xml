@@ -39,17 +39,12 @@
       <artifactId>easysoa-registry-api-messaging</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.easysoa.proxy</groupId>
-      <artifactId>easysoa-proxy-core-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.proxy</groupId>
-      <artifactId>easysoa-proxy-core-api-frascati</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.easysoa.frascati</groupId>
       <artifactId>easysoa-frascati-service-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.proxy</groupId>
+      <artifactId>easysoa-proxy-core-api</artifactId>
     </dependency>
     <!-- Nuxeo dependencies -->
     <dependency>

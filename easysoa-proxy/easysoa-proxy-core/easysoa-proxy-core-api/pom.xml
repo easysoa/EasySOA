@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>easysoa-proxy-core-api</artifactId>
-  <name>EasySOA Proxy core api project</name>
+  <name>EasySOA Proxy core api</name>
   <packaging>jar</packaging>
 
   <parent>
@@ -24,6 +24,19 @@
       		<groupId>org.easysoa.registry.api</groupId>
       		<artifactId>easysoa-registry-api-remote</artifactId>
     	</dependency>
+    	
+    	<!-- For scheduled validation -->
+    	<dependency>
+      		<groupId>org.easysoa.registry.api</groupId>
+      		<artifactId>easysoa-registry-api-local</artifactId>
+      		<version>${easysoa.version}</version>
+    	</dependency>
+		<!--<dependency>
+      		<groupId>org.easysoa.registry</groupId>
+      		<artifactId>easysoa-registry-rest-miner</artifactId>
+      		<version>${easysoa.version}</version>
+    	</dependency>-->
+    	
     	<!-- log4j -->
 		<dependency>
 			<groupId>log4j</groupId>

@@ -121,8 +121,12 @@ public class FraSCAtiFactory implements ApplicationFactory
         NuxeoFraSCAti service = new NuxeoFraSCAti();
         
         // Notify Nuxeo that NuxeoFraSCAti has been launched
-        EventProducer eventProducer = Framework.getService(EventProducer.class);
-        eventProducer.fireEvent(new NuxeoFraSCAtiStartedEvent(service.getFraSCAtiService()));
+        /*try{*/
+            EventProducer eventProducer = Framework.getService(EventProducer.class);
+            eventProducer.fireEvent(new NuxeoFraSCAtiStartedEvent(service.getFraSCAtiService()));
+        /*} catch(Exception ex){
+            // nothing to do !!
+        }*/
         
         return service;
     }

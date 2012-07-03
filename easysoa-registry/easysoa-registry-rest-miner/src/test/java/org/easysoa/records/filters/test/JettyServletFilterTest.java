@@ -18,9 +18,6 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package org.easysoa.records.filters.test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,11 +26,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
 import org.easysoa.records.filters.ExchangeRecordServletFilterImpl;
 import org.easysoa.test.TestServlet;
 import org.junit.After;

@@ -11,7 +11,6 @@ import org.nuxeo.ecm.platform.usermanager.UserManager;
  */
 public class ScaTestComponentImpl implements ScaTestComponent {
 
-    @Override
     public String testMethod(UserManager userManager) throws Exception {
         return String.valueOf(userManager.getUserIds().size());
     }
