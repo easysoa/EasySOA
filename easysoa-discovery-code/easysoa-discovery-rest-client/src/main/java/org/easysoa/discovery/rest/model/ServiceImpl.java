@@ -1,7 +1,9 @@
 package org.easysoa.discovery.rest.model;
 
 
-public class ServiceImpl extends SOANode {
+public class ServiceImpl extends SoaNode {
+
+    public ServiceImpl() {}
     
     public ServiceImpl(Deliverable deliverable, String technology, String fullName, String name) {
         super(deliverable.getId() + "," + technology + ":" + fullName, name, deliverable.getVersion());
@@ -14,12 +16,12 @@ public class ServiceImpl extends SOANode {
     }
     
     public void setDeliverableRelation(Deliverable deliverable) {
-        this.setUniqueRelation(SOANodeType.DELIVERABLE, deliverable.getId());
+        this.setUniqueRelation(SoaNodeType.Deliverable, deliverable.getId());
     }
 
     @Override
-    public SOANodeType getSOANodeType() {
-        return SOANodeType.SERVICEIMPL;
+    public SoaNodeType getSoaNodeType() {
+        return SoaNodeType.ServiceImpl;
     }
     
 }

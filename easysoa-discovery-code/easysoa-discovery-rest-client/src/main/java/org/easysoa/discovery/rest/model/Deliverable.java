@@ -2,11 +2,11 @@ package org.easysoa.discovery.rest.model;
 
 import java.net.URL;
 
-import org.codehaus.jackson.node.ObjectNode;
-
-public class Deliverable extends SOANode {
+public class Deliverable extends SoaNode {
     
     private URL location;
+
+    public Deliverable() {}
     
     public Deliverable(String id, String name, String version, URL location) {
         super(id, name, version);
@@ -16,17 +16,10 @@ public class Deliverable extends SOANode {
     public URL getLocation() {
         return location;
     }
-
-    @Override
-    public ObjectNode toJSON() {
-        ObjectNode node = super.toJSON();
-        node.put("location", this.location.toString());
-        return node;
-    }
     
     @Override
-    public SOANodeType getSOANodeType() {
-        return SOANodeType.DELIVERABLE;
+    public SoaNodeType getSoaNodeType() {
+        return SoaNodeType.Deliverable;
     }
     
 }

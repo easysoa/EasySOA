@@ -14,8 +14,9 @@ import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.handler.ClassHandler;
 import org.easysoa.discovery.code.handler.JaxRSClassHandler;
 import org.easysoa.discovery.code.handler.JaxWSClassHandler;
+import org.easysoa.discovery.mock.MockRepository;
 import org.easysoa.discovery.rest.client.DiscoveryRequest;
-import org.easysoa.discovery.rest.model.SOANode;
+import org.easysoa.discovery.rest.model.SoaNode;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -74,7 +75,7 @@ public class CodeDiscoveryMojo extends AbstractMojo {
             log.error("Failed to convert project location to URL", e);
             mavenDeliverable = new MavenDeliverable(name, null, groupId, artifactId, version);
         }
-        List<SOANode> discoveredNodes = new LinkedList<SOANode>();
+        List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
         discoveredNodes.add(mavenDeliverable);
         
         // Configure parser
@@ -93,13 +94,23 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         }
         
         // Build and send discovery request
+        MockRepository mockRepository = new MockRepository(); // XXX Mock
+        //LogOutputStream outputStream = new LogOutputStream(log);
         try {
-            DiscoveryRequest request = new DiscoveryRequest();
+            DiscoveryRequest request = new DiscoveryRequest(mockRepository);
             request.addDiscoveryNotifications(discoveredNodes);
             request.send();
         } catch (IOException e) {
             log.error("Failed to send discovery request", e);
+        } finally {
+            try {
+                mockRepository.close();
+            } catch (IOException e) {
+                log.error("Failed to close output stream", e);
+            }
         }
+        
+        mockRepository.traceRepository();
         
     }
 

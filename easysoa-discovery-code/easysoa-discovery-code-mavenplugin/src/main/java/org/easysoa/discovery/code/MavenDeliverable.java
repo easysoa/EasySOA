@@ -2,14 +2,18 @@ package org.easysoa.discovery.code;
 
 import java.net.URL;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.easysoa.discovery.rest.model.Deliverable;
 
 public class MavenDeliverable extends Deliverable {
-
+    
+    @JsonIgnore
     private String mavenGroupId;
     
+    @JsonIgnore
     private String mavenArtifactId;
     
+    @JsonIgnore
     private String mavenVersion;
     
     public MavenDeliverable(String name, URL location, String mavenGroupId,

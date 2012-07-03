@@ -7,9 +7,9 @@ import java.util.List;
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.MavenDeliverable;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.rest.model.SOANode;
-import org.easysoa.discovery.rest.model.SOANodeType;
 import org.easysoa.discovery.rest.model.ServiceImpl;
+import org.easysoa.discovery.rest.model.SoaNode;
+import org.easysoa.discovery.rest.model.SoaNodeType;
 
 import com.thoughtworks.qdox.model.JavaClass;
 
@@ -21,15 +21,15 @@ public class JaxRSClassHandler implements ClassHandler {
 //        "javax.ws.rs.HEAD", "javax.ws.rs.OPTIONS"
 //      };
 
-    public Collection<SOANode> handleClass(JavaClass c, MavenDeliverable deliverableInfo, Log log) {
-        List<SOANode> discoveredNodes = new LinkedList<SOANode>();
+    public Collection<SoaNode> handleClass(JavaClass c, MavenDeliverable deliverableInfo, Log log) {
+        List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
         
         // Check JAX-WS annotation
         if (ParsingUtils.hasAnnotation(c, ANN_PATH)) {
             // Extract WS info
             ServiceImpl serviceImpl = new ServiceImpl(deliverableInfo,
                     "JAX-RS", c.getFullyQualifiedName(), c.getName());
-            deliverableInfo.addRelation(SOANodeType.SERVICEIMPL, serviceImpl.getId());
+            deliverableInfo.addRelation(SoaNodeType.ServiceImpl, serviceImpl.getId());
             discoveredNodes.add(serviceImpl);
             
 //            // Exctract operations info
