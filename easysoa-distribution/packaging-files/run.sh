@@ -66,7 +66,8 @@ trap shutdown SIGINT SIGTERM
 
 startupmonitor &
 serviceregistry &
-pafservices &
+# PAF services is now started in FraSCAti
+#pafservices &
 travelbackup &
 airportservice &
 sleep 10 # Let the demo start
