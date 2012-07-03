@@ -4,3 +4,4 @@ Bundle-ManifestVersion: 1
 Bundle-Name: easysoa-registry-api-local
 Bundle-SymbolicName: org.easysoa.registry.api.local;singleton:=true
 Bundle-Vendor: EasySOA Consortium
+Eclipse-AutoStart: true

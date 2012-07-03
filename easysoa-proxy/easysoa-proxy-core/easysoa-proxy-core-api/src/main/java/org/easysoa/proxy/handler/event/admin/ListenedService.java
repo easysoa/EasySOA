@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 
-
 @XmlRootElement(name = "listenedService")
 public class ListenedService {
 

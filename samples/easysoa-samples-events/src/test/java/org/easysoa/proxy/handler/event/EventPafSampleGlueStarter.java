@@ -98,7 +98,7 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
         System.in.read();
     }
 
-
+    
     /**
      * Clean Frascati 
      * @throws Exception

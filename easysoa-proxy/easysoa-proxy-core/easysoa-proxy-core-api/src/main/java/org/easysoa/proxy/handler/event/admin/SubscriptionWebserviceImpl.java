@@ -34,9 +34,9 @@ public class SubscriptionWebserviceImpl implements ISubscriptionWebService {
      */
     public Subscriptions simulResult(){
         
-        Subscriptions sub = new Subscriptions();
+        Subscriptions subscriptions = new Subscriptions();
 
-        Subscription su = new Subscription();
+        Subscription subsc = new Subscription();
 
         ListenedService lisw = new ListenedService();
         lisw.setId(17);
@@ -58,14 +58,14 @@ public class SubscriptionWebserviceImpl implements ISubscriptionWebService {
 
         listelist.add(lisw);
 
-        su.setLaunchedservices(launchlist);
-        su.setListenedservices(listelist);
+        subsc.setLaunchedservices(launchlist);
+        subsc.setListenedservices(listelist);
 
-        ArrayList<Subscription> subb = new ArrayList<Subscription>();
+        ArrayList<Subscription> listesubscription = new ArrayList<Subscription>();
 
-        subb.add(su);
-        sub.setSubscriptions(subb);
-        return sub;
+        listesubscription.add(subsc);
+        subscriptions.setSubscriptions(listesubscription);
+        return subscriptions;
     }
 	
     /**
@@ -92,7 +92,8 @@ public class SubscriptionWebserviceImpl implements ISubscriptionWebService {
                 }		
         }
         this.eventMessageHandler.setListenedServiceUrlToServicesToLaunchUrlMap(new HashMap<String, List<String>>());    
-        return simulResult();
+    //    return simulResult();
+        return this.getSubscriptions();
     }
 
     /**

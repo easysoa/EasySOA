@@ -8,8 +8,6 @@ import java.util.Hashtable;
 
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author fntangke

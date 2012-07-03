@@ -75,16 +75,28 @@
 	    <!-- FraSCAti (bindings) -->
 	  	<dependency>
 	   		<groupId>org.ow2.frascati</groupId>
+	   		<artifactId>frascati-runtime-factory</artifactId>
+	   		<version>${frascati.version}</version>
+			<scope>provided</scope>      		
+	 	</dependency>
+	  	<dependency>
+	   		<groupId>org.ow2.frascati</groupId>
 	   		<artifactId>frascati-binding-rest</artifactId>
 	   		<version>${frascati.version}</version>
-			<scope>test</scope>      		
+			<scope>provided</scope>      		
 	 	</dependency>
 	   <dependency>
 			<groupId>org.ow2.frascati</groupId>
 	   		<artifactId>frascati-binding-http</artifactId>
 	   		<version>${frascati.version}</version>
-			<scope>test</scope>      		
+			<scope>provided</scope>      		
 	   </dependency>
+	   <dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
+			<scope>provided</scope>
+		</dependency>
         
 
     <!-- Other samples -->

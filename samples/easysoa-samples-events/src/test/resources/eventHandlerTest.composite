@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"-->
+
+
 <composite xmlns="http://www.osoa.org/xmlns/sca/1.0" 
 	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
 	xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" 

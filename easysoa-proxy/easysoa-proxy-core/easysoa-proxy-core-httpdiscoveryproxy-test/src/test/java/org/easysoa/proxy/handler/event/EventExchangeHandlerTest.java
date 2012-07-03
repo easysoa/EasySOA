@@ -169,8 +169,9 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
     	// call a service to listen
     	doGet(urlToListen);
     	Thread.currentThread();
+    	System.in.read();
 		//wait(1000);
-    	Thread.sleep(1000);
+    //	Thread.sleep(1000);
     	// Get Records
         List<ExchangeRecord> records1 = frascati.getService("servicesToLaunchMock", "service1ToLaunchMockRecordsProvider", RecordsProvider.class).getRecords();
 		System.out.println("Longueurs des records 1 : "+Integer.toString(records1.size()));
@@ -197,7 +198,7 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
      * @throws IOException
      */
     @Test
-    @Ignore
+    //@Ignore
     public final void testWaitUntilRead() throws Exception
     {
 
