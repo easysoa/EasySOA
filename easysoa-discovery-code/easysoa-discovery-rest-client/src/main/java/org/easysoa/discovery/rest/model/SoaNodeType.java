@@ -7,7 +7,8 @@ import org.codehaus.jackson.map.ser.std.ToStringSerializer;
 public enum SoaNodeType {
 
     Deliverable,
+    Service,
     ServiceImpl,
-    System;
+    SoaSystem;
     
 }

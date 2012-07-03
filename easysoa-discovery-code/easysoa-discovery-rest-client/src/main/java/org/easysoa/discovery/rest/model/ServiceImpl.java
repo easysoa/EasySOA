@@ -3,6 +3,8 @@ package org.easysoa.discovery.rest.model;
 
 public class ServiceImpl extends SoaNode {
 
+    String operationsInfo;
+    
     public ServiceImpl() {}
     
     public ServiceImpl(Deliverable deliverable, String technology, String fullName, String name) {
@@ -19,6 +21,14 @@ public class ServiceImpl extends SoaNode {
         this.setUniqueRelation(SoaNodeType.Deliverable, deliverable.getId());
     }
 
+    public String getOperationsInfo() {
+        return operationsInfo;
+    }
+    
+    public void setOperationsInfo(String operationsInfo) {
+        this.operationsInfo = operationsInfo;
+    }
+    
     @Override
     public SoaNodeType getSoaNodeType() {
         return SoaNodeType.ServiceImpl;

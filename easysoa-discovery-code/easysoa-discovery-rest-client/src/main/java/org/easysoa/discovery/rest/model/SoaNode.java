@@ -1,6 +1,8 @@
 package org.easysoa.discovery.rest.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class SoaNode {
@@ -10,6 +12,8 @@ public abstract class SoaNode {
     protected String name;
 
     protected String version;
+
+    protected List<String> requirements = new ArrayList<String>();
     
     protected Map<String, SoaNodeType> relations = new HashMap<String, SoaNodeType>(); // <id, type>
 
@@ -83,6 +87,22 @@ public abstract class SoaNode {
     public void setUniqueRelation(SoaNode soaNode) {
         this.relations.remove(soaNode.getSoaNodeType());
         this.addRelation(soaNode.getSoaNodeType(), soaNode.getId());
+    }
+    
+    public List<String> getRequirements() {
+        return requirements;
+    }
+    
+    public void setRequirements(List<String> requirements) {
+        this.requirements = requirements;
+    }
+
+    public void addRequirement(String requirement) {
+        this.requirements.add(requirement);
+    }
+    
+    public void removeRequirement(String requirement) {
+        this.requirements.remove(requirement);
     }
     
     @Override

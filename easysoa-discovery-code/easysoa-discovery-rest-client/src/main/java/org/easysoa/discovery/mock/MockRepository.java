@@ -12,9 +12,11 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.easysoa.discovery.rest.model.Deliverable;
+import org.easysoa.discovery.rest.model.Service;
 import org.easysoa.discovery.rest.model.ServiceImpl;
 import org.easysoa.discovery.rest.model.SoaNode;
 import org.easysoa.discovery.rest.model.SoaNodeType;
+import org.easysoa.discovery.rest.model.SoaSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,8 +62,12 @@ public class MockRepository extends OutputStream {
                 // Handle each discovery
                 while (discoveryIt.hasNext()) {
                     JsonNode discovery = discoveryIt.next();
-                    SoaNodeType soaNodeType = SoaNodeType.valueOf(discovery.get("soaNodeType")
-                            .getTextValue());
+                    
+                    // Trace JSON message
+                    logger.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(discovery));
+                    
+                    // Parse JSON to POJO
+                    SoaNodeType soaNodeType = SoaNodeType.valueOf(discovery.get("soaNodeType").getTextValue());
                     SoaNode newNode = null;
                     switch (soaNodeType) {
                     case Deliverable:
@@ -69,6 +75,12 @@ public class MockRepository extends OutputStream {
                         break;
                     case ServiceImpl:
                         newNode = mapper.readValue(discovery, ServiceImpl.class);
+                        break;
+                    case Service:
+                        newNode = mapper.readValue(discovery, Service.class);
+                        break;
+                    case SoaSystem:
+                        newNode = mapper.readValue(discovery, SoaSystem.class);
                         break;
                     }
 
@@ -157,12 +169,14 @@ public class MockRepository extends OutputStream {
 
     private int getTypeLevel(SoaNodeType soaNodeType) {
         switch (soaNodeType) {
+        case SoaSystem:
+            return 10;
+        case Service:
+            return 9;
         case Deliverable:
             return 8;
         case ServiceImpl:
             return 5;
-        case System:
-            return 10;
         default:
             return 0;
         }

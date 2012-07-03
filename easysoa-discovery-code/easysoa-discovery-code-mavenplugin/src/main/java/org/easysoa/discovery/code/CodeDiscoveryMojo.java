@@ -62,11 +62,13 @@ public class CodeDiscoveryMojo extends AbstractMojo {
     private Map<String, ClassHandler> availableHandlers = new HashMap<String, ClassHandler>();
     
     public void execute() throws MojoExecutionException {
-        
-        // Init
+
+        // Init handlers
         Log log = getLog();
         this.availableHandlers.put("JAX-WS", new JaxWSClassHandler());
         this.availableHandlers.put("JAX-RS", new JaxRSClassHandler());
+        
+        // Deliverable discovery
         MavenDeliverable mavenDeliverable;
         try {
             mavenDeliverable = new MavenDeliverable(name,
@@ -77,18 +79,18 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         }
         List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
         discoveredNodes.add(mavenDeliverable);
-        
+
         // Configure parser
         JavaDocBuilder builder = new JavaDocBuilder();
         builder.addSourceTree(this.projectDirectory);
         
-        // Iterate through classes
+        // Iterate through classes to find WSes
         JavaSource[] sources = builder.getSources();
         for (JavaSource source : sources) {
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
                 for (ClassHandler handler : availableHandlers.values()) {
-                    discoveredNodes.addAll(handler.handleClass(c, mavenDeliverable, log));
+                    discoveredNodes.addAll(handler.handleClass(c, sources, mavenDeliverable, log));
                 }
             }
         }
