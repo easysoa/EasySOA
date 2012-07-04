@@ -27,7 +27,7 @@ public class JaxRSClassHandler implements ClassHandler {
             MavenDeliverable deliverableInfo, Log log) {
         List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
         
-        // Check JAX-WS annotation
+        // Check JAX-RS annotation
         if (ParsingUtils.hasAnnotation(c, ANN_PATH)) {
             // Extract WS info
             ServiceImpl serviceImpl = new ServiceImpl(deliverableInfo,
@@ -35,7 +35,7 @@ public class JaxRSClassHandler implements ClassHandler {
             deliverableInfo.addRelation(SoaNodeType.ServiceImpl, serviceImpl.getId());
             discoveredNodes.add(serviceImpl);
             
-            // Exctract operations info
+            // Extract operations info
             StringBuilder operationsInfo = new StringBuilder();
             for (JavaMethod method : c.getMethods()) {
                 if (ParsingUtils.hasAnnotation(method, ANN_PATH)) {

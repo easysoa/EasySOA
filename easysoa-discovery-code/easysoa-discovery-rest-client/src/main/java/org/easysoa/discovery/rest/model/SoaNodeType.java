@@ -6,9 +6,13 @@ import org.codehaus.jackson.map.ser.std.ToStringSerializer;
 @JsonSerialize(using = ToStringSerializer.class)
 public enum SoaNodeType {
 
-    Deliverable,
+    SoaSystem,
     Service,
+    Software,
+    Deliverable,
     ServiceImpl,
-    SoaSystem;
+    Environment,
+    DeployedDeliverable,
+    Endpoint;
     
 }

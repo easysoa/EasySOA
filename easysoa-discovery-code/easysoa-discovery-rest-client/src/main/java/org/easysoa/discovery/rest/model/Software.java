@@ -1,17 +1,17 @@
 package org.easysoa.discovery.rest.model;
 
 
-public class SoaSystem extends SoaNode {
+public class Software extends SoaNode {
 
-    public SoaSystem() {}
+    public Software() {}
     
-    public SoaSystem(String name, String version) {
+    public Software(String name, String version) {
         super(name, name, version);
     }
 
     @Override
     public SoaNodeType getSoaNodeType() {
-        return SoaNodeType.SoaSystem;
+        return SoaNodeType.Software;
     }
     
 }

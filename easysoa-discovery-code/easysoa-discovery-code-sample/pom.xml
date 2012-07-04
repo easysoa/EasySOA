@@ -53,6 +53,13 @@
       <artifactId>batik-ext</artifactId>
       <version>1.7</version>
     </dependency>
+    
+    <!-- easysoa tests -->
+    <dependency>
+      <groupId>org.easysoa.discovery</groupId>
+      <artifactId>easysoa-discovery-rest-client</artifactId>
+      <version>0.9-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>

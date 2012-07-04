@@ -6,7 +6,7 @@ public class Service extends SoaNode {
     public Service() {}
 
     public Service(String name, String version) {
-        super("serv_" + name, name, version);
+        super(name, name, version);
     }
     
     @Override
