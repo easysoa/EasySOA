@@ -115,7 +115,7 @@ public class JaxWSSourcesHandler implements SourcesHandler {
         // in java 6-injected fields :
         for (JavaField javaField : c.getFields()) { // TODO also superfields...
             if (ParsingUtils.hasAnnotation(javaField, ANN_INJECT) && isWSClientOrItf(javaField.getType())) {
-                deliverable.addRequirement("Depends on WS implemented by " 
+                deliverable.addRequirement("Consumes WS of JAX-WS interface "
                         + javaField.getType().getJavaClass().getFullyQualifiedName());
             }
         }

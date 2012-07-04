@@ -68,7 +68,7 @@ public class MockRepository extends OutputStream {
                     JsonNode discovery = discoveryIt.next();
                     
                     // Trace JSON message
-//                    logger.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(discovery));
+                    logger.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(discovery));
                     
                     // Parse JSON to POJO
                     SoaNodeType soaNodeType = SoaNodeType.valueOf(discovery.get("soaNodeType").getTextValue());

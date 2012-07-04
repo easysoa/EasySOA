@@ -60,6 +60,11 @@
       <artifactId>easysoa-discovery-rest-client</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
+    </dependency>
   </dependencies>
 
   <build>
