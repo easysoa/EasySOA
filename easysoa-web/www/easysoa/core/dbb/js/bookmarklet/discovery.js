@@ -8,8 +8,8 @@ var wsdls = new Array();
 var username = null;
 var frameDragged = false;
 
-LIBS_POLLING_INTERVAL = 20;
-EASYSOA_WEB = 'http://localhost:8083';
+var LIBS_POLLING_INTERVAL = 20;
+var EASYSOA_WEB = 'http://localhost:8083';
 
 /**
  * Load libs
@@ -201,7 +201,7 @@ function initTemplates() {
 	templates['wsdl'] = underscore.template(
 	'<div class="easysoa-wsdl-result" onclick="sendWSDL(this)" id="<%= id %>">\
       <span class="easysoa-wsdl-name"><%= serviceName %></span><br />\
-	  <a href="<%= serviceURL %>" class="easysoa-wsdl-link"><%= serviceURL %></a>\
+	  <a href="<%= serviceURL %>" onclick="sendWSDL(this.parentNode); return false;" class="easysoa-wsdl-link"><%= serviceURL %></a>\
     </div>');
 }
 
