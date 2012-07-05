@@ -19,7 +19,7 @@ import org.easysoa.EasySOAConstants;
 public class StartupMonitor {
     
     private static final String EASYSOA_URL = "http://localhost:8083/easysoa";
-    private static final int STARTUP_TIMEOUT = 90000;
+    private static final int STARTUP_TIMEOUT = 180000;
     
     public static void main(String[] args) throws IOException {
         

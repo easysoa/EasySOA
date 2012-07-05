@@ -19,7 +19,7 @@ var utils = require('./utils');
 
 // Proxy Initialization
 
-var proxy = new httpProxy.HttpProxy();
+var proxy = new (httpProxy.RoutingProxy)();
 
 proxy.on('proxyError', function(error, request, result) {
     result.end("<h1>Error "+error.errno+"</h1>" +
@@ -40,8 +40,8 @@ exports.forwardTo = forwardTo = function(request, response, host, port, path) {
 		request.headers['Authorization'] = utils.encodeAuthorization(request.session.username, request.session.password);
 	}
 	proxy.proxyRequest(request, response, {
-	    'host': host || parsedUrl.hostname,
-	    'port': port || parsedUrl.port
+	    host: host || parsedUrl.hostname,
+	    port: port || parsedUrl.port
 	});
 };
 

@@ -82,16 +82,20 @@ public class SubscriptionWebserviceImpl implements ISubscriptionWebService {
     public Subscriptions udpateSubscriptions(Subscriptions subscriptions) {
         //we get this uid service in nuxeo
         this.setSubscriptions(subscriptions);
+        
         // update listenedServiceUrlToServicesToLaunchUrlMap :
-        //this.eventMessageHandler.getListenedServiceUrlToServicesToLaunchUrlMap().clear();
+        HashMap<String, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap = new HashMap<String, List<String>>();
       
         for (Subscription subscription : subscriptions.getSubscriptions()) {		
                 for(ListenedService servicelistened: subscription.getListenedservices()){
                         List<String> launchedServicesUrlsCopy = new ArrayList<String>(subscription.getLaunchedServicesUrls());
-                        this.eventMessageHandler.getListenedServiceUrlToServicesToLaunchUrlMap().put(servicelistened.getUrl(), launchedServicesUrlsCopy);
+                        newListenedServiceUrlToServicesToLaunchUrlMap.put(servicelistened.getUrl(), launchedServicesUrlsCopy);
                 }		
         }
-        this.eventMessageHandler.setListenedServiceUrlToServicesToLaunchUrlMap(new HashMap<String, List<String>>());    
+        
+        // single update because we're calling a synchronized method here :
+        this.eventMessageHandler.setListenedServiceUrlToServicesToLaunchUrlMap(newListenedServiceUrlToServicesToLaunchUrlMap);
+        
     //    return simulResult();
         return this.getSubscriptions();
     }
