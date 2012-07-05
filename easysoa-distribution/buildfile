@@ -286,6 +286,13 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
     puts "Files copy failed: Nuxeo is probably running. Could you please stop it?"
     raise e
   end
+  
+  #rename server folder in serviceRegistry
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/server')
+  	puts "renaming server folder in serviceRegistry" 
+  	File.rename(PACKAGING_OUTPUT_PATH+'/server', PACKAGING_OUTPUT_PATH+'/serviceRegistry')
+  end
+  
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
   rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
@@ -319,15 +326,27 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   
   # Removing some jar to avoid FraSCAti launch problems
   puts "Removing duplicated jars..."
-  #mkdir_p PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/lib'  
-  #FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/xercesImpl-2.9.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/lib/xercesImpl-2.9.1.jar'
+  mkdir_p PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/lib'
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/xercesImpl-2.9.1.jar')
+  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/xercesImpl-2.9.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/lib/xercesImpl-2.9.1.jar', :force => true
+  end
   mkdir_p PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/frascati/lib'
-  FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar', :force => true
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar')
+  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar', :force => true
+  end
   mkdir_p PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib'
-  FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar', :force => true
-  FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar', :force => true
-  FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', :force => true
-  FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', :force => true
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar')
+  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar', :force => true
+  end
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar')
+  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar', :force => true
+  end
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar')
+  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', :force => true
+  end
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar')
+  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', :force => true
+  end
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
