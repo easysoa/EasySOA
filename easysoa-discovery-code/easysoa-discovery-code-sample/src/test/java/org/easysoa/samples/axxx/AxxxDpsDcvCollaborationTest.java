@@ -8,8 +8,10 @@ import org.easysoa.discovery.rest.model.Deliverable;
 import org.easysoa.discovery.rest.model.Endpoint;
 import org.easysoa.discovery.rest.model.Environment;
 import org.easysoa.discovery.rest.model.ServiceImpl;
+import org.easysoa.discovery.rest.model.SoaNode;
 import org.easysoa.discovery.rest.model.SoaSystem;
 import org.easysoa.discovery.rest.model.Software;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,20 +22,30 @@ public class AxxxDpsDcvCollaborationTest {
     private static DiscoveryRequest request;
     
     private static Environment stagingEnvironment;
+    private static Environment devDpsEnvironment;
     
     private static Software dcvCrmSoftware;
-    
+    private static Software dpsApvSoftware;
+
+    private static SoaSystem axxxDcvCrmApplicationSystem;
     private static SoaSystem collaborationSoaSystem;
     private static SoaSystem collaborationBusinessRequirementsSystem;
     private static SoaSystem collaborationArchitectureRequirementsSystem;
+    private static SoaNode dpsTestSoapuiSystem;
     
     private static Endpoint clientServiceEndpoint;
     private static Endpoint tdrServiceEndpoint;
+    private static Endpoint clientServiceEndpoint2;
+    private static Endpoint clientServiceMockDevDpsEndpoint;
+
+    private static String clientServiceWsdl;
+    private static String tdrServiceWsdl;
 
     private static Deliverable defaultDpsApvDeliverable;
     private static Deliverable defaultDcvCrmDeliverable;
     private static Deliverable dpsApvTdrDeliverable;
     private static ServiceImpl dpsApvTdrServiceImpl;
+    
     
     @BeforeClass
     public static void setup() {
@@ -47,18 +59,16 @@ public class AxxxDpsDcvCollaborationTest {
         
         // DCV : CRM developer does a (code) web discovery of ClientService
         stagingEnvironment = new Environment("staging", "0.1");
-        String clientServiceWsdl = "<wsdl/>";
+        clientServiceWsdl = "<wsdl/>";
         clientServiceEndpoint = new Endpoint(stagingEnvironment, "http://vmcrm/WS/ClientService.asmx", clientServiceWsdl, "0.1");
         clientServiceEndpoint.addRelation(stagingEnvironment); // TODO deployedDeliverable between
-        SoaSystem axxxDcvCrmApplicationSystem = new SoaSystem("AXXX DCV CRM Application", "0.1");
+        axxxDcvCrmApplicationSystem = new SoaSystem("AXXX DCV CRM Application", "0.1");
         axxxDcvCrmApplicationSystem.addRelation(clientServiceEndpoint); // set in web discovery ui ;TODO rather production endpoint ?!
         // also serviceImpl / deployable, deployedDeployable ??
         // save model...
         // version ?
         request.addDiscoveryNotification(stagingEnvironment, clientServiceEndpoint, axxxDcvCrmApplicationSystem);
         System.out.println("\ndcvCrmDeveloperDoesWebDisco:");
-        request.send();
-        repository.traceRepository();
     }
     
     @Test
@@ -80,8 +90,6 @@ public class AxxxDpsDcvCollaborationTest {
         request.addDiscoveryNotification(collaborationBusinessRequirementsSystem, collaborationArchitectureRequirementsSystem,
                 dcvCrmSoftware, collaborationSoaSystem);
         System.out.println("\ndcpOrDpsCompletesDesign:");
-        request.send();
-        repository.traceRepository();
     }
     
     @Test
@@ -89,11 +97,11 @@ public class AxxxDpsDcvCollaborationTest {
         
         // DPS : models consumption and exposition of ClientService by (ESB) APV by (jwt process &) sca import i.e. reqs, software, endpoints
         //Environment productionEnvironment = new Environment("prod", "0.1"); // TODO later copy to prod env
-        String tdrServiceWsdl = "<wsdl/>";
+        tdrServiceWsdl = "<wsdl/>";
         tdrServiceEndpoint = new Endpoint(stagingEnvironment, "http://vmapv/cxf/TdrService", tdrServiceWsdl, "0.1");
         tdrServiceEndpoint.addRelation(stagingEnvironment); // TODO deployedDeliverable between
         
-        Software dpsApvSoftware = new Software("DPS APV", "0.1");
+        dpsApvSoftware = new Software("DPS APV", "0.1");
         collaborationArchitectureRequirementsSystem.addRelation(dpsApvSoftware); // dpsApvSoftware belongs to architecture
         collaborationBusinessRequirementsSystem.addRelation(dpsApvSoftware); // dpsApvSoftware contributes to collaborationBusinessProcessSystem
 
@@ -110,8 +118,6 @@ public class AxxxDpsDcvCollaborationTest {
                 collaborationBusinessRequirementsSystem, collaborationArchitectureRequirementsSystem,
                 collaborationSoaSystem, defaultDpsApvDeliverable);
         System.out.println("\ndpsDesignsConsumptionAndExposition:");
-        request.send();
-        repository.traceRepository();
     }
     
     @Test
@@ -123,12 +129,10 @@ public class AxxxDpsDcvCollaborationTest {
 
         request.addDiscoveryNotification(defaultDcvCrmDeliverable, dcvCrmSoftware);
         System.out.println("\ndcvDesignsConsumption:");
-        request.send();
-        repository.traceRepository();
     }
     
     @Test
-    public void dpsDiscoversCode() throws IOException {
+    public void dpsDiscoversCodeThenWeb() throws IOException {
         
         // DPS : (ESB) APV developer does a code discovery of Client Service consumption & exposition
         
@@ -136,28 +140,69 @@ public class AxxxDpsDcvCollaborationTest {
         dpsApvTdrDeliverable = defaultDpsApvDeliverable; // TODO case of more than 1 actual deliverable
         dpsApvTdrDeliverable.setId("Deliverable=org.easysoa.sample.axxx.dps:easysoa-sample-axxx-apv-tdr");
         dpsApvTdrDeliverable.setName("0.1-SNAPSHOT");
+        dpsApvTdrDeliverable.setVersion("0.2");
         dpsApvTdrServiceImpl = new ServiceImpl(dpsApvTdrDeliverable, "JAX-WS", "org.easysoa.sample.axxx.dps.apv.TdrServiceImpl", "TdrServiceImpl");
         dpsApvTdrDeliverable.addRelation(dpsApvTdrServiceImpl);
+        dpsApvTdrDeliverable.addRequirement("Consumes WS of JAX-WS interface org.easysoa.samples.axxx.dcv.ClientService");
         
         // create / find service & link them
         // TODO both services with same wsdl (ClientService's), or TdrService is different but where comes his wsdl from (java2wsdl ?) ?
+        
+        // web disco
+        tdrServiceEndpoint.setWsdl(tdrServiceWsdl); // TODO store actual wsdl in another endpoint (ex. in "design" environment ??)
 
         request.addDiscoveryNotification(dpsApvTdrDeliverable, dpsApvTdrServiceImpl);
         System.out.println("\ndpsDiscoversCode:");
-        request.send();
-        repository.traceRepository();
     }
     
     @Test
     public void dcvChangesServiceImpl() throws IOException {
 
-        // DCV : changes serviceimpl, which changes actual service interface TODO detect api changes
+        // DCV : changes code (not discovered) and therefore actual service interface, detected in web discovery 
         
+        // case 1 : same service, different wsdl, LATER other correlation,kinds
+        // clientServiceEndpoint = findEndpoint(serviceName)
+        String clientService2Wsdl = "<wsdl>another</wsdl>";
+        clientServiceEndpoint.setWsdl(clientService2Wsdl);
+        clientServiceEndpoint.setVersion("0.2");
+        // on revalidation, alerts DPS about inconsistency : (TODO Q how does the DCV change propagate to DPS ??)
+        // code discovery :
+        // code alt 1 : if it doesn't compile anymore (assuming dpsApvTdrServiceImpl's consumed ClientService interface is generated from wsdl auto by maven TODO), error("doesn't compile anymore ; changes : ClientService.java changed")
+        // code alt 2 : if (it's not a backward compatible change and) dpsApvTdrServiceImpl's consumed ClientService.java interface doesn't change, error("should have changed")
+        // if (dpsApvTdrServiceImpl.getRequirements().get(0).contains("")) {}
+        // web discovery (in staging) :
+        if (!tdrServiceEndpoint.getWsdl().equals(tdrServiceEndpoint.getWsdl())) { System.out.println("Error : web disco'd impl wsdl differs from the design one");} // TODO another endpoint (ex. in "design" environment ??)
+        
+        // case 2 : different service (i.e. can't be correlated)
+        // webdisco.reinit(); // TODO !
+        clientServiceEndpoint2 = new Endpoint(stagingEnvironment, "http://vmcrm/WS/ClientService.asmx", clientServiceWsdl, "0.1");
+        clientServiceEndpoint2.addRelation(stagingEnvironment); // TODO deployedDeliverable between
+        axxxDcvCrmApplicationSystem.addRelation(clientServiceEndpoint); // set in web discovery ui ;TODO rather production endpoint ?!
+        //if (clientService has no more endpoint in staging) { error("Staging : no (more) endpoint for clientService in staging. Not ready to version.")}
+        //if (clientServiceEndpoint2 has no related service) { warn("New service, do you want : to link it with existing [suggestions], or to put it in SOAs [SOA systems] ?"); }
 
+        request.addDiscoveryNotification(clientServiceEndpoint, clientServiceEndpoint2, axxxDcvCrmApplicationSystem);
+        System.out.println("\ndcvChangesServiceImpl:");
     }
     
-    @AfterClass
-    public static void postTrace() throws IOException  {
+    @Test
+    public void dpsRediscoversOldClientServiceInDevSoapui() throws IOException {
+        devDpsEnvironment = new Environment("devDps", "0.1");
+        clientServiceMockDevDpsEndpoint = new Endpoint(devDpsEnvironment, "http://vmcrm/WS/ClientService.asmx", clientServiceWsdl, "0.1");
+        clientServiceMockDevDpsEndpoint.addRelation(devDpsEnvironment); // TODO deployedDeliverable between
+        dpsTestSoapuiSystem = new SoaSystem("dpsTestSoapui", "0.1");
+        dpsTestSoapuiSystem.addRelation(clientServiceMockDevDpsEndpoint); // set in web discovery ui ;TODO rather production endpoint ?!
+
+        // on revalidation, alerts DPS about inconsistency :
+        // web discovery (in dev) :
+        if (!clientServiceMockDevDpsEndpoint.getWsdl().equals(clientServiceEndpoint.getWsdl())) { System.out.println("Error : web disco'd test wsdl differs from the design one");}
+        
+        request.addDiscoveryNotification(devDpsEnvironment, clientServiceMockDevDpsEndpoint, dpsTestSoapuiSystem);
+        System.out.println("\ndpsRediscoversOldClientServiceInDev:");
+    }
+    
+    @After
+    public void postTrace() throws IOException  {
         request.send();
         repository.traceRepository();
     }

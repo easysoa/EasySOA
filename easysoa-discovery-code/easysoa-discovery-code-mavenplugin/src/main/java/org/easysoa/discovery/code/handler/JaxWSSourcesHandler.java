@@ -72,6 +72,7 @@ public class JaxWSSourcesHandler implements SourcesHandler {
             
             // Extract interface info
             Annotation wsImplAnnotation = ParsingUtils.getAnnotation(c, ANN_WS);
+            //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
             JavaClass itfClass = findWsInterface(wsImplAnnotation, sources); // TODO several interfaces ???
             if (itfClass != null) {
             
@@ -109,13 +110,14 @@ public class JaxWSSourcesHandler implements SourcesHandler {
         }
         
         // JAXWS WebServiceClient (generated client stub) :
-        // TODO
         
         // Java 6 injection of fields by service-annotated interfaces or WebServiceClients (generated client stub) :
         // in java 6-injected fields :
         for (JavaField javaField : c.getFields()) { // TODO also superfields...
             if (ParsingUtils.hasAnnotation(javaField, ANN_INJECT) && isWSClientOrItf(javaField.getType())) {
-                deliverable.addRequirement("Consumes WS of JAX-WS interface "
+                deliverable.addRequirement(
+                        c.getFullyQualifiedName()
+                        + " consumes WS of JAX-WS interface " 
                         + javaField.getType().getJavaClass().getFullyQualifiedName());
             }
         }
@@ -126,7 +128,9 @@ public class JaxWSSourcesHandler implements SourcesHandler {
             if (method != null && ParsingUtils.hasAnnotation(method, ANN_INJECT)) {
                 JavaParameter[] parameters = method.getParameters();
                 if (parameters.length == 1 && isWSClientOrItf(parameters[0].getType())) {
-                    deliverable.addRequirement("Depends on WS implemented by " 
+                    deliverable.addRequirement(
+                            c.getFullyQualifiedName()
+                            + " consumes WS of JAX-WS interface " 
                             + parameters[0].getType().getJavaClass().getFullyQualifiedName());
                 }
             }
