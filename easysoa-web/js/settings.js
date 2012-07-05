@@ -56,5 +56,6 @@ exports.SERVICE_FINDER_IGNORE = [
   '.ico',
   'localhost:7001', // FraSCAti (part of EasySOA Light)
   '127.0.0.1:7001',
+  'jQuery',
   NUXEO_URL
 ];

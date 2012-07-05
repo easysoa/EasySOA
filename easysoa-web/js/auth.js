@@ -50,7 +50,7 @@ authFilter = function(request, response, next) {
 // ============= Controller =============
 
 login = function(request, response, next) {
-	var params = request.body || request.query;
+	var params = (request.body && request.body.username) ? request.body : request.query;
 	if (params && params.username && params.password) {
 		if (nuxeo.isReady()) {
 			try {
