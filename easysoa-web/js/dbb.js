@@ -62,7 +62,7 @@ exports.configure = function(webServer) {
 
 	// SocketIO init
 	io = socketio.listen(webServer);
-	//io.set('transports', ['htmlfile', 'jsonp-polling']); // Default: websocket, htmlfile, xhr-polling, jsonp-polling
+	io.set('transports', ['htmlfile', 'jsonp-polling']); // Default: websocket, htmlfile, xhr-polling, jsonp-polling
 	io.set('log level', 2);
 	io.sockets.on('connection', initSocketIOConnection);
 };
