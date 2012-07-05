@@ -131,7 +131,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
      * @return the listenedServiceUrlToServicesToLaunchUrlMap
      */
     public Map<String, List<String>> getListenedServiceUrlToServicesToLaunchUrlMap() {
-        return this.listenedServiceUrlToServicesToLaunchUrlMap;
+        return new HashMap<String, List<String>>(this.listenedServiceUrlToServicesToLaunchUrlMap);
     }
 
     /**

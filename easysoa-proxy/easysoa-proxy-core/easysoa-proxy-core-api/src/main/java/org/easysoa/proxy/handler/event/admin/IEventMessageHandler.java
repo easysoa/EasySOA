@@ -12,6 +12,7 @@ import java.util.Map;
 public interface IEventMessageHandler {
     
     /**
+     * WARNING readonly
      * @param void
      * @return the services to call
      */
@@ -19,6 +20,7 @@ public interface IEventMessageHandler {
   
       
     /**
+     * Update the conf ; WARNING synchronized method
      * @param listenedServiceUrlToServicesToLaunchUrlMap  services to call
      * @return void
      */
