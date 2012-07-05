@@ -32,10 +32,8 @@ import org.apache.log4j.Logger;
  *
  */
 public class PropertyManager {
-	
-	/**
-	 * Logger
-	 */
+
+    // Logger
 	private static Logger logger = Logger.getLogger(PropertyManager.class.getName());
 
     // Default property file name
@@ -56,7 +54,7 @@ public class PropertyManager {
 	 * @throws Exception If the property file cannot be loaded
 	 */
 	public PropertyManager(String propsFileName) throws Exception {
-	    logger.debug("Creates a new PropertyManager ....");
+	    logger.info("Creates a new PropertyManager with fileName " + propsFileName);
 	    propertiesFileName = propsFileName;
 		properties = load(propsFileName);
 		propertyManager = this;
@@ -69,7 +67,7 @@ public class PropertyManager {
 	 * @throws Exception
 	 */
 	public PropertyManager(String propsFileName, InputStream propsFileStream) throws Exception {
-        logger.debug("Creates a new PropertyManager ....");
+	    logger.info("Creates a new PropertyManager with fileName " + propsFileName + " and provided inputstream");
         propertiesFileName = propsFileName;
         properties = load(propsFileStream);
         propertyManager = this;
@@ -89,8 +87,8 @@ public class PropertyManager {
 	 * @return 
 	 * @throws IOException If a problem occurs
 	 */
-	protected Properties load(InputStream propsFileStream) throws Exception{
-	    logger.debug("Loading property file form input stream : '" + propsFileStream +  "'");   
+	protected Properties load(InputStream propsFileStream) throws Exception {
+	    logger.info("Loading property file form input stream : '" + propsFileStream +  "'");   
 	    Properties props = new Properties();
 	    if(propsFileStream != null){
 	        props.load(propsFileStream);
@@ -147,6 +145,11 @@ public class PropertyManager {
 	   String value;
 	   try{
 		   value = properties.getProperty(propertyName);
+		   // If value is not found, returns the default value
+		   logger.warn("Property " + propertyName + " not found, default value is returned !");
+		   if(value == null){
+		       value = defaultValue;
+		   }
 	   }
 	   catch(Exception ex){
 		   value = defaultValue;

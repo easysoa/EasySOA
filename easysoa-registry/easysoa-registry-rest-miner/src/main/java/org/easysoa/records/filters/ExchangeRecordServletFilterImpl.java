@@ -57,13 +57,13 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	// Exchange handler
 	private HttpExchangeHandler exchangeHandler = null;
 
-	@Override
+	//@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// this.filterConfig = filterConfig;
 	    singleton = this;
 	}
 
-	@Override
+	//@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		logger.info("Filtering a EasySOA API request");
@@ -86,7 +86,7 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 		chain.doFilter(request, response);
 	}
 
-	@Override
+	//@Override
 	public void destroy() {
 		// Nothing to do
 	}

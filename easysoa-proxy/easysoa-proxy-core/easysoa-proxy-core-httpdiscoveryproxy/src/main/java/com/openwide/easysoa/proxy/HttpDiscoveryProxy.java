@@ -99,7 +99,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
             try{
                 propertyManager = new ProxyPropertyManager(ProxyPropertyManager.PROPERTY_FILE_NAME, this.getClass().getResourceAsStream("/" + ProxyPropertyManager.PROPERTY_FILE_NAME));                
             } catch(Exception exc){
-                logger.error("Error when loading the property manager", exc);                
+                logger.error("Error when loading the proxy property manager", exc);                
             }
         }
 	}

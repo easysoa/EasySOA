@@ -98,9 +98,9 @@ public class ProxyFileStore {
     public ProxyFileStore() {
         store = new FileStore();
         try {
-            this.path = PropertyManager.getPropertyManager().getProperty("path.record.store");
-            this.templatePath = PropertyManager.getPropertyManager().getProperty("path.template.store");
-            this.reportPath = PropertyManager.getPropertyManager().getProperty("path.reports");
+            this.path = PropertyManager.getPropertyManager().getProperty("path.record.store", "easysoa/stores/");
+            this.templatePath = PropertyManager.getPropertyManager().getProperty("path.template.store", "easysoa/webContent/templates/");
+            this.reportPath = PropertyManager.getPropertyManager().getProperty("path.reports", "easysoa/reports");
             logger.debug("Using property 'path.record.store' for record store path = " + this.path);
             logger.debug("Using property 'path.template.store' for template store path = " + this.templatePath);
             logger.debug("Using property 'path.reports' for reports path = " + this.reportPath);

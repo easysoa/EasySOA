@@ -344,6 +344,9 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar')
   	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', :force => true
   end
+  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.3.jar')
+  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.3.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpclient-4.0.3.jar', :force => true
+  end  
   if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar')
   	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', :force => true
   end

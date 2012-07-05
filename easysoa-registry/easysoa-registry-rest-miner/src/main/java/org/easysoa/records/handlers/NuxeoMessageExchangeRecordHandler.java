@@ -55,7 +55,7 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
     /* (non-Javadoc)
      * @see org.easysoa.records.handlers.ExchangeHandler#handleExchange(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    @Override
+    //@Override
     public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // Builds a new Exchange record with data contained in request and response
         HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper(request);
