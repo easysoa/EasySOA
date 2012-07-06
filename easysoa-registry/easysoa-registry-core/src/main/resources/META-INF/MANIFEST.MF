@@ -1,8 +1,4 @@
 Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven
-Built-By: mkalam-alami
-Build-Jdk: 1.6.0_24
 Bundle-ManifestVersion: 2
 Bundle-Name: easysoa-registry-core
 Bundle-SymbolicName: org.easysoa.registry.core;singleton:=true
@@ -45,5 +41,4 @@ Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/WebFileParsingPoolService.xml,
  OSGI-INF/webfileparsers-contrib.xml,
  OSGI-INF/content-template-contrib.xml,
- OSGI-INF/ValidationSchedulerServiceComponent.xml,
- OSGI-INF/validationscheduler-contrib.xml
+ OSGI-INF/ValidationSchedulerServiceComponent.xml

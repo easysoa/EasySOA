@@ -221,12 +221,11 @@ public class EasySOALocalApi implements EasySOAApiSession {
 
             // Exctract main fields
             String parentUrl = properties.get(Service.PROP_PARENTURL),
-                title = properties.get(Service.PROP_TITLE),
-                fileUrl = properties.get(Service.PROP_FILEURL);
+                title = properties.get(Service.PROP_TITLE);
             
             // Store URL as file in case of a WSDL
             if (url.toLowerCase().endsWith("?wsdl")) {
-                if (fileUrl == null) {
+                if (properties.get(Service.PROP_FILEURL) == null) {
                     properties.put(Service.PROP_FILEURL, url);
                 }
                 url = url.substring(0, url.length() - 5);
@@ -402,7 +401,7 @@ public class EasySOALocalApi implements EasySOAApiSession {
             String key = entry.getKey();
             String value = entry.getValue();
             
-            if (value != null && !value.isEmpty()) {
+            if (value != null && !value.isEmpty() && !EasySOADoctype.PROP_ENVIRONMENT.equals(key)) {
                 // Given schema specific properties
                 if (schemaDef.containsKey(key)) {
                     setPropertyIfNotNull(model, schema, key, value);
