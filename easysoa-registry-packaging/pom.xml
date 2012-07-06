@@ -80,11 +80,6 @@
                   <artifactId>easysoa-registry-frascati</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry</groupId>
-                  <artifactId>easysoa-registry-rest-frascati</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
 
                 <!-- Other EasySOA features -->
                 <artifactItem>
@@ -146,11 +141,6 @@
                   <artifactId>easysoa-proxy-core-persistence</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
-				<!--<artifactItem>
-                  <groupId>org.easysoa.proxy</groupId>
-                  <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>-->
                 <!--  These 2 following jar libs must be removed from nxserver/lib folder to avoid a compatibility error -->               
 				<artifactItem>
 					<groupId>org.apache.httpcomponents</groupId>

@@ -20,25 +20,19 @@
 
 package org.easysoa.validation;
 
-import java.io.IOException;
-import java.security.InvalidParameterException;
-
-public interface ExchangeReplayController {
-
-    /**
-     * Replays a run synchronously.
-     * 
-     * @param runName The run name
-     * @param environmentName The environment to which notifications have to be sent 
-     * @throws InvalidParameterException If the run doesn't exist
-     * @throws IOException If something went wrong during the replay
-     */
-    void replayRecord(String runName, String environmentName)
-            throws InvalidParameterException, IOException;
+/**
+ * Register a
+ * 
+ * @author jguillemotte
+ *
+ */
+public interface ExchangeReplayRegister {
 
     /**
-     * @return The name of all availables runs.
+     * register an <code>ExchangeReplayController</code> in a nuxeo service
+     * @param exchangeReplayController The exchange replay controller to register
+     * @throws Exception If a problem occurs
      */
-    String[] getAllRunNames();
-
+    public void registerExchangeReplayController(ExchangeReplayController exchangeReplayController) throws Exception;
+    
 }

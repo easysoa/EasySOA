@@ -133,7 +133,8 @@
       <!-- </archive> -->
       <!-- </configuration> -->
       <!-- </plugin> -->
-    </plugins>
+        <!-- Compile the SCA composite. -->
+	</plugins>
   </build>
 
 </project>

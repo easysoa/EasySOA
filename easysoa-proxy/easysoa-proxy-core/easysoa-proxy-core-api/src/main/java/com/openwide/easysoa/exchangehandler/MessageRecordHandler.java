@@ -55,7 +55,7 @@ public class MessageRecordHandler implements MessageHandler {
      * 
      * @param runManager
      */
-    // TODO : Find an other way to init runManager. When done, remove this setter
+    // TODO : Find an other way to init runManager (from nuxeo). When done, remove this setter
     public void setRunManager(RunManager runManager){
         this.runManager = runManager;
     }

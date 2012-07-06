@@ -1,5 +1,5 @@
 /**
- * EasySOA Proxy
+ * EasySOA Registry Rest Miner
  * Copyright 2011 Open Wide
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,13 +18,9 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package org.easysoa.records.filters;
 
 import java.io.IOException;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -33,36 +29,53 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
+import org.easysoa.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.easysoa.servlet.http.HttpMessageResponseWrapper;
-import org.nuxeo.ecm.core.api.ClientException;
-
+import org.nuxeo.runtime.api.Framework;
 import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
+import com.openwide.easysoa.run.RunManager;
 
 /**
+ * Servlet filter to record exchanges in Easysoa.
+ * 
  * @author jguillemotte, mkalam-alami
  * 
  */
 public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordServletFilter {
 
+    // Logger
 	private static Logger logger = Logger.getLogger(ExchangeRecordServletFilterImpl.class);
 
+	// Singleton
 	private static ExchangeRecordServletFilterImpl singleton = null;
-	
-	// Filter configuration
-	// private FilterConfig filterConfig;
 
 	// Exchange handler
 	private HttpExchangeHandler exchangeHandler = null;
 
-	//@Override
+
+	/**
+	 * Initialize the filter
+	 */
+    //@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// this.filterConfig = filterConfig;
 	    singleton = this;
+	    // Registering the event receiver
+	    try {
+	        FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();	        
+            RunManager runManager = frascati.getService("runManager", "runManagerService", RunManager.class);
+            runManager.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
+        } catch (Exception ex) {
+            logger.error("Unable to register the ExchangeRecordServletFilterEventReceiver in the run manager", ex);
+        }
 	}
 
+	
+	/**
+	 * Process the filter 
+	 */
 	//@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -86,13 +99,19 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 		chain.doFilter(request, response);
 	}
 
-	//@Override
+	/**
+	 * Destroy the filter
+	 */
+    //@Override
 	public void destroy() {
 		// Nothing to do
 	}
 	
+	/**
+	 * Start the mining
+	 */
 	public void start(HttpExchangeHandler exchangeHandler)
-			throws ClientException {
+			throws Exception {
 	    // NOTE: We probably can't make start() and stop() static
 	    // as the caller will be in a separate classloader.
 	    
@@ -105,6 +124,9 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 		}
 	}
 
+	/**
+	 * Stop the mining
+	 */
 	public void stop() {
         if (singleton != null) {
             logger.info("Stopping mining");

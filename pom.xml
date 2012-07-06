@@ -97,6 +97,9 @@
     <module>easysoa-distribution</module>
     <module>easysoa-registry</module>
     <module>easysoa-proxy</module>
+    <!-- temporary fix to avoid a compilation problem -->
+    <module>easysoa-registry/easysoa-registry-rest-miner</module>
+    <!--  -->
     <module>samples</module>
     <module>easysoa-registry-packaging</module>    
   </modules>

@@ -23,7 +23,10 @@
  */
 package org.easysoa.records.replay;
 
+import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +46,9 @@ import org.easysoa.reports.Report;
 import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.easysoa.validation.ExchangeReplayController;
+import org.easysoa.validation.ExchangeReplayRegister;
+import org.easysoa.validation.ExchangeReplayRegisterImpl;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -57,7 +63,7 @@ import com.openwide.easysoa.util.RequestForwarder;
  *
  */
 @Scope("composite")
-public class ReplayEngineImpl implements ReplayEngine {
+public class ReplayEngineImpl implements ReplayEngine, ExchangeReplayController {
     
     // SCA reference to assertion engine
     @Reference
@@ -87,7 +93,6 @@ public class ReplayEngineImpl implements ReplayEngine {
     
     /**
      * Constructor
-     * Set the param setter list
      */
     public ReplayEngineImpl(){
         /*paramSetterList.add(new RestFormParamSetter());
@@ -95,6 +100,16 @@ public class ReplayEngineImpl implements ReplayEngine {
         paramSetterList.add(new RestQueryParamSetter());
         paramSetterList.add(new WSDLParamSetter());*/
         this.replaySessionName = null;
+        
+        // Register the replay engine service in Nuxeo
+        try{
+            ExchangeReplayRegister register = new ExchangeReplayRegisterImpl();
+            register.registerExchangeReplayController(this);
+        } 
+        catch(Exception ex){
+            logger.error("Unable to register the replay engine in Nuxeo", ex);
+        }
+        
     }    
     
     /**
@@ -124,6 +139,9 @@ public class ReplayEngineImpl implements ReplayEngine {
         }
     }
     
+    /**
+     * Returns the exchange record list for a given store
+     */
     @Override
     public RecordCollection getExchangeRecordlist(String exchangeRecordStoreName) throws Exception {
         logger.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
@@ -140,6 +158,9 @@ public class ReplayEngineImpl implements ReplayEngine {
         return new RecordCollection(recordList);
     }    
     
+    /**
+     * Returns the exchange record corresponding to the parameters
+     */
     @Override
     public ExchangeRecord getExchangeRecord(String exchangeRecordStoreName, String exchangeID) throws Exception {
         logger.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
@@ -155,6 +176,9 @@ public class ReplayEngineImpl implements ReplayEngine {
         return record;
     }
     
+    /**
+     * Returns the store list
+     */
     @Override
     public StoreCollection getExchangeRecordStorelist() throws Exception {
         logger.debug("getExchangeRecordStorelist method called ...");
@@ -182,29 +206,44 @@ public class ReplayEngineImpl implements ReplayEngine {
     
     /**
      * Replay a record without any modifications
+     * @param exchangeRecordStoreName The store where the record is stored
+     * @param exchangerecordId The exchange record id to replay
      */
     @Override
     public OutMessage replay(String exchangeRecordStoreName, String exchangeRecordId) throws Exception{
-
-        // call remote service using chosen record :
-        // see how to share monit.forward(Message) code (extract it in a Util class), see also scaffolder client
-        // NB. without correlated asserts, test on response are impossible,
-        // however diff is possible (on server or client)
-        // ex. on server : http://code.google.com/p/java-diff-utils/
         logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
-        OutMessage outMessage = new OutMessage();
         try {
             ProxyFileStore erfs = new ProxyFileStore();
             // get the record
             if(exchangeRecordId == null || "".equals(exchangeRecordId) || exchangeRecordStoreName==null || "".equals(exchangeRecordStoreName)){
                 throw new Exception("Store and record ID must not be null !");
             }
+            // replay
             ExchangeRecord record = erfs.loadExchangeRecord(exchangeRecordStoreName, exchangeRecordId, false);
+            return this.replay(record);
+        }
+        catch(Exception ex){
+            logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecordId, ex);
+            throw new Exception("A problem occurs during the replay, see logs for more informations !", ex);
+        }
+    }
+    
+    /**
+     * Replay a record without any modifications
+     * @param record The <code>ExchangeRecord</code> to replay
+     */
+    public OutMessage replay(ExchangeRecord exchangeRecord) throws Exception{
+        OutMessage outMessage = new OutMessage();
+        try {
+            // check not null
+            if(exchangeRecord == null){
+                throw new Exception("record must not be null !");
+            }
             RequestForwarder requestForwarder;
             // Send the request
             requestForwarder = new RequestForwarder();
-            outMessage = requestForwarder.send(record.getInMessage());
-            logger.debug("Response of original exchange : " + record.getOutMessage().getMessageContent().getRawContent());
+            outMessage = requestForwarder.send(exchangeRecord.getInMessage());
+            logger.debug("Response of original exchange : " + exchangeRecord.getOutMessage().getMessageContent().getRawContent());
             logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getRawContent());
 
             // How to work with fields in fld files
@@ -215,7 +254,7 @@ public class ReplayEngineImpl implements ReplayEngine {
             // Get default assertions
             AssertionSuggestions assertionSuggestions = assertionSuggestionService.suggestAssertions();
             // Execute assertions
-            List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, record.getOutMessage(), outMessage);
+            List<AssertionResult> assertionResults = assertionEngine.executeAssertions(assertionSuggestions, exchangeRecord.getOutMessage(), outMessage);
             // Recording assertion result for reporting
             if(replaySessionName != null){
                 AssertionReport report = (AssertionReport) logEngine.getLogSession(replaySessionName).getReport();
@@ -226,10 +265,10 @@ public class ReplayEngineImpl implements ReplayEngine {
             return outMessage;
         }
         catch(Exception ex){
-            logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecordId, ex);
+            logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecord.getExchange().getExchangeID(), ex);
             throw new Exception("A problem occurs during the replay, see logs for more informations !", ex);
         }
-    }
+    }    
     
     /**
      * To replay a customized exchange record using template, field suggestions and assertions files generated before.
@@ -265,19 +304,67 @@ public class ReplayEngineImpl implements ReplayEngine {
         return replayedResponse;
     }
 
+    /**
+     * Returns the template engine
+     */
     @Override
     public TemplateEngine getTemplateEngine() {
         return this.templateEngine;
     }
 
+    /**
+     * Returns the assertion engine
+     */
     @Override
     public AssertionEngine getAssertionEngine() {
         return this.assertionEngine;
     }
     
+    /**
+     * Returns the simulation engine
+     */
     @Override
     public SimulationEngine getSimulationEngine() {
         return this.simulationEngine;
+    }
+   
+    /**
+     * Replay a complete store
+     */
+    @Override
+    public void replayRecord(String runName, String environmentName) throws InvalidParameterException, IOException {
+        // Call the replay method for the specified run
+        if(runName == null || "".equals(runName)){
+            throw new InvalidParameterException("the parameter runName must not be null, nor empty");
+        }
+        try{
+            // Get the list of the records contained in the specified store
+            RecordCollection recordCollection = getExchangeRecordlist(runName);
+            Collection<ExchangeRecord> recordList = recordCollection.getRecords();
+            for(ExchangeRecord record : recordList){
+                replay(record);                
+            }
+        }
+        catch(Exception ex){
+            throw new IOException("An error occurs during the replay of run : " + runName ,ex);
+        }
+    }
+
+    /**
+     * Returns a list with all the run name (or store name)
+     */
+    @Override
+    public String[] getAllRunNames() {
+        List<String> storeList = new ArrayList<String>();
+        try {
+            ProxyFileStore erfs = new ProxyFileStore();
+            storeList = erfs.getExchangeRecordStorelist();
+        }
+        catch (Exception ex) {
+            logger.error("An error occurs in the getAllRunNames method", ex);
+        }
+        String[] runList = new String[0];
+        return storeList.toArray(runList);
     }
     
     /*@Override

@@ -105,10 +105,11 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
         File appJar = new File(app.jarPath).getAbsoluteFile();
         try {
             URL[] appClasspath = filesToUrls(appJar, new File(app.libsPath).listFiles());
+            logger.info("Loading app " + app.name);
             String newCompositeName = frascatiService.processComposite(app.compositeName,
                     FraSCAtiServiceItf.all, appClasspath);
             compositeInstances.put(app, newCompositeName);
-            logger.error("Successfuly started app " + app.name);
+            logger.info("Successfuly started app " + app.name);
         } catch (FraSCAtiServiceException e) {
             logger.error("Failed to load app " + app.name + " (composite " + app.compositeName
                     + " from jar '" + appJar.getAbsolutePath() + "')", e);
