@@ -15,7 +15,7 @@ $(document).ready(function() {
       if (xhr.responseText.substr(0, 11) != 'javascript:') {
         js = 'javascript:' + js;
       }
-      $('#bookmarklet').html('<a href="' + js + '">Find WSDLs</a> <span style="font-size: 12pt"><i>(<b>Warning</b>: Work in progress)</i></span>');
+      $('#bookmarklet').html('<a href="' + js + '" style="border: 1px solid black; border-radius: 10px; background-color: white; padding: 10px">Find WSDLs</a>');
     }
   });
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
 
 <h2>Bookmarklet</h2>
 
-<p>If you need to browse to HTTPS places, our proxy will not work. Instead, try to drag this bookmarklet to your favorites: when you're on a page of interest (e.g. that contains links to WSDLs), click then on the bookmark to make EasySOA explore the page.</p>
+<p>If you need to browse to HTTPS places, our proxy will not work. Instead, try to <b>drag this bookmarklet to your favorites</b>: when you're on a page of interest (e.g. that contains links to WSDLs), click then on the bookmark to make EasySOA explore the page.</p>
 
 <p id="bookmarklet" style="font-size: 15pt"><i>(loading)</i></p>
 

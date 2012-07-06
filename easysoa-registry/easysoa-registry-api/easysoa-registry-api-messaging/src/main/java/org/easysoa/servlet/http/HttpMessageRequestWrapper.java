@@ -27,9 +27,14 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Map;
+
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -40,16 +45,20 @@ import org.apache.commons.io.IOUtils;
 public class HttpMessageRequestWrapper extends HttpServletRequestWrapper {
 
     // Request content
-    final private String reqContent;
+    private String reqContent;
+    
+    private Map<String, String[]> parameters;
     
     /**
      * 
      * @param request
      * @throws IOException
      */
-    public HttpMessageRequestWrapper(HttpServletRequest request) throws IOException {
+    @SuppressWarnings("unchecked")
+	public HttpMessageRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
         reqContent = IOUtils.toString(request.getInputStream());    
+        this.parameters = request.getParameterMap(); // TODO or also clone ??
     }
     
     /**
@@ -72,6 +81,28 @@ public class HttpMessageRequestWrapper extends HttpServletRequestWrapper {
      */
     public BufferedReader getReader() {
         return new BufferedReader(new StringReader(reqContent));
+    }
+  
+    @Override    
+    public String[] getParameterValues(String name) {
+    	return this.parameters.get(name);
+    }
+    
+    @SuppressWarnings("rawtypes")
+	@Override
+	public Map getParameterMap() {
+		return this.parameters;
+	}
+
+	@Override
+	public Enumeration<String> getParameterNames() {
+	    Enumeration<String> e = Collections.enumeration(this.parameters.keySet());
+		return e;
+	}
+
+	@Override
+    public String getParameter(String name) {
+    	return this.getParameterMap().get(name).toString();
     }
     
 }

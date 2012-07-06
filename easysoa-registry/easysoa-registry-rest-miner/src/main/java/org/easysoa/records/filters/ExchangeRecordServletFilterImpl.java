@@ -94,7 +94,6 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 				}
 			}
 		}
-
 		// Let the request continue
 		chain.doFilter(request, response);
 	}

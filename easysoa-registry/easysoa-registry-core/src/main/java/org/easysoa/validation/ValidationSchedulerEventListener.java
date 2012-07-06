@@ -119,13 +119,15 @@ public class ValidationSchedulerEventListener implements EventListener {
 					
 					// Run discovery replay
 					ExchangeReplayController exchangeReplayController = serviceValidationService.getExchangeReplayController();
-					if (exchangeReplayController == null) {
-					    throw new NullPointerException("No exchange replay controller available");
+					if (exchangeReplayController != null) {
+	                    exchangeReplayController.replayRecord(runName, environmentName);
+	                    
+	                    // Validate temporary environment
+	                    validationResults = serviceValidationService.validateServices(session, tmpWorkspaceModel); 
 					}
-					exchangeReplayController.replayRecord(runName, environmentName);
-					
-					// Validate temporary environment
-					validationResults = serviceValidationService.validateServices(session, tmpWorkspaceModel); 
+					else {
+	                    log.error("Cannot run scheduled validation: No exchange replay controller available");
+					}
 				}
 				catch (Exception e) {
 					log.error("Failed to run scheduled validation", e);
@@ -137,7 +139,7 @@ public class ValidationSchedulerEventListener implements EventListener {
 					}
 				}
 
-				if (freemarkerCfg != null) {
+				if (freemarkerCfg != null && validationResults != null) {
 					// Create report
 			        Template tpl = freemarkerCfg.getTemplate(VALIDATION_REPORT_TEMPLATE);
 			        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
