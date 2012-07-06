@@ -20,7 +20,7 @@ $(document).ready(function() {
 		url: '/light/serviceList',
 		success: function (data, textStatus, jqXHR) {
 			$("#loading").hide();
-			var result = JSON.parse(jqXHR.responseText);
+			var result = $.parseJSON(jqXHR.responseText);
 			if (result.success) {
 				if (result.data.length > 0) {
 					for (service in result.data) {
