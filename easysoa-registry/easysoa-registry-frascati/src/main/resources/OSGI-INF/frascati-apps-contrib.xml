@@ -2,6 +2,7 @@
 <component name="org.easysoa.registry.frascati.FraSCAtiApps.contrib">
 
   <extension target="org.easysoa.registry.frascati.FraSCAtiApps" point="apps">
+   
     <app name="EasySOA Proxy Core HTTP Monitoring Proxy">
       <jarPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT/bin/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT.jar</jarPath>
       <libsPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT/lib</libsPath>

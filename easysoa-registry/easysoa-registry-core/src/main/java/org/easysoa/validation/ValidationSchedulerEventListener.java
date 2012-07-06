@@ -93,12 +93,19 @@ public class ValidationSchedulerEventListener implements EventListener {
 	public void handleEvent(Event event) throws ClientException {
 		
 		synchronized(log) {
-		
+
+        boolean wasActiveTx = false;
 		try {
 		
 			// Init
 	        RepositoryManager mgr = Framework.getService(RepositoryManager.class);
 	        Repository repository = mgr.getDefaultRepository();
+	        
+	        wasActiveTx = TransactionHelper.isTransactionActive();
+	        if (wasActiveTx) {
+	            TransactionHelper.commitOrRollbackTransaction();
+	        }
+	        
 	        TransactionHelper.startTransaction();
 	        session = repository.open();
 	        
@@ -113,13 +120,13 @@ public class ValidationSchedulerEventListener implements EventListener {
 				DocumentModel tmpWorkspaceModel = null;
 				ValidationResultList validationResults = null;
 
-				try {
-					// Create temporary environment
-					tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
-					
+				//try {
 					// Run discovery replay
 					ExchangeReplayController exchangeReplayController = serviceValidationService.getExchangeReplayController();
 					if (exchangeReplayController != null) {
+	                    // Create temporary environment
+	                    tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
+	                    
 	                    exchangeReplayController.replayRecord(runName, environmentName);
 	                    
 	                    // Validate temporary environment
@@ -128,16 +135,17 @@ public class ValidationSchedulerEventListener implements EventListener {
 					else {
 	                    log.error("Cannot run scheduled validation: No exchange replay controller available");
 					}
-				}
+				/*}
 				catch (Exception e) {
 					log.error("Failed to run scheduled validation", e);
+					throw e;
 				}
 				finally {
 					if (tmpWorkspaceModel != null) {
 						// Remove temporary environment
 						session.removeDocument(tmpWorkspaceModel.getRef());
 					}
-				}
+				}*/
 
 				if (freemarkerCfg != null && validationResults != null) {
 					// Create report
@@ -204,6 +212,9 @@ public class ValidationSchedulerEventListener implements EventListener {
 	        if (session != null) {
 	            CoreInstance.getInstance().close(session);
 	        }
+            if (wasActiveTx) {
+                TransactionHelper.startTransaction();
+            }
 		}
 		
 		}

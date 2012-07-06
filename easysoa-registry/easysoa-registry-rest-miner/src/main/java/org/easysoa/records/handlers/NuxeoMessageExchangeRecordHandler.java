@@ -49,6 +49,8 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
         super();
         // Get the service
         FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+        
+        // TODO : Same problem here : not possible to get the runManager with this method
         this.setRunManager((RunManager) frascati.getService("runManager", "runManagerService", RunManager.class));
     }
 

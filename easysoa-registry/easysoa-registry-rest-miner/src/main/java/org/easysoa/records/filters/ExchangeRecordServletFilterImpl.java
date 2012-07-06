@@ -34,9 +34,14 @@ import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.easysoa.servlet.http.HttpMessageResponseWrapper;
-import org.nuxeo.runtime.api.Framework;
+/*import org.eclipse.emf.common.util.EList;
+import org.eclipse.stp.sca.Component;
+import org.eclipse.stp.sca.ComponentService;
+import org.eclipse.stp.sca.Interface;
+import org.nuxeo.runtime.api.Framework;*/
 import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
 import com.openwide.easysoa.run.RunManager;
+import com.openwide.easysoa.run.RunManagerImpl;
 
 /**
  * Servlet filter to record exchanges in Easysoa.
@@ -64,9 +69,37 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	    singleton = this;
 	    // Registering the event receiver
 	    try {
-	        FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();	        
-            RunManager runManager = frascati.getService("runManager", "runManagerService", RunManager.class);
-            runManager.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
+	        //FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+	        // Problem here, only the manually stared composites are returned
+	        // Or this composite is not yet loaded ...
+            /*EList<Component> componentList = frascati.getComposite("httpDiscoveryProxy").getComponent();
+            for(Component c : componentList){
+                logger.debug(c.getName());
+                if("runManagerComponent".equals(c.getName())){
+                    EList<ComponentService> componentServiceList = c.getService();
+                    for(ComponentService cs : componentServiceList){        
+                        if("runManagerService".equals(cs.getName())){
+                            // How to cast the returned thing in runManager ????
+                            Interface csInterface = cs.getInterface();
+                            
+                            if(csInterface instanceof RunManager){
+                                
+                            }
+                            else {
+                                
+                            }
+                            
+                            logger.debug(csInterface.getClass());
+                        }
+                    }
+                }
+            }*/
+	        //RunManager runManager = frascati.getService("runManager", "runManagerService", RunManager.class);
+	        //runManager.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
+	        
+	        // TODO : Using a static method to set the event receiver
+	        // Not a clean method, check if it is possible to get the RunManager service with Frascati.getService method
+	        RunManagerImpl.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
         } catch (Exception ex) {
             logger.error("Unable to register the ExchangeRecordServletFilterEventReceiver in the run manager", ex);
         }

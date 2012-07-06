@@ -122,6 +122,11 @@
                   <version>${easysoa.version}</version>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-local</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>                
+                <artifactItem>
                   <groupId>org.easysoa.proxy</groupId>
                   <artifactId>easysoa-proxy-core-api</artifactId>
                   <version>${easysoa.version}</version>
