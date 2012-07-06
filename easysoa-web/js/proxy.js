@@ -19,7 +19,7 @@ var utils = require('./utils');
 
 // Proxy Initialization
 
-var proxy = new httpProxy.HttpProxy();
+var proxy = new httpProxy.RoutingProxy();
 
 proxy.on('proxyError', function(error, request, result) {
     result.end("<h1>Error "+error.errno+"</h1>" +
