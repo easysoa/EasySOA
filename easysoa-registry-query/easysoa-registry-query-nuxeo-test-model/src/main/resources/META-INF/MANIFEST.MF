@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: easysoa-registry-query-nuxeo-test-model
+Bundle-SymbolicName: org.easysoa.registry.query.nuxeo.test-model;singleton:=true
+Bundle-Vendor: EasySOA Consortium
+Require-Bundle: org.nuxeo.ecm.core,
+ org.nuxeo.ecm.core.schema
+Nuxeo-Component: OSGI-INF/schema-contrib.xml,
+ OSGI-INF/doctype-contrib.xml

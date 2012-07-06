@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: easysoa-registry-query-nuxeo-webengine
+Bundle-SymbolicName: org.easysoa.registry.query.nuxeo.webengine;singleton:=true
+Bundle-Vendor: EasySOA Consortium
+Nuxeo-Require: org.nuxeo.ecm.core,
+ org.nuxeo.ecm.webengine
+Nuxeo-WebModule: org.nuxeo.ecm.webengine.jaxrs.scan.DynamicApplicationFactory;package=org/easysoa/registry/query/nuxeo/webengine,
+ org.nuxeo.ecm.webengine.app.WebEngineModule;name=ServiceListing[;extends=base;package=org/easysoa/registry/query/nuxeo/webengine]
+Nuxeo-Component: 

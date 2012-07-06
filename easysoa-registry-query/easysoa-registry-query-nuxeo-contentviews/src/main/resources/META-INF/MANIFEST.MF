@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: easysoa-registry-query-nuxeo-contentviews
+Bundle-SymbolicName: org.easysoa.registry.query.nuxeo.contentviews;singleton:=true
+Bundle-Vendor: EasySOA Consortium
+Require-Bundle: org.nuxeo.ecm.platform.contentview.jsf,
+ org.easysoa.registry.query.nuxeo.test-model
+Nuxeo-Component: OSGI-INF/contentviews-contrib.xml,
+ OSGI-INF/ui-contrib.xml

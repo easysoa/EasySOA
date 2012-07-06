@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>easysoa-registry-query-parent</artifactId>
+    <groupId>org.easysoa.registry.query</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <groupId>org.easysoa.registry.service-listing.nuxeo</groupId>
+  <artifactId>easysoa-registry-service-listing-nuxeo-webengine</artifactId>
+
+  <properties>
+    <nuxeo.version>5.5.0-HF09</nuxeo.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.nuxeo.ecm.core</groupId>
+        <artifactId>nuxeo-core-api</artifactId>
+        <version>${nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.webengine</groupId>
+        <artifactId>nuxeo-webengine-base</artifactId>
+        <version>${nuxeo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-platform-directory-api</artifactId>
+        <version>${nuxeo.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.webengine</groupId>
+      <artifactId>nuxeo-webengine-base</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-platform-directory-api</artifactId>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>nuxeo-public-releases</id>
+      <url>https://maven-eu.nuxeo.org/nexus/content/repositories/public-releases/</url>
+    </repository>
+  </repositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+      <!-- APT plugin for annotation preprocessing -->
+      <plugin>
+        <groupId>org.apache.myfaces.tobago</groupId>
+        <artifactId>maven-apt-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-bindings</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- end APT plugin -->
+    </plugins>
+  </build>
+</project>

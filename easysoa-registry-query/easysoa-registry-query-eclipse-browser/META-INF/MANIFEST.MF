@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: easysoa-registry-query-eclipse
+Bundle-SymbolicName: org.easysoa.registry.query.eclipse.browser;singleton:=true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: EasySOA Consortium
+Bundle-Version: 0.0.1.qualifier
+Bundle-ActivationPolicy: lazy

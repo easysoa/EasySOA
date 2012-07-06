@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<component name="org.easysoa.registry.test.model.ui">
+
+  <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewExtensionPoint/org.nuxeo.ecm.platform.types.TypeService--types
+  </documentation>
+
+  <extension target="org.nuxeo.ecm.platform.types.TypeService"
+    point="types">
+
+    <type id="Service" coretype="Service">
+      <label>Service</label>
+      <icon>/icons/file.gif</icon>
+      <bigIcon>/icons/file_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>file</layout>
+        <layout>dublincore</layout>
+      </layouts>
+    </type>
+    
+    <type id="System" coretype="System">
+      <label>System</label>      
+      <icon>/icons/folder.gif</icon>
+      <bigIcon>/icons/folder_100.png</bigIcon>
+      <icon-expanded>/icons/folder_open.gif</icon-expanded>
+      <default-view>view_documents</default-view>
+      <subtypes>
+        <type>Service</type>
+      </subtypes>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>dublincore</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>nested_services</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
+
+    <type id="Workspace">
+      <subtypes>
+        <type>System</type>
+      </subtypes>
+    </type>
+
+  </extension>
+
+</component>
