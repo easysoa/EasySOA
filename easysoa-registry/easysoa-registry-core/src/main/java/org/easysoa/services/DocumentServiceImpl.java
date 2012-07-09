@@ -39,6 +39,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.api.Filter;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.runtime.model.DefaultComponent;
 
@@ -126,7 +127,7 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
 
     public DocumentModel findWorkspace(CoreSession session, String name) throws ClientException {
         if (name != null) {
-            return findFirstDocument(session, "Workspace", "dc:title", name);
+            return findFirstDocument(session, "Workspace", "dc:title", name, new PersonalWorkspaceFilter());
         } else {
             return null;
         }
@@ -293,22 +294,14 @@ public class DocumentServiceImpl extends DefaultComponent implements DocumentSer
     public DocumentRef getWorkspaceRoot(CoreSession session) throws ClientException {
         return workspaceRootRef;
     }
-
+    
     private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value) throws ClientException {
+        return findFirstDocument(session, type, field, value, null);
+    }
+
+    private DocumentModel findFirstDocument(CoreSession session, String type, String field, String value, Filter filter) throws ClientException {
         DocumentModelList results = session.query("SELECT * FROM " + type + " WHERE " + 
-        		field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isCheckedInVersion = 0"/*,
-        		new Filter() {
-                    private static final long serialVersionUID = 1L;
-                    public boolean accept(DocumentModel docModel) {
-                        try {
-                            // Filter old versions of document
-                            return docModel.isLatestVersion() || !docModel.hasFacet("Versionable");
-                        } catch (ClientException e) {
-                            return false;
-                        }
-                    }
-                }*/ // FIXME
-            );
+                field + " = '" + value + "' AND ecm:currentLifeCycleState <> 'deleted' AND ecm:isCheckedInVersion = 0", filter);
         return (results != null && !results.isEmpty()) ? results.get(0) : null;
     }
 

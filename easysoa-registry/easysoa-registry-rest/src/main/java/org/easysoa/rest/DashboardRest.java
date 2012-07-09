@@ -188,9 +188,6 @@ public class DashboardRest {
     @Path("/document/{docId}/validate")
     @Produces(MediaType.APPLICATION_JSON)
     public Object getValidators(@Context HttpServletRequest request, @PathParam("docId") String docId) throws Exception {
-        
-        // XXX Untested
-        
         CoreSession session = SessionFactory.getSession(request);
         DocumentModel doc = session.getDocument(new IdRef(docId));
         JSONObject result = new JSONObject();
@@ -260,11 +257,10 @@ public class DashboardRest {
         if (localServiceModel != null) {
             boolean referenceidIsNull = "null".equals(referenceid);
             DocumentRef referenceRef = new IdRef(referenceid);
-            if (referenceidIsNull || session.exists(new IdRef(referenceid))) {
-                DocumentModel referenceModel = session.getDocument(referenceRef);
+            if (referenceidIsNull || session.exists(referenceRef)) {
                 String newReferencePath = null, newReferenceOrigin = null;
                 if (!referenceidIsNull) {
-                    newReferencePath = referenceModel.getPathAsString();
+                    newReferencePath = session.getDocument(referenceRef).getPathAsString();
                     newReferenceOrigin = "Manually set";
                     if (localServiceModel.getAllowedStateTransitions().contains("approve")) {
                         localServiceModel.followTransition("approve");
