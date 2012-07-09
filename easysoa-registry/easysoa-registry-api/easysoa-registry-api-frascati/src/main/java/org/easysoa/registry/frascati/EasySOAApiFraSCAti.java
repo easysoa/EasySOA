@@ -36,6 +36,8 @@ import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
  */
 public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
 {
+    private static final File LIBRARIES_DIRECTORY = new File("./nxserver/frascati/lib");
+
     /**
      * the EasySOAApiFraSCAti singleton
      */
@@ -55,7 +57,12 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
     {
         if (instance == null)
         {
-            instance = new EasySOAApiFraSCAti();
+            try
+            {
+                instance = new EasySOAApiFraSCAti();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
         }
         return instance;
     }
@@ -79,20 +86,27 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
     }
     
     /**
-     * Hidden constructor Use {@link EasySOAApiFraSCAti#getInstance()} static
-     * method instead
+     * Prefer {@link EasySOAApiFraSCAti#getInstance()} static method instead
+     * (constructor only made public to let the Nuxeo framework instanciate it)
      */
-    protected EasySOAApiFraSCAti()
+    public EasySOAApiFraSCAti() throws InstantiationException
     {
+        if (instance != null)
+        {
+            throw new InstantiationException("EasySOAApiFraSCAti is already instanciated");
+        }
+        
         try
         {
-            remoteProvider = new RemoteFraSCAtiServiceProvider(null);
+            remoteProvider = new RemoteFraSCAtiServiceProvider(LIBRARIES_DIRECTORY);
             this.frascati = remoteProvider.getFraSCAtiService();
             
         } catch (Exception e)
         {
             e.printStackTrace();
         }
+        
+        instance = this;
     }
 
     /**
