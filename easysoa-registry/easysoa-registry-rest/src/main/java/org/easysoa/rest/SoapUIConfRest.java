@@ -73,7 +73,7 @@ public class SoapUIConfRest {
         
             Blob wsdlBlob = (Blob) serviceModel.getPropertyValue("file:content");
             if (wsdlBlob != null) {
-                File tmpWsdlFile = File.createTempFile(serviceModel.getTitle(), "wsdl");
+                File tmpWsdlFile = File.createTempFile(serviceModel.getTitle().replaceAll("/", "_"), "wsdl");
                 wsdlBlob.transferTo(tmpWsdlFile);
                 SoapUIWSDL newWSDL = wsdlFactory.create(tmpWsdlFile,
                        (String) serviceModel.getProperty(Service.SCHEMA, Service.PROP_FILEURL));
