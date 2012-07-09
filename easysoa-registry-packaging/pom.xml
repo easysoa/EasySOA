@@ -437,6 +437,22 @@
                     <artifactId>commons-io</artifactId>
                     <version>1.3.2</version>
                 </artifactItem>
+                <artifactItem>
+                    <!-- Needed by api-messaging -->
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-io</artifactId>
+                    <version>1.3.2</version>
+                </artifactItem>
+
+				            
+    			<artifactItem>
+    				<groupId>commons-fileupload</groupId>
+    				<artifactId>commons-fileupload</artifactId>
+    				<version>1.2.2</version>
+    			</artifactItem>
+
+				
+		
 
 				<!-- Needed by HttpDiscovery Proxy -->
 				<!-- 2.2.1 version is used to avoid problems with json embedded in a json data structure -->
