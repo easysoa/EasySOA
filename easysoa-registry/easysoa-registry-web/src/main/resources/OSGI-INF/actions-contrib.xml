@@ -15,12 +15,23 @@
       <category>EASYSOA_TAB</category>
       <filter-id>can-view-easysoa-tab</filter-id>
     </action>
-
     <action id="scaImport" link="/incl/sca/sca_import_form.xhtml"
       label="Import SCA" order="20">
       <category>SCA_sub_tab</category>
        <filter-id>can-view-easysoa-tab</filter-id>
     </action>
+
+    <action id="environmentValidation" link="view_easysoa-fragment.xhtml"
+      label="Validation" order="11">
+      <category>EASYSOA_TAB</category>
+      <filter-id>can-view-easysoa-tab</filter-id>
+    </action>
+    <action id="environmentValidationTab" link="/incl/validation/env_validation_form.xhtml"
+      label="Environment Validation" order="20">
+      <category>environmentValidation_sub_tab</category>
+      <filter-id>can-view-easysoa-tab</filter-id>
+    </action>
+    
   </extension>
 
   <extension target="org.nuxeo.ecm.platform.actions.ActionService"

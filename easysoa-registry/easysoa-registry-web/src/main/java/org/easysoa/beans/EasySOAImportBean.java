@@ -227,19 +227,6 @@ public class EasySOAImportBean {
         }
     }
 
-    private static List<SelectItem> modelsToSelectItems(DocumentModelList modelList) {
-        // Transform into select item list
-        List<SelectItem> items = new ArrayList<SelectItem>();
-        for (DocumentModel model : modelList) {
-            try {
-                items.add(new SelectItem(model.getId(), model.getTitle()));
-            } catch (Exception e) {
-                log.warn("Failed to extract data from a document");
-            }
-        }
-        return items;
-    }
-
     public Blob getFile() {
         return file;
     }
@@ -249,12 +236,12 @@ public class EasySOAImportBean {
     }
 
     public List<SelectItem> getWorkspaces() throws ClientException {
-        return modelsToSelectItems(getAllWorkspaces(documentManager)); // TODO Caching
+        return BeanUtils.modelsToSelectItems(getAllWorkspaces(documentManager)); // TODO Caching
     }
 
     public List<SelectItem> getAppliImpls() throws ClientException {
         if (targetWorkspaceModel != null) {
-            return modelsToSelectItems(getAllAppliImpls(documentManager, targetWorkspaceModel.getRef()));
+            return BeanUtils.modelsToSelectItems(getAllAppliImpls(documentManager, targetWorkspaceModel.getRef()));
         }
         else {
             return new ArrayList<SelectItem>();

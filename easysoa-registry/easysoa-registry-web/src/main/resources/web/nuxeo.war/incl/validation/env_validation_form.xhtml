@@ -1,0 +1,57 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:nxh="http://nuxeo.org/nxweb/html">
+
+  <h1>
+    <h:outputText value="#{messages['label.easysoa.validation.pagetitle']}" />
+  </h1>
+
+  <div id="content">
+
+    <h:form enctype="multipart/form-data">
+        
+    <table class="dataInput">
+      <tbody>
+      
+        <tr>
+          <td class="labelColumn"><h:outputText
+              value="#{messages['label.easysoa.validation.runname']}" /></td>
+          <td class="fieldColumn"><h:selectOneMenu id="runName"
+              value="#{environmentValidation.runName}">
+              <f:selectItems
+                value="#{environmentValidation.getAvailableRunNames()}" />
+            </h:selectOneMenu></td>
+        </tr>
+
+        <tr>
+          <td class="labelColumn"><h:outputText
+              value="#{messages['label.easysoa.validation.environmentname']}" /></td>
+          <td class="fieldColumn"><h:selectOneMenu
+              id="environmentName"
+              value="#{environmentValidation.environmentName}">
+              <f:selectItems
+                value="#{environmentValidation.getAvailableEnvironments()}" />
+            </h:selectOneMenu></td>
+        </tr>
+
+        <tr>
+          <td class="labelColumn"></td>
+          <td class="fieldColumn"><nxh:commandButton type="button"
+              value="#{messages['label.easysoa.validation.launch']}"
+              action="#{environmentValidation.runValidation()}" /></td>
+        </tr>
+
+      </tbody>
+    </table>
+    
+    </h:form>
+
+    <div
+      style="border: 1px solid black; padding: 10px; margin-top: 15px; background-color: #F5F5F5; min-width: 300px">
+      <h:outputText value="#{environmentValidation.validationReport}" />
+    </div>
+
+  </div>
+
+</div>

@@ -21,35 +21,12 @@
 package org.easysoa.validation;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.services.DocumentService;
-import org.easysoa.services.PublicationService;
-import org.easysoa.services.ServiceValidationService;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreInstance;
-import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
-import org.nuxeo.ecm.core.api.repository.Repository;
-import org.nuxeo.ecm.core.api.repository.RepositoryManager;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.transaction.TransactionHelper;
-
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.Template;
 
 /**
  * 
@@ -58,166 +35,22 @@ import freemarker.template.Template;
  */
 public class ValidationSchedulerEventListener implements EventListener {
 
-	private static final String TEMPLATES_FOLDER = "./nxserver/nuxeo.war/templates";
-	private static final String VALIDATION_REPORT_TEMPLATE = "validationReport.ftl";
-
     private static Log log = LogFactory.getLog(ValidationSchedulerEventListener.class);
     
-	private static Configuration freemarkerCfg = null;
-    
-	private ServiceValidationService serviceValidationService;
-
-	private PublicationService publicationService;
-	
-	private DocumentService docService;
-	
-	private CoreSession session = null;
-	
-    static {
-    	try {
-        	freemarkerCfg = new Configuration();
-			freemarkerCfg.setDirectoryForTemplateLoading(new File(TEMPLATES_FOLDER));
-	    	freemarkerCfg.setObjectWrapper(new DefaultObjectWrapper());
-		} catch (IOException e) {
-			log.error("Failed to initialize templating configuration, no validation reports will be produced: " + e.getMessage());
-		}
-    }
-    
-	public ValidationSchedulerEventListener() throws Exception {
-		serviceValidationService = Framework.getService(ServiceValidationService.class);
-		publicationService = Framework.getService(PublicationService.class);
-		docService = Framework.getService(DocumentService.class);
-	}
-	
 	@Override
 	public void handleEvent(Event event) throws ClientException {
-		
-		synchronized(log) {
 
-        boolean wasActiveTx = false;
-		try {
-		
-			// Init
-	        RepositoryManager mgr = Framework.getService(RepositoryManager.class);
-	        Repository repository = mgr.getDefaultRepository();
-	        
-	        wasActiveTx = TransactionHelper.isTransactionActive();
-	        if (wasActiveTx) {
-	            TransactionHelper.commitOrRollbackTransaction();
-	        }
-	        
-	        TransactionHelper.startTransaction();
-	        session = repository.open();
-	        
-			String[] eventData = ((String) event.getContext().getProperty("eventCategory")).split("-"); // (see ValidationSchedulerComponent.registerContribution()
-			String runName = eventData[0], environmentName = eventData[1];
-			
-			String tmpWorkspaceName = "tmp" +  + System.currentTimeMillis();
-			
-			// Fork existing environment
-			DocumentModel environmentModel = docService.findEnvironment(session, environmentName);
-			if (environmentModel != null) {
-				DocumentModel tmpWorkspaceModel = null;
-				ValidationResultList validationResults = null;
+        try {
+            // "eventCategory" stores information under the format "runName-environmentName"
+            // (see ValidationSchedulerComponent.registerContribution()
+            String[] eventData = ((String) event.getContext().getProperty("eventCategory")).split("-");
 
-				//try {
-					// Run discovery replay
-					ExchangeReplayController exchangeReplayController = serviceValidationService.getExchangeReplayController();
-					if (exchangeReplayController != null) {
-	                    // Create temporary environment
-	                    tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
-	                    
-	                    exchangeReplayController.replayRecord(runName, environmentName);
-	                    
-	                    // Validate temporary environment
-	                    validationResults = serviceValidationService.validateServices(session, tmpWorkspaceModel); 
-					}
-					else {
-	                    log.error("Cannot run scheduled validation: No exchange replay controller available");
-					}
-				/*}
-				catch (Exception e) {
-					log.error("Failed to run scheduled validation", e);
-					throw e;
-				}
-				finally {
-					if (tmpWorkspaceModel != null) {
-						// Remove temporary environment
-						session.removeDocument(tmpWorkspaceModel.getRef());
-					}
-				}*/
-
-				if (freemarkerCfg != null && validationResults != null) {
-					// Create report
-			        Template tpl = freemarkerCfg.getTemplate(VALIDATION_REPORT_TEMPLATE);
-			        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-			        for (ValidationResult validationResult : validationResults) {
-				        List<Map<String, Object>> validatorsResults = new ArrayList<Map<String, Object>>();
-				        for (ValidatorResult validatorResult : validationResult) {
-					        Map<String, Object> paramsOneValidator = new HashMap<String, Object>();
-					        paramsOneValidator.put("validationSuccess", validatorResult.isValidated() ? "passed" : "failed");
-					        paramsOneValidator.put("validatorName", validatorResult.getValidatorName());
-					        paramsOneValidator.put("validationLog", validatorResult.getValidationLog());
-					        validatorsResults.add(paramsOneValidator);
-				        }
-				        Map<String, Object> paramsOneResult = new HashMap<String, Object>();
-				        paramsOneResult.put("validatorsResults", validatorsResults);
-				        paramsOneResult.put("validationSuccess", validationResult.isValidationPassed() ? "passed" : "failed");
-				        paramsOneResult.put("serviceName", validationResult.getServiceName());
-				        results.add(paramsOneResult);
-			        }
-			        Map<String, Object> params = new HashMap<String, Object>();
-			        List<String> validatorsNames = new ArrayList<String>();
-			        for (ValidatorResult validatorResult : validationResults.get(0)) {
-			        	validatorsNames.add(validatorResult.getValidatorName());
-			        }
-			        params.put("results", results);
-			        params.put("validatorsNames", validatorsNames);
-			        params.put("validationSuccess", validationResults.isEveryValidationPassed() ? "passed" : "failed");
-			        params.put("date", new Date());
-			        params.put("runName", "TODO"); // TODO
-			        params.put("environmentName", environmentName);
-			        
-			        StringWriter writer = new StringWriter();
-			        tpl.process(params, writer);
-			        writer.flush();
-			        String reportAsString = writer.getBuffer().toString();
-	
-					// Save report | TODO if too much files, remove the older ones
-					DocumentModel workspaceModel = docService.findWorkspace(session, environmentName);
-					@SuppressWarnings("unchecked")
-					List<Map<String, Object>> files = (List<Map<String, Object>>) workspaceModel.getProperty("files", "files");
-					Map<String, Object> newFile = new HashMap<String, Object>();
-					newFile.put("filename", "Validation report - " + new Date(System.currentTimeMillis()).toString() + ".html");
-					newFile.put("file", new StringBlob(reportAsString));
-	
-					files.add(newFile);
-					workspaceModel.setProperty("files", "files", files);
-					session.saveDocument(workspaceModel);
-				}
-			
-			}
-			else {
-				log.error("Failed to run scheduled validation: environment '" + environmentName + "' doesn't exist");
-			}
-			
-		}
-		
-		catch (Exception e) {
-			log.error("Failed to run scheduled validation", e);
-		}
-		
-		finally {
-	        TransactionHelper.commitOrRollbackTransaction();
-	        if (session != null) {
-	            CoreInstance.getInstance().close(session);
-	        }
-            if (wasActiveTx) {
-                TransactionHelper.startTransaction();
-            }
-		}
-		
-		}
+            EnvironmentValidationService environmentValidationService = Framework.getService(EnvironmentValidationService.class);
+            environmentValidationService.run(eventData[0], eventData[1]);
+        } catch (Exception e) {
+            log.error("Failed to trigger scheduled validation", e);
+        }
+        
 	}
 	
 }
