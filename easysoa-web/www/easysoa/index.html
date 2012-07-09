@@ -173,7 +173,7 @@
    
     <div id="accordion">
     
-      <h3><a href="#">For the Business user</a></h3>
+      <h3><a href="#">Discover services easily, and call them</a></h3>
       <div>
           <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (enable only the HTTP protocol) and remove any proxy exceptions. In case something goes wrong during the demo, you can check the <a href="https://github.com/easysoa/EasySOA/wiki/Demo-v0.3-doc#wiki-troubleshooting">troubleshooting page</a>.</p>
            
@@ -182,7 +182,7 @@
           <div class="loginInfoBox"><img src="img/users/biz.png" style="vertical-align: middle" />
           In order to login as a <b>Business User</b>, use <b>Sophie</b> as username/password.</div>
           
-          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/dbb/index.html">Service Discovery</a>. From there, as you visit pages, you will see services appearing in the left menu, meaning that EasySOA has just found them. You're then two clicks away to register this service: just select <b>"Orders service"</b>, then click <b>"Save Service"</b>, and you're done!</p>
+          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Discovery-by-Browsing">More on discovery by browsing</a>For tests purposes, this demo packs a mockup intranet of a company named <i>Pure Air Flowers</i>. Let's browse it using the <a href="core/dbb/index.html">Discovery by browsing</a>. From there, as you visit pages, you will see services appearing in the left menu, meaning that EasySOA has just found them. You're then two clicks away to register this service: just select <b>"Orders service"</b>, then click <b>"Save Service"</b>, and you're done!</p>
 
           <h2><div>Step 2</div> Explore all services</h2>
           
@@ -212,7 +212,7 @@
 
 
       
-      <h3><a href="#">For Developers & IT staff</a></h3>
+      <h3><a href="#">Import and monitor your services</a></h3>
       <div>
           <p>This scenario is based on another demo SOA, called "Smart Travel". This time, we will take the role of a developer who wants to map the SOA contents.</p>
           
@@ -221,7 +221,9 @@
           <div class="loginInfoBox"><img src="img/users/architect.png" style="vertical-align: middle" />
           In order to login as a <b>Software architect</b>, type <b>Ted</b> as username/password.</div>
           
-          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" is able to analyze the definition of the SOA components. From the service registry, create a new application by going to the "<i>Service registry</i>" document and choosing "<i>New Application Implementation</i>" ; create it with "<b>Smart Travel</b>" as the title and "<b>http://localhost</b>" for the services URL. Then, import the SCA file through the "EasySOA > SCA data import" page, from the top menu. Choose the file located in "<i>examples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), then select the newly created application for the import, and go!</p>
+          <p><a class="more" href="http://github.com/easysoa/EasySOA/wiki/Importing-an-SCA-Model">More on SCA import</a>First, we are going to import the whole SOA architecture into the service registry. In order to do that, a feature called "<i><a href="http://en.wikipedia.org/wiki/Service_Component_Architecture">SCA</a> import</i>" is able to analyze the definition of the SOA components. From the service registry, create a new application by going to the "<i>Service registry</i>" document and choosing "<i>New Application Implementation</i>" ; create it with "<b>Smart Travel</b>" as the title and "<b>http://localhost</b>" for the services URL.</p>
+          
+          <p>Then, import the SCA file through the "EasySOA > SCA data import" page, from the top menu. Choose the file located in "<i>examples/smart-travel-mock-services.composite</i>" (in your EasySOA folder), select the newly created application for the import, and you're ready to go! While we're at it, notice that the import of Soap UI projects is also possible (feel free to test it with the .xml file provided in the same "<i>examples/</i>" folder).</p>
           
           <h2><div>Step 2</div> Explore the services</h2>
           
@@ -249,6 +251,31 @@
           <p>These two demos show you various ways to use and interact with EasySOA and its cross-cutting model. But the ambitions of EasySOA go further than what you just saw: services creation, more collaborative features, but also the configuration of the monitoring component, an all-in-one architecture... So stay tuned! Thanks for testing EasySOA!</p>
       </div>
       
+      <h3><a href="#">Manipulate and validate environments</a></h3>
+      <div>
+      
+        <p>This scenario focuses on using EasySOA to ensure the quality of your services. We have various ways to validate services that we'll showcase here. To get started, make sure your service registry already contains at least one service to work with (you can use the <a href="/easysoa/core/dbb">Discovery by browsing</a> tool to help you with that).</p>
+      
+        <h2><div>Step 1</div> Publishing and forking environments</h2>
+      
+        <div class="loginInfoBox"><img src="img/users/developer.png" style="vertical-align: middle" />
+          In order to login as a <b>Developer</b>, type <b>George</b> as username/password.</div>
+          
+        <p><a class="more" href="https://github.com/easysoa/EasySOA/wiki/Publishing-and-forking-environments">More on envrionments</a>The SOA model embedded in EasySOA aims at supporting several "environments", i.e. several versions of the SOA deployed at different places for different purposes. Here, the main - or "Master" - environment will serve as a reference for a new, developer-specific environment.</p>
+        
+        <p>Log in to the <a href="http://localhost:8080">Service registry</a>, and browse to the one and only Environment named "<i>Master</a>". From there click the "<i>Publish workspace</a>" button (located just above the document list) : the goal of publishing an environment if to mark its current state as valid, and make it serve as a reference for other environments. One example would be that if someone in a development environment works on a new version of a SOAP service, EasySOA will be able to check if the WSDL of the work in progress is compatible with the published WSDL.</p>
+        
+        <p>The published environment can be found under "<i>Environments > Master</i>". Once you're viewing this published document, click this time on "<i>Fork workspace</i>" to get your own copy of it, stored as a personal "<i>George</i>" environment.</p>
+        
+        <h2><div>Step 2</div> The validation dashboard</h2>
+        
+        
+        <h2><div>Step 3</div> Using recorded exchanges for validation</h2>
+        
+        
+        <h2><div>Step 4</div> Setting up a scheduled validation</h2>
+        
+        
     </div>
 
   </div>

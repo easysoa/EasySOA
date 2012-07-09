@@ -275,9 +275,6 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   rm_rf FileList['tmp/easysoa-samples-smarttravel-services-backup*']
   rm_rf 'tmp'
   
-  mkdir PACKAGING_OUTPUT_PATH+'/examples'
-  cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
-  
   # Copy Nuxeo
   puts "Copying service registry (Nuxeo)..."
   begin
@@ -323,6 +320,9 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   # Copy packaging files
   puts "Copying packaging files..."
   cp_r FileList['packaging-files/*'], PACKAGING_OUTPUT_PATH
+  
+  # Add Smart Travel composite as example
+  cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
   
   # Removing some jar to avoid FraSCAti launch problems
   puts "Removing duplicated jars..."

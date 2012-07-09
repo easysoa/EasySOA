@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="Pure Air Flowers" resourceRoot="${projectDir}" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="PureAirFlowersServiceServiceSoapBinding" type="wsdl" bindingName="{http://paf.samples.easysoa.org/}PureAirFlowersServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="PureAirFlowers.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/home/mkalam-alami/Bureau/PureAirFlowers.wsdl"><con:part><con:url>file:/home/mkalam-alami/Bureau/PureAirFlowers.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="PureAirFlowersServiceService" targetNamespace="http://paf.samples.easysoa.org/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://paf.samples.easysoa.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://paf.samples.easysoa.org/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="addOrder" type="tns:addOrder"/>
+      <xs:element name="addOrderResponse" type="tns:addOrderResponse"/>
+      <xs:element name="getOrdersNumber" type="tns:getOrdersNumber"/>
+      <xs:element name="getOrdersNumberResponse" type="tns:getOrdersNumberResponse"/>
+      <xs:complexType name="addOrder">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="orderNb" type="xs:int"/>
+          <xs:element minOccurs="0" name="ClientName" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="addOrderResponse">
+        <xs:sequence>
+          <xs:element name="addOrder" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getOrdersNumber">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ClientName" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getOrdersNumberResponse">
+        <xs:sequence>
+          <xs:element name="ordersNumber" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getOrdersNumberResponse">
+    <wsdl:part element="tns:getOrdersNumberResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addOrder">
+    <wsdl:part element="tns:addOrder" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getOrdersNumber">
+    <wsdl:part element="tns:getOrdersNumber" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addOrderResponse">
+    <wsdl:part element="tns:addOrderResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PureAirFlowersService">
+    <wsdl:operation name="addOrder">
+      <wsdl:input message="tns:addOrder" name="addOrder"></wsdl:input>
+      <wsdl:output message="tns:addOrderResponse" name="addOrderResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOrdersNumber">
+      <wsdl:input message="tns:getOrdersNumber" name="getOrdersNumber"></wsdl:input>
+      <wsdl:output message="tns:getOrdersNumberResponse" name="getOrdersNumberResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PureAirFlowersServiceServiceSoapBinding" type="tns:PureAirFlowersService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="addOrder">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addOrder">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addOrderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOrdersNumber">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getOrdersNumber">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getOrdersNumberResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PureAirFlowersServiceService">
+    <wsdl:port binding="tns:PureAirFlowersServiceServiceSoapBinding" name="PureAirFlowersServicePort">
+      <soap:address location="http://localhost:9010/PureAirFlowers"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9010/PureAirFlowers</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="addOrder" bindingOperationName="addOrder" type="Request-Response" outputName="addOrderResponse" inputName="addOrder" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Add John orders"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9010/PureAirFlowers</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:paf="http://paf.samples.easysoa.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <paf:addOrder>
+         <orderNb>50</orderNb>
+         <ClientName>John</ClientName>
+      </paf:addOrder>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://paf.samples.easysoa.org/PureAirFlowersService/addOrder"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getOrdersNumber" bindingOperationName="getOrdersNumber" type="Request-Response" outputName="getOrdersNumberResponse" inputName="getOrdersNumber" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Get John orders"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9010/PureAirFlowers</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:paf="http://paf.samples.easysoa.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <paf:getOrdersNumber>
+         <ClientName>John</ClientName>
+      </paf:getOrdersNumber>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://paf.samples.easysoa.org/PureAirFlowersService/getOrdersNumber"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
