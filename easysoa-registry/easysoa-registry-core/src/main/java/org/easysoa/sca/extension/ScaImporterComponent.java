@@ -73,7 +73,8 @@ public class ScaImporterComponent extends DefaultComponent {
                 if (scaImporterDescriptor.enabled) {
                     try {
                         Class<?> scaImporterClass = Class.forName(scaImporterDescriptor.implementation.trim());
-                        for (Class<?> currentScaImporterClass : scaImporterClasses) {
+                        List<Class<?>> scaImporterClassesCopy = new LinkedList<Class<?>>(scaImporterClasses);
+                        for (Class<?> currentScaImporterClass : scaImporterClassesCopy) {
                             if (currentScaImporterClass.equals(scaImporterClass)) {
                                 scaImporterClasses.remove(scaImporterClass);
                             }
