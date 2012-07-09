@@ -53,6 +53,7 @@ import org.ow2.frascati.assembly.factory.api.ManagerException;
 import org.ow2.frascati.assembly.factory.api.ProcessingMode;
 import org.ow2.frascati.util.AbstractLoggeable;
 import org.ow2.frascati.util.FrascatiClassLoader;
+import org.ow2.frascati.util.io.IOUtils;
 
 /**
  * Implementation of the {@link FraSCAtiServiceItf}
@@ -97,7 +98,18 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
     public Composite getComposite(String compositeName)
             throws FraSCAtiServiceException
     {
-        if(getComponent(compositeName) != null )
+        Component component = null;
+        String componentName = IOUtils.pathLastPart(compositeName);        
+        try
+        {
+            component = getComponent(
+                    compositeManager.getTopLevelDomainComposite(),componentName);
+            
+        } catch (Exception e)
+        {
+            logger.log(Level.SEVERE,e.getMessage(),e);
+        }
+        if(component != null )
         {
             return compositesMap.get(compositeName);
         } 
@@ -262,7 +274,16 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
      */
     public String state(String compositeName)
     {
-        Component component = getComponent(compositeName);
+        Component component = null;
+        try
+        {
+            component = getComponent(
+                    compositeManager.getTopLevelDomainComposite(),compositeName);
+            
+        } catch (Exception e)
+        {
+            logger.log(Level.SEVERE,e.getMessage(),e);
+        }
         if (component != null)
         {
             try
@@ -287,7 +308,16 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
      */
     public void start(String componentName)
     {
-        Component component = getComponent(componentName);
+        Component component = null;
+        try
+        {
+            component = getComponent(
+                    compositeManager.getTopLevelDomainComposite(),componentName);
+            
+        } catch (Exception e)
+        {
+            logger.log(Level.SEVERE,e.getMessage(),e);
+        }
         if (component != null)
         {
             try
@@ -301,10 +331,11 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
                 }
             } catch (NoSuchInterfaceException e)
             {
-                e.printStackTrace();
+                logger.log(Level.SEVERE,e.getMessage(),e);
+                
             } catch (IllegalLifeCycleException e)
             {
-                e.printStackTrace();
+                logger.log(Level.SEVERE,e.getMessage(),e);
             }
         }
     }
@@ -316,7 +347,16 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
      */
     public void stop(String componentName)
     {
-        Component component = getComponent(componentName);
+        Component component = null;
+        try
+        {
+            component = getComponent(
+                    compositeManager.getTopLevelDomainComposite(),componentName);
+            
+        } catch (Exception e)
+        {
+            logger.log(Level.SEVERE,e.getMessage(),e);
+        }
         if (component != null)
         {
             try
@@ -330,10 +370,11 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
                 }
             } catch (NoSuchInterfaceException e)
             {
-                e.printStackTrace();
+                logger.log(Level.SEVERE,e.getMessage(),e);
+                
             } catch (IllegalLifeCycleException e)
             {
-                e.printStackTrace();
+                logger.log(Level.SEVERE,e.getMessage(),e);
             }
         }
 
@@ -344,9 +385,10 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
      * 
      * @see org.easysoa.frascati.api.FraSCAtiServiceItf#remove(java.lang.String)
      */
-    public void remove(String componentName)
+    public void remove(String compositeName)
             throws FraSCAtiServiceException
     {
+        String componentName = IOUtils.pathLastPart(compositeName);  
         stop(componentName);
         try
         {
@@ -354,7 +396,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
             
         } catch (ManagerException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE,e.getMessage(),e);
             throw new FraSCAtiServiceException("Enable to remove the '" 
             + componentName + "' component"); 
         }
@@ -371,7 +413,16 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
             String serviceName, Class<T> serviceClass)
             throws FraSCAtiServiceException
     {
-        Component component = getComponent(componentName);
+        Component component = null;
+        try
+        {
+            component = getComponent(
+                    compositeManager.getTopLevelDomainComposite(),componentName);
+            
+        } catch (Exception e)
+        {
+            logger.log(Level.SEVERE,e.getMessage(),e);
+        }
         if(component != null)
         {
             try
@@ -472,7 +523,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
     }
     
     /**
-     * Return the {@link Component} which name is passed on as a parameter if 
+     * Return the {@link Component} which path is passed on as a parameter if 
      * it exists in the ScaDomain (Top Level Domain Component of FraSCAti)
      * 
      * @param componentName
@@ -480,36 +531,50 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
      * @return
      *          the {@link Component} if it exists, null otherwise
      */
-    private Component getComponent(String componentName) 
+    private Component getComponent(Component currentComponent,
+            String componentPath) throws Exception
     {
-        try
+        String[] componentPathElements = componentPath.split("/");
+        String lookFor = componentPathElements[0];
+        String next = null;
+        
+        if(componentPathElements.length>1)
         {
-           ContentController contentController =  (ContentController) 
-               compositeManager.getTopLevelDomainComposite(
-                   ).getFcInterface("content-controller");
-           
-           Component[] components = contentController.getFcSubComponents();
-           int currentComponentIndex = 0;
-           
-           for(;currentComponentIndex<components.length;currentComponentIndex++)
-           {
-               try{
-                   Component component = components[currentComponentIndex];
-                   if(componentName.equals(((NameController)component.getFcInterface(
-                       "name-controller")).getFcName()))
-                       {
-                        return component;
-                       }
-                   
-               } catch(NoSuchInterfaceException e)
-               {
-                   log.log(Level.WARNING,e.getMessage());
-               }
-           }
-            
-        } catch (NoSuchInterfaceException e)
+            int n = 1;
+            StringBuilder nextSB = new StringBuilder();
+            for(;n<componentPathElements.length;n++)
+            {
+                nextSB.append(componentPathElements[n]);
+                if(n<componentPathElements.length - 1)
+                {
+                    nextSB.append("/");
+                }
+            }
+            next = nextSB.toString();
+        }  
+       ContentController contentController = (ContentController) currentComponent.getFcInterface(
+               "content-controller");     
+       Component[] subComponents = contentController.getFcSubComponents();
+        if(subComponents == null)
         {
-           log.log(Level.WARNING,e.getMessage(),e);
+            return null;
+        }
+        for(Component component : subComponents)
+        {
+            NameController nameController = (NameController) component.getFcInterface(
+                    "name-controller");            
+            String name = (String) nameController.getFcName();            
+            if(lookFor.equals(name))
+            {
+                if(next == null || next.length() ==0)
+                {
+                    return component;
+                    
+                } else 
+                {
+                    return getComponent(component,next);
+                }
+            }
         }
         return null;
     }
