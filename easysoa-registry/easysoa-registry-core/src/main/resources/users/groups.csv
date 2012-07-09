@@ -1,5 +1,5 @@
 groupname, description
-"members","Group of users with read access rights"
+"members","Group of users with read/write access rights"
 "administrators","Group of users with administrative rights"
 "Administrator",""
 "Business User",""
