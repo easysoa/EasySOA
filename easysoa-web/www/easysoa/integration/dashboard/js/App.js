@@ -232,7 +232,7 @@ window.AppView = Backbone.View.extend({
             });
         }
         else {
-            alert("You must a service that has a reference.");
+            alert("You must select a service that has a reference.");
         }
     },
      
