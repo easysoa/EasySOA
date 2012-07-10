@@ -9,7 +9,7 @@ $(function() {
 		// NavbarModel Attributes
 		//   url = Navigation URL
 		
-		DEFAULT_URL: location.host+"/easysoa/core/default.html",
+		DEFAULT_URL: location.host+"/easysoa/core/dbb/default.html",
 		HTTP: "http://",
 	
 		initialize: function() {
