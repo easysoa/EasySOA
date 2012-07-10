@@ -194,7 +194,7 @@ public class EnvironmentValidationService {
 			
 			}
 			else {
-				log.error("Failed to run scheduled validation: environment '" + environmentName + "' doesn't exist");
+				log.error("Failed to run scheduled validation: environment '" + environmentName + "' doesn't exist. Did you publish it?");
 			}
 			
 		}
