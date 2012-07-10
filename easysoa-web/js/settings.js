@@ -48,14 +48,15 @@ exports.EASYSOA_DISCOVERY_PATH              = 'easysoa/discovery/service';
 exports.EASYSOA_SERVICE_FINDER_PATH         = 'easysoa/servicefinder';
 
 exports.SERVICE_FINDER_IGNORE = [
-  '.css',
-  '.jpg',
-  '.gif',
-  '.png',
-  '.js',
-  '.ico',
+  '\\.css',
+  '\\.jpg',
+  '\\.gif',
+  '\\.png',
+  '\\.js',
+  '\\.ico',
   'localhost:7001', // FraSCAti (part of EasySOA Light)
   '127.0.0.1:7001',
   'jQuery',
+  'google',
   NUXEO_URL
 ];
