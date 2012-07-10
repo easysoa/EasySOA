@@ -5,10 +5,10 @@
     @author Marwane Kalam-Alami
   </documentation>
 
-  <implementation class="org.easysoa.services.EnvironmentValidationService" />
+  <implementation class="org.easysoa.validation.EnvironmentValidationService" />
 
   <service>
-    <provide interface="org.easysoa.services.EnvironmentValidationService" />
+    <provide interface="org.easysoa.validation.EnvironmentValidationService" />
   </service>
 
 </component>
