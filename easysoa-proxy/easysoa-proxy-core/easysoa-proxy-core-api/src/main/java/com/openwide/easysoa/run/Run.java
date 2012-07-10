@@ -71,7 +71,7 @@ public class Run {
 	/**
 	 * Initialize a new <code>Run</code> instance 
 	 */
-	// TODO :  check thaht the run name does not contains exotic characters because the name will be used to create the run folder for persistence. 
+	// TODO :  check that the run name does not contains exotic characters because the name will be used to create the run folder for persistence. 
 	public Run(String name) throws IllegalArgumentException {
 		if(name == null){
 			throw new IllegalArgumentException("name parameter must not be null");

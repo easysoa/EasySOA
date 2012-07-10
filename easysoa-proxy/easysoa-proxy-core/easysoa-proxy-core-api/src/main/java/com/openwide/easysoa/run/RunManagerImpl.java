@@ -79,7 +79,7 @@ public class RunManagerImpl implements RunManager {
 	NumberGenerator exchangeNumberGenerator;
 	
 	// List of event receiver
-	private static List<RunManagerEventReceiver> runManagerEventReceiverList = new ArrayList<RunManagerEventReceiver>();
+	private List<RunManagerEventReceiver> runManagerEventReceiverList = new ArrayList<RunManagerEventReceiver>();
 	
 	/**
 	 * The current run
@@ -136,7 +136,7 @@ public class RunManagerImpl implements RunManager {
 	 * Register a new event receiver
 	 * @param eventReceiver The RunManagerEventReceiver to register
 	 */
-	public static void addEventReceiver(RunManagerEventReceiver eventReceiver){
+	public void addEventReceiver(RunManagerEventReceiver eventReceiver){
 	    if(eventReceiver != null){
 	        runManagerEventReceiverList.add(eventReceiver);
 	    }

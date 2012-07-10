@@ -45,13 +45,15 @@ import com.openwide.easysoa.run.RunManager;
  */
 public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler implements HttpExchangeHandler {
 
+    /**
+     * Constructor
+     * @throws FraSCAtiServiceException If a problem occurs
+     */
     public NuxeoMessageExchangeRecordHandler() throws FraSCAtiServiceException{
         super();
-        // Get the service
+        // Get the run manager service
         FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-        
-        // TODO : Same problem here : not possible to get the runManager with this method
-        this.setRunManager((RunManager) frascati.getService("runManager", "runManagerService", RunManager.class));
+        this.setRunManager(frascati.getService("httpDiscoveryProxy/runManagerComponent", "runManagerService", RunManager.class));        
     }
 
     /* (non-Javadoc)

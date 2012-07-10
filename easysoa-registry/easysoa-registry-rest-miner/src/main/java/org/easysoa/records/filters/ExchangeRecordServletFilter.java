@@ -28,8 +28,16 @@ import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
  */
 public interface ExchangeRecordServletFilter {
 	
+    /**
+     * Start the filter
+     * @param httpExchangeHandler The http exchange handler to use for exchange recording
+     * @throws Exception If a problem occurs
+     */
 	void start(HttpExchangeHandler httpExchangeHandler) throws Exception;
 	
+	/**
+	 * Stop the filter
+	 */
 	void stop();
 
 }

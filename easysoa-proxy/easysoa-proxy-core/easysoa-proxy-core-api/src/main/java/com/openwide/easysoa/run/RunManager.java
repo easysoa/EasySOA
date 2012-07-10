@@ -57,7 +57,7 @@ public interface RunManager {
 	 * Register an event receiver
 	 * @param eventReceiver The RunManagerEventReciver to register
 	 */
-	//public void addEventReceiver(RunManagerEventReceiver eventReceiver);	
+	public void addEventReceiver(RunManagerEventReceiver eventReceiver);
 	
 	/**
 	 * Returns the specified run
