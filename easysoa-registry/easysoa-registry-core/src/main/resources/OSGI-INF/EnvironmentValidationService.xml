@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.core.service.EnvironmentValidationService">
+
+  <documentation>
+    @author Marwane Kalam-Alami
+  </documentation>
+
+  <implementation class="org.easysoa.services.EnvironmentValidationService" />
+
+  <service>
+    <provide interface="org.easysoa.services.EnvironmentValidationService" />
+  </service>
+
+</component>

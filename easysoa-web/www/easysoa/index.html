@@ -85,6 +85,11 @@
       max-width: none;
     }
     
+    .todo {
+      color: grey;
+      font-weight: bold;
+    }
+    
     
   </style>
 </head>
@@ -166,14 +171,15 @@
       $('#accordion').accordion({
         collapsible: true,
         active: false,
-        autoHeight: false
+        autoHeight: false,
+        navigation: true
       });
     });
    </script>
    
     <div id="accordion">
     
-      <h3><a href="#">Discover services easily, and call them</a></h3>
+      <h3><a href="#1">Discover services easily, and call them</a></h3>
       <div>
           <p><b>Note:</b> Before using this demo, please set your browser's HTTP proxy to <b>localhost:8081</b> (enable only the HTTP protocol) and remove any proxy exceptions. In case something goes wrong during the demo, you can check the <a href="https://github.com/easysoa/EasySOA/wiki/Demo-v0.3-doc#wiki-troubleshooting">troubleshooting page</a>.</p>
            
@@ -212,7 +218,7 @@
 
 
       
-      <h3><a href="#">Import and monitor your services</a></h3>
+      <h3><a href="#2">Import and monitor your services</a></h3>
       <div>
           <p>This scenario is based on another demo SOA, called "Smart Travel". This time, we will take the role of a developer who wants to map the SOA contents.</p>
           
@@ -251,7 +257,7 @@
           <p>These two demos show you various ways to use and interact with EasySOA and its cross-cutting model. But the ambitions of EasySOA go further than what you just saw: services creation, more collaborative features, but also the configuration of the monitoring component, an all-in-one architecture... So stay tuned! Thanks for testing EasySOA!</p>
       </div>
       
-      <h3><a href="#">Manipulate and validate environments</a></h3>
+      <h3><a href="#3">Manipulate and validate environments</a></h3>
       <div>
       
         <p>This scenario focuses on using EasySOA to ensure the quality of your services. We have various ways to validate services that we'll showcase here. To get started, make sure your service registry already contains at least one service to work with (you can use the <a href="/easysoa/core/dbb">Discovery by browsing</a> tool to help you with that).</p>
@@ -263,18 +269,29 @@
           
         <p><a class="more" href="https://github.com/easysoa/EasySOA/wiki/Publishing-and-forking-environments">More on envrionments</a>The SOA model embedded in EasySOA aims at supporting several "environments", i.e. several versions of the SOA deployed at different places for different purposes. Here, the main - or "Master" - environment will serve as a reference for a new, developer-specific environment.</p>
         
-        <p>Log in to the <a href="http://localhost:8080">Service registry</a>, and browse to the one and only Environment named "<i>Master</a>". From there click the "<i>Publish workspace</a>" button (located just above the document list) : the goal of publishing an environment if to mark its current state as valid, and make it serve as a reference for other environments. One example would be that if someone in a development environment works on a new version of a SOAP service, EasySOA will be able to check if the WSDL of the work in progress is compatible with the published WSDL.</p>
+        <p>Log in to the <a href="http://localhost:8080">Service registry</a>, and browse to the one and only Environment named "<i>Master</i>". From there click the "<i>Publish workspace</i>" button (located just above the document list) : the goal of publishing an environment if to mark its current state as valid, and make it serve as a reference for other environments. One example would be that if someone in a development environment works on a new version of a SOAP service, EasySOA will be able to check if the WSDL of the work in progress is compatible with the published WSDL.</p>
         
         <p>The published environment can be found under "<i>Environments > Master</i>". Once you're viewing this published document, click this time on "<i>Fork workspace</i>" to get your own copy of it, stored as a personal "<i>George</i>" environment.</p>
         
         <h2><div>Step 2</div> The validation dashboard</h2>
         
+        <p><a class="more" href="https://github.com/easysoa/EasySOA/wiki/Soa-sanity-check-dashboard">More on the sanity check dashboard</a>As you're working on the new version of a web service, it might be useful to check if the environment you're on is still compatible with the reference one. That's why we made a "Sanity check dashboard", that you can access by <a href="/easysoa/integration/dashboard">clicking here</a>.</p>
+        
+        <p>While its main use is to display the state of your environment compared to the reference one (for instance, the "<i>WSDL match</i>" test validates the compatibility of your WSDL with the one from Master), it also helps manage the relations between your services and the reference ones. To test this feature, just click on the name of one or more services to see the actions you can use.</p>
         
         <h2><div>Step 3</div> Using recorded exchanges for validation</h2>
         
+        <p>Another way to keep an eye on the state of your environments is the use of recorded exchanges. Indeed, it can be very useful to record, then replay a set of requests to check if the response from a service is as expected.</p>
+        
+        <p>Let's start by recording a new set of requests, or "run". <span class="todo">Click here</span> to access the run manager, and use it to start a new run.  <span class="todo">TODO</span></p>
+        
+        <p>Now that we have recorded a run, let's use it to trigger a run-based validation. Back to the <a href="http://localhost:8080/nuxeo">service registry</a>, browse to the EasySOA tab (on the top menu), and choose "<i>Validation</i>". You should be able to select the newly created run to validate the environment of your choice. Select a run & an environment and confirm to make the validation report appear.</p>
         
         <h2><div>Step 4</div> Setting up a scheduled validation</h2>
         
+        <p>To go a step further, we might want to schedule the validation we just did, in order to check on a regular basis that the services from an environment didn't change. Currently, this can be done by editing a configuration file from the service registry.</p>
+        
+        <p>From the EasySOA root folder, go to "<i>serviceRegistry/nxserver/config</i>" and open "<i>validationScheduler-config.xml</i>". You can configure it as you want, but for now just uncomment the "<i>&lt;schedule ...&gt;</i>" line and set the run & environment names to relevant values. Once you're done and the file is saved, just restart the demo, and the validation will be started every minute! The validation reports are then available as files, visible when viewing the environment you configured.</p>
         
     </div>
 
