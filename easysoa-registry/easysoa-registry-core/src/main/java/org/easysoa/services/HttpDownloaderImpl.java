@@ -22,14 +22,15 @@ package org.easysoa.services;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.IOException;import java.io.ByteArrayOutputStream;import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.GetMethod;import org.apache.commons.io.IOUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
 
@@ -48,6 +49,8 @@ public class HttpDownloaderImpl implements HttpDownloader {
 
     public HttpDownloaderImpl(String url) throws MalformedURLException {
         this.url = new URL(url);
+        client.getParams().setParameter("http.method.retry-handler", new DefaultHttpMethodRetryHandler(0, false));
+        //((DefaultHttpMethodRetryHandler) client.getParams().getParameter("http.method.retry-handler")).
     }
     
     public HttpDownloaderImpl(URL url) {
@@ -90,7 +93,9 @@ public class HttpDownloaderImpl implements HttpDownloader {
     	    }
         	int responseCode = client.executeMethod(getMethod);
         	if (responseCode == 200) {
-        		this.bytes = getMethod.getResponseBody();
+        		ByteArrayOutputStream outputBos = new ByteArrayOutputStream();
+				IOUtils.copy(getMethod.getResponseBodyAsStream(), outputBos); // already buffered
+				this.bytes = outputBos.toByteArray(); // this.bytes = getMethod.getResponseBody();
         	}
     	}
     	finally {

@@ -57,6 +57,7 @@ exports.SERVICE_FINDER_IGNORE = [
   'localhost:7001', // FraSCAti (part of EasySOA Light)
   '127.0.0.1:7001',
   'jQuery',
+  '/socket\\.io/',
   'google',
   NUXEO_URL
 ];

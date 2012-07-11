@@ -116,7 +116,7 @@ public class ServiceFinderRest {
 
         // Run finders
         List<FoundService> foundServices = new LinkedList<FoundService>();
-        if (context.getURL() != null) {
+        if (context.getURL() != null && context.getData() != null) {
             ServiceFinderComponent finderComponent = (ServiceFinderComponent) Framework
                     .getRuntime().getComponent(ServiceFinderComponent.NAME);
             List<ServiceFinderStrategy> strategies = finderComponent.getStrategies();
