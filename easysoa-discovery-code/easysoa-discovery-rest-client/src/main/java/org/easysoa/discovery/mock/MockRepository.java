@@ -12,11 +12,15 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.easysoa.discovery.rest.model.Deliverable;
+import org.easysoa.discovery.rest.model.DeployedDeliverable;
+import org.easysoa.discovery.rest.model.Endpoint;
+import org.easysoa.discovery.rest.model.Environment;
 import org.easysoa.discovery.rest.model.Service;
 import org.easysoa.discovery.rest.model.ServiceImpl;
 import org.easysoa.discovery.rest.model.SoaNode;
 import org.easysoa.discovery.rest.model.SoaNodeType;
 import org.easysoa.discovery.rest.model.SoaSystem;
+import org.easysoa.discovery.rest.model.Software;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,17 +74,29 @@ public class MockRepository extends OutputStream {
                     SoaNodeType soaNodeType = SoaNodeType.valueOf(discovery.get("soaNodeType").getTextValue());
                     SoaNode newNode = null;
                     switch (soaNodeType) {
+                    case SoaSystem:
+                        newNode = mapper.readValue(discovery, SoaSystem.class);
+                        break;
+                    case Software:
+                        newNode = mapper.readValue(discovery, Software.class);
+                        break;
+                    case Service:
+                        newNode = mapper.readValue(discovery, Service.class);
+                        break;
                     case Deliverable:
                         newNode = mapper.readValue(discovery, Deliverable.class);
                         break;
                     case ServiceImpl:
                         newNode = mapper.readValue(discovery, ServiceImpl.class);
                         break;
-                    case Service:
-                        newNode = mapper.readValue(discovery, Service.class);
+                    case Environment:
+                        newNode = mapper.readValue(discovery, Environment.class);
                         break;
-                    case SoaSystem:
-                        newNode = mapper.readValue(discovery, SoaSystem.class);
+                    case DeployedDeliverable:
+                        newNode = mapper.readValue(discovery, DeployedDeliverable.class);
+                        break;
+                    case Endpoint:
+                        newNode = mapper.readValue(discovery, Endpoint.class);
                         break;
                     }
 
@@ -126,6 +142,8 @@ public class MockRepository extends OutputStream {
                 traceRepository(vertice, 0);
             }
         }
+        logger.info("-------------------");
+        logger.info("");
     }
 
     private void traceRepository(String currentId, int depth) {
@@ -173,10 +191,18 @@ public class MockRepository extends OutputStream {
             return 10;
         case Service:
             return 9;
-        case Deliverable:
+        case Software:
             return 8;
+        case Deliverable:
+            return 7;
         case ServiceImpl:
             return 5;
+        case Environment:
+            return 4;
+        case DeployedDeliverable:
+            return 3;
+        case Endpoint:
+            return 2;
         default:
             return 0;
         }

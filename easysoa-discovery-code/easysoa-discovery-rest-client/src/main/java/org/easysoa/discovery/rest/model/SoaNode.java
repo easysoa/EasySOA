@@ -24,7 +24,7 @@ public abstract class SoaNode {
     }
     
     public SoaNode(String id, String name, String version) {
-        this.id = id;
+        this.id = getSoaNodeType().toString() + "=" + id;
         this.name = name;
         this.version = version;
     }

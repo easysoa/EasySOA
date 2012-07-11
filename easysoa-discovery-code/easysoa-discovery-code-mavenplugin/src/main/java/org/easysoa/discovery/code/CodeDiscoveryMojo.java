@@ -11,15 +11,14 @@ import java.util.Map;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
-import org.easysoa.discovery.code.handler.ClassHandler;
-import org.easysoa.discovery.code.handler.JaxRSClassHandler;
-import org.easysoa.discovery.code.handler.JaxWSClassHandler;
+import org.easysoa.discovery.code.handler.JaxRSSourcesHandler;
+import org.easysoa.discovery.code.handler.JaxWSSourcesHandler;
+import org.easysoa.discovery.code.handler.SourcesHandler;
 import org.easysoa.discovery.mock.MockRepository;
 import org.easysoa.discovery.rest.client.DiscoveryRequest;
 import org.easysoa.discovery.rest.model.SoaNode;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 
 /**
@@ -59,14 +58,14 @@ public class CodeDiscoveryMojo extends AbstractMojo {
      */
     private String version;
 
-    private Map<String, ClassHandler> availableHandlers = new HashMap<String, ClassHandler>();
+    private Map<String, SourcesHandler> availableHandlers = new HashMap<String, SourcesHandler>();
     
     public void execute() throws MojoExecutionException {
 
         // Init handlers
         Log log = getLog();
-        this.availableHandlers.put("JAX-WS", new JaxWSClassHandler());
-        this.availableHandlers.put("JAX-RS", new JaxRSClassHandler());
+        this.availableHandlers.put("JAX-WS", new JaxWSSourcesHandler());
+        this.availableHandlers.put("JAX-RS", new JaxRSSourcesHandler());
         
         // Deliverable discovery
         MavenDeliverable mavenDeliverable;
@@ -86,13 +85,8 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         
         // Iterate through classes to find WSes
         JavaSource[] sources = builder.getSources();
-        for (JavaSource source : sources) {
-            JavaClass[] classes = source.getClasses();
-            for (JavaClass c : classes) {
-                for (ClassHandler handler : availableHandlers.values()) {
-                    discoveredNodes.addAll(handler.handleClass(c, sources, mavenDeliverable, log));
-                }
-            }
+        for (SourcesHandler handler : availableHandlers.values()) {
+            discoveredNodes.addAll(handler.handleSources(sources, mavenDeliverable, log));
         }
         
         // Build and send discovery request

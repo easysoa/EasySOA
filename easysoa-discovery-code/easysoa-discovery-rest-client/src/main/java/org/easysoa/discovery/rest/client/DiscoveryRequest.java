@@ -2,6 +2,7 @@ package org.easysoa.discovery.rest.client;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,10 @@ public class DiscoveryRequest {
     
     public void addDiscoveryNotification(SoaNode soaNode) {
         notifications.add(soaNode);
+    }
+    
+    public void addDiscoveryNotification(SoaNode... soaNodes) {
+        notifications.addAll(Arrays.asList(soaNodes));
     }
     
     public void send() throws IOException {
