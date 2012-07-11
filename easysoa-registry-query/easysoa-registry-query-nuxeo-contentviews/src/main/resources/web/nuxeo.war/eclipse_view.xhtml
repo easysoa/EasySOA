@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<nxthemes:composition xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nxu="http://nuxeo.org/nxweb/util"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:nxthemes="http://nuxeo.org/nxthemes">
+	<ui:define name="body">
+		<nxu:set var="thisIsATest"
+			value="#{facetedSearchActions.setCurrentContentViewName('faceted_service_search')}">
+		</nxu:set>
+		<p>
+			Here is a content view in this custom JSF view:<br />
+			<ui:decorate template="/incl/content_view.xhtml">
+				<ui:param name="contentViewName" value="nested_services" />
+			</ui:decorate>
+		</p>
+		<p>
+			And here should be a faceted search content view:
+			<ui:decorate template="/incl/content_view.xhtml">
+				<ui:param name="contentViewName" value="search_services" />
+			</ui:decorate>
+		</p>
+	</ui:define>
+</nxthemes:composition>

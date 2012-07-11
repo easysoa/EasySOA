@@ -1,0 +1,8 @@
+<f:subview xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:nxd="http://nuxeo.org/nxweb/document">
+{
+	'test': '<c:out value="#{clipboardActions.getCurrentSelectedListTitle()}" />',
+	'test2': [1,2,3]
+}
+</f:subview>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component
+  name="org.easysoa.registry.query.nuxeo.contentviews.EclipseImport">
+
+  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
+    point="chains">
+    <chain id="fetchWorklist">
+      <operation id="Seam.FetchFromWorklist" />
+      <operation id="Blob.Get" />
+      <operation id="Blob.CreateZip" />
+      <operation id="Seam.DownloadFile" />
+    </chain>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService"
+    point="actions">
+    <action id="exportToEclipseAutomationEL" label="Export to Eclipse (Automation)"
+      link="#{operationActionBean.doOperation('fetchWorklist')}" order="100">
+      <category>CURRENT_SELECTION_LIST</category>
+    </action>
+    <action id="exportToEclipseJS" label="Export to Eclipse (JS)"
+      link="javascript:alert('This is a JS call');" order="101">
+      <category>CURRENT_SELECTION_LIST</category>
+    </action>
+    <action id="exportToEclipseLinkNavigationView" label="Export to Eclipse (Navigation view)"
+      link="eclipse_service_import" order="104">
+      <category>CURRENT_SELECTION_LIST</category>
+    </action>
+    <action id="exportToEclipseLinkNavigationViewJson" label="Export to Eclipse (Navigation view - JSON)"
+      link="eclipse_service_import_json" order="105">
+      <category>CURRENT_SELECTION_LIST</category>
+    </action>
+    <action id="exportToEclipseLinkNavigationViewXml" label="Export to Eclipse (Navigation view - XML)"
+      link="eclipse_service_import_xml" order="106">
+      <category>CURRENT_SELECTION_LIST</category>
+    </action>
+    <action id="redirectToWebEngine" label="Redirect to WebEngine"
+      link="/nuxeo/site/admin/repository" order="107">
+      <category>CURRENT_SELECTION_LIST</category>
+    </action>
+  </extension>
+
+</component>

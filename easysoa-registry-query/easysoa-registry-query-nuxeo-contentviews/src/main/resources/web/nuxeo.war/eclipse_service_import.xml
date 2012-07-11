@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<root xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core" xmlns:nxd="http://nuxeo.org/nxweb/document">
+  <seq>
+    <elem1>
+      <c:out value="#{clipboardActions.getCurrentSelectedListTitle()}" />
+    </elem1>
+  </seq>
+</root>

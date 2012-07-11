@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<body>
+		<script type="text/javascript">
+			jQuery(document).ready(function() {
+				alert('YAYE!');
+			});
+		</script>
+
+		<p>A pop-up should have been displayed, saying 'YAYE!'</p>
+
+		<p>Here are the selected services:</p>
+		<ul>
+			<c:forEach var="clipboardItem"
+				items="#{clipboardActions.getCurrentSelectedList()}">
+				<li><h:outputText value="#{clipboardItem.title}" /></li>
+			</c:forEach>
+		</ul>
+	</body>
+</html>

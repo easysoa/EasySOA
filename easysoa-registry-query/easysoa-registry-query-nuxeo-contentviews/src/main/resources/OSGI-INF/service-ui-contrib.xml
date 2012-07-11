@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<component
+  name="org.easysoa.registry.query.nuxeo.contentviews.ServiceUI">
+
+  <extension target="org.nuxeo.ecm.platform.ui.web.ContentViewService"
+    point="contentViews">
+    <contentView name="nested_services">
+      <coreQueryPageProvider>
+        <property name="coreSession">#{documentManager}</property>
+        <pattern>
+          SELECT *
+          FROM Service
+          WHERE
+          ecm:path STARTSWITH ?
+            AND ecm:isCheckedInVersion = 0
+            AND ecm:mixinType != 'HiddenInNavigation'
+            AND ecm:currentLifeCycleState != 'deleted'
+        </pattern>
+        <parameter>#{currentDocument.path}</parameter>
+        <sort column="dc:title" ascending="true" />
+      </coreQueryPageProvider>
+
+      <cacheKey>#{currentDocument.id}</cacheKey>
+      <cacheSize>10</cacheSize>
+      <refresh>
+        <event>documentChanged</event>
+        <event>documentChildrenChanged</event>
+      </refresh>
+
+      <resultLayouts>
+        <layout name="document_listing_ajax" title="document_listing"
+          translateTitle="true" iconPath="/icons/document_listing_icon.png" /><!-- 
+          showCSVExport="true" showPDFExport="true" showSyndicationLinks="true" -->
+        <layout name="document_listing_ajax_compact_2_columns"
+          title="document_listing_compact_2_columns" translateTitle="true"
+          iconPath="/icons/document_listing_compact_2_columns_icon.png" />
+        <layout name="document_listing_ajax_icon_2_columns"
+          title="document_listing_icon_2_columns" translateTitle="true"
+          iconPath="/icons/document_listing_icon_2_columns_icon.png" />
+        <!--layout name="export_to_eclipse" title="export_to_eclipse" translateTitle="false" 
+          / -->
+      </resultLayouts>
+
+      <selectionList>CURRENT_SELECTION</selectionList>
+      <actions category="CURRENT_SELECTION_LIST" />
+    </contentView>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.types.TypeService"
+    point="types">
+
+    <type id="Service" coretype="Service">
+      <label>Service</label>
+      <icon>/icons/file.gif</icon>
+      <bigIcon>/icons/file_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>file</layout>
+        <layout>dublincore</layout>
+      </layouts>
+    </type>
+
+    <type id="System" coretype="System">
+      <label>System</label>
+      <icon>/icons/folder.gif</icon>
+      <bigIcon>/icons/folder_100.png</bigIcon>
+      <icon-expanded>/icons/folder_open.gif</icon-expanded>
+      <default-view>view_documents</default-view>
+      <subtypes>
+        <type>Service</type>
+      </subtypes>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>dublincore</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>nested_services</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
+
+    <type id="Workspace">
+      <subtypes>
+        <type>System</type>
+      </subtypes>
+    </type>
+
+  </extension>
+
+</component>
+  
