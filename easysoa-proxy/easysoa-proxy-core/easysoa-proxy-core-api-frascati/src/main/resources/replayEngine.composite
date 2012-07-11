@@ -8,7 +8,7 @@
 
 	<!--  ReplayEngine service -->
 	<sca:service name="replayEngineService" promote="replayEngineComponent/replayEngineService"/>	
-	
+
 	<!-- Exchange replay service -->
 	<sca:component name="replayEngineComponent">
 		<sca:service name="replayEngineService">

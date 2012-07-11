@@ -42,6 +42,10 @@
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-frascati</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.easysoa.frascati</groupId>
+      <artifactId>easysoa-frascati-service-api</artifactId>
+    </dependency>
 
     <!-- Nuxeo -->
     <dependency>

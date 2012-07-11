@@ -6,6 +6,7 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
 	<!--<sca:include name="templateEngine"/>-->
 	<!--  Replay engine needed to avoid a name conflict with HTTP proxy -->
 	<sca:include name="replayEngine"/>
+	<sca:include name="scheduledValidationReplayEngine"/>
 	<sca:include name="monitoringService"/>
 	<sca:include name="storeManager"/>
 
@@ -29,6 +30,7 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
 		<sca:implementation.java class="com.openwide.easysoa.run.RunManagerImpl" />
 		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
 		<sca:reference name="exchangeNumberGenerator" target="exchangeNumberGeneratorComponent" />
+		<sca:reference name="replayEngine" target="replayEngineComponent" />
 	</sca:component>
 
     <sca:component name="runManagerDriver">

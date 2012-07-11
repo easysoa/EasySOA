@@ -20,6 +20,8 @@
 
 package org.easysoa.records.replay;
 
+import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +32,16 @@ import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
-
 import com.openwide.easysoa.message.OutMessage;
 
 public interface ReplayEngine {
 
+    /**
+     * Return an ExchangeReplayController
+     * @return
+     */
+    //public ExchangeReplayController getExchangeReplayController();
+    
     /**
      * Returns the template engine SCA reference
      * @return
@@ -46,6 +53,10 @@ public interface ReplayEngine {
      * @return
      */
     public AssertionEngine getAssertionEngine();    
+    
+    public void replayRunRecords(String runName, String environmentName) throws InvalidParameterException, IOException;
+    
+    public String[] getAllRunNamesArray();
     
     /**
      * Starts a replay session

@@ -46,9 +46,6 @@ import org.easysoa.reports.Report;
 import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
-import org.easysoa.validation.ExchangeReplayController;
-import org.easysoa.validation.ExchangeReplayRegister;
-import org.easysoa.validation.ExchangeReplayRegisterImpl;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -63,7 +60,7 @@ import com.openwide.easysoa.util.RequestForwarder;
  *
  */
 @Scope("composite")
-public class ReplayEngineImpl implements ReplayEngine, ExchangeReplayController {
+public class ReplayEngineImpl implements ReplayEngine {
     
     // SCA reference to assertion engine
     @Reference
@@ -102,15 +99,22 @@ public class ReplayEngineImpl implements ReplayEngine, ExchangeReplayController 
         this.replaySessionName = null;
         
         // Register the replay engine service in Nuxeo
-        try{
+        /*try{
             ExchangeReplayRegister register = new ExchangeReplayRegisterImpl();
             register.registerExchangeReplayController(this);
         } 
         catch(Exception ex){
             logger.error("Unable to register the replay engine in Nuxeo", ex);
-        }
+        }*/
         
     }    
+    
+    /**
+     * Return this object as an ExchangeReplayController
+     */
+    /*public ExchangeReplayController getExchangeReplayController(){
+        return this;
+    }*/
     
     /**
      * Start a replay session. The replay session is mainly used to execute assertion and to generate a report containing assertion results.
@@ -332,7 +336,7 @@ public class ReplayEngineImpl implements ReplayEngine, ExchangeReplayController 
      * Replay a complete store
      */
     @Override
-    public void replayRecord(String runName, String environmentName) throws InvalidParameterException, IOException {
+    public void replayRunRecords(String runName, String environmentName) throws InvalidParameterException, IOException {
         // Call the replay method for the specified run
         if(runName == null || "".equals(runName)){
             throw new InvalidParameterException("the parameter runName must not be null, nor empty");
@@ -354,7 +358,7 @@ public class ReplayEngineImpl implements ReplayEngine, ExchangeReplayController 
      * Returns a list with all the run name (or store name)
      */
     @Override
-    public String[] getAllRunNames() {
+    public String[] getAllRunNamesArray() {
         List<String> storeList = new ArrayList<String>();
         try {
             ProxyFileStore erfs = new ProxyFileStore();

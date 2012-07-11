@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.messages.server.NumberGenerator;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.records.replay.ReplayEngine;
 /*
 import org.easysoa.records.filters.ExchangeRecordServletFilter;
 import org.easysoa.records.handlers.NuxeoMessageExchangeRecordHandler;
@@ -77,6 +78,9 @@ public class RunManagerImpl implements RunManager {
 
 	@Reference
 	NumberGenerator exchangeNumberGenerator;
+	
+	@Reference
+	ReplayEngine replayEngine;
 	
 	// List of event receiver
 	private List<RunManagerEventReceiver> runManagerEventReceiverList = new ArrayList<RunManagerEventReceiver>();

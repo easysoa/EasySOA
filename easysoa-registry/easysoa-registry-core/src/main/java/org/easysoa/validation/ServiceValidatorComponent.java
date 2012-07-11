@@ -33,6 +33,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.Workspace;
+import org.easysoa.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.services.DeletedDocumentFilter;
 import org.easysoa.services.DocumentService;
 import org.easysoa.services.ServiceValidationService;
@@ -112,6 +114,15 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
     }
 
     public ExchangeReplayController getExchangeReplayController() {
+        if(exchangeReplayController == null){
+            try{
+                FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+                this.exchangeReplayController = frascati.getService("httpDiscoveryProxy/scheduledValidationReplayEngineComponent", "scheduledValidationReplayEngineService", ExchangeReplayController.class);
+            }
+            catch(Exception ex){
+                log.error("Unable to get the replayEngineService from FraSCAti", ex);
+            }
+        }
         return exchangeReplayController;
     }
 
