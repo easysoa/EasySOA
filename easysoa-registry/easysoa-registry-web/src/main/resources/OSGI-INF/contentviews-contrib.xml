@@ -85,43 +85,43 @@
 <!--     </contentView> -->
 
 
-    <contentView name="byFeatureContentView">
-      <title>label.easysoa.feature</title>
-      <translateTitle>true</translateTitle>
+<!--     <contentView name="byFeatureContentView"> -->
+<!--       <title>label.easysoa.feature</title> -->
+<!--       <translateTitle>true</translateTitle> -->
 
-      <coreQueryPageProvider>
-        <property name="coreSession">#{documentManager}</property>
-        <whereClause docType="QueryNav2">
-          <predicate parameter="app:environment" operator="STARTSWITH">
-            <field schema="querynav2" name="location" />
-          </predicate>
-          <fixedPart>
-            ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState
-            !='deleted' AND
-            ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'AppliImpl'
-          </fixedPart>
-        </whereClause>
-        <sort column="dc:title" ascending="true" />
-        <pageSize>10</pageSize>
-      </coreQueryPageProvider>
+<!--       <coreQueryPageProvider> -->
+<!--         <property name="coreSession">#{documentManager}</property> -->
+<!--         <whereClause docType="QueryNav2"> -->
+<!--           <predicate parameter="app:environment" operator="STARTSWITH"> -->
+<!--             <field schema="querynav2" name="location" /> -->
+<!--           </predicate> -->
+<!--           <fixedPart> -->
+<!--             ecm:mixinType != 'HiddenInNavigation' AND ecm:currentLifeCycleState -->
+<!--             !='deleted' AND -->
+<!--             ecm:isCheckedInVersion = 0 AND ecm:primaryType = 'AppliImpl' -->
+<!--           </fixedPart> -->
+<!--         </whereClause> -->
+<!--         <sort column="dc:title" ascending="true" /> -->
+<!--         <pageSize>10</pageSize> -->
+<!--       </coreQueryPageProvider> -->
 
-      <useGlobalPageSize>true</useGlobalPageSize>
-      <refresh>
-        <event>documentChanged</event>
-        <event>documentChildrenChanged</event>
-      </refresh>
-      <cacheKey>only_one_cache</cacheKey>
-      <cacheSize>1</cacheSize>
+<!--       <useGlobalPageSize>true</useGlobalPageSize> -->
+<!--       <refresh> -->
+<!--         <event>documentChanged</event> -->
+<!--         <event>documentChildrenChanged</event> -->
+<!--       </refresh> -->
+<!--       <cacheKey>only_one_cache</cacheKey> -->
+<!--       <cacheSize>1</cacheSize> -->
 
-      <resultLayouts>
-        <layout name="document_virtual_navigation_listing_ajax_feature" title="document_listing" translateTitle="true"
-          iconPath="/icons/document_listing_icon.png" />
-      </resultLayouts>
+<!--       <resultLayouts> -->
+<!--         <layout name="document_virtual_navigation_listing_ajax_feature" title="document_listing" translateTitle="true" -->
+<!--           iconPath="/icons/document_listing_icon.png" /> -->
+<!--       </resultLayouts> -->
 
-      <selectionList>CURRENT_SELECTION</selectionList>
-      <actions category="CURRENT_SELECTION_LIST" />
+<!--       <selectionList>CURRENT_SELECTION</selectionList> -->
+<!--       <actions category="CURRENT_SELECTION_LIST" /> -->
 
-    </contentView>
+<!--     </contentView> -->
 
   </extension>
 </component>

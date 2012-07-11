@@ -22,10 +22,10 @@
 <!--       <directory>server</directory> -->
 <!--     </directoryTree> -->
 
-    <directoryTree name="byFeatureNavigation" label="label.easysoa.navfeature" contentView="byFeatureContentView"
-      field="location" schema="querynav2" outcome="feature_virtual_navigation" enabled="true">
-      <directory>environment</directory>
-    </directoryTree>
+<!--     <directoryTree name="byFeatureNavigation" label="label.easysoa.navfeature" contentView="byFeatureContentView" -->
+<!--       field="location" schema="querynav2" outcome="feature_virtual_navigation" enabled="true"> -->
+<!--       <directory>environment</directory> -->
+<!--     </directoryTree> -->
 
   </extension>
 
