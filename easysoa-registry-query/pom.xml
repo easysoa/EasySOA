@@ -11,4 +11,7 @@
     <module>easysoa-registry-query-nuxeo-webengine</module>
     <module>easysoa-registry-query-nuxeo-contentviews</module>
   </modules>
+  <properties>
+    <nuxeo.version>5.5.0-HF09</nuxeo.version>
+  </properties>
 </project>

@@ -1,10 +1,43 @@
 <?xml version="1.0" ?>
 <fragment version="1">
 
+  <require>org.nuxeo.ecm.webapp.core</require>
+  <require>org.nuxeo.ecm.webapp.ui</require>
+
   <extension target="application#MODULE">
     <module>
       <ejb>${bundle.fileName}</ejb>
     </module>
   </extension>
-  
+
+  <extension target="faces-config#NAVIGATION">
+    <navigation-case>
+      <from-outcome>eclipse_service_import</from-outcome>
+      <to-view-id>/eclipse_service_import.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>eclipse_service_import_xml</from-outcome>
+      <to-view-id>/eclipse_service_import.xml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>eclipse_service_import_json</from-outcome>
+      <to-view-id>/eclipse_service_import.json</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>eclipse_view</from-outcome>
+      <to-view-id>/eclipse_view.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </extension>
+
+  <install>
+    <!-- Copie du contenu web -->
+    <unzip from="${bundle.fileName}" to="/" prefix="web">
+      <include>web/nuxeo.war/**</include>
+    </unzip>
+  </install>
+
 </fragment>

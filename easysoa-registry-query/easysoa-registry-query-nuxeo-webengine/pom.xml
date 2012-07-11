@@ -10,9 +10,6 @@
   <groupId>org.easysoa.registry.service-listing.nuxeo</groupId>
   <artifactId>easysoa-registry-service-listing-nuxeo-webengine</artifactId>
 
-  <properties>
-    <nuxeo.version>5.5.0-HF09</nuxeo.version>
-  </properties>
 
   <dependencyManagement>
     <dependencies>

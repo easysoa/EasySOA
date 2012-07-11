@@ -9,6 +9,14 @@
   <groupId>org.easysoa.registry.query.nuxeo</groupId>
   <artifactId>easysoa-registry-query-nuxeo-contentviews</artifactId>
   
+  <!--dependencies>
+    <dependency>
+      <groupId>javax.ejb</groupId>
+      <artifactId>ejb-api</artifactId>
+      <version>3.0</version>
+    </dependency>
+  </dependencies-->
+  
   <build>
     <plugins>
       <plugin>
