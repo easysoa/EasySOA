@@ -19,7 +19,7 @@ function getElementsByClass(searchClass, node, tag) {
 }
 
 function submitForm(form, url, wsdlUrl, serviceName, binding, operation, responseMessage, outputFields) {
-
+	
     // Preparing the request
     // For each form field : add it in the url
     var jsonParams = "";
@@ -48,21 +48,56 @@ function submitForm(form, url, wsdlUrl, serviceName, binding, operation, respons
          outputFields[j].value = "Sending request...";
     }
     
+    // Setting error function
+    jQuery.ajaxSetup({
+            error: function(jqXHR, exception) {
+            	// TODO : hard coded error message, must be returned by the fuse intent
+            	// The returned status code is 0 when the request is blocked by the fuse intent
+            	// Maybe because the intent throws only an exception and not an error response 
+            	if (jqXHR.status == 0) {
+                    //alert('Not connect.\n Verify Network.');
+                    alert("[AUTOREARMFUSE INTENT] Too much requests detected for the time period, this resquest has been blocked !");
+                } else if (jqXHR.status == 404) {
+                    alert('Requested page not found. [404]');
+                } else if (jqXHR.status == 500) {
+                    //alert('Internal Server Error [500].');
+                	alert("[AUTOREARMFUSE INTENT] Too much requests detected for the time period, this resquest has been blocked !");
+                } else if (exception === 'parsererror') {
+                    alert('Requested JSON parse failed.');
+                } else if (exception === 'timeout') {
+                    alert('Time out error.');
+                } else if (exception === 'abort') {
+                    alert('Ajax request aborted.');
+                } else {
+                    alert('Uncaught Error.\n' + jqXHR.responseText);
+                }
+       			for(j=0; j<outputFields.length; j++){
+       				var fieldName = outputFields[j].name;
+       				outputFields[j].value = "";
+       			}
+            }
+        });
+    
     // Request
-    jQuery.getJSON(url+'?callback=?',
+    //jQuery.getJSON(url+'?callback=?',
+    jQuery.get(url+'?callback=?',
         jsonParameters,
-        function(responseData) {
-           for(j=0; j<outputFields.length; j++){
-                var fieldName = outputFields[j].name;
-                outputFields[j].value = eval("responseData.Body." + responseMessage + "." + fieldName);
-           }
+        function(responseData, textStatus, jqXHR) {
+    		var cleanedResponse = responseData.substr(2, responseData.length-4);
+    		//alert(cleanedResponse);
+    		var jsonResponse = JSON.parse(cleanedResponse);
+   			for(j=0; j<outputFields.length; j++){
+   				var fieldName = outputFields[j].name;
+   				outputFields[j].value = eval("jsonResponse.Body." + responseMessage + "." + fieldName);
+   			}
         }
-    )
-    .error(function() {
-       for(j=0; j<outputFields.length; j++){
+    );
+    /*.error(function(status, xhr) {
+    	alert("There is a problem, the service is down");
+    	for(j=0; j<outputFields.length; j++){
             var fieldName = outputFields[j].name;
-            outputFields[j].value = "Error.";
+            outputFields[j].value = "Error -- " + xhr.responseText;
        }
-    });
-
+    });*/
+   
 }
