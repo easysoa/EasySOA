@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URLDecoder;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
@@ -45,29 +46,66 @@ import org.apache.commons.io.IOUtils;
 public class HttpMessageRequestWrapper extends HttpServletRequestWrapper {
 
     // Request content
-    private String reqContent;
-    
-    private Map<String, String[]> parameters;
+    private byte[] reqContentBytes = null;
+
+    private Map<String, String[]> parameters = null;
     
     /**
      * 
      * @param request
      * @throws IOException
      */
-    @SuppressWarnings("unchecked")
 	public HttpMessageRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
-        reqContent = IOUtils.toString(request.getInputStream());    
-        this.parameters = request.getParameterMap(); // TODO or also clone ??
+        /*
+        if ("POST".equals(request.getMethod()) && request.getContentType().startsWith("application/x-www-form-urlencoded")) {
+        	// handling specific case of form params, see http://markmail.org/message/xstjwbgz5r2ko2oe
+        	// TODO doesn't work with DiscoverRest (because of Nuxeo reflection access to request ??) so rather use this code in DiscoverRest ; or possible opposite code ???
+            this.reqContentBytes = IOUtils.toByteArray(request.getInputStream());
+            String[] valueKeyStrings = new String(reqContentBytes).split("&");
+            this.parameters = new java.util.HashMap<String, String[]>(valueKeyStrings.length);
+            for (String valueKeyString : valueKeyStrings) {
+            	String[] valueKeyTable = valueKeyString.split("=");
+            	if (valueKeyTable.length < 2) {
+            		continue; // TODO or accept = 1 as "false" ?
+            	}
+            	this.parameters.put(URLDecoder.decode(valueKeyTable[0], "UTF-8"),
+            			new String[] { URLDecoder.decode(valueKeyTable[1], "UTF-8") }); 
+            }
+        }*/
+        
+        // NOT REQUIRED FOR NOW else see http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.2
+        /*try {
+            MultipartStream multipartStream = new MultipartStream(new ByteArrayInputStream(reqContentBytes), get it from content type.getBytes());
+            boolean nextPart = multipartStream.skipPreamble();
+            OutputStream output = null;
+            while(nextPart) {
+              String header = multipartStream.readHeaders();
+              // process headers
+              // create some output stream
+              multipartStream.readBodyData(output);
+              nextPart = multipartStream.readBoundary();
+            }
+          } catch(MultipartStream.MalformedStreamException e) {
+            // the stream failed to follow required syntax
+        	  throw e;
+          } catch(IOException e) {
+            // a read or write error occurred
+        	  throw e;
+          }*/
     }
     
     /**
      * 
      * @return
+     * @throws IOException 
      */
-    public ServletInputStream getInputStream() {
+    public ServletInputStream getInputStream() throws IOException {
+    	if (this.reqContentBytes == null) {
+    		return super.getInputStream();
+    	}
         return new ServletInputStream() {
-            private ByteArrayInputStream bis = new ByteArrayInputStream(reqContent.getBytes());
+            private ByteArrayInputStream bis = new ByteArrayInputStream(HttpMessageRequestWrapper.this.reqContentBytes);
             @Override
             public int read() throws IOException {
                 return bis.read();
@@ -78,31 +116,48 @@ public class HttpMessageRequestWrapper extends HttpServletRequestWrapper {
     /**
      * 
      * @return
+     * @throws IOException 
      */
-    public BufferedReader getReader() {
-        return new BufferedReader(new StringReader(reqContent));
+    public BufferedReader getReader() throws IOException {
+    	if (this.reqContentBytes == null) {
+    		return super.getReader();
+    	}
+        return new BufferedReader(new StringReader(new String(reqContentBytes)));
     }
   
     @Override    
     public String[] getParameterValues(String name) {
+    	if (this.parameters == null) {
+    		return super.getParameterValues(name);
+    	}
     	return this.parameters.get(name);
     }
     
     @SuppressWarnings("rawtypes")
 	@Override
 	public Map getParameterMap() {
+    	if (this.parameters == null) {
+    		return super.getParameterMap();
+    	}
 		return this.parameters;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<String> getParameterNames() {
+    	if (this.parameters == null) {
+    		return super.getParameterNames();
+    	}
 	    Enumeration<String> e = Collections.enumeration(this.parameters.keySet());
 		return e;
 	}
 
 	@Override
     public String getParameter(String name) {
-    	return this.getParameterMap().get(name).toString();
+    	if (this.parameters == null) {
+    		return super.getParameter(name);
+    	}
+    	return this.parameters.get(name)[0];
     }
     
 }

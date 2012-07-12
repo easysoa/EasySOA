@@ -87,6 +87,8 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 			if (request instanceof HttpServletRequest) {
 				HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper((HttpServletRequest) request);
 				HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper((HttpServletResponse) response);
+				//request = requestWrapper;
+				//response = responseWrapper;
 				try {
 					exchangeHandler.handleExchange(requestWrapper, responseWrapper);
 				} catch (Exception e) {
