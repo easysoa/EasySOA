@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.List;
 
 import org.easysoa.doctypes.AppliImpl;
-import org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf;
+import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.BindingInfoProvider;
 import org.easysoa.sca.visitors.BindingVisitorFactory;
 import org.easysoa.sca.visitors.LocalBindingVisitorFactory;
@@ -56,8 +56,11 @@ public class FraSCAtiScaImporter extends ApiRuntimeFraSCAtiScaImporter
             File compositeFile) 
     throws ClientException, Exception
     {
-        super(bindingVisitorFactory, compositeFile, 
-                Framework.getService(FraSCAtiRegistryServiceItf.class));
+        super(bindingVisitorFactory, compositeFile,
+                // XXX: Hard-coded EasySOA API FraSCAti reference,
+                // as it currently cannot be registered as a Nuxeo service
+                // (hidden constructor)
+                EasySOAApiFraSCAti.getInstance());
 
         DocumentModel parentAppliImplModel = null;
         CoreSession documentManager = null;

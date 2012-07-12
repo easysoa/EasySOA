@@ -171,7 +171,7 @@ public class EnvironmentValidationService {
 			        params.put("validatorsNames", validatorsNames);
 			        params.put("validationSuccess", validationResults.isEveryValidationPassed() ? "passed" : "failed");
 			        params.put("date", new Date());
-			        params.put("runName", "TODO"); // TODO
+			        params.put("runName", runName);
 			        params.put("environmentName", environmentName);
 			        
 			        StringWriter writer = new StringWriter();
