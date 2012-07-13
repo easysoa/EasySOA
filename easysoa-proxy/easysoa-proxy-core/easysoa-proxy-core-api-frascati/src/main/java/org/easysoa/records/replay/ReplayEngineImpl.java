@@ -30,7 +30,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+//import org.apache.log4j.Logger;
 import org.easysoa.logs.LogEngine;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
@@ -79,7 +81,8 @@ public class ReplayEngineImpl implements ReplayEngine {
     LogEngine logEngine;
     
     // Logger
-    private static Logger logger = Logger.getLogger(ReplayEngineImpl.class.getName());
+    private static Log log = LogFactory.getLog(ReplayEngineImpl.class);
+    //private static Logger logger = Logger.getLogger(ReplayEngineImpl.class.getName());
 
     // TODO : To move in template engine
     // Param setter list
@@ -148,17 +151,17 @@ public class ReplayEngineImpl implements ReplayEngine {
      */
     @Override
     public RecordCollection getExchangeRecordlist(String exchangeRecordStoreName) throws Exception {
-        logger.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
+        log.debug("getExchangeRecordlist method called for store : " + exchangeRecordStoreName);
         List<ExchangeRecord> recordList = new ArrayList<ExchangeRecord>();
         try {
             ProxyFileStore erfs = new ProxyFileStore();
             recordList = erfs.getExchangeRecordlist(exchangeRecordStoreName);
         }
         catch (Exception ex) {
-            logger.error("An error occurs during the listing of exchanges records", ex);
+            log.error("An error occurs during the listing of exchanges records", ex);
             throw new Exception("An error occurs during the listing of exchanges records", ex);
         }
-        logger.debug("recordedList size = " + recordList.size());
+        log.debug("recordedList size = " + recordList.size());
         return new RecordCollection(recordList);
     }    
     
@@ -167,14 +170,14 @@ public class ReplayEngineImpl implements ReplayEngine {
      */
     @Override
     public ExchangeRecord getExchangeRecord(String exchangeRecordStoreName, String exchangeID) throws Exception {
-        logger.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
+        log.debug("getExchangeRecord method called for store : " + exchangeRecordStoreName + " and exchangeID : " + exchangeID);
         ExchangeRecord record = null;
         try {
             ProxyFileStore erfs = new ProxyFileStore();
             record = erfs.loadExchangeRecord(exchangeRecordStoreName, exchangeID, false);
         }
         catch (Exception ex) {
-            logger.error("An error occurs during the list", ex);
+            log.error("An error occurs during the list", ex);
             throw new Exception("An error occurs during the loading of exchange record with id " + exchangeID, ex);
         }
         return record;
@@ -185,7 +188,7 @@ public class ReplayEngineImpl implements ReplayEngine {
      */
     @Override
     public StoreCollection getExchangeRecordStorelist() throws Exception {
-        logger.debug("getExchangeRecordStorelist method called ...");
+        log.debug("getExchangeRecordStorelist method called ...");
         List<ExchangeRecordStore> storeList = new ArrayList<ExchangeRecordStore>();
         try{
             ProxyFileStore erfs = new ProxyFileStore();
@@ -194,7 +197,7 @@ public class ReplayEngineImpl implements ReplayEngine {
             }
         }
         catch(Exception ex){
-            logger.error("An error occurs during the listing of exchanges record stores", ex);
+            log.error("An error occurs during the listing of exchanges record stores", ex);
             throw new Exception("An error occurs during the listing of exchanges record stores", ex); 
         }
         return new StoreCollection(storeList);
@@ -204,7 +207,7 @@ public class ReplayEngineImpl implements ReplayEngine {
     public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String recordID) throws Exception {
         ProxyFileStore erfs = new ProxyFileStore();
         TemplateFieldSuggestions templateFieldSuggest = erfs.getTemplateFieldSuggestions(storeName, recordID);
-        logger.debug(templateFieldSuggest.getTemplateFields().size());
+        log.debug(templateFieldSuggest.getTemplateFields().size());
         return templateFieldSuggest;
     }
     
@@ -215,7 +218,7 @@ public class ReplayEngineImpl implements ReplayEngine {
      */
     @Override
     public OutMessage replay(String exchangeRecordStoreName, String exchangeRecordId) throws Exception{
-        logger.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
+        log.debug("Replaying store : " + exchangeRecordStoreName + ", specific id : " + exchangeRecordId);
         try {
             ProxyFileStore erfs = new ProxyFileStore();
             // get the record
@@ -227,7 +230,7 @@ public class ReplayEngineImpl implements ReplayEngine {
             return this.replay(record);
         }
         catch(Exception ex){
-            logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecordId, ex);
+            log.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecordId, ex);
             throw new Exception("A problem occurs during the replay, see logs for more informations !", ex);
         }
     }
@@ -247,8 +250,8 @@ public class ReplayEngineImpl implements ReplayEngine {
             // Send the request
             requestForwarder = new RequestForwarder();
             outMessage = requestForwarder.send(exchangeRecord.getInMessage());
-            logger.debug("Response of original exchange : " + exchangeRecord.getOutMessage().getMessageContent().getRawContent());
-            logger.debug("Response of replayed exchange : " + outMessage.getMessageContent().getRawContent());
+            log.debug("Response of original exchange : " + exchangeRecord.getOutMessage().getMessageContent().getRawContent());
+            log.debug("Response of replayed exchange : " + outMessage.getMessageContent().getRawContent());
 
             // How to work with fields in fld files
             // Properties by properties => need to specify a property (field in fld files) and to find the corresponding prop in the response ...
@@ -269,7 +272,7 @@ public class ReplayEngineImpl implements ReplayEngine {
             return outMessage;
         }
         catch(Exception ex){
-            logger.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecord.getExchange().getExchangeID(), ex);
+            log.warn("A problem occurs during the replay of exchange record  with id " + exchangeRecord.getExchange().getExchangeID(), ex);
             throw new Exception("A problem occurs during the replay, see logs for more informations !", ex);
         }
     }    
@@ -341,15 +344,21 @@ public class ReplayEngineImpl implements ReplayEngine {
         if(runName == null || "".equals(runName)){
             throw new InvalidParameterException("the parameter runName must not be null, nor empty");
         }
+        log.info("Replaying recorded run '" + runName + "'");
         try{
             // Get the list of the records contained in the specified store
             RecordCollection recordCollection = getExchangeRecordlist(runName);
             Collection<ExchangeRecord> recordList = recordCollection.getRecords();
+            if(recordList.size() <= 0){
+                log.info("The run '" + runName + " does not exists or is empty, there is no records to replay");
+            }
             for(ExchangeRecord record : recordList){
+                log.debug("Replaying record ID : " + record.getExchange().getExchangeID());
                 replay(record);                
             }
         }
         catch(Exception ex){
+            log.error("An error occurs during the replay of run : " + runName , ex);
             throw new IOException("An error occurs during the replay of run : " + runName ,ex);
         }
     }
@@ -365,7 +374,7 @@ public class ReplayEngineImpl implements ReplayEngine {
             storeList = erfs.getExchangeRecordStorelist();
         }
         catch (Exception ex) {
-            logger.error("An error occurs in the getAllRunNames method", ex);
+            log.error("An error occurs in the getAllRunNames method", ex);
         }
         String[] runList = new String[0];
         return storeList.toArray(runList);

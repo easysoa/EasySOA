@@ -22,18 +22,25 @@ package com.openwide.sca.intents;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.osoa.sca.ServiceUnavailableException;
 import org.osoa.sca.annotations.Scope;
 import org.osoa.sca.annotations.Service;
 import org.ow2.frascati.tinfi.api.IntentHandler;
 import org.ow2.frascati.tinfi.api.IntentJoinPoint;
-
 import com.openwide.sca.intents.utils.RequestElement;
+//import javax.servlet.http.HttpServletRequest;
+//import org.eclipse.jetty.server.Request;
 
 @Scope("COMPOSITE")
 @Service(IntentHandler.class)
 public class AutoRearmFuseIntent implements IntentHandler {
 
+    // Logger
+    private static Log log = LogFactory.getLog(AutoRearmFuseIntent.class);    
+    
 	/**
 	 * Max number of requests in a given time period (default value)
 	 */
@@ -55,14 +62,15 @@ public class AutoRearmFuseIntent implements IntentHandler {
 	 * Constructor
 	 */
 	public AutoRearmFuseIntent() {
-		System.out.println("[AUTOREARMFUSE INTENT] AUTOREARMFUSE INTENT default Constructor !!");
+		//System.out.println("[AUTOREARMFUSE INTENT] AUTOREARMFUSE INTENT default Constructor !!");
 		// Queue initialization -> max size = maxRequestNumber
 		requestQueue = new ArrayBlockingQueue<RequestElement>(maxRequestsNumber);
 	}
 
 	/** Set the maxRequestsNumber property. */
 	public void setMaxRequestsNumber(final String maxRequestsNumber) {
-		System.out.println("[AUTOREARMFUSE INTENT] : setting maxRequestsNumber to '" + maxRequestsNumber + "'.");
+		//System.out.println("[AUTOREARMFUSE INTENT] : setting maxRequestsNumber to '" + maxRequestsNumber + "'.");
+	    log.info("[AUTOREARMFUSE INTENT] : setting maxRequestsNumber to '" + maxRequestsNumber + "'.");
 		try {
 			int mrn = Integer.parseInt(maxRequestsNumber);
 			if (mrn > 0) {
@@ -71,21 +79,24 @@ public class AutoRearmFuseIntent implements IntentHandler {
 						this.maxRequestsNumber);
 			}
 		} catch (Exception ex) {
-			System.out.println("[AUTOREARMFUSE INTENT] : Invalid value for maxRequestsNumber property. Default value will be use instead !");
+			//System.out.println("[AUTOREARMFUSE INTENT] : Invalid value for maxRequestsNumber property. Default value will be use instead !");
+			log.error("[AUTOREARMFUSE INTENT] : Invalid value for maxRequestsNumber property. Default value will be use instead !");
 		}
 	}
 
 	/** Set the maxTimePeriod property. */
 	public void setMaxTimePeriod(final String maxTimePeriod) {
-		System.out.println("[AUTOREARMFUSE INTENT] : setting maxTimePeriod to '"
-				+ maxTimePeriod + "'.");
+		//System.out.println("[AUTOREARMFUSE INTENT] : setting maxTimePeriod to '" + maxTimePeriod + "'.");
+		log.info("[AUTOREARMFUSE INTENT] : setting maxTimePeriod to '" + maxTimePeriod + "'.");
 		try {
 			int mtp = Integer.parseInt(maxTimePeriod);
 			if (mtp > 500) {
 				this.maxTimePeriod = mtp;
 			}
 		} catch (Exception ex) {
-			System.out.println("[AUTOREARMFUSE INTENT] : Invalid value for maxTimePeriod property. Default value will be use instead !");
+			//System.out.println("[AUTOREARMFUSE INTENT] : Invalid value for maxTimePeriod property. Default value will be use instead !");
+			log.error("[AUTOREARMFUSE INTENT] : Invalid value for maxTimePeriod property. Default value will be use instead !");
+			
 		}
 	}
 	
@@ -98,10 +109,13 @@ public class AutoRearmFuseIntent implements IntentHandler {
 	public void checkFuseConditions() throws ServiceUnavailableException, Throwable {
 		// get the current time in Ms
 		long currentTime = System.currentTimeMillis();
-		System.out.println("[AUTOREARMFUSE INTENT] Current time (Ms) : " + currentTime);
-		System.out.println("[AUTOREARMFUSE INTENT] Requests in queue : " + requestQueue.size());
+		//System.out.println("[AUTOREARMFUSE INTENT] Current time (Ms) : " + currentTime);
+		log.debug("[AUTOREARMFUSE INTENT] Current time (Ms) : " + currentTime);
+		//System.out.println("[AUTOREARMFUSE INTENT] Requests in queue : " + requestQueue.size());
+		log.debug("[AUTOREARMFUSE INTENT] Requests in queue : " + requestQueue.size());
 		if(requestQueue.size() > 0){
-			System.out.println("[AUTOREARMFUSE INTENT] Older request time in queue : " + requestQueue.peek().getRequestTime());
+			//System.out.println("[AUTOREARMFUSE INTENT] Older request time in queue : " + requestQueue.peek().getRequestTime());
+			log.debug("[AUTOREARMFUSE INTENT] Older request time in queue : " + requestQueue.peek().getRequestTime());
 		}
 		// if the queue is not full, add the new request in the queue
 		if(requestQueue.size() < maxRequestsNumber){
@@ -118,7 +132,8 @@ public class AutoRearmFuseIntent implements IntentHandler {
 			// otherwise, throw an exception
 			else {
 				String errorMessage = "[AUTOREARMFUSE INTENT] Too much requests detected for the time period, this resquest has been blocked !";
-				System.out.println(errorMessage);
+				//System.out.println(errorMessage);
+				log.error(errorMessage);
 				throw new ServiceUnavailableException(errorMessage);
 			}
 		}
@@ -139,9 +154,21 @@ public class AutoRearmFuseIntent implements IntentHandler {
 	 */
 	public Object invoke(IntentJoinPoint ijp) throws Throwable {
 		Object ret;
+		Object[] args = ijp.getArguments();
+		//HttpServletRequest request = (HttpServletRequest)args[1];
+		//Request request = (Request)args[1];
+		
 		//System.out.println("Entering invoke method !");
 		// PUT HERE CODE TO RUN BEFORE THE JOINPOINT PROCESSING
-		checkFuseConditions();
+		//try{
+		    checkFuseConditions();
+		//}
+		//catch(ServiceUnavailableException ex){
+		    // This exception is returned if the fuse max request limit is reached
+		    // Send a error response
+		    //request.getResponse().sendError(500, ex.getMessage());
+		//}
+		
 		ret = ijp.proceed();
 		// PUT HERE CODE TO RUN AFTER THE JOINPOINT PROCESSING
 		//System.out.println("Exiting invoke method !");
