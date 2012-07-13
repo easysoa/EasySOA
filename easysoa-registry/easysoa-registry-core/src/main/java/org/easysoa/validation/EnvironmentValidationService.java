@@ -116,7 +116,7 @@ public class EnvironmentValidationService {
 				DocumentModel tmpWorkspaceModel = null;
 				ValidationResultList validationResults = null;
 
-				//try {
+				try {
 					// Run discovery replay
 					ExchangeReplayController exchangeReplayController = serviceValidationService.getExchangeReplayController();
 					if (exchangeReplayController != null) {
@@ -131,7 +131,7 @@ public class EnvironmentValidationService {
 					else {
 	                    log.error("Cannot run scheduled validation: No exchange replay controller available");
 					}
-				/*}
+				}
 				catch (Exception e) {
 					log.error("Failed to run scheduled validation", e);
 					throw e;
@@ -141,7 +141,7 @@ public class EnvironmentValidationService {
 						// Remove temporary environment
 						session.removeDocument(tmpWorkspaceModel.getRef());
 					}
-				}*/
+				}
 
 				if (freemarkerCfg != null && validationResults != null) {
 					// Create report
@@ -164,8 +164,10 @@ public class EnvironmentValidationService {
 			        }
 			        Map<String, Object> params = new HashMap<String, Object>();
 			        List<String> validatorsNames = new ArrayList<String>();
-			        for (ValidatorResult validatorResult : validationResults.get(0)) {
-			        	validatorsNames.add(validatorResult.getValidatorName());
+			        if (!validationResults.isEmpty()) {
+    			        for (ValidatorResult validatorResult : validationResults.get(0)) {
+    			        	validatorsNames.add(validatorResult.getValidatorName());
+    			        }
 			        }
 			        params.put("results", results);
 			        params.put("validatorsNames", validatorsNames);
