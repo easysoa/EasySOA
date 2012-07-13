@@ -15,7 +15,7 @@ $(document).ready(function() {
       if (xhr.responseText.substr(0, 11) != 'javascript:') {
         js = 'javascript:' + js;
       }
-      $('#bookmarklet').html('<a href="' + js + '" style="border: 1px solid black; border-radius: 10px; background-color: white; padding: 10px">Find WSDLs</a>');
+      $('#bookmarklet').html('<a href="' + js + '">Find WSDLs</a> <span style="font-size: 12pt"><i>(<b>Warning</b>: Work in progress)</i></span>');
     }
   });
 
@@ -36,6 +36,8 @@ $(document).ready(function() {
 	<li><a href="http://frascati.elasticbeanstalk.com/services/">FraSCAti services deployed on Amazon Web Services</a></li>
 	<li><a href="http://frascati.bitnamiapp.com:8080/services/">FraSCAti services deployed on Bitnami</a></li>
 	<li><a href="http://frascati.cloudfoundry.com/services/">FraSCAti services deployed on Cloud Foundry</a></li>
+	<li><a href="http://footballpool.dataaccess.eu/data/info.wso">Daehosting Web Services</a></li>
+	<li><a href="http://services.unitedplanet.de/blz/BlzService.asmx">United Plane Web Services</a></li>
 	<!--The following services doesn't works due to a problem in Discovery proxy-->
 	<!--<li><a href="http://ec2-79-125-45-33.eu-west-1.compute.amazonaws.com:8080/services/">FraSCAti services deployed on Amazon Web Services Elastic Beanstalk</a></li>-->
 	<!--<li><a href="http://frascati.frascati.cloudbees.net/services/">FraSCAti services deployed on Cloudbees</a></li>-->
@@ -44,15 +46,17 @@ $(document).ready(function() {
 
 <p>Other examples:</p>
 <ul>
-  <li><a href="http://www.ebi.ac.uk/Tools/webservices/about/webservices">"Web Services at EMBL-EBI"</a></li>
-  <li><a href="http://www.actionscript.org/forums/showthread.php3?t=70742">"Some handy web services"</a></li>
+  <li>http://www.ebi.ac.uk/Tools/webservices/wsdl/list</li>
+  <li>http://www.actionscript.org/forums/showthread.php3?t=70742</li>
+  <li>https://predic8.com/svn/membrane/registry/trunk/servicelist.text</li>
 </ul>
 
 <h2>Bookmarklet</h2>
 
-<p>If you need to browse to HTTPS places, our proxy will not work. Instead, try to <b>drag this bookmarklet to your favorites</b>: when you're on a page of interest (e.g. that contains links to WSDLs), click then on the bookmark to make EasySOA explore the page.</p>
+<p>If you need to browse to HTTPS places, our proxy will not work. Instead, try to drag this bookmarklet to your favorites: when you're on a page of interest (e.g. that contains links to WSDLs), click then on the bookmark to make EasySOA explore the page.</p>
 
 <p id="bookmarklet" style="font-size: 15pt"><i>(loading)</i></p>
 
 </body>
 </html>
+
