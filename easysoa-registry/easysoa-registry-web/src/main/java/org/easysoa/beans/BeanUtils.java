@@ -19,10 +19,15 @@ public class BeanUtils {
         return items;
     }
     
-    public static List<SelectItem> stringsToSelectItems(String[] strings) {
+    /**
+     * Puts o.toString() as key/value
+     * @param objects
+     * @return
+     */
+    public static List<SelectItem> arrayToSelectItems(Object[] objects) {
         List<SelectItem> items = new ArrayList<SelectItem>();
-        for (String string : strings) {
-            items.add(new SelectItem(string, string));
+        for (Object object : objects) {
+            items.add(new SelectItem(object.toString(), object.toString()));
         }
         return items;
     }

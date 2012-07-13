@@ -3,96 +3,95 @@
 <head>
 <title>EasySOA - Scheduled validation report</title>
 <style type="text/css">
-* {
-	margin: 0;
-	padding: 0;
+
+#validation-report-contents {
+    width: 100%;
+    height: 820px;
+    background-color: #EEF5FA;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-body {
-	width: 100%;
-	height: 820px;
-	background-color: #EEF5FA;
-	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+#validation-report-contents h1, #validation-report-contents h2 {
+    clear: both;
+    max-width: 900px;
+    margin-left: 20px;
+    margin-top: 0;
 }
 
-h1, h2 {
-	clear: both;
-	max-width: 900px;
-	margin-left: 20px;
+#validation-report-contents h1 {
+    padding-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid grey;
+    color: #446;
+    font-size: 15pt;
 }
-
-h1 {
-	padding-top: 20px;
-	margin-bottom: 10px;
-	border-bottom: 1px solid grey;
-	color: #446;
-	font-size: 15pt;
-}
-h1:first-child {
+#validation-report-contents h1:first-child {
   padding-top: 10px;
 }
 
-h2 {
-	font: 12pt Arial;
-	font-weight: bold;
-	padding-top: 10px;
-	padding-bottom: 5px;
-	color: #248;
+#validation-report-contents h2 {
+    font: 12pt Arial;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    color: #248;
 }
 
-li {
-	margin-left: 50px;
-	margin-bottom: 5px;
+#validation-report-contents li {
+    margin-left: 50px;
+    margin-bottom: 5px;
 }
 
-table {
+#validation-report-contents table {
   border-spacing: 0;
   border: 1px solid black;
   margin: 10px;
   width: 800px;
 }
 
-td {
+#validation-report-contents td {
   border: 1px solid grey;
   padding: 5px;
   background-color: white;
 }
 
-th {
+#validation-report-contents th {
   border: 1px solid grey;
   padding: 5px;
   background-color: #cde;
 }
 
-.result {
+#validation-report-contents .result {
   font-size: 15pt;
   text-transform: uppercase;
   font-weight: bold;
 }
 
-.resultsmall {
+#validation-report-contents .resultsmall {
   font-size: 12pt;
   text-transform: uppercase;
   font-weight: bold;
 }
 
-span.passed {
+#validation-report-contents span.passed {
   color: darkgreen;
 }
 
-span.failed {
+#validation-report-contents span.failed {
   color: red;
 }
 
-td.passed {
+#validation-report-contents td.passed {
   background-color: #DFD;
 }
 
-td.failed {
+#validation-report-contents td.failed {
   background-color: #FDD;
 }
 
-.log {
+#validation-report-contents .log {
   font-family: monospace, sans-serif;
   color: #444;
   font-size: 9pt;
@@ -100,7 +99,8 @@ td.failed {
 
 </style>
 </head>
-<body>
+<body style="margin: 0; padding: 0">
+<div id="validation-report-contents">
 
 <h1>EasySOA - Scheduled validation report</h1>
 
@@ -141,5 +141,6 @@ td.failed {
 </#list>
 </table>
 
+</div>
 </body>
 </html>

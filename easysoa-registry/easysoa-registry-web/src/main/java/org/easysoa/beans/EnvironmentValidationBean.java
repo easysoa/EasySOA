@@ -38,6 +38,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
@@ -105,7 +106,7 @@ public class EnvironmentValidationBean {
                 return new LinkedList<SelectItem>();
             }
         }
-        return BeanUtils.stringsToSelectItems(exchangeReplayController.getAllRunNames());
+        return BeanUtils.arrayToSelectItems(exchangeReplayController.getAllRunNames());
     }
     
     public String getRunName() {
@@ -117,7 +118,12 @@ public class EnvironmentValidationBean {
     }
 
     public List<SelectItem> getAvailableEnvironments() throws ClientException {
-        return BeanUtils.modelsToSelectItems(getAllWorkspaces());
+        DocumentModelList workspacesModels = getAllWorkspaces();
+        List<String> workspaceNames = new LinkedList<String>();
+        for (DocumentModel workspaceModel : workspacesModels) {
+            workspaceNames.add(workspaceModel.getTitle());
+        }
+        return BeanUtils.arrayToSelectItems(workspaceNames.toArray());
     }
     
     public String getEnvironmentName() {
