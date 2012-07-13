@@ -22,7 +22,6 @@ package com.openwide.sca.intents;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osoa.sca.ServiceUnavailableException;
@@ -31,8 +30,7 @@ import org.osoa.sca.annotations.Service;
 import org.ow2.frascati.tinfi.api.IntentHandler;
 import org.ow2.frascati.tinfi.api.IntentJoinPoint;
 import com.openwide.sca.intents.utils.RequestElement;
-//import javax.servlet.http.HttpServletRequest;
-//import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Request;
 
 @Scope("COMPOSITE")
 @Service(IntentHandler.class)
@@ -153,25 +151,32 @@ public class AutoRearmFuseIntent implements IntentHandler {
 	 * @see org.ow2.frascati.tinfi.control.intent.IntentHandler#invoke(IntentJoinPoint)
 	 */
 	public Object invoke(IntentJoinPoint ijp) throws Throwable {
-		Object ret;
-		Object[] args = ijp.getArguments();
-		//HttpServletRequest request = (HttpServletRequest)args[1];
-		//Request request = (Request)args[1];
-		
-		//System.out.println("Entering invoke method !");
-		// PUT HERE CODE TO RUN BEFORE THE JOINPOINT PROCESSING
-		//try{
+
+	    // TODO : The fuse intent works for all received calls => WSDL file requests or service requests
+	    // And makes no differences between the calls : there is only one list where the call are stored 
+	    
+	    // So 2 main improvements are necessary :
+	    // - First : add a key (eg for localhost:8084 to have a fuse for each different service or endpoint
+	    // - Second : add a filter intent working with a list of endpoint to avoid to activate the fuse for these endpoints  
+	    
+	    Object ret;
+		Request request = null;
+		// Get the request to return error message if the fuse must be activated
+		if(ijp.getArguments().length >= 2){
+		    if(ijp.getArguments()[1] instanceof org.eclipse.jetty.server.Request){
+		        request = (org.eclipse.jetty.server.Request) (ijp.getArguments()[1]); 
+		    }
+		}
+		try{
 		    checkFuseConditions();
-		//}
-		//catch(ServiceUnavailableException ex){
-		    // This exception is returned if the fuse max request limit is reached
-		    // Send a error response
-		    //request.getResponse().sendError(500, ex.getMessage());
-		//}
-		
+		}
+		catch(ServiceUnavailableException ex){
+		    // This exception is returned if the fuse max request limit is reached,send a error response
+		    if(request != null && !request.getResponse().isCommitted()){
+		        request.getResponse().sendError(500, ex.getMessage());
+		    }
+		}
 		ret = ijp.proceed();
-		// PUT HERE CODE TO RUN AFTER THE JOINPOINT PROCESSING
-		//System.out.println("Exiting invoke method !");
 		return ret;
 	}
 }
