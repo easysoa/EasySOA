@@ -82,58 +82,26 @@ public class RunManagerImpl implements RunManager {
 	@Reference
 	ReplayEngine replayEngine;
 	
-	// List of event receiver
+	/**
+	 * List of event receivers
+	 */
 	private List<RunManagerEventReceiver> runManagerEventReceiverList = new ArrayList<RunManagerEventReceiver>();
-	
+
+	/**
+	 * Run store
+	 */
+    private ProxyFileStore erStore = new ProxyFileStore();
+    
 	/**
 	 * The current run
 	 */
 	private Run currentRun;
 	
 	/**
-	 * Run list
-	 */
-	// obsolete, only one run at the same time
-	//private ArrayDeque<Run> runList;
-
-	/**
 	 * 
 	 */
 	public RunManagerImpl(){
-		//runList = new ArrayDeque<Run>();
 		logger.debug("Init RunManagerImpl ...");
-	}
-	
-	/**
-	 * Set the auto start. The auto start feature create a new <code>Run</code> automatically even if the start method was not called before.
-	 * @param autoStart true if a new run should be created automatically when the method getCurrentRun is called, false otherwise
-	 */
-	public void setAutoStart(boolean autoStart){
-		this.autoStart = autoStart;
-	}
-
-	/**
-	 * Returns true id the auto start is enabled
-	 * @return true id the auto start is enabled 
-	 */
-	public boolean isAutoStart() {
-		return autoStart;
-	}	
-
-	/**
-	 * Set the auto save. The auto save feature save automatically the run when the stop method is called.
-	 * @param autoStart true if the current run should be saved automatically when the method stop is called, false otherwise
-	 */
-	public void setAutoSave(boolean autoSave) {
-		this.autoSave = autoSave;
-	}
-
-	/**
-	 * Returns true id the auto save is enabled
-	 * @return true id the auto save is enabled 
-	 */	
-	public boolean isAutoSave() {
-		return autoSave;
 	}
 	
 	/**
@@ -207,13 +175,13 @@ public class RunManagerImpl implements RunManager {
 	public String stop() throws Exception {
 		String response;
 		if(this.currentRun != null){
+            response = "Run " + currentRun.getName() + " stopped !";
 			this.currentRun.setStopDate(new Date());
-			//this.runList.add(currentRun);
-			//this.currentRun = null;
-			currentRun.setStatus(RunStatus.STOPPED);
-			if(autoSave){
+			this.currentRun.setStatus(RunStatus.STOPPED);
+			if (autoSave) {
 				save();
 			}
+            this.currentRun = null;
             for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
                 try {
                     eventReceiver.receiveEvent(RunManagerEvent.STOP);
@@ -222,7 +190,6 @@ public class RunManagerImpl implements RunManager {
                     logger.error("Cannot send event to event receiver : " + eventReceiver.getEventReceiverName(), ex);
                 }
             }			
-			response = "Run " + currentRun.getName() + " stopped !";
 		} else {
 			throw new Exception("There is no current run to stop !");
 		}
@@ -333,9 +300,6 @@ public class RunManagerImpl implements RunManager {
 
 	@Override
 	public String save() throws Exception {
-		// Save the exchangeRecord
-		//ExchangeRecordStoreManager erStore = ExchangeRecordStoreFactory.createExchangeRecordStore();
-	    ProxyFileStore erStore = new ProxyFileStore();
 		erStore.save(currentRun);
 		currentRun.setStatus(RunStatus.SAVED);
 		return "Run " + currentRun.getName() + " saved !";
@@ -367,6 +331,36 @@ public class RunManagerImpl implements RunManager {
 		}
 	}
 
-	
-	
+    /**
+     * Set the auto start. The auto start feature create a new <code>Run</code> automatically even if the start method was not called before.
+     * @param autoStart true if a new run should be created automatically when the method getCurrentRun is called, false otherwise
+     */
+    public void setAutoStart(boolean autoStart){
+        this.autoStart = autoStart;
+    }
+
+    /**
+     * Returns true id the auto start is enabled
+     * @return true id the auto start is enabled 
+     */
+    public boolean isAutoStart() {
+        return autoStart;
+    }   
+
+    /**
+     * Set the auto save. The auto save feature save automatically the run when the stop method is called.
+     * @param autoStart true if the current run should be saved automatically when the method stop is called, false otherwise
+     */
+    public void setAutoSave(boolean autoSave) {
+        this.autoSave = autoSave;
+    }
+
+    /**
+     * Returns true id the auto save is enabled
+     * @return true id the auto save is enabled 
+     */ 
+    public boolean isAutoSave() {
+        return autoSave;
+    }
+    
 }
