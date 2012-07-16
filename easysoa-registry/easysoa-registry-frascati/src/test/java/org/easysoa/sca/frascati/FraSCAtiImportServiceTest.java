@@ -363,9 +363,7 @@ public class FraSCAtiImportServiceTest
     {
         // With this sample, frascati throws a ClassNotFoundException because required
         // classes are in an other jar
-        String scaFilePath =
-                "src/test/resources/"
-                        + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
+        String scaFilePath = "src/test/resources/" + "easysoa-samples-smarttravel-trip-0.4.jar";
         File scaFile = new File(scaFilePath);
         boolean classNotFoundExceptionThrown = false;
         // Getting the importer

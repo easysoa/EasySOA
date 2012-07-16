@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Version: 0.4-SNAPSHOT
+Bundle-Version: 0.4
 Bundle-Name: easysoa-registry-rest-miner
 Bundle-SymbolicName: org.easysoa.registry.restminer;singleton:=true
 Bundle-Vendor: EasySOA Consortium

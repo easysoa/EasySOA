@@ -4,21 +4,14 @@
 	 <parent> 
 		<groupId>org.easysoa.proxy</groupId> 
 		<artifactId>easysoa-proxy-parent</artifactId> 
-		<version>0.4-SNAPSHOT</version> 
+		<version>0.4</version> 
 		<relativePath>../../pom.xml</relativePath> 
 	</parent>
 
-
 	<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-
 	<name>EasySOA HTTP Discovery Proxy</name>
 	<packaging>jar</packaging>
 
-	<properties>
-		<frascati.version>1.5-SNAPSHOT</frascati.version>
-		<easysoa.version>0.4-SNAPSHOT</easysoa.version>
-	</properties>
-	
 	<dependencies>
 		<dependency> 
 			<groupId>org.ow2.frascati</groupId>

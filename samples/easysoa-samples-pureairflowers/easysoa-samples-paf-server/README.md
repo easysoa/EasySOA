@@ -10,9 +10,9 @@ No database is required. The number of orders returned by the service is hard co
 
 To run the server:
 
-- unzip easysoa-samples-paf-server-0.4-SNAPSHOT-bin.zip
-- cd easysoa-samples-paf-server-0.4-SNAPSHOT
-- java -jar bin/easysoa-samples-paf-server-0.4-SNAPSHOT.jar
+- unzip easysoa-samples-paf-server-VERSION-bin.zip
+- cd easysoa-samples-paf-server-VERSION
+- java -jar bin/easysoa-samples-paf-server-VERSION.jar
 
 The server listens to: http://localhost:9010/PureAirFlowers
 

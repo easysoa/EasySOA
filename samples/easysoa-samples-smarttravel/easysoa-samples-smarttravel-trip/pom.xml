@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.easysoa.samples</groupId>
 		<artifactId>easysoa-samples-parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
+		<version>0.4</version>
 		<relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
 	</parent>
 
@@ -113,13 +113,13 @@
 							<dependency>
 								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
-								<version>0.4-SNAPSHOT</version>
+								<version>0.4</version>
 								<scope>provided</scope>
 							</dependency>
 							<dependency>
 								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
-								<version>0.4-SNAPSHOT</version>
+								<version>0.4</version>
 								<scope>provided</scope>
 							</dependency>
 							<!-- <dependency> -->
@@ -130,13 +130,13 @@
 							<dependency>
 								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
-								<version>0.4-SNAPSHOT</version>
+								<version>0.4</version>
 								<scope>provided</scope>
 							</dependency>
 							<dependency>
 								<groupId>org.easysoa.samples.smarttravel</groupId>
 								<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
-								<version>0.4-SNAPSHOT</version>
+								<version>0.4</version>
 								<scope>provided</scope>
 							</dependency>
 							<dependency>

@@ -11,7 +11,7 @@
   <parent>
     <groupId>org.easysoa.samples</groupId>
     <artifactId>easysoa-samples-parent</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <relativePath>../../easysoa-samples-parent/pom.xml</relativePath>
   </parent>
 

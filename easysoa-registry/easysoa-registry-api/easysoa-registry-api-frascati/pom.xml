@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.easysoa.registry.api</groupId>
     <artifactId>easysoa-registry-api</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 

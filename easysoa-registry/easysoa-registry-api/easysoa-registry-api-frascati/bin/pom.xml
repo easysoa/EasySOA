@@ -7,13 +7,13 @@
 	<!--<parent>
 		<artifactId>easysoa-registry</artifactId>
 		<groupId>org.easysoa.registry</groupId>
-		<version>0.4-SNAPSHOT</version>
+		<version>0.4</version>
 	</parent>-->
 	
 	<groupId>org.easysoa.registry</groupId>
 	<artifactId>easysoa-registry-api-frascati</artifactId>
 	<name>easysoa-registry-api-frascati</name>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.4</version>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-api</artifactId>
-			<version>0.4-SNAPSHOT</version>
+			<version>${easysoa.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	

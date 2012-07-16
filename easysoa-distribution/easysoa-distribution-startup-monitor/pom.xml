@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.easysoa.distribution</groupId>
     <artifactId>easysoa-distribution</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 

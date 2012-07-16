@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.easysoa</groupId>
         <artifactId>parent</artifactId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.easysoa.frascati</groupId>
             <artifactId>easysoa-frascati-service-api</artifactId>
-            <version>0.4-SNAPSHOT</version>
+            <version>0.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -5,19 +5,13 @@
 	<artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
 	<name>EasySOA UI Scaffolder Proxy</name>
 	<packaging>jar</packaging>
-	<!--<version>0.4-SNAPSHOT</version>-->
 
 	<parent>
 		<groupId>org.easysoa.proxy</groupId>
 		<artifactId>easysoa-proxy-parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
+		<version>0.4</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-
-	<!--<properties>
-		<frascati.version>1.5-SNAPSHOT</frascati.version>
-		<easysoa.version>0.4-SNAPSHOT</easysoa.version>
-	</properties>-->
 
 	<dependencies>
 		<dependency>

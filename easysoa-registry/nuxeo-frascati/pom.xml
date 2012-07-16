@@ -7,14 +7,14 @@
   <parent>
     <groupId>org.easysoa.registry</groupId>
     <artifactId>easysoa-registry-parent</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>org.nuxeo</groupId>
   <artifactId>nuxeo-frascati</artifactId>
   <name>nuxeo-frascati</name>
-  <version>0.0-SNAPSHOT</version>
+  <version>0.4</version>
   
   <dependencies>
     <!-- EasySOA -->
@@ -26,7 +26,7 @@
     <dependency>
     	<groupId>org.easysoa.registry.api</groupId>
   		<artifactId>easysoa-remote-frascati</artifactId>
-    	<version>0.4-SNAPSHOT</version>
+    	<version>0.4</version>
     </dependency>    
     <!-- FraSCAti -->
     <!-- Nuxeo -->
@@ -1296,7 +1296,7 @@
                 <artifactItem>
                   <groupId>org.easysoa.frascati</groupId>
                   <artifactId>easysoa-frascati-service</artifactId>
-                  <version>0.4-SNAPSHOT</version>
+                  <version>${easysoa.version}</version>
                 </artifactItem>
               </artifactItems>
             </configuration>

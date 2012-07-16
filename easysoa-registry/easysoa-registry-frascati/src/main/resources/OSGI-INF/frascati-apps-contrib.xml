@@ -4,35 +4,35 @@
   <extension target="org.easysoa.registry.frascati.FraSCAtiApps" point="apps">
    
     <app name="EasySOA Proxy Core HTTP Monitoring Proxy">
-      <jarPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT/bin/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT.jar</jarPath>
-      <libsPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT/lib</libsPath>
+      <jarPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.4/bin/easysoa-proxy-core-httpdiscoveryproxy-0.4.jar</jarPath>
+      <libsPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.4/lib</libsPath>
       <compositeName>httpDiscoveryProxy</compositeName>
     </app>
     
     <app name="EasySOA Proxy core Scaffolding Proxy">
-      <jarPath>nxserver/frascati/apps/easysoa-proxy-core-scaffolderproxy-0.4-SNAPSHOT/bin/easysoa-proxy-core-scaffolderproxy-0.4-SNAPSHOT.jar</jarPath>
-      <libsPath>nxserver/frascati/apps/easysoa-proxy-core-scaffolderproxy-0.4-SNAPSHOT/lib</libsPath>
+      <jarPath>nxserver/frascati/apps/easysoa-proxy-core-scaffolderproxy-0.4/bin/easysoa-proxy-core-scaffolderproxy-0.4.jar</jarPath>
+      <libsPath>nxserver/frascati/apps/easysoa-proxy-core-scaffolderproxy-0.4/lib</libsPath>
       <compositeName>scaffoldingProxy_monitored</compositeName>
     </app>
     
     <app name="EasySOA Pure Air Flowers Service sample">
-	  <jarPath>nxserver/frascati/apps/easysoa-samples-paf-server-sca-0.4-SNAPSHOT/bin/easysoa-samples-paf-server-sca-0.4-SNAPSHOT.jar</jarPath>
-	  <libsPath>nxserver/frascati/apps/easysoa-samples-paf-server-sca-0.4-SNAPSHOT/lib</libsPath>
+	  <jarPath>nxserver/frascati/apps/easysoa-samples-paf-server-sca-0.4/bin/easysoa-samples-paf-server-sca-0.4.jar</jarPath>
+	  <libsPath>nxserver/frascati/apps/easysoa-samples-paf-server-sca-0.4/lib</libsPath>
 	  <compositeName>paf-sample</compositeName>
     </app>
     
     <!-- Smart travel sample disabled. There is a problem with the samples generated with wsdl2java tool and FraSCAti (service name, parameter names, see issue 23 on Github -->
     <!--
     <app name="EasySOA Smart Travel Services backup">
-      <jarPath>nxserver/frascati/apps/easysoa-samples-smarttravel-services-backup-sca-0.4-SNAPSHOT/bin/easysoa-samples-smarttravel-services-backup-sca-0.4-SNAPSHOT.jar</jarPath>
-      <libsPath>nxserver/frascati/apps/easysoa-samples-smarttravel-services-backup-sca-0.4-SNAPSHOT/lib</libsPath>
+      <jarPath>nxserver/frascati/apps/easysoa-samples-smarttravel-services-backup-sca-0.4/bin/easysoa-samples-smarttravel-services-backup-sca-0.4.jar</jarPath>
+      <libsPath>nxserver/frascati/apps/easysoa-samples-smarttravel-services-backup-sca-0.4/lib</libsPath>
       <compositeName>services-backup-sca</compositeName>
     </app>
     -->
     
     <app name="EasySOA Smart Travel Trip sample">
-      <jarPath>nxserver/frascati/apps/easysoa-samples-smarttravel-trip-0.4-SNAPSHOT/bin/easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar</jarPath>
-      <libsPath>nxserver/frascati/apps/easysoa-samples-smarttravel-trip-0.4-SNAPSHOT/lib</libsPath>
+      <jarPath>nxserver/frascati/apps/easysoa-samples-smarttravel-trip-0.4/bin/easysoa-samples-smarttravel-trip-0.4.jar</jarPath>
+      <libsPath>nxserver/frascati/apps/easysoa-samples-smarttravel-trip-0.4/lib</libsPath>
 	  <compositeName>smart-travel-mock-services</compositeName>
     </app>
   </extension>
