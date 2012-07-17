@@ -22,14 +22,12 @@ package org.easysoa.registry.frascati;
 
 import java.io.File;
 
-import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
-import org.easysoa.sca.IScaRuntimeImporter;
 import org.easysoa.sca.IScaImporter;
+import org.easysoa.sca.IScaRuntimeImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
 import org.easysoa.sca.frascati.ApiRuntimeFraSCAtiScaImporter;
 import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
 import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * 
@@ -81,7 +79,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase {
      * method instead
      */
     protected EasySOAApiFraSCAti() {
-        try {
+ /*       try {
             //remoteProvider = new RemoteFraSCAtiServiceProvider(null);
             //this.frascati = remoteProvider.getFraSCAtiService();
             
@@ -91,7 +89,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase {
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**

@@ -1,6 +1,15 @@
 <?xml version="1.0" ?>
 <fragment version="1">
 
+  <require>org.nuxeo.runtime</require>
+  <require>org.nuxeo.ecm.core.api</require>
+  <require>org.nuxeo.ecm.core</require>
+  <require>org.nuxeo.ecm.core.schema</require>
+  <require>org.nuxeo.ecm.directory.api</require>
+  <require>org.easysoa.registry.api.local</require>
+  <require>org.nuxeo.ecm.platform.scheduler.core</require>
+  <require>org.nuxeo.frascati</require>
+  
   <extension target="application#MODULE">
     <module>
       <ejb>${bundle.fileName}</ejb>
