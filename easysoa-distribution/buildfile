@@ -114,9 +114,9 @@ define 'easysoa', :base_dir => '../' do
   desc 'EasySOA Registry packaging project'
   define 'easysoa-registry-packaging' do
   
-      task :mvn do
-        maven(['clean', 'install'], project)
-      end
+    task :mvn do
+      maven(['clean', 'install'], project)
+    end
       
     desc 'Send plugins to Nuxeo'
     task :dist do
