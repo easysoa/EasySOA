@@ -251,6 +251,8 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
             {
                 log.log(Level.WARNING,e.getMessage());
             }
+        } else if (processingContext.getRootComposite() != null) {
+            return processingContext.getRootComposite().getName();
         }
         return null;
     }
