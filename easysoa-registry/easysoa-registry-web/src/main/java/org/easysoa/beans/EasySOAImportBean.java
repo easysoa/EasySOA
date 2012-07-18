@@ -90,6 +90,8 @@ public class EasySOAImportBean {
     private String targetWorkspace;
 
     private String targetAppliImpl;
+
+    private String outputMessage = null;
     
     private DocumentModel targetWorkspaceModel;
     
@@ -186,9 +188,12 @@ public class EasySOAImportBean {
                 
                 return appliImplModel;
             }
+            
+            outputMessage = "Done.";
 
         } catch (Exception e) {
             log.error("Failed to import SCA", e);
+            outputMessage = "Failed to import SCA: " + e.getMessage();
         } finally {
             if (scaFile != null) {
                 scaFile.delete();
@@ -278,4 +283,8 @@ public class EasySOAImportBean {
         this.targetAppliImpl = targetAppliImpl;
     }
 
+    public String getOutputMessage() {
+        return outputMessage;
+    }
+    
 }
