@@ -38,6 +38,7 @@ import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
 import org.easysoa.sca.frascati.test.RemoteFraSCAtiServiceProviderTest;
+import org.eclipse.stp.sca.Composite;
 
 /**
  * Abstract Proxy Test Starter. Launch FraSCAti and the HTTP Discovery Proxy.
@@ -52,7 +53,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
 
     protected FraSCAtiServiceItf frascati = null;
     protected RemoteFraSCAtiServiceProvider serviceProvider = null;
-    protected ArrayList<String> componentList = null;
+    protected ArrayList<Composite> componentList = null;
     
     protected File lib;
 
@@ -100,7 +101,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
             lib = new File(libBuilder.toString());
             
             logger.info("FraSCATI Starting");
-            componentList = new ArrayList<String>();
+            componentList = new ArrayList<Composite>();
             serviceProvider = new RemoteFraSCAtiServiceProvider(null);
             frascati = serviceProvider.getFraSCAtiService();
         }
@@ -118,10 +119,10 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
             if (componentList != null)
               {
                   // for(Component component : componentList){
-                  for (String component : componentList)
+                  for (Composite component : componentList)
                   {
-                      logger.debug("Closing component : " + component);
-                      frascati.stop(component);
+                      logger.debug("Closing component : " + component.getName());
+                      frascati.stop(component.getName());
                }
             }
             if(lib.exists() && lib.delete())
@@ -166,7 +167,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
      */
     protected void startHttpDiscoveryProxy(String composite, URL... urls) throws Exception {
         logger.info("HTTP Discovery Proxy Starting");
-        String component = frascati.processComposite(composite,
+        Composite component = frascati.processComposite(composite,
                 FraSCAtiServiceItf.all, urls);
         componentList.add(component);
     }

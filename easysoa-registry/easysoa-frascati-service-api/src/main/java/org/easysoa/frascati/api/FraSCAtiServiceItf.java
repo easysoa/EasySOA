@@ -97,7 +97,7 @@ public interface FraSCAtiServiceItf
      * @throws FraSCAtiServiceException
      *             if the composite can not be loaded
      */
-    String processComposite(String composite, int processingMode, URL... urls)
+    Composite processComposite(String composite, int processingMode, URL... urls)
             throws FraSCAtiServiceException;
 
     /**
@@ -109,7 +109,7 @@ public interface FraSCAtiServiceItf
      * @throws FraSCAtiServiceException
      *             if the component cannot be loaded
      */
-    String processComposite(String composite) throws FraSCAtiServiceException;
+    Composite processComposite(String composite) throws FraSCAtiServiceException;
 
     /**
      * Return the state of the component which name is passed on as a

@@ -166,30 +166,28 @@ public class EasySOAImportBean {
         try {
             scaFile = transferBlobToFile();
 
-            if (scaFile != null) {
-                BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(documentManager);
-                IScaImporter importer = Framework.getService(ScaImporterComponent.class).createScaImporter(visitorFactory, scaFile);
-    
-                DocumentModel appliImplModel = documentManager.getDocument(new IdRef(targetAppliImpl));
-                if (targetAppliImpl != null) {
-                    // Add a test here to check if instance of NuxeoFrascatiScaImporter
-                    //importer.setParentAppliImpl(appliImplModel);
-                    importer.setAppliImplURL((String)
-                            appliImplModel.getProperty(AppliImpl.SCHEMA,AppliImpl.PROP_URL));
-                }
-                if (serviceStackType != null) {
-                    importer.setServiceStackType(serviceStackType);
-                }
-                if (serviceStackUrl != null) {
-                    importer.setServiceStackUrl(serviceStackUrl);
-                }
-    
-                importer.importSCA();
-                
-                return appliImplModel;
+            BindingVisitorFactory visitorFactory = new LocalBindingVisitorFactory(documentManager);
+            IScaImporter importer = Framework.getService(ScaImporterComponent.class).createScaImporter(visitorFactory, scaFile);
+
+            DocumentModel appliImplModel = documentManager.getDocument(new IdRef(targetAppliImpl));
+            if (targetAppliImpl != null) {
+                // Add a test here to check if instance of NuxeoFrascatiScaImporter
+                //importer.setParentAppliImpl(appliImplModel);
+                importer.setAppliImplURL((String)
+                        appliImplModel.getProperty(AppliImpl.SCHEMA,AppliImpl.PROP_URL));
             }
+            if (serviceStackType != null) {
+                importer.setServiceStackType(serviceStackType);
+            }
+            if (serviceStackUrl != null) {
+                importer.setServiceStackUrl(serviceStackUrl);
+            }
+
+            importer.importSCA();
             
             outputMessage = "Done.";
+            
+            return appliImplModel;
 
         } catch (Exception e) {
             log.error("Failed to import SCA", e);
@@ -214,7 +212,7 @@ public class EasySOAImportBean {
             return f;
         }
         else {
-            return null;
+            throw new NullPointerException("File to transfer is not specified");
         }
     }
 

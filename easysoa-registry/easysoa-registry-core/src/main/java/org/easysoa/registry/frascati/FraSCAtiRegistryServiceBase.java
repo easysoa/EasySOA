@@ -106,11 +106,10 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		log.debug("composite URL = " + compositeUrl);
 		log.debug("scaZipUrls = " + scaZipUrls);
 		
-		String compositeName = null;
+		Composite composite = null;
 		
 		try {
-			compositeName = frascati.processComposite(
-			        compositeUrl.toString(), mode,scaZipUrls);
+			composite = frascati.processComposite(compositeUrl.toString(), mode,scaZipUrls);
 		} 
 		catch (FraSCAtiServiceException fe) { 
 			log.error("The number of checking errors is equals to " + frascati.getErrors());
@@ -120,8 +119,6 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		// TODO feed parsing errors / warnings up to UI ?!
 		log.warn("\nErrors while parsing " + compositeUrl + ":\n" + frascati.getErrorMessages());
 		log.info("\nWarnings while parsing " + compositeUrl + ":\n" + frascati.getWarningMessages());
-		
-		Composite composite = frascati.getComposite(compositeName);
 		
 		if(composite == null){
 			throw new FraSCAtiRegistryException("Composite '" + compositeUrl + "' can not be loaded");

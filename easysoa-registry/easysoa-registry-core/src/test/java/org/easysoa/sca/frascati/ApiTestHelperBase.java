@@ -28,6 +28,7 @@ import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.registry.frascati.EasySOAApiFraSCAti;
 import org.easysoa.sca.frascati.test.RemoteFraSCAtiServiceProviderTest;
+import org.eclipse.stp.sca.Composite;
 
 /**
  * 
@@ -48,13 +49,13 @@ public class ApiTestHelperBase extends RemoteFraSCAtiServiceProviderTest {
         log.info("Services Mock Starting");
         log.info("frascati = " + frascati);
         
-        String compositeName = null;
+        Composite composite = null;
         
         try {
             
-            compositeName = frascati.processComposite(
+            composite = frascati.processComposite(
                     "src/test/resources/RestApiMock.composite", FraSCAtiServiceItf.all);
-            componentList.add(compositeName);
+            componentList.add(composite.getName());
             
         } catch (FraSCAtiServiceException e) {
             
