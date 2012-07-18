@@ -184,7 +184,7 @@
         <!--<dependency>
 			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-			<version>0.4-SNAPSHOT</version>
+			<version>${easysoa.version}</version>
 			<scope>test</scope>
 		</dependency>-->
 	    <!-- esper -->

@@ -1275,7 +1275,7 @@
                 <artifactItem>
                   <groupId>org.easysoa.frascati</groupId>
                   <artifactId>easysoa-frascati-service</artifactId>
-                  <version>0.4-SNAPSHOT</version>
+                  <version>${easysoa.version}</version>
                 </artifactItem>
               </artifactItems>
             </configuration>

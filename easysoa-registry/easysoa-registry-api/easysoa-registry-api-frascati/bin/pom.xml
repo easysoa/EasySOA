@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.easysoa.registry</groupId>
 			<artifactId>easysoa-registry-api</artifactId>
-			<version>0.4-SNAPSHOT</version>
+			<version>${easysoa.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	
