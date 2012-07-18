@@ -130,6 +130,35 @@ define 'easysoa', :base_dir => '../' do
       puts "===== Nuxeo plugins & libs - Deploying to '" + NUXEO_PATH + "' ====="
       puts FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*']
       cp_r FileList[project(EASYSOA_REGISTRY_PACKAGING).base_dir+'/target/*'], _(NUXEO_PATH)
+      
+      # Removing some jar to avoid FraSCAti launch problems
+      puts "===== Removing duplicated jars ====="
+      mkdir_p NUXEO_PATH+'/removedJars/serviceRegistry/lib'
+      if File.exist?(NUXEO_PATH+'/lib/xercesImpl-2.9.1.jar')
+      	FileUtils.mv NUXEO_PATH+'/lib/xercesImpl-2.9.1.jar', NUXEO_PATH+'/removedJars/lib/xercesImpl-2.9.1.jar', :force => true
+      end
+      mkdir_p NUXEO_PATH+'/removedJars/nxserver/frascati/lib'
+      if File.exist?(NUXEO_PATH+'/nxserver/frascati/lib/jaxb-impl.jar')
+      	FileUtils.mv NUXEO_PATH+'/nxserver/frascati/lib/jaxb-impl.jar', NUXEO_PATH+'/removedJars/nxserver/frascati/lib/jaxb-impl.jar', :force => true
+      end
+      mkdir_p NUXEO_PATH+'/removedJars/nxserver/lib'
+      if File.exist?(NUXEO_PATH+'/nxserver/lib/jaxb-impl-2.1.11.jar')
+      	FileUtils.mv NUXEO_PATH+'/nxserver/lib/jaxb-impl-2.1.11.jar', NUXEO_PATH+'/removedJars/nxserver/lib/jaxb-impl-2.1.11.jar', :force => true
+      end
+      if File.exist?(NUXEO_PATH+'/nxserver/lib/jsr311-api-1.1.1.jar')
+      	FileUtils.mv NUXEO_PATH+'/nxserver/lib/jsr311-api-1.1.1.jar', NUXEO_PATH+'/removedJars/nxserver/lib/jsr311-api-1.1.1.jar', :force => true
+      end
+      if File.exist?(NUXEO_PATH+'/nxserver/lib/httpclient-4.0.1.jar')
+      	FileUtils.mv NUXEO_PATH+'/nxserver/lib/httpclient-4.0.1.jar', NUXEO_PATH+'/removedJars/nxserver/lib/httpclient-4.0.1.jar', :force => true
+      end
+      if File.exist?(NUXEO_PATH+'/nxserver/lib/httpclient-4.0.3.jar')
+      	FileUtils.mv NUXEO_PATH+'/nxserver/lib/httpclient-4.0.3.jar', NUXEO_PATH+'/removedJars/nxserver/lib/httpclient-4.0.3.jar', :force => true
+      end  
+      if File.exist?(NUXEO_PATH+'/nxserver/lib/httpcore-4.0.1.jar')
+      	FileUtils.mv NUXEO_PATH+'/nxserver/lib/httpcore-4.0.1.jar', NUXEO_PATH+'/removedJars/nxserver/lib/httpcore-4.0.1.jar', :force => true
+      end
+      puts "Done."
+      
     end
     
     desc 'Send plugins to Nuxeo (except FraSCAti components)'
@@ -323,33 +352,6 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   
   # Add Smart Travel composite as example
   cp_r project(EASYSOA_TRAVEL).base_dir+'/easysoa-samples-smarttravel-trip/src/main/resources/smart-travel-mock-services.composite', PACKAGING_OUTPUT_PATH+'/examples'
-  
-  # Removing some jar to avoid FraSCAti launch problems
-  puts "Removing duplicated jars..."
-  mkdir_p PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/lib'
-  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/xercesImpl-2.9.1.jar')
-  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/xercesImpl-2.9.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/lib/xercesImpl-2.9.1.jar', :force => true
-  end
-  mkdir_p PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/frascati/lib'
-  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar')
-  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/frascati/lib/jaxb-impl.jar', :force => true
-  end
-  mkdir_p PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib'
-  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar')
-  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/jaxb-impl-2.1.11.jar', :force => true
-  end
-  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar')
-  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/jsr311-api-1.1.1.jar', :force => true
-  end
-  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar')
-  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpclient-4.0.1.jar', :force => true
-  end
-  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.3.jar')
-  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpclient-4.0.3.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpclient-4.0.3.jar', :force => true
-  end  
-  if File.exist?(PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar')
-  	FileUtils.mv PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', PACKAGING_OUTPUT_PATH+'/removedJars/serviceRegistry/nxserver/lib/httpcore-4.0.1.jar', :force => true
-  end
   
   puts "Packaging done."
   puts "You can launch EasySOA by typing 'cd easysoa', then './run.sh'."
