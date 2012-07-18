@@ -20,20 +20,9 @@
 
 package org.openwide.easysoa.test;
 
-import org.easysoa.EasySOAConstants;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-/*import org.easysoa.test.EasySOACoreFeature;
-import org.easysoa.test.AbstractRestTest;
-import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.webengine.test.WebEngineFeature;
-import org.nuxeo.runtime.test.runner.Deploy;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.Jetty;
 
-import com.google.inject.Inject;*/
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
