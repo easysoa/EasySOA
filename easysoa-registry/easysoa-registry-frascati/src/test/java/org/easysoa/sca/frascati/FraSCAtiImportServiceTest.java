@@ -365,7 +365,7 @@ public class FraSCAtiImportServiceTest
         // classes are in an other jar
         String scaFilePath =
                 "src/test/resources/"
-                        + "easysoa-samples-smarttravel-trip-0.4-SNAPSHOT.jar";
+                        + "easysoa-samples-smarttravel-trip-0.5-SNAPSHOT.jar";
         File scaFile = new File(scaFilePath);
         boolean classNotFoundExceptionThrown = false;
         // Getting the importer

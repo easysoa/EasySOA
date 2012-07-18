@@ -6,7 +6,7 @@
   <groupId>org.easysoa</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.5-SNAPSHOT</version>
 
   <name>EasySOA Main Project</name>
   <description>EasySOA is a software for discovering, registering and organizing SOA services.</description>
@@ -30,7 +30,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
-    <easysoa.version>0.4-SNAPSHOT</easysoa.version>
+    <easysoa.version>0.5-SNAPSHOT</easysoa.version>
     <easysoa.nuxeo.version>5.5</easysoa.nuxeo.version>
     <easysoa.nuxeo-bridge.version>5.5-SNAPSHOT</easysoa.nuxeo-bridge.version>
     <easysoa.nuxeo-frascati.version>0.0-SNAPSHOT</easysoa.nuxeo-frascati.version>

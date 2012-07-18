@@ -1,23 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!--<groupId>org.easysoa.proxy</groupId>-->
-	<artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
-	<name>EasySOA UI Scaffolder Proxy</name>
-	<packaging>jar</packaging>
-	<!--<version>0.4-SNAPSHOT</version>-->
 
 	<parent>
 		<groupId>org.easysoa.proxy</groupId>
 		<artifactId>easysoa-proxy-parent</artifactId>
-		<version>0.4-SNAPSHOT</version>
+		<version>0.5-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-
-	<!--<properties>
-		<frascati.version>1.5-SNAPSHOT</frascati.version>
-		<easysoa.version>0.4-SNAPSHOT</easysoa.version>
-	</properties>-->
+	
+	<artifactId>easysoa-proxy-core-scaffolderproxy</artifactId>
+	<name>EasySOA UI Scaffolder Proxy</name>
+	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>

@@ -2,9 +2,9 @@
 To build this mock : mvn assembly:assembly
 
 To launch the mock :
-- unzip target/easysoa-samples-smarttravel-services-backup-0.4-SNAPSHOT-bin.zip -d target
-- cd target/easysoa-samples-smarttravel-services-backup-0.4-SNAPSHOT/bin
-- java -jar easysoa-samples-smarttravel-services-backup-0.4-SNAPSHOT.jar http://localhost:9020/
+- unzip target/easysoa-samples-smarttravel-services-backup-VERSION-bin.zip -d target
+- cd target/easysoa-samples-smarttravel-services-backup-VERSION/bin
+- java -jar easysoa-samples-smarttravel-services-backup-VERSION.jar http://localhost:9020/
 
 -------
 

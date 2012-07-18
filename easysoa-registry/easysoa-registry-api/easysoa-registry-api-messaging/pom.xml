@@ -4,7 +4,7 @@
   	<modelVersion>4.0.0</modelVersion>
   	<groupId>org.easysoa.registry.api</groupId>
   	<artifactId>easysoa-registry-api-messaging</artifactId>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.5-SNAPSHOT</version>
   	<packaging>jar</packaging>
 
   	<name>EasySOA Registry Messaging API</name>

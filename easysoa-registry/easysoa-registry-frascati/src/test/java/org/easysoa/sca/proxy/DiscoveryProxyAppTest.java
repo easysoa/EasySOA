@@ -38,7 +38,7 @@ public class DiscoveryProxyAppTest {
     //private final String resourcePath = "src/test/resources/";
     private final String resourcePath = "target/";
 
-    private final String proxyCompositePath = resourcePath + "easysoa-proxy-core-httpdiscoveryproxy-0.4-SNAPSHOT.jar";
+    private final String proxyCompositePath = resourcePath + "easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT.jar";
     
     protected FraSCAtiServiceItf frascatiService = null;    
     

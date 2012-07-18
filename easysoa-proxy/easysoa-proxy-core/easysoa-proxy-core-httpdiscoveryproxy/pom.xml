@@ -1,24 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	 <parent> 
+	
+	<parent> 
 		<groupId>org.easysoa.proxy</groupId> 
 		<artifactId>easysoa-proxy-parent</artifactId> 
-		<version>0.4-SNAPSHOT</version> 
+		<version>0.5-SNAPSHOT</version> 
 		<relativePath>../../pom.xml</relativePath> 
 	</parent>
-
 
 	<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
 
 	<name>EasySOA HTTP Discovery Proxy</name>
 	<packaging>jar</packaging>
 
-	<properties>
-		<frascati.version>1.5-SNAPSHOT</frascati.version>
-		<easysoa.version>0.4-SNAPSHOT</easysoa.version>
-	</properties>
-	
 	<dependencies>
 		<dependency> 
 			<groupId>org.ow2.frascati</groupId>

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Version: 0.4-SNAPSHOT
+Bundle-Version: 0.5-SNAPSHOT
 Bundle-Name: easysoa-registry-rest
 Bundle-SymbolicName: org.easysoa.registry.rest;singleton:=true
 Bundle-Vendor: EasySOA Consortium

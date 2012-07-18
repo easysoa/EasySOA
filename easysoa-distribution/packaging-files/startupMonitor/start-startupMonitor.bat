@@ -1,1 +1,1 @@
-java -jar easysoa-distribution-startup-monitor-0.4-SNAPSHOT.jar
+java -jar easysoa-distribution-startup-monitor-0.5-SNAPSHOT.jar
