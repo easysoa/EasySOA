@@ -14,7 +14,7 @@
     <groupId>org.nuxeo</groupId>
     <artifactId>nuxeo-frascati-test</artifactId>
     <name>nuxeo-frascati-test</name>
-    <version>0.4</version>
+    <version>0.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
