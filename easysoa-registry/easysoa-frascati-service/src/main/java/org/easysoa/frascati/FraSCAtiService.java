@@ -208,7 +208,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
      * @see org.easysoa.frascati.api.FraSCAtiServiceItf#processComposite(java.lang
      *      .String, int, java.net.URL[])
      */
-    public String processComposite(String composite, int processingMode,
+    public Composite processComposite(String composite, int processingMode,
             URL... urls) throws FraSCAtiServiceException
     {
         FrascatiClassLoader classLoader = new FrascatiClassLoader(
@@ -244,13 +244,15 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
         {
             try{
                 
-                return ((NameController)component.getFcInterface(
-                    "name-controller")).getFcName();
+                return getComposite(((NameController)component.getFcInterface(
+                    "name-controller")).getFcName());
                 
             } catch(NoSuchInterfaceException e)
             {
                 log.log(Level.WARNING,e.getMessage());
             }
+        } else if (processingContext.getRootComposite() != null) {
+            return processingContext.getRootComposite();
         }
         return null;
     }
@@ -261,7 +263,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
      * @see org.easysoa.frascati.api.FraSCAtiServiceItf#processComposite(java.lang
      *      .String)
      */
-    public String processComposite(String composite)
+    public Composite processComposite(String composite)
             throws FraSCAtiServiceException
     {
         return processComposite(composite, FraSCAtiServiceItf.all);

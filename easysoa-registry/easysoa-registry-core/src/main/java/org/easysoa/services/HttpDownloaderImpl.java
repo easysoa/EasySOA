@@ -20,9 +20,10 @@
 
 package org.easysoa.services;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;import java.io.ByteArrayOutputStream;import java.io.OutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -30,7 +31,8 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;import org.apache.commons.io.IOUtils;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.io.IOUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
 

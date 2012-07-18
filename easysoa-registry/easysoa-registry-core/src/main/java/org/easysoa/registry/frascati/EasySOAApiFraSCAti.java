@@ -22,8 +22,8 @@ package org.easysoa.registry.frascati;
 
 import java.io.File;
 
-import org.easysoa.sca.IScaRuntimeImporter;
 import org.easysoa.sca.IScaImporter;
+import org.easysoa.sca.IScaRuntimeImporter;
 import org.easysoa.sca.frascati.ApiFraSCAtiScaImporter;
 import org.easysoa.sca.frascati.ApiRuntimeFraSCAtiScaImporter;
 import org.easysoa.sca.frascati.RemoteFraSCAtiServiceProvider;
@@ -34,8 +34,8 @@ import org.easysoa.sca.visitors.RemoteBindingVisitorFactory;
  * @author mkalam-alami, jguillemotte
  * 
  */
-public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
-{
+public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase {
+    
     /**
      * the EasySOAApiFraSCAti singleton
      */
@@ -51,10 +51,8 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * 
      * @return the EasySOAApiFraSCAti singleton
      */
-    public static final EasySOAApiFraSCAti getInstance()
-    {
-        if (instance == null)
-        {
+    public static final EasySOAApiFraSCAti getInstance() {
+        if (instance == null) {
             instance = new EasySOAApiFraSCAti();
         }
         return instance;
@@ -63,14 +61,12 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
     /**
      * Stop the EasySOAApiFraSCAti singleton
      */
-    public static final void killInstance()
-    {
-        try
-        {
+    public static final void killInstance() {
+        try {
             instance.remoteProvider.stopFraSCAtiService();
             
-        } catch (Exception e)
-        {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         instance.remoteProvider = null;
@@ -82,17 +78,18 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * Hidden constructor Use {@link EasySOAApiFraSCAti#getInstance()} static
      * method instead
      */
-    protected EasySOAApiFraSCAti()
-    {
-        try
-        {
-            remoteProvider = new RemoteFraSCAtiServiceProvider(null);
-            this.frascati = remoteProvider.getFraSCAtiService();
+    protected EasySOAApiFraSCAti() {
+ /*       try {
+            //remoteProvider = new RemoteFraSCAtiServiceProvider(null);
+            //this.frascati = remoteProvider.getFraSCAtiService();
             
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+            // TODO : To use the Nuxeo embedded FraSCAti SCA importer
+            // Must be refactored to have the choice to use a remote FraSCAti SCA importer or an embedded FraSCAti importer
+            this.frascati = Framework.getService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
         }
+        catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
 
     /**
@@ -100,8 +97,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * 
      * @see org.easysoa.registry.frascati.FraSCAtiRegistryServiceItf#newRuntimeScaImporter()
      */
-    public IScaRuntimeImporter newRuntimeScaImporter() throws Exception
-    {
+    public IScaRuntimeImporter newRuntimeScaImporter() throws Exception {
         return newRemoteRuntimeScaImporter();
     }
 
@@ -110,8 +106,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * @return
      * @throws Exception
      */
-    public IScaImporter newScaImporter(File compositeFile) throws Exception
-    {
+    public IScaImporter newScaImporter(File compositeFile) throws Exception {
         return newRemoteScaImporter(compositeFile);
     }
 
@@ -119,8 +114,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * @return
      * @throws Exception
      */
-    public IScaRuntimeImporter newRemoteRuntimeScaImporter() throws Exception
-    {
+    public IScaRuntimeImporter newRemoteRuntimeScaImporter() throws Exception {
         RemoteBindingVisitorFactory apiBindingVisitorFactory = new RemoteBindingVisitorFactory();
 
         ApiRuntimeFraSCAtiScaImporter runtimeImporter = new ApiRuntimeFraSCAtiScaImporter(
@@ -134,9 +128,7 @@ public class EasySOAApiFraSCAti extends FraSCAtiRegistryServiceBase
      * @return
      * @throws Exception
      */
-    public IScaImporter newRemoteScaImporter(File compositeFile)
-            throws Exception
-    {
+    public IScaImporter newRemoteScaImporter(File compositeFile) throws Exception {
         RemoteBindingVisitorFactory apiBindingVisitorFactory = new RemoteBindingVisitorFactory();
         ApiFraSCAtiScaImporter apiFraSCAtiScaImporter = new ApiFraSCAtiScaImporter(
                 apiBindingVisitorFactory, compositeFile, this);

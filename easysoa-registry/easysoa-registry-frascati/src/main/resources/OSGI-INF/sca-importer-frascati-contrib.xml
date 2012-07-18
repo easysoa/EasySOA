@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.sca.frascati.nx.importer.contrib" version="1.0">
 
+  <require>org.nuxeo.frascati.service</require>
+
   <extension target="org.easysoa.core.component.ScaImporterComponent" point="scaImporters">
     <IScaImporter>org.easysoa.sca.frascati.FraSCAtiScaImporter</IScaImporter>
   </extension>

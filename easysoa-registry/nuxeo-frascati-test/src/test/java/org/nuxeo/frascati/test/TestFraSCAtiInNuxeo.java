@@ -76,7 +76,7 @@ public class TestFraSCAtiInNuxeo
             scaFile = scaFile.getAbsoluteFile();
             fcomponent = frascatiService.processComposite(
                     "helloworld-pojo.composite", FraSCAtiServiceItf.all,
-                    scaFile.toURI().toURL());
+                    scaFile.toURI().toURL()).getName();
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -151,7 +151,7 @@ public class TestFraSCAtiInNuxeo
             {
                 String componentServletName = frascatiService.processComposite(
                         "helloworld-servlet.composite", FraSCAtiServiceItf.all,
-                        servletFile.toURI().toURL());
+                        servletFile.toURI().toURL()).getName();
                 frascatiService.remove(componentServletName);
             }
         } catch (FraSCAtiServiceException e)
@@ -174,7 +174,7 @@ public class TestFraSCAtiInNuxeo
             {
                 String componentWSName = frascatiService.processComposite(
                         "helloworld-ws-server.composite",
-                        FraSCAtiServiceItf.all, wsFile.toURI().toURL());
+                        FraSCAtiServiceItf.all, wsFile.toURI().toURL()).getName();
                 frascatiService.remove(componentWSName);
             }
         } catch (FraSCAtiServiceException e)

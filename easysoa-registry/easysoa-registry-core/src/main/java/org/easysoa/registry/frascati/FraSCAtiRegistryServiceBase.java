@@ -30,6 +30,8 @@ import org.eclipse.stp.sca.Composite;
 
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
+import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * TODO pb : now wrongly depends on Nuxeo through FraSCAtiServiceItf
@@ -55,6 +57,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 *     the composite.
 	 */
 	public Composite getComposite(String composite) throws Exception { //TODO prettier ApiException ??
+        checkFraSCatiService();
 		return frascati.getComposite(composite);
 	}
 
@@ -66,6 +69,7 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * @return
 	 */
 	public FraSCAtiServiceItf getFraSCAti() {
+        checkFraSCatiService();
 		return frascati;
 	}
 	
@@ -89,23 +93,23 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 	 * @throws Exception
 	 */
 	public Composite readComposite(URL compositeUrl, int mode, URL... scaZipUrls) throws Exception {
-	    
-	        if(frascati == null)
-	        {
-	            String msg = "No FraSCAtiService attached to this FraSCAti Registry Service "
-	                    + "when reading composite " + compositeUrl;
-	            log.debug(msg);
-	            throw new Exception(msg);
-	        }
+        checkFraSCatiService();
+        
+        if (frascati == null) {
+            String msg = "No FraSCAtiService attached to this FraSCAti Registry Service "
+                    + "when reading composite " + compositeUrl;
+            log.debug(msg);
+            throw new Exception(msg);
+        }
+        
 		// Create a processing context with where to find ref'd classes
 		log.debug("composite URL = " + compositeUrl);
 		log.debug("scaZipUrls = " + scaZipUrls);
 		
-		String compositeName = null;
+		Composite composite = null;
 		
 		try {
-			compositeName = frascati.processComposite(
-			        compositeUrl.toString(), mode,scaZipUrls);
+			composite = frascati.processComposite(compositeUrl.toString(), mode,scaZipUrls);
 		} 
 		catch (FraSCAtiServiceException fe) { 
 			log.error("The number of checking errors is equals to " + frascati.getErrors());
@@ -116,15 +120,13 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		log.warn("\nErrors while parsing " + compositeUrl + ":\n" + frascati.getErrorMessages());
 		log.info("\nWarnings while parsing " + compositeUrl + ":\n" + frascati.getWarningMessages());
 		
-		Composite composite = frascati.getComposite(compositeName);
-		
 		if(composite == null){
 			throw new FraSCAtiRegistryException("Composite '" + compositeUrl + "' can not be loaded");
 		}
 		return composite;
 	}
 
-	/**
+    /**
 	 * Reads a zip (or jar), parses and returns the composites within. Classes
 	 * they references are resolved within the zip. Only known (i.e. in the
 	 * classpath / maven) extensions can be parsed (impls, bindings...).
@@ -158,5 +160,15 @@ public abstract class FraSCAtiRegistryServiceBase implements FraSCAtiRegistrySer
 		}
 		return scaZipCompositeSet;
 	}
+
+    private void checkFraSCatiService() {
+        if (frascati == null) {
+            try {
+                this.frascati = Framework.getService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+            } catch (Exception e) {
+                log.error("Failed to fetch FraSCAtiServiceProviderItf", e);
+            }
+        }
+    }
 	
 }

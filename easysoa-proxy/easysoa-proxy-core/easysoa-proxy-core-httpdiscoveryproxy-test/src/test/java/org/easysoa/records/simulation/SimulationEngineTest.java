@@ -98,7 +98,7 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         ProxyFileStore fileStore= new ProxyFileStore();
         // Launch the simulation
         List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
-        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
         SimulationEngine simulationEngine = replayEngine.getSimulationEngine();
         
         // Send a request to the replay service

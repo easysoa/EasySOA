@@ -261,7 +261,7 @@ window.AppView = Backbone.View.extend({
                 type: 'POST',
                 success: function(data, textStatus, jqXHR) {
                     // XXX: Page is sometimes reloaded before the update is done ; why?
-                    setTimeout(location.reload, 300);  
+                    setTimeout(function() { window.location.reload(); }, 300);  
                 },
                 error: function(data) {
                     app.showError("Failed to update lifecycle state");

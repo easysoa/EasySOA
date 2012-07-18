@@ -59,7 +59,7 @@ public class DiscoveryProxyAppTest {
         // Start the discovery proxy
         File scaProxyFile = new File(proxyCompositePath);
         scaProxyFile = scaProxyFile.getAbsoluteFile();
-        String discoveryProxyComponent = frascatiService.processComposite("httpDiscoveryProxy", FraSCAtiServiceItf.all, scaProxyFile.toURI().toURL());        
+        String discoveryProxyComponent = frascatiService.processComposite("httpDiscoveryProxy", FraSCAtiServiceItf.all, scaProxyFile.toURI().toURL()).getName();        
         log.info("Discovery proxy component : " + discoveryProxyComponent);
         assertEquals(discoveryProxyComponent ,"httpDiscoveryProxy");
         

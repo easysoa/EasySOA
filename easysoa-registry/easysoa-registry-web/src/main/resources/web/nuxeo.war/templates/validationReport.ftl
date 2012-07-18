@@ -125,7 +125,7 @@
 </tr>
 <#list results as result>
 <tr>
-  <td>Service name</td>
+  <td>${result.serviceName}</td>
   <td class="${result.validationSuccess}"><span class="resultsmall ${result.validationSuccess}">${result.validationSuccess}</span></td>
   <#list result.validatorsResults as validatorsResult>
   <td>

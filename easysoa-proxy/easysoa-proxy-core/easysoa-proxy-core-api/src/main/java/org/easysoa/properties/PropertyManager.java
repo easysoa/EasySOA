@@ -129,7 +129,7 @@ public class PropertyManager {
     * @throws Exception If the property manager is not properly initialized
     */
    public static PropertyManager getPropertyManager() throws Exception {
-       if(propertyManager == null){
+       if (propertyManager == null){
            throw new Exception("Property manager is not properly initialized !");
        }
        return propertyManager;

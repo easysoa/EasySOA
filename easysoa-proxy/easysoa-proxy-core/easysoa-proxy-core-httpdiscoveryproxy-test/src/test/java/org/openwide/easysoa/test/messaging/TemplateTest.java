@@ -23,7 +23,7 @@
  */
 package org.openwide.easysoa.test.messaging;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -31,6 +31,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.xml.soap.SOAPException;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -52,10 +55,8 @@ import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openwide.easysoa.test.ProxyStarter;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
@@ -211,7 +212,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		//TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 
 	      // Get the replay engine service
-        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
 		
 		// Build an HashMap to simulate user provided values
 		HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
@@ -281,7 +282,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		//TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 		
 		// Get the replay engine service
-		ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+		ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
 
 		// Build an HashMap to simulate user provided values
 		HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();

@@ -100,5 +100,11 @@
 
         </h:form></div>
 
+    <c:if test="#{easysoaImport.outputMessage != null}">
+      <div
+        style="border: 1px solid black; padding: 10px; margin-top: 15px; background-color: #F5F5F5; min-width: 300px">
+        <h:outputText value="#{easysoaImport.outputMessage}" escape="false" />
+      </div>
+    </c:if>
 
 </div>

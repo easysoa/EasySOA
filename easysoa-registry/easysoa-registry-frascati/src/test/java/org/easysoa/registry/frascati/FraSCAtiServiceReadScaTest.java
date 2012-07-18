@@ -27,7 +27,6 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.eclipse.stp.sca.Composite;
@@ -76,7 +75,7 @@ public class FraSCAtiServiceReadScaTest {
         String compositeName = null;
         try {
             //compositeName = frascatiRegistryService.getFraSCAti().processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, scaFile.toURI().toURL());
-            compositeName = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, scaFile.toURI().toURL());
+            compositeName = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, scaFile.toURI().toURL()).getName();
 
             //Composite composite = frascatiRegistryService.getFraSCAti().getComposite(compositeName);
             Composite composite = frascatiService.getComposite(compositeName);
@@ -100,7 +99,7 @@ public class FraSCAtiServiceReadScaTest {
         // File scaFile = new File(scaFilePath);
 
         //String composite = frascatiRegistryService.getFraSCAti().processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, new File(scaFilePath).toURI().toURL());
-        String composite = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, new File(scaFilePath).toURI().toURL());
+        String composite = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, new File(scaFilePath).toURI().toURL()).getName();
         
         Assert.assertTrue(composite != null);
         //Assert.assertTrue(frascatiRegistryService.getFraSCAti().getComposite(composite) != null);
@@ -109,19 +108,7 @@ public class FraSCAtiServiceReadScaTest {
 
     /** Rather here than in FraSCAtiService because only public for test purpose */
     private Composite readComposite(URL compositeUrl, int mode) throws Exception {
-        String compositeName = null;
-        Composite parsedComposite = null;
-        try {
-            // Process the SCA composite.
-            //compositeName = frascatiRegistryService.getFraSCAti().processComposite(compositeUrl.toString(), mode);
-            compositeName = frascatiService.processComposite(compositeUrl.toString(), mode);
-
-            //parsedComposite = frascatiRegistryService.getFraSCAti().getComposite(compositeName);
-            parsedComposite = frascatiService.getComposite(compositeName);
-        } catch (FraSCAtiServiceException ex) {
-            log.warn(ex);
-        }
-        return parsedComposite;
+       return frascatiService.processComposite(compositeUrl.toString(), mode);
     }
 
 }

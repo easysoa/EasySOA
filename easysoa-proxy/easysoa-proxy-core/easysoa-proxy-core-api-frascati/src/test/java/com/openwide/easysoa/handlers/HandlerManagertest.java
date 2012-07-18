@@ -1,7 +1,5 @@
 package com.openwide.easysoa.handlers;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
