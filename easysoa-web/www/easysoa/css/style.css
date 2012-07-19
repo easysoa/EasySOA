@@ -31,6 +31,7 @@ h2 {
 	font-weight: bold;
 	padding-top: 10px;
 	padding-bottom: 5px;
+	margin-bottom: 5px;
 	color: #248;
 }
 
@@ -213,10 +214,16 @@ legend {
 
 .loginInfoBox {
   font-size: 11pt;
-  width: 100%;
   background-color: #D5FFDA;
   border: 1px solid green;
-  margin: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  padding: 4px;
+}
+
+.warningInfoBox {
+  font-size: 11pt;
+  background-color: #FFE5DA;
+  border: 1px solid red;
+  margin-bottom: 10px;
   padding: 4px;
 }

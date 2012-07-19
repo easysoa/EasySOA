@@ -79,9 +79,9 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	//@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		logger.info("Filtering a EasySOA API request");
 
         if (exchangeHandler != null) {
+			logger.info("Filtering a EasySOA API request");
             response = new HttpMessageResponseWrapper((HttpServletResponse) response);
         }
         
