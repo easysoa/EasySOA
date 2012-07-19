@@ -61,7 +61,7 @@ public class RunManagerImpl implements RunManager {
 	/**
 	 * when set to true, a run is automatically started when the getCurrentRun is called if there is no current run.
 	 */
-	private boolean autoStart = true;	
+	private boolean autoStart = false;	
 	
 	/**
 	 * When set to true, the run is automatically saved when the stop method is called. 
