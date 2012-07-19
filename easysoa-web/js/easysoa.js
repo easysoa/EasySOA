@@ -5,6 +5,7 @@
 // 
 // Contact : easysoa-dev@googlegroups.com
 
+require('longjohn');
 var http = require('http');
 var express = require('express');
 
