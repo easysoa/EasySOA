@@ -52,8 +52,18 @@ public class DirectAccessStrategy extends DefaultAbstractStrategy implements Ser
             // Guess service name
             WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
             Description desc = reader.read(url); // TODO use context response
-            String serviceName = desc.getQName().getLocalPart();
             
+            String serviceName = null;
+            try {
+                serviceName = desc.getQName().getLocalPart();
+            }
+            catch (Exception e) {
+                String[] splitUrl = urlString.toLowerCase().split("[/.]");
+                serviceName = (splitUrl[splitUrl.length - 1].contains("wsdl"))
+                        ? splitUrl[splitUrl.length - 2]
+                        : splitUrl[splitUrl.length - 1];
+            }
+
             foundServices.add(new FoundService(serviceName, urlString));
             
         }

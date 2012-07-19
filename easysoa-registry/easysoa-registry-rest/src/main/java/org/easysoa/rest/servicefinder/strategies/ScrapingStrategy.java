@@ -25,6 +25,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.rest.servicefinder.BrowsingContext;
 import org.easysoa.rest.servicefinder.FoundService;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
@@ -40,6 +42,8 @@ import org.htmlcleaner.TagNode;
  */
 public class ScrapingStrategy extends DefaultAbstractStrategy implements ServiceFinderStrategy {
 
+    private static final Log log = LogFactory.getLog(ScrapingStrategy.class);
+    
     @Override
     public List<FoundService> findFromContext(BrowsingContext context) throws Exception {
 
@@ -50,7 +54,14 @@ public class ScrapingStrategy extends DefaultAbstractStrategy implements Service
     
             // Web page parsing
             HtmlCleaner cleaner = new HtmlCleaner();
-            TagNode cleanHtml = cleaner.clean(context.getData());
+            TagNode cleanHtml = null;
+            try {
+                cleanHtml = cleaner.clean(context.getData());
+            }
+            catch (StackOverflowError e) {
+                log.warn("HtmlCleaner stack overflow while parsing " + url + ", aborting strategy");
+                return foundServices;
+            }
     
             // Find app name
             String applicationName = guessApplicationName(url);
