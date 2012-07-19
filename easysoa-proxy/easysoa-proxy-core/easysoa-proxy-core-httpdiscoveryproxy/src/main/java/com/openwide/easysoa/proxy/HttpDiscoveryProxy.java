@@ -209,7 +209,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		}
 	    catch(Throwable ex){
 	    	// error in the internals of the httpProxy : building & returning it
-	    	ex.printStackTrace();
+	    	//ex.printStackTrace();
 	    	logger.error("An error occurs in doHttpMethod method.", ex);
 
 	    	// attempting to reset response
