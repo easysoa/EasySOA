@@ -109,10 +109,11 @@ public class ProxyFileStore {
             this.path = "./easysoa/stores/";
             this.templatePath = "./easysoa/webContent/templates/";
             this.reportPath = "./easysoa/reports";
-            logger.warn("An error occurs during the ProxyFileStore initialization", ex);
-            logger.warn("Using property 'path.record.store' for record store path = " + this.path);
-            logger.warn("Using property 'path.template.store' for template store path = " + this.templatePath);
-            logger.warn("Using property 'path.reports' for reports path = " + this.reportPath);
+            //logger.warn("An error occurs during the ProxyFileStore initialization", ex);
+            logger.warn("An error occurs during the ProxyFileStore initialization, please check the property manager.");
+            logger.warn("Using default property 'path.record.store' for record store path = " + this.path);
+            logger.warn("Using default property 'path.template.store' for template store path = " + this.templatePath);
+            logger.warn("Using default property 'path.reports' for reports path = " + this.reportPath);
         }
     }
 
