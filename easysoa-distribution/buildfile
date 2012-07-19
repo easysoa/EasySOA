@@ -321,7 +321,8 @@ task :packageall => [EASYSOA_STARTUP_MONITOR+':mvn'] do # TODO Less messy code
   
   system 'mv', '-T', FileList[PACKAGING_OUTPUT_PATH+'/nuxeo-*'].to_s, PACKAGING_OUTPUT_PATH+'/serviceRegistry' # XXX Linux/Cygwin-dependent
   cp_r FileList[project(EASYSOA_REGISTRY).base_dir+'/target/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry' # TODO Check that bundles exist
-  rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/']
+  rm_rf FileList[PACKAGING_OUTPUT_PATH+'/serviceRegistry/log/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/tmp/',
+    PACKAGING_OUTPUT_PATH+'/serviceRegistry/nxserver/data/', PACKAGING_OUTPUT_PATH+'/serviceRegistry/removedJars/']
   # No need to copy this dependencies in serviceRegistry/lib since FraSCAti is embedded in Nuxeo with a dedicated folder 
   #cp_r FileList['./deps/frascati/lib/*'], PACKAGING_OUTPUT_PATH+'/serviceRegistry/lib/' # XXX Dirty way of managing FraSCAti dependencies
   

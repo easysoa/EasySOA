@@ -287,6 +287,8 @@
         
         <p>Now that we have recorded a run, let's use it to trigger a run-based validation. Back to the <a href="http://localhost:8080/nuxeo">service registry</a>, browse to the EasySOA tab (on the top menu), and choose "<i>Validation</i>". You should be able to select the newly created run to validate the environment of your choice. Select a run & environment, and confirm to make the validation report appear.</p>
         
+        <div class="warningInfoBox"><b>Warning:</b> Due to a known bug, when a run is recording, all REST requests to Nuxeo are intercepted and blocked, making actual discovery impossible. Make sure to stop the run when you're done, to make the discovery work back to normal.</div>
+        
         <h2><div>Step 4</div> Setting up a scheduled validation</h2>
         
         <p>To go a step further, we might want to schedule the validation we just did, in order to check on a regular basis that the services from an environment didn't change. Currently, this can be done by editing a configuration file from the service registry.</p>
