@@ -118,7 +118,8 @@ public class AppliImplListener implements EventListener {
                     PROP_SERVER);
 
             // Maintain internal properties
-            if (url != null && !url.isEmpty() && !AppliImpl.DEFAULT_APPLIIMPL_URL.equals(url)
+            if (url != null && !url.isEmpty() && !"null".equals(url)
+                    && !AppliImpl.DEFAULT_APPLIIMPL_URL.equals(url)
             		&& (server == null || server.isEmpty())) {
                 try {
                     url = PropertyNormalizer.normalizeUrl(url);

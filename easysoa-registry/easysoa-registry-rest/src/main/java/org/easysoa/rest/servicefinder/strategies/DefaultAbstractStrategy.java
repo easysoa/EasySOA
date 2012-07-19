@@ -22,6 +22,8 @@ package org.easysoa.rest.servicefinder.strategies;
 
 import java.net.URL;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easysoa.rest.servicefinder.ServiceFinderStrategy;
 import org.easysoa.services.HttpDownloader;
 import org.easysoa.services.HttpDownloaderService;
@@ -37,6 +39,8 @@ import org.nuxeo.runtime.api.Framework;
  *
  */
 public abstract class DefaultAbstractStrategy implements ServiceFinderStrategy {
+
+    private static final Log log = LogFactory.getLog(DefaultAbstractStrategy.class);
     
     private static HtmlCleaner cleaner = new HtmlCleaner();
     
@@ -61,8 +65,14 @@ public abstract class DefaultAbstractStrategy implements ServiceFinderStrategy {
     	HttpDownloaderService httpDownloaderService = Framework.getService(HttpDownloaderService.class);
         HttpDownloader siteRootFile = httpDownloaderService.createHttpDownloader(url);
         siteRootFile.download();
-        TagNode siteRootCleanHtml = cleaner.clean(siteRootFile.getFile());
-        return extractApplicationName(siteRootCleanHtml);
+        try {
+            TagNode siteRootCleanHtml = cleaner.clean(siteRootFile.getFile());
+            return extractApplicationName(siteRootCleanHtml);
+        }
+        catch (StackOverflowError e) {
+            log.warn("HtmlCleaner stack overflow while parsing " + url + ", cannot fetch app name");
+            return null;
+        }
     }
 
     private static String extractApplicationName(TagNode html) {
