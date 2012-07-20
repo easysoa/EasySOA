@@ -66,7 +66,7 @@ public class NuxeoRegistrationService {
 
     public NuxeoRegistrationService() throws Exception {
         PropertyManager propertyManager = PropertyManager.getPropertyManager();
-        factory = new RestNotificationFactory(propertyManager.getProperty("nuxeo.rest.service"),
+        factory = new RestNotificationFactory(propertyManager.getProperty("nuxeo.rest.service", "http://localhost:8080/nuxeo/site"),
                 propertyManager.getProperty("nuxeo.auth.login", "Administrator"),
                 propertyManager.getProperty("nuxeo.auth.password", "Administrator"));
     }

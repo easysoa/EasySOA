@@ -51,7 +51,7 @@
       <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
     </service>
     <!-- WSDL service helper reference -->
-	<reference name="wsdlServiceHelper" target="wsdlServiceHelperComponent/wsdlServiceHelperService" />
+	<reference name="wsdlpourServiceHelper" target="wsdlServiceHelperComponent/wsdlServiceHelperService" />
   </component>
   <!-- Rest binding for Rest / Soap proxy -->
   <service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">

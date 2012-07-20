@@ -10,7 +10,7 @@
 			<sca:interface.java interface="org.easysoa.validation.ExchangeReplayController" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.records.replay.ScheduledValidationReplayEngine" />
-		<sca:reference name="replayEngine" target="replayEngineComponent" />
+		<sca:reference name="replayEngine" target="replayEngineComponent/replayEngineService" />
 	</sca:component>
 
 </sca:composite>

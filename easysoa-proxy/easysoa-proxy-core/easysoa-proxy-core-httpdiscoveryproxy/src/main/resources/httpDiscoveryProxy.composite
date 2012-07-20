@@ -17,7 +17,7 @@
             <sca:interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
-         <sca:reference name="handlerManager" target = "handleManagerComponent" >
+         <sca:reference name="handlerManager" target = "handlerManagerComponent/handlerManagerService" >
          	<sca:interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
          </sca:reference>
         <sca:property name="proxyPort">8082</sca:property>
