@@ -11,7 +11,7 @@
             <sca:interface.java interface="org.easysoa.simulation.SimulationEngine" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.simulation.SimulationEngineImpl" />
-        <sca:reference name="correlationEngine" target="correlationEngineComponent">
+        <sca:reference name="correlationEngine" target="correlationEngineComponent/correlationEngineService">
             <sca:interface.java interface="org.easysoa.records.correlation.CorrelationEngine" />
         </sca:reference>
         <!--<sca:reference name="templateEngine" target="templateEngineComponent" />-->

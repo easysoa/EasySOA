@@ -14,7 +14,7 @@
             <interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </service>
-         <reference name="handlerManager" target="handleManagerComponent" >
+         <reference name="handlerManager" target="handlerManagerComponent" >
          	<interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
          </reference>
         <property name="proxyPort">8082</property>
@@ -22,7 +22,7 @@
         <property name="forwardHttpSocketTimeoutMs">30000</property>
     </component>
 
-	<component name="handleManagerComponent">
+	<component name="handlerManagerComponent">
 		<service name="handlerManagerService">
 			<interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
 		</service>

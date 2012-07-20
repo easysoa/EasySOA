@@ -19,10 +19,14 @@
  */
 package com.openwide.easysoa.exchangehandler;
 
+import org.easysoa.records.ExchangeRecord;
+import org.easysoa.records.replay.ReplayEngine;
+import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
+import com.openwide.easysoa.run.RunManager;
 
 /**
  * Implementation of the message handler for the serviceToLaunch.composite
@@ -33,8 +37,18 @@ import com.openwide.easysoa.message.OutMessage;
 @Scope("composite")
 public class MonitoringHandler implements MessageHandler {
 
+    @Reference
+    RunManager runManager;
+    
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
+        // Builds a new Exchange record with data contained in request and response
+        ExchangeRecord record = new ExchangeRecord();
+        record.setInMessage(inMessage);
+        record.setOutMessage(outMessage);
+        // Send it to the monitoring service
+        runManager.getMonitoringService().listen(record);
+        //runManager.getMonitoringService().registerDetectedServicesToNuxeo();
     }
 
 }

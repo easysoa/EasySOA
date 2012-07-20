@@ -15,10 +15,10 @@
 			<sca:interface.java interface="org.easysoa.records.replay.ReplayEngine" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.records.replay.ReplayEngineImpl" />
-		<sca:reference name="templateEngine" target="templateEngineComponent" />
-		<sca:reference name="assertionEngine" target="assertionEngineComponent" />
-		<sca:reference name="logEngine" target="logEngineComponent" />
-		<sca:reference name="simulationEngine" target="simulationEngineComponent" />
+		<sca:reference name="templateEngine" target="templateEngineComponent/templateEngineService" />
+		<sca:reference name="assertionEngine" target="assertionEngineComponent/assertionEngineService" />
+		<sca:reference name="logEngine" target="logEngineComponent/logEngineService" />
+		<sca:reference name="simulationEngine" target="simulationEngineComponent/simulationEngineService" />
 	</sca:component>
 
 	<!-- Exchange replay service -->
@@ -28,7 +28,7 @@
 			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
 			<frascati:binding.rest uri="http://localhost:8086/" />
 		</sca:service>
-		<sca:reference name="replayEngine" target="replayEngineComponent" />
+		<sca:reference name="replayEngine" target="replayEngineComponent/replayEngineService" />
 	</sca:component>
 
 </sca:composite>

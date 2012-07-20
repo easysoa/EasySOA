@@ -7,7 +7,7 @@
 			<sca:interface.java interface="org.easysoa.template.TemplateEngine" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.template.TemplateEngineImpl" />
-		<sca:reference name="templateRenderer" target="TemplateProcessor" />
+		<sca:reference name="templateRenderer" target="TemplateProcessor/processor" />
 	</sca:component>
 
 	<!--  Template processor -->

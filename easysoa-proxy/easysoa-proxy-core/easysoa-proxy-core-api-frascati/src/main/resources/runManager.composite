@@ -28,9 +28,9 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
 			<sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.run.RunManagerImpl" />
-		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
-		<sca:reference name="exchangeNumberGenerator" target="exchangeNumberGeneratorComponent" />
-		<sca:reference name="replayEngine" target="replayEngineComponent" />
+		<sca:reference name="monitoringService" target="monitoringServiceComponent/monitoringServiceService" />
+		<sca:reference name="exchangeNumberGenerator" target="exchangeNumberGeneratorComponent/exchangeNumberGeneratorService" />
+		<sca:reference name="replayEngine" target="replayEngineComponent/replayEngineService" />
 	</sca:component>
 
     <sca:component name="runManagerDriver">
@@ -40,7 +40,7 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
             <sca:interface.java interface="com.openwide.easysoa.run.RunManagerDriver" />
             <frascati:binding.rest uri="http://localhost:8084/" />
         </sca:service>
-        <sca:reference name="runManager" target="runManagerComponent">
+        <sca:reference name="runManager" target="runManagerComponent/runManagerService">
             <sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
         </sca:reference>
     </sca:component>
