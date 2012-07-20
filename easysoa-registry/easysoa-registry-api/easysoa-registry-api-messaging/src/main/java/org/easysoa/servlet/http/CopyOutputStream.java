@@ -1,5 +1,5 @@
 /**
- * EasySOA Proxy
+ * EasySOA Registry
  * Copyright 2011 Open Wide
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,38 +18,39 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.sca.intents.utils;
-
 /**
  * 
+ */
+package org.easysoa.servlet.http;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+/**
  * 
  * @author jguillemotte
  *
  */
-public class RequestElement {
+class CopyOutputStream extends OutputStream {
 
-	private long requestTime;
-	private String request; 
-	
-	public RequestElement(String request, long requestTime) throws IllegalArgumentException {
-		if(request != null){
-			this.request = request;
-		} else {
-			throw new IllegalArgumentException("request parameter must not be null");
-		}
-		if(requestTime > 0){
-			this.requestTime = requestTime;
-		} else {
-			throw new IllegalArgumentException("requestTime parameter must be set with a value > 0");
-		}
-	}
-	
-	public String getRequest(){
-		return this.request;
-	}
-	
-	public long getRequestTime(){
-		return this.requestTime;
-	}
-	
+    //StringBuilder copy = new StringBuilder();
+    private ByteArrayOutputStream copyOut = new ByteArrayOutputStream();
+    private OutputStream out;
+
+    public CopyOutputStream(OutputStream out) {
+        super();
+        this.out = out;
+    }
+
+    @Override
+    public void write(int b) throws IOException {
+        out.write(b);
+        super.flush(); // ?
+        copyOut.write(b);
+    }
+
+    public byte[] getCopy() {
+        return copyOut.toByteArray();
+    }
 }

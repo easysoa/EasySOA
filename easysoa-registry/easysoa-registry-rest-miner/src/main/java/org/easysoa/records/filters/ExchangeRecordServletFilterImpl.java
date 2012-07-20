@@ -47,90 +47,96 @@ import com.openwide.easysoa.run.RunManager;
 public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordServletFilter {
 
     // Logger
-    private static Logger logger = Logger.getLogger(ExchangeRecordServletFilterImpl.class);
+	private static Logger logger = Logger.getLogger(ExchangeRecordServletFilterImpl.class);
 
-    // Singleton
-    private static ExchangeRecordServletFilterImpl singleton = null;
+	// Singleton
+	private static ExchangeRecordServletFilterImpl singleton = null;
 
-    // Exchange handler
-    private HttpExchangeHandler exchangeHandler = null;
+	// Exchange handler
+	private HttpExchangeHandler exchangeHandler = null;
 
-    /**
-     * Initialize the filter
-     */
-    // @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        singleton = this;
-        // Registering the event receiver
-        try {
-            FraSCAtiServiceItf frascati = Framework.getLocalService(
-                    FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-            RunManager runManager = frascati.getService("httpDiscoveryProxy/runManagerComponent",
-                    "runManagerService", RunManager.class);
-            runManager.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
+
+	/**
+	 * Initialize the filter
+	 */
+    //@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+	    singleton = this;
+	    // Registering the event receiver
+	    try {
+	        FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
+	        RunManager runManager = frascati.getService("httpDiscoveryProxy/runManagerComponent", "runManagerService", RunManager.class);
+	        runManager.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
         } catch (Exception ex) {
             logger.error("Unable to register the ExchangeRecordServletFilterEventReceiver in the run manager", ex);
         }
-    }
+	}
 
-    /**
-     * Process the filter
-     */
-    // @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+	
+	/**
+	 * Process the filter 
+	 */
+	//@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+        if (exchangeHandler != null) {
+			logger.info("Filtering a EasySOA API request");
+            response = new HttpMessageResponseWrapper((HttpServletResponse) response);
+        }
+        
+		// Let the request continue
+		chain.doFilter(request, response);
 
         // Forward to the exchange handler
         if (exchangeHandler != null) {
             // Filtering HTTP requests only for registering exchanges
-            logger.info("Filtering a EasySOA API request");
             if (request instanceof HttpServletRequest) {
-                HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper((HttpServletRequest) request);
-                HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper((HttpServletResponse) response);
                 try {
-                    exchangeHandler.handleExchange(requestWrapper, responseWrapper);
+                    exchangeHandler.handleExchange((HttpServletRequest) request, (HttpServletResponse) response);
                 } catch (Exception e) {
                     logger.error("An error occurred during the exchange handling", e);
                 }
             }
         }
-        // Let the request continue
-        chain.doFilter(request, response);
-    }
+	}
 
-    /**
-     * Destroy the filter
-     */
-    // @Override
-    public void destroy() {
-        // Nothing to do
-    }
+	/**
+	 * Destroy the filter
+	 */
+    //@Override
+	public void destroy() {
+		// Nothing to do
+	}
+	
+	/**
+	 * Start the mining
+	 */
+	public void start(HttpExchangeHandler exchangeHandler)
+			throws Exception {
+	    // NOTE: We probably can't make start() and stop() static
+	    // as the caller will be in a separate classloader.
+	    
+		if (singleton != null) {
+	        logger.info("Starting mining with handler " + exchangeHandler.toString());
+		    singleton.exchangeHandler = exchangeHandler;
+		}
+		else {
+		    logger.warn("Can't start mining, the filter is not ready yet");
+		}
+	}
 
-    /**
-     * Start the mining
-     */
-    public void start(HttpExchangeHandler exchangeHandler) throws Exception {
-        // NOTE: We probably can't make start() and stop() static
-        // as the caller will be in a separate classloader.
-
-        if (singleton != null) {
-            logger.info("Starting mining with handler " + exchangeHandler.toString());
-            singleton.exchangeHandler = exchangeHandler;
-        } else {
-            logger.warn("Can't start mining, the filter is not ready yet");
-        }
-    }
-
-    /**
-     * Stop the mining
-     */
-    public void stop() {
+	/**
+	 * Stop the mining
+	 */
+	public void stop() {
         if (singleton != null) {
             logger.info("Stopping mining");
             singleton.exchangeHandler = null;
-        } else {
+        }
+        else {
             logger.info("Nothing to stop, the filter is not ready yet");
         }
-    }
+	}
 
 }

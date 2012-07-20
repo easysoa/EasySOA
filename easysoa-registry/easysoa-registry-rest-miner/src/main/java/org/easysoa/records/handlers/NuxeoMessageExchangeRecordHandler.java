@@ -63,8 +63,13 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
     public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // Builds a new Exchange record with data contained in request and response
         HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper(request);
-        HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper(response);
-        InMessage inMessage = new InMessage(requestWrapper);
+        HttpMessageResponseWrapper responseWrapper;
+        if (response instanceof HttpMessageResponseWrapper) {
+            responseWrapper = (HttpMessageResponseWrapper) response;
+        } else {
+            responseWrapper = new HttpMessageResponseWrapper(response);
+        }
+        InMessage inMessage = new InMessage(requestWrapper); // TODO this and below rather in CopyOut.close();
         OutMessage outMessage = new OutMessage(responseWrapper);
         this.handleMessage(inMessage, outMessage);
     }
