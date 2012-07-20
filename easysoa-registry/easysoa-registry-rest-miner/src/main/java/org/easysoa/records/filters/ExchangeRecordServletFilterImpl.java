@@ -81,23 +81,24 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 			throws IOException, ServletException {
 		logger.info("Filtering a EasySOA API request");
 
-		// Forward to the exchange handler
-		if (exchangeHandler != null) {
-			// Filtering HTTP requests only for registering exchanges
-			if (request instanceof HttpServletRequest) {
-				HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper((HttpServletRequest) request);
-				HttpMessageResponseWrapper responseWrapper = new HttpMessageResponseWrapper((HttpServletResponse) response);
-				//request = requestWrapper;
-				//response = responseWrapper;
-				try {
-					exchangeHandler.handleExchange(requestWrapper, responseWrapper);
-				} catch (Exception e) {
-					logger.error("An error occurred during the exchange handling", e);
-				}
-			}
-		}
+        if (exchangeHandler != null) {
+            response = new HttpMessageResponseWrapper((HttpServletResponse) response);
+        }
+        
 		// Let the request continue
 		chain.doFilter(request, response);
+
+        // Forward to the exchange handler
+        if (exchangeHandler != null) {
+            // Filtering HTTP requests only for registering exchanges
+            if (request instanceof HttpServletRequest) {
+                try {
+                    exchangeHandler.handleExchange((HttpServletRequest) request, (HttpServletResponse) response);
+                } catch (Exception e) {
+                    logger.error("An error occurred during the exchange handling", e);
+                }
+            }
+        }
 	}
 
 	/**

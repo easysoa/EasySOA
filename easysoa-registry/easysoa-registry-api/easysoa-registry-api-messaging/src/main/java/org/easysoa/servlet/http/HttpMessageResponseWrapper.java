@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +39,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HttpMessageResponseWrapper extends StatusExposingServletResponse {
 
-    private CopyWriter writer;
+    private PrintWriter writer;
+    private CopyOutputStream copyOut;
     
     /**
      * Constructor
@@ -52,16 +55,18 @@ public class HttpMessageResponseWrapper extends StatusExposingServletResponse {
             response.setCharacterEncoding("UTF-8");
         }*/
         // Create copy writer.
-        writer = new CopyWriter(new OutputStreamWriter(response.getOutputStream(), response.getCharacterEncoding()));
+        //writer = new CopyWriter(new OutputStreamWriter(response.getOutputStream(), response.getCharacterEncoding()));
     }
     
     // TODO override the write methods to fill the ByteArrayOutputStream.
-    public ServletOutputStream getOutputStream() {
+    public ServletOutputStream getOutputStream() throws IOException {
+        copyOut = new CopyOutputStream(this.getResponse().getOutputStream());
+        writer = new PrintWriter(new OutputStreamWriter(copyOut, this.getCharacterEncoding()));
         return new ServletOutputStream() {
-            private ByteArrayOutputStream bos = new ByteArrayOutputStream();
             @Override
             public void write(int b) throws IOException {
-                bos.write(writer.getCopy().getBytes());
+                //bos.write(writer.getCopy().getBytes());
+                copyOut.write(b);
             }
         };
     }
@@ -70,7 +75,9 @@ public class HttpMessageResponseWrapper extends StatusExposingServletResponse {
      * 
      * @return
      */
-    public PrintWriter getWriter() {
+    public PrintWriter getWriter() throws IOException {
+        copyOut = new CopyOutputStream(this.getResponse().getOutputStream());
+        writer = new PrintWriter(new OutputStreamWriter(copyOut, this.getCharacterEncoding()));
         return this.writer;
     }
     
@@ -79,6 +86,6 @@ public class HttpMessageResponseWrapper extends StatusExposingServletResponse {
      * @return
      */
     public String getMessageContent(){
-       return this.writer.getCopy();
+       return new String(this.copyOut.getCopy(), Charset.forName(this.getCharacterEncoding())); // ??
     }
 }
