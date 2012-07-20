@@ -160,11 +160,11 @@ public class WSDLValidator extends ServiceValidator {
                 // Match elements
                 for (Element referenceElement : referenceSchema.getElements()) {
                     Element element = schema.getElement(referenceElement.getQName());
-                    if (element != null) {
-                        if (!element.getType().getQName().equals(referenceElement.getType().getQName())) {
-                            return false;
-                        }
-                    }
+                    if (element != null && element.getType() != null && element.getType().getQName() != null
+                            && referenceElement != null && referenceElement.getType() != null
+                            && !element.getType().getQName().equals(referenceElement.getType().getQName())) {
+                        return false;
+                    } // else anonymous types, match only contents
                     else {
                        return false;
                     }
