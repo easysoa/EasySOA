@@ -1,21 +1,26 @@
 script(type='text/javascript')
   $(document).ready(function() {
     var $tab = $('#tab-discovery');
-    $('#tab-discovery-link').click(function() {
+    $('.tab-discovery-link').click(function() {
       $('#tab-discovery-contents').toggle();
       var $arrow = $('#tab-discovery-arrow');
       $arrow.toggle();
       if ($arrow.is(':visible')) {
-        $tab.css({width: '90px'});
+        $tab.css({width: '110px'});
       } else {
-        $tab.css({width: '380px'});
+        $tab.css({width: '400px'});
       }
     });
   });
     
 #header1
- #userbox Bob | Developer | CRM Team 
-   img(src='img/menu.png')
+ #userbox 
+   echo Logged as <b>Bob</b> | Part of <b>CRM Team, R&D team</b> | View as 
+   select
+     option Architect
+     option Business user
+     option(selected) Developer
+     option IT Staff
  a(href='./')
    img#logo(src='img/easysoa.png')
  
@@ -23,34 +28,34 @@ script(type='text/javascript')
   .bigtab(style='float: right; width: 120px') Administration
     img(src='img/arrowr.png')
     
-  .bigtab Home
+  .bigtab(style='width: 100px') 
+    a.fake(href='#') Notifications
     #notificationicon 2
   .bigtabspacer 
   
-  .bigtab.open(style='width: 380px')
-    .bigtabtext Registry
+  .bigtab(style='width: 80px')
+    a.fake(href='#') Reports
+    
+  .bigtab.open(style='width: 410px; margin-right: -30px')
+    .bigtabtext(style='width: 70px') Registry
     .bigtabsep
     .bigtabtext(style="background-color: white; border: 2px solid #8888DD; height: 35px; margin-top: -15px; padding-top: 10px")
-      a(href='./env_summary') Master 
+      a.fake(href='#') General view 
       img(src='img/world.png')
     .bigtabsep.small
     .bigtabtext
-      a.fake(href='./env_summary') Staging
+      a.fake(href='#') Provider view
       img(src='img/world.png')
     .bigtabsep.small
     .bigtabtext
-      a.fake(href='./env_summary') Bob's  
+      a.fake(href='#', style="width: 100px") Consumer view
       img(src='img/user.png')
-    .bigtabsep
-    .bigtabtext
-      a.fake(href='#') Settings 
-      img(src='img/settings.png')
     img(src='img/arrowl.png')
   .bigtabspacer 
     
-  #tab-discovery.bigtab(style='width: 90px; cursor: pointer')
-    #tab-discovery-link.bigtabtext Discovery
-    img#tab-discovery-arrow(src='img/arrowr.png', style='float: left')
+  #tab-discovery.bigtab(style='width: 110px; cursor: pointer')
+    a.tab-discovery-link.bigtabtext(style='width: auto', href='#') Discovery
+    img.tab-discovery-link#tab-discovery-arrow(src='img/arrowr.png', style='float: left')
     #tab-discovery-contents(style='display: none; float: left; width: auto')
       .bigtabsep
       .bigtabtext(style='width: 90px')
@@ -67,6 +72,3 @@ script(type='text/javascript')
     
   .bigtab
     a(href='./studio') Studio
-    
-  .bigtab
-    a(href='./wizard') Wizard

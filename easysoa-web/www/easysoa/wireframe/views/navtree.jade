@@ -12,7 +12,7 @@
     });
   
   #navtreetitle(style='background-color: white')
-    a#browsing(href='#') App. layers browsing
+    a#browsing(href='#') By application layer
     img#closed(src='img/arrowr.png')
     img#open(src='img/arrowd.png', style='display: none')
   
@@ -70,28 +70,24 @@
   #navoptions.navtreecontents(style='display: none')
     p Choose a browsing view...
     
-    h3 Default views
+    h3 <u>Provider</u> views
     
     ul
       li
-        a.fake(href='#') By Service
+        a.fake(href='#') Flattened services
       li
-        a.fake(href='#') By Implementation
-      li
-        a.fake(href='#') By Endpoint
+        a.fake(href='#') By validation state
     
     
     h3 Custom hierarchies
     
     ul
       li
-        a.fake(href='#') Application layers
+        a.fake(href='#') By application layer
       li
-        a.fake(href='#') Servers
+        a.fake(href='#') By project
       li
-        a.fake(href='#') Projects
-      li
-        a.fake(href='#') Business domains
+        a.fake(href='#') By business domain
       li
         input(type='button', value='Create...', style='font-size: 9pt')
       
