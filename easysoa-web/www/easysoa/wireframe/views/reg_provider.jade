@@ -1,0 +1,144 @@
+include navtree
+  
+h1.title Service 
+  b Client Service 
+  i(style='font-size: 60%') v1.2
+      
+#contents(style='height: 700px')
+  
+  #breadcrumbs
+    a.fake(href='#') CRM Application > CRUD Services > Client Service
+  
+  #doccontents
+
+    div(style='width: 37%; float: right; margin-left: 10px; font-size: 10pt')
+      .contentbox(style='width: 100%; float: right')
+        .title Service state
+        
+        
+        h3 Staging environment
+        
+        .all
+          div(style='float: left; padding: 5px')
+            img(src='img/green.png')
+          .quarter(style='padding: 5px') Last seen<br /><b>Today, 11h30</b>
+          .quarter(style='padding: 5px') Last tested<br /><b>2 days ago</b>
+          .quarter(style='padding: 5px') Validation<br /><b><a href="#">3 tests OK</a></b>
+        p
+          input(type='button', value="Run validation")
+          input(type='button', value="Redeploy")
+          input(type='button', value="Undeploy")
+        
+        hr
+        
+        h3 Bob's testing environment
+        
+        .all
+          div(style='float: left; padding: 5px')
+            img(src='img/green.png')
+          .quarter(style='padding: 5px') Last seen<br /><b>Today, 11h30</b>
+          .quarter(style='padding: 5px') Last tested<br /><b>2 days ago</b>
+          .quarter(style='padding: 5px') Validation<br /><b><a href="#">3 tests OK</a></b>
+        p
+          input(type='button', value="Run validation")
+          input(type='button', value="Redeploy")
+          input(type='button', value="Undeploy")
+        
+        a.fake(href='#') View all environments...
+        
+      .contentbox(style='width: 100%; float: right')
+        .title Latest changes
+        ul(style="margin-top: 10px")
+          li
+            .quarter 15:20
+            .quarter Bob
+            .half Added notesToDeveloper.txt to doc.
+          li
+            .quarter 11:30
+            .quarter EasySOA
+            .half Inferred service documentation
+          li
+            .quarter 11:30
+            .quarter EasySOA
+            .half Inferred service documentation
+          li
+            .quarter 2 days ago
+            .quarter EasySOA
+            .half Validation passed 
+          li
+            .quarter 2 days ago
+            .quarter EasySOA
+            .half Scheduled validation failed (<a class="fake" href="#">See report</a>)
+         
+    .contentbox(style='width: 55%; float: left')
+      .title General information
+      h3 Description
+      p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      
+      h3 Consumers
+      p
+        a.fake(href='#') Company A
+        echo , 
+        a.fake(href='#') Company B    
+        
+    .contentbox(style='width: 55%; float: left')
+      .title Requirements
+      
+      h3 Endpoint documentation
+      ul
+        li(style='height: 20px')
+          .half
+            img(src='img/world.png') 
+            echo  Expected URL 
+          .half
+            b http://api.mycompany.com/crm/client
+        li(style='height: 20px')
+          .half
+            img(src='img/application.png') 
+            echo  Expected WSDL 
+          .half
+            a.fake(href='#') Preview
+            echo  |  
+            a.fake(href='#') Download
+        li(style='height: 20px')
+          .half
+            img(src='img/secured.gif') 
+            echo  Security Requirements
+          .half
+            a.fake(href='#') View
+      
+      h3 Related documents
+      ul
+        li(style='height: 20px')
+          .half
+            img(src='img/doc.png')
+            a.fake(href='#') ClientServiceArchi.pdf
+          .half Technical requirements
+        li(style='height: 20px')
+          .half
+            img(src='img/doc.png')
+            a.fake(href='#') ClientServiceReqs.pdf
+          .half Business requirements
+        li(style='height: 20px')
+          .half
+            img(src='img/doc.png')
+            a.fake(href='#') notesToDeveloper.txt
+          .half Documentation
+          
+      h3 Parents
+      a.fake(href='#') CRM Application > CRUD Services, 
+      a.fake(href='#') CRM SCA Component, 
+      a.fake(href='#') Production servers > CRM API server, 
+      a.fake(href='#') Client service v2 Project
+
+    .contentbox(style='width: 55%; float: left')
+      .title Collaboration
+      .all
+        div(style='width: 50px; float: left')
+          img(src='img/administrator.png')
+        .threequarters
+          b Arnold said (yesterday, 13:52):
+          br
+          echo Could someone provide an example on how to use this service? The current documentation is a bit unclear.       
+       .all
+         a.fake(href='#') Add comment...
