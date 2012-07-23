@@ -1,0 +1,66 @@
+script
+  window.selectedId = 2;
+
+include navtree
+  
+h1.title System 
+  b CRUD Services 
+  i(style='font-size: 60%') v1.2
+      
+#contents(style='height: 700px')
+  
+  #breadcrumbs
+    a.fake(href='#') CRM Application
+  
+  #doccontents
+    
+    .contentbox
+      .title Contents
+      
+      table
+        tr
+          th Type
+          th Name
+          th 
+            img(src='img/provider.png') 
+            echo Provider
+          th 
+            img(src='img/consumer.png') 
+            echo Consumers
+          th Current state
+          th Comments
+        tr
+          td Service
+          td 
+            a(href='./reg_general') Client service
+          td 
+            a.fake(href='#') CRM Team
+          td 
+            a.fake(href='#') Company A
+            echo , 
+            a.fake(href='#') Company B 
+          td(align="center")
+            img(src='img/green.png')
+          td
+        tr
+          td Service
+          td 
+            a(href='./reg_general') Activities service
+          td 
+            a.fake(href='#') Blah
+          td 
+            a.fake(href='#') Blah
+          td(align="center")
+            img(src='img/green.png')
+          td
+        tr
+          td Service
+          td 
+            a(href='./reg_general') SalesOrders service
+          td 
+            a.fake(href='#') Blah
+          td 
+            a.fake(href='#') Blah
+          td(align="center")
+            img(src='img/red.png')
+          td Service is not available at the expected endpoint

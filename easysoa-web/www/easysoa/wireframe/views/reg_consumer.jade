@@ -23,6 +23,82 @@ h1.title Service
           .quarter(style='padding: 5px') Validation<br /><b><a href="#">3 tests OK</a></b>
         
       .contentbox(style='width: 100%; float: right')
+        .title Service access
+        
+        h3 Recommended clients
+        ul(style='margin-top: 10px')
+          li 
+            img(src='img/world.png') 
+            echo  &nbsp;<b>Content Automation</b> |
+            img(src='img/secured.gif')
+            i Proxied 
+            input(type='button', value='Use with scaffolder') 
+            input(type='button', value='Use with C.A. playground') 
+          li 
+            img(src='img/application.png') 
+            echo  &nbsp;Content Automation / <b>Studio scripting</b> |
+            img(src='img/secured.gif')
+            i Proxied 
+            input(type='button', value='Go to Studio') 
+            
+        h3 Other clients
+        ul(style='margin-top: 10px')
+          li 
+            img(src='img/world.png') 
+            echo  &nbsp;<b>SOAP endpoint</b> |
+            img(src='img/secured.gif')
+            i Proxied 
+            input(type='button', value='Use with UI scaffolder') 
+          li 
+            img(src='img/application.png') 
+            echo  &nbsp;SOAP endpoint / <b>Java connector</b> |
+            img(src='img/secured.gif')
+            i Proxied 
+            input(type='button', value='Download') 
+            
+        hr
+        h3 Create new client
+        
+        form.all
+          fieldset(style='float: left; width 30%')
+            legend Target environment
+            select
+              option Master
+              option Staging
+              option Bob's
+          fieldset(style='float: left; width 30%')
+            legend Protocol
+            select
+              option REST
+              option SOAP
+              option Content Automation
+          fieldset(style='float: left; width 30%')
+            legend Connector
+            select
+              option (Any)
+              option None (web client)
+              option Java
+              option JavaScript
+        
+        fieldset
+          legend
+            b Search results
+          ul
+            li 
+              img(src='img/world.png') 
+              echo &nbsp;<b>REST endpoint</b> |
+              img(src='img/secured.gif')
+              i Proxied 
+              input(type='button', value='Create') 
+              input(type='button', value='Create and deploy')
+            li 
+              img(src='img/application.png') 
+              echo  &nbsp;REST endpoint / <b>Javascript connector</b> |
+              img(src='img/secured.gif')
+              i Proxied 
+              input(type='button', value='Create') 
+            
+      .contentbox(style='width: 100%; float: right')
         .title Latest changes
         ul(style="margin-top: 10px")
           li

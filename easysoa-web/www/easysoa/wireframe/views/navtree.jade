@@ -25,19 +25,22 @@
             { label: 'Top-level services'},
             { label: 'Functional services'},
             { label: 'CRUD services',
+              id: 2,
+              url: './reg_general_folder',
               children: [
                 { label: 'Client service', id: 1 },
                 { label: 'Activities service' },
                 { label: 'SalesOrders service' }
               ] }
-          ] },
-        { label: 'HR Application',
+          ] } ];
+       if (window.location.pathname.indexOf('provider') == -1) {
+         data.push({ label: 'HR Application',
           children: [
             { label: 'Top-level services'},
             { label: 'Functional services'},
             { label: 'CRUD services' }
-          ] }
-       ];
+          ] });
+       }
        var $tree = $("#navhierarchy");
        
        $tree.tree({
@@ -51,9 +54,12 @@
         $tree.tree('selectNode', node, true);
        }
        
-       $("#navhierarchy .title").click(function() {
-        window.location = './endp_summary';
-       });
+       $tree.bind(
+          'tree.click',
+          function(event) {
+              window.location = event.node.url || window.location;
+          }
+       );
        
     });
   #navhierarchy.navtreecontents
