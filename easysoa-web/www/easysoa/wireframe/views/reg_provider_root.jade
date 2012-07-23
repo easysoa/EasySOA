@@ -1,0 +1,148 @@
+script
+  window.selectedId = 3;
+
+include navtree
+
+h1.title
+  echo System 
+  b My SOA
+  echo , by application layer
+      
+#contents
+
+  #doccontents
+    
+    .contentbox
+      .title CRM Application
+      
+      h3 CRUD services
+      
+      table
+        tr
+          th Type
+          th Name
+          th 
+            img(src='img/provider.png') 
+            echo Provider
+          th 
+            img(src='img/consumer.png') 
+            echo Consumers
+          th Current state
+          th Comments
+        tr
+          td Service
+          td 
+            a(href='./reg_general') Client service
+          td 
+            a.fake(href='#') CRM Team
+          td 
+            a.fake(href='#') Company A
+            echo , 
+            a.fake(href='#') Company B 
+          td(align="center")
+            img(src='img/green.png')
+          td
+        tr
+          td Service
+          td 
+            a(href='./reg_general') Activities service
+          td 
+            a.fake(href='#') Blah
+          td 
+            a.fake(href='#') Blah
+          td(align="center")
+            img(src='img/green.png')
+          td
+        tr
+          td Service
+          td 
+            a(href='./reg_general') SalesOrders service
+          td 
+            a.fake(href='#') Blah
+          td 
+            a.fake(href='#') Blah
+          td(align="center")
+            img(src='img/red.png')
+          td Service is not available at the expected endpoint
+          
+          
+    .contentbox
+      .title HR Application
+      
+      h3 Top-level services
+      
+      table
+        tr
+          th Type
+          th Name
+          th 
+            img(src='img/provider.png') 
+            echo Provider
+          th 
+            img(src='img/consumer.png') 
+            echo Consumers
+          th Current state
+          th Comments
+        tr
+          td Service
+          td 
+            a(href='./reg_general') Client service
+          td 
+            a.fake(href='#') CRM Team
+          td 
+            a.fake(href='#') Company A
+            echo , 
+            a.fake(href='#') Company B 
+          td(align="center")
+            img(src='img/green.png')
+          td
+          
+      h3 Functional services
+      
+      table
+        tr
+          th Type
+          th Name
+          th 
+            img(src='img/provider.png') 
+            echo Provider
+          th 
+            img(src='img/consumer.png') 
+            echo Consumers
+          th Current state
+          th Comments
+        tr
+          td Service
+          td 
+            a(href='./reg_general') Client service
+          td 
+            a.fake(href='#') CRM Team
+          td 
+            a.fake(href='#') Company A
+            echo , 
+            a.fake(href='#') Company B 
+          td(align="center")
+            img(src='img/green.png')
+          td
+        tr
+          td Service
+          td 
+            a(href='./reg_general') Activities service
+          td 
+            a.fake(href='#') Blah
+          td 
+            a.fake(href='#') Blah
+          td(align="center")
+            img(src='img/green.png')
+          td
+        tr
+          td Service
+          td 
+            a(href='./reg_general') SalesOrders service
+          td 
+            a.fake(href='#') Blah
+          td 
+            a.fake(href='#') Blah
+          td(align="center")
+            img(src='img/green.png')
+          td

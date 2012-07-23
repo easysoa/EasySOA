@@ -20,21 +20,31 @@
   script(type='text/javascript')
     $(document).ready(function() {
        var data = [
-        { label: 'CRM Application',
+        { label: 'My SOA',
+          url: './reg_provider_root',
+          id: 3,
           children: [
-            { label: 'Top-level services'},
-            { label: 'Functional services'},
-            { label: 'CRUD services',
-              id: 2,
-              url: './reg_general_folder',
+            { label: 'CRM Application',
               children: [
-                { label: 'Client service', id: 1 },
-                { label: 'Activities service' },
-                { label: 'SalesOrders service' }
-              ] }
-          ] } ];
+                { label: 'Top-level services'},
+                { label: 'Functional services'},
+                { label: 'CRUD services',
+                  id: 2,
+                  url: './reg_provider_folder',
+                  children: [
+                    { label: 'Client service', id: 1 },
+                    { label: 'Activities service' },
+                    { label: 'SalesOrders service' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+       ];
+       
        if (window.location.pathname.indexOf('provider') == -1) {
-         data.push({ label: 'HR Application',
+         data[0].children.push({ label: 'HR Application',
           children: [
             { label: 'Top-level services'},
             { label: 'Functional services'},
