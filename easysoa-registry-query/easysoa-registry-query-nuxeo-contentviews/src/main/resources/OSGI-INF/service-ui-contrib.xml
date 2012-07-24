@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
-<component
-  name="org.easysoa.registry.query.nuxeo.contentviews.ServiceUI">
+<component name="org.easysoa.registry.query.nuxeo.contentviews.ServiceUI">
 
+  <!-- This file defines everything necessary to display custom views when 
+    inspecting a System in Nuxeo. -->
+
+  <!-- This view only displays the nested services of the current System -->
   <extension target="org.nuxeo.ecm.platform.ui.web.ContentViewService"
     point="contentViews">
     <contentView name="nested_services">
@@ -12,9 +15,11 @@
           FROM Service
           WHERE
           ecm:path STARTSWITH ?
-            AND ecm:isCheckedInVersion = 0
-            AND ecm:mixinType != 'HiddenInNavigation'
-            AND ecm:currentLifeCycleState != 'deleted'
+          AND
+          ecm:isCheckedInVersion = 0
+          AND ecm:mixinType !=
+          'HiddenInNavigation'
+          AND ecm:currentLifeCycleState != 'deleted'
         </pattern>
         <parameter>#{currentDocument.path}</parameter>
         <sort column="dc:title" ascending="true" />
@@ -41,8 +46,10 @@
           / -->
       </resultLayouts>
 
-      <selectionList>CURRENT_SELECTION</selectionList>
-      <actions category="CURRENT_SELECTION_LIST" />
+      <selectionList>CURRENT_SELECTION</selectionList><!-- This allows the 
+        operation chain defined in "eclipse-import-contrib.xml" to retrieve the selection -->
+      <actions category="CURRENT_SELECTION_LIST" /><!-- This adds 
+        the actions defined in "eclipse-import-contrib.xml" -->
     </contentView>
   </extension>
 
@@ -75,6 +82,7 @@
         <layout>dublincore</layout>
       </layouts>
       <contentViews category="content">
+        <!-- Here we instruct Nuxeo to show our custom view by default. -->
         <contentView>nested_services</contentView>
       </contentViews>
       <contentViews category="trash_content">

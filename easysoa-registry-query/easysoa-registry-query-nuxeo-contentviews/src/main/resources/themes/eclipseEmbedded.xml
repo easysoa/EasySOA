@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <theme name="eclipseEmbedded" template-engines="jsf-facelets">
+  <!-- This is a theme definition in which we try to remove some parts of 
+    the default UI (to change the layout). To that end, we copied the a default 
+    theme (adminCenter) and removed the footer section -->
+  <!-- Currently, the layout is quite weird and it seems the CSS files are not properly declared. -->
   <layout>
     <page name="default" class="adminCenter">
       <section class="nxHeader">
         <cell class="logo">
           <!-- logo -->
-          <fragment type="generic fragment"/>
+          <fragment type="generic fragment" />
         </cell>
         <cell class="content">
           <!-- user services -->
-          <fragment type="generic fragment"/>
+          <fragment type="generic fragment" />
         </cell>
         <cell class="includes">
           <!-- Include -->
-          <fragment type="generic fragment"/>
+          <fragment type="generic fragment" />
         </cell>
       </section>
       <section class="nxMainContainer">
         <cell class="content">
           <!-- main area -->
-          <fragment type="region fragment"/>
-        </cell>
-      </section>
-      <section class="nxFooter">
-        <cell class="content">
-          <!-- footer -->
-          <fragment type="generic fragment"/>
+          <fragment type="region fragment" />
         </cell>
       </section>
     </page>
   </layout>
   <properties element="page[1]/section[2]/cell[1]/fragment[1]">
     <name>body</name>
-    <defaultBody/>
-    <defaultSrc/>
+    <defaultBody />
+    <defaultSrc />
   </properties>
   <formats>
     <widget element="">
@@ -44,10 +42,11 @@
     <widget element="page[1]">
       <view>page frame</view>
     </widget>
-    <widget element="page[1]/section[1]|page[1]/section[2]|page[1]/section[3]">
+    <widget element="page[1]/section[1]|page[1]/section[2]">
       <view>section frame</view>
     </widget>
-    <widget element="page[1]/section[1]/cell[1]|page[1]/section[1]/cell[2]|page[1]/section[1]/cell[3]|page[1]/section[2]/cell[1]|page[1]/section[3]/cell[1]">
+    <widget
+      element="page[1]/section[1]/cell[1]|page[1]/section[1]/cell[2]|page[1]/section[1]/cell[3]|page[1]/section[2]/cell[1]">
       <view>cell frame</view>
     </widget>
     <widget element="page[1]/section[1]/cell[1]/fragment[1]">
@@ -61,9 +60,6 @@
     </widget>
     <widget element="page[1]/section[2]/cell[1]/fragment[1]">
       <view>facelet region</view>
-    </widget>
-    <widget element="page[1]/section[3]/cell[1]/fragment[1]">
-      <view>Nuxeo footer</view>
     </widget>
   </formats>
 </theme>

@@ -8,6 +8,15 @@ import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * A widget allowing to use a Web interface from EasySOA to filter and select several services.
+ * <p>
+ * For now, it's just a piece of code demonstrating how to transmit information from the webpage's Javascript to Eclipse
+ * Java code.
+ * 
+ * @author yrodiere
+ * 
+ */
 public class EasySOAServicePicker extends Composite {
 
 	private Browser browser;
@@ -22,13 +31,13 @@ public class EasySOAServicePicker extends Composite {
 			public Object function(Object[] arguments) {
 				EasySOAServicePicker.this.getChildren()[0].dispose();
 				Text text = new Text(EasySOAServicePicker.this, SWT.NONE);
-				text.setText(Arrays.toString((Object[])arguments[0]));
+				text.setText("These arguments came from Javascript code: " + Arrays.toString((Object[]) arguments[0])); //$NON-NLS-1$
 				text.pack();
 				EasySOAServicePicker.this.layout(true, true);
 				return null;
 			};
 		};
-		
+
 		browser.pack();
 	}
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <root xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
   xmlns:c="http://java.sun.com/jstl/core" xmlns:nxd="http://nuxeo.org/nxweb/document">
+<!-- This view can be accessed by browsing to a System document in Nuxeo and clicking on the
+  "Export to Eclipse (Navigation view - XML)" button. It does not work properly, though-->
   <seq>
     <elem1>
       <c:out value="#{clipboardActions.getCurrentSelectedListTitle()}" />

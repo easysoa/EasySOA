@@ -2,21 +2,31 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html">
-	<body>
-		<script type="text/javascript">
-			jQuery(document).ready(function() {
-				alert('YAYE!');
-			});
-		</script>
+<!-- This is a Nuxeo view (= webpage) that could be used at the _end_ of a service selection in order to either:
+          * trigger a javascript call giving some information to the browser 
+            (see "org.easysoa.registry.query.eclipse.browser" project)
+          * or allow the Eclipse client to parse the page, which would
+            list the selected services.
+    -->
+<!-- This view can be accessed by browsing to a System document in Nuxeo and clicking on the
+	"Export to Eclipse (Navigation view)" button-->
+<body>
+	<!-- This validates the use of custom javascript in Nuxeo -->
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			alert('YAYE!');
+		});
+	</script>
 
-		<p>A pop-up should have been displayed, saying 'YAYE!'</p>
+	<p>A pop-up should have been displayed, saying 'YAYE!'</p>
 
-		<p>Here are the selected services:</p>
-		<ul>
-			<c:forEach var="clipboardItem"
-				items="#{clipboardActions.getCurrentSelectedList()}">
-				<li><h:outputText value="#{clipboardItem.title}" /></li>
-			</c:forEach>
-		</ul>
-	</body>
+	<p>Here are the selected services:</p>
+	<!-- This validates the listing of the current selection in a custom fashion in Nuxeo -->
+	<ul>
+		<c:forEach var="clipboardItem"
+			items="#{clipboardActions.getCurrentSelectedList()}">
+			<li><h:outputText value="#{clipboardItem.title}" /></li>
+		</c:forEach>
+	</ul>
+</body>
 </html>

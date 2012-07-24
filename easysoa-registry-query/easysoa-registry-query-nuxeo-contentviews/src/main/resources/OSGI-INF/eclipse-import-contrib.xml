@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component
-  name="org.easysoa.registry.query.nuxeo.contentviews.EclipseImport">
+<component name="org.easysoa.registry.query.nuxeo.contentviews.EclipseImport">
 
+  <!-- This file experiments several ways of triggering the end of a service 
+    selection, i.e. of propagating the information conveyed by the service selection 
+    to Eclipse -->
+
+  <!-- We could define an Operation Chain which would create a file containing 
+    the service selection. The browser in Eclipse could then detect the URL change 
+    (using listeners) and parse the new document. This is an example definition 
+    of an Operation Chain, but it only uses out-of-the-box operations (so it 
+    can't create a readable document, but just a ZIP). -->
   <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
     point="chains">
     <chain id="fetchWorklist">
@@ -12,28 +20,53 @@
     </chain>
   </extension>
 
+  <!-- These are action definitions, i.e. statements instructing Nuxeo to 
+    add buttons. Where to add the buttons is defined by their category and -->
   <extension target="org.nuxeo.ecm.platform.actions.ActionService"
     point="actions">
+    <!-- This actions triggers the Operation Chain defined above -->
     <action id="exportToEclipseAutomationEL" label="Export to Eclipse (Automation)"
       link="#{operationActionBean.doOperation('fetchWorklist')}" order="100">
       <category>CURRENT_SELECTION_LIST</category>
     </action>
+    <!-- This action should trigger a javascript call. Inspired by other 
+      action definitions found in the Nuxeo Explorer (http://explorer.nuxeo.org/nuxeo/site/distribution/Nuxeo%20DM-5.5/listExtensionPoints). -->
+    <!-- This does not work. -->
     <action id="exportToEclipseJS" label="Export to Eclipse (JS)"
       link="javascript:alert('This is a JS call');" order="101">
       <category>CURRENT_SELECTION_LIST</category>
     </action>
+    <!-- This action switches to a new Nuxeo view (not a Content View!), 
+      defined in "/web/nuxeo.war/eclipse_service_import.xhtml" that could be used 
+      to either:
+          * trigger a javascript call giving some information to the browser 
+            (see "org.easysoa.registry.query.eclipse.browser" project)
+          * or allow the Eclipse client to parse the page, which would
+            list the selected services.
+    -->
     <action id="exportToEclipseLinkNavigationView" label="Export to Eclipse (Navigation view)"
       link="eclipse_service_import" order="104">
       <category>CURRENT_SELECTION_LIST</category>
     </action>
+    <!-- We could define a Nuxeo View (webpage) which would list the current 
+      selection in JSON, by using a JFace template. Unfortunately, JFace (Facelets?) 
+      only supports XHTML files, or more precisely files with ".xhtml" extensions. 
+      This was an experiment with JSON, which (unfortunately) is interpreted as 
+      a static file, not as a template. -->
+    <!-- This does not work. -->
     <action id="exportToEclipseLinkNavigationViewJson" label="Export to Eclipse (Navigation view - JSON)"
       link="eclipse_service_import_json" order="105">
       <category>CURRENT_SELECTION_LIST</category>
     </action>
+    <!-- (See above) This is the same with XML. -->
+    <!-- This does not work. -->
     <action id="exportToEclipseLinkNavigationViewXml" label="Export to Eclipse (Navigation view - XML)"
       link="eclipse_service_import_xml" order="106">
       <category>CURRENT_SELECTION_LIST</category>
     </action>
+    <!-- Redirection in Nuxeo raises a few issues, the first of them being 
+      the fact that we cannot refer to an absolute path. -->
+    <!-- This does not work. -->
     <action id="redirectToWebEngine" label="Redirect to WebEngine"
       link="/nuxeo/site/admin/repository" order="107">
       <category>CURRENT_SELECTION_LIST</category>
