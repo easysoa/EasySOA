@@ -9,6 +9,7 @@
 			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
 		</sca:service>
 		<sca:implementation.java class="com.openwide.easysoa.monitoring.DiscoveryMonitoringService" />
+		<!--<sca:implementation.java class="com.openwide.easysoa.monitoring.ValidatedMonitoringService" />-->
 		<sca:reference name="esperEngine" target="esperEngineComponent/esperEngineService" />
 	</sca:component>
 

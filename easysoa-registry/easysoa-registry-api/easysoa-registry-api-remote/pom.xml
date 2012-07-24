@@ -36,6 +36,11 @@
       <groupId>org.nuxeo.ecm.automation</groupId>
       <artifactId>nuxeo-automation-client</artifactId>
     </dependency>
+    <dependency>
+    	<groupId>commons-codec</groupId>
+    	<artifactId>commons-codec</artifactId>
+    	<version>1.6</version>
+    </dependency>
   </dependencies>
 
   <build>
