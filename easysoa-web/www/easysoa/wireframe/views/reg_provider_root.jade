@@ -12,10 +12,65 @@ h1.title
 
   #doccontents
     
-    .contentbox
-      .title CRM Application
+    .contentbox(style="height: 180px")
+      .title Indicators
+    
+      div(style="float: left; width: 100%; padding: 5px") Services: <b>27</b> | Deployed services: <b>27</b> | Validated services: <b>26</b> | ...
+    
+      div(style="float: left; margin-bottom: 25px")
+        table.report(style="display: none")
+          caption Validated services
+          thead
+            tr
+              th -7
+              th -6
+              th -5
+              th -4
+              th -3
+              th -2
+              th -1
+              th 0d
+          tr
+            td 85
+            td 92
+            td 90
+            td 80
+            td 93
+            td 97
+            td 96
+            td 93
+        
+      div(style="float: left")
+        table.report(style="display: none")
+          caption Documentation level
+          thead
+            tr
+              th -7
+              th -6
+              th -5
+              th -4
+              th -3
+              th -2
+              th -1
+              th 0d
+          tr
+            td 65
+            td 70
+            td 70
+            td 70
+            td 72
+            td 75
+            td 75
+            td 78
+        
+      div(style="float: left; width: 100%; padding: 5px; color: #A50")
+        span(style="font-weight: bold; border: 1px solid #A50; padding: 2px; background-color: #FE8") 2 Warnings
+        echo  <b>1</b> service not deployed in a test environment, <b>1</b> service without known provider
       
-      h3 CRUD services
+    .contentbox
+      .title Contents
+      
+      h3 CRM Application > CRUD services
       
       table
         tr
@@ -41,7 +96,7 @@ h1.title
             a.fake(href='#') Company B 
           td(align="center")
             img(src='img/green.png')
-          td
+          td <span style="color: #A50"><b>Warning</b></span>: Service is not deployed in a full test environment
         tr
           td Service
           td 
@@ -52,7 +107,7 @@ h1.title
             a.fake(href='#') Blah
           td(align="center")
             img(src='img/green.png')
-          td
+          td <span style="color: #A50"><b>Warning</b></span>: Service has no known provider
         tr
           td Service
           td 
@@ -63,13 +118,9 @@ h1.title
             a.fake(href='#') Blah
           td(align="center")
             img(src='img/red.png')
-          td Service is not available at the expected endpoint
+          td <span style="color: red"><b>Validation failure</b></span>: Service is not available at the expected endpoint
           
-          
-    .contentbox
-      .title HR Application
-      
-      h3 Top-level services
+      h3 HR Application > Top-level services
       
       table
         tr
@@ -97,7 +148,7 @@ h1.title
             img(src='img/green.png')
           td
           
-      h3 Functional services
+      h3 HR Application > Functional services
       
       table
         tr
@@ -146,3 +197,13 @@ h1.title
           td(align="center")
             img(src='img/green.png')
           td
+          
+      h3 ...
+                
+script
+  $('.report').visualize({
+    width: 200,
+    height: 50,
+    type: 'area',
+    colors: ['green']
+  });

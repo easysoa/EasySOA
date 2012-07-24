@@ -14,6 +14,61 @@ h1.title System
   
   #doccontents
     
+    .contentbox(style="height: 180px")
+      .title Indicators
+    
+      div(style="float: left; width: 100%; padding: 5px") Services: <b>3</b> | Deployed services: <b>3</b> | Validated services: <b>2</b> | ...
+    
+      div(style="float: left; margin-bottom: 25px")
+        table.report(style="display: none")
+          caption Validated services
+          thead
+            tr
+              th -7
+              th -6
+              th -5
+              th -4
+              th -3
+              th -2
+              th -1
+              th 0d
+          tr
+            td 1
+            td 2
+            td 2
+            td 3
+            td 3
+            td 3
+            td 2
+            td 2
+        
+      div(style="float: left")
+        table.report(style="display: none")
+          caption Documentation level
+          thead
+            tr
+              th -7
+              th -6
+              th -5
+              th -4
+              th -3
+              th -2
+              th -1
+              th 0d
+          tr
+            td 2
+            td 2
+            td 2
+            td 3
+            td 3
+            td 3
+            td 3
+            td 3
+        
+      div(style="float: left; width: 100%; padding: 5px; color: #A50")
+        span(style="font-weight: bold; border: 1px solid #A50; padding: 2px; background-color: #FE8") 2 Warnings
+        echo  <b>1</b> service without known consumer, <b>1</b> service without developer in charge
+      
     .contentbox
       .title Contents
       
@@ -41,7 +96,7 @@ h1.title System
             a.fake(href='#') Company B 
           td(align="center")
             img(src='img/green.png')
-          td
+          td <span style="color: #A50"><b>Warning</b></span>: Service is not deployed in a full test environment
         tr
           td Service
           td 
@@ -52,7 +107,7 @@ h1.title System
             a.fake(href='#') Blah
           td(align="center")
             img(src='img/green.png')
-          td
+          td <span style="color: #A50"><b>Warning</b></span>: Service has no known provider
         tr
           td Service
           td 
@@ -63,4 +118,12 @@ h1.title System
             a.fake(href='#') Blah
           td(align="center")
             img(src='img/red.png')
-          td Service is not available at the expected endpoint
+          td <span style="color: red"><b>Validation failure</b></span>: Service is not available at the expected endpoint
+          
+script
+  $('.report').visualize({
+    width: 200,
+    height: 50,
+    type: 'area',
+    colors: ['green']
+  });
