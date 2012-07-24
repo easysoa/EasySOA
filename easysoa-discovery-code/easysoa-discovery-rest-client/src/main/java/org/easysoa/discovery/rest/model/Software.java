@@ -1,6 +1,7 @@
 package org.easysoa.discovery.rest.model;
 
 
+// TODO => (Software)Component
 public class Software extends SoaNode {
 
     public Software() {}

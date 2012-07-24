@@ -13,42 +13,62 @@ import org.easysoa.discovery.rest.model.ServiceImpl;
 import org.easysoa.discovery.rest.model.SoaNode;
 
 import com.thoughtworks.qdox.model.Annotation;
-import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.Type;
+import com.thoughtworks.qdox.model.annotation.AnnotationValue;
 
-public class JaxWSSourcesHandler implements SourcesHandler {
+
+/**
+ * In project & current deliverable, reports :
+ * * JAXWS service impl and their impl'd service interface (from impl and also by themselves),
+ * both by being annotated by @WebService
+ * * thanks to InterfaceHandlerBase, member (field or bean setter)-injected service :
+ * typed by @WebService annotated interfaces or @WebServiceClient annotated classes)
+ * 
+ * @author mdutoo
+ *
+ */
+public class JaxWSSourcesHandler extends InterfaceHandlerBase implements SourcesHandler {
 
     private static final String ANN_WSCLIENT = "javax.jws.WebServiceClient";
     private static final String ANN_WS = "javax.jws.WebService";
     private static final String ANN_WEBRESULT = "javax.jws.WebResult";
     private static final String ANN_WEBPARAM = "javax.jws.WebParam";
-    private static final String ANN_INJECT = "javax.inject.Inject";
-
-    private List<JavaClass> wsClientsAndItfs = new ArrayList<JavaClass>();
     
     @Override
     public Collection<SoaNode> handleSources(JavaSource[] sources,
             MavenDeliverable mavenDeliverable, Log log) {
         Collection<SoaNode> discoveredNodes = new ArrayList<SoaNode>();
         
-        // Find all WS clients/interfaces
+        // Pass 1 : Find all WS clients/interfaces
         for (JavaSource source : sources) {
+            // TODO diff between main & tests
+            System.out.println("source: " + source);//
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
-                if (ParsingUtils.hasAnnotation(c, ANN_WSCLIENT)
-                        || ParsingUtils.hasAnnotation(c, ANN_WS)) {
+                boolean isWsClient = ParsingUtils.hasAnnotation(c, ANN_WSCLIENT);
+                boolean isWs = ParsingUtils.hasAnnotation(c, ANN_WS);
+                boolean isInterface = c.isInterface();
+                
+                if (isWs) {
+                    if (isInterface) {
+                        wsClientsAndItfs.add(c);
+                        
+                        // also in first pass for itf, Extract WS info
+                        Service serviceDef = new Service(c.getName(), mavenDeliverable.getVersion());
+                        discoveredNodes.add(serviceDef);
+                    }
+                } else if (isWs && isInterface || isWsClient) {
                     wsClientsAndItfs.add(c);
                 }
             }
         }
         
-        // Explore each class
+        // Pass 2 : Explore each impl
         for (JavaSource source : sources) {
+            // TODO diff between main & tests
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
                 discoveredNodes.addAll(this.handleClass(c, sources, mavenDeliverable, log));
@@ -62,7 +82,7 @@ public class JaxWSSourcesHandler implements SourcesHandler {
         List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
         
         // Check JAX-WS annotation
-        if (!c.isInterface() && ParsingUtils.hasAnnotation(c, ANN_WS)) { // TODO superclass ?
+        if (!c.isInterface() && ParsingUtils.hasAnnotation(c, ANN_WS)) { // TODO superclass ? TODO interface !
 
             // Extract WS info
             ServiceImpl serviceImpl = new ServiceImpl(deliverable,
@@ -71,9 +91,8 @@ public class JaxWSSourcesHandler implements SourcesHandler {
             discoveredNodes.add(serviceImpl);
             
             // Extract interface info
-            Annotation wsImplAnnotation = ParsingUtils.getAnnotation(c, ANN_WS);
             //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
-            JavaClass itfClass = findWsInterface(wsImplAnnotation, sources); // TODO several interfaces ???
+            JavaClass itfClass = findWsInterface(c, sources); // TODO several interfaces ???
             if (itfClass != null) {
             
                 // Extract WS info
@@ -109,54 +128,50 @@ public class JaxWSSourcesHandler implements SourcesHandler {
             }
         }
         
-        // JAXWS WebServiceClient (generated client stub) :
+        // NB. JAXWS WebServiceClient (generated client stub) not reported as such but through injection below
+        // (though they could be, as "connector" TODO)
         
-        // Java 6 injection of fields by service-annotated interfaces or WebServiceClients (generated client stub) :
-        // in java 6-injected fields :
-        for (JavaField javaField : c.getFields()) { // TODO also superfields...
-            if (ParsingUtils.hasAnnotation(javaField, ANN_INJECT) && isWSClientOrItf(javaField.getType())) {
-                deliverable.addRequirement(
-                        c.getFullyQualifiedName()
-                        + " consumes WS of JAX-WS interface " 
-                        + javaField.getType().getJavaClass().getFullyQualifiedName());
-            }
-        }
-        // in java 6-injected setters :
-        for (BeanProperty beanProperty : c.getBeanProperties()) {
-            JavaMethod method = beanProperty.getMutator();
-            
-            if (method != null && ParsingUtils.hasAnnotation(method, ANN_INJECT)) {
-                JavaParameter[] parameters = method.getParameters();
-                if (parameters.length == 1 && isWSClientOrItf(parameters[0].getType())) {
-                    deliverable.addRequirement(
-                            c.getFullyQualifiedName()
-                            + " consumes WS of JAX-WS interface " 
-                            + parameters[0].getType().getJavaClass().getFullyQualifiedName());
-                }
-            }
-        }
+        // member injected by WebService annotated interfaces or WebServiceClients (generated client stub) :
+        handleInjectedMembers(c, deliverable, log);
         
         return discoveredNodes;
     }
 
-    private JavaClass findWsInterface(Annotation wsImplAnnotation, JavaSource[] sources) {
-        Object itfParameter = wsImplAnnotation.getProperty("endpointInterface").getParameterValue();
-
-        if (itfParameter != null && itfParameter instanceof String) {
-            String itfFullName = ((String) itfParameter).replace("\"", "");
+    private JavaClass findWsInterface(JavaClass c, JavaSource[] sources) {
+        String endpointInterfaceAnnotationValue = null;
+        Annotation wsImplAnnotation = ParsingUtils.getAnnotation(c, ANN_WS); // should not be null
+        AnnotationValue endpointInterfaceAnnotation = wsImplAnnotation.getProperty("endpointInterface");
+        if (endpointInterfaceAnnotation != null) {
+            Object itfParameter = endpointInterfaceAnnotation.getParameterValue();
+            if (itfParameter != null && itfParameter instanceof String) {
+                endpointInterfaceAnnotationValue = ((String) itfParameter).replace("\"", "");
+            }
+        }
+        
+        if (endpointInterfaceAnnotationValue != null && !endpointInterfaceAnnotationValue.isEmpty()) {
+            String itfFullName = endpointInterfaceAnnotationValue;
+            // return c.getSource().getJavaClassContext().getClassByName(itfFullName); // TODO rather than below ?
             for (JavaSource source : sources) {
-                for (JavaClass candidateClass : source.getClasses()) {
+                JavaClass itf = source.getJavaClassContext().getClassByName(itfFullName);
+                if (itf != null) {
+                    return itf;
+                }
+                /*for (JavaClass candidateClass : source.getClasses()) {
                     if (itfFullName.equals(candidateClass.getFullyQualifiedName())) {
                         return candidateClass;
                     }
+                }*/
+            }
+            
+        } else {
+            for (JavaClass itf : c.getImplementedInterfaces()) {
+                Annotation wsItfAnnotation = ParsingUtils.getAnnotation(itf, ANN_WS);
+                if (wsItfAnnotation != null) {
+                    return itf;
                 }
             }
         }
 
         return null;
-    }
-    
-    private boolean isWSClientOrItf(Type type) {
-        return wsClientsAndItfs.contains(type.getJavaClass());
     }
 }
