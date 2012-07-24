@@ -27,6 +27,7 @@ import org.easysoa.records.Exchange.ExchangeType;
 
 import com.openwide.easysoa.esper.EsperEngine;
 import com.openwide.easysoa.message.QueryParam;
+import com.openwide.easysoa.monitoring.soa.Node;
 import com.openwide.easysoa.monitoring.soa.Service;
 import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
@@ -88,6 +89,16 @@ public class WSDLMessageHandler implements MessageHandler {
         } catch (Exception e) {
             logger.error("Failed to register WSDL service", e);
         }
+        
+        Node soaNode = null;
+        for(Node node : monitoringService.getModel().getSoaNodes()){
+            if(node.getUrl().equals(exchangeRecord.getInMessage().buildCompleteUrl())){
+                soaNode = node;
+                logger.debug("Node found ! " + soaNode.getTitle());
+                break;
+            }
+        }        
+        esperEngine.sendEvent(soaNode);         
         
 		return true;
 	}

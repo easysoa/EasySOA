@@ -49,7 +49,6 @@ public class RestMessageHandler implements MessageHandler {
 		if("com.openwide.easysoa.monitoring.DiscoveryMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
 			logger.debug("Discovery mode, message added in tree");
 			monitoringService.getUrlTree().addUrlNode(exchangeRecord);
-			
 		}
 		//else if(MonitoringMode.VALIDATED.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
 		else if("com.openwide.easysoa.monitoring.ValidatedMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
