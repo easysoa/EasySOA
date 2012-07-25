@@ -53,7 +53,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
                         }
                     }
                     if (pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
-                        wsClientsAndItfs.add(c);
+                        wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
                         Service serviceDef = new Service(c.getName(), mavenDeliverable.getVersion());
@@ -145,17 +145,6 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
         
         return discoveredNodes;
         
-    }
-
-    private JavaClass getWsItf(JavaClass c) {
-        for (JavaClass itf : c.getImplementedInterfaces()) {
-            for (JavaClass wsItf : wsClientsAndItfs) {
-                if (itf.getFullyQualifiedName().equals(wsItf)) {
-                    return itf;
-                }
-            }
-        }
-        return null;
     }
 
 }

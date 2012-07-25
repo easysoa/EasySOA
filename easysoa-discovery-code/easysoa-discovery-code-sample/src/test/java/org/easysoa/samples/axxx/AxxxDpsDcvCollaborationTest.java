@@ -140,7 +140,7 @@ public class AxxxDpsDcvCollaborationTest {
         // devEnvRules("'what it devs' should not be mock", "and should belong to Organization")
         // dpsDevEnvRules("'what it devs' = axxxDpsApvSoftware")
         
-        // designPhaseRules("services must have WSDL reqs", "requirementsVersioningApprovalWorkflow");
+        // designPhaseRules("SOAP services must have WSDL reqs", "requirementsVersioningApprovalWorkflow");
         // designPhaseRulesOptional("if unknown services i.e. not in business process, CIO dashboard alert");
         // (NB. if disco in dcvDev env first, not the target env, so "transition / fork & design it" (or after publish, only in collab pov)
         // service auto creation in target soa (rather than "there is no (matched) service yet, do you want to create them ?")

@@ -32,10 +32,22 @@ import com.thoughtworks.qdox.model.annotation.AnnotationValue;
  */
 public class JaxWSSourcesHandler extends InterfaceHandlerBase implements SourcesHandler {
 
-    private static final String ANN_WSCLIENT = "javax.jws.WebServiceClient";
+    private static final String ANN_WSPROVIDER = "javax.jws.WebServiceProvider";
     private static final String ANN_WS = "javax.jws.WebService";
     private static final String ANN_WEBRESULT = "javax.jws.WebResult";
     private static final String ANN_WEBPARAM = "javax.jws.WebParam";
+
+    private static final String ANN_XML_WSCLIENT = "javax.xml.ws.WebServiceClient";
+    private static final String ANN_XML_WSREF = "javax.xml.ws.WebServiceRef";
+    private static final String ANN_XML_WSPROVIDER = "javax.xml.ws.WebServiceProvider";
+    
+    public JaxWSSourcesHandler() {
+        super();
+        this.injectionAnnotations.add(ANN_WSPROVIDER);
+        this.injectionAnnotations.add(ANN_XML_WSCLIENT);
+        this.injectionAnnotations.add(ANN_XML_WSREF);
+        this.injectionAnnotations.add(ANN_XML_WSPROVIDER);
+    }
     
     @Override
     public Collection<SoaNode> handleSources(JavaSource[] sources,
@@ -48,20 +60,22 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             System.out.println("source: " + source);//
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
-                boolean isWsClient = ParsingUtils.hasAnnotation(c, ANN_WSCLIENT);
                 boolean isWs = ParsingUtils.hasAnnotation(c, ANN_WS);
                 boolean isInterface = c.isInterface();
                 
                 if (isWs) {
                     if (isInterface) {
-                        wsClientsAndItfs.add(c);
+                        wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
                         Service serviceDef = new Service(c.getName(), mavenDeliverable.getVersion());
                         discoveredNodes.add(serviceDef);
                     }
-                } else if (isWs && isInterface || isWsClient) {
-                    wsClientsAndItfs.add(c);
+                } else if (isWs && isInterface
+                        || ParsingUtils.hasAnnotation(c, ANN_XML_WSCLIENT)
+                        || ParsingUtils.hasAnnotation(c, ANN_WSPROVIDER)
+                        || ParsingUtils.hasAnnotation(c, ANN_XML_WSPROVIDER)) {
+                    wsInjectableTypeSet.add(c.asType());
                 }
             }
         }
@@ -131,7 +145,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         // NB. JAXWS WebServiceClient (generated client stub) not reported as such but through injection below
         // (though they could be, as "connector" TODO)
         
-        // member injected by WebService annotated interfaces or WebServiceClients (generated client stub) :
+        // member injected by WebService annotated interfaces, WebServiceClients (generated client stub) or WebServiceRefs :
         handleInjectedMembers(c, deliverable, log);
         
         return discoveredNodes;
