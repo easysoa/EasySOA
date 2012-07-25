@@ -27,6 +27,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashSet;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
@@ -66,6 +68,12 @@ public class RequestForwarder {
 	// Timeouts
 	private int forwardHttpConnexionTimeoutMs;
 	private int forwardHttpSocketTimeoutMs;
+
+    @SuppressWarnings("serial")
+    private static HashSet<String> autoSetHeaderLowerCaseSet = new HashSet<String>() { {
+        add("content-length");
+        add("transfer-encoding");
+    } };
 	
 	/**
 	 * Default constructor
@@ -223,12 +231,9 @@ public class RequestForwarder {
 	private void setHeaders(InMessage inMessage, HttpMessage httpMessage) {
 		//logger.debug("Requests Headers :");
 		for (Header header : inMessage.getHeaders().getHeaderList()) {
-			// to avoid an exception when the Content-length header is set twice
-			// if("Host".equals(headerName) &&
-			// headerValue.contains("microsoft")){////
-			// httpMessage.setHeader("Host", "localhost:8084");////
-			// } else/////
-			if (!"Content-Length".equals(header.getName()) && !"Transfer-Encoding".equals(header.getName())) {
+			// Don't set again automatically set headers (else ex. Content-Length set twice)
+		    // Moreover, RFC says that headers are case-insensitive
+			if (!autoSetHeaderLowerCaseSet.contains(header.getName().toLowerCase())) {
 				httpMessage.setHeader(header.getName(), header.getValue());
 			}
 			logger.debug(header.getName() + ": " + header.getValue());
