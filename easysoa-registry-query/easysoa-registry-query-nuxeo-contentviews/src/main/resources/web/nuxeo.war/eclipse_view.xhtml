@@ -5,6 +5,8 @@
 	xmlns:nxu="http://nuxeo.org/nxweb/util"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:nxthemes="http://nuxeo.org/nxthemes">
+	<!-- This Nuxeo view (= webpage) aims at implementing a customized UI in Nuxeo using JSF. Its goal is to allow a user to filter and select several services -->
+	<!-- This view can be accessed by browsing to a System document in Nuxeo and replacing the "@view_documents.*$" part of the URL by "@eclipse_view" -->
 	<ui:define name="body">
 		<nxu:set var="thisIsATest"
 			value="#{facetedSearchActions.setCurrentContentViewName('faceted_service_search')}">

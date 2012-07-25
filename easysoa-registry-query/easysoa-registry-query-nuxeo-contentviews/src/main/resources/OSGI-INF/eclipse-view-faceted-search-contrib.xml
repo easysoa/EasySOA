@@ -1,8 +1,19 @@
 <?xml version="1.0"?>
-<component
-  name="org.easysoa.registry.query.nuxeo.contentviews.FacetedSearch">
+<component name="org.easysoa.registry.query.nuxeo.contentviews.FacetedSearch">
 
-  <!-- application settings -->
+  <!-- This is an attempt at defining a custom faceted search. Does 
+    not work. -->
+  <!--  Nuxeo documentation: http://doc.nuxeo.com/display/NXDOC/Faceted+Search# -->
+  <!-- The faceted search requires the following plugins:
+    nuxeo-platform-faceted-search-api
+    nuxeo-platform-faceted-search-dm
+    nuxeo-platform-faceted-search-jsf
+    nuxeo-platform-virtualnavigation-core-contrib
+    nuxeo-platform-virtualnavigation-web
+    
+    The JARs can be found there: https://maven-eu.nuxeo.org/nexus/content/repositories/public-releases/org/nuxeo/ecm/platform/
+    -->
+
   <!--extension target="org.nuxeo.theme.services.ThemeService" point="applications"> 
     <application root="${org.nuxeo.ecm.contextPath}" template-engine="jsf-facelets"> 
     <view id="/eclipse_view.xhtml"> <theme>galaxy/popup</theme> </view> </application> 
@@ -56,16 +67,18 @@
         <whereClause docType="FacetedServiceSearch">
           <fixedPart>
             ecm:mixinType != 'HiddenInNavigation'
-              AND ecm:mixinType != 'HiddenInFacetedSearch'
-              AND ecm:isCheckedInVersion = 0
-              AND ecm:currentLifeCycleState != 'deleted'
+            AND
+            ecm:mixinType != 'HiddenInFacetedSearch'
+            AND
+            ecm:isCheckedInVersion = 0
+            AND ecm:currentLifeCycleState !=
+            'deleted'
           </fixedPart>
           <predicate parameter="ecm:path" operator="STARTSWITH">
             <field schema="faceted_service_search" name="ecm_path" />
           </predicate>
-          <!--predicate parameter="wsdlUrl" operator="STARTSWITH">
-            <field schema="faceted_service_search" name="wsdlUrl" />
-          </predicate-->
+          <!--predicate parameter="wsdlUrl" operator="STARTSWITH"> <field 
+            schema="faceted_service_search" name="wsdlUrl" /> </predicate -->
         </whereClause>
         <sort column="dc:title" ascending="true" />
         <pageSize>20</pageSize>
@@ -84,17 +97,16 @@
       <useGlobalPageSize>true</useGlobalPageSize>
 
       <resultLayouts>
-      <layout name="document_virtual_navigation_listing_ajax"
-        title="document_listing" translateTitle="true"
-        iconPath="/icons/document_listing_icon.png" />
-        <!--layout name="document_listing_ajax" title="document_listing"
-          translateTitle="true" iconPath="/icons/document_listing_icon.png" />
-        <layout name="document_listing_ajax_compact_2_columns"
-          title="document_listing_compact_2_columns" translateTitle="true"
-          iconPath="/icons/document_listing_compact_2_columns_icon.png" />
-        <layout name="document_listing_ajax_icon_2_columns"
-          title="document_listing_icon_2_columns" translateTitle="true"
-          iconPath="/icons/document_listing_icon_2_columns_icon.png" /-->
+        <layout name="document_virtual_navigation_listing_ajax"
+          title="document_listing" translateTitle="true"
+          iconPath="/icons/document_listing_icon.png" />
+        <!--layout name="document_listing_ajax" title="document_listing" 
+          translateTitle="true" iconPath="/icons/document_listing_icon.png" /> <layout 
+          name="document_listing_ajax_compact_2_columns" title="document_listing_compact_2_columns" 
+          translateTitle="true" iconPath="/icons/document_listing_compact_2_columns_icon.png" 
+          /> <layout name="document_listing_ajax_icon_2_columns" title="document_listing_icon_2_columns" 
+          translateTitle="true" iconPath="/icons/document_listing_icon_2_columns_icon.png" 
+          / -->
       </resultLayouts>
 
       <selectionList>CURRENT_SELECTION</selectionList>

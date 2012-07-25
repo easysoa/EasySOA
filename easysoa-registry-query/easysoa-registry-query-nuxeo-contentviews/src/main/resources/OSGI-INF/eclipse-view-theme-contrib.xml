@@ -2,8 +2,13 @@
 <component
   name="org.easysoa.registry.query.nuxeo.contentviews.EclipseEmbeddedTheme">
 
+  <!-- In order to define a Nuxeo view (i.e. a webpage) with a custom layout, 
+    we must define a new Theme. See http://doc.nuxeo.com/display/NXDOC/Theme#Theme-Pagelayout -->
+
   <extension target="org.nuxeo.theme.services.ThemeService"
     point="themes">
+    <!-- Here we register the theme file "themes/eclipseEmbedded.xml" to 
+      the Nuxeo extension mechanism. -->
     <theme>
       <src>themes/eclipseEmbedded.xml</src>
     </theme>
@@ -16,6 +21,8 @@
       <flavor>rainbow</flavor>
     </flavors>
     <styles>
+      <!-- Tells Nuxeo which CSS files to declare in webpages using this 
+        theme -->
       <style>basics</style>
       <style>buttons_and_actions</style>
       <style>header</style>
@@ -41,6 +48,7 @@
     <application root="${org.nuxeo.ecm.contextPath}"
       template-engine="jsf-facelets">
       <view id="/eclipse_view.xhtml">
+        <!-- Make eclipseEmbedded the default theme for the view "eclipse_view" -->
         <theme>eclipseEmbedded/default</theme>
       </view>
     </application>
