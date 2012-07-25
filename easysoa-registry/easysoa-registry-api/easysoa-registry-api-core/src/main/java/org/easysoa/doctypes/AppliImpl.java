@@ -39,7 +39,7 @@ public class AppliImpl extends EasySOADoctype {
     public static final String FEATURE_SCHEMA_PREFIX = "feat:";
     
     public static final String DEFAULT_APPLIIMPL_TITLE = "Default application";
-    public static final String DEFAULT_APPLIIMPL_URL = "(Unknown)";
+    public static final String DEFAULT_APPLIIMPL_URL = "http://unknown";
     
     // Application properties
     public static final String PROP_URL = "url";
