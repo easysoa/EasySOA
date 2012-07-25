@@ -47,6 +47,8 @@ import com.openwide.easysoa.run.Run.RunStatus;
  * runs, start() (if not autostart), stop(), listRuns() / getLastRun()..., rerun(Run)
  * In this version, RunManager can only manage ONE active run and several terminated runs !*
  * 
+ * LATER manage several currentRuns, and synchronize on them rather than on the RunManagerImpl instance.
+ * 
  * @author jguillemotte
  *
  */
@@ -144,28 +146,30 @@ public class RunManagerImpl implements RunManager {
 	    }*/
 	    
 		StringBuffer error = new StringBuffer();
-		if(currentRun == null && checkUniqueRunName(runName)){
-			currentRun = new Run(runName);
-			currentRun.setStartDate(new Date());
-			currentRun.setStatus(RunStatus.RUNNING);
-		    for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
-		        try {
-		            eventReceiver.receiveEvent(RunManagerEvent.START);
-			    }
-		        catch(Exception ex) {
-		            logger.error("Cannot send event to event receiver : " + eventReceiver.getEventReceiverName(), ex);
-		        }
-		    }
-            return "Run " + runName + " started !";
-		} else {
-			error.append("Unable to start a new run. ");
-			if(currentRun != null){
-				error.append("The run '" + currentRun.getName() + "' is currently started, please stop the current run before to start another one !");
-			} else {
-				error.append("The name '" + runName + "' is already in the run list, please choose an other name !");
-			}
-			throw new Exception(error.toString());
-		}
+        synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete
+    		if(currentRun == null && checkUniqueRunName(runName)){
+    			currentRun = new Run(runName);
+    			currentRun.setStartDate(new Date());
+    			currentRun.setStatus(RunStatus.RUNNING);
+    		    for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
+    		        try {
+    		            eventReceiver.receiveEvent(RunManagerEvent.START);
+    			    }
+    		        catch(Exception ex) {
+    		            logger.error("Cannot send event to event receiver : " + eventReceiver.getEventReceiverName(), ex);
+    		        }
+                }
+                return "Run " + runName + " started !";
+    		} else {
+    			error.append("Unable to start a new run. ");
+    			if(currentRun != null){
+    				error.append("The run '" + currentRun.getName() + "' is currently started, please stop the current run before to start another one !");
+    			} else {
+    				error.append("The name '" + runName + "' is already in the run list, please choose an other name !");
+    			}
+    			throw new Exception(error.toString());
+    		}
+	}
 	}
 	
 	/* (non-Javadoc)
@@ -173,27 +177,30 @@ public class RunManagerImpl implements RunManager {
 	 */
 	@Override
 	public String stop() throws Exception {
-		String response;
-		if(this.currentRun != null){
-            response = "Run " + currentRun.getName() + " stopped !";
-			this.currentRun.setStopDate(new Date());
-			this.currentRun.setStatus(RunStatus.STOPPED);
-			if (autoSave) {
-				save();
-			}
-            this.currentRun = null;
-            for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
-                try {
-                    eventReceiver.receiveEvent(RunManagerEvent.STOP);
+        synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete
+            if(this.currentRun != null){
+                String response = "Run " + currentRun.getName() + " stopped !";
+    			this.currentRun.setStopDate(new Date());
+    			this.currentRun.setStatus(RunStatus.STOPPED);
+    			if (autoSave) {
+    				//internalSave();
+    			    erStore.save(currentRun);
+    		        currentRun.setStatus(RunStatus.SAVED);
+    			}
+                this.currentRun = null;
+                for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
+                    try {
+                        eventReceiver.receiveEvent(RunManagerEvent.STOP);
+                    }
+                    catch(Exception ex) {
+                        logger.error("Cannot send event to event receiver : " + eventReceiver.getEventReceiverName(), ex);
+                    }
                 }
-                catch(Exception ex) {
-                    logger.error("Cannot send event to event receiver : " + eventReceiver.getEventReceiverName(), ex);
-                }
-            }			
-		} else {
-			throw new Exception("There is no current run to stop !");
-		}
-		return response;
+                return response;
+            } else {
+                throw new Exception("There is no current run to stop !");
+            }
+        }
 	}
 	
 	/**
@@ -217,16 +224,22 @@ public class RunManagerImpl implements RunManager {
 	 */	
 	@Override
 	public void record(ExchangeRecord exchangeRecord){
-		// Get the current run and add a message
-		logger.debug("Recording message : " + exchangeRecord);
-		try{
-		    exchangeRecord.getExchange().setExchangeID(Long.toString(exchangeNumberGenerator.getNextNumber()));
-			this.getCurrentRun().addExchange(exchangeRecord);
-			monitoringService.listen(exchangeRecord);
-		}
-		catch(Exception ex){
-			logger.error("Unable to record message !", ex);
-		}
+        synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete
+            if(this.currentRun != null){
+        		// Get the current run and add a message
+        		logger.debug("Recording message : " + exchangeRecord);
+        		try{
+        		    exchangeRecord.getExchange().setExchangeID(Long.toString(exchangeNumberGenerator.getNextNumber()));
+    	            this.getCurrentRun().addExchange(exchangeRecord);
+        			monitoringService.listen(exchangeRecord);
+        		}
+        		catch(Exception ex){
+        			logger.error("Unable to record message !", ex);
+        		}    
+            } else {
+                logger.error("Unable to record message : There is no current run !");
+            }
+        }
 	}
 
 	/* (non-Javadoc)
@@ -271,8 +284,14 @@ public class RunManagerImpl implements RunManager {
 	 */	
 	@Override
 	public String delete() throws Exception {
-		currentRun = null;
-		return "Run deleted !";
+        synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete
+            if(this.currentRun != null){
+                currentRun = null;
+                return "Run deleted !";
+            } else {
+                throw new Exception("There is no current run to delete !");
+            }
+        }
 	}
 
 	/* (non-Javadoc)
@@ -300,9 +319,15 @@ public class RunManagerImpl implements RunManager {
 
 	@Override
 	public String save() throws Exception {
-		erStore.save(currentRun);
-		currentRun.setStatus(RunStatus.SAVED);
-		return "Run " + currentRun.getName() + " saved !";
+        synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete
+            if(this.currentRun != null){
+                erStore.save(currentRun);
+                currentRun.setStatus(RunStatus.SAVED);
+                return "Run " + currentRun.getName() + " saved !";
+            } else {
+                throw new Exception("There is no current run to save !");
+            }
+	    }
 	}
 	
 	/**
