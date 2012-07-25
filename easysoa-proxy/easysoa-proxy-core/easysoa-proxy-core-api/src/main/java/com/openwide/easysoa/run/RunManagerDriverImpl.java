@@ -113,11 +113,11 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 		logger.debug("Starting a new run !");
 		try{
 			runManager.start(runName);
+	        return "Run '" + runName + "' started !";
 		} catch(Exception ex){
 			logger.error("Unable to start a new run", ex);
 			return ex.getMessage();
 		}
-		return "Run '" + runName + "' started !";
 	}
 
 	/**
@@ -129,12 +129,12 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 			runManager.stop();
 			// Registering is now done in save method
 			//runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+	        return "Current run stopped !";
 		}
 		catch(Exception ex){
 			logger.error("Unable to stop the current run", ex);
 			return ex.getMessage();			
 		}
-		return "Current run stopped !";
 	}
 
 	
@@ -148,11 +148,11 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 				throw new IllegalArgumentException("Monitoring mode must not be null or empty");
 			}
 			// Best method is to stop the http Proxy with FraSCAti, and then restart with the good composite file
+	        return "Monitoring mode set";
 		} catch(Exception ex){
 			logger.error("Unable to set monitoring mode", ex);
 			return ex.getMessage();
 		}
-		return "Monitoring mode set";
 	}
 
 	/*@Override
@@ -172,12 +172,12 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	public String reRun(String runName) {
 		try{
 			runManager.reRun(runName);
+        return "Re-run done";
 		}
 		catch(Exception ex){
 			logger.error("Unable to re-run the run '" + runName + "'", ex);
 			return ex.getMessage();	
 		}
-		return "Re-run done";
 	}*/
 
 	/**
@@ -186,12 +186,12 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	public String delete() {
 		try {
 			runManager.delete();
+	        return "Run deleted !";
 		}
 		catch(Exception ex){
 			logger.error("Unable to delete the run", ex);
 			return ex.getMessage();
 		}
-		return "Run deleted !";
 	}
 	
 	/**
@@ -199,9 +199,15 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	 */
 	public String save() throws Exception {
 	    // Register and save at the same time, maybe best to have 2 separated methods ...
-	    String result = runManager.save();
-	    runManager.getMonitoringService().registerDetectedServicesToNuxeo();
-	    return result;
+        try {
+            String result = runManager.save();
+            runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+            return result;
+        }
+        catch(Exception ex){
+            logger.error("Unable to save the run", ex);
+            return ex.getMessage();
+        }
 	}
 
 }

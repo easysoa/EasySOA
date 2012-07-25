@@ -23,7 +23,6 @@
  */
 package org.easysoa.servlet.http;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -86,6 +85,13 @@ public class HttpMessageResponseWrapper extends StatusExposingServletResponse {
      * @return
      */
     public String getMessageContent(){
-       return new String(this.copyOut.getCopy(), Charset.forName(this.getCharacterEncoding())); // ??
+        byte[] copyOutCopy;
+        if (this.copyOut == null) {
+            // no message content ex. GET
+            copyOutCopy = new byte[0];
+        } else {
+            copyOutCopy = copyOut.getCopy();
+        }
+       return new String(copyOutCopy, Charset.forName(this.getCharacterEncoding())); // ??
     }
 }
