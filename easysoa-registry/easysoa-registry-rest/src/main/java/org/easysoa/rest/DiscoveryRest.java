@@ -48,6 +48,7 @@ import org.easysoa.doctypes.EasySOADoctype;
 import org.easysoa.doctypes.Service;
 import org.easysoa.doctypes.ServiceAPI;
 import org.easysoa.doctypes.ServiceReference;
+import org.easysoa.services.PersonalWorkspaceFilter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,7 +90,9 @@ public class DiscoveryRest {
     @Path("/environments")
     public Object doGetEnvironmentNames(@Context HttpServletRequest request) throws ClientException {
         CoreSession session = SessionFactory.getSession(request);
-        DocumentModelList models = session.query("SELECT * FROM Workspace WHERE ecm:currentLifeCycleState <> 'deleted'");
+        DocumentModelList models = session.query(
+                "SELECT * FROM Workspace WHERE ecm:currentLifeCycleState <> 'deleted'",
+                new PersonalWorkspaceFilter());
         JSONArray result = new JSONArray();
         for (DocumentModel model : models) {
             result.put(model.getTitle());
