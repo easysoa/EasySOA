@@ -212,6 +212,9 @@ public class EasySOAClasspathAnalysis implements Runnable {
                         logger.info("Not sending a discovery notification, as defined in the settings");
                     }
                     
+                    // stopping tries after successful notification
+                    tryLater = false;
+                    
                 } catch (IOException e) {
                     logger.error("Failed to connect to the EasySOA registry: " + e.getMessage());
                     tryLater = true;
