@@ -40,6 +40,7 @@ public class OutMessage implements Message {
 	private String protocolVersion;
 	// private Cookies cookies;
 	private Headers headers;
+	/** null means HTTP without content ex. GET TODO OR messageContent.rawContent */
 	private MessageContent messageContent;
 	private String redirectURL;
 	// private Long headersSize = new Long(-1);
