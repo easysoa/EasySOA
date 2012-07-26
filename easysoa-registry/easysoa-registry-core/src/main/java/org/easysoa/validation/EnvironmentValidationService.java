@@ -122,8 +122,11 @@ public class EnvironmentValidationService {
 					if (exchangeReplayController != null) {
 	                    // Create temporary environment
 	                    tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
-	                    
+
+	                    // replaying WITHOUT transaction (the only nuxeo changes will come from external REST discoveries)
+                        TransactionHelper.commitOrRollbackTransaction();
 	                    exchangeReplayController.replayRecord(runName, tmpWorkspaceName);
+                        TransactionHelper.startTransaction();
 	                    
 	                    // Validate temporary environment
 	                    validationResults = serviceValidationService.validateServices(session, tmpWorkspaceModel); 
