@@ -164,9 +164,6 @@ public class WSDLValidator extends ServiceValidator {
                             && referenceElement != null && referenceElement.getType() != null
                             && !element.getType().getQName().equals(referenceElement.getType().getQName())) {
                         return false;
-                    } // else anonymous types, match only contents
-                    else {
-                       return false;
                     }
                 }
                 // Match types
