@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.registry.boilerplate.layout.contrib">
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
+
+    <layout name="URL_url">
+      <rows>
+        <row>
+          <widget>URL_url</widget>
+        </row>
+      </rows>
+      <widget name="URL_url" type="text">
+        <labels>
+          <label mode="any">URL</label>
+        </labels>
+        <fields>
+          <field>url:url</field>
+        </fields>
+        <properties mode="any">
+          <property name="required">true</property>
+          <property name="validator">#{easysoaPropertyValidator.validateUrl}</property>
+        </properties>
+      </widget>
+    </layout>
+
+  </extension>
+</component>

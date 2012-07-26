@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<component name="org.easysoa.registry.boilerplate.ecmtypes.contrib">
+
+  <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewExtensionPoint/org.nuxeo.ecm.platform.types.TypeService--types</documentation>
+
+  <require>org.nuxeo.ecm.platform.types</require>
+
+  <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
+
+    <type id="URL" coretype="URL">
+      <label>URL</label>
+      <icon>/icons/url_16.png</icon>
+      <bigIcon>/icons/url_64.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+        <layout>URL_url</layout>
+      </layouts>
+    </type>
+    
+    <type id="Folder" coretype="Folder">
+      <subtypes>
+        <type>URL</type>
+      </subtypes>
+    </type>
+
+  </extension>
+
+</component>
