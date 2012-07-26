@@ -123,7 +123,7 @@ public class EnvironmentValidationService {
 	                    // Create temporary environment
 	                    tmpWorkspaceModel = publicationService.forkEnvironment(session, environmentModel, tmpWorkspaceName);
 	                    
-	                    exchangeReplayController.replayRecord(runName, environmentName);
+	                    exchangeReplayController.replayRecord(runName, tmpWorkspaceName);
 	                    
 	                    // Validate temporary environment
 	                    validationResults = serviceValidationService.validateServices(session, tmpWorkspaceModel); 
