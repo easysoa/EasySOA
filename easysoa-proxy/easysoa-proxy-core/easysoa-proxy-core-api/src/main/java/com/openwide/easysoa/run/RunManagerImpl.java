@@ -179,13 +179,14 @@ public class RunManagerImpl implements RunManager {
 	public String stop() throws Exception {
         synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete
             if(this.currentRun != null){
-                String response = "Run " + currentRun.getName() + " stopped !";
+                String response = "Run " + currentRun.getName() + " stopped and deleted !";
     			this.currentRun.setStopDate(new Date());
     			this.currentRun.setStatus(RunStatus.STOPPED);
     			if (autoSave) {
     				//internalSave();
     			    erStore.save(currentRun);
     		        currentRun.setStatus(RunStatus.SAVED);
+    		        response = "Run " + currentRun.getName() + " stopped, saved and deleted !";
     			}
                 this.currentRun = null;
                 for(RunManagerEventReceiver eventReceiver : runManagerEventReceiverList){
