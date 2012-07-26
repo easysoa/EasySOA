@@ -1,6 +1,6 @@
 <img src="https://github.com/easysoa/EasySOA/wiki/logo.png" height="80" />
 
-### Latest version : <a href="http://www.easysoa.org/welcome/download/">Demo 0.3</a>
+### Latest version : <a href="http://www.easysoa.org/welcome/download/">Demo 0.4</a>
 
 ## Introduction
 
