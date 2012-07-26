@@ -39,10 +39,16 @@ exports.forwardTo = forwardTo = function(request, response, host, port, path) {
 	if (request.session && request.session.username) {
 		request.headers['Authorization'] = utils.encodeAuthorization(request.session.username, request.session.password);
 	}
-	proxy.proxyRequest(request, response, {
-	    'host': host || parsedUrl.hostname,
-	    'port': port || parsedUrl.port || 80 // default http url port
-	});
+	try {
+	  proxy.proxyRequest(request, response, {
+	      'host': host || parsedUrl.hostname,
+	      'port': port || parsedUrl.port || 80 // default http url port
+	  });
+	} catch (error) {
+	  response.writeHead(500);
+	  response.end('Failed to proxy request: ' + e);
+	  console.log(error);
+	}
 };
 
 exports.handleProxyRequest = function(request, response) {
