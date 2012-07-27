@@ -18,6 +18,145 @@
       <facet name="Versionable" />
       <facet name="Publishable" />
     </doctype>
+    
+    <!-- to allow multitenancy LATER -->
+    <!-- doctype extends="Domain" name="SoaDomain">
+      
+    </doctype -->
+    
+    <!-- allows users to classify & organize the SOA for their own purpose -->
+    <doctype extends="Folder" name="TaggingFolder">
+      <!-- contains proxy to version or live SOA elements -->
+      <!-- NB. nuxeo tags have no ontology, would rather allow to create topics / feeds -->
+    </doctype>
+    
+    <doctype extends="Folder" name="Soa"><!-- shareable SOA root -->
+      
+    </doctype>
+    
+    <doctype extends="Folder" name="System">
+      <!-- (System, process) -->
+    </doctype>
+    <!-- may contain / tag any service consumers & providers -->
+    <!-- doctype extends="Folder" name="BusinessComponent">
+    </doctype -->
+    <!-- mapping of Business on Architecture and its instanciation (i.e. deliverables) -->
+    <doctype extends="Folder" name="SoftwareComponent">
+      <!-- refers to an Application (or only ontology ?) -->
+      <!-- contains (static or live) proxies of Deliverables -->
+    </doctype>
+    <!-- may contain / tag any implementation consumers & providers -->
+    <!-- doctype extends="Folder" name="ArchitectureComponent">
+    </doctype -->
+    
+    <doctype extends="Folder" name="Requirements">
+      <!-- target a subset of the SOA model -->
+      <!-- to use it, version Requirements along with said subset,
+      and target it from the rest of the model (another folder) -->
+      <!-- this subset may be simply defined by proxying them in it -->
+    
+      <!-- NB. requirements information outside of the fixed version of the promised model
+      are only validation engine configuration i.e. validation strategies
+      (whose rules might be tuned for each model element by requirementProperties ??) -->
+    </doctype>
+    <doctype extends="Requirements" name="BusinessRequirements">
+    </doctype>
+    <doctype extends="Requirements" name="ArchitectureRequirements">
+    </doctype>
+    <doctype extends="ArchitectureRequirements" name="JwtArchitectureRequirements">
+    </doctype>
+    
+    <doctype extends="Folder" name="Application">
+      <!-- architectural (not end user) application, to be shared among processes, may be only ontology -->
+    </doctype>
+    
+    
+    <!-- Where source comes from, ex. Java project in SCM using Maven with Jenkins / Sonar CI -->
+    <doctype extends="Document" name="DevelopmentProject"><!-- or its own tree, multifiled by proxies -->
+      
+    </doctype>
+    <doctype extends="Document" name="MavenRepository"><!-- or only id -->
+      
+    </doctype>
+    <doctype extends="Folder" name="Deliverable">
+      <!-- contains Implementations (maybe also test ones, or rather only their javaIds on provider) -->
+      <subtypes>
+        <type>Implementation</type>
+      </subtypes>
+      <!-- refers to DevelopmentProject that bears him if known -->
+      <!-- refers to MavenRepository where it is available if any -->
+      <!-- contains proxied DeployedDeliverables ?? -->
+    </doctype>
+    <doctype extends="Folder" name="Implementation">
+      <!-- taggable in ArchitectureComponent -->
+      <subtypes>
+        <type>Operation</type>
+      </subtypes>
+    </doctype>
+    <facet name="javaImplementationAndInterface">
+      <!-- identifies one java implementation class, and interface(s) & superclasses if any / possible -->
+    </facet>
+    <doctype extends="Implementation" name="ServiceProviderImpl">
+      <facet name="javaImplementation"/>
+      <!-- (deduced provided interface (signature) if required for validation) -->
+      <!-- provides (linked to) an endpoint -->
+    </doctype>
+    <doctype extends="Implementation" name="ServiceConsumerImpl">
+      <facet name="javaImplementationAndInterface"/>
+      <!-- (deduced provided interface (signature) if required for validation) -->
+      <!-- consumes / refers to an endpoint -->
+    </doctype>
+    <doctype extends="Documentation" name="Operation">
+      <!-- extracted documentation -->
+    </doctype>
+    <doctype extends="Operation" name="SoapOperation">
+      <facet name="javaOperationId"/><!-- if java -->
+      <facet name="soapOperationId"/><!-- if java, from jaxws -->
+    </doctype>
+    <doctype extends="Operation" name="RestOperation">
+      <facet name="javaOperationId"/><!-- if java -->
+      <facet name="restOperationId"/><!-- if java, from jaxrs or... -->
+    </doctype>
+    
+    <!-- See when extracting doc & model from code if it can be factorized in facets -->
+    <doctype extends="ServiceProviderImpl" name="JaxwsProviderImpl">
+    
+    </doctype>
+    <doctype extends="JavaConsumerImpl" name="JaxwsConsumerImpl">
+    
+    </doctype>
+    <doctype extends="ServiceConsumerImpl" name="JaxrsProviderImpl">
+    
+    </doctype>
+    <doctype extends="ServiceConsumerImpl" name="JaxrsConsumerImpl">
+    
+    </doctype>
+    
+    <doctype extends="Folder" name="Environment">
+      <subtypes>
+        <type>DeployedDeliverable</type>
+      </subtypes>
+    </doctype>
+    <doctype extends="Folder" name="DeployedDeliverable">
+      <!-- (with classpath disco : last seen & history) -->
+      <!-- with Talend : available, last seen & history -->
+      <subtypes>
+        <type>Endpoint</type>
+      </subtypes>
+    </doctype>
+    <doctype extends="Document" name="Endpoint">
+      <!-- endpoint url -->
+      
+      <!-- interface url -->
+      <!-- interface ping (web disco, validation (planifiée)) : available, last successfully pinged date, interface (ex. WSDL, only udpated if changed), history (& change events ??) ((web discoes)) -->
+      
+      <!--  monitoring : -->
+      <!-- Light proxy : last seen date (& status ??), call number ((monit discoes)). NB. WSDL may be gotten but same as ping so none here. -->
+      <!-- with Jasmine : success vs errors over minute / hour / day (health / trend), meets SLA (or delta) -->
+    </doctype>
+    
   </extension>
+  
+  
 
 </component>
