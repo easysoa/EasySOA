@@ -37,7 +37,7 @@ import org.osoa.sca.annotations.Scope;
 import org.osoa.sca.annotations.Service;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.Processor;
-import org.ow2.frascati.starter.api.InitializableItf;
+import org.ow2.frascati.starter.api.AbstractInitializable;
 import org.ow2.frascati.parser.api.Parser;
 import org.ow2.frascati.parser.api.ParsingContext;
 import org.ow2.frascati.tinfi.TinfiComponentInterceptor;
@@ -45,19 +45,13 @@ import org.ow2.frascati.tinfi.api.IntentHandler;
 import org.ow2.frascati.util.AbstractLoggeable;
 import org.ow2.frascati.util.reference.ServiceReferenceUtil;
 
-@Scope("COMPOSITE")
-@Service(InitializableItf.class)
-public class WeaverInitializer extends AbstractLoggeable implements
-        InitializableItf
+public class WeaverInitializer extends AbstractInitializable
 {
 
     // --------------------------------------------------------------------------
     // Internal state.
     // --------------------------------------------------------------------------
-    @Reference(name = "next-initializable", required = false)
-    InitializableItf nextInitializable;
-
-    
+   
     //list of service references and intent handlers to weave together
     //those object will allow to notice each event relative to the processing or 
     //parsing processes
@@ -130,7 +124,7 @@ public class WeaverInitializer extends AbstractLoggeable implements
      * org.ow2.frascati.starter.api.InitializableItf#initialize
      * ()
      */
-    public void initialize()
+    public void doInitialize()
     {
         TinfiComponentInterceptor<?> tci = null;
         Component component = null;
@@ -193,17 +187,4 @@ public class WeaverInitializer extends AbstractLoggeable implements
             e.printStackTrace();
         }
     }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.ow2.frascati.starter.api.InitializableItf#
-     * getNextInitializable()
-     */
-    public InitializableItf getNextInitializable()
-    {
-        log.info("Ask for the next initializable - return NULL");
-        return nextInitializable;
-    }
-
 }
