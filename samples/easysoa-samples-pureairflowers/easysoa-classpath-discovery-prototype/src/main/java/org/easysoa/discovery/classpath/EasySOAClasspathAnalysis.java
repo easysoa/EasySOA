@@ -22,7 +22,9 @@ package org.easysoa.discovery.classpath;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +44,10 @@ public class EasySOAClasspathAnalysis implements Runnable {
     private final static Logger logger = LoggerFactory.getLogger(EasySOAClasspathAnalysis.class);
 
     private final static String PROPERTIES_FILENAME = "discovery.properties";
+    private final static File[] PROPERTIES_LOCATIONS = new File[] {
+        new File(PROPERTIES_FILENAME),
+        new File("target/classes/" + PROPERTIES_FILENAME)
+    };
 
     private final static String PROP_NUXEOURL = "discovery.nuxeoUrl";
     private final static String PROP_USERNAME = "discovery.nuxeoUsername";
@@ -62,29 +68,40 @@ public class EasySOAClasspathAnalysis implements Runnable {
     private String appliImplUrl = null, appliImplTitle = null;
     
     public EasySOAClasspathAnalysis() {
+        // Extract default property file from the JAR
+        if (!new File(PROPERTIES_FILENAME).exists()) {
+            extractDiscoveryPropertyFile("/" + PROPERTIES_FILENAME, PROPERTIES_FILENAME);
+        }
         
         try {
             
+            // Load properties from configuration file, otherwise from jar resource
             Properties props = new Properties();
-            
-            // Load properties from configuration file
-            String propsPath = null;
-            if (new File(PROPERTIES_FILENAME).exists()) {
-                propsPath = PROPERTIES_FILENAME;
+            File propsFile = null;
+            for (File propsFileCandidate : PROPERTIES_LOCATIONS) {
+                logger.error(propsFileCandidate.getAbsolutePath());
+                if (propsFileCandidate.exists()) {
+                    propsFile = propsFileCandidate;
+                    break;
+                }
             }
-            else if (new File("target/classes/" + PROPERTIES_FILENAME).exists()) {
-                propsPath = "target/classes/" + PROPERTIES_FILENAME;
-            }
-            if (propsPath != null) {
-                props.load(new FileInputStream(propsPath));
+            if (propsFile != null) {
+                InputStream propsIs = new FileInputStream(propsFile);
+                try {
+                    props.load(propsIs);
+                }
+                finally {
+                    propsIs.close();
+                }
             }
             else {
                 logger.warn("No " + PROPERTIES_FILENAME + " found, using default config");
             }
-
+            
             // Set discovery settings
-            appliImplUrl = props.getProperty(PROP_APPLIIMPLURL);
-            appliImplTitle = props.getProperty(PROP_APPLIIMPLTITLE);
+            
+            appliImplUrl = props.getProperty(PROP_APPLIIMPLURL, "http://unknown");
+            appliImplTitle = props.getProperty(PROP_APPLIIMPLTITLE, "Unknown application");
             environment = props.getProperty(PROP_ENVIRONMENT, "Master");
             username = props.getProperty(PROP_USERNAME, "Administrator");
             password = props.getProperty(PROP_PASSWORD, "Administrator");
@@ -134,7 +151,7 @@ public class EasySOAClasspathAnalysis implements Runnable {
      */
     @Override
     public void run() {
-
+    
         if (initFailed) {
             return;
         }
@@ -158,7 +175,7 @@ public class EasySOAClasspathAnalysis implements Runnable {
                 }
             }
         }
-
+    
         boolean tryLater = false;
         
         do {
@@ -195,6 +212,9 @@ public class EasySOAClasspathAnalysis implements Runnable {
                         logger.info("Not sending a discovery notification, as defined in the settings");
                     }
                     
+                    // stopping tries after successful notification
+                    tryLater = false;
+                    
                 } catch (IOException e) {
                     logger.error("Failed to connect to the EasySOA registry: " + e.getMessage());
                     tryLater = true;
@@ -214,6 +234,39 @@ public class EasySOAClasspathAnalysis implements Runnable {
         
         } while (tryLater);
         
+    }
+
+    /**
+     * Extract discovery property file
+     */
+    private void extractDiscoveryPropertyFile(String fromResource, String toPath) {
+        InputStream propertiesFileStream = null;
+        FileOutputStream fos = null;
+        try {
+            propertiesFileStream = this.getClass().getResourceAsStream(fromResource);
+            if (propertiesFileStream != null) {
+                fos = new FileOutputStream(toPath);
+                int buffer;
+                while ((buffer = propertiesFileStream.read()) != -1) {
+                    fos.write(buffer);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Init error", e);
+        }
+        finally {
+            try {
+                if (propertiesFileStream != null) {
+                    propertiesFileStream.close();
+                }
+                if (fos != null) {
+                    fos.close();
+                }
+            }
+            catch (IOException e) {
+                logger.error("Init error", e);
+            }
+        }
     }
     
 }

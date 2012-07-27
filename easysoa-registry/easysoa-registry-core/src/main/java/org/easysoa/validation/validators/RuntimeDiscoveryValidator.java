@@ -40,16 +40,18 @@ public class RuntimeDiscoveryValidator extends ServiceValidator {
     @Override
     public List<String> validateService(CoreSession session, DocumentModel service, DocumentModel referenceService) {
         List<String> errors = new LinkedList<String>();
-        try {
-            // check discovery (either by browsing or by monitoring) TODO restrict to runtime env only
-            String discoveryTypeBrowsing = (String) referenceService.getProperty(Service.SCHEMA_COMMON, Service.PROP_DTBROWSING);
-            String discoveryTypeMonitoring = (String) referenceService.getProperty(Service.SCHEMA_COMMON, Service.PROP_DTMONITORING);
-            if (discoveryTypeBrowsing == null || discoveryTypeBrowsing.isEmpty()
-                    && (discoveryTypeMonitoring == null || discoveryTypeMonitoring.isEmpty())) {
-                errors.add("Service not found by browsing nor by monitoring");
+        // Check discovery (either by browsing or by monitoring) if the service is expected in the reference environment
+        if (referenceService != null) {
+            try {
+                String discoveryTypeBrowsing = (String) service.getProperty(Service.SCHEMA_COMMON, Service.PROP_DTBROWSING);
+                String discoveryTypeMonitoring = (String) service.getProperty(Service.SCHEMA_COMMON, Service.PROP_DTMONITORING);
+                if (discoveryTypeBrowsing == null || discoveryTypeBrowsing.isEmpty()
+                        && (discoveryTypeMonitoring == null || discoveryTypeMonitoring.isEmpty())) {
+                    errors.add("Service not found by browsing nor by monitoring");
+                }
+            } catch (Exception e) {
+                errors.add("Exception while validating service: " + e.getMessage());
             }
-        } catch (Exception e) {
-            errors.add("Exception while validating service: " + e.getMessage());
         }
         
         return errors;
