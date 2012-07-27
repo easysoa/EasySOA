@@ -152,9 +152,11 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
     }
 
     private JavaClass findWsInterface(JavaClass c, JavaSource[] sources) {
+        // getting referenced endpointInterface, see http://pic.dhe.ibm.com/infocenter/wasinfo/v7r0/index.jsp?topic=%2Fcom.ibm.websphere.express.doc%2Finfo%2Fexp%2Fae%2Ftwbs_devjaxwsendpt.html
         String endpointInterfaceAnnotationValue = null;
         Annotation wsImplAnnotation = ParsingUtils.getAnnotation(c, ANN_WS); // should not be null
         AnnotationValue endpointInterfaceAnnotation = wsImplAnnotation.getProperty("endpointInterface");
+        
         if (endpointInterfaceAnnotation != null) {
             Object itfParameter = endpointInterfaceAnnotation.getParameterValue();
             if (itfParameter != null && itfParameter instanceof String) {
@@ -163,7 +165,9 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         }
         
         if (endpointInterfaceAnnotationValue != null && !endpointInterfaceAnnotationValue.isEmpty()) {
+            // use endpointInterface to find interface
             String itfFullName = endpointInterfaceAnnotationValue;
+            //return wsInjectableTypeToClassMap.get(new Type(itfFullName)); // TODO rather than below ?
             // return c.getSource().getJavaClassContext().getClassByName(itfFullName); // TODO rather than below ?
             for (JavaSource source : sources) {
                 JavaClass itf = source.getJavaClassContext().getClassByName(itfFullName);
@@ -178,6 +182,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             }
             
         } else {
+            // find first impl'd ws interface
             for (JavaClass itf : c.getImplementedInterfaces()) {
                 Annotation wsItfAnnotation = ParsingUtils.getAnnotation(itf, ANN_WS);
                 if (wsItfAnnotation != null) {
