@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="twitterMockRest">
 	<!-- Twitter mock -->
 	<sca:component name="twitterMock">
-		<sca:implementation.java class="org.openwide.easysoa.test.mock.twittermock.TwitterMockImpl"/>
+		<sca:implementation.java class="org.easysoa.test.mock.twittermock.TwitterMockImpl"/>
 		<sca:service name="twitterServiceMock">
-			<sca:interface.java interface="org.openwide.easysoa.test.mock.twittermock.TwitterMock"/>
+			<sca:interface.java interface="org.easysoa.test.mock.twittermock.TwitterMock"/>
 			<frascati:binding.rest uri="http://localhost:8088/"/>
 		</sca:service>
 	</sca:component>

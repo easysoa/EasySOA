@@ -27,11 +27,11 @@ import javax.xml.ws.Endpoint;
 
 import org.apache.log4j.Logger;
 import org.easysoa.frascati.FraSCAtiServiceException;
+import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 
 /**
  * This class contains two tests for CXF Provider/Dispatcher API

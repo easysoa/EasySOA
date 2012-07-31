@@ -43,11 +43,11 @@ import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.test.mock.nuxeo.RecordsProvider;
+import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 
 /**
  * Tests Event exchange handler

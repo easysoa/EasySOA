@@ -27,9 +27,9 @@
   <!-- EasyWSDL Form generator component -->
   <component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
+      <interface.java interface="org.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.EasyWsdlFormGenerator"/>
+    <implementation.java class="org.easysoa.scaffolding.EasyWsdlFormGenerator"/>
 	<property name="defaultWsdl">defaultWsdl/modified_airport_soap.wsdl</property>
   </component>
 
@@ -46,25 +46,25 @@
   
   <!-- Rest Soap Proxy  -->
   <component name="restSoapProxyComponent">
-    <implementation.java class="org.openwide.easysoa.scaffolding.ScaffoldingProxyImpl"/>
+    <implementation.java class="org.easysoa.scaffolding.ScaffoldingProxyImpl"/>
     <service name="restInterface">
-      <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
+      <interface.java interface="org.easysoa.scaffolding.ScaffoldingProxy"/>
     </service>
     <!-- WSDL service helper reference -->
 	<reference name="wsdlpourServiceHelper" target="wsdlServiceHelperComponent/wsdlServiceHelperService" />
   </component>
   <!-- Rest binding for Rest / Soap proxy -->
   <service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">
-    <interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
+    <interface.java interface="org.easysoa.scaffolding.ScaffoldingProxy"/>
     <frascati:binding.rest uri="http://localhost:7001/"/>
   </service>
   
   <!-- WSDL Service helper component -->
   <component name="wsdlServiceHelperComponent">
     <service name="wsdlServiceHelperService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper"/>
+      <interface.java interface="org.easysoa.scaffolding.wsdlhelper.WsdlServiceHelper"/>
     </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.wsdlhelper.soapui.SoapUIServiceHelper"/>
+    <implementation.java class="org.easysoa.scaffolding.wsdlhelper.soapui.SoapUIServiceHelper"/>
 	<!-- property name="httpProxyHost">localhost</property>
 	<property name="httpProxyPort">8082</property -->
 	<!-- property name="httpProxyUsername">username</property>

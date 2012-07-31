@@ -9,6 +9,6 @@
      <sca:service name="logIntentService">
        <sca:interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler"/>
      </sca:service>
-    <sca:implementation.java class="com.openwide.sca.intents.LogIntent"/>
+    <sca:implementation.java class="org.easysoa.sca.intents.LogIntent"/>
   </sca:component>
 </sca:composite>

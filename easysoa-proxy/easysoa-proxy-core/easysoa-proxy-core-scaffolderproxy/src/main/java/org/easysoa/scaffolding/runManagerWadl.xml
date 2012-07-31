@@ -1,0 +1,78 @@
+<application xmlns="http://wadl.dev.java.net/2009/02"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<grammars></grammars>
+	<resources base="http://localhost:8084/">
+		<resource path="/">
+			<method name="GET">
+				<request></request>
+				<response>
+					<representation mediaType="application/octet-stream">
+						<param name="result" style="plain" type="xs:string" />
+					</representation>
+				</response>
+			</method>
+			<resource path="deleteRun/{runName}">
+				<param name="runName" style="template" type="xs:string" />
+				<method name="GET">
+					<request></request>
+					<response>
+						<representation mediaType="application/octet-stream">
+							<param name="result" style="plain" type="xs:string" />
+						</representation>
+					</response>
+				</method>
+			</resource>
+			<resource path="getOrderedRunNames">
+				<method name="GET">
+					<response>
+						<representation mediaType="application/octet-stream">
+							<param name="result" style="plain" type="xs:string" />
+						</representation>
+					</response>
+				</method>
+			</resource>
+			<resource path="reRun/{runName}">
+				<param name="runName" style="template" type="xs:string" />
+				<method name="GET">
+					<request></request>
+					<response>
+						<representation mediaType="application/octet-stream">
+							<param name="result" style="plain" type="xs:string" />
+						</representation>
+					</response>
+				</method>
+			</resource>
+			<resource path="setMonitoringMode/{mode}">
+				<param name="mode" style="template" type="xs:string" />
+				<method name="GET">
+					<request></request>
+					<response>
+						<representation mediaType="application/octet-stream">
+							<param name="result" style="plain" type="xs:string" />
+						</representation>
+					</response>
+				</method>
+			</resource>
+			<resource path="startNewRun/{runName}">
+				<param name="runName" style="template" type="xs:string" />
+				<method name="GET">
+					<request></request>
+					<response>
+						<representation mediaType="application/octet-stream">
+							<param name="result" style="plain" type="xs:string" />
+						</representation>
+					</response>
+				</method>
+			</resource>
+			<resource path="stopCurrentRun">
+				<method name="GET">
+					<response>
+						<representation mediaType="application/octet-stream">
+							<param name="result" style="plain" type="xs:string" />
+						</representation>
+					</response>
+				</method>
+			</resource>
+		</resource>
+	</resources>
+</application>

@@ -3,9 +3,9 @@
 
 	<!-- Meteo mock -->
 	<component name="meteoMockSoap">
-    	<implementation.java class="org.openwide.easysoa.test.mock.meteomock.MeteoMockImpl"/>
+    	<implementation.java class="org.easysoa.test.mock.meteomock.MeteoMockImpl"/>
     	<service name="meteoServiceMock">
-			<interface.java interface="org.openwide.easysoa.test.mock.meteomock.MeteoMock" />     		
+			<interface.java interface="org.easysoa.test.mock.meteomock.MeteoMock" />     		
       		<binding.ws uri="http://localhost:8085/meteo"/>
     	</service>	
 	</component>

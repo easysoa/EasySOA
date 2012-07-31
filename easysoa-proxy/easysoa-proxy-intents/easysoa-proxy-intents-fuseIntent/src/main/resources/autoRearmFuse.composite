@@ -4,7 +4,7 @@
     <sca:interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler"/>
   </sca:service>
   <sca:component name="fuseIntentHandler">
-    <sca:implementation.java class="com.openwide.sca.intents.AutoRearmFuseIntent"/>
+    <sca:implementation.java class="org.easysoa.sca.intents.AutoRearmFuseIntent"/>
     <sca:service name="fuseIntentService">
       <sca:interface.java interface="org.ow2.frascati.tinfi.api.IntentHandler"/>
     </sca:service>
