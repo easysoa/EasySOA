@@ -21,7 +21,7 @@
 /**
  * 
  */
-package com.openwide.easysoa.message.util;
+package org.easysoa.message.util;
 
 
 

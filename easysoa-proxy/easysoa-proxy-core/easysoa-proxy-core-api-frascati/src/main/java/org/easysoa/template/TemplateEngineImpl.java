@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Centralize the call of field suggester, template builder, template renderer in the same class 

@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * To compare a replayed request with the recorded original 
@@ -88,7 +88,7 @@ public class AssertionEngineImpl implements AssertionEngine {
     }
     
     /* (non-Javadoc)
-     * @see org.easysoa.records.assertions.AssertionEngine#executeAssertions(org.easysoa.records.assertions.AssertionSuggestions, com.openwide.easysoa.message.OutMessage, com.openwide.easysoa.message.OutMessage)
+     * @see org.easysoa.records.assertions.AssertionEngine#executeAssertions(org.easysoa.records.assertions.AssertionSuggestions, org.easysoa.message.OutMessage, org.easysoa.message.OutMessage)
      */ 
     @Override
     public List<AssertionResult> executeAssertions(AssertionSuggestions assertionSuggestions, OutMessage originalMessage, OutMessage replayedMessage){
@@ -109,7 +109,7 @@ public class AssertionEngineImpl implements AssertionEngine {
     }
     
     /* (non-Javadoc)
-     * @see org.easysoa.records.assertions.AssertionEngine#executeAssertion(org.easysoa.records.assertions.Assertion, com.openwide.easysoa.message.OutMessage, com.openwide.easysoa.message.OutMessage)
+     * @see org.easysoa.records.assertions.AssertionEngine#executeAssertion(org.easysoa.records.assertions.Assertion, org.easysoa.message.OutMessage, org.easysoa.message.OutMessage)
      */
     @Override
     public AssertionResult executeAssertion(String referenceField, Assertion assertion, OutMessage originalMessage, OutMessage replayedMessage) {

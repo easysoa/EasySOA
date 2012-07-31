@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.message;
+package org.easysoa.message;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import org.easysoa.servlet.http.HttpMessageResponseWrapper;

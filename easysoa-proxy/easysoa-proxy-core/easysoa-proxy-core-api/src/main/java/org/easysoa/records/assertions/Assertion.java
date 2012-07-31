@@ -19,7 +19,7 @@
  */
 package org.easysoa.records.assertions;
 
-import com.openwide.easysoa.message.OutMessage;
+import org.easysoa.message.OutMessage;
 
 /**
  * 

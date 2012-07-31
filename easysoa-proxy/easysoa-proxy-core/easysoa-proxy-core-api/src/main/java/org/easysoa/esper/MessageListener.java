@@ -27,12 +27,9 @@ import org.easysoa.monitoring.soa.Service;
 import org.easysoa.nuxeo.registration.NuxeoRegistrationService;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.Exchange.ExchangeType;
-
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.bean.BeanEventBean;
-//import com.openwide.easysoa.monitoring.Message;
-//import com.openwide.easysoa.monitoring.Message.MessageType;
 
 /**
  * Sync message listener

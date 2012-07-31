@@ -25,6 +25,7 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
@@ -32,7 +33,6 @@ import org.easysoa.records.assertions.AssertionEngine;
 import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
-import com.openwide.easysoa.message.OutMessage;
 
 public interface ReplayEngine {
 

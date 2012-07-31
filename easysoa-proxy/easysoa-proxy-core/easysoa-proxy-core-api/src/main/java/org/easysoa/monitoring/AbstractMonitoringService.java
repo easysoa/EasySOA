@@ -117,7 +117,7 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	
 
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.monitoring.MonitoringService#getModel()
+	 * @see org.easysoa.monitoring.MonitoringService#getModel()
 	 */
 	@Override
 	public MonitoringModel getModel(){
@@ -125,7 +125,7 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.monitoring.MonitoringService#getUrlTree()
+	 * @see org.easysoa.monitoring.MonitoringService#getUrlTree()
 	 */
 	@Override
 	public UrlTree getUrlTree(){
@@ -133,7 +133,7 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.monitoring.MonitoringService#getUnknownMessagesList()
+	 * @see org.easysoa.monitoring.MonitoringService#getUnknownMessagesList()
 	 */
 	@Override
 	/*public ArrayDeque<Message> getUnknownMessagesList(){

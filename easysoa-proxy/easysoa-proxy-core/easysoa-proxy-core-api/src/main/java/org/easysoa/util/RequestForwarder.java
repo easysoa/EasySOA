@@ -45,11 +45,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
-import com.openwide.easysoa.message.Header;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.MessageContent;
-import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.message.QueryParam;
+import org.easysoa.message.Header;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.MessageContent;
+import org.easysoa.message.OutMessage;
+import org.easysoa.message.QueryParam;
 
 /**
  * This class contains stuff to help with forwarding a request

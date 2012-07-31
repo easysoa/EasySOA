@@ -23,11 +23,11 @@ package org.easysoa.template.setters;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.QueryParam;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
 
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.QueryParam;
 
 public class RestQueryParamSetter implements CustomParamSetter {
 

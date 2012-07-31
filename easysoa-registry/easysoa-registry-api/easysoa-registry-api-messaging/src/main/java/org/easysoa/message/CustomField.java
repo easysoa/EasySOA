@@ -1,5 +1,5 @@
 /**
- * EasySOA Proxy
+ * EasySOA Registry
  * Copyright 2011 Open Wide
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,17 +18,42 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.message;
+package org.easysoa.message;
 
 /**
- * A class to store message seen in the proxy
+ * A key/value object
  * @author jguillemotte
  *
  */
-public interface Message {
+public class CustomField {
+
+	private String name;
+	private String value;
 	
-	public Headers getHeaders();
+	public CustomField(){
+		this.name = "";
+		this.value = "";
+	}
 	
-	public String getComment();
+	public CustomField(String name, String value) {
+		this.name = name;
+		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
 	
 }

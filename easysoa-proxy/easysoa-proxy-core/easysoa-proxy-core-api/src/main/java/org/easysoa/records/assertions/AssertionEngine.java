@@ -22,9 +22,9 @@ package org.easysoa.records.assertions;
 
 import java.util.List;
 
+import org.easysoa.message.OutMessage;
 import org.easysoa.template.TemplateFieldSuggestions;
 
-import com.openwide.easysoa.message.OutMessage;
 
 public interface AssertionEngine {
 

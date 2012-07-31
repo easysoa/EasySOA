@@ -24,17 +24,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import javax.ws.rs.core.UriInfo;
-
 import org.apache.log4j.Logger;
 import org.easysoa.configurator.ProxyConfigurator;
 import org.easysoa.properties.PropertyManager;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
-//import com.openwide.easysoa.proxy.ProxyConfigurator;
-//import com.openwide.easysoa.proxy.properties.ProxyPropertyManager;
 
 /**
  * HttpProxyDriver implementation

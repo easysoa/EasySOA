@@ -31,6 +31,11 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.message.Header;
+import org.easysoa.message.Headers;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.MessageContent;
+import org.easysoa.message.OutMessage;
 import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
@@ -42,11 +47,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.openwide.easysoa.message.Header;
-import com.openwide.easysoa.message.Headers;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.MessageContent;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * To test the messaging API. Only the save, load, replay functions without any integration with the HttpDiscoveryproxy.

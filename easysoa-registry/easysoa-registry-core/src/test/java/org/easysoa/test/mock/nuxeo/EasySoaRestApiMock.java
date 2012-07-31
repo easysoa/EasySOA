@@ -39,11 +39,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.easysoa.message.InMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.message.InMessage;
 
 /**
  * Base mock of the EasySOA Core registry (actually of Nuxeo Content Automation).

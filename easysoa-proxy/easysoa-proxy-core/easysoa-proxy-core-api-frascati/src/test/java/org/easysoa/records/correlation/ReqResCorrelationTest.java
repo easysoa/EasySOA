@@ -32,15 +32,15 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
+import org.easysoa.message.PostData;
+import org.easysoa.message.QueryParam;
+import org.easysoa.message.QueryString;
 import org.easysoa.records.ExchangeRecord;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.message.PostData;
-import com.openwide.easysoa.message.QueryParam;
-import com.openwide.easysoa.message.QueryString;
 
 public class ReqResCorrelationTest {
     

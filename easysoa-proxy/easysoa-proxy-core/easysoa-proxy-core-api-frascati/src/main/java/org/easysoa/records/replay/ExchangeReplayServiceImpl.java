@@ -26,13 +26,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.easysoa.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * This service allows a user (ex. through a web UI) to choose, load, replay 

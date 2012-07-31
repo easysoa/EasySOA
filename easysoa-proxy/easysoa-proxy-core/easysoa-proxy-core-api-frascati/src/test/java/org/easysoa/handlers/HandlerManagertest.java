@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.easysoa.exchangehandler.HandlerManager;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.objectweb.fractal.api.Component;
@@ -11,8 +13,6 @@ import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
 
 public class HandlerManagertest {
 

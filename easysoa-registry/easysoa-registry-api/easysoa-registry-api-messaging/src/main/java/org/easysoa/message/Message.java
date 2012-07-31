@@ -18,49 +18,17 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.message;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.easysoa.message;
 
 /**
- * Header collection
+ * A class to store message seen in the proxy
  * @author jguillemotte
- * 
+ *
  */
-public class Headers {
-
-	private List<Header> headerList;
-
-	/**
-	 * Creates a new <code>Headers</code> object
-	 */
-	public Headers() {
-		headerList = new ArrayList<Header>();
-	}
-
-	/**
-	 * Add a new header to the list
-	 * @param header The header to add
-	 */
-	public void addHeader(Header header) {
-		headerList.add(header);
-	}
-
-	/**
-	 * Returns the headers.
-	 * @return Returns the headers.
-	 */
-	public List<Header> getHeaderList() {
-		return headerList;
-	}
-
-	/**
-	 * Sets the headers value.
-	 * @param headers The headers to set.
-	 */
-	public void setHeaderList(List<Header> headers) {
-		this.headerList = headers;
-	}
-
+public interface Message {
+	
+	public Headers getHeaders();
+	
+	public String getComment();
+	
 }

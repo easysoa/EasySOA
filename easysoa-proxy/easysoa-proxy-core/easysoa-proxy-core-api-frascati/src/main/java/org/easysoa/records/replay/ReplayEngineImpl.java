@@ -34,6 +34,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 //import org.apache.log4j.Logger;
 import org.easysoa.logs.LogEngine;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.RecordCollection;
@@ -52,7 +53,6 @@ import org.easysoa.util.RequestForwarder;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Contains only the replay code. Other functionalities as assertions engine or template engine are plugged in the replay engine

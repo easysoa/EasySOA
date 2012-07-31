@@ -33,6 +33,7 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
 import org.easysoa.configurator.ProxyConfigurator;
 import org.easysoa.exchangehandler.HandlerManager;
+import org.easysoa.message.InMessage;
 import org.easysoa.properties.PropertyManager;
 import org.easysoa.proxy.properties.ProxyPropertyManager;
 import org.easysoa.records.ExchangeRecord;
@@ -41,7 +42,6 @@ import org.easysoa.util.RequestForwarder;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import com.openwide.easysoa.message.InMessage;
 
 /**
  * HTTP Proxy 

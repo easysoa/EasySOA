@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.simulation.SimulationMethod;
 import org.easysoa.simulation.SimulationStore;
@@ -35,7 +36,6 @@ import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * @author jguillemotte

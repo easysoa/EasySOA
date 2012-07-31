@@ -25,9 +25,9 @@ package org.easysoa.template;
 
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.easysoa.message.QueryParam;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
-import com.openwide.easysoa.message.QueryParam;
 
 /**
  * Generate and save request and response templates made from field suggestions, an exchange record and an Exchange store name *

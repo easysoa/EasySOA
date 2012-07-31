@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.message;
+package org.easysoa.message;
 
 import java.io.BufferedReader;
 import java.io.IOException;

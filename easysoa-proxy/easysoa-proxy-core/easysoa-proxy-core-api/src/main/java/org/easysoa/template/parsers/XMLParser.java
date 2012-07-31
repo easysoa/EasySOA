@@ -25,12 +25,12 @@ package org.easysoa.template.parsers;
 
 import java.util.HashMap;
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.correlation.CandidateField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * @author jguillemotte

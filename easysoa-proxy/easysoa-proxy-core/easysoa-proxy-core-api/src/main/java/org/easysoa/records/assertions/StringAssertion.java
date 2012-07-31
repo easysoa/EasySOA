@@ -20,10 +20,10 @@
 package org.easysoa.records.assertions;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 import org.osoa.sca.annotations.Scope;
 import org.apache.commons.lang.StringUtils;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Assertion class for strings

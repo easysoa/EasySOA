@@ -21,6 +21,8 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.exchangehandler.MessageHandler;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.handler.event.*;
 import org.easysoa.util.RequestForwarder;
 import org.osoa.sca.annotations.Property;
@@ -28,8 +30,6 @@ import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 import com.espertech.esper.epl.generated.EsperEPL2GrammarParser.betweenList_return;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * To handle and perform the steps between the inMessage's reception and the calls (of the web service to launch) 

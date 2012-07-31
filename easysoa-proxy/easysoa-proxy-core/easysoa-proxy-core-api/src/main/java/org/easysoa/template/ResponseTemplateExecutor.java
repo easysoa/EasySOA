@@ -4,8 +4,8 @@
 package org.easysoa.template;
 
 import org.apache.log4j.Logger;
-import com.openwide.easysoa.message.MessageContent;
-import com.openwide.easysoa.message.OutMessage;
+import org.easysoa.message.MessageContent;
+import org.easysoa.message.OutMessage;
 
 /**
  * @author jguillemotte

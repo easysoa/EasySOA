@@ -25,9 +25,9 @@ package org.easysoa.template.parsers;
 
 import java.util.HashMap;
 
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.correlation.CandidateField;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * @author jguillemotte

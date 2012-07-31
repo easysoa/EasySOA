@@ -72,7 +72,7 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.monitoring.MonitoringService#registerUnknownMessagesToNuxeo()
+	 * @see org.easysoa.monitoring.MonitoringService#registerUnknownMessagesToNuxeo()
 	 */
 	@Override
 	public void registerUnknownMessagesToNuxeo(){
@@ -80,7 +80,7 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.monitoring.MonitoringService#registerDetectedServicesToNuxeo()
+	 * @see org.easysoa.monitoring.MonitoringService#registerDetectedServicesToNuxeo()
 	 */
 	@Override
 	public void registerDetectedServicesToNuxeo() {

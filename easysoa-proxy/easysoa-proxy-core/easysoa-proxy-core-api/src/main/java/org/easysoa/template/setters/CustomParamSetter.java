@@ -25,8 +25,9 @@ package org.easysoa.template.setters;
 
 import java.util.List;
 import java.util.Map;
+
+import org.easysoa.message.InMessage;
 import org.easysoa.template.AbstractTemplateField;
-import com.openwide.easysoa.message.InMessage;
 
 /**
  * Param setter interface

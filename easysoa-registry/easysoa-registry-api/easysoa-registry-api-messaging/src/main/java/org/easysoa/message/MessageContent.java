@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.message;
+package org.easysoa.message;
 
 import java.io.StringReader;
 
@@ -26,12 +26,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.util.ContentChecker;
+import org.easysoa.message.util.ContentChecker.ContentType;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
-import com.openwide.easysoa.message.util.ContentChecker;
-import com.openwide.easysoa.message.util.ContentChecker.ContentType;
 
 /**
  * Message content

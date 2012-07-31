@@ -20,13 +20,13 @@
 package org.easysoa.exchangehandler;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.run.RunManager;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Handler to record messages using the run manager 

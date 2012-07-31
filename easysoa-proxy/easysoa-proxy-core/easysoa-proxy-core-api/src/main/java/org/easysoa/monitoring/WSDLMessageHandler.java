@@ -22,6 +22,7 @@ package org.easysoa.monitoring;
 
 import org.apache.log4j.Logger;
 import org.easysoa.esper.EsperEngine;
+import org.easysoa.message.QueryParam;
 import org.easysoa.monitoring.soa.Node;
 import org.easysoa.monitoring.soa.Service;
 import org.easysoa.nuxeo.registration.NuxeoRegistrationService;
@@ -29,7 +30,6 @@ import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.Exchange.ExchangeType;
 
-import com.openwide.easysoa.message.QueryParam;
 
 public class WSDLMessageHandler implements MessageHandler {
 

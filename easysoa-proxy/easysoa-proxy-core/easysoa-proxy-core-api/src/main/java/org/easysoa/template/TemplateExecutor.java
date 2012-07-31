@@ -23,7 +23,7 @@
  */
 package org.easysoa.template;
 
-import com.openwide.easysoa.message.OutMessage;
+import org.easysoa.message.OutMessage;
 
 /**
  * Execute a rendered template

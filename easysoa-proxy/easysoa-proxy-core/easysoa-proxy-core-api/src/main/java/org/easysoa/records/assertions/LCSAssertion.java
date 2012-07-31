@@ -24,9 +24,9 @@
 package org.easysoa.records.assertions;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Do an assertion on message content using the LCS (longest common sub-sequence) method

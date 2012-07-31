@@ -25,10 +25,10 @@ package org.easysoa.records.assertions;
 
 import java.util.HashMap;
 
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Do several assertions on a complete message

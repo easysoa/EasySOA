@@ -22,12 +22,12 @@ package org.easysoa.records.assertions;
 import static org.junit.Assert.*;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.MessageContent;
+import org.easysoa.message.OutMessage;
+import org.easysoa.message.util.ContentChecker.ContentType;
 import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
 import org.easysoa.records.assertions.StringAssertion.StringAssertionMethod;
 import org.junit.Test;
-import com.openwide.easysoa.message.MessageContent;
-import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.message.util.ContentChecker.ContentType;
 
 /**
  * Test for the assertion engine

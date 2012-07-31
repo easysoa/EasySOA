@@ -36,6 +36,8 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.message.MessageContent;
+import org.easysoa.message.OutMessage;
 import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.assertions.AssertionEngine;
@@ -56,8 +58,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.openwide.easysoa.message.MessageContent;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * To test the replay function associated with an exchange record discovered by the http discovery proxy 

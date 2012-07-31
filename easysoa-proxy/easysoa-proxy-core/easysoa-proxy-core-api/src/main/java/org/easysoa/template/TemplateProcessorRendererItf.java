@@ -25,8 +25,9 @@ package org.easysoa.template;
 
 import java.util.List;
 import java.util.Map;
+
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * @author jguillemotte

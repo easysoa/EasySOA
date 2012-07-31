@@ -8,12 +8,12 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.apache.log4j.Logger;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
+import org.easysoa.message.QueryString;
 import org.easysoa.records.Exchange;
 import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.ExchangeRecord;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.message.QueryString;
 
 /**
  * CXF interceptor. Works as the HTTP discovery proxy : listen the HTTP exchanges and record them as files. 

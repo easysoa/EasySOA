@@ -25,13 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
+import org.easysoa.message.QueryParam;
 import org.easysoa.template.parsers.JSONParser;
 import org.easysoa.template.parsers.TemplateParser;
 import org.easysoa.template.parsers.XMLParser;
 
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.message.QueryParam;
 
 /**
  * Field extractor : extract params from input and output and returns CandidateFields to use with correlation engine

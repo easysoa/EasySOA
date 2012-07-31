@@ -19,8 +19,8 @@
  */
 package org.easysoa.exchangehandler;
 
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
 
 /**
  * 

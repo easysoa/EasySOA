@@ -1,5 +1,5 @@
 /**
- * EasySOA Registry
+ * EasySOA Proxy
  * Copyright 2011 Open Wide
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,42 +18,49 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.message;
+package org.easysoa.message;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A key/value object
+ * Header collection
  * @author jguillemotte
- *
+ * 
  */
-public class CustomField {
+public class Headers {
 
-	private String name;
-	private String value;
-	
-	public CustomField(){
-		this.name = "";
-		this.value = "";
-	}
-	
-	public CustomField(String name, String value) {
-		this.name = name;
-		this.value = value;
+	private List<Header> headerList;
+
+	/**
+	 * Creates a new <code>Headers</code> object
+	 */
+	public Headers() {
+		headerList = new ArrayList<Header>();
 	}
 
-	public String getValue() {
-		return value;
+	/**
+	 * Add a new header to the list
+	 * @param header The header to add
+	 */
+	public void addHeader(Header header) {
+		headerList.add(header);
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	/**
+	 * Returns the headers.
+	 * @return Returns the headers.
+	 */
+	public List<Header> getHeaderList() {
+		return headerList;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	/**
+	 * Sets the headers value.
+	 * @param headers The headers to set.
+	 */
+	public void setHeaderList(List<Header> headers) {
+		this.headerList = headers;
 	}
 
-	public String getName() {
-		return name;
-	}
-	
 }

@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
+import org.easysoa.message.InMessage;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
-import com.openwide.easysoa.message.InMessage;
 
 /**
  * @author jguillemotte

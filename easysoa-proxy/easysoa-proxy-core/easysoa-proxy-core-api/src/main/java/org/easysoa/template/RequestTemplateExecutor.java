@@ -6,17 +6,17 @@ package org.easysoa.template;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.CustomField;
+import org.easysoa.message.CustomFields;
+import org.easysoa.message.Header;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
+import org.easysoa.message.QueryParam;
+import org.easysoa.message.QueryString;
 import org.easysoa.util.RequestForwarder;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
-import com.openwide.easysoa.message.CustomField;
-import com.openwide.easysoa.message.CustomFields;
-import com.openwide.easysoa.message.Header;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.message.QueryParam;
-import com.openwide.easysoa.message.QueryString;
 
 /**
  * @author jguillemotte

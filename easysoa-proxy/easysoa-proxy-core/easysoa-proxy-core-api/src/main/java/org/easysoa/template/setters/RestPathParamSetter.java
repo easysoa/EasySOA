@@ -24,10 +24,11 @@ import org.apache.log4j.Logger;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import org.easysoa.message.InMessage;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.AbstractTemplateField.TemplateFieldType;
 
-import com.openwide.easysoa.message.InMessage;
 
 public class RestPathParamSetter implements CustomParamSetter {
 

@@ -21,10 +21,10 @@ package org.easysoa.exchangehandler;
 
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * To handle message

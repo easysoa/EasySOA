@@ -23,7 +23,6 @@ package org.easysoa.run;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.easysoa.messages.server.NumberGenerator;
 import org.easysoa.monitoring.MonitoringService;
@@ -39,7 +38,6 @@ import org.easysoa.records.service.ExchangeRecordServletFilterServiceImpl;
 */
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-//import com.openwide.easysoa.exchangehandler.MessageHandler;
 
 /**
  * A manager for run's
@@ -117,7 +115,7 @@ public class RunManagerImpl implements RunManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getCurrentRun()
+	 * @see org.easysoa.esperpoc.run.RunManager#getCurrentRun()
 	 */
 	@Override
 	public Run getCurrentRun() throws Exception {
@@ -132,7 +130,7 @@ public class RunManagerImpl implements RunManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#start(java.lang.String)
+	 * @see org.easysoa.esperpoc.run.RunManager#start(java.lang.String)
 	 */
 	@Override
 	public String start(String runName) throws Exception {
@@ -173,7 +171,7 @@ public class RunManagerImpl implements RunManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#stop()
+	 * @see org.easysoa.esperpoc.run.RunManager#stop()
 	 */
 	@Override
 	public String stop() throws Exception {
@@ -213,7 +211,7 @@ public class RunManagerImpl implements RunManager {
 	}*/
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getLastRun()
+	 * @see org.easysoa.esperpoc.run.RunManager#getLastRun()
 	 */
 	/*@Override
 	public Run getLastRun(){
@@ -221,7 +219,7 @@ public class RunManagerImpl implements RunManager {
 	}*/
 
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#record()
+	 * @see org.easysoa.esperpoc.run.RunManager#record()
 	 */	
 	@Override
 	public void record(ExchangeRecord exchangeRecord){
@@ -244,7 +242,7 @@ public class RunManagerImpl implements RunManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getOrderedRunNames()
+	 * @see org.easysoa.esperpoc.run.RunManager#getOrderedRunNames()
 	 */	
 	/*@Override
 	public List<String> getOrderedRunNames() {
@@ -257,7 +255,7 @@ public class RunManagerImpl implements RunManager {
 	}*/
 	
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#reRun()
+	 * @see org.easysoa.esperpoc.run.RunManager#reRun()
 	 */
 	/*@Override
 	public void reRun(String runName) throws Exception {
@@ -281,7 +279,7 @@ public class RunManagerImpl implements RunManager {
 	}*/
 
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#deleteRun()
+	 * @see org.easysoa.esperpoc.run.RunManager#deleteRun()
 	 */	
 	@Override
 	public String delete() throws Exception {
@@ -296,7 +294,7 @@ public class RunManagerImpl implements RunManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getRun()
+	 * @see org.easysoa.esperpoc.run.RunManager#getRun()
 	 */	
 	/*@Override
 	public Run getRun(String runName) throws Exception {
@@ -311,7 +309,7 @@ public class RunManagerImpl implements RunManager {
 	}*/
 
 	/* (non-Javadoc)
-	 * @see com.openwide.easysoa.esperpoc.run.RunManager#getMonitoringService()
+	 * @see org.easysoa.esperpoc.run.RunManager#getMonitoringService()
 	 */	
 	@Override
 	public MonitoringService getMonitoringService() {

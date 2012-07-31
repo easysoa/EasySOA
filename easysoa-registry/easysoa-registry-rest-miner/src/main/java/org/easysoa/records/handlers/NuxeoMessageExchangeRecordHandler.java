@@ -31,12 +31,12 @@ import org.easysoa.exchangehandler.MessageRecordHandler;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
 import org.easysoa.run.RunManager;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.easysoa.servlet.http.HttpMessageResponseWrapper;
 import org.nuxeo.runtime.api.Framework;
-import com.openwide.easysoa.message.InMessage;
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Exchange record handler : register a record from HttpServletRequest and HttpServletResponse

@@ -46,12 +46,12 @@ public class RestMessageHandler implements MessageHandler {
 		logger.debug("REST message found");
 		exchangeRecord.getExchange().setExchangeType(ExchangeType.REST);
 		//if(MonitoringMode.DISCOVERY.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
-		if("com.openwide.easysoa.monitoring.DiscoveryMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
+		if("org.easysoa.monitoring.DiscoveryMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
 			logger.debug("Discovery mode, message added in tree");
 			monitoringService.getUrlTree().addUrlNode(exchangeRecord);
 		}
 		//else if(MonitoringMode.VALIDATED.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
-		else if("com.openwide.easysoa.monitoring.ValidatedMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
+		else if("org.easysoa.monitoring.ValidatedMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
 			logger.debug("Validated mode, checking if message exists in urlSoaModel");
 			//MonitoringModel monitoringModel =  DiscoveryMonitoringService.getMonitorService().getModel();
 			MonitoringModel monitoringModel = monitoringService.getModel();

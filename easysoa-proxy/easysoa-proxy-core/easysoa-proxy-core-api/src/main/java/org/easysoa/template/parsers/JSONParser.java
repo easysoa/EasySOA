@@ -27,10 +27,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.correlation.CandidateField;
 import org.easysoa.template.TemplateFieldSuggester;
 
-import com.openwide.easysoa.message.OutMessage;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

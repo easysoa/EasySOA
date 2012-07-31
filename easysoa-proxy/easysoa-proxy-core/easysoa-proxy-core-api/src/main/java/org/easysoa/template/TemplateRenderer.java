@@ -26,11 +26,11 @@ package org.easysoa.template;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-import com.openwide.easysoa.message.OutMessage;
 
 /**
  * Render a template (replace the expressions by provided values)
