@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.collections.set.SynchronizedSet;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -44,7 +46,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
     @Property
 	private int forwardHttpSocketTimeoutMs;
     
-	private Map<String, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<String, List<String>>();
+	private Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>();
     
     public EventMessageHandlerImpl(){
     }
@@ -56,18 +58,29 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
         
         // find listened service in map among n
-        String listenedServiceUrl = inMessage.buildCompleteUrl();
+      //  String listenedServiceUrl = inMessage.buildCompleteUrl();
 
         /**
          * listenedServiceUrlToServicesToLaunchUrlMap should be use by one Thread
          */
         List<String> servicesToLaunchUrls;
+        
     	synchronized(this) {
-            List<String> servicesToLaunchUrlsOrig = this.listenedServiceUrlToServicesToLaunchUrlMap.get(listenedServiceUrl);
-	        if (servicesToLaunchUrlsOrig == null) {
-	                return;
-	        }
+            List<String> servicesToLaunchUrlsOrig = new ArrayList<String>(); //this.listenedServiceUrlToServicesToLaunchUrlMap.get(listenedServiceUrl);
+
+            //TODO maybe we should remove doublons from the serviceToLaunchsUrls
+            for (Entry<List<CompiledCondition>, List<String>> currentEntry : listenedServiceUrlToServicesToLaunchUrlMap.entrySet()) {
+            	List<CompiledCondition> listCompiledCondition = currentEntry.getKey();
+            	for(CompiledCondition compiledCondition: listCompiledCondition){
+            		if (compiledCondition.matches(inMessage)){
+            			 for(String serviceToLaunch : currentEntry.getValue()){
+            				 servicesToLaunchUrlsOrig.add(new String(serviceToLaunch)); 
+            			 }
+            		}
+            	}
+            }
 	        servicesToLaunchUrls = new ArrayList<String>(servicesToLaunchUrlsOrig);
+	        servicesToLaunchUrlsOrig =null;
     	}
 
         // TODO LATER handle services that may have different URLs ex. REST
@@ -126,22 +139,15 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
         this.forwardHttpSocketTimeoutMs = forwardHttpSocketTimeoutMs;
     }
 
-    /**
-     * READONLY ! else concurrency pb
-     * @return the listenedServiceUrlToServicesToLaunchUrlMap
-     */
-    public Map<String, List<String>> getListenedServiceUrlToServicesToLaunchUrlMap() {
-        return new HashMap<String, List<String>>(this.listenedServiceUrlToServicesToLaunchUrlMap);
-    }
+    @Override
+	public Map<List<CompiledCondition>, List<String>> getListenedServiceUrlToServicesToLaunchUrlMap() {
+		return listenedServiceUrlToServicesToLaunchUrlMap;
+	}
 
-    /**
-     * synchronized
-     * @param listenedServiceUrlToServicesToLaunchUrlMap the listenedServiceUrlToServicesToLaunchUrlMap to set
-     */
-    public void setListenedServiceUrlToServicesToLaunchUrlMap(Map<String, List<String>> listenedServiceUrlToServicesToLaunchUrlMap) {
-    	synchronized(this) {
-    		this.listenedServiceUrlToServicesToLaunchUrlMap = listenedServiceUrlToServicesToLaunchUrlMap;
-    	}
-    }
- 
+    @Override
+	public void setListenedServiceUrlToServicesToLaunchUrlMap(Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap){
+		synchronized(this){
+			this.listenedServiceUrlToServicesToLaunchUrlMap = listenedServiceUrlToServicesToLaunchUrlMap;
+		}
+	}
 }

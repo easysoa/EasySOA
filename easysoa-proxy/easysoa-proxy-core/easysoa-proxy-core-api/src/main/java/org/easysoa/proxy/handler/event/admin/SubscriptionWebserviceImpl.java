@@ -12,6 +12,8 @@ import javax.ws.rs.*;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
+
+
 /**
  * To Implement all the web services registered in the serviceToLaunch.composite
  * They will be launched automatically by frascati
@@ -84,17 +86,22 @@ public class SubscriptionWebserviceImpl implements ISubscriptionWebService {
         this.setSubscriptions(subscriptions);
         
         // update listenedServiceUrlToServicesToLaunchUrlMap :
-        HashMap<String, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap = new HashMap<String, List<String>>();
+        HashMap<List<CompiledCondition>, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>();
       
         for (Subscription subscription : subscriptions.getSubscriptions()) {		
-                for(ListenedService servicelistened: subscription.getListenedservices()){
-                        List<String> launchedServicesUrlsCopy = new ArrayList<String>(subscription.getLaunchedServicesUrls());
-                        newListenedServiceUrlToServicesToLaunchUrlMap.put(servicelistened.getUrl(), launchedServicesUrlsCopy);
+                for(ListenedService servicelistened: subscription.getListenedservices()){    
+                	List<String> launchedServicesUrlsCopy = new ArrayList<String>(subscription.getLaunchedServicesUrls());
+                    CompiledCondition compiledCondition = new CompiledCondition(servicelistened.getUrl());
+                        
+                    List<CompiledCondition> compiledConditionList = new ArrayList<CompiledCondition>();
+                    compiledConditionList.add(compiledCondition);
+                        
+                    newListenedServiceUrlToServicesToLaunchUrlMap.put(compiledConditionList, launchedServicesUrlsCopy);
                 }		
         }
         
         // single update because we're calling a synchronized method here :
-        this.eventMessageHandler.setListenedServiceUrlToServicesToLaunchUrlMap(newListenedServiceUrlToServicesToLaunchUrlMap);
+       this.eventMessageHandler.setListenedServiceUrlToServicesToLaunchUrlMap(newListenedServiceUrlToServicesToLaunchUrlMap);
         
     //    return simulResult();
         return this.getSubscriptions();

@@ -16,7 +16,7 @@ public interface IEventMessageHandler {
      * @param void
      * @return the services to call
      */
-    public Map<String, List<String>> getListenedServiceUrlToServicesToLaunchUrlMap();	
+    public Map<List<CompiledCondition>, List<String>> getListenedServiceUrlToServicesToLaunchUrlMap();	
   
       
     /**
@@ -26,5 +26,5 @@ public interface IEventMessageHandler {
      */
     
     public void setListenedServiceUrlToServicesToLaunchUrlMap(
-			Map<String, List<String>> listenedServiceUrlToServicesToLaunchUrlMap);
+			Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap);
 }
