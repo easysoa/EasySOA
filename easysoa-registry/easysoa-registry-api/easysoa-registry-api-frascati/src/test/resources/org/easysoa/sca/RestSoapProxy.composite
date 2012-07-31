@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<sca:composite xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
-	xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
-	name="RestSoapProxy" targetNamespace="http://eclipse.org/proxy/src/main/resources/RestSoapProxy"> -->
 <composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
 	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance"
 	name="RestSoapProxy">
 	<component name="Proxy">
-		<implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl" />
+		<implementation.java class="org.easysoa.sca.proxy.RestSoapProxyImpl" />
 		<service name="restInterface">
-			<interface.java interface="com.openwide.sca.proxy.RestSoapProxy" />
+			<interface.java interface="org.easysoa.sca.proxy.RestSoapProxy" />
 			<binding.ws uri="http://localhost:9000/restSoapProxyWSInternal" />
 		</service>
 		<reference name="ws">
@@ -33,9 +30,9 @@
 		</service>
 	</component>
 	<component name="ProxyUnused">
-		<implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl" />
+		<implementation.java class="org.easysoa.sca.proxy.RestSoapProxyImpl" />
 		<service name="restInterface">
-			<interface.java interface="com.openwide.sca.proxy.RestSoapProxy" />
+			<interface.java interface="org.easysoa.sca.proxy.RestSoapProxy" />
 		</service>
 		<reference name="ws">
 			<interface.java interface="pureairflowers.clients.PureAirFlowersClients" />
@@ -45,41 +42,19 @@
 		</reference>
 	</component>
 	<service name="ProxyService" promote="Proxy/restInterface">
-		<interface.java interface="com.openwide.sca.proxy.RestSoapProxy" />
+		<interface.java interface="org.easysoa.sca.proxy.RestSoapProxy" />
 		<frascati:binding.rest uri="http://localhost:7001/" name="test" />
 		<binding.ws uri="http://localhost:9000/restSoapProxyWS" />
 	</service>
 	
   	<component name="restSoapProxyComponent">
-    	<implementation.java class="org.openwide.easysoa.scaffolding.ScaffoldingProxyImpl"/>
+    	<implementation.java class="org.easysoa.scaffolding.ScaffoldingProxyImpl"/>
     	<service name="restInterface">
-      		<interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
+      		<interface.java interface="org.easysoa.scaffolding.ScaffoldingProxy"/>
     	</service>
   	</component>	
   	<service name="restSoapProxyService" promote="restSoapProxyComponent/restInterface">
-    	<interface.java interface="org.openwide.easysoa.scaffolding.ScaffoldingProxy"/>
+    	<interface.java interface="org.easysoa.scaffolding.ScaffoldingProxy"/>
     	<frascati:binding.rest uri="http://localhost:7085/"/>
   	</service>	
 </composite>
-
-<!-- <?xml version="1.0" encoding="UTF-8"?> <sca:composite xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
-	xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
-	name="RestSoapProxy" targetNamespace="http://eclipse.org/proxy/src/main/resources/RestSoapProxy"> 
-	<sca:component name="Proxy"> <sca:implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl"/> 
-	<sca:service name="restInterface"> <sca:interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/> 
-	</sca:service> <sca:reference name="ws"> <sca:interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/> 
-	<sca:binding.ws name="webService" instance:wsdlLocation="http://localhost:9000/helloWorld?wsdl" 
-	wsdlElement="http://localhost:9000#wsdl.port(HelloWorld/HelloWorldImplPort)"/> 
-	</sca:reference> </sca:component> <sca:service name="ProxyService" promote="Proxy/restInterface"> 
-	<sca:interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/> <frascati:binding.rest 
-	name="restListener" uri="http://localhost:7000/"/> </sca:service> </sca:composite> 
-	<?xml version="1.0" encoding="UTF-8"?> <sca:composite xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
-	xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
-	name="RestSoapProxy" targetNamespace="http://eclipse.org/proxy/src/main/resources/RestSoapProxy"> 
-	<sca:component name="Proxy"> <sca:implementation.java class="com.openwide.sca.proxy.RestSoapProxyImpl"/> 
-	<sca:service name="restInterface"> <sca:interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/> 
-	</sca:service> <sca:reference name="ws"> <sca:interface.java interface="cxf.test.hw.server.HelloWorld"/> 
-	<sca:binding.ws uri="http://localhost:9000/helloWorld"/> </sca:reference> 
-	</sca:component> <sca:service name="ProxyService" promote="Proxy/restInterface"> 
-	<sca:interface.java interface="com.openwide.sca.proxy.RestSoapProxy"/> <frascati:binding.rest 
-	uri="http://localhost:7000/"/> </sca:service> </sca:composite> -->

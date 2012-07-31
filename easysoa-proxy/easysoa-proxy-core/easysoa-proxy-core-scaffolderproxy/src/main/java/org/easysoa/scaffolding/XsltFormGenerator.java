@@ -55,7 +55,7 @@ public class XsltFormGenerator implements TransformationFormGeneratorInterface {
 	String defaultWsdl;
 		
 	/* (non-Javadoc)
-	 * @see org.openwide.easysoa.scaffolding.FormGenerator#generateHtmlFormFromWsdl(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.easysoa.scaffolding.FormGenerator#generateHtmlFormFromWsdl(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	//@Override
 	public String generateHtmlFormFromWsdl(String wsdlXmlSource, String formWsdlXmlSource, String xsltSource, String htmlOutput) {

@@ -32,7 +32,7 @@ public class ExchangeRecord {
 	// TODO : Not possible to record directly the ServletRequest and ServeltResponse objects
 	// Time to use an unified MessageApi ??
 	// See RestMessageExchange interface from SOAPUI at http://www.soapui.org/apidocs/com/eviware/soapui/impl/wsdl/submit/RestMessageExchange.html
-	// See also com.openwide.easysoa.monitoring.Message
+	// See also org.easysoa.monitoring.Message
 
 	// TODO : Add fields to store :
 	// - IN message (request)

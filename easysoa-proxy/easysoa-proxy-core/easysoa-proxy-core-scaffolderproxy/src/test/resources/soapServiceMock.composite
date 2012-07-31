@@ -3,9 +3,9 @@
 
 	<!-- Soap service mock for test -->
 	<component name="soapServiceMock">
-    	<implementation.java class="org.openwide.easysoa.test.mock.SoapServiceMockImpl"/>
+    	<implementation.java class="org.easysoa.test.mock.SoapServiceMockImpl"/>
     	<service name="serviceMock">
-			<interface.java interface="org.openwide.easysoa.test.mock.SoapServiceMock" />     		
+			<interface.java interface="org.easysoa.test.mock.SoapServiceMock" />     		
       		<binding.ws uri="http://localhost:8086/soapServiceMock"/>
     	</service>	
 	</component>
@@ -13,9 +13,9 @@
 	<!--  -->
 	<!--  for test -->
 	<component name="talendTutoServiceMock">
-    	<implementation.java class="org.openwide.easysoa.test.mock.TalendTutoServiceMockImpl"/>
+    	<implementation.java class="org.easysoa.test.mock.TalendTutoServiceMockImpl"/>
     	<service name="serviceMock">
-			<interface.java interface="org.openwide.easysoa.test.mock.TalendTutoServiceMock" />     		
+			<interface.java interface="org.easysoa.test.mock.TalendTutoServiceMock" />     		
       		<binding.ws uri="http://localhost:8200/esb/AirportService"/>
     	</service>	
 	</component>

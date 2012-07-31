@@ -24,9 +24,9 @@
   <!-- EasyWSDL Form generator component -->
   <!-- component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
+      <interface.java interface="org.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.EasyWsdlFormGenerator"/>
+    <implementation.java class="org.easysoa.scaffolding.EasyWsdlFormGenerator"/>
 	<property name="defaultWsdl">src/main/resources/defaultWsdl/modified_airport_soap.wsdl</property>
   </component -->
 
@@ -35,9 +35,9 @@
   <!-- Woden version 1.0M9 is not compatible with version 2.0 so this component is deactivated for the moment, waiting for a new compatible version -->
   <!--<component name="formGeneratorComponent">
     <service name="formGeneratorService">
-      <interface.java interface="org.openwide.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
+      <interface.java interface="org.easysoa.scaffolding.TemplateFormGeneratorInterface"/>
     </service>
-    <implementation.java class="org.openwide.easysoa.scaffolding.WodenFormGenerator"/>
+    <implementation.java class="org.easysoa.scaffolding.WodenFormGenerator"/>
 	<property name="defaultWsdl">src/main/resources/defaultWsdl/airport_soap.wsdl</property>
   </component>-->
   

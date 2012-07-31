@@ -10,14 +10,14 @@
 	targetNamespace="http://docs.oasis-open.org/ns/opencsa/sca/200912">
 	
     <component name="httpProxyService">
-        <implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
+        <implementation.java class="org.easysoa.proxy.HttpDiscoveryProxy" />
 		<!--<service name="httpServiceInput" requires="esperIntent"> -->
         <service name="httpServiceInput">
             <interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </service>
          <reference name="handlerManager" target="handlerManagerComponent" >
-         	<interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
+         	<interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
          </reference>
         <property name="proxyPort">8082</property>
         <property name="forwardHttpConnexionTimeoutMs">30000</property>
@@ -26,11 +26,11 @@
 
 	<component name="handlerManagerComponent">
 		<service name="handlerManagerService">
-			<interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
+			<interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
 		</service>
-		<implementation.java class="com.openwide.easysoa.exchangehandler.HandlerManagerImpl"/>
+		<implementation.java class="org.easysoa.exchangehandler.HandlerManagerImpl"/>
 		<reference multiplicity="0..n" name="handlers" target="eventMessageHandlerComponent/HandlerService" >
-			<interface.java interface="com.openwide.easysoa.exchangehandler.MessageHandler"/>
+			<interface.java interface="org.easysoa.exchangehandler.MessageHandler"/>
 		</reference>
 	</component>  
 	
@@ -38,7 +38,7 @@
 		
 	<component name="eventMessageHandlerComponent">
 		<service name="HandlerService">
-			<interface.java interface="com.openwide.easysoa.exchangehandler.MessageHandler" />
+			<interface.java interface="org.easysoa.exchangehandler.MessageHandler" />
 		</service>
 		<service name="IEventMessageHandler">
 			<interface.java interface="org.easysoa.proxy.handler.event.admin.IEventMessageHandler" />

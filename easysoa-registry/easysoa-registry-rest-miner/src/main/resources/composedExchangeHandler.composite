@@ -6,18 +6,18 @@
 	<!-- Composed exchange handler -->
 	<sca:component name="composedExchangeHandlerComponent">
 		<sca:service name="composedExchangeHandlerService">
-			<sca:interface.java interface="com.openwide.easysoa.exchangehandler.HttpExchangeHandler" />
+			<sca:interface.java interface="org.easysoa.exchangehandler.HttpExchangeHandler" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.records.handlers.ComposedExchangeHandler" />
         <sca:reference multiplicity="0..n" name="exchangeHandlers">
-            <sca:interface.java interface="com.openwide.easysoa.exchangehandler.HttpExchangeHandler" />
+            <sca:interface.java interface="org.easysoa.exchangehandler.HttpExchangeHandler" />
         </sca:reference>
 	</sca:component>
 
 	<!-- Exchange record handler -->
     <sca:component name="exchangeRecordHandler">
         <sca:service name="exchange-record-handler">
-            <sca:interface.java interface="com.openwide.easysoa.exchangehandler.HttpExchangeHandler" />
+            <sca:interface.java interface="org.easysoa.exchangehandler.HttpExchangeHandler" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.records.handlers.NuxeoMessageExchangeRecordHandler" />        
     </sca:component>

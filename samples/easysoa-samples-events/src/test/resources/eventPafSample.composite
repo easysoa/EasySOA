@@ -3,13 +3,13 @@
 <composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="eventPafSample" targetNamespace="http://docs.oasis-open.org/ns/opencsa/sca/200912">
   <include name="eventHandlerTest"/>
   <component name="glueComponent">
-    <implementation.java class="org.openwide.easysoa.test.event.paf.test.Glue"/>
+    <implementation.java class="org.easysoa.test.event.paf.test.Glue"/>
     <service name="paf">
-      <interface.java interface="org.openwide.easysoa.test.event.paf.test.PureAirFlowersService"/>
+      <interface.java interface="org.easysoa.test.event.paf.test.PureAirFlowersService"/>
       <binding.ws uri="http://localhost:8090/glue"/>
     </service>
     <reference name="trip">
-      <interface.java interface="org.openwide.easysoa.test.event.paf.test.TripPortType"/>
+      <interface.java interface="org.easysoa.test.event.paf.test.TripPortType"/>
       <binding.ws wsdlElement="http://test.paf.event.test.easysoa.openwide.org/#wsdl.port(Trip/TripPort)" wsdlLocation="http://localhost:9000/GalaxyTrip?wsdl"/>
     </reference>
   </component>

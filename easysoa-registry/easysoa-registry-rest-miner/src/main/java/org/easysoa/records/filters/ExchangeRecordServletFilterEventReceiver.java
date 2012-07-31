@@ -20,14 +20,14 @@ public class ExchangeRecordServletFilterEventReceiver implements RunManagerEvent
     private static Logger logger = Logger.getLogger(ExchangeRecordServletFilterEventReceiver.class);    
     
     /* (non-Javadoc)
-     * @see com.openwide.easysoa.run.RunManagerEventReceiver#getEventReceiverName()
+     * @see org.easysoa.run.RunManagerEventReceiver#getEventReceiverName()
      */
     public String getEventReceiverName() {
         return "ExchangeRecordServeltFilterEventReceiver";
     }
 
     /* (non-Javadoc)
-     * @see com.openwide.easysoa.run.RunManagerEventReceiver#receiveEvent(com.openwide.easysoa.run.RunManager.RunManagerEvent)
+     * @see org.easysoa.run.RunManagerEventReceiver#receiveEvent(org.easysoa.run.RunManager.RunManagerEvent)
      */
     public void receiveEvent(RunManagerEvent runManagerEvent) {
         try {

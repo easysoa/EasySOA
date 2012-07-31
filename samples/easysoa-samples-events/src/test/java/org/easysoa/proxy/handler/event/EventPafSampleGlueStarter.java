@@ -11,10 +11,10 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.exchangehandler.HandlerManagerImpl;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
 import org.easysoa.proxy.test.HttpUtils;
+import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
 
 /**

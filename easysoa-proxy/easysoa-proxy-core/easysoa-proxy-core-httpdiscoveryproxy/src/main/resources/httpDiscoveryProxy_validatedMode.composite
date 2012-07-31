@@ -8,7 +8,7 @@
 	<!-- HTTP Proxy -->
 	<!-- Run with mode : Validated -->
 	<sca:component name="httpProxyService">
-		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
+		<sca:implementation.java class="org.easysoa.proxy.HttpDiscoveryProxy" />
 		<!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
 		<sca:service name="httpServiceInput">
 			<sca:interface.java interface="javax.servlet.Servlet" />
@@ -22,9 +22,9 @@
 
 	<!-- HTTP Client to drive the proxy -->
 	<sca:component name="httpProxyDriver">
-		<sca:implementation.java class="com.openwide.easysoa.proxy.HttpProxyDriverImpl" />
+		<sca:implementation.java class="org.easysoa.proxy.HttpProxyDriverImpl" />
 		<sca:service name="httpServiceDriver">
-			<sca:interface.java interface="com.openwide.easysoa.proxy.HttpProxyDriver" />
+			<sca:interface.java interface="org.easysoa.proxy.HttpProxyDriver" />
 			<frascati:binding.rest uri="http://localhost:8084/" />
 		</sca:service>
 		<sca:reference name="runManager" target="runManagerComponent" />
@@ -52,18 +52,18 @@
 	<!-- Monitoring service -->
 	<sca:component name="monitoringServiceComponent">
 		<sca:service name="monitoringServiceService">
-			<sca:interface.java interface="com.openwide.easysoa.monitoring.MonitoringService" />
+			<sca:interface.java interface="org.easysoa.monitoring.MonitoringService" />
 		</sca:service>
-		<sca:implementation.java class="com.openwide.easysoa.monitoring.ValidatedMonitoringService" />
+		<sca:implementation.java class="org.easysoa.monitoring.ValidatedMonitoringService" />
 		<sca:reference name="esperEngine" target="esperEngineComponent" />		
 	</sca:component>
 
 	<!-- Run Manager -->
 	<sca:component name="runManagerComponent">
 		<sca:service name="runManagerService">
-			<sca:interface.java interface="com.openwide.easysoa.run.RunManager" />
+			<sca:interface.java interface="org.easysoa.run.RunManager" />
 		</sca:service>
-		<sca:implementation.java class="com.openwide.easysoa.run.RunManagerImpl" />
+		<sca:implementation.java class="org.easysoa.run.RunManagerImpl" />
 		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
 	</sca:component>
 	
@@ -80,9 +80,9 @@
 	<!-- Esper Engine -->
 	<sca:component name="esperEngineComponent">
 		<sca:service name="esperEngineService">
-			<sca:interface.java interface="com.openwide.easysoa.esper.EsperEngine" />
+			<sca:interface.java interface="org.easysoa.esper.EsperEngine" />
 		</sca:service>
-		<sca:implementation.java class="com.openwide.easysoa.esper.EsperEngineImpl" />
+		<sca:implementation.java class="org.easysoa.esper.EsperEngineImpl" />
 	</sca:component>
 
 </sca:composite>

@@ -39,9 +39,9 @@ import javax.xml.ws.ResponseWrapper;
 public interface MeteoMockPortType {
 
     @WebResult(name = "return", targetNamespace = "http://meteomock.mock.test.easysoa.openwide.org/")
-    @RequestWrapper(localName = "getTomorrowForecast", targetNamespace = "http://meteomock.mock.test.easysoa.openwide.org/", className = "org.openwide.easysoa.test.mock.meteomock.client.GetTomorrowForecast")
+    @RequestWrapper(localName = "getTomorrowForecast", targetNamespace = "http://meteomock.mock.test.easysoa.openwide.org/", className = "org.easysoa.test.mock.meteomock.client.GetTomorrowForecast")
     @WebMethod
-    @ResponseWrapper(localName = "getTomorrowForecastResponse", targetNamespace = "http://meteomock.mock.test.easysoa.openwide.org/", className = "org.openwide.easysoa.test.mock.meteomock.client.GetTomorrowForecastResponse")
+    @ResponseWrapper(localName = "getTomorrowForecastResponse", targetNamespace = "http://meteomock.mock.test.easysoa.openwide.org/", className = "org.easysoa.test.mock.meteomock.client.GetTomorrowForecastResponse")
     public java.lang.String getTomorrowForecast(
         @WebParam(name = "arg0", targetNamespace = "http://meteomock.mock.test.easysoa.openwide.org/")
         java.lang.String arg0
