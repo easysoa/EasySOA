@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Version: 0.4
+Bundle-Name: easysoa-registry-boilerplate-webengine
+Bundle-SymbolicName: org.easysoa.registry.boilerplate.webengine;singleton:=true
+Bundle-Vendor: EasySOA Consortium
+Eclipse-LazyStart: true
+Nuxeo-WebModule: org.easysoa.boilerplate.rest.EasySOAModule;name=easysoa;extends=base;package=org/easysoa/boilerplate/rest
