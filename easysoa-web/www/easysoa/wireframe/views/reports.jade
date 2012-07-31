@@ -1,0 +1,182 @@
+include navtree_reports
+
+h1.title General report
+
+#contents
+  
+  .contentbox
+    .title Statistics
+    
+    ul(style="font-size: 130%; margin-top: 10px")
+      li Services: <b>27</b>
+      li Deployed services: <b>27</b>
+      li Validated services: <b>26</b>
+    
+  .contentbox(style="height: 250px")
+    .title Services validation
+    
+    div(style="float: left")
+      table#valsummary(style="display: none")
+        caption Validated services
+        thead
+          tr
+            th -7d
+            th -6d
+            th -5d
+            th -4d
+            th -3d
+            th -2d
+            th -1d
+            th Today
+        tr
+          td 85
+          td 92
+          td 90
+          td 80
+          td 93
+          td 97
+          td 96
+          td 93
+          
+    div(style="float: left")
+      table#valavail(style="display: none")
+        caption Service availability
+        thead
+          tr
+            th -7
+            th -6
+            th -5
+            th -4
+            th -3
+            th -2
+            th -1
+            th 0
+        tr
+          td 98
+          td 97
+          td 100
+          td 95
+          td 100
+          td 100
+          td 100
+          td 100
+          
+    div(style="float: left")
+      table#valwsdl(style="display: none")
+        caption WSDL conformance
+        thead
+          tr
+            th -7
+            th -6
+            th -5
+            th -4
+            th -3
+            th -2
+            th -1
+            th 0
+        tr
+          td 85
+          td 92
+          td 90
+          td 80
+          td 93
+          td 97
+          td 96
+          td 93
+
+  .contentbox(style="height: 180px")
+    .title Other indicators
+    
+    div(style="float: left")
+      table.otherindic(style="display: none")
+        caption Deployed services
+        thead
+          tr
+            th -7d
+            th -6d
+            th -5d
+            th -4d
+            th -3d
+            th -2d
+            th -1d
+            th Today
+        tr
+          td 85
+          td 92
+          td 90
+          td 80
+          td 93
+          td 97
+          td 96
+          td 98
+          
+    div(style="float: left")
+      table.otherindic(style="display: none")
+        caption API Documentation level
+        thead
+          tr
+            th -7d
+            th -6d
+            th -5d
+            th -4d
+            th -3d
+            th -2d
+            th -1d
+            th Today
+        tr
+          td 65
+          td 70
+          td 70
+          td 70
+          td 72
+          td 75
+          td 75
+          td 78
+
+  .contentbox
+    .title Unclassified services
+    
+    table
+      tr
+        th Name
+        th 
+          img(src='img/provider.png') 
+          echo Provider
+        th 
+          img(src='img/consumer.png') 
+          echo Consumers
+        th Current state
+        th Comments
+      tr
+        td 
+          a(href='./reg_general') Blahblah service
+        td 
+          a.fake(href='#') CRM Team
+        td 
+        td(align="center")
+          img(src='img/green.png')
+        td Unclassified.
+    
+script
+  // https://github.com/filamentgroup/jQuery-Visualize/
+  $('#valsummary').visualize({
+    width: 400,
+    height: 150,
+    type: 'area',
+    colors: ['green'],
+    topValue: 100
+  });
+  $('#valavail, #valwsdl').visualize({
+    width: 200,
+    height: 150,
+    type: 'area',
+    colors: ['grey'],
+    topValue: 100
+  });
+  $('.otherindic').visualize({
+    width: 400,
+    height: 100,
+    type: 'area',
+    colors: ['#DA0'],
+    topValue: 100
+  });

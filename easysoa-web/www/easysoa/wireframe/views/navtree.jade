@@ -12,7 +12,7 @@
     });
   
   #navtreetitle(style='background-color: white')
-    a#browsing(href='#') App. layers browsing
+    a#browsing(href='#') By application layer
     img#closed(src='img/arrowr.png')
     img#open(src='img/arrowd.png', style='display: none')
   
@@ -20,24 +20,37 @@
   script(type='text/javascript')
     $(document).ready(function() {
        var data = [
-        { label: 'CRM Application',
+        { label: 'My SOA',
+          url: './reg_provider_root',
+          id: 3,
           children: [
-            { label: 'Top-level services'},
-            { label: 'Functional services'},
-            { label: 'CRUD services',
+            { label: 'CRM Application',
               children: [
-                { label: 'Client service', id: 1 },
-                { label: 'Activities service' },
-                { label: 'SalesOrders service' }
-              ] }
-          ] },
-        { label: 'HR Application',
+                { label: 'Top-level services'},
+                { label: 'Funct. services'},
+                { label: 'CRUD services',
+                  id: 2,
+                  url: './reg_provider_folder',
+                  children: [
+                    { label: 'Client service', id: 1, url: './reg_provider' },
+                    { label: 'Activities service' },
+                    { label: 'SalesOrders service' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+       ];
+       
+       if (window.location.pathname.indexOf('provider') == -1) {
+         data[0].children.push({ label: 'HR Application',
           children: [
             { label: 'Top-level services'},
-            { label: 'Functional services'},
+            { label: 'Funct. services'},
             { label: 'CRUD services' }
-          ] }
-       ];
+          ] });
+       }
        var $tree = $("#navhierarchy");
        
        $tree.tree({
@@ -51,9 +64,12 @@
         $tree.tree('selectNode', node, true);
        }
        
-       $("#navhierarchy .title").click(function() {
-        window.location = './endp_summary';
-       });
+       $tree.bind(
+          'tree.click',
+          function(event) {
+              window.location = event.node.url || window.location;
+          }
+       );
        
     });
   #navhierarchy.navtreecontents
@@ -70,28 +86,24 @@
   #navoptions.navtreecontents(style='display: none')
     p Choose a browsing view...
     
-    h3 Default views
+    h3 <u>Provider</u> views
     
     ul
       li
-        a.fake(href='#') By Service
+        a.fake(href='#') Flattened services
       li
-        a.fake(href='#') By Implementation
-      li
-        a.fake(href='#') By Endpoint
+        a.fake(href='#') By validation state
     
     
     h3 Custom hierarchies
     
     ul
       li
-        a.fake(href='#') Application layers
+        a.fake(href='#') By application layer
       li
-        a.fake(href='#') Servers
+        a.fake(href='#') By project
       li
-        a.fake(href='#') Projects
-      li
-        a.fake(href='#') Business domains
+        a.fake(href='#') By business domain
       li
         input(type='button', value='Create...', style='font-size: 9pt')
       
