@@ -57,21 +57,25 @@
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>core</artifactId>
+      <version>3.3.0-v_771</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-core</artifactId>
+      <version>${easysoa.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-rest</artifactId>
+      <version>${easysoa.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-frascati</artifactId>
+      <version>${easysoa.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -92,6 +96,7 @@
     <dependency>
       <groupId>jetty</groupId>
       <artifactId>org.mortbay.jetty.plus</artifactId>
+      <version>5.1.10</version>
       <scope>test</scope>
     </dependency>
 

@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest.mock;
+package org.easysoa.galaxydemotest.mock;
 
 import net.server.Server;
 

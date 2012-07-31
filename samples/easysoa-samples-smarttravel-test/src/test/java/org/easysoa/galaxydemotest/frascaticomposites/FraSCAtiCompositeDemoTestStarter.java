@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest.frascaticomposites;
+package org.easysoa.galaxydemotest.frascaticomposites;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -65,7 +65,7 @@ public class FraSCAtiCompositeDemoTestStarter {
 	 */
    @Before
 	public final void setUp() throws FrascatiException, InterruptedException {
-	   System.setProperty("org.apache.cxf.bus.factory","com.openwide.easysoa.cxf.EasySOABusFactory");
+	   System.setProperty("org.apache.cxf.bus.factory","org.easysoa.cxf.EasySOABusFactory");
 		// Start fraSCAti
 		startFraSCAti();
 		// Start HTTP Proxy

@@ -18,7 +18,7 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-package com.openwide.easysoa.galaxydemotest;
+package org.easysoa.galaxydemotest;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

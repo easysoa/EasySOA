@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest.standalone;
+package org.easysoa.galaxydemotest.standalone;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -63,7 +63,7 @@ public class GalaxyDemoTestStarter {
 	public final void setUp() throws FrascatiException, InterruptedException {
     	logger.debug("user.dir : " + System.getProperty("user.dir"));	   
     	//TODO : Problem here ? 
-    	//System.setProperty("org.apache.cxf.bus.factory","com.openwide.easysoa.cxf.EasySOABusFactory");
+    	//System.setProperty("org.apache.cxf.bus.factory","org.easysoa.cxf.EasySOABusFactory");
     	// Start fraSCAti
 		startFraSCAti();
 		// Start Galaxy Demo

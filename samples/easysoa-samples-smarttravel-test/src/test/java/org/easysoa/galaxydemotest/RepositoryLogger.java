@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest;
+package org.easysoa.galaxydemotest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

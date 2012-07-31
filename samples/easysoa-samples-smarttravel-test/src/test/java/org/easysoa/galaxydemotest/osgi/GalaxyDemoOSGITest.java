@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest.osgi;
+package org.easysoa.galaxydemotest.osgi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,6 +17,7 @@ import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 
 import org.apache.log4j.Logger;
+import org.easysoa.galaxydemotest.EasySOARepositoryInit;
 import org.easysoa.test.EasySOACoreFeature;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,6 @@ import org.ow2.frascati.FraSCAti;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 import com.google.inject.Inject;
-import com.openwide.easysoa.galaxydemotest.EasySOARepositoryInit;
 
 /**
  * Unit test for Galaxy Demo. Frascati runs in Nuxeo with OSGI mechanism.
@@ -84,7 +84,7 @@ public class GalaxyDemoOSGITest {
 	 */
    @Before
 	public final void setUp() throws FrascatiException, InterruptedException {
-	   System.setProperty("org.apache.cxf.bus.factory","com.openwide.easysoa.cxf.EasySOABusFactory");
+	   System.setProperty("org.apache.cxf.bus.factory","org.easysoa.cxf.EasySOABusFactory");
 		// Start fraSCAti
 		startFraSCAti();
 		// Start HTTP Proxy

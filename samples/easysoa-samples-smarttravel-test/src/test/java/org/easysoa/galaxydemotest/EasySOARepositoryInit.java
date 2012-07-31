@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest;
+package org.easysoa.galaxydemotest;
 
 import org.easysoa.DomainInit;
 import org.easysoa.doctypes.AppliImpl;

@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest.standalone;
+package org.easysoa.galaxydemotest.standalone;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.galaxydemotest.EasySOARepositoryInit;
 import org.easysoa.test.EasySOAServerFeature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,6 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.Jetty;
 
 import com.google.inject.Inject;
-import com.openwide.easysoa.galaxydemotest.EasySOARepositoryInit;
 
 /**
  * Unit test for Galaxy Demo.

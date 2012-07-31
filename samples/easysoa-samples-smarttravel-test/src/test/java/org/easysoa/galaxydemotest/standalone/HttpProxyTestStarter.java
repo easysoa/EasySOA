@@ -1,4 +1,4 @@
-package com.openwide.easysoa.galaxydemotest.standalone;
+package org.easysoa.galaxydemotest.standalone;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,7 +46,7 @@ public class HttpProxyTestStarter {
 	 */
    @Before
 	public final void setUp() throws FrascatiException, InterruptedException {
-	    //System.setProperty("org.apache.cxf.bus.factory","com.openwide.easysoa.cxf.EasySOABusFactory");
+	    //System.setProperty("org.apache.cxf.bus.factory","org.easysoa.cxf.EasySOABusFactory");
 		// Start fraSCAti
 		startFraSCAti();
 		// Start HTTP Proxy
