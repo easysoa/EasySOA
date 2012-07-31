@@ -53,6 +53,7 @@ import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.easysoa.util.ContentReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -62,7 +63,6 @@ import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.openwide.easysoa.test.util.UrlMock;
 
-import com.openwide.easysoa.util.ContentReader;
 
 /**
  * To test replay templates

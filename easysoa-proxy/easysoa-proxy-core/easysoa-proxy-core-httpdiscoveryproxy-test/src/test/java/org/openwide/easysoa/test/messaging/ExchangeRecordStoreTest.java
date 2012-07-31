@@ -35,6 +35,7 @@ import org.easysoa.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.ExchangeRecordStore;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.util.ContentReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,6 @@ import com.openwide.easysoa.message.Headers;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.util.ContentReader;
 
 /**
  * To test the messaging API. Only the save, load, replay functions without any integration with the HttpDiscoveryproxy.

@@ -38,6 +38,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.nuxeo.registration.NuxeoRegistrationService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +47,6 @@ import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.openwide.easysoa.test.util.UrlMock;
 
-import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 public abstract class DiscoveryModeProxyTestBase extends AbstractProxyTestStarter {
 

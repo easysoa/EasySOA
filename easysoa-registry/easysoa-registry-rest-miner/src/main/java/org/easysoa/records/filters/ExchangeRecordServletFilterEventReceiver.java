@@ -5,10 +5,10 @@ package org.easysoa.records.filters;
 
 import org.apache.log4j.Logger;
 import org.easysoa.records.handlers.NuxeoMessageExchangeRecordHandler;
+import org.easysoa.run.RunManagerEventReceiver;
+import org.easysoa.run.RunManager.RunManagerEvent;
 import org.nuxeo.runtime.api.Framework;
 
-import com.openwide.easysoa.run.RunManagerEventReceiver;
-import com.openwide.easysoa.run.RunManager.RunManagerEvent;
 
 /**
  * @author jguillemotte

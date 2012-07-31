@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<title>Replay manager commands</title>
+<script type="text/javascript" src="http://localhost:8083/easysoa/lib/jquery.js"></script>
+<link rel="stylesheet" href="http://localhost:8083/easysoa/css/style.css" />
+<style type="text/css">
+code {
+    font-size: 80%;
+    font-weight: normal;
+    margin-left: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="headerWelcome">
+  <div id="headerWelcomeContents">
+  <div id="headerUserBar"></div>
+    Replay manager commands
+  </div>
+</div>
+
+<div id="container" style="width: 100%">
+
+    <h1>Command result</h1>
+    
+    <textarea readonly="readonly" style="width: 100%; max-width: 800px; height: 50px; font-size: 15pt"></textarea>
+
+    <h1>Available commands</h1>
+        
+    <h2>Get the exchange record store list <code>[GET] /getExchangeRecordStorelist</code></h2>
+    <input id="exchangeRecordStoreList" type="submit" value="Get exchange record store list" />
+    <script type="text/javascript">
+    function getExchangeRecordStoreList(callback) {
+        $('#exchangeRecordStoreList').click(function() {
+            $.get('/getExchangeRecordStorelist').val()).success(callback).error(callback);
+        });
+    }
+    </script>
+
+    <h2>Get the exchange record list for a store <code>[GET] /getExchangeRecordList/{storeName}</code></h2>
+    Store name : <input id="storeName" type="text" value="" style="width: 100px" /> <input id="exchangeRecordList" type="submit" value="Get exchange record list" />
+    <script type="text/javascript">
+    function getExchangeRecordList(callback) {
+        $('#exchangeRecordList').click(function() {
+            $.get('/getExchangeRecordList/' + $('#storeName').val()).success(callback).error(callback);
+        });
+    }
+    </script>
+    
+    get a specific record (GET operation) : /getExchangeRecord/{storeName}/{exchangeID}    
+    <h2>Get a specific record <code>[GET] /getExchangeRecord/{storeName}/{exchangeID}</code></h2>
+    Store name : <input id="storeName_B" type="text" value="" style="width: 100px" /><br><br>Exchange ID : <input id="exchangeID_B" type="text" value="" style="width: 100px" /> <input id="exchangeRecord" type="submit" value="Get exchange record" />
+    <script type="text/javascript">
+    function getExchangeRecord(callback) {
+        $('#exchangeRecord').click(function() {
+            $.get('/getExchangeRecord/'  + $('#storeName_B').val() + '/' +  + $('#exchangeID_B').val()).success(callback).error(callback);
+        });
+    }
+    </script>
+    
+    
+help.append("<LI>To replay an exchange record directly without any modifications (GET operation) : /replay/{exchangeRecordStoreName}/{exchangeRecordId}</LI>");    
+    
+    <h2>Replay a exchange record without any modifications <code>[GET] /replay/{exchangeRecordStoreName}/{exchangeRecordId}</code></h2>
+    Store name : <input id="storeName_C" type="text" value="" style="width: 100px" /><br><br>Exchange ID : <input id="exchangeID_C" type="text" value="" style="width: 100px" /> <input id="exchangeRecordReplay" type="submit" value="Replay exchange record" />
+    <script type="text/javascript">
+    function replayExchangeRecord(callback) {
+        $('#echangeRecordReplay').click(function() {
+            $.get('/replay/'  + $('#storeName_C').val() + '/' +  + $('#exchangeID_C').val()).success(callback).error(callback);
+        });
+    }
+    </script>
+    
+    <!-- Deprecated -->
+    <!--<h2>Change the monitoring mode <code>[POST] /setMonitoringMode/{mode}</code></h2>
+    New mode : <input id="newMode" type="text" value="" style="width: 100px" /> <input id="setMonitoringMode" type="submit" value="Get run list" />
+    <script type="text/javascript">
+    function initChangeMode(callback) {
+        $('#setMonitoringMode').click(function() {
+            $.post('/setMonitoringMode/' + $('#newMode').val()).success(callback).error(callback);
+        });
+    }
+    </script>-->
+    
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var $out = $('textarea');
+        var trace = function(data) {
+            $out.html(JSON.stringify(data));
+        };
+        initNewRun(trace);
+        initStopRun(trace);
+        initSaveRun(trace);
+        initDeleteRun(trace);
+        initChangeMode(trace);
+    });
+    </script>
+ 
+</div>
+
+</body>
+</html>

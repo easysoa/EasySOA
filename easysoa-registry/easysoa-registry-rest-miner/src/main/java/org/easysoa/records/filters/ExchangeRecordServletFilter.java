@@ -19,7 +19,7 @@
  */
 package org.easysoa.records.filters;
 
-import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
+import org.easysoa.exchangehandler.HttpExchangeHandler;
 
 /**
  * 

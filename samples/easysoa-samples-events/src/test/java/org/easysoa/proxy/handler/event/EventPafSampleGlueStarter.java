@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.exchangehandler.HandlerManagerImpl;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
 import org.easysoa.proxy.test.HttpUtils;
 import org.junit.After;
@@ -16,10 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.ow2.frascati.util.FrascatiException;
-
-import com.openwide.easysoa.exchangehandler.HandlerManagerImpl;
-
-
 
 /**
  *  Prerequisite:

@@ -20,11 +20,11 @@
 
 package org.openwide.easysoa.test;
 
+import org.easysoa.monitoring.soa.Service;
+import org.easysoa.nuxeo.registration.NuxeoRegistrationService;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.openwide.easysoa.monitoring.soa.Service;
-import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 /**
  * Tests the NuxeoRegistrationService

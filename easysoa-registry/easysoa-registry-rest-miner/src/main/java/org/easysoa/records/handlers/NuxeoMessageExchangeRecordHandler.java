@@ -25,17 +25,18 @@ package org.easysoa.records.handlers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.easysoa.exchangehandler.HttpExchangeHandler;
+import org.easysoa.exchangehandler.MessageRecordHandler;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
+import org.easysoa.run.RunManager;
 import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 import org.easysoa.servlet.http.HttpMessageResponseWrapper;
 import org.nuxeo.runtime.api.Framework;
-import com.openwide.easysoa.exchangehandler.HttpExchangeHandler;
-import com.openwide.easysoa.exchangehandler.MessageRecordHandler;
 import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.run.RunManager;
 
 /**
  * Exchange record handler : register a record from HttpServletRequest and HttpServletResponse

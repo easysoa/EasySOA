@@ -6,6 +6,7 @@ package org.easysoa.template;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.easysoa.util.RequestForwarder;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -16,7 +17,6 @@ import com.openwide.easysoa.message.InMessage;
 import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.message.QueryString;
-import com.openwide.easysoa.util.RequestForwarder;
 
 /**
  * @author jguillemotte

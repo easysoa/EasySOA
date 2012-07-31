@@ -15,10 +15,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.easysoa.util.ContentReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import com.openwide.easysoa.util.ContentReader;
 
 /**
  * Test for CXF proxy interceptor

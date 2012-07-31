@@ -48,11 +48,11 @@ import org.easysoa.reports.Report;
 import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.easysoa.util.RequestForwarder;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.util.RequestForwarder;
 
 /**
  * Contains only the replay code. Other functionalities as assertions engine or template engine are plugged in the replay engine

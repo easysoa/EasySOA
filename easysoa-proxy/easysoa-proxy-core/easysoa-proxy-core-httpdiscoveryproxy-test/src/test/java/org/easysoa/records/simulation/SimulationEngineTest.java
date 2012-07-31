@@ -25,13 +25,13 @@ import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.simulation.SimulationEngine;
 import org.easysoa.simulation.SimulationStore;
 import org.easysoa.simulation.methods.SimpleSimulationMethod;
+import org.easysoa.util.ContentReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openwide.easysoa.test.util.AbstractProxyTestStarter;
 import org.openwide.easysoa.test.util.UrlMock;
 
-import com.openwide.easysoa.util.ContentReader;
 
 /**
  * @author jguillemotte

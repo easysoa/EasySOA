@@ -18,12 +18,12 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.util.ContentReader;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.openwide.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 
-import com.openwide.easysoa.util.ContentReader;
 
 /**
  * This class can be used to create a permanent exchange test set

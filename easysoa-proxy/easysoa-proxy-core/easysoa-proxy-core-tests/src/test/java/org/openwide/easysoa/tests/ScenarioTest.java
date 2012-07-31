@@ -47,6 +47,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.easysoa.util.ContentReader;
 import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -54,7 +55,6 @@ import org.junit.Test;
 import org.openwide.easysoa.tests.helpers.AbstractTestHelper;
 
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.util.ContentReader;
 
 /**
  * @author jguillemotte

@@ -39,6 +39,7 @@ import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.assertions.AssertionSuggestions;
 import org.easysoa.reports.Report;
+import org.easysoa.run.Run;
 import org.easysoa.simulation.SimulationStore;
 import org.easysoa.template.AbstractTemplateField;
 import org.easysoa.template.TemplateFieldSuggestions;
@@ -52,7 +53,6 @@ import com.openwide.easysoa.message.OutMessage;
 import com.openwide.easysoa.message.PostData;
 import com.openwide.easysoa.message.QueryParam;
 import com.openwide.easysoa.message.QueryString;
-import com.openwide.easysoa.run.Run;
 
 /**
  * Take a ExchangeRecordStoreArray and store the Exchange records as files in

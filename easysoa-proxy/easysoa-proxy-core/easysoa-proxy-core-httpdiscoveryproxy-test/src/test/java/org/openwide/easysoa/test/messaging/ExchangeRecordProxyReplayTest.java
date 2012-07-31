@@ -46,6 +46,8 @@ import org.easysoa.records.replay.ReplayEngine;
 import org.easysoa.template.TemplateEngine;
 import org.easysoa.template.TemplateEngineImpl;
 import org.easysoa.template.TemplateFieldSuggestions;
+import org.easysoa.util.ContentReader;
+import org.easysoa.util.RequestForwarder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,8 +58,6 @@ import org.openwide.easysoa.test.util.UrlMock;
 
 import com.openwide.easysoa.message.MessageContent;
 import com.openwide.easysoa.message.OutMessage;
-import com.openwide.easysoa.util.ContentReader;
-import com.openwide.easysoa.util.RequestForwarder;
 
 /**
  * To test the replay function associated with an exchange record discovered by the http discovery proxy 

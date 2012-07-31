@@ -11,14 +11,14 @@
 	<!-- HTTP Proxy -->
 	<!-- Run with default mode : Discovery -->
     <sca:component name="httpProxyService">
-        <sca:implementation.java class="com.openwide.easysoa.proxy.HttpDiscoveryProxy" />
+        <sca:implementation.java class="org.easysoa.proxy.HttpDiscoveryProxy" />
 		<!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
         <sca:service name="httpServiceInput">
             <sca:interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
          <sca:reference name="handlerManager" target = "handlerManagerComponent/handlerManagerService" >
-         	<sca:interface.java interface="com.openwide.easysoa.exchangehandler.HandlerManager" />
+         	<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
          </sca:reference>
         <sca:property name="proxyPort">8082</sca:property>
         <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>

@@ -23,11 +23,11 @@ package org.openwide.easysoa.test.helpers;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.easysoa.nuxeo.registration.NuxeoRegistrationService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.openwide.easysoa.nuxeo.registration.NuxeoRegistrationService;
 
 
 /**
