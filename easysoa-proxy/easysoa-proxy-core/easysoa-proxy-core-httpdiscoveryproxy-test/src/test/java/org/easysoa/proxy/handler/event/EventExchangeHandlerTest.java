@@ -40,6 +40,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.frascati.FraSCAtiServiceException;
+import org.easysoa.proxy.handler.event.admin.CompiledCondition;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.test.mock.nuxeo.RecordsProvider;
@@ -150,15 +151,18 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter  {
    
         String urlToListen = "http://localhost:8080/another";		
         // set some conf
-    	Map<String, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<String, List<String>>() ;
+    	Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>() ;
 		
     	ArrayList<String> value = new ArrayList<String>();
     	
-		value.add("http://localhost:8081/");
-		value.add("http://localhost:8080/2");
-		value.add("http://localhost:8080/3");
-				
-		listenedServiceUrlToServicesToLaunchUrlMap.put(urlToListen, value);
+        value.add("http://localhost:8081/");
+	value.add("http://localhost:8080/2");
+	value.add("http://localhost:8080/3");
+        
+	List<CompiledCondition> listCompiledCondition = new ArrayList<CompiledCondition>();
+        listCompiledCondition.add(new CompiledCondition(urlToListen));
+	listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);
+        
     	frascati.getService("servicesToLaunchMock", "IEventMessageHandler", IEventMessageHandler.class)
 			.setListenedServiceUrlToServicesToLaunchUrlMap(listenedServiceUrlToServicesToLaunchUrlMap);
     	

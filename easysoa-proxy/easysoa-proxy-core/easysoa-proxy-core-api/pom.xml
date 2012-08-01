@@ -18,6 +18,8 @@
     	<dependency>
       		<groupId>org.easysoa.registry.api</groupId>
       		<artifactId>easysoa-registry-api-messaging</artifactId>
+    	  <version>0.5-SNAPSHOT</version>
+    	  <type>jar</type>
     	</dependency>
     	<!-- Easysoa remote rest api -->
     	<dependency>

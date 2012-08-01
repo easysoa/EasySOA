@@ -9,6 +9,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.exchangehandler.HandlerManagerImpl;
+import org.easysoa.proxy.handler.event.admin.CompiledCondition;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
 import org.easysoa.proxy.test.HttpUtils;
 import org.easysoa.test.util.AbstractProxyTestStarter;
@@ -75,11 +76,15 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
         
         String urlToListen = "http://localhost:9010/PureAirFlowers";        
 
-        Map<String, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<String, List<String>>() ;
+        Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>() ;
         ArrayList<String> value = new ArrayList<String>();
         value.add("http://localhost:8090/glue");
         
-        listenedServiceUrlToServicesToLaunchUrlMap.put(urlToListen, value);
+        List<CompiledCondition> listCompiledCondition = new ArrayList<CompiledCondition>();
+        listCompiledCondition.add(new CompiledCondition(urlToListen));
+	listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);
+        
+        listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);
         frascati.getService(componentList.get(0), "IEventMessageHandler", IEventMessageHandler.class)
             .setListenedServiceUrlToServicesToLaunchUrlMap(listenedServiceUrlToServicesToLaunchUrlMap);
         
@@ -115,4 +120,3 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
         cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
     }
 }
-
