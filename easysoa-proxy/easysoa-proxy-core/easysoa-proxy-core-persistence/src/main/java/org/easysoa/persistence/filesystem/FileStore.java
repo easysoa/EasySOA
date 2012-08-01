@@ -56,9 +56,11 @@ public class FileStore implements StoreItf {
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         List<String> storeList = new ArrayList<String>();
-        for (File file : listOfFiles) {
-            if (file.isDirectory()) {
-                storeList.add(file.getName());
+        if(listOfFiles != null){
+            for (File file : listOfFiles) {
+                if (file.isDirectory()) {
+                    storeList.add(file.getName());
+                }
             }
         }
         return storeList;
