@@ -14,7 +14,6 @@ import org.easysoa.message.InMessage;
 public class CompiledCondition implements CompiledConditionInt {
 
 	private Pattern p; 
-	
 	public CompiledCondition(){		
 	}
 	
@@ -25,13 +24,10 @@ public class CompiledCondition implements CompiledConditionInt {
 	/**
 	 * @return true or false if the pattern's url matched 
 	 */
-	
+	@Override
 	public boolean matches(InMessage inMessage){
-	
 		Matcher m = this.p.matcher(inMessage.buildCompleteUrl());
-		if (m.groupCount()!=0)
-			return true;
-		else return false;
+		return m.matches();
 	}
 	
 	public Pattern getP() {

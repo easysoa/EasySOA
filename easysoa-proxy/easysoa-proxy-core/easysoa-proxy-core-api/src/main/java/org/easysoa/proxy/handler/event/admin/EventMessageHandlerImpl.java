@@ -74,7 +74,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
             	for(CompiledCondition compiledCondition: listCompiledCondition){
             		if (compiledCondition.matches(inMessage)){
             			 for(String serviceToLaunch : currentEntry.getValue()){
-            				 servicesToLaunchUrlsOrig.add(new String(serviceToLaunch)); 
+            				 servicesToLaunchUrlsOrig.add(serviceToLaunch); 
             			 }
             		}
             	}
