@@ -18,7 +18,8 @@ public class CompiledCondition implements CompiledConditionInt {
 	}
 	
 	public CompiledCondition(String url){
-		this.p = Pattern.compile(url);
+             String regularExpession = url.concat(".*");
+             this.p = Pattern.compile(regularExpession);
 	}
 		
 	/**

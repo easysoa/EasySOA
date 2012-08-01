@@ -49,6 +49,15 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
 	private Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>();
     
     public EventMessageHandlerImpl(){
+        // Little test of the CompiledCondition
+        CompiledCondition compiledCondition1 = new CompiledCondition("http://localhost:8200/esb/AirportService");
+        List<CompiledCondition> listCompiledCondition1 = new ArrayList<CompiledCondition>();
+        listCompiledCondition1.add(compiledCondition1);
+        List<String> listCall = new ArrayList<String>(); 
+        listCall.add("http://www.google.fr");
+        this.listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition1, listCall);
+        // End of Test
+    
     }
     
     /**
@@ -56,10 +65,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
      */
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
-        
-        // find listened service in map among n
-      //  String listenedServiceUrl = inMessage.buildCompleteUrl();
-
+               
         /**
          * listenedServiceUrlToServicesToLaunchUrlMap should be use by one Thread
          */
