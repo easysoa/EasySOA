@@ -1,6 +1,6 @@
 package org.easysoa.proxy.handler.event.admin;
 
-import com.openwide.easysoa.message.InMessage;
+import org.easysoa.message.InMessage;
 
 public interface CompiledConditionInt {
 	

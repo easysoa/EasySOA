@@ -2,7 +2,7 @@ package org.easysoa.proxy.handler.event.admin;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.openwide.easysoa.message.InMessage;
+import org.easysoa.message.InMessage;
 
 /**
  * 
