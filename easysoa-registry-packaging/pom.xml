@@ -106,6 +106,12 @@
                   <artifactId>easysoa-registry-api-core</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
+				<!-- proxy core persistence layer -->                
+				<artifactItem>
+                  <groupId>org.easysoa.proxy</groupId>
+                  <artifactId>easysoa-proxy-core-persistence</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>                
                 <artifactItem>
                   <groupId>org.easysoa.registry.api</groupId>
                   <artifactId>easysoa-registry-api-remote</artifactId>
@@ -132,18 +138,8 @@
                   <version>${easysoa.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.easysoa.proxy</groupId>
-                  <artifactId>easysoa-proxy-core-api-frascati</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
-                <artifactItem>
                   <groupId>org.easysoa.frascati</groupId>
                   <artifactId>easysoa-frascati-service-api</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
-				<artifactItem>
-                  <groupId>org.easysoa.proxy</groupId>
-                  <artifactId>easysoa-proxy-core-persistence</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
                 <!--  These 2 following jar libs must be removed from nxserver/lib folder to avoid a compatibility error -->               
@@ -340,26 +336,6 @@
 					<version>${easysoa.version}</version>
 				</artifactItem>
 				<artifactItem>
-					<groupId>org.easysoa.samples.smarttravel</groupId>
-					<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
-					<version>${easysoa.version}</version>
-				</artifactItem>
-				<artifactItem>
-					<groupId>org.easysoa.samples.smarttravel</groupId>
-					<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
-					<version>${easysoa.version}</version>
-				</artifactItem>
-				<artifactItem>
-					<groupId>org.easysoa.samples.smarttravel</groupId>
-					<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
-					<version>${easysoa.version}</version>
-				</artifactItem>
-				<artifactItem>
-					<groupId>org.easysoa.samples.smarttravel</groupId>
-					<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
-					<version>${easysoa.version}</version>
-				</artifactItem>				
-				<artifactItem>
 					<groupId>org.eclipse.emf</groupId>
 					<artifactId>ecore</artifactId>
 					<version>2.4.0</version>
@@ -478,6 +454,12 @@
             </goals>
             <configuration>
               <artifactItems>
+                <!-- Proxy core api FraSCAti : contains the easysoa composites -->
+                <artifactItem>
+                  <groupId>org.easysoa.proxy</groupId>
+                  <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>
                 <!-- Intents required by scaffolding proxy -->
                 <artifactItem>
 					<groupId>org.easysoa.proxy</groupId>
@@ -489,6 +471,27 @@
 					<artifactId>easysoa-proxy-intents-logintent</artifactId>
 					<version>${easysoa.version}</version>                
                 </artifactItem>
+                <!-- Smart Travel sample mock services models -->
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>                
               </artifactItems>
               <outputDirectory>${project.build.directory}/nxserver/frascati/lib</outputDirectory>
             </configuration>
@@ -586,8 +589,6 @@
                 <artifactId>ant-contrib</artifactId>
                 <version>20020829</version>
             </dependency>
-
-
         </dependencies>
         <executions>
           <execution>
