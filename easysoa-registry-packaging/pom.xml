@@ -106,12 +106,6 @@
                   <artifactId>easysoa-registry-api-core</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
-				<!-- proxy core persistence layer -->                
-				<artifactItem>
-                  <groupId>org.easysoa.proxy</groupId>
-                  <artifactId>easysoa-proxy-core-persistence</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>                
                 <artifactItem>
                   <groupId>org.easysoa.registry.api</groupId>
                   <artifactId>easysoa-registry-api-remote</artifactId>
@@ -460,6 +454,12 @@
                   <artifactId>easysoa-proxy-core-api-frascati</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
+				<!-- proxy core persistence layer -->                
+				<artifactItem>
+                  <groupId>org.easysoa.proxy</groupId>
+                  <artifactId>easysoa-proxy-core-persistence</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>                
                 <!-- Intents required by scaffolding proxy -->
                 <artifactItem>
 					<groupId>org.easysoa.proxy</groupId>

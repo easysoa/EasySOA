@@ -74,7 +74,7 @@ public class LogEngineImpl implements LogEngine {
         if(logSessions.containsKey(logSessionName)){
             throw new IllegalArgumentException("logSessionName already exists, cannot start another logSession with the same name");
         }
-        this.logSessions.put(logSessionName, new LogSession(report));
+        this.logSessions.put(logSessionName, new LogSessionImpl(report));
     }
     
     /**
