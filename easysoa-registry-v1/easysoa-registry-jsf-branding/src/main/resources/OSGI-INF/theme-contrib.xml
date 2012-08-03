@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.jsf.theme.contrib">
+
+  <require>org.nuxeo.theme.nuxeo.default</require>
+  <require>org.nuxeo.theme.nuxeo.virtualnavigation</require>
+  <require>org.nuxeo.ecm.admin.center.theme</require>
+
+  <extension target="org.nuxeo.theme.styling.service" point="styles">
+    <style name="header">
+      <src>themes/css/header.css</src>
+    </style>
+  </extension>
+
+  <!-- Register new flavor for EasySOA -->
+  <extension target="org.nuxeo.theme.styling.service" point="flavors">
+    <flavor name="easysoa">
+      <label>label.theme.flavor.nuxeo.default</label>
+      <logo>
+        <path>/img/easysoa/logo-core-50.png</path>
+        <previewPath>/img/easysoa/logo-core-50.png</previewPath>
+        <width>211</width>
+        <height>50</height>
+        <title>EasySOA Core</title>
+      </logo>
+      <presetsList>
+        <presets category="border" src="themes/palettes/easysoa-borders.properties" />
+        <presets category="background" src="themes/palettes/easysoa-backgrounds.properties" />
+        <presets category="font" src="themes/palettes/easysoa-fonts.properties" />
+        <presets category="color" src="themes/palettes/easysoa-colors.properties" />
+      </presetsList>
+      <palettePreview>
+        <colors>
+          <color>#cfecff</color>
+          <color>#70bbff</color>
+          <color>#4e9ae1</color>
+          <color>#fff</color>
+          <color>#fff</color>
+          <color>#0079a6</color>
+          <color>#00416b</color>
+          <color>#332e2e</color>
+          <color>#cfecff</color>
+        </colors>
+      </palettePreview>
+    </flavor>
+  </extension>
+
+  <!--  Make easySOA the default flavor -->
+  <extension target="org.nuxeo.theme.styling.service" point="pages">
+     <themePage name="galaxy/popup">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="galaxy/print">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="admin/default">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="userCenter/default">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+     <themePage name="galaxy/default">
+       <defaultFlavor>easysoa</defaultFlavor>
+     </themePage>
+  </extension>
+
+</component>

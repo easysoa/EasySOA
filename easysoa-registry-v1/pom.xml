@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.easysoa.registry</groupId>
+  <artifactId>easysoa-registry</artifactId>
+  <name>EasySOA Registry</name>
+  <description>EasySOA is a software for discovering, registering and organizing SOA services.</description>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <!-- =================== -->
+  <!-- Project information -->
+  <!-- =================== -->
+  <licenses>
+    <license>
+      <name>The GNU Lesser General Public License, Version 3</name>
+      <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+    </license>
+  </licenses>
+  
+  <url>http://www.easysoa.org</url>
+  <scm>
+    <connection>scm:git:git://github.com/easysoa/EasySOA.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:easysoa/EasySOA.git</developerConnection>
+    <url>https://github.com/easysoa/EasySOA</url>
+  </scm>
+  
+  <mailingLists>
+    <mailingList>
+      <name>EasySOA developers mailing-list</name>
+      <archive>https://groups.google.com/forum/?fromgroups#!forum/easysoa-dev</archive>
+      <post>easysoa.dev@googlegroups.com</post>
+    </mailingList>
+  </mailingLists>
+  <issueManagement>
+    <!-- Missing -->
+  </issueManagement>
+  <ciManagement>
+    <!-- Missing -->
+  </ciManagement>
+  
+  <organization>
+    <name>EasySOA Consortium</name>
+    <url>http://www.easysoa.org</url>
+  </organization>
+
+  <!-- ========== -->
+  <!-- Properties -->
+  <!-- ========== -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <easysoa.version>1.0-SNAPSHOT</easysoa.version>
+    <nuxeo.version>5.5</nuxeo.version>
+  </properties>
+
+  <!-- ======= -->
+  <!-- Modules -->
+  <!-- ======= -->
+  <modules>
+    <module>easysoa-registry-core-doctypes</module>
+    <module>easysoa-registry-jsf-branding</module>
+  </modules>
+
+  <!-- ============ -->
+  <!-- Dependencies -->
+  <!-- ============ -->
+  <dependencies>
+    <!-- Testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-features-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- ======================= -->
+  <!-- Dependencies management -->
+  <!-- ======================= -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <!-- Import Nuxeo dependency management -->
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-features-parent</artifactId>
+        <version>${nuxeo.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <!-- ======= -->
+  <!-- Plugins -->
+  <!-- ======= -->
+  <build>
+    <plugins>
+      <!-- Compile with Java 1.6 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <!--  Use META-INF/MANIFEST.MF -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <!-- ================= -->
+    <!-- Plugin management -->
+    <!-- ================= -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.3</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <!-- ============ -->
+  <!-- Repositories -->
+  <!-- ============ -->
+  <repositories>
+    <repository>
+      <id>easysoa</id>
+      <name>EasySOA consortium repository</name>
+      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>easysoa</id>
+      <name>EasySOA consortium repository</name>
+      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+</project>
+

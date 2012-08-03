@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<component name="org.easysoa.registry.boilerplate.actions.contrib">
+
+  <require>org.nuxeo.ecm.platform.actions</require>
+
+  <!-- ======= -->
+  <!-- Filters  -->
+  <!-- ======= -->
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
+  
+    <!-- Override. Enable common "New" button on workspace roots -->
+    <filter id="create">
+      <rule grant="true">
+        <permission>AddChildren</permission>
+        <type>WorkspaceRoot</type>
+        <type>SystemTreeRoot</type>
+      </rule>
+      <rule grant="true">
+        <contition>#{document.hasFacet("SoaNode")}</contition>
+      </rule>
+    </filter>
+    
+  </extension>
+  
+  <!-- ======= -->
+  <!-- Actions  -->
+  <!-- ======= -->
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
+
+    <!-- Override. Hide "Create a new workspace" link -->
+    <action id="newWorkspace" enabled="false" />
+    
+  </extension>
+    
+
+</component>

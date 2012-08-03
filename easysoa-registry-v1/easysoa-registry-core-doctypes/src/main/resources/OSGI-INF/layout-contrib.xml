@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.registry.boilerplate.layout.contrib">
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+    point="layouts">
+
+    <layout name="parents_listing">
+      <templates>
+        <template mode="view">/layouts/easysoa_layout_parents_listing_template.xhtml
+        </template>
+      </templates>
+    </layout>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+    point="widgettypes">
+
+
+    <!-- Display doctype in document title -->
+    <widgetType name="title_and_permlink">
+      <configuration>
+        <sinceVersion>5.4.2</sinceVersion>
+        <title>Title and permanent link</title>
+        <fields>
+          <list>false</list>
+          <complex>false</complex>
+          <defaultConfiguration>
+            <field></field>
+            <field>uid:major_version</field>
+            <field>uid:minor_version</field>
+          </defaultConfiguration>
+        </fields>
+        <categories>
+          <category>document</category>
+        </categories>
+      </configuration>
+      <handler-class>
+        org.nuxeo.ecm.platform.forms.layout.facelets.plugins.TemplateWidgetTypeHandler
+      </handler-class>
+      <property name="template">
+        /widgets/easysoa_title_with_permlink_widget_template.xhtml
+      </property>
+    </widgetType>
+
+    <!-- <layout name="URL_url"> -->
+    <!-- <templates> -->
+    <!-- <template mode="any">/layouts/layout_default_template.xhtml</template> -->
+    <!-- </templates> -->
+    <!-- <rows> -->
+    <!-- <row> -->
+    <!-- <widget>URL_url</widget> -->
+    <!-- </row> -->
+    <!-- </rows> -->
+    <!-- <widget name="URL_url" type="text"> -->
+    <!-- <labels> -->
+    <!-- <label mode="any">URL</label> -->
+    <!-- </labels> -->
+    <!-- <fields> -->
+    <!-- <field>url:url</field> -->
+    <!-- </fields> -->
+    <!-- <properties mode="any"> -->
+    <!-- <property name="required">true</property> -->
+    <!-- <property name="validator">#{easysoaPropertyValidator.validateUrl}</property> -->
+    <!-- </properties> -->
+    <!-- </widget> -->
+    <!-- </layout> -->
+
+  </extension>
+</component>

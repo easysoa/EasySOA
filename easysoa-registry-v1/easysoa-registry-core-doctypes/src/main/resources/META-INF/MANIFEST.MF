@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-Vendor: EasySOA Consortium
+Bundle-ActivationPolicy: lazy
+Bundle-Name: easysoa-registry-boilerplate-doctypes
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.easysoa.registry.boilerplate.doctypes;singleton:=true
+Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
+ OSGI-INF/ecm-type-contrib.xml,
+ OSGI-INF/layout-contrib.xml,
+ OSGI-INF/actions-contrib.xml
