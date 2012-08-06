@@ -19,9 +19,12 @@
  */
 package org.easysoa.exchangehandler;
 
+import java.util.HashMap;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.handler.event.admin.CompiledCondition;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.run.RunManager;
 import org.osoa.sca.annotations.Reference;
@@ -69,6 +72,17 @@ public class MessageRecordHandler implements MessageHandler {
         record.setOutMessage(outMessage);
         // Call runManager to register the exchange record 
         runManager.record(record);
+    }
+
+    @Override
+    public void setListenedServiceUrlToServicesToLaunchUrlMap(HashMap<List<CompiledCondition>, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean isApplicable(InMessage inMessage) {
+        return false;
+        
     }
 
 }
