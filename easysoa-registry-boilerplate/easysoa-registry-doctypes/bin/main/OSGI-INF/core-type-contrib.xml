@@ -7,9 +7,12 @@
   </extension>
 
   <!-- Doctypes registration -->
-  <documentation>http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewContribution/org.nuxeo.ecm.core.CoreExtensions--doctype</documentation>
+  <documentation>
+    http://explorer.nuxeo.org/nuxeo/site/distribution/current/viewContribution/org.nuxeo.ecm.core.CoreExtensions--doctype
+  </documentation>
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
     <doctype extends="Document" name="URL">
+      <schema name="dublincore" />
       <schema name="url" />
       <facet name="Commentable" />
       <facet name="Versionable" />
