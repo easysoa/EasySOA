@@ -12,13 +12,15 @@
 
     <doctype extends="File" name="Specification">
     </doctype>
-
+    
+    <!-- used in : workflow System is Subject of JWT workflow requirements document -->
     <doctype extends="Relation" name="Subject">
     </doctype>
 
     <doctype extends="Specification" name="RuntimeRequirements">
     </doctype>
-
+    
+    <!-- used in : at runtime, a requirement depends on a service -->
     <doctype extends="Relation" name="RuntimeDependency">
     </doctype>
 
