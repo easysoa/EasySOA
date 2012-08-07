@@ -10,6 +10,7 @@
         </template>
       </templates>
     </layout>
+    
   </extension>
 
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"

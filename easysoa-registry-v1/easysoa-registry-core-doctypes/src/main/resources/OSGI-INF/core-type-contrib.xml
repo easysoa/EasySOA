@@ -67,7 +67,6 @@
     <doctype extends="EndpointConsumer" name="DeployedDeliverable">
     </doctype>
     <doctype extends="SoaNode" name="Endpoint">
-      <facet name="Folderish" />
     </doctype>
 
   </extension>
