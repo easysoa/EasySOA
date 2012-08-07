@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<component name="org.easysoa.registry.boilerplate.actions.contrib">
+<component name="org.easysoa.registry.core.doctypes.actions.contrib">
 
   <require>org.nuxeo.ecm.platform.actions</require>
 
@@ -17,6 +17,9 @@
       </rule>
       <rule grant="true">
         <contition>#{document.hasFacet("SoaNode") and document.hasFacet("Folderish")}</contition>
+      </rule>
+      <rule grant="false">
+        <type>Repository</type>
       </rule>
     </filter>
     

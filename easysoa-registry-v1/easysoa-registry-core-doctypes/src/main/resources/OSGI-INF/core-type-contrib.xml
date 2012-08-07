@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.registry.boilerplate.coretypes.contrib">
+<component name="org.easysoa.registry.core.doctypes.coretypes.contrib">
 
+  <require>org.nuxeo.ecm.core.CoreExtensions</require>
 
   <!-- ===================== -->
   <!-- Core doctypes schemas -->
@@ -13,8 +14,8 @@
   <!-- ============= -->
   <!-- Core doctypes -->
   <!-- ============= -->
-  <extension target="org.nuxeo.ecm.core.schema.TypeService"
-    point="doctype">
+  
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
 
     <!-- SoaNode tagging facet, allowing for queries such as #{document.hasFacet("SoaNode")} -->
     <facet name="SoaNode" />
@@ -33,6 +34,11 @@
     </doctype>
 
     <!-- Systems hierarchies -->
+    <doctype extends="Document" name="Repository">
+      <schema name="common" />
+      <schema name="dublincore" />
+      <facet name="Folderish" />
+    </doctype>
     <doctype extends="Folder" name="SystemTreeRoot">
       <schema name="dublincore" />
       <facet name="Commentable" />

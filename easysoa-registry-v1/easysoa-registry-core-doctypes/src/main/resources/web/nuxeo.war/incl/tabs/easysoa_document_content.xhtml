@@ -11,46 +11,51 @@
   <c:if test="false">
    Include document listing and summary view in the same tab
   </c:if>
-
+  
+  <!-- Contents listing -->
   <ui:include src="/incl/tabs/document_content.xhtml" />
+    
+  <c:if test="#{currentDocument.hasFacet('SoaNode')}">
+    
+    <!-- Display parents -->
+    <nxu:set var="parentModels" value="#{documentModelHelperBean.getParents(currentDocument)}">
+        <h3 class="summaryTitle">
+          <h:outputText value="#{messages['label.easysoa.document.parents']}" />
+        </h3>
+        <div class="summaryLayout">
+          <c:forEach items="#{documentModelHelperBean.getParents(currentDocument)}" var="parentModel">
+            <c:if test="#{!parentModel.getType().toString().equals('Repository')}">
+              <span style="margin-right: 20px">
+               <nxu:graphicImage
+                  value="#{nxd:iconPath(parentModel)}"
+                  rendered="#{!empty nxd:iconPath(parentModel)}"
+                  styleClass="smallIcon" />
+                <nxd:restDocumentLink document="#{parentModel}">
+                  <nxh:outputText value=" #{nxd:titleOrId(parentModel)} " />
+                </nxd:restDocumentLink>
+                <nxd:restDocumentLink document="#{parentModel}"
+                  newConversation="true" target="_blank"
+                  tab="#{widgetProperty_tab}"
+                  subTab="#{widgetProperty_subTab}">
+                  <nxu:graphicImage value="/icons/external.gif"
+                    style="vertical-align:middle"
+                    alt="#{messages['permalink.newTab']}"
+                    title="#{messages['permalink.newTab']}" />
+                </nxd:restDocumentLink>
+               </span>
+             </c:if>
+          </c:forEach>
+        </div>
+    </nxu:set>
+    
+    <!--  Display metadata, including for folderish documents -->
+    <h:form id="document_view">
+      <a4j:region id="documentViewRegion">
+        <a4j:outputPanel id="documentViewPanel">
+          <nxl:layout value="#{currentDocument}" mode="view"  name="#{currentDocumentSummaryLayout}" />
+        </a4j:outputPanel>
+      </a4j:region>
+    </h:form>
+  </c:if>
 
-  <!--  Display parents -->
-  <nxu:set var="parentModels" value="#{documentModelHelperBean.getParents(currentDocument)}">
-    <c:if test="#{parentModels.size() > 1}">
-      <h3 class="summaryTitle">
-        <h:outputText value="#{messages['label.easysoa.document.parents']}" />
-      </h3>
-      <div class="summaryLayout">
-        <ui:repeat value="#{documentModelHelperBean.getParents(currentDocument)}" var="parentModel">
-          <span style="margin-right: 20px">
-           <nxu:graphicImage
-              value="#{nxd:iconPath(parentModel)}"
-              rendered="#{!empty nxd:iconPath(parentModel)}"
-              styleClass="smallIcon" />
-            <nxd:restDocumentLink document="#{parentModel}">
-              <nxh:outputText value=" #{nxd:titleOrId(parentModel)} " />
-            </nxd:restDocumentLink>
-            <nxd:restDocumentLink document="#{parentModel}"
-              newConversation="true" target="_blank"
-              tab="#{widgetProperty_tab}"
-              subTab="#{widgetProperty_subTab}">
-              <nxu:graphicImage value="/icons/external.gif"
-                style="vertical-align:middle"
-                alt="#{messages['permalink.newTab']}"
-                title="#{messages['permalink.newTab']}" />
-            </nxd:restDocumentLink>
-           </span>
-        </ui:repeat>
-      </div>
-    </c:if>
-  </nxu:set>
-
-  <h:form id="document_view">
-    <a4j:region id="documentViewRegion">
-      <a4j:outputPanel id="documentViewPanel">
-        <nxl:layout value="#{currentDocument}" mode="view"
-          name="#{currentDocumentSummaryLayout}" />
-      </a4j:outputPanel>
-    </a4j:region>
-  </h:form>
 </div>

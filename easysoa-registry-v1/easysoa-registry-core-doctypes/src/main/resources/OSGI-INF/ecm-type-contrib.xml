@@ -1,12 +1,35 @@
 <?xml version="1.0" ?>
-<component name="org.easysoa.registry.boilerplate.ecmtypes.contrib">
+<component name="org.easysoa.registry.core.doctypes.ecmtypes.contrib">
 
   <!-- ============ -->
   <!-- ECM Doctypes -->
   <!-- ============ -->
+  
   <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
 
     <!-- Systems hierarchies -->
+    <type id="Repository" coretype="Repository">
+      <label>Repository</label>
+      <icon>/icons/workspace.gif</icon>
+      <bigIcon>/icons/workspace_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+      </layouts>
+      <layouts mode="listing">
+        <layout>document_listing</layout>
+        <layout>document_listing_compact_2_columns</layout>
+        <layout>document_listing_icon_2_columns</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
     <type id="WorkspaceRoot" coretype="WorkspaceRoot">
       <subtypes>
         <type>SystemTreeRoot</type>
@@ -69,7 +92,6 @@
       <bigIcon>/icons/workspace_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -98,7 +120,6 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -124,7 +145,6 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -152,7 +172,6 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -180,7 +199,6 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -207,7 +225,6 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
     </type>
@@ -219,7 +236,6 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -245,7 +261,6 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>parents_listing</layout>
         <layout>heading</layout>
       </layouts>
     </type>
