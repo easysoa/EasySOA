@@ -20,7 +20,7 @@ public class Subscription {
     //Map<List<ListenedService> ,List<LaunchedServices>> content;
 
     //List<ListenedService> listenedservices;
-    private Conditions conditions;
+    private ListenedService listenedService;
     private List<LaunchedService> launchedservices;
 
 
@@ -29,22 +29,8 @@ public class Subscription {
      */
 
     public Subscription(){
-            this.conditions = new Conditions();
+            this.listenedService = new ListenedService();
             this.launchedservices = new ArrayList<LaunchedService>();
-    }
-
-    /**
-     * @return the conditions
-     */
-    public Conditions getConditions() {
-        return conditions;
-    }
-
-    /**
-     * @param conditions the conditions to set
-     */
-    public void setConditions(Conditions conditions) {
-        this.conditions = conditions;
     }
 
     /**
@@ -58,7 +44,7 @@ public class Subscription {
      * @param launchedservices the launchedservices to set
      */
     public void setLaunchedservices(List<LaunchedService> launchedservices) {
-        this.launchedservices = launchedservices;
+        this.setLaunchedservices(launchedservices);
     }
 
     public List<String> getLaunchedServiceUrl(){
@@ -68,5 +54,20 @@ public class Subscription {
         }
         return listLaunchedService;
     }
-	
+
+    /**
+     * @return the listenedService
+     */
+    public ListenedService getListenedService() {
+        return listenedService;
+    }
+
+    /**
+     * @param listenedService the listenedService to set
+     */
+    public void setListenedService(ListenedService listenedService) {
+        this.listenedService = listenedService;
+    }
+
+  
 }

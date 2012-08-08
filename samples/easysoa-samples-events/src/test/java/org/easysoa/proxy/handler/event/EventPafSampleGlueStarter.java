@@ -11,6 +11,7 @@ import org.easysoa.EasySOAConstants;
 import org.easysoa.exchangehandler.HandlerManagerImpl;
 import org.easysoa.proxy.handler.event.admin.CompiledCondition;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
+import org.easysoa.proxy.handler.event.admin.RegexCondition;
 import org.easysoa.proxy.test.HttpUtils;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
@@ -81,7 +82,7 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
         value.add("http://localhost:8090/glue");
         
         List<CompiledCondition> listCompiledCondition = new ArrayList<CompiledCondition>();
-        listCompiledCondition.add(new CompiledCondition(urlToListen));
+        listCompiledCondition.add(new RegexCondition(urlToListen));
 	listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);
         
         listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);

@@ -50,7 +50,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
 
     public EventMessageHandlerImpl() {
         // Little test of the CompiledCondition
-        Conditions conditions = new Conditions("http://localhost:8200/esb/AirportService");
+     /*   CompiledCondition compiledCondition = new CompiledCondition("http://localhost:8200/esb/AirportService");
         LaunchedService launchedService = new LaunchedService();
         launchedService.setUrl("http://www.google.fr");
 
@@ -70,6 +70,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
         this.listenedServiceUrlToServicesToLaunchUrlMap = subscriptions.updateBehaviors();
         //.put(listCompiledCondition1, listCall);
         // End of Test
+        * */
 
     }
 

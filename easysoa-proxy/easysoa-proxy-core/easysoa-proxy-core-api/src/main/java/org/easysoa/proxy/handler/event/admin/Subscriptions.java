@@ -52,9 +52,10 @@ public class Subscriptions {
         Map<List<CompiledCondition>, List<String>> behavior = new HashMap<List<CompiledCondition>, List<String>>();
         List<CompiledCondition> listCompiledCondition = new ArrayList<CompiledCondition>();
         for(Subscription subscription: this.subscriptions){
-            CompiledCondition compiledCondition = new CompiledCondition(subscription.getConditions().getRegexConditions());
-            listCompiledCondition.add(compiledCondition);
-            behavior.put(listCompiledCondition, subscription.getLaunchedServiceUrl());
+            //TODO revoir  comment ceer des JXPath Condition et ou seront elles creer.
+           // CompiledCondition compiledCondition = new CompiledCondition(subscription.getListenedService().getUrl());
+           // listCompiledCondition.add(compiledCondition);
+           // behavior.put(listCompiledCondition, subscription.getLaunchedServiceUrl());
         }
         return behavior;
     }

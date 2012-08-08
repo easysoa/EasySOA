@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.ws.rs.*;
 import org.easysoa.exchangehandler.MessageHandler;
 import org.easysoa.proxy.handler.event.admin.CompiledCondition;
-import org.easysoa.proxy.handler.event.admin.Conditions;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
 import org.easysoa.proxy.handler.event.admin.LaunchedService;
 import org.easysoa.proxy.handler.event.admin.ListenedService;
@@ -45,51 +44,51 @@ public class SubscriptionWebserviceImpl implements ISubscriptionWebService {
     public Subscriptions simulResult() {
 
         List<Subscription> listsub = new ArrayList<Subscription>();
-        
-        
+
+
         LaunchedService laweb = new LaunchedService();
         laweb.setUrl("http://Yahoo.fr");
 
 
         LaunchedService laweb1 = new LaunchedService();
         laweb1.setUrl("http://Yahorgeo.fr");
-        
+        /*      
        
         
-        Conditions conds1 = new Conditions("http://amazon.fr");
-        Subscription subsc1 = new Subscription();
-        subsc1.setConditions(conds1);
-        List<LaunchedService> list1 = new ArrayList<LaunchedService>();
-        list1.add(laweb);
-        subsc1.setLaunchedservices(list1);
-        listsub.add(subsc1);
+         Conditions conds1 = new Conditions("http://amazon.fr");
+         Subscription subsc1 = new Subscription();
+         subsc1.setConditions(conds1);
+         List<LaunchedService> list1 = new ArrayList<LaunchedService>();
+         list1.add(laweb);
+         subsc1.setLaunchedservices(list1);
+         listsub.add(subsc1);
         
-        Conditions conds2 = new Conditions("http://google.fr");
-        Subscription subsc2 = new Subscription();
-        subsc1.setConditions(conds2);
-        List<LaunchedService> list2 = new ArrayList<LaunchedService>();
-        list2.add(laweb1);
-        subsc2.setLaunchedservices(list2);
-        listsub.add(subsc2);
+         Conditions conds2 = new Conditions("http://google.fr");
+         Subscription subsc2 = new Subscription();
+         subsc1.setConditions(conds2);
+         List<LaunchedService> list2 = new ArrayList<LaunchedService>();
+         list2.add(laweb1);
+         subsc2.setLaunchedservices(list2);
+         listsub.add(subsc2);
         
-        this.subscriptions.setSubscriptions(listsub);
+         this.subscriptions.setSubscriptions(listsub);
         
-    /*    ArrayList<LaunchedService> launchlist = new ArrayList<LaunchedService>();
-        launchlist.add(laweb);
-        launchlist.add(laweb1);
+         ArrayList<LaunchedService> launchlist = new ArrayList<LaunchedService>();
+         launchlist.add(laweb);
+         launchlist.add(laweb1);
 
-        ArrayList<ListenedService> listelist = new ArrayList<ListenedService>();
+         ArrayList<ListenedService> listelist = new ArrayList<ListenedService>();
 
-        listelist.add(lisw);
+         listelist.add(lisw);
 
-        subsc.setLaunchedservices(launchlist);
-        Conditions conditions = new Conditions("http://amazon.fr");
-        subsc.setConditions(conditions);
+         subsc.setLaunchedservices(launchlist);
+         Conditions conditions = new Conditions("http://amazon.fr");
+         subsc.setConditions(conditions);
 
-        ArrayList<Subscription> listesubscription = new ArrayList<Subscription>();
+         ArrayList<Subscription> listesubscription = new ArrayList<Subscription>();
 
-        listesubscription.add(subsc);
-        subscriptions.setSubscriptions(listesubscription);*/
+         listesubscription.add(subsc);
+         subscriptions.setSubscriptions(listesubscription);*/
         return subscriptions;
     }
 
