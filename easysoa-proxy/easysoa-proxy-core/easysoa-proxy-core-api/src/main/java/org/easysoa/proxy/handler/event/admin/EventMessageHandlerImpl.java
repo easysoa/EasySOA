@@ -88,17 +88,15 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
         List<String> servicesToLaunchUrls;
 
         synchronized (this) {
-            List<String> servicesToLaunchUrlsOrig = new ArrayList<String>(); //this.listenedServiceUrlToServicesToLaunchUrlMap.get(listenedServiceUrl);
+            List<String> servicesToLaunchUrlsOrig = null; //this.listenedServiceUrlToServicesToLaunchUrlMap.get(listenedServiceUrl);
 
             //TODO maybe we should remove doublons from the serviceToLaunchsUrls
             for (Entry<List<CompiledCondition>, List<String>> currentEntry : listenedServiceUrlToServicesToLaunchUrlMap.entrySet()) {
                 List<CompiledCondition> listCompiledCondition = currentEntry.getKey();
-                for (CompiledCondition compiledCondition : listCompiledCondition) {
-                    if (compiledCondition.matches(inMessage)) {
-                        for (String serviceToLaunch : currentEntry.getValue()) {
-                            servicesToLaunchUrlsOrig.add(serviceToLaunch);
-                        }
-                    }
+                ConditionsMatcher conditionsMatcher = new ConditionsMatcher();
+                if(conditionsMatcher.matchesAll(listCompiledCondition, inMessage)){
+                    servicesToLaunchUrlsOrig = currentEntry.getValue();
+                    break;
                 }
             }
             servicesToLaunchUrls = new ArrayList<String>(servicesToLaunchUrlsOrig);
