@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="smartTravelProxyServerIntent">
+  <include name="ProxyServerIntent"/>
+  <property name="ProxyServer">localhost</property>
+  <property name="ProxyServerPort" type="xsd:int">8082</property>
+</composite>

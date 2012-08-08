@@ -176,6 +176,7 @@ public class AutoRearmFuseIntent implements IntentHandler {
 		        request.getResponse().sendError(500, ex.getMessage());
 		    }
 		}
+		// Proceed the request
 		ret = ijp.proceed();
 		return ret;
 	}
