@@ -61,7 +61,6 @@
 
     <!-- Implementation level -->
     <doctype extends="EndpointConsumer" name="Deliverable">
-      <facet name="EndpointConsumer" />
     </doctype>
     <doctype extends="SoaNode" name="ServiceImplementation">
       <facet name="Folderish" />

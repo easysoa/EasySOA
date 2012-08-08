@@ -7,7 +7,7 @@ package org.easysoa.registry.types;
  *
  */
 public class SystemDoctype {
-    
+
     public static final String DOCTYPE = "System";
     
 }

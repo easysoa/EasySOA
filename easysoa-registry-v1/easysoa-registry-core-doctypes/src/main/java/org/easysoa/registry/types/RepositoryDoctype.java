@@ -3,7 +3,6 @@ package org.easysoa.registry.types;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 
 /**
@@ -14,8 +13,10 @@ import org.nuxeo.ecm.core.api.PathRef;
 public class RepositoryDoctype {
     
     public static final String DOCTYPE = "Repository";
-    
-    public static final DocumentRef REPOSITORY_REF = new PathRef("/default-domain/repository");
+
+    public static final String REPOSITORY_PATH = "/default-domain/repository";  
+ 
+    public static final PathRef REPOSITORY_REF = new PathRef(REPOSITORY_PATH);
     
     private static final String REPOSITORY_TITLE = "Repository"; // TODO l10n
 
@@ -30,5 +31,9 @@ public class RepositoryDoctype {
             documentManager.save();
             return repositoryModel;
         }
+    }
+    
+    public static void ensureRepositoryInstanceExists(CoreSession documentManager) throws ClientException {
+        getRepositoryInstance(documentManager);
     }
 }

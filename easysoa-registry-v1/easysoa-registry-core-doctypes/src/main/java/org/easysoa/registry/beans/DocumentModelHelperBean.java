@@ -1,5 +1,6 @@
 package org.easysoa.registry.beans;
 
+import org.easysoa.registry.services.DocumentService;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
@@ -15,14 +16,18 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 @Install(precedence = Install.FRAMEWORK)
 public class DocumentModelHelperBean {
 
-    @In CoreSession documentManager;
+    @In
+    CoreSession documentManager;
 
+    @In(create = true)
+    DocumentService documentService;
+    
     public String getDocumentTypeLabel(DocumentModel model) throws Exception {
-        return DocumentModelHelper.getDocumentTypeLabel(model);
+        return DocumentModelHelper.getDocumentTypeLabel(model.getType());
     }
     
-    public DocumentModelList getParents(DocumentModel documentModel) throws Exception {
-        return DocumentModelHelper.getParents(documentManager, documentModel);
+    public DocumentModelList findAllParents(DocumentModel documentModel) throws Exception {
+        return documentService.findAllParents(documentManager, documentModel);
     }
-
+    
 }

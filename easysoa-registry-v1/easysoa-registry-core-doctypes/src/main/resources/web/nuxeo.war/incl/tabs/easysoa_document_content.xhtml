@@ -18,12 +18,12 @@
   <c:if test="#{currentDocument.hasFacet('SoaNode')}">
     
     <!-- Display parents -->
-    <nxu:set var="parentModels" value="#{documentModelHelperBean.getParents(currentDocument)}">
+    <nxu:set var="parentModels" value="#{documentModelHelperBean.findAllParents(currentDocument)}">
         <h3 class="summaryTitle">
           <h:outputText value="#{messages['label.easysoa.document.parents']}" />
         </h3>
         <div class="summaryLayout">
-          <c:forEach items="#{documentModelHelperBean.getParents(currentDocument)}" var="parentModel">
+          <c:forEach items="#{parentModels}" var="parentModel">
             <c:if test="#{!parentModel.getType().toString().equals('Repository')}">
               <span style="margin-right: 20px">
                <nxu:graphicImage
