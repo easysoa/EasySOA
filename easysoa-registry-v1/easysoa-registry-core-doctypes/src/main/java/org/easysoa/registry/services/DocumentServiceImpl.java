@@ -115,6 +115,11 @@ public class DocumentServiceImpl implements DocumentService {
     public String getSourcePath(String doctype, String name) {
         return getSourceFolderPath(doctype) + '/' + name;
     }
+    
+    public void ensureSourceFolderExists(CoreSession documentManager, String doctype) throws ClientException {
+        RepositoryDoctype.getRepositoryInstance(documentManager);
+        getSourceFolder(documentManager, doctype);
+    }
 
     private DocumentModel getSourceFolder(CoreSession documentManager, String doctype) throws ClientException {
         PathRef sourceFolderRef = new PathRef(getSourceFolderPath(doctype));
@@ -127,11 +132,6 @@ public class DocumentServiceImpl implements DocumentService {
             sourceFolderModel = documentManager.createDocument(sourceFolderModel);
             return sourceFolderModel;
         }
-    }
-
-    private void ensureSourceFolderExists(CoreSession documentManager, String doctype) throws ClientException {
-        RepositoryDoctype.getRepositoryInstance(documentManager);
-        getSourceFolder(documentManager, doctype);
     }
 
 

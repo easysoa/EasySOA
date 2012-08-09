@@ -46,7 +46,7 @@ public class RepositoryManagementListener implements EventListener {
             DocumentRef currentParentRef = sourceDocument.getParentRef();
             String sourceFolderPath = documentService.getSourceFolderPath(sourceDocument.getType());
             if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)) {
-                RepositoryDoctype.ensureRepositoryInstanceExists(documentManager);
+                documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
                 DocumentModel repositoryDocument = documentManager.move(sourceDocument.getRef(),
                         new PathRef(sourceFolderPath), sourceDocument.getName());
                 documentManager.createProxy(repositoryDocument.getRef(), currentParentRef);

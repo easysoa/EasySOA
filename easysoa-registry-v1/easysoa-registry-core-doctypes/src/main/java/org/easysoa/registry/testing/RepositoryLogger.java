@@ -81,7 +81,7 @@ public class RepositoryLogger {
     }
     
     public void logDocumentAndChildren(DocumentModel model) {
-        if (logger.getLevel().isGreaterOrEqual(level)) {
+        if (logger.isEnabledFor(level)) {
             try {
                 // Header
                 String separator = getDashes(title.length());
@@ -98,7 +98,6 @@ public class RepositoryLogger {
     }
 
     private void logDocumentAndChildren(DocumentModel model, int indent) throws ClientException {
-        
         // Log document
         if (matcher.matches(model)) {
             logDetailed(indent, model);

@@ -32,5 +32,8 @@ public interface DocumentService {
     String getSourceFolderPath(String doctype);
 
     String getSourcePath(String doctype, String name);
+
+    void ensureSourceFolderExists(CoreSession documentManager, String doctype)
+            throws ClientException;
     
 }
