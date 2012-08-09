@@ -9,6 +9,7 @@ import java.util.Map;
 import org.easysoa.message.InMessage;
 
 /**
+ * For check if the inMessage match with all the conditions
  *
  * @author fntangke
  */
@@ -19,9 +20,20 @@ public class ConditionsMatcher {
      */
     public ConditionsMatcher() {
     }
-    
-    public boolean matchesAll(List<CompiledCondition> compiledConditionsList, InMessage inMessage){
+
+    /**
+     * 
+     * @param compiledConditionsList
+     * @param inMessage
+     * @return true if he inMessage matches with compiledCondition
+     */
+    public boolean matchesAll(List<CompiledCondition> compiledConditionsList, InMessage inMessage) {
         //TODO  update this method
+        for(CompiledCondition compiledCondition : compiledConditionsList){
+            if(!compiledCondition.matches(inMessage)) {
+                return false;
+            }
+        }
         return true;
     }
     
