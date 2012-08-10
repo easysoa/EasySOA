@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.exchangehandler.HandlerManagerImpl;
 import org.easysoa.proxy.handler.event.admin.CompiledCondition;
 import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
 import org.easysoa.proxy.handler.event.admin.RegexCondition;
@@ -33,7 +32,7 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
     /**
      * Logger
      */
-    private Logger logger = Logger.getLogger(HandlerManagerImpl.class.getName());    
+    private Logger logger = Logger.getLogger(EventPafSampleGlueStarter.class.getName());    
     /**
      * Initialize one time the remote systems for the test
      * FraSCAti and HTTP discovery Proxy ...
