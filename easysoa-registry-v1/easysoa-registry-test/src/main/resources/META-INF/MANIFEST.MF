@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-Vendor: EasySOA Consortium
+Bundle-ActivationPolicy: lazy
+Bundle-Name: easysoa-registry-test
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.easysoa.registry.test;singleton:=true

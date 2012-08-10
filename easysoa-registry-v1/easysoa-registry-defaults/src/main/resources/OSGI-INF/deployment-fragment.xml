@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<fragment version="1">
+
+  <require>org.nuxeo.ecm.core</require>
+
+  <extension target="application#MODULE">
+    <!-- Module registration -->
+    <module>
+      <ejb>${bundle.fileName}</ejb>
+    </module>
+  </extension>
+
+</fragment>

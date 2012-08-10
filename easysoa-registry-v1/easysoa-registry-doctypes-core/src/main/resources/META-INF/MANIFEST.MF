@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-Vendor: EasySOA Consortium
+Bundle-ActivationPolicy: lazy
+Bundle-Name: easysoa-registry-doctypes-core
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.easysoa.registry.doctypes.core;singleton:=true
+Nuxeo-Component: OSGI-INF/DocumentService.xml,
+ OSGI-INF/IntelligentSystemTreeService.xml,
+ OSGI-INF/core-type-contrib.xml,
+ OSGI-INF/ecm-type-contrib.xml,
+ OSGI-INF/layout-contrib.xml,
+ OSGI-INF/action-contrib.xml,
+ OSGI-INF/event-listener-contrib.xml

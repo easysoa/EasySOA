@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.registry.defaults.ist.contrib">
+
+  <extension target="org.easysoa.registry.systems.IntelligentSystemTreeService" point="classifiers">
+      <classifier name="byEnvironment">org.easysoa.registry.systems.ByEnvironmentClassifier</classifier>
+  </extension>
+  
+  <extension target="org.easysoa.registry.systems.IntelligentSystemTreeService" point="intelligentSystemTrees">
+      <intelligentSystemTree name="byEnvironment">
+        <title>By Environment</title>
+        <classifier>byEnvironment</classifier>
+      </intelligentSystemTree>
+  </extension>
+  
+</component>
