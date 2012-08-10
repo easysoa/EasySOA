@@ -8,7 +8,8 @@
   <!-- ===================== -->
 
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
-    <schema name="url" src="schemas/intelligent-system-tree-root.xsd" prefix="intsys" />
+    <schema name="istr" src="schemas/intelligent-system-tree-root.xsd" prefix="istr" />
+    <schema name="environment" src="schemas/environment.xsd" prefix="env" />
   </extension>
 
   <!-- ============= -->
@@ -46,9 +47,12 @@
       <facet name="Publishable" />
     </doctype>
     <doctype extends="SystemTreeRoot" name="IntelligentSystemTreeRoot">
+      <schema name="istr" />
     </doctype>
     <doctype extends="SoaNode" name="System">
       <facet name="Folderish" />
+    </doctype>
+    <doctype extends="Folder" name="IntelligentSystem">
     </doctype>
 
     <!-- Architecture level -->
@@ -70,8 +74,10 @@
 
     <!-- Deployment level -->
     <doctype extends="EndpointConsumer" name="DeployedDeliverable">
+      <schema name="environment" />
     </doctype>
     <doctype extends="SoaNode" name="Endpoint">
+      <schema name="environment" />
     </doctype>
 
   </extension>

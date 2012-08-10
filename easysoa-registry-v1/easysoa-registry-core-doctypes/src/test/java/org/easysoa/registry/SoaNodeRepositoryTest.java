@@ -1,15 +1,11 @@
 package org.easysoa.registry;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.easysoa.registry.services.DocumentService;
-import org.easysoa.registry.testing.RepositoryLogger;
 import org.easysoa.registry.types.DeliverableDoctype;
 import org.easysoa.registry.types.RepositoryDoctype;
 import org.easysoa.registry.types.SystemDoctype;
 import org.easysoa.registry.types.SystemTreeRootDoctype;
 import org.easysoa.registry.utils.DocumentModelHelper;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
@@ -18,21 +14,24 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
+import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 import com.google.inject.Inject;
 
 @RunWith(FeaturesRunner.class)
-@Features(EasySOADoctypesFeature.class)
+@Features(CoreFeature.class)
+@Deploy("org.easysoa.registry.core.doctypes")
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class RepositoryDoctypeTest {
+public class SoaNodeRepositoryTest {
 
     @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(RepositoryDoctypeTest.class);
+    private static Logger logger = Logger.getLogger(SoaNodeRepositoryTest.class);
 
     @Inject
     CoreSession documentManager;
@@ -45,7 +44,7 @@ public class RepositoryDoctypeTest {
     private static DocumentModel systemModel;
 
     private static DocumentModel deliverableModel;
-
+    
     @Test
     public void testRepositoryCreation() throws ClientException {
         // Check that the repository document doesn't exist
@@ -150,9 +149,4 @@ public class RepositoryDoctypeTest {
         Assert.assertEquals("The deliverable must now have 3 proxies", 3, proxies.size());
     }
     
-    @After
-    public void log() {
-        RepositoryLogger repoLogger = new RepositoryLogger(documentManager, Level.DEBUG);
-        repoLogger.logAllRepository();
-    }
 }

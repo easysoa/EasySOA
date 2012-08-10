@@ -1,4 +1,4 @@
-package org.easysoa.registry.services;
+package org.easysoa.registry;
 
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -14,13 +14,16 @@ public interface DocumentService {
     DocumentModel copy(CoreSession documentManager, DocumentModel sourceModel, DocumentRef destRef)
             throws ClientException;
     
-    DocumentModel findSource(CoreSession documentManager, String doctype, String name)
+    /**
+     * If a SoaNode, returns the source (non-proxy) from the repository
+     */
+    DocumentModel find(CoreSession documentManager, String doctype, String name)
             throws ClientException;
 
     DocumentModelList findProxies(CoreSession documentManager, DocumentModel model)
             throws ClientException;
 
-    DocumentModelList findAll(CoreSession documentManager, String doctype, String name)
+    DocumentModelList findAllInstances(CoreSession documentManager, String doctype, String name)
             throws ClientException;
 
     DocumentModelList findAllInstances(CoreSession documentManager, DocumentModel model)

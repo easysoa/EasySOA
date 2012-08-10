@@ -1,0 +1,89 @@
+package org.easysoa.registry;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.easysoa.registry.testing.RepositoryLogger;
+import org.easysoa.registry.types.EndpointDoctype;
+import org.easysoa.registry.types.IntelligentSystemDoctype;
+import org.easysoa.registry.types.IntelligentSystemTreeRootDoctype;
+import org.easysoa.registry.types.SystemDoctype;
+import org.easysoa.registry.types.SystemTreeRootDoctype;
+import org.easysoa.registry.utils.DocumentModelHelper;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.test.CoreFeature;
+import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
+import org.nuxeo.ecm.core.test.annotations.Granularity;
+import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
+import org.nuxeo.runtime.test.runner.Deploy;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LocalDeploy;
+
+import com.google.inject.Inject;
+
+@RunWith(FeaturesRunner.class)
+@Features(CoreFeature.class)
+@Deploy("org.easysoa.registry.core.doctypes")
+@LocalDeploy({ "org.easysoa.registry.core.doctypes:OSGI-INF/sample-ist-contrib.xml" })
+@RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
+public class IntelligentSystemTreeTest {
+
+    @SuppressWarnings("unused")
+    private static Logger logger = Logger.getLogger(IntelligentSystemTreeTest.class);
+
+    @Inject
+    CoreSession documentManager;
+
+    @Inject
+    DocumentService documentService;
+
+    @Test
+    public void testByEnvironmentTree() throws ClientException {
+        // Create manual SystemTreeRoot
+        DocumentModel strModel = documentService.create(documentManager, SystemTreeRootDoctype.DOCTYPE,
+                DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
+
+        // Create System in it
+        DocumentModel systemModel = documentService.create(documentManager, SystemDoctype.DOCTYPE,
+                strModel.getPathAsString(), "MySystem", "MySystem");
+
+        // Create Endpoint in it
+        DocumentModel endpointModel  = documentService.create(documentManager, EndpointDoctype.DOCTYPE,
+                systemModel.getPathAsString(), "MyEndpoint", "MyEndpoint");
+        endpointModel.setPropertyValue(EndpointDoctype.XPATH_ENVIRONMENT, "Production");
+        documentManager.saveDocument(endpointModel);
+        
+        documentManager.save();
+
+        // Make sure that there are now 2 proxies of the endpoint,
+        // one in the manual tree, the other in the By Environment intelligent tree
+        
+        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRootDoctype.DOCTYPE, "byEnvironment:byEnvironment");
+        Assert.assertNotNull("A By Environment intelligent system tree root must have been created",
+                istrModel);
+        Assert.assertEquals("The By Environment STR must contain 1 system", 1, documentManager.getChildren(istrModel.getRef()).size());
+        
+        DocumentModel productionSystem = documentService.find(documentManager, IntelligentSystemDoctype.DOCTYPE, "Production");
+        Assert.assertNotNull("A 'Production' system must have been created", productionSystem);
+
+        DocumentModelList productionSystemChildren = documentManager.getChildren(productionSystem.getRef());
+        Assert.assertEquals("The 'Production' system must have a child", 1, productionSystemChildren.size());
+        
+        DocumentModel childModel = productionSystemChildren.get(0);
+        Assert.assertTrue("The document in the 'Production' system must be the expected endpoint",
+                EndpointDoctype.DOCTYPE.equals(childModel.getType()) && "MyEndpoint".equals(childModel.getTitle()));
+    }
+
+    @After
+    public void log() {
+        RepositoryLogger repoLogger = new RepositoryLogger(documentManager, Level.DEBUG);
+        repoLogger.logAllRepository();
+    }
+}

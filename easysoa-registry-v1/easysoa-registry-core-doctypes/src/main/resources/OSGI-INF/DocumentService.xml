@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.registry.services.DocumentService">
+<component name="org.easysoa.registry.DocumentService" version="1.0">
 
-  <implementation class="org.easysoa.registry.services.DocumentServiceImpl" />
+  <implementation class="org.easysoa.registry.DocumentServiceImpl" />
 
   <service>
-    <provide interface="org.easysoa.registry.services.DocumentService" />
+    <provide interface="org.easysoa.registry.DocumentService" />
   </service>
 
 </component>

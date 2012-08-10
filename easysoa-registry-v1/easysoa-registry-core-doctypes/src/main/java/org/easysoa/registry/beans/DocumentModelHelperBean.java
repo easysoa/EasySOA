@@ -1,6 +1,6 @@
 package org.easysoa.registry.beans;
 
-import org.easysoa.registry.services.DocumentService;
+import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;

@@ -112,6 +112,29 @@
         <type>Deliverable</type>
       </subtypes>
     </type>
+    <type id="IntelligentSystem" coretype="IntelligentSystem">
+      <label>Intelligent System</label>
+      <icon>/icons/workspace.gif</icon>
+      <bigIcon>/icons/workspace_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>heading</layout>
+      </layouts>
+      <layouts mode="listing">
+        <layout>document_listing</layout>
+        <layout>document_listing_compact_2_columns</layout>
+        <layout>document_listing_icon_2_columns</layout>
+        <layout>default_summary_layout</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
 
     <!-- Architecture level -->
     <type id="SoftwareComponent" coretype="SoftwareComponent">

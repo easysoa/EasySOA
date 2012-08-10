@@ -1,8 +1,7 @@
-package org.easysoa.registry.listeners;
+package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
-import org.easysoa.registry.services.DocumentService;
-import org.easysoa.registry.types.RepositoryDoctype;
+import org.easysoa.registry.systems.IntelligentSystemTreeService;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -51,12 +50,18 @@ public class RepositoryManagementListener implements EventListener {
                         new PathRef(sourceFolderPath), sourceDocument.getName());
                 documentManager.createProxy(repositoryDocument.getRef(), currentParentRef);
             }
+            documentManager.save();
+            
+            // Intelligent system trees update
+            IntelligentSystemTreeService intelligentSystemTreeServiceCache =
+                    Framework.getService(IntelligentSystemTreeService.class);
+            intelligentSystemTreeServiceCache.handleDocumentModel(documentManager, sourceDocument);
+            documentManager.save();
+            
         } catch (Exception e) {
             logger.error("Failed to check document after creation", e);
         }
         
-        
     }
-    
 
 }

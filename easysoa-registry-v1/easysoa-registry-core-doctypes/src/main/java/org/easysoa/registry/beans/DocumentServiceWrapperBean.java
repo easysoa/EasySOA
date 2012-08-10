@@ -2,7 +2,7 @@ package org.easysoa.registry.beans;
 
 import java.io.Serializable;
 
-import org.easysoa.registry.services.DocumentService;
+import org.easysoa.registry.DocumentService;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
@@ -11,7 +11,7 @@ import org.jboss.seam.annotations.Unwrap;
 import org.nuxeo.runtime.api.Framework;
 
 @Name("documentService")
-@Scope(ScopeType.EVENT)
+@Scope(ScopeType.CONVERSATION)
 @Install(precedence = Install.FRAMEWORK)
 public class DocumentServiceWrapperBean implements Serializable {
 
@@ -20,7 +20,7 @@ public class DocumentServiceWrapperBean implements Serializable {
     protected DocumentService documentService;
 
     @Unwrap
-    public DocumentService getService() throws Exception {
+    public DocumentService getDocumentService() throws Exception {
         if (documentService == null) {
             documentService = Framework.getService(DocumentService.class);
         }

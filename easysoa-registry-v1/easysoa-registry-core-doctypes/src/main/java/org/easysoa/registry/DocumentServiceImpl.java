@@ -1,5 +1,6 @@
-package org.easysoa.registry.services;
+package org.easysoa.registry;
 
+import org.easysoa.registry.types.IntelligentSystemDoctype;
 import org.easysoa.registry.types.RepositoryDoctype;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -63,7 +64,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    public DocumentModel findSource(CoreSession documentManager, String doctype, String name) throws ClientException {
+    public DocumentModel find(CoreSession documentManager, String doctype, String name) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?' AND " + NXQL.ECM_ISPROXY + " = 0",
                 new Object[] { doctype, name },
                 false, true);
@@ -75,7 +76,7 @@ public class DocumentServiceImpl implements DocumentService {
         return documentManager.getProxies(model.getRef(), null);
     }
    
-    public DocumentModelList findAll(CoreSession documentManager, String doctype, String name) throws ClientException {
+    public DocumentModelList findAllInstances(CoreSession documentManager, String doctype, String name) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'",
                 new Object[] { doctype, name },
                 false, true);
@@ -83,7 +84,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public DocumentModelList findAllInstances(CoreSession documentManager, DocumentModel model) throws ClientException {
-        return findAll(documentManager, model.getType(), model.getName());
+        return findAllInstances(documentManager, model.getType(), model.getName());
     }
     
     public DocumentModelList findAllParents(CoreSession documentManager, DocumentModel documentModel) throws Exception {
@@ -127,8 +128,9 @@ public class DocumentServiceImpl implements DocumentService {
             return documentManager.getDocument(sourceFolderRef);
         }
         else {
-            DocumentModel sourceFolderModel = documentManager.createDocumentModel(RepositoryDoctype.REPOSITORY_PATH, doctype, "Folder");
-            sourceFolderModel.setProperty("dublincore", "title", DocumentModelHelper.getDocumentTypeLabel(doctype));
+            DocumentModel sourceFolderModel = documentManager.createDocumentModel(RepositoryDoctype.REPOSITORY_PATH,
+                    doctype, IntelligentSystemDoctype.DOCTYPE);
+            sourceFolderModel.setProperty("dublincore", "title", DocumentModelHelper.getDocumentTypeLabel(doctype) + "s");
             sourceFolderModel = documentManager.createDocument(sourceFolderModel);
             return sourceFolderModel;
         }
