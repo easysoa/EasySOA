@@ -6,7 +6,7 @@ import org.easysoa.registry.testing.RepositoryLogger;
 import org.easysoa.registry.types.EndpointDoctype;
 import org.easysoa.registry.types.IntelligentSystemDoctype;
 import org.easysoa.registry.types.IntelligentSystemTreeRootDoctype;
-import org.easysoa.registry.types.SystemDoctype;
+import org.easysoa.registry.types.TaggingFolderDoctype;
 import org.easysoa.registry.types.SystemTreeRootDoctype;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.junit.After;
@@ -17,6 +17,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
@@ -51,7 +52,7 @@ public class IntelligentSystemTreeTest {
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
 
         // Create System in it
-        DocumentModel systemModel = documentService.create(documentManager, SystemDoctype.DOCTYPE,
+        DocumentModel systemModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
                 strModel.getPathAsString(), "MySystem", "MySystem");
 
         // Create Endpoint in it
@@ -62,8 +63,10 @@ public class IntelligentSystemTreeTest {
         
         documentManager.save();
 
-        // Make sure that there are now 2 proxies of the endpoint,
-        // one in the manual tree, the other in the By Environment intelligent tree
+        // Make sure that there are now 3 proxies of the endpoint,
+        // one in the manual tree, the others in the intelligent trees
+        
+        // By environment
         
         DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRootDoctype.DOCTYPE, "byEnvironment:byEnvironment");
         Assert.assertNotNull("A By Environment intelligent system tree root must have been created",
@@ -79,6 +82,13 @@ public class IntelligentSystemTreeTest {
         DocumentModel childModel = productionSystemChildren.get(0);
         Assert.assertTrue("The document in the 'Production' system must be the expected endpoint",
                 EndpointDoctype.DOCTYPE.equals(childModel.getType()) && "MyEndpoint".equals(childModel.getTitle()));
+        
+        // By alphabetical order
+        
+        endpointModel = documentManager.getDocument(new PathRef("/default-domain/workspaces/byAlphabeticalOrder:byFirst2Letters/M/Y/MyEndpoint"));
+        Assert.assertNotNull("The endpoint must be classified by alphabetical order " +
+        		"(= in a multiple-levels hierarchy defined with parameters)", endpointModel);
+        
     }
 
     @After

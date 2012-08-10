@@ -3,7 +3,7 @@ package org.easysoa.registry;
 import org.apache.log4j.Logger;
 import org.easysoa.registry.types.DeliverableDoctype;
 import org.easysoa.registry.types.RepositoryDoctype;
-import org.easysoa.registry.types.SystemDoctype;
+import org.easysoa.registry.types.TaggingFolderDoctype;
 import org.easysoa.registry.types.SystemTreeRootDoctype;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.junit.Assert;
@@ -61,7 +61,7 @@ public class SoaNodeRepositoryTest {
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
 
         // Create System in it
-        systemModel = documentService.create(documentManager, SystemDoctype.DOCTYPE,
+        systemModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
                 strModel.getPathAsString(), "MySystem", "MySystem");
 
         documentManager.save();
@@ -97,7 +97,7 @@ public class SoaNodeRepositoryTest {
     @Test
     public void testDuplicatesHandling() throws Exception {
         // Create already created system
-        DocumentModel duplicateModel = documentService.create(documentManager, SystemDoctype.DOCTYPE,
+        DocumentModel duplicateModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
                 strModel.getPathAsString(), "MySystem", "MySystem");
         
         // Make sure the system created twice still have only one source
@@ -115,7 +115,7 @@ public class SoaNodeRepositoryTest {
     public void testProxyCopy() throws Exception {
         // Create new system
         DocumentModel newSystemModel = documentService.create(documentManager,
-                SystemDoctype.DOCTYPE, strModel.getPathAsString(), "MySystem2", "MySystem2");
+                TaggingFolderDoctype.DOCTYPE, strModel.getPathAsString(), "MySystem2", "MySystem2");
 
         // Create deliverable to put in both systems
         deliverableModel = documentService.create(documentManager, DeliverableDoctype.DOCTYPE,
@@ -137,7 +137,7 @@ public class SoaNodeRepositoryTest {
     public void testSourceCopy() throws Exception {
         // Create a third system
         DocumentModel thirdSystemModel = documentService.create(documentManager,
-                SystemDoctype.DOCTYPE, strModel.getPathAsString(), "MySystem3", "MySystem3");
+                TaggingFolderDoctype.DOCTYPE, strModel.getPathAsString(), "MySystem3", "MySystem3");
 
         // Copy the deployable source into it
         DocumentModel sourceDeployableModel = documentManager.getSourceDocument(deliverableModel.getRef());

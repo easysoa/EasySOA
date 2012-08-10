@@ -86,8 +86,8 @@
         <type>System</type>
       </subtypes>
     </type>
-    <type id="System" coretype="System">
-      <label>System</label>
+    <type id="TaggingFolder" coretype="TaggingFolder">
+      <label>Tagging Folder</label>
       <icon>/icons/workspace.gif</icon>
       <bigIcon>/icons/workspace_100.png</bigIcon>
       <default-view>view_documents</default-view>

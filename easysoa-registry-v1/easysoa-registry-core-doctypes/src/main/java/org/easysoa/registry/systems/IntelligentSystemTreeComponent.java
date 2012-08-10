@@ -94,15 +94,23 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
     }
     
     public void handleDocumentModel(CoreSession documentManager, DocumentModel model) throws Exception {
-        DocumentService documentService = Framework.getService(DocumentService.class);
+        // Filter documents from other intelligent trees
+        if (IntelligentSystemDoctype.DOCTYPE.equals(documentManager.getDocument(model.getParentRef()).getType())) {
+            return;
+        }
         
         // Find the document source & proxies
+        DocumentService documentService = Framework.getService(DocumentService.class);
         DocumentModelList proxyModels = documentService.findAllInstances(documentManager, model);
         DocumentModel sourceModel = null;
         for (DocumentModel instance : proxyModels) {
             if (!instance.isProxy()) {
                 sourceModel = instance;
             }
+        }
+        if (sourceModel == null) {
+            logger.error("Can't find source document for " + model + ", won't be add it to intelligent system trees");
+            return;
         }
         proxyModels.remove(sourceModel);
         
@@ -131,12 +139,17 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
                 
                 // Run classifier!
                 String classification = istEntry.getValue().classify(model);
-                if (classification != null && classification.charAt(0) == '/') {
-                    classification = classification.substring(1);
-                }
                 
                 // Handling when model is accepted
                 if (classification != null) {
+                    // Make path uniform
+                    if (classification.charAt(0) == '/') {
+                        classification = classification.substring(1);
+                    }
+                    if (classification.charAt(classification.length() - 1) == '/') {
+                        classification = classification.substring(0, classification.length() - 1);
+                    }
+                    
                     // Check if the model is at its right place
                     PathRef expectedParentPath = new PathRef(istModel.getPathAsString() + '/' + classification);
 

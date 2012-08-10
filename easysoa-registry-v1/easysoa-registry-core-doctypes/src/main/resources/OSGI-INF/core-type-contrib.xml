@@ -20,6 +20,7 @@
 
     <!-- SoaNode tagging facet, allowing for queries such as #{document.hasFacet("SoaNode")} -->
     <facet name="SoaNode" />
+    <facet name="System" />
 
     <!-- Abstract doctypes -->
     <doctype extends="Document" name="SoaNode">
@@ -49,12 +50,14 @@
     <doctype extends="SystemTreeRoot" name="IntelligentSystemTreeRoot">
       <schema name="istr" />
     </doctype>
-    <doctype extends="SoaNode" name="System">
+    <doctype extends="SoaNode" name="TaggingFolder">
       <facet name="Folderish" />
+      <facet name="System" />
     </doctype>
     <doctype extends="Folder" name="IntelligentSystem">
+      <facet name="System" />
     </doctype>
-
+    
     <!-- Architecture level -->
     <doctype extends="SoaNode" name="SoftwareComponent">
       <facet name="Folderish" />

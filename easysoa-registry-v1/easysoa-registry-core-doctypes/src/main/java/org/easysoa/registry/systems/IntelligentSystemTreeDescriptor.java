@@ -66,7 +66,7 @@ public class IntelligentSystemTreeDescriptor {
         if (parametersAsHashMapCache == null) {
             parametersAsHashMapCache = new HashMap<String, String>();
             for (Parameter parameter : parameters) {
-                parametersAsHashMapCache.put(parameter.key, parameter.value);
+                parametersAsHashMapCache.put(parameter.key, parameter.value.trim());
             }
         }
         return parametersAsHashMapCache;

@@ -2,7 +2,7 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.types.RepositoryDoctype;
-import org.easysoa.registry.types.SystemDoctype;
+import org.easysoa.registry.types.TaggingFolderDoctype;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class DocumentModelHelperTest {
     
     @Test
     public void testModelCreation() throws ClientException {
-        DocumentModel systemModel = documentService.create(documentManager, SystemDoctype.DOCTYPE,
+        DocumentModel systemModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(),
                 "MySystem", "MySystemTitle");
         documentManager.save();
@@ -53,7 +53,7 @@ public class DocumentModelHelperTest {
 
     @Test
     public void testModelQuery() throws ClientException {
-        DocumentModel systemModel = documentService.find(documentManager, SystemDoctype.DOCTYPE, "MySystem");
+        DocumentModel systemModel = documentService.find(documentManager, TaggingFolderDoctype.DOCTYPE, "MySystem");
         Assert.assertNotNull("Created system must be found by name", systemModel);
         Assert.assertEquals(systemModel.getTitle(), "MySystemTitle");
         Assert.assertTrue("Returned document must be in the repository, in the System folder",
