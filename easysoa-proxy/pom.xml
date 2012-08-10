@@ -19,8 +19,10 @@
 	  <module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-api</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-api-frascati</module>
+	  <module>easysoa-proxy-core/easysoa-proxy-core-handlermanager</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
 	  <module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
+	  <module>easysoa-proxy-intents/easysoa-proxy-intents-cxfFuseIntent</module>
 	  <module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy-test</module>

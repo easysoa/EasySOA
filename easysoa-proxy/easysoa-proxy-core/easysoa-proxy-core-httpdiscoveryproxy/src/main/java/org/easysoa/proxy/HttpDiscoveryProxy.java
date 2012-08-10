@@ -92,7 +92,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 * Constructor
 	 */
 	public HttpDiscoveryProxy(){
-        try {
+        // Loading property manager
+	    try {
             propertyManager = new ProxyPropertyManager();
         } catch (Exception ex) {
             logger.warn("Error when loading the property manager, trying another method");

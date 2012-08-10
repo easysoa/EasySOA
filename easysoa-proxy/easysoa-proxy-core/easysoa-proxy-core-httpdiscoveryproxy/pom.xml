@@ -89,6 +89,12 @@
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-handlermanager</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>		
 		<!-- Messaging api -->
 		<dependency>
 			<groupId>org.easysoa.registry.api</groupId>
@@ -254,6 +260,11 @@
 						<artifactId>easysoa-proxy-core-api-frascati</artifactId>
 						<version>${project.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>org.easysoa.proxy</groupId>
+						<artifactId>easysoa-proxy-core-handlermanager</artifactId>
+						<version>${project.version}</version>
+					</dependency>					
 					<dependency>
 						<!-- THIS DEPENDENCY MUST BE ACCESSIBLE TO FRASCATI -->
 						<groupId>org.apache.httpcomponents</groupId>

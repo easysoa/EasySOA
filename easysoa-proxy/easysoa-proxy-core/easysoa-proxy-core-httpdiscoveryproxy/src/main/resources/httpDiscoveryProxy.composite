@@ -5,8 +5,8 @@
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy"
 >
 
-    <!-- <sca:include name="runManager" />-->
-    <sca:include name="handlerManager"/>   
+    <!-- <sca:include name="runManager" /> -->
+    <!-- <sca:include name="handlerManager"/> -->   
     <sca:include name="subscriptionEngine"/>
     <!-- HTTP Proxy -->
     <!-- Run with default mode : Discovery -->
@@ -17,6 +17,7 @@
             <sca:interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
+        <!--<sca:reference name="handlerManager" target = "handlerManagerServ" >-->
         <sca:reference name="handlerManager" target = "handlerManagerComponent/handlerManagerService" >
             <sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
         </sca:reference>
@@ -24,6 +25,12 @@
         <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
         <sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>
     </sca:component>
+
+	<!-- Handler manager -->
+	<!--<sca:service name="handlerManagerServ" promote="handlerManagerComp"/>
+	<sca:component name="handlerManagerComp">
+		<sca:implementation.composite name="handlerManager"/>
+	</sca:component>-->
 
     <!-- HTTP Client to drive the proxy -->
     <!--<sca:component name="httpProxyDriver">
