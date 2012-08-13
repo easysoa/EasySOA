@@ -1220,7 +1220,12 @@
                 </artifactItem>
                 <artifactItem>
 		           <groupId>org.ow2.frascati.osgi</groupId>
-		           <artifactId>frascati-osgi-util</artifactId>
+		           <artifactId>frascati-dependent-osgi-util</artifactId>
+		           <version>${frascati.version}</version>
+            	</artifactItem>
+                <artifactItem>
+		           <groupId>org.ow2.frascati.osgi</groupId>
+		           <artifactId>frascati-independent-osgi-util</artifactId>
 		           <version>${frascati.version}</version>
             	</artifactItem>
                 <artifactItem>
