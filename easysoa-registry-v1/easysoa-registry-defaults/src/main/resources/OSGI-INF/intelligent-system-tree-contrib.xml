@@ -4,16 +4,26 @@
   <extension target="org.easysoa.registry.systems.IntelligentSystemTreeService" point="classifiers">
       <classifier name="environment">org.easysoa.registry.systems.EnvironmentClassifier</classifier>
       <classifier name="mavenHierarchy">org.easysoa.registry.systems.MavenHierarchyClassifier</classifier>
+      <classifier name="implementationsList">org.easysoa.registry.systems.ImplementationsListClassifier</classifier>
+      <classifier name="application">org.easysoa.registry.systems.ApplicationClassifier</classifier>
   </extension>
   
   <extension target="org.easysoa.registry.systems.IntelligentSystemTreeService" point="intelligentSystemTrees">
       <intelligentSystemTree name="environment">
-        <title>By Environment</title>
+        <title>Environments</title>
         <classifier>environment</classifier>
       </intelligentSystemTree>
       <intelligentSystemTree name="mavenHierarchy">
-        <title>By Maven artifacts</title>
+        <title>Maven artifacts</title>
         <classifier>mavenHierarchy</classifier>
+      </intelligentSystemTree>
+      <intelligentSystemTree name="implementationsList">
+        <title>Service implementations</title>
+        <classifier>implementationsList</classifier>
+      </intelligentSystemTree>
+      <intelligentSystemTree name="application">
+        <title>Applications</title>
+        <classifier>application</classifier>
       </intelligentSystemTree>
   </extension>
   

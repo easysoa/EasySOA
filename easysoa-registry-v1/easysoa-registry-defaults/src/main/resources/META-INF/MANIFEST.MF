@@ -5,3 +5,4 @@ Bundle-Name: easysoa-registry-defaults
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.easysoa.registry.defaults;singleton:=true
 Nuxeo-Component: OSGI-INF/intelligent-system-tree-contrib.xml
+

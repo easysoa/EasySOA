@@ -2,7 +2,6 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.test.EasySOAFeature;
-import org.easysoa.registry.testing.RepositoryLogger;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
@@ -63,8 +62,6 @@ public class IntelligentSystemTreeTest {
         documentManager.saveDocument(endpointModel);
         
         documentManager.save();
-        
-        new RepositoryLogger(documentManager).logAllRepository();
 
         // Make sure that there are now 3 proxies of the endpoint,
         // one in the manual tree, the others in the intelligent trees

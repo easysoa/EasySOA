@@ -12,7 +12,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  * @author mkalam-alami
  *
  */
-public class AllImplementationsClassifier implements IntelligentSystemTreeClassifier {
+public class ImplementationsListClassifier implements IntelligentSystemTreeClassifier {
 
     public static final String DEFAULT_ENVIRONMENT = "Unspecified";
     
