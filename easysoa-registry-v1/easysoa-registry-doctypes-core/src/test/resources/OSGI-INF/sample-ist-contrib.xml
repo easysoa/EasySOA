@@ -2,21 +2,26 @@
 <component name="org.easysoa.registry.core.doctypes.test.ist.contrib">
 
   <extension target="org.easysoa.registry.systems.IntelligentSystemTreeService" point="classifiers">
-      <classifier name="byEnvironment">org.easysoa.registry.systems.ByEnvironmentClassifier</classifier>
-      <classifier name="byAlphabeticalOrder">org.easysoa.registry.systems.ByAlphabeticalOrderClassifier</classifier>
+      <classifier name="environment">org.easysoa.registry.systems.EnvironmentClassifier</classifier>
+      <classifier name="alphabeticalOrder">org.easysoa.registry.systems.AlphabeticalOrderClassifier</classifier>
+      <classifier name="everythingFlat">org.easysoa.registry.systems.EverythingFlatClassifier</classifier>
   </extension>
   
   <extension target="org.easysoa.registry.systems.IntelligentSystemTreeService" point="intelligentSystemTrees">
-      <intelligentSystemTree name="byEnvironment">
+      <intelligentSystemTree name="environment">
         <title>By Environment</title>
-        <classifier>byEnvironment</classifier>
+        <classifier>environment</classifier>
       </intelligentSystemTree>
-      <intelligentSystemTree name="byFirst2Letters">
+      <intelligentSystemTree name="first2Letters">
         <title>By alphabetical order</title>
-        <classifier>byAlphabeticalOrder</classifier>
+        <classifier>alphabeticalOrder</classifier>
         <parameters>
             <parameter name="depth">2</parameter>
         </parameters>
+      </intelligentSystemTree>
+      <intelligentSystemTree name="everythingFlat">
+        <title>All documents</title>
+        <classifier>everythingFlat</classifier>
       </intelligentSystemTree>
   </extension>
   

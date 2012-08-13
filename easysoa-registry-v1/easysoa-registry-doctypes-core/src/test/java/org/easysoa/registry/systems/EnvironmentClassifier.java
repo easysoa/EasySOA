@@ -7,7 +7,7 @@ import org.easysoa.registry.types.Endpoint;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
-public class ByEnvironmentClassifier implements IntelligentSystemTreeClassifier {
+public class EnvironmentClassifier implements IntelligentSystemTreeClassifier {
 
     public static final String DEFAULT_ENVIRONMENT = "Unspecified";
     

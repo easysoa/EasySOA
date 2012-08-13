@@ -95,7 +95,8 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
     
     public void handleDocumentModel(CoreSession documentManager, DocumentModel model) throws Exception {
         // Filter documents from other intelligent trees
-        if (IntelligentSystem.DOCTYPE.equals(documentManager.getDocument(model.getParentRef()).getType())) {
+        String parentType = documentManager.getDocument(model.getParentRef()).getType();
+        if (IntelligentSystem.DOCTYPE.equals(parentType) || IntelligentSystemTreeRoot.DOCTYPE.equals(parentType)) {
             return;
         }
         
@@ -143,15 +144,16 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
                 // Handling when model is accepted
                 if (classification != null) {
                     // Make path uniform
-                    if (classification.charAt(0) == '/') {
+                    if (classification.length() > 0 && classification.charAt(0) == '/') {
                         classification = classification.substring(1);
                     }
-                    if (classification.charAt(classification.length() - 1) == '/') {
+                    if (classification.length() > 0 && classification.charAt(classification.length() - 1) == '/') {
                         classification = classification.substring(0, classification.length() - 1);
                     }
                     
                     // Check if the model is at its right place
-                    PathRef expectedParentPath = new PathRef(istModel.getPathAsString() + '/' + classification);
+                    PathRef expectedParentPath = new PathRef(istModel.getPathAsString() +
+                            (("".equals(classification)) ? "" : "/" + classification));
 
                     // Ensure the parent systems exist
                     if (!documentManager.exists(expectedParentPath)) {

@@ -7,6 +7,12 @@ import org.easysoa.registry.types.Endpoint;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
+/**
+ * System tree of endpoints & deployed deliverables classified by environment.
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class EnvironmentClassifier implements IntelligentSystemTreeClassifier {
 
     public static final String DEFAULT_ENVIRONMENT = "Unspecified";

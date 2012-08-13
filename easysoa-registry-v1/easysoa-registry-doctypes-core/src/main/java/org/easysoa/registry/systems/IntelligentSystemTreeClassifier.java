@@ -18,6 +18,7 @@ public interface IntelligentSystemTreeClassifier {
      * 
      * "MySystem" : The document should be stored in the MySystem system
      * "MySystem/MyChildSystem" : The document should be stored in the MyChildSystem system, itself stored in MySystem
+     * "" : The document should be stored at the root of the tree
      * null : The document should not be stored in the system tree
      * 
      * @param model the model to test, never null

@@ -62,7 +62,7 @@ public class EnvironmentClassifierTest {
 
         // Make sure that there are now the endpoint in the By Environment tree
         
-        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRoot.DOCTYPE, "byEnvironment:byEnvironment");
+        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRoot.DOCTYPE, "environment:environment");
         Assert.assertNotNull("A By Environment intelligent system tree root must have been created",
                 istrModel);
         Assert.assertEquals("The By Environment STR must contain 1 system", 1, documentManager.getChildren(istrModel.getRef()).size());

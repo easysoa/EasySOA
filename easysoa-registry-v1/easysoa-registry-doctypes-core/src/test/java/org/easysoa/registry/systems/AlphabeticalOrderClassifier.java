@@ -5,7 +5,7 @@ import java.util.Map;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
-public class ByAlphabeticalOrderClassifier implements IntelligentSystemTreeClassifier {
+public class AlphabeticalOrderClassifier implements IntelligentSystemTreeClassifier {
     
     public static final String DEFAULT_ENVIRONMENT = "Unspecified";
     

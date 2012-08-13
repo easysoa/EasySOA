@@ -2,6 +2,7 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.test.EasySOAFeature;
+import org.easysoa.registry.testing.RepositoryLogger;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
@@ -46,7 +47,7 @@ public class IntelligentSystemTreeTest {
     DocumentService documentService;
 
     @Test
-    public void testByEnvironmentTree() throws ClientException {
+    public void testEnvironmentTrees() throws ClientException {
         // Create manual SystemTreeRoot
         DocumentModel strModel = documentService.create(documentManager, SystemTreeRoot.DOCTYPE,
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
@@ -62,13 +63,15 @@ public class IntelligentSystemTreeTest {
         documentManager.saveDocument(endpointModel);
         
         documentManager.save();
+        
+        new RepositoryLogger(documentManager).logAllRepository();
 
         // Make sure that there are now 3 proxies of the endpoint,
         // one in the manual tree, the others in the intelligent trees
         
         // By environment
         
-        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRoot.DOCTYPE, "byEnvironment:byEnvironment");
+        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRoot.DOCTYPE, "environment:environment");
         Assert.assertNotNull("A By Environment intelligent system tree root must have been created",
                 istrModel);
         Assert.assertEquals("The By Environment STR must contain 1 system", 1, documentManager.getChildren(istrModel.getRef()).size());
@@ -85,10 +88,15 @@ public class IntelligentSystemTreeTest {
         
         // By alphabetical order
         
-        endpointModel = documentManager.getDocument(new PathRef("/default-domain/workspaces/byAlphabeticalOrder:byFirst2Letters/M/Y/MyEndpoint"));
+        endpointModel = documentManager.getDocument(new PathRef("/default-domain/workspaces/alphabeticalOrder:first2Letters/M/Y/MyEndpoint"));
         Assert.assertNotNull("The endpoint must be classified by alphabetical order " +
         		"(= in a multiple-levels hierarchy defined with parameters)", endpointModel);
         
+        // Flat documents
+        
+        endpointModel = documentManager.getDocument(new PathRef("/default-domain/workspaces/everythingFlat:everythingFlat/MyEndpoint"));
+        Assert.assertNotNull("The endpoint must be added to the flat document list", endpointModel);
+       
     }
     
 }

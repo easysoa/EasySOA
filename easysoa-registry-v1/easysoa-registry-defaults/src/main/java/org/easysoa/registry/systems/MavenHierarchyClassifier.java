@@ -7,6 +7,12 @@ import org.easysoa.registry.types.MavenDeliverable;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
+/**
+ * System hierachy made of Maven groups.
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class MavenHierarchyClassifier implements IntelligentSystemTreeClassifier {
 
     public static final String DEFAULT_ENVIRONMENT = "Unspecified";
