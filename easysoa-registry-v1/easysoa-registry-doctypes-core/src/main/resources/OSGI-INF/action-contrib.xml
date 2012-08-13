@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<component name="org.easysoa.registry.core.doctypes.actions.contrib">
+<component name="org.easysoa.registry.core.doctypes.action.contrib">
 
   <require>org.nuxeo.ecm.platform.actions</require>
 

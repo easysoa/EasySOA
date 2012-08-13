@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.DocumentService;
-import org.easysoa.registry.types.IntelligentSystemDoctype;
-import org.easysoa.registry.types.IntelligentSystemTreeRootDoctype;
+import org.easysoa.registry.types.IntelligentSystem;
+import org.easysoa.registry.types.IntelligentSystemTreeRoot;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -95,7 +95,7 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
     
     public void handleDocumentModel(CoreSession documentManager, DocumentModel model) throws Exception {
         // Filter documents from other intelligent trees
-        if (IntelligentSystemDoctype.DOCTYPE.equals(documentManager.getDocument(model.getParentRef()).getType())) {
+        if (IntelligentSystem.DOCTYPE.equals(documentManager.getDocument(model.getParentRef()).getType())) {
             return;
         }
         
@@ -122,9 +122,9 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
             if (istDescriptor.isEnabled()) {
                 // Fetch or create the IST model
                 DocumentModel istModel = documentService.find(documentManager,
-                        IntelligentSystemTreeRootDoctype.DOCTYPE, istDescriptor.getClassifier()+':'+istDescriptor.getName());
+                        IntelligentSystemTreeRoot.DOCTYPE, istDescriptor.getClassifier()+':'+istDescriptor.getName());
                 if (istModel == null) {
-                    istModel = documentService.create(documentManager, IntelligentSystemTreeRootDoctype.DOCTYPE,
+                    istModel = documentService.create(documentManager, IntelligentSystemTreeRoot.DOCTYPE,
                             "/default-domain/workspaces", istDescriptor.getClassifier()+':'+istDescriptor.getName(),
                             istDescriptor.getTitle());
                 }
@@ -160,7 +160,7 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
                         for (String parentSystem : parentSystems) {
                             String childPath = currentFolder.getPathAsString() + '/' + parentSystem;
                             if (!documentManager.exists(new PathRef(childPath))) {
-                                currentFolder = documentService.create(documentManager, IntelligentSystemDoctype.DOCTYPE,
+                                currentFolder = documentService.create(documentManager, IntelligentSystem.DOCTYPE,
                                         currentFolder.getPathAsString(), parentSystem, parentSystem);
                             }
                         }
@@ -201,7 +201,7 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
         for (int i = hierarchy.size() - 2; i >= 0; i--) {
             DocumentModel parentModel = hierarchy.get(i);
             if (!documentManager.hasChildren(parentModel.getRef())
-                    && IntelligentSystemDoctype.DOCTYPE.equals(parentModel.getType())) {
+                    && IntelligentSystem.DOCTYPE.equals(parentModel.getType())) {
                 documentManager.removeDocument(parentModel.getRef());
             }
             else {

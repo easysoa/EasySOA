@@ -2,11 +2,11 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.test.EasySOAFeature;
-import org.easysoa.registry.types.EndpointDoctype;
-import org.easysoa.registry.types.IntelligentSystemDoctype;
-import org.easysoa.registry.types.IntelligentSystemTreeRootDoctype;
-import org.easysoa.registry.types.SystemTreeRootDoctype;
-import org.easysoa.registry.types.TaggingFolderDoctype;
+import org.easysoa.registry.types.Endpoint;
+import org.easysoa.registry.types.IntelligentSystem;
+import org.easysoa.registry.types.IntelligentSystemTreeRoot;
+import org.easysoa.registry.types.SystemTreeRoot;
+import org.easysoa.registry.types.TaggingFolder;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,17 +48,17 @@ public class IntelligentSystemTreeTest {
     @Test
     public void testByEnvironmentTree() throws ClientException {
         // Create manual SystemTreeRoot
-        DocumentModel strModel = documentService.create(documentManager, SystemTreeRootDoctype.DOCTYPE,
+        DocumentModel strModel = documentService.create(documentManager, SystemTreeRoot.DOCTYPE,
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
 
         // Create System in it
-        DocumentModel systemModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
+        DocumentModel systemModel = documentService.create(documentManager, TaggingFolder.DOCTYPE,
                 strModel.getPathAsString(), "MySystem", "MySystem");
 
         // Create Endpoint in it
-        DocumentModel endpointModel  = documentService.create(documentManager, EndpointDoctype.DOCTYPE,
+        DocumentModel endpointModel  = documentService.create(documentManager, Endpoint.DOCTYPE,
                 systemModel.getPathAsString(), "MyEndpoint", "MyEndpoint");
-        endpointModel.setPropertyValue(EndpointDoctype.XPATH_ENVIRONMENT, "Production");
+        endpointModel.setPropertyValue(Endpoint.XPATH_ENVIRONMENT, "Production");
         documentManager.saveDocument(endpointModel);
         
         documentManager.save();
@@ -68,12 +68,12 @@ public class IntelligentSystemTreeTest {
         
         // By environment
         
-        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRootDoctype.DOCTYPE, "byEnvironment:byEnvironment");
+        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRoot.DOCTYPE, "byEnvironment:byEnvironment");
         Assert.assertNotNull("A By Environment intelligent system tree root must have been created",
                 istrModel);
         Assert.assertEquals("The By Environment STR must contain 1 system", 1, documentManager.getChildren(istrModel.getRef()).size());
         
-        DocumentModel productionSystem = documentService.find(documentManager, IntelligentSystemDoctype.DOCTYPE, "Production");
+        DocumentModel productionSystem = documentService.find(documentManager, IntelligentSystem.DOCTYPE, "Production");
         Assert.assertNotNull("A 'Production' system must have been created", productionSystem);
 
         DocumentModelList productionSystemChildren = documentManager.getChildren(productionSystem.getRef());
@@ -81,7 +81,7 @@ public class IntelligentSystemTreeTest {
         
         DocumentModel childModel = productionSystemChildren.get(0);
         Assert.assertTrue("The document in the 'Production' system must be the expected endpoint",
-                EndpointDoctype.DOCTYPE.equals(childModel.getType()) && "MyEndpoint".equals(childModel.getTitle()));
+                Endpoint.DOCTYPE.equals(childModel.getType()) && "MyEndpoint".equals(childModel.getTitle()));
         
         // By alphabetical order
         

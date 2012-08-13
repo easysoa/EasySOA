@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<component name="org.easysoa.registry.core.doctypes.ecmtypes.contrib">
+<component name="org.easysoa.registry.doctypes.core.ecmtype.contrib">
 
   <!-- ============ -->
   <!-- ECM Doctypes -->
@@ -83,7 +83,7 @@
         </contentView>
       </contentViews>
       <subtypes>
-        <type>System</type>
+        <type>TaggingFolder</type>
       </subtypes>
     </type>
     <type id="TaggingFolder" coretype="TaggingFolder">

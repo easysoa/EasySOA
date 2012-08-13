@@ -10,4 +10,6 @@ Nuxeo-Component: OSGI-INF/DocumentService.xml,
  OSGI-INF/ecm-type-contrib.xml,
  OSGI-INF/layout-contrib.xml,
  OSGI-INF/action-contrib.xml,
- OSGI-INF/event-listener-contrib.xml
+ OSGI-INF/event-listener-contrib.xml,
+ OSGI-INF/adapter-contrib.xml,
+ OSGI-INF/layout-types-contrib.xml

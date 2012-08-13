@@ -56,6 +56,10 @@ public class RepositoryLogger {
     public RepositoryLogger(CoreSession session, Level level) {
         this(session, "Repository contents", level);
     }
+
+    public RepositoryLogger(CoreSession session) {
+        this(session, "Repository contents", Level.DEBUG);
+    }
     
     public RepositoryLogger(CoreSession session, String title, Level level) {
         this.session = session;

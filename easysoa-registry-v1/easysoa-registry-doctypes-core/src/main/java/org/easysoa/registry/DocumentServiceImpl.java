@@ -1,7 +1,7 @@
 package org.easysoa.registry;
 
-import org.easysoa.registry.types.IntelligentSystemDoctype;
-import org.easysoa.registry.types.RepositoryDoctype;
+import org.easysoa.registry.types.IntelligentSystem;
+import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -26,7 +26,7 @@ public class DocumentServiceImpl implements DocumentService {
         // SoaNodes must be stored in the repository, and only have live proxies in the system trees
         else {
             boolean createProxy = false;
-            if (!parentPath.equals(RepositoryDoctype.REPOSITORY_PATH)) {
+            if (!parentPath.equals(Repository.REPOSITORY_PATH)) {
                 createProxy = true;
             }
             
@@ -77,13 +77,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
    
     public DocumentModelList findAllInstances(CoreSession documentManager, String doctype, String name) throws ClientException {
-        // Remove eventual suffix added by Nuxeo if some proxies conflict
-        // XXX: Side effect is that no document should end its "real" name with a dot followed by numbers
-        String realName = name.replaceAll("\\.[0-9]+$", "");
-        
-        // Run query
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'",
-                new Object[] { doctype, realName },
+                new Object[] { doctype, DocumentModelHelper.getIdentifier(name) },
                 false, true);
         return documentManager.query(query);
     }
@@ -115,7 +110,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     public String getSourceFolderPath(String doctype) {
-        return RepositoryDoctype.REPOSITORY_PATH + '/' + doctype; 
+        return Repository.REPOSITORY_PATH + '/' + doctype; 
     }
     
     public String getSourcePath(String doctype, String name) {
@@ -123,7 +118,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public void ensureSourceFolderExists(CoreSession documentManager, String doctype) throws ClientException {
-        RepositoryDoctype.getRepositoryInstance(documentManager);
+        Repository.getRepositoryInstance(documentManager);
         getSourceFolder(documentManager, doctype);
     }
 
@@ -133,8 +128,8 @@ public class DocumentServiceImpl implements DocumentService {
             return documentManager.getDocument(sourceFolderRef);
         }
         else {
-            DocumentModel sourceFolderModel = documentManager.createDocumentModel(RepositoryDoctype.REPOSITORY_PATH,
-                    doctype, IntelligentSystemDoctype.DOCTYPE);
+            DocumentModel sourceFolderModel = documentManager.createDocumentModel(Repository.REPOSITORY_PATH,
+                    doctype, IntelligentSystem.DOCTYPE);
             sourceFolderModel.setProperty("dublincore", "title", DocumentModelHelper.getDocumentTypeLabel(doctype) + "s");
             sourceFolderModel = documentManager.createDocument(sourceFolderModel);
             return sourceFolderModel;

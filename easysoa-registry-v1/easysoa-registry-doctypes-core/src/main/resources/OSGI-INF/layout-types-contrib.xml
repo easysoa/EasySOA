@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.registry.doctypes.core.layout.types.contrib">
+
+  <!-- ======= -->
+  <!-- Layouts -->
+  <!-- ======= -->
+  
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+    point="layouts">
+  </extension>
+
+  <!-- ============ -->
+  <!-- Widget types -->
+  <!-- ============ -->
+  
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+    point="widgettypes">
+  </extension>
+  
+</component>

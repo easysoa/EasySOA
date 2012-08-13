@@ -2,8 +2,8 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.test.EasySOAFeature;
-import org.easysoa.registry.types.RepositoryDoctype;
-import org.easysoa.registry.types.TaggingFolderDoctype;
+import org.easysoa.registry.types.Repository;
+import org.easysoa.registry.types.TaggingFolder;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import com.google.inject.Inject;
 public class DocumentModelHelperTest {
 
     @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(SoaNodeRepositoryTest.class);
+    private static Logger logger = Logger.getLogger(DocumentModelHelperTest.class);
 
     @Inject
     CoreSession documentManager;
@@ -40,7 +40,7 @@ public class DocumentModelHelperTest {
     
     @Test
     public void testModelCreation() throws ClientException {
-        DocumentModel systemModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
+        DocumentModel systemModel = documentService.create(documentManager, TaggingFolder.DOCTYPE,
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(),
                 "MySystem", "MySystemTitle");
         documentManager.save();
@@ -51,10 +51,10 @@ public class DocumentModelHelperTest {
 
     @Test
     public void testModelQuery() throws ClientException {
-        DocumentModel systemModel = documentService.find(documentManager, TaggingFolderDoctype.DOCTYPE, "MySystem");
+        DocumentModel systemModel = documentService.find(documentManager, TaggingFolder.DOCTYPE, "MySystem");
         Assert.assertNotNull("Created system must be found by name", systemModel);
         Assert.assertEquals(systemModel.getTitle(), "MySystemTitle");
         Assert.assertTrue("Returned document must be in the repository, in the System folder",
-                systemModel.getPathAsString().startsWith(RepositoryDoctype.REPOSITORY_REF.toString()));
+                systemModel.getPathAsString().startsWith(Repository.REPOSITORY_REF.toString()));
     }
 }

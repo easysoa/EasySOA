@@ -8,7 +8,10 @@ import org.nuxeo.runtime.test.runner.Deploy;
  * @author mkalam-alami
  *
  */
-@Deploy({ "org.easysoa.registry.defaults" })
+@Deploy({
+    "org.easysoa.registry.doctypes.java",
+    "org.easysoa.registry.defaults"
+})
 public class EasySOADefaultsFeature extends EasySOAFeature {
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.easysoa.registry.core.doctypes.coretypes.contrib">
+<component name="org.easysoa.registry.doctypes.core.coretype.contrib">
 
   <require>org.nuxeo.ecm.core.CoreExtensions</require>
 
@@ -10,6 +10,7 @@
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
     <schema name="istr" src="schemas/intelligent-system-tree-root.xsd" prefix="istr" />
     <schema name="environment" src="schemas/environment.xsd" prefix="env" />
+    <schema name="deliverable" src="schemas/deliverable.xsd" prefix="del" />
   </extension>
 
   <!-- ============= -->
@@ -68,6 +69,7 @@
 
     <!-- Implementation level -->
     <doctype extends="EndpointConsumer" name="Deliverable">
+      <schema name="deliverable" />
     </doctype>
     <doctype extends="SoaNode" name="ServiceImplementation">
       <facet name="Folderish" />

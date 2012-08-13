@@ -10,7 +10,7 @@ import org.nuxeo.ecm.core.api.PathRef;
  * @author mkalam-alami
  *
  */
-public class RepositoryDoctype {
+public class Repository {
     
     public static final String DOCTYPE = "Repository";
 

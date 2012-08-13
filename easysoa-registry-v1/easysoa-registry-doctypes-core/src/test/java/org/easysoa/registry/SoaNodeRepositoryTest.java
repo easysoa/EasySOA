@@ -2,10 +2,10 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.test.EasySOAFeature;
-import org.easysoa.registry.types.DeliverableDoctype;
-import org.easysoa.registry.types.RepositoryDoctype;
-import org.easysoa.registry.types.SystemTreeRootDoctype;
-import org.easysoa.registry.types.TaggingFolderDoctype;
+import org.easysoa.registry.types.Deliverable;
+import org.easysoa.registry.types.Repository;
+import org.easysoa.registry.types.SystemTreeRoot;
+import org.easysoa.registry.types.TaggingFolder;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -51,20 +51,20 @@ public class SoaNodeRepositoryTest {
     @Test
     public void testRepositoryCreation() throws ClientException {
         // Check that the repository document doesn't exist
-        Assume.assumeTrue(!documentManager.exists(RepositoryDoctype.REPOSITORY_REF));
+        Assume.assumeTrue(!documentManager.exists(Repository.REPOSITORY_REF));
 
-        DocumentModel repositoryInstance = RepositoryDoctype.getRepositoryInstance(documentManager);
+        DocumentModel repositoryInstance = Repository.getRepositoryInstance(documentManager);
         Assert.assertNotNull("Repository must be created on first access", repositoryInstance);
     }
 
     @Test
     public void testDocumentRelocation() throws Exception {
         // Create SystemTreeRoot
-        strModel = documentService.create(documentManager, SystemTreeRootDoctype.DOCTYPE,
+        strModel = documentService.create(documentManager, SystemTreeRoot.DOCTYPE,
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
 
         // Create System in it
-        systemModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
+        systemModel = documentService.create(documentManager, TaggingFolder.DOCTYPE,
                 strModel.getPathAsString(), "MySystem", "MySystem");
 
         documentManager.save();
@@ -80,7 +80,7 @@ public class SoaNodeRepositoryTest {
                         systemInstance.isProxy());
                 hasSystemTreeRootAsParent = true;
             } else if (systemInstance.getPathAsString().startsWith(
-                    RepositoryDoctype.REPOSITORY_REF.toString())) {
+                    Repository.REPOSITORY_REF.toString())) {
                 hasRepositoryAsParent = true;
             }
         }
@@ -100,14 +100,14 @@ public class SoaNodeRepositoryTest {
     @Test
     public void testDuplicatesHandling() throws Exception {
         // Create already created system
-        DocumentModel duplicateModel = documentService.create(documentManager, TaggingFolderDoctype.DOCTYPE,
+        DocumentModel duplicateModel = documentService.create(documentManager, TaggingFolder.DOCTYPE,
                 strModel.getPathAsString(), "MySystem", "MySystem");
         
         // Make sure the system created twice still have only one source
         boolean sourceFound = false;
         DocumentModelList allInstances = documentService.findAllInstances(documentManager, duplicateModel);
         for (DocumentModel instance : allInstances) {
-            if (instance.getPathAsString().startsWith(RepositoryDoctype.REPOSITORY_PATH)) {
+            if (instance.getPathAsString().startsWith(Repository.REPOSITORY_PATH)) {
                 Assert.assertFalse("System created twice should still have only one source", sourceFound);
                 sourceFound = true;
             }
@@ -118,10 +118,10 @@ public class SoaNodeRepositoryTest {
     public void testProxyCopy() throws Exception {
         // Create new system
         DocumentModel newSystemModel = documentService.create(documentManager,
-                TaggingFolderDoctype.DOCTYPE, strModel.getPathAsString(), "MySystem2", "MySystem2");
+                TaggingFolder.DOCTYPE, strModel.getPathAsString(), "MySystem2", "MySystem2");
 
         // Create deliverable to put in both systems
-        deliverableModel = documentService.create(documentManager, DeliverableDoctype.DOCTYPE,
+        deliverableModel = documentService.create(documentManager, Deliverable.DOCTYPE,
                 systemModel.getPathAsString(), "org.company:mydeliverable", "MyDeliverable");
 
         documentManager.save();
@@ -140,7 +140,7 @@ public class SoaNodeRepositoryTest {
     public void testSourceCopy() throws Exception {
         // Create a third system
         DocumentModel thirdSystemModel = documentService.create(documentManager,
-                TaggingFolderDoctype.DOCTYPE, strModel.getPathAsString(), "MySystem3", "MySystem3");
+                TaggingFolder.DOCTYPE, strModel.getPathAsString(), "MySystem3", "MySystem3");
 
         // Copy the deployable source into it
         DocumentModel sourceDeployableModel = documentManager.getSourceDocument(deliverableModel.getRef());

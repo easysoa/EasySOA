@@ -6,7 +6,7 @@ package org.easysoa.registry.types;
  * @author mkalam-alami
  *
  */
-public class SystemTreeRootDoctype {
+public class SystemTreeRoot {
     
     public static final String DOCTYPE = "SystemTreeRoot";
     
