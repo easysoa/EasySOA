@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Bundle-Vendor: EasySOA Consortium
 Bundle-ActivationPolicy: lazy
-Bundle-Name: easysoa-registry-boilerplate-doctypes
+Bundle-Name: easysoa-registry-jsf-branding
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: org.easysoa.registry.boilerplate.doctypes;singleton:=true
-Nuxeo-Component: theme-contrib.xml
+Bundle-SymbolicName: org.easysoa.registry.jsf.branding;singleton:=true
+Nuxeo-Component: OSGI-INF/theme-contrib.xml
+

@@ -58,12 +58,12 @@
         </contentView>
       </contentViews>
       <subtypes>
-        <type>System</type>
+        <type>TaggingFolder</type>
       </subtypes>
     </type>
     <type id="IntelligentSystemTreeRoot" coretype="IntelligentSystemTreeRoot">
       <label>Intelligent System Tree Root</label>
-      <icon>/icons/ordered_folder.gif</icon>
+      <icon>/icons/ordered_folder.png</icon>
       <bigIcon>/icons/ordered_folder_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
@@ -83,7 +83,7 @@
         </contentView>
       </contentViews>
       <subtypes>
-        <type>TaggingFolder</type>
+        <type>IntelligentSystem</type>
       </subtypes>
     </type>
     <type id="TaggingFolder" coretype="TaggingFolder">
@@ -109,13 +109,19 @@
         </contentView>
       </contentViews>
       <subtypes>
+        <type>TaggingFolder</type>
+        <type>SoftwareComponent</type>
+        <type>Service</type>
         <type>Deliverable</type>
+        <type>ServiceImplementation</type>
+        <type>DeployedDeliverable</type>
+        <type>Endpoint</type>
       </subtypes>
     </type>
     <type id="IntelligentSystem" coretype="IntelligentSystem">
       <label>Intelligent System</label>
-      <icon>/icons/workspace.gif</icon>
-      <bigIcon>/icons/workspace_100.png</bigIcon>
+      <icon>/icons/ordered_folder.png</icon>
+      <bigIcon>/icons/ordered_folder_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>

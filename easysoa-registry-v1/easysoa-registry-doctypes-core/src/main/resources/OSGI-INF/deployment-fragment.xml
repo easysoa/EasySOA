@@ -2,10 +2,10 @@
 <fragment version="1">
 
   <!-- Bundle requirements -->
-<!--   <require>org.nuxeo.ecm.core</require> -->
+  <require>org.nuxeo.ecm.core</require>
   
+  <!-- Module registration -->
   <extension target="application#MODULE">
-    <!-- Module registration -->
     <module>
       <ejb>${bundle.fileName}</ejb>
     </module>
