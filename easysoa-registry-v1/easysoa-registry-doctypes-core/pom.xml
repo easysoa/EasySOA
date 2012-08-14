@@ -40,5 +40,19 @@
       <groupId>javax.faces</groupId>
       <artifactId>jsf-api</artifactId>
     </dependency>
+    
+    <!-- Correlation graph -->
+    <dependency>
+      <groupId>net.sf.jung</groupId>
+      <artifactId>jung-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.jung</groupId>
+      <artifactId>jung-graph-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.jung</groupId>
+      <artifactId>jung-algorithms</artifactId>
+    </dependency>
   </dependencies>
 </project>

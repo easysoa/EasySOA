@@ -18,14 +18,14 @@
       <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
     </license>
   </licenses>
-  
+
   <url>http://www.easysoa.org</url>
   <scm>
     <connection>scm:git:git://github.com/easysoa/EasySOA.git</connection>
     <developerConnection>scm:git:ssh://git@github.com:easysoa/EasySOA.git</developerConnection>
     <url>https://github.com/easysoa/EasySOA</url>
   </scm>
-  
+
   <mailingLists>
     <mailingList>
       <name>EasySOA developers mailing-list</name>
@@ -39,7 +39,7 @@
   <ciManagement>
     <!-- Missing -->
   </ciManagement>
-  
+
   <organization>
     <name>EasySOA Consortium</name>
     <url>http://www.easysoa.org</url>
@@ -52,6 +52,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <easysoa.version>1.0-SNAPSHOT</easysoa.version>
     <nuxeo.version>5.5</nuxeo.version>
+    <jung.version>2.0.1</jung.version>
   </properties>
 
   <!-- ======= -->
@@ -125,17 +126,32 @@
       <dependency>
         <groupId>org.easysoa.registry</groupId>
         <artifactId>easysoa-registry-test</artifactId>
-          <version>${easysoa.version}</version>
+        <version>${easysoa.version}</version>
       </dependency>
       <dependency>
-          <groupId>org.easysoa.registry</groupId>
-          <artifactId>easysoa-registry-doctypes-core</artifactId>
-          <version>${easysoa.version}</version>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-doctypes-core</artifactId>
+        <version>${easysoa.version}</version>
       </dependency>
       <dependency>
-          <groupId>org.easysoa.registry</groupId>
-          <artifactId>easysoa-registry-doctypes-java</artifactId>
-          <version>${easysoa.version}</version>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-doctypes-java</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-api</artifactId>
+        <version>${jung.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-graph-impl</artifactId>
+        <version>${jung.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-algorithms</artifactId>
+        <version>${jung.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -154,7 +170,7 @@
           <target>1.6</target>
         </configuration>
       </plugin>
-      <!--  Use META-INF/MANIFEST.MF -->
+      <!-- Use META-INF/MANIFEST.MF -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

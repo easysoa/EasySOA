@@ -9,12 +9,11 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 /**
  * 
  * @author mkalam-alami
- *
+ * 
  */
 public interface DiscoveryService {
-    
-    DocumentModel importDiscovery(CoreSession documentManager,
-            SoaNodeId document, Map<String, String> properties,
-            List<SoaNodeId> correlatedDocuments);
+
+    DocumentModel importDiscovery(CoreSession documentManager, SoaNodeId identifier,
+            Map<String, String> properties, List<SoaNodeId> correlatedDocuments) throws Exception;
 
 }
