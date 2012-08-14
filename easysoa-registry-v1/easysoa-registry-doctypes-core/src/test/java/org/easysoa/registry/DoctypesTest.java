@@ -79,8 +79,9 @@ public class DoctypesTest {
     public void testDocumentAdapters() throws ClientException {
      
         // Create a deliverable
-        DocumentModel deliverableModel = documentService.create(documentManager, Deliverable.DOCTYPE,
-                "/default-domain/workspaces", "MyDeliverable", "MyDeliverable");
+        DocumentModel deliverableModel = documentService.create(documentManager, 
+                new SoaNodeId(Deliverable.DOCTYPE, "MyDeliverable"),
+                "/default-domain/workspaces", "MyDeliverable");
         
         // Use its adapter
         Deliverable deliverable = deliverableModel.getAdapter(Deliverable.class);

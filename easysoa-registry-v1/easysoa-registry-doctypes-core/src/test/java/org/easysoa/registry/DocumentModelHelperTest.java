@@ -40,9 +40,10 @@ public class DocumentModelHelperTest {
     
     @Test
     public void testModelCreation() throws ClientException {
-        DocumentModel systemModel = documentService.create(documentManager, TaggingFolder.DOCTYPE,
+        DocumentModel systemModel = documentService.create(documentManager,
+                new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"),
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(),
-                "MySystem", "MySystemTitle");
+                "MySystemTitle");
         documentManager.save();
         Assert.assertNotNull(systemModel);
         Assert.assertEquals(systemModel.getName(), "MySystem");
@@ -51,7 +52,7 @@ public class DocumentModelHelperTest {
 
     @Test
     public void testModelQuery() throws ClientException {
-        DocumentModel systemModel = documentService.find(documentManager, TaggingFolder.DOCTYPE, "MySystem");
+        DocumentModel systemModel = documentService.find(documentManager, new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"));
         Assert.assertNotNull("Created system must be found by name", systemModel);
         Assert.assertEquals(systemModel.getTitle(), "MySystemTitle");
         Assert.assertTrue("Returned document must be in the repository, in the System folder",

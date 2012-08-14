@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.DocumentService;
+import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -122,12 +123,11 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
             // Filter disabled ISTs
             if (istDescriptor.isEnabled()) {
                 // Fetch or create the IST model
-                DocumentModel istModel = documentService.find(documentManager,
-                        IntelligentSystemTreeRoot.DOCTYPE, istDescriptor.getClassifier()+':'+istDescriptor.getName());
+                SoaNodeId istId = new SoaNodeId(IntelligentSystemTreeRoot.DOCTYPE, istDescriptor.getClassifier()+':'+istDescriptor.getName());
+                DocumentModel istModel = documentService.find(documentManager, istId);
                 if (istModel == null) {
-                    istModel = documentService.create(documentManager, IntelligentSystemTreeRoot.DOCTYPE,
-                            "/default-domain/workspaces", istDescriptor.getClassifier()+':'+istDescriptor.getName(),
-                            istDescriptor.getTitle());
+                    istModel = documentService.create(documentManager, istId,
+                            "/default-domain/workspaces", istDescriptor.getTitle());
                 }
 
                 // Find eventual presence of model in the IST
@@ -162,8 +162,9 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
                         for (String parentSystem : parentSystems) {
                             String childPath = currentFolder.getPathAsString() + '/' + parentSystem;
                             if (!documentManager.exists(new PathRef(childPath))) {
-                                currentFolder = documentService.create(documentManager, IntelligentSystem.DOCTYPE,
-                                        currentFolder.getPathAsString(), parentSystem, parentSystem);
+                                currentFolder = documentService.create(documentManager,
+                                        new SoaNodeId(IntelligentSystem.DOCTYPE, parentSystem),
+                                        currentFolder.getPathAsString(), parentSystem);
                             }
                         }
                     }

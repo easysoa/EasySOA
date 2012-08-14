@@ -16,7 +16,9 @@ import org.nuxeo.ecm.platform.query.nxql.NXQLQueryBuilder;
 
 public class DocumentServiceImpl implements DocumentService {
 
-    public DocumentModel create(CoreSession documentManager, String doctype, String parentPath, String name, String title) throws ClientException {
+    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath, String title) throws ClientException {
+        String doctype = identifier.getType(), name = identifier.getName();
+        
         // Basic behavior
         if (!documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
             
@@ -33,7 +35,7 @@ public class DocumentServiceImpl implements DocumentService {
             
             // Create or fetch source document
             ensureSourceFolderExists(documentManager, doctype);
-            PathRef sourceRef = new PathRef(getSourcePath(doctype, name));
+            PathRef sourceRef = new PathRef(getSourcePath(identifier));
             DocumentModel documentModel;
             if (!documentManager.exists(sourceRef)) {
                 documentModel = documentManager.createDocumentModel(doctype);
@@ -55,10 +57,12 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    public DocumentModel create(CoreSession documentManager, String doctype, String name, String title) throws ClientException {
+    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String title) throws ClientException {
+        String doctype = identifier.getType(), name = identifier.getName();
+        
         if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
             ensureSourceFolderExists(documentManager, doctype);
-            PathRef sourceRef = new PathRef(getSourcePath(doctype, name));
+            PathRef sourceRef = new PathRef(getSourcePath(identifier));
             DocumentModel documentModel;
             if (!documentManager.exists(sourceRef)) {
                 documentModel = documentManager.createDocumentModel(doctype);
@@ -84,9 +88,9 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    public DocumentModel find(CoreSession documentManager, String doctype, String name) throws ClientException {
+    public DocumentModel find(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?' AND " + NXQL.ECM_ISPROXY + " = 0",
-                new Object[] { doctype, name },
+                new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
         DocumentModelList results = documentManager.query(query);
         return results.size() > 0 ? results.get(0) : null;
@@ -96,15 +100,15 @@ public class DocumentServiceImpl implements DocumentService {
         return documentManager.getProxies(model.getRef(), null);
     }
    
-    public DocumentModelList findAllInstances(CoreSession documentManager, String doctype, String name) throws ClientException {
+    public DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'",
-                new Object[] { doctype, DocumentModelHelper.getIdentifier(name) },
+                new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
         return documentManager.query(query);
     }
     
     public DocumentModelList findAllInstances(CoreSession documentManager, DocumentModel model) throws ClientException {
-        return findAllInstances(documentManager, model.getType(), model.getName());
+        return findAllInstances(documentManager, SoaNodeId.fromModel(model));
     }
     
     public DocumentModelList findAllParents(CoreSession documentManager, DocumentModel documentModel) throws Exception {
@@ -133,8 +137,8 @@ public class DocumentServiceImpl implements DocumentService {
         return Repository.REPOSITORY_PATH + '/' + doctype; 
     }
     
-    public String getSourcePath(String doctype, String name) {
-        return getSourceFolderPath(doctype) + '/' + name;
+    public String getSourcePath(SoaNodeId identifier) {
+        return getSourceFolderPath(identifier.getType()) + '/' + identifier.getName();
     }
     
     public void ensureSourceFolderExists(CoreSession documentManager, String doctype) throws ClientException {

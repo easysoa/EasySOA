@@ -28,15 +28,4 @@ public class DocumentModelHelper {
         }
     }
 
-    /**
-     * Returns the unique identifier of the document for EasySOA.
-     * Not to be confused with the ID given by Nuxeo to each document.
-     * @param docName
-     * @return
-     */
-    public static String getIdentifier(String documentName) {
-        // Remove eventual suffix added by Nuxeo if some proxies conflict
-        // XXX: Side effect is that no document should end its "real" name with a dot followed by numbers
-        return documentName.replaceAll("\\.[0-9]+$", "");
-    }
 }

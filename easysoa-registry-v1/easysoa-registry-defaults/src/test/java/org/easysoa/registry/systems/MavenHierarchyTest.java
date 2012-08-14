@@ -2,6 +2,7 @@ package org.easysoa.registry.systems;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.DocumentService;
+import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
 import org.easysoa.registry.types.SystemTreeRoot;
@@ -44,24 +45,28 @@ public class MavenHierarchyTest {
     @Test
     public void testClassification() throws ClientException {
         // Create manual SystemTreeRoot
-        DocumentModel strModel = documentService.create(documentManager, SystemTreeRoot.DOCTYPE,
-                DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
+        DocumentModel strModel = documentService.create(documentManager,
+                new SoaNodeId(SystemTreeRoot.DOCTYPE, "MyRoot"),
+                DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot");
 
         // Create System in it
-        DocumentModel systemModel = documentService.create(documentManager, TaggingFolder.DOCTYPE,
-                strModel.getPathAsString(), "MySystem", "MySystem");
+        DocumentModel systemModel = documentService.create(documentManager,
+                new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"),
+                strModel.getPathAsString(), "MySystem");
 
         // Create Deliverable in it
-        DocumentModel deliverableModel = documentService.create(documentManager, Deliverable.DOCTYPE,
-                systemModel.getPathAsString(), "org.easysoa.registry:myartifact", "My Artifact");
+        DocumentModel deliverableModel = documentService.create(documentManager,
+                new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa.registry:myartifact"),
+                systemModel.getPathAsString(), "My Artifact");
         deliverableModel.setPropertyValue(Deliverable.XPATH_NATURE, MavenDeliverable.NATURE);
         documentManager.saveDocument(deliverableModel);
         
         documentManager.save();
-
+        
         // Make sure that the deliverable is now in the Maven hierarchy
         
-        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRoot.DOCTYPE, "mavenHierarchy:mavenHierarchy");
+        DocumentModel istrModel = documentService.find(documentManager,
+                new SoaNodeId(IntelligentSystemTreeRoot.DOCTYPE, "mavenHierarchy:mavenHierarchy"));
         Assert.assertNotNull("A Maven hierarchy intelligent system tree root must have been created",
                 istrModel);
         

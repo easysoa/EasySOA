@@ -19,8 +19,8 @@ public interface DocumentService {
      * @return
      * @throws ClientException
      */
-    DocumentModel create(CoreSession documentManager, String doctype, String parentPath,
-            String name, String title) throws ClientException;
+    DocumentModel create(CoreSession documentManager, SoaNodeId identifier,
+            String parentPath, String title) throws ClientException;
 
     /**
      * Creates a document and puts it in the repository.
@@ -29,7 +29,7 @@ public interface DocumentService {
      * @return
      * @throws ClientException
      */
-    DocumentModel create(CoreSession documentManager, String doctype, String name, String title)
+    DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String title)
             throws ClientException;
     
     /**
@@ -43,7 +43,7 @@ public interface DocumentService {
      * Finds any document given its type and name
      * If a SoaNode, returns the source (non-proxy) from the repository
      */
-    DocumentModel find(CoreSession documentManager, String doctype, String name)
+    DocumentModel find(CoreSession documentManager, SoaNodeId identifier)
             throws ClientException;
 
     /**
@@ -55,7 +55,7 @@ public interface DocumentService {
     /**
      * Find all proxies and the repository source, given a type and name
      */
-    DocumentModelList findAllInstances(CoreSession documentManager, String doctype, String name)
+    DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier)
             throws ClientException;
 
     /**
@@ -72,7 +72,7 @@ public interface DocumentService {
 
     String getSourceFolderPath(String doctype);
 
-    String getSourcePath(String doctype, String name);
+    String getSourcePath(SoaNodeId identifier);
 
     void ensureSourceFolderExists(CoreSession documentManager, String doctype)
             throws ClientException;

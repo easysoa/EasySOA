@@ -2,7 +2,6 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.systems.IntelligentSystemTreeService;
-import org.easysoa.registry.utils.DocumentModelHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -49,8 +48,7 @@ public class RepositoryManagementListener implements EventListener {
             if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)) {
                 documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
                 
-                PathRef sourcePathRef = new PathRef(documentService.getSourcePath(sourceDocument.getType(),
-                        DocumentModelHelper.getIdentifier(sourceDocument.getName())));
+                PathRef sourcePathRef = new PathRef(documentService.getSourcePath(SoaNodeId.fromModel(sourceDocument)));
                 DocumentModel repositoryDocument;
                 if (documentManager.exists(sourcePathRef)) {
                     // If the source document already exists, only keep one

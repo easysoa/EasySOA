@@ -48,16 +48,19 @@ public class IntelligentSystemTreeTest {
     @Test
     public void testEnvironmentTrees() throws ClientException {
         // Create manual SystemTreeRoot
-        DocumentModel strModel = documentService.create(documentManager, SystemTreeRoot.DOCTYPE,
-                DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot", "MyRoot");
+        DocumentModel strModel = documentService.create(documentManager,
+                new SoaNodeId(SystemTreeRoot.DOCTYPE, "MyRoot"),
+                DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot");
 
         // Create System in it
-        DocumentModel systemModel = documentService.create(documentManager, TaggingFolder.DOCTYPE,
-                strModel.getPathAsString(), "MySystem", "MySystem");
+        DocumentModel systemModel = documentService.create(documentManager,
+                new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"),
+                strModel.getPathAsString(), "MySystem");
 
         // Create Endpoint in it
-        DocumentModel endpointModel  = documentService.create(documentManager, Endpoint.DOCTYPE,
-                systemModel.getPathAsString(), "MyEndpoint", "MyEndpoint");
+        DocumentModel endpointModel  = documentService.create(documentManager,
+                new SoaNodeId(Endpoint.DOCTYPE, "MyEndpoint"),
+                systemModel.getPathAsString(), "MyEndpoint");
         endpointModel.setPropertyValue(Endpoint.XPATH_ENVIRONMENT, "Production");
         documentManager.saveDocument(endpointModel);
         
@@ -68,12 +71,12 @@ public class IntelligentSystemTreeTest {
         
         // By environment
         
-        DocumentModel istrModel = documentService.find(documentManager, IntelligentSystemTreeRoot.DOCTYPE, "environment:environment");
+        DocumentModel istrModel = documentService.find(documentManager, new SoaNodeId(IntelligentSystemTreeRoot.DOCTYPE, "environment:environment"));
         Assert.assertNotNull("A By Environment intelligent system tree root must have been created",
                 istrModel);
         Assert.assertEquals("The By Environment STR must contain 1 system", 1, documentManager.getChildren(istrModel.getRef()).size());
         
-        DocumentModel productionSystem = documentService.find(documentManager, IntelligentSystem.DOCTYPE, "Production");
+        DocumentModel productionSystem = documentService.find(documentManager, new SoaNodeId(IntelligentSystem.DOCTYPE, "Production"));
         Assert.assertNotNull("A 'Production' system must have been created", productionSystem);
 
         DocumentModelList productionSystemChildren = documentManager.getChildren(productionSystem.getRef());

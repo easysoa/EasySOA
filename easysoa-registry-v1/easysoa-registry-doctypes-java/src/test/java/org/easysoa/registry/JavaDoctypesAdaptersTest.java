@@ -39,7 +39,7 @@ public class JavaDoctypesAdaptersTest {
     public void testMavenAdapter() throws ClientException {
         // Create Maven deliverable
         DocumentModel deliverableModel = documentService.create(documentManager,
-                MavenDeliverable.DOCTYPE, "org.easysoa.registry:myartifact", "My Artifact");
+                new SoaNodeId(MavenDeliverable.DOCTYPE, "org.easysoa.registry:myartifact"), "My Artifact");
         Assert.assertNotNull("Document service must successfully create the deliverable", deliverableModel);
         
         deliverableModel.setPropertyValue(Deliverable.XPATH_NATURE, MavenDeliverable.NATURE);
