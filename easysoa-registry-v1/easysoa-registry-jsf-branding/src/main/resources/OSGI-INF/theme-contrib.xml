@@ -9,6 +9,9 @@
     <style name="header">
       <src>themes/css/header.css</src>
     </style>
+    <style name="nuxeo_dm_specific">
+      <src>themes/css/nuxeo_dm_specific.css</src>
+    </style>
   </extension>
 
   <!-- Register new flavor for EasySOA -->

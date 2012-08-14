@@ -71,15 +71,15 @@ author: lkemen@nuxeo.com
 
 /* EasySOA styling*/
 .siteLogo {
-  background: url('/nuxeo/img/easysoa/HeaderBG.png');
+  background: url('/nuxeo/img/easysoa/header-bg.png');
 }
 
 .nxHeader .themeCellFrame.content {
-  background: url('/nuxeo/img/easysoa/HeaderBG.png');
+  background: url('/nuxeo/img/easysoa/header-bg.png');
 }
 
 .nxHeader .themeCellFrame.content {
-  background: url('/nuxeo/img/easysoa/HeaderBG.png');
+  background: url('/nuxeo/img/easysoa/header-bg.png');
 }
 
 .nxMainContainer .themeCellFrame.column {

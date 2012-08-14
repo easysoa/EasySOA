@@ -1,8 +1,12 @@
 <?xml version="1.0" ?>
 <fragment version="1">
 
-  <require>org.nuxeo.ecm.core</require>
-
+  <require>org.nuxeo.ecm.webapp.core</require>
+  <require>org.nuxeo.ecm.webapp.ui</require>
+  <require>org.nuxeo.admin.center</require>
+  <require>org.nuxeo.ecm.user.center</require>
+  <require>org.nuxeo.ecm.platform.lang</require>
+  
   <extension target="application#MODULE">
     <!-- Module registration -->
     <module>
