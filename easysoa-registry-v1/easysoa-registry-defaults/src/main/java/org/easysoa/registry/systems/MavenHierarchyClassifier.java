@@ -4,7 +4,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.types.Deliverable;
-import org.easysoa.registry.types.MavenDeliverable;
+import org.easysoa.registry.types.adapters.java.MavenDeliverableAdapter;
+import org.easysoa.registry.types.java.MavenDeliverable;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
@@ -38,7 +39,7 @@ public class MavenHierarchyClassifier implements IntelligentSystemTreeClassifier
         
         try {
             // Gather information
-            MavenDeliverable mavenDeliverable = model.getAdapter(MavenDeliverable.class);
+            MavenDeliverable mavenDeliverable = model.getAdapter(MavenDeliverableAdapter.class);
             String groupId = mavenDeliverable.getGroupId();
             
             // Build classification

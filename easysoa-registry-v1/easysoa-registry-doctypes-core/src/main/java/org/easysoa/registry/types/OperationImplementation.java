@@ -6,7 +6,7 @@ package org.easysoa.registry.types;
  * @author mkalam-alami
  *
  */
-public class OperationImplementation {
+public interface OperationImplementation extends Document {
 
     public static final String DOCTYPE = "OperationImplementation";
     

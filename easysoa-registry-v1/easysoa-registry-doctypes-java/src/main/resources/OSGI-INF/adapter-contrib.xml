@@ -6,8 +6,8 @@
   <!-- ======== -->
 
   <extension target="org.nuxeo.ecm.core.api.DocumentAdapterService" point="adapters">
-    <adapter class="org.easysoa.registry.types.MavenDeliverable"
-     factory="org.easysoa.registry.JavaDoctypesAdapterFactory" />
+    <adapter class="org.easysoa.registry.types.java.MavenDeliverable"
+     factory="org.easysoa.registry.types.adapters.java.JavaDoctypesAdapterFactory" />
   </extension>
 
 

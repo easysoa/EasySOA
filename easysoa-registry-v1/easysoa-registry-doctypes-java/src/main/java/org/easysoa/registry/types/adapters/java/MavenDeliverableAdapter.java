@@ -1,7 +1,8 @@
-package org.easysoa.registry.types;
+package org.easysoa.registry.types.adapters.java;
 
 import org.easysoa.registry.InvalidDoctypeException;
-import org.easysoa.registry.types.Deliverable;
+import org.easysoa.registry.types.adapters.DeliverableAdapter;
+import org.easysoa.registry.types.java.MavenDeliverable;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
 
@@ -10,15 +11,13 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  * @author mkalam-alami
  *
  */
-public class MavenDeliverable extends Deliverable {
+public class MavenDeliverableAdapter extends DeliverableAdapter implements MavenDeliverable {
 
-    public static final String NATURE = "maven";
-    
     private String groupId;
     
     private String artifactId;
     
-    public MavenDeliverable(DocumentModel documentModel) throws InvalidDoctypeException {
+    public MavenDeliverableAdapter(DocumentModel documentModel) throws InvalidDoctypeException {
         super(documentModel);
         
         // Identifiers format:

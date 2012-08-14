@@ -6,7 +6,7 @@ package org.easysoa.registry.types;
  * @author mkalam-alami
  *
  */
-public class IntelligentSystemTreeRoot {
+public interface IntelligentSystemTreeRoot extends Document {
     
     public static final String DOCTYPE = "IntelligentSystemTreeRoot";
 

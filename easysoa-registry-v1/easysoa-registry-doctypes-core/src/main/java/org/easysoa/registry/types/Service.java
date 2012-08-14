@@ -6,7 +6,7 @@ package org.easysoa.registry.types;
  * @author mkalam-alami
  *
  */
-public class Service {
+public interface Service extends Document {
 
     public static final String DOCTYPE = "Service";
     

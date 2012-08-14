@@ -8,7 +8,7 @@
   <extension target="org.nuxeo.ecm.core.api.DocumentAdapterService"
     point="adapters">
     <adapter class="org.easysoa.registry.types.Deliverable"
-      factory="org.easysoa.registry.CoreDoctypesAdapterFactory" />
+      factory="org.easysoa.registry.types.adapters.CoreDoctypesAdapterFactory" />
   </extension>
 
 </component>

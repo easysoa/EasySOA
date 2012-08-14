@@ -3,6 +3,7 @@ package org.easysoa.registry;
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.utils.DocumentModelHelper;
+import org.easysoa.registry.utils.RepositoryHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -137,7 +138,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public void ensureSourceFolderExists(CoreSession documentManager, String doctype) throws ClientException {
-        Repository.getRepositoryInstance(documentManager);
+        RepositoryHelper.getRepositoryInstance(documentManager);
         getSourceFolder(documentManager, doctype);
     }
 

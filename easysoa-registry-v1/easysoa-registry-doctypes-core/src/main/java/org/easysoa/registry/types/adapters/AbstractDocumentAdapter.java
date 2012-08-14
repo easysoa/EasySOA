@@ -1,4 +1,4 @@
-package org.easysoa.registry.types;
+package org.easysoa.registry.types.adapters;
 
 import org.easysoa.registry.InvalidDoctypeException;
 import org.nuxeo.ecm.core.api.DocumentModel;

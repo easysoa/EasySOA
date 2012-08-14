@@ -7,6 +7,7 @@ import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.types.SystemTreeRoot;
 import org.easysoa.registry.types.TaggingFolder;
 import org.easysoa.registry.utils.DocumentModelHelper;
+import org.easysoa.registry.utils.RepositoryHelper;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class SoaNodeRepositoryTest {
         // Check that the repository document doesn't exist
         Assume.assumeTrue(!documentManager.exists(Repository.REPOSITORY_REF));
 
-        DocumentModel repositoryInstance = Repository.getRepositoryInstance(documentManager);
+        DocumentModel repositoryInstance = RepositoryHelper.getRepositoryInstance(documentManager);
         Assert.assertNotNull("Repository must be created on first access", repositoryInstance);
     }
 
