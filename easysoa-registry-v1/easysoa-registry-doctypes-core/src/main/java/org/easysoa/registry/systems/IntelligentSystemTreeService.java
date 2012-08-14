@@ -5,6 +5,6 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 
 public interface IntelligentSystemTreeService {
 
-    void handleDocumentModel(CoreSession documentManager, DocumentModel model) throws Exception;
+    void handleDocumentModel(CoreSession documentManager, DocumentModel model, boolean force) throws Exception;
 
 }

@@ -202,6 +202,7 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
+        <layout>deliverable</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -266,6 +267,7 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
+        <layout>environment</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -291,6 +293,7 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
+        <layout>environment</layout>
       </layouts>
     </type>
 

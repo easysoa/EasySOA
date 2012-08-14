@@ -93,10 +93,10 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
         }
     }
     
-    public void handleDocumentModel(CoreSession documentManager, DocumentModel model) throws Exception {
+    public void handleDocumentModel(CoreSession documentManager, DocumentModel model, boolean force) throws Exception {
         // Filter documents from other intelligent trees
         String parentType = documentManager.getDocument(model.getParentRef()).getType();
-        if (IntelligentSystem.DOCTYPE.equals(parentType) || IntelligentSystemTreeRoot.DOCTYPE.equals(parentType)) {
+        if (!force && IntelligentSystem.DOCTYPE.equals(parentType) || IntelligentSystemTreeRoot.DOCTYPE.equals(parentType)) {
             return;
         }
         

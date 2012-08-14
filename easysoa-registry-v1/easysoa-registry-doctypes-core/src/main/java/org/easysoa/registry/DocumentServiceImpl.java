@@ -54,6 +54,25 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
+    public DocumentModel create(CoreSession documentManager, String doctype, String name, String title) throws ClientException {
+        if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
+            ensureSourceFolderExists(documentManager, doctype);
+            PathRef sourceRef = new PathRef(getSourcePath(doctype, name));
+            DocumentModel documentModel;
+            if (!documentManager.exists(sourceRef)) {
+                documentModel = documentManager.createDocumentModel(doctype);
+                documentModel.setPathInfo(getSourceFolderPath(doctype), name);
+                documentModel.setProperty("dublincore", "title", title);
+                return documentManager.createDocument(documentModel);
+            }
+            else {
+                return documentManager.getDocument(sourceRef);
+            }
+        }
+        else {
+            return null;
+        }
+    }
     @Override
     public DocumentModel copy(CoreSession documentManager, DocumentModel sourceModel, DocumentRef ref) throws ClientException {
         if (sourceModel.isProxy()) {

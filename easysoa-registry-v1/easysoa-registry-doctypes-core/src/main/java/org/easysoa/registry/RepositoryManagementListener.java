@@ -8,6 +8,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.api.event.DocumentEventTypes;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
 import org.nuxeo.ecm.core.event.EventListener;
@@ -72,7 +73,8 @@ public class RepositoryManagementListener implements EventListener {
             // Intelligent system trees update
             IntelligentSystemTreeService intelligentSystemTreeServiceCache =
                     Framework.getService(IntelligentSystemTreeService.class);
-            intelligentSystemTreeServiceCache.handleDocumentModel(documentManager, sourceDocument);
+            intelligentSystemTreeServiceCache.handleDocumentModel(documentManager, sourceDocument,
+                    !DocumentEventTypes.DOCUMENT_CREATED.equals(event.getName()));
             documentManager.save();
             
         } catch (Exception e) {
