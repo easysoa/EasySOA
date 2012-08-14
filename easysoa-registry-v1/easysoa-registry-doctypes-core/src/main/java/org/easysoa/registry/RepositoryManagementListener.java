@@ -2,6 +2,7 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.systems.IntelligentSystemTreeService;
+import org.easysoa.registry.utils.DocumentModelHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -46,8 +47,24 @@ public class RepositoryManagementListener implements EventListener {
             String sourceFolderPath = documentService.getSourceFolderPath(sourceDocument.getType());
             if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)) {
                 documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
-                DocumentModel repositoryDocument = documentManager.move(sourceDocument.getRef(),
+                
+                PathRef sourcePathRef = new PathRef(documentService.getSourcePath(sourceDocument.getType(),
+                        DocumentModelHelper.getIdentifier(sourceDocument.getName())));
+                DocumentModel repositoryDocument;
+                if (documentManager.exists(sourcePathRef)) {
+                    // If the source document already exists, only keep one
+                    repositoryDocument = documentManager.getDocument(sourcePathRef);
+                    repositoryDocument.copyContent(sourceDocument); // Merge
+                    documentManager.saveDocument(repositoryDocument);
+                    documentManager.removeDocument(sourceDocument.getRef());
+                }
+                else {
+                    // Move to repository otherwise
+                    repositoryDocument = documentManager.move(sourceDocument.getRef(),
                         new PathRef(sourceFolderPath), sourceDocument.getName());
+                }
+                
+                // Create a proxy at the expected location
                 documentManager.createProxy(repositoryDocument.getRef(), currentParentRef);
             }
             documentManager.save();
