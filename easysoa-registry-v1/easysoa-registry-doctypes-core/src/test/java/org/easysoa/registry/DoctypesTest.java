@@ -19,7 +19,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.schema.SchemaManager;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
@@ -43,9 +42,6 @@ public class DoctypesTest extends AbstractRepositoryTest {
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(DoctypesTest.class);
 
-    @Inject
-    CoreSession documentManager;
-    
     @Inject
     SchemaManager schemaManager;
 

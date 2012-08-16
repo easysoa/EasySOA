@@ -14,7 +14,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
@@ -37,9 +36,6 @@ public class EnvironmentClassifierTest extends AbstractRepositoryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(EnvironmentClassifierTest.class);
-
-    @Inject
-    CoreSession documentManager;
 
     @Inject
     DocumentService documentService;
