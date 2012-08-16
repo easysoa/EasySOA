@@ -1,6 +1,7 @@
 package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
+import org.easysoa.registry.test.AbstractRepositoryTest;
 import org.easysoa.registry.test.EasySOAFeature;
 import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.types.TaggingFolder;
@@ -27,7 +28,7 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(EasySOAFeature.class)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class DocumentModelHelperTest {
+public class DocumentModelHelperTest extends AbstractRepositoryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(DocumentModelHelperTest.class);

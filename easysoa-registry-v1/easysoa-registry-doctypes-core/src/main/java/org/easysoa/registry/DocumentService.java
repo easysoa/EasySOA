@@ -14,19 +14,30 @@ import org.nuxeo.ecm.core.api.DocumentRef;
 public interface DocumentService {
 
     /**
-     * Creates a document.
+     * Helper for general document creation.
+     * Direct use is not recommended for SoaNode types.
      * 
      * @return
+     * @throws ClientException
+     */
+    DocumentModel createDocument(CoreSession documentManager, String doctype, String name,
+            String parentPath, String title) throws ClientException;
+    
+    /**
+     * Creates a SoaNode document. If a document of the same identifier
+     * exists, returns it instead. If the target path is not the repository root,
+     * a document will be stored in the repository, and proxied at the wanted destination.
+     * 
      * @throws ClientException
      */
     DocumentModel create(CoreSession documentManager, SoaNodeId identifier,
             String parentPath, String title) throws ClientException;
 
     /**
-     * Creates a document and puts it in the repository.
-     * Works only with SoaNode types (returns null otherwise) 
+     * Creates a document and puts it in the repository. If a document of the same identifier
+     * exists, returns it instead.
+     * Works only with SoaNode types (returns null otherwise).
      * 
-     * @return
      * @throws ClientException
      */
     DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String title)
@@ -34,11 +45,14 @@ public interface DocumentService {
     
     /**
      * Copies a document at the target destination.
-     * Recommanded for SoaNodes as it handles proxies correctly.
+     * Recommended for SoaNodes as it handles proxies correctly.
      */
     DocumentModel copy(CoreSession documentManager, DocumentModel sourceModel, DocumentRef destRef)
             throws ClientException;
     
+    DocumentModel findDocument(CoreSession documentManager, String type, String name)
+    throws ClientException;
+
     /**
      * Finds any document given its type and name
      * If a SoaNode, returns the source (non-proxy) from the repository
@@ -76,6 +90,7 @@ public interface DocumentService {
 
     void ensureSourceFolderExists(CoreSession documentManager, String doctype)
             throws ClientException;
+
 
     
 }

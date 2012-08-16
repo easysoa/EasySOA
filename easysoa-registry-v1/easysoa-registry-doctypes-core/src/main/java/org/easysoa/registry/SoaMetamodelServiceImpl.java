@@ -20,7 +20,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  * @author mkalam-alami
  *
  */
-public class SoaNodeTypeServiceImpl extends DefaultComponent implements SoaNodeTypeService {
+public class SoaMetamodelServiceImpl extends DefaultComponent implements SoaMetamodelService {
 
     public static final String EXTENSIONPOINT_TYPES = "types";
     
@@ -50,27 +50,25 @@ public class SoaNodeTypeServiceImpl extends DefaultComponent implements SoaNodeT
     }
 
     // Modified version of ShortestPathUtils.getPath()
-    private static <V, E> List<V> getPath(Graph<V,E> graph, ShortestPath<V,E> sp, V source, V target)
-    {
+    private static <V, E> List<V> getPath(Graph<V, E> graph, ShortestPath<V, E> sp, V source, V target) {
         LinkedList<V> path = new LinkedList<V>();
-        
-        Map<V,E> incomingEdges = sp.getIncomingEdgeMap(source);
-        
-        if (incomingEdges.isEmpty() || incomingEdges.get(target) == null)
+        Map<V, E> incomingEdges = sp.getIncomingEdgeMap(source);
+
+        if (incomingEdges.isEmpty() || incomingEdges.get(target) == null) {
             return path;
+        }
         V current = target;
-        while (!current.equals(source))
-        {
+        while (!current.equals(source)) {
             E incoming = incomingEdges.get(current);
             path.addFirst(current);
             Pair<V> endpoints = graph.getEndpoints(incoming);
-            if(endpoints.getFirst().equals(current)) {  
+            if (endpoints.getFirst().equals(current)) {
                 current = endpoints.getSecond();
             } else {
                 current = endpoints.getFirst();
             }
         }
-        
+
         return path;
     }
 

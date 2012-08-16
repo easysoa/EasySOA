@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.SoaMetamodelService" version="1.0">
+
+  <implementation class="org.easysoa.registry.SoaMetamodelServiceImpl" />
+
+  <service>
+    <provide interface="org.easysoa.registry.SoaMetamodelService" />
+  </service>
+  
+  <extension-point name="types">
+    <object class="org.easysoa.registry.SoaNodeTypeDescriptor" />
+  </extension-point>
+
+</component>

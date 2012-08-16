@@ -3,6 +3,7 @@ package org.easysoa.registry.systems;
 import org.apache.log4j.Logger;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
+import org.easysoa.registry.test.AbstractRepositoryTest;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
@@ -32,7 +33,7 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(EasySOADefaultsFeature.class)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class EnvironmentClassifierTest {
+public class EnvironmentClassifierTest extends AbstractRepositoryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(EnvironmentClassifierTest.class);
@@ -46,8 +47,8 @@ public class EnvironmentClassifierTest {
     @Test
     public void testClassification() throws ClientException {
         // Create manual SystemTreeRoot
-        DocumentModel strModel = documentService.create(documentManager,
-                new SoaNodeId(SystemTreeRoot.DOCTYPE, "MyRoot"),
+        DocumentModel strModel = documentService.createDocument(documentManager,
+                SystemTreeRoot.DOCTYPE, "MyRoot",
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot");
 
         // Create System in it
@@ -66,14 +67,14 @@ public class EnvironmentClassifierTest {
 
         // Make sure that there are now the endpoint in the By Environment tree
         
-        DocumentModel istrModel = documentService.find(documentManager,
-                new SoaNodeId(IntelligentSystemTreeRoot.DOCTYPE, "environment:environment"));
+        DocumentModel istrModel = documentService.findDocument(documentManager,
+                IntelligentSystemTreeRoot.DOCTYPE, "environment:environment");
         Assert.assertNotNull("A By Environment intelligent system tree root must have been created",
                 istrModel);
         Assert.assertEquals("The By Environment STR must contain 1 system", 1, documentManager.getChildren(istrModel.getRef()).size());
         
-        DocumentModel productionSystem = documentService.find(documentManager,
-                new SoaNodeId(IntelligentSystem.DOCTYPE, "Production"));
+        DocumentModel productionSystem = documentService.findDocument(documentManager,
+                IntelligentSystem.DOCTYPE, "Production");
         Assert.assertNotNull("A 'Production' system must have been created", productionSystem);
 
         DocumentModelList productionSystemChildren = documentManager.getChildren(productionSystem.getRef());

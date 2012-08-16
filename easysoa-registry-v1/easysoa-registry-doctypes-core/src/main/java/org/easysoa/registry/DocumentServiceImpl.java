@@ -16,18 +16,18 @@ import org.nuxeo.ecm.platform.query.nxql.NXQLQueryBuilder;
 
 public class DocumentServiceImpl implements DocumentService {
 
+    public DocumentModel createDocument(CoreSession documentManager, String doctype, String name, String parentPath, String title) throws ClientException {
+        DocumentModel documentModel = documentManager.createDocumentModel(doctype);
+        documentModel.setPathInfo(parentPath, name);
+        documentModel.setProperty("dublincore", "title", title);
+        documentModel = documentManager.createDocument(documentModel);
+        return documentModel;
+    }
+    
     public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath, String title) throws ClientException {
         String doctype = identifier.getType(), name = identifier.getName();
-        
-        // Basic behavior
-        if (!documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
-            
-            DocumentModel documentModel = documentManager.createDocumentModel(parentPath, name, doctype);
-            documentModel.setProperty("dublincore", "title", title);
-            return documentManager.createDocument(documentModel);
-        }
-        // SoaNodes must be stored in the repository, and only have live proxies in the system trees
-        else {
+ 
+        if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
             boolean createProxy = false;
             if (!parentPath.equals(Repository.REPOSITORY_PATH)) {
                 createProxy = true;
@@ -38,10 +38,7 @@ public class DocumentServiceImpl implements DocumentService {
             PathRef sourceRef = new PathRef(getSourcePath(identifier));
             DocumentModel documentModel;
             if (!documentManager.exists(sourceRef)) {
-                documentModel = documentManager.createDocumentModel(doctype);
-                documentModel.setPathInfo(getSourceFolderPath(doctype), name);
-                documentModel.setProperty("dublincore", "title", title);
-                documentModel = documentManager.createDocument(documentModel);
+                documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), title);
             }
             else {
                 documentModel = documentManager.getDocument(sourceRef);
@@ -54,6 +51,9 @@ public class DocumentServiceImpl implements DocumentService {
             else {
                 return documentModel;
             }
+        }
+        else {
+            return null;
         }
     }
 
@@ -88,12 +88,16 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    public DocumentModel find(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
+    public DocumentModel findDocument(CoreSession documentManager, String type, String name) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?' AND " + NXQL.ECM_ISPROXY + " = 0",
-                new Object[] { identifier.getType(), identifier.getName() },
+                new Object[] { type, name },
                 false, true);
         DocumentModelList results = documentManager.query(query);
         return results.size() > 0 ? results.get(0) : null;
+    }
+    
+    public DocumentModel find(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
+        return findDocument(documentManager, identifier.getType(), identifier.getName());
     }
 
     public DocumentModelList findProxies(CoreSession documentManager, DocumentModel model) throws ClientException {

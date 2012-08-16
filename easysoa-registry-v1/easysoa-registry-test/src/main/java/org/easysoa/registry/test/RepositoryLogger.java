@@ -43,26 +43,30 @@ public class RepositoryLogger {
 
     private static Logger logger = Logger.getLogger(RepositoryLogger.class);
     
-    private CoreSession session;
+    private CoreSession documentManager;
     private String title;
     private final Level level;
+    
     private RepositoryLoggerMatcher matcher = new RepositoryLoggerMatcher() {
         public boolean matches(DocumentModel model) {
             return false;
         }
     };
 
-
-    public RepositoryLogger(CoreSession session, Level level) {
-        this(session, "Repository contents", level);
+    public RepositoryLogger(CoreSession documentManager) {
+        this(documentManager, Level.DEBUG);
     }
     
-    public RepositoryLogger(CoreSession session, String title, Level level) {
-        this.session = session;
+    public RepositoryLogger(CoreSession documentManager, Level level) {
+        this(documentManager, "Repository contents", level);
+    }
+    
+    public RepositoryLogger(CoreSession documentManager, String title, Level level) {
+        this.documentManager = documentManager;
         this.title = title;
         this.level = level;
     }
-    
+
     /**
      * Allows to define a matcher to set which documents
      * need to be logged in details.
@@ -74,7 +78,7 @@ public class RepositoryLogger {
 
     public void logAllRepository() {
         try {
-            logDocumentAndChildren(session.getRootDocument());
+            logDocumentAndChildren(documentManager.getRootDocument());
         } catch (ClientException e) {
             logger.log(level, "ERROR: Failed to log a document", e);
         }
@@ -96,6 +100,10 @@ public class RepositoryLogger {
             }
         }
     }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     private void logDocumentAndChildren(DocumentModel model, int indent) throws ClientException {
         // Log document
@@ -107,7 +115,7 @@ public class RepositoryLogger {
         }
         
         // Recursive calls
-        DocumentModelList list = session.getChildren(model.getRef());
+        DocumentModelList list = documentManager.getChildren(model.getRef());
         for (DocumentModel childModel : list) {
             logDocumentAndChildren(childModel, indent+INDENT_STEP);
         }

@@ -19,7 +19,7 @@ public class SoaNodeId {
     public void setName(String name) {
         // Remove eventual suffix added by Nuxeo when some proxies conflict
         // XXX: Side effect is that no document should end its "real" name with a dot followed by numbers
-        this.name = name.replaceAll("\\.[0-9]+$", "");
+        this.name = name.replaceAll("\\.[0-9]+$", "").replace('/', '-');
     }
     
     public String getType() {
@@ -32,6 +32,11 @@ public class SoaNodeId {
 
     public static SoaNodeId fromModel(DocumentModel model) {
         return new SoaNodeId(model.getType(), model.getName());
+    }
+    
+    @Override
+    public String toString() {
+        return doctype + ":" + name;
     }
     
 }

@@ -1,10 +1,13 @@
 package org.easysoa.registry;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.easysoa.registry.test.AbstractRepositoryTest;
 import org.easysoa.registry.test.EasySOAFeature;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.DeployedDeliverable;
@@ -14,7 +17,6 @@ import org.easysoa.registry.types.ServiceImplementation;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
@@ -32,13 +34,10 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(EasySOAFeature.class)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class DiscoveryServiceTest {
+public class DiscoveryServiceTest extends AbstractRepositoryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(DiscoveryServiceTest.class);
-
-    @Inject
-    CoreSession documentManager;
 
     @Inject
     DocumentService documentService;
@@ -47,13 +46,19 @@ public class DiscoveryServiceTest {
     DiscoveryService discoveryService;
     
     @Inject
-    SoaNodeTypeService soaNodeTypeService;
+    SoaMetamodelService soaMetamodelService;
+
+    private static SoaNodeId discoveredDeliverableId;
+
+    private static Map<String, String> properties;
+    
+    private static DocumentModel foundDeliverable;
     
     @Test
     public void testSimpleDiscovery() throws Exception {
         // Gather discovery information
-        SoaNodeId discoveredDeliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa.registry:myartifact");
-        Map<String, String> properties = new HashMap<String, String>();
+        discoveredDeliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa.registry:myartifact");
+        properties = new HashMap<String, String>();
         properties.put(Deliverable.XPATH_TITLE, "My Artifact");
         properties.put(Deliverable.XPATH_APPLICATION, "myapp");
         
@@ -62,7 +67,7 @@ public class DiscoveryServiceTest {
         documentManager.save();
         
         // Check results
-        DocumentModel foundDeliverable = documentService.find(documentManager, discoveredDeliverableId);
+        foundDeliverable = documentService.find(documentManager, discoveredDeliverableId);
         Assert.assertNotNull("A deliverable must be created by the discovery processing", foundDeliverable);
         for (Entry<String, String> property : properties.entrySet()) {
             Assert.assertEquals("Property " + property.getKey() + " must match value from discovery",
@@ -74,13 +79,39 @@ public class DiscoveryServiceTest {
     public void testSoaNodeTypeService() throws Exception {
         // Check a few random values of the default contribution
         Assert.assertTrue("The default contributions must be loaded",
-                soaNodeTypeService.getChildren(Deliverable.DOCTYPE).contains(ServiceImplementation.DOCTYPE));
+                soaMetamodelService.getChildren(Deliverable.DOCTYPE).contains(ServiceImplementation.DOCTYPE));
         Assert.assertTrue("The default contributions must be loaded",
-                soaNodeTypeService.getChildren(DeployedDeliverable.DOCTYPE).contains(Endpoint.DOCTYPE));
+                soaMetamodelService.getChildren(DeployedDeliverable.DOCTYPE).contains(Endpoint.DOCTYPE));
 
         // Test a random path
         Assert.assertArrayEquals("Subtypes chain must be valid", 
                 new Object[]{ ServiceImplementation.DOCTYPE, Endpoint.DOCTYPE },
-                soaNodeTypeService.getPath(Service.DOCTYPE, Endpoint.DOCTYPE).toArray());
+                soaMetamodelService.getPath(Service.DOCTYPE, Endpoint.DOCTYPE).toArray());
     }
+    
+    @Test
+    public void testCorrelationDiscovery() throws Exception {
+        // Add correlation information
+        List<SoaNodeId> correlatedDocuments = new LinkedList<SoaNodeId>();
+        SoaNodeId endpointId = new SoaNodeId(Endpoint.DOCTYPE, "http://myapp.com/service");
+        correlatedDocuments.add(endpointId);
+        SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "myserviceimpl");
+        correlatedDocuments.add(serviceImplId);
+        
+        // Run discovery
+        discoveryService.importDiscovery(documentManager, discoveredDeliverableId, null, correlatedDocuments);
+        documentManager.save();
+        
+        // Check results
+        DocumentModel foundEndpoint = documentService.find(documentManager, endpointId);
+        Assert.assertNotNull("An endpoint must be created by the discovery processing", foundEndpoint);
+
+        Assert.assertNotNull("The correlated documents must be stored under the deliverable",
+                documentManager.hasChildren(foundDeliverable.getRef()));
+        
+        DocumentModel foundServiceImpl = documentService.find(documentManager, serviceImplId);
+        Assert.assertNotNull("The service implementation must contain the endpoint when both are specified for correlation",
+                documentManager.hasChildren(foundServiceImpl.getRef()));
+    }
+    
 }

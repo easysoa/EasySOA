@@ -3,6 +3,7 @@ package org.easysoa.registry.systems;
 import org.apache.log4j.Logger;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
+import org.easysoa.registry.test.AbstractRepositoryTest;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
 import org.easysoa.registry.types.SystemTreeRoot;
@@ -31,7 +32,7 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(EasySOADefaultsFeature.class)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class MavenHierarchyTest {
+public class MavenHierarchyTest extends AbstractRepositoryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(MavenHierarchyTest.class);
@@ -45,8 +46,8 @@ public class MavenHierarchyTest {
     @Test
     public void testClassification() throws ClientException {
         // Create manual SystemTreeRoot
-        DocumentModel strModel = documentService.create(documentManager,
-                new SoaNodeId(SystemTreeRoot.DOCTYPE, "MyRoot"),
+        DocumentModel strModel = documentService.createDocument(documentManager,
+                SystemTreeRoot.DOCTYPE, "MyRoot",
                 DocumentModelHelper.WORKSPACEROOT_REF.toString(), "MyRoot");
 
         // Create System in it
@@ -65,8 +66,8 @@ public class MavenHierarchyTest {
         
         // Make sure that the deliverable is now in the Maven hierarchy
         
-        DocumentModel istrModel = documentService.find(documentManager,
-                new SoaNodeId(IntelligentSystemTreeRoot.DOCTYPE, "mavenHierarchy:mavenHierarchy"));
+        DocumentModel istrModel = documentService.findDocument(documentManager,
+                IntelligentSystemTreeRoot.DOCTYPE, "mavenHierarchy:mavenHierarchy");
         Assert.assertNotNull("A Maven hierarchy intelligent system tree root must have been created",
                 istrModel);
         
