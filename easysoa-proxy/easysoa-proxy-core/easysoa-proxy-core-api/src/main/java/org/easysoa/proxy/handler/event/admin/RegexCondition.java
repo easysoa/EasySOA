@@ -21,7 +21,8 @@ public class RegexCondition implements CompiledCondition {
      * @param regex
      */
     public RegexCondition(String regex) {
-        this.p = Pattern.compile(regex.concat(".*"));
+        //this.p = Pattern.compile(regex.concat(".*"));
+        this.p = Pattern.compile(regex);
     }
 
     /**

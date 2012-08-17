@@ -17,7 +17,6 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-
 package org.easysoa.message;
 
 import java.io.BufferedReader;
@@ -90,6 +89,11 @@ public class InMessage implements Message {
 	 * Message body or entity 
 	 */
 	private MessageContent messageContent;
+        
+        /**
+         * Request Sender Host
+         */
+        private String remoteHost;
 	
 	// private Long headersSize;
 	// private Long bodySize;
@@ -113,6 +117,7 @@ public class InMessage implements Message {
 		this.protocol = "";
 		this.protocolVersion = "";
 		this.queryString = new QueryString();
+                this.remoteHost ="";
 	}
 	
 	/**
@@ -147,6 +152,7 @@ public class InMessage implements Message {
 		this.server = request.getServerName();
 		this.port = request.getServerPort();
 		this.path = request.getRequestURI();
+                this.remoteHost = request.getRemoteHost();
 		//this.completeUrl = request.getRequestURL().toString();
 		// Set url parameters
 		this.queryString = new QueryString();
@@ -330,5 +336,13 @@ public class InMessage implements Message {
 	/*public void setCompleteUrl(String completeUrl) {
 		this.completeUrl = completeUrl;
 	}*/
-	
+
+    public String getRemoteHost() {
+        return remoteHost;
+    }
+
+    public void setRemoteHost(String remoteHost) {
+        this.remoteHost = remoteHost;
+    }     
+   
 }

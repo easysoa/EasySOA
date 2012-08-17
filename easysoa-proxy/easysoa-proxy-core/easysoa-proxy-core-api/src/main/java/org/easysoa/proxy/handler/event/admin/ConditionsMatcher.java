@@ -22,19 +22,18 @@ public class ConditionsMatcher {
     }
 
     /**
-     * 
+     *
      * @param compiledConditionsList
      * @param inMessage
      * @return true if he inMessage matches with compiledCondition
      */
     public boolean matchesAll(List<CompiledCondition> compiledConditionsList, InMessage inMessage) {
         //TODO  update this method
-        for(CompiledCondition compiledCondition : compiledConditionsList){
-            if(!compiledCondition.matches(inMessage)) {
+        for (CompiledCondition compiledCondition : compiledConditionsList) {
+            if (!compiledCondition.matches(inMessage)) {
                 return false;
             }
         }
         return true;
     }
-    
 }

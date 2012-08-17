@@ -32,6 +32,7 @@ import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 import com.espertech.esper.epl.generated.EsperEPL2GrammarParser.betweenList_return;
+import java.util.AbstractMap;
 
 /**
  * To handle and perform the steps between the inMessage's reception and the
@@ -49,34 +50,48 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
     private Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>();
 
     public EventMessageHandlerImpl() {
+
+        RegexCondition rCondition1 = new RegexCondition("http://localhost:8200/esb/AirportService");
+        List<CompiledCondition> listCompiledCondition1 = new ArrayList<CompiledCondition>();
+        listCompiledCondition1.add(rCondition1);
+        List<String> listServiceToCall1 = new ArrayList<String>();
+        listServiceToCall1.add("http://www.facebook.fr");
+        listServiceToCall1.add("http://www.yahoo.fr");
+        Map<List<CompiledCondition>, List<String>> listmap = new HashMap<List<CompiledCondition>, List<String>>();
+        listmap.put(listCompiledCondition1, listServiceToCall1);
+
+        this.setListenedServiceUrlToServicesToLaunchUrlMap(listmap);
         // Little test of the CompiledCondition
-     /*   CompiledCondition compiledCondition = new CompiledCondition("http://localhost:8200/esb/AirportService");
-        LaunchedService launchedService = new LaunchedService();
-        launchedService.setUrl("http://www.google.fr");
+        /*   CompiledCondition compiledCondition = new CompiledCondition("http://localhost:8200/esb/AirportService");
+         LaunchedService launchedService = new LaunchedService();
+         launchedService.setUrl("http://www.google.fr");
 
-        List<LaunchedService> listCall = new ArrayList<LaunchedService>();
-        listCall.add(launchedService);
-        Subscription subscription = new Subscription();
+         List<LaunchedService> listCall = new ArrayList<LaunchedService>();
+         listCall.add(launchedService);
+         Subscription subscription = new Subscription();
 
-        subscription.setConditions(conditions);
-        subscription.setLaunchedservices(listCall);
+         subscription.setConditions(conditions);
+         subscription.setLaunchedservices(listCall);
 
-        Subscriptions subscriptions = new Subscriptions(subscription);
+         Subscriptions subscriptions = new Subscriptions(subscription);
 
-        //CompiledCondition compiledCondition1 = new CompiledCondition("http://localhost:8200/esb/AirportService");
-        //List<CompiledCondition> listCompiledCondition1 = new ArrayList<CompiledCondition>();
-        //listCompiledCondition1.add(compiledCondition1);
+         //CompiledCondition compiledCondition1 = new CompiledCondition("http://localhost:8200/esb/AirportService");
+         //List<CompiledCondition> listCompiledCondition1 = new ArrayList<CompiledCondition>();
+         //listCompiledCondition1.add(compiledCondition1);
 
-        this.listenedServiceUrlToServicesToLaunchUrlMap = subscriptions.updateBehaviors();
-        //.put(listCompiledCondition1, listCall);
-        // End of Test
-        * */
-
+         this.listenedServiceUrlToServicesToLaunchUrlMap = subscriptions.updateBehaviors();
+         //.put(listCompiledCondition1, listCall);
+         // End of Test
+         * */
     }
 
     /**
-     * Get the web Service to launch and generate valid urls, call them and get
-     * the result in a list
+     *
+     * @param inMessage
+     * @param outMessage
+     * @throws Exception
+     * @return Get the web Service to launch and generate valid urls, call them
+     * and get the result in a list
      */
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
@@ -94,7 +109,7 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
             for (Entry<List<CompiledCondition>, List<String>> currentEntry : listenedServiceUrlToServicesToLaunchUrlMap.entrySet()) {
                 List<CompiledCondition> listCompiledCondition = currentEntry.getKey();
                 ConditionsMatcher conditionsMatcher = new ConditionsMatcher();
-                if(conditionsMatcher.matchesAll(listCompiledCondition, inMessage)){
+                if (conditionsMatcher.matchesAll(listCompiledCondition, inMessage)) {
                     servicesToLaunchUrlsOrig = currentEntry.getValue();
                     break;
                 }
@@ -116,12 +131,17 @@ public class EventMessageHandlerImpl implements MessageHandler, IEventMessageHan
         List<OutMessage> launchresults = new ArrayList<OutMessage>();
         for (String serviceToLaunchUrlString : servicesToLaunchUrls) {
             InMessage forwardedInMessage = inMessage; // TODO clone and replace URL etc.
-            URL serviceToLaunchUrl = new URL(serviceToLaunchUrlString);
-            forwardedInMessage.setProtocol(serviceToLaunchUrl.getProtocol());
-            forwardedInMessage.setServer(serviceToLaunchUrl.getHost());
-            forwardedInMessage.setPort(serviceToLaunchUrl.getPort());
-            forwardedInMessage.setPath(serviceToLaunchUrl.getPath()); // TODO LATER handle services that may have different URLs ex. REST
+            // URL serviceToLaunchUrl = new URL(serviceToLaunchUrlString);
+            //  forwardedInMessage.setMethod("GET");
+            //  forwardedInMessage.setServer("www.facebook.com");
+            //  forwardedInMessage.setPath("");
 
+
+            /* forwardedInMessage.setProtocol(serviceToLaunchUrl.getProtocol());
+             forwardedInMessage.setServer(serviceToLaunchUrl.getHost());
+             forwardedInMessage.setPort(serviceToLaunchUrl.getPort());
+             forwardedInMessage.setPath(serviceToLaunchUrl.getPath()); // TODO LATER handle services that may have different URLs ex. REST
+             */
             // call it TODO LATER async using a threaded Queue Worker     
             OutMessage forwardedOutMessage = forwarder.send(forwardedInMessage);
 
