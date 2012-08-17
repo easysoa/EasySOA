@@ -7,8 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.easysoa.registry.test.AbstractRepositoryTest;
-import org.easysoa.registry.test.EasySOAFeature;
+import org.easysoa.registry.test.AbstractRegistryTest;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.DeployedDeliverable;
 import org.easysoa.registry.types.Endpoint;
@@ -16,25 +15,19 @@ import org.easysoa.registry.types.Service;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 import com.google.inject.Inject;
 
 /**
  * 
  * @author mkalam-alami
- *
  */
-@RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class DiscoveryServiceTest extends AbstractRepositoryTest {
+public class DiscoveryServiceTest extends AbstractRegistryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(DiscoveryServiceTest.class);

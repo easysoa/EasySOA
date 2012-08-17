@@ -1,8 +1,7 @@
 package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
-import org.easysoa.registry.test.AbstractRepositoryTest;
-import org.easysoa.registry.test.EasySOAFeature;
+import org.easysoa.registry.test.AbstractRegistryTest;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
@@ -11,16 +10,10 @@ import org.easysoa.registry.types.TaggingFolder;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.PathRef;
-import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
-import org.nuxeo.ecm.core.test.annotations.Granularity;
-import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 import com.google.inject.Inject;
@@ -30,11 +23,8 @@ import com.google.inject.Inject;
  * @author mkalam-alami
  *
  */
-@RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
 @LocalDeploy({ "org.easysoa.registry.doctypes.core:OSGI-INF/sample-ist-contrib.xml" })
-@RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class IntelligentSystemTreeTest extends AbstractRepositoryTest {
+public class IntelligentSystemTreeTest extends AbstractRegistryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(IntelligentSystemTreeTest.class);

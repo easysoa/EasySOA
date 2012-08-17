@@ -1,6 +1,6 @@
 package org.easysoa.registry;
 
-import org.easysoa.registry.test.AbstractRepositoryTest;
+import org.easysoa.registry.test.AbstractRegistryTest;
 import org.easysoa.registry.test.EasySOAFeature;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.java.MavenDeliverable;
@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
@@ -24,10 +25,10 @@ import com.google.inject.Inject;
  *
  */
 @RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
+@Features({EasySOAFeature.class, CoreFeature.class})
 @Deploy("org.easysoa.registry.doctypes.java")
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class JavaDoctypesAdaptersTest extends AbstractRepositoryTest {
+public class JavaDoctypesAdaptersTest extends AbstractRegistryTest {
 
     @Inject
     DocumentService documentService;

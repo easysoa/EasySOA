@@ -1,8 +1,7 @@
 package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
-import org.easysoa.registry.test.AbstractRepositoryTest;
-import org.easysoa.registry.test.EasySOAFeature;
+import org.easysoa.registry.test.AbstractRegistryTest;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.types.SystemTreeRoot;
@@ -12,15 +11,12 @@ import org.easysoa.registry.utils.RepositoryHelper;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 import com.google.inject.Inject;
 
@@ -29,10 +25,8 @@ import com.google.inject.Inject;
  * @author mkalam-alami
  *
  */
-@RunWith(FeaturesRunner.class)
-@Features(EasySOAFeature.class)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class SoaNodeRepositoryTest extends AbstractRepositoryTest {
+public class SoaNodeRepositoryTest extends AbstractRegistryTest {
 
     @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(SoaNodeRepositoryTest.class);
