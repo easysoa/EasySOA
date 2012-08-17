@@ -4,6 +4,7 @@
  */
 package org.easysoa.proxy.handler.event.admin;
 
+import org.apache.commons.jxpath.JXPathContext;
 import org.easysoa.message.InMessage;
 
 /**
@@ -24,6 +25,13 @@ public class JXPathCondition implements CompiledCondition {
      */
     @Override
     public boolean matches(InMessage inMessage) {
-        return false;
+        //Employee emp = (Employee)context.getValue("/departmentList/employees[name='Johnny']");
+        JXPathContext context = JXPathContext.newContext(inMessage);
+        InMessage result = (InMessage) context.getValue("[remoteHost='127.0.0.1']");
+        if (result == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
