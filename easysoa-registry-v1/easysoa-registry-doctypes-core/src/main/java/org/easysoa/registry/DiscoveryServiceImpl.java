@@ -11,7 +11,7 @@ import org.nuxeo.runtime.api.Framework;
 
 public class DiscoveryServiceImpl implements DiscoveryService {
 
-    public DocumentModel importDiscovery(CoreSession documentManager, SoaNodeId identifier,
+    public DocumentModel runDiscovery(CoreSession documentManager, SoaNodeId identifier,
             Map<String, String> properties, List<SoaNodeId> correlatedDocuments) throws Exception {
         DocumentService documentService = Framework.getService(DocumentService.class);
         
@@ -39,11 +39,28 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                 // Swap the documents if necessary
                 DocumentModel parentDocument;
                 if (path == null) {
+                    // Create the target
                     parentDocument = documentService.find(documentManager, correlatedDocument);
                     if (parentDocument == null) {
                         parentDocument = documentService.create(documentManager, correlatedDocument, correlatedDocument.getType());
                     }
-                    correlatedDocument = SoaNodeId.fromModel(documentModel);
+                    
+                    // Find a path (either between doc & target, or between target & another correlated doc)
+                    path = soaMetamodelService.getPath(correlatedDocument.getType(), type);
+                    if (path == null) {
+                        for (SoaNodeId candidateCorrelatedDocument : correlatedDocuments) {
+                            if (!correlatedDocument.getType().equals(candidateCorrelatedDocument.getType())) {
+                                path = soaMetamodelService.getPath(correlatedDocument.getType(), candidateCorrelatedDocument.getType());
+                                if (path != null) {
+                                    correlatedDocument = candidateCorrelatedDocument;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        correlatedDocument = SoaNodeId.fromModel(documentModel);
+                    }
                 }
                 else {
                     parentDocument = documentModel;
@@ -51,7 +68,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                 
                 // If we have unknown documents between the two, create placeholders
                 // TODO More intelligent, pluggable correlation logic?
-                if (!path.isEmpty()) {
+                if (path != null) {
                     for (String pathStepType : path.subList(0, path.size() - 1)) {
                         // Before creating a placeholder, check if the intermediate type
                         // is not already listed in the correlated documents
@@ -72,9 +89,13 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                         }
                     }
                 }
-                documentService.create(documentManager, correlatedDocument,
-                        parentDocument.getPathAsString(), correlatedDocument.getName());
                 
+                // Create target document if necessary
+                if (documentService.findProxy(documentManager, correlatedDocument,
+                        parentDocument.getPathAsString()) == null) {
+                    documentService.create(documentManager, correlatedDocument,
+                            parentDocument.getPathAsString(), correlatedDocument.getName());
+                }
             } 
         }
         

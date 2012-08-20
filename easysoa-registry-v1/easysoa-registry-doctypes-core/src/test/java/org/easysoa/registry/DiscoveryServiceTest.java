@@ -56,7 +56,7 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
         properties.put(Deliverable.XPATH_APPLICATION, "myapp");
         
         // Run discovery
-        discoveryService.importDiscovery(documentManager, discoveredDeliverableId, properties, null);
+        discoveryService.runDiscovery(documentManager, discoveredDeliverableId, properties, null);
         documentManager.save();
         
         // Check results
@@ -90,21 +90,27 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
         correlatedDocuments.add(endpointId);
         SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "myserviceimpl");
         correlatedDocuments.add(serviceImplId);
+        SoaNodeId serviceId = new SoaNodeId(Service.DOCTYPE, "myservice");
+        correlatedDocuments.add(serviceId);
         
         // Run discovery
-        discoveryService.importDiscovery(documentManager, discoveredDeliverableId, null, correlatedDocuments);
+        discoveryService.runDiscovery(documentManager, discoveredDeliverableId, null, correlatedDocuments);
         documentManager.save();
         
         // Check results
         DocumentModel foundEndpoint = documentService.find(documentManager, endpointId);
         Assert.assertNotNull("An endpoint must be created by the discovery processing", foundEndpoint);
 
-        Assert.assertNotNull("The correlated documents must be stored under the deliverable",
+        Assert.assertTrue("The correlated documents must be stored under the deliverable",
                 documentManager.hasChildren(foundDeliverable.getRef()));
         
         DocumentModel foundServiceImpl = documentService.find(documentManager, serviceImplId);
-        Assert.assertNotNull("The service implementation must contain the endpoint when both are specified for correlation",
+        Assert.assertTrue("The service implementation must contain the endpoint when both are specified for correlation",
                 documentManager.hasChildren(foundServiceImpl.getRef()));
+        
+        DocumentModel foundService = documentService.find(documentManager, serviceId);
+        Assert.assertTrue("The service must link to the deliverable through its the service implementation",
+                documentManager.hasChildren(foundService.getRef()));
     }
     
 }

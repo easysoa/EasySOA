@@ -30,7 +30,7 @@ public class DocumentServiceImpl implements DocumentService {
  
         if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
             boolean createProxy = false;
-            if (!parentPath.equals(Repository.REPOSITORY_PATH)) {
+            if (!parentPath.equals(getSourceFolderPath(doctype))) {
                 createProxy = true;
             }
             
@@ -45,9 +45,15 @@ public class DocumentServiceImpl implements DocumentService {
                 documentModel = documentManager.getDocument(sourceRef);
             }
             
-            // Create proxy if needed
+            // Create proxy if needed (but make sure the parent is the instance of the repository,
+            // otherwise the child proxy will only be visible in the context of the parent proxy)
             if (createProxy) {
-                return documentManager.createProxy(documentModel.getRef(), new PathRef(parentPath));
+                PathRef parentRef = new PathRef(parentPath);
+                DocumentModel parentModel = documentManager.getDocument(parentRef);
+                if (parentModel.isProxy()) {
+                    parentModel = find(documentManager, SoaNodeId.fromModel(parentModel));
+                }
+                return documentManager.createProxy(documentModel.getRef(), parentModel.getRef());
             }
             else {
                 return documentModel;
@@ -145,6 +151,26 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
    
+    @Override
+    public DocumentModel findProxy(CoreSession documentManager, SoaNodeId identifier,
+            String parentPath) throws ClientException {
+        // Check parent
+        PathRef parentRef = new PathRef(parentPath);
+        DocumentModel parentModel = documentManager.getDocument(parentRef);
+        if (parentModel.isProxy()) {
+            parentModel = find(documentManager, SoaNodeId.fromModel(parentModel));
+        }
+        
+        // Find proxy among children
+        DocumentModelList childrenModels = documentManager.getChildren(parentModel.getRef());
+        for (DocumentModel childModel : childrenModels) {
+            if (SoaNodeId.fromModel(childModel).equals(identifier)) {
+                return childModel;
+            }
+        }
+        return null;
+    }
+
     public DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'",
                 new Object[] { identifier.getType(), identifier.getName() },

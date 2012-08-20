@@ -39,4 +39,15 @@ public class SoaNodeId {
         return doctype + ":" + name;
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SoaNodeId) {
+            SoaNodeId otherId = (SoaNodeId) obj;
+            return this.doctype.equals(otherId.doctype) && this.name.equals(otherId.name);
+        }
+        else {
+            return false;
+        }
+    }
+    
 }

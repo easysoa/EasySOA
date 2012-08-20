@@ -18,7 +18,7 @@ public interface SoaMetamodelService {
      * 
      * @param fromType The parent type
      * @param toType The child type
-     * @return The path (without <i>fromType</i> and <i>toType</i>, or null if it's not possible
+     * @return The path (without <i>fromType</i>, or null if it's not possible
      * to store <i>toType</i> under <i>fromType</i>)
      */
     List<String> getPath(String fromType, String toType);

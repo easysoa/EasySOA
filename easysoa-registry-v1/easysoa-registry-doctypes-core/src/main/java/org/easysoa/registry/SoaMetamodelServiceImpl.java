@@ -55,7 +55,7 @@ public class SoaMetamodelServiceImpl extends DefaultComponent implements SoaMeta
         Map<V, E> incomingEdges = sp.getIncomingEdgeMap(source);
 
         if (incomingEdges.isEmpty() || incomingEdges.get(target) == null) {
-            return path;
+            return null;
         }
         V current = target;
         while (!current.equals(source)) {

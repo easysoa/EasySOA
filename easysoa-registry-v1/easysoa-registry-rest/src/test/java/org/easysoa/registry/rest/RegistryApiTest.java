@@ -54,7 +54,7 @@ public class RegistryApiTest extends AbstractWebEngineTest {
         
         // Fill repository for all tests
         for (int i = 0; i < SERVICE_COUNT; i++) {
-            discoveryService.importDiscovery(documentManager, new SoaNodeId(Service.DOCTYPE,
+            discoveryService.runDiscovery(documentManager, new SoaNodeId(Service.DOCTYPE,
                     "MyService" + i), new HashMap<String, String>(), null);
         }
         documentManager.save();
@@ -171,7 +171,7 @@ public class RegistryApiTest extends AbstractWebEngineTest {
         
         // Run discovery to test proxy deletion
         SoaNodeId endpointId = new SoaNodeId(Endpoint.DOCTYPE, "MyEndpoint");
-        discoveryService.importDiscovery(documentManager, endpointId,
+        discoveryService.runDiscovery(documentManager, endpointId,
                 null, Arrays.asList(deliverableId));
 
         // Delete only proxy (TODO test as array)

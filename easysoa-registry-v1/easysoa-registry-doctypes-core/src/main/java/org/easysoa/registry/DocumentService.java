@@ -78,6 +78,12 @@ public interface DocumentService {
             throws ClientException;
 
     /**
+     * Find a proxy at a specific location
+     */
+    DocumentModel findProxy(CoreSession documentManager, SoaNodeId identifier, String parentPath)
+            throws ClientException;
+    
+    /**
      * Find all proxies for a document given its type and name
      */
     DocumentModelList findProxies(CoreSession documentManager, SoaNodeId identifier)

@@ -13,7 +13,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  */
 public interface DiscoveryService {
 
-    DocumentModel importDiscovery(CoreSession documentManager, SoaNodeId identifier,
+    DocumentModel runDiscovery(CoreSession documentManager, SoaNodeId identifier,
             Map<String, String> properties, List<SoaNodeId> correlatedDocuments) throws Exception;
 
 }
