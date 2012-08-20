@@ -8,10 +8,10 @@ import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
 import org.easysoa.registry.SoaNodeId;
-import org.mortbay.util.ajax.JSON;
 
 public class JsonRegistryApiMarshalling implements RegistryApiMarshalling {
 
@@ -84,7 +84,7 @@ public class JsonRegistryApiMarshalling implements RegistryApiMarshalling {
     @Override
     public List<String> unmarshallPathList(String data) {
         List<String> pathList = new LinkedList<String>();
-        Object json = JSON.parse(data);
+        Object json = JSONSerializer.toJSON(data);
         if (json instanceof JSONArray) {
             JSONArray pathArray = (JSONArray) json;
             for (Object path : pathArray) {
