@@ -1,9 +1,9 @@
 package org.easysoa.registry.rest;
 
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -45,41 +45,57 @@ public class RegistryApi {
 	@POST
 	@Path("{doctype}")
     public Object doPost(@Context HttpServletRequest request,
-            @PathParam("doctype") String doctype) throws Exception {
-        // Initialization
-	    CoreSession documentManager = SessionFactory.getSession(request);
-	    
-	    // SoaNode creation
-	    // TODO
-        return doctype + " / " + documentManager;
+            @PathParam("doctype") String doctype, String body) throws Exception {
+        SoaNodeMarshalling marshalling = new JsonDocumentMarshalling();
+        try {
+            // Initialization
+            CoreSession documentManager = SessionFactory.getSession(request);
+            DocumentService documentService = Framework.getService(DocumentService.class);
+
+            // Create SoaNode
+            SoaNodeInformation soaNodeInfo = marshalling.unmarshall(body);
+            DocumentModel createdModel = documentService.create(documentManager, soaNodeInfo.getId(),
+                    soaNodeInfo.getId().getName());
+            for (Entry<String, Object> entry : soaNodeInfo.getProperties().entrySet()) {
+                createdModel.setPropertyValue(entry.getKey(), (Serializable) entry.getValue());
+            }
+            documentManager.saveDocument(createdModel);
+            documentManager.save();
+            
+            return marshalling.marshall(new SoaNodeInformation(documentManager, createdModel));
+        } catch (Exception e) {
+            return marshalling.marshallError("Failed to create document", e);
+        }
     }
 
 	@GET
     @Path("{doctype}")
     public Object doGet(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype) throws ClientException {
-        // Initialization
-        CoreSession documentManager = SessionFactory.getSession(request);
         SoaNodeMarshalling marshalling = new JsonDocumentMarshalling();
-        
-        // Fetch SoaNode list
-        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " +
-        		"ecm:currentLifeCycleState <> 'deleted' AND " +
-                "ecm:isCheckedInVersion = 0 AND " +
-                "ecm:isProxy = 0",
-                new Object[] { doctype },
-                false, true);
-        DocumentModelList soaNodeModelList = documentManager.query(query);
-        
-        // Convert data for marshalling
-        List<SoaNodeInformation> modelsToMarshall = new LinkedList<SoaNodeInformation>();
-        for (DocumentModel soaNodeModel : soaNodeModelList) {
-            modelsToMarshall.add(new SoaNodeInformation(
-                    SoaNodeId.fromModel(soaNodeModel), null, null));
+        try {
+            // Initialization
+            CoreSession documentManager = SessionFactory.getSession(request);
+
+            // Fetch SoaNode list
+            String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE "
+                    + "ecm:currentLifeCycleState <> 'deleted' AND "
+                    + "ecm:isCheckedInVersion = 0 AND " + "ecm:isProxy = 0",
+                    new Object[] { doctype }, false, true);
+            DocumentModelList soaNodeModelList = documentManager.query(query);
+
+            // Convert data for marshalling
+            List<SoaNodeInformation> modelsToMarshall = new LinkedList<SoaNodeInformation>();
+            for (DocumentModel soaNodeModel : soaNodeModelList) {
+                modelsToMarshall.add(new SoaNodeInformation(SoaNodeId.fromModel(soaNodeModel),
+                        null, null));
+            }
+
+            // Write response
+            return marshalling.marshall(modelsToMarshall);
+        } catch (Exception e) {
+            return marshalling.marshallError("Failed to fetch " + doctype + " list", e);
         }
-        
-        // Write response
-        return marshalling.marshall(modelsToMarshall);
     }
 
     @GET
@@ -93,21 +109,13 @@ public class RegistryApi {
             CoreSession documentManager = SessionFactory.getSession(request);
             DocumentService documentService = Framework.getService(DocumentService.class);
     
-            // SoaNode fetching
+            // Fetch SoaNode
             DocumentModel foundDocument = documentService.find(documentManager, id);
             if (foundDocument == null) {
                 return new JSONObject().toString();
             }
             else {
-                Map<String, Object> properties = new HashMap<String, Object>();
-                Map<String, Object> schemaProperties;
-                for (String schema : foundDocument.getSchemas()) {
-                    if (!"common".equals(schema)) {
-                        schemaProperties = foundDocument.getProperties(schema);
-                        properties.putAll(schemaProperties);
-                    }
-                }
-                return marshalling.marshall(new SoaNodeInformation(id, properties, null));
+                return marshalling.marshall(new SoaNodeInformation(documentManager, foundDocument));
             }
         }
         catch (Exception e) {

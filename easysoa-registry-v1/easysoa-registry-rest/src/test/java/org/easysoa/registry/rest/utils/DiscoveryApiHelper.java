@@ -1,5 +1,6 @@
 package org.easysoa.registry.rest.utils;
 
+import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.test.AbstractWebEngineTest;
 
@@ -17,6 +18,10 @@ public class DiscoveryApiHelper {
     
     public String getServiceURL(String doctype, String name) {
         return getServiceURL(doctype) + "/" + name;
+    }
+
+    public String getServiceURL(SoaNodeId id) {
+        return getServiceURL(id.getType(), id.getName());
     }
     
 }
