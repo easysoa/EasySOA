@@ -4,3 +4,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Name: easysoa-registry-rest
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.easysoa.registry.rest;singleton:=true
+Nuxeo-WebModule: org.easysoa.registry.rest.EasySOAModule;name=easysoa;extends=base;package=org/easysoa/registry/rest
