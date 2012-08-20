@@ -4,6 +4,7 @@ import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.easysoa.registry.utils.RepositoryHelper;
+import org.nuxeo.common.utils.Path;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -88,6 +89,31 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
+    @Override
+    public boolean delete(CoreSession documentManager, SoaNodeId soaNodeId) throws ClientException {
+        DocumentModel sourceDocument = find(documentManager, soaNodeId);
+        if (sourceDocument != null) {
+            documentManager.removeDocument(sourceDocument.getRef());
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteProxy(CoreSession documentManager, SoaNodeId soaNodeId, String parentPath)
+            throws ClientException {
+        DocumentModelList instances = findAllInstances(documentManager, soaNodeId);
+        for (DocumentModel instance : instances) {
+            if (instance.getPath().removeLastSegments(1).equals(new Path(parentPath))) {
+                documentManager.removeDocument(instance.getRef());
+                return true;
+            }
+        }   
+        return false;
+    }
+
     public DocumentModel findDocument(CoreSession documentManager, String type, String name) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?' AND " + NXQL.ECM_ISPROXY + " = 0",
                 new Object[] { type, name },
@@ -100,8 +126,23 @@ public class DocumentServiceImpl implements DocumentService {
         return findDocument(documentManager, identifier.getType(), identifier.getName());
     }
 
+    @Override
+    public DocumentModelList findProxies(CoreSession documentManager, SoaNodeId identifier)
+            throws ClientException {
+        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?' " +
+        		"AND ecm:isProxy = 1",
+                new Object[] { identifier.getType(), identifier.getName() },
+                false, true);
+        return documentManager.query(query);
+    }
+
     public DocumentModelList findProxies(CoreSession documentManager, DocumentModel model) throws ClientException {
-        return documentManager.getProxies(model.getRef(), null);
+        if (!model.isProxy()) {
+            return documentManager.getProxies(model.getRef(), null);
+        }
+        else {
+            return findProxies(documentManager, SoaNodeId.fromModel(model));
+        }
     }
    
     public DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier) throws ClientException {

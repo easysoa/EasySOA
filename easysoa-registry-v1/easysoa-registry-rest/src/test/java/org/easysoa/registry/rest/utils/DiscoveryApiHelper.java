@@ -24,4 +24,8 @@ public class DiscoveryApiHelper {
         return getServiceURL(id.getType(), id.getName());
     }
     
+    public String getServiceURL(SoaNodeId id, SoaNodeId correlatedId) {
+        return getServiceURL(id.getType(), id.getName()) + "/" + correlatedId.getType() + "/" + correlatedId.getName();
+    }
+    
 }

@@ -122,7 +122,11 @@ public class RepositoryLogger {
     }
 
     private void logBasic(int indent, DocumentModel model) {
-        String line = getSpaces(indent) + "* ["+model.getType()+"] ";
+        String type = model.getType();
+        if (model.getDocumentType().getFacets().contains("SoaNode")) {
+            type += ":" + model.getName();
+        }
+        String line = getSpaces(indent) + "* [" + type + "] ";
         try {
             line += model.getTitle();
         } catch (ClientException e) {

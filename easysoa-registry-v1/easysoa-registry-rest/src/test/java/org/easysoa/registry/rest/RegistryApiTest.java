@@ -1,5 +1,6 @@
 package org.easysoa.registry.rest;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +10,10 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
 import org.easysoa.registry.DiscoveryService;
@@ -19,6 +22,7 @@ import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.utils.DiscoveryApiHelper;
 import org.easysoa.registry.test.AbstractWebEngineTest;
 import org.easysoa.registry.types.Deliverable;
+import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,8 +46,12 @@ public class RegistryApiTest extends AbstractWebEngineTest {
 
     private final int SERVICE_COUNT = 5;
 
+    private SoaNodeId deliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa:deliverable");;
+
     @Test
     public void getOne() throws Exception {
+        logTestName(logger);
+        
         // Fill repository for all tests
         for (int i = 0; i < SERVICE_COUNT; i++) {
             discoveryService.importDiscovery(documentManager, new SoaNodeId(Service.DOCTYPE,
@@ -75,6 +83,7 @@ public class RegistryApiTest extends AbstractWebEngineTest {
 
     @Test
     public void getList() throws Exception {
+        logTestName(logger);
 
         // Run request
         HttpClient client = createAuthenticatedHTTPClient();
@@ -96,7 +105,7 @@ public class RegistryApiTest extends AbstractWebEngineTest {
 
     @Test
     public void create() throws Exception {
-        final SoaNodeId deliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa:deliverable");
+        logTestName(logger);
         
         // Create service
         JSONObject requestBody = new JSONObject();
@@ -115,11 +124,9 @@ public class RegistryApiTest extends AbstractWebEngineTest {
                 MediaType.APPLICATION_JSON, "UTF-8"));
         client.executeMethod(discoveryRequest);
         JSONObject result = getResultBodyAsJSONObject(discoveryRequest);
-        
         logger.info("Response: " + result.toString(2));
         
         // Check result
-        documentService.find(documentManager, deliverableId);
         Assert.assertEquals("'doctype' property must be provided for the document", deliverableId.getType(), result.get("doctype"));
         Assert.assertEquals("'name' property must be provided for the document", deliverableId.getName(), result.get("name"));
         Assert.assertTrue("Properties must be provided for the document", result.has("properties"));
@@ -129,4 +136,71 @@ public class RegistryApiTest extends AbstractWebEngineTest {
         Assert.assertEquals("Valid properties must be returned", properties.get("del:application"), resultProperties.get("del:application"));
         
     }
+
+    @Test
+    public void update() throws Exception {
+        logTestName(logger);
+        
+        // Property to override
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("doctype", deliverableId.getType());
+        requestBody.put("name", deliverableId.getName());
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put("dc:title", "My New Title");
+        requestBody.put("properties", properties);
+        String requestBodyAsString = requestBody.toString(2);
+        logger.info("Request: " + requestBodyAsString);
+        
+        HttpClient client = createAuthenticatedHTTPClient();
+        PutMethod discoveryRequest = new PutMethod(discoveryApi.getServiceURL(deliverableId));
+        discoveryRequest.setRequestEntity(new StringRequestEntity(requestBodyAsString,
+                MediaType.APPLICATION_JSON, "UTF-8"));
+        client.executeMethod(discoveryRequest);
+        JSONObject result = getResultBodyAsJSONObject(discoveryRequest);
+        logger.info("Response: " + result.toString(2));
+
+        // Check result
+        Assert.assertEquals("Properties must be listed as a JSON object", JSONObject.class, result.get("properties").getClass());
+        JSONObject resultProperties = (JSONObject) result.get("properties");
+        Assert.assertEquals("The title must be updated", "My New Title", resultProperties.get("dc:title"));
+    }
+    
+    @Test
+    public void delete() throws Exception {
+        logTestName(logger);
+        
+        // Run discovery to test proxy deletion
+        SoaNodeId endpointId = new SoaNodeId(Endpoint.DOCTYPE, "MyEndpoint");
+        discoveryService.importDiscovery(documentManager, endpointId,
+                null, Arrays.asList(deliverableId));
+
+        // Delete only proxy (TODO test as array)
+        JSONObject serviceIdAsJSON = new JSONObject();
+        serviceIdAsJSON.put("doctype", endpointId.getType());
+        serviceIdAsJSON.put("name", endpointId.getName());
+        String requestBodyAsString = serviceIdAsJSON.toString(2);
+        logger.info("Request: " + requestBodyAsString);
+        
+        HttpClient client = createAuthenticatedHTTPClient();
+        DeleteMethod discoveryRequest = new DeleteMethod(discoveryApi.getServiceURL(deliverableId, endpointId));
+        client.executeMethod(discoveryRequest);
+        JSONObject result = getResultBodyAsJSONObject(discoveryRequest);
+        logger.info("Response: " + result.toString(2));
+
+        // Check result
+        Assert.assertEquals("Deletion must be marked as successful", true, result.get("success"));
+        Assert.assertTrue("Proxy must not be available after deletion",
+                documentService.findProxies(documentManager, deliverableId).isEmpty());
+        
+        // Delete whole document
+        discoveryRequest = new DeleteMethod(discoveryApi.getServiceURL(deliverableId));
+        client.executeMethod(discoveryRequest);
+        result = getResultBodyAsJSONObject(discoveryRequest);
+        logger.info("Response: " + result.toString(2));
+
+        // Check result
+        Assert.assertEquals("Deletion must be marked as successful", true, result.get("success"));
+        Assert.assertNull("Deliverable must not be available after deletion", documentService.find(documentManager, deliverableId));
+    }
+        
 }

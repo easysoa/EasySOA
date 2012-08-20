@@ -49,19 +49,42 @@ public interface DocumentService {
      */
     DocumentModel copy(CoreSession documentManager, DocumentModel sourceModel, DocumentRef destRef)
             throws ClientException;
+
+    /**
+     * Deletes the specified SoaNode from the repository, including all proxies.
+     * @return true if the document existed and was succesfully deleted
+     */
+    boolean delete(CoreSession documentManager, SoaNodeId soaNodeId) throws ClientException;
+
+    
+    /**
+     * Deletes the specified SoaNode proxy from a specific location.
+     * @return true if the document existed and was succesfully deleted
+     */
+    boolean deleteProxy(CoreSession documentManager, SoaNodeId soaNodeId, String parentPath) throws ClientException;
     
     DocumentModel findDocument(CoreSession documentManager, String type, String name)
     throws ClientException;
 
     /**
      * Finds any document given its type and name
-     * If a SoaNode, returns the source (non-proxy) from the repository
+     * If a SoaNode, returns the source (non-proxy) from the repository 
+     * @param documentManager
+     * @param identifier
+     * @return The document, or null if it doesn't exist
+     * @throws ClientException
      */
     DocumentModel find(CoreSession documentManager, SoaNodeId identifier)
             throws ClientException;
 
     /**
      * Find all proxies for a document given its type and name
+     */
+    DocumentModelList findProxies(CoreSession documentManager, SoaNodeId identifier)
+            throws ClientException;
+    
+    /**
+     * Find all proxies for a document given a model (either one proxy or the source)
      */
     DocumentModelList findProxies(CoreSession documentManager, DocumentModel model)
             throws ClientException;

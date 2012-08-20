@@ -105,4 +105,10 @@ public class AbstractWebEngineTest {
     public String getURL(Class<?> c, String methodName, Class<?>... parameterTypes) throws SecurityException, NoSuchMethodException {
         return NUXEO_PATH + PathExtractor.getPath(c, methodName, parameterTypes);
     }
+    
+    public void logTestName(Logger logger) {
+        logger.debug("--------------------");
+        logger.debug(name.getMethodName());
+        logger.debug("--------------------");
+    }
 }

@@ -2,6 +2,7 @@ package org.easysoa.registry.rest.marshalling;
 
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +11,9 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 import org.easysoa.registry.SoaNodeId;
+import org.mortbay.util.ajax.JSON;
 
-public class JsonDocumentMarshalling implements SoaNodeMarshalling {
+public class JsonRegistryApiMarshalling implements RegistryApiMarshalling {
 
     private static JsonConfig config;
 
@@ -33,7 +35,7 @@ public class JsonDocumentMarshalling implements SoaNodeMarshalling {
         }
         return soaNodeArray.toString(2);
     }
-    
+
     private JSONObject toJSON(SoaNodeInformation soaNodeInfo) {
         JSONObject modelAsJSON = new JSONObject();
         modelAsJSON.put("doctype", soaNodeInfo.getId().getType());
@@ -48,6 +50,12 @@ public class JsonDocumentMarshalling implements SoaNodeMarshalling {
         return modelAsJSON;
     }
 
+    public String marshallSuccess() {
+        JSONObject result = new JSONObject();
+        result.put("success", true);
+        return result.toString();
+    }
+
     @Override
     public String marshallError(String message, Exception e) {
         JSONObject result = new JSONObject();
@@ -57,8 +65,8 @@ public class JsonDocumentMarshalling implements SoaNodeMarshalling {
     }
 
     @Override
-    public SoaNodeInformation unmarshall(String string) {
-        JSONObject json = JSONObject.fromObject(string);
+    public SoaNodeInformation unmarshall(String data) {
+        JSONObject json = JSONObject.fromObject(data);
         String doctype = (String) json.get("doctype");
         String name = (String) json.get("name");
         Map<String, Object> properties = toMap((JSONObject) json.get("properties"));
@@ -71,6 +79,19 @@ public class JsonDocumentMarshalling implements SoaNodeMarshalling {
            map.put((String) key, jsonObject.get(key));
        }
        return map;
+    }
+
+    @Override
+    public List<String> unmarshallPathList(String data) {
+        List<String> pathList = new LinkedList<String>();
+        Object json = JSON.parse(data);
+        if (json instanceof JSONArray) {
+            JSONArray pathArray = (JSONArray) json;
+            for (Object path : pathArray) {
+                pathList.add((String) path);
+            }
+        }
+        return pathList;
     }
     
 }

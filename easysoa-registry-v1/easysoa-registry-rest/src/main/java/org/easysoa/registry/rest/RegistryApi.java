@@ -21,9 +21,9 @@ import net.sf.json.JSONObject;
 
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
-import org.easysoa.registry.rest.marshalling.JsonDocumentMarshalling;
+import org.easysoa.registry.rest.marshalling.JsonRegistryApiMarshalling;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
-import org.easysoa.registry.rest.marshalling.SoaNodeMarshalling;
+import org.easysoa.registry.rest.marshalling.RegistryApiMarshalling;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -46,7 +46,7 @@ public class RegistryApi {
 	@Path("{doctype}")
     public Object doPost(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype, String body) throws Exception {
-        SoaNodeMarshalling marshalling = new JsonDocumentMarshalling();
+        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
@@ -72,7 +72,7 @@ public class RegistryApi {
     @Path("{doctype}")
     public Object doGet(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype) throws ClientException {
-        SoaNodeMarshalling marshalling = new JsonDocumentMarshalling();
+        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
@@ -103,7 +103,7 @@ public class RegistryApi {
     public Object doGet(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype, @PathParam("name") String name) {
         SoaNodeId id = new SoaNodeId(doctype, name);
-        SoaNodeMarshalling marshalling = new JsonDocumentMarshalling();
+        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
@@ -126,26 +126,80 @@ public class RegistryApi {
     @PUT
     @Path("{doctype}/{name}")
     public Object doPut(@Context HttpServletRequest request,
-            @PathParam("doctype") String doctype, @PathParam("name") String name) throws ClientException {
-        // Initialization
-        CoreSession documentManager = SessionFactory.getSession(request);
-        SoaNodeId id = new SoaNodeId(doctype, name);
-        
-        // SoaNode update
-        // TODO
-        return id;
+            @PathParam("doctype") String doctype, @PathParam("name") String name, String body) throws ClientException {
+        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
+        SoaNodeId soaNodeId = new SoaNodeId(doctype, name);
+        try {
+            // Initialization
+            CoreSession documentManager = SessionFactory.getSession(request);
+            DocumentService documentService = Framework.getService(DocumentService.class);
+
+            // Create SoaNode
+            SoaNodeInformation soaNodeInfo = marshalling.unmarshall(body);
+            DocumentModel foundModel = documentService.find(documentManager, soaNodeId);
+            if (foundModel != null) {
+                for (Entry<String, Object> entry : soaNodeInfo.getProperties().entrySet()) {
+                    foundModel.setPropertyValue(entry.getKey(), (Serializable) entry.getValue());
+                }
+                documentManager.saveDocument(foundModel);
+                documentManager.save();
+            }
+            else {
+                throw new Exception("The specified document doesn't exist");
+            }
+            
+            return marshalling.marshall(new SoaNodeInformation(documentManager, foundModel));
+        } catch (Exception e) {
+            return marshalling.marshallError("Failed to update document " + soaNodeId.toString(), e);
+        }
     }
 
     @DELETE
     @Path("{doctype}/{name}")
     public Object doDelete(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype, @PathParam("name") String name) throws ClientException {
-        // Initialization
-        CoreSession documentManager = SessionFactory.getSession(request);
-        SoaNodeId id = new SoaNodeId(doctype, name);
-        
-        // Document deletion
-        // TODO
-        return id;
+        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
+        SoaNodeId soaNodeId = new SoaNodeId(doctype, name);
+        try {
+            // Initialization
+            CoreSession documentManager = SessionFactory.getSession(request);
+            DocumentService documentService = Framework.getService(DocumentService.class);
+
+            // Delete SoaNode
+            documentService.delete(documentManager, soaNodeId);
+
+            return marshalling.marshallSuccess();
+        } catch (Exception e) {
+            return marshalling.marshallError("Failed to delete document " + soaNodeId.toString(), e);
+        }
+    }
+    
+    @DELETE
+    @Path("{doctype}/{name}/{correlatedDoctype}/{correlatedName}")
+    public Object doDelete(@Context HttpServletRequest request,
+            @PathParam("doctype") String doctype, @PathParam("name") String name,
+            @PathParam("correlatedDoctype") String correlatedDoctype,
+            @PathParam("correlatedName") String correlatedName) throws ClientException {
+        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
+        SoaNodeId soaNodeId = new SoaNodeId(doctype, name),
+                correlatedSoaNodeId = new SoaNodeId(correlatedDoctype, correlatedName);
+        try {
+            // Initialization
+            CoreSession documentManager = SessionFactory.getSession(request);
+            DocumentService documentService = Framework.getService(DocumentService.class);
+
+            // Delete proxy of SoaNode
+            DocumentModel correlatedSoaNodeModel = documentService.find(documentManager, correlatedSoaNodeId);
+            if (correlatedSoaNodeModel != null) {
+                documentService.deleteProxy(documentManager, soaNodeId, correlatedSoaNodeModel.getPathAsString());
+            }
+            else {
+                throw new Exception("Correlated SoaNode does not exist");
+            }
+
+            return marshalling.marshallSuccess();
+        } catch (Exception e) {
+            return marshalling.marshallError("Failed to delete document " + soaNodeId.toString(), e);
+        }
     }
 }
