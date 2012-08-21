@@ -46,6 +46,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                     }
                     
                     // Find a path (either between doc & target, or between target & another correlated doc)
+                    // FIXME Does not cover all special cases
                     path = soaMetamodelService.getPath(correlatedDocument.getType(), type);
                     if (path == null) {
                         for (SoaNodeId candidateCorrelatedDocument : correlatedDocuments) {

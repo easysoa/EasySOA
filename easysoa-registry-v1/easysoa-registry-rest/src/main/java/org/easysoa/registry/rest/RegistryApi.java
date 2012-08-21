@@ -139,6 +139,7 @@ public class RegistryApi {
             DocumentModel foundModel = documentService.find(documentManager, soaNodeId);
             if (foundModel != null) {
                 for (Entry<String, Object> entry : soaNodeInfo.getProperties().entrySet()) {
+                    // FIXME Bad error handling on non Serializable classes (ex: JSONObject)
                     foundModel.setPropertyValue(entry.getKey(), (Serializable) entry.getValue());
                 }
                 documentManager.saveDocument(foundModel);

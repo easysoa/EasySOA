@@ -74,9 +74,10 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         // Deliverable discovery
         MavenDeliverable mavenDeliverable = new MavenDeliverable(groupId, artifactId);
         mavenDeliverable.setTitle(name);
+        mavenDeliverable.setProperty("del:nature", "maven");
         try {
-            // TODO set version, create more suitable properties to set
-            mavenDeliverable.setProperty("dc:description", projectDirectory.toURI().toURL());
+            // TODO Set version, create more suitable property to set URL
+            mavenDeliverable.setProperty("dc:description", projectDirectory.toURI().toURL().toString());
         } catch (MalformedURLException e) {
             log.error("Failed to convert project location to URL", e);
         }
