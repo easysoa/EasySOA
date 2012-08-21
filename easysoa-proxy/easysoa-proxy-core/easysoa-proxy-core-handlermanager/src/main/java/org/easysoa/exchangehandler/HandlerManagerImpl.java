@@ -42,8 +42,10 @@ public class HandlerManagerImpl implements HandlerManager {
     
     @Reference 
     private List<MessageHandler> handlers;
-    
-    @Override
+
+    /**
+     * 
+     */
     public void handle(InMessage inMessage, OutMessage outMessage) {
         logger.debug("Message received, calling registered handlers");
         for(MessageHandler handler : this.handlers){
@@ -55,5 +57,5 @@ public class HandlerManagerImpl implements HandlerManager {
             }
         }    
     }
-    
+   
 }

@@ -14,11 +14,6 @@
   </parent>
    
 	<dependencies>
-    	<!-- Messaging api -->
-    	<dependency>
-      		<groupId>org.easysoa.proxy</groupId>
-      		<artifactId>easysoa-proxy-core-api</artifactId>
-    	</dependency>
     	<!-- log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
@@ -202,17 +197,13 @@
 						<groupId>org.easysoa.proxy</groupId>
 						<artifactId>easysoa-proxy-core-api</artifactId>
 						<version>${project.version}</version>
+						<scope>compile</scope>
 					</dependency>
 					<dependency>
 						<groupId>org.easysoa.proxy</groupId>
 						<artifactId>easysoa-proxy-core-api-frascati</artifactId>
 						<version>${project.version}</version>
-					</dependency>
-					<dependency>
-						<!-- THIS DEPENDENCY MUST BE ACCESSIBLE TO FRASCATI -->
-						<groupId>org.apache.httpcomponents</groupId>
-						<artifactId>httpclient</artifactId>
-						<version>4.1.1</version>
+						<scope>compile</scope>
 					</dependency>
 				</dependencies>
 			</plugin>
