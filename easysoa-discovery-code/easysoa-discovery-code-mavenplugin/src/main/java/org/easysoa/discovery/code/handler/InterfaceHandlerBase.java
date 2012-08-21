@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.maven.plugin.logging.Log;
-import org.easysoa.discovery.code.MavenDeliverable;
 import org.easysoa.discovery.code.ParsingUtils;
+import org.easysoa.discovery.code.model.MavenDeliverable;
 
 import com.thoughtworks.qdox.model.AbstractJavaEntity;
 import com.thoughtworks.qdox.model.BeanProperty;
@@ -89,12 +89,13 @@ public abstract class InterfaceHandlerBase implements SourcesHandler {
         String injectionAnnotation = getInjectionAnnotation(injectedMember);
         if (allInjected || injectionAnnotation != null) {
             if (isWSInjectableType(injectedType)) {
-                deliverable.addRequirement(
+                // TODO
+               /* deliverable.addRequirement(
                         injectedMember.getParentClass().getFullyQualifiedName()
                         + " consumes WS of JAX-WS interface (or client, provider) " 
                         + injectedType.getJavaClass().getFullyQualifiedName()
                         + " (through property " + beanPropertyName + " injected by "
-                        + ((injectionAnnotation != null) ? injectionAnnotation : "unknown"));
+                        + ((injectionAnnotation != null) ? injectionAnnotation : "unknown"));*/
                 injectedBeanProperties.add(beanPropertyName);
             }
         }

@@ -14,8 +14,10 @@ import org.easysoa.discovery.rest.model.SoaSystem;
 import org.easysoa.discovery.rest.model.Software;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class AxxxDpsDcvCollaborationTest {
     
     private static MockRepository repository;
@@ -94,7 +96,7 @@ public class AxxxDpsDcvCollaborationTest {
         // TODO OK sched val : autoprobes using a previous probing conf (history), comparison with old version (or record / fork if simpler), changes not approved can't be published to other people (collab or end users), and are notified to responsible & impacted people (including UI "service" with a "end user" orga ??)
         
         // even LATER
-        // TODO fine conf of disco entry param to model field ; in source : to test, SoftwareComponent...), & helped by maven pom props (or Manifest entries...) à la @api("doc")
+        // TODO fine conf of disco entry param to model field ; in source : to test, SoftwareComponent...), & helped by maven pom props (or Manifest entries...) ï¿½ la @api("doc")
         // TODO dev quick wins : from SOAPUI ex. artifacts generation (jboss, axis, cxf, also .NET)
         // TODO universal tunnel proxy for easysoa-integrated tools (clients) ex. soapui, scaffolder : embedded in easysoa, & can be local agent outputting json discos (or also http proxy using soapui headers, or with wsa...) ; BUT must be able to simulate wsdl (and changed port / endpoint url) ?? ; in soapui settings (in user home) <con:setting id="ProxySettings@host">localhost</con:setting><con:setting id="ProxySettings@port">38081</con:setting> or sample request "</con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://fr.ancv.pivotal/Client"/><con:wsrmConfig version="1.2"/></con:call><con:call name="PivotalClientRequest1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="testheader" value="zzz" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings>"
         // TODO instanciable / param's services : discoNotif apply to all services (with same endpoint...), save if context specified (disco of process) or extracted (exchange param / rule) 

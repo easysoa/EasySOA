@@ -6,12 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
-import org.easysoa.discovery.code.MavenDeliverable;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.rest.model.Service;
-import org.easysoa.discovery.rest.model.ServiceImpl;
-import org.easysoa.discovery.rest.model.SoaNode;
-import org.easysoa.discovery.rest.model.SoaNodeType;
+import org.easysoa.discovery.code.model.MavenDeliverable;
+import org.easysoa.discovery.code.model.Service;
+import org.easysoa.discovery.code.model.ServiceImpl;
+import org.easysoa.discovery.code.model.SoaNode;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
@@ -56,7 +55,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
                         wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
-                        Service serviceDef = new Service(c.getName(), mavenDeliverable.getVersion());
+                        Service serviceDef = new Service(c.getName()); // TODO , mavenDeliverable.getVersion()
                         discoveredNodes.add(serviceDef);
                     }
                 }
@@ -99,15 +98,17 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
         if (itf != null || pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
             
             // Extract WS info
-            ServiceImpl serviceImpl = new ServiceImpl(deliverable,
-                    "JAX-RS", c.getFullyQualifiedName(), c.getName());
-            deliverable.addRelation(SoaNodeType.ServiceImpl, serviceImpl.getId());
+            ServiceImpl serviceImpl = new ServiceImpl(c.getName());
+            serviceImpl.setTitle(c.getFullyQualifiedName());
+           //serviceImpl.setProperty("impl:nature?", "JAX-RS"); // TODO tech
+            // TODO link to deliverable
+            //deliverable.addRelation(SoaNodeType.ServiceImpl, serviceImpl.getId());
             discoveredNodes.add(serviceImpl);
             
             if (itf != null) {
                 // Extract WS info
-                Service serviceDef = new Service(itf.getName(), deliverable.getVersion()); // TODO + Path
-                serviceDef.addRelation(serviceImpl);
+                Service serviceDef = new Service(itf.getName()); // TODO + Path, deliverable.getVersion()
+              // TODO  serviceDef.addRelation(serviceImpl);
                 discoveredNodes.add(serviceDef);
             }
             
@@ -135,7 +136,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
                     // Cosmetic changes before storage
                     String operationInfoString = operationsInfo.toString().substring(0, operationsInfo.length() - 2);
                     operationInfoString = operationInfoString.replace("\"", "'");
-                    serviceImpl.setOperationsInfo(operationInfoString);
+                    serviceImpl.setProperty("dc:description", operationInfoString); // TODO create real operations
                 }
             }
         }

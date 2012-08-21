@@ -37,7 +37,7 @@ import org.nuxeo.runtime.api.Framework;
  * @author mkalam-alami
  * 
  */
-@Path("easysoa/discovery")
+@Path("easysoa/registry")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RegistryApi {

@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
-import org.easysoa.discovery.code.MavenDeliverable;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.rest.model.Service;
-import org.easysoa.discovery.rest.model.ServiceImpl;
-import org.easysoa.discovery.rest.model.SoaNode;
+import org.easysoa.discovery.code.model.MavenDeliverable;
+import org.easysoa.discovery.code.model.Service;
+import org.easysoa.discovery.code.model.ServiceImpl;
+import org.easysoa.discovery.code.model.SoaNode;
 
 import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -56,8 +56,6 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         
         // Pass 1 : Find all WS clients/interfaces
         for (JavaSource source : sources) {
-            // TODO diff between main & tests
-            System.out.println("source: " + source);//
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
                 boolean isWs = ParsingUtils.hasAnnotation(c, ANN_WS);
@@ -68,7 +66,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                         wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
-                        Service serviceDef = new Service(c.getName(), mavenDeliverable.getVersion());
+                        Service serviceDef = new Service(c.getName());// TODO, mavenDeliverable.getVersion());
                         discoveredNodes.add(serviceDef);
                     }
                 } else if (isWs && isInterface
@@ -99,9 +97,11 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         if (!c.isInterface() && ParsingUtils.hasAnnotation(c, ANN_WS)) { // TODO superclass ? TODO interface !
 
             // Extract WS info
-            ServiceImpl serviceImpl = new ServiceImpl(deliverable,
-                    "JAX-WS", c.getFullyQualifiedName(), c.getName());
-            deliverable.addRelation(serviceImpl);
+            ServiceImpl serviceImpl = new ServiceImpl(c.getName());
+            serviceImpl.setTitle(c.getFullyQualifiedName());
+           //serviceImpl.setProperty("impl:nature?", "JAX-WS"); // TODO tech
+            // TODO link to deliverable
+            //deliverable.addRelation(serviceImpl);
             discoveredNodes.add(serviceImpl);
             
             // Extract interface info
@@ -110,8 +110,8 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             if (itfClass != null) {
             
                 // Extract WS info
-                Service serviceDef = new Service(itfClass.getName(), deliverable.getVersion());
-                serviceDef.addRelation(serviceImpl);
+                Service serviceDef = new Service(itfClass.getName()); // TODO , deliverable.getVersion());
+               // serviceDef.addRelation(serviceImpl); // TODO
                 discoveredNodes.add(serviceDef);
        
                 // Extract operations info
@@ -135,8 +135,8 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                     // Cosmetic changes before storage
                     String operationInfoString = operationsInfo.toString().substring(0, operationsInfo.length() - 2);
                     operationInfoString = operationInfoString.replace("\"", "'");
-                    serviceImpl.setOperationsInfo(operationInfoString);
-                    serviceDef.addRequirement(operationInfoString);
+                    serviceImpl.setProperty("dc:description", operationInfoString); // TODO
+                    //serviceDef.addRequirement(operationInfoString); // TODO
                 }
             
             }

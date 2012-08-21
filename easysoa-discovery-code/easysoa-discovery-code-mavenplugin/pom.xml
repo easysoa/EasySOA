@@ -13,20 +13,31 @@
   <packaging>maven-plugin</packaging>
 
   <dependencies>
-    <dependency>
-      <groupId>org.easysoa.discovery</groupId>
-      <artifactId>easysoa-discovery-rest-client</artifactId>
-      <version>0.9-SNAPSHOT</version>
-    </dependency>
+    <!-- Maven parsing -->
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>2.0</version>
     </dependency>
+    
+    <!-- Code parsing -->
     <dependency>
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
       <version>1.12</version>
+    </dependency>
+
+    <!-- Rest client -->
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <classifier>jdk15</classifier>
+      <version>2.4</version>
     </dependency>
   </dependencies>
 

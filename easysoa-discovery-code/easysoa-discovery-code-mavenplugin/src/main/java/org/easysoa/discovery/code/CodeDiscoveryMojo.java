@@ -8,15 +8,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.handler.JaxRSSourcesHandler;
 import org.easysoa.discovery.code.handler.JaxWSSourcesHandler;
 import org.easysoa.discovery.code.handler.SourcesHandler;
-import org.easysoa.discovery.mock.MockRepository;
-import org.easysoa.discovery.rest.client.DiscoveryRequest;
-import org.easysoa.discovery.rest.model.SoaNode;
+import org.easysoa.discovery.code.model.MavenDeliverable;
+import org.easysoa.discovery.code.model.SoaNode;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
@@ -68,13 +72,13 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         this.availableHandlers.put("JAX-RS", new JaxRSSourcesHandler());
         
         // Deliverable discovery
-        MavenDeliverable mavenDeliverable;
+        MavenDeliverable mavenDeliverable = new MavenDeliverable(groupId, artifactId);
+        mavenDeliverable.setTitle(name);
         try {
-            mavenDeliverable = new MavenDeliverable(name,
-                    projectDirectory.toURI().toURL(), groupId, artifactId, version);
+            // TODO set version, create more suitable properties to set
+            mavenDeliverable.setProperty("dc:description", projectDirectory.toURI().toURL());
         } catch (MalformedURLException e) {
             log.error("Failed to convert project location to URL", e);
-            mavenDeliverable = new MavenDeliverable(name, null, groupId, artifactId, version);
         }
         List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
         discoveredNodes.add(mavenDeliverable);
@@ -90,23 +94,19 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         }
         
         // Build and send discovery request
-        MockRepository mockRepository = new MockRepository(); // XXX Mock
-        //LogOutputStream outputStream = new LogOutputStream(log);
         try {
-            DiscoveryRequest request = new DiscoveryRequest(mockRepository);
-            request.addDiscoveryNotifications(discoveredNodes);
-            request.send();
+            HttpClient client = new HttpClient();
+            client.getParams().setAuthenticationPreemptive(true);
+            client.getState().setCredentials(AuthScope.ANY,
+                    new UsernamePasswordCredentials("Administrator", "Administrator")); // TODO
+            for (SoaNode soaNode : discoveredNodes) {
+                PostMethod request = new PostMethod("http://localhost:8080/nuxeo/site/easysoa/registry/" + soaNode.getType());
+                request.setRequestEntity(new StringRequestEntity(soaNode.toJSONString(), "application/json", "UTF-8"));
+                client.executeMethod(request);
+            }
         } catch (IOException e) {
             log.error("Failed to send discovery request", e);
-        } finally {
-            try {
-                mockRepository.close();
-            } catch (IOException e) {
-                log.error("Failed to close output stream", e);
-            }
         }
-        
-        mockRepository.traceRepository();
         
     }
 
