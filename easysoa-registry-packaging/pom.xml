@@ -459,7 +459,13 @@
                   <groupId>org.easysoa.proxy</groupId>
                   <artifactId>easysoa-proxy-core-persistence</artifactId>
                   <version>${easysoa.version}</version>
-                </artifactItem>                
+                </artifactItem>
+                <!-- FraSCAti cxf intents -->
+                <artifactItem>
+  					<groupId>org.ow2.frascati.intent</groupId>
+  					<artifactId>frascati-intent-apache-cxf</artifactId>
+  					<version>${frascati.version}</version>
+  				</artifactItem> 
                 <!-- Intents required by scaffolding proxy -->
                 <artifactItem>
 					<groupId>org.easysoa.proxy</groupId>
