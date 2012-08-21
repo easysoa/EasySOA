@@ -14,6 +14,6 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 public interface DiscoveryService {
 
     DocumentModel runDiscovery(CoreSession documentManager, SoaNodeId identifier,
-            Map<String, String> properties, List<SoaNodeId> correlatedDocuments) throws Exception;
+            Map<String, Object> properties, List<SoaNodeId> correlatedDocuments) throws Exception;
 
 }

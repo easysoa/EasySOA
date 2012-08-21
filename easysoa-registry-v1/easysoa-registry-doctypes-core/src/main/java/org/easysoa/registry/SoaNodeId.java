@@ -7,6 +7,11 @@ public class SoaNodeId {
     private String name;
     private String doctype;
 
+    public SoaNodeId(DocumentModel model) {
+        this.setType(model.getType());
+        this.setName(model.getName());
+    }
+    
     public SoaNodeId(String doctype, String name) {
         this.setType(doctype);
         this.setName(name);
@@ -28,10 +33,6 @@ public class SoaNodeId {
     
     public void setType(String doctype) {
         this.doctype = doctype;
-    }
-
-    public static SoaNodeId fromModel(DocumentModel model) {
-        return new SoaNodeId(model.getType(), model.getName());
     }
     
     @Override

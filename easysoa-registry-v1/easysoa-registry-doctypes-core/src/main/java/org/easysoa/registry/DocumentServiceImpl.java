@@ -51,7 +51,7 @@ public class DocumentServiceImpl implements DocumentService {
                 PathRef parentRef = new PathRef(parentPath);
                 DocumentModel parentModel = documentManager.getDocument(parentRef);
                 if (parentModel.isProxy()) {
-                    parentModel = find(documentManager, SoaNodeId.fromModel(parentModel));
+                    parentModel = find(documentManager, new SoaNodeId(parentModel));
                 }
                 return documentManager.createProxy(documentModel.getRef(), parentModel.getRef());
             }
@@ -147,7 +147,7 @@ public class DocumentServiceImpl implements DocumentService {
             return documentManager.getProxies(model.getRef(), null);
         }
         else {
-            return findProxies(documentManager, SoaNodeId.fromModel(model));
+            return findProxies(documentManager, new SoaNodeId(model));
         }
     }
    
@@ -158,13 +158,13 @@ public class DocumentServiceImpl implements DocumentService {
         PathRef parentRef = new PathRef(parentPath);
         DocumentModel parentModel = documentManager.getDocument(parentRef);
         if (parentModel.isProxy()) {
-            parentModel = find(documentManager, SoaNodeId.fromModel(parentModel));
+            parentModel = find(documentManager, new SoaNodeId(parentModel));
         }
         
         // Find proxy among children
         DocumentModelList childrenModels = documentManager.getChildren(parentModel.getRef());
         for (DocumentModel childModel : childrenModels) {
-            if (SoaNodeId.fromModel(childModel).equals(identifier)) {
+            if (new SoaNodeId(childModel).equals(identifier)) {
                 return childModel;
             }
         }
@@ -179,7 +179,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public DocumentModelList findAllInstances(CoreSession documentManager, DocumentModel model) throws ClientException {
-        return findAllInstances(documentManager, SoaNodeId.fromModel(model));
+        return findAllInstances(documentManager, new SoaNodeId(model));
     }
     
     public DocumentModelList findAllParents(CoreSession documentManager, DocumentModel documentModel) throws Exception {

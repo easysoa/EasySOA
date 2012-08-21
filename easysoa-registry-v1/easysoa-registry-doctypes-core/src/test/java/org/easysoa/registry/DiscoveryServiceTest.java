@@ -43,7 +43,7 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
 
     private static SoaNodeId discoveredDeliverableId;
 
-    private static Map<String, String> properties;
+    private static Map<String, Object> properties;
     
     private static DocumentModel foundDeliverable;
     
@@ -51,7 +51,7 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
     public void testSimpleDiscovery() throws Exception {
         // Gather discovery information
         discoveredDeliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa.registry:myartifact");
-        properties = new HashMap<String, String>();
+        properties = new HashMap<String, Object>();
         properties.put(Deliverable.XPATH_TITLE, "My Artifact");
         properties.put(Deliverable.XPATH_APPLICATION, "myapp");
         
@@ -62,7 +62,7 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
         // Check results
         foundDeliverable = documentService.find(documentManager, discoveredDeliverableId);
         Assert.assertNotNull("A deliverable must be created by the discovery processing", foundDeliverable);
-        for (Entry<String, String> property : properties.entrySet()) {
+        for (Entry<String, Object> property : properties.entrySet()) {
             Assert.assertEquals("Property " + property.getKey() + " must match value from discovery",
                     property.getValue(), foundDeliverable.getPropertyValue(property.getKey()));
         }

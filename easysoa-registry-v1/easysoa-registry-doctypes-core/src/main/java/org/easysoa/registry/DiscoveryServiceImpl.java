@@ -1,5 +1,6 @@
 package org.easysoa.registry;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,7 +13,7 @@ import org.nuxeo.runtime.api.Framework;
 public class DiscoveryServiceImpl implements DiscoveryService {
 
     public DocumentModel runDiscovery(CoreSession documentManager, SoaNodeId identifier,
-            Map<String, String> properties, List<SoaNodeId> correlatedDocuments) throws Exception {
+            Map<String, Object> properties, List<SoaNodeId> correlatedDocuments) throws Exception {
         DocumentService documentService = Framework.getService(DocumentService.class);
         
         // Fetch or create document
@@ -23,8 +24,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
         
         // Set properties
         if (properties != null) {
-            for (Entry<String, String> property : properties.entrySet()) {
-                documentModel.setPropertyValue(property.getKey(), property.getValue());
+            for (Entry<String, Object> property : properties.entrySet()) {
+                // FIXME Non-serializable error handling
+                documentModel.setPropertyValue(property.getKey(), (Serializable) property.getValue());
             }
             documentManager.saveDocument(documentModel);
         }
@@ -60,7 +62,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                         }
                     }
                     else {
-                        correlatedDocument = SoaNodeId.fromModel(documentModel);
+                        correlatedDocument = new SoaNodeId(documentModel);
                     }
                 }
                 else {

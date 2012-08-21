@@ -55,7 +55,7 @@ public class RegistryApiTest extends AbstractWebEngineTest {
         // Fill repository for all tests
         for (int i = 0; i < SERVICE_COUNT; i++) {
             discoveryService.runDiscovery(documentManager, new SoaNodeId(Service.DOCTYPE,
-                    "MyService" + i), new HashMap<String, String>(), null);
+                    "MyService" + i), null, null);
         }
         documentManager.save();
 

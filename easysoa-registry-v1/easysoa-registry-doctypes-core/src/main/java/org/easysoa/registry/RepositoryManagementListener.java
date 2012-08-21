@@ -48,7 +48,7 @@ public class RepositoryManagementListener implements EventListener {
             if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)) {
                 documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
                 
-                PathRef sourcePathRef = new PathRef(documentService.getSourcePath(SoaNodeId.fromModel(sourceDocument)));
+                PathRef sourcePathRef = new PathRef(documentService.getSourcePath(new SoaNodeId(sourceDocument)));
                 DocumentModel repositoryDocument;
                 if (documentManager.exists(sourcePathRef)) {
                     // If the source document already exists, only keep one

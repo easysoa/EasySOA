@@ -1,9 +1,7 @@
 package org.easysoa.registry.rest;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -19,11 +17,12 @@ import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONObject;
 
+import org.easysoa.registry.DiscoveryService;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.marshalling.JsonRegistryApiMarshalling;
-import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.rest.marshalling.RegistryApiMarshalling;
+import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -50,21 +49,20 @@ public class RegistryApi {
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
-            DocumentService documentService = Framework.getService(DocumentService.class);
 
             // Create SoaNode
             SoaNodeInformation soaNodeInfo = marshalling.unmarshall(body);
-            DocumentModel createdModel = documentService.create(documentManager, soaNodeInfo.getId(),
-                    soaNodeInfo.getId().getName());
-            for (Entry<String, Object> entry : soaNodeInfo.getProperties().entrySet()) {
-                createdModel.setPropertyValue(entry.getKey(), (Serializable) entry.getValue());
-            }
-            documentManager.saveDocument(createdModel);
+            DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
+            discoveryService.runDiscovery(documentManager, soaNodeInfo.getId(),
+                    soaNodeInfo.getProperties(), soaNodeInfo.getCorrelatedDocuments());
             documentManager.save();
             
+            // Return created document
+            DocumentService documentService = Framework.getService(DocumentService.class);
+            DocumentModel createdModel = documentService.find(documentManager, soaNodeInfo.getId());
             return marshalling.marshall(new SoaNodeInformation(documentManager, createdModel));
         } catch (Exception e) {
-            return marshalling.marshallError("Failed to create document", e);
+            return marshalling.marshallError("Failed to update or create document", e);
         }
     }
 
@@ -87,7 +85,7 @@ public class RegistryApi {
             // Convert data for marshalling
             List<SoaNodeInformation> modelsToMarshall = new LinkedList<SoaNodeInformation>();
             for (DocumentModel soaNodeModel : soaNodeModelList) {
-                modelsToMarshall.add(new SoaNodeInformation(SoaNodeId.fromModel(soaNodeModel),
+                modelsToMarshall.add(new SoaNodeInformation(new SoaNodeId(soaNodeModel),
                         null, null));
             }
 
@@ -134,24 +132,25 @@ public class RegistryApi {
             CoreSession documentManager = SessionFactory.getSession(request);
             DocumentService documentService = Framework.getService(DocumentService.class);
 
-            // Create SoaNode
-            SoaNodeInformation soaNodeInfo = marshalling.unmarshall(body);
-            DocumentModel foundModel = documentService.find(documentManager, soaNodeId);
-            if (foundModel != null) {
-                for (Entry<String, Object> entry : soaNodeInfo.getProperties().entrySet()) {
-                    // FIXME Bad error handling on non Serializable classes (ex: JSONObject)
-                    foundModel.setPropertyValue(entry.getKey(), (Serializable) entry.getValue());
-                }
-                documentManager.saveDocument(foundModel);
+            // Check that the target document exists
+            DocumentModel modelToUpdate = documentService.find(documentManager, soaNodeId);
+            if (modelToUpdate != null) {
+                // Create SoaNode
+                SoaNodeInformation soaNodeInfo = marshalling.unmarshall(body);
+                DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
+                discoveryService.runDiscovery(documentManager, soaNodeId,
+                        soaNodeInfo.getProperties(), soaNodeInfo.getCorrelatedDocuments());
                 documentManager.save();
+                
+                // Return created document
+                DocumentModel updatedModel = documentService.find(documentManager, soaNodeId);
+                return marshalling.marshall(new SoaNodeInformation(documentManager, updatedModel));
             }
             else {
-                throw new Exception("The specified document doesn't exist");
+                throw new Exception("Document to update " + soaNodeId.toString() + " doesn't exist");
             }
-            
-            return marshalling.marshall(new SoaNodeInformation(documentManager, foundModel));
         } catch (Exception e) {
-            return marshalling.marshallError("Failed to update document " + soaNodeId.toString(), e);
+            return marshalling.marshallError("Failed to update or create document", e);
         }
     }
 
