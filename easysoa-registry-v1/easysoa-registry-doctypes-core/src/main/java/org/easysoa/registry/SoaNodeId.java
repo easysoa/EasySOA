@@ -7,6 +7,10 @@ public class SoaNodeId {
     private String name;
     private String doctype;
 
+    protected SoaNodeId() {
+        // Needed to be compatible with JAXB serialization
+    }
+    
     public SoaNodeId(DocumentModel model) {
         this.setType(model.getType());
         this.setName(model.getName());
@@ -23,7 +27,7 @@ public class SoaNodeId {
     
     public void setName(String name) {
         // Remove eventual suffix added by Nuxeo when some proxies conflict
-        // XXX: Side effect is that no document should end its "real" name with a dot followed by numbers
+        // XXX Side effect is that no document should end its "real" name with a dot followed by numbers
         this.name = name.replaceAll("\\.[0-9]+$", "").replace('/', '-');
     }
     
@@ -44,7 +48,7 @@ public class SoaNodeId {
     public boolean equals(Object obj) {
         if (obj instanceof SoaNodeId) {
             SoaNodeId otherId = (SoaNodeId) obj;
-            return this.doctype.equals(otherId.doctype) && this.name.equals(otherId.name);
+            return this.doctype.equals(otherId.getType()) && this.name.equals(otherId.getName());
         }
         else {
             return false;

@@ -23,26 +23,24 @@
     </h3>
     <div class="summaryLayout">
       <c:forEach items="#{documentModelHelperBean.findAllParents(currentDocument)}" var="parentModel">
-        <c:if test="#{!parentModel.getType().toString().equals('Repository')}">
-          <span style="margin-right: 20px">
-           <nxu:graphicImage
-              value="#{nxd:iconPath(parentModel)}"
-              rendered="#{!empty nxd:iconPath(parentModel)}"
-              styleClass="smallIcon" />
-            <nxd:restDocumentLink document="#{parentModel}">
-              <nxh:outputText value=" #{nxd:titleOrId(parentModel)} " />
-            </nxd:restDocumentLink>
-            <nxd:restDocumentLink document="#{parentModel}"
-              newConversation="true" target="_blank"
-              tab="#{widgetProperty_tab}"
-              subTab="#{widgetProperty_subTab}">
-              <nxu:graphicImage value="/icons/external.gif"
-                style="vertical-align:middle"
-                alt="#{messages['permalink.newTab']}"
-                title="#{messages['permalink.newTab']}" />
-            </nxd:restDocumentLink>
-           </span>
-         </c:if>
+        <span style="margin-right: 20px">
+         <nxu:graphicImage
+            value="#{nxd:iconPath(parentModel)}"
+            rendered="#{!empty nxd:iconPath(parentModel)}"
+            styleClass="smallIcon" />
+          <nxd:restDocumentLink document="#{parentModel}">
+            <nxh:outputText value=" #{nxd:titleOrId(parentModel)} " />
+          </nxd:restDocumentLink>
+          <nxd:restDocumentLink document="#{parentModel}"
+            newConversation="true" target="_blank"
+            tab="#{widgetProperty_tab}"
+            subTab="#{widgetProperty_subTab}">
+            <nxu:graphicImage value="/icons/external.gif"
+              style="vertical-align:middle"
+              alt="#{messages['permalink.newTab']}"
+              title="#{messages['permalink.newTab']}" />
+          </nxd:restDocumentLink>
+         </span>
       </c:forEach>
     </div>
     

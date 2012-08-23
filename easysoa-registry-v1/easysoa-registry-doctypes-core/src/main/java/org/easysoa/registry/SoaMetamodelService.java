@@ -14,7 +14,7 @@ public interface SoaMetamodelService {
     
     /**
      * Computes the minimal path needed to link two document types.
-     * The returned list is empty if <i>toType</i> can be directly stored inder <i>fromType</i>.
+     * The returned list is empty if <i>toType</i> can be directly stored under <i>fromType</i>.
      * 
      * @param fromType The parent type
      * @param toType The child type

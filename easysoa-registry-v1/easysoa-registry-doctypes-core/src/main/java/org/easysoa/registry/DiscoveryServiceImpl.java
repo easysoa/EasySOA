@@ -10,6 +10,16 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.runtime.api.Framework;
 
+/**
+ * Computes...
+ * 
+ * still TODO (see FIXMEs) :
+ * if needed soaMetamodel performances
+ * special cases (see FIXMEs)
+ * 
+ * @author mkalam-alami
+ *
+ */
 public class DiscoveryServiceImpl implements DiscoveryService {
 
     public DocumentModel runDiscovery(CoreSession documentManager, SoaNodeId identifier,
@@ -32,6 +42,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
         }
         
         // Link to correlated documents
+        //FIXME cache / build model of soaMetamodelService responses to speed it up, handle swapped & unswapped in same call
         if (correlatedDocuments != null && !correlatedDocuments.isEmpty()) {
             String type = documentModel.getType();
             SoaMetamodelService soaMetamodelService = Framework.getService(SoaMetamodelService.class);
@@ -48,7 +59,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                     }
                     
                     // Find a path (either between doc & target, or between target & another correlated doc)
-                    // FIXME Does not cover all special cases
+                    // FIXME Does not cover all special cases (ex. if no swapping, if a placeholder is found to be another existing element and therefore must be removed)
                     path = soaMetamodelService.getPath(correlatedDocument.getType(), type);
                     if (path == null) {
                         for (SoaNodeId candidateCorrelatedDocument : correlatedDocuments) {
