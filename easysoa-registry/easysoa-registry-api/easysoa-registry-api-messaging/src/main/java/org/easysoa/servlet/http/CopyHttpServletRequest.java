@@ -27,7 +27,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URLDecoder;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
@@ -36,14 +35,13 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.apache.commons.io.IOUtils;
-
 /**
+ * Tries to solve getParameters() vs getInputStream() problems, but not required for now (?!!)
  * 
  * @author jguillemotte
  *
  */
-public class HttpMessageRequestWrapper extends HttpServletRequestWrapper {
+public class CopyHttpServletRequest extends HttpServletRequestWrapper {
 
     // Request content
     private byte[] reqContentBytes = null;
@@ -55,7 +53,7 @@ public class HttpMessageRequestWrapper extends HttpServletRequestWrapper {
      * @param request
      * @throws IOException
      */
-	public HttpMessageRequestWrapper(HttpServletRequest request) throws IOException {
+	public CopyHttpServletRequest(HttpServletRequest request) throws IOException {
         super(request);
         /*
         if ("POST".equals(request.getMethod()) && request.getContentType().startsWith("application/x-www-form-urlencoded")) {
@@ -105,7 +103,7 @@ public class HttpMessageRequestWrapper extends HttpServletRequestWrapper {
     		return super.getInputStream();
     	}
         return new ServletInputStream() {
-            private ByteArrayInputStream bis = new ByteArrayInputStream(HttpMessageRequestWrapper.this.reqContentBytes);
+            private ByteArrayInputStream bis = new ByteArrayInputStream(CopyHttpServletRequest.this.reqContentBytes);
             @Override
             public int read() throws IOException {
                 return bis.read();

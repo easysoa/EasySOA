@@ -25,12 +25,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
 import java.util.Enumeration;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.log4j.Logger;
-import org.easysoa.servlet.http.HttpMessageRequestWrapper;
 
 /**
  * HTTP incoming message
+ * 
+ * TODO LATER extract "servlet" code in (Servlet)InMessageBuilder
+ * Make it Lazy with several levels (one for headers ..., one for JSONContent or XML content)
+ * 
+ * 
  * @author jguillemotte
  * 
  */
@@ -130,7 +137,7 @@ public class InMessage implements Message {
 	 * @param request The HttpservletRequest
 	 */
 	//public InMessage(HttpMessRequest request){
-	public InMessage(HttpMessageRequestWrapper request){
+	public InMessage(HttpServletRequest request){
 		
 		// TODO : Check this code : WSDL request are not well recorded !
 		this.method = request.getMethod();

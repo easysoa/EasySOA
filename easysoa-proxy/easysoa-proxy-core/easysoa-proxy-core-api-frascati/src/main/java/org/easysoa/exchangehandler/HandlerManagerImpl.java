@@ -19,10 +19,12 @@
  */
 package org.easysoa.exchangehandler;
 
+import java.util.HashMap;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.handler.event.admin.CompiledCondition;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -46,7 +48,7 @@ public class HandlerManagerImpl implements HandlerManager {
     /**
      * 
      */
-    public void handle(InMessage inMessage, OutMessage outMessage) {
+    public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
         logger.debug("Message received, calling registered handlers");
         for(MessageHandler handler : this.handlers){
             try {
@@ -56,6 +58,15 @@ public class HandlerManagerImpl implements HandlerManager {
                 logger.warn("An error occurs during the execution of the handler", ex);
             }
         }    
+    }
+
+    public void setListenedServiceUrlToServicesToLaunchUrlMap(HashMap<List<CompiledCondition>, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap) {
+        // TODO rm
+        
+    }
+
+    public boolean isApplicable(InMessage inMessage) {
+        return true;
     }
    
 }

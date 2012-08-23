@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jguillemotte
  *
  */
-public interface HttpExchangeHandler {
+public interface HttpExchangeHandler extends HandlerManager { // TODO rm
     
     /**
      * Handle an exchange

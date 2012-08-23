@@ -85,7 +85,7 @@
 		</dependency>-->
 		<dependency>
 			<groupId>org.apache.tuscany.sca</groupId>
-			<artifactId>tuscany-sca-all</artifactId>
+			<artifactId>tuscany-sca-all</artifactId><!-- TODO -->
 		</dependency>
 	</dependencies>
 

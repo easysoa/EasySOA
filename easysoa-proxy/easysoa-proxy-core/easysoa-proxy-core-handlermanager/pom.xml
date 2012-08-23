@@ -23,84 +23,77 @@
     	<dependency>
       		<groupId>javax.ws.rs</groupId>
       		<artifactId>jsr311-api</artifactId>
-	    </dependency>		
-	
-		<!-- Tests -->
-		<!-- junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+      		<scope>provided</scope>
+	    </dependency>
+	    <!-- Easysoa dependencies -->
+	    <dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-api</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1.3</version>
-		</dependency>-->
+		<dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-api-frascati</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+    	<!-- Frascati dependencies -->
+		<dependency> 
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>${frascati.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>${frascati.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>${frascati.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>${frascati.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-velocity</artifactId>
+			<version>${frascati.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.tuscany.sca</groupId>
 			<artifactId>tuscany-sca-all</artifactId>
+			<scope>provided</scope>
 		</dependency>		
     	<dependency>
     		<groupId>org.easysoa.proxy</groupId>
   			<artifactId>easysoa-proxy-core-api</artifactId>
   			<scope>provided</scope>
     	</dependency>
-		<!-- TEST DEPENDENCIES -->
-    	<dependency>
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-binding-factory</artifactId>
-      		<version>${frascati.version}</version>
-			<scope>test</scope>      		
-    	</dependency>
-    	<dependency>
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-runtime-factory</artifactId>
-      		<version>${frascati.version}</version>
+    	
+		<!-- Tests -->
+		<!-- junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 			<scope>test</scope>
-			<!-- -->
-			<!-- NOT REQUIRED ANYMORE since always use FraSCAtiService when in Nuxeo -->
-			<!-- exclude and replace FraSCAti's jdt core by Nuxeo's (1) -->
-			<!--  -->
-			<exclusions>
-				<exclusion>
-        			<groupId>org.eclipse.jdt</groupId>
-        			<artifactId>core</artifactId>
-				</exclusion>
-			</exclusions>
-    	</dependency>
-    	<!--  -->
-		<!-- exclude and replace FraSCAti's jdt core by Nuxeo's (2) -->
-    	<!--<dependency>
-        	<groupId>org.eclipse.jdt</groupId>
-        	<artifactId>core</artifactId>
-        	<version>3.3.0.771</version>
-        	<scope>test</scope>
-    	</dependency>
-    	<dependency>
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-binding-ws</artifactId>
-      		<version>${frascati.version}</version>
-			<scope>test</scope>      		
-    	</dependency>
-    	<dependency>
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-binding-http</artifactId>
-      		<version>${frascati.version}</version>
-			<scope>test</scope>      		
-    	</dependency>
-    	<dependency>
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-binding-rest</artifactId>
-      		<version>${frascati.version}</version>
-			<scope>test</scope>      		
-    	</dependency>
-    	<dependency>
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-implementation-velocity</artifactId>
-      		<version>${frascati.version}</version>
-			<scope>test</scope>
-    	</dependency>-->
+		</dependency>    	
+    	
 	</dependencies>
 
 	<build>
@@ -191,20 +184,22 @@
 						<groupId>xerces</groupId>
 						<artifactId>xercesImpl</artifactId>
 						<version>2.9.1</version>
-						<scope>compile</scope>
 					</dependency>
 					<dependency>
 						<groupId>org.easysoa.proxy</groupId>
 						<artifactId>easysoa-proxy-core-api</artifactId>
 						<version>${project.version}</version>
-						<scope>compile</scope>
 					</dependency>
 					<dependency>
 						<groupId>org.easysoa.proxy</groupId>
 						<artifactId>easysoa-proxy-core-api-frascati</artifactId>
 						<version>${project.version}</version>
-						<scope>compile</scope>
 					</dependency>
+					<dependency>
+						<groupId>org.ow2.frascati</groupId>
+						<artifactId>frascati-implementation-velocity</artifactId>
+						<version>${frascati.version}</version>
+					</dependency>					
 				</dependencies>
 			</plugin>
 			<plugin>

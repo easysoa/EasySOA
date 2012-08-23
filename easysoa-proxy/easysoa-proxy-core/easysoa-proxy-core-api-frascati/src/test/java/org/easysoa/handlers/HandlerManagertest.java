@@ -72,9 +72,8 @@ public class HandlerManagertest {
         inMessage.setPath("openwide/easysoanews/");
         inMessage.setServer("www.easysoa.org");
         
-        
         OutMessage outMessage = new OutMessage();
-        var.handle(inMessage, outMessage);
+        var.handleMessage(inMessage, outMessage);
     }
 
 }

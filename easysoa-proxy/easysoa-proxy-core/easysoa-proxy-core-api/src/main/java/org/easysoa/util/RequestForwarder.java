@@ -185,45 +185,71 @@ public class RequestForwarder {
 		
 		// Send the request
 		Date requestSendDate = new Date();
+        inMessage.setRequestTimeStamp(requestSendDate.getTime());
 		HttpResponse clientResponse = httpClient.execute(httpUriRequest);
-		Date responseSendDate = new Date();
     	
     	// Get and package the response
     	// TODO set the missing value like timnings ....
-    	OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
-		inMessage.setRequestTimeStamp(requestSendDate.getTime());
-    	outMessage.setResponseTimeStamp(responseSendDate.getTime());
-    	MessageContent messageContent = new MessageContent();
+    	OutMessage outMessage = buildOutMessage(clientResponse);
     	
-		// Read the response message content
-		InputStreamReader in= new InputStreamReader(clientResponse.getEntity().getContent());
-		BufferedReader bin= new BufferedReader(in);
-		StringBuffer responseBuffer = new StringBuffer();
-		String line;
-		do{
-			 line = bin.readLine();
-			 if(line != null){
-				 responseBuffer.append(line);
-			 }
-		}
-		while(line != null);
-		messageContent.setRawContent(responseBuffer.toString());
-    	messageContent.setSize(clientResponse.getEntity().getContentLength());
-    	if(clientResponse.getEntity().getContentType() != null){
-    		messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
-    	}
-    	outMessage.setMessageContent(messageContent);
-    	// TODO : There is an encoding problem when returning the response and when the encoding is not ISO-8859 ....
-    	//messageContent.setEncoding(clientResponse.getEntity().getContentEncoding().getValue());
-    	org.apache.http.Header contentEncoding = clientResponse.getEntity().getContentEncoding();
-    	if (contentEncoding != null) {
-    		messageContent.setEncoding(contentEncoding.getValue());
-		}
     	// Return response message
 		return outMessage;
 	}
 	
-	/**
+	private OutMessage buildOutMessage(HttpResponse clientResponse) throws IllegalStateException, IOException {
+        Date responseSendDate = new Date();
+        OutMessage outMessage = new OutMessage(clientResponse.getStatusLine().getStatusCode(), clientResponse.getStatusLine().getReasonPhrase());
+        outMessage.setResponseTimeStamp(responseSendDate.getTime());
+        
+        // copy content
+        
+        MessageContent messageContent = new MessageContent();
+        
+        // Read the response message content
+        InputStreamReader in= new InputStreamReader(clientResponse.getEntity().getContent());
+        BufferedReader bin= new BufferedReader(in);
+        StringBuffer responseBuffer = new StringBuffer();
+        String line;
+        do{
+             line = bin.readLine();
+             if(line != null){
+                 responseBuffer.append(line);
+             }
+        }
+        while(line != null);
+        messageContent.setRawContent(responseBuffer.toString());
+        messageContent.setSize(clientResponse.getEntity().getContentLength());
+        if(clientResponse.getEntity().getContentType() != null){
+            messageContent.setMimeType(clientResponse.getEntity().getContentType().getValue());
+        }
+        outMessage.setMessageContent(messageContent);
+        // TODO : There is an encoding problem when returning the response and when the encoding is not ISO-8859 ....
+        //messageContent.setEncoding(clientResponse.getEntity().getContentEncoding().getValue());
+        org.apache.http.Header contentEncoding = clientResponse.getEntity().getContentEncoding();
+        if (contentEncoding != null) {
+            messageContent.setEncoding(contentEncoding.getValue());
+        }
+        
+        // copy updated headers
+        for (org.apache.http.Header header : clientResponse.getAllHeaders()) {
+            String headerName = header.getName();
+            String headerValue = header.getValue();
+            
+            // handling headers computed from content (may have been modified (?!))
+            // see http://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Responses
+            String headerLowercaseName = headerName.toLowerCase();
+            if ("content-length".equals(headerLowercaseName)) { // Content-Length
+                headerValue = String.valueOf(clientResponse.getEntity().getContentLength());
+            } else if ("content-encoding".equals(headerLowercaseName)) { // Content-Length
+                headerValue = String.valueOf(clientResponse.getEntity().getContentEncoding());
+            } // else TODO others 
+            outMessage.getHeaders().addHeader(new Header(headerName, headerValue ));
+        }
+        
+        return outMessage;
+    }
+
+    /**
 	 * Set headers in the httpMessage
 	 * @param request The request where to get headers
 	 * @param httpMessage The http message to set

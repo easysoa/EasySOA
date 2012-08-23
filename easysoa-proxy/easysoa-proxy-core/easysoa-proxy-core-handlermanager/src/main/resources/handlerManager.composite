@@ -1,48 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" name="handlerManager">
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="handlerManager">
 	
-    <sca:include name="runManager"/>
-	
-    <sca:service name="handlerManagerService" promote="handlerManagerComponent/handlerManagerService"></sca:service>
+    <!--<sca:include name="handlerManagerBase"/>-->
+    <!--<sca:service name="handlerManagerService" promote="handlerManagerComponent/handlerManagerServiceBase"></sca:service>-->
 
-    <sca:component name="handlerManagerComponent">
-        <sca:service name="handlerManagerService">
-            <sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
-        </sca:service>
-        <sca:implementation.java class="org.easysoa.exchangehandler.HandlerManagerImpl"/>
-        <sca:reference multiplicity="0..n" name="handlers">
-            <sca:interface.java interface="org.easysoa.exchangehandler.MessageHandler"/>
-        </sca:reference>
-    </sca:component>
+	<!-- Handler manager -->
+	<!--<sca:service name="handlerManager" promote="handlerManagerBaseComp"/>
+	<sca:component name="handlerManagerBaseComp">
+		<sca:implementation.composite name="handlerManagerBase"/>
+	</sca:component>-->
 
-    <sca:component name="recordHandlerComponent">
-        <sca:service name="recordHandlerService">
-            <sca:interface.java interface="org.easysoa.exchangehandler.MessageHandler" />
-        </sca:service>
-        <sca:implementation.java class="org.easysoa.exchangehandler.MessageRecordHandler" />
-        <sca:reference name="runManager" target="runManagerComponent/runManagerService">
-            <sca:interface.java interface="org.easysoa.run.RunManager" />
-        </sca:reference>
-    </sca:component>
-    <sca:wire source="handlerManagerComponent/handlers" target="recordHandlerComponent/recordHandlerService" />
+	<!-- Handler manager -->
+	<sca:service name="handlerManager" promote="handlerManagerServiceBaseComp/handlerManagerComponentService">
+		<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+	</sca:service>
+	<sca:component name="handlerManagerServiceBaseComp">
+    	<sca:service name="handlerManagerComponentService">
+      		<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+    	</sca:service>
+		<sca:implementation.composite name="handlerManagerBase.composite"/>
+	</sca:component>
 
-    <sca:component name="eventMessageHandlerComponent">
-        <sca:service name="eventMessageHandlerService"> 
-            <sca:interface.java interface="org.easysoa.exchangehandler.MessageHandler" />
-        </sca:service> 
-        <sca:implementation.java class="org.easysoa.proxy.handler.event.admin.EventMessageHandlerImpl" />
-    </sca:component>
-    <sca:wire source="handlerManagerComponent/handlers" target="eventMessageHandlerComponent/eventMessageHandlerService"/>
-	
-    <sca:component name="monitoringHandlerComponent">
-        <sca:service name="monitoringHandlerService"> 
-            <sca:interface.java interface="org.easysoa.exchangehandler.MessageHandler" /> 
-        </sca:service>
-        <sca:implementation.java class="org.easysoa.exchangehandler.MonitoringHandler" />
-        <sca:reference name="runManager" target="runManagerComponent/runManagerService">
-            <sca:interface.java interface="org.easysoa.run.RunManager" />
-        </sca:reference>		
-    </sca:component> 
-    <sca:wire source="handlerManagerComponent/handlers" target="monitoringHandlerComponent/monitoringHandlerService"/>
-        
 </sca:composite>

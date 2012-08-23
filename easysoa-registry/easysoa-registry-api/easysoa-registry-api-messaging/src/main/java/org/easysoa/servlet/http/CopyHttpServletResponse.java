@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jguillemotte
  *
  */
-public class HttpMessageResponseWrapper extends StatusExposingServletResponse {
+public class CopyHttpServletResponse extends StatusExposingServletResponse {
 
     private PrintWriter writer;
     private CopyOutputStream copyOut;
@@ -47,7 +47,7 @@ public class HttpMessageResponseWrapper extends StatusExposingServletResponse {
      * @throws IOException 
      * @throws UnsupportedEncodingException 
      */
-    public HttpMessageResponseWrapper(HttpServletResponse response) throws UnsupportedEncodingException, IOException {
+    public CopyHttpServletResponse(HttpServletResponse response) throws UnsupportedEncodingException, IOException {
         super(response);
         // Set character encoding if no character encoding is found, default is ISO-....
         /*if("".equals(response.getCharacterEncoding())){
