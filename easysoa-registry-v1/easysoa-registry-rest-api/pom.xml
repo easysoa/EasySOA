@@ -9,7 +9,7 @@
     <relativePath>..</relativePath>
   </parent>
   
-  <artifactId>easysoa-registry-rest</artifactId>
+  <artifactId>easysoa-registry-rest-api</artifactId>
   <name>EasySOA Registry Rest API</name>
   
   <dependencies>

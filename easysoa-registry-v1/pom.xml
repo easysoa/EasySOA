@@ -62,7 +62,7 @@
     <module>easysoa-registry-test</module>
     <module>easysoa-registry-doctypes-core</module>
     <module>easysoa-registry-doctypes-java</module>
-    <module>easysoa-registry-rest</module>
+    <module>easysoa-registry-rest-api</module>
     <module>easysoa-registry-jsf-branding</module>
     <module>easysoa-registry-defaults</module>
   </modules>

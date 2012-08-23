@@ -28,9 +28,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
+import org.nuxeo.runtime.test.runner.Deploy;
 
 import com.google.inject.Inject;
 
+@Deploy("org.easysoa.registry.rest.api")
 @RepositoryConfig(cleanup = Granularity.CLASS)
 public class RegistryApiTest extends AbstractWebEngineTest {
 

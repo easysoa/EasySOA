@@ -32,6 +32,11 @@ import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.runtime.api.Framework;
 
 /**
+ * REST discovery API
+ * 
+ * For now try to put info discovered in source code the simplest way
+ * 
+ * later (once indicators are computed...) soanodeinformation may need to be be detailed (add correlation direction, full model...)
  * 
  * @author mkalam-alami
  * 
