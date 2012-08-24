@@ -1,21 +1,10 @@
 package org.easysoa.registry.test;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
 import junit.framework.Assert;
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,6 +19,9 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.Jetty;
 
 import com.google.inject.Inject;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 @RunWith(FeaturesRunner.class)
 @Features({EasySOAFeature.class, WebEngineFeature.class})
@@ -42,6 +34,12 @@ public class AbstractWebEngineTest {
     private static final String NUXEO_PATH = "http://localhost:" + PORT + "/";
 
     private static final Logger logger = Logger.getLogger(AbstractWebEngineTest.class);
+
+    private final ClientConfig clientConfig;
+    
+    public AbstractWebEngineTest(ClientConfig clientConfig) {
+        this.clientConfig = clientConfig;
+    }
     
     @Inject
     protected CoreSession documentManager;
@@ -61,39 +59,15 @@ public class AbstractWebEngineTest {
             Assert.fail(message);
         }
     }
-    
-    public HttpClient createAuthenticatedHTTPClient() {
+
+    public Client createAuthenticatedHTTPClient() {
         return createAuthenticatedHTTPClient("Administrator", "Administrator");
     }
     
-    public HttpClient createAuthenticatedHTTPClient(String username, String password) {
-        HttpClient client = new HttpClient();
-        client.getParams().setAuthenticationPreemptive(true);
-        client.getState().setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(username, password));
+    public Client createAuthenticatedHTTPClient(String username, String password) {
+        Client client = Client.create(clientConfig);
+        client.addFilter(new HTTPBasicAuthFilter("Administrator", "Administrator"));
         return client;
-    }
-
-    public JSONArray getResultBodyAsJSONArray(HttpMethodBase method) throws IOException {
-        return (JSONArray) getResultBodyAsJSON(method);
-    }
-
-    public JSONObject getResultBodyAsJSONObject(HttpMethodBase method) throws IOException {
-        return (JSONObject) getResultBodyAsJSON(method);
-    }
-
-    private JSON getResultBodyAsJSON(HttpMethodBase method) throws IOException {
-        InputStream is = null;
-        try {
-            is = method.getResponseBodyAsStream();
-            String string = IOUtils.toString(is);
-            return JSONSerializer.toJSON(string);
-        }
-        finally {
-            if (is != null) {
-                is.close();
-            }
-        }
     }
     
     public String getURL(Class<?> c) {

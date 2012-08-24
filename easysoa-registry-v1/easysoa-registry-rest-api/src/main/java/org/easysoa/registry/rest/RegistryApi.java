@@ -15,18 +15,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import net.sf.json.JSONObject;
-
 import org.easysoa.registry.DiscoveryService;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
-import org.easysoa.registry.rest.marshalling.JsonRegistryApiMarshalling;
-import org.easysoa.registry.rest.marshalling.RegistryApiMarshalling;
+import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.query.nxql.NXQLQueryBuilder;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.runtime.api.Framework;
@@ -45,18 +43,22 @@ import org.nuxeo.runtime.api.Framework;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RegistryApi {
+
+    @GET
+    public Object doGet(@Context HttpServletRequest request) throws Exception {
+        CoreSession documentManager = SessionFactory.getSession(request);
+        DocumentModel document = documentManager.getDocument(new PathRef("/default-domain/workspaces"));
+        
+        return new SoaNodeInformation(documentManager, document);
+    }
     
 	@POST
-	@Path("{doctype}")
-    public Object doPost(@Context HttpServletRequest request,
-            @PathParam("doctype") String doctype, String body) throws Exception {
-        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
+    public Object doPost(@Context HttpServletRequest request, SoaNodeInformation soaNodeInfo) throws Exception {
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
 
             // Create SoaNode
-            SoaNodeInformation soaNodeInfo = marshalling.unmarshall(body);
             DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
             discoveryService.runDiscovery(documentManager, soaNodeInfo.getId(),
                     soaNodeInfo.getProperties(), soaNodeInfo.getCorrelatedDocuments());
@@ -65,9 +67,9 @@ public class RegistryApi {
             // Return created document
             DocumentService documentService = Framework.getService(DocumentService.class);
             DocumentModel createdModel = documentService.find(documentManager, soaNodeInfo.getId());
-            return marshalling.marshall(new SoaNodeInformation(documentManager, createdModel));
+            return new SoaNodeInformation(documentManager, createdModel);
         } catch (Exception e) {
-            return marshalling.marshallError("Failed to update or create document", e);
+            return new Exception("Failed to update or create document", e);
         }
     }
 
@@ -75,7 +77,6 @@ public class RegistryApi {
     @Path("{doctype}")
     public Object doGet(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype) throws ClientException {
-        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
@@ -95,9 +96,9 @@ public class RegistryApi {
             }
 
             // Write response
-            return marshalling.marshall(modelsToMarshall);
+            return modelsToMarshall;
         } catch (Exception e) {
-            return marshalling.marshallError("Failed to fetch " + doctype + " list", e);
+            return new Exception("Failed to fetch " + doctype + " list", e);
         }
     }
 
@@ -106,7 +107,6 @@ public class RegistryApi {
     public Object doGet(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype, @PathParam("name") String name) {
         SoaNodeId id = new SoaNodeId(doctype, name);
-        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
@@ -115,23 +115,21 @@ public class RegistryApi {
             // Fetch SoaNode
             DocumentModel foundDocument = documentService.find(documentManager, id);
             if (foundDocument == null) {
-                return new JSONObject().toString();
+                return new Exception("Document doesnt exist"); // TODO 404
             }
             else {
-                return marshalling.marshall(new SoaNodeInformation(documentManager, foundDocument));
+                return new SoaNodeInformation(documentManager, foundDocument);
             }
         }
         catch (Exception e) {
-            return marshalling.marshallError("Failed to fetch document " + id.toString(), e);
+            return new Exception("Failed to fetch document " + id.toString(), e);
         }
     }
 
     @PUT
-    @Path("{doctype}/{name}")
     public Object doPut(@Context HttpServletRequest request,
-            @PathParam("doctype") String doctype, @PathParam("name") String name, String body) throws ClientException {
-        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
-        SoaNodeId soaNodeId = new SoaNodeId(doctype, name);
+            SoaNodeInformation soaNodeInfo) throws ClientException {
+        SoaNodeId soaNodeId = soaNodeInfo.getId();
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
@@ -141,7 +139,6 @@ public class RegistryApi {
             DocumentModel modelToUpdate = documentService.find(documentManager, soaNodeId);
             if (modelToUpdate != null) {
                 // Create SoaNode
-                SoaNodeInformation soaNodeInfo = marshalling.unmarshall(body);
                 DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
                 discoveryService.runDiscovery(documentManager, soaNodeId,
                         soaNodeInfo.getProperties(), soaNodeInfo.getCorrelatedDocuments());
@@ -149,13 +146,13 @@ public class RegistryApi {
                 
                 // Return created document
                 DocumentModel updatedModel = documentService.find(documentManager, soaNodeId);
-                return marshalling.marshall(new SoaNodeInformation(documentManager, updatedModel));
+                return new SoaNodeInformation(documentManager, updatedModel);
             }
             else {
                 throw new Exception("Document to update " + soaNodeId.toString() + " doesn't exist");
             }
         } catch (Exception e) {
-            return marshalling.marshallError("Failed to update or create document", e);
+            return new Exception("Failed to update or create document", e);
         }
     }
 
@@ -163,7 +160,6 @@ public class RegistryApi {
     @Path("{doctype}/{name}")
     public Object doDelete(@Context HttpServletRequest request,
             @PathParam("doctype") String doctype, @PathParam("name") String name) throws ClientException {
-        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
         SoaNodeId soaNodeId = new SoaNodeId(doctype, name);
         try {
             // Initialization
@@ -173,9 +169,9 @@ public class RegistryApi {
             // Delete SoaNode
             documentService.delete(documentManager, soaNodeId);
 
-            return marshalling.marshallSuccess();
+            return new OperationResult(true);
         } catch (Exception e) {
-            return marshalling.marshallError("Failed to delete document " + soaNodeId.toString(), e);
+            return new OperationResult(false, "Failed to delete document " + soaNodeId.toString(), e);
         }
     }
     
@@ -185,7 +181,6 @@ public class RegistryApi {
             @PathParam("doctype") String doctype, @PathParam("name") String name,
             @PathParam("correlatedDoctype") String correlatedDoctype,
             @PathParam("correlatedName") String correlatedName) throws ClientException {
-        RegistryApiMarshalling marshalling = new JsonRegistryApiMarshalling();
         SoaNodeId soaNodeId = new SoaNodeId(doctype, name),
                 correlatedSoaNodeId = new SoaNodeId(correlatedDoctype, correlatedName);
         try {
@@ -202,9 +197,9 @@ public class RegistryApi {
                 throw new Exception("Correlated SoaNode does not exist");
             }
 
-            return marshalling.marshallSuccess();
+            return new OperationResult(true);
         } catch (Exception e) {
-            return marshalling.marshallError("Failed to delete document " + soaNodeId.toString(), e);
+            return new OperationResult(false, "Failed to delete document " + soaNodeId.toString(), e);
         }
     }
 }

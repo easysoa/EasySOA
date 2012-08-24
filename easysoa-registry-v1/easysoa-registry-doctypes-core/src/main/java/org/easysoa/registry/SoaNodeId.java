@@ -5,7 +5,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 public class SoaNodeId {
 
     private String name;
-    private String doctype;
+    private String type;
 
     protected SoaNodeId() {
         // Needed to be compatible with JAXB serialization
@@ -32,23 +32,23 @@ public class SoaNodeId {
     }
     
     public String getType() {
-        return doctype;
+        return type;
     }
     
     public void setType(String doctype) {
-        this.doctype = doctype;
+        this.type = doctype;
     }
     
     @Override
     public String toString() {
-        return doctype + ":" + name;
+        return type + ":" + name;
     }
     
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof SoaNodeId) {
             SoaNodeId otherId = (SoaNodeId) obj;
-            return this.doctype.equals(otherId.getType()) && this.name.equals(otherId.getName());
+            return this.type.equals(otherId.getType()) && this.name.equals(otherId.getName());
         }
         else {
             return false;

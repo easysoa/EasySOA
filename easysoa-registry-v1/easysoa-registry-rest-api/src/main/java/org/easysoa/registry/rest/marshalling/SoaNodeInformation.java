@@ -14,12 +14,16 @@ import org.nuxeo.runtime.api.Framework;
 
 public class SoaNodeInformation {
 
-    private final SoaNodeId id;
+    private SoaNodeId id;
     
     private List<SoaNodeId> correlatedDocuments;
     
-    private final Map<String, Object> properties;
+    private Map<String, Object> properties;
 
+    protected SoaNodeInformation() {
+        
+    }
+    
     public SoaNodeInformation(CoreSession documentManager, DocumentModel model) throws Exception {
         this.id = new SoaNodeId(model);
         this.properties = new HashMap<String, Object>();
@@ -56,12 +60,24 @@ public class SoaNodeInformation {
         return id;
     }
     
+    public void setId(SoaNodeId id) {
+        this.id = id;
+    }
+    
     public Map<String, Object> getProperties() {
         return properties;
     }
     
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+    
     public List<SoaNodeId> getCorrelatedDocuments() {
         return correlatedDocuments;
+    }
+    
+    public void setCorrelatedDocuments(List<SoaNodeId> correlatedDocuments) {
+        this.correlatedDocuments = correlatedDocuments;
     }
     
 }

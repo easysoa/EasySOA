@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.easysoa.registry</groupId>
@@ -8,10 +8,10 @@
     <version>1.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  
+
   <artifactId>easysoa-registry-rest-api</artifactId>
   <name>EasySOA Registry Rest API</name>
-  
+
   <dependencies>
     <!-- EasySOA -->
     <dependency>
@@ -23,7 +23,7 @@
       <artifactId>easysoa-registry-test</artifactId>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- Nuxeo -->
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
@@ -37,12 +37,15 @@
       <groupId>org.nuxeo.ecm.webengine</groupId>
       <artifactId>nuxeo-webengine-jaxrs</artifactId>
     </dependency>
-    
+
     <!-- JSON -->
     <dependency>
-      <groupId>net.sf.json-lib</groupId>
-      <artifactId>json-lib</artifactId>
-      <classifier>jdk15</classifier>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-core-asl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
     </dependency>
   </dependencies>
 </project>
