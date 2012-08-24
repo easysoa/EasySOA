@@ -117,7 +117,8 @@ public class ServiceValidatorComponent extends DefaultComponent implements Servi
         if(exchangeReplayController == null){
             try{
                 FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-                this.exchangeReplayController = frascati.getService("httpDiscoveryProxy/scheduledValidationReplayEngineComponent", "scheduledValidationReplayEngineService", ExchangeReplayController.class);
+                //this.exchangeReplayController = frascati.getService("httpDiscoveryProxy/scheduledValidationReplayEngineComponent", "scheduledValidationReplayEngineService", ExchangeReplayController.class);
+                this.exchangeReplayController = frascati.getService("handlerManager/handlerManagerServiceBaseComp/scheduledValidationReplayEngineComponent", "scheduledValidationReplayEngineService", ExchangeReplayController.class);
             }
             catch(Exception ex){
                 log.error("Unable to get the replayEngineService from FraSCAti", ex);

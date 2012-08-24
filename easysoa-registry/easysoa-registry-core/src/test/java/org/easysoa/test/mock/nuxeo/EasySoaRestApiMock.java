@@ -41,7 +41,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.servlet.http.HttpMessageRequestWrapper;
+import org.easysoa.servlet.http.CopyHttpServletRequest;
 import org.osoa.sca.annotations.Scope;
 
 
@@ -146,7 +146,7 @@ public class EasySoaRestApiMock extends HttpServlet implements Servlet, RecordsP
      */
     private void recordExchange(HttpServletRequest request) throws IOException {
     	// recording exchange
-        ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(new HttpMessageRequestWrapper(request)));
+        ExchangeRecord record = new ExchangeRecord("" + new Date().getTime(), new InMessage(new CopyHttpServletRequest(request)));
         log.debug("request content : " + record.getInMessage());
         this.records.add(record);
     }

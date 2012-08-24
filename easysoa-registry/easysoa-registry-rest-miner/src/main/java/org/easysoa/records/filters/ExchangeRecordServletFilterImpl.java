@@ -67,7 +67,7 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	    // Registering the event receiver
 	    try {
 	        FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-	        RunManager runManager = frascati.getService("httpDiscoveryProxy/runManagerComponent", "runManagerService", RunManager.class);
+	        RunManager runManager = frascati.getService("handlerManager/handlerManagerServiceBaseComp/runManagerComponent", "runManagerService", RunManager.class);
 	        runManager.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
         } catch (Exception ex) {
             logger.error("Unable to register the ExchangeRecordServletFilterEventReceiver in the run manager", ex);
