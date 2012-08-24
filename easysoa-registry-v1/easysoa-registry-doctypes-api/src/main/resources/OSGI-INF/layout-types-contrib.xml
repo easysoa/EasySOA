@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.registry.doctypes.core.layout.types.contrib">
+
+  <!-- ======= -->
+  <!-- Layouts -->
+  <!-- ======= -->
+  
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+    point="layouts">
+    
+    <!-- Layout for deliverable schema -->
+    <layout name="deliverable">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>deliverable_nature</widget>
+        </row>
+        <row>
+          <widget>deliverable_application</widget>
+        </row>
+      </rows>
+      <widget name="deliverable_nature" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.deliverable.nature</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>del:nature</field>
+        </fields>
+      </widget>
+      <widget name="deliverable_application" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.deliverable.application</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>del:application</field>
+        </fields>
+      </widget>
+    </layout>
+    
+    <!-- Layout for environment schema -->
+    <layout name="environment">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>environment_environment</widget>
+        </row>
+      </rows>
+      <widget name="environment_environment" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.environment.environment</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>env:environment</field>
+        </fields>
+      </widget>
+    </layout>
+    
+  </extension>
+  
+</component>

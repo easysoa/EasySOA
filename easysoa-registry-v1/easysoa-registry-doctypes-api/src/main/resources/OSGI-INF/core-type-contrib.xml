@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.doctypes.core.coretype.contrib">
+
+  <require>org.nuxeo.ecm.core.CoreExtensions</require>
+
+  <!-- ===================== -->
+  <!-- Core doctypes schemas -->
+  <!-- ===================== -->
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="istr" src="schemas/intelligent-system-tree-root.xsd" prefix="istr" />
+    <schema name="environment" src="schemas/environment.xsd" prefix="env" />
+    <schema name="deliverable" src="schemas/deliverable.xsd" prefix="del" />
+  </extension>
+
+  <!-- ============= -->
+  <!-- Core doctypes -->
+  <!-- ============= -->
+  
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+
+    <!-- SoaNode tagging facet, allowing for queries such as #{document.hasFacet("SoaNode")} -->
+    <facet name="SoaNode" />
+    <facet name="System" />
+
+    <!-- Abstract doctypes -->
+    <doctype extends="Document" name="SoaNode">
+      <schema name="common" />
+      <schema name="dublincore" />
+      <facet name="SoaNode" />
+      <facet name="Commentable" />
+      <facet name="Versionable" />
+      <facet name="Publishable" />
+    </doctype>
+    <doctype extends="SoaNode" name="EndpointConsumer">
+      <facet name="Folderish" />
+    </doctype>
+
+    <!-- Systems hierarchies -->
+    <doctype extends="Document" name="Repository">
+      <schema name="common" />
+      <schema name="dublincore" />
+      <facet name="Folderish" />
+    </doctype>
+    <doctype extends="Folder" name="SystemTreeRoot">
+      <schema name="dublincore" />
+      <facet name="Commentable" />
+      <facet name="Versionable" />
+      <facet name="Publishable" />
+    </doctype>
+    <doctype extends="SystemTreeRoot" name="IntelligentSystemTreeRoot">
+      <schema name="istr" />
+    </doctype>
+    <doctype extends="SoaNode" name="TaggingFolder">
+      <facet name="Folderish" />
+      <facet name="System" />
+    </doctype>
+    <doctype extends="Folder" name="IntelligentSystem">
+      <facet name="System" />
+    </doctype>
+    
+    <!-- Architecture level -->
+    <doctype extends="SoaNode" name="SoftwareComponent">
+      <facet name="Folderish" />
+    </doctype>
+    <doctype extends="SoaNode" name="Service">
+      <facet name="Folderish" />
+    </doctype>
+
+    <!-- Implementation level -->
+    <doctype extends="EndpointConsumer" name="Deliverable">
+      <schema name="deliverable" />
+    </doctype>
+    <doctype extends="SoaNode" name="ServiceImplementation">
+      <facet name="Folderish" />
+    </doctype>
+    <doctype extends="SoaNode" name="OperationImplementation">
+    </doctype>
+
+    <!-- Deployment level -->
+    <doctype extends="EndpointConsumer" name="DeployedDeliverable">
+      <schema name="environment" />
+    </doctype>
+    <doctype extends="SoaNode" name="Endpoint">
+      <schema name="environment" />
+    </doctype>
+
+  </extension>
+
+</component>

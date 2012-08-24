@@ -25,7 +25,9 @@ public class SoaNodeInformation {
     }
     
     public SoaNodeInformation(CoreSession documentManager, DocumentModel model) throws Exception {
-        this.id = new SoaNodeId(model);
+        DocumentService documentService = Framework.getService(DocumentService.class);
+        
+        this.id = documentService.createSoaNodeId(model);
         this.properties = new HashMap<String, Object>();
         Map<String, Object> schemaProperties;
         for (String schema : model.getSchemas()) {
@@ -36,7 +38,6 @@ public class SoaNodeInformation {
         }
         
         // Find correlated documents
-        DocumentService documentService = Framework.getService(DocumentService.class);
         DocumentModelList correlatedDocuments = documentService.findAllParents(documentManager, model);
         if (model.isProxy()) {
             model = documentService.find(documentManager, id);
@@ -45,7 +46,7 @@ public class SoaNodeInformation {
         this.correlatedDocuments = new LinkedList<SoaNodeId>();
         for (DocumentModel correlatedDocument : correlatedDocuments) {
             if (correlatedDocument.getFacets().contains("SoaNode")) {
-                this.correlatedDocuments.add(new SoaNodeId(correlatedDocument));
+                this.correlatedDocuments.add(documentService.createSoaNodeId(correlatedDocument));
             }
         }
     }

@@ -1,6 +1,5 @@
 package org.easysoa.registry.types;
 
-import org.nuxeo.ecm.core.api.ClientException;
 
 public interface Deliverable extends Document {
 
@@ -12,12 +11,12 @@ public interface Deliverable extends Document {
 
     String getDoctype();
 
-    String getNature() throws ClientException;
+    String getNature() throws Exception;
 
-    void setNature(String nature) throws ClientException;
+    void setNature(String nature) throws Exception;
 
-    String getApplication() throws ClientException;
+    String getApplication() throws Exception;
 
-    void setApplication(String application) throws ClientException;
+    void setApplication(String application) throws Exception;
 
 }

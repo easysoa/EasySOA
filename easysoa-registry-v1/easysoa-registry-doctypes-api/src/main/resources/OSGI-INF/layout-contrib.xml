@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.easysoa.registry.doctypes.core.layout.contrib">
+
+  <!-- ======= -->
+  <!-- Layouts -->
+  <!-- ======= -->
+  
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+    point="layouts">
+    
+  </extension>
+
+  <!-- ============ -->
+  <!-- Widget types -->
+  <!-- ============ -->
+  
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+    point="widgettypes">
+
+    <!-- Display doctype in document title -->
+    <widgetType name="title_and_permlink">
+      <configuration>
+        <sinceVersion>5.4.2</sinceVersion>
+        <title>Title and permanent link</title>
+        <fields>
+          <list>false</list>
+          <complex>false</complex>
+          <defaultConfiguration>
+            <field></field>
+            <field>uid:major_version</field>
+            <field>uid:minor_version</field>
+          </defaultConfiguration>
+        </fields>
+        <categories>
+          <category>document</category>
+        </categories>
+      </configuration>
+      <handler-class>
+        org.nuxeo.ecm.platform.forms.layout.facelets.plugins.TemplateWidgetTypeHandler
+      </handler-class>
+      <property name="template">
+        /widgets/easysoa_title_with_permlink_widget_template.xhtml
+      </property>
+    </widgetType>
+
+  </extension>
+</component>

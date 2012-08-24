@@ -120,6 +120,8 @@ public interface DocumentService {
     void ensureSourceFolderExists(CoreSession documentManager, String doctype)
             throws ClientException;
 
+    SoaNodeId createSoaNodeId(DocumentModel model);
+
 
     
 }

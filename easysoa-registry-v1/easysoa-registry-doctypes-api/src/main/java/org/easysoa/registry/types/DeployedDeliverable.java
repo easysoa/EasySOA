@@ -1,7 +1,5 @@
 package org.easysoa.registry.types;
 
-import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.model.PropertyException;
 
 public interface DeployedDeliverable extends Document {
 
@@ -10,6 +8,6 @@ public interface DeployedDeliverable extends Document {
 
     String getDoctype();
 
-    String getEnvironment() throws PropertyException, ClientException;
+    String getEnvironment() throws Exception;
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.systems.IntelligentSystemTreeService" version="1.0">
+
+  <implementation class="org.easysoa.registry.systems.IntelligentSystemTreeComponent" />
+
+  <service>
+    <provide interface="org.easysoa.registry.systems.IntelligentSystemTreeService" />
+  </service>
+  
+  <extension-point name="classifiers">
+    <object class="org.easysoa.registry.systems.IntelligentSystemTreeClassifierDescriptor" />
+  </extension-point>
+  
+  <extension-point name="intelligentSystemTrees">
+    <object class="org.easysoa.registry.systems.IntelligentSystemTreeDescriptor" />
+  </extension-point>
+
+</component>

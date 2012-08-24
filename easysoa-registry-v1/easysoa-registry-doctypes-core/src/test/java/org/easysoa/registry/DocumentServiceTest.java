@@ -2,8 +2,8 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.test.AbstractRegistryTest;
-import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.types.TaggingFolder;
+import org.easysoa.registry.utils.RepositoryHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -49,7 +49,7 @@ public class DocumentServiceTest extends AbstractRegistryTest {
         Assert.assertNotNull("Created system must be found by name", systemModel);
         Assert.assertEquals(systemModel.getTitle(), "MySystemTitle");
         Assert.assertTrue("Returned document must be in the repository, in the System folder",
-                systemModel.getPathAsString().startsWith(Repository.REPOSITORY_REF.toString()));
+                systemModel.getPathAsString().startsWith(RepositoryHelper.REPOSITORY_REF.toString()));
     }
 
     @Test

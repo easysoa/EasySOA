@@ -5,7 +5,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.java.MavenDeliverable;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 
 /**
@@ -26,7 +25,7 @@ public class MavenHierarchyClassifier implements IntelligentSystemTreeClassifier
     }
 
     @Override
-    public String classify(DocumentModel model) throws ClientException {
+    public String classify(DocumentModel model) throws Exception {
         // Filter non-Maven documents
         if (!Deliverable.DOCTYPE.equals(model.getType())) {
             return null;

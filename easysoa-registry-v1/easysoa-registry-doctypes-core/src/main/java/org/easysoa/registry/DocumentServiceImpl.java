@@ -51,7 +51,7 @@ public class DocumentServiceImpl implements DocumentService {
                 PathRef parentRef = new PathRef(parentPath);
                 DocumentModel parentModel = documentManager.getDocument(parentRef);
                 if (parentModel.isProxy()) {
-                    parentModel = find(documentManager, new SoaNodeId(parentModel));
+                    parentModel = find(documentManager, createSoaNodeId(parentModel));
                 }
                 return documentManager.createProxy(documentModel.getRef(), parentModel.getRef());
             }
@@ -147,7 +147,7 @@ public class DocumentServiceImpl implements DocumentService {
             return documentManager.getProxies(model.getRef(), null);
         }
         else {
-            return findProxies(documentManager, new SoaNodeId(model));
+            return findProxies(documentManager, createSoaNodeId(model));
         }
     }
    
@@ -158,13 +158,13 @@ public class DocumentServiceImpl implements DocumentService {
         PathRef parentRef = new PathRef(parentPath);
         DocumentModel parentModel = documentManager.getDocument(parentRef);
         if (parentModel.isProxy()) {
-            parentModel = find(documentManager, new SoaNodeId(parentModel));
+            parentModel = find(documentManager, createSoaNodeId(parentModel));
         }
         
         // Find proxy among children
         DocumentModelList childrenModels = documentManager.getChildren(parentModel.getRef());
         for (DocumentModel childModel : childrenModels) {
-            if (new SoaNodeId(childModel).equals(identifier)) {
+            if (createSoaNodeId(childModel).equals(identifier)) {
                 return childModel;
             }
         }
@@ -179,7 +179,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public DocumentModelList findAllInstances(CoreSession documentManager, DocumentModel model) throws ClientException {
-        return findAllInstances(documentManager, new SoaNodeId(model));
+        return findAllInstances(documentManager, createSoaNodeId(model));
     }
     
     public DocumentModelList findAllParents(CoreSession documentManager, DocumentModel documentModel) throws Exception {
@@ -229,6 +229,10 @@ public class DocumentServiceImpl implements DocumentService {
             sourceFolderModel = documentManager.createDocument(sourceFolderModel);
             return sourceFolderModel;
         }
+    }
+    
+    public SoaNodeId createSoaNodeId(DocumentModel model) {
+        return new SoaNodeId(model.getType(), model.getName());
     }
 
 

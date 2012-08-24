@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.DiscoveryService" version="1.0">
+
+  <implementation class="org.easysoa.registry.DiscoveryServiceImpl" />
+
+  <service>
+    <provide interface="org.easysoa.registry.DiscoveryService" />
+  </service>
+
+</component>

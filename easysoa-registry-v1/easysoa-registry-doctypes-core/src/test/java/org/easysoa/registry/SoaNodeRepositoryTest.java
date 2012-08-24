@@ -43,7 +43,7 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
     @Test
     public void testRepositoryCreation() throws ClientException {
         // Check that the repository document doesn't exist
-        Assume.assumeTrue(!documentManager.exists(Repository.REPOSITORY_REF));
+        Assume.assumeTrue(!documentManager.exists(RepositoryHelper.REPOSITORY_REF));
 
         DocumentModel repositoryInstance = RepositoryHelper.getRepositoryInstance(documentManager);
         Assert.assertNotNull("Repository must be created on first access", repositoryInstance);
@@ -74,7 +74,7 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
                         systemInstance.isProxy());
                 hasSystemTreeRootAsParent = true;
             } else if (systemInstance.getPathAsString().startsWith(
-                    Repository.REPOSITORY_REF.toString())) {
+                    RepositoryHelper.REPOSITORY_REF.toString())) {
                 hasRepositoryAsParent = true;
             }
         }

@@ -26,6 +26,6 @@ public interface IntelligentSystemTreeClassifier {
      * @throws ClientException 
      */
     // TODO Give more flexibility to allow for setting System title, possibly more properties
-    String classify(DocumentModel model) throws ClientException;
+    String classify(DocumentModel model) throws Exception;
     
 }

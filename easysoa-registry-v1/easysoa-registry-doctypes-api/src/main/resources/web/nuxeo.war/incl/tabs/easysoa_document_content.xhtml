@@ -1,0 +1,57 @@
+<div xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:nxh="http://nuxeo.org/nxweb/html"
+  xmlns:nxl="http://nuxeo.org/nxforms/layout"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+  xmlns:nxu="http://nuxeo.org/nxweb/util">
+
+  <c:if test="false">
+   Include document listing and summary view in the same tab
+  </c:if>
+  
+  <!-- Contents listing -->
+  <ui:include src="/incl/tabs/document_content.xhtml" />
+      
+  <c:if test="#{currentDocument.hasFacet('SoaNode')}">
+    
+    <!-- Display parents -->
+    <h3 class="summaryTitle">
+      <h:outputText value="#{messages['label.easysoa.document.parents']}" />
+    </h3>
+    <div class="summaryLayout">
+      <c:forEach items="#{documentModelHelperBean.findAllParents(currentDocument)}" var="parentModel">
+        <span style="margin-right: 20px">
+         <nxu:graphicImage
+            value="#{nxd:iconPath(parentModel)}"
+            rendered="#{!empty nxd:iconPath(parentModel)}"
+            styleClass="smallIcon" />
+          <nxd:restDocumentLink document="#{parentModel}">
+            <nxh:outputText value=" #{nxd:titleOrId(parentModel)} " />
+          </nxd:restDocumentLink>
+          <nxd:restDocumentLink document="#{parentModel}"
+            newConversation="true" target="_blank"
+            tab="#{widgetProperty_tab}"
+            subTab="#{widgetProperty_subTab}">
+            <nxu:graphicImage value="/icons/external.gif"
+              style="vertical-align:middle"
+              alt="#{messages['permalink.newTab']}"
+              title="#{messages['permalink.newTab']}" />
+          </nxd:restDocumentLink>
+         </span>
+      </c:forEach>
+    </div>
+    
+    <!--  Display metadata, including for folderish documents -->
+    <h:form id="document_view">
+      <a4j:region id="documentViewRegion">
+        <a4j:outputPanel id="documentViewPanel">
+          <nxl:layout value="#{currentDocument}" mode="view"  name="#{currentDocumentSummaryLayout}" />
+        </a4j:outputPanel>
+      </a4j:region>
+    </h:form>
+  </c:if>
+
+</div>

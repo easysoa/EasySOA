@@ -57,9 +57,9 @@ public class RegistryApi {
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
+            DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
 
             // Create SoaNode
-            DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
             discoveryService.runDiscovery(documentManager, soaNodeInfo.getId(),
                     soaNodeInfo.getProperties(), soaNodeInfo.getCorrelatedDocuments());
             documentManager.save();
@@ -80,6 +80,7 @@ public class RegistryApi {
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
+            DocumentService documentService = Framework.getService(DocumentService.class);
 
             // Fetch SoaNode list
             String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE "
@@ -91,7 +92,7 @@ public class RegistryApi {
             // Convert data for marshalling
             List<SoaNodeInformation> modelsToMarshall = new LinkedList<SoaNodeInformation>();
             for (DocumentModel soaNodeModel : soaNodeModelList) {
-                modelsToMarshall.add(new SoaNodeInformation(new SoaNodeId(soaNodeModel),
+                modelsToMarshall.add(new SoaNodeInformation(documentService.createSoaNodeId(soaNodeModel),
                         null, null));
             }
 

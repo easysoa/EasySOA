@@ -1,6 +1,5 @@
 package org.easysoa.registry;
 
-import org.nuxeo.ecm.core.api.DocumentModel;
 
 public class SoaNodeId {
 
@@ -11,10 +10,10 @@ public class SoaNodeId {
         // Needed to be compatible with JAXB serialization
     }
     
-    public SoaNodeId(DocumentModel model) {
-        this.setType(model.getType());
-        this.setName(model.getName());
-    }
+//    public SoaNodeId(DocumentModel model) {
+//        this.setType(model.getType());
+//        this.setName(model.getName());
+//    }
     
     public SoaNodeId(String doctype, String name) {
         this.setType(doctype);

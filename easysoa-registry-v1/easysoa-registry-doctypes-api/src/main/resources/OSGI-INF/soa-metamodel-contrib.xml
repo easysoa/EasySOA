@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.doctypes.core.soametamodel.contrib" version="1.0">
+
+  <extension target="org.easysoa.registry.SoaMetamodelService" point="types">
+    <soaNodeType name="TaggingFolder">
+        <subtype>SoftwareComponent</subtype>
+        <subtype>Service</subtype>
+        <subtype>Deliverable</subtype>
+        <subtype>ServiceImplementation</subtype>
+        <subtype>DeployedDeliverable</subtype>
+        <subtype>Endpoint</subtype>
+    </soaNodeType>
+    
+    <soaNodeType name="SoftwareComponent">
+        <subtype>Deliverable</subtype>
+    </soaNodeType>
+    <soaNodeType name="Service">
+        <subtype>ServiceImplementation</subtype>
+    </soaNodeType>
+    
+    <soaNodeType name="Deliverable">
+        <subtype>ServiceImplementation</subtype>
+        <subtype>DeployedDeliverable</subtype>
+    </soaNodeType>
+    <soaNodeType name="ServiceImplementation">
+        <subtype>OperationImplementation</subtype>
+        <subtype>Endpoint</subtype>
+    </soaNodeType>
+    <soaNodeType name="OperationImplementation">
+    </soaNodeType>
+    
+    <soaNodeType name="DeployedDeliverable">
+        <subtype>Endpoint</subtype>
+    </soaNodeType>
+    <soaNodeType name="Endpoint">
+    </soaNodeType>
+  </extension>
+
+</component>

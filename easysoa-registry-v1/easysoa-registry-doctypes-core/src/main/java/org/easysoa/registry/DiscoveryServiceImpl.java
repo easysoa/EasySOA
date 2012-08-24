@@ -73,7 +73,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                         }
                     }
                     else {
-                        correlatedDocument = new SoaNodeId(documentModel);
+                        correlatedDocument = documentService.createSoaNodeId(documentModel);
                     }
                 }
                 else {

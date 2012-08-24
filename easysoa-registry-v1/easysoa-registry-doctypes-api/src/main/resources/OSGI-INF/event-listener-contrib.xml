@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.doctypes.core.eventlistener.contrib">
+
+  <!-- =============== -->
+  <!-- Event listeners -->
+  <!-- =============== -->
+  
+  <extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+    <listener name="repositoryManagementListener" class="org.easysoa.registry.RepositoryManagementListener" order="120">
+      <event>documentCreated</event>
+      <event>documentCreatedByCopy</event>
+      <event>documentMoved</event>
+      <event>documentModified</event>
+    </listener>
+  </extension>
+
+</component>

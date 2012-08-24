@@ -60,8 +60,10 @@
   <!-- ======= -->
   <modules>
     <module>easysoa-registry-test</module>
+    <module>easysoa-registry-doctypes-api</module>
     <module>easysoa-registry-doctypes-core</module>
     <module>easysoa-registry-doctypes-java</module>
+    <module>easysoa-registry-rest-client</module>
     <module>easysoa-registry-rest-api</module>
     <module>easysoa-registry-jsf-branding</module>
     <module>easysoa-registry-defaults</module>
@@ -130,12 +132,22 @@
       </dependency>
       <dependency>
         <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-doctypes-api</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
         <artifactId>easysoa-registry-doctypes-core</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
       <dependency>
         <groupId>org.easysoa.registry</groupId>
         <artifactId>easysoa-registry-doctypes-java</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-rest-client</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
       <dependency>
