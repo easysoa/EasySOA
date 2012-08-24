@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="templateEngine">
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" xmlns:web="http://frascati.ow2.org/xmlns/web/1.0" name="templateEngine">
 
 	<!-- Template engine -->
 	<sca:component name="templateEngineComponent">
@@ -25,7 +25,7 @@
 	</sca:component>
 
 	<sca:component name="ProxyWSTemplate">
-		<implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="webContent/templates" default="template.vm" />
+		<web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="webContent/templates" default="template.vm" />
 		<sca:service name="template">
 			<sca:interface.java interface="org.easysoa.template.TemplateRendererItf" />
 		</sca:service>

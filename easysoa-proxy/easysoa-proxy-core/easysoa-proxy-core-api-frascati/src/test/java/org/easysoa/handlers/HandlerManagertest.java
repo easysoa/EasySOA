@@ -63,7 +63,7 @@ public class HandlerManagertest {
     
     @Test
     public void test() throws Exception {
-        Component comp = frascati.getComposite("handlerManager");
+        Component comp = frascati.getComposite("handlerManager/handlerManagerServiceBaseComp");
         HandlerManager var =  frascati.getService(comp, "handlerManagerService", HandlerManager.class);
         
         InMessage inMessage = new InMessage();
@@ -72,9 +72,8 @@ public class HandlerManagertest {
         inMessage.setPath("openwide/easysoanews/");
         inMessage.setServer("www.easysoa.org");
         
-        
         OutMessage outMessage = new OutMessage();
-        var.handle(inMessage, outMessage);
+        var.handleMessage(inMessage, outMessage);
     }
 
 }

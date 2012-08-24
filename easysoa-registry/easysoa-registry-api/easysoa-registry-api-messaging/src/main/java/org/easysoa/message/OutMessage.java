@@ -20,11 +20,17 @@
 
 package org.easysoa.message;
 
+import java.util.Enumeration;
+
 import javax.xml.bind.annotation.XmlRootElement;
-import org.easysoa.servlet.http.HttpMessageResponseWrapper;
+import org.easysoa.servlet.http.CopyHttpServletResponse;
 
 /**
  * Outgoing message
+ * 
+ * TODO LATER extract "servlet" code in (servlet)OutMessageBuilder
+ * Make it Lazy with several levels (one for headers ..., one for JSONContent or XML content)
+ * 
  * @author jguillemotte
  * 
  */
@@ -71,11 +77,19 @@ public class OutMessage implements Message {
 	 * 
 	 * @param response
 	 */
-	public OutMessage(HttpMessageResponseWrapper response) {
+	public OutMessage(CopyHttpServletResponse response) {
         this();
         // Setting status
         this.setStatus(response.getStatus());
         // Setting Message content
+        this.headers = new Headers();
+        // How to get response Headers ?
+        /* 
+        Enumeration<String> headerNameEnum = response. .getHeaderNames();
+        while(headerNameEnum.hasMoreElements()){
+            String headerName = headerNameEnum.nextElement();
+            this.headers.addHeader(new Header(headerName, response.getHeader(headerName)));
+        }*/       
         MessageContent messageContent = new MessageContent();
         messageContent.setRawContent(response.getMessageContent());
         messageContent.setEncoding(response.getCharacterEncoding());

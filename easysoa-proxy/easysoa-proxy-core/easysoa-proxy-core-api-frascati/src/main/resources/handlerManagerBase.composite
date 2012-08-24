@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" name="handlerManager">
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="handlerManagerBase">
 	
-    <sca:include name="runManager"/>
-	
-    <sca:service name="handlerManagerService" promote="handlerManagerComponent/handlerManagerService"></sca:service>
-
+    <sca:include name="runManager"/>    
+    
+    <sca:service name="handlerManagerComponentService" promote="handlerManagerComponent/handlerManagerServiceBase">
+    	<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+    </sca:service>
+    
     <sca:component name="handlerManagerComponent">
-        <sca:service name="handlerManagerService">
+        <sca:service name="handlerManagerServiceBase">
             <sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.exchangehandler.HandlerManagerImpl"/>
@@ -44,5 +46,16 @@
         </sca:reference>		
     </sca:component> 
     <sca:wire source="handlerManagerComponent/handlers" target="monitoringHandlerComponent/monitoringHandlerService"/>
-        
+    
+    <sca:component name ="subscriptionWebserviceComponent">
+        <sca:service name="ISubscriptionWebService">
+            <sca:interface.java interface="org.easysoa.subscriptions.handlers.ISubscriptionWebService"/>
+            <frascati:binding.rest uri="http://localhost:8084/SubscriptionWebService/" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.subscriptions.handlers.SubscriptionWebserviceImpl" ></sca:implementation.java>
+        <sca:reference name="eventMessageHandler" target="eventMessageHandlerComponent" >
+            <sca:interface.java interface="org.easysoa.exchangehandler.MessageHandler" />
+        </sca:reference> 
+     </sca:component>    
+    
 </sca:composite>

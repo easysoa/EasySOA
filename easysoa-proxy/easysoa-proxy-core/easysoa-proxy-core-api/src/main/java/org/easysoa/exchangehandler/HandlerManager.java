@@ -19,10 +19,7 @@
  */
 package org.easysoa.exchangehandler;
 
-import org.easysoa.message.InMessage;
-import org.easysoa.message.OutMessage;
 
-public interface HandlerManager {
-    public void handle(InMessage inMessage, OutMessage outMessage) throws Exception;
+public interface HandlerManager extends MessageHandler {
     
 }

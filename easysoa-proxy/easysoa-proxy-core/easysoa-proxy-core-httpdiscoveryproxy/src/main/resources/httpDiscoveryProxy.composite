@@ -5,25 +5,35 @@
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy"
 >
 
-    <!-- <sca:include name="runManager" />-->
-    <sca:include name="handlerManager"/>   
-    <sca:include name="subscriptionEngine"/>
+    <!-- <sca:include name="runManager" /> -->
+    <!--<sca:include name="handlerManagerBase"/>-->
+    <!--<sca:include name="subscriptionEngine"/>-->
     <!-- HTTP Proxy -->
     <!-- Run with default mode : Discovery -->
     <sca:component name="httpProxyService">
         <sca:implementation.java class="org.easysoa.proxy.HttpDiscoveryProxy" />
-        <!--<sca:service name="httpServiceInput" requires="esperIntent"> -->
         <sca:service name="httpServiceInput">
             <sca:interface.java interface="javax.servlet.Servlet" />
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
-        <sca:reference name="handlerManager" target = "handlerManagerComponent/handlerManagerService" >
+        <sca:reference name="handlerManager" target = "handlerManagerServBaseComp/handlerManagerComponentService">
+        	<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+       	</sca:reference>
+        <!--<sca:reference name="handlerManager" target = "handlerManagerComponent/handlerManagerServiceBase" >
             <sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
-        </sca:reference>
+        </sca:reference>-->
         <sca:property name="proxyPort">8082</sca:property>
         <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
         <sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>
     </sca:component>
+
+	<!-- Handler manager -->
+	<sca:component name="handlerManagerServBaseComp">
+		<sca:service name="handlerManagerComponentService">
+      		<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+    	</sca:service>
+	    <sca:implementation.composite name="handlerManagerBase.composite"/>
+	</sca:component>
 
     <!-- HTTP Client to drive the proxy -->
     <!--<sca:component name="httpProxyDriver">

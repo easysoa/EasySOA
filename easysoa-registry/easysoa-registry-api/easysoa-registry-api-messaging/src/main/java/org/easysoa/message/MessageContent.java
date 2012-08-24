@@ -139,13 +139,8 @@ public class MessageContent {
 	    if(rawContent != null){
 	        // Need to remove escape double quotes to avoid problem with some JSON libs
 	        ////StringUtils.replaceChars(rawContent, "\"", "\\\"");
-	        ///rawContent.replaceAll("\"","\\\\\"");
-	        //this.rawContent = rawContent.replaceAll("\"","\\\\\"");
 	        this.rawContent = rawContent;
-            /*logger.debug("RawContent before replace => " + this.rawContent);	        
-	        this.rawContent.replace("\"", "\\\"");
-	        logger.debug("RawContent after replace => " + this.rawContent);*/
-	        
+
 	        // Check the content type
 	        this.contentType = ContentChecker.checkJsonXmlContent(rawContent);
 	        if (ContentType.JSON.equals(contentType)) {
@@ -161,13 +156,13 @@ public class MessageContent {
                     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
                     this.XMLContent = docBuilder.parse(new InputSource(new StringReader(rawContent))); // this.rawContent
-                } 
+                }
 	            catch (Exception ex) {
                     ex.printStackTrace();
                     this.contentType = ContentType.Undefined;
                     this.XMLContent = null;    
                 }
-                this.JSONContent = null;                
+                this.JSONContent = null;
 	        } else {
 	            this.JSONContent = null;
 	            this.XMLContent = null;
