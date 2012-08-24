@@ -23,7 +23,7 @@ import org.nuxeo.runtime.api.Framework;
 public class DiscoveryServiceImpl implements DiscoveryService {
 
     public DocumentModel runDiscovery(CoreSession documentManager, SoaNodeId identifier,
-            Map<String, Object> properties, List<SoaNodeId> correlatedDocuments) throws Exception {
+            Map<String, Object> properties, List<SoaNodeId> parentDocuments) throws Exception {
         DocumentService documentService = Framework.getService(DocumentService.class);
         
         // Fetch or create document
@@ -41,55 +41,36 @@ public class DiscoveryServiceImpl implements DiscoveryService {
             documentManager.saveDocument(documentModel);
         }
         
-        // Link to correlated documents
-        //FIXME cache / build model of soaMetamodelService responses to speed it up, handle swapped & unswapped in same call
-        if (correlatedDocuments != null && !correlatedDocuments.isEmpty()) {
+        // Link to parent documents
+        // FIXME cache / build model of soaMetamodelService responses to speed it up
+        if (parentDocuments != null && !parentDocuments.isEmpty()) {
             String type = documentModel.getType();
             SoaMetamodelService soaMetamodelService = Framework.getService(SoaMetamodelService.class);
-            for (SoaNodeId correlatedDocument : correlatedDocuments) {
-                List<String> path = soaMetamodelService.getPath(type, correlatedDocument.getType());
+            for (SoaNodeId parentDocumentId : parentDocuments) {
+                List<String> path = soaMetamodelService.getPath(parentDocumentId.getType(), type);
+                DocumentModel parentDocument = documentService.find(documentManager, parentDocumentId);
                 
-                // Swap the documents if necessary
-                DocumentModel parentDocument;
+                // Make sure parent is valid
                 if (path == null) {
-                    // Create the target
-                    parentDocument = documentService.find(documentManager, correlatedDocument);
-                    if (parentDocument == null) {
-                        parentDocument = documentService.create(documentManager, correlatedDocument, correlatedDocument.getType());
-                    }
-                    
-                    // Find a path (either between doc & target, or between target & another correlated doc)
-                    // FIXME Does not cover all special cases (ex. if no swapping, if a placeholder is found to be another existing element and therefore must be removed)
-                    path = soaMetamodelService.getPath(correlatedDocument.getType(), type);
-                    if (path == null) {
-                        for (SoaNodeId candidateCorrelatedDocument : correlatedDocuments) {
-                            if (!correlatedDocument.getType().equals(candidateCorrelatedDocument.getType())) {
-                                path = soaMetamodelService.getPath(correlatedDocument.getType(), candidateCorrelatedDocument.getType());
-                                if (path != null) {
-                                    correlatedDocument = candidateCorrelatedDocument;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        correlatedDocument = documentService.createSoaNodeId(documentModel);
-                    }
+                    documentManager.cancel();
+                    throw new Exception("Cannot set " + parentDocumentId.toString() + " as parent");
                 }
                 else {
-                    parentDocument = documentModel;
-                }
-                
-                // If we have unknown documents between the two, create placeholders
-                // TODO More intelligent, pluggable correlation logic?
-                if (path != null) {
+                    // Create parent if necessary
+                    if (parentDocument == null) {
+                        parentDocument = documentService.create(documentManager, parentDocumentId, parentDocumentId.getName());
+                    }
+                    
+                    // Link the intermediate documents 
+                    // If we have unknown documents between the two, create placeholders
                     for (String pathStepType : path.subList(0, path.size() - 1)) {
                         // Before creating a placeholder, check if the intermediate type
-                        // is not already listed in the correlated documents
+                        // is not already listed in the parent documents
                         boolean placeholderNeeded = true;
-                        for (SoaNodeId placeholderReplacementCandidate : correlatedDocuments) {
+                        for (SoaNodeId placeholderReplacementCandidate : parentDocuments) {
                             if (pathStepType.equals(placeholderReplacementCandidate.getType())) {
-                                parentDocument = documentService.create(documentManager, placeholderReplacementCandidate,
+                                parentDocument = documentService.create(documentManager,
+                                        placeholderReplacementCandidate,
                                         parentDocument.getPathAsString(), null);
                                 placeholderNeeded = false;
                                 break;
@@ -105,10 +86,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                 }
                 
                 // Create target document if necessary
-                if (documentService.findProxy(documentManager, correlatedDocument,
+                if (documentService.findProxy(documentManager, identifier,
                         parentDocument.getPathAsString()) == null) {
-                    documentService.create(documentManager, correlatedDocument,
-                            parentDocument.getPathAsString(), correlatedDocument.getName());
+                    documentService.create(documentManager, identifier,
+                            parentDocument.getPathAsString(), parentDocument.getName());
                 }
             } 
         }

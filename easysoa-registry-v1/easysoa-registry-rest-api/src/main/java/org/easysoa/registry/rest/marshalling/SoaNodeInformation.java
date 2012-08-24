@@ -16,10 +16,10 @@ public class SoaNodeInformation {
 
     private SoaNodeId id;
     
-    private List<SoaNodeId> correlatedDocuments;
-    
     private Map<String, Object> properties;
-
+    
+    private List<SoaNodeId> parentDocuments;
+    
     protected SoaNodeInformation() {
         
     }
@@ -38,23 +38,17 @@ public class SoaNodeInformation {
         }
         
         // Find correlated documents
-        DocumentModelList correlatedDocuments = documentService.findAllParents(documentManager, model);
-        if (model.isProxy()) {
-            model = documentService.find(documentManager, id);
-        }
-        correlatedDocuments.addAll(documentManager.getChildren(model.getRef()));
-        this.correlatedDocuments = new LinkedList<SoaNodeId>();
-        for (DocumentModel correlatedDocument : correlatedDocuments) {
-            if (correlatedDocument.getFacets().contains("SoaNode")) {
-                this.correlatedDocuments.add(documentService.createSoaNodeId(correlatedDocument));
-            }
+        this.parentDocuments = new LinkedList<SoaNodeId>();
+        DocumentModelList parentDocumentList = documentService.findAllParents(documentManager, model);
+        for (DocumentModel parentDocument : parentDocumentList) {
+            this.parentDocuments.add(documentService.createSoaNodeId(parentDocument));
         }
     }
     
-    public SoaNodeInformation(SoaNodeId id, Map<String, Object> properties, List<SoaNodeId> correlatedDocuments) {
+    public SoaNodeInformation(SoaNodeId id, Map<String, Object> properties, List<SoaNodeId> parentDocuments) {
         this.id = id;
         this.properties = (properties == null) ? new HashMap<String, Object>() : properties;
-        this.correlatedDocuments = (correlatedDocuments == null) ? new LinkedList<SoaNodeId>() : correlatedDocuments;
+        this.parentDocuments = (parentDocuments == null) ? new LinkedList<SoaNodeId>() : parentDocuments;
     }
     
     public SoaNodeId getId() {
@@ -73,12 +67,12 @@ public class SoaNodeInformation {
         this.properties = properties;
     }
     
-    public List<SoaNodeId> getCorrelatedDocuments() {
-        return correlatedDocuments;
+    public List<SoaNodeId> getParentDocuments() {
+        return parentDocuments;
     }
     
-    public void setCorrelatedDocuments(List<SoaNodeId> correlatedDocuments) {
-        this.correlatedDocuments = correlatedDocuments;
+    public void setParentDocuments(List<SoaNodeId> correlatedDocuments) {
+        this.parentDocuments = correlatedDocuments;
     }
     
 }

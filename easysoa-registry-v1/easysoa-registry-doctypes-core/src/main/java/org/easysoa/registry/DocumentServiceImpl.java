@@ -204,6 +204,20 @@ public class DocumentServiceImpl implements DocumentService {
         return parents;
     }
 
+    @Override
+    public boolean hasChild(CoreSession documentManager, DocumentModel document,
+            SoaNodeId childId) throws ClientException {
+        if (document != null && childId != null) {
+            DocumentModelList children = documentManager.getChildren(document.getRef(), childId.getType());
+            for (DocumentModel child : children) {
+                if (createSoaNodeId(child).equals(childId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public String getSourceFolderPath(String doctype) {
         return Repository.REPOSITORY_PATH + '/' + doctype; 
     }

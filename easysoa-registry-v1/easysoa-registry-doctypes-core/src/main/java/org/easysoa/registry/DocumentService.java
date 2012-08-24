@@ -25,7 +25,7 @@ public interface DocumentService {
     
     /**
      * Creates a SoaNode document. If a document of the same identifier
-     * exists, returns it instead. If the target path is not the repository root,
+     * exists, returns it instead. If the target path is not the expected path within the repository,
      * a document will be stored in the repository, and proxied at the wanted destination.
      * 
      * @throws ClientException
@@ -112,6 +112,9 @@ public interface DocumentService {
      */
     DocumentModelList findAllParents(CoreSession documentManager, DocumentModel documentModel)
             throws Exception;
+    
+    boolean hasChild(CoreSession documentManager, DocumentModel document, SoaNodeId childId)
+            throws ClientException;
 
     String getSourceFolderPath(String doctype);
 

@@ -41,7 +41,7 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
     @Inject
     SoaMetamodelService soaMetamodelService;
 
-    private static SoaNodeId discoveredDeliverableId;
+    private static SoaNodeId discoveredEndpointId;
 
     private static Map<String, Object> properties;
     
@@ -50,18 +50,17 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
     @Test
     public void testSimpleDiscovery() throws Exception {
         // Gather discovery information
-        discoveredDeliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa.registry:myartifact");
+        discoveredEndpointId = new SoaNodeId(Endpoint.DOCTYPE, "http://www.services.com/endpoint");
         properties = new HashMap<String, Object>();
-        properties.put(Deliverable.XPATH_TITLE, "My Artifact");
-        properties.put(Deliverable.XPATH_APPLICATION, "myapp");
+        properties.put(Endpoint.XPATH_TITLE, "My Endpoint");
         
         // Run discovery
-        discoveryService.runDiscovery(documentManager, discoveredDeliverableId, properties, null);
+        discoveryService.runDiscovery(documentManager, discoveredEndpointId, properties, null);
         documentManager.save();
         
         // Check results
-        foundDeliverable = documentService.find(documentManager, discoveredDeliverableId);
-        Assert.assertNotNull("A deliverable must be created by the discovery processing", foundDeliverable);
+        foundDeliverable = documentService.find(documentManager, discoveredEndpointId);
+        Assert.assertNotNull("An endpoint must be created by the discovery processing", foundDeliverable);
         for (Entry<String, Object> property : properties.entrySet()) {
             Assert.assertEquals("Property " + property.getKey() + " must match value from discovery",
                     property.getValue(), foundDeliverable.getPropertyValue(property.getKey()));
@@ -85,32 +84,30 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
     @Test
     public void testCorrelationDiscovery() throws Exception {
         // Add correlation information
-        List<SoaNodeId> correlatedDocuments = new LinkedList<SoaNodeId>();
-        SoaNodeId endpointId = new SoaNodeId(Endpoint.DOCTYPE, "http://myapp.com/service");
-        correlatedDocuments.add(endpointId);
+        List<SoaNodeId> parentDocuments = new LinkedList<SoaNodeId>();
+        SoaNodeId deliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa.services:myservices");
+        parentDocuments.add(deliverableId);
         SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "myserviceimpl");
-        correlatedDocuments.add(serviceImplId);
+        parentDocuments.add(serviceImplId);
         SoaNodeId serviceId = new SoaNodeId(Service.DOCTYPE, "myservice");
-        correlatedDocuments.add(serviceId);
+        parentDocuments.add(serviceId);
         
         // Run discovery
-        discoveryService.runDiscovery(documentManager, discoveredDeliverableId, null, correlatedDocuments);
+        discoveryService.runDiscovery(documentManager, discoveredEndpointId, null, parentDocuments);
         documentManager.save();
         
         // Check results
-        DocumentModel foundEndpoint = documentService.find(documentManager, endpointId);
-        Assert.assertNotNull("An endpoint must be created by the discovery processing", foundEndpoint);
+        DocumentModel foundService = documentService.find(documentManager, serviceId);
+        Assert.assertTrue(serviceId + " must be linked to " + serviceImplId, 
+                documentService.hasChild(documentManager, foundService, serviceImplId));
 
-        Assert.assertTrue("The correlated documents must be stored under the deliverable",
-                documentManager.hasChildren(foundDeliverable.getRef()));
+        DocumentModel foundDeliverable = documentService.find(documentManager, deliverableId);
+        Assert.assertTrue(deliverableId + " must be linked to " + serviceImplId, 
+                documentService.hasChild(documentManager, foundDeliverable, serviceImplId));
         
         DocumentModel foundServiceImpl = documentService.find(documentManager, serviceImplId);
-        Assert.assertTrue("The service implementation must contain the endpoint when both are specified for correlation",
-                documentManager.hasChildren(foundServiceImpl.getRef()));
-        
-        DocumentModel foundService = documentService.find(documentManager, serviceId);
-        Assert.assertTrue("The service must link to the deliverable through its the service implementation",
-                documentManager.hasChildren(foundService.getRef()));
+        Assert.assertTrue(serviceImplId + " must be linked to " + discoveredEndpointId, 
+                documentService.hasChild(documentManager, foundServiceImpl, discoveredEndpointId));
     }
     
 }

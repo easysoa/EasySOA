@@ -61,7 +61,7 @@ public class RegistryApi {
 
             // Create SoaNode
             discoveryService.runDiscovery(documentManager, soaNodeInfo.getId(),
-                    soaNodeInfo.getProperties(), soaNodeInfo.getCorrelatedDocuments());
+                    soaNodeInfo.getProperties(), soaNodeInfo.getParentDocuments());
             documentManager.save();
             
             // Return created document
@@ -142,7 +142,7 @@ public class RegistryApi {
                 // Create SoaNode
                 DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
                 discoveryService.runDiscovery(documentManager, soaNodeId,
-                        soaNodeInfo.getProperties(), soaNodeInfo.getCorrelatedDocuments());
+                        soaNodeInfo.getProperties(), soaNodeInfo.getParentDocuments());
                 documentManager.save();
                 
                 // Return created document
