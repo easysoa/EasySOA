@@ -17,7 +17,7 @@
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
         <sca:reference name="handlerManager" target = "handlerManagerServBaseComp/handlerManagerComponentService">
-        	<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+        	<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
        	</sca:reference>
         <!--<sca:reference name="handlerManager" target = "handlerManagerComponent/handlerManagerServiceBase" >
             <sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
@@ -30,7 +30,7 @@
 	<!-- Handler manager -->
 	<sca:component name="handlerManagerServBaseComp">
 		<sca:service name="handlerManagerComponentService">
-      		<sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+      		<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
     	</sca:service>
 	    <sca:implementation.composite name="handlerManagerBase.composite"/>
 	</sca:component>

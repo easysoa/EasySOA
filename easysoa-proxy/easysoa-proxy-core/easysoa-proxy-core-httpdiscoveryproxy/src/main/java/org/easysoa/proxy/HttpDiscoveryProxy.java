@@ -32,14 +32,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
-import org.easysoa.configurator.ProxyConfigurator;
-import org.easysoa.exchangehandler.HandlerManager;
 import org.easysoa.message.Header;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.properties.PropertyManager;
+import org.easysoa.proxy.core.api.configurator.ProxyConfigurator;
+import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
+import org.easysoa.proxy.core.api.properties.PropertyManager;
+import org.easysoa.proxy.core.api.util.RequestForwarder;
 import org.easysoa.proxy.properties.ProxyPropertyManager;
-import org.easysoa.util.RequestForwarder;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;

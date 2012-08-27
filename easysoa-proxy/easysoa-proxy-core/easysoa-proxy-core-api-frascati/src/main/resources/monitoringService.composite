@@ -6,9 +6,9 @@
 	<!-- Monitoring service -->
 	<sca:component name="monitoringServiceComponent">
 		<sca:service name="monitoringServiceService">
-			<sca:interface.java interface="org.easysoa.monitoring.MonitoringService" />
+			<sca:interface.java interface="org.easysoa.proxy.core.api.monitoring.MonitoringService" />
 		</sca:service>
-		<sca:implementation.java class="org.easysoa.monitoring.DiscoveryMonitoringService" />
+		<sca:implementation.java class="org.easysoa.proxy.core.api.monitoring.DiscoveryMonitoringService" />
 		<!--<sca:implementation.java class="org.easysoa.monitoring.ValidatedMonitoringService" />-->
 		<sca:reference name="esperEngine" target="esperEngineComponent/esperEngineService" />
 	</sca:component>

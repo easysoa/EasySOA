@@ -8,11 +8,11 @@
 	<!-- Simulation engine -->
     <sca:component name="simulationEngineComponent">
         <sca:service name="simulationEngineService">
-            <sca:interface.java interface="org.easysoa.simulation.SimulationEngine" />
+            <sca:interface.java interface="org.easysoa.proxy.core.api.simulation.SimulationEngine" />
         </sca:service>
-        <sca:implementation.java class="org.easysoa.simulation.SimulationEngineImpl" />
+        <sca:implementation.java class="org.easysoa.proxy.core.api.simulation.SimulationEngineImpl" />
         <sca:reference name="correlationEngine" target="correlationEngineComponent/correlationEngineService">
-            <sca:interface.java interface="org.easysoa.records.correlation.CorrelationEngine" />
+            <sca:interface.java interface="org.easysoa.proxy.core.api.records.correlation.CorrelationEngine" />
         </sca:reference>
         <!--<sca:reference name="templateEngine" target="templateEngineComponent" />-->
         <!--<sca:reference name="exchangeRecordStoreManager" target="exchangeStoreManagerComponent/exchangeStoreManagerService" />-->

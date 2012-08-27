@@ -38,22 +38,22 @@ import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.message.MessageContent;
 import org.easysoa.message.OutMessage;
-import org.easysoa.properties.PropertyManager;
+import org.easysoa.proxy.core.api.properties.PropertyManager;
+import org.easysoa.proxy.core.api.records.assertions.AssertionEngine;
+import org.easysoa.proxy.core.api.records.assertions.AssertionEngineImpl;
+import org.easysoa.proxy.core.api.records.assertions.AssertionSuggestions;
+import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
+import org.easysoa.proxy.core.api.template.TemplateEngine;
+import org.easysoa.proxy.core.api.template.TemplateEngineImpl;
+import org.easysoa.proxy.core.api.template.TemplateFieldSuggestions;
+import org.easysoa.proxy.core.api.util.ContentReader;
+import org.easysoa.proxy.core.api.util.RequestForwarder;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.assertions.AssertionEngine;
-import org.easysoa.records.assertions.AssertionEngineImpl;
-import org.easysoa.records.assertions.AssertionSuggestions;
-import org.easysoa.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.records.replay.ReplayEngine;
-import org.easysoa.template.TemplateEngine;
-import org.easysoa.template.TemplateEngineImpl;
-import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.easysoa.test.util.UrlMock;
-import org.easysoa.util.ContentReader;
-import org.easysoa.util.RequestForwarder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -187,7 +187,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
     
 	    // Create a ReplaySequencer class to organise to execution of differents engines
 	    // Add boolean variables in property file to enable or disable the execution of engines
-        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
         replayEngine.startReplaySession(testStoreName + "_replaySession");
 	    for(ExchangeRecord record : recordList){
 	        // Field suggestions
@@ -303,7 +303,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
         AssertionEngine assertionEngine = new AssertionEngineImpl();
         // Create a ReplaySequencer class to organise to execution of differents engines
         // Add boolean variables in property file to enable or disable the execution of engines
-        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
         replayEngine.startReplaySession(testStoreName + "_replaySession");
         for(ExchangeRecord record : recordList){
             // Field suggestions

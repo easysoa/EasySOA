@@ -4,13 +4,13 @@
 package org.easysoa.records.filters;
 
 import org.apache.log4j.Logger;
-import org.easysoa.exchangehandler.HandlerManager;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
+import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
+import org.easysoa.proxy.core.api.run.RunManager;
+import org.easysoa.proxy.core.api.run.RunManagerEventReceiver;
+import org.easysoa.proxy.core.api.run.RunManager.RunManagerEvent;
 import org.easysoa.records.handlers.NuxeoMessageExchangeRecordHandler;
-import org.easysoa.run.RunManager;
-import org.easysoa.run.RunManagerEventReceiver;
-import org.easysoa.run.RunManager.RunManagerEvent;
 import org.nuxeo.runtime.api.Framework;
 
 

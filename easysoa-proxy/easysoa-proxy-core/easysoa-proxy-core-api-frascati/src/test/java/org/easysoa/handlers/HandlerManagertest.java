@@ -3,9 +3,9 @@ package org.easysoa.handlers;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.easysoa.exchangehandler.HandlerManager;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.objectweb.fractal.api.Component;

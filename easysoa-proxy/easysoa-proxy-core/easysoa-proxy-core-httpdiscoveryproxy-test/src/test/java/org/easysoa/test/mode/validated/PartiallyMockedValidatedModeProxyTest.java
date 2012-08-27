@@ -32,7 +32,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.nuxeo.registration.NuxeoRegistrationService;
+import org.easysoa.proxy.core.api.nuxeo.registration.NuxeoRegistrationService;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.easysoa.test.util.UrlMock;
 import org.json.JSONArray;

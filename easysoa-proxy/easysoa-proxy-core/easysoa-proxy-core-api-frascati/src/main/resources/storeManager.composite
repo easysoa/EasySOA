@@ -4,9 +4,9 @@
 	<!-- Exchange record Manager -->
 	<sca:component name="exchangeStoreManagerComponent">
 		<sca:service name="exchangeStoreManagerService">
-			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
+			<sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ExchangeReplayService" />
 		</sca:service>
-		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
+		<sca:implementation.java class="org.easysoa.proxy.core.api.records.replay.ExchangeReplayServiceImpl" />
 	</sca:component>
 
 </sca:composite>

@@ -4,9 +4,9 @@
 	<!-- Log engine -->
 	<sca:component name="logEngineComponent">
 		<sca:service name="logEngineService">
-			<sca:interface.java interface="org.easysoa.logs.LogEngine" />
+			<sca:interface.java interface="org.easysoa.proxy.core.api.logs.LogEngine" />
 		</sca:service>
-		<sca:implementation.java class="org.easysoa.logs.LogEngineImpl" />
+		<sca:implementation.java class="org.easysoa.proxy.core.api.logs.LogEngineImpl" />
 	</sca:component>
 	
 </sca:composite>

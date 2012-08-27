@@ -19,7 +19,7 @@
  */
 package org.easysoa.records.filters;
 
-import org.easysoa.exchangehandler.HttpExchangeHandler;
+import org.easysoa.proxy.core.api.exchangehandler.HttpExchangeHandler;
 
 /**
  * 

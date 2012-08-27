@@ -25,8 +25,16 @@ import org.apache.log4j.Logger;
 import org.easysoa.message.MessageContent;
 import org.easysoa.message.OutMessage;
 import org.easysoa.message.util.ContentChecker.ContentType;
-import org.easysoa.records.assertions.AssertionResult.AssertionResultStatus;
-import org.easysoa.records.assertions.StringAssertion.StringAssertionMethod;
+import org.easysoa.proxy.core.api.records.assertions.Assertion;
+import org.easysoa.proxy.core.api.records.assertions.AssertionEngine;
+import org.easysoa.proxy.core.api.records.assertions.AssertionEngineImpl;
+import org.easysoa.proxy.core.api.records.assertions.AssertionResult;
+import org.easysoa.proxy.core.api.records.assertions.AssertionSuggestions;
+import org.easysoa.proxy.core.api.records.assertions.ContainsAssertion;
+import org.easysoa.proxy.core.api.records.assertions.LCSAssertion;
+import org.easysoa.proxy.core.api.records.assertions.StringAssertion;
+import org.easysoa.proxy.core.api.records.assertions.AssertionResult.AssertionResultStatus;
+import org.easysoa.proxy.core.api.records.assertions.StringAssertion.StringAssertionMethod;
 import org.junit.Test;
 
 /**

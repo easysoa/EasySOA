@@ -30,8 +30,8 @@ import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.core.api.util.ContentReader;
 import org.easysoa.test.util.AbstractProxyTestStarter;
-import org.easysoa.util.ContentReader;
 import org.junit.Test;
 
 

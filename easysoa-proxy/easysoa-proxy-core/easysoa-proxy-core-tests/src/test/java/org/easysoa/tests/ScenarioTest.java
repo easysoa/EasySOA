@@ -44,12 +44,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
+import org.easysoa.proxy.core.api.template.TemplateFieldSuggestions;
+import org.easysoa.proxy.core.api.util.ContentReader;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.records.replay.ReplayEngine;
-import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.tests.helpers.AbstractTestHelper;
-import org.easysoa.util.ContentReader;
 import org.easysoa.wsdl.twitter_test_run_wsdl.TwitterTestRunPortType_TwitterTestRunPort_Server;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -225,7 +225,7 @@ public class ScenarioTest extends AbstractTestHelper {
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
 
 	    // Get the replay engine service
-        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
 		
         // Build an HashMap to simulate user provided values
         HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
