@@ -23,6 +23,11 @@ package org.easysoa.proxy.core.api.esper;
 import org.easysoa.proxy.core.api.monitoring.soa.Node;
 import org.easysoa.records.ExchangeRecord;
 
+/**
+ * Esper engine interface
+ * @author jguillemotte
+ *
+ */
 public interface EsperEngine {
 
 	/**
@@ -35,7 +40,6 @@ public interface EsperEngine {
 	 * Send a event to the Esper engine 
 	 * @param soaNode The <code>Message</code> contained in the event
 	 */
-	//public void sendEvent(Message message);
 	public void sendEvent(ExchangeRecord exchangeRecord);
 	
 }

@@ -28,6 +28,7 @@ import java.util.Set;
 import org.easysoa.proxy.core.api.reports.Report;
 
 /**
+ * Log engine interface
  * @author jguillemotte
  *
  */
@@ -41,10 +42,7 @@ public interface LogEngine {
      * @throws Exception If a problem occurs
      */
     //public void generateAssertionReport(List<AssertionResult> assertionResults) throws Exception;
-
-    
     //public void saveReport(AssertionReport assertionReport) throws Exception;
-    
  
     public void startLogSession(String logSessionName, Report report) throws Exception;
     
