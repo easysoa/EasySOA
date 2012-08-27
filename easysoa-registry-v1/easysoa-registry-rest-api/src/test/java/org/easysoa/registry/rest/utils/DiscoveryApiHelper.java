@@ -1,7 +1,7 @@
 package org.easysoa.registry.rest.utils;
 
+import org.easysoa.registry.rest.AbstractWebEngineTest;
 import org.easysoa.registry.rest.RegistryApi;
-import org.easysoa.registry.test.AbstractWebEngineTest;
 
 public class DiscoveryApiHelper {
 

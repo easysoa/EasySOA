@@ -32,7 +32,7 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 @Features({EasySOAFeature.class, WebEngineFeature.class})
 @Jetty(port=AbstractWebEngineTest.PORT)
 @RepositoryConfig(cleanup = Granularity.METHOD)
-public class AbstractWebEngineTest {
+public abstract class AbstractWebEngineTest {
     
     public static final int PORT = 8082;
 
