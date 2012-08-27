@@ -1,4 +1,4 @@
-package org.easysoa.registry.test;
+package org.easysoa.registry.rest;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -6,6 +6,10 @@ import java.net.URLConnection;
 import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
+import org.easysoa.registry.rest.marshalling.JsonMessageReader;
+import org.easysoa.registry.rest.marshalling.JsonMessageWriter;
+import org.easysoa.registry.test.EasySOAFeature;
+import org.easysoa.registry.test.PathExtractor;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
@@ -21,13 +25,14 @@ import org.nuxeo.runtime.test.runner.Jetty;
 import com.google.inject.Inject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 @RunWith(FeaturesRunner.class)
 @Features({EasySOAFeature.class, WebEngineFeature.class})
 @Jetty(port=AbstractWebEngineTest.PORT)
 @RepositoryConfig(cleanup = Granularity.METHOD)
-public class AbstractWebEngineTest {
+public abstract class AbstractWebEngineTest {
     
     public static final int PORT = 8082;
 
@@ -39,6 +44,9 @@ public class AbstractWebEngineTest {
     
     public AbstractWebEngineTest(ClientConfig clientConfig) {
         this.clientConfig = clientConfig;
+    }
+    public AbstractWebEngineTest() {
+        this(createClientConfig());
     }
     
     @Inject
@@ -58,6 +66,13 @@ public class AbstractWebEngineTest {
             logger.error(message, e);
             Assert.fail(message);
         }
+    }
+
+    private static ClientConfig createClientConfig() {
+        ClientConfig clientConfig = new DefaultClientConfig();
+        clientConfig.getSingletons().add(new JsonMessageReader());
+        clientConfig.getSingletons().add(new JsonMessageWriter());
+        return clientConfig;
     }
 
     public Client createAuthenticatedHTTPClient() {

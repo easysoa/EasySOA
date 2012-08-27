@@ -1,5 +1,7 @@
 package org.easysoa.registry;
 
+import java.util.List;
+
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -125,5 +127,14 @@ public interface DocumentService {
             throws ClientException;
 
     SoaNodeId createSoaNodeId(DocumentModel model) throws PropertyException, ClientException;
+
+    /**
+     * proxy-compliant getChildren())
+     * @return 
+     * @throws ClientException 
+     */
+    List<DocumentModel> getChildren(CoreSession session, DocumentRef ref,
+            String doctype) throws ClientException;
+
     
 }

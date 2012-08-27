@@ -10,12 +10,9 @@ import org.apache.log4j.Logger;
 import org.easysoa.registry.DiscoveryService;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
-import org.easysoa.registry.rest.marshalling.JsonMessageReader;
-import org.easysoa.registry.rest.marshalling.JsonMessageWriter;
 import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.rest.utils.DiscoveryApiHelper;
-import org.easysoa.registry.test.AbstractWebEngineTest;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
@@ -29,8 +26,6 @@ import com.google.inject.Inject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 @Deploy("org.easysoa.registry.rest.api")
 @RepositoryConfig(cleanup = Granularity.CLASS)
@@ -49,17 +44,6 @@ public class RegistryApiTest extends AbstractWebEngineTest {
     private final int SERVICE_COUNT = 5;
 
     private SoaNodeId deliverableId = new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa:deliverable");
-
-    public RegistryApiTest() {
-        super(createClientConfig());
-    }
-
-    private static ClientConfig createClientConfig() {
-        ClientConfig clientConfig = new DefaultClientConfig();
-        clientConfig.getSingletons().add(new JsonMessageReader());
-        clientConfig.getSingletons().add(new JsonMessageWriter());
-        return clientConfig;
-    }
 
     @Test
     public void getOne() throws Exception {
