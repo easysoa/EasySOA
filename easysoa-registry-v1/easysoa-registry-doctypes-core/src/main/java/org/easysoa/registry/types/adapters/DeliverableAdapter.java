@@ -2,9 +2,9 @@ package org.easysoa.registry.types.adapters;
 
 import org.easysoa.registry.InvalidDoctypeException;
 import org.easysoa.registry.types.Deliverable;
-import org.easysoa.registry.types.adapters.AbstractDocumentAdapter;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.model.PropertyException;
 
 
 /**
@@ -12,9 +12,10 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  * @author mkalam-alami
  *
  */
-public class DeliverableAdapter extends AbstractDocumentAdapter implements Deliverable {
+public class DeliverableAdapter extends SoaNodeAdapter implements Deliverable {
 
-    public DeliverableAdapter(DocumentModel documentModel) throws InvalidDoctypeException {
+    public DeliverableAdapter(DocumentModel documentModel)
+            throws InvalidDoctypeException, PropertyException, ClientException {
         super(documentModel);
     }
     

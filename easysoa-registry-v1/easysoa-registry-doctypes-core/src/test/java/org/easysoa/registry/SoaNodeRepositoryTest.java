@@ -87,7 +87,7 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
         Assert.assertTrue("System tree root child must be a proxy", strChild.isProxy());
         
         // Make sure that the system tree root is not in the repository (not a SoaNode)
-        DocumentModelList strInstances = documentService.findAllInstances(documentManager, strModel);
+        DocumentModelList strInstances = documentManager.query("SELECT * FROM " + strModel.getType());
         Assert.assertEquals("The system tree root must not have a proxy", 1, strInstances.size());
     }
 

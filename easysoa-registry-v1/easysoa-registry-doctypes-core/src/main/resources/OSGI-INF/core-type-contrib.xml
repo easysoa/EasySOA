@@ -11,6 +11,7 @@
     <schema name="istr" src="schemas/intelligent-system-tree-root.xsd" prefix="istr" />
     <schema name="environment" src="schemas/environment.xsd" prefix="env" />
     <schema name="deliverable" src="schemas/deliverable.xsd" prefix="del" />
+    <schema name="soanode" src="schemas/soanode.xsd" prefix="soa" />
   </extension>
 
   <!-- ============= -->
@@ -27,6 +28,7 @@
     <doctype extends="Document" name="SoaNode">
       <schema name="common" />
       <schema name="dublincore" />
+      <schema name="soanode" />
       <facet name="SoaNode" />
       <facet name="Commentable" />
       <facet name="Versionable" />

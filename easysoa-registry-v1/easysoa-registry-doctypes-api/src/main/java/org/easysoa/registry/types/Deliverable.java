@@ -1,7 +1,7 @@
 package org.easysoa.registry.types;
 
 
-public interface Deliverable extends Document {
+public interface Deliverable extends SoaNode {
 
     public static final String DOCTYPE = "Deliverable";
 

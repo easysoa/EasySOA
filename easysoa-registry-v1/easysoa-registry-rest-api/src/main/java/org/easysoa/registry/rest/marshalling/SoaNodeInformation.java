@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
+import org.easysoa.registry.types.SoaNode;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -41,7 +42,9 @@ public class SoaNodeInformation {
         this.parentDocuments = new LinkedList<SoaNodeId>();
         DocumentModelList parentDocumentList = documentService.findAllParents(documentManager, model);
         for (DocumentModel parentDocument : parentDocumentList) {
-            this.parentDocuments.add(documentService.createSoaNodeId(parentDocument));
+            if (parentDocument.getFacets().contains(SoaNode.FACET)) { 
+                this.parentDocuments.add(documentService.createSoaNodeId(parentDocument));
+            }
         }
     }
     

@@ -89,7 +89,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                 if (documentService.findProxy(documentManager, identifier,
                         parentDocument.getPathAsString()) == null) {
                     documentService.create(documentManager, identifier,
-                            parentDocument.getPathAsString(), parentDocument.getName());
+                            parentDocument.getPathAsString(), identifier.getName());
                 }
             } 
         }

@@ -5,6 +5,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.api.model.PropertyException;
 
 /**
  * 
@@ -123,8 +124,6 @@ public interface DocumentService {
     void ensureSourceFolderExists(CoreSession documentManager, String doctype)
             throws ClientException;
 
-    SoaNodeId createSoaNodeId(DocumentModel model);
-
-
+    SoaNodeId createSoaNodeId(DocumentModel model) throws PropertyException, ClientException;
     
 }

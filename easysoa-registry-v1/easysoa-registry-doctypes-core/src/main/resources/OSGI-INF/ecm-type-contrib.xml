@@ -92,6 +92,7 @@
       <bigIcon>/icons/workspace_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -149,6 +150,7 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -174,6 +176,7 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -201,6 +204,7 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
         <layout>deliverable</layout>
       </layouts>
@@ -229,6 +233,7 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
       </layouts>
       <layouts mode="listing">
@@ -255,6 +260,7 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
       </layouts>
     </type>
@@ -266,6 +272,7 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
         <layout>environment</layout>
       </layouts>
@@ -292,6 +299,7 @@
       <bigIcon>/icons/file_100.png</bigIcon>
       <default-view>view_documents</default-view>
       <layouts mode="any">
+        <layout>soanode</layout>
         <layout>heading</layout>
         <layout>environment</layout>
       </layouts>

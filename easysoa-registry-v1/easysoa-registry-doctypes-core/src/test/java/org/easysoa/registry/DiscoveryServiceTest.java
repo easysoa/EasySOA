@@ -100,7 +100,8 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
         DocumentModel foundService = documentService.find(documentManager, serviceId);
         Assert.assertTrue(serviceId + " must be linked to " + serviceImplId, 
                 documentService.hasChild(documentManager, foundService, serviceImplId));
-
+        
+        
         DocumentModel foundDeliverable = documentService.find(documentManager, deliverableId);
         Assert.assertTrue(deliverableId + " must be linked to " + serviceImplId, 
                 documentService.hasChild(documentManager, foundDeliverable, serviceImplId));
@@ -108,6 +109,7 @@ public class DiscoveryServiceTest extends AbstractRegistryTest {
         DocumentModel foundServiceImpl = documentService.find(documentManager, serviceImplId);
         Assert.assertTrue(serviceImplId + " must be linked to " + discoveredEndpointId, 
                 documentService.hasChild(documentManager, foundServiceImpl, discoveredEndpointId));
+        
     }
     
 }

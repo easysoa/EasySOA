@@ -2,6 +2,7 @@ package org.easysoa.registry;
 
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.Repository;
+import org.easysoa.registry.types.SoaNode;
 import org.easysoa.registry.utils.DocumentModelHelper;
 import org.easysoa.registry.utils.RepositoryHelper;
 import org.nuxeo.common.utils.Path;
@@ -12,6 +13,7 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
+import org.nuxeo.ecm.core.api.model.PropertyException;
 import org.nuxeo.ecm.core.query.sql.NXQL;
 import org.nuxeo.ecm.platform.query.nxql.NXQLQueryBuilder;
 
@@ -40,6 +42,8 @@ public class DocumentServiceImpl implements DocumentService {
             DocumentModel documentModel;
             if (!documentManager.exists(sourceRef)) {
                 documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), title);
+                documentModel.setPropertyValue(SoaNode.XPATH_SOANAME, name);
+                documentManager.saveDocument(documentModel);
             }
             else {
                 documentModel = documentManager.getDocument(sourceRef);
@@ -74,7 +78,8 @@ public class DocumentServiceImpl implements DocumentService {
             if (!documentManager.exists(sourceRef)) {
                 documentModel = documentManager.createDocumentModel(doctype);
                 documentModel.setPathInfo(getSourceFolderPath(doctype), name);
-                documentModel.setProperty("dublincore", "title", title);
+                documentModel.setPropertyValue("dc:title", title);
+                documentModel.setPropertyValue(SoaNode.XPATH_SOANAME, name);
                 return documentManager.createDocument(documentModel);
             }
             else {
@@ -245,8 +250,8 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
     
-    public SoaNodeId createSoaNodeId(DocumentModel model) {
-        return new SoaNodeId(model.getType(), model.getName());
+    public SoaNodeId createSoaNodeId(DocumentModel model) throws PropertyException, ClientException {
+        return new SoaNodeId(model.getType(), (String) model.getPropertyValue(SoaNode.XPATH_SOANAME));
     }
 
 

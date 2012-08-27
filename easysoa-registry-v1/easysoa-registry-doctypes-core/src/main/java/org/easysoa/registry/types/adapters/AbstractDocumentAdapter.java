@@ -41,6 +41,5 @@ public abstract class AbstractDocumentAdapter {
     public String getName() {
         return documentModel.getName();
     }
-
     
 }

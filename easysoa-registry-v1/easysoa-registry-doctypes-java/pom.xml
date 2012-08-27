@@ -16,6 +16,10 @@
     <!-- EasySOA -->
     <dependency>
       <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-doctypes-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-doctypes-core</artifactId>
     </dependency>
     <dependency>

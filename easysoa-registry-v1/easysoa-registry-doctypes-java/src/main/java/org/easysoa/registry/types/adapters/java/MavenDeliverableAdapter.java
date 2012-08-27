@@ -3,7 +3,9 @@ package org.easysoa.registry.types.adapters.java;
 import org.easysoa.registry.InvalidDoctypeException;
 import org.easysoa.registry.types.adapters.DeliverableAdapter;
 import org.easysoa.registry.types.java.MavenDeliverable;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.model.PropertyException;
 
 
 /**
@@ -17,7 +19,7 @@ public class MavenDeliverableAdapter extends DeliverableAdapter implements Maven
     
     private String artifactId;
     
-    public MavenDeliverableAdapter(DocumentModel documentModel) throws InvalidDoctypeException {
+    public MavenDeliverableAdapter(DocumentModel documentModel) throws InvalidDoctypeException, PropertyException, ClientException {
         super(documentModel);
         
         // Identifiers format:

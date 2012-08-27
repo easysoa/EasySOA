@@ -20,6 +20,7 @@ import com.google.inject.Binder;
     "org.nuxeo.ecm.platform.types.core",
     
     // Minimal EasySOA requirements
+    "org.easysoa.registry.doctypes.api",
     "org.easysoa.registry.doctypes.core"
 })
 public class EasySOAFeature extends SimpleFeature {

@@ -1,6 +1,6 @@
 package org.easysoa.registry.types;
 
-public interface Endpoint extends Document {
+public interface Endpoint extends SoaNode {
 
     public static final String DOCTYPE = "Endpoint";
     
