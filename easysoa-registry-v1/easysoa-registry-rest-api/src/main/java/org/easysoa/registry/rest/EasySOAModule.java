@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.easysoa.registry.rest.marshalling.JsonMessageReader;
 import org.easysoa.registry.rest.marshalling.JsonMessageWriter;
+import org.easysoa.registry.indicators.rest.IndicatorsController;
 import org.nuxeo.ecm.webengine.app.WebEngineModule;
 
 /**
@@ -24,7 +25,7 @@ public class EasySOAModule extends WebEngineModule {
     
     @Override
     public Class<?>[] getWebTypes() {
-        return new Class<?>[] { RegistryApi.class };
+        return new Class<?>[] { RegistryApi.class, IndicatorsController.class };
     }
 
 }
