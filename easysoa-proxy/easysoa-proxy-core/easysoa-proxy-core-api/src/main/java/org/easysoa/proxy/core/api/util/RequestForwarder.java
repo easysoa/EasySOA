@@ -29,6 +29,8 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashSet;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
@@ -50,6 +52,7 @@ import org.easysoa.message.InMessage;
 import org.easysoa.message.MessageContent;
 import org.easysoa.message.OutMessage;
 import org.easysoa.message.QueryParam;
+import org.easysoa.servlet.http.CopyHttpServletResponse;
 
 /**
  * This class contains stuff to help with forwarding a request
@@ -202,7 +205,6 @@ public class RequestForwarder {
         outMessage.setResponseTimeStamp(responseSendDate.getTime());
         
         // copy content
-        
         MessageContent messageContent = new MessageContent();
         
         // Read the response message content
