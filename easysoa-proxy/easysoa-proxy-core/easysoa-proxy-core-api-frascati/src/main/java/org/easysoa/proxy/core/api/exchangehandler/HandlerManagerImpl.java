@@ -19,14 +19,11 @@
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
-import java.util.HashMap;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
-import org.easysoa.proxy.core.api.exchangehandler.MessageHandler;
-import org.easysoa.proxy.core.api.handler.event.admin.CompiledCondition;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -62,13 +59,4 @@ public class HandlerManagerImpl implements HandlerManager {
         }    
     }
 
-    public void setListenedServiceUrlToServicesToLaunchUrlMap(HashMap<List<CompiledCondition>, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap) {
-        // TODO rm
-        
-    }
-
-    public boolean isApplicable(InMessage inMessage) {
-        return true;
-    }
-   
 }

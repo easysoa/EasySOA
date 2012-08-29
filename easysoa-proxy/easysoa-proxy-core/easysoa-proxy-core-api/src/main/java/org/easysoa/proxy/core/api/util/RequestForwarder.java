@@ -18,9 +18,6 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package org.easysoa.proxy.core.api.util;
 
 import java.io.BufferedReader;

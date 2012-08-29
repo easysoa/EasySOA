@@ -1,4 +1,4 @@
-package org.easysoa.proxy.core.api.handler.event.admin;
+package org.easysoa.proxy.core.api.event;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -7,13 +7,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author fntangke
  *
  */
-@XmlRootElement(name = "launchedService")
-public class LaunchedService {
+@XmlRootElement(name = "listenedService")
+public class ListenedService {
 
-    //private int id;
     private String url;
 
-    public LaunchedService() {
+    public ListenedService() {
         // TODO Auto-generated constructor stub
     }
 

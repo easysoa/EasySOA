@@ -18,38 +18,23 @@
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
-import java.util.HashMap;
-import java.util.List;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.proxy.core.api.handler.event.admin.CompiledCondition;
 
 /**
- *
  * @author fntangke
  */
 public interface MessageHandler {
 
-    /**
-     * Handle an exchange
-     *
-     * @param messagein incoming message
-     * @param messageout outgoing message
-     * @throws Exception
-     */
-    public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception;
-    
-    /**
-     * 
-     * @param newListenedServiceUrlToServicesToLaunchUrlMap 
-     */
-
-    public void setListenedServiceUrlToServicesToLaunchUrlMap(HashMap<List<CompiledCondition>, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap);
-    
-    /**
-     * 
-     * @param inMessage
-     * @return is The inMessage's url is reconized by the proxy
-     */
-    public boolean isApplicable(InMessage inMessage);
+	/**
+	 * Handle an exchange
+	 * 
+	 * @param messagein
+	 *            incoming message
+	 * @param messageout
+	 *            outgoing message
+	 * @throws Exception
+	 */
+	public void handleMessage(InMessage inMessage, OutMessage outMessage)
+			throws Exception;
 }

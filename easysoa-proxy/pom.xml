@@ -49,6 +49,12 @@
         <version>${easysoa.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+
     
       <!-- Java REST WebServices -->
       <dependency>

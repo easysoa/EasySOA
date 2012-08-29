@@ -52,7 +52,7 @@ public class MessageListener implements UpdateListener {
 			update(newData);
 		}
     }
-	
+	 
 	/**
 	 * Update 
 	 * @param newData New event data

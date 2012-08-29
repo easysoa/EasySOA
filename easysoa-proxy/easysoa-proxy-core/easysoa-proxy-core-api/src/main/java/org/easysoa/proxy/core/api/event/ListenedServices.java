@@ -1,4 +1,4 @@
-package org.easysoa.proxy.core.api.handler.event.admin;
+package org.easysoa.proxy.core.api.event;
 
 import java.util.ArrayList;
 import java.util.List;

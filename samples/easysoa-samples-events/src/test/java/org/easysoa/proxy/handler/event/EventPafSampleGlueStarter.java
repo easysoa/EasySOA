@@ -8,9 +8,9 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.proxy.core.api.handler.event.admin.CompiledCondition;
-import org.easysoa.proxy.core.api.handler.event.admin.IEventMessageHandler;
-import org.easysoa.proxy.core.api.handler.event.admin.RegexCondition;
+import org.easysoa.proxy.core.api.event.Condition;
+import org.easysoa.proxy.core.api.event.IEventMessageHandler;
+import org.easysoa.proxy.core.api.event.RegexCondition;
 import org.easysoa.proxy.test.HttpUtils;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
@@ -76,15 +76,15 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
         
         String urlToListen = "http://localhost:9010/PureAirFlowers";        
 
-        Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>() ;
+        Map<List<Condition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<Condition>, List<String>>() ;
         ArrayList<String> value = new ArrayList<String>();
         value.add("http://localhost:8090/glue");
         
-        List<CompiledCondition> listCompiledCondition = new ArrayList<CompiledCondition>();
-        listCompiledCondition.add(new RegexCondition(urlToListen));
-	listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);
+        List<Condition> listCondition = new ArrayList<Condition>();
+        listCondition.add(new RegexCondition(urlToListen));
+	listenedServiceUrlToServicesToLaunchUrlMap.put(listCondition, value);
         
-        listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);
+        listenedServiceUrlToServicesToLaunchUrlMap.put(listCondition, value);
         frascati.getService(componentList.get(0), "IEventMessageHandler", IEventMessageHandler.class)
             .setListenedServiceUrlToServicesToLaunchUrlMap(listenedServiceUrlToServicesToLaunchUrlMap);
         

@@ -1,93 +1,86 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>easysoa-proxy-core-api</artifactId>
-  <name>EasySOA Proxy core api</name>
-  <packaging>jar</packaging>
+    <artifactId>easysoa-proxy-core-api</artifactId>
+    <name>EasySOA Proxy core api</name>
+    <packaging>jar</packaging>
 
-  <parent>
-    <groupId>org.easysoa.proxy</groupId>
-    <artifactId>easysoa-proxy-parent</artifactId>
-    <version>0.5-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+    <parent>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-parent</artifactId>
+        <version>0.5-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
    
-	<dependencies>
-    	<!-- Messaging api -->
-    	<dependency>
-      		<groupId>org.easysoa.registry.api</groupId>
-      		<artifactId>easysoa-registry-api-messaging</artifactId>
-    	  <version>0.5-SNAPSHOT</version>
-    	  <type>jar</type>
-    	</dependency>
-    	<!-- Easysoa remote rest api -->
-    	<dependency>
-      		<groupId>org.easysoa.registry.api</groupId>
-      		<artifactId>easysoa-registry-api-remote</artifactId>
-    	</dependency>
+    <dependencies>
+        <!-- Messaging api -->
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-messaging</artifactId>
+            <type>jar</type>
+        </dependency>
+        <!-- Easysoa remote rest api -->
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-remote</artifactId>
+        </dependency>
     	
-    	<!-- For scheduled validation -->
-    	<dependency>
-      		<groupId>org.easysoa.registry.api</groupId>
-      		<artifactId>easysoa-registry-api-core</artifactId>
-      		<!--<version>${easysoa.version}</version>-->
-    	</dependency>    	
-    	<!--<dependency>
-      		<groupId>org.easysoa.registry.api</groupId>
-      		<artifactId>easysoa-registry-api-local</artifactId>
-      		<version>${easysoa.version}</version>
-    	</dependency>-->
-		<!--<dependency>
-      		<groupId>org.easysoa.registry</groupId>
-      		<artifactId>easysoa-registry-rest-miner</artifactId>
-      		<version>${easysoa.version}</version>
-    	</dependency>-->
+        <!-- For scheduled validation -->
+        <dependency>
+            <groupId>org.easysoa.registry.api</groupId>
+            <artifactId>easysoa-registry-api-core</artifactId>
+        </dependency>    	
     	
-    	<!-- log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
+        <!-- log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
 				
-    	<!-- java rest webservices -->
-    	<dependency>
-      		<groupId>javax.ws.rs</groupId>
-      		<artifactId>jsr311-api</artifactId>
-	    </dependency>		
-		<!-- xstream for report conversion to XML -->
-    	<dependency>
-    		<groupId>xstream</groupId>
-    		<artifactId>xstream</artifactId>
-    	</dependency>
-    	<!-- esper -->
-	    <dependency>
-    	  	<groupId>com.espertech</groupId>
-      		<artifactId>esper</artifactId>
-    	</dependency>	
-		<!-- json -->
-    	<dependency>
-    		<groupId>org.json</groupId>
-    		<artifactId>json</artifactId>
-    	</dependency>
+        <!-- java rest webservices -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+        </dependency>		
+        <!-- xstream for report conversion to XML -->
+        <dependency>
+            <groupId>xstream</groupId>
+            <artifactId>xstream</artifactId>
+        </dependency>
+        <!-- esper -->
+        <dependency>
+            <groupId>com.espertech</groupId>
+            <artifactId>esper</artifactId>
+        </dependency>	
+        <!-- json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
 	
-		<!-- Tests -->
-		<!-- junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1.3</version>
-		</dependency>-->
-		<!-- Cannot be removed until there is SCA annotations used in interfaces -->
-		<dependency>
-			<groupId>org.apache.tuscany.sca</groupId>
-			<artifactId>tuscany-sca-all</artifactId>
-		</dependency>
-	</dependencies>
+        <!-- Tests -->
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--<dependency>
+  			<groupId>org.apache.httpcomponents</groupId>
+   			<artifactId>httpclient</artifactId>
+   			<version>4.1.3</version>
+   		</dependency>-->
+        <dependency>
+            <groupId>org.apache.tuscany.sca</groupId>
+            <artifactId>tuscany-sca-all</artifactId><!-- TODO -->
+        </dependency>
+        <dependency>
+            <groupId>commons-jxpath</groupId>
+            <artifactId>commons-jxpath</artifactId>
+            <version>1.3</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -19,12 +19,8 @@
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
-import java.util.HashMap;
-import java.util.List;
-
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.proxy.core.api.handler.event.admin.CompiledCondition;
 import org.easysoa.proxy.core.api.run.RunManager;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
@@ -52,16 +48,6 @@ public class MonitoringHandler implements MessageHandler {
         // Send it to the monitoring service
         runManager.getMonitoringService().listen(record);
         //runManager.getMonitoringService().registerDetectedServicesToNuxeo();
-    }
-
-    @Override
-    public void setListenedServiceUrlToServicesToLaunchUrlMap(HashMap<List<CompiledCondition>, List<String>> newListenedServiceUrlToServicesToLaunchUrlMap) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean isApplicable(InMessage inMessage) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
