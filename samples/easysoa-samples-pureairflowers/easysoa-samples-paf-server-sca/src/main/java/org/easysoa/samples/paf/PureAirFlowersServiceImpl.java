@@ -35,6 +35,7 @@ public class PureAirFlowersServiceImpl implements PureAirFlowersService {
 
     private final static Logger logger = LoggerFactory.getLogger(PureAirFlowersServer.class);
 
+    @Override
     public int getOrdersNumber(String clientName) {
         logger.info("getOrdersNumber called");
         return Math.abs(clientName.hashCode() % 50);

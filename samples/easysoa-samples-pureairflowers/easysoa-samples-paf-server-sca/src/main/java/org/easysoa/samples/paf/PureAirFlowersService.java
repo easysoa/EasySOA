@@ -20,6 +20,8 @@
 
 package org.easysoa.samples.paf;
 
+import javax.jws.WebParam;
+
 //import javax.jws.WebParam;
 //import javax.jws.WebService;
 //import javax.jws.WebResult;
@@ -29,10 +31,18 @@ package org.easysoa.samples.paf;
  * @author jguillemotte
  * 
  */
-//@WebService // This annotation is a problem when we try to run this mock in Frascati
+// @WebService // This annotation is a problem when we try to run this mock in
+// Frascati
 public interface PureAirFlowersService {
 
-    //@WebResult(name = "ordersNumber")
-    int getOrdersNumber(/*@WebParam(name = "ClientName")*/ String text);
+	// @WebResult(name = "ordersNumber")
+	int getOrdersNumber(/* @WebParam(name = "ClientName") */String text);
 
+	/* Added
+	public int addOrder(
+	// @WebParam(name = "orderNb", targetNamespace = "")
+			java.lang.Integer orderNb,
+			// @WebParam(name = "ClientName", targetNamespace = "")
+			java.lang.String clientName);
+*/
 }
