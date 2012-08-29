@@ -157,6 +157,10 @@ define 'easysoa', :base_dir => '../' do
       if File.exist?(NUXEO_PATH+'/nxserver/lib/httpcore-4.0.1.jar')
       	FileUtils.mv NUXEO_PATH+'/nxserver/lib/httpcore-4.0.1.jar', NUXEO_PATH+'/removedJars/nxserver/lib/httpcore-4.0.1.jar', :force => true
       end
+  	  # Move jettison jar from nxserver/frascati/lib to nxserver/lib to have the FraSCAti Web Explorer working
+  	  if File.exist?(NUXEO_PATH+'/nxserver/frascati/lib/jettison.jar')
+  	  	FileUtils.mv NUXEO_PATH+'/nxserver/frascati/lib/jettison.jar', NUXEO_PATH+'/nxserver/lib/jettison.jar', :force => true
+  	  end      
       puts "Done."
       
     end
