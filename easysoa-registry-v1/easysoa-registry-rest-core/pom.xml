@@ -9,8 +9,8 @@
     <relativePath>..</relativePath>
   </parent>
 
-  <artifactId>easysoa-registry-rest-client</artifactId>
-  <name>EasySOA Registry Rest Client</name>
+  <artifactId>easysoa-registry-rest-core</artifactId>
+  <name>EasySOA Registry Rest Core</name>
 
   <dependencies>
     <!-- EasySOA -->
@@ -18,32 +18,13 @@
         <groupId>org.easysoa.registry</groupId>
         <artifactId>easysoa-registry-doctypes-api</artifactId>
     </dependency>
-    <dependency>
-        <groupId>org.easysoa.registry</groupId>
-        <artifactId>easysoa-registry-rest-core</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.easysoa.registry</groupId>
-        <artifactId>easysoa-registry-test</artifactId>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.easysoa.registry</groupId>
-        <artifactId>easysoa-registry-doctypes-core</artifactId>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.easysoa.registry</groupId>
-      <artifactId>easysoa-registry-rest-server</artifactId>
-      <scope>test</scope>
-    </dependency>
-  
-    <!-- Jersey Client -->
+    
+    <!-- Jersey -->
     <dependency>
       <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
+      <artifactId>jersey-core</artifactId>
     </dependency>
-
+    
     <!-- JSON -->
     <dependency>
       <groupId>org.codehaus.jackson</groupId>

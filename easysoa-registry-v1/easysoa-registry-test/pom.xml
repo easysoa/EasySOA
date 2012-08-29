@@ -46,10 +46,5 @@
       <artifactId>guice</artifactId>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
 </project>

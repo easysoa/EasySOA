@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-Vendor: EasySOA Consortium
-Bundle-ActivationPolicy: lazy
-Bundle-Name: easysoa-registry-rest-api
-Bundle-ManifestVersion: 2
-Bundle-SymbolicName: org.easysoa.registry.rest.api;singleton:=true
-Nuxeo-WebModule: org.easysoa.registry.rest.EasySOAModule;name=easysoa;extends=base;package=org/easysoa/registry/rest
