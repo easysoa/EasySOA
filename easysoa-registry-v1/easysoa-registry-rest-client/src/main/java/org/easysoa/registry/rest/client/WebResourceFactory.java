@@ -162,7 +162,7 @@ public final class WebResourceFactory implements InvocationHandler {
         }
 
         // create a new UriBuilder appending the @Path attached to the method
-        WebResource newTarget = addPathFromAnnotation(method, target);
+        WebResource newTarget = target;//addPathFromMethod(method, args, target);
 
         if (httpMethod == null) {
             if (newTarget == target) {
@@ -191,7 +191,7 @@ public final class WebResourceFactory implements InvocationHandler {
                 anns.put(ann.annotationType(), ann);
             }
             Annotation ann;
-            Object value = (String) args[i];
+            Object value = args[i];
             if (anns.isEmpty()) {
                 entityType = method.getGenericParameterTypes()[i];
                 entity = value;
@@ -291,13 +291,13 @@ public final class WebResourceFactory implements InvocationHandler {
             }
         }
 
-        GenericType<?> responseGenericType = new GenericType<Object>(method.getGenericReturnType()); // XXX <Object>
+        GenericType<?> responseGenericType = new GenericType<Object>(method.getGenericReturnType());
         if (entity != null) {
             if (entityType instanceof ParameterizedType) {
                 entity = new GenericEntity<Object>(entity, entityType);
             }
-            throw new UnsupportedOperationException(entity.toString() + "  "  + responseGenericType.toString());
-          //  result = b.method(httpMethod, Entity.entity(entity, contentType), responseGenericType);
+            b.entity(entity, contentType);
+            result = b.method(httpMethod, responseGenericType);
         } else {
             result = b.method(httpMethod, responseGenericType);
         }
@@ -312,7 +312,7 @@ public final class WebResourceFactory implements InvocationHandler {
         }
         return target;
     }
-
+    
     private static String getHttpMethodName(AnnotatedElement ae) {
         HttpMethod a = ae.getAnnotation(HttpMethod.class);
         return a == null ? null : a.value();
