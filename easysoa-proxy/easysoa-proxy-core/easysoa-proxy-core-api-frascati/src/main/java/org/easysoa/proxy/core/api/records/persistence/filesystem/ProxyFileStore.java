@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -131,19 +132,27 @@ public class ProxyFileStore {
     }
 
     /**
-     * 
-     * @param run
-     * @throws Exception
+     * Save the run
+     * @param run The run to save
+     * @throws Exception If a problem occurs during the run save
      */
     public void save(Run run) throws Exception {
         // Create the run folder
         logger.debug("Path to store run = " + path + run.getName());
+       
         // Create the store folder
         this.createStore(run.getName());
+        
+        // lock the store
+        store.createRecordingLock(path + run.getName());        
+        
         // Create in the same time the template folder
         for (ExchangeRecord record : run.getExchangeRecordList()) {
             this.save(record, path + run.getName() + "/");
         }
+        
+        // unlock the store
+        store.removeRecordingLock(path + run.getName());
     }
 
     /**
@@ -177,10 +186,14 @@ public class ProxyFileStore {
      * @throws IOException
      */
     public void saveFieldSuggestions(TemplateFieldSuggestions templateFieldSuggestions, String storeName, String recordID) throws Exception {
+        // lock the store
+        store.createRecordingLock(path + storeName);        
         String fieldSuggestFileName = SUGGESTION_FILE_PREFIX + recordID + SUGGESTIONS_FILE_EXTENSION;
         JSONObject templateJSON = JSONObject.fromObject(templateFieldSuggestions);
         StoreResource resource = new StoreResource(fieldSuggestFileName, this.templatePath + storeName, templateJSON.toString()); 
         store.save(resource);
+        // unlock the recording lock
+        store.removeRecordingLock(path + storeName);
     }
 
     /**
@@ -199,6 +212,8 @@ public class ProxyFileStore {
      * @throws IOException If a problem occurs
      */
     public Map<String, String> saveTemplate(VelocityTemplate templateRecord, String storeName) throws Exception {
+        // lock the store
+        store.createRecordingLock(path + storeName);        
         HashMap<String, String> templateFileMap = new HashMap<String, String>();
         StoreResource resource; 
         String reqTemplateFileName = REQ_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
@@ -211,6 +226,8 @@ public class ProxyFileStore {
         //resource = new StoreResource(resTemplateFileName, templatePath + "/" + storeName, JSONObject.fromObject(templateRecord.getResponsetemplate()).toString());
         store.save(resource);
         templateFileMap.put("resTemplate", resTemplateFileName);
+        // unlock the store
+        store.removeRecordingLock(path + storeName);        
         return templateFileMap;
     }
 
@@ -222,6 +239,7 @@ public class ProxyFileStore {
      * @throws Exception
      */
     public TemplateFieldSuggestions getTemplateFieldSuggestions(String storeName, String recordID) throws Exception {
+        checkForLock(path + storeName);
         logger.debug("loading field suggestions for record ID : " + recordID);
         // Getting the resource
         StoreResource resource = store.load(SUGGESTION_FILE_PREFIX + recordID + SUGGESTIONS_FILE_EXTENSION, templatePath + storeName);
@@ -240,6 +258,7 @@ public class ProxyFileStore {
      * @throws Exception If a problem occurs
      */
     public AssertionSuggestions getAssertionSuggestions(String storeName, String recordID) throws Exception {
+        checkForLock(path + storeName);
         logger.debug("loading assertion suggestions :" + ASSERTIONS_FILE_PREFIX + recordID + ASSERTIONS_FILE_EXTENSION);
         StoreResource resource = store.load(ASSERTIONS_FILE_PREFIX + recordID + ASSERTIONS_FILE_EXTENSION, templatePath + storeName);
         @SuppressWarnings("rawtypes")
@@ -256,6 +275,7 @@ public class ProxyFileStore {
      * @throws Exception 
      */
     public List<String> getTemplateList(String storeName) throws Exception {
+        checkForLock(path + storeName);
         ArrayList<String> templateFileList = new ArrayList<String>();
         List<StoreResource> resourceList = store.getResourceList(templatePath + "/" + storeName);
         for(StoreResource resource : resourceList){
@@ -274,10 +294,14 @@ public class ProxyFileStore {
      * @throws Exception If a problem occurs
      */
     public void saveAssertionSuggestions(AssertionSuggestions assertionSuggestions, String recordID, String storeName) throws Exception {
+        // lock the store
+        store.createRecordingLock(path + storeName);
         String assertionSuggestFileName = ASSERTIONS_FILE_PREFIX + recordID + ASSERTIONS_FILE_EXTENSION;
         JSONObject fieldSuggestJSON = JSONObject.fromObject(assertionSuggestions);
         StoreResource resource = new StoreResource(assertionSuggestFileName, templatePath + storeName, fieldSuggestJSON.toString());
         store.save(resource);
+        // unlock the store
+        store.removeRecordingLock(path + storeName);        
     }
 
     /**
@@ -300,6 +324,9 @@ public class ProxyFileStore {
      * @throws Exception
      */
     public List<ExchangeRecord> getExchangeRecordlist(String exchangeRecordStoreName) throws Exception {
+        // Check if there is a recording lock, if true is returned, waits for lock deletion
+        checkForLock(path + exchangeRecordStoreName);
+        
         // loads all files in path with extension & lists them
         logger.debug("exchangeRecordStoreName  = " + exchangeRecordStoreName);
         List<StoreResource> resourceList = store.getResourceList(path + "/" + exchangeRecordStoreName);
@@ -339,6 +366,7 @@ public class ProxyFileStore {
      * @throws Exception
      */
     public ExchangeRecord loadExchangeRecord(String exchangeStoreName, String recordID, boolean customizedRecord) throws Exception {
+        checkForLock(path + exchangeStoreName);
         String workPath = "";
         if(customizedRecord){
             workPath = this.templatePath;
@@ -374,6 +402,8 @@ public class ProxyFileStore {
      * @throws Exception  If a problem occurs
      */
     public void saveSimulationStore(SimulationStore simulationStore) throws Exception {
+        // lock the store
+        store.createRecordingLock(path + simulationStore);
         Iterator<ExchangeRecord> recordIterator = simulationStore.getRecordList().keySet().iterator() ;
         String recordID;
         while(recordIterator.hasNext()){
@@ -383,6 +413,8 @@ public class ProxyFileStore {
             recordID = this.save(record, path + "/" + simulationStore.getStoreName());
             this.saveFieldSuggestions(suggestions, simulationStore.getStoreName(), recordID);
         }
+        // unlock the store
+        store.removeRecordingLock(path + simulationStore);        
     }
     
     /**
@@ -392,6 +424,7 @@ public class ProxyFileStore {
      * @throws Exception If a problem occurs during the loading
      */
     public SimulationStore loadSimulationStore(String storeName) throws Exception {
+        checkForLock(path + storeName);
         logger.debug("loading simulation store :" + storeName);
         List<StoreResource> resourceList = store.getResourceList(path + "/" + storeName);
         SimulationStore simulStore = new SimulationStore(storeName);
@@ -417,6 +450,17 @@ public class ProxyFileStore {
      */
     private Object convertJSONToObject(String jsonString, @SuppressWarnings("rawtypes") Class objectClass, @SuppressWarnings("rawtypes") HashMap<String, Class> classMap) throws Exception {
         return JSONObject.toBean((JSONObject) JSONSerializer.toJSON(jsonString), objectClass, classMap);
+    }
+ 
+    /**
+     * Check if there is a recording lock, if true is returned, waits for lock deletion
+     * @param storeName The store name to check
+     * @throws Exception if the lock is not release before timeout is elapsed
+     */
+    private void checkForLock(String storeName) throws Exception {
+        if(store.checkRecordingLock(storeName)){ 
+            store.waitForRecordingLock(storeName, 5000);
+        }        
     }
     
 }

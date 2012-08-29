@@ -26,6 +26,8 @@ import java.io.FileWriter;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
+
 import org.apache.log4j.Logger;
 import org.easysoa.persistence.StoreItf;
 import org.easysoa.persistence.StoreResource;
@@ -38,6 +40,9 @@ import org.easysoa.persistence.StoreResource;
  */
 public class FileStore implements StoreItf {
 
+    // Recording lock file name
+    public final static String RECORDING_LOCK_FILE_NAME = "recording.lock";
+    
     // Path separator
     public static final String SEPARATOR = "/";
     
@@ -139,6 +144,47 @@ public class FileStore implements StoreItf {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public void createRecordingLock(String storeName) throws Exception {
+        File recordingLock = new File(storeName + SEPARATOR + RECORDING_LOCK_FILE_NAME);
+        FileWriter resourceFileWriter = new FileWriter(recordingLock);
+        try{
+            resourceFileWriter.write("The store " + storeName + " is currently locked, a writing operation is in process. This lock file will be removed automatically when the writing process will be terminated.");
+        }
+        finally{
+            resourceFileWriter.close();        
+        }
+    }
+
+    @Override
+    public void removeRecordingLock(String storeName) throws Exception {
+        File recordingLock = new File(storeName + SEPARATOR + RECORDING_LOCK_FILE_NAME);
+        if(recordingLock.exists()){
+            recordingLock.delete();
+        }
+    }
+
+    @Override
+    public boolean checkRecordingLock(String storeName) {
+        File recordingLock = new File(storeName + SEPARATOR + RECORDING_LOCK_FILE_NAME);
+        return recordingLock.exists();
+    }
+
+    @Override
+    public void waitForRecordingLock(String storeName, long timeout) throws Exception {
+        File recordingLock = new File(storeName + SEPARATOR + RECORDING_LOCK_FILE_NAME);
+        long currentTime = System.currentTimeMillis();
+        while(recordingLock.exists()){
+            long actualTime = System.currentTimeMillis();
+            // CHeck the timeout
+            if(actualTime - currentTime >= timeout){
+                throw new TimeoutException("Timeout reached while waiting for recording lock been deleted");
+            } else {
+                Thread.sleep(500);
+            }
         }
     }
     

@@ -69,4 +69,33 @@ public interface StoreItf {
      */
     public List<StoreResource> getResourceList(String store) throws Exception;
 	
+    /**
+     * Creates a recording lock
+     * @param storeName The store name where to create the lock
+     * @throws Exception
+     */
+    public void createRecordingLock(String storeName) throws Exception;
+    
+    /**
+     * Remove a recording lock
+     * @param storeName The store name where to delete the lock
+     * @throws Exception
+     */
+    public void removeRecordingLock(String storeName) throws Exception;
+    
+    /**
+     * Check if there is a recording lock
+     * @param storeName The store name where to check for a lock
+     * @return true if there is a recording lock, false otherwise
+     */
+    public boolean checkRecordingLock(String storeName);
+    
+    /**
+     * Waits for the recording store is deleted. If the recording store is not deleted before the timeout is finished, the method throws an exception
+     * @param storeName The store name to wait for the recording lock is deleted
+     * @param timeout in ms
+     * @throws Exception if the timeout is reached before the lock is deleted
+     */
+    public void waitForRecordingLock(String storeName, long timeout) throws Exception;
+    
 }

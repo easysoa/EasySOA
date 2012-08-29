@@ -29,7 +29,7 @@ import org.easysoa.persistence.StoreItf;
 import org.easysoa.persistence.StoreResource;
 
 /**
- * Not used ate the moment.
+ * Not used at the moment.
  * 
  * @author jguillemotte
  *
@@ -39,7 +39,6 @@ public class DatabaseStore implements StoreItf {
     @Override
     public void createStore(String storeName) throws Exception {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -64,6 +63,27 @@ public class DatabaseStore implements StoreItf {
     public List<StoreResource> getResourceList(String store) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void createRecordingLock(String storeName) throws Exception {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void removeRecordingLock(String storeName) throws Exception {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public boolean checkRecordingLock(String storeName) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void waitForRecordingLock(String storeName, long timeout) throws Exception {
+        // TODO Auto-generated method stub
     }
 
 }
