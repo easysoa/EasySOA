@@ -20,8 +20,8 @@
 
 package org.easysoa.test;
 
-import org.easysoa.monitoring.soa.Service;
-import org.easysoa.nuxeo.registration.NuxeoRegistrationService;
+import org.easysoa.proxy.core.api.monitoring.soa.Service;
+import org.easysoa.proxy.core.api.nuxeo.registration.NuxeoRegistrationService;
 import org.junit.Ignore;
 import org.junit.Test;
 

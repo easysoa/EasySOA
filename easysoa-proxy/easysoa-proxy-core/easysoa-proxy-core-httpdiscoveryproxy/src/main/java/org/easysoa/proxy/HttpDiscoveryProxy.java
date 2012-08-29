@@ -24,21 +24,22 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.HashMap;
-import java.util.UUID;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
-import org.easysoa.configurator.ProxyConfigurator;
-import org.easysoa.exchangehandler.HandlerManager;
+import org.easysoa.message.Header;
 import org.easysoa.message.InMessage;
-import org.easysoa.properties.PropertyManager;
+import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.configurator.ProxyConfigurator;
+import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
+import org.easysoa.proxy.core.api.properties.PropertyManager;
+import org.easysoa.proxy.core.api.util.RequestForwarder;
 import org.easysoa.proxy.properties.ProxyPropertyManager;
-import org.easysoa.records.ExchangeRecord;
-import org.easysoa.servlet.http.HttpMessageRequestWrapper;
-import org.easysoa.util.RequestForwarder;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -92,7 +93,8 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 * Constructor
 	 */
 	public HttpDiscoveryProxy(){
-        try {
+        // Loading property manager
+	    try {
             propertyManager = new ProxyPropertyManager();
         } catch (Exception ex) {
             logger.warn("Error when loading the property manager, trying another method");
@@ -185,9 +187,10 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	// Detect infinite request loop (proxy send a request to itself)
 	    	infiniteLoopDetection(request);	    	
 	    	// Listening the message
-	    	ExchangeRecord exchangeRecord = forward(request, response); 
+	        InMessage inMessage = new InMessage(request);
+	    	OutMessage outMessage = forward(inMessage, response); 
 	    	//runManager.record(exchangeRecord);
-	    	this.handlerManager.handle(exchangeRecord.getInMessage(), exchangeRecord.getOutMessage());
+	    	this.handlerManager.handleMessage(inMessage, outMessage);
 	    	
 	    }
 	    catch (HttpResponseException rex) {
@@ -262,12 +265,13 @@ public class HttpDiscoveryProxy extends HttpServlet {
 
 	/**
 	 * Send back the request to the original recipient and get the response
+	 * @param response 
 	 * @param request HTTP Request
 	 * @param response HTTP response
 	 * @return A message object to be used by the discovery API
 	 * @throws Exception If a problem occurs during the forward
 	 */
-	private ExchangeRecord forward(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private OutMessage forward(InMessage inMessage, HttpServletResponse response) throws Exception {
 		PrintWriter respOut = response.getWriter();
 
 		// Request forwarder
@@ -277,16 +281,22 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		// Use HttpRetryHandler default value for retry
 		forwarder.setRetryHandler(new HttpRetryHandler());
 
-		// Build a new exchangeRecord and set the in message
-		// TODO what id to use ? TimeStamp ? generated UUID ??		
-		ExchangeRecord exchangeRecord = new ExchangeRecord(UUID.randomUUID().toString(), new InMessage(new HttpMessageRequestWrapper(request)));
-
 		// forward the message
-		exchangeRecord.setOutMessage(forwarder.send(exchangeRecord.getInMessage()));
-    	logger.debug("clientResponse : " + exchangeRecord.getOutMessage().getMessageContent().getRawContent());
-    	respOut.write(exchangeRecord.getOutMessage().getMessageContent().getRawContent());
+		OutMessage outMessage = forwarder.send(inMessage);
+		
+		// return response :
+		
+		// copy headers
+		for (Header header : outMessage.getHeaders().getHeaderList()) {
+		    response.setHeader(header.getName(), header.getValue());
+		}
+		
+		// copy response
+    	logger.debug("clientResponse : " + outMessage.getMessageContent().getRawContent());
+    	respOut.write(outMessage.getMessageContent().getRawContent());
     	respOut.close();
-    	return exchangeRecord;
+    	
+    	return outMessage;
 	}
 
 	/**

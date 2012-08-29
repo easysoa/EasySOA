@@ -4,9 +4,9 @@
 	<!-- Exchange number generator -->
 	<sca:component name="exchangeNumberGeneratorComponent">
 		<sca:service name="exchangeNumberGeneratorService">
-			<sca:interface.java interface="org.easysoa.messages.server.NumberGenerator" />
+			<sca:interface.java interface="org.easysoa.proxy.core.api.messages.server.NumberGenerator" />
 		</sca:service>
-		<sca:implementation.java class="org.easysoa.messages.server.ExchangeNumberGenerator" />
+		<sca:implementation.java class="org.easysoa.proxy.core.api.messages.server.ExchangeNumberGenerator" />
 	</sca:component>
 	
 </sca:composite>

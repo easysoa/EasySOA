@@ -19,6 +19,7 @@
 	  <module>easysoa-proxy-core/easysoa-proxy-core-persistence</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-api</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-api-frascati</module>
+	  <module>easysoa-proxy-core/easysoa-proxy-core-handlermanager</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-mocks</module>
 	  <module>easysoa-proxy-intents/easysoa-proxy-intents-fuseIntent</module>
 	  <module>easysoa-proxy-intents/easysoa-proxy-intents-logIntent</module>
@@ -48,6 +49,12 @@
         <version>${easysoa.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.easysoa.proxy</groupId>
+        <artifactId>easysoa-proxy-core-api-frascati</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+
     
       <!-- Java REST WebServices -->
       <dependency>

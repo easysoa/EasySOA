@@ -18,6 +18,8 @@
  */
 package org.easysoa.proxy.handler.event;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,194 +40,352 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.frascati.FraSCAtiServiceException;
-import org.easysoa.proxy.handler.event.admin.CompiledCondition;
-import org.easysoa.proxy.handler.event.admin.IEventMessageHandler;
-import org.easysoa.proxy.handler.event.admin.RegexCondition;
+import org.easysoa.proxy.core.api.event.Condition;
+import org.easysoa.proxy.core.api.event.IEventMessageHandler;
+import org.easysoa.proxy.core.api.event.RegexCondition;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.test.mock.nuxeo.RecordsProvider;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * Tests Event exchange handler
- *
+ * 
  * @author fntangke
- *
  */
+
 public class EventExchangeHandlerTest extends AbstractProxyTestStarter {
 
-    /**
-     * Logger
-     */
-    private static Logger logger = Logger.getLogger(EventExchangeHandlerTest.class.getName());
+	private static Logger logger = Logger
+			.getLogger(EventExchangeHandlerTest.class.getName());
 
-    /**
-     * Initialize one time the remote systems for the test FraSCAti and HTTP
-     * discovery Proxy ...
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
+	private String eventMessageHandlerAdminUrl = "http://localhost:8084/SubscriptionWebService/subscriptions";
 
-        logger.info("Launching FraSCAti and REST mock");
-        // Start fraSCAti
-        startFraSCAti();
-        // Start HTTP Proxy
-        startHttpDiscoveryProxy("servicesToLaunchMock.composite");
-        //   startHttpDiscoveryProxy(composite, urls)
-    }
+	/**
+	 * Initialize one time the remote systems for the test FraSCAti and HTTP
+	 * discovery Proxy ...
+	 * 
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public void testEmpty() throws ClientProtocolException, IOException, FraSCAtiServiceException {
-        // using empty event map
-        String urlToListen = "http://localhost:8080/";
-        // call a service to listen
-        doGet(urlToListen);
-        frascati.getComposite("servicesToLaunchMock");
-        List<ExchangeRecord> records = frascati.getService("servicesToLaunchMock", "service1ToLaunchMockRecordsProvider", RecordsProvider.class).getRecords();
-        System.out.println("Longueurs des records : " + Integer.toString(records.size()));
-        // 1. check that no service launched when no conf
-        //assertEquals(records.size(), 0);
-    }
+		logger.info("Launching FraSCAti and REST mock");
+		// Start fraSCAti
+		startFraSCAti();
+		// Start HTTP Proxy
+		// startHttpDiscoveryProxy("servicesToLaunchMock.composite", new
+		// URL("file:///home/fntangke/workspace/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-api-frascati/target/classes"));
+		startHttpDiscoveryProxy("servicesToLaunchMock.composite"/*
+																 * , new URL(
+																 * "file:///home/fntangke/workspace/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-api-frascati/target/easysoa-proxy-core-api-frascati-0.5-SNAPSHOT.jar"
+																 * )
+																 */);
+		// startHttpDiscoveryProxy(composite, urls)
+	}
 
-    @Test
-    public void udpateSubscriptionsTest() throws FraSCAtiServiceException, ClientProtocolException, IOException {
+	@Test
+	public void testEmpty() throws ClientProtocolException, IOException,
+			FraSCAtiServiceException {
+		// using empty event map
+		String urlToListen = "http://localhost:8080/";
+		// call a service to listen
+		doGet(urlToListen);
+		frascati.getComposite("servicesToLaunchMock");
+		List<ExchangeRecord> records = frascati.getService(
+				"servicesToLaunchMock", "service1ToLaunchMockRecordsProvider",
+				RecordsProvider.class).getRecords();
+		System.out.println("Longueurs des records : "
+				+ Integer.toString(records.size()));
+		// 1. check that no service launched when no conf
+		// assertEquals(records.size(), 0);
+	}
 
-        //EventMessageHandler eventMessageHandler = new EventMessageHandler();
-        //	eventMessageHandler.updateSubscription(subscription, subscriptionId)
-        //frascati.g
+	@Test
+	public void defaultSubscriptionsTest() throws FraSCAtiServiceException,
+			ClientProtocolException, IOException {
 
-        //Subscriptions subscriptions = frascati.getService("servicesToLaunchMock", "ISubscriptionWebService", ISubscriptionWebService.class).getSubscriptions();
+		doGet(this.eventMessageHandlerAdminUrl);
 
-        String eventMessageHandlerAdminUrl = "http://localhost:8084/subscriptions";
+		System.in.read();
+		// do get on admin URL, display it
+		// TODO
 
-        String emptySubscriptionsJson = "{'subscriptions':''}";
-        doPostJson(eventMessageHandlerAdminUrl, emptySubscriptionsJson);
-        // TODO LATER GET & check
-        // TODO get map and check
-        String someSubscriptionsJson = "{'subscriptions':{'subscriptions':{'launchedservices':[{'id':159,'url':'http://Yahoo.fr'},{'id':15,'url':'http://Yahorgeo.fr'}],'listenedservices':{'id':17,'url':'http://amazon.fr'}}}}";
-        doPostJson(eventMessageHandlerAdminUrl, someSubscriptionsJson);
-        // TODO LATER GET & check
-        // TODO get map and check	
-        //Subscriptions verif = frascati.getService("servicesToLaunchMock", "testons", SubscriptionWebServiceInterface.class).getSubscriptions();
+		// TODO check it is as expected
+	}
 
-    }
+	/**
+	 * Print the current monitoring configuration in the console
+	 * 
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	@Test
+	public void getMonitoringConfig() throws ClientProtocolException,
+			IOException {
+		doGet(this.eventMessageHandlerAdminUrl);
+		// System.in.read();
+	}
 
-    private void doGet(String url) throws ClientProtocolException, IOException {
-        // TODO Auto-generated method stub
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-        // HTTP proxy Client
-        DefaultHttpClient httpProxyClient = new DefaultHttpClient();
-        // Set client to use the HTTP Discovery Proxy
-        HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
-        httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-        // Send a request to 
-        httpProxyClient.execute(new HttpGet(url), responseHandler);
-    }
+	/**
+	 * This test sent a xml configuration file to the Subscription Web Service
+	 * and get all the Monitoring configuration
+	 * 
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
 
-    private void doPostJson(String url, String jsonContent) throws ClientProtocolException, IOException {
-        // TODO Auto-generated method stub
+	@Test
+	public void updateConfXml() throws ClientProtocolException, IOException {
 
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String bodyContent = "<configuration><proxy>Mon Poxy UK</proxy><subscriptions><regexCondition><regex>httpgorgreggle</regex></regexCondition><launchedservices><url>wwetw.geckogeek.fr/lel</url></launchedservices></subscriptions></configuration>";
+		String result = this.confPoster(bodyContent, "xml");
+		assertTrue(result.contains("Mon Poxy UK"));
+		assertTrue(result.contains("httpgorgreggle"));
 
-        // HTTP proxy Client
-        DefaultHttpClient httpProxyClient = new DefaultHttpClient();
+	}
 
-        // Set client to use the HTTP Discovery Proxy
-        HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
-        httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+	/**
+	 * This test sent a json configuration file to the Subscription Web Service
+	 * and get all the Monitoring configuration
+	 * 
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	@Test
+	public void updateConfJson() throws ClientProtocolException, IOException {
+		
+		String bodyContent = "{\"configuration\":{\"subscriptions\":{\"regexCondition\":{\"regex\":\"http:mail.fr\"},\"launchedservices\":[{\"url\":\"http:Yahoo.fr\"},{\"url\":\"http:Yahorgeo.fr\"}]},\"proxy\":\"proxy de test http:efef?swdl\"}}";
+		String result = this.confPoster(bodyContent, "json");
+		assertTrue(result.contains("http:mail.fr"));
+		assertTrue(result.contains("http:Yahorgeo.fr"));
 
-        // Send a request to 
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setHeader("Content-Type", "application/json; charset=UTF-8");
-        httpPost.setEntity(new StringEntity(jsonContent));
-        httpProxyClient.execute(httpPost, responseHandler);
-    }
+	}
 
-    @Test
-    public void testWithSome() throws ClientProtocolException, IOException, FraSCAtiServiceException, InterruptedException {
+	/**
+	 * Set the apropriate headers and makes the post request
+	 * 
+	 * @param bodyContent
+	 * @param format
+	 *            "xml" or "json"
+	 * @return the json or xml result of the web service request, it depends of
+	 *         the format
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public String confPoster(String bodyContent, String format)
+			throws ClientProtocolException, IOException {
+		String result = null;
+		if (format.equals("xml"))
+			result = doPost(this.eventMessageHandlerAdminUrl, bodyContent,
+					"xml");
+		if (format.equals("json"))
+			result = doPost(this.eventMessageHandlerAdminUrl, bodyContent,
+					"json");
+		if ((!format.equals("xml")) && (!format.equals("json")))
+			result = doPost(this.eventMessageHandlerAdminUrl, bodyContent,
+					"xml");
+		return result;
+	}
 
-        String urlToListen = "http://localhost:8080/another";
-        // set some conf
-        Map<List<CompiledCondition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<CompiledCondition>, List<String>>();
+	@Test
+	public void udpateSubscriptionsTest() throws FraSCAtiServiceException,
+			ClientProtocolException, IOException {
 
-        ArrayList<String> value = new ArrayList<String>();
+		// EventMessageHandler eventMessageHandler = new EventMessageHandler();
+		// eventMessageHandler.updateSubscription(subscription, subscriptionId)
+		// frascati.g
 
-        value.add("http://localhost:8081/");
-        value.add("http://localhost:8080/2");
-        value.add("http://localhost:8080/3");
+		// Subscriptions subscriptions =
+		// frascati.getService("servicesToLaunchMock",
+		// "ISubscriptionWebService",
+		// ISubscriptionWebService.class).getSubscriptions();
 
-        List<CompiledCondition> listCompiledCondition = new ArrayList<CompiledCondition>();
-        listCompiledCondition.add(new RegexCondition(urlToListen));
-        listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition, value);
+		String emptySubscriptionsJson = "{'subscriptions':''}";
+		doPost(eventMessageHandlerAdminUrl, emptySubscriptionsJson, "json");
+		// TODO LATER GET & check
+		// TODO get map and check
+		String someSubscriptionsJson = "{'subscriptions':{'subscriptions':{'launchedservices':[{'id':159,'url':'http://Yahoo.fr'},{'id':15,'url':'http://Yahorgeo.fr'}],'listenedservices':{'id':17,'url':'http://amazon.fr'}}}}";
+		doPost(eventMessageHandlerAdminUrl, someSubscriptionsJson, "json");
+		// TODO LATER GET & check
+		// TODO get map and check
+		// Subscriptions verif = frascati.getService("servicesToLaunchMock",
+		// "testons", SubscriptionWebServiceInterface.class).getSubscriptions();
+	}
 
-        frascati.getService("servicesToLaunchMock", "IEventMessageHandler", IEventMessageHandler.class)
-                .setListenedServiceUrlToServicesToLaunchUrlMap(listenedServiceUrlToServicesToLaunchUrlMap);
+	/**
+	 * {"monitoringConfiguration":{"configurations":{"subscriptions":{
+	 * "regexCondition":{"regex":"httpgorgreggle"},"launchedservices":{"url":
+	 * "wwetw.geckogeek.fr\/lel"}},"proxy":"Mon Poxy UK"}}}
+	 * 
+	 * 
+	 */
 
-        String verif = frascati.getService("servicesToLaunchMock", "IEventMessageHandler", IEventMessageHandler.class).getListenedServiceUrlToServicesToLaunchUrlMap().toString();
+	/**
+	 * Post Xml or Json request
+	 * 
+	 * @param url
+	 * @param messageContent
+	 * @param contentType
+	 *            "xml" or "json"
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	private String doPost(String url, String messageContent, String contentType)
+			throws ClientProtocolException, IOException {
 
-        System.out.println(" Verif: " + verif);
+		String contentTypeValue = null;
+		String acceptTypeValue = null;
 
-        // call a service to listen
-        doGet(urlToListen);
-        Thread.currentThread();
-        System.in.read();
-        //wait(1000);
-        //	Thread.sleep(1000);
-        // Get Records
-        List<ExchangeRecord> records1 = frascati.getService("servicesToLaunchMock", "service1ToLaunchMockRecordsProvider", RecordsProvider.class).getRecords();
-        System.out.println("Longueurs des records 1 : " + Integer.toString(records1.size()));
+		if ((!contentType.equals("xml")) && (!contentType.equals("json"))) {
+			contentTypeValue = "application/xml; charset=UTF-8";
+			acceptTypeValue = "application/xml";
+		} else {
+			contentTypeValue = "application/".concat(contentType).concat(
+					"; charset=UTF-8");
+			acceptTypeValue = "application/".concat(contentType);
+		}
+		// TODO Auto-generated method stub
 
-        // TODO check that there is some records in the right mock (check that the appropriate service(s) have been launched)
-        //records1 = frascati.getService("servicesToLaunchMock", "service1ToLaunchMockRecordsProvider", RecordsProvider.class).getRecords();
-        //assertEquals(records1.size(), 1);
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
-        List<ExchangeRecord> records2 = frascati.getService("servicesToLaunchMock", "service2ToLaunchMockRecordsProvider", RecordsProvider.class).getRecords();
-        System.out.println("Longueurs des records 2 : " + Integer.toString(records2.size()));
-        //frascati.getService("servicesToLaunchMock", "service2ToLaunchMockRecordsProvider", RecordsProvider.class).
-        //assertEquals(records2.size(), 1);
+		// HTTP proxy Client
+		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
 
-        List<ExchangeRecord> records3 = frascati.getService("servicesToLaunchMock", "service3ToLaunchMockRecordsProvider", RecordsProvider.class).getRecords();
-        System.out.println("Longueurs des records 3 : " + Integer.toString(records3.size()));
-        //assertEquals(records2.size(), 1);
-    }
+		// Set client to use the HTTP Discovery Proxy
+		HttpHost proxy = new HttpHost("localhost",
+				EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
+				proxy);
 
-    /**
-     * This test does nothing, just wait for a user action to stop the proxy.
-     *
-     * @throws ClientException
-     * @throws SOAPException
-     * @throws IOException
-     */
-    @Test
-    //@Ignore
-    public final void testWaitUntilRead() throws Exception {
+		// Send a request to
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept", acceptTypeValue);
+		httpPost.setHeader("Content-Type", contentTypeValue);
+		httpPost.setEntity(new StringEntity(messageContent));
+		httpProxyClient.execute(httpPost, responseHandler);
 
-        logger.info("Http Discovery Proxy started, wait for user action to stop !");
-        // Just push a key in the console window to stop the test
-        System.in.read();
-        logger.info("Http Discovery Proxy stopped !");
-    }
+		return httpProxyClient.execute(httpPost, responseHandler);
 
-    /**
-     * Stop FraSCAti components
-     *
-     * @throws FrascatiException
-     */
-    @After
-    public void cleanUp() throws Exception {
-        logger.info("Stopping FraSCAti...");
-        stopFraSCAti();
-        // Clean Easysoa proxy
-        cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
-        //cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
-        //cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
-        // Clean (nuxeo) mocks
-        cleanJetty(8080);
-        cleanJetty(8081);
-    }
+	}
+
+	private void doGet(String url) throws ClientProtocolException, IOException {
+		// TODO Auto-generated method stub
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		// HTTP proxy Client
+		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
+		// Set client to use the HTTP Discovery Proxy
+		HttpHost proxy = new HttpHost("localhost",
+				EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
+				proxy);
+		// Send a request to
+		httpProxyClient.execute(new HttpGet(url), responseHandler);
+	}
+
+	@Test
+	public void testWithSome() throws ClientProtocolException, IOException,
+			FraSCAtiServiceException, InterruptedException {
+
+		String urlToListen = "http://localhost:8080/another";
+		// set some conf
+		Map<List<Condition>, List<String>> listenedServiceUrlToServicesToLaunchUrlMap = new HashMap<List<Condition>, List<String>>();
+
+		ArrayList<String> value = new ArrayList<String>();
+
+		value.add("http://localhost:8081/");
+		value.add("http://localhost:8080/2");
+		value.add("http://localhost:8080/3");
+
+		List<Condition> listCompiledCondition = new ArrayList<Condition>();
+		listCompiledCondition.add(new RegexCondition(urlToListen));
+		listenedServiceUrlToServicesToLaunchUrlMap.put(listCompiledCondition,
+				value);
+
+		frascati.getService("servicesToLaunchMock", "IEventMessageHandler",
+				IEventMessageHandler.class)
+				.setListenedServiceUrlToServicesToLaunchUrlMap(
+						listenedServiceUrlToServicesToLaunchUrlMap);
+
+		String verif = frascati
+				.getService("servicesToLaunchMock", "IEventMessageHandler",
+						IEventMessageHandler.class)
+				.getListenedServiceUrlToServicesToLaunchUrlMap().toString();
+
+		System.out.println(" Verif: " + verif);
+
+		// call a service to listen
+		doGet(urlToListen);
+		Thread.currentThread();
+		System.in.read();
+		// wait(1000);
+		// Thread.sleep(1000);
+		// Get Records
+		List<ExchangeRecord> records1 = frascati.getService(
+				"servicesToLaunchMock", "service1ToLaunchMockRecordsProvider",
+				RecordsProvider.class).getRecords();
+		System.out.println("Longueurs des records 1 : "
+				+ Integer.toString(records1.size()));
+
+		// TODO check that there is some records in the right mock (check that
+		// the appropriate service(s) have been launched)
+		// records1 = frascati.getService("servicesToLaunchMock",
+		// "service1ToLaunchMockRecordsProvider",
+		// RecordsProvider.class).getRecords();
+		// assertEquals(records1.size(), 1);
+
+		List<ExchangeRecord> records2 = frascati.getService(
+				"servicesToLaunchMock", "service2ToLaunchMockRecordsProvider",
+				RecordsProvider.class).getRecords();
+		System.out.println("Longueurs des records 2 : "
+				+ Integer.toString(records2.size()));
+		// frascati.getService("servicesToLaunchMock",
+		// "service2ToLaunchMockRecordsProvider", RecordsProvider.class).
+		// assertEquals(records2.size(), 1);
+
+		List<ExchangeRecord> records3 = frascati.getService(
+				"servicesToLaunchMock", "service3ToLaunchMockRecordsProvider",
+				RecordsProvider.class).getRecords();
+		System.out.println("Longueurs des records 3 : "
+				+ Integer.toString(records3.size()));
+		// assertEquals(records2.size(), 1);
+	}
+
+	/**
+	 * This test does nothing, just wait for a user action to stop the proxy.
+	 * 
+	 * @throws ClientException
+	 * @throws SOAPException
+	 * @throws IOException
+	 */
+	@Test
+	// @Ignore
+	public final void testWaitUntilRead() throws Exception {
+
+		logger.info("Http Discovery Proxy started, wait for user action to stop !");
+		// Just push a key in the console window to stop the test
+		System.in.read();
+		logger.info("Http Discovery Proxy stopped !");
+	}
+
+	/**
+	 * Stop FraSCAti components
+	 * 
+	 * @throws FrascatiException
+	 */
+	@After
+	public void cleanUp() throws Exception {
+		logger.info("Stopping FraSCAti...");
+		stopFraSCAti();
+		// Clean Easysoa proxy
+		cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+		// cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+		// cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
+		// Clean (nuxeo) mocks
+		cleanJetty(8080);
+		cleanJetty(8081);
+	}
 }

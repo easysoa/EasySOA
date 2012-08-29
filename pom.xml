@@ -38,6 +38,7 @@
     <!-- FraSCAti must be in version 1.5-SNAPSHOT because Velocity feature is only
       available in this version at the moment -->
     <frascati.version>1.5-SNAPSHOT</frascati.version>
+    <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
     <log4j.version>1.2.16</log4j.version>
     <slf4j.version>1.6.4</slf4j.version>
     <cxf.version>2.4.2</cxf.version>

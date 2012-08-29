@@ -18,9 +18,9 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.core.api.util.ContentReader;
 import org.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.easysoa.test.mock.meteomock.client.MeteoMockPortType;
-import org.easysoa.util.ContentReader;
 import org.junit.Ignore;
 import org.junit.Test;
 

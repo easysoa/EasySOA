@@ -5,7 +5,7 @@ package org.easysoa.proxy.properties;
 
 import java.io.InputStream;
 
-import org.easysoa.properties.PropertyManager;
+import org.easysoa.proxy.core.api.properties.PropertyManager;
 
 /**
  * @author jguillemotte

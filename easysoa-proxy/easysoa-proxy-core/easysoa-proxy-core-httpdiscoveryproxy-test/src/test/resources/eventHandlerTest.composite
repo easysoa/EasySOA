@@ -15,7 +15,7 @@
             <tuscany:binding.http uri="http://localhost:8082/" />
         </service>
          <reference name="handlerManager" target="handlerManagerComponent" >
-         	<interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+         	<interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
          </reference>
         <property name="proxyPort">8082</property>
         <property name="forwardHttpConnexionTimeoutMs">30000</property>
@@ -24,11 +24,11 @@
 
 	<component name="handlerManagerComponent">
 		<service name="handlerManagerService">
-			<interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
+			<interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
 		</service>
-		<implementation.java class="org.easysoa.exchangehandler.HandlerManagerImpl"/>
+		<implementation.java class="org.easysoa.proxy.core.api.exchangehandler.HandlerManagerImpl"/>
 		<reference multiplicity="0..n" name="handlers" target="eventMessageHandlerComponent/HandlerService" >
-			<interface.java interface="org.easysoa.exchangehandler.MessageHandler"/>
+			<interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler"/>
 		</reference>
 	</component>  
 	
@@ -36,29 +36,28 @@
 		
 	<component name="eventMessageHandlerComponent">
 		<service name="HandlerService">
-			<interface.java interface="org.easysoa.exchangehandler.MessageHandler" />
+			<interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
 		</service>
 		<service name="IEventMessageHandler">
-			<interface.java interface="org.easysoa.proxy.handler.event.admin.IEventMessageHandler" />
+			<interface.java interface="org.easysoa.proxy.core.api.event.IEventMessageHandler" />
 		</service>
 	
         <property name="forwardHttpConnexionTimeoutMs">30000</property>
         <property name="forwardHttpSocketTimeoutMs">30000</property>
 		
-		<implementation.java class="org.easysoa.proxy.handler.event.admin.EventMessageHandlerImpl" />
-		
+		<implementation.java class="org.easysoa.proxy.core.api.event.EventMessageHandlerImpl" />
 	</component>
-    
+  
     <component name ="subscriptionWebserviceComponent">
 		<service name="ISubscriptionWebService">
-			<interface.java interface="org.easysoa.proxy.handler.event.admin.ISubscriptionWebService"/>
+			<interface.java interface="org.easysoa.proxy.core.api.event.ISubscriptionWebService"/>
 				<frascati:binding.rest uri="http://localhost:8084/SubscriptionWebService/" />
 		</service>
          
-        <implementation.java class="org.easysoa.proxy.handler.event.admin.SubscriptionWebserviceImpl" ></implementation.java>
+        <implementation.java class="org.easysoa.proxy.core.api.event.SubscriptionWebserviceImpl" ></implementation.java>
          
     	<reference name="eventMessageHandler" target="eventMessageHandlerComponent" >
-    		<interface.java interface="org.easysoa.proxy.handler.event.admin.IEventMessageHandler" />
+    		<interface.java interface="org.easysoa.proxy.core.api.event.IEventMessageHandler" />
         </reference>
     </component>
 	

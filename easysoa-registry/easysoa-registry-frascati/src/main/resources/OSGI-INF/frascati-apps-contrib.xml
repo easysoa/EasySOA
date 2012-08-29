@@ -2,6 +2,12 @@
 <component name="org.easysoa.registry.frascati.FraSCAtiApps.contrib">
 
   <extension target="org.easysoa.registry.frascati.FraSCAtiApps" point="apps">
+
+    <app name="EasySOA Proxy Core Handler Manager">
+      <jarPath>nxserver/frascati/apps/easysoa-proxy-core-handlermanager-0.5-SNAPSHOT/bin/easysoa-proxy-core-handlermanager-0.5-SNAPSHOT.jar</jarPath>
+      <libsPath>nxserver/frascati/apps/easysoa-proxy-core-handlermanager-0.5-SNAPSHOT/lib</libsPath>
+      <compositeName>handlerManager</compositeName>
+    </app>
    
     <app name="EasySOA Proxy Core HTTP Monitoring Proxy">
       <jarPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT/bin/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT.jar</jarPath>

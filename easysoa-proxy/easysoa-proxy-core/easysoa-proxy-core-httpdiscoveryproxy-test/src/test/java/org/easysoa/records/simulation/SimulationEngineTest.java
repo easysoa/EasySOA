@@ -19,15 +19,15 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
+import org.easysoa.proxy.core.api.simulation.SimulationEngine;
+import org.easysoa.proxy.core.api.simulation.SimulationStore;
+import org.easysoa.proxy.core.api.simulation.methods.SimpleSimulationMethod;
+import org.easysoa.proxy.core.api.util.ContentReader;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.records.replay.ReplayEngine;
-import org.easysoa.simulation.SimulationEngine;
-import org.easysoa.simulation.SimulationStore;
-import org.easysoa.simulation.methods.SimpleSimulationMethod;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.easysoa.test.util.UrlMock;
-import org.easysoa.util.ContentReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,7 +98,7 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         ProxyFileStore fileStore= new ProxyFileStore();
         // Launch the simulation
         List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
-        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
         SimulationEngine simulationEngine = replayEngine.getSimulationEngine();
         
         // Send a request to the replay service

@@ -30,12 +30,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.easysoa.exchangehandler.HttpExchangeHandler;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
-import org.easysoa.run.RunManager;
-import org.easysoa.servlet.http.HttpMessageRequestWrapper;
-import org.easysoa.servlet.http.HttpMessageResponseWrapper;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.exchangehandler.HttpExchangeHandler;
+import org.easysoa.proxy.core.api.run.RunManager;
+import org.easysoa.servlet.http.CopyHttpServletRequest;
+import org.easysoa.servlet.http.CopyHttpServletResponse;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -65,7 +67,7 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	    // Registering the event receiver
 	    try {
 	        FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-	        RunManager runManager = frascati.getService("httpDiscoveryProxy/runManagerComponent", "runManagerService", RunManager.class);
+	        RunManager runManager = frascati.getService("handlerManager/handlerManagerServiceBaseComp/runManagerComponent", "runManagerService", RunManager.class);
 	        runManager.addEventReceiver(new ExchangeRecordServletFilterEventReceiver());
         } catch (Exception ex) {
             logger.error("Unable to register the ExchangeRecordServletFilterEventReceiver in the run manager", ex);
@@ -82,7 +84,12 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 
         if (exchangeHandler != null) {
 			logger.info("Filtering a EasySOA API request");
-            response = new HttpMessageResponseWrapper((HttpServletResponse) response);
+            if (!(request instanceof CopyHttpServletResponse)) {
+                request = new CopyHttpServletRequest((HttpServletRequest) request);
+            }
+            if (!(response instanceof CopyHttpServletResponse)) {
+                response = new CopyHttpServletResponse((HttpServletResponse) response);
+            }
         }
         
 		// Let the request continue
@@ -93,7 +100,12 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
             // Filtering HTTP requests only for registering exchanges
             if (request instanceof HttpServletRequest) {
                 try {
-                    exchangeHandler.handleExchange((HttpServletRequest) request, (HttpServletResponse) response);
+                    InMessage inMessage = new InMessage((CopyHttpServletRequest) request);
+                    OutMessage outMessage = new OutMessage((CopyHttpServletResponse) response);
+                    
+                    // TODO TODOOOOOOOOOOOOOOOOOOOOOOOOO if always nuxeoProbeHandlerManager, make in/outMsg lazy OR use builders !!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // Lazy with several levels (one for headers ..., one for JSONContent or XML content)
+                    this.exchangeHandler.handleMessage(inMessage, outMessage);
                 } catch (Exception e) {
                     logger.error("An error occurred during the exchange handling", e);
                 }

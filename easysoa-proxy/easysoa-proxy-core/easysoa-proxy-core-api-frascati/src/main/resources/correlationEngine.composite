@@ -4,9 +4,9 @@
 	<!-- Log engine -->
 	<sca:component name="correlationEngineComponent">
 		<sca:service name="correlationEngineService">
-			<sca:interface.java interface="org.easysoa.records.correlation.CorrelationEngine" />
+			<sca:interface.java interface="org.easysoa.proxy.core.api.records.correlation.CorrelationEngine" />
 		</sca:service>
-		<sca:implementation.java class="org.easysoa.records.correlation.CorrelationEngineImpl" />
+		<sca:implementation.java class="org.easysoa.proxy.core.api.records.correlation.CorrelationEngineImpl" />
 	</sca:component>
 	
 </sca:composite>

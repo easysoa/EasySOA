@@ -106,6 +106,12 @@
                   <artifactId>easysoa-registry-api-core</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
+                <!-- Messaging API -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry.api</groupId>
+                  <artifactId>easysoa-registry-api-messaging</artifactId>
+                  <version>${easysoa.version}</version>
+                </artifactItem>                
                 <artifactItem>
                   <groupId>org.easysoa.registry.api</groupId>
                   <artifactId>easysoa-registry-api-remote</artifactId>
@@ -114,11 +120,6 @@
                 <artifactItem>
                   <groupId>org.easysoa.registry.api</groupId>
                   <artifactId>easysoa-registry-api-frascati</artifactId>
-                  <version>${easysoa.version}</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.easysoa.registry.api</groupId>
-                  <artifactId>easysoa-registry-api-messaging</artifactId>
                   <version>${easysoa.version}</version>
                 </artifactItem>
                 <artifactItem>
@@ -222,7 +223,8 @@
                 <artifactItem>
                   <groupId>org.apache.cxf</groupId>
                   <artifactId>cxf-common-utilities</artifactId>
-                  <version>2.4.2</version>
+                  <!--<version>2.4.2</version>-->
+                  <version>2.5.4</version>
                 </artifactItem>
                 
                 <!-- Required dependencies for FraSCAti and FraSCAti explorer embedded in Nuxeo -->
@@ -239,67 +241,68 @@
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-transports-http-jetty</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-transports-http</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
+					<!--<version>2.4.2</version>-->
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-frontend-jaxrs</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-frontend-jaxws</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-databinding-jaxb</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-ws-addr</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-frontend-simple</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>	
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-bindings-xml</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 			    <artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-bindings-soap</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-core</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-api</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-databinding-aegis</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-tools-common</artifactId>
-					<version>2.4.2</version>
+					<version>2.5.4</version>
 				</artifactItem>				
 				<artifactItem>
 					<groupId>org.apache.ws.xmlschema</groupId>
@@ -340,6 +343,11 @@
 					<version>2.4.0</version>
 				</artifactItem>
 				<artifactItem>
+					<groupId>org.ow2.frascati.model</groupId>
+					<artifactId>sca-model</artifactId>
+					<version>2.0.1.3</version>
+				</artifactItem>				
+				<artifactItem>
 					<groupId>wsdl4j</groupId>
 					<artifactId>wsdl4j</artifactId>
 					<version>1.6.2</version>
@@ -349,11 +357,6 @@
 					<artifactId>frascati-model</artifactId>
 					<version>2.0.1.3</version>					
 				</artifactItem>				
-				<artifactItem>
-					<groupId>org.ow2.frascati.model</groupId>
-					<artifactId>sca-model</artifactId>
-					<version>2.0.1.3</version>
-				</artifactItem>	
 				<artifactItem>
 					<groupId>org.ow2.frascati.model</groupId>
 					<artifactId>osoa-java-api</artifactId>
@@ -426,6 +429,27 @@
                     <version>1.3.2</version>
                 </artifactItem>
 
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-meteo-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-translate-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.easysoa.samples.smarttravel</groupId>
+					<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
+					<version>${easysoa.version}</version>
+				</artifactItem>
+
 				<!-- Needed by HttpDiscovery Proxy -->
 				<!-- 2.2.1 version is used to avoid problems with json embedded in a json data structure -->
 	  			<artifactItem>
@@ -459,7 +483,13 @@
                   <groupId>org.easysoa.proxy</groupId>
                   <artifactId>easysoa-proxy-core-persistence</artifactId>
                   <version>${easysoa.version}</version>
-                </artifactItem>                
+                </artifactItem>
+                <!-- FraSCAti cxf intents -->
+                <artifactItem>
+  					<groupId>org.ow2.frascati.intent</groupId>
+  					<artifactId>frascati-intent-apache-cxf</artifactId>
+  					<version>${frascati.version}</version>
+  				</artifactItem> 
                 <!-- Intents required by scaffolding proxy -->
                 <artifactItem>
 					<groupId>org.easysoa.proxy</groupId>
@@ -472,7 +502,7 @@
 					<version>${easysoa.version}</version>                
                 </artifactItem>
                 <!-- Smart Travel sample mock services models -->
-				<artifactItem>
+				<!--<artifactItem>
 					<groupId>org.easysoa.samples.smarttravel</groupId>
 					<artifactId>easysoa-samples-smarttravel-currency-model</artifactId>
 					<version>${easysoa.version}</version>
@@ -491,7 +521,14 @@
 					<groupId>org.easysoa.samples.smarttravel</groupId>
 					<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
 					<version>${easysoa.version}</version>
-				</artifactItem>                
+				</artifactItem>-->
+				
+				<!-- FraSCAti CXF intents -->
+  				<artifactItem>
+  					<groupId>org.ow2.frascati.intent</groupId>
+  					<artifactId>frascati-intent-apache-cxf</artifactId>
+  					<version>${frascati.version}</version>
+  				</artifactItem>				
               </artifactItems>
               <outputDirectory>${project.build.directory}/nxserver/frascati/lib</outputDirectory>
             </configuration>
@@ -600,7 +637,7 @@
             <configuration>
                 <target>
                     <!-- List the FraSCAti applications to export here (separated by ','s) -->
-                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/target/easysoa-samples-smarttravel-trip-${easysoa.version}-bin.zip" />
+                    <property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-handlermanager/target/easysoa-proxy-core-handlermanager-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/target/easysoa-samples-smarttravel-trip-${easysoa.version}-bin.zip" />
                     <!-- List including the samples Pure Air Flowers and Smart travel : Disabled because the samples are not working in FraSCAti -->
                     <!--<property name="frascati.applications" value="${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-${easysoa.version}-bin.zip,${basedir}/../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy/target/easysoa-proxy-core-scaffolderproxy-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/target/easysoa-samples-paf-server-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-services-backup-sca/target/easysoa-samples-smarttravel-services-backup-sca-${easysoa.version}-bin.zip,${basedir}/../samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/target/easysoa-samples-smarttravel-trip-${easysoa.version}-bin.zip" />-->
                     <ant antfile="build.xml" target="unzip-apps" />

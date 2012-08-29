@@ -47,17 +47,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.properties.PropertyManager;
+import org.easysoa.proxy.core.api.properties.PropertyManager;
+import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
+import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
+import org.easysoa.proxy.core.api.template.AbstractTemplateField;
+import org.easysoa.proxy.core.api.template.TemplateFieldSuggestions;
+import org.easysoa.proxy.core.api.util.ContentReader;
 import org.easysoa.records.ExchangeRecord;
-import org.easysoa.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.records.replay.ReplayEngine;
-import org.easysoa.template.AbstractTemplateField;
-import org.easysoa.template.TemplateFieldSuggestions;
 import org.easysoa.test.mock.meteomock.client.MeteoMock;
 import org.easysoa.test.mock.meteomock.client.MeteoMockPortType;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.easysoa.test.util.UrlMock;
-import org.easysoa.util.ContentReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -212,7 +212,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		//TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 
 	      // Get the replay engine service
-        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+        ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
 		
 		// Build an HashMap to simulate user provided values
 		HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
@@ -282,7 +282,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		//TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
 		
 		// Get the replay engine service
-		ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.records.replay.ReplayEngine.class);
+		ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
 
 		// Build an HashMap to simulate user provided values
 		HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();

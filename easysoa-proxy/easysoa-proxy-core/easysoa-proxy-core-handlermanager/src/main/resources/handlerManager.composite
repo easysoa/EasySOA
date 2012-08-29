@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite 
+	xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
+	name="handlerManager">
+	
+    <!--<sca:include name="handlerManagerBase"/> -->
+    <!--<sca:service name="handlerManagerService" promote="handlerManagerComponent/handlerManagerServiceBase"></sca:service> -->
+
+	<!-- Handler manager -->
+	<!--<sca:service name="handlerManager" promote="handlerManagerBaseComp"/ -->
+  	
+	<sca:component name="handlerManagerBaseComp">
+		<sca:implementation.composite name="handlerManagerBase"/>
+	</sca:component>-->
+
+	<!-- Handler manager -->
+	<sca:service name="handlerManager" promote="handlerManagerServiceBaseComp/handlerManagerComponentService">
+		<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
+	</sca:service>
+		
+	<sca:component name="handlerManagerServiceBaseComp">
+		<sca:service name="handlerManagerComponentService">
+      			<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
+    		</sca:service>
+		<sca:implementation.composite name="handlerManagerBase.composite"/>
+	</sca:component>
+
+</sca:composite>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
-xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
+xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frascati.ow2.org/xmlns/web/1.0" name="runManager">
 
 	<sca:include name="exchangeNumberGenerator"/>
 	<!--<sca:include name="templateEngine"/>-->
@@ -12,10 +12,12 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
 
 	<!-- Client UI for RunManager and Exchange store, Works with velocity -->
   	<sca:component name="runManagerUIComponent">
-	    <implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="runManagerUITemplate.html" location="webContent" />
+	    <web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="runManagerUITemplate.html" location="webContent" />
 	    <sca:service name="velocity">
+	    	<sca:interface.java interface="javax.servlet.Servlet"/>
     		<tuscany:binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/runManager" />
     	</sca:service>
+		<!-- <sca:implementation.java class="org.easysoa.run.RunManagerImpl" /> -->
 		<sca:reference name="runManager" target="runManagerComponent/runManagerService" />
 		<sca:reference name="exchangeRecordStoreManager" target="exchangeStoreManagerComponent/exchangeStoreManagerService" />
 		<!-- Proxy implementation Velocity -->
@@ -25,22 +27,22 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="runManager">
 	<!-- Run Manager -->
 	<sca:component name="runManagerComponent">
 		<sca:service name="runManagerService">
-			<sca:interface.java interface="org.easysoa.run.RunManager" />
+			<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
 		</sca:service>
-		<sca:implementation.java class="org.easysoa.run.RunManagerImpl" />
+		<sca:implementation.java class="org.easysoa.proxy.core.api.run.RunManagerImpl" />
 		<sca:reference name="monitoringService" target="monitoringServiceComponent/monitoringServiceService" />
 		<sca:reference name="exchangeNumberGenerator" target="exchangeNumberGeneratorComponent/exchangeNumberGeneratorService" />
 		<sca:reference name="replayEngine" target="replayEngineComponent/replayEngineService" />
 	</sca:component>
 
     <sca:component name="runManagerDriver">
-        <sca:implementation.java class="org.easysoa.run.RunManagerDriverImpl" />
+        <sca:implementation.java class="org.easysoa.proxy.core.api.run.RunManagerDriverImpl" />
         <sca:service name="runManagerServiceDriver">
-            <sca:interface.java interface="org.easysoa.run.RunManagerDriver" />
+            <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManagerDriver" />
             <frascati:binding.rest uri="http://localhost:8084/" />
         </sca:service>
         <sca:reference name="runManager" target="runManagerComponent/runManagerService">
-            <sca:interface.java interface="org.easysoa.run.RunManager" />
+            <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
         </sca:reference>
     </sca:component>
 

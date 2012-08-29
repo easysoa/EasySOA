@@ -26,16 +26,16 @@ package org.easysoa.records.handlers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.easysoa.exchangehandler.HttpExchangeHandler;
-import org.easysoa.exchangehandler.MessageRecordHandler;
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.run.RunManager;
-import org.easysoa.servlet.http.HttpMessageRequestWrapper;
-import org.easysoa.servlet.http.HttpMessageResponseWrapper;
+import org.easysoa.proxy.core.api.exchangehandler.HttpExchangeHandler;
+import org.easysoa.proxy.core.api.exchangehandler.MessageRecordHandler;
+import org.easysoa.proxy.core.api.run.RunManager;
+import org.easysoa.servlet.http.CopyHttpServletRequest;
+import org.easysoa.servlet.http.CopyHttpServletResponse;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -54,21 +54,22 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
         super();
         // Get the run manager service
         FraSCAtiServiceItf frascati = Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
-        this.setRunManager(frascati.getService("httpDiscoveryProxy/runManagerComponent", "runManagerService", RunManager.class));        
+        //this.setRunManager(frascati.getService("httpDiscoveryProxy/runManagerComponent", "runManagerService", RunManager.class));
+        this.setRunManager(frascati.getService("handlerManager/handlerManagerServiceBaseComp/runManagerComponent", "runManagerService", RunManager.class));
     }
-
+    
     /* (non-Javadoc)
      * @see org.easysoa.records.handlers.ExchangeHandler#handleExchange(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     //@Override
     public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // Builds a new Exchange record with data contained in request and response
-        HttpMessageRequestWrapper requestWrapper = new HttpMessageRequestWrapper(request);
-        HttpMessageResponseWrapper responseWrapper;
-        if (response instanceof HttpMessageResponseWrapper) {
-            responseWrapper = (HttpMessageResponseWrapper) response;
+        CopyHttpServletRequest requestWrapper = new CopyHttpServletRequest(request);
+        CopyHttpServletResponse responseWrapper;
+        if (response instanceof CopyHttpServletResponse) {
+            responseWrapper = (CopyHttpServletResponse) response;
         } else {
-            responseWrapper = new HttpMessageResponseWrapper(response);
+            responseWrapper = new CopyHttpServletResponse(response);
         }
         InMessage inMessage = new InMessage(requestWrapper); // TODO this and below rather in CopyOut.close();
         OutMessage outMessage = new OutMessage(responseWrapper);

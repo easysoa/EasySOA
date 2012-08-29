@@ -3,9 +3,9 @@ package org.easysoa.handlers;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.easysoa.exchangehandler.HandlerManager;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.objectweb.fractal.api.Component;
@@ -63,7 +63,7 @@ public class HandlerManagertest {
     
     @Test
     public void test() throws Exception {
-        Component comp = frascati.getComposite("handlerManager");
+        Component comp = frascati.getComposite("handlerManager/handlerManagerServiceBaseComp");
         HandlerManager var =  frascati.getService(comp, "handlerManagerService", HandlerManager.class);
         
         InMessage inMessage = new InMessage();
@@ -72,9 +72,8 @@ public class HandlerManagertest {
         inMessage.setPath("openwide/easysoanews/");
         inMessage.setServer("www.easysoa.org");
         
-        
         OutMessage outMessage = new OutMessage();
-        var.handle(inMessage, outMessage);
+        var.handleMessage(inMessage, outMessage);
     }
 
 }

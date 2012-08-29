@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!-- This is a complete return of the WebSubscriptionImpl -->
+
+<monitoringConfiguration>
+	<configurations />
+
+	<configurations>
+		<subscriptions>
+			<regexCondition>
+				<regex>http://localhost:5478?wsdl</regex>
+			</regexCondition>
+			<launchedservices>
+				<url>http://gogle</url>
+			</launchedservices>
+			<launchedservices>
+				<url>http://156.125.94.678:8080/Camarche?wsdl</url>
+			</launchedservices>
+		</subscriptions>
+
+		<subscriptions>
+			<regexCondition>
+				<regex>http://gogle</regex>
+			</regexCondition>
+			<launchedservices>
+				<url>http://156.125.94.678:8080/Camarche?wsdl</url>
+			</launchedservices>
+			<launchedservices>
+				<url>http://www.geckogeek.fr/les-tableaux-ruby-array-en-details.html
+				</url>
+			</launchedservices>
+		</subscriptions>
+		<subscriptions>
+			<regexCondition>
+				<regex>http://localhost:5478?wsdl</regex>
+			</regexCondition>
+			<launchedservices>
+				<url>http://gogle</url>
+			</launchedservices>
+			<launchedservices>
+				<url>http://156.125.94.678:8080/Camarche?wsdl</url>
+			</launchedservices>
+		</subscriptions>
+		<subscriptions>
+			<regexCondition>
+				<regex>http://gogle</regex>
+			</regexCondition>
+			<launchedservices>
+				<url>http://localhost:5478?wsdl</url>
+			</launchedservices>
+			<launchedservices>
+				<url>http://156.125.94.678:8080/Camarche?wsdl</url>
+			</launchedservices>
+		</subscriptions>
+		<proxy>htp:GogLe.html.fr:4589.uSa</proxy>
+	</configurations>
+</monitoringConfiguration>
