@@ -39,4 +39,14 @@ public class DeliverableAdapter extends SoaNodeAdapter implements Deliverable {
         documentModel.setPropertyValue(XPATH_NATURE, application);
     }
 
+    public String getVersion() throws Exception {
+        return (String) documentModel.getPropertyValue(XPATH_SOAVERSION);
+    }
+
+    @Override
+    public void setVersion(String version) throws Exception {
+        documentModel.setPropertyValue(XPATH_SOAVERSION, version);
+        
+    }
+
 }

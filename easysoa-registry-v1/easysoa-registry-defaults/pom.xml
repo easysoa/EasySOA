@@ -20,12 +20,17 @@
     </dependency>
     <dependency>
         <groupId>org.easysoa.registry</groupId>
-        <artifactId>easysoa-registry-doctypes-java</artifactId>
+        <artifactId>easysoa-registry-doctypes-java-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry</groupId>
       <artifactId>easysoa-registry-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-doctypes-java-core</artifactId>
+        <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

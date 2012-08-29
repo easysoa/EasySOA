@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.code.model.MavenDeliverable;
-import org.easysoa.discovery.code.model.Service;
-import org.easysoa.discovery.code.model.ServiceImpl;
-import org.easysoa.discovery.code.model.SoaNode;
+import org.easysoa.registry.rest.client.types.ServiceImplInformation;
+import org.easysoa.registry.rest.client.types.ServiceInformation;
+import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
+import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 
 import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -50,9 +50,9 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
     }
     
     @Override
-    public Collection<SoaNode> handleSources(JavaSource[] sources,
-            MavenDeliverable mavenDeliverable, Log log) {
-        Collection<SoaNode> discoveredNodes = new ArrayList<SoaNode>();
+    public Collection<SoaNodeInformation> handleSources(JavaSource[] sources,
+            MavenDeliverableInformation mavenDeliverable, Log log) throws Exception {
+        Collection<SoaNodeInformation> discoveredNodes = new ArrayList<SoaNodeInformation>();
         
         // Pass 1 : Find all WS clients/interfaces
         for (JavaSource source : sources) {
@@ -66,7 +66,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                         wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
-                        Service serviceDef = new Service(c.getName());// TODO, mavenDeliverable.getVersion());
+                        ServiceInformation serviceDef = new ServiceInformation(c.getName());// TODO, mavenDeliverable.getVersion());
                         discoveredNodes.add(serviceDef);
                     }
                 } else if (isWs && isInterface
@@ -89,15 +89,15 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         return discoveredNodes;
     }
     
-    public Collection<SoaNode> handleClass(JavaClass c, JavaSource[] sources,
-            MavenDeliverable deliverable, Log log) {
-        List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
+    public Collection<SoaNodeInformation> handleClass(JavaClass c, JavaSource[] sources,
+            MavenDeliverableInformation deliverable, Log log) throws Exception {
+        List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
         
         // Check JAX-WS annotation
         if (!c.isInterface() && ParsingUtils.hasAnnotation(c, ANN_WS)) { // TODO superclass ? TODO interface !
 
             // Extract WS info
-            ServiceImpl serviceImpl = new ServiceImpl(c.getName());
+            ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
            //serviceImpl.setProperty("impl:nature?", "JAX-WS"); // TODO tech
             // TODO link to deliverable
@@ -110,7 +110,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             if (itfClass != null) {
             
                 // Extract WS info
-                Service serviceDef = new Service(itfClass.getName()); // TODO , deliverable.getVersion());
+                ServiceInformation serviceDef = new ServiceInformation(itfClass.getName()); // TODO , deliverable.getVersion());
                // serviceDef.addRelation(serviceImpl); // TODO
                 discoveredNodes.add(serviceDef);
        

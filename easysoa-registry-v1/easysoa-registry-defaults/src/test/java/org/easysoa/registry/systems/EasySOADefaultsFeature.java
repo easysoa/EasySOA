@@ -9,7 +9,7 @@ import org.nuxeo.runtime.test.runner.Deploy;
  *
  */
 @Deploy({
-    "org.easysoa.registry.doctypes.java",
+    "org.easysoa.registry.doctypes.java.core",
     "org.easysoa.registry.defaults"
 })
 public class EasySOADefaultsFeature extends EasySOAFeature {

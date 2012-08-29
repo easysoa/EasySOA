@@ -10,15 +10,16 @@ import org.nuxeo.ecm.core.api.model.PropertyException;
 /**
  * 
  * @author mkalam-alami
- *
+ * 
  */
 public abstract class SoaNodeAdapter extends AbstractDocumentAdapter implements SoaNode {
 
     protected SoaNodeId soaNodeId;
 
-    public SoaNodeAdapter(DocumentModel documentModel) throws InvalidDoctypeException, PropertyException, ClientException {
+    public SoaNodeAdapter(DocumentModel documentModel) throws InvalidDoctypeException,
+            PropertyException, ClientException {
         super(documentModel);
-        this.soaNodeId = new SoaNodeId(documentModel.getType(), 
+        this.soaNodeId = new SoaNodeId(documentModel.getType(),
                 (String) documentModel.getPropertyValue(SoaNode.XPATH_SOANAME));
     }
 
@@ -29,5 +30,4 @@ public abstract class SoaNodeAdapter extends AbstractDocumentAdapter implements 
     public String getSoaName() {
         return this.soaNodeId.getName();
     }
-    
 }

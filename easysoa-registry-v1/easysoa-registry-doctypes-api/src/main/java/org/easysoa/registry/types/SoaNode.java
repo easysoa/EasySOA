@@ -7,10 +7,12 @@ public interface SoaNode extends Document {
     
     public static final String FACET = "SoaNode";
 
-    public static final String XPATH_SOANAME = "soa:name";
+    public static final String XPATH_SOANAME = "soan:name";
 
-    SoaNodeId getSoaNodeId();
+    String getDoctype() throws Exception;
+    
+    SoaNodeId getSoaNodeId() throws Exception;
 
-    String getSoaName();
+    String getSoaName() throws Exception;
 
 }

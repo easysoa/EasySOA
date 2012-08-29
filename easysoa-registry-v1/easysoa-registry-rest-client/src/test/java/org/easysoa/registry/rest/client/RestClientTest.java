@@ -20,7 +20,7 @@ public class RestClientTest extends AbstractWebEngineTest {
     
     public RestClientTest() {
         ClientBuilder clientBuilder = new ClientBuilder();
-        clientBuilder.setNuxeoUrl(NUXEO_URL);
+        clientBuilder.setNuxeoSitesUrl(NUXEO_URL);
         registryApi = clientBuilder.constructRegistryApi();
     }
     
@@ -36,7 +36,7 @@ public class RestClientTest extends AbstractWebEngineTest {
         // Fetch it
         SoaNodeInformation foundSoaNode = registryApi.get(myServiceId.getType(), myServiceId.getName());
         Assert.assertNotNull("Created SoaNode must have been found by the client", foundSoaNode);
-        Assert.assertEquals("Found document must be the expected Service", myServiceId, foundSoaNode.getId());
+        Assert.assertEquals("Found document must be the expected Service", myServiceId, foundSoaNode.getSoaNodeId());
     }
 
 }

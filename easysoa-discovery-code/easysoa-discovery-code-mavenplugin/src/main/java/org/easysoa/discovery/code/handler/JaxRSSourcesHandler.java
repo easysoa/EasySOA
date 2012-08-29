@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.code.model.MavenDeliverable;
-import org.easysoa.discovery.code.model.Service;
-import org.easysoa.discovery.code.model.ServiceImpl;
-import org.easysoa.discovery.code.model.SoaNode;
+import org.easysoa.registry.rest.client.types.ServiceImplInformation;
+import org.easysoa.registry.rest.client.types.ServiceInformation;
+import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
+import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
@@ -31,9 +31,9 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
         "javax.ws.rs.HEAD", "javax.ws.rs.OPTIONS"
       };
 
-    public Collection<SoaNode> handleSources(JavaSource[] sources, 
-            MavenDeliverable mavenDeliverable, Log log) {
-        List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
+    public Collection<SoaNodeInformation> handleSources(JavaSource[] sources, 
+            MavenDeliverableInformation mavenDeliverable, Log log) throws Exception {
+        List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
 
         // Pass 1 : Find all WS interfaces if any
         for (JavaSource source : sources) {
@@ -55,7 +55,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
                         wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
-                        Service serviceDef = new Service(c.getName()); // TODO , mavenDeliverable.getVersion()
+                        ServiceInformation serviceDef = new ServiceInformation(c.getName()); // TODO , mavenDeliverable.getVersion()
                         discoveredNodes.add(serviceDef);
                     }
                 }
@@ -76,9 +76,9 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
         return discoveredNodes;
     }
         
-    public Collection<SoaNode> handleClass(JavaClass c, JavaSource[] sources, 
-            MavenDeliverable deliverable, Log log) {
-        List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
+    public Collection<SoaNodeInformation> handleClass(JavaClass c, JavaSource[] sources, 
+            MavenDeliverableInformation deliverable, Log log) throws Exception {
+        List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
         
         JavaClass itf = getWsItf(c);
 
@@ -98,7 +98,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
         if (itf != null || pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
             
             // Extract WS info
-            ServiceImpl serviceImpl = new ServiceImpl(c.getName());
+            ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
            //serviceImpl.setProperty("impl:nature?", "JAX-RS"); // TODO tech
             // TODO link to deliverable
@@ -107,7 +107,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
             
             if (itf != null) {
                 // Extract WS info
-                Service serviceDef = new Service(itf.getName()); // TODO + Path, deliverable.getVersion()
+                ServiceInformation serviceDef = new ServiceInformation(itf.getName()); // TODO + Path, deliverable.getVersion()
               // TODO  serviceDef.addRelation(serviceImpl);
                 discoveredNodes.add(serviceDef);
             }

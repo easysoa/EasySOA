@@ -1,7 +1,10 @@
 package org.easysoa.registry.rest;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -54,8 +57,9 @@ public class RegistryApiImpl implements RegistryApi {
             DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
 
             // Create SoaNode
-            discoveryService.runDiscovery(documentManager, soaNodeInfo.getId(),
-                    soaNodeInfo.getProperties(), soaNodeInfo.getParentDocuments());
+           
+            discoveryService.runDiscovery(documentManager, soaNodeInfo.getSoaNodeId(),
+                    toObjectProperties(soaNodeInfo.getProperties()), soaNodeInfo.getParentDocuments());
             documentManager.save();
             return new OperationResult(true);
         } catch (Exception e) {
@@ -123,7 +127,7 @@ public class RegistryApiImpl implements RegistryApi {
     @PUT
     public OperationResult put(
             SoaNodeInformation soaNodeInfo) throws ClientException {
-        SoaNodeId soaNodeId = soaNodeInfo.getId();
+        SoaNodeId soaNodeId = soaNodeInfo.getSoaNodeId();
         try {
             // Initialization
             CoreSession documentManager = SessionFactory.getSession(request);
@@ -135,7 +139,7 @@ public class RegistryApiImpl implements RegistryApi {
                 // Update SoaNode
                 DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
                 discoveryService.runDiscovery(documentManager, soaNodeId,
-                        soaNodeInfo.getProperties(), soaNodeInfo.getParentDocuments());
+                        toObjectProperties(soaNodeInfo.getProperties()), soaNodeInfo.getParentDocuments());
                 documentManager.save();
                 
                 return new OperationResult(true);
@@ -193,5 +197,11 @@ public class RegistryApiImpl implements RegistryApi {
         } catch (Exception e) {
             return new OperationResult(false, "Failed to delete document " + soaNodeId.toString(), e);
         }
+    }
+
+    private Map<String, Object> toObjectProperties(Map<String, Serializable> properties) {
+        Map<String, Object> objectProperties = new HashMap<String, Object>();
+        objectProperties.putAll(properties);
+        return objectProperties;
     }
 }

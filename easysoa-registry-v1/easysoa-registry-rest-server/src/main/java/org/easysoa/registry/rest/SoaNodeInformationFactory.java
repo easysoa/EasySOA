@@ -1,9 +1,11 @@
 package org.easysoa.registry.rest;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
@@ -24,12 +26,16 @@ public class SoaNodeInformationFactory {
         SoaNodeId id = documentService.createSoaNodeId(model);
         
         // Properties
-        HashMap<String, Object> properties = new HashMap<String, Object>();
+        HashMap<String, Serializable> properties = new HashMap<String, Serializable>();
         Map<String, Object> schemaProperties;
         for (String schema : model.getSchemas()) {
             if (!"common".equals(schema)) {
                 schemaProperties = model.getProperties(schema);
-                properties.putAll(schemaProperties);
+                for (Entry<String, Object> entry : schemaProperties.entrySet()) {
+                    if (entry.getValue() instanceof Serializable) {
+                        properties.put(entry.getKey(), (Serializable) entry.getValue());
+                    }
+                }
             }
         }
         

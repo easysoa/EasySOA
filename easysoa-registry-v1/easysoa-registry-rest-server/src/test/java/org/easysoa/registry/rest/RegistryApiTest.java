@@ -1,5 +1,6 @@
 package org.easysoa.registry.rest;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,8 +65,8 @@ public class RegistryApiTest extends AbstractRestApiTest {
 
         // Check result
         Assert.assertEquals("Returned SoaNode must have the expected ID", "Service:MyService0",
-                soaNodeInformation.getId().toString());
-        Map<String, Object> properties = soaNodeInformation.getProperties();
+                soaNodeInformation.getSoaNodeId().toString());
+        Map<String, Serializable> properties = soaNodeInformation.getProperties();
         Assert.assertTrue("Properties must be provided for the document", properties != null
                 && !properties.isEmpty());
         Assert.assertEquals("Valid properties must be returned", "MyService0",
@@ -83,7 +84,7 @@ public class RegistryApiTest extends AbstractRestApiTest {
 
         // Check result
         Assert.assertEquals("All registered services must be found", SERVICE_COUNT, soaNodes.length);
-        SoaNodeId firstSoaNodeId = soaNodes[0].getId();
+        SoaNodeId firstSoaNodeId = soaNodes[0].getSoaNodeId();
         Assert.assertEquals("'type' property must be provided for each document", "Service",
                 firstSoaNodeId.getType());
         Assert.assertEquals("'name' property must be provided for each document", "MyService0",
@@ -95,7 +96,7 @@ public class RegistryApiTest extends AbstractRestApiTest {
         logTestName(logger);
 
         // Create service
-        Map<String, Object> properties = new HashMap<String, Object>();
+        Map<String, Serializable> properties = new HashMap<String, Serializable>();
         properties.put("dc:title", "My Deliverable");
         properties.put("del:application", "myapp");
         SoaNodeInformation soaNodeInfo = new SoaNodeInformation(deliverableId, properties, null);
@@ -111,12 +112,12 @@ public class RegistryApiTest extends AbstractRestApiTest {
                     .path(deliverableId.getType())
                     .path(deliverableId.getName())
                     .get(SoaNodeInformation.class);
-        SoaNodeId id = resultSoaNodeInfo.getId();
+        SoaNodeId id = resultSoaNodeInfo.getSoaNodeId();
         Assert.assertEquals("'type' property must be provided for the document",
                 deliverableId.getType(), id.getType());
         Assert.assertEquals("'name' property must be provided for the document",
                 deliverableId.getName(), id.getName());
-        Map<String, Object> resultProperties = resultSoaNodeInfo.getProperties();
+        Map<String, Serializable> resultProperties = resultSoaNodeInfo.getProperties();
         Assert.assertTrue("Properties must be provided for the document", properties != null && !properties.isEmpty());
         Assert.assertEquals("Valid properties must be returned", properties.get("dc:title"),
                 resultProperties.get("dc:title"));
@@ -129,7 +130,7 @@ public class RegistryApiTest extends AbstractRestApiTest {
         logTestName(logger);
 
         // Set property to override
-        Map<String, Object> properties = new HashMap<String, Object>();
+        Map<String, Serializable> properties = new HashMap<String, Serializable>();
         properties.put("dc:title", "My New Title");
         SoaNodeInformation soaNodeInfo = new SoaNodeInformation(deliverableId, properties, null);
 

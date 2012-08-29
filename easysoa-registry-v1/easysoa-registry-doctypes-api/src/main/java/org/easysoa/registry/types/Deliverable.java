@@ -9,8 +9,8 @@ public interface Deliverable extends SoaNode {
 
     public static final String XPATH_APPLICATION = "del:application";
 
-    String getDoctype();
-
+    public static final String XPATH_SOAVERSION = "soav:version";
+    
     String getNature() throws Exception;
 
     void setNature(String nature) throws Exception;
@@ -19,4 +19,7 @@ public interface Deliverable extends SoaNode {
 
     void setApplication(String application) throws Exception;
 
+    String getVersion() throws Exception;
+
+    void setVersion(String version) throws Exception;
 }

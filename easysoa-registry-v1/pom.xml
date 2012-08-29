@@ -62,7 +62,8 @@
     <module>easysoa-registry-test</module>
     <module>easysoa-registry-doctypes-api</module>
     <module>easysoa-registry-doctypes-core</module>
-    <module>easysoa-registry-doctypes-java</module>
+    <module>easysoa-registry-doctypes-java-api</module>
+    <module>easysoa-registry-doctypes-java-core</module>
     <module>easysoa-registry-rest-core</module>
     <module>easysoa-registry-rest-server</module>
     <module>easysoa-registry-rest-client</module>
@@ -143,7 +144,12 @@
       </dependency>
       <dependency>
         <groupId>org.easysoa.registry</groupId>
-        <artifactId>easysoa-registry-doctypes-java</artifactId>
+        <artifactId>easysoa-registry-doctypes-java-api</artifactId>
+        <version>${easysoa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-doctypes-java-core</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
       <dependency>

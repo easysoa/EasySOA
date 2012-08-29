@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.code.model.MavenDeliverable;
+import org.easysoa.registry.rest.client.types.DeliverableInformation;
 
 import com.thoughtworks.qdox.model.AbstractJavaEntity;
 import com.thoughtworks.qdox.model.BeanProperty;
@@ -60,7 +60,7 @@ public abstract class InterfaceHandlerBase implements SourcesHandler {
 
 
 
-    protected void handleInjectedMembers(JavaClass c, MavenDeliverable deliverable, Log log) {
+    protected void handleInjectedMembers(JavaClass c, DeliverableInformation deliverable, Log log) {
         // Java 6 (and other methods) injection of fields by service-annotated interfaces 
         // in injected fields :
         HashSet<String> injectedBeanProperties = new HashSet<String>();
@@ -80,7 +80,7 @@ public abstract class InterfaceHandlerBase implements SourcesHandler {
     }
 
 
-    private void addConsumerFoundInInjectedMember(MavenDeliverable deliverable,
+    private void addConsumerFoundInInjectedMember(DeliverableInformation deliverable,
             AbstractJavaEntity injectedMember, Type injectedType,
             String beanPropertyName, HashSet<String> injectedBeanProperties) {
         if (injectedBeanProperties.contains(beanPropertyName)) {

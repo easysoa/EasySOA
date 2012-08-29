@@ -11,8 +11,24 @@
   <groupId>org.easysoa.discovery.code</groupId>
   <artifactId>easysoa-discovery-code-mavenplugin</artifactId>
   <packaging>maven-plugin</packaging>
+  
+  <properties>
+    <easysoa.version>1.0-SNAPSHOT</easysoa.version>
+  </properties>
 
   <dependencies>
+    <!-- EasySOA -->
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-rest-client</artifactId>
+      <version>${easysoa.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-doctypes-java-api</artifactId>
+      <version>${easysoa.version}</version>
+    </dependency>
+    
     <!-- Maven parsing -->
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -25,19 +41,6 @@
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
       <version>1.12</version>
-    </dependency>
-
-    <!-- Rest client -->
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.json-lib</groupId>
-      <artifactId>json-lib</artifactId>
-      <classifier>jdk15</classifier>
-      <version>2.4</version>
     </dependency>
   </dependencies>
 

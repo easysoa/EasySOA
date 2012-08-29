@@ -8,19 +8,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.handler.JaxRSSourcesHandler;
 import org.easysoa.discovery.code.handler.JaxWSSourcesHandler;
 import org.easysoa.discovery.code.handler.SourcesHandler;
-import org.easysoa.discovery.code.model.MavenDeliverable;
-import org.easysoa.discovery.code.model.SoaNode;
+import org.easysoa.registry.rest.RegistryApi;
+import org.easysoa.registry.rest.client.ClientBuilder;
+import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
+import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
@@ -65,23 +62,28 @@ public class CodeDiscoveryMojo extends AbstractMojo {
     private Map<String, SourcesHandler> availableHandlers = new HashMap<String, SourcesHandler>();
     
     public void execute() throws MojoExecutionException {
-
+        try {
+        // Init registry client
+        ClientBuilder clientBuilder = new ClientBuilder();
+        clientBuilder.setCredentials("Administrator", "Administrator");
+        clientBuilder.setNuxeoSitesUrl("http://localhost:8080/nuxeo/site");
+        RegistryApi registryApi = clientBuilder.constructRegistryApi();
+        
         // Init handlers
         Log log = getLog();
         this.availableHandlers.put("JAX-WS", new JaxWSSourcesHandler());
         this.availableHandlers.put("JAX-RS", new JaxRSSourcesHandler());
         
-        // Deliverable discovery
-        MavenDeliverable mavenDeliverable = new MavenDeliverable(groupId, artifactId);
+        // TODO Maven extensions in -java-api
+        MavenDeliverableInformation mavenDeliverable = new MavenDeliverableInformation(groupId + ":" + artifactId);
         mavenDeliverable.setTitle(name);
-        mavenDeliverable.setProperty("del:nature", "maven");
+        mavenDeliverable.setVersion(version);
         try {
-            // TODO Set version, create more suitable property to set URL
             mavenDeliverable.setProperty("dc:description", projectDirectory.toURI().toURL().toString());
         } catch (MalformedURLException e) {
             log.error("Failed to convert project location to URL", e);
         }
-        List<SoaNode> discoveredNodes = new LinkedList<SoaNode>();
+        List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
         discoveredNodes.add(mavenDeliverable);
 
         // Configure parser
@@ -96,17 +98,16 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         
         // Build and send discovery request
         try {
-            HttpClient client = new HttpClient();
-            client.getParams().setAuthenticationPreemptive(true);
-            client.getState().setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials("Administrator", "Administrator")); // TODO
-            for (SoaNode soaNode : discoveredNodes) {
-                PostMethod request = new PostMethod("http://localhost:8080/nuxeo/site/easysoa/registry/" + soaNode.getType());
-                request.setRequestEntity(new StringRequestEntity(soaNode.toJSONString(), "application/json", "UTF-8"));
-                client.executeMethod(request);
+            for (SoaNodeInformation soaNode : discoveredNodes) {
+                registryApi.post(soaNode);
             }
         } catch (IOException e) {
             log.error("Failed to send discovery request", e);
+        }
+        
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Failed to discover SOA documents in code", e);
         }
         
     }

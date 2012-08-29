@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<fragment version="1">
+
+  <!-- Bundle requirements -->
+  <require>org.easysoa.registry.doctypes.core</require>
+  <require>org.easysoa.registry.doctypes.java.api</require>
+  
+  <!-- Module registration -->
+  <extension target="application#MODULE">
+    <module>
+      <ejb>${bundle.fileName}</ejb>
+    </module>
+  </extension>
+  
+</fragment>

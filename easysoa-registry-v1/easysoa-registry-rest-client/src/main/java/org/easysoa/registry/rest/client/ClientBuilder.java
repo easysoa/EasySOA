@@ -30,7 +30,7 @@ public class ClientBuilder {
         this.singletons.add(singleton);
     }
 
-    public void setNuxeoUrl(String nuxeoUrl) {
+    public void setNuxeoSitesUrl(String nuxeoUrl) {
         this.nuxeoUrl = nuxeoUrl;
     }
     
