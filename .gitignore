@@ -19,6 +19,11 @@ bin/
 .settings/
 nxsqldirectory/
 
+samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server-sca/discovery.properties
+samples/easysoa-samples-pureairflowers/easysoa-samples-paf-server/discovery.properties
+samples/easysoa-samples-smarttravel/easysoa-samples-smarttravel-trip/CreateS*
+
+
 easysoa-registry/easysoa-registry-frascati/src/test/resources/easysoa-proxy-core-httpdiscoveryproxy-*.jar
 
 # Distribution files
