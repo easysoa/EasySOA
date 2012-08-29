@@ -21,7 +21,6 @@
 package org.easysoa.registry.indicators.rest;
 
 import java.util.HashMap;
-import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -77,15 +76,13 @@ public class IndicatorsController extends ModuleRoot {
         int serviceWhithoutImplementationNb = 0;
         int serviceWithImplementationWhithoutEndpointNb = 0;
         for (DocumentModel service : listMap.get("Service")) {
-            service = session.getWorkingCopy(service.getRef()); // making sure it's not a proxy
             // finding (all) child implems and then their endpoints
-            List<DocumentModel> serviceImpls = getDocumentService().getChildren(session, service.getRef(), ServiceImplementation.DOCTYPE);
+            DocumentModelList serviceImpls = getDocumentService().getChildren(session, service.getRef(), ServiceImplementation.DOCTYPE);
             if (serviceImpls.isEmpty()) {
                 serviceWhithoutImplementationNb++;
             } else {
                 for (DocumentModel serviceImpl : serviceImpls) {
-                    serviceImpl = session.getWorkingCopy(serviceImpl.getRef()); // making sure it's not a proxy
-                    List<DocumentModel> endpoints = getDocumentService().getChildren(session, serviceImpl.getRef(), Endpoint.DOCTYPE);
+                    DocumentModelList endpoints = getDocumentService().getChildren(session, serviceImpl.getRef(), Endpoint.DOCTYPE);
                     if (endpoints.isEmpty()) {
                         serviceWithImplementationWhithoutEndpointNb++;
                     }

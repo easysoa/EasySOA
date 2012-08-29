@@ -1,7 +1,5 @@
 package org.easysoa.registry;
 
-import java.util.ArrayList;
-
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.utils.DocumentModelHelper;
@@ -219,13 +217,10 @@ public class DocumentServiceImpl implements DocumentService {
         getSourceFolder(documentManager, doctype);
     }
     
-    public ArrayList<DocumentModel> getChildren(CoreSession session, DocumentRef parentRef, String type) throws ClientException {
-        ArrayList<DocumentModel> res = new ArrayList<DocumentModel>(session.getChildren(parentRef, type));
-        DocumentModelList serviceProxyList = session.getProxies(parentRef, null);
-        for (DocumentModel proxy : serviceProxyList) {
-            res.addAll(session.getChildren(proxy.getRef(), type));
-        }
-        return res;
+    public DocumentModelList getChildren(CoreSession session, DocumentRef parentRef, String type) throws ClientException {
+        parentRef = session.getWorkingCopy(parentRef).getRef(); // making sure it's not a proxy
+        ///DocumentModelList serviceProxyList = session.getProxies(parentRef, null);
+        return session.getChildren(parentRef, type);
     }
 
     private DocumentModel getSourceFolder(CoreSession documentManager, String doctype) throws ClientException {

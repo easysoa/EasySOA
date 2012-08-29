@@ -125,11 +125,12 @@ public interface DocumentService {
     SoaNodeId createSoaNodeId(DocumentModel model);
 
     /**
-     * proxy-compliant getChildren())
+     * proxy-compliant getChildren()).
+     * If ref is a proxy first gets its actual target.
      * @return 
      * @throws ClientException 
      */
-    List<DocumentModel> getChildren(CoreSession session, DocumentRef ref,
+    DocumentModelList getChildren(CoreSession session, DocumentRef ref,
             String doctype) throws ClientException;
 
     
