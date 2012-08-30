@@ -11,6 +11,7 @@ import org.easysoa.registry.rest.client.types.ServiceImplInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
+import org.easysoa.registry.types.ServiceImplementation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
@@ -100,15 +101,14 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
             // Extract WS info
             ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
-           //serviceImpl.setProperty("impl:nature?", "JAX-RS"); // TODO tech
-            // TODO link to deliverable
-            //deliverable.addRelation(SoaNodeType.ServiceImpl, serviceImpl.getId());
+            serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-RS");
+            serviceImpl.addParentDocument(deliverable.getSoaNodeId());
             discoveredNodes.add(serviceImpl);
             
             if (itf != null) {
                 // Extract WS info
-                ServiceInformation serviceDef = new ServiceInformation(itf.getName()); // TODO + Path, deliverable.getVersion()
-              // TODO  serviceDef.addRelation(serviceImpl);
+                ServiceInformation serviceDef = new ServiceInformation(itf.getName());
+                serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
                 discoveredNodes.add(serviceDef);
             }
             

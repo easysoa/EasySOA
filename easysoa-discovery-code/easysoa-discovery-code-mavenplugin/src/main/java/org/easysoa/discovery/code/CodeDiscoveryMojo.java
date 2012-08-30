@@ -23,7 +23,8 @@ import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
 
 /**
- * Says "Hi" to the user.
+ * Allows to discover services information by parsing the sources of a project.
+ * All discoveries are then sent to Nuxeo through its REST API. 
  * 
  * @goal discover
  */
@@ -58,15 +59,33 @@ public class CodeDiscoveryMojo extends AbstractMojo {
      * @required
      */
     private String version;
+    
+    /**
+     * @parameter default-value="http://localhost:8080/nuxeo/site"
+     */
+    private String nuxeoSitesUrl;
+    
 
+    /**
+     * @parameter default-value="Administrator"
+     */
+    private String username;
+    
+
+    /**
+     * @parameter default-value="Administrator"
+     */
+    private String password;
+    
+    
     private Map<String, SourcesHandler> availableHandlers = new HashMap<String, SourcesHandler>();
     
     public void execute() throws MojoExecutionException {
         try {
         // Init registry client
         ClientBuilder clientBuilder = new ClientBuilder();
-        clientBuilder.setCredentials("Administrator", "Administrator");
-        clientBuilder.setNuxeoSitesUrl("http://localhost:8080/nuxeo/site");
+        clientBuilder.setCredentials(username, password);
+        clientBuilder.setNuxeoSitesUrl(nuxeoSitesUrl);
         RegistryApi registryApi = clientBuilder.constructRegistryApi();
         
         // Init handlers
@@ -98,8 +117,12 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         
         // Build and send discovery request
         try {
-            for (SoaNodeInformation soaNode : discoveredNodes) {
-                registryApi.post(soaNode);
+            log.info("Sending found SoaNodes to " + nuxeoSitesUrl);
+            if (discoveredNodes.size() > 0) {
+                for (SoaNodeInformation soaNode : discoveredNodes) {
+                    log.info("> " + soaNode.toString());
+                    registryApi.post(soaNode);
+                }
             }
         } catch (IOException e) {
             log.error("Failed to send discovery request", e);

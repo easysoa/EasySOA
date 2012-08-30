@@ -76,12 +76,21 @@ public class SoaNodeInformation implements SoaNode {
         this.parentDocuments = correlatedDocuments;
     }
 
+    public void addParentDocument(SoaNodeId correlatedDocument) {
+        this.parentDocuments.add(correlatedDocument);
+    }
+
     public String getTitle() {
         return (String) properties.get(SoaNode.XPATH_TITLE);
     }
     
     public void setTitle(String title) {
         properties.put(SoaNode.XPATH_TITLE, title);
+    }
+    
+    @Override
+    public String toString() {
+        return this.id.toString();
     }
     
 }

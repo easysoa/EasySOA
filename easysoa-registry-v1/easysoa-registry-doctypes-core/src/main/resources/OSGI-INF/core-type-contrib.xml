@@ -13,6 +13,7 @@
     <schema name="deliverable" src="schemas/deliverable.xsd" prefix="del" />
     <schema name="soanode" src="schemas/soanode.xsd" prefix="soan" />
     <schema name="soaversionable" src="schemas/soaversionable.xsd" prefix="soav" />
+    <schema name="serviceimpl" src="schemas/serviceimpl.xsd" prefix="impl" />
   </extension>
 
   <!-- ============= -->
@@ -76,6 +77,7 @@
       <schema name="soaversionable" />
     </doctype>
     <doctype extends="SoaNode" name="ServiceImplementation">
+      <schema name="serviceimpl" />
       <facet name="Folderish" />
     </doctype>
     <doctype extends="SoaNode" name="OperationImplementation">

@@ -11,6 +11,7 @@ import org.easysoa.registry.rest.client.types.ServiceImplInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
+import org.easysoa.registry.types.ServiceImplementation;
 
 import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -66,7 +67,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                         wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
-                        ServiceInformation serviceDef = new ServiceInformation(c.getName());// TODO, mavenDeliverable.getVersion());
+                        ServiceInformation serviceDef = new ServiceInformation(c.getName());
                         discoveredNodes.add(serviceDef);
                     }
                 } else if (isWs && isInterface
@@ -99,9 +100,8 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             // Extract WS info
             ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
-           //serviceImpl.setProperty("impl:nature?", "JAX-WS"); // TODO tech
-            // TODO link to deliverable
-            //deliverable.addRelation(serviceImpl);
+            serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS"); // TODO tech
+            serviceImpl.addParentDocument(deliverable.getSoaNodeId());
             discoveredNodes.add(serviceImpl);
             
             // Extract interface info
@@ -110,8 +110,8 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             if (itfClass != null) {
             
                 // Extract WS info
-                ServiceInformation serviceDef = new ServiceInformation(itfClass.getName()); // TODO , deliverable.getVersion());
-               // serviceDef.addRelation(serviceImpl); // TODO
+                ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
+                serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
                 discoveredNodes.add(serviceDef);
        
                 // Extract operations info

@@ -81,6 +81,11 @@
             <goals>
               <goal>discover</goal>
             </goals>
+            <configuration>
+                <nuxeoSitesUrl>http://localhost:8080/nuxeo/site</nuxeoSitesUrl>
+                <username>Administrator</username>
+                <password>Administrator</password>
+            </configuration>
           </execution>
         </executions>
       </plugin>
