@@ -9,6 +9,12 @@
     point="adapters">
     <adapter class="org.easysoa.registry.types.Deliverable"
       factory="org.easysoa.registry.types.adapters.CoreDoctypesAdapterFactory" />
+    <adapter class="org.easysoa.registry.types.ServiceImplementation"
+      factory="org.easysoa.registry.types.adapters.CoreDoctypesAdapterFactory" />
+    <adapter class="org.easysoa.registry.types.DeployedDeliverable"
+      factory="org.easysoa.registry.types.adapters.CoreDoctypesAdapterFactory" />
+    <adapter class="org.easysoa.registry.types.Endpoint"
+      factory="org.easysoa.registry.types.adapters.CoreDoctypesAdapterFactory" />
   </extension>
 
 </component>

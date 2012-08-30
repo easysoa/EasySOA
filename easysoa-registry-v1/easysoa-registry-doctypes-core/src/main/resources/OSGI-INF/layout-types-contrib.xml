@@ -128,9 +128,9 @@
         <row>
           <widget>serviceimpl_documentation</widget>
         </row>
-        <row>
-          <widget>serviceimpl_operations</widget>
-        </row>
+<!--         <row> -->
+<!--           <widget>serviceimpl_operations</widget> -->
+<!--         </row> -->
       </rows>
       <widget name="serviceimpl_technology" type="text">
         <labels>
@@ -150,15 +150,15 @@
           <field>impl:documentation</field>
         </fields>
       </widget>
-      <widget name="serviceimpl_operations" type="text">
-        <labels>
-          <label mode="any">label.easysoa.layout.serviceimpl.operations</label>
-        </labels>
-        <translated>true</translated>
-        <fields>
-          <field>impl:operations</field>
-        </fields>
-      </widget>
+<!--       <widget name="serviceimpl_operations" type="text"> -->
+<!--         <labels> -->
+<!--           <label mode="any">label.easysoa.layout.serviceimpl.operations</label> -->
+<!--         </labels> -->
+<!--         <translated>true</translated> -->
+<!--         <fields> -->
+<!--           <field>impl:operations</field> -->
+<!--         </fields> -->
+<!--       </widget> -->
     </layout>
     
   </extension>

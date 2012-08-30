@@ -2,9 +2,23 @@
 <xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/impl/"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:nxs="http://www.nuxeo.org/ecm/schemas/impl/">
-  
-  <xs:element name="technology" type="xs:string"/>
-  <xs:element name="operations" type="xs:string"/>
-  <xs:element name="documentation" type="xs:string"/>
-    
+
+  <xs:element name="technology" type="xs:string" />
+  <xs:element name="documentation" type="xs:string" />
+
+  <xs:complexType name="operation">
+    <xs:sequence>
+      <xs:element name="operationName" type="xs:string" />
+      <xs:element name="operationParameters" type="xs:string" />
+      <xs:element name="operationDocumentation" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="operations">
+    <xs:sequence>
+      <xs:element name="operation" type="nxs:operation"
+        minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="operations" type="nxs:operations" />
+
 </xs:schema>

@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.registry.rest.client.types.ServiceImplInformation;
+import org.easysoa.registry.rest.client.types.ServiceImplementationInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
@@ -98,7 +98,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         if (!c.isInterface() && ParsingUtils.hasAnnotation(c, ANN_WS)) { // TODO superclass ? TODO interface !
 
             // Extract WS info
-            ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
+            ServiceImplementationInformation serviceImpl = new ServiceImplementationInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
             serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
             serviceImpl.addParentDocument(deliverable.getSoaNodeId());

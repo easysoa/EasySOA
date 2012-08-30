@@ -80,8 +80,6 @@
       <schema name="serviceimpl" />
       <facet name="Folderish" />
     </doctype>
-    <doctype extends="SoaNode" name="OperationImplementation">
-    </doctype>
 
     <!-- Deployment level -->
     <doctype extends="EndpointConsumer" name="DeployedDeliverable">

@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.registry.rest.client.types.ServiceImplInformation;
+import org.easysoa.registry.rest.client.types.ServiceImplementationInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
@@ -99,7 +99,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
         if (itf != null || pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
             
             // Extract WS info
-            ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
+            ServiceImplementationInformation serviceImpl = new ServiceImplementationInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
             serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-RS");
             serviceImpl.setProperty(ServiceImplementation.XPATH_DOCUMENTATION, c.getComment());

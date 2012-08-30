@@ -1,5 +1,7 @@
 package org.easysoa.registry;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.easysoa.registry.test.AbstractRegistryTest;
 import org.easysoa.registry.types.Deliverable;
@@ -47,7 +49,6 @@ public class DoctypesTest extends AbstractRegistryTest {
                 Endpoint.DOCTYPE,
                 IntelligentSystem.DOCTYPE,
                 IntelligentSystemTreeRoot.DOCTYPE,
-                OperationImplementation.DOCTYPE,
                 Repository.DOCTYPE,
                 Service.DOCTYPE,
                 ServiceImplementation.DOCTYPE,
@@ -74,5 +75,33 @@ public class DoctypesTest extends AbstractRegistryTest {
         Deliverable deliverable = deliverableModel.getAdapter(Deliverable.class);
         Assert.assertNotNull("Document model must be adapted as a deliverable", deliverable);
         
+    }
+    
+    @Test
+    public void testServiceImplOperations() throws Exception {
+
+        // Create ServiceImpl
+        SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
+        DocumentModel serviceImplModel = documentService.create(documentManager, 
+                serviceImplId, "My Service Impl");
+        
+        // Use adapter to manipulate operations
+        ServiceImplementation serviceImpl = serviceImplModel.getAdapter(ServiceImplementation.class);
+        List<OperationImplementation> operations = serviceImpl.getOperations();
+        operations.add(new OperationImplementation("Yo", "Param1, Param2", "This does something"));
+        serviceImpl.setOperations(operations);
+        
+        // Save
+        documentManager.saveDocument(serviceImplModel);
+        documentManager.save();
+        
+        // Fetch document again, check operations update
+        serviceImplModel = documentService.find(documentManager, serviceImplId);
+        serviceImpl = serviceImplModel.getAdapter(ServiceImplementation.class);
+        operations = serviceImpl.getOperations();
+        Assert.assertEquals(1, operations.size());
+        Assert.assertEquals("Yo", operations.get(0).getName());
+        Assert.assertEquals("Param1, Param2", operations.get(0).getParameters());
+        Assert.assertEquals("This does something", operations.get(0).getDocumentation());
     }
 }

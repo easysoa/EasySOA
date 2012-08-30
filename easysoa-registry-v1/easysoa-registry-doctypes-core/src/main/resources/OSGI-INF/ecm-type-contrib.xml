@@ -252,19 +252,8 @@
         </contentView>
       </contentViews>
       <subtypes>
-        <type>OperationImplementation</type>
         <type>Endpoint</type>
       </subtypes>
-    </type>
-    <type id="OperationImplementation" coretype="OperationImplementation">
-      <label>Operation Implementation</label>
-      <icon>/icons/file.gif</icon>
-      <bigIcon>/icons/file_100.png</bigIcon>
-      <default-view>view_documents</default-view>
-      <layouts mode="any">
-        <layout>soanode</layout>
-        <layout>heading</layout>
-      </layouts>
     </type>
 
     <!-- Deployment level -->
