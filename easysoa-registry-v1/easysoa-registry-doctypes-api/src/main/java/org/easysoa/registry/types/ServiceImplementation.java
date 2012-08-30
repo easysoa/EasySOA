@@ -12,4 +12,8 @@ public interface ServiceImplementation extends SoaNode {
     
     public static final String XPATH_TECHNOLOGY = "impl:technology";
     
+    public static final String XPATH_OPERATIONS = "impl:operations";
+    
+    public static final String XPATH_DOCUMENTATION = "impl:documentation";
+    
 }

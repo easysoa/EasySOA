@@ -11,6 +11,7 @@
   <groupId>org.easysoa.discovery.code</groupId>
   <artifactId>easysoa-discovery-code-mavenplugin</artifactId>
   <packaging>maven-plugin</packaging>
+  <name>EasySOA Discovery Code Maven Plugin</name>
   
   <properties>
     <easysoa.version>1.0-SNAPSHOT</easysoa.version>
@@ -41,6 +42,14 @@
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
       <version>1.12</version>
+    </dependency>
+    
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

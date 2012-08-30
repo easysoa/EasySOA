@@ -18,13 +18,34 @@
           <widget>soanode_name</widget>
         </row>
       </rows>
-      <widget name="soanode_soaname" type="text">
+      <widget name="soanode_name" type="text">
         <labels>
           <label mode="any">label.easysoa.layout.soanode.name</label>
         </labels>
         <translated>true</translated>
         <fields>
-          <field>soa:soaname</field>
+          <field>soan:name</field>
+        </fields>
+      </widget>
+    </layout>
+    
+    <!-- Layout for soanode schema -->
+    <layout name="soaversion">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>soaversion_version</widget>
+        </row>
+      </rows>
+      <widget name="soaversion_version" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.soaversion.version</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>soav:version</field>
         </fields>
       </widget>
     </layout>
@@ -40,6 +61,9 @@
         </row>
         <row>
           <widget>deliverable_application</widget>
+        </row>
+        <row>
+          <widget>deliverable_location</widget>
         </row>
       </rows>
       <widget name="deliverable_nature" type="text">
@@ -58,6 +82,15 @@
         <translated>true</translated>
         <fields>
           <field>del:application</field>
+        </fields>
+      </widget>
+      <widget name="deliverable_location" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.deliverable.location</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>del:location</field>
         </fields>
       </widget>
     </layout>
@@ -79,6 +112,51 @@
         <translated>true</translated>
         <fields>
           <field>env:environment</field>
+        </fields>
+      </widget>
+    </layout>
+    
+    <!-- Layout for serviceimpl schema -->
+    <layout name="serviceimpl">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>serviceimpl_technology</widget>
+        </row>
+        <row>
+          <widget>serviceimpl_documentation</widget>
+        </row>
+        <row>
+          <widget>serviceimpl_operations</widget>
+        </row>
+      </rows>
+      <widget name="serviceimpl_technology" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.serviceimpl.technology</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>impl:technology</field>
+        </fields>
+      </widget>
+      <widget name="serviceimpl_documentation" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.serviceimpl.documentation</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>impl:documentation</field>
+        </fields>
+      </widget>
+      <widget name="serviceimpl_operations" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.serviceimpl.operations</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>impl:operations</field>
         </fields>
       </widget>
     </layout>

@@ -100,7 +100,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             // Extract WS info
             ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
-            serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS"); // TODO tech
+            serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
             serviceImpl.addParentDocument(deliverable.getSoaNodeId());
             discoveredNodes.add(serviceImpl);
             
@@ -108,10 +108,11 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
             JavaClass itfClass = findWsInterface(c, sources); // TODO several interfaces ???
             if (itfClass != null) {
-            
+                
                 // Extract WS info
                 ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
                 serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
+                serviceImpl.setProperty(ServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
                 discoveredNodes.add(serviceDef);
        
                 // Extract operations info
@@ -135,7 +136,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                     // Cosmetic changes before storage
                     String operationInfoString = operationsInfo.toString().substring(0, operationsInfo.length() - 2);
                     operationInfoString = operationInfoString.replace("\"", "'");
-                    serviceImpl.setProperty("dc:description", operationInfoString); // TODO
+                    serviceImpl.setProperty(ServiceImplementation.XPATH_OPERATIONS, operationInfoString);
                     //serviceDef.addRequirement(operationInfoString); // TODO
                 }
             

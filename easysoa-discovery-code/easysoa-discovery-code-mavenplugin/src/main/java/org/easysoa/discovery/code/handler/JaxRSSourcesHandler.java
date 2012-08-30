@@ -56,7 +56,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
                         wsInjectableTypeSet.add(c.asType());
                         
                         // also in first pass for itf, Extract WS info
-                        ServiceInformation serviceDef = new ServiceInformation(c.getName()); // TODO , mavenDeliverable.getVersion()
+                        ServiceInformation serviceDef = new ServiceInformation(c.getName());
                         discoveredNodes.add(serviceDef);
                     }
                 }
@@ -102,6 +102,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
             ServiceImplInformation serviceImpl = new ServiceImplInformation(c.getName());
             serviceImpl.setTitle(c.getFullyQualifiedName());
             serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-RS");
+            serviceImpl.setProperty(ServiceImplementation.XPATH_DOCUMENTATION, c.getComment());
             serviceImpl.addParentDocument(deliverable.getSoaNodeId());
             discoveredNodes.add(serviceImpl);
             
@@ -136,7 +137,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
                     // Cosmetic changes before storage
                     String operationInfoString = operationsInfo.toString().substring(0, operationsInfo.length() - 2);
                     operationInfoString = operationInfoString.replace("\"", "'");
-                    serviceImpl.setProperty("dc:description", operationInfoString); // TODO create real operations
+                    serviceImpl.setProperty(ServiceImplementation.XPATH_OPERATIONS, operationInfoString);
                 }
             }
         }

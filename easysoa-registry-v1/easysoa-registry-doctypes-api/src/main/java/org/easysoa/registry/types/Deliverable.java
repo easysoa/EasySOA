@@ -5,11 +5,13 @@ public interface Deliverable extends SoaNode {
 
     public static final String DOCTYPE = "Deliverable";
 
+    public static final String XPATH_SOAVERSION = "soav:version";
+
     public static final String XPATH_NATURE = "del:nature";
 
     public static final String XPATH_APPLICATION = "del:application";
 
-    public static final String XPATH_SOAVERSION = "soav:version";
+    public static final String XPATH_LOCATION = "del:location";
     
     String getNature() throws Exception;
 

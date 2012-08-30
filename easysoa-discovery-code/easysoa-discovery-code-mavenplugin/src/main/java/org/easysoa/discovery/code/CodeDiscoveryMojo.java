@@ -18,6 +18,7 @@ import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
+import org.easysoa.registry.types.Deliverable;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
@@ -77,6 +78,11 @@ public class CodeDiscoveryMojo extends AbstractMojo {
      */
     private String password;
     
+    /**
+     * @parameter
+     */
+    private String application;
+    
     
     private Map<String, SourcesHandler> availableHandlers = new HashMap<String, SourcesHandler>();
     
@@ -93,12 +99,15 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         this.availableHandlers.put("JAX-WS", new JaxWSSourcesHandler());
         this.availableHandlers.put("JAX-RS", new JaxRSSourcesHandler());
         
-        // TODO Maven extensions in -java-api
         MavenDeliverableInformation mavenDeliverable = new MavenDeliverableInformation(groupId + ":" + artifactId);
         mavenDeliverable.setTitle(name);
         mavenDeliverable.setVersion(version);
+        if (application != null && !application.trim().isEmpty()) {
+            mavenDeliverable.setApplication(application);
+        }
+        // TODO Set application from config
         try {
-            mavenDeliverable.setProperty("dc:description", projectDirectory.toURI().toURL().toString());
+            mavenDeliverable.setProperty(Deliverable.XPATH_LOCATION, projectDirectory.toURI().toURL().toString());
         } catch (MalformedURLException e) {
             log.error("Failed to convert project location to URL", e);
         }

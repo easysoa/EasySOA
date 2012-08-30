@@ -5,6 +5,7 @@
   <artifactId>easysoa-discovery-code</artifactId>
   <version>0.9-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <name>EasySOA Discovery Code</name>
 
   <modules>
     <module>easysoa-discovery-code-mavenplugin</module>
