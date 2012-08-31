@@ -4,5 +4,4 @@ bin/
 .settings
 .classpath
 *~
-nuxeo.rb
 buildAndRun.sh
