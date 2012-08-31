@@ -61,7 +61,10 @@ public class IndicatorsController extends ModuleRoot {
         
         HashMap<String, DocumentModelList> listMap = new HashMap<String, DocumentModelList>();
         listMap.put("Service", session.query(NXQL_SELECT_FROM + "Service" + NXQL_WHERE_NO_PROXY));
-	    
+        listMap.put(ServiceImplementation.DOCTYPE, session.query(NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE + NXQL_WHERE_NO_PROXY));
+
+        // Count indicators
+        
 	    HashMap<String, Integer> nbMap = new HashMap<String, Integer>();
         nbMap.put("SoaNode", session.query(NXQL_SELECT_FROM + "SoaNode" + NXQL_WHERE_NO_PROXY).size());
 	    nbMap.put("Service", listMap.get("Service").size());
@@ -72,6 +75,7 @@ public class IndicatorsController extends ModuleRoot {
         nbMap.put("Endpoint", session.query(NXQL_SELECT_FROM + "Endpoint" + NXQL_WHERE_NO_PROXY).size());
         nbMap.put("EndpointConsumer", session.query(NXQL_SELECT_FROM + "EndpointConsumer" + NXQL_WHERE_NO_PROXY).size());
 
+        // Count indicators - Service-specific
         int serviceWhithoutImplementationNb = 0;
         int serviceWithImplementationWhithoutEndpointNb = 0;
         for (DocumentModel service : listMap.get("Service")) {
@@ -91,13 +95,33 @@ public class IndicatorsController extends ModuleRoot {
         nbMap.put("serviceWhithoutImplementation", serviceWhithoutImplementationNb); // TODO "main" vs "test" implementation
         nbMap.put("serviceWithImplementationWhithoutEndpoint", serviceWithImplementationWhithoutEndpointNb); // TODO "test", "integration", "staging" ("design", "dev")
         nbMap.put("serviceWhithoutEndpoint", serviceWhithoutImplementationNb + serviceWithImplementationWhithoutEndpointNb);
+
+        // Count indicators - ServiceImplementation-specific
+        final int IDEAL_DOCUMENTATION_LINES = 40;
+        int undocumentedServiceImpls = 0;
+		int maxServiceImplsDocQuality = nbMap.get(ServiceImplementation.DOCTYPE) * IDEAL_DOCUMENTATION_LINES;
+        int serviceImplsDocQuality = maxServiceImplsDocQuality;
+        for (DocumentModel serviceImpl : listMap.get(ServiceImplementation.DOCTYPE)) {
+        	String documentation = (String) serviceImpl.getPropertyValue(ServiceImplementation.XPATH_DOCUMENTATION);
+        	if (documentation != null && !documentation.isEmpty()) {
+        		serviceImplsDocQuality -= Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - documentation.split("\n").length));
+        	}
+        	else {
+        		undocumentedServiceImpls++;
+        		serviceImplsDocQuality -= IDEAL_DOCUMENTATION_LINES;
+        	}
+        }
+        nbMap.put("Undocumented service implementation", undocumentedServiceImpls);
         
+        // Indicators in %
 
         HashMap<String, Integer> percentMap = new HashMap<String, Integer>();
         
         percentMap.put("serviceWhithoutImplementation", (nbMap.get("Service") == 0) ? -1 : 100 * serviceWhithoutImplementationNb / nbMap.get("Service"));
         percentMap.put("serviceWhithoutEndpoint", (nbMap.get("Service") == 0) ? -1 :100 * (serviceWhithoutImplementationNb + serviceWithImplementationWhithoutEndpointNb) / nbMap.get("Service"));
         percentMap.put("serviceWithImplementationWhithoutEndpoint", (nbMap.get("Service") - serviceWhithoutImplementationNb == 0) ? -1 :100 * serviceWithImplementationWhithoutEndpointNb / (nbMap.get("Service") - serviceWhithoutImplementationNb));
+        
+        percentMap.put("Service implementations documentation quality", (maxServiceImplsDocQuality == 0) ? -1 : (100 * serviceImplsDocQuality / maxServiceImplsDocQuality));
 
         // TODO model consistency ex. impl without service
         // TODO for one ex. impl of ONE service => prop to query

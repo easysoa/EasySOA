@@ -1,6 +1,8 @@
 package org.easysoa.registry.indicators.rest;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
@@ -12,6 +14,7 @@ import org.easysoa.registry.rest.AbstractRestApiTest;
 import org.easysoa.registry.test.RepositoryLogger;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
+import org.easysoa.registry.types.ServiceImplementation;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,7 +43,6 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
 
     @Test
     public void testIndicators() throws Exception {
-        logTestName(logger);
         
         // Fill repository for all tests
         for (int i = 0; i < SERVICE_COUNT; i++) {
@@ -50,6 +52,12 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         SoaNodeId service0Id = new SoaNodeId(Service.DOCTYPE, "MyService0");
         SoaNodeId endpointId = new SoaNodeId(Endpoint.DOCTYPE, "MyEndpoint");
         discoveryService.runDiscovery(documentManager, endpointId, null, Arrays.asList(service0Id));
+        SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put(ServiceImplementation.XPATH_DOCUMENTATION,
+        		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\n" +
+        		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah");
+        discoveryService.runDiscovery(documentManager, serviceImplId, properties, null);
         documentManager.save();
         
         logRepository();

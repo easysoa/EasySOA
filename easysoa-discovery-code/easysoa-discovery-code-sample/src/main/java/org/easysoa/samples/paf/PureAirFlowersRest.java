@@ -8,6 +8,11 @@ import javax.ws.rs.PathParam;
 
 /**
  * Allows for orders management of the PureAirFlowers clients.
+ * - All clients are specified by a unique client name
+ * - Orders count are represented by a integer
+ * This documentation is not 40 lines long, but should be enough
+ * to reach a moderately satisfying result for the services documentation
+ * indicator.
  * 
  * @author jguillemotte
  */
@@ -21,7 +26,7 @@ public class PureAirFlowersRest {
     }
 
     /**
-     * Returns the orders number for the specified client name
+     * Returns the orders number for the specified client name.
      */
     @GET
     @Path("/orders/{clientName}")

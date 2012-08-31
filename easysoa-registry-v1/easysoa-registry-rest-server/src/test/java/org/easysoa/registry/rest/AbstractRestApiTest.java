@@ -14,7 +14,6 @@ public abstract class AbstractRestApiTest extends AbstractWebEngineTest {
     private final ClientConfig clientConfig;
     
     public AbstractRestApiTest() {
-        // TODO use clientBuilder
         this.clientConfig = new DefaultClientConfig();
         clientConfig.getSingletons().add(new JsonMessageReader());
         clientConfig.getSingletons().add(new JsonMessageWriter());

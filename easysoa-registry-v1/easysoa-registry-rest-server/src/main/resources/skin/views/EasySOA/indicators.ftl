@@ -165,12 +165,14 @@
 
   <h2>Percent</h2>
   <#list percentMap?keys as percentMapKey>
+  <#if percentMap[percentMapKey]>
   	<#if percentMap[percentMapKey] != -1>
-  		Pourcentage de ${percentMapKey} : ${percentMap[percentMapKey]}%
+  		${percentMapKey} : ${percentMap[percentMapKey]}%
   	<#else>
-  		Pourcentage de ${percentMapKey} : N.A.
+  		${percentMapKey} : N.A.
   	</#if>
   	<br/>
+  </#if>
   </#list>
   
   <#-- table style="width: 100%; max-width: 1000px">
