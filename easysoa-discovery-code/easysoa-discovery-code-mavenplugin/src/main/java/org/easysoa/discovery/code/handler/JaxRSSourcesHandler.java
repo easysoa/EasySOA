@@ -11,6 +11,7 @@ import org.easysoa.registry.rest.client.types.ServiceImplementationInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
+import org.easysoa.registry.types.OperationImplementation;
 import org.easysoa.registry.types.ServiceImplementation;
 
 import com.thoughtworks.qdox.model.JavaClass;
@@ -114,7 +115,7 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
             }
             
             // Extract operations info
-            StringBuilder operationsInfo = new StringBuilder();
+            List<OperationImplementation> operations = serviceImpl.getOperations();
             if (pathMethods != null) {
                 for (JavaMethod method : c.getMethods()) {
                     if (ParsingUtils.hasAnnotation(method, ANN_PATH)) {
@@ -130,15 +131,13 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
                             }
                         }
                         
-                        operationsInfo.append(httpMethod + " Operation " + method.getName() + " (" + path + "), ");
+                        operations.add(new OperationImplementation(
+                        		method.getName(),
+                        		null,
+                        		"Method: " + httpMethod + ", Path: " + path + ", Description: " + method.getComment()));
                     }
                 }
-                if (operationsInfo.length() > 0) {
-                    // Cosmetic changes before storage
-                    String operationInfoString = operationsInfo.toString().substring(0, operationsInfo.length() - 2);
-                    operationInfoString = operationInfoString.replace("\"", "'");
-                    serviceImpl.setProperty(ServiceImplementation.XPATH_OPERATIONS, operationInfoString);
-                }
+                serviceImpl.setOperations(operations);
             }
         }
 

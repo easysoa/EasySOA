@@ -20,14 +20,16 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
     @Override
     public List<OperationImplementation> getOperations() {
         // Proper-ish conversion from List<Map<String, Serializable>> hidden behind Serializable, to List<OperationImplementation>
-        List<?> operationUnknowns = (List<?>) properties.get(XPATH_OPERATIONS);
+        List<?> operationsUnknown = (List<?>) properties.get(XPATH_OPERATIONS);
         List<OperationImplementation> operations = new ArrayList<OperationImplementation>();
-        for (Object operationUnknown : operationUnknowns) {
-            Map<?, ?> operationMap = (Map<?, ?>) operationUnknown;
-            operations.add(new OperationImplementation(
-                    (String) operationMap.get(OPERATION_NAME),
-                    (String) operationMap.get(OPERATION_PARAMETERS),
-                    (String) operationMap.get(OPERATION_DOCUMENTATION)));
+        if (operationsUnknown != null) {
+	        for (Object operationUnknown : operationsUnknown) {
+	            Map<?, ?> operationMap = (Map<?, ?>) operationUnknown;
+	            operations.add(new OperationImplementation(
+	                    (String) operationMap.get(OPERATION_NAME),
+	                    (String) operationMap.get(OPERATION_PARAMETERS),
+	                    (String) operationMap.get(OPERATION_DOCUMENTATION)));
+	        }
         }
         return operations;
     }

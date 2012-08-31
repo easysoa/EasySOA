@@ -1,0 +1,29 @@
+<f:subview xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core" id="#{widget.id}">
+
+    <table style="width: 400px">
+        <tr>
+            <th>Name</th>
+            <th>Parameters</th>
+            <th>Documentation</th>
+        </tr>
+        <c:choose>
+            <c:when test="${field.getChildren().size() > 0}">
+                <c:forEach var="entry" items="${field.getChildren()}">
+                    <tr>
+                        <td><h:outputText value="${entry.get('operationName').getValue()}" /></td>
+                        <td><h:outputText value="${entry.get('operationParameters').getValue()}" /></td>
+                        <td><h:outputText value="${entry.get('operationDocumentation').getValue()}" /></td>
+                    </tr>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="3" style="text-align: center">No operations.</td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
+    </table>
+
+</f:subview>

@@ -128,9 +128,9 @@
         <row>
           <widget>serviceimpl_documentation</widget>
         </row>
-<!--         <row> -->
-<!--           <widget>serviceimpl_operations</widget> -->
-<!--         </row> -->
+        <row>
+          <widget>serviceimpl_operations</widget>
+        </row>
       </rows>
       <widget name="serviceimpl_technology" type="text">
         <labels>
@@ -141,7 +141,7 @@
           <field>impl:technology</field>
         </fields>
       </widget>
-      <widget name="serviceimpl_documentation" type="text">
+      <widget name="serviceimpl_documentation" type="textarea">
         <labels>
           <label mode="any">label.easysoa.layout.serviceimpl.documentation</label>
         </labels>
@@ -150,15 +150,22 @@
           <field>impl:documentation</field>
         </fields>
       </widget>
-<!--       <widget name="serviceimpl_operations" type="text"> -->
-<!--         <labels> -->
-<!--           <label mode="any">label.easysoa.layout.serviceimpl.operations</label> -->
-<!--         </labels> -->
-<!--         <translated>true</translated> -->
-<!--         <fields> -->
-<!--           <field>impl:operations</field> -->
-<!--         </fields> -->
-<!--       </widget> -->
+      <widget name="serviceimpl_operations" type="template">
+        <labels>
+          <label mode="any">label.easysoa.layout.serviceimpl.operations</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>impl:operations</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/serviceimpl_operations_template.xhtml</property>
+        </properties>
+      </widget>
     </layout>
     
   </extension>

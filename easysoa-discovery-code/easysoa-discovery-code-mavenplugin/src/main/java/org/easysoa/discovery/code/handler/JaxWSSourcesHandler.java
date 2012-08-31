@@ -11,6 +11,7 @@ import org.easysoa.registry.rest.client.types.ServiceImplementationInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
+import org.easysoa.registry.types.OperationImplementation;
 import org.easysoa.registry.types.ServiceImplementation;
 
 import com.thoughtworks.qdox.model.Annotation;
@@ -116,30 +117,25 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                 discoveredNodes.add(serviceDef);
        
                 // Extract operations info
-                StringBuilder operationsInfo = new StringBuilder();
+                List<OperationImplementation> operations = serviceImpl.getOperations();
                 for (JavaMethod method : itfClass.getMethods()) {
                     if (ParsingUtils.hasAnnotation(method, ANN_WEBRESULT)) {
                         Annotation webResultAnn = ParsingUtils.getAnnotation(method, ANN_WEBRESULT);
-                        operationsInfo.append("Operation " + webResultAnn.getProperty("name") + " (");
                         
                         // Extract parameters info
+                        StringBuilder parametersInfo = new StringBuilder();
                         for (JavaParameter parameter : method.getParameters()) {
                             Annotation webParamAnn = ParsingUtils.getAnnotation(parameter, ANN_WEBPARAM);
-                            operationsInfo.append(webParamAnn.getProperty("name").getParameterValue()
+                            parametersInfo.append(webParamAnn.getProperty("name").getParameterValue()
                                     + "=" + parameter.getType().toString() + ", ");
                         }
-                        operationsInfo.delete(operationsInfo.length() - 2, operationsInfo.length());
-                        operationsInfo.append("), ");
+                        operations.add(new OperationImplementation(
+                        		webResultAnn.getProperty("name").toString(),
+                        		parametersInfo.delete(parametersInfo.length()-2, parametersInfo.length()).toString(),
+                        		method.getComment()));
                     }
                 }
-                if (operationsInfo.length() > 0) {
-                    // Cosmetic changes before storage
-                    String operationInfoString = operationsInfo.toString().substring(0, operationsInfo.length() - 2);
-                    operationInfoString = operationInfoString.replace("\"", "'");
-                    serviceImpl.setProperty(ServiceImplementation.XPATH_OPERATIONS, operationInfoString);
-                    //serviceDef.addRequirement(operationInfoString); // TODO
-                }
-            
+                serviceImpl.setOperations(operations);
             }
         }
         
