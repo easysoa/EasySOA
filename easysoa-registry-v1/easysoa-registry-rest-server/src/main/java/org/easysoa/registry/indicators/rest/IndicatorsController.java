@@ -67,7 +67,6 @@ public class IndicatorsController extends ModuleRoot {
 	    nbMap.put("Service", listMap.get("Service").size());
         nbMap.put("SoftwareComponent", session.query(NXQL_SELECT_FROM + "SoftwareComponent" + NXQL_WHERE_NO_PROXY).size());
         nbMap.put("ServiceImplementation", session.query(NXQL_SELECT_FROM + "ServiceImplementation" + NXQL_WHERE_NO_PROXY).size());
-        nbMap.put("OperationImplementation", session.query(NXQL_SELECT_FROM + "OperationImplementation" + NXQL_WHERE_NO_PROXY).size());
         nbMap.put("Deliverable", session.query(NXQL_SELECT_FROM + "Deliverable" + NXQL_WHERE_NO_PROXY).size());
         nbMap.put("DeployedDeliverable", session.query(NXQL_SELECT_FROM + "DeployedDeliverable" + NXQL_WHERE_NO_PROXY).size());
         nbMap.put("Endpoint", session.query(NXQL_SELECT_FROM + "Endpoint" + NXQL_WHERE_NO_PROXY).size());
@@ -96,9 +95,9 @@ public class IndicatorsController extends ModuleRoot {
 
         HashMap<String, Integer> percentMap = new HashMap<String, Integer>();
         
-        percentMap.put("serviceWhithoutImplementation", 100 * serviceWhithoutImplementationNb / nbMap.get("Service"));
-        percentMap.put("serviceWhithoutEndpoint", 100 * (serviceWhithoutImplementationNb + serviceWithImplementationWhithoutEndpointNb) / nbMap.get("Service"));
-        percentMap.put("serviceWithImplementationWhithoutEndpoint", 100 * serviceWithImplementationWhithoutEndpointNb / (nbMap.get("Service") - serviceWhithoutImplementationNb));
+        percentMap.put("serviceWhithoutImplementation", (nbMap.get("Service") == 0) ? -1 : 100 * serviceWhithoutImplementationNb / nbMap.get("Service"));
+        percentMap.put("serviceWhithoutEndpoint", (nbMap.get("Service") == 0) ? -1 :100 * (serviceWhithoutImplementationNb + serviceWithImplementationWhithoutEndpointNb) / nbMap.get("Service"));
+        percentMap.put("serviceWithImplementationWhithoutEndpoint", (nbMap.get("Service") - serviceWhithoutImplementationNb == 0) ? -1 :100 * serviceWithImplementationWhithoutEndpointNb / (nbMap.get("Service") - serviceWhithoutImplementationNb));
 
         // TODO model consistency ex. impl without service
         // TODO for one ex. impl of ONE service => prop to query

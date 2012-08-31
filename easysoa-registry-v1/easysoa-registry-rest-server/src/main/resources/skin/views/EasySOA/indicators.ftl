@@ -153,14 +153,24 @@
   <h2>Nbs</h2>
   <#list nbMap?keys as nbMapKey>
   Nombre de ${nbMapKey}s : ${nbMap[nbMapKey]}
-  <#if percentMap[nbMapKey]> ; Pourcentage : ${percentMap[nbMapKey]}%</#if>
+  <#if percentMap[nbMapKey]>
+  	<#if percentMap[nbMapKey] != -1>
+  		Pourcentage : ${percentMap[nbMapKey]}%
+  	<#else>
+  		Pourcentage : N.A.
+  	</#if>
+  </#if>
   <br/>
   </#list>
 
   <h2>Percent</h2>
   <#list percentMap?keys as percentMapKey>
-  Pourcentage de ${percentMapKey} : ${percentMap[percentMapKey]}%
-  <br/>
+  	<#if percentMap[percentMapKey] != -1>
+  		Pourcentage de ${percentMapKey} : ${percentMap[percentMapKey]}%
+  	<#else>
+  		Pourcentage de ${percentMapKey} : N.A.
+  	</#if>
+  	<br/>
   </#list>
   
   <#-- table style="width: 100%; max-width: 1000px">
