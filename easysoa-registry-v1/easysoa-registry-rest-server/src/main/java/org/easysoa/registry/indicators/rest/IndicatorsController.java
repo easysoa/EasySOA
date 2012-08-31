@@ -98,13 +98,15 @@ public class IndicatorsController extends ModuleRoot {
 
         // Count indicators - ServiceImplementation-specific
         final int IDEAL_DOCUMENTATION_LINES = 40;
-        int undocumentedServiceImpls = 0;
+        int undocumentedServiceImpls = 0, documentationLines = 0;
 		int maxServiceImplsDocQuality = nbMap.get(ServiceImplementation.DOCTYPE) * IDEAL_DOCUMENTATION_LINES;
         int serviceImplsDocQuality = maxServiceImplsDocQuality;
         for (DocumentModel serviceImpl : listMap.get(ServiceImplementation.DOCTYPE)) {
         	String documentation = (String) serviceImpl.getPropertyValue(ServiceImplementation.XPATH_DOCUMENTATION);
         	if (documentation != null && !documentation.isEmpty()) {
-        		serviceImplsDocQuality -= Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - documentation.split("\n").length));
+        		int serviceDocumentationLines = documentation.split("\n").length;
+        		documentationLines += serviceDocumentationLines;
+        		serviceImplsDocQuality -= Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - serviceDocumentationLines));
         	}
         	else {
         		undocumentedServiceImpls++;
@@ -112,6 +114,7 @@ public class IndicatorsController extends ModuleRoot {
         	}
         }
         nbMap.put("Undocumented service implementation", undocumentedServiceImpls);
+        nbMap.put("Lines of documentation per service impl. (average)", (nbMap.get(ServiceImplementation.DOCTYPE) == 0) ? -1 : (documentationLines / nbMap.get(ServiceImplementation.DOCTYPE)));
         
         // Indicators in %
 
