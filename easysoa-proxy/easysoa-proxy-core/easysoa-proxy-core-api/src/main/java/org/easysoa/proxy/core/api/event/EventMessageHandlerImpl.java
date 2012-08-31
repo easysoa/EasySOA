@@ -37,20 +37,22 @@ public class EventMessageHandlerImpl implements
 
 	public EventMessageHandlerImpl() {
 
-		RegexCondition rCondition1 = new RegexCondition(
-				"http://localhost:8200/esb/AirportService");
-		List<Condition> listCompiledCondition1 = new ArrayList<Condition>();
+		//RegexCondition rCondition1 = new RegexCondition(
+		//		"http://localhost:8200/esb/AirportService");
+		List<Condition> listConditions = new ArrayList<Condition>();
 
 		List<String> listServiceToCall1 = new ArrayList<String>();
 		listServiceToCall1.add("http://www.facebook.fr");
 		listServiceToCall1.add("http://www.yahoo.fr");
 		Map<List<Condition>, List<String>> listmap = new HashMap<List<Condition>, List<String>>();
 		// TODO Arranger JXPah condition
-		// JXPathCondition jxpCondition = new JXPathCondition("remoteHost",
-		// "127.0.0.1");
-		listmap.put(listCompiledCondition1, listServiceToCall1);
+		 JXPathCondition jxpCondition = new JXPathCondition("remoteHost",
+		 "127.0.0.1");
+		 
+		 listConditions.add(jxpCondition);
+		listmap.put(listConditions, listServiceToCall1);
 		// listCompiledCondition1.add(jxpCondition);
-		listCompiledCondition1.add(rCondition1);
+		//listCompiledCondition1.add(rCondition1);
 
 		this.setListenedServiceUrlToServicesToLaunchUrlMap(listmap);
 		// Little test of the CompiledCondition

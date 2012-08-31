@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
 /**
  * HTTP incoming message
  * 
- * TODO LATER extract "servlet" code in (Servlet)InMessageBuilder
- * Make it Lazy with several levels (one for headers ..., one for JSONContent or XML content)
+ * TODO LATER extract "servlet" code in (Servlet)InMessageBuilder Make it Lazy
+ * with several levels (one for headers ..., one for JSONContent or XML content)
  * 
  * 
  * @author jguillemotte
@@ -46,7 +46,7 @@ public class InMessage implements Message {
 
 	// Logger
 	private static Logger logger = Logger.getLogger(InMessage.class.getName());
-	
+
 	/**
 	 * Protocol (http, htpps, ...)
 	 */
@@ -60,7 +60,7 @@ public class InMessage implements Message {
 	 */
 	private String server;
 	/**
-	 * Port 
+	 * Port
 	 */
 	private int port;
 	/**
@@ -71,7 +71,7 @@ public class InMessage implements Message {
 	/**
 	 * Complete url including protocol, server, port, path
 	 */
-	//private String completeUrl;
+	// private String completeUrl;
 	/**
 	 * Protocol version
 	 */
@@ -93,110 +93,120 @@ public class InMessage implements Message {
 	 */
 	private String comment;
 	/**
-	 * Message body or entity 
+	 * Message body or entity
 	 */
 	private MessageContent messageContent;
-        
-        /**
-         * Request Sender Host
-         */
-        private String remoteHost;
-	
+
+	/**
+	 * Request Sender Host
+	 */
+	private String remoteHost;
+
 	// private Long headersSize;
 	// private Long bodySize;
-	//private CustomFields customFields;
-	
+	// private CustomFields customFields;
+
 	private long requestTimeStamp = 0;
 
 	/**
 	 * Default constructor
 	 */
-	public InMessage(){
+	public InMessage() {
 		this.comment = "";
 		this.method = "";
 		this.path = "";
 		this.port = -1;
 		this.server = "";
-		//this.customFields = new CustomFields();
+		// this.customFields = new CustomFields();
 		this.headers = new Headers();
 		this.messageContent = new MessageContent();
 		this.postData = new PostData();
 		this.protocol = "";
 		this.protocolVersion = "";
 		this.queryString = new QueryString();
-                this.remoteHost ="";
+		this.remoteHost = "";
 	}
-	
+
 	/**
 	 * 
-	 * @param method HTTP method
-	 * @param path 
+	 * @param method
+	 *            HTTP method
+	 * @param path
 	 */
-	public InMessage(String method, String path){
+	public InMessage(String method, String path) {
 		this.method = method;
 		this.path = path;
 	}
-	
+
 	/**
 	 * Build a InMessage from an HttpServletrequest
-	 * @param request The HttpservletRequest
+	 * 
+	 * @param request
+	 *            The HttpservletRequest
 	 */
-	//public InMessage(HttpMessRequest request){
-	public InMessage(HttpServletRequest request){
-		
+	// public InMessage(HttpMessRequest request){
+	public InMessage(HttpServletRequest request) {
+
 		// TODO : Check this code : WSDL request are not well recorded !
 		this.method = request.getMethod();
 		// Set the headers
 		this.headers = new Headers();
 		Enumeration<String> headerNameEnum = request.getHeaderNames();
-		while(headerNameEnum.hasMoreElements()){
+		while (headerNameEnum.hasMoreElements()) {
 			String headerName = headerNameEnum.nextElement();
-			this.headers.addHeader(new Header(headerName, request.getHeader(headerName)));
+			this.headers.addHeader(new Header(headerName, request
+					.getHeader(headerName)));
 		}
 		// Set protocol, server, port, path
-		this.protocol = request.getProtocol().substring(0,request.getProtocol().indexOf('/'));
-		this.protocolVersion = request.getProtocol().substring(request.getProtocol().indexOf('/')+1);
+		this.protocol = request.getProtocol().substring(0,
+				request.getProtocol().indexOf('/'));
+		this.protocolVersion = request.getProtocol().substring(
+				request.getProtocol().indexOf('/') + 1);
 		this.server = request.getServerName();
 		this.port = request.getServerPort();
 		this.path = request.getRequestURI();
-                this.remoteHost = request.getRemoteHost();
-		//this.completeUrl = request.getRequestURL().toString();
+		this.remoteHost = request.getRemoteHost();
+		// this.completeUrl = request.getRequestURL().toString();
 		// Set url parameters
 		this.queryString = new QueryString();
-		Enumeration<String> parametersNameEnum = request.getParameterNames(); 
-		while(parametersNameEnum.hasMoreElements()){
+		Enumeration<String> parametersNameEnum = request.getParameterNames();
+		while (parametersNameEnum.hasMoreElements()) {
 			String parameterName = parametersNameEnum.nextElement();
-			for(String parameterValue : request.getParameterValues(parameterName)){
-				this.queryString.addQueryParam(new QueryParam(parameterName, parameterValue));
+			for (String parameterValue : request
+					.getParameterValues(parameterName)) {
+				this.queryString.addQueryParam(new QueryParam(parameterName,
+						parameterValue));
 			}
 		}
 		this.messageContent = new MessageContent();
-	    StringBuffer requestBody = new StringBuffer();
-	    BufferedReader requestBodyReader = null;
-	    CharBuffer buffer = CharBuffer.allocate(512); 
+		StringBuffer requestBody = new StringBuffer();
+		BufferedReader requestBodyReader = null;
+		CharBuffer buffer = CharBuffer.allocate(512);
 		try {
-		    requestBodyReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
-		    while( requestBodyReader.read(buffer) >= 0 ) {
-			requestBody.append( buffer.flip() );
-			buffer.clear();
-		    }		    
-		    this.messageContent.setRawContent(requestBody.toString());
-		    this.messageContent.setSize(requestBody.length());
-		    this.messageContent.setMimeType(request.getContentType());
+			requestBodyReader = new BufferedReader(new InputStreamReader(
+					request.getInputStream()));
+			while (requestBodyReader.read(buffer) >= 0) {
+				requestBody.append(buffer.flip());
+				buffer.clear();
+			}
+			this.messageContent.setRawContent(requestBody.toString());
+			this.messageContent.setSize(requestBody.length());
+			this.messageContent.setMimeType(request.getContentType());
 		} catch (Exception ex) {
 			logger.warn("Error while reading request body !", ex);
-		} finally {	    
+		} finally {
 			try {
-				if(requestBodyReader != null){
+				if (requestBodyReader != null) {
 					requestBodyReader.close();
 				}
 			} catch (IOException ex) {
-				//logger.warn("Error while closing the requestBodyReader !", ex);
+				// logger.warn("Error while closing the requestBodyReader !",
+				// ex);
 			}
 		}
 		this.comment = "";
 	}
-	
+
 	public String getProtocol() {
 		return protocol;
 	}
@@ -221,10 +231,10 @@ public class InMessage implements Message {
 		this.port = port;
 	}
 
-	public void setMethod(String method){
+	public void setMethod(String method) {
 		this.method = method;
 	}
-	
+
 	public String getMethod() {
 		return method;
 	}
@@ -269,19 +279,20 @@ public class InMessage implements Message {
 		this.comment = comment;
 	}
 
-	/*public CustomFields getCustomFields() {
-		return customFields;
-	}*/
+	/*
+	 * public CustomFields getCustomFields() { return customFields; }
+	 */
 
-	/*public void setCustomFields(CustomFields customFields) {
-		this.customFields = customFields;
-	}*/
+	/*
+	 * public void setCustomFields(CustomFields customFields) {
+	 * this.customFields = customFields; }
+	 */
 
 	public String getPath() {
 		return path;
 	}
-	
-	public void setPath(String path){
+
+	public void setPath(String path) {
 		this.path = path;
 	}
 
@@ -291,41 +302,38 @@ public class InMessage implements Message {
 
 	public void setMessageContent(MessageContent messageContent) {
 		this.messageContent = messageContent;
-	}	
-	
+	}
+
 	/**
 	 * Builds the complete url
+	 * 
 	 * @return the complete url with protocol, server, port and path
 	 */
 	public String buildCompleteUrl() {
-		//return completeUrl;
+		// return completeUrl;
 		StringBuffer urlBuffer = new StringBuffer();
 		urlBuffer.append(this.protocol.toLowerCase());
 		urlBuffer.append("://");
 		urlBuffer.append(this.server);
-		if(this.port > -1){
+		if (this.port > -1) {
 			urlBuffer.append(":");
 			urlBuffer.append(this.port);
 		}
 		urlBuffer.append(this.path);
-		/*if(!this.queryString.getQueryParams().isEmpty()){
-			urlBuffer.append("?");
-			boolean firstParam = true;
-			for(QueryParam param : this.queryString.getQueryParams()){
-				if(!firstParam){
-					urlBuffer.append("?");
-				}
-				urlBuffer.append(param.getName());
-				urlBuffer.append("=");
-				urlBuffer.append(param.getValue());
-				firstParam = false;
-			}
-		}*/
+		/*
+		 * if(!this.queryString.getQueryParams().isEmpty()){
+		 * urlBuffer.append("?"); boolean firstParam = true; for(QueryParam
+		 * param : this.queryString.getQueryParams()){ if(!firstParam){
+		 * urlBuffer.append("?"); } urlBuffer.append(param.getName());
+		 * urlBuffer.append("="); urlBuffer.append(param.getValue()); firstParam
+		 * = false; } }
+		 */
 		return urlBuffer.toString();
 	}
 
 	/**
 	 * Get the timestamp when the request has been received
+	 * 
 	 * @return
 	 */
 	public long getRequestTimeStamp() {
@@ -334,22 +342,24 @@ public class InMessage implements Message {
 
 	/**
 	 * Set the timestamp
+	 * 
 	 * @param requestTimeStamp
 	 */
 	public void setRequestTimeStamp(long requestTimeStamp) {
 		this.requestTimeStamp = requestTimeStamp;
 	}
 
-	/*public void setCompleteUrl(String completeUrl) {
-		this.completeUrl = completeUrl;
-	}*/
+	/*
+	 * public void setCompleteUrl(String completeUrl) { this.completeUrl =
+	 * completeUrl; }
+	 */
 
-    public String getRemoteHost() {
-        return remoteHost;
-    }
+	public String getRemoteHost() {
+		return remoteHost;
+	}
 
-    public void setRemoteHost(String remoteHost) {
-        this.remoteHost = remoteHost;
-    }     
-   
+	public void setRemoteHost(String remoteHost) {
+		this.remoteHost = remoteHost;
+	}
+
 }

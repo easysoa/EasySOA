@@ -32,7 +32,7 @@ public class JXPathCondition implements Condition {
 	 */
 
 	public JXPathCondition(String name, String value) {
-		this.jxPathRequest = "[" + name + "=" + value + "]";
+		this.jxPathRequest = "[" + name + "='"+value +"']";
 	}
 
 	@Override
@@ -47,15 +47,9 @@ public class JXPathCondition implements Condition {
 	 */
 	@Override
 	public boolean matches(InMessage inMessage) throws JXPathException {
-		// Employee emp =
-		// (Employee)context.getValue("/departmentList/employees[name='Johnny']");
-		InMessage result = (InMessage) JXPathContext.newContext(inMessage)
-				.getValue(this.jxPathRequest);
-		if (result == null) {
-			return false;
-		} else {
-			return true;
-		}
+		JXPathContext context = JXPathContext.newContext(inMessage);
+		Object result  = (String) context.getValue(jxPathRequest);
+		return (Boolean) result;
 	}
 
 	public void setJxPathRequest(String jxPathRequest) {
