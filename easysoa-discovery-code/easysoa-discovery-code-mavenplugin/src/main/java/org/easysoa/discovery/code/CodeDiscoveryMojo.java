@@ -105,7 +105,6 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         if (application != null && !application.trim().isEmpty()) {
             mavenDeliverable.setApplication(application);
         }
-        // TODO Set application from config
         try {
             mavenDeliverable.setProperty(Deliverable.XPATH_LOCATION, projectDirectory.toURI().toURL().toString());
         } catch (MalformedURLException e) {
