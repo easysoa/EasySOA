@@ -11,7 +11,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -48,7 +47,7 @@ import org.nuxeo.runtime.api.Framework;
 public class RegistryApiImpl implements RegistryApi {
     
     @Context HttpServletRequest request;
-    
+
     @POST
     public OperationResult post(SoaNodeInformation soaNodeInfo) throws Exception {
         try {
@@ -56,17 +55,16 @@ public class RegistryApiImpl implements RegistryApi {
             CoreSession documentManager = SessionFactory.getSession(request);
             DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
 
-            // Create SoaNode
-           
+            // Run discovery
             discoveryService.runDiscovery(documentManager, soaNodeInfo.getSoaNodeId(),
                     toObjectProperties(soaNodeInfo.getProperties()), soaNodeInfo.getParentDocuments());
             documentManager.save();
             return new OperationResult(true);
         } catch (Exception e) {
-            return new OperationResult(false, "Failed to update or create document", e);
+            return new OperationResult(false, "Failed to update or create one the documents", e);
         }
     }
-
+    
     @GET
     public SoaNodeInformation get() throws Exception {
         CoreSession documentManager = SessionFactory.getSession(request);
@@ -124,34 +122,6 @@ public class RegistryApiImpl implements RegistryApi {
         }
     }
 
-    @PUT
-    public OperationResult put(
-            SoaNodeInformation soaNodeInfo) throws ClientException {
-        SoaNodeId soaNodeId = soaNodeInfo.getSoaNodeId();
-        try {
-            // Initialization
-            CoreSession documentManager = SessionFactory.getSession(request);
-            DocumentService documentService = Framework.getService(DocumentService.class);
-
-            // Check that the target document exists
-            DocumentModel modelToUpdate = documentService.find(documentManager, soaNodeId);
-            if (modelToUpdate != null) {
-                // Update SoaNode
-                DiscoveryService discoveryService = Framework.getService(DiscoveryService.class);
-                discoveryService.runDiscovery(documentManager, soaNodeId,
-                        toObjectProperties(soaNodeInfo.getProperties()), soaNodeInfo.getParentDocuments());
-                documentManager.save();
-                
-                return new OperationResult(true);
-            }
-            else {
-                throw new Exception("Document to update " + soaNodeId.toString() + " doesn't exist");
-            }
-        } catch (Exception e) {
-            return new OperationResult(false, "Failed to update or create document", e);
-        }
-    }
-    
     @DELETE
     @Path("{doctype}/{name}")
     public OperationResult delete(

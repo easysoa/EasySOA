@@ -126,28 +126,6 @@ public class RegistryApiTest extends AbstractRestApiTest {
     }
 
     @Test
-    public void update() throws Exception {
-        logTestName(logger);
-
-        // Set property to override
-        Map<String, Serializable> properties = new HashMap<String, Serializable>();
-        properties.put("dc:title", "My New Title");
-        SoaNodeInformation soaNodeInfo = new SoaNodeInformation(deliverableId, properties, null);
-
-        // Run request
-        Client client = createAuthenticatedHTTPClient();
-        Builder discoveryRequest = client.resource(discoveryApi.getRootURL()).type(MediaType.APPLICATION_JSON);
-        OperationResult result = discoveryRequest.put(OperationResult.class, soaNodeInfo);
-        documentManager.save(); // FIXME Why is this needed? documentManager.save(); is actually run in the registry API...
-
-        // Check result
-        Assert.assertTrue("Update must be successful", result.isSuccessful());
-        DocumentModel foundDeliverable = documentService.find(documentManager, deliverableId);
-        Assert.assertEquals("Title must have been updated",
-                "My New Title", foundDeliverable.getPropertyValue("dc:title"));
-    }
-
-    @Test
     public void delete() throws Exception {
         logTestName(logger);
 

@@ -15,7 +15,7 @@ import org.nuxeo.runtime.test.runner.Deploy;
 @Deploy("org.easysoa.registry.rest.server")
 @RepositoryConfig(cleanup = Granularity.METHOD)
 public class RestClientTest extends AbstractWebEngineTest {
-
+    
     private RegistryApi registryApi;
     
     public RestClientTest() {
