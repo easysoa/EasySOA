@@ -5,6 +5,7 @@
 
   <xs:element name="technology" type="xs:string" />
   <xs:element name="documentation" type="xs:string" />
+  <xs:element name="ismock" type="xs:string" />
 
   <xs:complexType name="operation">
     <xs:sequence>
@@ -20,5 +21,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="operations" type="nxs:operations" />
-
+  
+  <xs:simpleType name="stringArray">
+    <xs:list itemType="xs:string" />
+  </xs:simpleType>
+  <xs:element name="tests" type="nxs:stringArray" />
+  
 </xs:schema>

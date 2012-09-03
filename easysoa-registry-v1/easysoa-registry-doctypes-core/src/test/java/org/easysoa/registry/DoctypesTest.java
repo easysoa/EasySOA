@@ -1,5 +1,6 @@
 package org.easysoa.registry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -78,7 +79,7 @@ public class DoctypesTest extends AbstractRegistryTest {
     }
     
     @Test
-    public void testServiceImplOperations() throws Exception {
+    public void testServiceImplComplexProps() throws Exception {
 
         // Create ServiceImpl
         SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
@@ -90,6 +91,10 @@ public class DoctypesTest extends AbstractRegistryTest {
         List<OperationImplementation> operations = serviceImpl.getOperations();
         operations.add(new OperationImplementation("Yo", "Param1, Param2", "This does something"));
         serviceImpl.setOperations(operations);
+        List<String> tests = new ArrayList<String>();
+        tests.add("org.easysoa.TestClass1");
+        tests.add("org.easysoa.TestClass2");
+        serviceImpl.setTests(tests);
         
         // Save
         documentManager.saveDocument(serviceImplModel);
@@ -103,5 +108,6 @@ public class DoctypesTest extends AbstractRegistryTest {
         Assert.assertEquals("Yo", operations.get(0).getName());
         Assert.assertEquals("Param1, Param2", operations.get(0).getParameters());
         Assert.assertEquals("This does something", operations.get(0).getDocumentation());
+        Assert.assertEquals(2, serviceImpl.getTests().size());
     }
 }

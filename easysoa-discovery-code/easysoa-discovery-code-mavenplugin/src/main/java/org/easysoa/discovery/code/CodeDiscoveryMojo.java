@@ -3,8 +3,8 @@ package org.easysoa.discovery.code;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +17,7 @@ import org.easysoa.discovery.code.handler.SourcesHandler;
 import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
+import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.Deliverable;
 
@@ -110,7 +111,7 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         } catch (MalformedURLException e) {
             log.error("Failed to convert project location to URL", e);
         }
-        List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
+        List<SoaNodeInformation> discoveredNodes = new ArrayList<SoaNodeInformation>();
         discoveredNodes.add(mavenDeliverable);
 
         // Configure parser
@@ -129,7 +130,10 @@ public class CodeDiscoveryMojo extends AbstractMojo {
             if (discoveredNodes.size() > 0) {
                 for (SoaNodeInformation soaNode : discoveredNodes) {
                     log.info("> " + soaNode.toString());
-                    registryApi.post(soaNode);
+                    OperationResult result = registryApi.post(soaNode);
+                    if (!result.isSuccessful()) {
+                    	throw new IOException(result.getMessage());
+                    }
                 }
             }
         } catch (IOException e) {

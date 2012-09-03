@@ -60,5 +60,20 @@ public class ServiceImplementationAdapter extends SoaNodeAdapter implements Serv
         
     }
 
+	@Override
+	public List<String> getTests() throws Exception {
+		Serializable[] testsArray = (Serializable[]) documentModel.getPropertyValue(XPATH_TESTS);
+		List<String> tests = new ArrayList<String>();
+		for (Serializable test : testsArray) {
+			tests.add(test.toString());
+		}
+		return tests;
+	}
+
+	@Override
+	public void setTests(List<String> tests) throws Exception {
+		documentModel.setPropertyValue(XPATH_TESTS, tests.toArray());
+	}
+
 
 }

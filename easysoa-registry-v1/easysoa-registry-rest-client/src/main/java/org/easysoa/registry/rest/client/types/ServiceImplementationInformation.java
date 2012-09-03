@@ -47,5 +47,20 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
         }
         properties.put(XPATH_OPERATIONS, (Serializable) operationsSerializable);
     }
+
+	@Override
+	public List<String> getTests() throws Exception {
+		Serializable[] testsArray = (Serializable[]) properties.get(XPATH_TESTS);
+		List<String> tests = new ArrayList<String>();
+		for (Serializable test : testsArray) {
+			tests.add(test.toString());
+		}
+		return tests;
+	}
+
+	@Override
+	public void setTests(List<String> tests) throws Exception {
+		properties.put(XPATH_TESTS, (Serializable) tests);
+	}
     
 }

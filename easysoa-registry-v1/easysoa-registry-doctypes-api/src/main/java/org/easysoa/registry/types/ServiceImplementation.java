@@ -18,6 +18,10 @@ public interface ServiceImplementation extends SoaNode {
     
     static final String XPATH_DOCUMENTATION = "impl:documentation";
 
+    static final String XPATH_ISMOCK = "impl:ismock";
+
+    static final String XPATH_TESTS = "impl:tests";
+    
     static final String OPERATION_NAME = "operationName";
     
     static final String OPERATION_PARAMETERS = "operationParameters";
@@ -27,6 +31,9 @@ public interface ServiceImplementation extends SoaNode {
     List<OperationImplementation> getOperations() throws Exception;
     
     void setOperations(List<OperationImplementation> operations) throws Exception;
-    
+
+    List<String> getTests() throws Exception;
+
+    void setTests(List<String> tests) throws Exception;
     
 }

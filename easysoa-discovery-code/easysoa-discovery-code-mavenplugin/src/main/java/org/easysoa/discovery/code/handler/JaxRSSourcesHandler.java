@@ -100,8 +100,8 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
         if (itf != null || pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
             
             // Extract WS info
-            ServiceImplementationInformation serviceImpl = new ServiceImplementationInformation(c.getName());
-            serviceImpl.setTitle(c.getFullyQualifiedName());
+            ServiceImplementationInformation serviceImpl = new ServiceImplementationInformation(c.getFullyQualifiedName());
+            serviceImpl.setTitle(c.getName());
             serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-RS");
             serviceImpl.setProperty(ServiceImplementation.XPATH_DOCUMENTATION, c.getComment());
             serviceImpl.addParentDocument(deliverable.getSoaNodeId());

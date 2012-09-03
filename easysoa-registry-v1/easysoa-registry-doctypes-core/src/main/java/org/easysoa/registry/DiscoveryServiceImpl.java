@@ -36,7 +36,11 @@ public class DiscoveryServiceImpl implements DiscoveryService {
         if (properties != null) {
             for (Entry<String, Object> property : properties.entrySet()) {
                 // FIXME Non-serializable error handling
-                documentModel.setPropertyValue(property.getKey(), (Serializable) property.getValue());
+            	Object propertyValue = property.getValue();
+            	if (propertyValue instanceof Boolean) {
+            		propertyValue = propertyValue.toString();
+            	}
+                documentModel.setPropertyValue(property.getKey(), (Serializable) propertyValue);
             }
             documentManager.saveDocument(documentModel);
         }

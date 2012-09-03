@@ -131,6 +131,12 @@
         <row>
           <widget>serviceimpl_operations</widget>
         </row>
+        <row>
+          <widget>serviceimpl_ismock</widget>
+        </row>
+        <row>
+          <widget>serviceimpl_tests</widget>
+        </row>
       </rows>
       <widget name="serviceimpl_technology" type="text">
         <labels>
@@ -164,6 +170,31 @@
         </widgetModes>
         <properties widgetMode="view">
           <property name="template">/widgets/serviceimpl_operations_template.xhtml</property>
+        </properties>
+      </widget>
+      <widget name="serviceimpl_ismock" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.serviceimpl.ismock</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>impl:ismock</field>
+        </fields>
+      </widget>
+      <widget name="serviceimpl_tests" type="template">
+        <labels>
+          <label mode="any">label.easysoa.layout.serviceimpl.tests</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>impl:tests</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/serviceimpl_tests_template.xhtml</property>
         </properties>
       </widget>
     </layout>

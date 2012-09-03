@@ -18,7 +18,6 @@ import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
 import org.junit.Assert;
 import org.junit.Test;
-import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Deploy;
