@@ -20,7 +20,11 @@
 
 package org.easysoa.registry.indicators.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,9 +34,11 @@ import javax.ws.rs.core.MediaType;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.ServiceImplementation;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.ecm.webengine.model.WebObject;
@@ -74,15 +80,18 @@ public class IndicatorsController extends ModuleRoot {
         nbMap.put("DeployedDeliverable", session.query(NXQL_SELECT_FROM + "DeployedDeliverable" + NXQL_WHERE_NO_PROXY).size());
         nbMap.put("Endpoint", session.query(NXQL_SELECT_FROM + "Endpoint" + NXQL_WHERE_NO_PROXY).size());
         nbMap.put("EndpointConsumer", session.query(NXQL_SELECT_FROM + "EndpointConsumer" + NXQL_WHERE_NO_PROXY).size());
+        nbMap.put("TaggingFolder", session.query(NXQL_SELECT_FROM + "TaggingFolder" + NXQL_WHERE_NO_PROXY).size());
 
         // Count indicators - Service-specific
         int serviceWhithoutImplementationNb = 0;
+        HashSet<String> serviceWhithoutImplementationIdSet = new HashSet<String>(nbMap.get("Service"));
         int serviceWithImplementationWhithoutEndpointNb = 0;
         for (DocumentModel service : listMap.get("Service")) {
             // finding (all) child implems and then their endpoints
             DocumentModelList serviceImpls = getDocumentService().getChildren(session, service.getRef(), ServiceImplementation.DOCTYPE);
             if (serviceImpls.isEmpty()) {
                 serviceWhithoutImplementationNb++;
+                serviceWhithoutImplementationIdSet.add(service.getId());
             } else {
                 for (DocumentModel serviceImpl : serviceImpls) {
                     DocumentModelList endpoints = getDocumentService().getChildren(session, serviceImpl.getRef(), Endpoint.DOCTYPE);
@@ -116,6 +125,39 @@ public class IndicatorsController extends ModuleRoot {
         nbMap.put("Undocumented service implementation", undocumentedServiceImpls);
         nbMap.put("Lines of documentation per service impl. (average)", (nbMap.get(ServiceImplementation.DOCTYPE) == 0) ? -1 : (documentationLines / nbMap.get(ServiceImplementation.DOCTYPE)));
         
+        // not in any software component :
+        DocumentModelList deliverableProxyInASoftwareComponent = session.query(NXQL_SELECT_FROM + "Deliverable"
+                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + " AND ecm:path STARTSWITH '" + "/default-domain/repository/SoftwareComponent" + "'");
+        listMap.put("deliverable in no software component", session.query(NXQL_SELECT_FROM + "Deliverable" + NXQL_WHERE_NO_PROXY
+                + " AND ecm:uuid NOT IN " + getProxiedIdLiteralList(session, deliverableProxyInASoftwareComponent)));
+        nbMap.put("deliverable in no software component", listMap.get("deliverable in no software component").size());
+        listMap.put("deliverable in no software component' implementations", session.query(NXQL_SELECT_FROM + "ServiceImplementation"
+                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Deliverable" + "'"
+                + " AND ecm:parentId NOT IN " + getProxiedIdLiteralList(session, deliverableProxyInASoftwareComponent)));
+        nbMap.put("deliverable in no software component' implementations", listMap.get("deliverable in no software component' implementations").size());
+        DocumentModelList implementationProxyInADeliverable = session.query(NXQL_SELECT_FROM + "ServiceImplementation"
+                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Deliverable" + "'");
+        listMap.put("implementation in no deliverable", session.query(NXQL_SELECT_FROM + "ServiceImplementation" + NXQL_WHERE_NO_PROXY
+                + " AND ecm:uuid NOT IN " + getProxiedIdLiteralList(session, implementationProxyInADeliverable)));
+        nbMap.put("implementation in no deliverable", listMap.get("implementation in no deliverable").size());
+        ArrayList<DocumentModel> implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent = new ArrayList<DocumentModel>(listMap.get("implementation in no deliverable"));
+        implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent.addAll(listMap.get("deliverable in no software component' implementations"));
+        nbMap.put("implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent", implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent.size());
+        DocumentModelList implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentServiceProxy = session.query(NXQL_SELECT_FROM + "ServiceImplementation"
+                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Service" + "'"
+                // + " AND ecm:proxyTargetId IN " + getProxiedIdLiteralList(session, implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent)); // TODO soaid for proxies
+                + " AND ecm:uuid IN " + getIdLiteralList(getProxyIds(session, implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent, null))); // TODO soaid for proxies
+        HashSet<String> implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentServiceIdSet = new HashSet<String>(getParentIds(implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentServiceProxy));
+        nbMap.put("implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentService", implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentServiceIdSet.size());
+        HashSet<String> serviceInNoSoftwareComponentIdSet = new HashSet<String>(implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentServiceIdSet);
+        serviceInNoSoftwareComponentIdSet.addAll(serviceWhithoutImplementationIdSet);
+        nbMap.put("serviceInNoSoftwareComponent", serviceInNoSoftwareComponentIdSet.size());
+        
+        
         // Indicators in %
 
         HashMap<String, Integer> percentMap = new HashMap<String, Integer>();
@@ -126,12 +168,52 @@ public class IndicatorsController extends ModuleRoot {
         
         percentMap.put("Service implementations documentation quality", (maxServiceImplsDocQuality == 0) ? -1 : (100 * serviceImplsDocQuality / maxServiceImplsDocQuality));
 
+        percentMap.put("deliverable in no software component", 100 * nbMap.get("deliverable in no software component") / nbMap.get("Deliverable"));
+        percentMap.put("implementation in no deliverable", 100 * nbMap.get("implementation in no deliverable") / nbMap.get("ServiceImplementation"));
+        percentMap.put("implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent", 100 * nbMap.get("implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent") / nbMap.get("ServiceImplementation"));
+        percentMap.put("implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentService", 100 * nbMap.get("implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentService") / nbMap.get("Service"));
+        percentMap.put("serviceInNoSoftwareComponent", 100 * nbMap.get("serviceInNoSoftwareComponent") / nbMap.get("Service"));
+
         // TODO model consistency ex. impl without service
         // TODO for one ex. impl of ONE service => prop to query
         
         return getView("indicators")
                 .arg("nbMap", nbMap)
                 .arg("percentMap", percentMap);
+    }
+
+    private String getIdLiteralList(List<String> ids) throws ClientException {
+        return "('" + ids.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", "', '") + "')";
+    }
+
+    private String getProxiedIdLiteralList(CoreSession session, List<DocumentModel> proxies) throws ClientException {
+        return getIdLiteralList(getProxiedIds(session, proxies));
+    }
+
+    private List<String> getProxiedIds(CoreSession session, List<DocumentModel> proxies) throws ClientException {
+        ArrayList<String> proxiedIds = new ArrayList<String>();
+        for (DocumentModel proxy : proxies) {
+            proxiedIds.add(session.getWorkingCopy(proxy.getRef()).getId());
+        }
+        return proxiedIds;
+    }
+
+    private List<String> getProxyIds(CoreSession session, List<DocumentModel> docs, DocumentRef root) throws ClientException {
+        ArrayList<String> proxyIds = new ArrayList<String>();
+        for (DocumentModel doc : docs) {
+            for (DocumentModel proxy : session.getProxies(doc.getRef(), root)) {
+                proxyIds.add(proxy.getId());
+            }
+        }
+        return proxyIds;
+    }
+    
+    private List<String> getParentIds(List<DocumentModel> docs) throws ClientException {
+        ArrayList<String> parentIds = new ArrayList<String>();
+        for (DocumentModel doc : docs) {
+            parentIds.add(doc.getParentRef().reference().toString());
+        }
+        return parentIds;
     }
 
     public static DocumentService getDocumentService() throws Exception {
