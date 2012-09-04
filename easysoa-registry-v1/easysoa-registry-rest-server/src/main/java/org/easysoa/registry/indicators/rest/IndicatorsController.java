@@ -20,7 +20,9 @@
 
 package org.easysoa.registry.indicators.rest;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,6 +31,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.types.Endpoint;
+import org.easysoa.registry.types.Service;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -58,6 +61,7 @@ public class IndicatorsController extends ModuleRoot {
     @GET
     public Object doGet() throws Exception {
 	    CoreSession session = SessionFactory.getSession(request);
+	    DocumentService documentService = Framework.getService(DocumentService.class);
         
         HashMap<String, DocumentModelList> listMap = new HashMap<String, DocumentModelList>();
         listMap.put("Service", session.query(NXQL_SELECT_FROM + "Service" + NXQL_WHERE_NO_PROXY));
@@ -80,14 +84,16 @@ public class IndicatorsController extends ModuleRoot {
         int serviceWithImplementationWhithoutEndpointNb = 0;
         for (DocumentModel service : listMap.get("Service")) {
             // finding (all) child implems and then their endpoints
-            DocumentModelList serviceImpls = getDocumentService().getChildren(session, service.getRef(), ServiceImplementation.DOCTYPE);
+            DocumentModelList serviceImpls = documentService.getChildren(session, service.getRef(), ServiceImplementation.DOCTYPE);
             if (serviceImpls.isEmpty()) {
                 serviceWhithoutImplementationNb++;
             } else {
                 for (DocumentModel serviceImpl : serviceImpls) {
                     DocumentModelList endpoints = getDocumentService().getChildren(session, serviceImpl.getRef(), Endpoint.DOCTYPE);
-                    if (endpoints.isEmpty()) {
+                    Serializable isMock = serviceImpl.getPropertyValue(ServiceImplementation.XPATH_ISMOCK);
+                    if ((isMock == null || !Boolean.parseBoolean((String) isMock)) && endpoints.isEmpty()) {
                         serviceWithImplementationWhithoutEndpointNb++;
+                        break;
                     }
                 }
             }
@@ -101,6 +107,8 @@ public class IndicatorsController extends ModuleRoot {
         int undocumentedServiceImpls = 0, documentationLines = 0;
 		int maxServiceImplsDocQuality = nbMap.get(ServiceImplementation.DOCTYPE) * IDEAL_DOCUMENTATION_LINES;
         int serviceImplsDocQuality = maxServiceImplsDocQuality;
+        Map<Serializable, Boolean> hasMock = new HashMap<Serializable, Boolean>();
+        int mockedImplsCount = 0;
         for (DocumentModel serviceImpl : listMap.get(ServiceImplementation.DOCTYPE)) {
         	String documentation = (String) serviceImpl.getPropertyValue(ServiceImplementation.XPATH_DOCUMENTATION);
         	if (documentation != null && !documentation.isEmpty()) {
@@ -112,9 +120,33 @@ public class IndicatorsController extends ModuleRoot {
         		undocumentedServiceImpls++;
         		serviceImplsDocQuality -= IDEAL_DOCUMENTATION_LINES;
         	}
+        	
+        	String parentServiceId = null;
+        	DocumentModelList implParents = documentService.findAllParents(session, serviceImpl);
+        	for (DocumentModel implParent : implParents) {
+        		if (Service.DOCTYPE.equals(implParent.getType())) {
+        			parentServiceId = (String) implParent.getPropertyValue(Service.XPATH_SOANAME);
+        			break;
+        		}
+        	}
+        	if (parentServiceId != null) {
+	        	Serializable isMock = serviceImpl.getPropertyValue(ServiceImplementation.XPATH_ISMOCK);
+				if (isMock != null && Boolean.parseBoolean((String) isMock)) {
+					hasMock.put(parentServiceId, true);
+	        	}
+				else if (!hasMock.containsKey(parentServiceId)) {
+					hasMock.put(parentServiceId, false);
+				}
+        	}
+        }
+        for (Boolean isMock : hasMock.values()) {
+        	if (isMock) {
+        		mockedImplsCount++;
+        	}
         }
         nbMap.put("Undocumented service implementation", undocumentedServiceImpls);
         nbMap.put("Lines of documentation per service impl. (average)", (nbMap.get(ServiceImplementation.DOCTYPE) == 0) ? -1 : (documentationLines / nbMap.get(ServiceImplementation.DOCTYPE)));
+        nbMap.put("Service impls without mock", hasMock.size() - mockedImplsCount);
         
         // Indicators in %
 
@@ -125,6 +157,7 @@ public class IndicatorsController extends ModuleRoot {
         percentMap.put("serviceWithImplementationWhithoutEndpoint", (nbMap.get("Service") - serviceWhithoutImplementationNb == 0) ? -1 :100 * serviceWithImplementationWhithoutEndpointNb / (nbMap.get("Service") - serviceWhithoutImplementationNb));
         
         percentMap.put("Service implementations documentation quality", (maxServiceImplsDocQuality == 0) ? -1 : (100 * serviceImplsDocQuality / maxServiceImplsDocQuality));
+        percentMap.put("Non-mocked service impls", (hasMock.size() > 0) ? (100 * mockedImplsCount / hasMock.size()) : -1);
 
         // TODO model consistency ex. impl without service
         // TODO for one ex. impl of ONE service => prop to query

@@ -52,12 +52,19 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         SoaNodeId service0Id = new SoaNodeId(Service.DOCTYPE, "MyService0");
         SoaNodeId endpointId = new SoaNodeId(Endpoint.DOCTYPE, "MyEndpoint");
         discoveryService.runDiscovery(documentManager, endpointId, null, Arrays.asList(service0Id));
+        
         SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put(ServiceImplementation.XPATH_DOCUMENTATION,
         		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\n" +
         		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah");
-        discoveryService.runDiscovery(documentManager, serviceImplId, properties, null);
+        properties.put(ServiceImplementation.XPATH_ISMOCK, "true");
+        discoveryService.runDiscovery(documentManager, serviceImplId, properties, Arrays.asList(service0Id));
+        discoveryService.runDiscovery(documentManager, 
+        		new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImplNotMock"), null, Arrays.asList(service0Id));
+        discoveryService.runDiscovery(documentManager, 
+        		new SoaNodeId(ServiceImplementation.DOCTYPE, "MyNotMockedImpl"), null,
+        		Arrays.asList(new SoaNodeId(Service.DOCTYPE, "MyNotMockedService")));
         documentManager.save();
         
         logRepository();
