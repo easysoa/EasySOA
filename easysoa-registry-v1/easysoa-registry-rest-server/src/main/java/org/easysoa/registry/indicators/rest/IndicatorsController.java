@@ -41,6 +41,8 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
+import org.nuxeo.ecm.core.api.IterableQueryResult;
+import org.nuxeo.ecm.core.query.sql.NXQL;
 import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.ecm.webengine.model.WebObject;
@@ -75,15 +77,15 @@ public class IndicatorsController extends ModuleRoot {
         // Count indicators
         
 	    HashMap<String, Integer> nbMap = new HashMap<String, Integer>();
-        nbMap.put("SoaNode", session.query(NXQL_SELECT_FROM + "SoaNode" + NXQL_WHERE_NO_PROXY).size());
+        nbMap.put("SoaNode", countFromQuery(session, NXQL_SELECT_FROM + "SoaNode" + NXQL_WHERE_NO_PROXY));
 	    nbMap.put("Service", listMap.get("Service").size());
-        nbMap.put("SoftwareComponent", session.query(NXQL_SELECT_FROM + "SoftwareComponent" + NXQL_WHERE_NO_PROXY).size());
-        nbMap.put("ServiceImplementation", session.query(NXQL_SELECT_FROM + "ServiceImplementation" + NXQL_WHERE_NO_PROXY).size());
-        nbMap.put("Deliverable", session.query(NXQL_SELECT_FROM + "Deliverable" + NXQL_WHERE_NO_PROXY).size());
-        nbMap.put("DeployedDeliverable", session.query(NXQL_SELECT_FROM + "DeployedDeliverable" + NXQL_WHERE_NO_PROXY).size());
-        nbMap.put("Endpoint", session.query(NXQL_SELECT_FROM + "Endpoint" + NXQL_WHERE_NO_PROXY).size());
-        nbMap.put("EndpointConsumer", session.query(NXQL_SELECT_FROM + "EndpointConsumer" + NXQL_WHERE_NO_PROXY).size());
-        nbMap.put("TaggingFolder", session.query(NXQL_SELECT_FROM + "TaggingFolder" + NXQL_WHERE_NO_PROXY).size());
+        nbMap.put("SoftwareComponent", countFromQuery(session, NXQL_SELECT_FROM + "SoftwareComponent" + NXQL_WHERE_NO_PROXY));
+        nbMap.put("ServiceImplementation", countFromQuery(session, NXQL_SELECT_FROM + "ServiceImplementation" + NXQL_WHERE_NO_PROXY));
+        nbMap.put("Deliverable", countFromQuery(session, NXQL_SELECT_FROM + "Deliverable" + NXQL_WHERE_NO_PROXY));
+        nbMap.put("DeployedDeliverable", countFromQuery(session, NXQL_SELECT_FROM + "DeployedDeliverable" + NXQL_WHERE_NO_PROXY));
+        nbMap.put("Endpoint", countFromQuery(session, NXQL_SELECT_FROM + "Endpoint" + NXQL_WHERE_NO_PROXY));
+        nbMap.put("EndpointConsumer", countFromQuery(session, NXQL_SELECT_FROM + "EndpointConsumer" + NXQL_WHERE_NO_PROXY));
+        nbMap.put("TaggingFolder", countFromQuery(session, NXQL_SELECT_FROM + "TaggingFolder" + NXQL_WHERE_NO_PROXY));
 
         // Count indicators - Service-specific
         int serviceWhithoutImplementationNb = 0;
@@ -232,7 +234,12 @@ public class IndicatorsController extends ModuleRoot {
                 .arg("percentMap", percentMap);
     }
 
-    private String getIdLiteralList(List<String> ids) throws ClientException {
+    private int countFromQuery(CoreSession session, String query) throws ClientException {
+		IterableQueryResult queryResult = session.queryAndFetch(query, NXQL.NXQL);
+		return (int) queryResult.size();
+	}
+
+	private String getIdLiteralList(List<String> ids) throws ClientException {
         return "('" + ids.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", "', '") + "')";
     }
 
