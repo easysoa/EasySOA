@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.OperationImplementation;
@@ -17,7 +18,6 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
         super(new SoaNodeId(ServiceImplementation.DOCTYPE, name), null, null);
     }
 
-    @Override
     public List<OperationImplementation> getOperations() {
         // Proper-ish conversion from List<Map<String, Serializable>> hidden behind Serializable, to List<OperationImplementation>
         List<?> operationsUnknown = (List<?>) properties.get(XPATH_OPERATIONS);
@@ -34,7 +34,6 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
         return operations;
     }
     
-    @Override
     public void setOperations(List<OperationImplementation> operations) {
         // Conversion from List<OperationImplementation> to List<Map<String, Serializable>>
         List<Map<String, Serializable>> operationsSerializable = new ArrayList<Map<String, Serializable>>();
@@ -48,7 +47,6 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
         properties.put(XPATH_OPERATIONS, (Serializable) operationsSerializable);
     }
 
-	@Override
 	public List<String> getTests() throws Exception {
 		Serializable[] testsArray = (Serializable[]) properties.get(XPATH_TESTS);
 		List<String> tests = new ArrayList<String>();
@@ -58,12 +56,11 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
 		return tests;
 	}
 
-	@Override
 	public void setTests(List<String> tests) throws Exception {
 		properties.put(XPATH_TESTS, (Serializable) tests);
 	}
 
-	@Override
+	@JsonIgnore
 	public boolean isMock() {
 		return properties.containsKey(XPATH_ISMOCK)
 				&& Boolean.parseBoolean((String) properties.get(XPATH_ISMOCK));

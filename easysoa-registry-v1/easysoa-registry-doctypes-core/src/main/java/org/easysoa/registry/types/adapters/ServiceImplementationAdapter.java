@@ -74,7 +74,7 @@ public class ServiceImplementationAdapter extends SoaNodeAdapter implements Serv
 	public void setTests(List<String> tests) throws Exception {
 		documentModel.setPropertyValue(XPATH_TESTS, tests.toArray());
 	}
-
+	
 	@Override
 	public boolean isMock() throws Exception {
 		String isMock = (String) documentModel.getPropertyValue(XPATH_ISMOCK);
