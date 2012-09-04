@@ -36,4 +36,6 @@ public interface ServiceImplementation extends SoaNode {
 
     void setTests(List<String> tests) throws Exception;
     
+    boolean isMock() throws Exception;
+    
 }

@@ -58,10 +58,17 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         properties.put(ServiceImplementation.XPATH_DOCUMENTATION,
         		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\n" +
         		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah");
+        properties.put(ServiceImplementation.XPATH_TESTS,
+        		Arrays.asList("org.easysoa.MyServiceImplTest"));
         properties.put(ServiceImplementation.XPATH_ISMOCK, "true");
         discoveryService.runDiscovery(documentManager, serviceImplId, properties, Arrays.asList(service0Id));
+        
+        properties.clear();
+        properties.put(ServiceImplementation.XPATH_TESTS,
+        		Arrays.asList("org.easysoa.MyServiceImplTest"));
         discoveryService.runDiscovery(documentManager, 
-        		new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImplNotMock"), null, Arrays.asList(service0Id));
+        		new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImplNotMock"), properties, Arrays.asList(service0Id));
+        
         discoveryService.runDiscovery(documentManager, 
         		new SoaNodeId(ServiceImplementation.DOCTYPE, "MyNotMockedImpl"), null,
         		Arrays.asList(new SoaNodeId(Service.DOCTYPE, "MyNotMockedService")));

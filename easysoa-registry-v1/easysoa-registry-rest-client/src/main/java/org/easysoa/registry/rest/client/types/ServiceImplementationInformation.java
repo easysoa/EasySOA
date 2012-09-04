@@ -62,5 +62,11 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
 	public void setTests(List<String> tests) throws Exception {
 		properties.put(XPATH_TESTS, (Serializable) tests);
 	}
+
+	@Override
+	public boolean isMock() {
+		return properties.containsKey(XPATH_ISMOCK)
+				&& Boolean.parseBoolean((String) properties.get(XPATH_ISMOCK));
+	}
     
 }
