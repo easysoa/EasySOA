@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.easysoa.message.InMessage;
+import org.easysoa.records.ExchangeRecord;
 
 public class RegexCompiledCondition extends RegexCondition {
 
@@ -14,20 +15,21 @@ public class RegexCompiledCondition extends RegexCondition {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param regexCondition
 	 */
 	public RegexCompiledCondition(RegexCondition regexCondition) {
 		this.p = Pattern.compile(regexCondition.getRegex());
 	}
 
-	/** 
+	/**
 	 * @return
 	 */
 	public Pattern getP() {
 		return p;
 	}
-	
-	/** 
+
+	/**
 	 * @param p
 	 */
 	public void setP(Pattern p) {
@@ -35,8 +37,8 @@ public class RegexCompiledCondition extends RegexCondition {
 	}
 
 	@Override
-	public boolean matches(InMessage inMessage) {
-		Matcher m = this.p.matcher(inMessage.buildCompleteUrl());
+	public boolean matches(ExchangeRecord exchangeRecord) {
+		Matcher m = this.p.matcher(exchangeRecord.getInMessage().buildCompleteUrl());
 		return m.matches();
 	}
 

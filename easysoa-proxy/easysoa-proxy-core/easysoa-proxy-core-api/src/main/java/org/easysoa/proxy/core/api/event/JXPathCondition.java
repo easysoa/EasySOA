@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.easysoa.message.InMessage;
+import org.easysoa.records.ExchangeRecord;
 
 /**
  * 
@@ -46,8 +47,8 @@ public class JXPathCondition implements Condition {
 	 * @return true if the inMessage matches with the JXPathCOndition else false
 	 */
 	@Override
-	public boolean matches(InMessage inMessage) throws JXPathException {
-		JXPathContext context = JXPathContext.newContext(inMessage);
+	public boolean matches(ExchangeRecord exchangeRecord) throws JXPathException {
+		JXPathContext context = JXPathContext.newContext(exchangeRecord);
 		Object result  = (String) context.getValue(jxPathRequest);
 		return (Boolean) result;
 	}

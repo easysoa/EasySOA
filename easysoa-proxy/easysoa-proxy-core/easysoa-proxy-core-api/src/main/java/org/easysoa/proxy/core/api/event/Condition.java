@@ -7,6 +7,7 @@ package org.easysoa.proxy.core.api.event;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.easysoa.message.InMessage;
+import org.easysoa.records.ExchangeRecord;
 
 /**
  *
@@ -21,5 +22,5 @@ public interface Condition {
      * @param inMessage
      * @return true if the condition is OK 
      */
-    public abstract boolean matches(InMessage inMessage);
+    public abstract boolean matches(ExchangeRecord exchangeRecord);
 }

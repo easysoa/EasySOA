@@ -103,7 +103,7 @@ public class EventExchangeHandlerTest extends AbstractProxyTestStarter {
 		// assertEquals(records.size(), 0);
 	}
 
-	@Test
+	//@Test
 	public void defaultSubscriptionsTest() throws FraSCAtiServiceException,
 			ClientProtocolException, IOException {
 

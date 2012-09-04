@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.util.RequestForwarder;
+import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Scope;
 
@@ -25,7 +26,7 @@ import org.osoa.sca.annotations.Scope;
  */
 @Scope("Composite")
 public class EventMessageHandlerImpl implements
-		/* MessageHandler, */IEventMessageHandler {
+/* MessageHandler, */IEventMessageHandler {
 
 	private ConditionsMatcher conditionsMatcher = new ConditionsMatcher();
 
@@ -37,8 +38,8 @@ public class EventMessageHandlerImpl implements
 
 	public EventMessageHandlerImpl() {
 
-		//RegexCondition rCondition1 = new RegexCondition(
-		//		"http://localhost:8200/esb/AirportService");
+		// RegexCondition rCondition1 = new RegexCondition(
+		// "http://localhost:8200/esb/AirportService");
 		List<Condition> listConditions = new ArrayList<Condition>();
 
 		List<String> listServiceToCall1 = new ArrayList<String>();
@@ -46,13 +47,13 @@ public class EventMessageHandlerImpl implements
 		listServiceToCall1.add("http://www.yahoo.fr");
 		Map<List<Condition>, List<String>> listmap = new HashMap<List<Condition>, List<String>>();
 		// TODO Arranger JXPah condition
-		 JXPathCondition jxpCondition = new JXPathCondition("remoteHost",
-		 "127.0.0.1");
-		 
-		 listConditions.add(jxpCondition);
+		JXPathCondition jxpCondition = new JXPathCondition("remoteHost",
+				"127.0.0.1");
+
+		listConditions.add(jxpCondition);
 		listmap.put(listConditions, listServiceToCall1);
 		// listCompiledCondition1.add(jxpCondition);
-		//listCompiledCondition1.add(rCondition1);
+		// listCompiledCondition1.add(rCondition1);
 
 		this.setListenedServiceUrlToServicesToLaunchUrlMap(listmap);
 		// Little test of the CompiledCondition
@@ -94,7 +95,9 @@ public class EventMessageHandlerImpl implements
 	@Override
 	public void handleMessage(InMessage inMessage, OutMessage outMessage)
 			throws Exception {
-
+		ExchangeRecord exchangeRecord = new ExchangeRecord();
+		exchangeRecord.setInMessage(inMessage);
+		exchangeRecord.setOutMessage(outMessage);
 		/**
 		 * listenedServiceUrlToServicesToLaunchUrlMap should be use by one
 		 * Thread
@@ -110,7 +113,7 @@ public class EventMessageHandlerImpl implements
 		// TODO maybe we should remove doublons from the serviceToLaunchsUrls
 		for (Entry<List<Condition>, List<String>> currentEntry : entrySetCopy) {
 			List<Condition> listCondition = currentEntry.getKey();
-			if (conditionsMatcher.matchesAll(listCondition, inMessage)) {
+			if (conditionsMatcher.matchesAll(listCondition, exchangeRecord)) {
 				servicesToLaunchUrls = currentEntry.getValue(); // only the
 																// first
 																// servicesToLaunch
@@ -211,11 +214,12 @@ public class EventMessageHandlerImpl implements
 	@Override
 	public Configuration getConfiguration() {
 		Configuration conf = new Configuration();
-		for(Entry<List<Condition>, List<String>> entry : this.listenedServiceUrlToServicesToLaunchUrlMap.entrySet()) {
+		for (Entry<List<Condition>, List<String>> entry : this.listenedServiceUrlToServicesToLaunchUrlMap
+				.entrySet()) {
 			List<Condition> conditions = entry.getKey();
-		    List<String> servicesToCall = entry.getValue();
-		    //TODO Add a subscriptions
-		    conf.addSubscription(new Subscription(conditions, servicesToCall));
+			List<String> servicesToCall = entry.getValue();
+			// TODO Add a subscriptions
+			conf.addSubscription(new Subscription(conditions, servicesToCall));
 		}
 		return conf;
 	}

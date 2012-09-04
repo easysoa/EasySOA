@@ -6,13 +6,14 @@ import java.util.regex.Pattern;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.easysoa.message.InMessage;
+import org.easysoa.records.ExchangeRecord;
 
 /**
  * @author fntangke
  */
 
 @XmlRootElement
-public class RegexCondition  implements Condition {
+public class RegexCondition implements Condition {
 
 	private String regex;
 
@@ -32,6 +33,7 @@ public class RegexCondition  implements Condition {
 	public String getRegex() {
 		return regex;
 	}
+
 	public void setRegex(String regex) {
 		this.regex = regex;
 	}
@@ -43,7 +45,7 @@ public class RegexCondition  implements Condition {
 	}
 
 	@Override
-	public boolean matches(InMessage inMessage) {
+	public boolean matches(ExchangeRecord exchangeRecord) {
 		// TODO Auto-generated method stub
 		return false;
 	}
