@@ -2,8 +2,11 @@ package org.easysoa.discovery.code.handler;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.ParsingUtils;
@@ -44,6 +47,8 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
     private static final String ANN_XML_WSPROVIDER = "javax.xml.ws.WebServiceProvider";
 
     private static final String ANN_JUNIT_TEST = "org.junit.Test";
+    
+    private Map<Type, Type> implsToInterfaces = new HashMap<Type, Type>();
     
     public JaxWSSourcesHandler() {
         super();
@@ -107,12 +112,17 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                 		for (String importedClass : c.getSource().getImports()) {
                 			Type importedType = new JavaClass(importedClass).asType();
 							if (this.wsInjectableTypeSet.contains(importedType)) {
-								// FIXME Should be the main implementation and not the itf 
-								ServiceImplementationInformation serviceImpl = new ServiceImplementationInformation(importedType.getFullyQualifiedName());
-                				List<String> tests = new ArrayList<String>();
-                				tests.add(c.getFullyQualifiedName());
-                				serviceImpl.setTests(tests);
-                				discoveredNodes.add(serviceImpl);
+								// Attach test info to all known implementations of the interface
+								for (Entry<Type, Type> implToInterface : implsToInterfaces.entrySet()) {
+									if (importedType.equals(implToInterface.getValue())) {
+										ServiceImplementationInformation serviceImpl = 
+												new ServiceImplementationInformation(implToInterface.getKey().toGenericString());
+		                				List<String> tests = new ArrayList<String>();
+		                				tests.add(c.getFullyQualifiedName());
+		                				serviceImpl.setTests(tests);
+		                				discoveredNodes.add(serviceImpl);
+									}
+								}
                 			}
                 		}
                 	}
@@ -129,7 +139,6 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         
         // Check JAX-WS annotation
         if (!c.isInterface() && (ParsingUtils.hasAnnotation(c, ANN_WS) || getWsItf(c) != null)) { // TODO superclass ?
-
             // Extract WS info
             ServiceImplementationInformation serviceImpl = new ServiceImplementationInformation(c.getFullyQualifiedName());
             serviceImpl.setTitle(c.getName());
@@ -141,35 +150,34 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
             // Extract interface info
             //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
             JavaClass itfClass = getWsItf(c); // TODO several interfaces ???
-            if (itfClass != null) {
-                
-                // Extract WS info
-                ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
-                serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
-                serviceImpl.setProperty(ServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
-                discoveredNodes.add(serviceDef);
-       
-                // Extract operations info
-                List<OperationImplementation> operations = serviceImpl.getOperations();
-                for (JavaMethod method : itfClass.getMethods()) {
-                    if (ParsingUtils.hasAnnotation(method, ANN_WEBRESULT)) {
-                        Annotation webResultAnn = ParsingUtils.getAnnotation(method, ANN_WEBRESULT);
-                        
-                        // Extract parameters info
-                        StringBuilder parametersInfo = new StringBuilder();
-                        for (JavaParameter parameter : method.getParameters()) {
-                            Annotation webParamAnn = ParsingUtils.getAnnotation(parameter, ANN_WEBPARAM);
-                            parametersInfo.append(webParamAnn.getProperty("name").getParameterValue()
-                                    + "=" + parameter.getType().toString() + ", ");
-                        }
-                        operations.add(new OperationImplementation(
-                        		webResultAnn.getProperty("name").toString(),
-                        		parametersInfo.delete(parametersInfo.length()-2, parametersInfo.length()).toString(),
-                        		method.getComment()));
+        	implsToInterfaces.put(c.asType(), itfClass.asType());
+            
+            // Extract WS info
+            ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
+            serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
+            serviceImpl.setProperty(ServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
+            discoveredNodes.add(serviceDef);
+   
+            // Extract operations info
+            List<OperationImplementation> operations = serviceImpl.getOperations();
+            for (JavaMethod method : itfClass.getMethods()) {
+                if (ParsingUtils.hasAnnotation(method, ANN_WEBRESULT)) {
+                    Annotation webResultAnn = ParsingUtils.getAnnotation(method, ANN_WEBRESULT);
+                    
+                    // Extract parameters info
+                    StringBuilder parametersInfo = new StringBuilder();
+                    for (JavaParameter parameter : method.getParameters()) {
+                        Annotation webParamAnn = ParsingUtils.getAnnotation(parameter, ANN_WEBPARAM);
+                        parametersInfo.append(webParamAnn.getProperty("name").getParameterValue()
+                                + "=" + parameter.getType().toString() + ", ");
                     }
+                    operations.add(new OperationImplementation(
+                    		webResultAnn.getProperty("name").toString(),
+                    		parametersInfo.delete(parametersInfo.length()-2, parametersInfo.length()).toString(),
+                    		method.getComment()));
                 }
-                serviceImpl.setOperations(operations);
             }
+            serviceImpl.setOperations(operations);
         }
         
         // NB. JAXWS WebServiceClient (generated client stub) not reported as such but through injection below
