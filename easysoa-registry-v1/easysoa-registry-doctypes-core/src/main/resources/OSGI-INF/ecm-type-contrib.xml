@@ -36,6 +36,11 @@
         <type>IntelligentSystemTreeRoot</type>
       </subtypes>
     </type>
+    <type id="Workspace" coretype="Workspace">
+      <subtypes>
+        <type>SystemTreeRoot</type>
+      </subtypes>
+    </type>
     <type id="SystemTreeRoot" coretype="SystemTreeRoot">
       <label>System Tree Root</label>
       <icon>/icons/workspace.gif</icon>
