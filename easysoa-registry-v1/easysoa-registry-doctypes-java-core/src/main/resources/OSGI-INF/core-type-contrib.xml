@@ -8,6 +8,8 @@
   <!-- ===================== -->
 
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="javaserviceconsumption" src="schemas/java-service-consumption.xsd" prefix="javasc" />
+    <schema name="javaserviceimplementation" src="schemas/java-service-implementation.xsd" prefix="javasi" />
   </extension>
 
   <!-- ============= -->
@@ -15,6 +17,12 @@
   <!-- ============= -->
   
   <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+    <doctype extends="ServiceConsumption" name="JavaServiceConsumption">
+    	<schema name="javaserviceconsumption" />
+    </doctype>
+    <doctype extends="ServiceImplementation" name="JavaServiceImplementation">
+    	<schema name="javaserviceimplementation" />
+    </doctype>
   </extension>
 
 </component>

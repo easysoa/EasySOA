@@ -64,7 +64,7 @@ public class DocumentServiceTest extends AbstractRegistryTest {
         systemModel = documentService.create(documentManager, MYSYSTEM_ID, "MySystemTitle");
         Assert.assertNotNull("It must be possible to re-create a deleted document", systemModel);
         DocumentModel otherSystemModel = documentService.create(documentManager, MYOTHERSYSTEM_ID,
-                systemModel.getPathAsString(), "MyOtherSystemTitle");
+                systemModel.getPathAsString());
         Assert.assertNotNull("A child system must have been succesfully created", otherSystemModel);
         documentManager.save();
         

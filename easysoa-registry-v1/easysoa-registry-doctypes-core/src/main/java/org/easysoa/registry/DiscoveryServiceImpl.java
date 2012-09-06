@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.easysoa.registry.types.Document;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -75,7 +76,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                             if (pathStepType.equals(placeholderReplacementCandidate.getType())) {
                                 parentDocument = documentService.create(documentManager,
                                         placeholderReplacementCandidate,
-                                        parentDocument.getPathAsString(), null);
+                                        parentDocument.getPathAsString());
                                 placeholderNeeded = false;
                                 break;
                             }
@@ -84,7 +85,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                         if (placeholderNeeded) {
                             parentDocument = documentService.create(documentManager,
                                     new SoaNodeId(pathStepType, IdUtils.generateStringId()),
-                                    parentDocument.getPathAsString(), "(Placeholder)");
+                                    parentDocument.getPathAsString());
+                            parentDocument.setPropertyValue(Document.XPATH_TITLE, "(Placeholder)");
                         }
                     }
                 }
@@ -93,7 +95,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                 if (documentService.findProxy(documentManager, identifier,
                         parentDocument.getPathAsString()) == null) {
                     documentService.create(documentManager, identifier,
-                            parentDocument.getPathAsString(), identifier.getName());
+                            parentDocument.getPathAsString());
                 }
             } 
         }

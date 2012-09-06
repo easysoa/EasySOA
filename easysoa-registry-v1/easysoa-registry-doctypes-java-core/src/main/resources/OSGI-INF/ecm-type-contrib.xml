@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<component name="org.easysoa.registry.doctypes.java.core.ecmtype.contrib">
+
+  <!-- ============ -->
+  <!-- ECM Doctypes -->
+  <!-- ============ -->
+  
+  <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
+
+    <!-- Implementation level -->
+    <type id="Deliverable" coretype="Deliverable">
+      <subtypes>
+        <type>JavaServiceConsumption</type>
+        <type>JavaServiceImplementation</type>
+      </subtypes>
+    </type>
+    <type id="JavaServiceConsumption" coretype="JavaServiceConsumption">
+      <label>Java Service Consumption</label>
+      <icon>/icons/file.gif</icon>
+      <bigIcon>/icons/file_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>soanode</layout>
+        <layout>heading</layout>
+        <layout>javaserviceconsumption</layout>
+      </layouts>
+      <layouts mode="listing">
+        <layout>document_listing</layout>
+        <layout>document_listing_compact_2_columns</layout>
+        <layout>document_listing_icon_2_columns</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
+    <type id="JavaServiceImplementation" coretype="JavaServiceImplementation">
+      <label>Java Service Implementation</label>
+      <icon>/icons/file.gif</icon>
+      <bigIcon>/icons/file_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>soanode</layout>
+        <layout>heading</layout>
+        <layout>javaserviceimplementation</layout>
+      </layouts>
+      <layouts mode="listing">
+        <layout>document_listing</layout>
+        <layout>document_listing_compact_2_columns</layout>
+        <layout>document_listing_icon_2_columns</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
+    
+  </extension>
+
+</component>

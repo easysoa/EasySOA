@@ -1,6 +1,7 @@
 package org.easysoa.registry.types.adapters.java;
 
 import org.apache.log4j.Logger;
+import org.easysoa.registry.types.java.JavaServiceConsumption;
 import org.easysoa.registry.types.java.MavenDeliverable;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.adapter.DocumentAdapterFactory;
@@ -14,6 +15,9 @@ public class JavaDoctypesAdapterFactory implements DocumentAdapterFactory {
         try {
             if (MavenDeliverable.class.equals(itf)) {
                 return new MavenDeliverableAdapter(doc);
+            }
+            if (JavaServiceConsumption.class.equals(itf)) {
+                return new JavaServiceConsumptionAdapter(doc);
             }
         }
         catch (Exception e) {

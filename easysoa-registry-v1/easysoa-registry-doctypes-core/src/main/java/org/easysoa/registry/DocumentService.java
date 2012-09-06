@@ -6,6 +6,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.model.PropertyException;
+import org.nuxeo.ecm.core.query.sql.NXQL;
 
 /**
  * 
@@ -13,7 +14,13 @@ import org.nuxeo.ecm.core.api.model.PropertyException;
  *
  */
 public interface DocumentService {
+    
+    static final String DELETED_DOCUMENTS_QUERY_FILTER = " AND " + NXQL.ECM_LIFECYCLESTATE + " != 'deleted'";
 
+    static final String PROXIES_QUERY_FILTER = " AND " + NXQL.ECM_ISPROXY + " = 0";
+    
+    static final String NON_PROXIES_QUERY_FILTER = " AND " + NXQL.ECM_ISPROXY + " = 1";
+    
     /**
      * Helper for general document creation.
      * Direct use is not recommended for SoaNode types.
@@ -31,17 +38,16 @@ public interface DocumentService {
      * 
      * @throws ClientException
      */
-    DocumentModel create(CoreSession documentManager, SoaNodeId identifier,
-            String parentPath, String title) throws ClientException;
+    DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath) throws ClientException;
 
     /**
      * Creates a document and puts it in the repository. If a document of the same identifier
-     * exists, returns it instead (without setting the title).
+     * exists, returns it instead.
      * Works only with SoaNode types (returns null otherwise).
      * 
      * @throws ClientException
      */
-    DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String defaultTitle)
+    DocumentModel create(CoreSession documentManager, SoaNodeId identifier)
             throws ClientException;
     
     /**

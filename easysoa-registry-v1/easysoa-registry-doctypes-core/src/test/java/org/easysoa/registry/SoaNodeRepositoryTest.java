@@ -59,7 +59,7 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
         // Create System in it
         systemModel = documentService.create(documentManager,
                 new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"),
-                strModel.getPathAsString(), "MySystem");
+                strModel.getPathAsString());
 
         documentManager.save();
 
@@ -96,7 +96,7 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
         // Create already created system
         DocumentModel duplicateModel = documentService.create(documentManager,
                 new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"),
-                strModel.getPathAsString(), "MySystem");
+                strModel.getPathAsString());
         
         // Make sure the system created twice still have only one source
         boolean sourceFound = false;
@@ -114,12 +114,12 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
         // Create new system
         DocumentModel newSystemModel = documentService.create(documentManager,
                 new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem2"),
-                strModel.getPathAsString(), "MySystem2");
+                strModel.getPathAsString());
 
         // Create deliverable to put in both systems
         deliverableModel = documentService.create(documentManager,
                 new SoaNodeId(Deliverable.DOCTYPE, "org.company:mydeliverable"),
-                systemModel.getPathAsString(), "MyDeliverable");
+                systemModel.getPathAsString());
 
         documentManager.save();
 
@@ -138,7 +138,7 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
         // Create a third system
         DocumentModel thirdSystemModel = documentService.create(documentManager,
                 new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem3"),
-                strModel.getPathAsString(), "MySystem3");
+                strModel.getPathAsString());
 
         // Copy the deployable source into it
         DocumentModel sourceDeployableModel = documentManager.getSourceDocument(deliverableModel.getRef());

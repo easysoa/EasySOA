@@ -27,7 +27,7 @@ public class DocumentServiceImpl implements DocumentService {
         return documentModel;
     }
     
-    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath, String defaultTitle) throws ClientException {
+    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath) throws ClientException {
         String doctype = identifier.getType(), name = identifier.getName();
  
         if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
@@ -41,7 +41,7 @@ public class DocumentServiceImpl implements DocumentService {
             PathRef sourceRef = new PathRef(getSourcePath(identifier));
             DocumentModel documentModel;
             if (!documentManager.exists(sourceRef)) {
-                documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), defaultTitle);
+                documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), name);
                 documentModel.setPropertyValue(SoaNode.XPATH_SOANAME, name);
                 documentManager.saveDocument(documentModel);
             }
@@ -68,7 +68,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String title) throws ClientException {
+    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
         String doctype = identifier.getType(), name = identifier.getName();
         
         if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
@@ -78,7 +78,7 @@ public class DocumentServiceImpl implements DocumentService {
             if (!documentManager.exists(sourceRef)) {
                 documentModel = documentManager.createDocumentModel(doctype);
                 documentModel.setPathInfo(getSourceFolderPath(doctype), name);
-                documentModel.setPropertyValue("dc:title", title);
+                documentModel.setPropertyValue("dc:title", name);
                 documentModel.setPropertyValue(SoaNode.XPATH_SOANAME, name);
                 return documentManager.createDocument(documentModel);
             }
@@ -126,7 +126,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     public DocumentModel findDocument(CoreSession documentManager, String type, String name) throws ClientException {
-        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?' AND " + NXQL.ECM_ISPROXY + " = 0",
+        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'"
+                + PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER,
                 new Object[] { type, name },
                 false, true);
         DocumentModelList results = documentManager.query(query);
@@ -140,8 +141,8 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentModelList findProxies(CoreSession documentManager, SoaNodeId identifier)
             throws ClientException {
-        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?' " +
-        		"AND ecm:isProxy = 1",
+        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'"
+                + NON_PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
         return documentManager.query(query);
@@ -177,7 +178,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     public DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
-        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'",
+        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'"
+                + DELETED_DOCUMENTS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
         return documentManager.query(query);

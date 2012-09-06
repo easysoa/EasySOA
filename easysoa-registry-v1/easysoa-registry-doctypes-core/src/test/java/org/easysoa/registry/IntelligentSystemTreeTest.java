@@ -42,12 +42,12 @@ public class IntelligentSystemTreeTest extends AbstractRegistryTest {
         // Create System in it
         DocumentModel systemModel = documentService.create(documentManager,
                 new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"),
-                strModel.getPathAsString(), "MySystem");
+                strModel.getPathAsString());
 
         // Create Endpoint in it
         DocumentModel endpointModel  = documentService.create(documentManager,
                 new SoaNodeId(Endpoint.DOCTYPE, "MyEndpoint"),
-                systemModel.getPathAsString(), "MyEndpoint");
+                systemModel.getPathAsString());
         endpointModel.setPropertyValue(Endpoint.XPATH_ENVIRONMENT, "Production");
         documentManager.saveDocument(endpointModel);
         

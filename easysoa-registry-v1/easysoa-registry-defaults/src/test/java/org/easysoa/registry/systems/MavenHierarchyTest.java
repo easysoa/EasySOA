@@ -46,12 +46,12 @@ public class MavenHierarchyTest extends AbstractRegistryTest {
         // Create System in it
         DocumentModel systemModel = documentService.create(documentManager,
                 new SoaNodeId(TaggingFolder.DOCTYPE, "MySystem"),
-                strModel.getPathAsString(), "MySystem");
+                strModel.getPathAsString());
 
         // Create Deliverable in it
         DocumentModel deliverableModel = documentService.create(documentManager,
                 new SoaNodeId(Deliverable.DOCTYPE, "org.easysoa.registry:myartifact"),
-                systemModel.getPathAsString(), "My Artifact");
+                systemModel.getPathAsString());
         deliverableModel.setPropertyValue(Deliverable.XPATH_NATURE, MavenDeliverable.NATURE);
         documentManager.saveDocument(deliverableModel);
         

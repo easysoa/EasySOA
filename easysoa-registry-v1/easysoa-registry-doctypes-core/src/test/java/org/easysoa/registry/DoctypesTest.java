@@ -71,7 +71,7 @@ public class DoctypesTest extends AbstractRegistryTest {
         // Create a deliverable
         DocumentModel deliverableModel = documentService.create(documentManager, 
                 new SoaNodeId(Deliverable.DOCTYPE, "MyDeliverable"),
-                "/default-domain/workspaces", "MyDeliverable");
+                "/default-domain/workspaces");
         
         // Use its adapter
         Deliverable deliverable = deliverableModel.getAdapter(Deliverable.class);
@@ -85,7 +85,7 @@ public class DoctypesTest extends AbstractRegistryTest {
         // Create ServiceImpl
         SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
         DocumentModel serviceImplModel = documentService.create(documentManager, 
-                serviceImplId, "My Service Impl");
+                serviceImplId);
         
         // Use adapter to manipulate operations
         ServiceImplementation serviceImpl = serviceImplModel.getAdapter(ServiceImplementation.class);
