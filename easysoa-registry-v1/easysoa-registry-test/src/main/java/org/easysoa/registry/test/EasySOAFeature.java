@@ -1,6 +1,7 @@
 package org.easysoa.registry.test;
 
 import org.nuxeo.runtime.test.runner.Deploy;
+import org.nuxeo.runtime.test.runner.LocalDeploy;
 import org.nuxeo.runtime.test.runner.SimpleFeature;
 
 /**
@@ -9,7 +10,14 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
  * 
  */
 @Deploy({
-    // Needed by the DocumentModelHelper
+    "org.easysoa.registry.test",
+    
+    // Relations support
+    "org.nuxeo.ecm.relations.api",
+    "org.nuxeo.ecm.relations",
+    "org.nuxeo.ecm.relations.jena",
+    
+    // Needed by the DocumentModelHelper to fetch doctype UI names
     "org.nuxeo.ecm.platform.types.api",
     "org.nuxeo.ecm.platform.types.core",
     
@@ -17,6 +25,10 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.easysoa.registry.doctypes.api",
     "org.easysoa.registry.doctypes.core"
 })
+@LocalDeploy(
+    // Default graph contribution
+    "org.easysoa.registry.test:OSGI-INF/test-relation-jena-contrib.xml"
+)
 public class EasySOAFeature extends SimpleFeature {
 
 //    private static Logger logger = Logger.getLogger(EasySOAFeature.class);

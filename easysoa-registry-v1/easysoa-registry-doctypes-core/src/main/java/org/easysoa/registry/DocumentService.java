@@ -36,12 +36,12 @@ public interface DocumentService {
 
     /**
      * Creates a document and puts it in the repository. If a document of the same identifier
-     * exists, returns it instead.
+     * exists, returns it instead (without setting the title).
      * Works only with SoaNode types (returns null otherwise).
      * 
      * @throws ClientException
      */
-    DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String title)
+    DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String defaultTitle)
             throws ClientException;
     
     /**

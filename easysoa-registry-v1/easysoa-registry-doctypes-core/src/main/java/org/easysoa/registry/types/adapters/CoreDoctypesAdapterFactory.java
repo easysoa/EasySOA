@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.DeployedDeliverable;
 import org.easysoa.registry.types.Endpoint;
+import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.adapter.DocumentAdapterFactory;
@@ -20,6 +21,9 @@ public class CoreDoctypesAdapterFactory implements DocumentAdapterFactory {
             }
             if (ServiceImplementation.class.equals(itf)) {
                 return new ServiceImplementationAdapter(doc);
+            }
+            if (EndpointConsumption.class.equals(itf)) {
+                return new EndpointConsumptionAdapter(doc);
             }
             if (DeployedDeliverable.class.equals(itf)) {
                 return new DeployedDeliverableAdapter(doc);

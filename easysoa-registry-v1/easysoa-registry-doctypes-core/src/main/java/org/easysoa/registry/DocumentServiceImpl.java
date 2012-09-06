@@ -27,7 +27,7 @@ public class DocumentServiceImpl implements DocumentService {
         return documentModel;
     }
     
-    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath, String title) throws ClientException {
+    public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath, String defaultTitle) throws ClientException {
         String doctype = identifier.getType(), name = identifier.getName();
  
         if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
@@ -41,7 +41,7 @@ public class DocumentServiceImpl implements DocumentService {
             PathRef sourceRef = new PathRef(getSourcePath(identifier));
             DocumentModel documentModel;
             if (!documentManager.exists(sourceRef)) {
-                documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), title);
+                documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), defaultTitle);
                 documentModel.setPropertyValue(SoaNode.XPATH_SOANAME, name);
                 documentManager.saveDocument(documentModel);
             }

@@ -8,6 +8,7 @@ import org.easysoa.registry.test.AbstractRegistryTest;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.DeployedDeliverable;
 import org.easysoa.registry.types.Endpoint;
+import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.IntelligentSystemTreeRoot;
 import org.easysoa.registry.types.OperationImplementation;
@@ -109,5 +110,29 @@ public class DoctypesTest extends AbstractRegistryTest {
         Assert.assertEquals("Param1, Param2", operations.get(0).getParameters());
         Assert.assertEquals("This does something", operations.get(0).getDocumentation());
         Assert.assertEquals(2, serviceImpl.getTests().size());
+    }
+    
+    @Test
+    public void testEndpointConsumptionRelations() throws Exception {
+        // Create endpoint consumption
+        SoaNodeId endpointConsumptionId = new SoaNodeId(EndpointConsumption.DOCTYPE, "MyConsumption");
+        DocumentModel endpointConsumptionModel = documentService.create(documentManager,
+                endpointConsumptionId, "MyConsumption");
+        EndpointConsumption endpointConsumption = endpointConsumptionModel.getAdapter(EndpointConsumption.class);
+        Assert.assertNotNull("EndpointConsumption adapter must be available", endpointConsumption);
+        documentManager.save();
+        
+        // Manipulate and test it
+        Assert.assertNull("EndpointConsumption must not initially consume endpoints",
+                endpointConsumption.getConsumedEndpoint());
+        SoaNodeId consumedEndpoint = new SoaNodeId(Endpoint.DOCTYPE, "Blah");
+        endpointConsumption.setConsumedEndpoint(consumedEndpoint);
+        Assert.assertEquals("EndpointConsumption must be set as expected", consumedEndpoint,
+                endpointConsumption.getConsumedEndpoint());
+        DocumentModel foundEndpointModel = documentService.find(documentManager, consumedEndpoint);
+        Assert.assertNotNull("Consumed endpoint must be created", foundEndpointModel);
+        endpointConsumption.setConsumedEndpoint(null);
+        Assert.assertNull("EndpointConsumption must be removed",
+                endpointConsumption.getConsumedEndpoint());
     }
 }

@@ -260,6 +260,32 @@
         <type>Endpoint</type>
       </subtypes>
     </type>
+    <type id="EndpointConsumption" coretype="EndpointConsumption">
+      <label>Endpoint Consumption</label>
+      <icon>/icons/file.gif</icon>
+      <bigIcon>/icons/file_100.png</bigIcon>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>soanode</layout>
+        <layout>heading</layout>
+      </layouts>
+      <layouts mode="listing">
+        <layout>document_listing</layout>
+        <layout>document_listing_compact_2_columns</layout>
+        <layout>document_listing_icon_2_columns</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+      <subtypes>
+        <type>Endpoint</type>
+      </subtypes>
+    </type>
 
     <!-- Deployment level -->
     <type id="DeployedDeliverable" coretype="DeployedDeliverable">
