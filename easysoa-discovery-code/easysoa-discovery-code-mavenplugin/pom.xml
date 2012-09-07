@@ -29,6 +29,18 @@
       <artifactId>easysoa-registry-doctypes-java-api</artifactId>
       <version>${easysoa.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-rest-server</artifactId>
+      <version>${easysoa.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+      <artifactId>easysoa-registry-test</artifactId>
+      <version>${easysoa.version}</version>
+      <scope>test</scope>
+    </dependency>
     
     <!-- Maven parsing -->
     <dependency>

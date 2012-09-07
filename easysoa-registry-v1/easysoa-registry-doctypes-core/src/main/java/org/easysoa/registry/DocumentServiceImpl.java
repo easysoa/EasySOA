@@ -54,8 +54,13 @@ public class DocumentServiceImpl implements DocumentService {
             if (createProxy) {
                 PathRef parentRef = new PathRef(parentPath);
                 DocumentModel parentModel = documentManager.getDocument(parentRef);
-                if (parentModel.isProxy()) {
-                    parentModel = find(documentManager, createSoaNodeId(parentModel));
+                if (parentModel != null) {
+                    if (parentModel.isProxy()) {
+                        parentModel = find(documentManager, createSoaNodeId(parentModel));
+                    }
+                }
+                else {
+                    throw new ClientException("Invalid parent path: " + parentPath);
                 }
                 return documentManager.createProxy(documentModel.getRef(), parentModel.getRef());
             }

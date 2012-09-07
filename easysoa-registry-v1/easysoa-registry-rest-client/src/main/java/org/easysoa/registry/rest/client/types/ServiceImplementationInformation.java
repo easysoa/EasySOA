@@ -13,7 +13,7 @@ import org.easysoa.registry.types.OperationImplementation;
 import org.easysoa.registry.types.ServiceImplementation;
 
 public class ServiceImplementationInformation extends SoaNodeInformation implements ServiceImplementation {
-
+    
     public ServiceImplementationInformation(String name) {
         super(new SoaNodeId(ServiceImplementation.DOCTYPE, name), null, null);
     }
@@ -65,5 +65,13 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
 		return properties.containsKey(XPATH_ISMOCK)
 				&& Boolean.parseBoolean((String) properties.get(XPATH_ISMOCK));
 	}
-    
+
+    public static ServiceImplementationInformation create(SoaNodeInformation soaNodeInfo) {
+        // TODO Convertor service, or anything cleaner that this?
+        ServiceImplementationInformation result = new ServiceImplementationInformation(soaNodeInfo.getSoaName());
+        result.setProperties(soaNodeInfo.getProperties());
+        result.setParentDocuments(soaNodeInfo.getParentDocuments());
+        return result;
+    }
+	
 }

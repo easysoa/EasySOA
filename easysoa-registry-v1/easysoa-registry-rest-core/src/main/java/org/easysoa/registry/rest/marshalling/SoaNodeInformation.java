@@ -34,10 +34,6 @@ public class SoaNodeInformation implements SoaNode {
         this.parentDocuments = (parentDocuments == null) ? new LinkedList<SoaNodeId>() : parentDocuments;
     }
 
-    public String getDoctype() {
-        return id.getType();
-    }
-    
     @Override
     public SoaNodeId getSoaNodeId() {
         return id;

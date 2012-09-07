@@ -31,9 +31,8 @@ public class RelationsTest extends AbstractRegistryTest {
     @Test
     public void testRelationCreationAndAccess() throws Exception {
         DocumentModel endpointConsumptionModel = documentService.create(documentManager, new SoaNodeId(
-                EndpointConsumption.DOCTYPE, "Foo"), "Foo");
-        DocumentModel endpointModel = documentService.create(documentManager, new SoaNodeId(Endpoint.DOCTYPE, "Bar"),
-                "Bar");
+                EndpointConsumption.DOCTYPE, "Foo"));
+        DocumentModel endpointModel = documentService.create(documentManager, new SoaNodeId(Endpoint.DOCTYPE, "Bar"));
 
         // Create and read relation
         

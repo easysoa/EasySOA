@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
+import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.ParsingUtils;
 import org.easysoa.registry.rest.client.types.ServiceImplementationInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
@@ -34,7 +35,8 @@ public class JaxRSSourcesHandler extends InterfaceHandlerBase implements Sources
       };
 
     public Collection<SoaNodeInformation> handleSources(JavaSource[] sources, 
-            MavenDeliverableInformation mavenDeliverable, Log log) throws Exception {
+            MavenDeliverableInformation mavenDeliverable, 
+            CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
 
         // Pass 1 : Find all WS interfaces if any

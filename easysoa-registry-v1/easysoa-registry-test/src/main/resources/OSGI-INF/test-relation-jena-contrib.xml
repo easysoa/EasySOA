@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<component name="test.jena.contribs">
+<component name="org.easysoa.test.jena.contrib">
 
-  <!-- memory graph -->
+  <!-- Memory graph -->
   <extension target="org.nuxeo.ecm.platform.relations.services.RelationService"
     point="graphs">
     <graph name="default" type="jena">

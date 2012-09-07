@@ -65,6 +65,24 @@ public class RegistryApiImpl implements RegistryApi {
         }
     }
     
+    @POST
+    @Path("query")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public SoaNodeInformation[] query(String query) throws Exception {
+        try {
+            CoreSession documentManager = SessionFactory.getSession(request);
+            DocumentModelList modelList = documentManager.query(query + DocumentService.DELETED_DOCUMENTS_QUERY_FILTER);
+            SoaNodeInformation soaNodes[] = new SoaNodeInformation[modelList.size()];
+            int i = 0;
+            for (DocumentModel model : modelList) {
+                soaNodes[i++] = SoaNodeInformationFactory.create(documentManager, model);
+            }
+            return soaNodes;
+        } catch (Exception e) {
+            throw new Exception("Failed to query documents with '" + query +"'", e);
+        }
+    }
+    
     @GET
     public SoaNodeInformation get() throws Exception {
         CoreSession documentManager = SessionFactory.getSession(request);
@@ -74,7 +92,7 @@ public class RegistryApiImpl implements RegistryApi {
 
     @GET
     @Path("{doctype}")
-    public List<SoaNodeInformation> get(
+    public SoaNodeInformation[] get(
             @PathParam("doctype") String doctype) throws Exception {
         // Initialization
         CoreSession documentManager = SessionFactory.getSession(request);
@@ -95,7 +113,7 @@ public class RegistryApiImpl implements RegistryApi {
         }
 
         // Write response
-        return modelsToMarshall;
+        return modelsToMarshall.toArray(new SoaNodeInformation[]{});
     }
 
     @GET

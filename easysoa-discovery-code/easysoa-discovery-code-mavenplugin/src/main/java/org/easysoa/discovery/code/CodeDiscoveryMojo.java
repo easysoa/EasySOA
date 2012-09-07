@@ -120,8 +120,9 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         
         // Iterate through classes to find WSes
         JavaSource[] sources = builder.getSources();
+        CodeDiscoveryRegistryClient registryClient = new CodeDiscoveryRegistryClient(registryApi);
         for (SourcesHandler handler : availableHandlers.values()) {
-            discoveredNodes.addAll(handler.handleSources(sources, mavenDeliverable, log));
+            discoveredNodes.addAll(handler.handleSources(sources, mavenDeliverable, registryClient, log));
         }
         
         // Build and send discovery request

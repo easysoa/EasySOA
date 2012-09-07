@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.maven.plugin.logging.Log;
+import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
+import org.easysoa.discovery.code.JavaServiceImplementationInformation;
 import org.easysoa.discovery.code.ParsingUtils;
 import org.easysoa.registry.rest.client.types.ServiceImplementationInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
@@ -60,7 +62,7 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
     
     @Override
     public Collection<SoaNodeInformation> handleSources(JavaSource[] sources,
-            MavenDeliverableInformation mavenDeliverable, Log log) throws Exception {
+            MavenDeliverableInformation mavenDeliverable, CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         Collection<SoaNodeInformation> discoveredNodes = new ArrayList<SoaNodeInformation>();
         
         // Pass 1 : Find all WS clients/interfaces
@@ -112,17 +114,32 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
                 		for (String importedClass : c.getSource().getImports()) {
                 			Type importedType = new JavaClass(importedClass).asType();
 							if (this.wsInjectableTypeSet.contains(importedType)) {
-								// Attach test info to all known implementations of the interface
-								for (Entry<Type, Type> implToInterface : implsToInterfaces.entrySet()) {
-									if (importedType.equals(implToInterface.getValue())) {
-										ServiceImplementationInformation serviceImpl = 
-												new ServiceImplementationInformation(implToInterface.getKey().toGenericString());
-		                				List<String> tests = new ArrayList<String>();
-		                				tests.add(c.getFullyQualifiedName());
-		                				serviceImpl.setTests(tests);
-		                				discoveredNodes.add(serviceImpl);
-									}
-								}
+							    // Try to attach test to existing non-mock impls
+							    boolean foundOriginalImplementation = false;
+							    SoaNodeInformation[] matchingRegistryImpls = registryClient
+							            .findImplsByInterface(importedType.toGenericString());
+							    for (SoaNodeInformation matchingRegistryImpl : matchingRegistryImpls) {
+							       ServiceImplementationInformation serviceImplInfo = 
+							               ServiceImplementationInformation.create(matchingRegistryImpl);
+							       if (!serviceImplInfo.isMock()) {
+							           foundOriginalImplementation = true;
+                                       discoveredNodes.add(createTestDiscovery(
+                                               matchingRegistryImpl.getSoaName(),
+                                               c.getFullyQualifiedName()));
+							       }
+							    }
+							    
+								// Otherwise, attach test info to all known implementations of the interface
+							    if (!foundOriginalImplementation) {
+    								for (Entry<Type, Type> implToInterface : implsToInterfaces.entrySet()) {
+    									if (importedType.equals(implToInterface.getValue())) {
+    		                				discoveredNodes.add(createTestDiscovery(
+    		                				        implToInterface.getKey().toGenericString(),
+    		                				        c.getFullyQualifiedName()));
+    									}
+    								}
+							    }
+							    
                 			}
                 		}
                 	}
@@ -131,6 +148,14 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         }
         
         return discoveredNodes;
+    }
+    
+    public JavaServiceImplementationInformation createTestDiscovery(String serviceImplName, String testName) throws Exception {
+        JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(serviceImplName);
+        List<String> tests = new ArrayList<String>();
+        tests.add(testName);
+        serviceImpl.setTests(tests);
+        return serviceImpl;
     }
     
     public Collection<SoaNodeInformation> handleClass(JavaClass c, JavaSource[] sources,

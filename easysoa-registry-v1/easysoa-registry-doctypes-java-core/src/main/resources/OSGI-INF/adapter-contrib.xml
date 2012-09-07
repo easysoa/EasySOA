@@ -8,6 +8,8 @@
   <extension target="org.nuxeo.ecm.core.api.DocumentAdapterService" point="adapters">
     <adapter class="org.easysoa.registry.types.java.MavenDeliverable"
      factory="org.easysoa.registry.types.adapters.java.JavaDoctypesAdapterFactory" />
+    <adapter class="org.easysoa.registry.types.java.JavaServiceConsumption"
+     factory="org.easysoa.registry.types.adapters.java.JavaDoctypesAdapterFactory" />
   </extension>
 
 

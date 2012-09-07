@@ -50,8 +50,7 @@ public class EndpointConsumptionAdapter extends SoaNodeAdapter implements Endpoi
         RelationsHelper.deleteOutgoingRelations(documentManager, documentModel, PREDICATE_CONSUMES);
         DocumentService documentService = Framework.getService(DocumentService.class);
         if (consumedEndpoint != null) {
-            DocumentModel consumedEndpointModel = documentService.create(documentManager,
-                    consumedEndpoint, consumedEndpoint.getName());
+            DocumentModel consumedEndpointModel = documentService.create(documentManager, consumedEndpoint);
             RelationsHelper.createRelation(documentManager, documentModel, PREDICATE_CONSUMES, consumedEndpointModel);
         }
     }

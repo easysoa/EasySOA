@@ -30,7 +30,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
         // Fetch or create document
         DocumentModel documentModel = documentService.find(documentManager, identifier);
         if (documentModel == null) {
-            documentModel = documentService.create(documentManager, identifier, identifier.getName());
+            documentModel = documentService.create(documentManager, identifier);
         }
         
         // Set properties
@@ -63,7 +63,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                 else {
                     // Create parent if necessary
                     if (parentDocument == null) {
-                        parentDocument = documentService.create(documentManager, parentDocumentId, parentDocumentId.getName());
+                        parentDocument = documentService.create(documentManager, parentDocumentId);
                     }
                     
                     // Link the intermediate documents 

@@ -116,8 +116,7 @@ public class DoctypesTest extends AbstractRegistryTest {
     public void testEndpointConsumptionRelations() throws Exception {
         // Create endpoint consumption
         SoaNodeId endpointConsumptionId = new SoaNodeId(EndpointConsumption.DOCTYPE, "MyConsumption");
-        DocumentModel endpointConsumptionModel = documentService.create(documentManager,
-                endpointConsumptionId, "MyConsumption");
+        DocumentModel endpointConsumptionModel = documentService.create(documentManager, endpointConsumptionId);
         EndpointConsumption endpointConsumption = endpointConsumptionModel.getAdapter(EndpointConsumption.class);
         Assert.assertNotNull("EndpointConsumption adapter must be available", endpointConsumption);
         documentManager.save();

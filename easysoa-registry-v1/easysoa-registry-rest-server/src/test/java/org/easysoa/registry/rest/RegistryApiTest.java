@@ -146,4 +146,19 @@ public class RegistryApiTest extends AbstractRestApiTest {
                 documentService.findProxies(documentManager, deliverableId).isEmpty());
     }
 
+    @Test
+    public void query() throws Exception {
+        logTestName(logger);
+        
+        documentService.create(documentManager, new SoaNodeId(Endpoint.DOCTYPE, "EndpointToQuery"));
+        
+        Client client = createAuthenticatedHTTPClient();
+        Builder discoveryRequest = client.resource(discoveryApi.getRootURL())
+                .path("query")
+                .type(MediaType.TEXT_PLAIN);
+       SoaNodeInformation[] foundEndpoints = discoveryRequest.post(SoaNodeInformation[].class, "SELECT * FROM Endpoint WHERE dc:title = 'EndpointToQuery'");
+       Assert.assertTrue(foundEndpoints.length == 1);
+       Assert.assertEquals("EndpointToQuery", foundEndpoints[0].getProperties().get("dc:title"));
+        
+    }
 }

@@ -35,19 +35,18 @@ public class DocumentServiceTest extends AbstractRegistryTest {
     
     @Test
     public void testModelCreation() throws ClientException {
-        DocumentModel systemModel = documentService.create(documentManager,
-                MYSYSTEM_ID, "MySystemTitle");
+        DocumentModel systemModel = documentService.create(documentManager, MYSYSTEM_ID);
         documentManager.save();
         Assert.assertNotNull(systemModel);
-        Assert.assertEquals(systemModel.getName(), "MySystem");
-        Assert.assertEquals(systemModel.getTitle(), "MySystemTitle");
+        Assert.assertEquals(MYSYSTEM_ID.getName(), systemModel.getName());
+        Assert.assertEquals(MYSYSTEM_ID.getName(), systemModel.getTitle());
     }
 
     @Test
     public void testModelQuery() throws ClientException {
         DocumentModel systemModel = documentService.find(documentManager, MYSYSTEM_ID);
         Assert.assertNotNull("Created system must be found by name", systemModel);
-        Assert.assertEquals(systemModel.getTitle(), "MySystemTitle");
+        Assert.assertEquals(MYSYSTEM_ID.getName(), systemModel.getTitle());
         Assert.assertTrue("Returned document must be in the repository, in the System folder",
                 systemModel.getPathAsString().startsWith(RepositoryHelper.REPOSITORY_REF.toString()));
     }
@@ -61,7 +60,7 @@ public class DocumentServiceTest extends AbstractRegistryTest {
         documentManager.save();
         
         // Re-create some documents
-        systemModel = documentService.create(documentManager, MYSYSTEM_ID, "MySystemTitle");
+        systemModel = documentService.create(documentManager, MYSYSTEM_ID);
         Assert.assertNotNull("It must be possible to re-create a deleted document", systemModel);
         DocumentModel otherSystemModel = documentService.create(documentManager, MYOTHERSYSTEM_ID,
                 systemModel.getPathAsString());

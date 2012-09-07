@@ -59,14 +59,22 @@
   <!-- Modules -->
   <!-- ======= -->
   <modules>
+    <!-- Framework -->
     <module>easysoa-registry-test</module>
+    
+    <!-- Core -->
     <module>easysoa-registry-doctypes-api</module>
     <module>easysoa-registry-doctypes-core</module>
-    <module>easysoa-registry-doctypes-java-api</module>
-    <module>easysoa-registry-doctypes-java-core</module>
     <module>easysoa-registry-rest-core</module>
     <module>easysoa-registry-rest-server</module>
     <module>easysoa-registry-rest-client</module>
+    
+    <!-- Java -->
+    <module>easysoa-registry-doctypes-java-api</module>
+    <module>easysoa-registry-doctypes-java-core</module>
+    <module>easysoa-registry-rest-server-java</module>
+    
+    <!-- Packaging -->
     <module>easysoa-registry-jsf-branding</module>
     <module>easysoa-registry-defaults</module>
   </modules>

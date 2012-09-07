@@ -9,8 +9,6 @@ public interface SoaNode extends Document {
 
     public static final String XPATH_SOANAME = "soan:name";
 
-    String getDoctype() throws Exception;
-    
     SoaNodeId getSoaNodeId() throws Exception;
 
     String getSoaName() throws Exception;

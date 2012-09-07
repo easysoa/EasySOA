@@ -18,6 +18,8 @@ import org.nuxeo.runtime.api.Framework;
 
 public class SoaNodeInformationFactory {
 
+    private SoaNodeInformationFactory() {}
+    
     public static SoaNodeInformation create(
             CoreSession documentManager, DocumentModel model) throws Exception {
         DocumentService documentService = Framework.getService(DocumentService.class);
