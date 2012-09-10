@@ -12,12 +12,12 @@ import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.JavaServiceImplementationInformation;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.registry.rest.client.types.ServiceImplementationInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.OperationImplementation;
 import org.easysoa.registry.types.ServiceImplementation;
+import org.easysoa.registry.types.java.JavaServiceImplementation;
 
 import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -118,16 +118,12 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
 							    boolean foundOriginalImplementation = false;
 							    SoaNodeInformation[] matchingRegistryImpls = registryClient
 							            .findImplsByInterface(importedType.toGenericString());
-							    for (SoaNodeInformation matchingRegistryImpl : matchingRegistryImpls) {
-							       ServiceImplementationInformation serviceImplInfo = 
-							               ServiceImplementationInformation.create(matchingRegistryImpl);
-							       if (!serviceImplInfo.isMock()) {
-							           foundOriginalImplementation = true;
-                                       discoveredNodes.add(createTestDiscovery(
-                                               matchingRegistryImpl.getSoaName(),
-                                               c.getFullyQualifiedName()));
-							       }
-							    }
+                                for (SoaNodeInformation matchingRegistryImpl : matchingRegistryImpls) {
+                                    foundOriginalImplementation = true;
+                                    discoveredNodes.add(createTestDiscovery(
+                                            matchingRegistryImpl.getSoaName(),
+                                            c.getFullyQualifiedName()));
+                                }
 							    
 								// Otherwise, attach test info to all known implementations of the interface
 							    if (!foundOriginalImplementation) {
@@ -164,20 +160,22 @@ public class JaxWSSourcesHandler extends InterfaceHandlerBase implements Sources
         
         // Check JAX-WS annotation
         if (!c.isInterface() && (ParsingUtils.hasAnnotation(c, ANN_WS) || getWsItf(c) != null)) { // TODO superclass ?
-            // Extract WS info
-            ServiceImplementationInformation serviceImpl = new ServiceImplementationInformation(c.getFullyQualifiedName());
-            serviceImpl.setTitle(c.getName());
-            serviceImpl.setProperty(ServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
-            serviceImpl.setProperty(ServiceImplementation.XPATH_ISMOCK, c.getSource().getURL().getPath().contains("src/test/"));
-            serviceImpl.addParentDocument(deliverable.getSoaNodeId());
-            discoveredNodes.add(serviceImpl);
-            
             // Extract interface info
             //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
             JavaClass itfClass = getWsItf(c); // TODO several interfaces ???
-        	implsToInterfaces.put(c.asType(), itfClass.asType());
+            implsToInterfaces.put(c.asType(), itfClass.asType());
             
             // Extract WS info
+            JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(c.getFullyQualifiedName());
+            serviceImpl.setTitle(c.getName());
+            serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
+            serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK,
+                    c.getSource().getURL().getPath().contains("src/test/"));
+            serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itfClass.getFullyQualifiedName());
+            serviceImpl.addParentDocument(deliverable.getSoaNodeId());
+            discoveredNodes.add(serviceImpl);
+            
+            // Extract service info
             ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
             serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
             serviceImpl.setProperty(ServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());

@@ -33,7 +33,11 @@ import com.thoughtworks.qdox.model.JavaSource;
  * @author mkalam-alami
  *
  */
-@Deploy("org.easysoa.registry.rest.server")
+@Deploy({
+    "org.easysoa.registry.doctypes.java.api",
+    "org.easysoa.registry.doctypes.java.core",
+    "org.easysoa.registry.rest.server"
+})
 @RepositoryConfig(cleanup = Granularity.CLASS)
 public class SourceHandlersTest extends AbstractWebEngineTest {
 
@@ -51,7 +55,7 @@ public class SourceHandlersTest extends AbstractWebEngineTest {
     public void testSourceHandlers() throws Exception {
         // Init registry client
         ClientBuilder clientBuilder = new ClientBuilder();
-        clientBuilder.setNuxeoSitesUrl("http://localhost:8082");
+       // clientBuilder.setNuxeoSitesUrl("http://localhost:8082");
         RegistryApi registryApi = clientBuilder.constructRegistryApi();
         
         // Set sources to explore

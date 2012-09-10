@@ -162,7 +162,14 @@ public final class WebResourceFactory implements InvocationHandler {
         }
 
         // create a new UriBuilder appending the @Path attached to the method
-        WebResource newTarget = target;//addPathFromMethod(method, args, target);
+        WebResource newTarget;
+        Path p = method.getAnnotation(Path.class);
+        if (p != null && !p.value().contains("{")) {
+            newTarget = addPathFromAnnotation(method, target);
+        }
+        else {
+            newTarget = target;
+        }
 
         if (httpMethod == null) {
             if (newTarget == target) {

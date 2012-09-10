@@ -54,17 +54,24 @@
       <artifactId>batik-ext</artifactId>
       <version>1.7</version>
     </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
     
     <!-- easysoa tests -->
     <dependency>
       <groupId>org.easysoa.discovery</groupId>
-      <artifactId>easysoa-discovery-rest-client</artifactId>
+      <artifactId>easysoa-discovery-rest-mock</artifactId>
       <version>0.9-SNAPSHOT</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>3.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -83,10 +90,10 @@
               <goal>discover</goal>
             </goals>
             <configuration>
-                <nuxeoSitesUrl>http://localhost:8080/nuxeo/site</nuxeoSitesUrl>
-                <username>Administrator</username>
-                <password>Administrator</password>
-                <application>AXXX</application>
+              <nuxeoSitesUrl>http://localhost:8080/nuxeo/site</nuxeoSitesUrl>
+              <username>Administrator</username>
+              <password>Administrator</password>
+              <application>AXXX</application>
             </configuration>
           </execution>
         </executions>
@@ -106,9 +113,7 @@
                 <pluginExecution>
                   <pluginExecutionFilter>
                     <groupId>org.easysoa.discovery.code</groupId>
-                    <artifactId>
-                      easysoa-discovery-code-mavenplugin
-                    </artifactId>
+                    <artifactId>easysoa-discovery-code-mavenplugin</artifactId>
                     <versionRange>[0.9-SNAPSHOT,)</versionRange>
                     <goals>
                       <goal>discover</goal>

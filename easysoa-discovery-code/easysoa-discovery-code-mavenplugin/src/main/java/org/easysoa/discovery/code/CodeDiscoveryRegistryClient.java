@@ -15,8 +15,8 @@ public class CodeDiscoveryRegistryClient {
     public SoaNodeInformation[] findImplsByInterface(String wsInterface) throws Exception {
         return registryApi.query("SELECT * FROM " 
         + JavaServiceImplementation.DOCTYPE + " WHERE "
-        + JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE + " = "
-        + "'" + wsInterface + "'");
+        + JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE + " = '" + wsInterface + "'"
+        + " AND " + JavaServiceImplementation.XPATH_ISMOCK + " != 'true'");
     }
     
 }

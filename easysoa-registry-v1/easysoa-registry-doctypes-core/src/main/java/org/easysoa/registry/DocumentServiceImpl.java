@@ -211,7 +211,10 @@ public class DocumentServiceImpl implements DocumentService {
         // Fetch parents
         DocumentModelList parents = new DocumentModelListImpl();
         for (DocumentModel modelInstance : modelInstances) {
-            parents.add(documentManager.getParentDocument(modelInstance.getRef()));
+            DocumentModel parentDocument = documentManager.getParentDocument(modelInstance.getRef());
+            if (!parents.contains(parentDocument)) {
+                parents.add(parentDocument);
+            }
         }
         return parents;
     }

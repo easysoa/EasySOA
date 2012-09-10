@@ -39,7 +39,7 @@
       </rows>
       <widget name="javaserviceimplementation_implementedInterface" type="text">
         <labels>
-          <label mode="any">label.easysoa.layout.javasi.implementedInterface</label>
+          <label mode="any">label.easysoa.layout.javasi.implementedinterface</label>
         </labels>
         <translated>true</translated>
         <fields>

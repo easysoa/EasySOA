@@ -72,7 +72,6 @@
     <!-- Java -->
     <module>easysoa-registry-doctypes-java-api</module>
     <module>easysoa-registry-doctypes-java-core</module>
-    <module>easysoa-registry-rest-server-java</module>
     
     <!-- Packaging -->
     <module>easysoa-registry-jsf-branding</module>

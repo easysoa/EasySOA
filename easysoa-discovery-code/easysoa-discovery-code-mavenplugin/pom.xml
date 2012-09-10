@@ -26,7 +26,7 @@
     </dependency>
     <dependency>
       <groupId>org.easysoa.registry</groupId>
-      <artifactId>easysoa-registry-doctypes-java-api</artifactId>
+      <artifactId>easysoa-registry-doctypes-java-core</artifactId>
       <version>${easysoa.version}</version>
     </dependency>
     <dependency>

@@ -89,4 +89,7 @@ public class SoaNodeInformation implements SoaNode {
         return this.id.toString();
     }
     
+    protected void setDoctype(String doctype) {
+        this.id.setType(doctype);
+    }
 }

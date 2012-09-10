@@ -2,11 +2,14 @@ package org.easysoa.registry;
 
 import org.easysoa.registry.test.AbstractRegistryTest;
 import org.easysoa.registry.types.Deliverable;
+import org.easysoa.registry.types.java.JavaServiceConsumption;
+import org.easysoa.registry.types.java.JavaServiceImplementation;
 import org.easysoa.registry.types.java.MavenDeliverable;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.schema.SchemaManager;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
@@ -25,6 +28,15 @@ public class JavaDoctypesAdaptersTest extends AbstractRegistryTest {
 
     @Inject
     DocumentService documentService;
+
+    @Inject
+    SchemaManager schemaManager;
+    
+    @Test
+    public void testDoctypes() throws ClientException {
+        Assert.assertNotNull(schemaManager.getDocumentType(JavaServiceImplementation.DOCTYPE));
+        Assert.assertNotNull(schemaManager.getDocumentType(JavaServiceConsumption.DOCTYPE));
+    }
     
     @Test
     public void testMavenAdapter() throws ClientException {

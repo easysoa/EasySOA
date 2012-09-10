@@ -32,5 +32,11 @@
         <artifactId>easysoa-registry-doctypes-java-core</artifactId>
         <scope>test</scope>
     </dependency>
+    
+    <!-- Nuxeo -->
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-platform-types-core</artifactId>
+    </dependency>
   </dependencies>
 </project>

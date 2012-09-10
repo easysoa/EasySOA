@@ -8,6 +8,7 @@
   <name>EasySOA Discovery Code</name>
 
   <modules>
+    <module>easysoa-discovery-rest-mock</module>
     <module>easysoa-discovery-code-mavenplugin</module>
     <module>easysoa-discovery-code-sample</module>
   </modules>
