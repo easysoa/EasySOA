@@ -13,6 +13,6 @@ public interface SourcesHandler {
 
     public Collection<SoaNodeInformation> handleSources(JavaSource[] sources,
             MavenDeliverableInformation mavenDeliverable,
-            CodeDiscoveryRegistryClient registryClient, Log log) throws Exception ;
+            CodeDiscoveryRegistryClient registryClient, Log log) throws Exception;
     
 }
