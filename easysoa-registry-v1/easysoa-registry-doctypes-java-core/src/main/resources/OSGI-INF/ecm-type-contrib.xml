@@ -46,6 +46,7 @@
       <layouts mode="any">
         <layout>soanode</layout>
         <layout>heading</layout>
+        <layout>serviceimpl</layout>
         <layout>javaserviceimplementation</layout>
       </layouts>
       <layouts mode="listing">
