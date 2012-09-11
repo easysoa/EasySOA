@@ -20,7 +20,7 @@ public class DeliverableAdapter extends SoaNodeAdapter implements Deliverable {
     }
     
     public String getDoctype() {
-        return DOCTYPE;
+        return Deliverable.DOCTYPE;
     }
 
     public String getNature() throws ClientException {

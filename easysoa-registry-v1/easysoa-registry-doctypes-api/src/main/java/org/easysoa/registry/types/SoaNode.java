@@ -4,6 +4,8 @@ import org.easysoa.registry.SoaNodeId;
 
 
 public interface SoaNode extends Document {
+
+    public static final String DOCTYPE = "SoaNode";
     
     public static final String FACET = "SoaNode";
 

@@ -30,7 +30,7 @@ public class EndpointConsumptionAdapter extends SoaNodeAdapter implements Endpoi
 
     @Override
     public String getDoctype() {
-        return DOCTYPE;
+        return EndpointConsumption.DOCTYPE;
     }
 
     @Override

@@ -9,6 +9,7 @@
   </parent>
 
   <artifactId>easysoa-discovery-rest-mock</artifactId>
+  <name>EasySOA Discovery mock REST client and repository</name>
 
   <dependencies>
     <dependency>

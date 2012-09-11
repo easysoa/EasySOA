@@ -21,7 +21,7 @@ public class EndpointAdapter extends SoaNodeAdapter implements Endpoint {
 
     @Override
     public String getDoctype() {
-        return DOCTYPE;
+        return Endpoint.DOCTYPE;
     }
     
     public String getEnvironment() throws PropertyException, ClientException {

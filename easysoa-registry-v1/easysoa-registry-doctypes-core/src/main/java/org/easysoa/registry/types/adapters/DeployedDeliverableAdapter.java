@@ -21,7 +21,7 @@ public class DeployedDeliverableAdapter extends SoaNodeAdapter implements Deploy
 
     @Override
     public String getDoctype() {
-        return DOCTYPE;
+        return DeployedDeliverable.DOCTYPE;
     }
     
     public String getEnvironment() throws PropertyException, ClientException {

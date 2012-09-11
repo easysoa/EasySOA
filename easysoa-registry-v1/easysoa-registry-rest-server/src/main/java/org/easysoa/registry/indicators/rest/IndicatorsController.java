@@ -20,34 +20,31 @@
 
 package org.easysoa.registry.indicators.rest;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.easysoa.registry.DocumentService;
+import org.apache.log4j.Logger;
+import org.easysoa.registry.types.Deliverable;
+import org.easysoa.registry.types.DeployedDeliverable;
 import org.easysoa.registry.types.Endpoint;
+import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.Service;
 import org.easysoa.registry.types.ServiceImplementation;
-import org.nuxeo.ecm.core.api.ClientException;
+import org.easysoa.registry.types.SoaNode;
+import org.easysoa.registry.types.SoftwareComponent;
+import org.easysoa.registry.types.TaggingFolder;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.IterableQueryResult;
-import org.nuxeo.ecm.core.query.sql.NXQL;
-import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * Indicators
@@ -60,64 +57,36 @@ import org.nuxeo.runtime.api.Framework;
 @Path("easysoa")
 public class IndicatorsController extends ModuleRoot {
 
-    private static final String NXQL_SELECT_FROM = "SELECT * FROM ";
-	private static final String NXQL_CRITERIA_NO_PROXY = "ecm:currentLifeCycleState <> 'deleted' " +
-                "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0";
-    private static final String NXQL_WHERE_NO_PROXY = " WHERE " + NXQL_CRITERIA_NO_PROXY;
+    private static Logger logger = Logger.getLogger(IndicatorsController.class);
+    
+    // XXX Categories are currently unused by view
+    public static final String CATEGORY_DOCTYPE_COUNTS = "Doctype counts";
+    public static final String CATEGORY_MISC = "Miscellaneous";
+    
+//    private static final String NXQL_SELECT_FROM = "SELECT * FROM ";
+//	private static final String NXQL_CRITERIA_NO_PROXY = "ecm:currentLifeCycleState <> 'deleted' " +
+//                "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0";
+//    private static final String NXQL_WHERE_NO_PROXY = " WHERE " + NXQL_CRITERIA_NO_PROXY;
 
-    @GET
-    public Object doGet() throws Exception {
-	    CoreSession session = SessionFactory.getSession(request);
-	    DocumentService documentService = Framework.getService(DocumentService.class);
+    private Map<String, List<IndicatorProvider>> indicatorProviders = new HashMap<String, List<IndicatorProvider>>();
+    
+    public IndicatorsController() {
+        // Document count by type
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(SoaNode.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(Service.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(SoftwareComponent.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(ServiceImplementation.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(Deliverable.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(DeployedDeliverable.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(Endpoint.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(EndpointConsumption.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(TaggingFolder.DOCTYPE));
         
-        HashMap<String, DocumentModelList> listMap = new HashMap<String, DocumentModelList>();
-        listMap.put("Service", session.query(NXQL_SELECT_FROM + "Service" + NXQL_WHERE_NO_PROXY));
-        listMap.put(ServiceImplementation.DOCTYPE, session.query(NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE + NXQL_WHERE_NO_PROXY));
-
-        // Count indicators
-        
-	    HashMap<String, Integer> nbMap = new HashMap<String, Integer>();
-        nbMap.put("SoaNode", countFromQuery(session, NXQL_SELECT_FROM + "SoaNode" + NXQL_WHERE_NO_PROXY));
-	    nbMap.put("Service", listMap.get("Service").size());
-        nbMap.put("SoftwareComponent", countFromQuery(session, NXQL_SELECT_FROM + "SoftwareComponent" + NXQL_WHERE_NO_PROXY));
-        nbMap.put("ServiceImplementation", countFromQuery(session, NXQL_SELECT_FROM + "ServiceImplementation" + NXQL_WHERE_NO_PROXY));
-        nbMap.put("Deliverable", countFromQuery(session, NXQL_SELECT_FROM + "Deliverable" + NXQL_WHERE_NO_PROXY));
-        nbMap.put("DeployedDeliverable", countFromQuery(session, NXQL_SELECT_FROM + "DeployedDeliverable" + NXQL_WHERE_NO_PROXY));
-        nbMap.put("Endpoint", countFromQuery(session, NXQL_SELECT_FROM + "Endpoint" + NXQL_WHERE_NO_PROXY));
-        nbMap.put("EndpointConsumer", countFromQuery(session, NXQL_SELECT_FROM + "EndpointConsumer" + NXQL_WHERE_NO_PROXY));
-        nbMap.put("TaggingFolder", countFromQuery(session, NXQL_SELECT_FROM + "TaggingFolder" + NXQL_WHERE_NO_PROXY));
-
-        // Count indicators - Service-specific
-        int serviceWhithoutImplementationNb = 0;
-        HashSet<String> serviceWhithoutImplementationIdSet = new HashSet<String>(nbMap.get("Service"));
-        int serviceWithImplementationWhithoutEndpointNb = 0;
-        for (DocumentModel service : listMap.get("Service")) {
-            // finding (all) child implems and then their endpoints
-            DocumentModelList serviceImpls = getDocumentService().getChildren(session, service.getRef(), ServiceImplementation.DOCTYPE);
-            if (serviceImpls.isEmpty()) {
-                serviceWhithoutImplementationNb++;
-                serviceWhithoutImplementationIdSet.add(service.getId());
-            } else {
-            	boolean isAServiceWithImplementationWhithoutEndpoint = true;
-                for (DocumentModel serviceImplModel : serviceImpls) {
-                    DocumentModelList endpoints = getDocumentService().getChildren(session, serviceImplModel.getRef(), Endpoint.DOCTYPE);
-                    ServiceImplementation serviceImpl = serviceImplModel.getAdapter(ServiceImplementation.class);
-                    if (!serviceImpl.isMock() && endpoints.isEmpty()) {
-                    	isAServiceWithImplementationWhithoutEndpoint = false;
-                        break;
-                    }
-                }
-                if (isAServiceWithImplementationWhithoutEndpoint) {
-                	serviceWithImplementationWhithoutEndpointNb++;
-                }
-            }
-        }
-        nbMap.put("serviceWhithoutImplementation", serviceWhithoutImplementationNb); // TODO "main" vs "test" implementation
-        nbMap.put("serviceWithImplementationWhithoutEndpoint", serviceWithImplementationWhithoutEndpointNb); // TODO "test", "integration", "staging" ("design", "dev")
-        nbMap.put("serviceWhithoutEndpoint", serviceWhithoutImplementationNb + serviceWithImplementationWhithoutEndpointNb);
-
+        // Services with missing impls/endpoints
+        addIndicator(CATEGORY_MISC, new ServiceStateProvider());
+	    
         // Count indicators - ServiceImplementation-specific
-        final int IDEAL_DOCUMENTATION_LINES = 40;
+        /*final int IDEAL_DOCUMENTATION_LINES = 40;
         int undocumentedServiceImpls = 0, documentationLines = 0;
 		int maxServiceImplsDocQuality = nbMap.get(ServiceImplementation.DOCTYPE) * IDEAL_DOCUMENTATION_LINES;
         int serviceImplsDocQuality = maxServiceImplsDocQuality;
@@ -173,8 +142,9 @@ public class IndicatorsController extends ModuleRoot {
         nbMap.put("Undocumented service implementation", undocumentedServiceImpls);
         nbMap.put("Lines of documentation per service impl. (average)", (nbMap.get(ServiceImplementation.DOCTYPE) == 0) ? -1 : (documentationLines / nbMap.get(ServiceImplementation.DOCTYPE)));
         nbMap.put("Service impls without mock", nonMockImplsCount - mockedImplsCount);
-        nbMap.put("Service impls without test", nonMockImplsCount - testedImplsCount);
+        nbMap.put("Service impls without test", nonMockImplsCount - testedImplsCount);*/
         
+        /*
         // not in any software component :
         DocumentModelList deliverableProxyInASoftwareComponent = session.query(NXQL_SELECT_FROM + "Deliverable"
                 + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
@@ -228,13 +198,100 @@ public class IndicatorsController extends ModuleRoot {
 
         // TODO model consistency ex. impl without service
         // TODO for one ex. impl of ONE service => prop to query
+        */
+    }
+
+    public void addIndicator(String category, IndicatorProvider indicator) {
+        if (!indicatorProviders.containsKey(category)) {
+            indicatorProviders.put(category, new ArrayList<IndicatorProvider>());
+        }
+        indicatorProviders.get(category).add(indicator);
+    }
+
+    @GET
+    public Object doGet() throws Exception {
+        CoreSession session = SessionFactory.getSession(request);
+        
+        List<IndicatorProvider> computedProviders = new ArrayList<IndicatorProvider>();
+        List<IndicatorProvider> pendingProviders = new ArrayList<IndicatorProvider>();
+        Map<String, IndicatorValue> computedIndicators = new HashMap<String, IndicatorValue>();
+        Map<String, Map<String, IndicatorValue>> indicatorsByCategory = new HashMap<String, Map<String, IndicatorValue>>();
+        int previousComputedProvidersCount = -1;
+
+        // Compute indicators in several passes, with respect to dependencies
+        while (computedProviders.size() != previousComputedProvidersCount) {
+            previousComputedProvidersCount = computedProviders.size();
+            
+            for (Entry<String, List<IndicatorProvider>> indicatorProviderCategory : indicatorProviders.entrySet()) {
+                // Start or continue indicator category
+                Map<String, IndicatorValue> categoryIndicators = indicatorsByCategory.get(indicatorProviderCategory.getKey());
+                if (categoryIndicators == null) {
+                    categoryIndicators = new HashMap<String, IndicatorValue>();
+                }
+                
+                // Browse all providers
+                for (IndicatorProvider indicatorProvider : indicatorProviderCategory.getValue()) {
+                    if (!computedProviders.contains(indicatorProvider)) {
+                        // Compute indicator only if the dependencies are already computed
+                        List<String> requiredIndicators = indicatorProvider.getRequiredIndicators();
+                        boolean allRequirementsSatisfied = true;
+                        if (requiredIndicators != null) {
+                            for (String requiredIndicator : requiredIndicators) {
+                                if (!computedIndicators.containsKey(requiredIndicator)) {
+                                    allRequirementsSatisfied = false;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // Actual indicator calculation
+                        if (allRequirementsSatisfied) {
+                            Map<String, IndicatorValue> indicators = indicatorProvider
+                                    .computeIndicators(session, computedIndicators);
+                            if (indicators != null) {
+                                categoryIndicators.putAll(indicators);
+                                computedIndicators.putAll(indicators);
+                            }
+                            
+                            computedProviders.add(indicatorProvider);
+                            pendingProviders.remove(indicatorProvider);
+                        }
+                        else {
+                            pendingProviders.add(indicatorProvider);
+                        }
+                    }
+                }
+                indicatorsByCategory.put(indicatorProviderCategory.getKey(), categoryIndicators);
+            }
+        }
+        
+        // Warn if some indicators have been left pending 
+        for (IndicatorProvider pendingProvider : pendingProviders) {
+            logger.warn(pendingProvider.getClass().getName()
+                    + " provider dependencies could not be satisfied ("
+                    + pendingProvider.getRequiredIndicators() + ")");
+        }
+        
+        // Create and return view
+        HashMap<String, Integer> nbMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> percentMap = new HashMap<String, Integer>();
+        for (Map<String, IndicatorValue> indicatorCategory : indicatorsByCategory.values()) {
+            for (Entry<String, IndicatorValue> indicator : indicatorCategory.entrySet()) {
+                if (indicator.getValue().getCount() != -1) {
+                    nbMap.put(indicator.getKey(), indicator.getValue().getCount());
+                }
+                if (indicator.getValue().getPercentage() != -1) {
+                    percentMap.put(indicator.getKey(), indicator.getValue().getPercentage());
+                }
+            }
+        }
         
         return getView("indicators")
                 .arg("nbMap", nbMap)
                 .arg("percentMap", percentMap);
     }
 
-    private int countFromQuery(CoreSession session, String query) throws ClientException {
+ /*   private int countFromQuery(CoreSession session, String query) throws ClientException {
 		IterableQueryResult queryResult = session.queryAndFetch(query, NXQL.NXQL);
 		return (int) queryResult.size();
 	}
@@ -279,6 +336,6 @@ public class IndicatorsController extends ModuleRoot {
             throw new WebException("Unable to get documentService");
         }
         return documentService;
-    }
+    }*/
 
 }

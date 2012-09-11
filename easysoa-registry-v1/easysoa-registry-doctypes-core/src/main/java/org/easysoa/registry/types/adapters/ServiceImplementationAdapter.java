@@ -27,7 +27,7 @@ public class ServiceImplementationAdapter extends SoaNodeAdapter implements Serv
     }
     
     public String getDoctype() {
-        return DOCTYPE;
+        return ServiceImplementation.DOCTYPE;
     }
 
     @Override

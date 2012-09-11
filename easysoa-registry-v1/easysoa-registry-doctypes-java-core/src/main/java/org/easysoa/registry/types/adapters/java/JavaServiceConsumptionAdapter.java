@@ -22,7 +22,7 @@ public class JavaServiceConsumptionAdapter extends SoaNodeAdapter implements Jav
 
     @Override
     public String getDoctype() {
-        return DOCTYPE;
+        return JavaServiceConsumption.DOCTYPE;
     }
 
     @Override
