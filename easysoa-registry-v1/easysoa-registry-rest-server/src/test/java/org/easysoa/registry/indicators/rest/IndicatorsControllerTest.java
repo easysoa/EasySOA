@@ -91,6 +91,7 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
 
         // (technical component (same ?!?))
 
+        
         // business component (as folder, or could be in model TODO)
         SoaNodeId businessProcessSystem1Id = new SoaNodeId(TaggingFolder.DOCTYPE, "BusinessProcessSystem1");
         discoveryService.runDiscovery(documentManager, businessProcessSystem1Id, null, null);
@@ -109,6 +110,10 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         discoveryService.runDiscovery(documentManager, new SoaNodeId(ServiceImplementation.DOCTYPE, "ServiceImplementation1"),
                 null, Arrays.asList(deliverable1id));
         
+        SoaNodeId noBusinessProcessSoftwareComponentId = new SoaNodeId(SoftwareComponent.DOCTYPE, "NoBusinessProcessSoftwareComponent");
+        discoveryService.runDiscovery(documentManager, noBusinessProcessSoftwareComponentId, null, null);
+        discoveryService.runDiscovery(documentManager, new SoaNodeId(Deliverable.DOCTYPE, "noBusinessProcessDeliverable"), null, Arrays.asList(noBusinessProcessSoftwareComponentId));
+
         // test software component
 
         documentManager.save();
