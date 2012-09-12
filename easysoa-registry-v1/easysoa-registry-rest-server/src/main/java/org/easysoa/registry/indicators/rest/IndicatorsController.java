@@ -53,7 +53,6 @@ import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
  * 
  */
 @WebObject(type = "EasySOA")
-@Produces(MediaType.TEXT_HTML)
 @Path("easysoa")
 public class IndicatorsController extends ModuleRoot {
 
@@ -80,6 +79,7 @@ public class IndicatorsController extends ModuleRoot {
         // Doctype-specific indicators
         addIndicator(CATEGORY_MISC, new ServiceStateProvider());
         addIndicator(CATEGORY_MISC, new ServiceImplStateProvider());
+        addIndicator(CATEGORY_MISC, new SoftwareComponentIndicatorProvider());
         
     }
     
@@ -91,7 +91,36 @@ public class IndicatorsController extends ModuleRoot {
     }
 
     @GET
-    public Object doGet() throws Exception {
+    @Produces(MediaType.TEXT_HTML)
+    public Object doGetHTML() throws Exception {
+        Map<String, Map<String, IndicatorValue>> indicatorsByCategory = computeIndicators();
+        
+        // Create and return view
+        HashMap<String, Integer> nbMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> percentMap = new HashMap<String, Integer>();
+        for (Map<String, IndicatorValue> indicatorCategory : indicatorsByCategory.values()) {
+            for (Entry<String, IndicatorValue> indicator : indicatorCategory.entrySet()) {
+                if (indicator.getValue().getCount() != -1) {
+                    nbMap.put(indicator.getKey(), indicator.getValue().getCount());
+                }
+                if (indicator.getValue().getPercentage() != -1) {
+                    percentMap.put(indicator.getKey(), indicator.getValue().getPercentage());
+                }
+            }
+        }
+        
+        return getView("indicators")
+                .arg("nbMap", nbMap)
+                .arg("percentMap", percentMap);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object doGetJSON() throws Exception {
+        return computeIndicators();
+    }
+    
+    private Map<String, Map<String, IndicatorValue>> computeIndicators() throws Exception {
         CoreSession session = SessionFactory.getSession(request);
         
         List<IndicatorProvider> computedProviders = new ArrayList<IndicatorProvider>();
@@ -154,23 +183,8 @@ public class IndicatorsController extends ModuleRoot {
                     + pendingProvider.getRequiredIndicators() + ")");
         }
         
-        // Create and return view
-        HashMap<String, Integer> nbMap = new HashMap<String, Integer>();
-        HashMap<String, Integer> percentMap = new HashMap<String, Integer>();
-        for (Map<String, IndicatorValue> indicatorCategory : indicatorsByCategory.values()) {
-            for (Entry<String, IndicatorValue> indicator : indicatorCategory.entrySet()) {
-                if (indicator.getValue().getCount() != -1) {
-                    nbMap.put(indicator.getKey(), indicator.getValue().getCount());
-                }
-                if (indicator.getValue().getPercentage() != -1) {
-                    percentMap.put(indicator.getKey(), indicator.getValue().getPercentage());
-                }
-            }
-        }
-        
-        return getView("indicators")
-                .arg("nbMap", nbMap)
-                .arg("percentMap", percentMap);
+        return indicatorsByCategory;
     }
+        
 
 }

@@ -36,7 +36,7 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         int maxServiceImplsDocQuality = serviceImplCount * IDEAL_DOCUMENTATION_LINES;
         int serviceImplsDocQuality = maxServiceImplsDocQuality;
         Map<Serializable, Boolean> hasMock = new HashMap<Serializable, Boolean>();
-        int mockedImplsCount = 0, testedImplsCount = 0, nonMockImplsCount = 0;
+        int mockedImplsCount = 0, testedImplsCount = 0, nonMockImplsCount = 0, documentedImplsCount = 0;
         DocumentModelList serviceImplModels = session.query(NXQL_SELECT_FROM
                 + ServiceImplementation.DOCTYPE + NXQL_WHERE_NO_PROXY);
         
@@ -47,17 +47,20 @@ public class ServiceImplStateProvider implements IndicatorProvider {
                 continue;
             }
             
+            // Documentation info
             String documentation = (String) serviceImpl.getProperty(ServiceImplementation.XPATH_DOCUMENTATION);
             if (documentation != null && !documentation.isEmpty()) {
                 int serviceDocumentationLines = documentation.split("\n").length;
                 documentationLines += serviceDocumentationLines;
                 serviceImplsDocQuality -= Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - serviceDocumentationLines));
+                documentedImplsCount++;
             }
             else {
                 undocumentedServiceImpls++;
                 serviceImplsDocQuality -= IDEAL_DOCUMENTATION_LINES;
             }
             
+            // Mock info
             String parentServiceId = null;
             DocumentModelList implParents = documentService.findAllParents(session, serviceImplModel);
             for (DocumentModel implParent : implParents) {
@@ -77,6 +80,8 @@ public class ServiceImplStateProvider implements IndicatorProvider {
             
             if (!serviceImpl.isMock()) {
                 nonMockImplsCount++;
+                
+                // Tests info
                 if (!serviceImpl.getTests().isEmpty()) {
                     testedImplsCount++;
                 }
@@ -90,10 +95,12 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         
         // Indicators results registration
         
+        //% de doc seulement sur les services qui en ont / Qualité de doc moyenne en%
+        //indicateurs documentation : % d'éléments doc'és (pour service, impl ; non test ; LATER pour consumer)
         indicators.put("Undocumented service implementation", 
                 new IndicatorValue(undocumentedServiceImpls, -1));
-        indicators.put("Lines of documentation per service impl. (average)",
-                new IndicatorValue((serviceImplCount > 0) ? (documentationLines / serviceImplCount) : -1, -1));
+        indicators.put("Lines of documentation per documented service impl. (average)",
+                new IndicatorValue((serviceImplCount > 0) ? (documentationLines / documentedImplsCount) : -1, -1));
         indicators.put("Service impls without mock", 
                 new IndicatorValue(nonMockImplsCount - mockedImplsCount,
                         (nonMockImplsCount > 0) ? (100 * (nonMockImplsCount - mockedImplsCount) / nonMockImplsCount) : -1));

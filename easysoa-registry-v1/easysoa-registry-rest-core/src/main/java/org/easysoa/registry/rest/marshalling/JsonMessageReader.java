@@ -1,5 +1,6 @@
 package org.easysoa.registry.rest.marshalling;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -12,6 +13,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -43,8 +46,15 @@ public class JsonMessageReader implements MessageBodyReader<Object> {
             else if (jsonNode.has("result")) {
                 return mapper.readValue(jsonNode, OperationResult.class);
             }
+            else {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                JsonFactory factory = new JsonFactory(new ObjectMapper());
+                JsonGenerator jsonGenerator = factory.createJsonGenerator(baos);
+                jsonGenerator.useDefaultPrettyPrinter();
+                jsonGenerator.writeObject(jsonNode);
+                return baos.toString();
+            }
         }
-        return null;
     }
 
 }

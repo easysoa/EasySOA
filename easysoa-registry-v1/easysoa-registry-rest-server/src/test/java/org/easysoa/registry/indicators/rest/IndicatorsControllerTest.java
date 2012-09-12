@@ -111,8 +111,7 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
 
         // Fetch indicators page :
         Client client = createAuthenticatedHTTPClient();
-        Builder indicatorsReq = client.resource(this.getURL(IndicatorsController.class))
-                .type(MediaType.TEXT_HTML);
+        Builder indicatorsReq = client.resource(this.getURL(IndicatorsController.class)).accept(MediaType.APPLICATION_JSON);
         String res = indicatorsReq.get(String.class);
 
         logger.info(res);
