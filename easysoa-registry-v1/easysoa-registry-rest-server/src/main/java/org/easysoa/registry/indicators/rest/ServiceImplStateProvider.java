@@ -30,13 +30,13 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         DocumentService documentService = Framework.getService(DocumentService.class);
 
         // Count indicators - ServiceImplementation-specific
-        final int IDEAL_DOCUMENTATION_LINES = 40;
+        final int IDEAL_DOCUMENTATION_LINES = 40, DOCUMENTATION_LINES_TOLERANCE = 20;
         int undocumentedServiceImpls = 0, documentationLines = 0;
         int serviceImplCount = computedIndicators.get(SERVICEIMPL_DOCTYPE_INDICATOR).getCount();
         int maxServiceImplsDocQuality = serviceImplCount * IDEAL_DOCUMENTATION_LINES;
-        int serviceImplsDocQuality = maxServiceImplsDocQuality;
+        int serviceImplsDocQuality = 0;
         Map<Serializable, Boolean> hasMock = new HashMap<Serializable, Boolean>();
-        int mockedImplsCount = 0, testedImplsCount = 0, nonMockImplsCount = 0, documentedImplsCount = 0;
+        int mockedImplsCount = 0, testedImplsCount = 0, nonMockImplsCount = 0;
         DocumentModelList serviceImplModels = session.query(NXQL_SELECT_FROM
                 + ServiceImplementation.DOCTYPE + NXQL_WHERE_NO_PROXY);
         
@@ -52,12 +52,13 @@ public class ServiceImplStateProvider implements IndicatorProvider {
             if (documentation != null && !documentation.isEmpty()) {
                 int serviceDocumentationLines = documentation.split("\n").length;
                 documentationLines += serviceDocumentationLines;
-                serviceImplsDocQuality -= Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - serviceDocumentationLines));
-                documentedImplsCount++;
+                serviceImplsDocQuality += IDEAL_DOCUMENTATION_LINES - DOCUMENTATION_LINES_TOLERANCE
+                        - Math.max(0, 
+                                Math.abs(IDEAL_DOCUMENTATION_LINES - serviceDocumentationLines)
+                                - DOCUMENTATION_LINES_TOLERANCE);
             }
             else {
                 undocumentedServiceImpls++;
-                serviceImplsDocQuality -= IDEAL_DOCUMENTATION_LINES;
             }
             
             // Mock info
@@ -97,18 +98,18 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         
         //% de doc seulement sur les services qui en ont / Qualité de doc moyenne en%
         //indicateurs documentation : % d'éléments doc'és (pour service, impl ; non test ; LATER pour consumer)
-        indicators.put("Undocumented service implementation", 
+        indicators.put("Undocumented service implementations", 
                 new IndicatorValue(undocumentedServiceImpls, -1));
         indicators.put("Lines of documentation per documented service impl. (average)",
-                new IndicatorValue((serviceImplCount > 0) ? (documentationLines / documentedImplsCount) : -1, -1));
-        indicators.put("Service impls without mock", 
+                new IndicatorValue((serviceImplCount > 0) ? (documentationLines / (serviceImplCount - undocumentedServiceImpls)) : -1, -1));
+        indicators.put("Service impls without mocks", 
                 new IndicatorValue(nonMockImplsCount - mockedImplsCount,
                         (nonMockImplsCount > 0) ? (100 * (nonMockImplsCount - mockedImplsCount) / nonMockImplsCount) : -1));
-        indicators.put("Service impls without test", 
+        indicators.put("Service impls without tests", 
                 new IndicatorValue(nonMockImplsCount - testedImplsCount,
                         (nonMockImplsCount > 0) ? (100 * (nonMockImplsCount - testedImplsCount) / nonMockImplsCount) : -1));
-        indicators.put("Service implementations documentation quality", 
-                new IndicatorValue(-1, (maxServiceImplsDocQuality == 0) ? -1 : (100 * serviceImplsDocQuality / maxServiceImplsDocQuality)));
+        indicators.put("Documented service implementations documentation quality", 
+                new IndicatorValue(-1, (maxServiceImplsDocQuality == 0) ? -1 : (100 * serviceImplsDocQuality / ((IDEAL_DOCUMENTATION_LINES - DOCUMENTATION_LINES_TOLERANCE) * (serviceImplCount - undocumentedServiceImpls)))));
 
         // TODO model consistency ex. impl without service
         // TODO for one ex. impl of ONE service => prop to query

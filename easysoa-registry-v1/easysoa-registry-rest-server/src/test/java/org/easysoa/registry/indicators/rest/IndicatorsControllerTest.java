@@ -1,7 +1,9 @@
 package org.easysoa.registry.indicators.rest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
@@ -47,8 +49,12 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         
         // services
         for (int i = 0; i < SERVICE_COUNT; i++) {
+            List<SoaNodeId> parentDocuments = new ArrayList<SoaNodeId>();
+            if (i < SERVICE_COUNT - 1) {
+                parentDocuments.add(new SoaNodeId(TaggingFolder.DOCTYPE, "Tag" + i));
+            }
             discoveryService.runDiscovery(documentManager, new SoaNodeId(Service.DOCTYPE,
-                    "MyService" + i), null, null);
+                    "MyService" + i), null, parentDocuments );
         }
         
         // endpoints
@@ -64,8 +70,7 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put(ServiceImplementation.XPATH_DOCUMENTATION,
-        		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\n" +
-        		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah");
+        		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah");
         properties.put(ServiceImplementation.XPATH_TESTS,
         		Arrays.asList("org.easysoa.MyServiceImplTest"));
         properties.put(ServiceImplementation.XPATH_ISMOCK, "true");
@@ -103,7 +108,7 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
                 null, Arrays.asList(new SoaNodeId(Service.DOCTYPE, "MyService1")));
         discoveryService.runDiscovery(documentManager, new SoaNodeId(ServiceImplementation.DOCTYPE, "ServiceImplementation1"),
                 null, Arrays.asList(deliverable1id));
-
+        
         // test software component
 
         documentManager.save();

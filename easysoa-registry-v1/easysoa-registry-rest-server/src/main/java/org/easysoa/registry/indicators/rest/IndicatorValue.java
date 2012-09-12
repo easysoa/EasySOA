@@ -33,7 +33,9 @@ public class IndicatorValue {
     
     @Override
     public String toString() {
-        return "[" + count + " / " + percentage + "%" + "]";
+        String countString = (count != -1) ? Integer.toString(count) : "N.A.";
+        String percentageString = (percentage != -1) ? Integer.toString(percentage) + "%" : "N.A.";
+        return "[" + countString + " / " + percentageString + "]";
     }
 
 }
