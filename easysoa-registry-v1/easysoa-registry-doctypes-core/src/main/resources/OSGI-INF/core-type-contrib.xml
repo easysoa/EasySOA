@@ -78,6 +78,7 @@
     </doctype>
     <doctype extends="SoaNode" name="ServiceImplementation">
       <schema name="serviceimpl" />
+      <facet name="Folderish" />
     </doctype>
     <doctype extends="SoaNode" name="ServiceConsumption">
     </doctype>

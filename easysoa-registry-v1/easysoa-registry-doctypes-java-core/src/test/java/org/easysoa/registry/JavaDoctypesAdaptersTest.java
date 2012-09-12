@@ -6,7 +6,6 @@ import org.easysoa.registry.types.java.JavaServiceConsumption;
 import org.easysoa.registry.types.java.JavaServiceImplementation;
 import org.easysoa.registry.types.java.MavenDeliverable;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -23,9 +22,8 @@ import com.google.inject.Inject;
  * @author mkalam-alami
  *
  */
-@Deploy("org.easysoa.registry.doctypes.java.core")
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-@Ignore // FIXME
+@Deploy("org.easysoa.registry.doctypes.java.core")
 public class JavaDoctypesAdaptersTest extends AbstractRegistryTest {
 
     @Inject
