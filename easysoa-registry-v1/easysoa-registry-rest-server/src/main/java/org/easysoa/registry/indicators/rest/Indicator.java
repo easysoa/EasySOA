@@ -5,6 +5,12 @@ import java.util.Map;
 
 import org.nuxeo.ecm.core.api.CoreSession;
 
+/**
+ * Simple indicator provider, that only computes 1 indicator.
+ * 
+ * @author mkalam-alami
+ *
+ */
 public abstract class Indicator implements IndicatorProvider {
 
     public Map<String, IndicatorValue> computeIndicators(CoreSession session,

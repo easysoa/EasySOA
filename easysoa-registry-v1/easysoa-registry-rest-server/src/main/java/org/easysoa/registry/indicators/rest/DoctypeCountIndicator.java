@@ -14,12 +14,16 @@ public class DoctypeCountIndicator extends QueryCountIndicator {
 
     @Override
     public String getName() {
-        return doctype + " count";
+        return getName(doctype);
     }
 
     @Override
     public List<String> getRequiredIndicators() {
         return null;
+    }
+    
+    public static String getName(String doctype) {
+        return doctype + " count";
     }
     
 }

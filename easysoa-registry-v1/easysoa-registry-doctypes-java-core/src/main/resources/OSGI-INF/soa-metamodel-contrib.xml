@@ -2,6 +2,9 @@
 <component name="org.easysoa.registry.doctypes.java.core.soametamodel.contrib" version="1.0">
 
   <extension target="org.easysoa.registry.SoaMetamodelService" point="types">
+    <soaNodeType name="Service">
+        <subtype>JavaServiceImplementation</subtype>
+    </soaNodeType>
     <soaNodeType name="Deliverable">
         <subtype>JavaServiceImplementation</subtype>
         <subtype>JavaServiceConsumption</subtype>

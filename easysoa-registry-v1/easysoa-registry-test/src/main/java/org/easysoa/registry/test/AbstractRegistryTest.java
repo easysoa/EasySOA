@@ -24,6 +24,8 @@ public class AbstractRegistryTest {
     protected CoreSession documentManager;
 
     protected RepositoryLogger repositoryLogger;
+    
+    protected boolean logRepositoryAfterEachTest = true;
 
     @Rule
     public TestName name = new TestName();
@@ -35,8 +37,14 @@ public class AbstractRegistryTest {
     
     @After
     public void logRepository() {
-        repositoryLogger.setTitle(name.getMethodName());
-        repositoryLogger.logAllRepository();
+        if (logRepositoryAfterEachTest) {
+            repositoryLogger.setTitle(name.getMethodName());
+            repositoryLogger.logAllRepository();
+        }
+    }
+    
+    public void setLogRepositoryAfterEachTest(boolean logRepositoryAfterEachTest) {
+        this.logRepositoryAfterEachTest = logRepositoryAfterEachTest;
     }
     
 }

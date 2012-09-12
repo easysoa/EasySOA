@@ -7,6 +7,12 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.IterableQueryResult;
 import org.nuxeo.ecm.core.query.sql.NXQL;
 
+/**
+ * NXQL-based indicator provider
+ * 
+ * @author mkalam-alami
+ *
+ */
 public abstract class QueryCountIndicator extends Indicator {
 
     private String valueQuery = null;

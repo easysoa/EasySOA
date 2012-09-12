@@ -1,7 +1,6 @@
 package org.easysoa.registry.test;
 
 import org.nuxeo.runtime.test.runner.Deploy;
-import org.nuxeo.runtime.test.runner.LocalDeploy;
 import org.nuxeo.runtime.test.runner.SimpleFeature;
 
 /**
@@ -25,10 +24,6 @@ import org.nuxeo.runtime.test.runner.SimpleFeature;
     "org.easysoa.registry.doctypes.api",
     "org.easysoa.registry.doctypes.core"
 })
-@LocalDeploy(
-    // Default graph contribution
-    "org.easysoa.registry.test:OSGI-INF/test-relation-jena-contrib.xml"
-)
 public class EasySOAFeature extends SimpleFeature {
 
 //    private static Logger logger = Logger.getLogger(EasySOAFeature.class);

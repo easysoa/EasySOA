@@ -11,17 +11,13 @@ import org.easysoa.registry.DiscoveryService;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.AbstractRestApiTest;
-import org.easysoa.registry.test.RepositoryLogger;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.easysoa.registry.types.SoftwareComponent;
 import org.easysoa.registry.types.TaggingFolder;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Deploy;
@@ -124,23 +120,4 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         // Check result
     }
     
-
-    // from AbstractRegistryTest
-
-    protected RepositoryLogger repositoryLogger;
-    
-    @Rule
-    public TestName name = new TestName();
-
-    @Before
-    public void setUp() {
-        repositoryLogger = new RepositoryLogger(documentManager);
-    }
-    
-    //@After
-    public void logRepository() {
-        repositoryLogger.setTitle(name.getMethodName());
-        repositoryLogger.logAllRepository();
-    }
-        
 }

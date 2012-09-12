@@ -133,7 +133,9 @@ public class CodeDiscoveryMojo extends AbstractMojo {
                     log.info("> " + soaNode.toString());
                     OperationResult result = registryApi.post(soaNode);
                     if (!result.isSuccessful()) {
-                    	throw new IOException(result.getMessage());
+                        IOException ioException = new IOException(result.getMessage());
+                        ioException.setStackTrace(result.getStacktrace());
+                    	throw ioException;
                     }
                 }
             }

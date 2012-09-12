@@ -4,3 +4,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Name: easysoa-registry-test
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.easysoa.registry.test;singleton:=true
+Nuxeo-Component: OSGI-INF/test-relation-jena-contrib.xml

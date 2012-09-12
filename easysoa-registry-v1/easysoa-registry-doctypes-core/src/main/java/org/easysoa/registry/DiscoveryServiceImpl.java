@@ -58,7 +58,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                 // Make sure parent is valid
                 if (path == null) {
                     documentManager.cancel();
-                    throw new Exception("Cannot set " + parentDocumentId.toString() + " as parent");
+                    throw new Exception("Cannot set " + parentDocumentId.getType() + " " + parentDocumentId.toString()
+                            + " as parent of " + type + " " + identifier.getName());
                 }
                 else {
                     // Create parent if necessary

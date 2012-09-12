@@ -7,4 +7,5 @@ Bundle-SymbolicName: org.easysoa.registry.doctypes.java.core;singleton:=true
 Nuxeo-Component: OSGI-INF/core-type-contrib.xml,
  OSGI-INF/layout-type-contrib.xml,
  OSGI-INF/ecm-type-contrib.xml,
- OSGI-INF/adapter-contrib.xml
+ OSGI-INF/adapter-contrib.xml,
+ OSGI-INF/soa-metamodel-contrib.xml

@@ -8,6 +8,11 @@
   <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
 
     <!-- Implementation level -->
+    <type id="TaggingFolder" coretype="TaggingFolder">
+      <subtypes>
+        <type>JavaServiceImplementation</type>
+      </subtypes>
+    </type>
     <type id="Deliverable" coretype="Deliverable">
       <subtypes>
         <type>JavaServiceConsumption</type>
