@@ -323,6 +323,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>soanode</layout>
+        <layout>url</layout>
         <layout>environment</layout>
       </layouts>
     </type>

@@ -81,6 +81,7 @@ public class IndicatorsController extends ModuleRoot {
         addIndicator(CATEGORY_MISC, new ServiceImplStateProvider());
         addIndicator(CATEGORY_MISC, new SoftwareComponentIndicatorProvider());
         addIndicator(CATEGORY_MISC, new TagsIndicatorProvider());
+        addIndicator(CATEGORY_MISC, new ServiceConsumptionIndicatorProvider());
         
     }
     

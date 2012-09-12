@@ -1,5 +1,8 @@
 package org.easysoa.registry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.easysoa.registry.types.IntelligentSystem;
 import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.types.SoaNode;
@@ -268,6 +271,15 @@ public class DocumentServiceImpl implements DocumentService {
     
     public SoaNodeId createSoaNodeId(DocumentModel model) throws PropertyException, ClientException {
         return new SoaNodeId(model.getType(), (String) model.getPropertyValue(SoaNode.XPATH_SOANAME));
+    }
+
+    @Override
+    public List<SoaNodeId> createSoaNodeIds(DocumentModel... models) throws PropertyException, ClientException {
+        List<SoaNodeId> soaNodeIds = new ArrayList<SoaNodeId>();
+        for (DocumentModel model : models) {
+            soaNodeIds.add(createSoaNodeId(model));
+        }
+        return soaNodeIds;
     }
 
 

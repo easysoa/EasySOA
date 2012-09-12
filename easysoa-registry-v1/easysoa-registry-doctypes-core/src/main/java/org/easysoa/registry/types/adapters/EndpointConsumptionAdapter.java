@@ -1,9 +1,13 @@
 package org.easysoa.registry.types.adapters;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.InvalidDoctypeException;
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.types.EndpointConsumption;
+import org.easysoa.registry.types.ServiceImplementation;
 import org.easysoa.registry.utils.RelationsHelper;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -53,6 +57,21 @@ public class EndpointConsumptionAdapter extends SoaNodeAdapter implements Endpoi
             DocumentModel consumedEndpointModel = documentService.create(documentManager, consumedEndpoint);
             RelationsHelper.createRelation(documentManager, documentModel, PREDICATE_CONSUMES, consumedEndpointModel);
         }
+    }
+
+    @Override
+    public List<SoaNodeId> getConsumableServiceImpls() throws Exception {
+        List<SoaNodeId> consumableServiceImpls = new LinkedList<SoaNodeId>();
+        DocumentService documentService = Framework.getService(DocumentService.class);
+        DocumentModel foundEndpoint = documentService.find(documentManager, getConsumedEndpoint());
+        DocumentModelList endpointParents = documentService.findAllParents(documentManager, foundEndpoint);
+        for (DocumentModel endpointParent : endpointParents) {
+            if (ServiceImplementation.DOCTYPE.equals(endpointParent)) {
+                consumableServiceImpls.add(documentService.createSoaNodeId(endpointParent));
+                break;
+            }
+        }
+        return consumableServiceImpls;
     }
     
 }

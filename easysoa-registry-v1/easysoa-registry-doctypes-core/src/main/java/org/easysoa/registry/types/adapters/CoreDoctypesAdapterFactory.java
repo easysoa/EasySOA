@@ -5,6 +5,7 @@ import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.DeployedDeliverable;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.EndpointConsumption;
+import org.easysoa.registry.types.ServiceConsumption;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.adapter.DocumentAdapterFactory;
@@ -24,6 +25,11 @@ public class CoreDoctypesAdapterFactory implements DocumentAdapterFactory {
             }
             if (EndpointConsumption.class.equals(itf)) {
                 return new EndpointConsumptionAdapter(doc);
+            }
+            if (ServiceConsumption.class.equals(itf)) {
+                if (EndpointConsumption.DOCTYPE.equals(doc.getType())) {
+                    return new EndpointConsumptionAdapter(doc);
+                }
             }
             if (DeployedDeliverable.class.equals(itf)) {
                 return new DeployedDeliverableAdapter(doc);

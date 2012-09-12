@@ -1,5 +1,7 @@
 package org.easysoa.discovery.code;
 
+import java.util.List;
+
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.java.JavaServiceConsumption;
@@ -16,6 +18,11 @@ public class JavaServiceConsumptionInformation extends SoaNodeInformation implem
     @Override
     public String getConsumedInterface() throws Exception {
         return (String) properties.get(JavaServiceConsumption.XPATH_CONSUMEDINTERFACE);
+    }
+
+    @Override
+    public List<SoaNodeId> getConsumableServiceImpls() throws Exception {
+        throw new UnsupportedOperationException();
     }
 
 }

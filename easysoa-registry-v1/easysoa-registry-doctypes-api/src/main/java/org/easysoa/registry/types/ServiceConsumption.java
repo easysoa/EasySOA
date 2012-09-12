@@ -1,5 +1,9 @@
 package org.easysoa.registry.types;
 
+import java.util.List;
+
+import org.easysoa.registry.SoaNodeId;
+
 
 
 /**
@@ -10,5 +14,7 @@ package org.easysoa.registry.types;
 public interface ServiceConsumption extends SoaNode {
 
     static final String DOCTYPE = "ServiceConsumption";
+    
+    public List<SoaNodeId> getConsumableServiceImpls() throws Exception;
     
 }
