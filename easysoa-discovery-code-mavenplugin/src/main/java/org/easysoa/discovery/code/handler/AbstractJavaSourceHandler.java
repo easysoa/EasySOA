@@ -93,8 +93,8 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
         }
         
         // Additional discovery
-        handleAdditionalDiscovery(sources, wsInterfaces, wsImpls,
-                mavenDeliverable, registryClient, log);
+        discoveredNodes.addAll(handleAdditionalDiscovery(sources, wsInterfaces, wsImpls,
+                mavenDeliverable, registryClient, log));
         
         return discoveredNodes;
     }

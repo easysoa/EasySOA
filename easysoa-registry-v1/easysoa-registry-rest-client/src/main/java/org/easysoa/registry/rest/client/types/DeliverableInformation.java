@@ -54,7 +54,7 @@ public class DeliverableInformation extends SoaNodeInformation implements Delive
 
     @Override
     public void setDependencies(List<String> dependencies) throws Exception {
-        properties.put(XPATH_DEPENDENCIES, (Serializable) dependencies.toArray());
+        properties.put(XPATH_DEPENDENCIES, (Serializable) dependencies);
     }
 
 }

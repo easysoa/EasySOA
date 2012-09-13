@@ -1,7 +1,10 @@
 package org.easysoa.registry;
 
+import java.io.Serializable;
+
 import org.apache.log4j.Logger;
 import org.easysoa.registry.systems.IntelligentSystemTreeService;
+import org.easysoa.registry.types.SoaNode;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -47,6 +50,10 @@ public class RepositoryManagementListener implements EventListener {
             String sourceFolderPath = documentService.getSourceFolderPath(sourceDocument.getType());
             if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)) {
                 documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
+                String soaName = (String) sourceDocument.getPropertyValue(SoaNode.XPATH_SOANAME);
+                if (soaName == null || soaName.isEmpty()) {
+                    sourceDocument.setPropertyValue(SoaNode.XPATH_SOANAME, sourceDocument.getName());
+                }
                 
                 PathRef sourcePathRef = new PathRef(documentService.getSourcePath(
                         documentService.createSoaNodeId(sourceDocument)));
@@ -61,7 +68,8 @@ public class RepositoryManagementListener implements EventListener {
                 else {
                     // Move to repository otherwise
                     repositoryDocument = documentManager.move(sourceDocument.getRef(),
-                        new PathRef(sourceFolderPath), sourceDocument.getName());
+                        new PathRef(sourceFolderPath),
+                        sourceDocument.getName());
                 }
                 
                 // Create a proxy at the expected location

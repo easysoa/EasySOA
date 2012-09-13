@@ -57,7 +57,7 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
 	}
 
 	public void setTests(List<String> tests) throws Exception {
-		properties.put(XPATH_TESTS, (Serializable) tests.toArray());
+		properties.put(XPATH_TESTS, (Serializable) tests);
 	}
 
 	@JsonIgnore

@@ -32,6 +32,7 @@
       <schema name="common" />
       <schema name="dublincore" />
       <schema name="soanode" />
+      <schema name="files" />
       <facet name="SoaNode" />
       <facet name="Commentable" />
       <facet name="Versionable" />

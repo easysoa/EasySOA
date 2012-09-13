@@ -55,7 +55,7 @@ public class SourceHandlersTest extends AbstractWebEngineTest {
     public void testSourceHandlers() throws Exception {
         // Init registry client
         ClientBuilder clientBuilder = new ClientBuilder();
-       // clientBuilder.setNuxeoSitesUrl("http://localhost:8082");
+        clientBuilder.setNuxeoSitesUrl(NUXEO_URL);
         RegistryApi registryApi = clientBuilder.constructRegistryApi();
         
         // Set sources to explore

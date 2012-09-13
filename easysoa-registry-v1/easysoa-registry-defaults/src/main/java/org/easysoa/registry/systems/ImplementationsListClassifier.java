@@ -5,6 +5,7 @@ import java.util.Map;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.schema.types.Type;
 
 /**
  * Flat system tree of all service implementations.
@@ -23,10 +24,19 @@ public class ImplementationsListClassifier implements IntelligentSystemTreeClass
 
     @Override
     public String classify(DocumentModel model) throws ClientException {
-        if (!ServiceImplementation.DOCTYPE.equals(model.getType())) {
+        if (!isInTypeArray(ServiceImplementation.DOCTYPE, model.getDocumentType().getTypeHierarchy())) {
             return null;
         }
         return "/";
     }
-
+    
+    private boolean isInTypeArray(String typeToSearch, Type[] types) {
+        for (Type type : types) {
+            if (type.getName().equals(typeToSearch)) {
+                return true;
+            }
+        }
+        return false;
+    }
+ 
 }

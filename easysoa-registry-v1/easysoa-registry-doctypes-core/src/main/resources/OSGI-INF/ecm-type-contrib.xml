@@ -99,6 +99,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>soanode</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -157,6 +158,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>soanode</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -183,6 +185,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>soanode</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -213,6 +216,7 @@
         <layout>soanode</layout>
         <layout>soaversion</layout>
         <layout>deliverable</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -242,6 +246,7 @@
         <layout>heading</layout>
         <layout>soanode</layout>
         <layout>serviceimpl</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -268,6 +273,7 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>soanode</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -297,6 +303,7 @@
         <layout>heading</layout>
         <layout>soanode</layout>
         <layout>environment</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -323,8 +330,9 @@
       <layouts mode="any">
         <layout>heading</layout>
         <layout>soanode</layout>
-        <layout>url</layout>
+        <layout>endpoint</layout>
         <layout>environment</layout>
+        <layout>files</layout>
       </layouts>
     </type>
 

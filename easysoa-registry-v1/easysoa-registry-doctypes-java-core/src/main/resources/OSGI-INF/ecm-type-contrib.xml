@@ -28,6 +28,7 @@
         <layout>soanode</layout>
         <layout>heading</layout>
         <layout>javaserviceconsumption</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
@@ -53,6 +54,7 @@
         <layout>heading</layout>
         <layout>serviceimpl</layout>
         <layout>javaserviceimplementation</layout>
+        <layout>files</layout>
       </layouts>
       <layouts mode="listing">
         <layout>document_listing</layout>
