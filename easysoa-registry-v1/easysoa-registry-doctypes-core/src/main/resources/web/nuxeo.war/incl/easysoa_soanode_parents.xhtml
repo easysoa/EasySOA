@@ -1,0 +1,44 @@
+<div class="summary"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+  xmlns:nxdir="http://nuxeo.org/nxdirectory"
+  xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:nxh="http://nuxeo.org/nxweb/html"
+  xmlns:nxl="http://nuxeo.org/nxforms/layout"
+  xmlns:nxu="http://nuxeo.org/nxweb/util">
+
+  <!-- Display parents -->
+  <c:if test="#{currentDocument.hasFacet('SoaNode')}">
+    <h3 class="summaryTitle">
+      <h:outputText value="#{messages['label.easysoa.document.parents']}" />
+    </h3>
+    <div class="summaryLayout">
+      <c:forEach items="#{documentModelHelperBean.findAllParents(currentDocument)}" var="parentModel">
+        <span style="margin-right: 20px">
+         <nxu:graphicImage
+            value="#{nxd:iconPath(parentModel)}"
+            rendered="#{!empty nxd:iconPath(parentModel)}"
+            styleClass="smallIcon" />
+          <nxd:restDocumentLink document="#{parentModel}">
+            <nxh:outputText value=" #{nxd:titleOrId(parentModel)} " />
+          </nxd:restDocumentLink>
+          <nxd:restDocumentLink document="#{parentModel}"
+            newConversation="true" target="_blank"
+            tab="#{widgetProperty_tab}"
+            subTab="#{widgetProperty_subTab}">
+            <nxu:graphicImage value="/icons/external.gif"
+              style="vertical-align:middle"
+              alt="#{messages['permalink.newTab']}"
+              title="#{messages['permalink.newTab']}" />
+          </nxd:restDocumentLink>
+         </span>
+      </c:forEach>
+    </div>
+  </c:if>
+  
+</div>

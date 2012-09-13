@@ -39,6 +39,13 @@
       <category>VIEW_ACTION_LIST</category>
       <filter-id>isFolderish</filter-id>
     </action>
+    
+    <!-- Redefine view tab to display parents -->
+    <action id="TAB_VIEW" link="/incl/tabs/easysoa_document_view.xhtml" order="0"
+      label="action.view.summary" icon="/icons/file.gif">
+      <category>VIEW_ACTION_LIST</category>
+      <filter-id>view</filter-id>
+    </action>
   </extension>
     
 
