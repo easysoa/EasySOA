@@ -1,5 +1,7 @@
 package org.easysoa.registry.types;
 
+import java.util.List;
+
 
 public interface Deliverable extends SoaNode {
 
@@ -13,6 +15,8 @@ public interface Deliverable extends SoaNode {
 
     public static final String XPATH_LOCATION = "del:location";
     
+    public static final String XPATH_DEPENDENCIES = "del:dependencies";
+    
     String getNature() throws Exception;
 
     void setNature(String nature) throws Exception;
@@ -24,4 +28,9 @@ public interface Deliverable extends SoaNode {
     String getVersion() throws Exception;
 
     void setVersion(String version) throws Exception;
+    
+    List<String> getDependencies() throws Exception;
+    
+    void setDependencies(List<String> dependencies) throws Exception;
+    
 }

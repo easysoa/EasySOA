@@ -1,16 +1,18 @@
 package org.easysoa.discovery.code;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.easysoa.discovery.code.handler.JaxRSSourcesHandler;
 import org.easysoa.discovery.code.handler.JaxWSSourcesHandler;
 import org.easysoa.discovery.code.handler.SourcesHandler;
@@ -33,47 +35,22 @@ import com.thoughtworks.qdox.model.JavaSource;
 public class CodeDiscoveryMojo extends AbstractMojo {
 
     /**
-     * @parameter expression="${project.name}"
+     * @parameter expression="${project}"
      * @required
+     * @readonly
      */
-    private String name;
-    
-    /**
-     * @parameter expression="${project.basedir}"
-     * @required
-     */
-    private File projectDirectory;
+    private MavenProject project;
 
-    /**
-     * @parameter expression="${project.groupId}"
-     * @required
-     */
-    private String groupId;
-    
-    /**
-     * @parameter expression="${project.artifactId}"
-     * @required
-     */
-    private String artifactId;
-    
-    /**
-     * @parameter expression="${project.version}"
-     * @required
-     */
-    private String version;
-    
     /**
      * @parameter default-value="http://localhost:8080/nuxeo/site"
      */
     private String nuxeoSitesUrl;
     
-
     /**
      * @parameter default-value="Administrator"
      */
     private String username;
     
-
     /**
      * @parameter default-value="Administrator"
      */
@@ -83,7 +60,6 @@ public class CodeDiscoveryMojo extends AbstractMojo {
      * @parameter
      */
     private String application;
-    
     
     private Map<String, SourcesHandler> availableHandlers = new HashMap<String, SourcesHandler>();
     
@@ -100,14 +76,27 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         this.availableHandlers.put("JAX-WS", new JaxWSSourcesHandler());
         this.availableHandlers.put("JAX-RS", new JaxRSSourcesHandler());
         
-        MavenDeliverableInformation mavenDeliverable = new MavenDeliverableInformation(groupId + ":" + artifactId);
-        mavenDeliverable.setTitle(name);
-        mavenDeliverable.setVersion(version);
+        MavenDeliverableInformation mavenDeliverable = new MavenDeliverableInformation(
+                project.getGroupId() + ":" + project.getArtifactId());
+        mavenDeliverable.setTitle(project.getName());
+        mavenDeliverable.setVersion(project.getVersion());
         if (application != null && !application.trim().isEmpty()) {
             mavenDeliverable.setApplication(application);
         }
         try {
-            mavenDeliverable.setProperty(Deliverable.XPATH_LOCATION, projectDirectory.toURI().toURL().toString());
+            mavenDeliverable.setProperty(Deliverable.XPATH_LOCATION, project.getBasedir().toURI().toURL().toString());
+        } catch (MalformedURLException e) {
+            log.error("Failed to convert project location to URL", e);
+        }
+        try {
+            // List dependencies
+            List<?> dependencies = project.getDependencies();
+            List<String> formattedDependencies = new ArrayList<String>();
+            for (Object objectDependency : dependencies) {
+                Dependency d = (Dependency) objectDependency;
+                formattedDependencies.add(d.getGroupId() + ":" + d.getArtifactId() + ":" + d.getVersion());
+            }
+            mavenDeliverable.setProperty(Deliverable.XPATH_DEPENDENCIES, (Serializable) formattedDependencies);
         } catch (MalformedURLException e) {
             log.error("Failed to convert project location to URL", e);
         }
@@ -116,7 +105,7 @@ public class CodeDiscoveryMojo extends AbstractMojo {
 
         // Configure parser
         JavaDocBuilder builder = new JavaDocBuilder();
-        builder.addSourceTree(this.projectDirectory);
+        builder.addSourceTree(project.getBasedir());
         
         // Iterate through classes to find WSes
         JavaSource[] sources = builder.getSources();

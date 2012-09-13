@@ -79,6 +79,7 @@ public class IndicatorsController extends ModuleRoot {
         // Doctype-specific indicators
         addIndicator(CATEGORY_MISC, new ServiceStateProvider());
         addIndicator(CATEGORY_MISC, new ServiceImplStateProvider());
+        addIndicator(CATEGORY_MISC, new SoftwareComponentIndicatorProvider());
         addIndicator(CATEGORY_MISC, new TagsIndicatorProvider());
         addIndicator(CATEGORY_MISC, new ServiceConsumptionIndicatorProvider());
         

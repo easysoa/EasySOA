@@ -1,5 +1,9 @@
 package org.easysoa.registry.types.adapters;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.easysoa.registry.InvalidDoctypeException;
 import org.easysoa.registry.types.Deliverable;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -49,4 +53,18 @@ public class DeliverableAdapter extends SoaNodeAdapter implements Deliverable {
         
     }
 
+    @Override
+    public List<String> getDependencies() throws Exception {
+        Serializable[] dependenciesArray = (Serializable[]) documentModel.getPropertyValue(XPATH_DEPENDENCIES);
+        List<String> dependencies = new ArrayList<String>();
+        for (Serializable dependency : dependenciesArray) {
+            dependencies.add(dependency.toString());
+        }
+        return dependencies;
+    }
+
+    @Override
+    public void setDependencies(List<String> dependencies) throws Exception {
+        documentModel.setPropertyValue(XPATH_DEPENDENCIES, dependencies.toArray());
+    }
 }

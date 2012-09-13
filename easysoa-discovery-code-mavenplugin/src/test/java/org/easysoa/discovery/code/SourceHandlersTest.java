@@ -20,7 +20,6 @@ import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.test.AbstractWebEngineTest;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
@@ -40,7 +39,6 @@ import com.thoughtworks.qdox.model.JavaSource;
     "org.easysoa.registry.rest.server"
 })
 @RepositoryConfig(cleanup = Granularity.CLASS)
-@Ignore // FIXME
 public class SourceHandlersTest extends AbstractWebEngineTest {
 
     private static Logger logger = Logger.getLogger(SourceHandlersTest.class);
@@ -62,7 +60,7 @@ public class SourceHandlersTest extends AbstractWebEngineTest {
         
         // Set sources to explore
         JavaDocBuilder builder = new JavaDocBuilder();
-        builder.addSourceTree(new File("../easysoa-discovery-code-sample"));
+        builder.addSourceTree(new File("../easysoa-samples/easysoa-discovery-code-sample"));
         JavaSource[] sources = builder.getSources();
         
         // Run code discovery

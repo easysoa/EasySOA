@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-Vendor: EasySOA Consortium
 Bundle-ActivationPolicy: lazy
-Bundle-Name: easysoa-registry-rest-client
+Bundle-Name: easysoa-registry-rest-core
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: org.easysoa.registry.rest.client;singleton:=true
+Bundle-SymbolicName: org.easysoa.registry.rest.core;singleton:=true

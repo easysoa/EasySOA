@@ -50,9 +50,11 @@ public class TagsIndicatorProvider implements IndicatorProvider {
         // Register indicators
         Map<String, IndicatorValue> indicators = new HashMap<String, IndicatorValue>();
         indicators.put("Services without at least one user tag",
-                new IndicatorValue(notTaggedServices, 100 * notTaggedServices / serviceModels.size()));
+                new IndicatorValue(notTaggedServices,
+                        (serviceModels.size() > 0) ? 100 * notTaggedServices / serviceModels.size() : -1));
         indicators.put("Average tag count per user",
-                new IndicatorValue(taggingFolderCountValue.getCount() / userCount, -1));
+                new IndicatorValue(
+                        (userCount > 0) ? taggingFolderCountValue.getCount() / userCount : -1, -1));
         
         return indicators;
     }

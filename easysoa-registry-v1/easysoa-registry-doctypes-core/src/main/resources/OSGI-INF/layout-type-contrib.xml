@@ -65,6 +65,9 @@
         <row>
           <widget>deliverable_location</widget>
         </row>
+        <row>
+          <widget>deliverable_dependencies</widget>
+        </row>
       </rows>
       <widget name="deliverable_nature" type="text">
         <labels>
@@ -92,6 +95,22 @@
         <fields>
           <field>del:location</field>
         </fields>
+      </widget>
+      <widget name="deliverable_dependencies" type="template">
+        <labels>
+          <label mode="any">label.easysoa.layout.deliverable.dependencies</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>del:dependencies</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="edit">hidden</mode>
+        </widgetModes>
+        <properties widgetMode="view">
+          <property name="template">/widgets/easysoa_list_template.xhtml</property>
+        </properties>
       </widget>
     </layout>
     
@@ -215,7 +234,7 @@
           <mode value="edit">hidden</mode>
         </widgetModes>
         <properties widgetMode="view">
-          <property name="template">/widgets/serviceimpl_tests_template.xhtml</property>
+          <property name="template">/widgets/easysoa_list_template.xhtml</property>
         </properties>
       </widget>
     </layout>

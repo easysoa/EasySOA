@@ -180,14 +180,6 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         return proxiedIds;
     }
 
-    private List<String> getProxiedIds(CoreSession session, Collection<String> proxyIds) throws ClientException {
-        ArrayList<String> proxiedIds = new ArrayList<String>();
-        for (String proxyId : proxyIds) {
-            proxiedIds.add(session.getWorkingCopy(new IdRef(proxyId)).getId());
-        }
-        return proxiedIds;
-    }
-
     private List<String> getProxyIds(CoreSession session, List<DocumentModel> docs, DocumentRef root) throws ClientException {
         ArrayList<String> proxyIds = new ArrayList<String>();
         for (DocumentModel doc : docs) {

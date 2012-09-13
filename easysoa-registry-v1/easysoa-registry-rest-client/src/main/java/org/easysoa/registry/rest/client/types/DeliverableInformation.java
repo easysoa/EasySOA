@@ -1,5 +1,9 @@
 package org.easysoa.registry.rest.client.types;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.Deliverable;
@@ -36,6 +40,21 @@ public class DeliverableInformation extends SoaNodeInformation implements Delive
     public void setVersion(String version) throws Exception {
         properties.put(Deliverable.XPATH_SOAVERSION, version);
         
+    }
+
+    @Override
+    public List<String> getDependencies() throws Exception {
+        Serializable[] dependenciesArray = (Serializable[]) properties.get(XPATH_DEPENDENCIES);
+        List<String> dependencies = new ArrayList<String>();
+        for (Serializable dependency : dependenciesArray) {
+            dependencies.add(dependency.toString());
+        }
+        return dependencies;
+    }
+
+    @Override
+    public void setDependencies(List<String> dependencies) throws Exception {
+        properties.put(XPATH_DEPENDENCIES, (Serializable) dependencies.toArray());
     }
 
 }
