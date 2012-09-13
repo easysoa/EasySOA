@@ -39,17 +39,17 @@ public class ClientBuilder {
         this.password = password;
     }
     
-    public Client constructEasySOAClient() {
+    public WebResource constructEasySOAClient() {
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getSingletons().addAll(this.singletons);
         Client client = Client.create(clientConfig);
         client.addFilter(new HTTPBasicAuthFilter(username, password));
-        return client;
+        return client.resource(this.nuxeoUrl).path("easysoa");
     }
     
     public RegistryApi constructRegistryApi() {
-        Client client = constructEasySOAClient();
-        WebResource registryApiResource = client.resource(this.nuxeoUrl).path("easysoa/registry");
+        WebResource client = constructEasySOAClient();
+        WebResource registryApiResource = client.path("registry");
         return WebResourceFactory.newResource(RegistryApi.class, registryApiResource);
     }
 

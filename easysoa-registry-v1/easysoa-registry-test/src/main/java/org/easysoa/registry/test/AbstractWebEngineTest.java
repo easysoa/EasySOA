@@ -7,8 +7,6 @@ import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
@@ -32,9 +30,6 @@ public abstract class AbstractWebEngineTest extends AbstractRegistryTest {
 
     @Inject
     protected CoreSession documentManager;
-
-    @Rule
-    public TestName name = new TestName();
     
     public AbstractWebEngineTest() {
         setLogRepositoryAfterEachTest(false);

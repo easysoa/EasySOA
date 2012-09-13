@@ -33,7 +33,15 @@ public class ServiceConsumptionIndicatorProvider implements IndicatorProvider {
         DocumentModelList serviceConsumptionModels = session.query(NXQL_SELECT_FROM + ServiceConsumption.DOCTYPE + NXQL_WHERE_NO_PROXY);
         for (DocumentModel serviceConsumptionModel : serviceConsumptionModels) {
             ServiceConsumption serviceConsumption = serviceConsumptionModel.getAdapter(ServiceConsumption.class);
-            unconsumedServiceIds.removeAll(serviceConsumption.getConsumableServiceImpls());
+            List<SoaNodeId> consumableServiceImpls = serviceConsumption.getConsumableServiceImpls();
+            for (SoaNodeId consumableServiceImpl : consumableServiceImpls) {
+                DocumentModelList consumableParents = documentService.findAllParents(session, documentService.find(session, consumableServiceImpl));
+                for (DocumentModel consumableParent : consumableParents) {
+                    if (Service.DOCTYPE.equals(consumableParent.getType())) {
+                        unconsumedServiceIds.remove(documentService.createSoaNodeId(consumableParent));
+                    }
+                }
+            }
         }
         
         Map<String, IndicatorValue> indicators = new HashMap<String, IndicatorValue>();

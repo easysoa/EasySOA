@@ -19,7 +19,6 @@ public class ServiceImplStateProvider implements IndicatorProvider {
     
     @Override
     public List<String> getRequiredIndicators() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -33,7 +32,6 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         final int IDEAL_DOCUMENTATION_LINES = 40, DOCUMENTATION_LINES_TOLERANCE = 20;
         int undocumentedServiceImpls = 0, documentationLines = 0;
         int serviceImplCount = computedIndicators.get(SERVICEIMPL_DOCTYPE_INDICATOR).getCount();
-        int maxServiceImplsDocQuality = serviceImplCount * IDEAL_DOCUMENTATION_LINES;
         int serviceImplsDocQuality = 0;
         Map<Serializable, Boolean> hasMock = new HashMap<Serializable, Boolean>();
         int mockedImplsCount = 0, testedImplsCount = 0, nonMockImplsCount = 0;
@@ -101,7 +99,7 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         indicators.put("Undocumented service implementations", 
                 new IndicatorValue(undocumentedServiceImpls, -1));
         indicators.put("Lines of documentation per documented service impl. (average)",
-                new IndicatorValue((serviceImplCount > 0) ? (documentationLines / (serviceImplCount - undocumentedServiceImpls)) : -1, -1));
+                new IndicatorValue((serviceImplCount - undocumentedServiceImpls > 0) ? (documentationLines / (serviceImplCount - undocumentedServiceImpls)) : -1, -1));
         indicators.put("Service impls without mocks", 
                 new IndicatorValue(nonMockImplsCount - mockedImplsCount,
                         (nonMockImplsCount > 0) ? (100 * (nonMockImplsCount - mockedImplsCount) / nonMockImplsCount) : -1));
@@ -109,7 +107,8 @@ public class ServiceImplStateProvider implements IndicatorProvider {
                 new IndicatorValue(nonMockImplsCount - testedImplsCount,
                         (nonMockImplsCount > 0) ? (100 * (nonMockImplsCount - testedImplsCount) / nonMockImplsCount) : -1));
         indicators.put("Documented service implementations documentation quality", 
-                new IndicatorValue(-1, (maxServiceImplsDocQuality == 0) ? -1 : (100 * serviceImplsDocQuality / ((IDEAL_DOCUMENTATION_LINES - DOCUMENTATION_LINES_TOLERANCE) * (serviceImplCount - undocumentedServiceImpls)))));
+                new IndicatorValue(-1, (serviceImplCount - undocumentedServiceImpls > 0) ?
+                        (100 * serviceImplsDocQuality / ((IDEAL_DOCUMENTATION_LINES - DOCUMENTATION_LINES_TOLERANCE) * (serviceImplCount - undocumentedServiceImpls))) : -1));
 
         // TODO model consistency ex. impl without service
         // TODO for one ex. impl of ONE service => prop to query
