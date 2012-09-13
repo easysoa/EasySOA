@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.easysoa.registry.DiscoveryService;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
@@ -24,6 +26,7 @@ import org.junit.Test;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Deploy;
+import org.openjena.atlas.json.JsonObject;
 
 import com.google.inject.Inject;
 import com.sun.jersey.api.client.Client;
@@ -124,8 +127,10 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         Client client = createAuthenticatedHTTPClient();
         Builder indicatorsReq = client.resource(this.getURL(IndicatorsController.class)).accept(MediaType.APPLICATION_JSON);
         String res = indicatorsReq.get(String.class);
+        JsonNode indicators = new ObjectMapper().readValue(res, JsonNode.class);
         
-        Assert.assertTrue(res.contains("Nombre de softwareComponentInNoTaggingFolders : <b>1</b>"));
+        Assert.assertEquals("Indicators must be computed and return the expected values",
+                1, indicators.get("Miscellaneous").get("softwareComponentInNoTaggingFolder").get("count").getIntValue());
 
         logger.info(res);
 

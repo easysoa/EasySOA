@@ -114,9 +114,10 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/TaggingFolder" + "'");
         DocumentModelList softwareComponentInNoTaggingFolder = session.query(NXQL_SELECT_FROM + "SoftwareComponent" + NXQL_WHERE_NO_PROXY
                 + " AND ecm:uuid NOT IN " + getProxiedIdLiteralList(session, softwareComponentProxyInATaggingFolder)); // TODO bof
+        int softwareComponentCount = computedIndicators.get(DoctypeCountIndicator.getName(SoftwareComponent.DOCTYPE)).getCount();
         indicators.put("softwareComponentInNoTaggingFolder",
                 new IndicatorValue(softwareComponentInNoTaggingFolder.size(),
-                        100 * softwareComponentInNoTaggingFolder.size() / computedIndicators.get(DoctypeCountIndicator.getName(SoftwareComponent.DOCTYPE)).getCount()));
+                        (softwareComponentCount > 0) ? 100 * softwareComponentInNoTaggingFolder.size() / softwareComponentCount : -1));
         HashSet<String> softwareComponentInNoTaggingFoldersDeliverableIds = new HashSet<String>(getProxiedIds(session, session.query(NXQL_SELECT_FROM + "Deliverable"
                 + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/SoftwareComponent" + "'"
