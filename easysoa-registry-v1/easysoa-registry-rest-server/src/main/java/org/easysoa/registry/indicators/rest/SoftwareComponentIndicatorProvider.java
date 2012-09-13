@@ -36,7 +36,6 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
     @Override
     public Map<String, IndicatorValue> computeIndicators(CoreSession session,
             Map<String, IndicatorValue> computedIndicators) throws Exception {
-        Map<String, DocumentModelList> listMap = new HashMap<String, DocumentModelList>();
         Map<String, IndicatorValue> indicators = new HashMap<String, IndicatorValue>();
         
         // not in any software component :

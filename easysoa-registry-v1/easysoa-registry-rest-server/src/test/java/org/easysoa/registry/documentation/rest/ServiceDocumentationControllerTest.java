@@ -1,4 +1,4 @@
-package org.easysoa.registry.indicators.rest;
+package org.easysoa.registry.documentation.rest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,11 +29,11 @@ import com.google.inject.Inject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-@Deploy("org.easysoa.registry.rest.server")
+@Deploy({"org.easysoa.registry.rest.server", "org.nuxeo.ecm.platform.rendering"})
 @RepositoryConfig(cleanup = Granularity.CLASS)
-public class IndicatorsControllerTest extends AbstractRestApiTest {
+public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
 
-    private static Logger logger = Logger.getLogger(IndicatorsControllerTest.class);
+    private static Logger logger = Logger.getLogger(ServiceDocumentationControllerTest.class);
     
     @Inject
     DiscoveryService discoveryService;
@@ -44,7 +44,7 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
     private final int SERVICE_COUNT = 5;
 
     @Test
-    public void testIndicators() throws Exception {
+    public void testServiceDocumentation() throws Exception {
         
         // Fill repository for all tests :
         
@@ -120,13 +120,18 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         documentManager.save();
         logRepository();
 
-        // Fetch indicators page :
         Client client = createAuthenticatedHTTPClient();
-        Builder indicatorsReq = client.resource(this.getURL(IndicatorsController.class)).accept(MediaType.APPLICATION_JSON);
-        String res = indicatorsReq.get(String.class);
         
-        Assert.assertTrue(res.contains("Nombre de softwareComponentInNoTaggingFolders : <b>1</b>"));
+        // Fetch services page :
+        Builder servicesReq = client.resource(this.getURL(ServiceDocumentationController.class)).accept(MediaType.TEXT_HTML);
+        String res = servicesReq.get(String.class);
+        logger.info(res);
+        //Assert.assertTrue(res.contains("Nombre de softwareComponentInNoTaggingFolders : <b>1</b>"));
 
+        // Fetch service doc page :
+        Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
+                .path("default-domain/repository/Service/MyService1").accept(MediaType.TEXT_HTML);
+        res = serviceDocRef.get(String.class);
         logger.info(res);
 
         // Check result
