@@ -144,9 +144,8 @@ public class InMessage implements Message {
 	 * @param request
 	 *            The HttpservletRequest
 	 */
-	// public InMessage(HttpMessRequest request){
 	public InMessage(HttpServletRequest request) {
-
+		
 		// TODO : Check this code : WSDL request are not well recorded !
 		this.method = request.getMethod();
 		// Set the headers

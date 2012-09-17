@@ -33,7 +33,6 @@ import org.easysoa.proxy.core.api.reports.Report;
  *
  */
 public interface LogEngine {
-    
     // Or report engine ???
     
     /**

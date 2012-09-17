@@ -102,10 +102,15 @@
 	<!--
 	<dependency><groupId>org.nuxeo</groupId><artifactId>nuxeo-frascati-test</artifactId></dependency> 
 	-->
+	<!-- replacing servlet-api by javx.servlet.api -->
 	<dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>servlet-api</artifactId>
 	</dependency>
+	<!--<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>javax.servlet-api</artifactId>
+	</dependency>-->	
 	<!-- For tests -->
 	<dependency>
 		<groupId>org.easysoa.registry.api</groupId>
