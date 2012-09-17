@@ -144,7 +144,7 @@ td:first-child {
 		<h2>Documentation(manuelle, extraite)</h2>
 
 		<h2>Usages</h2>
-		où
+		où (applications : le déployant ; architecture : le consommant)
 		exemples d'appel
 		(autres tags)
 
@@ -157,10 +157,39 @@ td:first-child {
 		Déployé à : 
 		Et a déploiements de test :
 
-		<h2>log : all props</h2>
-		<ul>
-		<#list service as doc>
 
+		<h1>test</h1>
+		<#macro displayDocShort doc>
+         ${doc['title']} - ${doc['path']}
+		</#macro>
+		<#macro displayDocsShort docs>
+         <#list docs as doc><@displayDocShort doc/> ; </#list>
+		</#macro>
+
+		<h2>Contenu dans</h2>
+		<#if service['proxies']?has_content><#list service['proxies'] as proxy><@displayDocShort proxy['parent']/> ; </#list></#if>
+
+		<h2>Contient</h2>
+		<#if service['children']?has_content><@displayDocsShort service['children']/></#if>
+
+		<h2>log : all props</h2>
+		<#macro displayProps1 props propName>
+         <#if propName = 'parent'>${props['title']} - ${props['path']}
+			<#elseif propName = 'children'><#list props as child>${child['title']} - ${child['path']}</#list>
+			<#elseif propName = 'proxies'><#list props as proxy>${proxy['title']} - ${proxy['path']}</#list>
+			<#else><@displayProps props propName/></#if>
+		</#macro>
+		<#macro displayProps props propName>
+         <#if !props?has_content>££NON
+			<#elseif props?is_string || props?is_number || props?is_boolean>${props}
+			<#elseif props?is_date>${props?string("yyyy-MM-dd HH:mm:ss zzzz")}
+			<#elseif props?is_hash><#list props?keys as itemName>${itemName} : <#if props[itemName]?has_content><@displayProps1 props[itemName] itemName/></#if> ; </#list>
+			<#elseif props?is_sequence>%%<#list props as item><@displayProps1 item propName/> ; </#list>
+			<#else>Error : type not supported</#if>
+		</#macro>
+		<ul>
+		<#list service?keys as propName>
+			<li>${propName} : <#if service[propName]?has_content><@displayProps1 service[propName] propName/><#else>$$</#if></li>
 		</#list>
 		</ul>
 	</div>

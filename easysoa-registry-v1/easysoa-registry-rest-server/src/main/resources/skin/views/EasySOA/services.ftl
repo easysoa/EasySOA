@@ -139,7 +139,7 @@ td:first-child {
 
 		<ul>
 			<#list services as service>
-			<li><a href="${service.path}">a</a><a href="${service.path}">a</a>
+			<li><a href="${Root.path}${service.path}">${service.path}</a>
 			</li>
 			</#list>
 		</ul>

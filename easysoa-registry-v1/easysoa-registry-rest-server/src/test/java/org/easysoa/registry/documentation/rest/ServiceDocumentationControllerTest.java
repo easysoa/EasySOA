@@ -29,9 +29,14 @@ import com.google.inject.Inject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-@Deploy({"org.easysoa.registry.rest.server", "org.nuxeo.ecm.platform.rendering"})
+@Deploy("org.easysoa.registry.rest.server")
 @RepositoryConfig(cleanup = Granularity.CLASS)
 public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
+
+    public ServiceDocumentationControllerTest() {
+        super();
+        setLogRepositoryAfterEachTest(true);
+    }
 
     private static Logger logger = Logger.getLogger(ServiceDocumentationControllerTest.class);
     
@@ -126,15 +131,16 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
         Builder servicesReq = client.resource(this.getURL(ServiceDocumentationController.class)).accept(MediaType.TEXT_HTML);
         String res = servicesReq.get(String.class);
         logger.info(res);
+        // Check result
         //Assert.assertTrue(res.contains("Nombre de softwareComponentInNoTaggingFolders : <b>1</b>"));
 
         // Fetch service doc page :
         Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
                 .path("default-domain/repository/Service/MyService1").accept(MediaType.TEXT_HTML);
+        //Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
+        //        .path("default-domain/repository/TaggingFolder/Tag0/MyService0").accept(MediaType.TEXT_HTML); // proxy case
         res = serviceDocRef.get(String.class);
         logger.info(res);
-
-        // Check result
     }
     
 }

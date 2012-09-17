@@ -43,9 +43,11 @@ import org.easysoa.registry.types.ServiceImplementation;
 import org.easysoa.registry.types.SoaNode;
 import org.easysoa.registry.types.SoftwareComponent;
 import org.easysoa.registry.types.TaggingFolder;
+import org.easysoa.registry.types.adapters.SoaNodeAdapter;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
+import org.nuxeo.ecm.webengine.model.Template;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 
@@ -87,10 +89,16 @@ public class ServiceDocumentationController extends ModuleRoot {
         CoreSession session = SessionFactory.getSession(request);
         
         DocumentModelList services = session.query(IndicatorProvider.NXQL_SELECT_FROM + Service.DOCTYPE
-                + IndicatorProvider.NXQL_WHERE_NO_PROXY + " AND ecm:path='/" + ecmPath + "'");
+                /*+ IndicatorProvider.NXQL_WHERE_NO_PROXY + " AND "*/ + " WHERE "
+                + "ecm:path='/" + ecmPath + "'");
         
-        return getView("servicedoc")
-                .arg("service", services.get(0));
+        Template view = getView("servicedoc");
+        if (!services.isEmpty()) {
+            view = view
+                    .arg("service", services.get(0))
+                    .arg("servicee", services.get(0).getAdapter(SoaNodeAdapter.class));
+        }
+        return view; 
     }
     
     @GET
