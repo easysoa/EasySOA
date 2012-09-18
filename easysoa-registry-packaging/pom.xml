@@ -218,13 +218,6 @@
                   <artifactId>htmlcleaner</artifactId>
                   <version>2.2</version>
                 </artifactItem>
-
-                <!-- HTTP body parsing -->
-                <!--<artifactItem>
-                  <groupId>org.apache.cxf</groupId>
-                  <artifactId>cxf-common-utilities</artifactId>
-                  <version>2.5.4</version>
-                </artifactItem>-->
                 
                 <!-- Required dependencies for FraSCAti and FraSCAti explorer embedded in Nuxeo -->
 				<artifactItem>
@@ -237,7 +230,15 @@
 					<artifactId>common</artifactId>
 					<version>3.4.0</version>
 				</artifactItem>
-				<!--
+				
+				
+				<!-- START of CXF, jar's are copied in serviceRegistry/lib folder to avoid a problem with smart-travel sample summary service -->
+                <!-- HTTP body parsing -->
+                <artifactItem>
+                  <groupId>org.apache.cxf</groupId>
+                  <artifactId>cxf-common-utilities</artifactId>
+                  <version>2.5.4</version>
+                </artifactItem>				
 				<artifactItem>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-rt-transports-http-jetty</artifactId>
@@ -303,7 +304,9 @@
 					<artifactId>cxf-tools-common</artifactId>
 					<version>2.5.4</version>
 				</artifactItem>
-				-->
+				
+				<!-- End of CXF -->
+				
 				<artifactItem>
 					<groupId>org.apache.ws.xmlschema</groupId>
 					<artifactId>xmlschema-core</artifactId>
@@ -471,6 +474,7 @@
           </execution>
 
 		  <!-- Copy CXF artifacts in serviceRegistry/nxserver/lib for FraSCAti web explorer -->
+		  <!-- otherwise the sca domain tree is not displayed -->
           <execution>
             <id>copy-cxf-jars</id>
             <phase>package</phase>
@@ -552,7 +556,7 @@
               </artifactItems>
               <outputDirectory>${project.build.directory}/nxserver/lib</outputDirectory>
             </configuration>
-          </execution>          
+          </execution>        
           
           <!-- Copy intents jars in serviceRegistry/nxserver/Frascati/lib folder -->
           <execution>
