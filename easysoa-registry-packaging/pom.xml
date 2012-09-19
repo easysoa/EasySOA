@@ -171,14 +171,13 @@
 				
                 <!-- To also add : httpdiscoveryproxy.jar in server/lib ???? -->
                 <!-- Is there a problem in classpath isolation ? -->
-                
 				<!-- Esper -->
-                <artifactItem>
+                <!--<artifactItem>
                   <groupId>com.espertech</groupId>
                   <artifactId>esper</artifactId>
                   <version>4.2.0</version>
-                </artifactItem>
-                
+                </artifactItem>-->
+                                
                 <artifactItem>
     				<groupId>commons-codec</groupId>
     				<artifactId>commons-codec</artifactId>
@@ -191,16 +190,6 @@
     			</artifactItem>
                 
                 <!-- WSDL Parsing & transformation -->
-                <artifactItem>
-                  <groupId>org.ow2.easywsdl</groupId>
-                  <artifactId>easywsdl-schema</artifactId>
-                  <version>2.1</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.ow2.easywsdl</groupId>
-                  <artifactId>easywsdl-wsdl</artifactId>
-                  <version>2.1</version>
-                </artifactItem>
                 <artifactItem>
                   <groupId>xalan</groupId>
                   <artifactId>xalan</artifactId>
@@ -617,13 +606,19 @@
 					<artifactId>easysoa-samples-smarttravel-summary-model</artifactId>
 					<version>${easysoa.version}</version>
 				</artifactItem>-->
-				
 				<!-- FraSCAti CXF intents -->
   				<artifactItem>
   					<groupId>org.ow2.frascati.intent</groupId>
   					<artifactId>frascati-intent-apache-cxf</artifactId>
   					<version>${frascati.version}</version>
-  				</artifactItem>				
+  				</artifactItem>
+  				
+                <!--<artifactItem>
+                  <groupId>com.espertech</groupId>
+                  <artifactId>esper</artifactId>
+                  <version>4.2.0</version>
+                </artifactItem>-->
+  				
               </artifactItems>
               <outputDirectory>${project.build.directory}/nxserver/frascati/lib</outputDirectory>
             </configuration>
