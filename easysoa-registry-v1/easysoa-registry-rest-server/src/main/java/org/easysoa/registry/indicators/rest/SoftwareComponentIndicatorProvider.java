@@ -40,7 +40,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         
         // not in any software component :
         DocumentModelList deliverableProxyInASoftwareComponent = session.query(NXQL_SELECT_FROM + "Deliverable"
-                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + NXQL_WHERE_PROXY
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/SoftwareComponent" + "'");
         DocumentModelList deliverableInNoSoftwareComponent = session.query(NXQL_SELECT_FROM + "Deliverable" + NXQL_WHERE_NO_PROXY
                 + " AND ecm:uuid NOT IN " + getProxiedIdLiteralList(session, deliverableProxyInASoftwareComponent));
@@ -51,7 +51,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
                 100 * deliverableInNoSoftwareComponentCount / deliverableCount));
         
         DocumentModelList deliverableInNoSoftwareComponentsImplementations = session.query(NXQL_SELECT_FROM + "ServiceImplementation"
-                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + NXQL_WHERE_PROXY
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Deliverable" + "'"
                 + " AND ecm:parentId NOT IN " + getProxiedIdLiteralList(session, deliverableProxyInASoftwareComponent));
         indicators.put("deliverableInNoSoftwareComponentsImplementations", 
@@ -59,7 +59,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
                         -1));
         
         DocumentModelList implementationProxyInADeliverable = session.query(NXQL_SELECT_FROM + "ServiceImplementation"
-                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + NXQL_WHERE_PROXY
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Deliverable" + "'");
         DocumentModelList implementationInNoDeliverable = session.query(NXQL_SELECT_FROM + "ServiceImplementation" + NXQL_WHERE_NO_PROXY
                 + " AND ecm:uuid NOT IN " + getProxiedIdLiteralList(session, implementationProxyInADeliverable));
@@ -75,7 +75,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
                         100 * implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent.size() / serviceImplCount));
         
         DocumentModelList implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentServiceProxy = session.query(NXQL_SELECT_FROM + "ServiceImplementation"
-                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + NXQL_WHERE_PROXY
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Service" + "'"
                 // + " AND ecm:proxyTargetId IN " + getProxiedIdLiteralList(session, implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent)); // TODO soaid for proxies
                 + " AND ecm:uuid IN " + getIdLiteralList(getProxyIds(session, implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent, null))); // TODO soaid for proxies
@@ -110,7 +110,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
                         100 * serviceInASoftwareComponentIdSet.size() / serviceCount)); // TODO bof
         
         DocumentModelList softwareComponentProxyInATaggingFolder = session.query(NXQL_SELECT_FROM + "SoftwareComponent"
-                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + NXQL_WHERE_PROXY
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/TaggingFolder" + "'");
         DocumentModelList softwareComponentInNoTaggingFolder = session.query(NXQL_SELECT_FROM + "SoftwareComponent" + NXQL_WHERE_NO_PROXY
                 + " AND ecm:uuid NOT IN " + getProxiedIdLiteralList(session, softwareComponentProxyInATaggingFolder)); // TODO bof
@@ -119,7 +119,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
                 new IndicatorValue(softwareComponentInNoTaggingFolder.size(),
                         (softwareComponentCount > 0) ? 100 * softwareComponentInNoTaggingFolder.size() / softwareComponentCount : -1));
         HashSet<String> softwareComponentInNoTaggingFoldersDeliverableIds = new HashSet<String>(getProxiedIds(session, session.query(NXQL_SELECT_FROM + "Deliverable"
-                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + NXQL_WHERE_PROXY
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/SoftwareComponent" + "'"
                 + " AND ecm:parentId NOT IN " + getProxiedIdLiteralList(session, softwareComponentProxyInATaggingFolder))));
         indicators.put("softwareComponentInNoTaggingFoldersDeliverables", 
@@ -133,7 +133,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
 
         HashSet<String> deliverableInNoSoftwareComponentOrWhoseIsInNoTaggingFolderImplementationIds = new HashSet<String>(getProxiedIds(session,
                 session.query(NXQL_SELECT_FROM + "ServiceImplementation"
-                + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                + NXQL_WHERE_PROXY
                 + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Deliverable" + "'"
                 + " AND ecm:parentId IN " + getIdLiteralList(deliverableInNoSoftwareComponentOrWhoseIsInNoTaggingFolderIds))));
         indicators.put("deliverableInNoSoftwareComponentOrWhoseIsInNoTaggingFolderImplementation",
@@ -148,7 +148,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         
         HashSet<String> implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentOrWhoseIsInNoTaggingFolderServiceIds = new HashSet<String>(getProxiedIds(session,
                 session.query(NXQL_SELECT_FROM  + "ServiceImplementation"
-                        + " WHERE " + "ecm:currentLifeCycleState <> 'deleted' " + "AND ecm:isProxy = 1"
+                        + NXQL_WHERE_PROXY
                         + " AND ecm:path STARTSWITH '" + "/default-domain/repository/Service" + "'"
                         // + " AND ecm:proxyTargetId IN " + getProxiedIdLiteralList(session, implementationInNoDeliverableOrWhoseIsInNoSoftwareComponent)); // TODO soaid for proxies
                         + " AND ecm:uuid IN " + getIdLiteralList(getProxyIds(session, implementationInNoDeliverableOrWhoseIsInNoSoftwareComponentOrWhoseIsInNoTaggingFolderIds, null))))); // TODO soaid for proxies
@@ -165,15 +165,15 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         return indicators;
     }
     
-    private String getIdLiteralList(Collection<String> ids) throws ClientException {
+    public static String getIdLiteralList(Collection<String> ids) throws ClientException {
         return "('" + ids.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", "', '") + "')";
     }
 
-    private String getProxiedIdLiteralList(CoreSession session, List<DocumentModel> proxies) throws ClientException {
+    public static String getProxiedIdLiteralList(CoreSession session, List<DocumentModel> proxies) throws ClientException {
         return getIdLiteralList(getProxiedIds(session, proxies));
     }
 
-    private List<String> getProxiedIds(CoreSession session, List<DocumentModel> proxies) throws ClientException {
+    public static List<String> getProxiedIds(CoreSession session, List<DocumentModel> proxies) throws ClientException {
         ArrayList<String> proxiedIds = new ArrayList<String>();
         for (DocumentModel proxy : proxies) {
             proxiedIds.add(session.getWorkingCopy(proxy.getRef()).getId());
@@ -181,7 +181,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         return proxiedIds;
     }
 
-    private List<String> getProxyIds(CoreSession session, List<DocumentModel> docs, DocumentRef root) throws ClientException {
+    public static List<String> getProxyIds(CoreSession session, List<DocumentModel> docs, DocumentRef root) throws ClientException {
         ArrayList<String> proxyIds = new ArrayList<String>();
         for (DocumentModel doc : docs) {
             for (DocumentModel proxy : session.getProxies(doc.getRef(), root)) {
@@ -191,7 +191,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         return proxyIds;
     }
 
-    private List<String> getProxyIds(CoreSession session, Collection<String> docIds, DocumentRef root) throws ClientException {
+    public static List<String> getProxyIds(CoreSession session, Collection<String> docIds, DocumentRef root) throws ClientException {
         ArrayList<String> proxyIds = new ArrayList<String>();
         for (String docId : docIds) {
             for (DocumentModel proxy : session.getProxies(new IdRef(docId), root)) {
@@ -201,7 +201,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         return proxyIds;
     }
     
-    private List<String> getParentIds(List<DocumentModel> docs) throws ClientException {
+    public static List<String> getParentIds(List<DocumentModel> docs) throws ClientException {
         ArrayList<String> parentIds = new ArrayList<String>();
         for (DocumentModel doc : docs) {
             parentIds.add(doc.getParentRef().reference().toString());
@@ -209,7 +209,7 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         return parentIds;
     }
     
-    private List<String> getIds(List<DocumentModel> docs) throws ClientException {
+    public static List<String> getIds(List<DocumentModel> docs) throws ClientException {
         ArrayList<String> ids = new ArrayList<String>();
         for (DocumentModel doc : docs) {
             ids.add(doc.getId());

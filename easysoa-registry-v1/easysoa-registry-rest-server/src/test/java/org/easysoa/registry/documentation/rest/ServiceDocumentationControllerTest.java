@@ -85,6 +85,7 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
         properties.clear();
         properties.put(ServiceImplementation.XPATH_TESTS,
         		Arrays.asList("org.easysoa.MyServiceImplTest"));
+        //properties.put(ServiceImplementation.XPATH_ISMOCK, "false");//TODO rm
         discoveryService.runDiscovery(documentManager, 
         		new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImplNotMock"), properties, Arrays.asList(service0Id));
         
@@ -136,7 +137,9 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
 
         // Fetch service doc page :
         Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
-                .path("default-domain/repository/Service/MyService1").accept(MediaType.TEXT_HTML);
+                .path("default-domain/repository/Service/MyService0").accept(MediaType.TEXT_HTML); // impl case
+        //Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
+        //        .path("default-domain/repository/Service/MyService1").accept(MediaType.TEXT_HTML);
         //Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
         //        .path("default-domain/repository/TaggingFolder/Tag0/MyService0").accept(MediaType.TEXT_HTML); // proxy case
         res = serviceDocRef.get(String.class);

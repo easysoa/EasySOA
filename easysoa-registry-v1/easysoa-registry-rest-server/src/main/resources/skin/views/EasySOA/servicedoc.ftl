@@ -135,7 +135,7 @@ td:first-child {
 	</div>
 	<div id="container">
 
-		<h1>Documentation du service ${service.path} ${service.title}</h1>
+		<h1>Documentation du service ${service.path} ${service.title} (${service['soan:name']})</h1>
 
 		Vous voulez : * vous en servir par une application (* prototyper) * développer avec[doc,essai en ligne, test endpoint, simulation] * le développer(specs, protos(mocks))
 
@@ -152,6 +152,12 @@ td:first-child {
 		
 		<h2>Implementation(test)</h2>
 		et consomme, dépend de (en mode non test)
+
+		Implementations :
+      <@displayDocs actualImpls/>
+		<br/>
+		Mocks : <@displayDocsShort mockImpls/>
+		TODO TEST ismock : ${mockImpls[0]['impl:ismock']}
 
 		<h2>Endpoint</h2>
 		Déployé à : 
@@ -187,11 +193,28 @@ td:first-child {
 			<#elseif props?is_sequence>%%<#list props as item><@displayProps1 item propName/> ; </#list>
 			<#else>Error : type not supported</#if>
 		</#macro>
+		<#macro displayDoc doc>
 		<ul>
-		<#list service?keys as propName>
-			<li>${propName} : <#if service[propName]?has_content><@displayProps1 service[propName] propName/><#else>$$</#if></li>
+		<#list doc?keys as propName>
+			<li>${propName} : <#if doc[propName]?has_content><@displayProps1 doc[propName] propName/><#else>$$</#if></li>
 		</#list>
 		</ul>
+      <#list doc['facets'] as facet>
+			<b>${facet}:</b>
+			<ul>
+			<#list facet?keys as propName>
+				<li>${propName} : <#if doc[propName]?has_content><@displayProps1 doc[propName] propName/><#else>$$</#if></li>
+			</#list>
+			</ul>
+		</#list>
+		</#macro>
+		<#macro displayDocs docs>
+         <#list docs as doc>
+				<h4><@displayDocShort doc/></h4>
+				<@displayDoc doc/>
+			</#list>
+		</#macro>
+		<@displayDoc service/>
 	</div>
 
 </body>

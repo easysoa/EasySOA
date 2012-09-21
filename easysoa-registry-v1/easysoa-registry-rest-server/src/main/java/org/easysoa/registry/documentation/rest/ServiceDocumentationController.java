@@ -34,6 +34,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.indicators.rest.IndicatorProvider;
+import org.easysoa.registry.indicators.rest.SoftwareComponentIndicatorProvider;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.DeployedDeliverable;
 import org.easysoa.registry.types.Endpoint;
@@ -45,6 +46,7 @@ import org.easysoa.registry.types.SoftwareComponent;
 import org.easysoa.registry.types.TaggingFolder;
 import org.easysoa.registry.types.adapters.SoaNodeAdapter;
 import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.ecm.webengine.model.Template;
@@ -89,14 +91,35 @@ public class ServiceDocumentationController extends ModuleRoot {
         CoreSession session = SessionFactory.getSession(request);
         
         DocumentModelList services = session.query(IndicatorProvider.NXQL_SELECT_FROM + Service.DOCTYPE
-                /*+ IndicatorProvider.NXQL_WHERE_NO_PROXY + " AND "*/ + " WHERE "
+                /*+ IndicatorProvider.NXQL_WHERE_NO_PROXY + " AND "*/ + IndicatorProvider.NXQL_WHERE
                 + "ecm:path='/" + ecmPath + "'");
         
         Template view = getView("servicedoc");
         if (!services.isEmpty()) {
+            DocumentModel service = services.get(0);
+            List<DocumentModel> actualImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
+                    + IndicatorProvider.NXQL_WHERE_NO_PROXY
+                    //+ IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + "!='true'" // TODO query pb : none match impl:ismock != true
+                    + IndicatorProvider.NXQL_AND + "ecm:uuid in "
+                    + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
+                            session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
+                    + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
+                    + "ecm:path STARTSWITH '" + "/default-domain/repository/Service" + "'"
+                    + IndicatorProvider.NXQL_AND + "ecm:parentId='" + service.getId() + "'"
+                    + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + "!='true'"))); // TODO query pb : none match impl:ismock != true 
+            List<DocumentModel> mockImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
+                    + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid in "
+                    + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
+                            session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
+                    + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
+                    + "ecm:path STARTSWITH '" + "/default-domain/repository/Service" + "'"
+                    + IndicatorProvider.NXQL_AND + "ecm:parentId='" + service.getId() + "'"
+                    + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + "='true'")));
             view = view
-                    .arg("service", services.get(0))
-                    .arg("servicee", services.get(0).getAdapter(SoaNodeAdapter.class));
+                    .arg("service", service)
+                    .arg("actualImpls", actualImpls)
+                    .arg("mockImpls", mockImpls)
+                    .arg("servicee", service.getAdapter(SoaNodeAdapter.class));
         }
         return view; 
     }
