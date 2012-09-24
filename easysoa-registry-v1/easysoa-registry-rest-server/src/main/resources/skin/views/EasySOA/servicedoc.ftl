@@ -202,9 +202,9 @@ td:first-child {
       <#list doc['facets'] as facet>
 			<b>${facet}:</b>
 			<ul>
-			<#list facet?keys as propName>
+			<#-- list facet?keys as propName>
 				<li>${propName} : <#if doc[propName]?has_content><@displayProps1 doc[propName] propName/><#else>$$</#if></li>
-			</#list>
+			</#list -->
 			</ul>
 		</#list>
 		</#macro>
