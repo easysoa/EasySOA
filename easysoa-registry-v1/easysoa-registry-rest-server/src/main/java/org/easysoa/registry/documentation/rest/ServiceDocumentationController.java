@@ -99,14 +99,13 @@ public class ServiceDocumentationController extends ModuleRoot {
             DocumentModel service = services.get(0);
             List<DocumentModel> actualImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
                     + IndicatorProvider.NXQL_WHERE_NO_PROXY
-                    //+ IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + "!='true'" // TODO query pb : none match impl:ismock != true
                     + IndicatorProvider.NXQL_AND + "ecm:uuid in "
                     + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
                             session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
                     + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
                     + "ecm:path STARTSWITH '" + "/default-domain/repository/Service" + "'"
                     + IndicatorProvider.NXQL_AND + "ecm:parentId='" + service.getId() + "'"
-                    + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + "!='true'"))); // TODO query pb : none match impl:ismock != true 
+                    + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + " IS NULL"))); // WARNING use IS NULL instead of !='true'
             List<DocumentModel> mockImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
                     + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid in "
                     + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,

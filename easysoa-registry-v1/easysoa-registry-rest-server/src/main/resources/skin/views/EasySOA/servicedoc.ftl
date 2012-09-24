@@ -154,7 +154,7 @@ td:first-child {
 		et consomme, dépend de (en mode non test)
 
 		Implementations :
-      <@displayDocs actualImpls/>
+      <@displayDocsShort actualImpls/>
 		<br/>
 		Mocks : <@displayDocsShort mockImpls/>
 		TODO TEST ismock : ${mockImpls[0]['impl:ismock']}
