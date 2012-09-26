@@ -137,32 +137,11 @@ td:first-child {
 
 <#include "/views/EasySOA/macros.ftl">
 
-		<h1>Services</h1>
+		<h1>Services (${tagServices?size}) of tag <@displayTagShort tag/></h1>
+		<@displayServicesShort tagServices/>
 
-		<@displayServicesShort services/>
-
-		<h1>By tags</h1>
-
-		<#list tags as tag>
-		<#if tagId2Services?keys?seq_contains(tag.id)>
-		<h3>Services (${tagId2Services[tag.id]?size}) of tag <@displayTagShort tag/></h3>
-		<@displayServicesShort tagId2Services[tag.id]/>
-		</#if>
-		</#list>
-
-		<h2>Untagged services (${untaggedServices?size})</h2>
-
-		<@displayServicesShort untaggedServices/>
-
-		<h2>Tags without services (${tags?size - tagId2Services?keys?size})</h2>
-
-		<ul>
-			<#list tags as tag>
-			<#if !tagId2Services?keys?seq_contains(tag.id)>
-			<li><@displayTagShort tag/></li>
-			</#if>
-			</#list>
-		</ul>
+		<h1>Tag details<h1>
+		<@displayDoc tag/>
 
 	</div>
 

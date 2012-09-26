@@ -23,6 +23,7 @@ import org.nuxeo.ecm.platform.query.nxql.NXQLQueryBuilder;
 public class DocumentServiceImpl implements DocumentService {
 
     public DocumentModel createDocument(CoreSession documentManager, String doctype, String name, String parentPath, String title) throws ClientException {
+        // TODO if doctype belongs to SoaNode subtypes, throw new Exception("createDocument() doesn't work for SoaNode types, rather use create()")
         DocumentModel documentModel = documentManager.createDocumentModel(doctype);
         documentModel.setPathInfo(parentPath, name);
         documentModel.setProperty("dublincore", "title", title);

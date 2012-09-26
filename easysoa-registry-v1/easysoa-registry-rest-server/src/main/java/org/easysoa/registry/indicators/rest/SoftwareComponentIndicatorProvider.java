@@ -40,8 +40,8 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         
         // not in any software component :
         DocumentModelList deliverableProxyInASoftwareComponent = session.query(NXQL_SELECT_FROM + "Deliverable"
-                + NXQL_WHERE_PROXY
-                + " AND ecm:path STARTSWITH '" + "/default-domain/repository/SoftwareComponent" + "'");
+                + NXQL_WHERE_PROXY + NXQL_AND + NXQL_PATH_STARTSWITH
+                + "/default-domain/repository/SoftwareComponent" + NXQL_QUOTE);
         DocumentModelList deliverableInNoSoftwareComponent = session.query(NXQL_SELECT_FROM + "Deliverable" + NXQL_WHERE_NO_PROXY
                 + " AND ecm:uuid NOT IN " + getProxiedIdLiteralList(session, deliverableProxyInASoftwareComponent));
         int deliverableInNoSoftwareComponentCount = deliverableInNoSoftwareComponent.size();
@@ -169,6 +169,13 @@ public class SoftwareComponentIndicatorProvider implements IndicatorProvider {
         return "('" + ids.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", "', '") + "')";
     }
 
+    /**
+     * Does not use an intermediary set
+     * @param session
+     * @param proxies
+     * @return
+     * @throws ClientException
+     */
     public static String getProxiedIdLiteralList(CoreSession session, List<DocumentModel> proxies) throws ClientException {
         return getIdLiteralList(getProxiedIds(session, proxies));
     }

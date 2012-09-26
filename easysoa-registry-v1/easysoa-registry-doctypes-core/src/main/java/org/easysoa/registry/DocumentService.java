@@ -25,13 +25,15 @@ public interface DocumentService {
     
     /**
      * Helper for general document creation.
-     * Direct use is not recommended for SoaNode types.
+     * Direct use is not recommended for SoaNode types (whose auto reclassification requires soaId).
+     * Used to create SOA roots and in tests.
      * 
      * @return
      * @throws ClientException
      */
     DocumentModel createDocument(CoreSession documentManager, String doctype, String name,
             String parentPath, String title) throws ClientException;
+    
     
     /**
      * Creates a SoaNode document. If a document of the same identifier

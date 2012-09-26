@@ -18,9 +18,12 @@ import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.easysoa.registry.types.SoftwareComponent;
+import org.easysoa.registry.types.SystemTreeRoot;
 import org.easysoa.registry.types.TaggingFolder;
 import org.junit.Assert;
 import org.junit.Test;
+import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Deploy;
@@ -85,7 +88,6 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
         properties.clear();
         properties.put(ServiceImplementation.XPATH_TESTS,
         		Arrays.asList("org.easysoa.MyServiceImplTest"));
-        //properties.put(ServiceImplementation.XPATH_ISMOCK, "false");//TODO rm
         discoveryService.runDiscovery(documentManager, 
         		new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImplNotMock"), properties, Arrays.asList(service0Id));
         
@@ -123,6 +125,27 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
 
         // test software component
 
+        // user classified business component
+        /*DocumentModel documentModel = documentManager.createDocumentModel(doctype);
+        documentModel.setPathInfo(parentPath, name);
+        documentModel.setProperty("dublincore", "title", title);
+        documentModel = documentManager.createDocument(documentModel);*/
+        documentService.createDocument(documentManager, "Workspace", "Business", "/default-domain/workspaces", "Business");
+        DocumentModel business1Folder = documentService.createDocument(documentManager, SystemTreeRoot.DOCTYPE, "Business1", "/default-domain/workspaces/Business", "Business1");
+        // first BP (user created) and its service :
+        DocumentModel b1p2 = documentService.create(documentManager, new SoaNodeId(TaggingFolder.DOCTYPE, "Business1Process2"), "/default-domain/workspaces/Business/Business1"); // will be auto reclassified
+        b1p2.setPropertyValue("dc:title", "Business1Process2");
+        documentManager.save();
+        SoaNodeId b1p2Id = documentService.createSoaNodeId(b1p2);
+        discoveryService.runDiscovery(documentManager, new SoaNodeId(Service.DOCTYPE, "Business1Process2Service1"),null, Arrays.asList(b1p2Id));
+        // 2nd BP (reused) and its service :
+        documentManager.createProxy(new PathRef("/default-domain/repository/TaggingFolder/BusinessProcessSystem1"), business1Folder.getRef());
+        discoveryService.runDiscovery(documentManager, new SoaNodeId(Service.DOCTYPE, "BusinessProcessSystem1Service1"), null, Arrays.asList(businessProcessSystem1Id));
+
+        // tag without service : 
+        SoaNodeId tagWithoutService = new SoaNodeId(TaggingFolder.DOCTYPE, "tagWithoutService");
+        discoveryService.runDiscovery(documentManager, tagWithoutService, null, null);
+        
         documentManager.save();
         logRepository();
 
@@ -133,17 +156,30 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
         String res = servicesReq.get(String.class);
         logger.info(res);
         // Check result
-        //Assert.assertTrue(res.contains("Nombre de softwareComponentInNoTaggingFolders : <b>1</b>"));
+        Assert.assertTrue(res.contains("MyService0"));
 
         // Fetch service doc page :
         Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
-                .path("default-domain/repository/Service/MyService0").accept(MediaType.TEXT_HTML); // impl case
+                .path("path/" + "default-domain/repository/Service/MyService0").accept(MediaType.TEXT_HTML); // impl case
         //Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
         //        .path("default-domain/repository/Service/MyService1").accept(MediaType.TEXT_HTML);
         //Builder serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
         //        .path("default-domain/repository/TaggingFolder/Tag0/MyService0").accept(MediaType.TEXT_HTML); // proxy case
         res = serviceDocRef.get(String.class);
         logger.info(res);
+        Assert.assertTrue(res.contains("MyService0"));
+
+        serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
+                .path("tag/default-domain/repository/TaggingFolder/BusinessProcessSystem1").accept(MediaType.TEXT_HTML);
+        res = serviceDocRef.get(String.class);
+        logger.info(res);
+        Assert.assertTrue(res.contains("/default-domain/repository/Service/BusinessProcessSystem1Service1"));
+
+        serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
+                .path("tag/default-domain/workspaces/Business/Business1/Business1Process2").accept(MediaType.TEXT_HTML);
+        res = serviceDocRef.get(String.class);
+        logger.info(res);
+        Assert.assertTrue(res.contains("/default-domain/repository/Service/Business1Process2Service1"));
     }
     
 }

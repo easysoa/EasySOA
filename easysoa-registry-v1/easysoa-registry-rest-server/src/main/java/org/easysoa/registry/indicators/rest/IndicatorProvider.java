@@ -17,6 +17,7 @@ public interface IndicatorProvider {
     static final String NXQL_SELECT_FROM = "SELECT * FROM ";
     static final String NXQL_WHERE = " WHERE ";
     static final String NXQL_AND = " AND ";
+    static final String NXQL_QUOTE = "'";
 
     static final String NXQL_IS_NOT_DELETED = "ecm:currentLifeCycleState <> 'deleted'";
 
@@ -29,6 +30,8 @@ public interface IndicatorProvider {
             + NXQL_AND + NXQL_IS_NOT_VERSIONED + NXQL_AND + NXQL_IS_NO_PROXY;
     static final String NXQL_WHERE_PROXY = NXQL_WHERE + NXQL_IS_NOT_DELETED
             + NXQL_AND + NXQL_IS_NOT_VERSIONED + NXQL_AND + NXQL_IS_PROXY;
+
+    static final String NXQL_PATH_STARTSWITH = "ecm:path STARTSWITH '";
     
     /**
      * @return The required indicator names

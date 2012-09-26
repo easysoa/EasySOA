@@ -135,6 +135,8 @@ td:first-child {
 	</div>
 	<div id="container">
 
+<#include "/views/EasySOA/macros.ftl">
+
 		<h1>Documentation du service ${service.path} ${service.title} (${service['soan:name']})</h1>
 
 		Vous voulez : * vous en servir par une application (* prototyper) * développer avec[doc,essai en ligne, test endpoint, simulation] * le développer(specs, protos(mocks))
@@ -157,7 +159,7 @@ td:first-child {
       <@displayDocsShort actualImpls/>
 		<br/>
 		Mocks : <@displayDocsShort mockImpls/>
-		TODO TEST ismock : ${mockImpls[0]['impl:ismock']}
+		<#-- TODO TEST ismock : ${mockImpls[0]['impl:ismock']} -->
 
 		<h2>Endpoint</h2>
 		Déployé à : 
@@ -165,12 +167,6 @@ td:first-child {
 
 
 		<h1>test</h1>
-		<#macro displayDocShort doc>
-         ${doc['title']} - ${doc['path']}
-		</#macro>
-		<#macro displayDocsShort docs>
-         <#list docs as doc><@displayDocShort doc/> ; </#list>
-		</#macro>
 
 		<h2>Contenu dans</h2>
 		<#if service['proxies']?has_content><#list service['proxies'] as proxy><@displayDocShort proxy['parent']/> ; </#list></#if>
@@ -179,41 +175,6 @@ td:first-child {
 		<#if service['children']?has_content><@displayDocsShort service['children']/></#if>
 
 		<h2>log : all props</h2>
-		<#macro displayProps1 props propName>
-         <#if propName = 'parent'>${props['title']} - ${props['path']}
-			<#elseif propName = 'children'><#list props as child>${child['title']} - ${child['path']}</#list>
-			<#elseif propName = 'proxies'><#list props as proxy>${proxy['title']} - ${proxy['path']}</#list>
-			<#else><@displayProps props propName/></#if>
-		</#macro>
-		<#macro displayProps props propName>
-         <#if !props?has_content>££NON
-			<#elseif props?is_string || props?is_number || props?is_boolean>${props}
-			<#elseif props?is_date>${props?string("yyyy-MM-dd HH:mm:ss zzzz")}
-			<#elseif props?is_hash><#list props?keys as itemName>${itemName} : <#if props[itemName]?has_content><@displayProps1 props[itemName] itemName/></#if> ; </#list>
-			<#elseif props?is_sequence>%%<#list props as item><@displayProps1 item propName/> ; </#list>
-			<#else>Error : type not supported</#if>
-		</#macro>
-		<#macro displayDoc doc>
-		<ul>
-		<#list doc?keys as propName>
-			<li>${propName} : <#if doc[propName]?has_content><@displayProps1 doc[propName] propName/><#else>$$</#if></li>
-		</#list>
-		</ul>
-      <#list doc['facets'] as facet>
-			<b>${facet}:</b>
-			<ul>
-			<#-- list facet?keys as propName>
-				<li>${propName} : <#if doc[propName]?has_content><@displayProps1 doc[propName] propName/><#else>$$</#if></li>
-			</#list -->
-			</ul>
-		</#list>
-		</#macro>
-		<#macro displayDocs docs>
-         <#list docs as doc>
-				<h4><@displayDocShort doc/></h4>
-				<@displayDoc doc/>
-			</#list>
-		</#macro>
 		<@displayDoc service/>
 	</div>
 
