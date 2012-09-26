@@ -29,6 +29,7 @@
 	  <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
 	  <module>handlers/easysoa-proxy-handlers-event-test</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-cxf-interceptor</module>
+	  <module>easysoa-proxy-intents/easysoa-proxy-intents-cxfMonitoringIntent</module>
   </modules>
   
   <!-- ======================= -->
