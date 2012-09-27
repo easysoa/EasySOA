@@ -1,132 +1,144 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <artifactId>easysoa-proxy-intents-cxfMonitoringintent</artifactId>
-  <packaging>jar</packaging>
-  <name>EasySOA Proxy CXF Monitoring Intent</name>
+	<artifactId>easysoa-proxy-intents-cxfMonitoringintent</artifactId>
+	<packaging>jar</packaging>
+	<name>EasySOA Proxy CXF Monitoring Intent</name>
 
-  <parent>
-    <groupId>org.easysoa.proxy</groupId>
-    <artifactId>easysoa-proxy-parent</artifactId>
-    <version>0.5-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+	<parent>
+		<groupId>org.easysoa.proxy</groupId>
+		<artifactId>easysoa-proxy-parent</artifactId>
+		<version>0.5-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <!--<dependency>
-      <groupId>aopalliance</groupId>
-      <artifactId>aopalliance</artifactId>
-    </dependency>-->
-    <!--<dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-    </dependency>-->
-    <!--<dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>8.1.4.v20120524</version>
-    </dependency>-->    
-    
-    <!--<dependency>
-      <groupId>org.ow2.frascati.tinfi</groupId>
-      <artifactId>frascati-tinfi-runtime-api</artifactId>
-      <version>${tinfi.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.frascati.tinfi</groupId>
-      <artifactId>frascati-tinfi-oo</artifactId>
-      <version>${tinfi.version}</version>
-    </dependency>-->
- 
-  	<!-- Frascati cxf intent -->
-  	<dependency>
-  		<groupId>org.ow2.frascati.intent</groupId>
-  		<artifactId>frascati-intent-apache-cxf</artifactId>
-  		<version>${frascati.version}</version>
-  		<scope>compile</scope>
-  	</dependency> 
-    <dependency>
-      <groupId>org.ow2.fractal.bf.connectors</groupId>
-      <artifactId>fractal-bf-connectors-common</artifactId>
-      <version>${fractal-bf.version}</version>
-      <scope>compile</scope>
-      <exclusions>
-        <!-- Exclude ASM All -->
-        <exclusion>
-          <groupId>asm</groupId>
-          <artifactId>asm-all</artifactId>
-        </exclusion>
-        <!-- Exclude Fractal ADL -->
-        <exclusion>
-          <groupId>org.objectweb.fractal.fractaladl</groupId>
-          <artifactId>fractal-adl</artifactId>
-        </exclusion>
-        <!-- Exclude ObjectWeb Monolog -->
-        <exclusion>
-          <groupId>org.objectweb.monolog</groupId>
-          <artifactId>monolog</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
-    <!-- OW2 Fractal Util. -->
-    <dependency>
-      <groupId>org.ow2.frascati</groupId>
-      <artifactId>frascati-util</artifactId>
-      <version>${frascati.version}</version>
-      <scope>compile</scope>
-    </dependency>    
-    
-    <!-- Apache CXF. -->
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-core</artifactId>
-      <version>${cxf.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxws</artifactId>
-      <version>${cxf.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-      <version>${cxf.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http</artifactId>
-      <version>${cxf.version}</version>
-      <scope>provided</scope>
-    </dependency>    
-    
-    <!-- Basic logging tool -->
-    <dependency>
-    	<groupId>commons-logging</groupId>
-    	<artifactId>commons-logging</artifactId>
-    	<version>1.1</version>
-    </dependency>
-    <!--<dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </dependency>-->
+	<dependencies>
+		<!--<dependency> <groupId>javax.ws.rs</groupId> <artifactId>jsr311-api</artifactId> 
+			</dependency> -->
+		<!--<dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-server</artifactId> 
+			<version>8.1.4.v20120524</version> </dependency> -->
 
-	<!-- For tests only -->
- 	<dependency>
- 		<groupId>org.easysoa.proxy</groupId>
- 		<artifactId>easysoa-proxy-core-httpdiscoveryproxy-test</artifactId>
- 		<version>${easysoa.version}</version>
- 		<scope>test</scope>
- 	</dependency>
+		<!-- Frascati -->
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-factory</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-implementation-fractal</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-ws</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-http</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-binding-rest</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-runtime-factory</artifactId>
+			<version>${frascati.version}</version>
+		</dependency>
 
-  </dependencies>
+		<!-- Frascati cxf intent -->
+		<dependency>
+			<groupId>org.ow2.frascati.intent</groupId>
+			<artifactId>frascati-intent-apache-cxf</artifactId>
+			<version>${frascati.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.fractal.bf.connectors</groupId>
+			<artifactId>fractal-bf-connectors-common</artifactId>
+			<version>${fractal-bf.version}</version>
+			<scope>compile</scope>
+			<exclusions>
+				<!-- Exclude ASM All -->
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm-all</artifactId>
+				</exclusion>
+				<!-- Exclude Fractal ADL -->
+				<exclusion>
+					<groupId>org.objectweb.fractal.fractaladl</groupId>
+					<artifactId>fractal-adl</artifactId>
+				</exclusion>
+				<!-- Exclude ObjectWeb Monolog -->
+				<exclusion>
+					<groupId>org.objectweb.monolog</groupId>
+					<artifactId>monolog</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- OW2 Fractal Util. -->
+		<dependency>
+			<groupId>org.ow2.frascati</groupId>
+			<artifactId>frascati-util</artifactId>
+			<version>${frascati.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Apache CXF. -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-core</artifactId>
+			<version>${cxf.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${cxf.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+			<version>${cxf.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>${cxf.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Basic logging tool -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<!-- For tests only -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa.proxy</groupId>
+			<artifactId>easysoa-proxy-core-mocks</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.easysoa.samples.smarttravel</groupId>
+			<artifactId>easysoa-samples-smarttravel-services-backup-sca</artifactId>
+			<version>${easysoa.version}</version>
+		</dependency>
+
+	</dependencies>
 
 </project>

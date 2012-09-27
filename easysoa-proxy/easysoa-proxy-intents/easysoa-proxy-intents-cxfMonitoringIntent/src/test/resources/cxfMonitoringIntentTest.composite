@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sca:composite xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
+  xmlns:hw="http://fuse-intent" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  name="cxfMonitoringIntentTest">
+  
+  <sca:service name="monitoringIntentTest" promote="cxfIntentTestComponent/cxfIntentTestService">
+  	<sca:interface.java interface="org.easysoa.sca.intents.test.IntentTest"/>
+  </sca:service>
+
+  <sca:component name="cxfIntentTestComponent">
+    <sca:implementation.java class="org.easysoa.sca.intents.test.IntentTestImpl"/>
+    <sca:service name="cxfIntentTestService">
+      <sca:interface.java interface="org.easysoa.sca.intents.test.IntentTest"/>
+    </sca:service>
+    <sca:reference name="meteo_genService_ref">
+      <sca:interface.java interface="net.webservicex.GlobalWeatherSoap"/>
+    </sca:reference>  
+  </sca:component>
+  
+  <sca:reference name="Check_Meteo_ref" promote="cxfIntentTestComponent/meteo_genService_ref">
+    <!--<sca:binding.ws wsdlElement="http://webservicex.net/#wsdl.port(GlobalWeather/GlobalWeatherSoap)" wsdli:wsdlLocation="http://localhost:9020/WeatherService?wsdl"/>-->
+    <sca:binding.ws wsdlElement="http://webservicex.net/#wsdl.port(GlobalWeather/GlobalWeatherSoap)" wsdli:wsdlLocation="http://localhost:9020/WeatherService?wsdl" requires="cxfMonitoringIntent"/>
+  </sca:reference>  
+  
+</sca:composite>

@@ -22,28 +22,25 @@ package org.easysoa.sca.intents;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+import javax.xml.ws.handler.Handler;
+import javax.xml.ws.handler.MessageContext;
 import org.osoa.sca.annotations.Reference;
-import org.ow2.frascati.intent.cxf.AbstractHTTPClientPolicyIntent;
-import org.talend.esb.sam._2011._03.common.EventEnumType;
-import org.talend.esb.sam._2011._03.common.EventType;
+import org.ow2.frascati.intent.cxf.AbstractHandlerIntent;
 import org.talend.esb.sam.monitoringservice.v1.MonitoringService;
-import org.talend.esb.sam.monitoringservice.v1.PutEventsFault;
 
 /**
  * 
  * @author jguillemotte
  *
  */
-public class CXFMonitoringIntent extends AbstractHTTPClientPolicyIntent {
-    
+public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handler<MessageContext> {
+
     @Reference
     MonitoringService samMonitoringService;
     
-    @Override
-    protected void configure(HTTPClientPolicy httpClientPolicy) {
-
+    //@Override
+    /*protected void configure(HTTPClientPolicy httpClientPolicy) {
+        
         // Event list
         List<EventType> events = new ArrayList<EventType>();
 
@@ -57,7 +54,7 @@ public class CXFMonitoringIntent extends AbstractHTTPClientPolicyIntent {
         // Add events to list
         events.add(inMessageEvent);
         events.add(outMessageEvent);
-        
+        */
         /*try {
             // Send events
             samMonitoringService.putEvents(events);
@@ -66,6 +63,28 @@ public class CXFMonitoringIntent extends AbstractHTTPClientPolicyIntent {
             e.printStackTrace();
         }*/
         
+    /*}*/
+
+    @Override
+    public boolean handleMessage(MessageContext context) {
+        return true;
+    }
+
+    @Override
+    public boolean handleFault(MessageContext context) {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public void close(MessageContext context) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected Handler<MessageContext> getHandler() {
+        return this;
     }
 
 }

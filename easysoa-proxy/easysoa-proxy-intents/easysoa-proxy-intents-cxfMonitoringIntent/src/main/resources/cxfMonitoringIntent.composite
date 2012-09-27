@@ -4,20 +4,18 @@
   xmlns:hw="http://fuse-intent" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  name="CXFMonitoringIntent">
+  name="cxfMonitoringIntent">
   <sca:service name="intent" promote="SAMMonitoringIntentHandlerComponent/intent"/>
+  
   <sca:component name="SAMMonitoringIntentHandlerComponent">
     <sca:implementation.java class="org.easysoa.sca.intents.CXFMonitoringIntent"/>
     <sca:service name="intent">
       <sca:interface.java interface="org.objectweb.fractal.bf.connectors.common.BindingIntentHandler"/>
     </sca:service>
-    <sca:reference name="samMonitoringService">
-      <sca:interface.java interface="org.talend.esb.sam.monitoringservice.v1.MonitoringService.java"/>
-    </sca:reference>    
+    <!--<sca:reference name="samMonitoringService">
+      <sca:interface.java interface="org.talend.esb.sam.monitoringservice.v1.MonitoringService"/>
+	  <sca:binding.ws wsdlElement="http://www.talend.org/esb/sam/MonitoringService/v1#wsdl.port(MonitoringWebServiceService/MonitoringWebServicePort)" wsdli:wsdlLocation="http://localhost:8080/sam-server-war/services/MonitoringServiceSOAP?wsdl"/>      
+    </sca:reference>-->
   </sca:component>
-  
-  <sca:reference name="samWebService" promote="SAMMonitoringIntentHandlerComponent/samMonitoringService">
-    <sca:binding.ws wsdlElement="http://www.talend.org/esb/sam/MonitoringService/v1#wsdl.port(MonitoringWebServicePort/MonitoringWebServiceService)" wsdli:wsdlLocation="http://localhost:8080/sam-server-war/services/MonitoringServiceSOAP?wsdl"/>
-  </sca:reference>  
   
 </sca:composite>
