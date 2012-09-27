@@ -12,10 +12,10 @@
     <sca:service name="intent">
       <sca:interface.java interface="org.objectweb.fractal.bf.connectors.common.BindingIntentHandler"/>
     </sca:service>
-    <!--<sca:reference name="samMonitoringService">
+    <sca:reference name="samMonitoringService">
       <sca:interface.java interface="org.talend.esb.sam.monitoringservice.v1.MonitoringService"/>
-	  <sca:binding.ws wsdlElement="http://www.talend.org/esb/sam/MonitoringService/v1#wsdl.port(MonitoringWebServiceService/MonitoringWebServicePort)" wsdli:wsdlLocation="http://localhost:8080/sam-server-war/services/MonitoringServiceSOAP?wsdl"/>      
-    </sca:reference>-->
+	  <sca:binding.ws wsdlElement="http://service.server.sam.esb.talend.org#wsdl.port(MonitoringWebServiceService/MonitoringWebServicePort)" wsdli:wsdlLocation="http://localhost:8080/sam-server-war/services/MonitoringServiceSOAP?wsdl"/>      
+    </sca:reference>
   </sca:component>
   
 </sca:composite>
