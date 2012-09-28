@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <title>EasySOA REST Services Documentation</title>
@@ -135,37 +135,41 @@ td:first-child {
 	</div>
 	<div id="container">
 
-		<h1>Indicateurs sur votre SOA</h1>
+<#include "/views/EasySOA/macros.ftl">
 
-		<h2>Nbs</h2>
-		<ul>
-			<#list nbMap?keys as nbMapKey>
-			<li>Nombre de ${nbMapKey}s : <b>${nbMap[nbMapKey]}</b>
-				<#if percentMap[nbMapKey]> | 
-					<#if percentMap[nbMapKey] != -1>
-						Pourcentage : <b>${percentMap[nbMapKey]}%</b>
-					<#else>
-						Pourcentage : <b>N.A.</b>
-					</#if>
-				</#if>
-			</li>
-			</#list>
-		</ul>
+		<h1>Service</h1>
+		<@displayServiceShort service/>
 
-		<h2>Percent</h2>
+		<h2>Tagged in</h2>
+
+		<#-- compute currentTagIds for later "not yet used tags" display : -->
+		<#assign currentTagIds=[]/>
+		<#if service['proxies']?has_content>
 		<ul>
-			<#list percentMap?keys as percentMapKey>
-			<#if percentMap[percentMapKey]>
-			<li>
-				<#if percentMap[percentMapKey] != -1>
-					${percentMapKey} : <b>${percentMap[percentMapKey]}%</b>
-				<#else>
-					${percentMapKey} : <b>N.A.</b>
-				</#if>
-			</li>
+		<#list service['proxies'] as serviceProxy>
+			<#if serviceProxy['parent'].type = 'TaggingFolder'>
+					<li><@displayTagShort serviceProxy['parent']/> -
+					<form method="POST" action="${Root.path}/proxy${serviceProxy.path}">
+						<input name="delete" type="hidden" value=""/>
+						<a href="##" onClick="this.parentNode.submit();">Untag</a>
+					</form>
+					</li>
+					<#assign currentTagIds=currentTagIds+[serviceProxy['parent'].id]/>
 			</#if>
-			</#list>
+		</#list>
 		</ul>
+		</#if>
+
+		<h2>Also tag in...</h2>
+
+		<#list tags as tag>
+			<#if !currentTagIds?seq_contains(tag.id)>
+			<form method="POST" action="${Root.path}${service.path}/tags">
+				<input name="tagPath" type="hidden" value="${tag.path}"/>
+				<a href="##" onClick="this.parentNode.submit();">Tag</a> in <@displayTagShort tag/>
+			</form>
+			</#if>
+		</#list>
 
 	</div>
 

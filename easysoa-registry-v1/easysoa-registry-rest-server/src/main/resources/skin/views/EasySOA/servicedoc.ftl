@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html>
 <head>
 <title>EasySOA REST Services Documentation</title>
@@ -139,31 +139,75 @@ td:first-child {
 
 		<h1>Documentation du service ${service.path} ${service.title} (${service['soan:name']})</h1>
 
-		Vous voulez : * vous en servir par une application (* prototyper) * développer avec[doc,essai en ligne, test endpoint, simulation] * le développer(specs, protos(mocks))
+		Vous voulez :
+		<ul>
+			<li>vous en servir par une application</li>
+			<li>prototyper)</li>
+			<li>dÃ©velopper avec[doc,essai en ligne, test endpoint, simulation]</li>
+			<li>le dÃ©velopper(specs, protos(mocks))</li>
+		</ul>
 
 		<h2>(description)</h2>
+		${service['dc:description']}
 
 		<h2>Documentation(manuelle, extraite)</h2>
+		<#-- doc of first impl, since none on service itself : -->
+		<#if actualImpls?size != 0>
+		${actualImpls[0]['impl:documentation']}
+		<@displayProps actualImpls[0]['impl:operations'] ''/>
+		</#if>
 
 		<h2>Usages</h2>
-		où (applications : le déployant ; architecture : le consommant)
-		exemples d'appel
-		(autres tags)
+		oÃ© (applications : le dÃ©ployant ; architecture : le consommant)
+
+		<#-- IntelligentSystems tagging it, since only Applications from now : -->
+		<b>Applications :</b><br/>
+		<#if service['proxies']?has_content>
+		<ul>
+		<#list service['proxies'] as serviceProxy>
+			<#if serviceProxy['parent'].type = 'IntelligentSystem'>
+					<li><@displayDocShort serviceProxy/></li>
+			</#if>
+		</#list>
+		</ul>
+		</#if>
+
+		<#-- TaggingFolder tagging it, since only Applications from now : -->
+		<br/><b>Business Processes :</b><br/>
+		<#if service['proxies']?has_content>
+		<ul>
+		<#list service['proxies'] as serviceProxy>
+			<#if serviceProxy['parent'].type = 'TaggingFolder'>
+					<li><@displayTagShort serviceProxy/></li>
+			</#if>
+		</#list>
+		</ul>
+		</#if>
+
+		<br/><a href="${Root.path}${service.path}/tags">Also tag in...</a>
+
+		<br/>exemples d'appel
+
+		<br/>(autres tags)
 
 		<h2>Interface(s)</h2>
+		WSDL, JAXRS...
 		
 		<h2>Implementation(test)</h2>
-		et consomme, dépend de (en mode non test)
+		et consomme, dÃ©pend de (en mode non test)
 
-		Implementations :
-      <@displayDocsShort actualImpls/>
+		<br/><b>Implementations :</b><br/>
+      <#-- @displayDocsShort actualImpls/ -->
+      <@displayDocs actualImpls shortDocumentPropNames + serviceImplementationPropNames/>
 		<br/>
-		Mocks : <@displayDocsShort mockImpls/>
+		<br/><b>Mocks :</b><br/>
+		<#-- @displayDocsShort mockImpls/ -->
+      <@displayDocs mockImpls shortDocumentPropNames + serviceImplementationPropNames/>
 		<#-- TODO TEST ismock : ${mockImpls[0]['impl:ismock']} -->
 
 		<h2>Endpoint</h2>
-		Déployé à : 
-		Et a déploiements de test :
+		DÃ©ployÃ© Ã  : URL
+		<br/>Et a dÃ©ploiements de test :
 
 
 		<h1>test</h1>

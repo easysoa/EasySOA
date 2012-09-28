@@ -24,6 +24,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.api.model.impl.ListProperty;
+import org.nuxeo.ecm.core.api.model.impl.MapProperty;
+import org.nuxeo.ecm.core.api.model.impl.primitives.StringProperty;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Deploy;
@@ -78,6 +81,21 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
 		// service impls
         SoaNodeId serviceImplId = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
         Map<String, Object> properties = new HashMap<String, Object>();
+        /*ListProperty operations = new org.nuxeo.ecm.core.api.model.impl.ListProperty(null, null);
+        MapProperty operation1 = new MapProperty(operations, null).setValue(value);
+        //operations.add(operations1);
+        operation1.put("operationParameters", new StringProperty(operation1, null, 0));
+        StringProperty operationName = new StringProperty(operation1, null, 0);
+        operationName.setValue(value);
+        operation1.put("operationName",  "getOrdersNumber");
+        operation1.put("operationDocumentation", "Method: GET, Path: \"/orders/{clientName}\", Description: Returns the orders number for the specified client name.");*/
+        ArrayList<Object> operations = new ArrayList<Object>();
+        Map<String, Object> operation1 = new HashMap<String, Object>();
+        operation1.put("operationParameters", null);
+        operation1.put("operationName", "getOrdersNumber");
+        operation1.put("operationDocumentation", "Method: GET, Path: \"/orders/{clientName}\", Description: Returns the orders number for the specified client name.");
+        operations.add(operation1);
+        properties.put(ServiceImplementation.XPATH_OPERATIONS, operations);
         properties.put(ServiceImplementation.XPATH_DOCUMENTATION,
         		"Blah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah\nBlah");
         properties.put(ServiceImplementation.XPATH_TESTS,
@@ -180,6 +198,22 @@ public class ServiceDocumentationControllerTest extends AbstractRestApiTest {
         res = serviceDocRef.get(String.class);
         logger.info(res);
         Assert.assertTrue(res.contains("/default-domain/repository/Service/Business1Process2Service1"));
+
+        serviceDocRef = client.resource(this.getURL(ServiceDocumentationController.class))
+                .path("default-domain/repository/Service/BusinessProcessSystem1Service1/tags").accept(MediaType.TEXT_HTML);
+        res = serviceDocRef.get(String.class);
+        logger.info(res);
+        Assert.assertTrue(res.contains("/default-domain/repository/TaggingFolder/Business1Process2"));
+        
+        // validation - internal services (consumption) :
+        // for (service : getInternalServices(context))
+        
+        // validation - services promoted from outside :
+        // for (service : application/proxiedServices) if !isCompliantTo(service.itf, application.getReqItf(service) alert("inconsistent!")
+        // for (businessService : application/businessServices) if !isCompliantTo(businessService/proxiedTechnicalService.itf, businessService.itf alert("inconsistent!")
+
+        // validation - services promoted to outside vs reqs :
+        // for (publishedService : application/publishedServices) if !isCompliantTo(publishedService.itf, application.getPublishedReqItf(publishedService) alert("inconsistent!")
     }
     
 }

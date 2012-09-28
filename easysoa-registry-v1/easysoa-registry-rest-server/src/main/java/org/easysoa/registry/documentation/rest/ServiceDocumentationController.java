@@ -29,13 +29,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
+import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.indicators.rest.IndicatorProvider;
 import org.easysoa.registry.indicators.rest.SoftwareComponentIndicatorProvider;
 import org.easysoa.registry.types.Deliverable;
@@ -57,6 +61,7 @@ import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.ecm.webengine.model.Template;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
+import org.nuxeo.runtime.api.Framework;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
@@ -129,7 +134,7 @@ public class ServiceDocumentationController extends ModuleRoot {
             tagId2ServiceNbs.put(serviceProxyParentId, serviceProxyNb);
         }*/
         DocumentModelList untaggedServices = session.query("SELECT " + SERVICE_LIST_PROPS + " FROM " + Service.DOCTYPE + IndicatorProvider.NXQL_WHERE_NO_PROXY
-                + IndicatorProvider.NXQL_AND + "ecm:uuid in " + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session, serviceProxies));
+                + IndicatorProvider.NXQL_AND + "ecm:uuid IN " + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session, serviceProxies));
         
         return getView("services")
                 .arg("services", services)
@@ -154,10 +159,10 @@ public class ServiceDocumentationController extends ModuleRoot {
         Template view = getView("servicedoc");
         if (!services.isEmpty()) {
             DocumentModel service = services.get(0);
-            service = session.getWorkingCopy(service.getRef()); // unwrapping
+            // WARNING IS NULL DOESN'T WORK IN RELEASE BUT IN JUNIT OK
             List<DocumentModel> actualImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
                     + IndicatorProvider.NXQL_WHERE_NO_PROXY
-                    + IndicatorProvider.NXQL_AND + "ecm:uuid in "
+                    + IndicatorProvider.NXQL_AND + "ecm:uuid IN "
                     + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
                             session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
                     + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
@@ -165,13 +170,17 @@ public class ServiceDocumentationController extends ModuleRoot {
                     + IndicatorProvider.NXQL_AND + "ecm:parentId='" + service.getId() + "'"
                     + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + " IS NULL"))); // WARNING use IS NULL instead of !='true'
             List<DocumentModel> mockImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
-                    + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid in "
+                    + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid IN "
                     + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
                             session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
                     + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
                     + IndicatorProvider.NXQL_PATH_STARTSWITH + "/default-domain/repository/Service" + "'"
                     + IndicatorProvider.NXQL_AND + "ecm:parentId='" + service.getId() + "'"
                     + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + "='true'")));
+            actualImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
+                    + IndicatorProvider.NXQL_WHERE_NO_PROXY
+                    + IndicatorProvider.NXQL_AND + "ecm:uuid NOT IN "
+                    + SoftwareComponentIndicatorProvider.getIdLiteralList(SoftwareComponentIndicatorProvider.getIds(mockImpls))); // WARNING use IS NULL instead of !='true'
             view = view
                     .arg("service", service)
                     .arg("actualImpls", actualImpls)
@@ -190,40 +199,82 @@ public class ServiceDocumentationController extends ModuleRoot {
         DocumentModel tag = session.getWorkingCopy(new PathRef("/" + tagPath)); // unwrapping
         
         DocumentModelList tagServices = session.query(IndicatorProvider.NXQL_SELECT_FROM + Service.DOCTYPE
-                + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid in "
+                + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid IN "
                 + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
                         session.query(IndicatorProvider.NXQL_SELECT_FROM + Service.DOCTYPE
                 /*+ IndicatorProvider.NXQL_WHERE_PROXY + " AND "*/ + IndicatorProvider.NXQL_WHERE
                 + IndicatorProvider.NXQL_PATH_STARTSWITH + tag.getPathAsString() + IndicatorProvider.NXQL_QUOTE)));
         
         Template view = getView("tagServices");
-        /*if (!services.isEmpty()) {
-            DocumentModel service = services.get(0);
-            List<DocumentModel> actualImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
-                    + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid in "
-                    + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
-                            session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
-                    + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
-                    + IndicatorProvider.NXQL_PATH_STARTSWITH + "/default-domain/repository/Service" + "'"
-                    + IndicatorProvider.NXQL_AND + "ecm:parentId='" + service.getId() + "'"
-                    + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + " IS NULL"))); // WARNING use IS NULL instead of !='true'
-            List<DocumentModel> mockImpls = session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
-                    + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND + "ecm:uuid in "
-                    + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session,
-                            session.query(IndicatorProvider.NXQL_SELECT_FROM + ServiceImplementation.DOCTYPE
-                    + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
-                    + IndicatorProvider.NXQL_PATH_STARTSWITH + "/default-domain/repository/Service" + "'"
-                    + IndicatorProvider.NXQL_AND + "ecm:parentId='" + service.getId() + "'"
-                    + IndicatorProvider.NXQL_AND + ServiceImplementation.XPATH_ISMOCK + "='true'")));
-            view = view
-                    .arg("service", service)
-                    .arg("actualImpls", actualImpls)
-                    .arg("mockImpls", mockImpls)
-                    .arg("servicee", service.getAdapter(SoaNodeAdapter.class));
-        }*/
         return view
                 .arg("tag", tag) 
                 .arg("tagServices", tagServices); 
+    }
+    
+    @GET
+    @Path("{servicePath:.+}/tags") // TODO encoding
+    @Produces(MediaType.TEXT_HTML)
+    public Object doGetTagsHTML(@PathParam("servicePath") String servicePath) throws Exception {
+        CoreSession session = SessionFactory.getSession(request);
+
+        DocumentModelList tags = session.query("SELECT " + "*" + " FROM " + TaggingFolder.DOCTYPE + IndicatorProvider.NXQL_WHERE_NO_PROXY);
+        
+        DocumentModelList services = session.query(IndicatorProvider.NXQL_SELECT_FROM + Service.DOCTYPE
+                + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND
+                + "ecm:path='/" + servicePath + "'");
+        
+        Template view = getView("servicetags");
+        if (!services.isEmpty()) {
+            DocumentModel service = services.get(0);
+            
+            view.arg("service", service);
+        }
+        return view
+                .arg("tags", tags); 
+    }
+    
+    @POST
+    @Path("{servicePath:.+}/tags") // TODO encoding
+    @Produces(MediaType.TEXT_HTML)
+    public Object doPostTagsHTML(@PathParam("servicePath") String servicePath, @FormParam("tagPath") String tagPath) throws Exception {
+        CoreSession session = SessionFactory.getSession(request);
+        
+        DocumentModelList services = session.query(IndicatorProvider.NXQL_SELECT_FROM + Service.DOCTYPE
+                + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND
+                + "ecm:path='/" + servicePath + "'");
+        DocumentModelList tags = session.query(IndicatorProvider.NXQL_SELECT_FROM + TaggingFolder.DOCTYPE
+                + IndicatorProvider.NXQL_WHERE_NO_PROXY + IndicatorProvider.NXQL_AND
+                + "ecm:path='" + tagPath + "'");
+        
+        if (!services.isEmpty() && !tags.isEmpty()) {
+            DocumentModel service = services.get(0);
+            DocumentModel tag = tags.get(0);
+            DocumentService documentService = Framework.getService(DocumentService.class);
+            documentService.create(session, documentService.createSoaNodeId(service), tag.getPathAsString());
+            session.save();
+        }
+        return doGetTagsHTML(servicePath);
+    }
+    
+    //@DELETE // doesn't work from browser
+    @POST
+    @Path("proxy/{serviceProxyPath:.+}") // TODO encoding
+    @Produces(MediaType.TEXT_HTML)
+    public Object doDeleteProxyHTML(@PathParam("serviceProxyPath") String serviceProxyPath, @FormParam("delete") String delete) throws Exception {
+        CoreSession session = SessionFactory.getSession(request);
+        
+        DocumentModelList services = session.query(IndicatorProvider.NXQL_SELECT_FROM + Service.DOCTYPE
+                + IndicatorProvider.NXQL_WHERE_PROXY + IndicatorProvider.NXQL_AND
+                + "ecm:path='/" + serviceProxyPath + "'");
+        
+        if (!services.isEmpty()) {
+            DocumentModel serviceProxy = services.get(0);
+            DocumentModel proxiedService = session.getWorkingCopy(services.get(0).getRef());
+            session.removeDocument(serviceProxy.getRef());
+            session.save();
+            return doGetTagsHTML(proxiedService.getPathAsString());
+        }
+        return doGetHTML(); //TODO better
     }
     
     @GET
