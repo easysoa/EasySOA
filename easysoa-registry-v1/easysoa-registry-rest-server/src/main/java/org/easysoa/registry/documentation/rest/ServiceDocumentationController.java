@@ -272,7 +272,7 @@ public class ServiceDocumentationController extends ModuleRoot {
             DocumentModel proxiedService = session.getWorkingCopy(services.get(0).getRef());
             session.removeDocument(serviceProxy.getRef());
             session.save();
-            return doGetTagsHTML(proxiedService.getPathAsString());
+            return doGetTagsHTML(proxiedService.getPathAsString().substring(1)); // removing lead slash
         }
         return doGetHTML(); //TODO better
     }
