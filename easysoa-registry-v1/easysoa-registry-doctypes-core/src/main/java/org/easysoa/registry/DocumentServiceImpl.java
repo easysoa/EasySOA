@@ -17,6 +17,7 @@ import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.model.PropertyException;
+import org.nuxeo.ecm.core.api.model.PropertyNotFoundException;
 import org.nuxeo.ecm.core.query.sql.NXQL;
 import org.nuxeo.ecm.platform.query.nxql.NXQLQueryBuilder;
 
@@ -270,8 +271,13 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
     
-    public SoaNodeId createSoaNodeId(DocumentModel model) throws PropertyException, ClientException {
-        return new SoaNodeId(model.getType(), (String) model.getPropertyValue(SoaNode.XPATH_SOANAME));
+    public SoaNodeId createSoaNodeId(DocumentModel model) throws ClientException {
+        try {
+            return new SoaNodeId(model.getType(), (String) model.getPropertyValue(SoaNode.XPATH_SOANAME));
+        }
+        catch (PropertyNotFoundException e) {
+            throw new ClientException("Invalid document type (" + model.getType() + "), an SoaNode is expected");
+        }
     }
 
     @Override

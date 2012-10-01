@@ -159,8 +159,14 @@ public class IndicatorsController extends ModuleRoot {
                         
                         // Actual indicator calculation
                         if (allRequirementsSatisfied) {
-                            Map<String, IndicatorValue> indicators = indicatorProvider
-                                    .computeIndicators(session, computedIndicators);
+                            Map<String, IndicatorValue> indicators = null;
+                            try {
+                                indicators = indicatorProvider
+                                        .computeIndicators(session, computedIndicators);
+                            }
+                            catch (Exception e) {
+                                logger.warn("Failed to compute indicator '" + indicatorProvider.toString() + "': " + e.getMessage());
+                            }
                             if (indicators != null) {
                                 categoryIndicators.putAll(indicators);
                                 computedIndicators.putAll(indicators);

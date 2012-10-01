@@ -87,7 +87,7 @@ public class RegistryApiImpl implements RegistryApi {
     public SoaNodeInformation get() throws Exception {
         CoreSession documentManager = SessionFactory.getSession(request);
         DocumentModel document = documentManager.getDocument(new PathRef("/default-domain/workspaces"));
-        return SoaNodeInformationFactory.create(documentManager, document);
+        return SoaNodeInformationFactory.create(documentManager, document); // FIXME WorkspaceRoot is not a SoaNode
     }
 
     @GET
