@@ -50,8 +50,7 @@ public class DocumentTemplate implements TemplateHashModelEx,
         this.wrapper = wrapper;
     }
 
-    @SuppressWarnings("unchecked")
-    public Object getAdaptedObject(Class hint) {
+    public Object getAdaptedObject(@SuppressWarnings("rawtypes") Class hint) {
         return doc;
     }
 

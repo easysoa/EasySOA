@@ -20,16 +20,10 @@
 
 package org.easysoa.registry.documentation.rest;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedMap;
 
-import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -42,30 +36,19 @@ import org.apache.log4j.Logger;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.indicators.rest.IndicatorProvider;
 import org.easysoa.registry.indicators.rest.SoftwareComponentIndicatorProvider;
-import org.easysoa.registry.types.Deliverable;
-import org.easysoa.registry.types.DeployedDeliverable;
-import org.easysoa.registry.types.Endpoint;
-import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.Service;
 import org.easysoa.registry.types.ServiceImplementation;
-import org.easysoa.registry.types.SoaNode;
-import org.easysoa.registry.types.SoftwareComponent;
 import org.easysoa.registry.types.TaggingFolder;
 import org.easysoa.registry.types.adapters.SoaNodeAdapter;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
 import org.nuxeo.ecm.webengine.model.Template;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.runtime.api.Framework;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
 /**
  * Indicators
@@ -79,6 +62,7 @@ public class ServiceDocumentationController extends ModuleRoot {
 
     private static final String SERVICE_LIST_PROPS = "*"; // "ecm:title"
     
+    @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(ServiceDocumentationController.class);
     
     public ServiceDocumentationController() {
