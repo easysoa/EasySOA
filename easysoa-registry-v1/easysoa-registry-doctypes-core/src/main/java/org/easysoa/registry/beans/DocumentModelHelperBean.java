@@ -17,11 +17,11 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 public class DocumentModelHelperBean {
 
     @In
-    CoreSession documentManager;
+    private CoreSession documentManager;
 
     @In(create = true)
-    DocumentService documentService;
-    
+    private DocumentService documentService;
+
     public String getDocumentTypeLabel(DocumentModel model) throws Exception {
         return DocumentModelHelper.getDocumentTypeLabel(model.getType());
     }

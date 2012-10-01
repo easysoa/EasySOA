@@ -1,14 +1,11 @@
 package org.easysoa.registry;
 
-import java.io.Serializable;
-
 import org.apache.log4j.Logger;
 import org.easysoa.registry.systems.IntelligentSystemTreeService;
 import org.easysoa.registry.types.SoaNode;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.event.DocumentEventTypes;
 import org.nuxeo.ecm.core.event.Event;
@@ -46,7 +43,6 @@ public class RepositoryManagementListener implements EventListener {
             DocumentService documentService = Framework.getService(DocumentService.class);
             
             // If a document has been created through the Nuxeo UI, move it to the repository and leave only a proxy
-            DocumentRef currentParentRef = sourceDocument.getParentRef();
             String sourceFolderPath = documentService.getSourceFolderPath(sourceDocument.getType());
             if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)) {
                 documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
@@ -63,6 +59,7 @@ public class RepositoryManagementListener implements EventListener {
                     repositoryDocument = documentManager.getDocument(sourcePathRef);
                     repositoryDocument.copyContent(sourceDocument); // Merge
                     documentManager.saveDocument(repositoryDocument);
+                    documentManager.save();
                     documentManager.removeDocument(sourceDocument.getRef());
                 }
                 else {
@@ -73,7 +70,11 @@ public class RepositoryManagementListener implements EventListener {
                 }
                 
                 // Create a proxy at the expected location
-                documentManager.createProxy(repositoryDocument.getRef(), currentParentRef);
+                DocumentModel parentModel = documentManager.getDocument(sourceDocument.getParentRef());
+                if (documentService.isSoaNode(documentManager, parentModel.getType())) {
+                    parentModel = documentService.find(documentManager, documentService.createSoaNodeId(parentModel));
+                }
+                documentManager.createProxy(repositoryDocument.getRef(), parentModel.getRef());
             }
             documentManager.save();
             

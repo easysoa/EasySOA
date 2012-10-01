@@ -147,5 +147,8 @@ public interface DocumentService {
     DocumentModelList getChildren(CoreSession session, DocumentRef ref,
             String doctype) throws ClientException;
 
+
+    boolean isSoaNode(CoreSession documentManager, String doctype) throws ClientException;
+
     
 }

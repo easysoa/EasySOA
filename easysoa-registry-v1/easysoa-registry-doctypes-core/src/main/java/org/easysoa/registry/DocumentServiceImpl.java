@@ -35,7 +35,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentModel create(CoreSession documentManager, SoaNodeId identifier, String parentPath) throws ClientException {
         String doctype = identifier.getType(), name = identifier.getName();
  
-        if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
+        if (isSoaNode(documentManager, doctype)) {
             boolean createProxy = false;
             if (!parentPath.equals(getSourceFolderPath(doctype))) {
                 createProxy = true;
@@ -81,7 +81,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentModel create(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
         String doctype = identifier.getType(), name = identifier.getName();
         
-        if (documentManager.getDocumentType(doctype).getFacets().contains("SoaNode")) {
+        if (isSoaNode(documentManager, doctype)) {
             ensureSourceFolderExists(documentManager, doctype);
             PathRef sourceRef = new PathRef(getSourcePath(identifier));
             DocumentModel documentModel;
@@ -287,6 +287,10 @@ public class DocumentServiceImpl implements DocumentService {
             soaNodeIds.add(createSoaNodeId(model));
         }
         return soaNodeIds;
+    }
+    
+    public boolean isSoaNode(CoreSession documentManager, String doctype) throws ClientException {
+        return documentManager.getDocumentType(doctype).getFacets().contains("SoaNode");
     }
 
 

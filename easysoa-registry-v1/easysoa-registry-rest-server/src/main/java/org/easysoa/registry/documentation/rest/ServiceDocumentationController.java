@@ -134,7 +134,7 @@ public class ServiceDocumentationController extends ModuleRoot {
             tagId2ServiceNbs.put(serviceProxyParentId, serviceProxyNb);
         }*/
         DocumentModelList untaggedServices = session.query("SELECT " + SERVICE_LIST_PROPS + " FROM " + Service.DOCTYPE + IndicatorProvider.NXQL_WHERE_NO_PROXY
-                + IndicatorProvider.NXQL_AND + "ecm:uuid IN " + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session, serviceProxies));
+                + IndicatorProvider.NXQL_AND + " NOT ecm:uuid IN " + SoftwareComponentIndicatorProvider.getProxiedIdLiteralList(session, serviceProxies));
         
         return getView("services")
                 .arg("services", services)
