@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<component name="org.easysoa.registry.doctypes.core.contentview.contrib">
+
+  <require>org.nuxeo.ecm.webapp.contentview.contrib</require>
+
+  <extension target="org.nuxeo.ecm.platform.ui.web.ContentViewService" point="contentViews">
+
+    <contentView name="document_content">
+
+      <title>label.contentview.document_content</title>
+      <translateTitle>true</translateTitle>
+      <showTitle>false</showTitle>
+
+      <coreQueryPageProvider>
+        <property name="coreSession">#{documentManager}</property>
+        <property name="maxResults">DEFAULT_NAVIGATION_RESULTS</property>
+        <whereClause docType="AdvancedSearch">
+          <predicate operator="FULLTEXT" parameter="ecm:fulltext">
+            <field name="fulltext_all" schema="advanced_search"/>
+          </predicate>
+          <predicate operator="FULLTEXT" parameter="dc:title">
+            <field name="title" schema="advanced_search"/>
+          </predicate>
+          <predicate operator="BETWEEN" parameter="dc:modified">
+            <field name="modified_min" schema="advanced_search"/>
+            <field name="modified_max" schema="advanced_search"/>
+          </predicate>
+          <fixedPart>
+            ecm:parentId = ? AND ecm:isCheckedInVersion = 0 AND
+            ecm:mixinType !=
+            'HiddenInNavigation' AND ecm:currentLifeCycleState
+            != 'deleted'
+          </fixedPart>
+        </whereClause>
+        <parameter>#{documentManager.getWorkingCopy(currentDocument.getRef()).getId()}</parameter><!-- EasySOA: view working copy instead of proxy -->
+        <sort ascending="true" column="dc:title"/>
+        <pageSize>20</pageSize>
+      </coreQueryPageProvider>
+
+      <searchLayout filterDisplayType="quick" name="document_content_filter"/>
+      <showFilterForm>true</showFilterForm>
+
+      <showPageSizeSelector>true</showPageSizeSelector>
+      <useGlobalPageSize>true</useGlobalPageSize>
+      <refresh>
+        <event>documentChanged</event>
+        <event>documentChildrenChanged</event>
+      </refresh>
+      <cacheKey>#{currentDocument.id}</cacheKey>
+      <cacheSize>10</cacheSize>
+
+      <resultLayouts>
+        <layout iconPath="/icons/document_listing_icon.png" name="document_listing_ajax" showCSVExport="true" showPDFExport="false" showSyndicationLinks="true" title="document_listing" translateTitle="true"/>
+        <layout iconPath="/icons/document_listing_compact_2_columns_icon.png" name="document_listing_ajax_compact_2_columns" showCSVExport="true" showPDFExport="false" showSyndicationLinks="true" title="document_listing_compact_2_columns" translateTitle="true"/>
+        <layout iconPath="/icons/document_listing_icon_2_columns_icon.png" name="document_listing_ajax_icon_2_columns" showCSVExport="true" showPDFExport="false" showSyndicationLinks="true" title="document_listing_icon_2_columns" translateTitle="true"/>
+      </resultLayouts>
+
+      <selectionList>CURRENT_SELECTION</selectionList>
+      <actions category="CURRENT_SELECTION_LIST"/>
+
+    </contentView>
+
+  </extension>
+
+</component>

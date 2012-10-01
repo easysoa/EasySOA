@@ -15,4 +15,5 @@ Nuxeo-Component: OSGI-INF/DocumentService.xml,
  OSGI-INF/event-listener-contrib.xml,
  OSGI-INF/adapter-contrib.xml,
  OSGI-INF/layout-type-contrib.xml,
- OSGI-INF/soa-metamodel-contrib.xml
+ OSGI-INF/soa-metamodel-contrib.xml,
+ OSGI-INF/contentview-contrib.xml
