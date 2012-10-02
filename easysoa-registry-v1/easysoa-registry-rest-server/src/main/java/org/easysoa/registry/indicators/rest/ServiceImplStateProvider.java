@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.easysoa.registry.DocumentService;
+import org.easysoa.registry.types.OperationImplementation;
 import org.easysoa.registry.types.Service;
 import org.easysoa.registry.types.ServiceImplementation;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -48,11 +49,15 @@ public class ServiceImplStateProvider implements IndicatorProvider {
             // Documentation info
             String documentation = (String) serviceImpl.getProperty(ServiceImplementation.XPATH_DOCUMENTATION);
             if (documentation != null && !documentation.isEmpty()) {
-                int serviceDocumentationLines = documentation.split("\n").length;
-                documentationLines += serviceDocumentationLines;
+                documentationLines += computeLines(documentation);
+                
+                for (OperationImplementation operation : serviceImpl.getOperations()) {
+                    String operationDocumentation = operation.getDocumentation();
+                    documentationLines += computeLines(operationDocumentation);
+                }
+                
                 serviceImplsDocQuality += IDEAL_DOCUMENTATION_LINES - DOCUMENTATION_LINES_TOLERANCE
-                        - Math.max(0, 
-                                Math.abs(IDEAL_DOCUMENTATION_LINES - serviceDocumentationLines)
+                        - Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - computeLines(documentation))
                                 - DOCUMENTATION_LINES_TOLERANCE);
             }
             else {
@@ -114,6 +119,10 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         // TODO for one ex. impl of ONE service => prop to query
         
         return indicators;
+    }
+
+    private int computeLines(String documentation) {
+        return documentation.split("\n").length;
     }
     
 }

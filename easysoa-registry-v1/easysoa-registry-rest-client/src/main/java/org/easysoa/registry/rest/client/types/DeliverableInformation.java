@@ -1,12 +1,12 @@
 package org.easysoa.registry.rest.client.types;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.Deliverable;
+import org.easysoa.registry.utils.ListUtils;
 
 public class DeliverableInformation extends SoaNodeInformation implements Deliverable {
 
@@ -45,11 +45,7 @@ public class DeliverableInformation extends SoaNodeInformation implements Delive
     @Override
     public List<String> getDependencies() throws Exception {
         Serializable[] dependenciesArray = (Serializable[]) properties.get(XPATH_DEPENDENCIES);
-        List<String> dependencies = new ArrayList<String>();
-        for (Serializable dependency : dependenciesArray) {
-            dependencies.add(dependency.toString());
-        }
-        return dependencies;
+        return ListUtils.toStringList(dependenciesArray);
     }
 
     @Override

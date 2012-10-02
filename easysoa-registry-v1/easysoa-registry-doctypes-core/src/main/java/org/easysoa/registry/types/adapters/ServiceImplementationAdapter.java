@@ -9,6 +9,7 @@ import java.util.Map;
 import org.easysoa.registry.InvalidDoctypeException;
 import org.easysoa.registry.types.OperationImplementation;
 import org.easysoa.registry.types.ServiceImplementation;
+import org.easysoa.registry.utils.ListUtils;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.model.PropertyException;
@@ -63,11 +64,7 @@ public class ServiceImplementationAdapter extends SoaNodeAdapter implements Serv
 	@Override
 	public List<String> getTests() throws Exception {
 		Serializable[] testsArray = (Serializable[]) documentModel.getPropertyValue(XPATH_TESTS);
-		List<String> tests = new ArrayList<String>();
-		for (Serializable test : testsArray) {
-			tests.add(test.toString());
-		}
-		return tests;
+		return ListUtils.toStringList(testsArray);
 	}
 
 	@Override

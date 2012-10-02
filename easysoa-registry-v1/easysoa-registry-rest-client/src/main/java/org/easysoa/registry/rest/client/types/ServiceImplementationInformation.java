@@ -11,6 +11,7 @@ import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.OperationImplementation;
 import org.easysoa.registry.types.ServiceImplementation;
+import org.easysoa.registry.utils.ListUtils;
 
 public class ServiceImplementationInformation extends SoaNodeInformation implements ServiceImplementation {
     
@@ -49,11 +50,7 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
 
 	public List<String> getTests() throws Exception {
 		Serializable[] testsArray = (Serializable[]) properties.get(XPATH_TESTS);
-		List<String> tests = new ArrayList<String>();
-		for (Serializable test : testsArray) {
-			tests.add(test.toString());
-		}
-		return tests;
+		return ListUtils.toStringList(testsArray);
 	}
 
 	public void setTests(List<String> tests) throws Exception {
