@@ -110,7 +110,7 @@ public class IntelligentSystemTreeComponent extends DefaultComponent implements 
             }
         }
         if (sourceModel == null) {
-            logger.error("Can't find source document for " + model + ", won't be add it to intelligent system trees");
+            // Can't find source document (usually happens when it is not saved yet)
             return;
         }
         proxyModels.remove(sourceModel);

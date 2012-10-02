@@ -17,6 +17,9 @@
         <row>
           <widget>soanode_name</widget>
         </row>
+        <row>
+          <widget>soanode_isplaceholder</widget>
+        </row>
       </rows>
       <widget name="soanode_name" type="text">
         <labels>
@@ -26,6 +29,19 @@
         <fields>
           <field>soan:name</field>
         </fields>
+      </widget>
+      <widget name="soanode_isplaceholder" type="checkbox">
+        <labels>
+          <label mode="any">label.easysoa.layout.soanode.isplaceholder</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>soan:isplaceholder</field>
+        </fields>
+        <widgetModes>
+          <mode value="create">hidden</mode>
+          <mode value="view">hidden</mode>
+        </widgetModes>
       </widget>
     </layout>
     

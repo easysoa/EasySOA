@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.easysoa.registry.types.Document;
+import org.easysoa.registry.types.SoaNode;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -88,7 +88,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
                             parentDocument = documentService.create(documentManager,
                                     new SoaNodeId(pathStepType, IdUtils.generateStringId()),
                                     parentDocument.getPathAsString());
-                            parentDocument.setPropertyValue(Document.XPATH_TITLE, "(Placeholder)");
+                            parentDocument.setPropertyValue(SoaNode.XPATH_TITLE, "(Placeholder)");
+                            parentDocument.setPropertyValue(SoaNode.XPATH_ISPLACEHOLDER, true);
                         }
                     }
                 }

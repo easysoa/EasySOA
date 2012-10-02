@@ -30,4 +30,13 @@ public abstract class SoaNodeAdapter extends AbstractDocumentAdapter implements 
     public String getSoaName() {
         return this.soaNodeId.getName();
     }
+    
+    public boolean isPlaceholder() throws Exception {
+        return (Boolean) documentModel.getPropertyValue(XPATH_ISPLACEHOLDER);
+    }
+    
+    public void setIsPlaceholder(boolean isPlaceholder) throws Exception {
+        documentModel.setPropertyValue(XPATH_ISPLACEHOLDER, isPlaceholder);
+    }
+    
 }

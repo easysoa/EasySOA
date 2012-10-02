@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonTypeInfo.As;
@@ -84,7 +85,16 @@ public class SoaNodeInformation implements SoaNode {
         properties.put(SoaNode.XPATH_TITLE, title);
     }
     
-    @Override
+    @JsonIgnore
+    public boolean isPlaceholder() throws Exception {
+        return (Boolean) properties.get(SoaNode.XPATH_TITLE);
+    }
+
+    @JsonIgnore
+    public void setIsPlaceholder(boolean isPlaceholder) throws Exception {
+        properties.put(SoaNode.XPATH_TITLE, isPlaceholder);
+    }
+
     public String toString() {
         return this.id.toString();
     }

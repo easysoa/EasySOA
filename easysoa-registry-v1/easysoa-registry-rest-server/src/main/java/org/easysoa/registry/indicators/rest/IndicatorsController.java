@@ -60,6 +60,7 @@ public class IndicatorsController extends ModuleRoot {
     
     // XXX Categories are currently unused by view
     public static final String CATEGORY_DOCTYPE_COUNTS = "Doctype counts";
+    public static final String CATEGORY_DOCTYPE_SPECIFIC = "Doctype-specific indicators";
     public static final String CATEGORY_MISC = "Miscellaneous";
 
     private Map<String, List<IndicatorProvider>> indicatorProviders = new HashMap<String, List<IndicatorProvider>>();
@@ -77,11 +78,14 @@ public class IndicatorsController extends ModuleRoot {
         addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(TaggingFolder.DOCTYPE));
         
         // Doctype-specific indicators
-        addIndicator(CATEGORY_MISC, new ServiceStateProvider());
-        addIndicator(CATEGORY_MISC, new ServiceImplStateProvider());
-        addIndicator(CATEGORY_MISC, new SoftwareComponentIndicatorProvider());
-        addIndicator(CATEGORY_MISC, new TagsIndicatorProvider());
-        addIndicator(CATEGORY_MISC, new ServiceConsumptionIndicatorProvider());
+        addIndicator(CATEGORY_DOCTYPE_SPECIFIC, new ServiceStateProvider());
+        addIndicator(CATEGORY_DOCTYPE_SPECIFIC, new ServiceImplStateProvider());
+        addIndicator(CATEGORY_DOCTYPE_SPECIFIC, new SoftwareComponentIndicatorProvider());
+        addIndicator(CATEGORY_DOCTYPE_SPECIFIC, new TagsIndicatorProvider());
+        addIndicator(CATEGORY_DOCTYPE_SPECIFIC, new ServiceConsumptionIndicatorProvider());
+
+        // Miscellaneous indicators
+        addIndicator(CATEGORY_MISC, new PlaceholdersIndicatorProvider());
         
     }
     

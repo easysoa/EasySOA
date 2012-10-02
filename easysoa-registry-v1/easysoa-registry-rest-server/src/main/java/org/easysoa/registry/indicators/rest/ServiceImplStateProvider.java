@@ -1,6 +1,7 @@
 package org.easysoa.registry.indicators.rest;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class ServiceImplStateProvider implements IndicatorProvider {
     
     @Override
     public List<String> getRequiredIndicators() {
-        return null;
+        return Arrays.asList(SERVICEIMPL_DOCTYPE_INDICATOR);
     }
 
     @Override
@@ -41,54 +42,53 @@ public class ServiceImplStateProvider implements IndicatorProvider {
         
         for (DocumentModel serviceImplModel : serviceImplModels) {
             ServiceImplementation serviceImpl = serviceImplModel.getAdapter(ServiceImplementation.class);
+            if (!serviceImpl.isPlaceholder()) {
             
-            if ("(Placeholder)".equals(serviceImpl.getTitle())) { // TODO Specific field?
-                continue;
-            }
-            
-            // Documentation info
-            String documentation = (String) serviceImpl.getProperty(ServiceImplementation.XPATH_DOCUMENTATION);
-            if (documentation != null && !documentation.isEmpty()) {
-                documentationLines += computeLines(documentation);
+                // Documentation info
+                String documentation = (String) serviceImpl.getProperty(ServiceImplementation.XPATH_DOCUMENTATION);
+                if (documentation != null && !documentation.isEmpty()) {
+                    documentationLines += computeLines(documentation);
+                    
+                    for (OperationImplementation operation : serviceImpl.getOperations()) {
+                        String operationDocumentation = operation.getDocumentation();
+                        documentationLines += computeLines(operationDocumentation);
+                    }
+                    
+                    serviceImplsDocQuality += IDEAL_DOCUMENTATION_LINES - DOCUMENTATION_LINES_TOLERANCE
+                            - Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - computeLines(documentation))
+                                    - DOCUMENTATION_LINES_TOLERANCE);
+                }
+                else {
+                    undocumentedServiceImpls++;
+                }
                 
-                for (OperationImplementation operation : serviceImpl.getOperations()) {
-                    String operationDocumentation = operation.getDocumentation();
-                    documentationLines += computeLines(operationDocumentation);
+                // Mock info
+                String parentServiceId = null;
+                DocumentModelList implParents = documentService.findAllParents(session, serviceImplModel);
+                for (DocumentModel implParent : implParents) {
+                    if (Service.DOCTYPE.equals(implParent.getType())) {
+                        parentServiceId = (String) implParent.getPropertyValue(Service.XPATH_SOANAME);
+                        break;
+                    }
+                }
+                if (parentServiceId != null) {
+                    if (serviceImpl.isMock()) {
+                        hasMock.put(parentServiceId, true);
+                    }
+                    else if (!hasMock.containsKey(parentServiceId)) {
+                        hasMock.put(parentServiceId, false);
+                    }
                 }
                 
-                serviceImplsDocQuality += IDEAL_DOCUMENTATION_LINES - DOCUMENTATION_LINES_TOLERANCE
-                        - Math.max(0, Math.abs(IDEAL_DOCUMENTATION_LINES - computeLines(documentation))
-                                - DOCUMENTATION_LINES_TOLERANCE);
-            }
-            else {
-                undocumentedServiceImpls++;
-            }
+                if (!serviceImpl.isMock()) {
+                    nonMockImplsCount++;
+                    
+                    // Tests info
+                    if (!serviceImpl.getTests().isEmpty()) {
+                        testedImplsCount++;
+                    }
+                }
             
-            // Mock info
-            String parentServiceId = null;
-            DocumentModelList implParents = documentService.findAllParents(session, serviceImplModel);
-            for (DocumentModel implParent : implParents) {
-                if (Service.DOCTYPE.equals(implParent.getType())) {
-                    parentServiceId = (String) implParent.getPropertyValue(Service.XPATH_SOANAME);
-                    break;
-                }
-            }
-            if (parentServiceId != null) {
-                if (serviceImpl.isMock()) {
-                    hasMock.put(parentServiceId, true);
-                }
-                else if (!hasMock.containsKey(parentServiceId)) {
-                    hasMock.put(parentServiceId, false);
-                }
-            }
-            
-            if (!serviceImpl.isMock()) {
-                nonMockImplsCount++;
-                
-                // Tests info
-                if (!serviceImpl.getTests().isEmpty()) {
-                    testedImplsCount++;
-                }
             }
         }
         for (Boolean isMock : hasMock.values()) {

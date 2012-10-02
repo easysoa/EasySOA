@@ -4,6 +4,6 @@
   xmlns:nxs="http://www.nuxeo.org/ecm/schemas/soa/">
   
   <xs:element name="name" type="xs:string" />
-  <xs:element name="isplaceholder" type="xs:string" />
+  <xs:element name="isplaceholder" type="xs:boolean" default="false" />
     
 </xs:schema>
