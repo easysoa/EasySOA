@@ -6,4 +6,5 @@ public interface IntentTest {
     
     public String getCitiesByCountry(String country);
     
+    public String returnLastTweet(String user);
 }

@@ -35,6 +35,41 @@
 			<artifactId>spring-beans</artifactId>
 			<version>3.0.6.RELEASE</version>
 		</dependency>-->
+		<dependency>
+			<groupId>org.talend.esb</groupId>
+			<artifactId>sam-agent</artifactId>
+			<version>5.1.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>cxf-tools-common</artifactId>
+					<groupId>org.apache.cxf</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cxf-rt-transports-http</artifactId>
+					<groupId>org.apache.cxf</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cxf-rt-frontend-jaxws</artifactId>
+					<groupId>org.apache.cxf</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cxf-rt-transports-local</artifactId>
+					<groupId>org.apache.cxf</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cxf-rt-ws-addr</artifactId>
+					<groupId>org.apache.cxf</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- Frascati -->
 		<dependency>
@@ -116,37 +151,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-ws-addr</artifactId>
-			<version>${cxf.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-tools-common</artifactId>
-			<version>${cxf.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>${cxf.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
-			<version>${cxf.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http</artifactId>
-			<version>${cxf.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-local</artifactId>
 			<version>${cxf.version}</version>
 			<scope>compile</scope>
 		</dependency>

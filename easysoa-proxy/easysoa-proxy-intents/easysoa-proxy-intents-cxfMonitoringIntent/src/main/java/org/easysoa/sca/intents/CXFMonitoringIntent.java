@@ -29,6 +29,7 @@ import javax.activation.DataHandler;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.namespace.QName;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.MessageContext;
 import org.apache.cxf.io.CachedOutputStream;
@@ -44,6 +45,7 @@ import org.talend.esb.sam._2011._03.common.EventType;
 import org.talend.esb.sam._2011._03.common.MessageInfoType;
 import org.talend.esb.sam._2011._03.common.OriginatorType;
 import org.talend.esb.sam.agent.eventproducer.MessageToEventMapper;
+import org.talend.esb.sam.agent.serviceclient.EventMapper;
 import org.talend.esb.sam.common.event.Event;
 import org.talend.esb.sam.monitoringservice.v1.MonitoringService;
 
@@ -70,25 +72,23 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
         List<EventType> events = new ArrayList<EventType>();
 
         // To remove when finished
-        Iterator<String> keys = context.keySet().iterator();
+        /*Iterator<String> keys = context.keySet().iterator();
         logger.debug("CXF context keys =>");
         while(keys.hasNext()){
             logger.debug(keys.next());
-        }
+        }*/
 
         try {
             WrappedMessageContext wmc = (WrappedMessageContext) context;
             Message message = wmc.getWrappedMessage();
-            //message.setContent(CachedOutputStream.class, new CachedOutputStream(message.getContent(PipedInputStream.class)));
             MessageToEventMapper mapper = new MessageToEventMapper();
             Event event = mapper.mapToEvent(message);
-                
             // Add events to list
-            events.add(mapEventToEventType(event));
+            events.add(EventMapper.map(event));
 
             // Send events
             String samResponse = samMonitoringService.putEvents(events);
-            logger.info("SAM server response");
+            logger.info("SAM server response : " + samResponse);
         } catch (Exception ex) {
             logger.error("An error occurs when sending the event in SAM Server", ex);
             ex.printStackTrace();
@@ -98,10 +98,13 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
     }
 
     /**
+     * DEPRECATED : Method EventMapper.map(event) is more efficient and avoid 
+     * JAXB error [java.lang.IllegalArgumentException: prefix {http is not bound to a namespace]
      * Mapper to transform an Event to an EventType
      * @param event
      * @return
      */
+    @Deprecated
     private EventType mapEventToEventType(Event event) {
         EventType messageEvent = new EventType();
         // Content
@@ -131,8 +134,13 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
         messageInfoType.setFlowId(event.getMessageInfo().getFlowId());
         messageInfoType.setMessageId(event.getMessageInfo().getMessageId());
         // Got a problem with the 2 following properties : marshalling error on SAM server because the tag string segment "{http" is considered as a namespace prefix
+        //.replace("{", "&#123;") Not working, still the same problem
+        //.replace("{", "{{")
+        //again with <![CDATA[ and ]]> ...
+        // So disabled at the moment
         //messageInfoType.setOperationName(event.getMessageInfo().getOperationName());
         //messageInfoType.setPorttype(new QName(event.getMessageInfo().getPortType()));
+        
         messageInfoType.setTransport(event.getMessageInfo().getTransportType());
         messageEvent.setMessageInfo(messageInfoType);
         // Originator

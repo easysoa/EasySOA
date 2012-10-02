@@ -75,9 +75,18 @@ public abstract class AbstractTestHelper {
      * Start the smart travel services mock for tests
      * @throws Exception
      */
-    protected static void startMockServices() throws Exception {
-        logger.info("Services Mock Starting");
+    protected static void startSoapMockServices() throws Exception {
+        logger.info("SOAP Services Mock Starting");
         componentList.add(frascati.processComposite("services-backup-sca.composite", new ProcessingContextImpl()));
+    }
+    
+    /**
+     * 
+     * @throws Exception
+     */
+    protected static void startRestMockServices() throws Exception {
+        logger.info("REST Services Mock Starting");
+        componentList.add(frascati.processComposite("twitterMockRest.composite", new ProcessingContextImpl()));        
     }
 
 }
