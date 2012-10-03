@@ -33,7 +33,7 @@
     <easysoa.version>0.5-SNAPSHOT</easysoa.version>
     <easysoa.nuxeo.version>5.5</easysoa.nuxeo.version>
     <easysoa.nuxeo-bridge.version>5.5-SNAPSHOT</easysoa.nuxeo-bridge.version>
-    <easysoa.nuxeo-frascati.version>0.0-SNAPSHOT</easysoa.nuxeo-frascati.version>
+    <easysoa.nuxeo-frascati.version>0.5-SNAPSHOT</easysoa.nuxeo-frascati.version>
     
     <!-- FraSCAti must be in version 1.5-SNAPSHOT because Velocity feature is only
       available in this version at the moment -->
