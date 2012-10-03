@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.easysoa.registry.indicators.rest.IndicatorsController;
 import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.test.AbstractWebEngineTest;
 import org.easysoa.registry.types.Deliverable;
@@ -98,7 +99,7 @@ public class ServiceConsumptionIndicatorProviderTest extends AbstractWebEngineTe
         JsonNode indicators = new ObjectMapper().readValue(indicatorsString, JsonNode.class);
         Assert.assertNotNull(indicators);
         Assert.assertEquals(66, indicators
-                .get("Miscellaneous")
+                .get(IndicatorsController.CATEGORY_DOCTYPE_SPECIFIC)
                 .get("Never consumed services")
                 .get("percentage")
                 .getIntValue());

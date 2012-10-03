@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.easysoa.registry.DiscoveryService;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
-import org.easysoa.registry.rest.AbstractRestApiTest;
+import org.easysoa.registry.rest.test.AbstractRestApiTest;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
@@ -129,7 +129,8 @@ public class IndicatorsControllerTest extends AbstractRestApiTest {
         JsonNode indicators = new ObjectMapper().readValue(res, JsonNode.class);
         
         Assert.assertEquals("Indicators must be computed and return the expected values",
-                1, indicators.get("Miscellaneous").get("softwareComponentInNoTaggingFolder").get("count").getIntValue());
+                1, indicators.get(IndicatorsController.CATEGORY_DOCTYPE_SPECIFIC)
+                    .get("softwareComponentInNoTaggingFolder").get("count").getIntValue());
 
         logger.info(res);
 
