@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.easysoa.registry.DiscoveryService;
 import org.easysoa.registry.DocumentService;
 import org.easysoa.registry.SoaNodeId;
-import org.easysoa.registry.rest.test.AbstractRestApiTest;
+import org.easysoa.registry.rest.AbstractRestApiTest;
 import org.easysoa.registry.types.Deliverable;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.Service;
