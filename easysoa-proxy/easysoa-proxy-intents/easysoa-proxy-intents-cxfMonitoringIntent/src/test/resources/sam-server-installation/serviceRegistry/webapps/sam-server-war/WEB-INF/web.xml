@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Service Activity Monitoring :: Server War
+  %%
+  Copyright (C) 2011 - 2012 Talend Inc.
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>MonitoringServer</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  <resource-ref>
+    <description>DB datasource</description>
+    <res-ref-name>jdbc/datasource</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  <servlet>
+    <description>Apache CXF Endpoint</description>
+    <display-name>cxf</display-name>
+    <servlet-name>cxf</servlet-name>
+    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <description>SAM Server UI API :: List</description>
+    <display-name>list</display-name>
+    <servlet-name>list</servlet-name>
+    <servlet-class>org.talend.esb.sam.server.ui.servlets.ListServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet>
+    <description>SAM Server UI API :: Flow Details</description>
+    <display-name>flow</display-name>
+    <servlet-name>flow</servlet-name>
+    <servlet-class>org.talend.esb.sam.server.ui.servlets.FlowDetailsServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>SAM Server UI API :: Event Details</description>
+    <display-name>event</display-name>
+    <servlet-name>event</servlet-name>
+    <servlet-class>org.talend.esb.sam.server.ui.servlets.EventDetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>cxf</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>list</servlet-name>
+    <url-pattern>/api/v1.0/list</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>flow</servlet-name>
+    <url-pattern>/api/v1.0/flow/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>event</servlet-name>
+    <url-pattern>/api/v1.0/event/*</url-pattern>
+  </servlet-mapping>
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>WEB-INF/serverstart.xml</param-value>
+  </context-param>
+   <listener>
+    <listener-class>org.talend.esb.sam.server.listener.DerbyStarterContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+</web-app>
