@@ -40,15 +40,19 @@ public class ImportedServicesFinder implements ServiceConsumptionFinder {
         return foundConsumptions;
     }
 
-    public List<JavaServiceConsumptionInformation> find(JavaClass c, MavenDeliverable mavenDeliverable,
-            Collection<Type> serviceInterfaces) throws Exception {
+    public List<JavaServiceConsumptionInformation> find(JavaClass c,
+            MavenDeliverable mavenDeliverable, Collection<Type> serviceInterfaces) throws Exception {
         List<JavaServiceConsumptionInformation> foundConsumptions = new ArrayList<JavaServiceConsumptionInformation>();
         
         // Explore imports
-        for (String importedClass : c.getSource().getImports()) {
-            if (serviceInterfaces.contains(new Type(importedClass))) {
-                foundConsumptions.add(new JavaServiceConsumptionInformation(
-                        mavenDeliverable.getSoaNodeId(), importedClass));
+        for (String importedClassName : c.getSource().getImports()) {
+            Type importedClassType = new Type(importedClassName);
+            for (Type serviceInterface : serviceInterfaces) {
+                if (importedClassType.equals(serviceInterface)) {
+                    foundConsumptions.add(new JavaServiceConsumptionInformation(
+                            mavenDeliverable.getSoaNodeId(), importedClassName,
+                            serviceInterface.getJavaClass().getSource().getURL().toString()));
+                }
             }
         }
         

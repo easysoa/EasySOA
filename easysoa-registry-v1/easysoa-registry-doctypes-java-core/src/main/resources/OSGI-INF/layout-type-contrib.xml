@@ -16,6 +16,9 @@
         <row>
           <widget>javaserviceconsumption_consumedInterface</widget>
         </row>
+        <row>
+          <widget>javaserviceconsumption_consumedInterfaceLocation</widget>
+        </row>
       </rows>
       <widget name="javaserviceconsumption_consumedInterface" type="text">
         <labels>
@@ -24,6 +27,15 @@
         <translated>true</translated>
         <fields>
           <field>javasc:consumedInterface</field>
+        </fields>
+      </widget>
+      <widget name="javaserviceconsumption_consumedInterfaceLocation" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.javasc.consumedinterfacelocation</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>javasc:consumedInterfaceLocation</field>
         </fields>
       </widget>
     </layout>

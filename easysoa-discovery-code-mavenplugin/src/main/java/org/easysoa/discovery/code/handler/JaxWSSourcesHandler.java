@@ -123,7 +123,8 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                 	}
                 	if (isUnitTestingClass) {
                 	    ImportedServicesFinder importedServiceFinders = new ImportedServicesFinder();
-                	    List<JavaServiceConsumptionInformation> foundConsumptions = importedServiceFinders.find(c, mavenDeliverable, wsInterfaces);
+                	    List<JavaServiceConsumptionInformation> foundConsumptions = importedServiceFinders.find(
+                	            c, mavenDeliverable, wsInterfaces);
                 	    for (JavaServiceConsumptionInformation foundConsumption : foundConsumptions) {
                             // Try to attach test to existing non-mock impls
                             boolean foundOriginalImplementation = false;

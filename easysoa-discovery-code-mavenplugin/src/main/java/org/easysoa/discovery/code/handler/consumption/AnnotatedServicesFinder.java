@@ -103,7 +103,9 @@ public class AnnotatedServicesFinder implements ServiceConsumptionFinder {
         if (allInjected || injectionAnnotation != null) {
             if (serviceInterfaces.contains(injectedType)) {
                 discoveredConsumptions.add(new JavaServiceConsumptionInformation(
-                        mavenDeliverable.getSoaNodeId(), injectedType.toGenericString()));
+                        mavenDeliverable.getSoaNodeId(),
+                        injectedType.toGenericString(),
+                        injectedType.getJavaClass().getSource().getURL().toString()));
                 injectedBeanProperties.add(beanPropertyName);
             }
         }
