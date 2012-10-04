@@ -451,6 +451,17 @@
         			<classifier>jdk15</classifier>
                 </artifactItem>
 
+				<artifactItem>
+					<groupId>org.ow2.easywsdl</groupId>
+					<artifactId>easywsdl-wsdl</artifactId>
+					<version>2.3</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.ow2.easywsdl</groupId>
+					<artifactId>easywsdl-schema</artifactId>
+					<version>2.3</version>
+				</artifactItem>				
+
 				<!-- To replace servlet api 2.5 -->
         		<artifactItem>
         			<groupId>javax.servlet</groupId>
@@ -612,6 +623,30 @@
   					<artifactId>frascati-intent-apache-cxf</artifactId>
   					<version>${frascati.version}</version>
   				</artifactItem>
+
+				<!--<artifactItem>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+					<version>4.1.1</version>
+				</artifactItem>
+				<artifactItem>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+					<version>4.1.1</version>
+				</artifactItem>-->
+
+				<!--
+                <artifactItem>
+                	<groupId>xom</groupId>
+                	<artifactId>xom</artifactId>
+                	<version>1.2.5</version>
+                </artifactItem>  				
+                <artifactItem>
+                  <groupId>xalan</groupId>
+                  <artifactId>xalan</artifactId>
+                  <version>2.7.0</version>
+                </artifactItem>
+                -->
   				
                 <!--<artifactItem>
                   <groupId>com.espertech</groupId>
