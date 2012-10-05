@@ -23,6 +23,7 @@ import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.Deliverable;
 
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
 
@@ -60,10 +61,20 @@ public class CodeDiscoveryMojo extends AbstractMojo {
      * @parameter
      */
     private String application;
+
+    /**
+     * The current SCM sources version (commit hash)
+     * 
+     * @parameter expression="${buildNumber}"
+     */
+    private String buildNumber;
+    
     
     private Map<String, SourcesHandler> availableHandlers = new HashMap<String, SourcesHandler>();
     
     public void execute() throws MojoExecutionException {
+        Log log = getLog();
+
         try {
         // Init registry client
         ClientBuilder clientBuilder = new ClientBuilder();
@@ -72,14 +83,13 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         RegistryApi registryApi = clientBuilder.constructRegistryApi();
         
         // Init handlers
-        Log log = getLog();
         this.availableHandlers.put("JAX-WS", new JaxWSSourcesHandler());
         this.availableHandlers.put("JAX-RS", new JaxRSSourcesHandler());
         
         MavenDeliverableInformation mavenDeliverable = new MavenDeliverableInformation(
                 project.getGroupId() + ":" + project.getArtifactId());
         mavenDeliverable.setTitle(project.getName());
-        mavenDeliverable.setVersion(project.getVersion());
+        mavenDeliverable.setVersion(project.getVersion() + " (commit " + buildNumber.substring(0, 10) + ")");
         if (application != null && !application.trim().isEmpty()) {
             mavenDeliverable.setApplication(application);
         }
@@ -132,6 +142,9 @@ public class CodeDiscoveryMojo extends AbstractMojo {
             log.error("Failed to send discovery request", e);
         }
         
+        }
+        catch (ClientHandlerException e) {
+            log.error("Failed to connect to Nuxeo", e);
         }
         catch (Exception e) {
             throw new MojoExecutionException("Failed to discover SOA documents in code", e);
