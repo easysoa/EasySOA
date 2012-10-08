@@ -113,10 +113,5 @@ public interface RunManager {
 	 * Save the run
 	 */
 	public String save() throws Exception;
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public MonitoringService getMonitoringService();
+
 }

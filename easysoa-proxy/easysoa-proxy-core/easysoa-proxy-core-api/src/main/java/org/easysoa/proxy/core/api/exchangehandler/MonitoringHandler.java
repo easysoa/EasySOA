@@ -21,7 +21,7 @@ package org.easysoa.proxy.core.api.exchangehandler;
 
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.proxy.core.api.run.RunManager;
+import org.easysoa.proxy.core.api.monitoring.MonitoringService;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -37,7 +37,7 @@ import org.osoa.sca.annotations.Scope;
 public class MonitoringHandler implements MessageHandler {
 
     @Reference
-    RunManager runManager;
+    MonitoringService monitoringService;
     
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
@@ -46,8 +46,7 @@ public class MonitoringHandler implements MessageHandler {
         record.setInMessage(inMessage);
         record.setOutMessage(outMessage);
         // Send it to the monitoring service
-        runManager.getMonitoringService().listen(record);
-        //runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+        monitoringService.listen(record);
     }
 
 }

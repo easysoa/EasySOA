@@ -76,8 +76,6 @@ public class RunManagerImpl implements RunManager {
 	 */
 	// TODO One monitoring service for each run.
 	// TODO A discoveryMonitoringService is hard configured in the composite file.
-	@Reference
-	MonitoringService monitoringService;
 
 	@Reference
 	NumberGenerator exchangeNumberGenerator;
@@ -233,7 +231,6 @@ public class RunManagerImpl implements RunManager {
         		try{
         		    exchangeRecord.getExchange().setExchangeID(Long.toString(exchangeNumberGenerator.getNextNumber()));
     	            this.getCurrentRun().addExchange(exchangeRecord);
-        			monitoringService.listen(exchangeRecord);
         		}
         		catch(Exception ex){
         			logger.error("Unable to record message !", ex);
@@ -310,14 +307,6 @@ public class RunManagerImpl implements RunManager {
 		}
 		throw new Exception("There is no run with the name '" +runName + "'");
 	}*/
-
-	/* (non-Javadoc)
-	 * @see org.easysoa.esperpoc.run.RunManager#getMonitoringService()
-	 */	
-	@Override
-	public MonitoringService getMonitoringService() {
-		return this.monitoringService;
-	}	
 
 	@Override
 	public String save() throws Exception {

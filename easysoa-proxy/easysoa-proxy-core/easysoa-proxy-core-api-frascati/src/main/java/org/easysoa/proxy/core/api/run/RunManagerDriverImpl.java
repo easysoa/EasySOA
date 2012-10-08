@@ -198,7 +198,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	    // Register and save at the same time, maybe best to have 2 separated methods ...
         try {
             String result = runManager.save();
-            runManager.getMonitoringService().registerDetectedServicesToNuxeo();
+            // Monitoring service is now an independent service
+            // TODO : Have a dedicated web driver for monitoring service
+            //runManager.getMonitoringService().registerDetectedServicesToNuxeo();
             return result;
         }
         catch(Exception ex){
