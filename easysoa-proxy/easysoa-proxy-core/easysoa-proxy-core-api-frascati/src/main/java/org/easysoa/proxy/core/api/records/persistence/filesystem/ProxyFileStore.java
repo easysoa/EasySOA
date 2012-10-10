@@ -66,7 +66,9 @@ public class ProxyFileStore {
 
     // Logger
     private static Logger logger = Logger.getLogger(ProxyFileStore.class.getName());
-
+    
+    // Exchange number counter data file
+    public final static String EXCHANGE_NUMBER_FILE_NAME = "exchangeNumberCounter.data";
     // File extensions
     public final static String EXCHANGE_FILE_EXTENSION = ".json";
     public final static String TEMPLATE_FILE_EXTENSION = ".vm";
@@ -461,6 +463,29 @@ public class ProxyFileStore {
         if(store.checkRecordingLock(storeName)){ 
             store.waitForRecordingLock(storeName, 5000);
         }        
+    }
+
+    /**
+     * Save the current exchange number
+     */
+    public void saveExchangeNumber(long exchangeNumberValue) throws Exception {
+        StoreResource resource = new StoreResource(this.path + "/" + EXCHANGE_NUMBER_FILE_NAME);
+        String content = "{\"exchangeNumberCounterValue\" : \"" + exchangeNumberValue + "\"}";
+        resource.setContent(content);
+        store.save(resource);
+    }
+    
+    /**
+     * Load the current exchange number file 
+     * @return
+     * @throws Exception 
+     */
+    public long getExchangeNumber() throws Exception {
+        StoreResource resource = store.load(this.path + "/" + EXCHANGE_NUMBER_FILE_NAME, "");
+        String jsonContent = resource.getContent();
+        JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonContent);
+        long counterValue = jsonObject.getLong("exchangeNumberCounterValue");
+        return counterValue;
     }
     
 }

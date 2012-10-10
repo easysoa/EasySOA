@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.messages.server.NumberGenerator;
-import org.easysoa.proxy.core.api.monitoring.MonitoringService;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
 import org.easysoa.proxy.core.api.run.Run;
@@ -39,6 +38,7 @@ import org.easysoa.records.handlers.NuxeoMessageExchangeRecordHandler;
 import org.easysoa.records.service.ExchangeRecordServletFilterService;
 import org.easysoa.records.service.ExchangeRecordServletFilterServiceImpl;
 */
+import org.osoa.sca.annotations.ConversationID;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -53,9 +53,17 @@ import org.osoa.sca.annotations.Scope;
  * @author jguillemotte
  *
  */
-@Scope("composite")
+// TODO Replace composite annotation by conversation or .....
+//@Scope("composite")
+@Scope("conversation")
 public class RunManagerImpl implements RunManager {
-	
+
+    // TODO : Update the checkUniqueRunName method !
+    // one different run manager for each proxy ... We need to avoid duplicate run names ....
+    // How to give a name to the current name ??
+    // - Client must be give id used as a prefix or suffix ?
+    // - 
+
 	/**
 	 * Logger
 	 */
@@ -64,24 +72,23 @@ public class RunManagerImpl implements RunManager {
 	/**
 	 * when set to true, a run is automatically started when the getCurrentRun is called if there is no current run.
 	 */
-	private boolean autoStart = false;	
+	private boolean autoStart = false;
 	
 	/**
 	 * When set to true, the run is automatically saved when the stop method is called. 
 	 */
 	private boolean autoSave = true;
-	
-	/**
-	 * Reference to monitoring service : only one monitoring service for the runManager 
-	 */
-	// TODO One monitoring service for each run.
-	// TODO A discoveryMonitoringService is hard configured in the composite file.
 
+	// If conversation scope => a different number generator for each
+	// instance of run manager
 	@Reference
 	NumberGenerator exchangeNumberGenerator;
 	
 	@Reference
 	ReplayEngine replayEngine;
+	
+	@ConversationID
+	Object conversationID;
 	
 	/**
 	 * List of event receivers
@@ -328,6 +335,14 @@ public class RunManagerImpl implements RunManager {
 	 */
 	private boolean checkUniqueRunName(String runName){
 		// TODO rewrite this method to check the run folder names
+	    
+	    // problem with conversation scope => several run manager at the same time .....
+	    // To check
+	    // - previous store with the same name already exists in store folder
+	    // - A run with the same name already exists in another run manager but is not already saved ...
+	    
+	    // Solution => use a RunNameChecker as a singleton in all run manager instances
+	    
 		/*Iterator<Run> iter = this.runList.iterator();
 		while(iter.hasNext()){
 			Run run = iter.next();
@@ -377,6 +392,11 @@ public class RunManagerImpl implements RunManager {
      */ 
     public boolean isAutoSave() {
         return autoSave;
+    }
+
+    @Override
+    public void close() {
+        // Nothing to do, the client have to save the current run explicitly before to close the run manager
     }
     
 }

@@ -24,6 +24,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.osoa.sca.annotations.ConversationID;
+import org.osoa.sca.annotations.EndsConversation;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -33,7 +35,8 @@ import org.osoa.sca.annotations.Scope;
  *
  */
 
-@Scope("composite")
+//@Scope("composite")
+@Scope("conversation")
 public class HandlerManagerImpl implements HandlerManager {
 
     /**
@@ -43,6 +46,9 @@ public class HandlerManagerImpl implements HandlerManager {
     
     @Reference 
     private List<MessageHandler> handlers;
+    
+    @ConversationID
+    Object conversationID;    
 
     /**
      * 
@@ -59,4 +65,9 @@ public class HandlerManagerImpl implements HandlerManager {
         }    
     }
 
+    @EndsConversation
+    public void close(){
+        // Nothing to do;
+    }
+    
 }

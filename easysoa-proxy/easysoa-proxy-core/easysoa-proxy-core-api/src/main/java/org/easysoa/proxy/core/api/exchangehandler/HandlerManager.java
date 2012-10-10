@@ -19,7 +19,18 @@
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
+import org.osoa.sca.annotations.Conversational;
+import org.osoa.sca.annotations.EndsConversation;
 
+/**
+ * Handler manager interface
+ * @author jguillemotte
+ *
+ */
+@Conversational
 public interface HandlerManager extends MessageHandler {
+    
+    @EndsConversation
+    public void close();
     
 }

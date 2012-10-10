@@ -39,7 +39,6 @@ public interface MonitoringService {
 	 * Listen a message
 	 * @param message The <code>Message</code> to listen
 	 */
-	//public void listen(Message message);
 	public void listen(ExchangeRecord exchangeRecord);
 
 	/**
@@ -58,7 +57,6 @@ public interface MonitoringService {
 	 * Returns the unknown messages list
 	 * @return
 	 */
-	//public ArrayDeque<Message> getUnknownMessagesList();
 	public ArrayDeque<ExchangeRecord> getUnknownExchangeRecordList();
 
 	/**

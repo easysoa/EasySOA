@@ -76,4 +76,11 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
         this.handleMessage(inMessage, outMessage);
     }
 
+    /* (non-Javadoc)
+     * @see org.easysoa.records.handlers.HandlerManager#close()
+     */    
+    public void close() {
+        // TODO Auto-generated method stub
+    }
+    
 }
