@@ -46,7 +46,7 @@ public class RepositoryManagementListener implements EventListener {
             // If a document has been created through the Nuxeo UI, move it to the repository and leave only a proxy
             String sourceFolderPath = documentService.getSourceFolderPath(sourceDocument.getType());
             DocumentModel parentModel = documentManager.getDocument(sourceDocument.getParentRef());
-            if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)
+            if (!sourceDocument.isProxy() && !parentModel.getPathAsString().equals(sourceFolderPath)
                     || sourceDocument.isProxy() && parentModel.hasFacet(SoaNode.FACET)
                         && !sourceDocument.getPathAsString().startsWith(Repository.REPOSITORY_PATH)) {
                 documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
