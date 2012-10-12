@@ -2,13 +2,16 @@ package org.easysoa.discovery.code.handler;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
-import org.easysoa.discovery.code.JavaServiceImplementationInformation;
 import org.easysoa.discovery.code.ParsingUtils;
+import org.easysoa.discovery.code.model.JavaServiceImplementationInformation;
+import org.easysoa.discovery.code.model.JavaServiceInterfaceInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
@@ -18,7 +21,6 @@ import org.easysoa.registry.types.java.JavaServiceImplementation;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.Type;
 
 /**
  * In project & current deliverable, reports :
@@ -36,10 +38,12 @@ public class JaxRSSourcesHandler extends AbstractJavaSourceHandler implements So
       };
     
     @Override
-    public Collection<Type> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
-            MavenDeliverableInformation mavenDeliverable, CodeDiscoveryRegistryClient registryClient, Log log)
+    public Map<String, JavaServiceInterfaceInformation> findWSInterfaces(CodeDiscoveryMojo codeDiscovery,
+            JavaSource[] sources,
+            MavenDeliverableInformation mavenDeliverable,
+            CodeDiscoveryRegistryClient registryClient, Log log)
             throws Exception {
-        List<Type> wsInjectableTypeSet = new ArrayList<Type>();
+        Map<String, JavaServiceInterfaceInformation> wsInjectableTypeSet = new HashMap<String, JavaServiceInterfaceInformation>();
         
         // Pass 1 : Find all WS interfaces if any
         for (JavaSource source : sources) {
@@ -57,7 +61,9 @@ public class JaxRSSourcesHandler extends AbstractJavaSourceHandler implements So
                         }
                     }
                     if (pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
-                          wsInjectableTypeSet.add(c.asType());
+                          wsInjectableTypeSet.put(c.getFullyQualifiedName(), new JavaServiceInterfaceInformation(
+                                  mavenDeliverable.getGroupId(), mavenDeliverable.getArtifactId(),
+                                  c.getFullyQualifiedName()));
                     }
                 }
             }
@@ -68,7 +74,7 @@ public class JaxRSSourcesHandler extends AbstractJavaSourceHandler implements So
    
     @Override
     public Collection<SoaNodeInformation> findWSImplementations(JavaSource[] sources,
-            Collection<Type> wsInterfaces, MavenDeliverableInformation mavenDeliverable,
+            Map<String, JavaServiceInterfaceInformation> wsInterfaces, MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         // Pass 2 : Find all WS impl, including those implementing known interfaces (though its not "classical" JAXRS)
         List<SoaNodeInformation> discoveredNodes = new ArrayList<SoaNodeInformation>();

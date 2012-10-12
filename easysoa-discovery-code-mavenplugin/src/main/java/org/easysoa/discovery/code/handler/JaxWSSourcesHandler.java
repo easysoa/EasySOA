@@ -15,10 +15,11 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
-import org.easysoa.discovery.code.JavaServiceConsumptionInformation;
-import org.easysoa.discovery.code.JavaServiceImplementationInformation;
 import org.easysoa.discovery.code.ParsingUtils;
 import org.easysoa.discovery.code.handler.consumption.ImportedServicesConsumptionFinder;
+import org.easysoa.discovery.code.model.JavaServiceConsumptionInformation;
+import org.easysoa.discovery.code.model.JavaServiceImplementationInformation;
+import org.easysoa.discovery.code.model.JavaServiceInterfaceInformation;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
@@ -67,26 +68,26 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
     }
     
     @Override
-    public Collection<Type> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
-            MavenDeliverableInformation mavenDeliverable,
+    public Map<String, JavaServiceInterfaceInformation> findWSInterfaces(CodeDiscoveryMojo codeDiscovery,
+            JavaSource[] sources, MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         // Pass 1 : Find all WS clients/interfaces
-        List<Type> wsInjectableTypeSet = new ArrayList<Type>();
+        Map<String, JavaServiceInterfaceInformation> wsInjectableTypeSet
+                = new HashMap<String, JavaServiceInterfaceInformation>();
         for (JavaSource source : sources) {
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
                 boolean isWs = ParsingUtils.hasAnnotation(c, ANN_WS);
                 boolean isInterface = c.isInterface();
                 
-                if (isWs) {
-                    if (isInterface) {
-                        wsInjectableTypeSet.add(c.asType());
-                    }
-                } else if (isWs && isInterface
+                if (isWs && isInterface
                         || ParsingUtils.hasAnnotation(c, ANN_XML_WSCLIENT)
                         || ParsingUtils.hasAnnotation(c, ANN_WSPROVIDER)
                         || ParsingUtils.hasAnnotation(c, ANN_XML_WSPROVIDER)) {
-                    wsInjectableTypeSet.add(c.asType());
+                    wsInjectableTypeSet.put(c.getFullyQualifiedName(), 
+                            new JavaServiceInterfaceInformation(mavenDeliverable.getGroupId(),
+                                    mavenDeliverable.getArtifactId(),
+                                    c.getFullyQualifiedName()));
                 }
             }
         }
@@ -100,7 +101,7 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                 Artifact dependency = (Artifact) dependencyObject;
                 URLClassLoader jarClassloader = new URLClassLoader(new URL[] { dependency.getFile().toURI().toURL() });
                 Enumeration<URL> resources = jarClassloader.getResources(".");
-                wsInjectableTypeSet.addAll(exploreResourcesForInterfaces(jarClassloader, resources));
+                wsInjectableTypeSet.putAll(exploreResourcesForInterfaces(jarClassloader, resources));
             }     
     
         }
@@ -108,9 +109,10 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
         return wsInjectableTypeSet;
     }
 
-    private Collection<Type> exploreResourcesForInterfaces(URLClassLoader jarClassloader,
+    private Map<String, JavaServiceInterfaceInformation> exploreResourcesForInterfaces(URLClassLoader jarClassloader,
             Enumeration<URL> resources) {
-        Collection<Type> wsInjectableTypeSet = new ArrayList<Type>();
+        Map<String, JavaServiceInterfaceInformation> wsInjectableTypeSet
+               = new HashMap<String, JavaServiceInterfaceInformation>();
         
         
         
@@ -118,7 +120,8 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
     }
 
     @Override
-    public Collection<SoaNodeInformation> findWSImplementations(JavaSource[] sources, Collection<Type> wsInterfaces,
+    public Collection<SoaNodeInformation> findWSImplementations(JavaSource[] sources,
+            Map<String, JavaServiceInterfaceInformation> wsInterfaces,
             MavenDeliverableInformation mavenDeliverable, CodeDiscoveryRegistryClient registryClient, Log log)
             throws Exception {
         // Pass 2 : Explore each impl
@@ -134,7 +137,8 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                     implsToInterfaces.put(c.asType(), itfClass.asType());
                     
                     // Extract WS info
-                    JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(c.getFullyQualifiedName());
+                    JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(
+                            c.getFullyQualifiedName());
                     serviceImpl.setTitle(c.getName());
                     serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
                     serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK,
@@ -178,7 +182,7 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
     
      @Override
     public Collection<SoaNodeInformation> handleAdditionalDiscovery(JavaSource[] sources,
-            Collection<Type> wsInterfaces, Collection<SoaNodeInformation> wsImpls,
+            Map<String, JavaServiceInterfaceInformation> wsInterfaces,
             MavenDeliverableInformation mavenDeliverable, CodeDiscoveryRegistryClient registryClient, Log log)
             throws Exception {
          List<SoaNodeInformation> discoveredNodes = new ArrayList<SoaNodeInformation>();

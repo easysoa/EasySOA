@@ -7,6 +7,8 @@ public interface JavaServiceConsumption extends ServiceConsumption {
 
     static final String DOCTYPE = "JavaServiceConsumption";
     
+    static final String XPATH_CONSUMERCLASS = "javasc:consumerClass";
+    
     static final String XPATH_CONSUMEDINTERFACE = "javasc:consumedInterface";
     
     static final String XPATH_CONSUMEDINTERFACELOCATION = "javasc:consumedInterfaceLocation";

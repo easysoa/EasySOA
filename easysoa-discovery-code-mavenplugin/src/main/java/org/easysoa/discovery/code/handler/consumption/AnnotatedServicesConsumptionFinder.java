@@ -1,14 +1,15 @@
 package org.easysoa.discovery.code.handler.consumption;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import org.easysoa.discovery.code.JavaServiceConsumptionInformation;
 import org.easysoa.discovery.code.ParsingUtils;
 import org.easysoa.discovery.code.handler.SourcesParsingUtils;
+import org.easysoa.discovery.code.model.JavaServiceConsumptionInformation;
+import org.easysoa.discovery.code.model.JavaServiceInterfaceInformation;
 import org.easysoa.registry.types.java.MavenDeliverable;
 
 import com.thoughtworks.qdox.model.AbstractJavaEntity;
@@ -60,7 +61,7 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
     
     @Override
     public List<JavaServiceConsumptionInformation> find(JavaSource javaSource,
-            MavenDeliverable mavenDeliverable, Collection<Type> serviceInterfaces) throws Exception {
+            MavenDeliverable mavenDeliverable, Map<String, JavaServiceInterfaceInformation> serviceInterfaces) throws Exception {
         List<JavaServiceConsumptionInformation> discoveredConsumptions = new LinkedList<JavaServiceConsumptionInformation>();
         // NB. JAXWS WebServiceClient (generated client stub) not reported as such but through injection below
         // (though they could be, as "connector" TODO)
@@ -95,15 +96,17 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
     private void addConsumerFoundInInjectedMember(List<JavaServiceConsumptionInformation> discoveredConsumptions,
             AbstractJavaEntity injectedMember, Type injectedType,
             String beanPropertyName, HashSet<String> injectedBeanProperties,
-            Collection<Type> serviceInterfaces, MavenDeliverable mavenDeliverable) throws Exception {
+            Map<String, JavaServiceInterfaceInformation> serviceInterfaces,
+            MavenDeliverable mavenDeliverable) throws Exception {
         if (injectedBeanProperties.contains(beanPropertyName)) {
             return;
         }
         String injectionAnnotation = getInjectionAnnotation(injectedMember);
         if (allInjected || injectionAnnotation != null) {
-            if (serviceInterfaces.contains(injectedType)) {
+            if (serviceInterfaces.containsKey(injectedType)) {
                 discoveredConsumptions.add(new JavaServiceConsumptionInformation(
                         mavenDeliverable.getSoaNodeId(),
+                        null, // TODO from class?
                         injectedType.toGenericString(),
                         injectedType.getJavaClass().getSource().getURL().toString()));
                 injectedBeanProperties.add(beanPropertyName);

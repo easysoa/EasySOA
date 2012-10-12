@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugin.logging.Log;
 import org.easysoa.discovery.code.CodeDiscoveryMojo;
@@ -12,12 +13,12 @@ import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.handler.consumption.AnnotatedServicesConsumptionFinder;
 import org.easysoa.discovery.code.handler.consumption.ImportedServicesConsumptionFinder;
 import org.easysoa.discovery.code.handler.consumption.ServiceConsumptionFinder;
+import org.easysoa.discovery.code.model.JavaServiceInterfaceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.Type;
 
 
 /**
@@ -63,9 +64,9 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
         annotatedServicesFinder.addAnnotationToDetect(annotationToDetect);
     }
 
-    protected JavaClass getWsItf(JavaClass c, Collection<Type> serviceInterfaces) {
+    protected JavaClass getWsItf(JavaClass c, Map<String, JavaServiceInterfaceInformation> serviceInterfaces) {
         for (JavaClass itfClass : c.getImplementedInterfaces()) {
-            if (serviceInterfaces.contains(itfClass.asType())) {
+            if (serviceInterfaces.containsKey(itfClass.getFullyQualifiedName())) {
                 return itfClass;
             }
         }
@@ -79,7 +80,7 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
         List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
         
         // Find WS interfaces
-        Collection<Type> wsInterfaces = findWSInterfaces(codeDiscovery, sources,
+        Map<String, JavaServiceInterfaceInformation> wsInterfaces = findWSInterfaces(codeDiscovery, sources,
                 mavenDeliverable, registryClient, log);
         
         // Find WS implementations
@@ -95,22 +96,22 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
         }
         
         // Additional discovery
-        discoveredNodes.addAll(handleAdditionalDiscovery(sources, wsInterfaces, wsImpls,
+        discoveredNodes.addAll(handleAdditionalDiscovery(sources, wsInterfaces,
                 mavenDeliverable, registryClient, log));
         
         return discoveredNodes;
     }
     
-    public abstract Collection<Type> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
+    public abstract Map<String, JavaServiceInterfaceInformation> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
             MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception;
 
     public abstract Collection<SoaNodeInformation> findWSImplementations(JavaSource[] sources,
-            Collection<Type> wsInterfaces, MavenDeliverableInformation mavenDeliverable,
+            Map<String, JavaServiceInterfaceInformation> wsInterfaces, MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception;
 
     public Collection<SoaNodeInformation> handleAdditionalDiscovery(JavaSource[] sources,
-            Collection<Type> wsInterfaces, Collection<SoaNodeInformation> wsImpls, 
+            Map<String, JavaServiceInterfaceInformation> wsInterfaces,
             MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         return Collections.emptyList();
