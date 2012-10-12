@@ -116,6 +116,7 @@
         </contentView>
       </contentViews>
       <subtypes>
+        <type>File</type>
         <type>TaggingFolder</type>
         <type>SoftwareComponent</type>
         <type>Service</type>

@@ -145,7 +145,12 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public DocumentModel find(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
-        return findDocument(documentManager, identifier.getType(), identifier.getName());
+        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + SoaNode.XPATH_SOANAME + " = '?'"
+                + PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER,
+                new Object[] { identifier.getType(), identifier.getName() },
+                false, true);
+        DocumentModelList results = documentManager.query(query);
+        return results.size() > 0 ? results.get(0) : null;
     }
 
     @Override
