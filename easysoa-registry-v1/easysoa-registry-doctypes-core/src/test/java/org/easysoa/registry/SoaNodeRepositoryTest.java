@@ -131,6 +131,7 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
         // Make sure that there are 2 proxies of the document
         DocumentModelList proxies = documentService.findProxies(documentManager, deliverableModel);
         Assert.assertEquals("The deliverable must now have 2 proxies", 2, proxies.size());
+        assertAllProxiesAreSetOnTheSources(proxies);
     }
 
     @Test
@@ -148,6 +149,13 @@ public class SoaNodeRepositoryTest extends AbstractRegistryTest {
         // Make sure that there are 3 proxies of the document
         DocumentModelList proxies = documentService.findProxies(documentManager, deliverableModel);
         Assert.assertEquals("The deliverable must now have 3 proxies", 3, proxies.size());
+        assertAllProxiesAreSetOnTheSources(proxies);
     }
-    
+
+    private void assertAllProxiesAreSetOnTheSources(DocumentModelList proxies) {
+        for (DocumentModel proxy : proxies) {
+            Assert.assertTrue("All proxies must be set on the source SoaNodes",
+                    proxy.getPathAsString().startsWith("/default-domain/repository"));
+        }
+    }
 }

@@ -2,6 +2,7 @@ package org.easysoa.registry;
 
 import org.apache.log4j.Logger;
 import org.easysoa.registry.systems.IntelligentSystemTreeService;
+import org.easysoa.registry.types.Repository;
 import org.easysoa.registry.types.SoaNode;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -44,7 +45,10 @@ public class RepositoryManagementListener implements EventListener {
             
             // If a document has been created through the Nuxeo UI, move it to the repository and leave only a proxy
             String sourceFolderPath = documentService.getSourceFolderPath(sourceDocument.getType());
-            if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)) {
+            DocumentModel parentModel = documentManager.getDocument(sourceDocument.getParentRef());
+            if (!sourceDocument.isProxy() && !sourceDocument.getPathAsString().startsWith(sourceFolderPath)
+                    || sourceDocument.isProxy() && parentModel.hasFacet(SoaNode.FACET)
+                        && !sourceDocument.getPathAsString().startsWith(Repository.REPOSITORY_PATH)) {
                 documentService.ensureSourceFolderExists(documentManager, sourceDocument.getType());
                 String soaName = (String) sourceDocument.getPropertyValue(SoaNode.XPATH_SOANAME);
                 if (soaName == null || soaName.isEmpty()) {
@@ -70,7 +74,6 @@ public class RepositoryManagementListener implements EventListener {
                 }
                 
                 // Create a proxy at the expected location
-                DocumentModel parentModel = documentManager.getDocument(sourceDocument.getParentRef());
                 if (documentService.isSoaNode(documentManager, parentModel.getType())) {
                     parentModel = documentService.find(documentManager, documentService.createSoaNodeId(parentModel));
                 }
