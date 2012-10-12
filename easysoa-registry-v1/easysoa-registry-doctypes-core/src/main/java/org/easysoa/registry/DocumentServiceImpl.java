@@ -151,7 +151,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentModelList findProxies(CoreSession documentManager, SoaNodeId identifier)
             throws ClientException {
-        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'"
+        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + SoaNode.XPATH_SOANAME + " = '?'"
                 + NON_PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
@@ -188,7 +188,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     public DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
-        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'"
+        String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + SoaNode.XPATH_SOANAME + " = '?'"
                 + DELETED_DOCUMENTS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
