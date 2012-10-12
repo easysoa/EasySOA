@@ -3,7 +3,7 @@ package org.easysoa.discovery.code.handler.consumption;
 import java.util.Collection;
 import java.util.List;
 
-import org.easysoa.discovery.code.JavaServiceConsumptionInformation;
+import org.easysoa.discovery.code.model.JavaServiceConsumptionInformation;
 import org.easysoa.registry.types.java.MavenDeliverable;
 
 import com.thoughtworks.qdox.model.JavaSource;

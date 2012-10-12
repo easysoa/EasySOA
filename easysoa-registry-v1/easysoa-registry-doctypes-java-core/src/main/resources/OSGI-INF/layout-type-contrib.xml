@@ -14,12 +14,24 @@
       </templates>
       <rows>
         <row>
+          <widget>javaserviceconsumption_consumerClass</widget>
+        </row>
+        <row>
           <widget>javaserviceconsumption_consumedInterface</widget>
         </row>
         <row>
           <widget>javaserviceconsumption_consumedInterfaceLocation</widget>
         </row>
       </rows>
+      <widget name="javaserviceconsumption_consumerClass" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.javasc.consumerclass</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>javasc:consumerClass</field>
+        </fields>
+      </widget>
       <widget name="javaserviceconsumption_consumedInterface" type="text">
         <labels>
           <label mode="any">label.easysoa.layout.javasc.consumedinterface</label>
@@ -46,9 +58,24 @@
       </templates>
       <rows>
         <row>
+          <widget>javaserviceimplementation_implementationClass</widget>
+        </row>
+        <row>
           <widget>javaserviceimplementation_implementedInterface</widget>
         </row>
+        <row>
+          <widget>javaserviceimplementation_implementedInterfaceLocation</widget>
+        </row>
       </rows>
+      <widget name="javaserviceimplementation_implementationClass" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.javasi.implementationclass</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>javasi:implementationClass</field>
+        </fields>
+      </widget>
       <widget name="javaserviceimplementation_implementedInterface" type="text">
         <labels>
           <label mode="any">label.easysoa.layout.javasi.implementedinterface</label>
@@ -56,6 +83,15 @@
         <translated>true</translated>
         <fields>
           <field>javasi:implementedInterface</field>
+        </fields>
+      </widget>
+      <widget name="javaserviceimplementation_implementedInterfaceLocation" type="text">
+        <labels>
+          <label mode="any">label.easysoa.layout.javasi.implementedinterfacelocation</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>javasi:implementedInterfaceLocation</field>
         </fields>
       </widget>
     </layout>

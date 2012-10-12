@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.easysoa.discovery.code.JavaServiceConsumptionInformation;
 import org.easysoa.discovery.code.ParsingUtils;
 import org.easysoa.discovery.code.handler.SourcesParsingUtils;
+import org.easysoa.discovery.code.model.JavaServiceConsumptionInformation;
 import org.easysoa.registry.types.java.MavenDeliverable;
 
 import com.thoughtworks.qdox.model.AbstractJavaEntity;
@@ -104,6 +104,7 @@ public class AnnotatedServicesFinder implements ServiceConsumptionFinder {
             if (serviceInterfaces.contains(injectedType)) {
                 discoveredConsumptions.add(new JavaServiceConsumptionInformation(
                         mavenDeliverable.getSoaNodeId(),
+                        null, // TODO from class?
                         injectedType.toGenericString(),
                         injectedType.getJavaClass().getSource().getURL().toString()));
                 injectedBeanProperties.add(beanPropertyName);
