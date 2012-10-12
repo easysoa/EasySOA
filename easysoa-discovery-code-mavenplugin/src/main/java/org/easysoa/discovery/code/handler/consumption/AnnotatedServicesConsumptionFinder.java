@@ -20,7 +20,7 @@ import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.Type;
 
-public class AnnotatedServicesFinder implements ServiceConsumptionFinder {
+public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFinder {
 
     // configuration :
     private boolean allInjected = true;
@@ -29,7 +29,7 @@ public class AnnotatedServicesFinder implements ServiceConsumptionFinder {
     
     private List<String> annotationsToDetect;
 
-    public AnnotatedServicesFinder(List<String> annotationsToDetect) {
+    public AnnotatedServicesConsumptionFinder(List<String> annotationsToDetect) {
         this.annotationsToDetect = annotationsToDetect;
         if (this.annotationsToDetect == null) {
             this.annotationsToDetect = new ArrayList<String>();

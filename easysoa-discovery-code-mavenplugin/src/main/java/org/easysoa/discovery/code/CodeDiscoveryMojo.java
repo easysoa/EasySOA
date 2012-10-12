@@ -121,7 +121,7 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         JavaSource[] sources = builder.getSources();
         CodeDiscoveryRegistryClient registryClient = new CodeDiscoveryRegistryClient(registryApi);
         for (SourcesHandler handler : availableHandlers.values()) {
-            discoveredNodes.addAll(handler.handleSources(sources, mavenDeliverable, registryClient, log));
+            discoveredNodes.addAll(handler.handleSources(this, sources, mavenDeliverable, registryClient, log));
         }
         
         // Build and send discovery request
@@ -152,4 +152,8 @@ public class CodeDiscoveryMojo extends AbstractMojo {
         
     }
 
+    public MavenProject getMavenProject() {
+        return project;
+    }
+    
 }

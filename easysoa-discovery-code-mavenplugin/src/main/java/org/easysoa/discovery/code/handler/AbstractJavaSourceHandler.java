@@ -7,9 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
+import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
-import org.easysoa.discovery.code.handler.consumption.AnnotatedServicesFinder;
-import org.easysoa.discovery.code.handler.consumption.ImportedServicesFinder;
+import org.easysoa.discovery.code.handler.consumption.AnnotatedServicesConsumptionFinder;
+import org.easysoa.discovery.code.handler.consumption.ImportedServicesConsumptionFinder;
 import org.easysoa.discovery.code.handler.consumption.ServiceConsumptionFinder;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
@@ -45,17 +46,17 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
 
     private List<ServiceConsumptionFinder> serviceConsumptionFinders = new ArrayList<ServiceConsumptionFinder>();
 
-    private AnnotatedServicesFinder annotatedServicesFinder;
+    private AnnotatedServicesConsumptionFinder annotatedServicesFinder;
 
     protected AbstractJavaSourceHandler() {
-        this.annotatedServicesFinder = new AnnotatedServicesFinder(null);
+        this.annotatedServicesFinder = new AnnotatedServicesConsumptionFinder(null);
         this.annotatedServicesFinder.addAnnotationToDetect(ANN_INJECT); // Java 6
         this.annotatedServicesFinder.addAnnotationToDetect("org.osoa.sca.annotations.Reference");
         this.annotatedServicesFinder.addAnnotationToDetect("org.springframework.beans.factory.annotation.Autowired");
         this.annotatedServicesFinder.addAnnotationToDetect("com.google.inject.Inject");
         this.annotatedServicesFinder.addAnnotationToDetect("javax.ejb.EJB");
         this.serviceConsumptionFinders.add(this.annotatedServicesFinder);
-        this.serviceConsumptionFinders.add(new ImportedServicesFinder());
+        this.serviceConsumptionFinders.add(new ImportedServicesConsumptionFinder());
     }
     
     protected void addAnnotationToDetect(String annotationToDetect) {
@@ -71,13 +72,14 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
         return null;
     }
 
-    public Collection<SoaNodeInformation> handleSources(JavaSource[] sources,
+    public Collection<SoaNodeInformation> handleSources(CodeDiscoveryMojo codeDiscovery,
+            JavaSource[] sources,
             MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
         
         // Find WS interfaces
-        Collection<Type> wsInterfaces = findWSInterfaces(sources,
+        Collection<Type> wsInterfaces = findWSInterfaces(codeDiscovery, sources,
                 mavenDeliverable, registryClient, log);
         
         // Find WS implementations
@@ -99,7 +101,7 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
         return discoveredNodes;
     }
     
-    public abstract Collection<Type> findWSInterfaces(JavaSource[] sources,
+    public abstract Collection<Type> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
             MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception;
 

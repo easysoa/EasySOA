@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
+import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.JavaServiceImplementationInformation;
 import org.easysoa.discovery.code.ParsingUtils;
@@ -35,7 +36,7 @@ public class JaxRSSourcesHandler extends AbstractJavaSourceHandler implements So
       };
     
     @Override
-    public Collection<Type> findWSInterfaces(JavaSource[] sources,
+    public Collection<Type> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
             MavenDeliverableInformation mavenDeliverable, CodeDiscoveryRegistryClient registryClient, Log log)
             throws Exception {
         List<Type> wsInjectableTypeSet = new ArrayList<Type>();
@@ -61,6 +62,7 @@ public class JaxRSSourcesHandler extends AbstractJavaSourceHandler implements So
                 }
             }
         }
+        
         return wsInjectableTypeSet;
     }
    
@@ -75,81 +77,71 @@ public class JaxRSSourcesHandler extends AbstractJavaSourceHandler implements So
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
                 if (!c.isInterface()) {
-                    discoveredNodes.addAll(this.handleClass(c, sources, wsInterfaces, mavenDeliverable, log));
-                }
-            }
-        }
-        return discoveredNodes;
-    }
+                    JavaClass itf = getWsItf(c, wsInterfaces);
 
-    public Collection<SoaNodeInformation> handleClass(JavaClass c, JavaSource[] sources, 
-            Collection<Type> wsInterfaces, MavenDeliverableInformation deliverable, Log log) throws Exception {
-        List<SoaNodeInformation> discoveredNodes = new ArrayList<SoaNodeInformation>();
-        
-        JavaClass itf = getWsItf(c, wsInterfaces);
-
-        ArrayList<JavaMethod> pathMethods = null;
-        if (itf == null) {
-            // Check JAX-RS annotation
-            for (JavaMethod method : c.getMethods()) {
-                if (ParsingUtils.hasAnnotation(method, ANN_PATH)) {
-                    if (pathMethods == null) {
-                        pathMethods = new ArrayList<JavaMethod>(c.getMethods().length);
-                    }
-                    pathMethods.add(method);
-                }
-            }
-        }
-
-        if (itf != null || pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
-            
-            // Extract WS info
-            JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(c.getFullyQualifiedName());
-            serviceImpl.setTitle(c.getName());
-            serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-RS");
-            serviceImpl.setProperty(JavaServiceImplementation.XPATH_DOCUMENTATION, c.getComment());
-            serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK, SourcesParsingUtils.isTestClass(c));
-            serviceImpl.addParentDocument(deliverable.getSoaNodeId());
-            
-            if (itf != null) {
-                // Extract WS info
-                serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itf.getFullyQualifiedName());
-                ServiceInformation serviceDef = new ServiceInformation(itf.getName());
-                serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
-                discoveredNodes.add(serviceDef);
-            }
-            
-            // Extract operations info
-            List<OperationImplementation> operations = serviceImpl.getOperations();
-            if (pathMethods != null) {
-                for (JavaMethod method : c.getMethods()) {
-                    if (ParsingUtils.hasAnnotation(method, ANN_PATH)) {
-                        // Extract service path
-                        Object path = ParsingUtils.getAnnotation(method, ANN_PATH).getProperty("value");
-                        
-                        // Extract HTTP method
-                        String httpMethod = "???";
-                        for (String annHttpMethod : ANN_METHODS) {
-                            if (ParsingUtils.hasAnnotation(method, annHttpMethod)) {
-                                httpMethod = annHttpMethod.replace("javax.ws.rs.", "");
-                                break;
+                    ArrayList<JavaMethod> pathMethods = null;
+                    if (itf == null) {
+                        // Check JAX-RS annotation
+                        for (JavaMethod method : c.getMethods()) {
+                            if (ParsingUtils.hasAnnotation(method, ANN_PATH)) {
+                                if (pathMethods == null) {
+                                    pathMethods = new ArrayList<JavaMethod>(c.getMethods().length);
+                                }
+                                pathMethods.add(method);
                             }
                         }
+                    }
+
+                    if (itf != null || pathMethods != null || ParsingUtils.hasAnnotation(c, ANN_PATH)) {
                         
-                        operations.add(new OperationImplementation(
-                        		method.getName(),
-                        		null,
-                        		"Method: " + httpMethod + ", Path: " + path + ", Description: " + method.getComment()));
+                        // Extract WS info
+                        JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(c.getFullyQualifiedName());
+                        serviceImpl.setTitle(c.getName());
+                        serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-RS");
+                        serviceImpl.setProperty(JavaServiceImplementation.XPATH_DOCUMENTATION, c.getComment());
+                        serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK, SourcesParsingUtils.isTestClass(c));
+                        serviceImpl.addParentDocument(mavenDeliverable.getSoaNodeId());
+                        
+                        if (itf != null) {
+                            // Extract WS info
+                            serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itf.getFullyQualifiedName());
+                            ServiceInformation serviceDef = new ServiceInformation(itf.getName());
+                            serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
+                            discoveredNodes.add(serviceDef);
+                        }
+                        
+                        // Extract operations info
+                        List<OperationImplementation> operations = serviceImpl.getOperations();
+                        if (pathMethods != null) {
+                            for (JavaMethod method : c.getMethods()) {
+                                if (ParsingUtils.hasAnnotation(method, ANN_PATH)) {
+                                    // Extract service path
+                                    Object path = ParsingUtils.getAnnotation(method, ANN_PATH).getProperty("value");
+                                    
+                                    // Extract HTTP method
+                                    String httpMethod = "???";
+                                    for (String annHttpMethod : ANN_METHODS) {
+                                        if (ParsingUtils.hasAnnotation(method, annHttpMethod)) {
+                                            httpMethod = annHttpMethod.replace("javax.ws.rs.", "");
+                                            break;
+                                        }
+                                    }
+                                    
+                                    operations.add(new OperationImplementation(
+                                            method.getName(),
+                                            null,
+                                            "Method: " + httpMethod + ", Path: " + path + ", Description: " + method.getComment()));
+                                }
+                            }
+                            serviceImpl.setOperations(operations);
+                            
+                            discoveredNodes.add(serviceImpl);
+                        }
                     }
                 }
-                serviceImpl.setOperations(operations);
-                
-                discoveredNodes.add(serviceImpl);
             }
         }
-        
         return discoveredNodes;
-        
     }
 
 }

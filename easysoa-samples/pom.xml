@@ -10,6 +10,7 @@
   
   <modules>
     <module>easysoa-discovery-rest-mock</module>
+    <module>easysoa-discovery-code-sample-itf</module>
     <module>easysoa-discovery-code-sample</module>
   </modules>
 

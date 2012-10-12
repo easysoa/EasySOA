@@ -1,18 +1,24 @@
 package org.easysoa.discovery.code.handler;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
+import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.JavaServiceConsumptionInformation;
 import org.easysoa.discovery.code.JavaServiceImplementationInformation;
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.code.handler.consumption.ImportedServicesFinder;
+import org.easysoa.discovery.code.handler.consumption.ImportedServicesConsumptionFinder;
 import org.easysoa.registry.rest.client.types.ServiceInformation;
 import org.easysoa.registry.rest.client.types.java.MavenDeliverableInformation;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
@@ -61,7 +67,8 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
     }
     
     @Override
-    public Collection<Type> findWSInterfaces(JavaSource[] sources, MavenDeliverableInformation mavenDeliverable,
+    public Collection<Type> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
+            MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         // Pass 1 : Find all WS clients/interfaces
         List<Type> wsInjectableTypeSet = new ArrayList<Type>();
@@ -83,6 +90,30 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                 }
             }
         }
+
+        // XXX WIP
+        Map<Type, MavenDeliverableInformation> mavenInfos = new HashMap<Type, MavenDeliverableInformation>();
+        MavenProject mavenProject = codeDiscovery.getMavenProject();
+        if (mavenProject != null) {
+            // Find interfaces from dependencies
+            for (Object dependencyObject : mavenProject.getDependencyArtifacts()) {
+                Artifact dependency = (Artifact) dependencyObject;
+                URLClassLoader jarClassloader = new URLClassLoader(new URL[] { dependency.getFile().toURI().toURL() });
+                Enumeration<URL> resources = jarClassloader.getResources(".");
+                wsInjectableTypeSet.addAll(exploreResourcesForInterfaces(jarClassloader, resources));
+            }     
+    
+        }
+        
+        return wsInjectableTypeSet;
+    }
+
+    private Collection<Type> exploreResourcesForInterfaces(URLClassLoader jarClassloader,
+            Enumeration<URL> resources) {
+        Collection<Type> wsInjectableTypeSet = new ArrayList<Type>();
+        
+        
+        
         return wsInjectableTypeSet;
     }
 
@@ -95,7 +126,50 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
         for (JavaSource source : sources) {
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
-                discoveredNodes.addAll(this.handleClass(c, sources, wsInterfaces, mavenDeliverable, log));
+                // Check JAX-WS annotation
+                if (!c.isInterface() && (ParsingUtils.hasAnnotation(c, ANN_WS) || getWsItf(c, wsInterfaces) != null)) { // TODO superclass ?
+                    // Extract interface info
+                    //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
+                    JavaClass itfClass = getWsItf(c, wsInterfaces); // TODO several interfaces ???
+                    implsToInterfaces.put(c.asType(), itfClass.asType());
+                    
+                    // Extract WS info
+                    JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(c.getFullyQualifiedName());
+                    serviceImpl.setTitle(c.getName());
+                    serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
+                    serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK,
+                            c.getSource().getURL().getPath().contains("src/test/"));
+                    serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itfClass.getFullyQualifiedName());
+                    serviceImpl.addParentDocument(mavenDeliverable.getSoaNodeId());
+                    discoveredNodes.add(serviceImpl);
+                    
+                    // Extract service info
+                    ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
+                    serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
+                    serviceImpl.setProperty(JavaServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
+                    discoveredNodes.add(serviceDef);
+           
+                    // Extract operations info
+                    List<OperationImplementation> operations = serviceImpl.getOperations();
+                    for (JavaMethod method : itfClass.getMethods()) {
+                        if (ParsingUtils.hasAnnotation(method, ANN_WEBRESULT)) {
+                            Annotation webResultAnn = ParsingUtils.getAnnotation(method, ANN_WEBRESULT);
+                            
+                            // Extract parameters info
+                            StringBuilder parametersInfo = new StringBuilder();
+                            for (JavaParameter parameter : method.getParameters()) {
+                                Annotation webParamAnn = ParsingUtils.getAnnotation(parameter, ANN_WEBPARAM);
+                                parametersInfo.append(webParamAnn.getProperty("name").getParameterValue()
+                                        + "=" + parameter.getType().toString() + ", ");
+                            }
+                            operations.add(new OperationImplementation(
+                                    webResultAnn.getProperty("name").toString(),
+                                    parametersInfo.delete(parametersInfo.length()-2, parametersInfo.length()).toString(),
+                                    method.getComment()));
+                        }
+                    }
+                    serviceImpl.setOperations(operations);
+                }
             }
         }
         return discoveredNodes;
@@ -122,7 +196,7 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                 		}
                 	}
                 	if (isUnitTestingClass) {
-                	    ImportedServicesFinder importedServiceFinders = new ImportedServicesFinder();
+                	    ImportedServicesConsumptionFinder importedServiceFinders = new ImportedServicesConsumptionFinder();
                 	    List<JavaServiceConsumptionInformation> foundConsumptions = importedServiceFinders.find(
                 	            c, mavenDeliverable, wsInterfaces);
                 	    for (JavaServiceConsumptionInformation foundConsumption : foundConsumptions) {
@@ -164,56 +238,4 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
         return serviceImpl;
     }
     
-    public Collection<SoaNodeInformation> handleClass(JavaClass c, JavaSource[] sources,
-            Collection<Type> wsInterfaces, MavenDeliverableInformation deliverable, Log log) throws Exception {
-        List<SoaNodeInformation> discoveredNodes = new ArrayList<SoaNodeInformation>();
-        
-        // Check JAX-WS annotation
-        if (!c.isInterface() && (ParsingUtils.hasAnnotation(c, ANN_WS) || getWsItf(c, wsInterfaces) != null)) { // TODO superclass ?
-            // Extract interface info
-            //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
-            JavaClass itfClass = getWsItf(c, wsInterfaces); // TODO several interfaces ???
-            implsToInterfaces.put(c.asType(), itfClass.asType());
-            
-            // Extract WS info
-            JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(c.getFullyQualifiedName());
-            serviceImpl.setTitle(c.getName());
-            serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
-            serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK,
-                    c.getSource().getURL().getPath().contains("src/test/"));
-            serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itfClass.getFullyQualifiedName());
-            serviceImpl.addParentDocument(deliverable.getSoaNodeId());
-            discoveredNodes.add(serviceImpl);
-            
-            // Extract service info
-            ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
-            serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
-            serviceImpl.setProperty(JavaServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
-            discoveredNodes.add(serviceDef);
-   
-            // Extract operations info
-            List<OperationImplementation> operations = serviceImpl.getOperations();
-            for (JavaMethod method : itfClass.getMethods()) {
-                if (ParsingUtils.hasAnnotation(method, ANN_WEBRESULT)) {
-                    Annotation webResultAnn = ParsingUtils.getAnnotation(method, ANN_WEBRESULT);
-                    
-                    // Extract parameters info
-                    StringBuilder parametersInfo = new StringBuilder();
-                    for (JavaParameter parameter : method.getParameters()) {
-                        Annotation webParamAnn = ParsingUtils.getAnnotation(parameter, ANN_WEBPARAM);
-                        parametersInfo.append(webParamAnn.getProperty("name").getParameterValue()
-                                + "=" + parameter.getType().toString() + ", ");
-                    }
-                    operations.add(new OperationImplementation(
-                    		webResultAnn.getProperty("name").toString(),
-                    		parametersInfo.delete(parametersInfo.length()-2, parametersInfo.length()).toString(),
-                    		method.getComment()));
-                }
-            }
-            serviceImpl.setOperations(operations);
-        }
-        
-        return discoveredNodes;
-    }
-
 }

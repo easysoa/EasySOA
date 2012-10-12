@@ -84,7 +84,8 @@ public class SourceHandlersTest extends AbstractWebEngineTest {
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
         for (SourcesHandler handler : availableHandlers.values()) {
-            discoveredNodes.addAll(handler.handleSources(sources, mavenDeliverable, registryClient, log));
+            // TODO mock instead of null CodeDiscoveryMojo, to test interfaces discovery from deps
+            discoveredNodes.addAll(handler.handleSources(null, sources, mavenDeliverable, registryClient, log));
         }
         return discoveredNodes;
     }

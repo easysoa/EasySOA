@@ -12,11 +12,11 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.Type;
 
-public class ImportedServicesFinder implements ServiceConsumptionFinder {
+public class ImportedServicesConsumptionFinder implements ServiceConsumptionFinder {
 
     private boolean filterSources = true;
     
-    public ImportedServicesFinder() {
+    public ImportedServicesConsumptionFinder() {
         
     }
     
