@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.easysoa.discovery.code.ParsingUtils;
-import org.easysoa.discovery.code.handler.SourcesParsingUtils;
 import org.easysoa.discovery.code.model.JavaServiceConsumptionInformation;
 import org.easysoa.discovery.code.model.JavaServiceInterfaceInformation;
 import org.easysoa.registry.types.java.MavenDeliverable;
@@ -68,12 +67,12 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
         // member injected by WebService annotated interfaces, WebServiceClients (generated client stub) or WebServiceRefs :
         
         for (JavaClass c : javaSource.getClasses()) {
-            if (!filterSources || !SourcesParsingUtils.isTestClass(c)) {
+            if (!filterSources || !ParsingUtils.isTestClass(c)) {
                 // Java 6 (and other methods) injection of fields by service-annotated interfaces 
                 // in injected fields :
                 HashSet<String> injectedBeanProperties = new HashSet<String>();
                 for (JavaField javaField : c.getFields()) { // TODO also superfields...
-                    addConsumerFoundInInjectedMember(discoveredConsumptions, javaField, javaField.getType(),
+                    addConsumerFoundInInjectedMember(discoveredConsumptions, c, javaField, javaField.getType(),
                             javaField.getName(), injectedBeanProperties, serviceInterfaces, mavenDeliverable);
                 }
                 // in injected setters :
@@ -82,7 +81,7 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
                     if (method != null) {
                         JavaParameter[] parameters = method.getParameters();
                         if (parameters.length == 1) {
-                            addConsumerFoundInInjectedMember(discoveredConsumptions, method, parameters[0].getType(),
+                            addConsumerFoundInInjectedMember(discoveredConsumptions, c, method, parameters[0].getType(),
                                     beanProperty.getName(), injectedBeanProperties, serviceInterfaces, mavenDeliverable);
                         }
                     }
@@ -94,7 +93,7 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
     }
 
     private void addConsumerFoundInInjectedMember(List<JavaServiceConsumptionInformation> discoveredConsumptions,
-            AbstractJavaEntity injectedMember, Type injectedType,
+            JavaClass fromClass, AbstractJavaEntity injectedMember, Type injectedType,
             String beanPropertyName, HashSet<String> injectedBeanProperties,
             Map<String, JavaServiceInterfaceInformation> serviceInterfaces,
             MavenDeliverable mavenDeliverable) throws Exception {
@@ -103,12 +102,13 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
         }
         String injectionAnnotation = getInjectionAnnotation(injectedMember);
         if (allInjected || injectionAnnotation != null) {
-            if (serviceInterfaces.containsKey(injectedType.getFullyQualifiedName())) {
+            String itfClassName = injectedType.getFullyQualifiedName();
+            if (serviceInterfaces.containsKey(itfClassName)) {
                 discoveredConsumptions.add(new JavaServiceConsumptionInformation(
                         mavenDeliverable.getSoaNodeId(),
-                        null, // TODO from class?
-                        injectedType.toGenericString(),
-                        injectedType.getJavaClass().getSource().getURL().toString()));
+                        fromClass.getFullyQualifiedName(),
+                        itfClassName,
+                        serviceInterfaces.get(itfClassName).getMavenDeliverableId().getName()));
                 injectedBeanProperties.add(beanPropertyName);
             }
         }

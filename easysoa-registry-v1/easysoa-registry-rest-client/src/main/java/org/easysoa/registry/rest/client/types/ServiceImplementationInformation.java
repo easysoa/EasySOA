@@ -18,6 +18,10 @@ public class ServiceImplementationInformation extends SoaNodeInformation impleme
     public ServiceImplementationInformation(String name) {
         super(new SoaNodeId(ServiceImplementation.DOCTYPE, name), null, null);
     }
+
+    protected ServiceImplementationInformation(String doctype, String name) {
+        super(new SoaNodeId(doctype, name), null, null);
+    }
     
     public List<OperationImplementation> getOperations() {
         // Proper-ish conversion from List<Map<String, Serializable>> hidden behind Serializable, to List<OperationImplementation>

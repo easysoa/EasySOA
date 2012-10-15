@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.easysoa.discovery.code.handler.SourcesParsingUtils;
+import org.easysoa.discovery.code.ParsingUtils;
 import org.easysoa.discovery.code.model.JavaServiceConsumptionInformation;
 import org.easysoa.discovery.code.model.JavaServiceInterfaceInformation;
 import org.easysoa.registry.types.java.MavenDeliverable;
@@ -34,7 +34,7 @@ public class ImportedServicesConsumptionFinder implements ServiceConsumptionFind
             Map<String, JavaServiceInterfaceInformation> serviceInterfaces) throws Exception {
         List<JavaServiceConsumptionInformation> foundConsumptions = new ArrayList<JavaServiceConsumptionInformation>();
         for (JavaClass c : javaSource.getClasses()) {
-            if (!filterSources || !SourcesParsingUtils.isTestClass(c)) {
+            if (!filterSources || !ParsingUtils.isTestClass(c)) {
                 foundConsumptions.addAll(find(c, mavenDeliverable, serviceInterfaces));
             }
         }
@@ -53,8 +53,8 @@ public class ImportedServicesConsumptionFinder implements ServiceConsumptionFind
                     foundConsumptions.add(new JavaServiceConsumptionInformation(
                             mavenDeliverable.getSoaNodeId(),
                             c.getFullyQualifiedName(),
-                            importedClassName,
-                            serviceInterface));
+                            serviceInterface,
+                            serviceInterfaces.get(serviceInterface).getMavenDeliverableId().getName()));
                 }
             }
         }

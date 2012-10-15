@@ -11,7 +11,7 @@ public class JavaServiceInterfaceInformation {
 
     public JavaServiceInterfaceInformation(String mavenGroupId, String mavenArtifactId, String interfaceName) throws Exception {
         this.interfaceName = interfaceName;
-        this.mavenDeliverableId = new MavenDeliverableInformation(mavenGroupId, mavenGroupId).getSoaNodeId();
+        this.mavenDeliverableId = new MavenDeliverableInformation(mavenGroupId, mavenArtifactId).getSoaNodeId();
     }
     
     public String getInterfaceName() {

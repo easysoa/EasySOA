@@ -1,13 +1,21 @@
 package org.easysoa.discovery.code.handler;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.handler.consumption.AnnotatedServicesConsumptionFinder;
@@ -66,7 +74,12 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
 
     protected JavaClass getWsItf(JavaClass c, Map<String, JavaServiceInterfaceInformation> serviceInterfaces) {
         for (JavaClass itfClass : c.getImplementedInterfaces()) {
-            if (serviceInterfaces.containsKey(itfClass.getFullyQualifiedName())) {
+            String itfClassName = itfClass.getFullyQualifiedName();
+            if (!itfClassName.contains(".")) {
+                itfClassName = c.getPackageName() + "." + itfClassName;
+                itfClass.setName(itfClassName);
+            }
+            if (serviceInterfaces.containsKey(itfClassName)) {
                 return itfClass;
             }
         }
@@ -79,9 +92,49 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         List<SoaNodeInformation> discoveredNodes = new LinkedList<SoaNodeInformation>();
         
-        // Find WS interfaces
-        Map<String, JavaServiceInterfaceInformation> wsInterfaces = findWSInterfaces(codeDiscovery, sources,
-                mavenDeliverable, registryClient, log);
+        // Find WS interfaces in sources
+        Map<String, JavaServiceInterfaceInformation> wsInterfaces =
+                new HashMap<String, JavaServiceInterfaceInformation>();
+        for (JavaSource source : sources) { 
+            wsInterfaces.putAll(findWSInterfaces(source, mavenDeliverable, registryClient, log));
+        }
+
+        // Find WS interfaces from dependencies
+        if (codeDiscovery != null) {
+            MavenProject mavenProject = codeDiscovery.getMavenProject();
+            for (Object dependencyObject : mavenProject.getDependencyArtifacts()) {
+                Artifact dependency = (Artifact) dependencyObject;
+                if (dependency.getGroupId().contains("easysoa")) { // TODO Configuration
+                    URLClassLoader jarClassloader = new URLClassLoader(
+                            new URL[] { dependency.getFile().toURI().toURL() },
+                            this.getClass().getClassLoader());
+                    JarFile jarFile = new JarFile(dependency.getFile());
+                    
+                    Enumeration<JarEntry> jarEntries = jarFile.entries();
+                    while (jarEntries.hasMoreElements()) {
+                        JarEntry element = jarEntries.nextElement();
+                        if (element.getName().endsWith(".class")) {
+                            String className = element.getName().replace(".class", "").replaceAll("/", "\\.");
+                            try {
+                                Class<?> candidateClass = jarClassloader.loadClass(className);
+                                
+                                JavaServiceInterfaceInformation newWSInterface = 
+                                        findWSInterfaceInClasspath(candidateClass,
+                                        new MavenDeliverableInformation(dependency.getGroupId(), dependency.getArtifactId()),
+                                        registryClient, log);
+                                
+                                if (newWSInterface != null) {
+                                    wsInterfaces.put(newWSInterface.getInterfaceName(), newWSInterface);
+                                }
+                            } catch (Throwable e) {
+                                log.warn("Failed to load class " + className + " to inspect potiential web services: " + e.getMessage());
+                            }
+                        }
+                    }
+                    
+                }
+             }
+        }
         
         // Find WS implementations
         Collection<SoaNodeInformation> wsImpls = findWSImplementations(sources,
@@ -101,8 +154,13 @@ public abstract class AbstractJavaSourceHandler implements SourcesHandler {
         
         return discoveredNodes;
     }
+
     
-    public abstract Map<String, JavaServiceInterfaceInformation> findWSInterfaces(CodeDiscoveryMojo codeDiscovery, JavaSource[] sources,
+    public abstract Map<String, JavaServiceInterfaceInformation> findWSInterfaces(JavaSource source,
+            MavenDeliverableInformation mavenDeliverable,
+            CodeDiscoveryRegistryClient registryClient, Log log) throws Exception;
+    
+    public abstract JavaServiceInterfaceInformation findWSInterfaceInClasspath(Class<?> candidateClass,
             MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception;
 

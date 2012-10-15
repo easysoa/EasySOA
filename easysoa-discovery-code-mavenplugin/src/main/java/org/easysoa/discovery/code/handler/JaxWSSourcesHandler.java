@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.maven.plugin.logging.Log;
-import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.ParsingUtils;
 import org.easysoa.discovery.code.handler.consumption.ImportedServicesConsumptionFinder;
@@ -52,7 +51,7 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
 
     private static final String ANN_JUNIT_TEST = "org.junit.Test";
     
-    private Map<Type, Type> implsToInterfaces = new HashMap<Type, Type>();
+    private Map<Type, String> implsToInterfaces = new HashMap<Type, String>();
     
     public JaxWSSourcesHandler() {
         super();
@@ -63,56 +62,51 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
     }
     
     @Override
-    public Map<String, JavaServiceInterfaceInformation> findWSInterfaces(CodeDiscoveryMojo codeDiscovery,
-            JavaSource[] sources, MavenDeliverableInformation mavenDeliverable,
+    public Map<String, JavaServiceInterfaceInformation> findWSInterfaces(JavaSource source,
+            MavenDeliverableInformation mavenDeliverable,
             CodeDiscoveryRegistryClient registryClient, Log log) throws Exception {
         // Pass 1 : Find all WS clients/interfaces
         Map<String, JavaServiceInterfaceInformation> wsInjectableTypeSet
                 = new HashMap<String, JavaServiceInterfaceInformation>();
-        for (JavaSource source : sources) {
-            JavaClass[] classes = source.getClasses();
-            for (JavaClass c : classes) {
-                boolean isWs = ParsingUtils.hasAnnotation(c, ANN_WS);
-                boolean isInterface = c.isInterface();
-                
-                if (isWs && isInterface
-                        || ParsingUtils.hasAnnotation(c, ANN_XML_WSCLIENT)
-                        || ParsingUtils.hasAnnotation(c, ANN_WSPROVIDER)
-                        || ParsingUtils.hasAnnotation(c, ANN_XML_WSPROVIDER)) {
-                    wsInjectableTypeSet.put(c.getFullyQualifiedName(), 
-                            new JavaServiceInterfaceInformation(mavenDeliverable.getGroupId(),
-                                    mavenDeliverable.getArtifactId(),
-                                    c.getFullyQualifiedName()));
-                }
+        
+        JavaClass[] classes = source.getClasses();
+        for (JavaClass c : classes) {
+            boolean isWs = ParsingUtils.hasAnnotation(c, ANN_WS);
+            boolean isInterface = c.isInterface();
+            
+            if (isWs && isInterface
+                    || ParsingUtils.hasAnnotation(c, ANN_XML_WSCLIENT)
+                    || ParsingUtils.hasAnnotation(c, ANN_WSPROVIDER)
+                    || ParsingUtils.hasAnnotation(c, ANN_XML_WSPROVIDER)) {
+                wsInjectableTypeSet.put(c.getFullyQualifiedName(), 
+                        new JavaServiceInterfaceInformation(mavenDeliverable.getGroupId(),
+                                mavenDeliverable.getArtifactId(),
+                                c.getFullyQualifiedName()));
             }
         }
 
-        // XXX WIP
-      /*  Map<Type, MavenDeliverableInformation> mavenInfos = new HashMap<Type, MavenDeliverableInformation>();
-        MavenProject mavenProject = codeDiscovery.getMavenProject();
-        if (mavenProject != null) {
-            // Find interfaces from dependencies
-            for (Object dependencyObject : mavenProject.getDependencyArtifacts()) {
-                Artifact dependency = (Artifact) dependencyObject;
-                URLClassLoader jarClassloader = new URLClassLoader(new URL[] { dependency.getFile().toURI().toURL() });
-                Enumeration<URL> resources = jarClassloader.getResources(".");
-                wsInjectableTypeSet.putAll(exploreResourcesForInterfaces(jarClassloader, resources));
-            }     
-    
-        }*/
-        
         return wsInjectableTypeSet;
     }
 
-    /*private Map<String, JavaServiceInterfaceInformation> exploreResourcesForInterfaces(URLClassLoader jarClassloader,
-            Enumeration<URL> resources) {
-        Map<String, JavaServiceInterfaceInformation> wsInjectableTypeSet
-               = new HashMap<String, JavaServiceInterfaceInformation>();
+    @Override
+    public JavaServiceInterfaceInformation findWSInterfaceInClasspath(Class<?> candidateClass,
+            MavenDeliverableInformation mavenDeliverable, CodeDiscoveryRegistryClient registryClient, Log log)
+            throws Exception {
+        boolean isWs = ParsingUtils.hasAnnotation(candidateClass, ANN_WS);
+        boolean isInterface = candidateClass.isInterface();
         
-        
-        
-        return wsInjectableTypeSet;
-    }*/
+        if (isWs && isInterface
+                || ParsingUtils.hasAnnotation(candidateClass, ANN_XML_WSCLIENT)
+                || ParsingUtils.hasAnnotation(candidateClass, ANN_WSPROVIDER)
+                || ParsingUtils.hasAnnotation(candidateClass, ANN_XML_WSPROVIDER)) {
+            return new JavaServiceInterfaceInformation(mavenDeliverable.getGroupId(),
+                            mavenDeliverable.getArtifactId(),
+                            candidateClass.getName());
+        }
+        else {
+            return null;
+        }
+    }
 
     @Override
     public Collection<SoaNodeInformation> findWSImplementations(JavaSource[] sources,
@@ -124,13 +118,13 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
         for (JavaSource source : sources) {
             JavaClass[] classes = source.getClasses();
             for (JavaClass c : classes) {
-                // Check JAX-WS annotation
-                if (!c.isInterface() && (ParsingUtils.hasAnnotation(c, ANN_WS) || getWsItf(c, wsInterfaces) != null)) { // TODO superclass ?
+                // Check JAX-WS annotation 
+                JavaClass itfClass = getWsItf(c, wsInterfaces); // TODO several interfaces ???
+                if (!c.isInterface() && (ParsingUtils.hasAnnotation(c, ANN_WS) || itfClass != null)) { // TODO superclass ?
                     // Extract interface info
                     //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
-                    JavaClass itfClass = getWsItf(c, wsInterfaces); // TODO several interfaces ???
                     if (itfClass != null) {
-                        implsToInterfaces.put(c.asType(), itfClass.asType());
+                        implsToInterfaces.put(c.asType(), itfClass.asType().getFullyQualifiedName());
                     }
                     else {
                         log.warn("Couldn't find interface for class " + c.getFullyQualifiedName());
@@ -143,15 +137,23 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                     serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
                     serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK,
                             c.getSource().getURL().getPath().contains("src/test/"));
+                    serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTATIONCLASS, c.getFullyQualifiedName());
                     if (itfClass != null) {
                         serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itfClass.getFullyQualifiedName());
+                        JavaServiceInterfaceInformation interfaceInfo = wsInterfaces.get(itfClass.getFullyQualifiedName());
+                        if (interfaceInfo != null) {
+                            serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACELOCATION,
+                                    interfaceInfo.getMavenDeliverableId().getName());
+                        }
                     }
                     serviceImpl.addParentDocument(mavenDeliverable.getSoaNodeId());
                     discoveredNodes.add(serviceImpl);
                     
                     if (itfClass != null) {
                         // Extract service info
-                        ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
+                        String itfClassName = itfClass.getName();
+                        ServiceInformation serviceDef = new ServiceInformation(
+                                itfClassName.substring(itfClassName.lastIndexOf(".") + 1));
                         serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
                             serviceImpl.setProperty(JavaServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
                         discoveredNodes.add(serviceDef);
@@ -221,8 +223,8 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                             
                             // Otherwise, attach test info to all known implementations of the interface
                             if (!foundOriginalImplementation) {
-                                for (Entry<Type, Type> implToInterface : implsToInterfaces.entrySet()) {
-                                    if (foundConsumption.getConsumedInterface().equals(implToInterface.getValue().toGenericString())) {
+                                for (Entry<Type, String> implToInterface : implsToInterfaces.entrySet()) {
+                                    if (foundConsumption.getConsumedInterface().equals(implToInterface)) {
                                         discoveredNodes.add(createTestDiscovery(
                                                 implToInterface.getKey().toGenericString(),
                                                 c.getFullyQualifiedName()));

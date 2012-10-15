@@ -11,15 +11,15 @@ public class JavaServiceImplementationInformation extends ServiceImplementationI
 
     public JavaServiceImplementationInformation(SoaNodeId deliverable, String implementationClass,
             String implementedInterface, String implementedInterfaceLocation) {
-        super(deliverable.getName() + ":" + implementationClass);
+        this(deliverable.getName() + ":" + implementationClass);
         this.properties.put(XPATH_IMPLEMENTATIONCLASS, implementationClass);
         this.properties.put(XPATH_IMPLEMENTEDINTERFACE, implementedInterface);
         this.properties.put(XPATH_IMPLEMENTEDINTERFACELOCATION, implementedInterfaceLocation);
-        setDoctype(JavaServiceImplementation.DOCTYPE);
     }
     
     public JavaServiceImplementationInformation(String name) {
         super(name);
+        setDoctype(JavaServiceImplementation.DOCTYPE);
     }
     
     public static JavaServiceImplementationInformation create(SoaNodeInformation soaNodeInfo) {
