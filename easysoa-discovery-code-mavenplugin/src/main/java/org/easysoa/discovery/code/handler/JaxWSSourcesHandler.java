@@ -1,18 +1,13 @@
 package org.easysoa.discovery.code.handler;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.project.MavenProject;
 import org.easysoa.discovery.code.CodeDiscoveryMojo;
 import org.easysoa.discovery.code.CodeDiscoveryRegistryClient;
 import org.easysoa.discovery.code.ParsingUtils;
@@ -93,7 +88,7 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
         }
 
         // XXX WIP
-        Map<Type, MavenDeliverableInformation> mavenInfos = new HashMap<Type, MavenDeliverableInformation>();
+      /*  Map<Type, MavenDeliverableInformation> mavenInfos = new HashMap<Type, MavenDeliverableInformation>();
         MavenProject mavenProject = codeDiscovery.getMavenProject();
         if (mavenProject != null) {
             // Find interfaces from dependencies
@@ -104,12 +99,12 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                 wsInjectableTypeSet.putAll(exploreResourcesForInterfaces(jarClassloader, resources));
             }     
     
-        }
+        }*/
         
         return wsInjectableTypeSet;
     }
 
-    private Map<String, JavaServiceInterfaceInformation> exploreResourcesForInterfaces(URLClassLoader jarClassloader,
+    /*private Map<String, JavaServiceInterfaceInformation> exploreResourcesForInterfaces(URLClassLoader jarClassloader,
             Enumeration<URL> resources) {
         Map<String, JavaServiceInterfaceInformation> wsInjectableTypeSet
                = new HashMap<String, JavaServiceInterfaceInformation>();
@@ -117,7 +112,7 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
         
         
         return wsInjectableTypeSet;
-    }
+    }*/
 
     @Override
     public Collection<SoaNodeInformation> findWSImplementations(JavaSource[] sources,
@@ -134,7 +129,12 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                     // Extract interface info
                     //System.out.println("\ncp:\n" + System.getProperty("java.class.path"));
                     JavaClass itfClass = getWsItf(c, wsInterfaces); // TODO several interfaces ???
-                    implsToInterfaces.put(c.asType(), itfClass.asType());
+                    if (itfClass != null) {
+                        implsToInterfaces.put(c.asType(), itfClass.asType());
+                    }
+                    else {
+                        log.warn("Couldn't find interface for class " + c.getFullyQualifiedName());
+                    }
                     
                     // Extract WS info
                     JavaServiceImplementationInformation serviceImpl = new JavaServiceImplementationInformation(
@@ -143,36 +143,40 @@ public class JaxWSSourcesHandler extends AbstractJavaSourceHandler implements So
                     serviceImpl.setProperty(JavaServiceImplementation.XPATH_TECHNOLOGY, "JAX-WS");
                     serviceImpl.setProperty(JavaServiceImplementation.XPATH_ISMOCK,
                             c.getSource().getURL().getPath().contains("src/test/"));
-                    serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itfClass.getFullyQualifiedName());
+                    if (itfClass != null) {
+                        serviceImpl.setProperty(JavaServiceImplementation.XPATH_IMPLEMENTEDINTERFACE, itfClass.getFullyQualifiedName());
+                    }
                     serviceImpl.addParentDocument(mavenDeliverable.getSoaNodeId());
                     discoveredNodes.add(serviceImpl);
                     
-                    // Extract service info
-                    ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
-                    serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
-                    serviceImpl.setProperty(JavaServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
-                    discoveredNodes.add(serviceDef);
-           
-                    // Extract operations info
-                    List<OperationImplementation> operations = serviceImpl.getOperations();
-                    for (JavaMethod method : itfClass.getMethods()) {
-                        if (ParsingUtils.hasAnnotation(method, ANN_WEBRESULT)) {
-                            Annotation webResultAnn = ParsingUtils.getAnnotation(method, ANN_WEBRESULT);
-                            
-                            // Extract parameters info
-                            StringBuilder parametersInfo = new StringBuilder();
-                            for (JavaParameter parameter : method.getParameters()) {
-                                Annotation webParamAnn = ParsingUtils.getAnnotation(parameter, ANN_WEBPARAM);
-                                parametersInfo.append(webParamAnn.getProperty("name").getParameterValue()
-                                        + "=" + parameter.getType().toString() + ", ");
+                    if (itfClass != null) {
+                        // Extract service info
+                        ServiceInformation serviceDef = new ServiceInformation(itfClass.getName());
+                        serviceImpl.addParentDocument(serviceDef.getSoaNodeId());
+                            serviceImpl.setProperty(JavaServiceImplementation.XPATH_DOCUMENTATION, itfClass.getComment());
+                        discoveredNodes.add(serviceDef);
+                        
+                        // Extract operations info
+                        List<OperationImplementation> operations = serviceImpl.getOperations();
+                        for (JavaMethod method : itfClass.getMethods()) {
+                            if (ParsingUtils.hasAnnotation(method, ANN_WEBRESULT)) {
+                                Annotation webResultAnn = ParsingUtils.getAnnotation(method, ANN_WEBRESULT);
+                                
+                                // Extract parameters info
+                                StringBuilder parametersInfo = new StringBuilder();
+                                for (JavaParameter parameter : method.getParameters()) {
+                                    Annotation webParamAnn = ParsingUtils.getAnnotation(parameter, ANN_WEBPARAM);
+                                    parametersInfo.append(webParamAnn.getProperty("name").getParameterValue()
+                                            + "=" + parameter.getType().toString() + ", ");
+                                }
+                                operations.add(new OperationImplementation(
+                                        webResultAnn.getProperty("name").toString(),
+                                        parametersInfo.delete(parametersInfo.length()-2, parametersInfo.length()).toString(),
+                                        method.getComment()));
                             }
-                            operations.add(new OperationImplementation(
-                                    webResultAnn.getProperty("name").toString(),
-                                    parametersInfo.delete(parametersInfo.length()-2, parametersInfo.length()).toString(),
-                                    method.getComment()));
                         }
+                        serviceImpl.setOperations(operations);
                     }
-                    serviceImpl.setOperations(operations);
                 }
             }
         }

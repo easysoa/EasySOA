@@ -103,7 +103,7 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
         }
         String injectionAnnotation = getInjectionAnnotation(injectedMember);
         if (allInjected || injectionAnnotation != null) {
-            if (serviceInterfaces.containsKey(injectedType)) {
+            if (serviceInterfaces.containsKey(injectedType.getFullyQualifiedName())) {
                 discoveredConsumptions.add(new JavaServiceConsumptionInformation(
                         mavenDeliverable.getSoaNodeId(),
                         null, // TODO from class?

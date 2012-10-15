@@ -49,7 +49,7 @@ public class ImportedServicesConsumptionFinder implements ServiceConsumptionFind
         for (String importedClassName : c.getSource().getImports()) {
             Type importedClassType = new Type(importedClassName);
             for (String serviceInterface : serviceInterfaces.keySet()) {
-                if (importedClassType.equals(serviceInterface)) {
+                if (importedClassType.getFullyQualifiedName().equals(serviceInterface)) {
                     foundConsumptions.add(new JavaServiceConsumptionInformation(
                             mavenDeliverable.getSoaNodeId(),
                             c.getFullyQualifiedName(),
