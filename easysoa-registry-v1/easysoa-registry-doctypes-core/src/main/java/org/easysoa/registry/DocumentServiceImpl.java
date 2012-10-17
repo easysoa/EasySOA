@@ -137,7 +137,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     public DocumentModel findDocument(CoreSession documentManager, String type, String name) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + NXQL.ECM_NAME + " = '?'"
-                + PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER,
+                + PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER + VERSIONS_QUERY_FILTER,
                 new Object[] { type, name },
                 false, true);
         DocumentModelList results = documentManager.query(query);
@@ -146,7 +146,7 @@ public class DocumentServiceImpl implements DocumentService {
     
     public DocumentModel find(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + SoaNode.XPATH_SOANAME + " = '?'"
-                + PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER,
+                + PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER + VERSIONS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
         DocumentModelList results = documentManager.query(query);
@@ -157,7 +157,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentModelList findProxies(CoreSession documentManager, SoaNodeId identifier)
             throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + SoaNode.XPATH_SOANAME + " = '?'"
-                + NON_PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER,
+                + NON_PROXIES_QUERY_FILTER + DELETED_DOCUMENTS_QUERY_FILTER + VERSIONS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
         return documentManager.query(query);
@@ -194,7 +194,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     public DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + SoaNode.XPATH_SOANAME + " = '?'"
-                + DELETED_DOCUMENTS_QUERY_FILTER,
+                + DELETED_DOCUMENTS_QUERY_FILTER + VERSIONS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
                 false, true);
         return documentManager.query(query);

@@ -19,6 +19,8 @@ public interface DocumentService {
     
     static final String DELETED_DOCUMENTS_QUERY_FILTER = " AND " + NXQL.ECM_LIFECYCLESTATE + " != 'deleted'";
 
+    static final String VERSIONS_QUERY_FILTER = " AND " + NXQL.ECM_ISVERSION + " = 0";
+    
     static final String PROXIES_QUERY_FILTER = " AND " + NXQL.ECM_ISPROXY + " = 0";
     
     static final String NON_PROXIES_QUERY_FILTER = " AND " + NXQL.ECM_ISPROXY + " = 1";
