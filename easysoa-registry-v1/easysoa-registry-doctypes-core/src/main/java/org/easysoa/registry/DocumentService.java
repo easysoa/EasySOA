@@ -141,10 +141,13 @@ public interface DocumentService {
     List<SoaNodeId> createSoaNodeIds(DocumentModel... models) throws PropertyException, ClientException;
 
     /**
-     * proxy-compliant getChildren()).
-     * If ref is a proxy first gets its actual target.
-     * @return 
-     * @throws ClientException 
+     * Proxy-compliant alternative to CoreSession.getChildren():
+     * If ref is a proxy, gets the children of its actual target.
+     * @param session
+     * @param ref
+     * @param doctype Can be null
+     * @return
+     * @throws ClientException
      */
     DocumentModelList getChildren(CoreSession session, DocumentRef ref,
             String doctype) throws ClientException;

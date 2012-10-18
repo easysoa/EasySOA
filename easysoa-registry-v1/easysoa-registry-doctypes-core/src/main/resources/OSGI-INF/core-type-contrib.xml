@@ -78,8 +78,11 @@
       <schema name="deliverable" />
       <schema name="soaversionable" />
     </doctype>
-    <doctype extends="SoaNode" name="ServiceImplementation">
+    <facet name="ServiceImplementationData">
       <schema name="serviceimpl" />
+    </facet>
+    <doctype extends="SoaNode" name="ServiceImplementation">
+      <facet name="ServiceImplementationData" />
       <facet name="Folderish" />
     </doctype>
     <doctype extends="SoaNode" name="ServiceConsumption">
@@ -94,6 +97,7 @@
     <doctype extends="SoaNode" name="Endpoint">
       <schema name="environment" />
       <schema name="endpoint" />
+      <facet name="ServiceImplementationData" />
     </doctype>
 
   </extension>

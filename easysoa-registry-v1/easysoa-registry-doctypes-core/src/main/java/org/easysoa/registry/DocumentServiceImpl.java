@@ -1,5 +1,6 @@
 package org.easysoa.registry;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class DocumentServiceImpl implements DocumentService {
         String doctype = identifier.getType(), name = identifier.getName();
  
         if (isSoaNode(documentManager, doctype)) {
+        	// XXX Redundant with RepositoryManagementListener?
             boolean createProxy = false;
             if (!parentPath.equals(getSourceFolderPath(doctype))) {
                 createProxy = true;
@@ -48,7 +50,7 @@ public class DocumentServiceImpl implements DocumentService {
             if (!documentManager.exists(sourceRef)) {
                 documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), name);
                 documentModel.setPropertyValue(SoaNode.XPATH_SOANAME, name);
-                documentManager.saveDocument(documentModel);
+                documentModel = documentManager.saveDocument(documentModel);
             }
             else {
                 documentModel = documentManager.getDocument(sourceRef);
@@ -193,6 +195,9 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     public DocumentModelList findAllInstances(CoreSession documentManager, SoaNodeId identifier) throws ClientException {
+    	if (identifier == null) {
+    		return new DocumentModelListImpl();
+    	}
         String query = NXQLQueryBuilder.getQuery("SELECT * FROM ? WHERE " + SoaNode.XPATH_SOANAME + " = '?'"
                 + DELETED_DOCUMENTS_QUERY_FILTER + VERSIONS_QUERY_FILTER,
                 new Object[] { identifier.getType(), identifier.getName() },
@@ -201,7 +206,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public DocumentModelList findAllInstances(CoreSession documentManager, DocumentModel model) throws ClientException {
-        return findAllInstances(documentManager, createSoaNodeId(model));
+		return findAllInstances(documentManager, createSoaNodeId(model));
     }
     
     public DocumentModelList findAllParents(CoreSession documentManager, DocumentModel documentModel) throws Exception {
@@ -258,7 +263,6 @@ public class DocumentServiceImpl implements DocumentService {
     
     public DocumentModelList getChildren(CoreSession session, DocumentRef parentRef, String type) throws ClientException {
         parentRef = session.getWorkingCopy(parentRef).getRef(); // making sure it's not a proxy
-        ///DocumentModelList serviceProxyList = session.getProxies(parentRef, null);
         return session.getChildren(parentRef, type);
     }
 
@@ -278,7 +282,13 @@ public class DocumentServiceImpl implements DocumentService {
     
     public SoaNodeId createSoaNodeId(DocumentModel model) throws ClientException {
         try {
-            return new SoaNodeId(model.getType(), (String) model.getPropertyValue(SoaNode.XPATH_SOANAME));
+            Serializable soaName = model.getPropertyValue(SoaNode.XPATH_SOANAME);
+            if (soaName != null) {
+            	return new SoaNodeId(model.getType(), (String) soaName);
+            }
+            else {
+            	return null;
+            }
         }
         catch (PropertyNotFoundException e) {
             throw new ClientException("Invalid document type (" + model.getType() + "), an SoaNode is expected");

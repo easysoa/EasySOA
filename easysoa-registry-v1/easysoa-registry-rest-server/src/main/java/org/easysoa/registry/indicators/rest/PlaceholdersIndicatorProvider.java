@@ -7,11 +7,11 @@ import org.easysoa.registry.types.SoaNode;
 public class PlaceholdersIndicatorProvider extends QueryCountIndicator {
 
     public PlaceholdersIndicatorProvider() {
-        super(NXQL_SELECT_FROM + SoaNode.DOCTYPE
+        super(NXQL_SELECT_FROM + SoaNode.ABSTRACT_DOCTYPE
                 + NXQL_WHERE_NO_PROXY
                 + NXQL_AND + NXQL_IS_NOT_DELETED
                 + NXQL_AND + SoaNode.XPATH_ISPLACEHOLDER + " = 1",
-              NXQL_SELECT_FROM + SoaNode.DOCTYPE
+              NXQL_SELECT_FROM + SoaNode.ABSTRACT_DOCTYPE
                 + NXQL_WHERE_NO_PROXY
                 + NXQL_AND + NXQL_IS_NOT_DELETED);
     }

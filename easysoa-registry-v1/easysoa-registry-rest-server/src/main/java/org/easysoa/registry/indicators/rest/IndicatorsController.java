@@ -67,7 +67,7 @@ public class IndicatorsController extends ModuleRoot {
     
     public IndicatorsController() {
         // Document count by type
-        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(SoaNode.DOCTYPE));
+        addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(SoaNode.ABSTRACT_DOCTYPE));
         addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(Service.DOCTYPE));
         addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(SoftwareComponent.DOCTYPE));
         addIndicator(CATEGORY_DOCTYPE_COUNTS, new DoctypeCountIndicator(ServiceImplementation.DOCTYPE));

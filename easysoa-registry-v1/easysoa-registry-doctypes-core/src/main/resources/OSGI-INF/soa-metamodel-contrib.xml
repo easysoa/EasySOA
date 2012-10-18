@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <component name="org.easysoa.registry.doctypes.core.soametamodel.contrib" version="1.0">
 
+  <extension target="org.easysoa.registry.SoaMetamodelService" point="inheritedFacets">
+  	<inheritedFacet name="ServiceImplementationData" />
+  </extension>
+  
   <extension target="org.easysoa.registry.SoaMetamodelService" point="types">
     <soaNodeType name="TaggingFolder">
         <subtype>SoftwareComponent</subtype>

@@ -45,7 +45,7 @@ public class SoaNodeInformationFactory {
         List<SoaNodeId> parentDocuments = new LinkedList<SoaNodeId>();
         DocumentModelList parentDocumentList = documentService.findAllParents(documentManager, model);
         for (DocumentModel parentDocument : parentDocumentList) {
-            if (parentDocument.getFacets().contains(SoaNode.FACET)) { 
+            if (parentDocument.hasSchema(SoaNode.SCHEMA)) { 
                 parentDocuments.add(documentService.createSoaNodeId(parentDocument));
             }
         }

@@ -7,7 +7,7 @@ public class SoaNodeId {
     private String type;
 
     protected SoaNodeId() {
-        // Needed to be compatible with JAXB serialization
+        // Empty constructur required to be compatible with JAXB serialization
     }
     
     public SoaNodeId(String doctype, String name) {

@@ -2,6 +2,7 @@ package org.easysoa.registry;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -22,5 +23,9 @@ public interface SoaMetamodelService {
      * to store <i>toType</i> under <i>fromType</i>)
      */
     List<String> getPath(String fromType, String toType);
+
+	Set<String> getInheritedFacets();
+
+	Set<String> getInheritedFacets(Set<String> filter);
     
 }

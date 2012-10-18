@@ -11,6 +11,7 @@
       <event>documentCreatedByCopy</event>
       <event>documentMoved</event>
       <event>documentModified</event>
+      <event>aboutToRemove</event>
     </listener>
   </extension>
 

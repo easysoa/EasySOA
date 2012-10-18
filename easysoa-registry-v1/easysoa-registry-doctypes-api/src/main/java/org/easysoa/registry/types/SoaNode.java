@@ -5,10 +5,10 @@ import org.easysoa.registry.SoaNodeId;
 
 public interface SoaNode extends Document {
 
-    public static final String DOCTYPE = "SoaNode";
+	public static final String ABSTRACT_DOCTYPE = "SoaNode";
+	
+    public static final String SCHEMA = "soanode";
     
-    public static final String FACET = "SoaNode";
-
     public static final String XPATH_SOANAME = "soan:name";
     
     public static final String XPATH_ISPLACEHOLDER = "soan:isplaceholder";

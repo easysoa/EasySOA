@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
@@ -36,8 +37,9 @@ public class AbstractRegistryTest {
     }
     
     @After
-    public void logRepository() {
+    public void logRepository() throws ClientException {
         if (logRepositoryAfterEachTest) {
+        	documentManager.save();
             repositoryLogger.setTitle(name.getMethodName());
             repositoryLogger.logAllRepository();
         }

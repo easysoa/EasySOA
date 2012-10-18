@@ -10,5 +10,9 @@
   <extension-point name="types">
     <object class="org.easysoa.registry.SoaNodeTypeDescriptor" />
   </extension-point>
+  
+  <extension-point name="inheritedFacets">
+    <object class="org.easysoa.registry.InheritedFacetDescriptor" />
+  </extension-point>
 
 </component>
