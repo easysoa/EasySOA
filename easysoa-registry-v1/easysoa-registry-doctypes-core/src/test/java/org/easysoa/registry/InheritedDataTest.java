@@ -19,7 +19,7 @@ import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.CLASS)
-public class InheritedFacetsTest extends AbstractRegistryTest {
+public class InheritedDataTest extends AbstractRegistryTest {
 
 	private static final SoaNodeId MYIMPL_ID = new SoaNodeId(ServiceImplementation.DOCTYPE, "MyServiceImpl");
 	
@@ -104,6 +104,19 @@ public class InheritedFacetsTest extends AbstractRegistryTest {
 				+ " WHERE " + NXQL.ECM_ISPROXY + " = 0 AND "
 				+ ServiceImplementation.XPATH_TESTS + "/* = 'org.easysoa.Test3'");
 		Assert.assertEquals("Query of ServiceImpl metadata on Endpoints must work", 1, results.size());
+		
+		// Check parents IDs storage feature...
+		myEndpointModel = results.get(0);
+		Endpoint myEndpoint = myEndpointModel.getAdapter(Endpoint.class);
+		List<SoaNodeId> endpointParentIds = myEndpoint.getParentIds();
+		Assert.assertEquals("Endpoint must store its parents' ids", endpointParentIds.size(), 1);
+		Assert.assertEquals("Endpoint must store its correct parents' ids", endpointParentIds.get(0), MYIMPL2_ID);
+		
+		// ...Before testing it with a query (look for "the endpoints that expose a certain serviceimpl")
+		results = documentManager.query("SELECT * FROM " + Endpoint.DOCTYPE
+				+ " WHERE " + NXQL.ECM_ISPROXY + " = 0 AND "
+				+ Endpoint.XPATH_PARENTSIDS + "/* = '" + MYIMPL2_ID + "'");
+		Assert.assertEquals("Query of parent IDs on Endpoints must work", 1, results.size());
 	}
 	
 	@Test

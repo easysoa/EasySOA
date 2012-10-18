@@ -6,4 +6,9 @@
   <xs:element name="name" type="xs:string" />
   <xs:element name="isplaceholder" type="xs:boolean" default="false" />
     
+  <xs:simpleType name="stringArray">
+    <xs:list itemType="xs:string" />
+  </xs:simpleType>
+  <xs:element name="parentIds" type="nxs:stringArray" />
+  
 </xs:schema>

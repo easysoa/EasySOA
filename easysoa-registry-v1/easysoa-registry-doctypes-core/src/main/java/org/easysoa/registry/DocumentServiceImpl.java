@@ -1,6 +1,5 @@
 package org.easysoa.registry;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +47,11 @@ public class DocumentServiceImpl implements DocumentService {
             PathRef sourceRef = new PathRef(getSourcePath(identifier));
             DocumentModel documentModel;
             if (!documentManager.exists(sourceRef)) {
-                documentModel = createDocument(documentManager, doctype, name, getSourceFolderPath(doctype), name);
+            	documentModel = documentManager.createDocumentModel(doctype);
+                documentModel.setPathInfo(getSourceFolderPath(doctype), name);
+                documentModel.setPropertyValue(SoaNode.XPATH_TITLE, name);
                 documentModel.setPropertyValue(SoaNode.XPATH_SOANAME, name);
-                documentModel = documentManager.saveDocument(documentModel);
+                documentModel = documentManager.createDocument(documentModel);
             }
             else {
                 documentModel = documentManager.getDocument(sourceRef);
@@ -282,13 +283,7 @@ public class DocumentServiceImpl implements DocumentService {
     
     public SoaNodeId createSoaNodeId(DocumentModel model) throws ClientException {
         try {
-            Serializable soaName = model.getPropertyValue(SoaNode.XPATH_SOANAME);
-            if (soaName != null) {
-            	return new SoaNodeId(model.getType(), (String) soaName);
-            }
-            else {
-            	return null;
-            }
+            return new SoaNodeId(model.getType(), (String) model.getPropertyValue(SoaNode.XPATH_SOANAME));
         }
         catch (PropertyNotFoundException e) {
             throw new ClientException("Invalid document type (" + model.getType() + "), an SoaNode is expected");
@@ -305,7 +300,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
     
     public boolean isSoaNode(CoreSession documentManager, String doctype) throws ClientException {
-        return documentManager.getDocumentType(doctype).getFacets().contains("SoaNode");
+        return documentManager.getDocumentType(doctype).hasSchema(SoaNode.SCHEMA);
     }
 
 

@@ -1,19 +1,21 @@
 package org.easysoa.registry.rest.marshalling;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonTypeInfo.As;
 import org.codehaus.jackson.annotate.JsonTypeInfo.Id;
 import org.easysoa.registry.SoaNodeId;
 import org.easysoa.registry.types.SoaNode;
+import org.easysoa.registry.utils.ListUtils;
 
 @JsonAutoDetect(fieldVisibility=Visibility.ANY, getterVisibility=Visibility.NONE, setterVisibility=Visibility.NONE)
 public class SoaNodeInformation implements SoaNode {
@@ -102,4 +104,26 @@ public class SoaNodeInformation implements SoaNode {
     protected void setDoctype(String doctype) {
         this.id.setType(doctype);
     }
+
+    public List<SoaNodeId> getParentIds() throws Exception {
+		Serializable[] parentsIdsArray = (Serializable[]) properties.get(XPATH_PARENTSIDS);
+		List<String> parentsIdsStringList = ListUtils.toStringList(parentsIdsArray);
+		List<SoaNodeId> parentsIds = new ArrayList<SoaNodeId>();
+		for (String parentIdString : parentsIdsStringList) {
+			SoaNodeId parentId = SoaNodeId.fromString(parentIdString);
+			if (parentId != null) {
+				parentsIds.add(parentId);
+			}
+		}
+		return parentsIds;
+    }
+    
+	public void setParentIds(List<SoaNodeId> parentIds) throws Exception {
+		List<String> parentsIdsStringList = new ArrayList<String>();
+		for (SoaNodeId parentId : parentIds) {
+			parentsIdsStringList.add(parentId.toString());
+		}
+		properties.put(XPATH_PARENTSIDS, (Serializable) parentsIdsStringList);
+	}
+    
 }

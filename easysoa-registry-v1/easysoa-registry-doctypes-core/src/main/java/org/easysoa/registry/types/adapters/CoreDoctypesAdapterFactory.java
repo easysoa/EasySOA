@@ -7,6 +7,7 @@ import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.ServiceConsumption;
 import org.easysoa.registry.types.ServiceImplementation;
+import org.easysoa.registry.types.SoaNode;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.adapter.DocumentAdapterFactory;
 
@@ -17,6 +18,9 @@ public class CoreDoctypesAdapterFactory implements DocumentAdapterFactory {
     @Override
     public Object getAdapter(DocumentModel doc, Class<?> itf) {
         try {
+            if (SoaNode.class.equals(itf)) {
+                return new SoaNodeAdapter(doc);
+            }
             if (Deliverable.class.equals(itf)) {
                 return new DeliverableAdapter(doc);
             }

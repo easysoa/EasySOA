@@ -7,7 +7,7 @@ public class SoaNodeId {
     private String type;
 
     protected SoaNodeId() {
-        // Empty constructur required to be compatible with JAXB serialization
+        // Empty constructor required to be compatible with JAXB serialization
     }
     
     public SoaNodeId(String doctype, String name) {
@@ -47,6 +47,16 @@ public class SoaNodeId {
         else {
             return false;
         }
+    }
+    
+    public static SoaNodeId fromString(String string) {
+		String[] splitParent = string.split("\\:", 2);
+		if (splitParent.length == 2) {
+			return new SoaNodeId(splitParent[0], splitParent[1]);
+		}
+		else {
+			return null;
+		}
     }
     
 }
