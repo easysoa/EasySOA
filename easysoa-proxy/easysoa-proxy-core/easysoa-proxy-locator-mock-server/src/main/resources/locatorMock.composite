@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<composite name="locatorMock" xmlns="http://www.osoa.org/xmlns/sca/1.0"
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1">
+
+	<component name="locatorMockComponent">
+		<implementation.java class="org.talend.services.esb.locator.v1.LocatorServiceImpl" />
+		<service name="locatorMockService">
+			<interface.java interface="org.talend.services.esb.locator.v1.LocatorService"/>
+			<binding.ws uri="http://localhost:8040/services/ServiceLocatorService" />
+		</service>
+	</component>
+
+</composite>

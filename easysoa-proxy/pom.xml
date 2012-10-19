@@ -30,6 +30,7 @@
 	  <module>handlers/easysoa-proxy-handlers-event-test</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-cxf-interceptor</module>
 	  <module>easysoa-proxy-intents/easysoa-proxy-intents-cxfMonitoringIntent</module>
+	  <module>easysoa-proxy-core/easysoa-proxy-locator-mock-server</module>
   </modules>
   
   <!-- ======================= -->

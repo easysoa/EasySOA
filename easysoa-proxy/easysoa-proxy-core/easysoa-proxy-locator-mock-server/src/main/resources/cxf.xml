@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - WS context for the ancv-form application. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+ 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+ 	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+ 	http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+ 	
+ 	
+ 	<!-- AUTO INJECTION (not used)  -->
+ 	<context:component-scan base-package="org.easysoa.proxy.cxflocator" />
+ 	<context:annotation-config />
+ 	
+ 	<!-- TEST CONFIGURATION (OVERRIDE) -->
+	<bean id="org.easysoa.proxy.configurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- value>classpath:easysoa-proxy.properties</value>
+				<value>classpath:easysoa-proxy-test.properties</value --><!-- overrides -->
+			</list>
+		</property>
+		<property name="ignoreResourceNotFound" value="false" />
+	</bean>
+
+
+ 	<!-- WEBSERVICES -->
+
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-extension-http-jetty.xml"/>
+
+	<cxf:bus>
+		<cxf:inInterceptors>
+			<bean class="org.easysoa.proxy.cxflocator.interceptor.CxfLocatorInInterceptor" />
+		</cxf:inInterceptors>
+	</cxf:bus>
+
+	<!-- http-conf:conduit name="*.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP" />
+	</http-conf:conduit -->
+	
+	<bean id="org.easysoa.proxy.cxflocator.discoveryProxyLocatorServiceImpl"
+		class="org.easysoa.proxy.cxflocator.DiscoveryProxyLocatorServiceImpl">
+		<!-- property name="talendLocatorService" ref="org.easysoa.proxy.cxflocator.talendLocatorClient" / -->
+	</bean>
+	
+	<jaxws:endpoint id="org.easysoa.proxy.cxflocator.discoveryProxyLocatorServiceImplEndpoint"
+		implementor="#org.easysoa.proxy.cxflocator.discoveryProxyLocatorServiceImpl"
+		address="http://localhost:8040/services/ServiceLocatorService" /><!-- TODO ${ancv.form.ws.baseUrl} -->
+	
+ 	<jaxws:client id="org.easysoa.proxy.cxflocator.talendLocatorClient"
+ 		serviceClass="org.talend.services.esb.locator.v1.LocatorService" 
+ 		address="http://localhost:8041/services/ServiceLocatorService" >
+ 	</jaxws:client>
+	
+	
+	<!-- TEST -->
+	
+ 	<jaxws:client id="org.easysoa.proxy.cxflocator.discoveryProxyLocatorServiceTestClient"
+ 		serviceClass="org.talend.services.esb.locator.v1.LocatorService" 
+ 		address="http://localhost:8040/services/ServiceLocatorService" >
+ 	</jaxws:client>
+	
+</beans>

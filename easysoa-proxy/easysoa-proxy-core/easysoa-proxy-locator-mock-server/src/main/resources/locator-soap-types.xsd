@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ Copyright (c) 2011 Talend Inc. - www.talend.com
+ All rights reserved.
+
+ This program and the accompanying materials are made available
+ under the terms of the Apache License v2.0
+ which accompanies this distribution, and is available at
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ -->
+<xsd:schema elementFormDefault="qualified"
+	targetNamespace="http://talend.org/schemas/esb/locator/2011/11"
+	xmlns="http://talend.org/schemas/esb/locator/2011/11" xmlns:wsa="http://www.w3.org/2005/08/addressing"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lpx="http://talend.org/schemas/esb/locator/2011/11"
+	xmlns:lps="http://www.talend.org/services/esb/locator/v1">
+	<xsd:import namespace="http://talend.org/schemas/esb/locator/2011/11"
+		schemaLocation="locator-common-types.xsd" />
+
+	<xsd:element name="lookupEndpoint" type="lpx:lookupRequestType" />
+	<xsd:element name="lookupEndpointResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="wsa:EndpointReference" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="lookupEndpoints" type="lpx:lookupRequestType" />
+	<xsd:element name="LookupEndpointsResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="wsa:EndpointReference" minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="registerEndpointResponse">
+		<xsd:complexType>
+			<xsd:sequence />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="unregisterEndpointResponse">
+		<xsd:complexType>
+			<xsd:sequence />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="InterruptionFaultDetail">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="InterruptionDetail" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="ServiceLocatorFaultDetail">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="LocatorFaultDetail" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="registerEndpoint">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="serviceName" type="xsd:QName" />
+				<xsd:element name="endpointURL" type="xsd:anyURI" />
+				<xsd:element name="binding" type="lpx:BindingType" />
+				<xsd:element name="transport" type="lpx:TransportType" />
+				<xsd:element name="properties" type="lpx:SLPropertiesType"
+					minOccurs="0" maxOccurs="1" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="unregisterEndpoint">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="serviceName" type="xsd:QName" />
+				<xsd:element name="endpointURL" type="xsd:anyURI" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
