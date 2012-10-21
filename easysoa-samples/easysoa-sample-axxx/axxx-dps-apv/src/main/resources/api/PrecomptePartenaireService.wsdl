@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="PrecomptePartenaireServiceImpl" targetNamespace="http://www.axxx.com/dps/apv" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.axxx.com/dps/apv" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://www.axxx.com/dps/apv" version="1.0" xmlns:tns="http://www.axxx.com/dps/apv" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="creerPrecompte" type="tns:creerPrecompte"/>
+<xs:element name="creerPrecompteResponse" type="tns:creerPrecompteResponse"/>
+<xs:element name="precomptePartenaire" type="tns:precomptePartenaire"/>
+<xs:complexType name="creerPrecompte">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="precomptePartenaire" type="tns:precomptePartenaire"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="precomptePartenaire">
+    <xs:sequence>
+      <xs:element name="identifiantClientPivotal" type="xs:string"/>
+      <xs:element name="typeStructure" type="tns:typeStructure"/>
+      <xs:element name="nomStructure" type="xs:string"/>
+      <xs:element name="anciennete" type="xs:string"/>
+      <xs:element name="telephone" type="xs:string"/>
+      <xs:element minOccurs="0" name="email" type="xs:string"/>
+      <xs:element name="adresse" type="xs:string"/>
+      <xs:element name="ville" type="xs:string"/>
+      <xs:element name="cp" type="xs:string"/>
+      <xs:element name="apeNaf" type="xs:string"/>
+      <xs:element name="sirenSiret" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="creerPrecompteResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:simpleType name="typeStructure">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ASSOCIATION_NAT"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="creerPrecompte">
+    <wsdl:part element="tns:creerPrecompte" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="creerPrecompteResponse">
+    <wsdl:part element="tns:creerPrecompteResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PrecomptePartenaireService">
+    <wsdl:operation name="creerPrecompte">
+      <wsdl:input message="tns:creerPrecompte" name="creerPrecompte">
+    </wsdl:input>
+      <wsdl:output message="tns:creerPrecompteResponse" name="creerPrecompteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PrecomptePartenaireServiceImplSoapBinding" type="tns:PrecomptePartenaireService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="creerPrecompte">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="creerPrecompte">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="creerPrecompteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PrecomptePartenaireServiceImpl">
+    <wsdl:port binding="tns:PrecomptePartenaireServiceImplSoapBinding" name="PrecomptePartenairePort">
+      <soap:address location="http://localhost:8076/services/PrecomptePartenaireService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

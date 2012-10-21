@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://fr.axxx.pivotal/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://fr.axxx.pivotal/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://fr.axxx.pivotal/">
+      <s:element name="Client">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Identifiant_Client" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Raison_Sociale" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Type_Structure" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Statut_Client" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="NPAI" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Date_Refus_APV" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Complement" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Num_et_voie" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BP_Lieu_Dit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Code_Postal" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Ville" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pays" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RIB" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Forme_Juridique" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SIREN" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dot_Glob_APV_N" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dont_Reliquat_N_1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dont_Dot_N" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Aide_Struc_N" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Nb_Benef_Prev_N" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Montant_Commande" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Montant_Utilise_N" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Nb_Benef_N" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Reliquat_N_1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClientResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ClientResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Contact_Client">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Identifiant_Client" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Nom_Contact" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Prenom_Contact" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Fonction_Contact" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Telephone" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Complement" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Num_et_voie" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BP_lieu_dit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Code_postal" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Ville" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pays" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Contact_ClientResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Contact_ClientResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Information_APV">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Identifiant_Client" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Numero_Decision" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Num_Avenant" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Annee" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Convention_Initiale" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Montant_Dot_Glob_N" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Bilan_Libelle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Bilan_Annee" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Information_APVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Information_APVResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ClientSoapIn">
+    <wsdl:part name="parameters" element="tns:Client" />
+  </wsdl:message>
+  <wsdl:message name="ClientSoapOut">
+    <wsdl:part name="parameters" element="tns:ClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="Contact_ClientSoapIn">
+    <wsdl:part name="parameters" element="tns:Contact_Client" />
+  </wsdl:message>
+  <wsdl:message name="Contact_ClientSoapOut">
+    <wsdl:part name="parameters" element="tns:Contact_ClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="Information_APVSoapIn">
+    <wsdl:part name="parameters" element="tns:Information_APV" />
+  </wsdl:message>
+  <wsdl:message name="Information_APVSoapOut">
+    <wsdl:part name="parameters" element="tns:Information_APVResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ContactSvcSoap">
+    <wsdl:operation name="Client">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Client.</wsdl:documentation>
+      <wsdl:input message="tns:ClientSoapIn" />
+      <wsdl:output message="tns:ClientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Contact_Client">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Contact client.</wsdl:documentation>
+      <wsdl:input message="tns:Contact_ClientSoapIn" />
+      <wsdl:output message="tns:Contact_ClientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Information_APV">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Information APV.</wsdl:documentation>
+      <wsdl:input message="tns:Information_APVSoapIn" />
+      <wsdl:output message="tns:Information_APVSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ContactSvcSoap" type="tns:ContactSvcSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Client">
+      <soap:operation soapAction="http://fr.axxx.pivotal/Client" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Contact_Client">
+      <soap:operation soapAction="http://fr.axxx.pivotal/Contact_Client" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Information_APV">
+      <soap:operation soapAction="http://fr.axxx.pivotal/Information_APV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ContactSvcSoap12" type="tns:ContactSvcSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Client">
+      <soap12:operation soapAction="http://fr.axxx.pivotal/Client" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Contact_Client">
+      <soap12:operation soapAction="http://fr.axxx.pivotal/Contact_Client" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Information_APV">
+      <soap12:operation soapAction="http://fr.axxx.pivotal/Information_APV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ContactSvc">
+    <wsdl:port name="ContactSvcSoap" binding="tns:ContactSvcSoap">
+      <soap:address location="http://168.192.0.28/WS/ContactSvc.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ContactSvcSoap12" binding="tns:ContactSvcSoap12">
+      <soap12:address location="http://168.192.0.28/WS/ContactSvc.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

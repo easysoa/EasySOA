@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - WS context for the ancv-form application. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+ 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+ 	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+ 	http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+ 	
+ 	
+ 	<!-- AUTO INJECTION  -->
+ 	<context:component-scan base-package="com.axxx.dps.apv" />
+ 	<context:annotation-config />
+ 	
+ 	<!-- TEST CONFIGURATION (OVERRIDE) -->
+	<bean id="com.axxx.dps.apv.configurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:axxx-dps-apv.properties</value>
+			</list>
+		</property>
+		<property name="ignoreResourceNotFound" value="false" />
+	</bean>
+
+
+ 	<!-- WEBSERVICES -->
+
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-extension-http-jetty.xml"/>
+
+	<cxf:bus>
+		<cxf:features>
+			<cxf:logging/>
+		</cxf:features>
+	</cxf:bus>
+
+	<!-- http-conf:conduit name="*.http-conduit">
+		<http-conf:client ProxyServer="localhost" ProxyServerPort="8082" ProxyServerType="HTTP" />
+	</http-conf:conduit -->
+	
+	<jaxws:endpoint id="com.axxx.dps.apv.ws.precomptePartenaireWebServiceImplEndpoint"
+		implementor="#com.axxx.dps.apv.ws.precomptePartenaireWebServiceImpl"
+		address="${axxx.dps.apv.ws.baseUrl}/PrecomptePartenaireService" />
+	
+ 	<!-- jaxws:client id="pivotal"
+ 		serviceClass="fromwsdl" 
+ 		address="http://localhost:8075/pivotal" >
+ 	</jaxws:client -->
+	
+</beans>

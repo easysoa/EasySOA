@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="TdrWebServiceImplService" targetNamespace="http://apv.axxx.fr/" xmlns:ns1="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://apv.axxx.fr/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://apv.axxx.fr/" xmlns:tns="http://apv.axxx.fr/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="tdr" xsi:type="tns:tdr" />	
+	<xs:complexType name="tdr">
+		<xs:sequence>
+			<xs:element name="tdrId" xsi:type="int" />
+			<xs:element name="identifiantClientPivotal" xsi:type="int" />
+			<xs:element name="utilisateur" xsi:type="tns:utilisateur" />
+			<xs:element name="blocAdministratif" xsi:type="tns:blocAdministratif" />
+			<xs:element name="contactOperationnel" xsi:type="tns:contactOperationnel" />
+			<xs:element name="signataireConvention" xsi:type="tns:signataireConvention" />
+			<xs:element name="convention" xsi:type="tns:convention" />
+			<xs:element name="tableauDeBord" xsi:type="tns:tableauDeBord" />
+			<xs:element name="bilans" xsi:type="tns:bilans" />
+			<xs:element name="evaluation" xsi:type="tns:evaluation" />
+		</sequence>
+	</complexType>
+	<xs:complexType name="contactOperationnel">
+		<xs:sequence>
+			<xs:element name="telephone" xsi:type="string" />
+			<xs:element name="ville" xsi:type="string" />
+			<xs:element name="nom" xsi:type="string" />
+			<xs:element name="nomStructure" xsi:type="string" />
+			<xs:element name="prenom" xsi:type="string" />
+			<xs:element name="adresse" xsi:type="string" />
+			<xs:element name="pouvoir" xsi:type="boolean" />
+			<xs:element name="cp" xsi:type="string" />
+			<xs:element name="email" xsi:type="string" />
+			<xs:element name="fonction" xsi:type="string" />
+		</sequence>
+	</ns0:complexType>
+	<xs:complexType name="tableauDeBord">
+		<xs:sequence>
+			<xs:element name="montantDisponible" xsi:type="float" />
+			<xs:element name="sommeCommandee" xsi:type="float" />
+			<xs:element name="nbBeneficiairesApv" xsi:type="int" />
+			<xs:element name="reliquatAnneePrecedente" xsi:type="float" />
+			<xs:element name="sommeUtilisee" xsi:type="float" />
+			<xs:element name="numeroClient" xsi:type="string" />
+			<xs:element name="reliquat" xsi:type="float" />
+			<xs:element name="dotationGlobale" xsi:type="float" />
+			<xs:element name="sommeCommandable" xsi:type="float" />
+			<xs:element name="dotationAnnuelle" xsi:type="float" />
+		</sequence>
+	</ns0:complexType>
+	<xs:complexType name="bilans">
+		<xs:sequence>
+			<xs:element name="sommeCommandee" xsi:type="float" />
+			<xs:element name="nbBeneficiairesApv" xsi:type="int" />
+			<xs:element name="montantMoyenApvBeneficiaire" xsi:type="float" />
+			<xs:element name="reliquatAnneePrecedente" xsi:type="float" />
+			<xs:element name="sommeUtilisee" xsi:type="float" />
+			<xs:element name="reliquat" xsi:type="float" />
+			<xs:element name="dotationGlobale" xsi:type="float" />
+			<xs:element name="dotationAnnuelle" xsi:type="float" />
+		</sequence>
+	</ns0:complexType>
+	<xs:complexType name="convention">
+		<xs:sequence>
+			<xs:element name="piecesAFournir" xsi:type="boolean" />
+			<xs:element name="reliquat" xsi:type="float" />
+			<xs:element name="dotation" xsi:type="float" />
+			<xs:element name="dateSignee" xsi:type="date" />
+			<xs:element name="numeroDecision" xsi:type="int" />
+		</sequence>
+	</ns0:complexType>
+	<xs:complexType name="evaluation">
+		<xs:sequence>
+			<xs:element name="noteEcoute" xsi:type="int" />
+			<xs:element name="notePaiement" xsi:type="int" />
+			<xs:element name="noteContact" xsi:type="int" />
+			<xs:element name="noteNotification" xsi:type="int" />
+			<xs:element name="noteConseil" xsi:type="int" />
+			<xs:element name="tauxSatisfaction" xsi:type="int" />
+			<xs:element name="noteBilans" xsi:type="int" />
+		</sequence>
+	</ns0:complexType>
+	<xs:complexType name="signataireConvention">
+		<xs:sequence>
+			<xs:element name="telephone" xsi:type="string" />
+			<xs:element name="ville" xsi:type="string" />
+			<xs:element name="nom" xsi:type="string" />
+			<xs:element name="nomStructure" xsi:type="string" />
+			<xs:element name="prenom" xsi:type="string" />
+			<xs:element name="adresse" xsi:type="string" />
+			<xs:element name="cp" xsi:type="string" />
+			<xs:element name="email" xsi:type="string" />
+			<xs:element name="pouvoirSignature" xsi:type="boolean" />
+		</sequence>
+	</ns0:complexType>
+	<xs:complexType name="blocAdministratif">
+		<xs:sequence>
+			<xs:element name="telephone" xsi:type="string" />
+			<xs:element name="adresse" xsi:type="string" />
+			<xs:element name="ville" xsi:type="string" />
+			<xs:element name="url" xsi:type="string" />
+			<xs:element name="nomStructure" xsi:type="string" />
+			<xs:element name="sirenSiret" xsi:type="string" />
+			<xs:element name="cp" xsi:type="string" />
+			<xs:element name="email" xsi:type="string" />
+		</sequence>
+	</ns0:complexType>
+	<xs:complexType name="utilisateur">
+		<xs:sequence>
+			<xs:element name="prenom" xsi:type="string" />
+			<xs:element name="email" xsi:type="string" />
+			<xs:element name="telephone" xsi:type="string" />
+			<xs:element name="nom" xsi:type="string" />
+		</sequence>
+	</ns0:complexType>
+
+<xs:element name="createOrUpdate" type="tns:createOrUpdate" />
+<xs:complexType name="createOrUpdate">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:Tdr" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="createOrUpdateResponse" type="tns:createOrUpdateResponse" />
+<xs:complexType name="createOrUpdateResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:Tdr" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="getByCriteria" type="tns:getByCriteria" />
+<xs:complexType name="getByCriteria">
+<xs:sequence>
+<xs:element minOccurs="1" maxOccurs="1" name="return" type="tns:Tdr" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="getByCriteriaResponse" type="tns:getByCriteriaResponse" />
+<xs:complexType name="getByCriteriaResponse">
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="tdr" type="tns:Tdr" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="listIds" type="tns:listIds" />
+<xs:complexType name="listIds">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="listIdsResponse" type="tns:listIdsResponse" />
+<xs:complexType name="listIdsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="tdrId" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="getById" type="tns:getById" />
+<xs:complexType name="getById">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="getByIdResponse" type="tns:getByIdResponse" />
+<xs:complexType name="getByIdResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:Tdr" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createOrUpdate">
+    <wsdl:part element="tns:createOrUpdate" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listIds">
+    <wsdl:part element="tns:listIds" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listIdsResponse">
+    <wsdl:part element="tns:listIdsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getByCriteria">
+    <wsdl:part element="tns:getByCriteria" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getByIdResponse">
+    <wsdl:part element="tns:getByIdResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getById">
+    <wsdl:part element="tns:getById" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createOrUpdateResponse">
+    <wsdl:part element="tns:createOrUpdateResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getByCriteriaResponse">
+    <wsdl:part element="tns:getByCriteriaResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TdrWebService">
+    <wsdl:operation name="createOrUpdate">
+      <wsdl:input message="tns:createOrUpdate" name="createOrUpdate">
+    </wsdl:input>
+      <wsdl:output message="tns:createOrUpdateResponse" name="createOrUpdateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getByCriteria">
+      <wsdl:input message="tns:getByCriteria" name="getByCriteria">
+    </wsdl:input>
+      <wsdl:output message="tns:getByCriteriaResponse" name="getByCriteriaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listIds">
+      <wsdl:input message="tns:listIds" name="listIds">
+    </wsdl:input>
+      <wsdl:output message="tns:listIdsResponse" name="listIdsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getById">
+      <wsdl:input message="tns:getById" name="getById">
+    </wsdl:input>
+      <wsdl:output message="tns:getByIdResponse" name="getByIdResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  <wsdl:binding name="TdrWebServiceImplServiceSoapBinding" type="tns:TdrWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="createOrUpdate">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="createOrUpdate">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createOrUpdateResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getByCriteria">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getByCriteria">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getByCriteriaResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listIds">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="listIds">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="listIdsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getById">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getById">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getByIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TdrWebServiceImplService">
+    <wsdl:port binding="tns:TdrWebServiceImplServiceSoapBinding" name="TdrWebServiceImplPort">
+      <soap:address location="http://192.168.0.21/cxf/TdrWebService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
