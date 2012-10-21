@@ -25,7 +25,7 @@ public class AnnotatedServicesConsumptionFinder implements ServiceConsumptionFin
     // configuration :
     private boolean allInjected = true;
 
-    private boolean filterSources = true;
+    private boolean filterSources = false;
     
     private List<String> annotationsToDetect;
 
