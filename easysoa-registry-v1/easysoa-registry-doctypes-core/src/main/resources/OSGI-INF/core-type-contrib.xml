@@ -33,6 +33,7 @@
       <schema name="dublincore" />
       <schema name="soanode" />
       <schema name="files" />
+      <schema name="file" /><!-- TODO to allow upload using CMIS in JWT export -->
       <facet name="SoaNode" />
       <facet name="Commentable" />
       <facet name="Versionable" />

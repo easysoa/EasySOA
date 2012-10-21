@@ -333,6 +333,7 @@
         <layout>soanode</layout>
         <layout>endpoint</layout>
         <layout>environment</layout>
+        <layout>file</layout><!-- TODO to allow upload using CMIS in JWT export -->
         <layout>files</layout>
       </layouts>
     </type>
