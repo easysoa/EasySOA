@@ -2,13 +2,6 @@
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
 xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frascati.ow2.org/xmlns/web/1.0" name="runManager">
 
-	<!--<sca:include name="exchangeNumberGenerator"/>-->
-	<!--<sca:include name="templateEngine"/>-->
-	<!--  Replay engine needed to avoid a name conflict with HTTP proxy -->
-	<!--<sca:include name="replayEngine"/>-->
-	<!--<sca:include name="scheduledValidationReplayEngine"/>-->
-	<!--<sca:include name="storeManager"/>-->
-	
 	<sca:service name="runManagerServiceRef" promote="runManagerComponent/runManagerService"/>
 
 	<!-- Client UI for RunManager and Exchange store, Works with velocity -->
@@ -20,7 +13,7 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frasca
     	</sca:service>
 		<!-- <sca:implementation.java class="org.easysoa.run.RunManagerImpl" /> -->
 		<sca:reference name="runManager" target="runManagerComponent/runManagerService" />
-		<sca:reference name="exchangeRecordStoreManager"><!--promote="exchangeStoreManagerComponentRef/exchangeStoreManagerServiceRef">-->
+		<sca:reference name="exchangeRecordStoreManager">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ExchangeReplayService" />		
 		</sca:reference>
 		<!-- Proxy implementation Velocity -->
@@ -40,7 +33,7 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frasca
 			<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.proxy.core.api.run.RunManagerImpl" />
-		<sca:reference name="exchangeNumberGenerator"><!-- promote="exchangeNumberGeneratorComponentRef/exchangeNumberGeneratorServiceRef">-->
+		<sca:reference name="exchangeNumberGenerator">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.messages.server.NumberGenerator" />			
 		</sca:reference>
 		<!--<sca:reference name="replayEngine" target="replayEngineComponent/replayEngineService" />-->

@@ -4,8 +4,6 @@
 	<!--  ReplayEngine service -->
 	<!--<sca:service name="scheduledValidationReplayEngineService" promote="scheduledValidationReplayEngineComponent/scheduledValidationReplayEngineService"/>-->	
 
-	<!--<sca:include name="replayEngine"/>-->
-
 	<!-- Exchange replay service -->
 	<sca:component name="scheduledValidationReplayEngineComponent">
 		<sca:service name="scheduledValidationReplayEngineService">

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="handlerManagerBase">
-	
-    <!--<sca:include name="runManager"/>-->
-    <!--<sca:include name="monitoringService"/>-->
     
     <sca:service name="handlerManagerComponentService" promote="handlerManagerComponent/handlerManagerServiceBase">
     	<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
@@ -23,7 +20,7 @@
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.MessageRecordHandler" />
-        <sca:reference name="runManager" target="runManagerComponentRef/runManagerServiceRef"><!-- promote -->
+        <sca:reference name="runManager" target="runManagerComponentRef/runManagerServiceRef">
         	<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
         </sca:reference>
     </sca:component>
@@ -48,7 +45,7 @@
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" /> 
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.MonitoringHandler" />
-        <sca:reference name="monitoringService" target="monitoringServiceComponentRef/monitoringServiceServiceRef"><!-- promote -->
+        <sca:reference name="monitoringService" target="monitoringServiceComponentRef/monitoringServiceServiceRef">
         	<sca:interface.java interface="org.easysoa.proxy.core.api.monitoring.MonitoringService" />
         </sca:reference>
     </sca:component> 
