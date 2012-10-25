@@ -184,14 +184,13 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		PrintWriter respOut = response.getWriter();
 		// re-route request to the provider and send the response to the consumer
 	    try{
-	    	// Detect infinite request loop (proxy send a request to itself)
-	    	infiniteLoopDetection(request);	    	
-	    	// Listening the message
-	        InMessage inMessage = new InMessage(request);
-	    	OutMessage outMessage = forward(inMessage, response); 
-	    	//runManager.record(exchangeRecord);
-	    	this.handlerManager.handleMessage(inMessage, outMessage);
-	    	
+            // Detect infinite request loop (proxy send a request to itself)
+            infiniteLoopDetection(request);	    	
+            // Listening the message
+            InMessage inMessage = new InMessage(request);
+            OutMessage outMessage = forward(inMessage, response); 
+            // runManager.record(exchangeRecord);
+            this.handlerManager.handleMessage(inMessage, outMessage);
 	    }
 	    catch (HttpResponseException rex) {
 			// error in the actual server : return it back to the client
@@ -324,12 +323,12 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 */
 	private void infiniteLoopDetection(HttpServletRequest request) throws Exception{
 		// Get the server name and port to detect the loop
-		if(proxyPort == request.getServerPort() 
+	    if(proxyPort == request.getServerPort()
 				&& ("localhost".equalsIgnoreCase(request.getServerName()) 
 						|| "127.0.0.1".equals(request.getServerName()) 
 						|| InetAddress.getLocalHost().getHostName().equals(request.getServerName()) )){
-			throw new Exception("Request on proxy itself detected on port " + proxyPort + " ! Infinite loop aborted !");
-		}
+            throw new Exception("Request on proxy itself detected on port " + proxyPort + " ! Infinite loop aborted !");
+        }
 	}
 	
 }

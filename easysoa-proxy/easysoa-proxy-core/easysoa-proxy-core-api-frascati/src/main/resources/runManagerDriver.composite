@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
+xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frascati.ow2.org/xmlns/web/1.0" name="runManager">
+
+	<sca:service name="runManagerDriverService" promote="runManagerDriver/runManagerServiceDriver"/>
+	<!-- sca:service name="runManagerDriverService" promote="runManagerServiceDriver/RunManagerDriver"/ -->
+
+    <sca:component name="runManagerDriver">
+        <sca:implementation.java class="org.easysoa.proxy.core.api.run.RunManagerDriverImpl" />
+        <sca:service name="runManagerServiceDriver">
+            <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManagerDriver" />
+        </sca:service>
+			<!--<frascati:binding.rest uri="http://localhost:8084/" />-->
+        <sca:reference name="runManager"><!--  promote="runManagerComponentReference/runManagerServiceReference" -->
+            <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
+        </sca:reference>
+    </sca:component>
+    
+    <sca:wire source="runManagerDriver/runManager" target="runManagerComponentReference/runManagerServiceRef"/>
+    
+    <sca:component name="runManagerComponentReference">
+    	<sca:service name="runManagerServiceRef">
+    		<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
+    	</sca:service>
+		<sca:implementation.composite name="runManager.composite" />
+    </sca:component>    
+
+</sca:composite>

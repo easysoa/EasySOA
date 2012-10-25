@@ -31,6 +31,7 @@ import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.Exchange.ExchangeType;
 
 /**
+ * Handler for SOAP exchanges (SOAP web services)
  * 
  * @author jguillemotte
  *
@@ -43,7 +44,6 @@ public class SoapMessageHandler implements MessageHandler {
 	private static Logger logger = Logger.getLogger(SoapMessageHandler.class.getName());	
 	
 	@Override
-	// public boolean isOkFor(Message message) {
 	public boolean isOkFor(ExchangeRecord exchangeRecord) {
 		if(exchangeRecord != null){
 			logger.debug("Message body : " + exchangeRecord.getInMessage().getMessageContent().getRawContent());
@@ -61,30 +61,21 @@ public class SoapMessageHandler implements MessageHandler {
 	}
 
 	@Override
-	//public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine) {
 	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// enrich the message
-		//message.setType(MessageType.SOAP);
 		exchangeRecord.getExchange().setExchangeType(ExchangeType.SOAP);
 		logger.debug("WSDL found");
-		//String serviceName = message.getPathName();
 		String serviceName = exchangeRecord.getInMessage().getPath();
 		if(serviceName.startsWith("/")){
 			serviceName = serviceName.substring(1);
 		}
 		serviceName = serviceName.replace('/', '_');
-		//Service service = new Service(message.getUrl());
 		Service service = new Service(exchangeRecord.getInMessage().buildCompleteUrl());
-		//service.setFileUrl(message.getUrl()+"?wsdl");
 		service.setFileUrl(exchangeRecord.getInMessage().buildCompleteUrl() + "?wsdl");
-		//service.setParentUrl(message.getUrl());
 		service.setParentUrl(exchangeRecord.getInMessage().buildCompleteUrl());
 		service.setCallCount(1);
-		//service.setTitle(message.getPathName());
 		service.setTitle(exchangeRecord.getInMessage().getPath());
-		//service.setDescription(message.getPathName());
 		service.setDescription(exchangeRecord.getInMessage().getPath());
-		//service.setHttpMethod(message.getMethod());
 		service.setHttpMethod(exchangeRecord.getInMessage().getMethod());
 
         try {
@@ -93,16 +84,19 @@ public class SoapMessageHandler implements MessageHandler {
             logger.error("Failed to register WSDL", e);
         }
         
-        Node soaNode = null;
-        for(Node node : monitoringService.getModel().getSoaNodes()){
-            if(node.getUrl().equals(exchangeRecord.getInMessage().buildCompleteUrl())){
-                soaNode = node;
-                logger.debug("Node found ! " + soaNode.getTitle());
-                break;
-            }
-        }        
-        esperEngine.sendEvent(soaNode);        
-        
+        // For discovery mode => each service is considered as a new service
+        // No need to trigger an esper event to update the call count value.
+        if(monitoringService.getModel() != null){
+            Node soaNode = null;
+            for(Node node : monitoringService.getModel().getSoaNodes()){
+                if(node.getUrl().equals(exchangeRecord.getInMessage().buildCompleteUrl())){
+                    soaNode = node;
+                    logger.debug("Node found ! " + soaNode.getTitle());
+                    break;
+                }
+            }        
+            esperEngine.sendEvent(soaNode);
+        }
         return true;
 	}
 	

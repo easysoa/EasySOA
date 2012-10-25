@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="assertionEngine">
 
+	<sca:service name="assertionEngineServiceRef" promote="assertionEngineComponent/assertionEngineService"/>
+
 	<!-- Assertion engine -->
 	<sca:component name="assertionEngineComponent">
 		<sca:service name="assertionEngineService">

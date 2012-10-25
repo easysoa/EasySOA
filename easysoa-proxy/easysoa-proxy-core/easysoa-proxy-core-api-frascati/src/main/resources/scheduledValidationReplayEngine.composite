@@ -4,13 +4,26 @@
 	<!--  ReplayEngine service -->
 	<!--<sca:service name="scheduledValidationReplayEngineService" promote="scheduledValidationReplayEngineComponent/scheduledValidationReplayEngineService"/>-->	
 
+	<!--<sca:include name="replayEngine"/>-->
+
 	<!-- Exchange replay service -->
 	<sca:component name="scheduledValidationReplayEngineComponent">
 		<sca:service name="scheduledValidationReplayEngineService">
 			<sca:interface.java interface="org.easysoa.validation.ExchangeReplayController" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.proxy.core.api.records.replay.ScheduledValidationReplayEngine" />
-		<sca:reference name="replayEngine" target="replayEngineComponent/replayEngineService" />
+		<sca:reference name="replayEngine"><!-- promote="replayEngineComponentRef/replayEngineServiceRef">-->
+			<sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />		
+		</sca:reference>
 	</sca:component>
+	
+	<sca:wire source="scheduledValidationReplayEngineComponent/replayEngine" target="replayEngineComponentRef/replayEngineService"/>
+	
+    <sca:component name="replayEngineComponentRef">
+    	<sca:service name="replayEngineService">
+			<sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />    		
+    	</sca:service>
+		<sca:implementation.composite name="replayEngine.composite" />    	
+    </sca:component>	
 
 </sca:composite>

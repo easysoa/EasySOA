@@ -26,6 +26,12 @@ import org.easysoa.proxy.core.api.monitoring.soa.Node;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.records.Exchange.ExchangeType;
 
+/**
+ * Handler for REST exchanges 
+ * 
+ * @author jguillemotte
+ *
+ */
 public class RestMessageHandler implements MessageHandler {
 
 	/**

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite 
+	xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
+	xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
+	name="easysoaapp">
+
+	<!-- Main Easysoa composite APP -->
+	<!-- This composite regroups easysoa standalone components in one main file -->
+
+	<!-- HTTP Discovery proxy -->
+	<sca:component name="HttpDiscoveryProxyComponent">
+		<sca:service name="HttpDiscoveryProxyService">
+      		<sca:interface.java interface="javax.servlet.Servlet" />
+    	</sca:service>
+	    <sca:implementation.composite name="httpDiscoveryProxy.composite"/>
+	</sca:component>
+	
+	<!-- Replay / simulation engine -->
+	<sca:component name="easysoaReplayEngineComponent">
+		<sca:service name="easysoaReplayEngineService">
+      			<sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />
+    		</sca:service>
+		<sca:implementation.composite name="replayEngine.composite"/>
+	</sca:component>
+
+	<!-- Scheduled Validation Replay Engine -->
+	<sca:component name="easysoaScheduledValidationReplayEngineComponent">
+		<sca:service name="easysoaScheduledValidationReplayEngineService">
+      			<sca:interface.java interface="org.easysoa.validation.ExchangeReplayController" />
+    		</sca:service>
+		<sca:implementation.composite name="scheduledValidationReplayEngine.composite"/>
+	</sca:component>
+
+</sca:composite>

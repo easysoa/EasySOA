@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.messages.server.NumberGenerator;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
+//import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
 import org.easysoa.proxy.core.api.run.Run;
 import org.easysoa.proxy.core.api.run.RunManager;
 import org.easysoa.proxy.core.api.run.RunManagerEventReceiver;
@@ -84,8 +84,8 @@ public class RunManagerImpl implements RunManager {
 	@Reference
 	NumberGenerator exchangeNumberGenerator;
 	
-	@Reference
-	ReplayEngine replayEngine;
+	//@Reference
+	//ReplayEngine replayEngine;
 	
 	@ConversationID
 	Object conversationID;

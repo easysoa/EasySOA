@@ -28,7 +28,6 @@ import org.easysoa.proxy.core.api.esper.EsperEngine;
 import org.easysoa.proxy.core.api.monitoring.apidetector.UrlTree;
 import org.easysoa.records.ExchangeRecord;
 
-
 /**
  * 
  * @author jguillemotte
@@ -49,7 +48,6 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	/**
 	 * Data structure to store unknown messages
 	 */
-	//protected ArrayDeque<Message> unknownMessagesList;
 	protected ArrayDeque<ExchangeRecord> unknownExchangeRecordList;
 	
 	/**
@@ -85,19 +83,6 @@ public abstract class AbstractMonitoringService implements MonitoringService {
      * @param message 
      * @param esperEngine 
      */
-	/*public void listen(Message message, EsperEngine esperEngine){
-	    logger.debug("Listenning message : " + message);
-		for(MessageHandler mh : messageHandlers){
-	    	// Call each messageHandler, when the good message handler is found, stop the loop
-	    	if(mh.isOkFor(message)){
-	    		logger.debug("MessageHandler found : " + mh.getClass().getName());
-	    		if(mh.handle(message, this, esperEngine)){
-	    			break;
-	    		}
-	    	}
-	    }
-	}*/
-	
 	public void listen(ExchangeRecord exchangeRecord, EsperEngine esperEngine){
 	    logger.debug("Listenning exchange record : " + exchangeRecord);
 		
@@ -110,11 +95,7 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	    		}
 	    	}
 	    }
-	    
 	}
-	
-	
-	
 
 	/* (non-Javadoc)
 	 * @see org.easysoa.monitoring.MonitoringService#getModel()
@@ -136,10 +117,6 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	 * @see org.easysoa.monitoring.MonitoringService#getUnknownMessagesList()
 	 */
 	@Override
-	/*public ArrayDeque<Message> getUnknownMessagesList(){
-		return this.unknownMessagesList;
-	}*/
-	
 	public ArrayDeque<ExchangeRecord> getUnknownExchangeRecordList(){
 		return this.unknownExchangeRecordList;
 	}

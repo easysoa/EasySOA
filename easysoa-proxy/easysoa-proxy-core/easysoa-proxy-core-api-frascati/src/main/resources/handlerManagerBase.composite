@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="handlerManagerBase">
 	
-    <sca:include name="runManager"/>
-    <sca:include name="monitoringService"/>
+    <!--<sca:include name="runManager"/>-->
+    <!--<sca:include name="monitoringService"/>-->
     
     <sca:service name="handlerManagerComponentService" promote="handlerManagerComponent/handlerManagerServiceBase">
     	<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
@@ -23,14 +23,20 @@
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.MessageRecordHandler" />
-        <sca:reference name="runManager" target="runManagerComponent/runManagerService">
-            <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
+        <sca:reference name="runManager" target="runManagerComponentRef/runManagerServiceRef"><!-- promote -->
+        	<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
         </sca:reference>
     </sca:component>
     <sca:wire source="handlerManagerComponent/handlers" target="recordHandlerComponent/recordHandlerService" />
+    <sca:component name="runManagerComponentRef">
+    	<sca:service name="runManagerServiceRef">
+    		<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
+    	</sca:service>
+		<sca:implementation.composite name="runManager.composite" />    	
+    </sca:component>
 
     <sca:component name="eventMessageHandlerComponent">
-        <sca:service name="eventMessageHandlerService"> 
+        <sca:service name="eventMessageHandlerService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.event.EventMessageHandlerImpl" />
@@ -42,18 +48,24 @@
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" /> 
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.MonitoringHandler" />
-        <sca:reference name="monitoringService" target="monitoringServiceComponent/monitoringServiceService">
-            <sca:interface.java interface="org.easysoa.proxy.core.api.monitoring.MonitoringService" />
-        </sca:reference>        
+        <sca:reference name="monitoringService" target="monitoringServiceComponentRef/monitoringServiceServiceRef"><!-- promote -->
+        	<sca:interface.java interface="org.easysoa.proxy.core.api.monitoring.MonitoringService" />
+        </sca:reference>
     </sca:component> 
     <sca:wire source="handlerManagerComponent/handlers" target="monitoringHandlerComponent/monitoringHandlerService"/>
+    <sca:component name="monitoringServiceComponentRef">
+    	<sca:service name="monitoringServiceServiceRef">
+    		<sca:interface.java interface="org.easysoa.proxy.core.api.monitoring.MonitoringService" />
+    	</sca:service>
+		<sca:implementation.composite name="monitoringService.composite" />
+    </sca:component>
     
     <sca:component name ="subscriptionWebserviceComponent">
         <sca:service name="ISubscriptionWebService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.event.ISubscriptionWebService"/>
             <frascati:binding.rest uri="http://localhost:8084/SubscriptionWebService/" />
         </sca:service>
-        <sca:implementation.java class="org.easysoa.proxy.core.api.event.SubscriptionWebserviceImpl" ></sca:implementation.java>
+        <sca:implementation.java class="org.easysoa.proxy.core.api.event.SubscriptionWebserviceImpl" />
         <sca:reference name="eventMessageHandler" target="eventMessageHandlerComponent" >
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
         </sca:reference> 

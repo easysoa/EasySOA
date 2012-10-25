@@ -59,7 +59,6 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 		logger.debug("Mode = DISCOVERY !!");
 		monitoringModel = null;
 		urlTree = new UrlTree(new UrlTreeNode("root", ""));
-		//unknownMessagesList = null;
 		unknownExchangeRecordList = null;
 	}
 
@@ -76,7 +75,7 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	 */
 	@Override
 	public void registerUnknownMessagesToNuxeo(){
-		// Nothing to do here, all messages are considered as unknown
+		// Nothing to do here, all messages are considered as unknown in discovery mode
 	}
 	
 	/* (non-Javadoc)
@@ -160,9 +159,6 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	}
 
 	@Override
-	/*public void listen(Message message) {
-		listen(message, esperEngine);
-	}*/
 	public void listen(ExchangeRecord exchangeRecord) {
 		listen(exchangeRecord, esperEngine);
 	}

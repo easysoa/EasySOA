@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="monitoringService">
 
-	<sca:include name="esperEngine"/>
+	<!--<sca:include name="esperEngine"/>-->
+	
+	<sca:service name="monitoringServiceServiceRef" promote="monitoringServiceComponent/monitoringServiceService"/>
 
 	<!-- Monitoring service -->
 	<sca:component name="monitoringServiceComponent">
@@ -10,7 +12,18 @@
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.proxy.core.api.monitoring.DiscoveryMonitoringService" />
 		<!--<sca:implementation.java class="org.easysoa.monitoring.ValidatedMonitoringService" />-->
-		<sca:reference name="esperEngine" target="esperEngineComponent/esperEngineService" />
+		<sca:reference name="esperEngine"><!-- target="esperEngineComponentRef/esperEngineServiceRef">--><!-- promote -->
+			<sca:interface.java interface="org.easysoa.proxy.core.api.esper.EsperEngine" />
+		</sca:reference>
 	</sca:component>
+
+	<sca:wire source="monitoringServiceComponent/esperEngine" target="esperEngineComponentRef/esperEngineServiceRef"/>	
+
+    <sca:component name="esperEngineComponentRef">
+    	<sca:service name="esperEngineServiceRef">
+    		<sca:interface.java interface="org.easysoa.proxy.core.api.esper.EsperEngine" />
+    	</sca:service>
+		<sca:implementation.composite name="esperEngine.composite" />    	
+    </sca:component>
 
 </sca:composite>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="replayEngine">
 
-	<sca:include name="templateEngine"/>
-	<sca:include name="assertionEngine"/>
-	<sca:include name="logEngine"/>
-	<sca:include name="simulationEngine"/>
+	<!--<sca:include name="templateEngine"/>-->
+    <!--<sca:include name="assertionEngine"/>-->
+	<!--<sca:include name="logEngine"/>-->
+	<!--<sca:include name="simulationEngine"/>-->
 
 	<!--  ReplayEngine service -->
 	<sca:service name="replayEngineService" promote="replayEngineComponent/replayEngineService"/>	
@@ -15,11 +15,40 @@
 			<sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />
 		</sca:service>
 		<sca:implementation.java class="org.easysoa.proxy.core.api.records.replay.ReplayEngineImpl" />
-		<sca:reference name="templateEngine" target="templateEngineComponent/templateEngineService" />
-		<sca:reference name="assertionEngine" target="assertionEngineComponent/assertionEngineService" />
-		<sca:reference name="logEngine" target="logEngineComponent/logEngineService" />
-		<sca:reference name="simulationEngine" target="simulationEngineComponent/simulationEngineService" />
+		<sca:reference name="templateEngine"/><!-- promote="templateEngineComponentRef/templateEngineServiceRef" />-->
+		<sca:reference name="assertionEngine"/><!-- promote="assertionEngineComponentRef/assertionEngineServiceRef" />-->
+		<sca:reference name="logEngine"/><!-- promote="logEngineComponentRef/logEngineServiceRef" />-->
+		<sca:reference name="simulationEngine"/><!-- promote="simulationEngineComponentRef/simulationEngineServiceRef" />-->
 	</sca:component>
+
+	<sca:wire source="replayEngineComponent/templateEngine" target="templateEngineComponentRef/templateEngineServiceRef"/>
+    <sca:component name="templateEngineComponentRef">
+    	<sca:service name="templateEngineServiceRef">
+    		<sca:interface.java interface="org.easysoa.proxy.core.api.template.TemplateEngine" />
+    	</sca:service>
+		<sca:implementation.composite name="templateEngine.composite" />    	
+    </sca:component>
+    <sca:wire source="replayEngineComponent/assertionEngine" target="assertionEngineComponentRef/assertionEngineServiceRef"/>
+    <sca:component name="assertionEngineComponentRef">
+    	<sca:service name="assertionEngineServiceRef">
+    		<sca:interface.java interface="org.easysoa.proxy.core.api.records.assertions.AssertionEngine" />
+    	</sca:service>
+		<sca:implementation.composite name="assertionEngine.composite" />    	
+    </sca:component>
+    <sca:wire source="replayEngineComponent/logEngine" target="logEngineComponentRef/logEngineServiceRef"/>
+    <sca:component name="logEngineComponentRef">
+    	<sca:service name="logEngineServiceRef">
+			<sca:interface.java interface="org.easysoa.proxy.core.api.logs.LogEngine" />
+    	</sca:service>
+		<sca:implementation.composite name="logEngine.composite" />    	
+    </sca:component>
+    <sca:wire source="replayEngineComponent/simulationEngine" target="simulationEngineComponentRef/simulationEngineServiceRef"/>
+    <sca:component name="simulationEngineComponentRef">
+    	<sca:service name="simulationEngineServiceRef">
+    		<sca:interface.java interface="org.easysoa.proxy.core.api.simulation.SimulationEngine" />
+    	</sca:service>
+		<sca:implementation.composite name="simulationEngine.composite" />    	
+    </sca:component>
 
 	<!-- Exchange replay service -->
 	<sca:component name="exchangeReplayServiceComponent">

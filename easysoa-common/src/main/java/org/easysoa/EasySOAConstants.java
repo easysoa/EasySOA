@@ -44,8 +44,9 @@ public class EasySOAConstants {
     
     // HTTP discovery proxy
     public static final int HTTP_DISCOVERY_PROXY_PORT = 8082;
-    public static final int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8084;
-	public static final int TWITTER_MOCK_PORT = 8088;
+    public static final int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8082;
+    //public static final int HTTP_DISCOVERY_PROXY_DRIVER_PORT = 8084;
+    public static final int TWITTER_MOCK_PORT = 8088;
 	public static final int METEO_MOCK_PORT = 8085;
 	public static final int EXCHANGE_RECORD_REPLAY_SERVICE_PORT = 8086; 
 	//public static final int NUXEO_MOCK_PORT = 8087;

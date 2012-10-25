@@ -10,7 +10,7 @@
 	<!-- Handler manager -->
 	<!--<sca:service name="handlerManager" promote="handlerManagerBaseComp"/ -->
   	
-	<sca:component name="handlerManagerBaseComp">
+	<!--<sca:component name="handlerManagerBaseComp">
 		<sca:implementation.composite name="handlerManagerBase"/>
 	</sca:component>-->
 

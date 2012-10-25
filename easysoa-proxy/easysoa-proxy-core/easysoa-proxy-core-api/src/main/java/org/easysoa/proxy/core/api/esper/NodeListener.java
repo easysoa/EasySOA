@@ -31,6 +31,9 @@ import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 
 /**
+ * Esper listener for Node objects
+ * 
+ * Node objects are used in the monitoring service to build the service tree.
  * 
  * @author jguillemotte
  *

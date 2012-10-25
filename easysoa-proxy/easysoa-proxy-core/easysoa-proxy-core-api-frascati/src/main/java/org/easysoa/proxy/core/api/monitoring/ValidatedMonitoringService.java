@@ -58,7 +58,6 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	public ValidatedMonitoringService() throws Exception{
 		// init & fill it from Nuxeo
 		logger.debug("Mode = VALIDATED !!");
-		//unknownMessagesList = new ArrayDeque<Message>();
 		unknownExchangeRecordList = new ArrayDeque<ExchangeRecord>();
 		monitoringModel = new MonitoringModel();
 		monitoringModel.fetchFromNuxeo();
@@ -95,9 +94,6 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	}
 
 	@Override
-	/*public void listen(Message message) {
-		listen(message, esperEngine);
-	}*/
 	public void listen(ExchangeRecord exchangeRecord){
 		listen(exchangeRecord, esperEngine);
 	}

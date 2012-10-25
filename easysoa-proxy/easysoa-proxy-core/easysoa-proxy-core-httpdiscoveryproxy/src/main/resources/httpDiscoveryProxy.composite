@@ -2,30 +2,28 @@
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
-               xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy"
->
+               xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy">
 
-    <!-- <sca:include name="runManager" /> -->
-    <!--<sca:include name="handlerManagerBase"/>-->
-    <!--<sca:include name="subscriptionEngine"/>-->
     <!-- HTTP Proxy -->
     <!-- Run with default mode : Discovery -->
     <sca:component name="httpProxyService">
         <sca:implementation.java class="org.easysoa.proxy.HttpDiscoveryProxy" />
         <sca:service name="httpServiceInput">
-            <sca:interface.java interface="javax.servlet.Servlet" />
+            <sca:interface.java interface="javax.servlet.Servlet" /><!-- TODO not required because already said ? -->
             <tuscany:binding.http uri="http://localhost:8082/" />
         </sca:service>
-        <sca:reference name="handlerManager" target = "handlerManagerServBaseComp/handlerManagerComponentService">
+        <sca:reference name="handlerManager">
         	<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
-       	</sca:reference>
-        <!--<sca:reference name="handlerManager" target = "handlerManagerComponent/handlerManagerServiceBase" >
-            <sca:interface.java interface="org.easysoa.exchangehandler.HandlerManager" />
-        </sca:reference>-->
+        </sca:reference>
+        <!--<sca:reference name="handlerManager" target="handlerManagerServBaseComp/handlerManagerComponentService">
+        	<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
+       	</sca:reference>-->
         <sca:property name="proxyPort">8082</sca:property>
         <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
         <sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>
     </sca:component>
+    
+    <sca:wire source="httpProxyService/handlerManager" target="handlerManagerServBaseComp/handlerManagerComponentService"/>
 
 	<!-- Handler manager -->
 	<sca:component name="handlerManagerServBaseComp">
@@ -35,166 +33,13 @@
 	    <sca:implementation.composite name="handlerManagerBase.composite"/>
 	</sca:component>
 
-    <!-- HTTP Client to drive the proxy -->
-    <!--<sca:component name="httpProxyDriver">
-        <sca:implementation.java
-            class="org.easysoa.proxy.HttpProxyDriverImpl" />
-        <sca:service name="httpServiceDriver">
-            <sca:interface.java interface="org.easysoa.proxy.HttpProxyDriver" />
-            <frascati:binding.rest uri="http://localhost:8084/" />
-        </sca:service>
-        <sca:reference name="runManager" target="runManagerComponent">
-            <sca:interface.java interface="org.easysoa.run.RunManager" />
-        </sca:reference>
-    </sca:component> -->
-	
-    <!-- Exchange replay service -->
-    <!--<sca:component name="exchangeReplayServiceComponent">
-          		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
-          		<sca:service name="exchangeReplayService">
-                 			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
-                 			<frascati:binding.rest uri="http://localhost:8086/" />
-          		</sca:service>
-          		<sca:reference name="replayEngine" target="replayEngineComponent" />
-   	</sca:component>-->
-
-    <!-- Client UI for RunManager and Exchange store, Works with velocity -->
-    <!--<sca:component name="runManagerUIComponent">
-<implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="runManagerUITemplate.html" location="webContent" />
-<sca:service name="velocity">
-  		<tuscany:binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/runManager" />
-</sca:service>
-  		<sca:reference name="runManager" target="runManagerComponent/runManagerService" />
-  		<sca:reference name="exchangeRecordStoreManager" target="exchangeStoreManagerComponent/exchangeStoreManagerService" />-->
-    <!-- Proxy implementation Velocity -->
-    <!--<sca:reference name="compositeTemplates" target="TemplateProcessor/processor" />
-   	</sca:component>-->
-	
-    <!--  Template processor -->
-    <!--<sca:service name="processor" promote="TemplateProcessor/processor"/>-->
-
-    <!-- Component for proxy implementation Velocity -->
-    <!--<sca:component name="TemplateProcessor">
-          		<sca:implementation.java class="org.easysoa.template.TemplateRenderer" />
-          		<sca:service name="processor">
-                 			<sca:interface.java interface="org.easysoa.template.TemplateProcessorRendererItf" />
-          		</sca:service>
-          		<sca:reference name="template">
-                 			<sca:interface.java interface="org.easysoa.template.TemplateRendererItf" />
-          		</sca:reference>
-   	</sca:component>-->
-	
-    <!--<sca:component name="ProxyWSTemplate">
-          		<implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="webContent/templates" default="template.vm" />
-          		<sca:service name="template">
-                 			<sca:interface.java interface="org.easysoa.template.TemplateRendererItf" />
-          		</sca:service>
-          		<sca:property name="pathArgIndex" type="xsd:int">0</sca:property>
-          		<sca:property name="storeIndex" type="xsd:int">1</sca:property>
-   	</sca:component>
-   	<sca:wire source="TemplateProcessor/template" target="ProxyWSTemplate/template" />-->
-
-    <!-- Monitoring service -->
-    <!--<sca:component name="monitoringServiceComponent">
-          		<sca:service name="monitoringServiceService">
-                 			<sca:interface.java interface="org.easysoa.monitoring.MonitoringService" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.monitoring.DiscoveryMonitoringService" />
-          		<sca:reference name="esperEngine" target="esperEngineComponent" />
-   	</sca:component>-->
-
-    <!-- Run Manager -->
-    <!--<sca:component name="runManagerComponent">
-          		<sca:service name="runManagerService">
-                 			<sca:interface.java interface="org.easysoa.run.RunManager" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.run.RunManagerImpl" />
-          		<sca:reference name="monitoringService" target="monitoringServiceComponent" />
-          		<sca:reference name="exchangeNumberGenerator" target="exchangeNumberGeneratorComponent" />
-   	</sca:component>-->
-	
-    <!-- Exchange record Manager -->
-    <!--<sca:component name="exchangeStoreManagerComponent">
-          		<sca:service name="exchangeStoreManagerService">
-                 			<sca:interface.java interface="org.easysoa.records.replay.ExchangeReplayService" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.records.replay.ExchangeReplayServiceImpl" />
-   	</sca:component>-->
-	
-    <!-- Esper Engine -->
-    <!--<sca:component name="esperEngineComponent">
-          		<sca:service name="esperEngineService">
-                 			<sca:interface.java interface="org.easysoa.esper.EsperEngine" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.esper.EsperEngineImpl" />
-   	</sca:component>-->
-	
-    <!--  ReplayEngine service -->
-    <!--<sca:service name="replayEngineService" promote="replayEngineComponent/replayEngineService"/>-->	
-	
-    <!-- Exchange replay service -->
-    <!--<sca:component name="replayEngineComponent">
-          		<sca:service name="replayEngineService">
-                 			<sca:interface.java interface="org.easysoa.records.replay.ReplayEngine" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.records.replay.ReplayEngineImpl" />
-          		<sca:reference name="templateEngine" target="templateEngineComponent" />
-          		<sca:reference name="assertionEngine" target="assertionEngineComponent" />
-          		<sca:reference name="logEngine" target="logEngineComponent" />
-   	</sca:component>-->
-	
-    <!-- Template engine -->
-    <!--<sca:component name="templateEngineComponent">
-          		<sca:service name="templateEngineService">
-                 			<sca:interface.java interface="org.easysoa.template.TemplateEngine" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.template.TemplateEngineImpl" />
-          		<sca:reference name="templateRenderer" target="TemplateProcessor" />
-   	</sca:component>-->
-		
-    <!-- Assertion engine -->
-    <!--<sca:component name="assertionEngineComponent">
-          		<sca:service name="assertionEngineService">
-                 			<sca:interface.java interface="org.easysoa.records.assertions.AssertionEngine" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.records.assertions.AssertionEngineImpl" />
-    <sca:reference multiplicity="0..n" name="assertions">
-        <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
-    </sca:reference>		
-   	</sca:component>-->
-	
-    <!-- Message assertion -->
-    <!--<sca:component name="messageAssertion">
-        <sca:service name="message-assertion">
-            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
-        </sca:service>
-        <sca:implementation.java class="org.easysoa.records.assertions.MessageAssertion" />        
-    </sca:component>
-    <sca:wire source="assertionEngineComponent/assertions" target="messageAssertion/message-assertion" />-->	
-	
-    <!-- String assertion -->
-    <!--<sca:component name="stringAssertion">
-        <sca:service name="string-assertion">
-            <sca:interface.java interface="org.easysoa.records.assertions.Assertion" />
-        </sca:service>
-        <sca:implementation.java class="org.easysoa.records.assertions.StringAssertion" />        
-    </sca:component>
-    <sca:wire source="assertionEngineComponent/assertions" target="stringAssertion/string-assertion" />-->
-	
-    <!-- Log engine -->
-    <!--<sca:component name="logEngineComponent">
-          		<sca:service name="logEngineService">
-                 			<sca:interface.java interface="org.easysoa.logs.LogEngine" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.logs.LogEngineImpl" />
-   	</sca:component>-->
-
-    <!-- Exchange number generator -->
-    <!--<sca:component name="exchangeNumberGeneratorComponent">
-          		<sca:service name="exchangeNumberGeneratorService">
-                 			<sca:interface.java interface="org.easysoa.messages.server.NumberGenerator" />
-          		</sca:service>
-          		<sca:implementation.java class="org.easysoa.messages.server.ExchangeNumberGenerator" />
-   	</sca:component>-->
+	<!-- Run Manager driver binding configuration -->
+	<sca:component name="runManagerDriverServiceComponent">
+		<sca:service name="runManagerDriverService"><!--  target="runManagerDriver/runManagerServiceDriver" -->
+			<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManagerDriver" /><!-- TODO not required because already said ? -->
+			<frascati:binding.rest uri="http://localhost:8084/" />
+		</sca:service>
+		<sca:implementation.composite name="runManagerDriver.composite"/>
+	</sca:component>
 
 </sca:composite>

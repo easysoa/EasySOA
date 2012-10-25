@@ -9,10 +9,16 @@
       <compositeName>handlerManager</compositeName>
     </app>
    
-    <app name="EasySOA Proxy Core HTTP Monitoring Proxy">
+    <!--<app name="EasySOA Proxy Core HTTP Monitoring Proxy">
       <jarPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT/bin/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT.jar</jarPath>
       <libsPath>nxserver/frascati/apps/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT/lib</libsPath>
       <compositeName>httpDiscoveryProxy</compositeName>
+    </app>-->
+
+    <app name="EasySOA Proxy app">
+      <jarPath>nxserver/frascati/apps/easysoa-proxy-easysoaapp-0.5-SNAPSHOT/bin/easysoa-proxy-core-easysoaapp-0.5-SNAPSHOT.jar</jarPath>
+      <libsPath>nxserver/frascati/apps/easysoa-proxy-easysoaapp-0.5-SNAPSHOT/lib</libsPath>
+      <compositeName>easysoaapp</compositeName>
     </app>
     
     <app name="EasySOA Proxy core Scaffolding Proxy">

@@ -2,42 +2,34 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>easysoa-proxy-core-handlermanager</artifactId>
-  <name>EasySOA Proxy core handler manager project</name>
+  <artifactId>easysoa-proxy-easysoaapp</artifactId>
+  <name>EasySOA Proxy easysoa app</name>
   <packaging>jar</packaging>
 
   <parent>
     <groupId>org.easysoa.proxy</groupId>
     <artifactId>easysoa-proxy-parent</artifactId>
     <version>0.5-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
    
 	<dependencies>
-    	<!-- log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-    	<!-- java rest webservices -->
+		<!-- Easysoa dependencies -->
     	<dependency>
-      		<groupId>javax.ws.rs</groupId>
-      		<artifactId>jsr311-api</artifactId>
-      		<scope>provided</scope>
-	    </dependency>
-	    <!-- Easysoa dependencies -->
-	    <dependency>
-			<groupId>org.easysoa.proxy</groupId>
-			<artifactId>easysoa-proxy-core-api</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.easysoa.proxy</groupId>
-			<artifactId>easysoa-proxy-core-api-frascati</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
+    		<groupId>org.easysoa.proxy</groupId>
+  			<artifactId>easysoa-proxy-core-api</artifactId>
+  			<scope>provided</scope>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.easysoa.proxy</groupId>
+  			<artifactId>easysoa-proxy-core-api-frascati</artifactId>
+  			<scope>provided</scope>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.easysoa.proxy</groupId>
+  			<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
+  			<scope>provided</scope>
+    	</dependency>
     	<!-- Frascati dependencies -->
 		<dependency> 
 			<groupId>org.ow2.frascati</groupId>
@@ -79,21 +71,7 @@
 			<groupId>org.apache.tuscany.sca</groupId>
 			<artifactId>tuscany-sca-all</artifactId>
 			<scope>provided</scope>
-		</dependency>
-    	<dependency>
-    		<groupId>org.easysoa.proxy</groupId>
-  			<artifactId>easysoa-proxy-core-api</artifactId>
-  			<scope>provided</scope>
-    	</dependency>
-    	
-		<!-- Tests -->
-		<!-- junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>    	
-    	
 	</dependencies>
 
 	<build>
@@ -157,7 +135,7 @@
 				</executions>
 				<configuration>
 					<composites>
-						<composite>handlerManager</composite>
+						<composite>easysoaapp</composite>
 					</composites>
 					<loggingConfFile>${frascati.logging.properties}</loggingConfFile>
 					<lifecycleMappingMetadata>
@@ -199,7 +177,7 @@
 						<groupId>org.ow2.frascati</groupId>
 						<artifactId>frascati-implementation-velocity</artifactId>
 						<version>${frascati.version}</version>
-					</dependency>					
+					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
