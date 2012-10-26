@@ -29,7 +29,7 @@ import org.easysoa.proxy.core.api.monitoring.apidetector.UrlTree;
 import org.easysoa.records.ExchangeRecord;
 
 /**
- * 
+ * Abstract monitoring service
  * @author jguillemotte
  *
  */
@@ -79,13 +79,12 @@ public abstract class AbstractMonitoringService implements MonitoringService {
     }
         
     /**
-     * 
-     * @param message 
-     * @param esperEngine 
+     * Listen the exchange 
+     * @param exchangeRecord The exchange record to listen
+     * @param esperEngine Esper engine instance
      */
 	public void listen(ExchangeRecord exchangeRecord, EsperEngine esperEngine){
 	    logger.debug("Listenning exchange record : " + exchangeRecord);
-		
 	    for(MessageHandler mh : messageHandlers){
 	    	// Call each messageHandler, when the good message handler is found, stop the loop
 	    	if(mh.isOkFor(exchangeRecord)){

@@ -25,11 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeoutException;
-
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
-
 import org.apache.log4j.Logger;
 import org.easysoa.message.Header;
 import org.easysoa.message.Headers;
@@ -53,7 +50,6 @@ import org.easysoa.proxy.core.api.template.VelocityTemplate;
 import org.easysoa.records.Exchange;
 import org.easysoa.records.Exchange.ExchangeType;
 import org.easysoa.records.ExchangeRecord;
-
 
 /**
  * Take a ExchangeRecordStoreArray and store the Exchange records as files in

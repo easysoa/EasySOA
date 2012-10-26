@@ -25,7 +25,11 @@ import java.util.ArrayDeque;
 import org.easysoa.proxy.core.api.monitoring.apidetector.UrlTree;
 import org.easysoa.records.ExchangeRecord;
 
-
+/**
+ * Monitoring service interface
+ * @author jguillemotte
+ *
+ */
 public interface MonitoringService {
 
 	/**

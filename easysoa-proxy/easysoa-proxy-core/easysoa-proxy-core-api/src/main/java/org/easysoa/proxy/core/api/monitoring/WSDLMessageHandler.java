@@ -91,7 +91,6 @@ public class WSDLMessageHandler implements MessageHandler {
         
         // For discovery mode => each service is considered as a new service
         // No need to trigger an esper event to update the call count value.
-        System.out.println("Ce code n'est pas mis a jour .......");
         
         if(monitoringService.getModel() != null){
             Node soaNode = null;

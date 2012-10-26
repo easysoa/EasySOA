@@ -48,11 +48,15 @@ import org.json.JSONObject;
 
 /**
  * This class regroups all the method required to send requests to Nuxeo.
+ * - Requests to register API, services and appli in Easysoa Nuxeo model
+ * - Request to get already registered API, services and appli for validated mode
  * @author jguillemotte
  *
  */
 public class NuxeoRegistrationService {
 	
+    // TODO : to be refactored for Easysoa model V1
+    
 	/**
 	 * Logger
 	 */
@@ -74,7 +78,7 @@ public class NuxeoRegistrationService {
 	 * @throws Exception 
 	 */
     // TODO Test
-	public String registerWSDLService(Service service) throws Exception{
+    public String registerWSDLService(Service service) throws Exception{
         logger.debug("[registerWSDLService()] --- Message url : " + service.getUrl().toString());
 	    return registerService(service);
 	}
@@ -109,7 +113,8 @@ public class NuxeoRegistrationService {
           }
         }
         */
-        RestNotificationRequest request = factory.createNotification(RestDiscoveryService.SERVICE);
+	    logger.debug("[registerService()] --- Message url : " + service.getUrl().toString());
+	    RestNotificationRequest request = factory.createNotification(RestDiscoveryService.SERVICE);
         
         request.setProperty(org.easysoa.doctypes.Service.PROP_URL, service.getUrl()); // ex. http://localhost:9080/CreateSummary
         request.setProperty(org.easysoa.doctypes.Service.PROP_PARENTURL, service.getUrl().substring(0, service.getUrl().lastIndexOf('/'))); // ex.    http://localhost:9080

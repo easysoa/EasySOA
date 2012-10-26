@@ -108,12 +108,6 @@ public interface RunManager {
 	public void record(ExchangeRecord exchangeRecord);
 	
 	/**
-	 * Returns the list of all recorded runs in their record order
-	 * @return Return the names of all recorded runs
-	 */
-	//public List<String> getOrderedRunNames();
-	
-	/**
 	 * Rerun a the specified run
 	 * @param runName The run to rerun
 	 */

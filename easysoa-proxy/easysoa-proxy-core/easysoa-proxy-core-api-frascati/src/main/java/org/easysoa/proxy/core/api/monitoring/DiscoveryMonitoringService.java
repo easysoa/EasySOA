@@ -94,7 +94,6 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	 * Register the children of the node
 	 * @param node The node 
 	 */
-	//TODO Method used in class UrlTreeEventListener !!!
 	private void registerChildren(UrlTreeNode node) {
 	    
 		NuxeoRegistrationService nrs = null;
@@ -150,6 +149,7 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 				service.setDescription(childNode.getNodeName());
 				//service.setHttpMethod(childNode.getMessages().getLast().getMethod());
 				service.setHttpMethod(childNode.getMessages().getLast().getInMessage().getMethod());
+				//if(!"ok".equals(nrs.registerRestService(service))){
 				if(!"ok".equals(nrs.registerRestService(service))){
 					childNode.setRegistered();
 				}

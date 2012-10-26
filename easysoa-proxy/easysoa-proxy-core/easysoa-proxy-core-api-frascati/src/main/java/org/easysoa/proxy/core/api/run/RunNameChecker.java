@@ -1,7 +1,6 @@
 package org.easysoa.proxy.core.api.run;
 
 import org.apache.log4j.Logger;
-import org.easysoa.proxy.core.api.messages.server.NumberGeneratorSingleton;
 
 /**
  * Run name checker
@@ -10,8 +9,10 @@ import org.easysoa.proxy.core.api.messages.server.NumberGeneratorSingleton;
  */
 public class RunNameChecker {
 
+    // Logger
     private Logger logger = Logger.getLogger(RunNameChecker.class.getName());
     
+    // Singleton
     private static RunNameChecker checkerInstance = null;    
     
     /**
@@ -23,7 +24,7 @@ public class RunNameChecker {
             checkerInstance = new RunNameChecker();
         }
         return checkerInstance;
-    }    
+    }
     
     /**
      * 
@@ -31,10 +32,10 @@ public class RunNameChecker {
      * @return
      */
     public boolean checkUniqueRunName(String runName) {
-       
+
         // Get the registered runs name in store folder
         
-        // how to have access to the run names of all run manager instances ????
+        // how to have access to the run names of all run manager instances ???? (get a list at startup ?)
         // add a nameRegister method ??
         // in the case the run is deleted but not saved => how to remove the unused run name ??
         

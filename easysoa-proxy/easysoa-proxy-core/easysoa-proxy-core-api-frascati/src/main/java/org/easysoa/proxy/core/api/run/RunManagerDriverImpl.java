@@ -40,7 +40,7 @@ import org.osoa.sca.annotations.Scope;
  */
 @Scope("composite")
 public class RunManagerDriverImpl implements RunManagerDriver {
-	
+    
 	/**
 	 * Logger
 	 */
@@ -54,9 +54,6 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	 */
 	@Reference
 	RunManager runManager;
-	
-	// Have to refactor these impl to have a run manager driver independant of proxy
-	// how to have a configurator and property manager separated between the proxy and the run manager but using the same property file ...
 	
 	static {
 		ProxyConfigurator.configure(RunManagerDriverImpl.class);
@@ -79,7 +76,8 @@ public class RunManagerDriverImpl implements RunManagerDriver {
     }
 	
     /**
-     * 
+     * return usage informations as HTML data
+     * @return HTML formated usage informations
      */
 	public String returnUseInformations(UriInfo ui) {
 		logger.debug("Returning help informations");
@@ -105,6 +103,7 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 
 	/**
 	 * Start a new run
+	 * @param runName The run name
 	 */
 	public String startNewRun(String runName) {
 		logger.debug("Starting a new run !");

@@ -23,7 +23,11 @@ package org.easysoa.proxy.core.api.monitoring;
 import org.easysoa.proxy.core.api.esper.EsperEngine;
 import org.easysoa.records.ExchangeRecord;
 
-
+/**
+ * Message handler interface
+ * @author jguillemotte
+ *
+ */
 public interface MessageHandler {
 	
 	/**
@@ -32,7 +36,6 @@ public interface MessageHandler {
 	 * @return True if the message can be handled, false otherwise
 	 * @throws Exception 
 	 */
-	//public boolean isOkFor(Message message);
 	public boolean isOkFor(ExchangeRecord exchangeRecord);
 	
 	/**
@@ -40,7 +43,6 @@ public interface MessageHandler {
 	 * @param message The message to handle
 	 */
 	// TODO : Monitoring service as parameter here is not a good solution, find an other way ...
-	//public boolean handle(Message message, MonitoringService monitoringService, EsperEngine esperEngine);
 	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine);
 	
 

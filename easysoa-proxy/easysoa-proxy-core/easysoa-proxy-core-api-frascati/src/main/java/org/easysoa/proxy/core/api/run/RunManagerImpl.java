@@ -62,7 +62,6 @@ public class RunManagerImpl implements RunManager {
     // one different run manager for each proxy ... We need to avoid duplicate run names ....
     // How to give a name to the current name ??
     // - Client must be give id used as a prefix or suffix ?
-    // - 
 
 	/**
 	 * Logger
@@ -247,19 +246,6 @@ public class RunManagerImpl implements RunManager {
             }
         }
 	}
-
-	/* (non-Javadoc)
-	 * @see org.easysoa.esperpoc.run.RunManager#getOrderedRunNames()
-	 */	
-	/*@Override
-	public List<String> getOrderedRunNames() {
-		ArrayList<String> runsNameList = new ArrayList<String>();
-		Iterator<Run> runIterator = runList.descendingIterator();
-		while(runIterator.hasNext()){
-			runsNameList.add(runIterator.next().getName());
-		}
-		return runsNameList;
-	}*/
 	
 	/* (non-Javadoc)
 	 * @see org.easysoa.esperpoc.run.RunManager#reRun()

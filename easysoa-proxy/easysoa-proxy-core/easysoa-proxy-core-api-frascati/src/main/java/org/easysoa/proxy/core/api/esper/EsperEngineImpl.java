@@ -22,7 +22,7 @@ package org.easysoa.proxy.core.api.esper;
 
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.esper.EsperEngine;
-import org.easysoa.proxy.core.api.esper.MessageListener;
+import org.easysoa.proxy.core.api.esper.ExchangeListener;
 import org.easysoa.proxy.core.api.esper.NodeListener;
 import org.easysoa.proxy.core.api.monitoring.soa.Node;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
@@ -36,7 +36,7 @@ import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
 /**
- * Esper engine
+ * Esper engine implementation
  * @author jguillemotte
  *
  */
@@ -62,11 +62,9 @@ public class EsperEngineImpl implements EsperEngine {
 		// Esper configuration
 		Configuration cepConfig = new Configuration();
         
-		// Registering Message and Node as objects the engine will have to handle
-        //cepConfig.addEventType("Message", Message.class);
+		// Registering Exchangerecord and Node as objects the engine will have to handle
 		cepConfig.addEventType("ExchangeRecord", ExchangeRecord.class);
         cepConfig.addEventType("Node", Node.class);
-        //cepConfig.addEventType("UrlTreeNodeEvent", UrlTreeNodeEvent.class);
     	EPServiceProvider cep = EPServiceProviderManager.getProvider("myCEPEngine",cepConfig);
     	
     	// Getting Esper runtime and Esper admin
@@ -74,19 +72,18 @@ public class EsperEngineImpl implements EsperEngine {
     	esperAdmin = cep.getEPAdministrator();
 
     	// Add statement & listener
-    	//logger.debug("Registering EPL statement :" + PropertyManager.getProperty("esper.message.listener.statement"));
-    	//EPStatement cepStatementMessage = esperAdmin.createEPL(PropertyManager.getProperty("esper.message.listener.statement"));
     	PropertyManager propertyManager = PropertyManager.getPropertyManager();
+    	// Statement for ExchangeRecord objects
     	logger.debug("Registering EPL statement :" + propertyManager.getProperty("esper.exchange.listener.statement"));
-    	EPStatement cepStatementMessage = esperAdmin.createEPL(propertyManager.getProperty("esper.exchange.listener.statement"));    	
-    	cepStatementMessage.addListener(new MessageListener());
+    	EPStatement cepStatementExchange = esperAdmin.createEPL(propertyManager.getProperty("esper.exchange.listener.statement"));    	
+    	cepStatementExchange.addListener(new ExchangeListener());
+        // Statement for Node objects
     	logger.debug("Registering EPL statement :" + propertyManager.getProperty("esper.node.listener.statement"));
     	EPStatement cepStatementNode = esperAdmin.createEPL(propertyManager.getProperty("esper.node.listener.statement"));
     	cepStatementNode.addListener(new NodeListener());    	
 	}
 
 	@Override
-	//public void sendEvent(Message message) {
 	public void sendEvent(ExchangeRecord exchangeRecord) {
 		logger.debug("Sending Exchange record event");
 		this.esperRuntime.sendEvent(exchangeRecord);
@@ -97,6 +94,5 @@ public class EsperEngineImpl implements EsperEngine {
 		logger.debug("Sending Node event");
 		this.esperRuntime.sendEvent(soaNode);		
 	}
-	
 	
 }

@@ -32,7 +32,11 @@ import org.easysoa.proxy.core.api.monitoring.soa.Node;
 import org.easysoa.proxy.core.api.monitoring.soa.Service;
 import org.easysoa.proxy.core.api.nuxeo.registration.NuxeoRegistrationService;
 
-
+/**
+ * Monitoring model for registering services, api's and appli's in Nuxeo
+ * @author jguillemotte
+ *
+ */
 public class MonitoringModel {
 
 	public static final String SERVICE_TYPE = "Service";
