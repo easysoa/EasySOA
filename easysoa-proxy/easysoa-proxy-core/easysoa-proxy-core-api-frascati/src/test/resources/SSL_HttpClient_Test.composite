@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+  xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+  name="SSL_HttpClient_Test">
+
+  <component name="HelloworldSampleHttpsServer">
+    <implementation.java class="org.easysoa.proxy.ssl.test.helloworld.Server" />
+    <service name="HelloService">
+      <interface.java interface="org.easysoa.proxy.ssl.test.helloworld.HelloService" />
+      <frascati:binding.rest uri="https://localhost:9090/HelloService"/>
+    </service>
+  </component>
+
+  <!--<service name="Runnable" promote="HelloworldSampleHttpsClient/Runnable" />
+
+  <component name="HelloworldSampleHttpsClient">
+    <service name="Runnable">
+      <interface.java interface="java.lang.Runnable" />
+    </service>
+    <implementation.java class="org.easysoa.proxy.ssl.test.helloworld.HttpClient" />
+  </component>-->
+
+</composite>

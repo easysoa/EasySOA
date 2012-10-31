@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+  * OW2 FraSCAti Examples: HelloWorld REST with HTTPS
+  *
+  * Copyright (c) 2012 Inria, University of Lille 1
+  *
+  * This library is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU Lesser General Public
+  * License as published by the Free Software Foundation; either
+  * version 2 of the License, or (at your option) any later version.
+  *
+  * This library is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  * Lesser General Public License for more details.
+  *
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with this library; if not, write to the Free Software
+  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+  * USA
+  *
+  * Contact: frascati@ow2.org
+  *
+  * Author: Philippe Merle
+  *
+  * Contributor:
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:sec="http://cxf.apache.org/configuration/security"
+       xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://cxf.apache.org/configuration/security  		      
+           http://cxf.apache.org/schemas/configuration/security.xsd
+           http://cxf.apache.org/transports/http-jetty/configuration
+           http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+           http://cxf.apache.org/core
+           http://cxf.apache.org/schemas/core.xsd">
+
+  <!-- See at http://cxf.apache.org/docs/configuration.html for details on how to configure Apache CXF. -->
+
+  <!-- Logging in and out interactions. -->
+  <cxf:bus>
+    <cxf:features>
+      <cxf:logging/>
+    </cxf:features>
+  </cxf:bus>
+
+  <!-- Configure HTTPS for server-side. -->
+  <httpj:engine-factory>
+   <httpj:engine port="9090">
+    <httpj:tlsServerParameters>
+      <sec:keyManagers keyPassword="password">
+           <sec:keyStore type="JKS" password="password" file="src/test/resources/certificates/server.jks"/>
+      </sec:keyManagers>
+      <sec:trustManagers>
+          <sec:keyStore type="JKS" password="password" file="src/test/resources/certificates/truststore.jks"/>
+      </sec:trustManagers>
+      <sec:cipherSuitesFilter>
+        <!-- these filters ensure that a ciphersuite with
+          export-suitable or null encryption is used,
+          but exclude anonymous Diffie-Hellman key change as
+          this is vulnerable to man-in-the-middle attacks -->
+        <sec:include>.*_EXPORT_.*</sec:include>
+        <sec:include>.*_EXPORT1024_.*</sec:include>
+        <sec:include>.*_WITH_DES_.*</sec:include>
+        <sec:include>.*_WITH_AES_.*</sec:include>
+        <sec:include>.*_WITH_NULL_.*</sec:include>
+        <sec:exclude>.*_DH_anon_.*</sec:exclude>
+      </sec:cipherSuitesFilter>
+      <sec:clientAuthentication want="true" required="true"/>
+    </httpj:tlsServerParameters>
+   </httpj:engine>
+  </httpj:engine-factory>
+
+</beans>
