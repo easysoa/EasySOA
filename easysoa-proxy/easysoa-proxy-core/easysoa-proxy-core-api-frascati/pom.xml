@@ -76,7 +76,7 @@
       		<groupId>org.ow2.frascati</groupId>
       		<artifactId>frascati-binding-factory</artifactId>
       		<version>${frascati.version}</version>
-			<scope>test</scope>      		
+			<scope>test</scope>
     	</dependency>
     	<dependency>
       		<groupId>org.ow2.frascati</groupId>
@@ -126,6 +126,13 @@
       		<version>${frascati.version}</version>
 			<scope>test</scope>
     	</dependency>
+    	<dependency>
+      		<groupId>xml-apis</groupId>
+      		<artifactId>xml-apis</artifactId>
+      		<version>1.4.01</version>
+			<scope>test</scope>    	
+    	</dependency>
+    	
 	</dependencies>
 
 </project>
