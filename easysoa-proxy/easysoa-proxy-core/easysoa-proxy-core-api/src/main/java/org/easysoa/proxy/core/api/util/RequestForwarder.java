@@ -23,6 +23,11 @@ package org.easysoa.proxy.core.api.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -49,6 +54,7 @@ import org.easysoa.message.InMessage;
 import org.easysoa.message.MessageContent;
 import org.easysoa.message.OutMessage;
 import org.easysoa.message.QueryParam;
+import org.easysoa.proxy.core.ssl.HttpClientSSLConfigurator;
 import org.easysoa.servlet.http.CopyHttpServletResponse;
 
 /**
@@ -64,7 +70,10 @@ public class RequestForwarder {
 	static Logger logger = Logger.getLogger(RequestForwarder.class.getName());	
 	
 	// Retry handler
-	private HttpRequestRetryHandler retryHandler; 
+	private HttpRequestRetryHandler retryHandler;
+	// SLL Configurator
+	private HttpClientSSLConfigurator httpClientSSLConfigurator;
+	
 	// Timeouts
 	private int forwardHttpConnexionTimeoutMs;
 	private int forwardHttpSocketTimeoutMs;
@@ -81,16 +90,23 @@ public class RequestForwarder {
 	public RequestForwarder(){
 		forwardHttpConnexionTimeoutMs = -1;
 		forwardHttpSocketTimeoutMs = -1;
+		retryHandler = null;
+		httpClientSSLConfigurator = null;
 	}
 	
 	/**
 	 * send the HTTP REST request, build an <code>OutMessage</code> with the response
 	 * @param inMessage The request will be build with this message 
 	 * @throws IOException, ClientProtocolException If a problem occurs 
+	 * @throws CertificateException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyStoreException 
+	 * @throws UnrecoverableKeyException 
+	 * @throws KeyManagementException 
 	 */
 	// TODO : add a return type corresponding to the response
 	// TODO : works only with HTTP REST Request, need another implementation for SOAP
-	public OutMessage send(InMessage inMessage) throws ClientProtocolException, IOException{
+	public OutMessage send(InMessage inMessage) throws ClientProtocolException, IOException, KeyManagementException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException{
 	//public OutMessage send(Exchange type, InMessage inMessage) throws ClientProtocolException, IOException{		
 		// Case of REST request
 		/*if(inMessage.get){*/
@@ -121,14 +137,24 @@ public class RequestForwarder {
 	 * @return <code>OutMessage</code> the response as an OutMessage object
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
+	 * @throws CertificateException  
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyStoreException 
+	 * @throws UnrecoverableKeyException 
+	 * @throws KeyManagementException 
 	 */
-	private OutMessage sendRestRequest(InMessage inMessage) throws ClientProtocolException, IOException{
+	private OutMessage sendRestRequest(InMessage inMessage) throws ClientProtocolException, IOException, KeyManagementException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
 		// Default HTTP client
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		// Set retry handler
 		if(retryHandler != null){
 			httpClient.setHttpRequestRetryHandler(retryHandler);
 		}
+		// SSL client configuration
+		if(httpClientSSLConfigurator != null){
+		    httpClientSSLConfigurator.configureHttpClientSSL(httpClient);
+		}
+		
 		// set the connection timeout
 		HttpParams httpParams = httpClient.getParams();
 		if(forwardHttpConnexionTimeoutMs > 0){
@@ -280,6 +306,22 @@ public class RequestForwarder {
 	public HttpRequestRetryHandler getRetryHandler(){
 		return retryHandler;
 	}
+	
+    /**
+     * Set the http client SSL configurator
+     * @param configurator
+     */
+    public void setHttpClientSSLConfigurator(HttpClientSSLConfigurator configurator){
+        this.httpClientSSLConfigurator = configurator;
+    }
+
+    /**
+     * Get the http client SSL configurator
+     * @return <code>HttpClientSSLConfigurator</code>
+     */
+    public HttpClientSSLConfigurator getHttpClientSSLConfigurator(){
+        return this.httpClientSSLConfigurator;
+    }    
 	
 	/**
 	 * Returns the http connexion timeout in MS
