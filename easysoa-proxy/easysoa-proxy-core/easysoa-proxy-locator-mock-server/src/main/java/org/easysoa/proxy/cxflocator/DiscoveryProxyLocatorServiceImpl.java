@@ -15,7 +15,7 @@ import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
-import org.easysoa.registry.types.Service;
+import org.easysoa.registry.types.InformationService;
 import org.easysoa.registry.types.Endpoint;
 import org.talend.schemas.esb.locator._2011._11.BindingType;
 import org.talend.schemas.esb.locator._2011._11.LookupEndpointResponse;
@@ -82,7 +82,7 @@ public class DiscoveryProxyLocatorServiceImpl implements LocatorService {
                 Map<String, Serializable> nxProperties;
                 OperationResult result;
                 
-                SoaNodeId myServiceId = new SoaNodeId(Service.DOCTYPE, serviceName.getLocalPart());
+                SoaNodeId myServiceId = new SoaNodeId(InformationService.DOCTYPE, serviceName.getLocalPart());
                 nxProperties = new HashMap<String, Serializable>();
                 nxProperties.put("title", serviceName.getLocalPart());
                 // Call Rest Nuxeo service for registering Service

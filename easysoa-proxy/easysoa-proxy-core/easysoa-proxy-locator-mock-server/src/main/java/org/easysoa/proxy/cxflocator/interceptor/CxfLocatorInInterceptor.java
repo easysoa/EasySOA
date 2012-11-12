@@ -27,7 +27,7 @@ public class CxfLocatorInInterceptor extends AbstractPhaseInterceptor<Message> {
     public CxfLocatorInInterceptor() {
         super(Phase.PRE_INVOKE); // called before the actual service is called
     }
-
+    
     @Override
     public void handleMessage(Message message) throws Fault {
         try {
@@ -53,5 +53,5 @@ public class CxfLocatorInInterceptor extends AbstractPhaseInterceptor<Message> {
             throw new Fault(t);
         }
     }
-
+    
 }
