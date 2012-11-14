@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.util.RequestForwarder;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Property;
@@ -28,8 +29,10 @@ import org.osoa.sca.annotations.Scope;
 public class EventMessageHandlerImpl implements
 /* MessageHandler, */IEventMessageHandler {
 
+    //public static final String HANDLER_ID = "EventMessageHandler";    
+    
 	private ConditionsMatcher conditionsMatcher = new ConditionsMatcher();
-
+	
 	@Property
 	private int forwardHttpConnexionTimeoutMs;
 	@Property
@@ -223,4 +226,14 @@ public class EventMessageHandlerImpl implements
 		}
 		return conf;
 	}
+
+    @Override
+    public void setHandlerConfiguration(ProxyConfiguration configuration) {
+        // Nothing to do
+    }
+
+    /*@Override
+    public String getID() {
+        return HANDLER_ID;
+    }*/
 }

@@ -21,8 +21,6 @@
 package org.easysoa.proxy.core.api.monitoring;
 
 import java.util.ArrayDeque;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.esper.EsperEngine;
 import org.easysoa.proxy.core.api.monitoring.AbstractMonitoringService;
@@ -31,9 +29,13 @@ import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
-
 /**
  * Monitoring service for Validated mode
+ * 
+ * Validated mode get already discovered services from Nuxeo, then listen for exchanges.
+ * If a listened service is already in the list form Nuxeo, the call counter is increased
+ * otherwise the service is stored in an unknow service list (TODO later)
+ * 
  * @author jguillemotte
  *
  */
@@ -58,39 +60,23 @@ public class ValidatedMonitoringService extends AbstractMonitoringService {
 	public ValidatedMonitoringService() throws Exception{
 		// init & fill it from Nuxeo
 		logger.debug("Mode = VALIDATED !!");
+		monitoringMode = MonitoringMode.VALIDATED;
 		unknownExchangeRecordList = new ArrayDeque<ExchangeRecord>();
 		monitoringModel = new MonitoringModel();
 		monitoringModel.fetchFromNuxeo();
-		logger.debug("Validated mode : Printing monitoring model keyset");
-		for (String url : monitoringModel.getSoaModelUrlToTypeMap().keySet()) {
-			logger.debug("url = " + url + ", value = " + monitoringModel.getSoaModelUrlToTypeMap().get(url));
-		}
-		Iterator<String> urlIter = monitoringModel.getSoaModelUrlToTypeMap().keySet().iterator();
-		String url;
-		while(urlIter.hasNext()){
-			url = urlIter.next();
-			logger.debug("url = " + url + ", value = " + monitoringModel.getSoaModelUrlToTypeMap().get(url));
-		}
 		urlTree = null;
 	}
-	
-	/**
-	 * Return the monitoring mode
-	 * @return <code>MonitoringMode</code>
-	 */
-	public MonitoringMode getMode(){
-		return MonitoringMode.VALIDATED;
-	}	
 
 	@Override
 	public void registerUnknownMessagesToNuxeo() {
-		// TODO Auto-generated method stub
-
+		// Nothing to do, unknow messages are just ignored
+	    // TODO later, implements this method to register unknow services
 	}
 
 	@Override
 	public void registerDetectedServicesToNuxeo() {
-		// TODO Auto-generated method stub
+        // Nothing to do, services are already registered in nuxeo
+	    // Method used only in discovery mode
 	}
 
 	@Override

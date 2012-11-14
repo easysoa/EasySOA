@@ -57,17 +57,10 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 	 */
 	public DiscoveryMonitoringService(){
 		logger.debug("Mode = DISCOVERY !!");
+		monitoringMode = MonitoringMode.DISCOVERY;
 		monitoringModel = null;
 		urlTree = new UrlTree(new UrlTreeNode("root", ""));
 		unknownExchangeRecordList = null;
-	}
-
-	/**
-	 * Return the monitoring mode
-	 * @return <code>MonitoringMode</code>
-	 */
-	public MonitoringMode getMode(){
-		return MonitoringMode.DISCOVERY;
 	}
 	
 	/* (non-Javadoc)
@@ -121,7 +114,7 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 				}
 			}
 			// API detection
-			//TODO CHange the parameters to detect API (Hardcoded level parameter !)
+			//TODO Change the parameters to detect API (Hard coded level parameter !)
 			else if(childNode.getChildCount() > 0 && childNode.getRatioComplete(urlTree) == 0 && childNode.getLevel() >= 2 && childNode.getLevel() < 4 
 					&& childNode.getPartialUrlcallCount() > 5 && !childNode.isRegistered() && node.isRegistered()){
 				logger.debug("[registerChildren] --- new Api to register !!!!");
@@ -149,7 +142,6 @@ public class DiscoveryMonitoringService extends AbstractMonitoringService {
 				service.setDescription(childNode.getNodeName());
 				//service.setHttpMethod(childNode.getMessages().getLast().getMethod());
 				service.setHttpMethod(childNode.getMessages().getLast().getInMessage().getMethod());
-				//if(!"ok".equals(nrs.registerRestService(service))){
 				if(!"ok".equals(nrs.registerRestService(service))){
 					childNode.setRegistered();
 				}

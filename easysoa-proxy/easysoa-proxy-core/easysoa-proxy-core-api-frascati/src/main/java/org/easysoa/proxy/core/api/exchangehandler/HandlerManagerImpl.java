@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.osoa.sca.annotations.ConversationID;
 import org.osoa.sca.annotations.EndsConversation;
 import org.osoa.sca.annotations.Reference;
@@ -39,14 +40,16 @@ import org.osoa.sca.annotations.Scope;
 @Scope("conversation")
 public class HandlerManagerImpl implements HandlerManager {
 
-    /**
-     * Logger
-     */
+    public final static String HANDLER_ID = "HandlerManager";
+    
+    // Logger
     private Logger logger = Logger.getLogger(HandlerManagerImpl.class.getName());        
     
+    // Handlers
     @Reference 
     private List<MessageHandler> handlers;
     
+    // Conversation ID
     @ConversationID
     Object conversationID;    
 
@@ -62,12 +65,27 @@ public class HandlerManagerImpl implements HandlerManager {
             catch(Exception ex){
                 logger.warn("An error occurs during the execution of the handler", ex);
             }
-        }    
+        }
     }
 
+    /**
+     * Close the conversation mode
+     */
     @EndsConversation
     public void close(){
         // Nothing to do;
+    }
+
+    @Override
+    public void setHandlerConfiguration(ProxyConfiguration configuration) {
+        for(MessageHandler handler : this.handlers){
+            try {
+                handler.setHandlerConfiguration(configuration);
+            }
+            catch(Exception ex){
+                logger.warn("An error occurs during the execution of the handler", ex);
+            }
+        }        
     }
     
 }

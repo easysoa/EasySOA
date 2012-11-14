@@ -22,8 +22,8 @@ package org.easysoa.proxy.core.api.esper;
 
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.esper.EsperEngine;
-import org.easysoa.proxy.core.api.esper.ExchangeListener;
-import org.easysoa.proxy.core.api.esper.NodeListener;
+import org.easysoa.proxy.core.api.esper.DiscoveryModeExchangeListener;
+import org.easysoa.proxy.core.api.esper.ValidatedModeSoaNodeListener;
 import org.easysoa.proxy.core.api.monitoring.soa.Node;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
 import org.easysoa.records.ExchangeRecord;
@@ -49,10 +49,10 @@ public class EsperEngineImpl implements EsperEngine {
 	private static Logger logger = Logger.getLogger(EsperEngineImpl.class.getName());	
 	
 	// Esper Runtime
-	private EPRuntime esperRuntime;;
+	private EPRuntime esperRuntime;
 	
 	// Esper Administrator
-	private EPAdministrator esperAdmin;;
+	private EPAdministrator esperAdmin;
 	
 	/**
 	 * Initialize the engine, registering listeners and EPL statements 
@@ -76,11 +76,11 @@ public class EsperEngineImpl implements EsperEngine {
     	// Statement for ExchangeRecord objects
     	logger.debug("Registering EPL statement :" + propertyManager.getProperty("esper.exchange.listener.statement"));
     	EPStatement cepStatementExchange = esperAdmin.createEPL(propertyManager.getProperty("esper.exchange.listener.statement"));    	
-    	cepStatementExchange.addListener(new ExchangeListener());
+    	cepStatementExchange.addListener(new DiscoveryModeExchangeListener());
         // Statement for Node objects
     	logger.debug("Registering EPL statement :" + propertyManager.getProperty("esper.node.listener.statement"));
     	EPStatement cepStatementNode = esperAdmin.createEPL(propertyManager.getProperty("esper.node.listener.statement"));
-    	cepStatementNode.addListener(new NodeListener());    	
+    	cepStatementNode.addListener(new ValidatedModeSoaNodeListener());    	
 	}
 
 	@Override

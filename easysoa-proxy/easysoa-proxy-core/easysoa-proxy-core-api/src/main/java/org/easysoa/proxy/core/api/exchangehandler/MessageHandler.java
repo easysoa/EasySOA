@@ -20,6 +20,7 @@ package org.easysoa.proxy.core.api.exchangehandler;
 
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 
 /**
  * @author fntangke
@@ -28,13 +29,16 @@ public interface MessageHandler {
 
 	/**
 	 * Handle an exchange
-	 * 
-	 * @param messagein
-	 *            incoming message
-	 * @param messageout
-	 *            outgoing message
+	 * @param messagein Incoming message
+	 * @param messageout Outgoing message
 	 * @throws Exception
 	 */
-	public void handleMessage(InMessage inMessage, OutMessage outMessage)
-			throws Exception;
+	public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception;
+	
+    /**
+     * Set the handlers configuration
+     * @param configuration The ProxyConfiguration to be used by the handlers
+     */
+    public void setHandlerConfiguration(ProxyConfiguration configuration);	
+	
 }

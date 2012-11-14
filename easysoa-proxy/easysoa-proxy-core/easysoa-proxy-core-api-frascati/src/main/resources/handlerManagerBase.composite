@@ -5,6 +5,7 @@
     	<sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
     </sca:service>
     
+    <!-- Handler manager -->
     <sca:component name="handlerManagerComponent">
         <sca:service name="handlerManagerServiceBase">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
@@ -15,6 +16,7 @@
         </sca:reference>
     </sca:component>
 
+	<!-- Exchange record handler -->
     <sca:component name="recordHandlerComponent">
         <sca:service name="recordHandlerService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
@@ -32,6 +34,7 @@
 		<sca:implementation.composite name="runManager.composite" />    	
     </sca:component>
 
+	<!-- Event message handler -->
     <sca:component name="eventMessageHandlerComponent">
         <sca:service name="eventMessageHandlerService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
@@ -40,6 +43,7 @@
     </sca:component>
     <sca:wire source="handlerManagerComponent/handlers" target="eventMessageHandlerComponent/eventMessageHandlerService"/>
 	
+	<!-- Monitoring handler -->
     <sca:component name="monitoringHandlerComponent">
         <sca:service name="monitoringHandlerService"> 
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" /> 
@@ -57,6 +61,16 @@
 		<sca:implementation.composite name="monitoringService.composite" />
     </sca:component>
     
+	<!-- Registry V1 SOAP Discovery message handler -->
+    <sca:component name="V1SoapDiscoveryMessageHandlerComponent">
+        <sca:service name="V1SoapDiscoveryMessageHandlerService">
+            <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.EasySOAv1SOAPDiscoveryMessageHandler" />
+    </sca:component>
+    <sca:wire source="handlerManagerComponent/handlers" target="V1SoapDiscoveryMessageHandlerComponent/V1SoapDiscoveryMessageHandlerService"/>    
+    
+    <!-- Subscription service -->
     <sca:component name ="subscriptionWebserviceComponent">
         <sca:service name="ISubscriptionWebService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.event.ISubscriptionWebService"/>

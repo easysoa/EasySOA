@@ -20,19 +20,15 @@
 
 package org.easysoa.sca.intents;
 
-import java.io.PipedInputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import javax.activation.DataHandler;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.namespace.QName;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.MessageContext;
-import org.apache.cxf.io.CachedOutputStream;
 import org.apache.cxf.jaxws.context.WrappedMessageContext;
 import org.apache.cxf.message.Message;
 import org.apache.log4j.Logger;
@@ -64,7 +60,7 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
     // SAM WS service reference
     @Reference
     MonitoringService samMonitoringService;
-
+    
     @Override
     public boolean handleMessage(MessageContext context) {
 

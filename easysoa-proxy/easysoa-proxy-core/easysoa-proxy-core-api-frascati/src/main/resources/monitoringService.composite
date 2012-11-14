@@ -8,8 +8,14 @@
 		<sca:service name="monitoringServiceService">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.monitoring.MonitoringService" />
 		</sca:service>
+		<!-- TODO : Add a 1-n binding, then with a parameter -->
+		<!-- Specify the discovery service to use -->
+		<!-- Creation of a monitoring service handler -->
+		<!-- keep esperEngine ? -->
+
 		<sca:implementation.java class="org.easysoa.proxy.core.api.monitoring.DiscoveryMonitoringService" />
 		<!--<sca:implementation.java class="org.easysoa.monitoring.ValidatedMonitoringService" />-->
+
 		<sca:reference name="esperEngine">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.esper.EsperEngine" />
 		</sca:reference>

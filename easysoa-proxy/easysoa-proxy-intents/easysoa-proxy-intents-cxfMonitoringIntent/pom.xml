@@ -35,6 +35,7 @@
 			<artifactId>spring-beans</artifactId>
 			<version>3.0.6.RELEASE</version>
 		</dependency>-->
+		
 		<dependency>
 			<groupId>org.talend.esb</groupId>
 			<artifactId>sam-agent</artifactId>

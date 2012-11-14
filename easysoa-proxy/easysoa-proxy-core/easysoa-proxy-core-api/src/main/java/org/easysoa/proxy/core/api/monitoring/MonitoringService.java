@@ -33,11 +33,19 @@ import org.easysoa.records.ExchangeRecord;
 public interface MonitoringService {
 
 	/**
-	 * Modes
+	 * Monitoring modes
+	 * - Discovery : register all the listened messages in Nuxeo, all messages are considered as new services
+	 * - Validated : listen only the services already registered in Nuxeo, the unknown services are stored in a unknown message list and then, can be optionally registered.
 	 */
 	public enum MonitoringMode {
 		DISCOVERY, VALIDATED
 	}	
+	
+	/**
+	 * Return the Monitoring mode
+	 * @return The monitoring mode
+	 */
+	public MonitoringMode getMode();
 	
 	/**
 	 * Listen a message
@@ -46,24 +54,25 @@ public interface MonitoringService {
 	public void listen(ExchangeRecord exchangeRecord);
 
 	/**
-	 * 
-	 * @return
+	 * Returns the monitoring model, the monitoring model is only loaded from nuxeo for Validated mode
+	 * @return The monitoring model (validated mode) or null (discovery mode)
 	 */
 	public MonitoringModel getModel();
 
 	/**
-	 * Returns the url tree
-	 * @return
+	 * Returns the url tree, used in Discovery mode to determine the services, api's and apply's
+	 * @return UrlTree
 	 */
 	public UrlTree getUrlTree();
 
 	/**
 	 * Returns the unknown messages list
-	 * @return
+	 * @return ArrayDeque<ExchangeRecord> containing the unknow messages
 	 */
 	public ArrayDeque<ExchangeRecord> getUnknownExchangeRecordList();
 
 	/**
+	 * Registrer unknow message in Nuxeo
 	 */
 	public void registerUnknownMessagesToNuxeo();
 

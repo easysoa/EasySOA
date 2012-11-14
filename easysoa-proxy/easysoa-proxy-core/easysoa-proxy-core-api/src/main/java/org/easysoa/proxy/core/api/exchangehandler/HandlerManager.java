@@ -27,9 +27,13 @@ import org.osoa.sca.annotations.EndsConversation;
  * @author jguillemotte
  *
  */
+// TODO : re-use the singleton annotation
 @Conversational
 public interface HandlerManager extends MessageHandler {
     
+    /**
+     * Ends the SCA conversation
+     */
     @EndsConversation
     public void close();
     

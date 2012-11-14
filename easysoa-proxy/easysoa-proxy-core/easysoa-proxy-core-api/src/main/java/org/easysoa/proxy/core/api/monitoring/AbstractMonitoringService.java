@@ -37,7 +37,7 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 
 	/**
 	 * Logger
-	 */
+	 */ 
 	private Logger logger = Logger.getLogger(AbstractMonitoringService.class.getName());	
 	
 	/**
@@ -54,6 +54,11 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 	 * Monitoring model : contains data from Nuxeo
 	 */
 	protected MonitoringModel monitoringModel;	
+	
+	/**
+	 * Monitoring mode
+	 */
+	protected MonitoringMode monitoringMode; 
 	
 	/**
 	 * urlTree
@@ -78,6 +83,11 @@ public abstract class AbstractMonitoringService implements MonitoringService {
 		this.unknownExchangeRecordList = new ArrayDeque<ExchangeRecord>();
     }
         
+    @Override
+    public MonitoringMode getMode(){
+        return this.monitoringMode;
+    }
+    
     /**
      * Listen the exchange 
      * @param exchangeRecord The exchange record to listen

@@ -45,21 +45,31 @@ public class RestMessageHandler implements MessageHandler {
 		// TODO : Use a Data Mining framework to discover URI patterns 
 		return true;
 	}
+    
+    /**
+     * @obsolete handle() uses no more custom built service name but merely full url
+     * @return
+     */
+    protected String buildServiceName(ExchangeRecord exchangeRecord) {
+        String serviceName = exchangeRecord.getInMessage().getPath();
+        if(serviceName.startsWith("/")){
+            serviceName = serviceName.substring(1);
+        }
+        serviceName = serviceName.replace('/', '_');
+        return serviceName;
+    }
 
 	@Override
 	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// Add the url in the url tree structure
 		logger.debug("REST message found");
 		exchangeRecord.getExchange().setExchangeType(ExchangeType.REST);
-		//if(MonitoringMode.DISCOVERY.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
-		if("org.easysoa.monitoring.DiscoveryMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
+		if(MonitoringService.MonitoringMode.DISCOVERY.equals(monitoringService.getMode())){
 			logger.debug("Discovery mode, message added in tree");
 			monitoringService.getUrlTree().addUrlNode(exchangeRecord);
 		}
-		//else if(MonitoringMode.VALIDATED.compareTo(DiscoveryMonitoringService.getMonitorService().getMode()) == 0){
-		else if("org.easysoa.monitoring.ValidatedMonitoringService".equals(monitoringService.getClass().getCanonicalName())){
+		else if(MonitoringService.MonitoringMode.VALIDATED.equals(monitoringService.getMode())){		    
 			logger.debug("Validated mode, checking if message exists in urlSoaModel");
-			//MonitoringModel monitoringModel =  DiscoveryMonitoringService.getMonitorService().getModel();
 			MonitoringModel monitoringModel = monitoringService.getModel();
 			logger.debug("searched key : " + exchangeRecord.getInMessage().buildCompleteUrl());
 			//TODO change this to match with partial url

@@ -473,6 +473,52 @@
         			<artifactId>javax.servlet-api</artifactId>
         			<version>3.0.1</version>
         		</artifactItem>
+        		
+        		<!-- FOR REFACTORING TEST -->
+        		<!-- SEE WHAT TO DO WITH THIS DEPENDENCY -->
+        		<!-- TO REMOVE WHEN EASYSOA-INCUBATION WILL BE MERGED WITH EASYSOA -->
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-rest-client</artifactId>
+                  <version>1.0-SNAPSHOT</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-rest-core</artifactId>
+                  <version>1.0-SNAPSHOT</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-doctypes-api</artifactId>
+                  <version>1.0-SNAPSHOT</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.easysoa.registry</groupId>
+                  <artifactId>easysoa-registry-doctypes-core</artifactId>
+                  <version>1.0-SNAPSHOT</version>
+                </artifactItem>
+			    <artifactItem>
+			      <groupId>com.sun.jersey</groupId>
+			      <artifactId>jersey-client</artifactId>
+			      <version>1.1.5</version>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>com.sun.jersey</groupId>
+			      <artifactId>jersey-core</artifactId>
+			      <version>1.1.5</version>
+			    </artifactItem>			    
+			    <artifactItem>
+			      <groupId>org.codehaus.jackson</groupId>
+			      <artifactId>jackson-core-asl</artifactId>
+			      <version>1.8.1</version>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.codehaus.jackson</groupId>
+			      <artifactId>jackson-mapper-asl</artifactId>
+			      <version>1.8.1</version>
+			    </artifactItem>
+			    <!-- END -->                
+        		
               </artifactItems>
               <outputDirectory>${project.build.directory}/lib</outputDirectory>
             </configuration>

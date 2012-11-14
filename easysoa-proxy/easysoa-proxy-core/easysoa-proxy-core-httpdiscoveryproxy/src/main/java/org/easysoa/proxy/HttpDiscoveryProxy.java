@@ -24,12 +24,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
 import org.easysoa.message.Header;
@@ -60,7 +58,7 @@ import org.osoa.sca.annotations.Scope;
 @Scope("composite")
 public class HttpDiscoveryProxy extends HttpServlet {
 	
-	// Reference on monitoring service
+	// Reference on handler manager
 	@Reference
 	HandlerManager handlerManager;
 	
@@ -76,6 +74,13 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	public int forwardHttpConnexionTimeoutMs;
 	@Property
 	public int forwardHttpSocketTimeoutMs;
+	
+	// proxyID - automatically generated - used for exchange store naming
+	// To pass this information to the runManager => pass it to handlerManager/MessagerecordHandler/runManager/ProxyFileStore
+	// Another way to pass this data to runManager ??
+	// Or just a prefix/suffix (user, environment, ...) from outside with a part generated directly in the proxy itself (timestamp, date ...)
+	//@Property
+	//public String proxyId;
 	
 	/**
 	 * Logger
@@ -110,7 +115,7 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
 	 */
 	@Override
-	public final void doGet(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException {
+	public final void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doHttpMethod(request, response);
 	}
 
@@ -189,7 +194,6 @@ public class HttpDiscoveryProxy extends HttpServlet {
             // Listening the message
             InMessage inMessage = new InMessage(request);
             OutMessage outMessage = forward(inMessage, response); 
-            // runManager.record(exchangeRecord);
             this.handlerManager.handleMessage(inMessage, outMessage);
 	    }
 	    catch (HttpResponseException rex) {
@@ -211,7 +215,6 @@ public class HttpDiscoveryProxy extends HttpServlet {
 		}
 	    catch(Throwable ex){
 	    	// error in the internals of the httpProxy : building & returning it
-	    	//ex.printStackTrace();
 	    	logger.error("An error occurs in doHttpMethod method.", ex);
 
 	    	// attempting to reset response
@@ -240,27 +243,6 @@ public class HttpDiscoveryProxy extends HttpServlet {
 	    	respOut.close();
 	    }
 	}
-
-	/**
-	 * 
-	 */
-	//@SuppressWarnings("unused")
-	//@Deprecated
-	/*private void printUrlTree(){
-		logger.debug("[printUrlTree()] Printing tree node index ***");
-		logger.debug("[printUrlTree()] Total url count : " + DiscoveryMonitoringService.getMonitorService().getUrlTree().getTotalUrlCount());
-		String key;
-		HashMap<String, UrlTreeNode> index = DiscoveryMonitoringService.getMonitorService().getUrlTree().getNodeIndex();
-		Iterator<String> iter2 = index.keySet().iterator();
-		UrlTreeNode parentNode;
-		float ratio;
-		while(iter2.hasNext()){
-			key = iter2.next();
-			parentNode = (UrlTreeNode)(index.get(key).getParent());
-			ratio = (float)index.get(key).getPartialUrlcallCount() / DiscoveryMonitoringService.getMonitorService().getUrlTree().getTotalUrlCount();
-			logger.debug("[printUrlTree()] " + key + " -- " + index.get(key).toString() + ", parent node => " + parentNode.getNodeName() + ", Depth => " + index.get(key).getDepth() + ", node childs => " + index.get(key).getChildCount() + ", ratio => " + ratio);
-		}
-	}*/
 
 	/**
 	 * Send back the request to the original recipient and get the response

@@ -20,7 +20,6 @@ import org.easysoa.EasySOAConstants;
  *
  */
 
-
 public class HttpUtils {
     
     

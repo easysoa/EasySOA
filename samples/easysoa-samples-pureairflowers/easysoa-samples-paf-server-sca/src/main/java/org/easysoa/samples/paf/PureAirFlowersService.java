@@ -20,8 +20,7 @@
 
 package org.easysoa.samples.paf;
 
-import javax.jws.WebParam;
-
+//import javax.jws.WebParam;
 //import javax.jws.WebParam;
 //import javax.jws.WebService;
 //import javax.jws.WebResult;

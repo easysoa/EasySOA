@@ -22,6 +22,7 @@ package org.easysoa.proxy.core.api.exchangehandler;
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.run.RunManager;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
@@ -40,6 +41,8 @@ public class MessageRecordHandler implements MessageHandler {
      * Logger
      */
     private Logger logger = Logger.getLogger(MessageRecordHandler.class.getName());
+    
+    //public static final String HANDLER_ID = "MessageRecordHandler";    
     
     @Reference
     protected RunManager runManager;
@@ -68,4 +71,14 @@ public class MessageRecordHandler implements MessageHandler {
         // Call runManager to register the exchange record 
         runManager.record(record);
     }
+
+    @Override
+    public void setHandlerConfiguration(ProxyConfiguration configuration) {
+        // Nothing to do
+    }    
+    
+    //@Override
+    /*public String getID() {
+        return HANDLER_ID;
+    }*/
 }

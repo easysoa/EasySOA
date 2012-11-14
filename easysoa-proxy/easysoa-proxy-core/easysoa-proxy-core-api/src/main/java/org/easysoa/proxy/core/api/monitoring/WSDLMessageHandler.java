@@ -72,16 +72,12 @@ public class WSDLMessageHandler implements MessageHandler {
 		logger.debug("WSDL found");
 		
 		// Service construction
-		String serviceName = exchangeRecord.getInMessage().getPath();
-		if(serviceName.startsWith("/")){
-			serviceName = serviceName.substring(1);
-		}
-		serviceName = serviceName.replace('/', '_');
 		Service service = new Service(exchangeRecord.getInMessage().buildCompleteUrl());
+		// parent url ??
 		service.setCallCount(1);
 		service.setTitle(exchangeRecord.getInMessage().getPath());
 		service.setDescription(exchangeRecord.getInMessage().getPath());
-		service.setHttpMethod(exchangeRecord.getInMessage().getMethod());
+		service.setHttpMethod(exchangeRecord.getInMessage().getMethod()); // GET
 		
         try {
             new NuxeoRegistrationService().registerRestService(service);  
@@ -91,8 +87,7 @@ public class WSDLMessageHandler implements MessageHandler {
         
         // For discovery mode => each service is considered as a new service
         // No need to trigger an esper event to update the call count value.
-        
-        if(monitoringService.getModel() != null){
+        if(MonitoringService.MonitoringMode.VALIDATED.equals(monitoringService.getMode())){
             Node soaNode = null;
             for(Node node : monitoringService.getModel().getSoaNodes()){
                 if(node.getUrl().equals(exchangeRecord.getInMessage().buildCompleteUrl())){

@@ -59,24 +59,33 @@ public class SoapMessageHandler implements MessageHandler {
 			return false;
 		}
 	}
+    
+    /**
+     * @obsolete handle() uses no more custom built service name but merely full url
+     * @return
+     */
+    protected String buildServiceName(ExchangeRecord exchangeRecord) {
+        String serviceName = exchangeRecord.getInMessage().getPath();
+        if(serviceName.startsWith("/")){
+            serviceName = serviceName.substring(1);
+        }
+        serviceName = serviceName.replace('/', '_');
+        return serviceName;
+    }
 
 	@Override
 	public boolean handle(ExchangeRecord exchangeRecord, MonitoringService monitoringService, EsperEngine esperEngine) {
 		// enrich the message
 		exchangeRecord.getExchange().setExchangeType(ExchangeType.SOAP);
 		logger.debug("WSDL found");
-		String serviceName = exchangeRecord.getInMessage().getPath();
-		if(serviceName.startsWith("/")){
-			serviceName = serviceName.substring(1);
-		}
-		serviceName = serviceName.replace('/', '_');
-		Service service = new Service(exchangeRecord.getInMessage().buildCompleteUrl());
-		service.setFileUrl(exchangeRecord.getInMessage().buildCompleteUrl() + "?wsdl");
-		service.setParentUrl(exchangeRecord.getInMessage().buildCompleteUrl());
+		
+		Service service = new Service(exchangeRecord.getInMessage().buildCompleteUrl()); // SOAP endpoint URL
+		service.setFileUrl(exchangeRecord.getInMessage().buildCompleteUrl() + "?wsdl"); // endpoint WSDL URL
+		service.setParentUrl(exchangeRecord.getInMessage().buildCompleteUrl()); // SOAP endpoint URL (again)
 		service.setCallCount(1);
 		service.setTitle(exchangeRecord.getInMessage().getPath());
 		service.setDescription(exchangeRecord.getInMessage().getPath());
-		service.setHttpMethod(exchangeRecord.getInMessage().getMethod());
+		service.setHttpMethod(exchangeRecord.getInMessage().getMethod()); // necessarily POST (since SOAP)
 
         try {
             new NuxeoRegistrationService().registerWSDLService(service);
@@ -84,18 +93,21 @@ public class SoapMessageHandler implements MessageHandler {
             logger.error("Failed to register WSDL", e);
         }
         
-        // For discovery mode => each service is considered as a new service
-        // No need to trigger an esper event to update the call count value.
-        if(monitoringService.getModel() != null){
-            Node soaNode = null;
+        // For discovery mode (each service is considered as a new service) :
+        if(MonitoringService.MonitoringMode.VALIDATED.equals(monitoringService.getMode())){
+            // getting known service node (fetched from registry at startup) :
+            Node serviceSoaNode = null;
             for(Node node : monitoringService.getModel().getSoaNodes()){
                 if(node.getUrl().equals(exchangeRecord.getInMessage().buildCompleteUrl())){
-                    soaNode = node;
-                    logger.debug("Node found ! " + soaNode.getTitle());
+                    serviceSoaNode = node; // found it !
+                    logger.debug("Node found ! " + serviceSoaNode.getTitle());
                     break;
                 }
-            }        
-            esperEngine.sendEvent(soaNode);
+            }
+            
+            // putting known service node in esper (which will increase call count & send it to registry) :
+            esperEngine.sendEvent(serviceSoaNode);
+            // TODO pb : no need to trigger an esper event to update the call count value.
         }
         return true;
 	}

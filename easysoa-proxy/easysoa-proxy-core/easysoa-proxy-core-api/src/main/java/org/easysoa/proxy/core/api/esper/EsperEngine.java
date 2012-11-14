@@ -31,13 +31,13 @@ import org.easysoa.records.ExchangeRecord;
 public interface EsperEngine {
 
 	/**
-	 * Send a event to the Esper engine using a Node object
+	 * Send an event to the Esper engine using a Node object
 	 * @param soaNode The <code>Node</code> contained in the event
 	 */
 	public void sendEvent(Node soaNode);
 
 	/**
-	 * Send a event to the Esper engine using a ExchangeRecord object
+	 * Send an event to the Esper engine using a ExchangeRecord object
 	 * @param soaNode The <code>Message</code> contained in the event
 	 */
 	public void sendEvent(ExchangeRecord exchangeRecord);

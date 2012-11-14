@@ -26,7 +26,6 @@ import org.easysoa.proxy.core.api.monitoring.soa.Appli;
 import org.easysoa.proxy.core.api.monitoring.soa.Node;
 import org.easysoa.proxy.core.api.monitoring.soa.Service;
 import org.easysoa.proxy.core.api.nuxeo.registration.NuxeoRegistrationService;
-
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 
@@ -35,15 +34,17 @@ import com.espertech.esper.client.UpdateListener;
  * 
  * Node objects are used in the monitoring service to build the service tree.
  * 
+ * What it does : only increases call count of Service.
+ * 
  * @author jguillemotte
  *
  */
-public class NodeListener implements UpdateListener {
+public class ValidatedModeSoaNodeListener implements UpdateListener {
 
 	/**
 	 * Logger
 	 */
-	static Logger logger = Logger.getLogger(NodeListener.class.getName());
+	static Logger logger = Logger.getLogger(ValidatedModeSoaNodeListener.class.getName());
 	
 	@Override
 	public void update(EventBean[] newEvents, EventBean[] oldEvents) {
@@ -61,10 +62,6 @@ public class NodeListener implements UpdateListener {
 	public void update(EventBean newEvent) {
 		logger.debug("[NodeListener] --- Event received: " + newEvent.getUnderlying());
 		logger.debug("[NodeListener] --- " + newEvent.getUnderlying().getClass().getName());
-		//@SuppressWarnings("unchecked")
-		/*HashMap<String,Object> hm = (HashMap<String,Object>)(newEvent.getUnderlying());
-		BeanEventBean beb = (BeanEventBean)(hm.get("n"));
-		Node soaNode = (Node)(beb.getUnderlying());*/
 		Node soaNode = (Node)(newEvent.getUnderlying());		
 		if(soaNode instanceof Service){
 			Service service = (Service) soaNode;
