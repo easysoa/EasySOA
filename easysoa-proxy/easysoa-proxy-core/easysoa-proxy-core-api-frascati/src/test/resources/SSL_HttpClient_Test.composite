@@ -12,13 +12,4 @@
     </service>
   </component>
 
-  <!--<service name="Runnable" promote="HelloworldSampleHttpsClient/Runnable" />
-
-  <component name="HelloworldSampleHttpsClient">
-    <service name="Runnable">
-      <interface.java interface="java.lang.Runnable" />
-    </service>
-    <implementation.java class="org.easysoa.proxy.ssl.test.helloworld.HttpClient" />
-  </component>-->
-
 </composite>
