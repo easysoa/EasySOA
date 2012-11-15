@@ -6,6 +6,8 @@ package org.easysoa.proxy.management;
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
+import org.easysoa.proxy.registry.InstanciatingEasySOAGeneratedAppsRegistry;
+import org.easysoa.proxy.strategy.EmbeddedEasySOAGeneratedAppIdFactoryStrategy;
 import org.easysoa.proxy.strategy.EmbeddedProxyCreationStrategy;
 import org.easysoa.proxy.strategy.ProxyCreationStrategy;
 import org.osoa.sca.annotations.Reference;
@@ -60,13 +62,26 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
      */
     public ProxyInfo getHttpProxy(ProxyConfiguration configuration) throws Exception {
         
+        // Generate the App ID form the configuration
+        EmbeddedEasySOAGeneratedAppIdFactoryStrategy idFactory = new EmbeddedEasySOAGeneratedAppIdFactoryStrategy();
+        String appID = idFactory.getId(configuration.getParameter(ProxyConfiguration.USER_PARAM_NAME),
+                configuration.getParameter(ProxyConfiguration.PROJECTID_PARAM_NAME),
+                configuration.getParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME));
+                
         // TODO : Call required for Frascati studio app's, not for embedded proxy
-        // getAvailablePort();
+        // getAvailablePort();                
+
+        // Call the generated app registry to check
+        // TODO : Must be a singleton => FraSCAti component ?
+        //InstanciatingEasySOAGeneratedAppsRegistry appRegistry = new InstanciatingEasySOAGeneratedAppsRegistry();
+        //appRegistry.get(appID, template);
         
         // Create the proxy using the proxy configuration
         // How to determine what creation strategy to use ?
         // Set in the proxy configuration ?
-        // TODO : load the ProxyCreationStrategy on demand
+        // TODO : load the ProxyCreationStrategy on demand (determined by parameters contained in the configuration)
+        
+        
         ProxyCreationStrategy strategy = new EmbeddedProxyCreationStrategy();
         ProxyInfo proxyInfo = strategy.createProxy(configuration);
         
@@ -82,4 +97,14 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         
     }
 
+    /**
+     * Get info about the proxy corresponding to the given proxy ID
+     * @param proxyID Proxy ID
+     * @return
+     */
+    public EasySOAGeneratedAppInfo get(String proxyID){
+        // TODO : complete this method
+        return null;
+    }
+    
 }

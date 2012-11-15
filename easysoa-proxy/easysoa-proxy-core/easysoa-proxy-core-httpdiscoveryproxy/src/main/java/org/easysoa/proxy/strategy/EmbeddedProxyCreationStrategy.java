@@ -23,8 +23,6 @@ public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
         // Just returning the embedded proxy parameters
         // The proxy is started automatically with Easysoa
         ProxyInfo proxyInfo = new ProxyInfo();
-
-        // How to generate proxy ID ?
         
         // Questions :
         // - DiscoveryProxy still started automatically ?

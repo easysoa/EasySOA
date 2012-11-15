@@ -6,15 +6,17 @@ package org.easysoa.proxy.management;
 import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 
 /**
+ * Container for information about generated EasySOA app's
+ * 
  * @author jguillemotte
  *
  */
 public class EasySOAGeneratedAppInfo {
 
-    //
+    // App ID
     private String easySOAGeneratedAppId;
     
-    //
+    // App configuration
     private EasySOAGeneratedAppConfiguration configuration;
    
     /**
@@ -56,7 +58,5 @@ public class EasySOAGeneratedAppInfo {
     private void setEasySOAGeneratedAppId(String easySOAGeneratedAppId) {
         this.easySOAGeneratedAppId = easySOAGeneratedAppId;
     }
-    
-    
-    
+
 }
