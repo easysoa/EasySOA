@@ -1,17 +1,21 @@
 package org.easysoa.proxy.sll.test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.easysoa.proxy.ssl.test.helloworld.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.ow2.frascati.util.FrascatiException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 /**
- * HttpClient SSL test 
+ * HttpCLient SSL test with a wrong server certificate, must return a SSLPeerUnverifiedException exception
+ * 
  */
-public class HttpClientSSLTest extends AbstractHttpClientSSLTest {
-
+public class HttpClientSSLTestWithWrongServerCertificate extends AbstractHttpClientSSLTest {
+    
     /**
      * Initialize the test
      * @throws FrascatiException
@@ -19,7 +23,7 @@ public class HttpClientSSLTest extends AbstractHttpClientSSLTest {
     @Before
     public void init() throws FrascatiException {
         // Set the CXF configuration file
-        System.setProperty("cxf.config.file", "src/test/resources/server-cxf.xml");
+        System.setProperty("cxf.config.file", "src/test/resources/wrong-certificate-server-cxf.xml");
         // Start FraSCAti and load the composite
         startFraSCAtiAndLoadComposite(getComposite());
     }
@@ -29,10 +33,16 @@ public class HttpClientSSLTest extends AbstractHttpClientSSLTest {
      * @throws Exception If a problem occurs
      */
     @Test
-    public final void httpClientSSLTest() throws Exception {
-        HttpClient httpClient = new HttpClient();
-        String response = httpClient.run();
-        assertEquals("Helloworld, test", response);
+    public final void httpClientSSLTest() {
+        try{
+            HttpClient httpClient = new HttpClient();
+            String response = httpClient.run();
+            assertEquals("Helloworld, test", response);
+            fail("javax.net.ssl.SSLPeerUnverifiedException exception expected");
+        }
+        catch(Exception ex){
+            assertTrue(ex instanceof SSLPeerUnverifiedException);
+        }
     }
 
     /**

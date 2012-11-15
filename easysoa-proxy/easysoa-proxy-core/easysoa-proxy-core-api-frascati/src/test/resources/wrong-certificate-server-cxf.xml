@@ -54,7 +54,8 @@
    <httpj:engine port="9090">
     <httpj:tlsServerParameters>
       <sec:keyManagers keyPassword="password">
-          <sec:keyStore type="JKS" password="password" file="src/test/resources/certificates/server.jks"/>
+          <!-- For test with a wrong server certificate -->
+          <sec:keyStore type="JKS" password="password" file="src/test/resources/certificates/wrongServer.jks"/>           
       </sec:keyManagers>
       <sec:trustManagers>
           <sec:keyStore type="JKS" password="password" file="src/test/resources/certificates/truststore.jks"/>

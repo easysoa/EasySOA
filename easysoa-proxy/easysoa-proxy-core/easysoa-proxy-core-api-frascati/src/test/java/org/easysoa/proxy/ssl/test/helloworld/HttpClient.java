@@ -12,7 +12,7 @@ public class HttpClient {
         System.out.println("Client created.");
     }
   
-    public final String run() {
+    public final String run() throws Exception {
         String response="";
         
         System.out.println("Call the HelloService...");
@@ -30,9 +30,9 @@ public class HttpClient {
             System.out.println("Response status : " + outMessage.getStatus());
             response = outMessage.getMessageContent().getRawContent();
             System.out.println("Response raw content : " + response);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
         }
         return response;
     }
