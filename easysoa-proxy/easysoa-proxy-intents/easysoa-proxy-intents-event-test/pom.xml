@@ -2,10 +2,10 @@
 
 <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>easysoa-proxy-handlers-event-test</artifactId>
-  <name>Easysoa Proxy Handlers Event Test</name>
-
-  <description>Pour tester le monitoring d'un seul service</description>
+  <artifactId>easysoa-proxy-intents-event-test</artifactId>
+  <groupId>org.easysoa.proxy</groupId>
+  <name>Easysoa Proxy - Test Event Intent</name>
+  <description>Test of monitoring of a single FraSCAti service using a dedicated Intent</description>
   <packaging>jar</packaging>
 
   <parent>
@@ -78,5 +78,4 @@
     </dependency>
   </dependencies>
   
-  <groupId>org.easysoa.proxy</groupId>
 </project>
