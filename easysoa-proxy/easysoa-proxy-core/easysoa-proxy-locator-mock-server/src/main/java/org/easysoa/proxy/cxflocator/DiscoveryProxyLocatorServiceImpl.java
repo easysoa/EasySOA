@@ -10,7 +10,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.cxflocator.interceptor.CxfLocatorInInterceptor;
-import org.easysoa.registry.SoaNodeId;
+import org.easysoa.registry.types.ids.SoaNodeId;
 import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.marshalling.OperationResult;

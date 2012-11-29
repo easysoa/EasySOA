@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
@@ -29,7 +30,12 @@ import org.osoa.sca.annotations.Scope;
 public class EventMessageHandlerImpl implements
 /* MessageHandler, */IEventMessageHandler {
 
-    //public static final String HANDLER_ID = "EventMessageHandler";    
+    public final static String HANDLER_ID = "eventMessageHandler";
+    
+    // Logger
+    private static Logger logger = Logger.getLogger(EventMessageHandlerImpl.class);    
+    
+    private boolean enabled = true;
     
 	private ConditionsMatcher conditionsMatcher = new ConditionsMatcher();
 	
@@ -98,70 +104,74 @@ public class EventMessageHandlerImpl implements
 	@Override
 	public void handleMessage(InMessage inMessage, OutMessage outMessage)
 			throws Exception {
-		ExchangeRecord exchangeRecord = new ExchangeRecord();
-		exchangeRecord.setInMessage(inMessage);
-		exchangeRecord.setOutMessage(outMessage);
-		/**
-		 * listenedServiceUrlToServicesToLaunchUrlMap should be use by one
-		 * Thread
-		 */
-		Collection<Entry<List<Condition>, List<String>>> entrySetCopy;
-
-		synchronized (this) {
-			entrySetCopy = new ArrayList<Entry<List<Condition>, List<String>>>(
-					listenedServiceUrlToServicesToLaunchUrlMap.entrySet());
-		}
-
-		List<String> servicesToLaunchUrls = null; // this.listenedServiceUrlToServicesToLaunchUrlMap.get(listenedServiceUrl);
-		// TODO maybe we should remove doublons from the serviceToLaunchsUrls
-		for (Entry<List<Condition>, List<String>> currentEntry : entrySetCopy) {
-			List<Condition> listCondition = currentEntry.getKey();
-			if (conditionsMatcher.matchesAll(listCondition, exchangeRecord)) {
-				servicesToLaunchUrls = currentEntry.getValue(); // only the
-																// first
-																// servicesToLaunch
-																// found will be
-																// launched
-				break;
-			}
-		}
-		if (servicesToLaunchUrls == null) {
-			return;
-		}
-
-		// TODO LATER handle services that may have different URLs ex. REST
-
-		// Request forwarder
-		RequestForwarder forwarder = new RequestForwarder();
-		forwarder
-				.setForwardHttpConnexionTimeoutMs(getForwardHttpConnexionTimeoutMs());
-		forwarder
-				.setForwardHttpSocketTimeoutMs(getForwardHttpSocketTimeoutMs());
-		// Use HttpRetryHandler default value for retry
-		// forwarder.setRetryHandler(new HttpRetryHandler());
-
-		// for each service to call,
-		List<OutMessage> launchresults = new ArrayList<OutMessage>();
-		for (String serviceToLaunchUrlString : servicesToLaunchUrls) {
-			InMessage forwardedInMessage = inMessage; // TODO clone and replace
-														// URL etc.
-			// URL serviceToLaunchUrl = new URL(serviceToLaunchUrlString);
-			// forwardedInMessage.setMethod("GET");
-			// forwardedInMessage.setServer("www.facebook.com");
-			// forwardedInMessage.setPath("");
-
-			/*
-			 * forwardedInMessage.setProtocol(serviceToLaunchUrl.getProtocol());
-			 * forwardedInMessage.setServer(serviceToLaunchUrl.getHost());
-			 * forwardedInMessage.setPort(serviceToLaunchUrl.getPort());
-			 * forwardedInMessage.setPath(serviceToLaunchUrl.getPath()); // TODO
-			 * LATER handle services that may have different URLs ex. REST
-			 */
-			// call it TODO LATER async using a threaded Queue Worker
-			OutMessage forwardedOutMessage = forwarder.send(forwardedInMessage);
-
-			// Save the result
-			launchresults.add(forwardedOutMessage);
+		if(enabled){
+    	    ExchangeRecord exchangeRecord = new ExchangeRecord();
+    		exchangeRecord.setInMessage(inMessage);
+    		exchangeRecord.setOutMessage(outMessage);
+    		/**
+    		 * listenedServiceUrlToServicesToLaunchUrlMap should be use by one
+    		 * Thread
+    		 */
+    		Collection<Entry<List<Condition>, List<String>>> entrySetCopy;
+    
+    		synchronized (this) {
+    			entrySetCopy = new ArrayList<Entry<List<Condition>, List<String>>>(
+    					listenedServiceUrlToServicesToLaunchUrlMap.entrySet());
+    		}
+    
+    		List<String> servicesToLaunchUrls = null; // this.listenedServiceUrlToServicesToLaunchUrlMap.get(listenedServiceUrl);
+    		// TODO maybe we should remove doublons from the serviceToLaunchsUrls
+    		for (Entry<List<Condition>, List<String>> currentEntry : entrySetCopy) {
+    			List<Condition> listCondition = currentEntry.getKey();
+    			if (conditionsMatcher.matchesAll(listCondition, exchangeRecord)) {
+    				servicesToLaunchUrls = currentEntry.getValue(); // only the
+    																// first
+    																// servicesToLaunch
+    																// found will be
+    																// launched
+    				break;
+    			}
+    		}
+    		if (servicesToLaunchUrls == null) {
+    			return;
+    		}
+    
+    		// TODO LATER handle services that may have different URLs ex. REST
+    
+    		// Request forwarder
+    		RequestForwarder forwarder = new RequestForwarder();
+    		forwarder
+    				.setForwardHttpConnexionTimeoutMs(getForwardHttpConnexionTimeoutMs());
+    		forwarder
+    				.setForwardHttpSocketTimeoutMs(getForwardHttpSocketTimeoutMs());
+    		// Use HttpRetryHandler default value for retry
+    		// forwarder.setRetryHandler(new HttpRetryHandler());
+    
+    		// for each service to call,
+    		List<OutMessage> launchresults = new ArrayList<OutMessage>();
+    		for (String serviceToLaunchUrlString : servicesToLaunchUrls) {
+    			InMessage forwardedInMessage = inMessage; // TODO clone and replace
+    														// URL etc.
+    			// URL serviceToLaunchUrl = new URL(serviceToLaunchUrlString);
+    			// forwardedInMessage.setMethod("GET");
+    			// forwardedInMessage.setServer("www.facebook.com");
+    			// forwardedInMessage.setPath("");
+    
+    			/*
+    			 * forwardedInMessage.setProtocol(serviceToLaunchUrl.getProtocol());
+    			 * forwardedInMessage.setServer(serviceToLaunchUrl.getHost());
+    			 * forwardedInMessage.setPort(serviceToLaunchUrl.getPort());
+    			 * forwardedInMessage.setPath(serviceToLaunchUrl.getPath()); // TODO
+    			 * LATER handle services that may have different URLs ex. REST
+    			 */
+    			// call it TODO LATER async using a threaded Queue Worker
+    			OutMessage forwardedOutMessage = forwarder.send(forwardedInMessage);
+    
+    			// Save the result
+    			launchresults.add(forwardedOutMessage);
+    		}
+		} else {
+		    logger.info("Event message handler is disabled");
 		}
 	}
 
@@ -232,8 +242,18 @@ public class EventMessageHandlerImpl implements
         // Nothing to do
     }
 
-    /*@Override
+    @Override
+    public void enable() {
+        this.enabled = true;
+    }
+
+    @Override
+    public void disable() {
+        this.enabled = false;
+    }
+
+    @Override
     public String getID() {
         return HANDLER_ID;
-    }*/
+    }
 }

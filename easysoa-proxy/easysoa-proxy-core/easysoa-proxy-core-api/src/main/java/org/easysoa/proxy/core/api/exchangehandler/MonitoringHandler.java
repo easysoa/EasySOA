@@ -19,6 +19,7 @@
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
+import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
@@ -37,19 +38,28 @@ import org.osoa.sca.annotations.Scope;
 @Scope("composite")
 public class MonitoringHandler implements MessageHandler {
 
-    //public static final String HANDLER_ID = "MonitoringHandler";
+    public final static String HANDLER_ID = "monitoringHandler";
+    
+    // Logger
+    private static Logger logger = Logger.getLogger(MonitoringHandler.class);    
+    
+    private boolean enabled = true;    
     
     @Reference
     MonitoringService monitoringService;
     
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
-        // Builds a new Exchange record with data contained in request and response
-        ExchangeRecord record = new ExchangeRecord();
-        record.setInMessage(inMessage);
-        record.setOutMessage(outMessage);
-        // Send it to the monitoring service
-        monitoringService.listen(record);
+        if(enabled){
+            // Builds a new Exchange record with data contained in request and response
+            ExchangeRecord record = new ExchangeRecord();
+            record.setInMessage(inMessage);
+            record.setOutMessage(outMessage);
+            // Send it to the monitoring service
+            monitoringService.listen(record);
+        } else {
+            logger.info("Monitoring handler is disabled");
+        }
     }
 
     @Override
@@ -57,9 +67,19 @@ public class MonitoringHandler implements MessageHandler {
         // Nothing to do
     }
 
-    /*@Override
+    @Override
+    public void enable() {
+        this.enabled = true;
+    }
+
+    @Override
+    public void disable() {
+        this.enabled = false;
+    }
+
+    @Override
     public String getID() {
         return HANDLER_ID;
-    }*/
+    }
 
 }

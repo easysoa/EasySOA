@@ -19,22 +19,43 @@
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
-import org.osoa.sca.annotations.Conversational;
-import org.osoa.sca.annotations.EndsConversation;
+import org.easysoa.message.InMessage;
+import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
+import org.osoa.sca.annotations.Scope;
 
 /**
  * Handler manager interface
  * @author jguillemotte
  *
  */
-// TODO : re-use the singleton annotation
-@Conversational
-public interface HandlerManager extends MessageHandler {
+@Scope("composite")
+public interface HandlerManager /*extends MessageHandler*/ {
     
     /**
-     * Ends the SCA conversation
+     * Handle an exchange
+     * @param messagein Incoming message
+     * @param messageout Outgoing message
+     * @throws Exception
      */
-    @EndsConversation
-    public void close();
+    public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception;
+    
+    /**
+     * Set the handlers configuration
+     * @param configuration The ProxyConfiguration to be used by the handlers
+     */
+    public void setHandlerConfiguration(ProxyConfiguration configuration);    
+    
+    /**
+     * 
+     * @param handlerId
+     */
+    public void enableHandler(String handlerId);
+
+    /**
+     * 
+     * @param handlerId
+     */
+    public void disableHandler(String handlerId);
     
 }

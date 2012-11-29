@@ -86,8 +86,10 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
             char sep = File.separatorChar;
             configure();
             
-            StringBuilder srcBuilder = new StringBuilder("target").append(sep).append("test-classes").append(sep).append("easysoa-proxy-core-httpdiscoveryproxy.jar");
-            //StringBuilder srcBuilder = new StringBuilder("target").append(sep).append(sep).append("easysoa-proxy-core-httpdiscoveryproxy.jar");
+            // target/test-classes/easysoa-proxy-core-httpdiscoveryproxy.jar
+            // ../easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT.jar
+            //StringBuilder srcBuilder = new StringBuilder("target").append(sep).append("test-classes").append(sep).append("easysoa-proxy-core-httpdiscoveryproxy.jar");
+            StringBuilder srcBuilder = new StringBuilder("../easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT.jar");
             
             File srcFile = new File(srcBuilder.toString());
             

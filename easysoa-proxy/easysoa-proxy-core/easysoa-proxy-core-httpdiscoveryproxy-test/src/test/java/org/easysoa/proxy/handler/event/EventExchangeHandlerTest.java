@@ -58,8 +58,7 @@ import org.junit.Test;
 
 public class EventExchangeHandlerTest extends AbstractProxyTestStarter {
 
-	private static Logger logger = Logger
-			.getLogger(EventExchangeHandlerTest.class.getName());
+	private static Logger logger = Logger.getLogger(EventExchangeHandlerTest.class.getName());
 
 	private String eventMessageHandlerAdminUrl = "http://localhost:8084/SubscriptionWebService/subscriptions";
 

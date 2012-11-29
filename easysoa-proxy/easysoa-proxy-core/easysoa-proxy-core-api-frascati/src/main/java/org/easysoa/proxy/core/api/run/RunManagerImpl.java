@@ -54,8 +54,7 @@ import org.osoa.sca.annotations.Scope;
  *
  */
 // TODO Replace composite annotation by conversation or .....
-//@Scope("composite")
-@Scope("conversation")
+@Scope("composite")
 public class RunManagerImpl implements RunManager {
 
     // TODO : Update the checkUniqueRunName method !
@@ -85,9 +84,6 @@ public class RunManagerImpl implements RunManager {
 	
 	//@Reference
 	//ReplayEngine replayEngine;
-	
-	@ConversationID
-	Object conversationID;
 	
 	/**
 	 * List of event receivers
@@ -378,11 +374,6 @@ public class RunManagerImpl implements RunManager {
      */ 
     public boolean isAutoSave() {
         return autoSave;
-    }
-
-    @Override
-    public void close() {
-        // Nothing to do, the client have to save the current run explicitly before to close the run manager
     }
     
 }

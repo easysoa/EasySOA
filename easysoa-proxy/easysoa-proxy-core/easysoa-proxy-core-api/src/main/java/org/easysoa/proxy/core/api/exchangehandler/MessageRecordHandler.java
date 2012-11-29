@@ -37,12 +37,14 @@ import org.osoa.sca.annotations.Scope;
 @Scope("composite")
 public class MessageRecordHandler implements MessageHandler {
 
+    public final static String HANDLER_ID = "messageRecordHandler";
+    
     /**
      * Logger
      */
     private Logger logger = Logger.getLogger(MessageRecordHandler.class.getName());
     
-    //public static final String HANDLER_ID = "MessageRecordHandler";    
+    private boolean enabled = true;    
     
     @Reference
     protected RunManager runManager;
@@ -63,22 +65,37 @@ public class MessageRecordHandler implements MessageHandler {
     
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
-        logger.debug("Message received, calling registered handlers");        
-        // Builds a new Exchange record with data contained in request and response
-        ExchangeRecord record = new ExchangeRecord();
-        record.setInMessage(inMessage);
-        record.setOutMessage(outMessage);
-        // Call runManager to register the exchange record 
-        runManager.record(record);
+        if(enabled){
+            logger.debug("Message received, calling registered handlers");        
+            // Builds a new Exchange record with data contained in request and response
+            ExchangeRecord record = new ExchangeRecord();
+            record.setInMessage(inMessage);
+            record.setOutMessage(outMessage);
+            // Call runManager to register the exchange record 
+            runManager.record(record);
+        } else {
+            logger.info("Message record handler is disabled");
+        }
     }
 
     @Override
     public void setHandlerConfiguration(ProxyConfiguration configuration) {
         // Nothing to do
-    }    
-    
-    //@Override
-    /*public String getID() {
+    }
+
+    @Override
+    public void enable() {
+        this.enabled = true;
+    }
+
+    @Override
+    public void disable() {
+        this.enabled = false;
+    }
+
+    @Override
+    public String getID() {
         return HANDLER_ID;
-    }*/
+    }    
+
 }

@@ -21,7 +21,8 @@
     <explorer.version>1.0</explorer.version>
     <spring.version>3.0.5.RELEASE</spring.version>
     <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
-    <juliac.version>2.4.3</juliac.version>
+    <!--<juliac.version>2.4.3</juliac.version>-->
+    <juliac.version>2.5-SNAPSHOT</juliac.version>
     <joram.version>5.5.0</joram.version>
     <jaxb.version>2.1.13</jaxb.version>
     <monolog.version>1.8</monolog.version>
@@ -42,7 +43,6 @@
     <module>easysoa-registry-runtime-management</module>
     <module>easysoa-registry-web</module>
     <module>easysoa-registry-rest</module>
-    
     <!--<module>easysoa-registry-rest-miner</module>-->
     <module>easysoa-registry-dashboard</module>
     <module>easysoa-registry-frascati</module>

@@ -46,6 +46,8 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler implements HttpExchangeHandler {
 
+    private boolean enabled = true;
+    
     /**
      * Constructor
      * @throws FraSCAtiServiceException If a problem occurs
@@ -63,24 +65,34 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
      */
     //@Override
     public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // Builds a new Exchange record with data contained in request and response
-        CopyHttpServletRequest requestWrapper = new CopyHttpServletRequest(request);
-        CopyHttpServletResponse responseWrapper;
-        if (response instanceof CopyHttpServletResponse) {
-            responseWrapper = (CopyHttpServletResponse) response;
-        } else {
-            responseWrapper = new CopyHttpServletResponse(response);
+        if(enabled){
+            // Builds a new Exchange record with data contained in request and response
+            CopyHttpServletRequest requestWrapper = new CopyHttpServletRequest(request);
+            CopyHttpServletResponse responseWrapper;
+            if (response instanceof CopyHttpServletResponse) {
+                responseWrapper = (CopyHttpServletResponse) response;
+            } else {
+                responseWrapper = new CopyHttpServletResponse(response);
+            }
+            InMessage inMessage = new InMessage(requestWrapper); // TODO this and below rather in CopyOut.close();
+            OutMessage outMessage = new OutMessage(responseWrapper);
+            this.handleMessage(inMessage, outMessage);
         }
-        InMessage inMessage = new InMessage(requestWrapper); // TODO this and below rather in CopyOut.close();
-        OutMessage outMessage = new OutMessage(responseWrapper);
-        this.handleMessage(inMessage, outMessage);
     }
 
     /* (non-Javadoc)
      * @see org.easysoa.records.handlers.HandlerManager#close()
      */    
-    public void close() {
+    /*public void close() {
         // TODO Auto-generated method stub
+    }*/
+
+    public void enableHandler(String handlerId) {
+        this.enabled = true;
+    }
+
+    public void disableHandler(String handlerId) {
+        this.enabled = false;
     }
     
 }

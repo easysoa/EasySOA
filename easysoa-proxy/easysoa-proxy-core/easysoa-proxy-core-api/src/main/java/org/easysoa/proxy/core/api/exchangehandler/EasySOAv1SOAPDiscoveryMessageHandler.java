@@ -9,23 +9,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
-
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
-import org.easysoa.registry.SoaNodeId;
+import org.easysoa.registry.types.ids.SoaNodeId;
+import org.easysoa.registry.rest.RegistryApi;
+import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.marshalling.JsonMessageReader;
 import org.easysoa.registry.rest.marshalling.JsonMessageWriter;
 import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.Endpoint;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 /**
  * Discovery message handler, works with easysoa model V1
@@ -34,17 +31,20 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  *
  */
 public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
-
-    //public static final String HANDLER_ID = "EasySOAv1SOAPDiscoveryMessageHandler";
     
-    public static final int PORT = 8082;
-    public static final String PATH = "easysoa/registry";
-    public static final String NUXEO_URL = "http://localhost:" + PORT + "/" + PATH;    
+    public final static String HANDLER_ID = "discoveryMessageHandler";
     
-    private final ClientConfig clientConfig;
+    // TODO : remove hard coded client configuration
+    public static final int PORT = 8080;
+    public static final String PATH = "nuxeo/site";
+    public static final String NUXEO_URL = "http://localhost:" + PORT + "/" + PATH;
 
     // Logger
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);    
+
+    private boolean enabled = true;
+    
+    private final ClientConfig clientConfig;
     
     // User
     private String user;
@@ -89,48 +89,53 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
 
     @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
-        
-        // Create endpoint
-        Map<String, Serializable> properties = new HashMap<String, Serializable>();
-        List<SoaNodeId> parents = new ArrayList<SoaNodeId>();
-        
-        // runtime props :
-        properties.put("env:environment", environment);
-        properties.put("endp:url", inMessage.buildCompleteUrl());
-        
-        //String endpUrl = "http://localhost:8076/services/PrecomptePartenaireService";
-        
-        // TODO : ask for user, projectID, componentsIDs param nuxeo name
-        //properties.put("endp:url", parameters.get(ENVIRONMENT_PARAM_NAME));
-        
-        
-        // parents :
-        //parents.add(new SoaNodeId(InformationService.DOCTYPE, "PrecomptePartenaireService")); // specified service
-        parents.add(new SoaNodeId("Component", componentIds)); // specified component
-        //parents.add(new SoaNodeId("Component", "FraSCAti Studio for AXXX DPS DCV Integration")); // technical component        
-        SoaNodeInformation soaNodeInfo = new SoaNodeInformation(new SoaNodeId(Endpoint.DOCTYPE, environment + ":" + inMessage.buildCompleteUrl()), properties, parents );        
-        
-        // Run request
-        Client client = createAuthenticatedHTTPClient("Administrator", "Administrator");
-        Builder discoveryRequest = client.resource(NUXEO_URL).type(MediaType.APPLICATION_JSON);
-        OperationResult result = discoveryRequest.post(OperationResult.class, soaNodeInfo);
-        if(result.isSuccessful()){
-            logger.info("Service regsitered successfully");
+        if(enabled){
+            // Create endpoint
+            Map<String, Serializable> properties = new HashMap<String, Serializable>();
+            List<SoaNodeId> parents = new ArrayList<SoaNodeId>();
+            
+            // runtime props :
+            properties.put("env:environment", environment);
+            properties.put("endp:url", inMessage.buildCompleteUrl());
+            // TODO : add project ID property
+            // properties.put("projectId", projectId); // Not implemented yet in V1 model
+            // properties.put("user", user);
+            
+            // parents :
+            //parents.add(new SoaNodeId(InformationService.DOCTYPE, "PrecomptePartenaireService")); // specified service
+            //parents.add(new SoaNodeId("Component", componentIds)); // specified component
+            //parents.add(new SoaNodeId("Component", "FraSCAti Studio for AXXX DPS DCV Integration")); // technical component        
+            SoaNodeInformation soaNodeInfo = new SoaNodeInformation(new SoaNodeId(Endpoint.DOCTYPE, environment + ":" + inMessage.buildCompleteUrl()), properties, parents );        
+            // Run request
+            ClientBuilder clientBuilder = new ClientBuilder();
+            clientBuilder.setNuxeoSitesUrl(NUXEO_URL);
+            RegistryApi registryApi = clientBuilder.constructRegistryApi();
+            OperationResult result = registryApi.post(soaNodeInfo);
+            
+            // Create some document
+            if(result.isSuccessful()){
+                logger.info("Service regsitered successfully");
+            } else {
+                logger.error("An error occurs during the service registration : " + result.getMessage());
+            }
         } else {
-            logger.error("An error occurs during the service registration : " + result.getMessage());
+            logger.info("Discovery message handler is disabled");
         }
     }
 
-    /**
-     * Creates an authenticated client
-     * @param username Username
-     * @param password Password
-     * @return 
-     */
-    private Client createAuthenticatedHTTPClient(String username, String password) {
-        Client client = Client.create(this.clientConfig);
-        client.addFilter(new HTTPBasicAuthFilter(username, password));
-        return client;
+    @Override
+    public void enable() {
+        this.enabled = true;
+    }
+
+    @Override
+    public void disable() {
+        this.enabled = false;
+    }
+
+    @Override
+    public String getID() {
+        return HANDLER_ID;
     }
       
 }

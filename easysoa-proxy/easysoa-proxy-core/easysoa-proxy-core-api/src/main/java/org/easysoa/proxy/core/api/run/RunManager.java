@@ -21,15 +21,12 @@
 package org.easysoa.proxy.core.api.run;
 
 import org.easysoa.records.ExchangeRecord;
-import org.osoa.sca.annotations.Conversational;
-import org.osoa.sca.annotations.EndsConversation;
 
 /**
  *  Run manager. A run is a collection of exchange records.
  * @author jguillemotte
  *
  */
-@Conversational
 public interface RunManager {
 
     /**
@@ -41,14 +38,6 @@ public interface RunManager {
         START,
         STOP
     }
-
-    /**
-     * Stop the run manager
-     * Warning : The data stored in the current will be not saved, please call save method explicitly
-     * before to close the run manager
-     */
-    @EndsConversation
-    public void close();
     
 	/**
 	 * Returns the current run. if there is no current run and autoStart is set to true, 

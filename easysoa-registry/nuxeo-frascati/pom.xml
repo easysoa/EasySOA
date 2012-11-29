@@ -749,47 +749,56 @@
                   <version>${julia.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac.osgi</groupId>-->
+                  <groupId>org.ow2.fractal.juliac.osgi</groupId>
                   <artifactId>juliac-osgi-bootstrap</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac.osgi</groupId>-->
+                  <groupId>org.ow2.fractal.juliac.osgi</groupId>
                   <artifactId>juliac-osgi-membranes-oo</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac.osgi</groupId>-->
+                  <groupId>org.ow2.fractal.juliac.osgi</groupId>
                   <artifactId>juliac-osgi-opt-oo</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac.osgi</groupId>-->
+                  <groupId>org.ow2.fractal.juliac.osgi</groupId>
                   <artifactId>juliac-osgi-runtime-core</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac.osgi</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac.osgi</groupId>-->
+                  <groupId>org.ow2.fractal.juliac.osgi</groupId>
                   <artifactId>juliac-osgi-runtime-equinox</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac</groupId>-->
+                  <groupId>org.ow2.fractal.juliac</groupId>
                   <artifactId>juliac-core</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac</groupId>-->
+                  <groupId>org.ow2.fractal.juliac</groupId>
                   <artifactId>juliac-jdt</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac</groupId>-->
+                  <groupId>org.ow2.fractal.juliac</groupId>
                   <artifactId>juliac-oo</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.objectweb.fractal.juliac</groupId>
+                  <!--<groupId>org.objectweb.fractal.juliac</groupId>-->
+                  <groupId>org.ow2.fractal.juliac</groupId>
                   <artifactId>juliac-runtime</artifactId>
                   <version>${juliac.version}</version>
                 </artifactItem>
@@ -931,6 +940,7 @@
                 <artifactItem>
                   <groupId>org.ow2.frascati.tinfi</groupId>
                   <artifactId>frascati-tinfi-membranes-oo</artifactId>
+                  <!--version>1.4.4</version>-->
                   <version>${tinfi.version}</version>
                 </artifactItem>
                 <artifactItem>

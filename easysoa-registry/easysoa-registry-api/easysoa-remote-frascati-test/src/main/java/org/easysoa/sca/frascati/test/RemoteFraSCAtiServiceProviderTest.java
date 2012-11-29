@@ -100,6 +100,9 @@ public class RemoteFraSCAtiServiceProviderTest
                 return false;
             }
         });
+        if(children == null){
+            children = new File[0]; 
+        }
         for (File child : children)
         {
             if (directoryName.equals(child.getName()))

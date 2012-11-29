@@ -25,8 +25,6 @@ import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
-import org.osoa.sca.annotations.ConversationID;
-import org.osoa.sca.annotations.EndsConversation;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -36,8 +34,7 @@ import org.osoa.sca.annotations.Scope;
  *
  */
 
-//@Scope("composite")
-@Scope("conversation")
+@Scope("composite")
 public class HandlerManagerImpl implements HandlerManager {
 
     public final static String HANDLER_ID = "HandlerManager";
@@ -48,10 +45,6 @@ public class HandlerManagerImpl implements HandlerManager {
     // Handlers
     @Reference 
     private List<MessageHandler> handlers;
-    
-    // Conversation ID
-    @ConversationID
-    Object conversationID;    
 
     /**
      * 
@@ -68,14 +61,6 @@ public class HandlerManagerImpl implements HandlerManager {
         }
     }
 
-    /**
-     * Close the conversation mode
-     */
-    @EndsConversation
-    public void close(){
-        // Nothing to do;
-    }
-
     @Override
     public void setHandlerConfiguration(ProxyConfiguration configuration) {
         for(MessageHandler handler : this.handlers){
@@ -86,6 +71,24 @@ public class HandlerManagerImpl implements HandlerManager {
                 logger.warn("An error occurs during the execution of the handler", ex);
             }
         }        
+    }
+
+    @Override
+    public void enableHandler(String handlerId) {
+        for(MessageHandler handler : handlers){
+            if(handler.getID().equals(handlerId)){
+                handler.enable();
+            }
+        }
+    }
+
+    @Override
+    public void disableHandler(String handlerId) {
+        for(MessageHandler handler : handlers){
+            if(handler.getID().equals(handlerId)){
+                handler.disable();
+            }
+        }
     }
     
 }
