@@ -1,4 +1,4 @@
-package org.easysoa.proxy.test;
+package org.easysoa.proxy.client.http;
 
 import java.io.IOException;
 
@@ -15,7 +15,9 @@ import org.easysoa.EasySOAConstants;
 
 
 /**
- * For run easily some http calls 
+ * Helps making simple HTTP calls going through EasySOA HTTP Proxy.
+ * Based on Apache HTTP Client. 
+ * 
  * @author fntangke
  *
  */
@@ -23,7 +25,14 @@ import org.easysoa.EasySOAConstants;
 public class HttpUtils {
     
     
-    public HttpUtils(){}
+    private String host;
+
+	public HttpUtils() {
+    	this("localhost");
+    }
+    public HttpUtils(String host) {
+    	this.host = host;
+    }
     
     /**
      * A simple GET Http call to the url
@@ -32,13 +41,13 @@ public class HttpUtils {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public static String doGet(String url) throws ClientProtocolException, IOException {
+    public String doGet(String url) throws ClientProtocolException, IOException {
         // TODO Auto-generated method stub
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         // HTTP proxy Client
         DefaultHttpClient httpProxyClient = new DefaultHttpClient();
         // Set client to use the HTTP Discovery Proxy
-        HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+        HttpHost proxy = new HttpHost(this.host, EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
         httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
         // Send a request to 
         return httpProxyClient.execute(new HttpGet(url), responseHandler);
@@ -54,7 +63,7 @@ public class HttpUtils {
      * @throws IOException
      */
     
-    public static String doPostJson(String url, String jsonContent) throws ClientProtocolException, IOException {
+    public String doPostJson(String url, String jsonContent) throws ClientProtocolException, IOException {
         // TODO Auto-generated method stub
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         
@@ -62,7 +71,7 @@ public class HttpUtils {
         DefaultHttpClient httpProxyClient = new DefaultHttpClient();
 
         // Set client to use the HTTP Discovery Proxy
-        HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+        HttpHost proxy = new HttpHost(this.host, EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
         httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 
         // Send a request to 
@@ -81,7 +90,7 @@ public class HttpUtils {
      * @throws IOException
      */
     
-    public static String doPostSoap(String url, String soapContent) throws ClientProtocolException, IOException {
+    public String doPostSoap(String url, String soapContent) throws ClientProtocolException, IOException {
         // TODO Auto-generated method stub
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         
@@ -89,7 +98,7 @@ public class HttpUtils {
         DefaultHttpClient httpProxyClient = new DefaultHttpClient();
 
         // Set client to use the HTTP Discovery Proxy
-        HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
+        HttpHost proxy = new HttpHost(this.host, EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
         httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 
         // Send a request to 

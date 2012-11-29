@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.client.http.HttpUtils;
 import org.easysoa.proxy.core.api.event.Condition;
 import org.easysoa.proxy.core.api.event.IEventMessageHandler;
 import org.easysoa.proxy.core.api.event.RegexCondition;
-import org.easysoa.proxy.test.HttpUtils;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
 import org.junit.Before;
@@ -33,6 +34,9 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
      * Logger
      */
     private Logger logger = Logger.getLogger(EventPafSampleGlueStarter.class.getName());    
+
+    private HttpUtils httputils = new HttpUtils();
+    
     /**
      * Initialize one time the remote systems for the test
      * FraSCAti and HTTP discovery Proxy ...
@@ -90,7 +94,6 @@ public class EventPafSampleGlueStarter extends AbstractProxyTestStarter{
         
         //String verif = frascati.getService("servicesToLaunchMock", "IEventMessageHandler", IEventMessageHandler.class).getListenedServiceUrlToServicesToLaunchUrlMap().toString();
 
-        HttpUtils httputils = new HttpUtils();
         String res = httputils.doPostSoap("http://localhost:9010/PureAirFlowers?wsdl",
                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body>" +
                 "<paf:addOrder xmlns:paf=\"http://paf.samples.easysoa.org/\"><orderNb>3</orderNb><ClientName>me</ClientName></paf:addOrder>" +

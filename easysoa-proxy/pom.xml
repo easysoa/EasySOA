@@ -27,7 +27,7 @@
 	  <module>easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy-test</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-scaffolderproxy</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-core-tests</module>
-	  <module>handlers/easysoa-proxy-handlers-event-test</module>
+	  <module>easysoa-proxy-intents/easysoa-proxy-intents-event-test</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-cxf-interceptor</module>
 	  <module>easysoa-proxy-intents/easysoa-proxy-intents-cxfMonitoringIntent</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-locator-mock-server</module>
