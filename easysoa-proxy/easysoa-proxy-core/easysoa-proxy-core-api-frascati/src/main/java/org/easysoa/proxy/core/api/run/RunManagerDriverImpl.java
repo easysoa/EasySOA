@@ -82,7 +82,7 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	public String returnUseInformations(UriInfo ui) {
 		logger.debug("Returning help informations");
 		StringBuffer help = new StringBuffer();
-		InputStream is = this.getClass().getResourceAsStream("/webContent/index.html");
+		InputStream is = this.getClass().getResourceAsStream("/webContent/replayManagerIndex.html");
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try {
             while(br.ready()) {

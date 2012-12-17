@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
+import org.easysoa.registry.types.Endpoint;
+import org.easysoa.registry.types.ids.EndpointId;
 import org.easysoa.registry.types.ids.SoaNodeId;
 import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.rest.client.ClientBuilder;
@@ -20,7 +22,8 @@ import org.easysoa.registry.rest.marshalling.JsonMessageReader;
 import org.easysoa.registry.rest.marshalling.JsonMessageWriter;
 import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
-import org.easysoa.registry.types.Endpoint;
+import org.osoa.sca.annotations.Scope;
+
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
@@ -30,6 +33,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
     
     public final static String HANDLER_ID = "discoveryMessageHandler";
@@ -47,16 +51,16 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
     private final ClientConfig clientConfig;
     
     // User
-    private String user;
+    private static String user;
     
     // Project ID
-    private String projectId;
+    private static String projectId;
     
     // Environment
-    private String environment;
+    private static String environment;
     
     // ComponentIDs
-    private String componentIds;
+    private static String componentIds;
     
     /**
      * Constructor
@@ -95,8 +99,9 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
             List<SoaNodeId> parents = new ArrayList<SoaNodeId>();
             
             // runtime props :
-            properties.put("env:environment", environment);
-            properties.put("endp:url", inMessage.buildCompleteUrl());
+            properties.put(Endpoint.XPATH_ENDP_ENVIRONMENT, environment);
+            properties.put(Endpoint.XPATH_URL, inMessage.buildCompleteUrl());
+            properties.put(Endpoint.XPATH_TITLE, inMessage.buildCompleteUrl());
             // TODO : add project ID property
             // properties.put("projectId", projectId); // Not implemented yet in V1 model
             // properties.put("user", user);
@@ -106,11 +111,15 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
             //parents.add(new SoaNodeId("Component", componentIds)); // specified component
             //parents.add(new SoaNodeId("Component", "FraSCAti Studio for AXXX DPS DCV Integration")); // technical component        
             SoaNodeInformation soaNodeInfo = new SoaNodeInformation(new SoaNodeId(Endpoint.DOCTYPE, environment + ":" + inMessage.buildCompleteUrl()), properties, parents );        
+            //SoaNodeInformation soaNodeInfo = new SoaNodeInformation(new EndpointId(environment, inMessage.buildCompleteUrl()), properties, parents);
+            
             // Run request
             ClientBuilder clientBuilder = new ClientBuilder();
             clientBuilder.setNuxeoSitesUrl(NUXEO_URL);
             RegistryApi registryApi = clientBuilder.constructRegistryApi();
             OperationResult result = registryApi.post(soaNodeInfo);
+            logger.debug("Registry API request response status : " + result.isSuccessful());
+            logger.debug("Registry API request response message : " + result.getMessage());
             
             // Create some document
             if(result.isSuccessful()){
