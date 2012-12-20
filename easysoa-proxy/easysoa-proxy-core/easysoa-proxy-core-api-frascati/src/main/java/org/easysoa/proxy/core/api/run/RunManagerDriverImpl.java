@@ -55,6 +55,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	@Reference
 	RunManager runManager;
 	
+	@Reference
+	HTMLProcessorItf html;
+	
 	static {
 		ProxyConfigurator.configure(RunManagerDriverImpl.class);
 	}
@@ -81,10 +84,13 @@ public class RunManagerDriverImpl implements RunManagerDriver {
      */
 	public String returnUseInformations(UriInfo ui) {
 		logger.debug("Returning help informations");
-		StringBuffer help = new StringBuffer();
-		InputStream is = this.getClass().getResourceAsStream("/webContent/replayManagerIndex.html");
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		try {
+		//StringBuffer help = new StringBuffer();
+		// Work when proxy is executed in Frascati
+		// But not when deployed as an App on frascati studio : not the same class loader
+		//InputStream is = this.getClass().getResourceAsStream("/webContent/replayManagerIndex.html");
+		// 
+		//BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		/*try {
             while(br.ready()) {
                 help.append(br.readLine() + '\n');
             }
@@ -97,8 +103,9 @@ public class RunManagerDriverImpl implements RunManagerDriver {
             } catch (IOException e) {
                 logger.error("Failed to close main page input stream", e);
             }
-		}
-		return help.toString();
+		}*/
+		//return help.toString();
+		return html.getRunManagerIndex();
 	}
 
 	/**

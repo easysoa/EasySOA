@@ -13,15 +13,28 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frasca
         <sca:reference name="runManager">
             <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
         </sca:reference>
+        <sca:reference name="html">
+        	<sca:interface.java interface="org.easysoa.proxy.core.api.run.HTMLProcessorItf" />
+        </sca:reference>
+        
     </sca:component>
     
     <sca:wire source="runManagerDriver/runManager" target="runManagerComponentReference/runManagerServiceRef"/>
     
     <sca:component name="runManagerComponentReference">
+		<sca:implementation.composite name="runManager.composite" />
     	<sca:service name="runManagerServiceRef">
     		<sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
     	</sca:service>
-		<sca:implementation.composite name="runManager.composite" />
     </sca:component>    
+
+	<sca:wire source="runManagerDriver/html" target="runManagerDriverHTMLProcessor/RunManagerDriverHtml"/>
+
+    <sca:component name="runManagerDriverHTMLProcessor">
+        <sca:service name="RunManagerDriverHtml">
+            <sca:interface.java interface="org.easysoa.proxy.core.api.run.HTMLProcessorItf" />
+        </sca:service>
+        <web:implementation.velocity location="webContent" default="htmlProcessor.vm" />
+    </sca:component>
 
 </sca:composite>

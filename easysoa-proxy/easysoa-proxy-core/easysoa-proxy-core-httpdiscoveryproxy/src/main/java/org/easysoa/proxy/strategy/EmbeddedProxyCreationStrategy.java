@@ -27,7 +27,7 @@ public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
         // Questions :
         // - DiscoveryProxy still started automatically ?
         // - Only SOAP ProxyInfo service start and then, with a call on getProxy method, starts and returns the embedded proxy ?
-        // if yes => how to modify the port in the proxy composite ? if port not configurable => just to call frascati.process(composite) to launch the predifined composite
+        // if yes => how to modify the port in the proxy composite ? if port not configurable => just to call frascati.process(composite) to launch the predefined composite
         // otherwise need to generate a composite
 
         // Set proxy informations

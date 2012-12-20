@@ -24,7 +24,6 @@ xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" name="servicesToLaunchM
 			<tuscany:binding.http uri="http://localhost:8080/another"/>			
 		</service>	
 	</component>
-    
 
 	<!-- a few (Nuxeo) services to launch -->
 
@@ -66,8 +65,6 @@ xmlns:instance="http://www.w3.org/2004/08/wsdl-instance" name="servicesToLaunchM
 			<interface.java interface="org.easysoa.test.mock.nuxeo.RecordsProvider"/>
 		</service>		
 	</component>
-
-
         
 </composite>
 
