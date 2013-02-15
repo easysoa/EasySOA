@@ -54,8 +54,19 @@ public interface ReplayEngine {
      */
     public AssertionEngine getAssertionEngine();    
     
+    /**
+     * 
+     * @param runName
+     * @param environmentName
+     * @throws InvalidParameterException
+     * @throws IOException 
+     */
     public void replayRunRecords(String runName, String environmentName) throws InvalidParameterException, IOException;
     
+    /**
+     * 
+     * @return 
+     */
     public String[] getAllRunNamesArray();
     
     /**
@@ -139,5 +150,12 @@ public interface ReplayEngine {
      * @throws Exception If a problem occurs
      */
     //public String replayWithTemplate(MultivaluedMap<String, String> formData, String exchangeStoreName, String exchangeRecordID, String templateName) throws Exception;
+    
+    /**
+     * 
+     * @param runName
+     * @throws Exception 
+     */
+    public String generateTemplateDefinition(String runName) throws Exception;
     
 }

@@ -35,7 +35,7 @@ import javax.ws.rs.core.UriInfo;
  * @author jguillemotte
  *
  */
-@Remotable
+//@Remotable
 public interface RunManagerDriver {
 
 	/**

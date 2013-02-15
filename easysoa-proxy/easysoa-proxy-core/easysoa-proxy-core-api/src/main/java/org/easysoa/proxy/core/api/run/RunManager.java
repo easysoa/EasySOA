@@ -21,12 +21,14 @@
 package org.easysoa.proxy.core.api.run;
 
 import org.easysoa.records.ExchangeRecord;
+import org.osoa.sca.annotations.Scope;
 
 /**
  *  Run manager. A run is a collection of exchange records.
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public interface RunManager {
 
     /**
