@@ -21,6 +21,7 @@
 package org.easysoa.tests.helpers;
 
 import java.util.ArrayList;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -93,6 +94,16 @@ public abstract class AbstractTestHelper {
 		componentList.add(frascati.processComposite(composite, new ProcessingContextImpl()));
 	}
 	
+        /**
+         * 
+         * @param composite
+         * @throws FrascatiException 
+         */
+	protected static void startComposite(String composite) throws FrascatiException {
+		logger.info(composite + " Starting");
+		componentList.add(frascati.processComposite(composite, new ProcessingContextImpl()));
+	}
+        
 	/**
 	 * Start the services mock for tests (Meteo mock, twitter mock ...)
 	 * @param withNuxeoMock If true, the Nuxeo mock is started
@@ -112,22 +123,24 @@ public abstract class AbstractTestHelper {
 	 * 
 	 * @throws Exception
 	 */
-	public void startNewRun(String runName) throws Exception {
+	public String startNewRun(String runName) throws Exception {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		// Start a new Run
 		HttpPost newRunPostRequest = new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/start/" + runName);
-		httpClient.execute(newRunPostRequest, new BasicResponseHandler());		
+                String response = httpClient.execute(newRunPostRequest, new BasicResponseHandler());
+                return response;
 	}
 	
 	/**
 	 * 
 	 * @throws Exception
 	 */
-	public void stopAndSaveRun() throws Exception {
+	public String stopAndSaveRun() throws Exception {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		// Stop and save the run
 		HttpPost stopRunPostRequest = new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/stop");
-		httpClient.execute(stopRunPostRequest, new BasicResponseHandler());
+		String response = httpClient.execute(stopRunPostRequest, new BasicResponseHandler());
+                return response;
 
 	}
 	
@@ -135,11 +148,12 @@ public abstract class AbstractTestHelper {
 	 * 
 	 * @throws Exception
 	 */
-	public void deleteRun() throws Exception {
+	public String deleteRun() throws Exception {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		// delete the run
 		HttpPost deleteRunPostRequest = new HttpPost("http://localhost:" + EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT + "/run/delete");
-		httpClient.execute(deleteRunPostRequest, new BasicResponseHandler());		
+		String response = httpClient.execute(deleteRunPostRequest, new BasicResponseHandler());		
+                return response;
 	}	
 	
 }

@@ -40,7 +40,7 @@ public class HandlerManagerImpl implements HandlerManager {
     public final static String HANDLER_ID = "HandlerManager";
     
     // Logger
-    private Logger logger = Logger.getLogger(HandlerManagerImpl.class.getName());        
+    private Logger logger = Logger.getLogger(HandlerManagerImpl.class.getName());
     
     // Handlers
     @Reference 

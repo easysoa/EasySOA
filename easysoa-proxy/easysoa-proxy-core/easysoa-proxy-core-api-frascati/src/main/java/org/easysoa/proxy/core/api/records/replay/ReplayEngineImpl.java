@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -380,6 +381,51 @@ public class ReplayEngineImpl implements ReplayEngine {
         String[] runList = new String[0];
         return storeList.toArray(runList);
     }
+    
+    @Override
+    public String generateTemplateDefinition(String runName) throws Exception {
+
+        log.debug("callTemplateDefService method for store " + runName);
+        ProxyFileStore fileStore = new ProxyFileStore();
+
+        List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(runName);
+
+        // TODO : expose the replay engine as a rest service ....
+        // find a solution to the problem ...
+        // Get the replay engine service
+        // Problem : since the use of implementation.composite => the following way to get the service doesn't work
+        //ReplayEngine replayEngine = frascati.getService(componentList.get(0), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
+        //HttpGet httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/replay/" + runName + "/" + record.getExchange().getExchangeID());
+        
+        // Build an HashMap to simulate user provided values
+        HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
+        ArrayList<String> valueList = new ArrayList<String>();
+        // TODO : remove these hard coded params and add them as method parameters
+        valueList.add("toto");
+        fieldMap.put("user", valueList);
+
+        // For each custom record in the list
+        // TODO : seem's there is a problem here, the rendered template is the same for 2 differents cases
+        //TemplateEngine templateEngine = new TemplateEngineImpl();
+        for (ExchangeRecord record : recordList) {
+            TemplateFieldSuggestions templateFieldsuggestions = this.getTemplateEngine().suggestFields(record, runName, true);
+            ExchangeRecord templatizedRecord = this.getTemplateEngine().generateTemplate(templateFieldsuggestions, record, runName, true);
+            this.getAssertionEngine().suggestAssertions(templateFieldsuggestions, record.getExchange().getExchangeID(), runName);
+            // Render the templates and replay the request
+			/*if(templatizedRecord != null){
+             String replayedResponse = processor.renderReq(ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION, record, runName, fieldMap);
+             logger.debug("returned message form replayed template : " + replayedResponse);
+             // TODO : call the renderRes method for server mock test
+             // TODO : add an assert to check the result of the replayed templatized request
+             //assertEquals(record.getOutMessage().getMessageContent().getContent(), response);
+             }*/
+            //OutMessage replayedMessageresponse = this.replayWithTemplate(fieldMap, runName, record.getExchange().getExchangeID());
+            // TODO add an assertion to check the replayed response
+        }
+        
+        return "templates successfully generated";
+    }
+    
     
     /*@Override
     @Deprecated

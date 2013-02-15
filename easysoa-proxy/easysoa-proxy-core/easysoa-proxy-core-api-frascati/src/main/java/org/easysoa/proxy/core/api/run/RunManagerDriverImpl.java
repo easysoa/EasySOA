@@ -129,10 +129,10 @@ public class RunManagerDriverImpl implements RunManagerDriver {
 	public String stopCurrentRun() {
 		logger.debug("Stopping the current run !");
 		try {
-			runManager.stop();
+			return runManager.stop();
 			// Registering is now done in save method
 			//runManager.getMonitoringService().registerDetectedServicesToNuxeo();
-	        return "Current run stopped !";
+                        //return "Current run stopped !";
 		}
 		catch(Exception ex){
 			logger.error("Unable to stop the current run", ex);

@@ -3,7 +3,7 @@
 
 	<sca:service name="correlationEngineServiceRef" promote="correlationEngineComponent/correlationEngineService"/>
 
-	<!-- Log engine -->
+	<!-- Correlation engine -->
 	<sca:component name="correlationEngineComponent">
 		<sca:service name="correlationEngineService">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.records.correlation.CorrelationEngine" />
