@@ -78,7 +78,8 @@ import org.ow2.frascati.assembly.factory.api.ProcessingContext;
  * @version 1.5
  */
 public class ProxyImplementationVelocity extends ImplementationVelocity {
-	@Property(name = "arguments")
+	
+        @Property(name = "arguments")
 	protected String params = "args";
 
 	protected final String invoke(String method, VelocityContext context, String[] args, Object... parameters) {
@@ -88,6 +89,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 		registerScaProperties();
 		StringWriter sw = new StringWriter();
 		// **** EasySOA Hack begin
+                
 		System.out.println("TEST PASSING in ProxyImplementationVelocity Hack");
 		int pathArgIndex = Integer.parseInt((String) context.get("pathArgIndex")); // pathArgIndex has been set as an SCA xsd:int property
 		int storeIndex = Integer.parseInt((String) context.get("storeIndex")); // storeIndex has been set as an SCA xsd:int property
@@ -103,6 +105,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 				System.out.println("template = " + template);
 			}
 		}
+                
 		if (template == null) {
 		// *** EasySOA Hack end
 			String name = this.velocityEngine.templateExists(method + ".vm") ? method + ".vm" : this.defaultResource;

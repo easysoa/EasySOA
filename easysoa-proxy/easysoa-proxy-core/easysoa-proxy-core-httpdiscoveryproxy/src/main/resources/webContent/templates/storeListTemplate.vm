@@ -1,0 +1,9 @@
+<html>
+    <body>
+        <ul>
+        #foreach( $store in $storeList )
+        <li><a href=\"http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + store + "?wsdl\">" + store + "</a></li>
+        #end
+        </ul>
+    </body>
+</html>
