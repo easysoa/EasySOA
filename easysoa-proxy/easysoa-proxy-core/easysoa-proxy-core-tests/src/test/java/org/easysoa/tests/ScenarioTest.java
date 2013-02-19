@@ -298,11 +298,20 @@ public class ScenarioTest extends AbstractTestHelper {
     private void getWSDLTemplate(String runName) throws Exception {
         //localhost:8090/runManager/target/TweeterRestTestRun?wsdl
         DefaultHttpClient httpClient = new DefaultHttpClient();
-        // get a list of recorded exchange store
-        //HttpGet httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + runName + "?wsdl");
-        HttpGet httpUriRequest = new HttpGet("http://localhost:18000/runManager/target/" + runName + "?wsdl");
+        // Get the store list
+        HttpGet httpUriRequest = new HttpGet("http://localhost:18000/target/");
         HttpResponse response = httpClient.execute(httpUriRequest);
         String entityResponseString = ContentReader.read(response.getEntity().getContent());
+        logger.debug("Store list : " + entityResponseString);
+        System.out.println("Store list : " + entityResponseString);
+        assertTrue(entityResponseString.startsWith("<html>"));
+        
+        // get a list of recorded exchange store
+        //HttpGet httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + runName + "?wsdl");
+        //HttpGet httpUriRequest = new HttpGet("http://localhost:18000/runManager/target/" + runName + "?wsdl");
+        httpUriRequest = new HttpGet("http://localhost:18000/target/" + runName + "/?wsdl");
+        response = httpClient.execute(httpUriRequest);
+        entityResponseString = ContentReader.read(response.getEntity().getContent());
         logger.debug("WSDL for store " + runName + " : " + entityResponseString);
         System.out.println("WSDL for store " + runName + " : " + entityResponseString);
         assertTrue(entityResponseString.startsWith("<definitions name=\"Twitter_test_runService\""));
@@ -317,7 +326,8 @@ public class ScenarioTest extends AbstractTestHelper {
      */
     private void sendWSDLToScaffolderProxy(String runName) throws Exception {
         //String wsdlTestRequest = "http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + runName + "?wsdl";
-        String wsdlTestRequest = "http://localhost:18000/runManager/target/" + runName + "?wsdl";
+        //String wsdlTestRequest = "http://localhost:18000/runManager/target/" + runName + "?wsdl";
+        String wsdlTestRequest = "http://localhost:18000/target/" + runName + "/?wsdl";
         //String scaffoldingProxyRequest = "http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/scaffoldingProxy/?wsdlUrl=";
         String scaffoldingProxyRequest = "http://localhost:18000/scaffoldingProxy/?wsdlUrl=";
         System.out.println("wsdlTestRequest = " + wsdlTestRequest);
