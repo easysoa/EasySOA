@@ -1,0 +1,9 @@
+<html>
+    <body>
+        <ul>
+        #foreach($store in $request.getAttribute("storeList"))
+        <li><a href="${request.getAttribute("baseAddress")}/target/${store}?wsdl">${store}</a></li>
+        #end
+        </ul>
+    </body>
+</html>

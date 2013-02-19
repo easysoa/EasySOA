@@ -43,6 +43,7 @@
  */
 package org.ow2.frascati.implementation.velocity;
 
+import org.easysoa.proxy.core.api.template.WsdlDataStoreProviderImpl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -100,7 +101,7 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
     }
     // TODO: Allow to configure this list.
     static final List<String> templatables = Arrays.asList(new String[]{"",
-                ".html", ".txt", ".xml"});
+                ".html", ".txt", ".xml", ".vm"});
 
     // ---------------------------------------------------------------------------
     // Internal methods.
@@ -136,14 +137,14 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
          * on /target Not the best solution but it works
          */
         // TODO : find an other way to trigger custom code
-        if (requestedResource.contains("/target")) {
+        /*if (requestedResource.contains("/target")) {
             // Call the custom code
             VelocityController.buildResponse(requestedResource, velocityEngine, velocityContext, request, response);
-        } 
+        }*/ 
         /**
          * EASYSOA HACK END
          */
-        else {
+        //else {
             // Compute extension of the requested resource.
             int idx = requestedResource.lastIndexOf('.');
             String extension = (idx != -1) ? requestedResource.substring(idx)
@@ -205,7 +206,7 @@ public class ServletImplementationVelocity extends ImplementationVelocity {
                 Stream.copy(is, response.getOutputStream());
                 is.close();
             }
-        }
+        //}
     }
 
     // ---------------------------------------------------------------------------

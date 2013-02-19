@@ -49,7 +49,14 @@
     		<groupId>org.json</groupId>
     		<artifactId>json</artifactId>
     	</dependency>
-	
+        <!-- Velocity -->
+        <dependency>
+      		<groupId>org.ow2.frascati</groupId>
+      		<artifactId>frascati-implementation-velocity</artifactId>
+      		<version>${frascati.version}</version>
+                <scope>provided</scope>
+    	</dependency>        
+        
 		<!-- Tests -->
 		<!-- junit -->
 		<dependency>
@@ -119,12 +126,6 @@
       		<artifactId>frascati-binding-rest</artifactId>
       		<version>${frascati.version}</version>
 			<scope>test</scope>      		
-    	</dependency>
-    	<dependency>
-      		<groupId>org.ow2.frascati</groupId>
-      		<artifactId>frascati-implementation-velocity</artifactId>
-      		<version>${frascati.version}</version>
-			<scope>test</scope>
     	</dependency>
     	<dependency>
       		<groupId>xml-apis</groupId>
