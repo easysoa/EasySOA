@@ -311,7 +311,6 @@ public class ScenarioTest extends AbstractTestHelper {
         //HttpGet httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + runName + "?wsdl");
         //HttpGet httpUriRequest = new HttpGet("http://localhost:18000/runManager/target/" + runName + "?wsdl");
         httpUriRequest = new HttpGet("http://localhost:18000/target/" + runName + "?wsdl");
-                                      http://localhost:18000/target/Twitter_test_run/?wsdl
         response = httpClient.execute(httpUriRequest);
         entityResponseString = ContentReader.read(response.getEntity().getContent());
         logger.debug("WSDL for store " + runName + " : " + entityResponseString);
