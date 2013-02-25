@@ -62,6 +62,7 @@ import javax.ws.rs.QueryParam;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.eclipse.stp.sca.Component;
 import org.eclipse.stp.sca.ComponentReference;
 import org.eclipse.stp.sca.PropertyValue;
@@ -81,7 +82,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 	
         @Property(name = "arguments")
 	protected String params = "args";
-
+        
 	protected final String invoke(String method, VelocityContext context, String[] args, Object... parameters) {
 		// VelocityContext context = new VelocityContext(this.velocityContext);
 		context.put(params, parameters);
@@ -90,24 +91,58 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 		StringWriter sw = new StringWriter();
 		// **** EasySOA Hack begin
                 
-		System.out.println("TEST PASSING in ProxyImplementationVelocity Hack");
+                // TODO : write a JIRA about the proxy velocity hack with a link on the original code and our hack in the JIRA
+                // With a proposition (a special method name) allowing to pass param to get templates in tree folder organisation..
+                // Use execute_custom as special method name !!
+                
+                Template template = null;
+
+                // method name is the method called in TemplateRenderer at line 83 => template.renderRes( ...
+                if(method.equals("execute_custom")){
+                    Object templateName = parameters[0];
+
+                    // Get only a template from the velocity resource management system
+                    // Not possible to get a template in an other folder
+                    
+                    // Calling the static getTemplate method works
+                    // But after got a problem with the method invokeVelocyMacro execute_custom is not a registred VM
+                    try{
+                        // Get a template in the current execution folder
+                        // TODO : check if a template can be retrieved from an other folder
+                        template = Velocity.getTemplate((String) templateName);
+                        if (!Velocity.invokeVelocimacro(method, method, args, context, sw)) {
+                            template.merge(context, sw);
+                        }
+                    }
+                    catch(Exception ex){
+                        // Get a template in the default folder
+                        template = this.velocityEngine.getTemplate((String) templateName);  
+            		if (!this.velocityEngine.invokeVelocimacro(method, method, args, context, sw)) {
+                            template.merge(context, sw);
+                        }                        
+                    }
+                        
+                    sw.flush();
+                    //System.out.println("returned by Proxy Velocity = " + sw.toString());
+                    return sw.toString();                    
+                    // Template not found in this case ...
+                    //template = this.velocityEngine.getTemplate((String) templateName);
+                    
+                }
+                /*
 		int pathArgIndex = Integer.parseInt((String) context.get("pathArgIndex")); // pathArgIndex has been set as an SCA xsd:int property
 		int storeIndex = Integer.parseInt((String) context.get("storeIndex")); // storeIndex has been set as an SCA xsd:int property
-		System.out.println("pathArgIndex = " + pathArgIndex);
-		Template template = null;
+		
 		if (parameters.length > pathArgIndex) {
 			Object templatePathFound = parameters[pathArgIndex];
 			Object storeNameFound = parameters[storeIndex];
-			System.out.println("templatePathFound = " + templatePathFound);
-			System.out.println("storeNameFound = " + storeNameFound);
 			if (templatePathFound instanceof String) {
 				template = this.velocityEngine.getTemplate((String)storeNameFound + "/" + (String) templatePathFound);
-				System.out.println("template = " + template);
 			}
 		}
-                
+                */
+                // *** EasySOA Hack end
 		if (template == null) {
-		// *** EasySOA Hack end
 			String name = this.velocityEngine.templateExists(method + ".vm") ? method + ".vm" : this.defaultResource;
 			template = this.velocityEngine.getTemplate(name);
 		}
@@ -115,7 +150,7 @@ public class ProxyImplementationVelocity extends ImplementationVelocity {
 			template.merge(context, sw);
 		}
 		sw.flush();
-		System.out.println("returned by Proxy Velocity = " + sw.toString());
+		//System.out.println("returned by Proxy Velocity = " + sw.toString());
 		return sw.toString();
 	}
 

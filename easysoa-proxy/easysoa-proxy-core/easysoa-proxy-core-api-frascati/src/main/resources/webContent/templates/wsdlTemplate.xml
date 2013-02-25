@@ -1,35 +1,37 @@
-<definitions name="${storeName}Service"
-   targetNamespace="http://www.easysoa.org/wsdl/${storeName}.wsdl"
+#macro ( execute_custom $arg0 $arg1 $arg2 $arg3)
+<definitions name="${arg1}Service"
+   targetNamespace="http://www.easysoa.org/wsdl/${arg1}.wsdl"
    xmlns="http://schemas.xmlsoap.org/wsdl/"
    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-   xmlns:tns="http://www.easysoa.org/wsdl/${storeName}.wsdl"
-   xmlns:xsd="http://easysoa.org/${storeName}.xsd">
+   xmlns:tns="http://www.easysoa.org/wsdl/${arg1}.wsdl"
+   xmlns:xsd="http://easysoa.org/${arg1}.xsd">
 
    ## Call the macro to render WSDL types
-   #renderWSDLTypes($storeName $operationList $paramFields)
+   #renderWSDLTypes(${arg1} ${arg2.get("operationList")} ${arg3})
  
    ## Call the macro to render WSDL messages   
-   #foreach( $operation in $operationList )
+   #foreach( $operation in ${arg2.get("operationList")} )
        #renderWSDLMessages($operation)
    #end
 
    ## Call the macro to render WSDL port types
-   #renderWSDLPortTypes($storeName $operation)
+   #renderWSDLPortTypes(${arg1} ${arg2.get("operationList")})
 
-   <binding name="${storeName}_Binding" type="tns:${storeName}_PortType">
+   <binding name="${arg1}_Binding" type="tns:${arg1}_PortType">
    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-   #foreach( $operation in $operationList )
+   #foreach( $operation in ${arg2.get("operationList")} )
    		#renderWSDLOperations($operation)
    #end
    </binding>
 
-   <service name="${storeName}_Service">
-      <documentation>WSDL File for $storeName Service</documentation>
-      <port binding="tns:${storeName}_Binding" name="${storeName}_Port">
-         <soap:address location="http://localhost:8092/runManager/target/processOperation"/>
+   <service name="${arg1}_Service">
+      <documentation>WSDL File for ${arg1} Service</documentation>
+      <port binding="tns:${arg1}_Binding" name="${arg1}_Port">
+         <soap:address location="http://localhost:18000/target/${arg1}"/>
       </port>
    </service>
 </definitions>
+#end
 
 ## Macro to render WSDL message part
 #macro ( renderWSDLMessages $operation $paramFields )
@@ -44,7 +46,7 @@
 #end
 
 ## Macro to render WSDL types part
-#macro (renderWSDLTypes $storeName $operation $paramFields )
+#macro (renderWSDLTypes $storeName $operationList $paramFields )
   <types>
     <schema targetNamespace="http://easysoa.org/${storeName}.xsd" xmlns="http://www.w3.org/2001/XMLSchema">
       #foreach( $operation in $operationList )
@@ -72,7 +74,7 @@
 #end
 
 ## Macro to render WSDL port types part
-#macro ( renderWSDLPortTypes $storeName $operation)
+#macro ( renderWSDLPortTypes $storeName $operationList)
    <portType name="${storeName}_PortType">
    #foreach( $operation in $operationList )
    		#renderWSDLPortTypeOperation($operation)

@@ -1,0 +1,10 @@
+#macro ( execute_custom $arg0 $arg1 $arg2 )
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://easysoa.org/${arg2.get("storeName").get(0)}.xsd">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xsd:${arg2.get("operation").get(0)}Response>
+         <response>${arg2.get("result").get(0)}</response>
+      </xsd:${arg2.get("operation").get(0)}Response>
+   </soapenv:Body>
+</soapenv:Envelope>
+#end

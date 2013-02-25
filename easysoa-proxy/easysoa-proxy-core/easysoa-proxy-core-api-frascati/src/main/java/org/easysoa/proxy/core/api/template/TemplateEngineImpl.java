@@ -126,10 +126,14 @@ public class TemplateEngineImpl implements TemplateEngine {
         String templatePath;
         if(simulation){
             templatePath = "resTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
-            return templateRenderer.renderRes(templatePath, record, storeName, fieldValues);
+            //return templateRenderer.renderRes(templatePath, record, storeName, fieldValues);
+            
+            return templateRenderer.renderRes("easysoa/webContent/templates/" + storeName + "/" + templatePath, record, storeName, fieldValues);
         } else {
             templatePath = "reqTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
-            return templateRenderer.renderReq(templatePath, record, storeName, fieldValues);            
+            //return templateRenderer.renderReq(templatePath, record, storeName, fieldValues);            
+            
+            return templateRenderer.renderReq("easysoa/webContent/templates/" + storeName + "/" + templatePath, record, storeName, fieldValues);
         }
     }
    

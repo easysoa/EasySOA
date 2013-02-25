@@ -83,6 +83,7 @@ public class ScenarioTest extends AbstractTestHelper {
      * test the integration between HTTP discovery proxy and Scaffolder proxy
      */
     @Test
+    //@Ignore
     public void scenarioTest() throws Exception {
         try {
             // Create the twitter test run
@@ -309,7 +310,8 @@ public class ScenarioTest extends AbstractTestHelper {
         // get a list of recorded exchange store
         //HttpGet httpUriRequest = new HttpGet("http://localhost:" + EasySOAConstants.HTML_FORM_GENERATOR_PORT + "/runManager/target/" + runName + "?wsdl");
         //HttpGet httpUriRequest = new HttpGet("http://localhost:18000/runManager/target/" + runName + "?wsdl");
-        httpUriRequest = new HttpGet("http://localhost:18000/target/" + runName + "/?wsdl");
+        httpUriRequest = new HttpGet("http://localhost:18000/target/" + runName + "?wsdl");
+                                      http://localhost:18000/target/Twitter_test_run/?wsdl
         response = httpClient.execute(httpUriRequest);
         entityResponseString = ContentReader.read(response.getEntity().getContent());
         logger.debug("WSDL for store " + runName + " : " + entityResponseString);
@@ -318,9 +320,7 @@ public class ScenarioTest extends AbstractTestHelper {
     }
 
     /**
-     * Send the corresponding store wsdl to the scaffolding proxy to get an HTML
-     * form
-     *
+     * Send the corresponding store wsdl to the scaffolding proxy to get an HTML form
      * @param runName
      * @throws Exception
      */
@@ -342,6 +342,17 @@ public class ScenarioTest extends AbstractTestHelper {
         assertTrue(form.contains("<input class=\"inputField\" name=\"user\" type=\"text\">"));
     }
 
+    /**
+     * Replay an exchange using the WSDL template service
+     * @param runName
+     * @throws Exception
+     */
+    private void templateReplay(String runName) throws Exception {
+        
+        String wsdlTest = "http://localhost:18000/target/" + runName + "/?wsdl";
+        
+    }
+    
     /**
      * This test do nothing, just wait for a user action to stop the proxy.
      *
