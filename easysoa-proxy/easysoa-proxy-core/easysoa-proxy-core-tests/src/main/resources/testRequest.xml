@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:twit="http://easysoa.org/Twitter_test_run.xsd">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <twit:reqTemplateRecord_2Request>
+         <!--You may enter the following 2 items in any order-->
+         <tweetNumber>5</tweetNumber>
+         <user>toto</user>
+      </twit:reqTemplateRecord_2Request>
+   </soapenv:Body>
+</soapenv:Envelope>

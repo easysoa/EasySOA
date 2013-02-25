@@ -21,13 +21,14 @@
  */
 package org.easysoa.tests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.assertEquals;
+        
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -36,15 +37,15 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
-import org.easysoa.proxy.core.api.template.TemplateFieldSuggestions;
 import org.easysoa.proxy.core.api.util.ContentReader;
 import org.easysoa.records.ExchangeRecord;
 import org.easysoa.tests.helpers.AbstractTestHelper;
@@ -124,6 +125,12 @@ public class ScenarioTest extends AbstractTestHelper {
             logger.warn("An error occurs during the sendWSDLToScaffolderProxy method", ex);
         }
 
+        try {
+            templateReplay(TWITTER_TEST_RUN_NAME);
+        }
+        catch(Exception ex){
+            logger.warn("An error occurs during the callReplayService method", ex);
+        }
         // Generate a server for test wsdl with wsdl2java or frascati
         // Send a request with scaffolder proxy
         // Check the response
@@ -332,7 +339,7 @@ public class ScenarioTest extends AbstractTestHelper {
         System.out.println("wsdlTestRequest = " + wsdlTestRequest);
         System.out.println("scaffoldingProxyRequest = " + scaffoldingProxyRequest);
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
-        // Send a request to generate the HTML form
+        // Send a request to generate the scaffolder HTML form
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpGet request = new HttpGet(scaffoldingProxyRequest + wsdlTestRequest);
         String form = httpClient.execute(request, responseHandler);
@@ -348,7 +355,19 @@ public class ScenarioTest extends AbstractTestHelper {
      */
     private void templateReplay(String runName) throws Exception {
         
-        String wsdlTest = "http://localhost:18000/target/" + runName + "/?wsdl";
+        String wsdlTestRequest = "http://localhost:18000/target/Twitter_test_run";
+        
+        // Send a POST request 
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpPost request = new HttpPost(wsdlTestRequest);
+        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+        InputStream is = this.getClass().getResourceAsStream("/testRequest.xml");
+        HttpEntity entity = new InputStreamEntity(is, is.available());
+        request.setEntity(entity);
+        String result = httpClient.execute(request, responseHandler);
+        logger.debug("Replay template response = " + result);
+        System.out.println("Replay template response = " + result);
+        assertTrue(result.contains("<xsd:reqTemplateRecord_2Response>"));
         
     }
     
