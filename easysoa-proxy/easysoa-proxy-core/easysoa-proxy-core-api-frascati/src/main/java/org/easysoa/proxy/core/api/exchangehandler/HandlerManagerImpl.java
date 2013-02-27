@@ -20,7 +20,6 @@
 package org.easysoa.proxy.core.api.exchangehandler;
 
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
@@ -33,7 +32,6 @@ import org.osoa.sca.annotations.Scope;
  * @author fntangke
  *
  */
-
 @Scope("composite")
 public class HandlerManagerImpl implements HandlerManager {
 
@@ -49,6 +47,7 @@ public class HandlerManagerImpl implements HandlerManager {
     /**
      * 
      */
+    @Override
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
         logger.debug("Message received, calling registered handlers");
         for(MessageHandler handler : this.handlers){

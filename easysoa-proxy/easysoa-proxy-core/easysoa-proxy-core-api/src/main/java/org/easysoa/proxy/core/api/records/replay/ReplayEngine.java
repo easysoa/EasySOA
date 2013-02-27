@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
-
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.records.assertions.AssertionEngine;
 import org.easysoa.proxy.core.api.simulation.SimulationEngine;

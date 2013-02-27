@@ -61,14 +61,6 @@ public interface RunManager {
 	public void addEventReceiver(RunManagerEventReceiver eventReceiver);
 	
 	/**
-	 * Returns the specified run
-	 * @param runName The run name to return
-	 * @return The run corresponding to the run name
-	 * @throws Exception if the run is not found 
-	 */
-	//public Run getRun(String runName) throws Exception;
-	
-	/**
 	 * Delete the run
 	 * @throws Exception If the run cannot be deleted
 	 */
@@ -87,22 +79,10 @@ public interface RunManager {
 	public String stop() throws Exception;
 
 	/**
-	 * Returns the last run
-	 * @return The last <code>Run</code>
-	 */
-	//public Run getLastRun();
-
-	/**
 	 * Record a message in the current run
 	 * @param message The <code>Message</code> to record
 	 */
 	public void record(ExchangeRecord exchangeRecord);
-	
-	/**
-	 * Rerun a the specified run
-	 * @param runName The run to rerun
-	 */
-	//public void reRun(String runName) throws Exception;
 	
 	/**
 	 * Save the run

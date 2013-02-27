@@ -24,21 +24,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.messages.server.NumberGenerator;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
-//import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
-import org.easysoa.proxy.core.api.run.Run;
-import org.easysoa.proxy.core.api.run.RunManager;
-import org.easysoa.proxy.core.api.run.RunManagerEventReceiver;
 import org.easysoa.proxy.core.api.run.Run.RunStatus;
 import org.easysoa.records.ExchangeRecord;
-/*
- import org.easysoa.records.filters.ExchangeRecordServletFilter;
- import org.easysoa.records.handlers.NuxeoMessageExchangeRecordHandler;
- import org.easysoa.records.service.ExchangeRecordServletFilterService;
- import org.easysoa.records.service.ExchangeRecordServletFilterServiceImpl;
- */
-import org.osoa.sca.annotations.ConversationID;
-import org.osoa.sca.annotations.EagerInit;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
@@ -62,15 +49,18 @@ public class RunManagerImpl implements RunManager {
     // one different run manager for each proxy ... We need to avoid duplicate run names ....
     // How to give a name to the current name ??
     // - Client must be give id used as a prefix or suffix ?
+    
     /**
      * Logger
      */
     private Logger logger = Logger.getLogger(RunManagerImpl.class.getName());
+    
     /**
      * when set to true, a run is automatically started when the getCurrentRun
      * is called if there is no current run.
      */
     private boolean autoStart = false;
+
     /**
      * When set to true, the run is automatically saved when the stop method is
      * called.
@@ -80,6 +70,7 @@ public class RunManagerImpl implements RunManager {
     // instance of run manager
     @Reference
     NumberGenerator exchangeNumberGenerator;
+    
     /**
      * List of event receivers
      */
@@ -105,6 +96,7 @@ public class RunManagerImpl implements RunManager {
      *
      * @param eventReceiver The RunManagerEventReceiver to register
      */
+    @Override
     public void addEventReceiver(RunManagerEventReceiver eventReceiver) {
         if (eventReceiver != null) {
             runManagerEventReceiverList.add(eventReceiver);
@@ -132,15 +124,7 @@ public class RunManagerImpl implements RunManager {
     @Override
     public String start(String runName) throws Exception {
 
-        /*try{
-         ExchangeRecordServletFilterService filterService = new ExchangeRecordServletFilterServiceImpl();
-         ExchangeRecordServletFilter filter = filterService.getExchangeRecordServletFilter();
-         filter.start(new NuxeoMessageExchangeRecordHandler());
-         } catch(Exception ex){
-         logger.error("Unable to call start method of ExchangeRecordServletFilter", ex);
-         }*/
-
-        StringBuffer error = new StringBuffer();
+        StringBuilder error = new StringBuilder();
         synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete
             if (this.currentRun == null && checkUniqueRunName(runName)) {
                 this.currentRun = new Run(runName);
@@ -165,7 +149,7 @@ public class RunManagerImpl implements RunManager {
             }
         }
     }
-
+    
     /* (non-Javadoc)
      * @see org.easysoa.esperpoc.run.RunManager#stop()
      */
@@ -177,7 +161,6 @@ public class RunManagerImpl implements RunManager {
                 this.currentRun.setStopDate(new Date());
                 this.currentRun.setStatus(RunStatus.STOPPED);
                 if (autoSave) {
-                    //internalSave();
                     erStore.save(currentRun);
                     currentRun.setStatus(RunStatus.SAVED);
                     response = "Run " + currentRun.getName() + " stopped, saved and deleted !";
@@ -196,22 +179,6 @@ public class RunManagerImpl implements RunManager {
             }
         }
     }
-
-    /**
-     * Returns the run list
-     *
-     * @return A <code>List</code> of <code>Run</code>
-     */
-    /*public ArrayDeque<Run> listRuns(){
-     return this.runList;
-     }*/
-    /* (non-Javadoc)
-     * @see org.easysoa.esperpoc.run.RunManager#getLastRun()
-     */
-    /*@Override
-     public Run getLastRun(){
-     return this.runList.getLast();
-     }*/
 
     /* (non-Javadoc)
      * @see org.easysoa.esperpoc.run.RunManager#record()
@@ -235,30 +202,6 @@ public class RunManagerImpl implements RunManager {
     }
 
     /* (non-Javadoc)
-     * @see org.easysoa.esperpoc.run.RunManager#reRun()
-     */
-    /*@Override
-     public void reRun(String runName) throws Exception {
-     Run run = getRun(runName);
-     // TODO remove this and find a way to re-init the monitoringService (especially the tree)
-     monitoringService = new DiscoveryMonitoringService();
-     // call directly the listen method, with all the run messages as parameters
-     // Pb the listen method is in the monitoringService class .... 
-     // 2 solutions :
-     // 1st : add a reference to monitoring service in runManager. The same Monitoring service is used for all the run in a same run manager
-     // 2nd : Each run can have a different run manager, defined when the run is created. We can give a monitoringServiceFactory as reference to the runManager.
-     //for(Message message : run.getMessageList()){
-     //	logger.debug("Listening message : " + message);
-     //	monitoringService.listen(message);
-     }
-     for(ExchangeRecord exchangeRecord : run.getExchangeRecordList()){
-     logger.debug("Listening exchange record : " + exchangeRecord);
-     monitoringService.listen(exchangeRecord);
-     }
-     monitoringService.registerDetectedServicesToNuxeo();		
-     }*/
-
-    /* (non-Javadoc)
      * @see org.easysoa.esperpoc.run.RunManager#deleteRun()
      */
     @Override
@@ -273,20 +216,6 @@ public class RunManagerImpl implements RunManager {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.easysoa.esperpoc.run.RunManager#getRun()
-     */
-    /*@Override
-     public Run getRun(String runName) throws Exception {
-     Iterator<Run> iter = this.runList.iterator();
-     while(iter.hasNext()){
-     Run run = iter.next();
-     if(run.getName().equalsIgnoreCase(runName)){
-     return run;
-     }
-     }
-     throw new Exception("There is no run with the name '" +runName + "'");
-     }*/
     @Override
     public String save() throws Exception {
         synchronized (RunManagerImpl.this) { // forbid simultaneous record, start, stop, save, delete

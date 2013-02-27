@@ -22,14 +22,10 @@ package org.easysoa.proxy.core.api.simulation;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.records.correlation.CorrelationEngine;
 import org.easysoa.proxy.core.api.records.correlation.FieldExtractor;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.proxy.core.api.simulation.SimulationEngine;
-import org.easysoa.proxy.core.api.simulation.SimulationMethod;
-import org.easysoa.proxy.core.api.simulation.SimulationStore;
 import org.easysoa.proxy.core.api.template.TemplateEngine;
 import org.easysoa.proxy.core.api.template.TemplateFieldSuggestions;
 import org.easysoa.records.ExchangeRecord;
@@ -51,12 +47,10 @@ public class SimulationEngineImpl implements SimulationEngine {
     @Reference
     CorrelationEngine correlationEngine;
     
-    //@Reference
-    //TemplateEngine templateEngine;
-    
-    //@Reference
+    // Proxy file store
     ProxyFileStore fileStore;
 
+    // Simulations methods
     List<SimulationMethod> simulationMethodList;
     
     /**

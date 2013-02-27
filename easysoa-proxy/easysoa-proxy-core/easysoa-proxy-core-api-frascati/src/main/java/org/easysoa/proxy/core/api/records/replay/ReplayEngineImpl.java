@@ -18,9 +18,6 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package org.easysoa.proxy.core.api.records.replay;
 
 import java.io.IOException;
@@ -30,10 +27,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.apache.log4j.Logger;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.logs.LogEngine;
 import org.easysoa.proxy.core.api.records.assertions.AssertionEngine;
@@ -42,7 +37,6 @@ import org.easysoa.proxy.core.api.records.assertions.AssertionResult;
 import org.easysoa.proxy.core.api.records.assertions.AssertionSuggestionService;
 import org.easysoa.proxy.core.api.records.assertions.AssertionSuggestions;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.proxy.core.api.records.replay.ReplayEngine;
 import org.easysoa.proxy.core.api.reports.Report;
 import org.easysoa.proxy.core.api.simulation.SimulationEngine;
 import org.easysoa.proxy.core.api.template.TemplateEngine;
@@ -84,23 +78,14 @@ public class ReplayEngineImpl implements ReplayEngine {
     
     // Logger
     private static Log log = LogFactory.getLog(ReplayEngineImpl.class);
-    //private static Logger logger = Logger.getLogger(ReplayEngineImpl.class.getName());
 
-    // TODO : To move in template engine
-    // Param setter list
-    //private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();    
-
-    // TODO : 
+    // Replay session name
     private String replaySessionName;
     
     /**
      * Constructor
      */
     public ReplayEngineImpl(){
-        /*paramSetterList.add(new RestFormParamSetter());
-        paramSetterList.add(new RestPathParamSetter());
-        paramSetterList.add(new RestQueryParamSetter());
-        paramSetterList.add(new WSDLParamSetter());*/
         this.replaySessionName = null;
         
         // Register the replay engine service in Nuxeo
@@ -115,16 +100,10 @@ public class ReplayEngineImpl implements ReplayEngine {
     }    
     
     /**
-     * Return this object as an ExchangeReplayController
-     */
-    /*public ExchangeReplayController getExchangeReplayController(){
-        return this;
-    }*/
-    
-    /**
      * Start a replay session. The replay session is mainly used to execute assertion and to generate a report containing assertion results.
      * @param replaySessionName
      */
+    @Override
     public void startReplaySession(String replaySessionName) throws Exception {
         if(replaySessionName == null || "".equals(replaySessionName)){
             throw new IllegalArgumentException("replaySessionName must not be null or empty");
@@ -141,6 +120,7 @@ public class ReplayEngineImpl implements ReplayEngine {
      * Stop the replay and save the assertion report
      * @throws Exception
      */
+    @Override
     public void stopReplaySession() throws Exception {
         if(replaySessionName != null){
             logEngine.saveAndRemoveLogSession(replaySessionName);
