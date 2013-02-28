@@ -206,7 +206,7 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.ow2.frascati.mojo</groupId>
 				<artifactId>frascati-compiler-plugin</artifactId>
 				<version>1.5-SNAPSHOT</version>
@@ -260,24 +260,19 @@
 						<artifactId>easysoa-proxy-core-api-frascati</artifactId>
 						<version>${project.version}</version>
 					</dependency>
-					<!--<dependency>
-						<groupId>org.easysoa.proxy</groupId>
-						<artifactId>easysoa-proxy-core-handlermanager</artifactId>
-						<version>${project.version}</version>
-					</dependency>-->
 					<dependency>
 						<groupId>org.ow2.frascati</groupId>
 						<artifactId>frascati-implementation-velocity</artifactId>
 						<version>${frascati.version}</version>
 					</dependency>
-					<dependency>
+					<dependency>-->
 						<!-- THIS DEPENDENCY MUST BE ACCESSIBLE TO FRASCATI -->
-						<groupId>org.apache.httpcomponents</groupId>
+						<!--<groupId>org.apache.httpcomponents</groupId>
 						<artifactId>httpclient</artifactId>
 						<version>4.1.1</version>
 					</dependency>
 				</dependencies>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
