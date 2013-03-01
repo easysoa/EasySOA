@@ -142,7 +142,7 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.ow2.frascati.mojo</groupId>
 				<artifactId>frascati-compiler-plugin</artifactId>
 				<version>1.5-SNAPSHOT</version>
@@ -201,7 +201,7 @@
 						<version>${frascati.version}</version>
 					</dependency>					
 				</dependencies>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
