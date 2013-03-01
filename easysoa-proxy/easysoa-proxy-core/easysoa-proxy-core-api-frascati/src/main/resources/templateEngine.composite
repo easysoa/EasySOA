@@ -108,7 +108,7 @@
                 <!-- If the folder doesn't exists when FraSCAti start the composite, the start fails -->
                 <!-- So for tests, add in the init method some code to check and to create the required folder and template -->
                 <!-- And for production environment : put this code in the software install package -->
-		<web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="/home/jguillemotte/NetBeansProjects/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-tests/easysoa/webContent/templates" default="template.vm" />
+		<web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="/home/jguillemotte/NetBeansProjects/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-tests/easysoa/webContent/templates" default="" />
 		<sca:service name="template">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.template.GenericTemplateRendererItf" />
 		</sca:service>
