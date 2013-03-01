@@ -22,7 +22,6 @@ package org.easysoa.proxy.core.api.template;
 
 import java.util.List;
 import java.util.Map;
-
 import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 
@@ -46,6 +45,7 @@ public interface TemplateEngine {
      * generate the template for a list of exchange records
      * @param exchangeRecordList
      */
+    //@Deprecated
     /*public void generateTemplate( List<ExchangeRecord> exchangeRecordList, boolean generateFile){
         for(ExchangeRecord record : exchangeRecordList){
             generateTemplate(record, generateFile);

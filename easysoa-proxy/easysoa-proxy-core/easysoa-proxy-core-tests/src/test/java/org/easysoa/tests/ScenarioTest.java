@@ -21,13 +21,15 @@
  */
 package org.easysoa.tests;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-        
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -37,9 +39,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -63,11 +63,24 @@ public class ScenarioTest extends AbstractTestHelper {
     // Logger
     private static Logger logger = Logger.getLogger(ScenarioTest.class.getName());
     private static final String TWITTER_TEST_RUN_NAME = "Twitter_test_run";
-    // Not yet used
-    //private final static String METEO_TEST_RUN_NAME = "Meteo_test_run";	
 
     @BeforeClass
     public static void setUp() throws Exception {
+        
+        // The two following operations are required for FraSCAti to start because the velocity binding needs to be configured with a location and with a default template.
+        // If the location and/or the default template is not found, FraSCAti doesn't start. This store is configured in templateEngine.composite
+        // Check and create if needed the store folder
+        File storeFolder = new File(System.getProperty("user.home") + "/NetBeansProjects/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-tests/easysoa/webContent/templates");
+        if(!storeFolder.exists()){
+            storeFolder.mkdir();
+        }
+        
+        // Check and create if needed the default template
+        File template = new File(System.getProperty("user.home") + "/NetBeansProjects/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-tests/easysoa/webContent/templates/template.vm");
+        if(!template.exists()){
+            FileUtils.copyFile(new File(ScenarioTest.class.getResource("template.vm").toURI().toString()), template);
+        }
+        
         // Start fraSCAti
         startFraSCAti();
         // Start Http Discovery proxy

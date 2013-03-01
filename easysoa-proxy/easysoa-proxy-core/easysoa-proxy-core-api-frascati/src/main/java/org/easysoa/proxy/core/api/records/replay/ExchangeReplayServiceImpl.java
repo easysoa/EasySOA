@@ -167,7 +167,7 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     @Path("/templates/")
     @Override
     public String getTemplateRecordList() {
-        // TODO Auto-generated method stub
+        // LATER
         return null;
     }
 
@@ -196,7 +196,5 @@ public class ExchangeReplayServiceImpl implements ExchangeReplayService {
     public String generateTemplateDefinition(String runName) throws Exception {
         return replayEngine.generateTemplateDefinition(runName);
     }
-    
-    
     
 }

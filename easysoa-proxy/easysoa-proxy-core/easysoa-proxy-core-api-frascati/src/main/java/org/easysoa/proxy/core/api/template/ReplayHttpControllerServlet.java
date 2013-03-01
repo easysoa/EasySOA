@@ -23,12 +23,9 @@ package org.easysoa.proxy.core.api.template;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.Servlet;
@@ -38,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
 import org.easysoa.records.ExchangeRecord;
@@ -47,7 +43,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -59,11 +54,9 @@ public class ReplayHttpControllerServlet extends HttpServlet {
     protected Servlet templateReplayWSDLHTMLListRenderer;
     
     @Reference
-    //protected Servlet templateReplayWSDLRenderer;
     protected GenericTemplateRendererItf templateReplayWSDLRenderer;
     
     @Reference
-    //protected Servlet templateResponseWSDLRenderer;
     protected GenericTemplateRendererItf templateResponseWSDLRenderer;
     
     @Reference
@@ -82,11 +75,6 @@ public class ReplayHttpControllerServlet extends HttpServlet {
         } else if(req.getQueryString().endsWith("wsdl")) {
             
             String result;
-            
-            // TODO : A problem remains. The velocity servlet implementation try to load the storeName composite instead of the default conposite
-            
-            //wsdlDataStoreProvider.buildWSDLResponse(req, resp, templateReplayWSDLRenderer);
-            
             ProxyFileStore excf = new ProxyFileStore();
             try {
                 String storeName = "";
@@ -98,8 +86,6 @@ public class ReplayHttpControllerServlet extends HttpServlet {
                 }
                 // Get the template files recorded in the store, each template => an operation
                 List<String> templateListExt = excf.getTemplateList(storeName);
-                // Removing template file extension
-                // TODO : Do better .....
                 List<String> templateList = new ArrayList<String>();
                 for (String templateName : templateListExt) {
                     // Only the requests are set in the WSDL
@@ -113,11 +99,7 @@ public class ReplayHttpControllerServlet extends HttpServlet {
                 List<AbstractTemplateField> responseOperationParams;
 
                 for (String templateName : templateList) {
-                    //templateName = templateName.substring(0, templateName.lastIndexOf("."));
-                    //String templateIndex = templateName.substring(templateName.lastIndexOf("_")+1, templateName.lastIndexOf("."));
                     String templateIndex = templateName.substring(templateName.lastIndexOf("_") + 1);
-                    // TODO : change the naming convention for the vm and fld files.
-
                     paramsList = new HashMap<String, List<AbstractTemplateField>>();
                     operationParams.put(templateName, paramsList);
                     requestOperationParams = new ArrayList<AbstractTemplateField>();
@@ -129,7 +111,7 @@ public class ReplayHttpControllerServlet extends HttpServlet {
                     TemplateFieldSuggestions templateSuggestion = excf.getTemplateFieldSuggestions(storeName, templateIndex);
                     for (AbstractTemplateField field : templateSuggestion.getTemplateFields()) {
                         // TODO : do not set the field type here, the type must be set by the field suggester !!
-                        // DOne like that temporary because type is not set in the suggester !!
+                        // Done like that temporary because type is not set in the suggester !!
                         field.setFieldType("string");
                         requestOperationParams.add(field);
                     }
@@ -151,19 +133,8 @@ public class ReplayHttpControllerServlet extends HttpServlet {
                 // Inject operation params structure
                 req.setAttribute("paramFields", operationParams);            
 
-                // problem in this case, the servletTemplateEngine try to get the runanme template ....
-                // Wrapper ???
-                //templateReplayWSDLRenderer.service(req, resp);
                 Map<String, List<String>> fields = new HashMap<String, List<String>>();
-                //List<String> arg0FieldList = new ArrayList<String>();
-                //arg0FieldList.add(operationParams);
-                //arg0FieldList.add("");
-                //fields.put("paramFields)", arg0FieldList);
                 fields.put("operationList", templateList);
-                //List<String> arg2FieldList = new ArrayList<String>();
-                //arg2FieldList.add(storeName);
-                //fields.put("storeName", arg2FieldList);
-                   
                 result = templateReplayWSDLRenderer.execute_custom("wsdlTemplate.xml", storeName, fields, operationParams);
 
                 resp.getWriter().print(result);
@@ -244,11 +215,6 @@ public class ReplayHttpControllerServlet extends HttpServlet {
         
         ProxyFileStore excf = new ProxyFileStore();
         try {
-            //excf.getTemplateFieldSuggestions(storeName, null);
-            
-            // TODO : not exposed as web service ....
-            // use a reference or expose a web service
-            //OutMessage message = replayWithTemplate(params, storeName, recordId);
             
             ExchangeRecord record = excf.loadExchangeRecord(storeName, recordId, true);
             // last param set to true = simulation mode
@@ -260,7 +226,6 @@ public class ReplayHttpControllerServlet extends HttpServlet {
             req.setAttribute("operation", operation);
             
             // Call the rendering template
-            //templateResponseWSDLRenderer.service(req, resp);
             Map<String, List<String>> fields = new HashMap<String, List<String>>();
             List<String> arg0FieldList = new ArrayList<String>();
             arg0FieldList.add(message.getMessageContent().getRawContent());
@@ -275,7 +240,6 @@ public class ReplayHttpControllerServlet extends HttpServlet {
         }
         catch(Exception ex){
             throw new ServletException("Unable to get template field suggestions",ex);
-            //result = result + "";
         }
         
         // POST requests : a simple implementation of calling these WSDLs (extract service and operation name,

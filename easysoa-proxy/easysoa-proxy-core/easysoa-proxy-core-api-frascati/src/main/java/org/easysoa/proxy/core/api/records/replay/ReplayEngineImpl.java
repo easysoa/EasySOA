@@ -17,7 +17,6 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-
 package org.easysoa.proxy.core.api.records.replay;
 
 import java.io.IOException;
@@ -48,7 +47,6 @@ import org.easysoa.records.RecordCollection;
 import org.easysoa.records.StoreCollection;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 
 /**
  * Contains only the replay code. Other functionalities as assertions engine or template engine are plugged in the replay engine
@@ -96,7 +94,6 @@ public class ReplayEngineImpl implements ReplayEngine {
         catch(Exception ex){
             logger.error("Unable to register the replay engine in Nuxeo", ex);
         }*/
-        
     }    
     
     /**
@@ -145,7 +142,7 @@ public class ReplayEngineImpl implements ReplayEngine {
         }
         log.debug("recordedList size = " + recordList.size());
         return new RecordCollection(recordList);
-    }    
+    }
     
     /**
      * Returns the exchange record corresponding to the parameters

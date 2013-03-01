@@ -76,6 +76,7 @@ public class RunManagerDriverImpl implements RunManagerDriver {
      *
      * @return HTML formated usage informations
      */
+    @Override
     public String returnUseInformations(UriInfo ui) {
         logger.debug("Returning help informations");
         //StringBuffer help = new StringBuffer();
@@ -107,6 +108,7 @@ public class RunManagerDriverImpl implements RunManagerDriver {
      *
      * @param runName The run name
      */
+    @Override
     public String startNewRun(String runName) {
         logger.debug("Starting a new run !");
         try {
@@ -121,6 +123,7 @@ public class RunManagerDriverImpl implements RunManagerDriver {
     /**
      * Stop the current run
      */
+    @Override
     public String stopCurrentRun() {
         logger.debug("Stopping the current run !");
         try {
@@ -137,6 +140,7 @@ public class RunManagerDriverImpl implements RunManagerDriver {
     @Deprecated
     // TODO Modify this method to change the monitoring mode
     // Method not used at the current time.
+    @Override
     public String setMonitoringMode(String mode) {
         logger.debug("Set monitoring mode !");
         try {

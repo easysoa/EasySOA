@@ -17,28 +17,16 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-
-/**
- * 
- */
 package org.easysoa.proxy.core.api.template;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.proxy.core.api.template.TemplateBuilder;
-import org.easysoa.proxy.core.api.template.TemplateEngine;
-import org.easysoa.proxy.core.api.template.TemplateFieldSuggester;
-import org.easysoa.proxy.core.api.template.TemplateFieldSuggestions;
-import org.easysoa.proxy.core.api.template.TemplateProcessorRendererItf;
-import org.easysoa.proxy.core.api.template.VelocityTemplate;
 import org.easysoa.records.ExchangeRecord;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-
 
 /**
  * Centralize the call of field suggester, template builder, template renderer in the same class 
@@ -52,14 +40,16 @@ public class TemplateEngineImpl implements TemplateEngine {
     // Logger
     private static Logger logger = Logger.getLogger(TemplateEngineImpl.class.getName());    
     
+    public static final String TEMPLATE_FILE_EXTENSION = ".vm";
+    public static final String TEMPLATE_RES_PREFIX = "resTemplateRecord_";
+    public static final String TEMPLATE_REQ_PREFIX = "reqTemplateRecord_";
+    
     // SCA Reference to template renderer
     @Reference
     TemplateProcessorRendererItf templateRenderer;
     
     // File store
     ProxyFileStore fileStore;
-    
-    //private List<CustomParamSetter> paramSetterList = new ArrayList<CustomParamSetter>();
     
     /**
      * 
@@ -120,20 +110,14 @@ public class TemplateEngineImpl implements TemplateEngine {
     @Override
     public OutMessage renderTemplateAndReplay(String storeName, ExchangeRecord record, Map<String, List<String>> fieldValues, boolean simulation) throws Exception {
         // call the template renderer
-        //String templatePath = ProxyExchangeRecordFileStore.REQ_TEMPLATE_FILE_PREFIX + record.getExchange().getExchangeID() + ProxyExchangeRecordFileStore.TEMPLATE_FILE_EXTENSION;
-        // TODO : Move the constants
         // TODO : call the renderReq Method in case of replay engine, renderRes otherwise
         String templatePath;
         if(simulation){
-            templatePath = "resTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
-            //return templateRenderer.renderRes(templatePath, record, storeName, fieldValues);
-            
-            return templateRenderer.renderRes("easysoa/webContent/templates/" + storeName + "/" + templatePath, record, storeName, fieldValues);
+            templatePath = TEMPLATE_RES_PREFIX + record.getExchange().getExchangeID() + TEMPLATE_FILE_EXTENSION;
+            return templateRenderer.renderRes(storeName + "/" + templatePath, record, storeName, fieldValues);
         } else {
-            templatePath = "reqTemplateRecord_" + record.getExchange().getExchangeID() + ".vm";
-            //return templateRenderer.renderReq(templatePath, record, storeName, fieldValues);            
-            
-            return templateRenderer.renderReq("easysoa/webContent/templates/" + storeName + "/" + templatePath, record, storeName, fieldValues);
+            templatePath = TEMPLATE_REQ_PREFIX + record.getExchange().getExchangeID() + TEMPLATE_FILE_EXTENSION;
+            return templateRenderer.renderReq(storeName + "/" + templatePath, record, storeName, fieldValues);
         }
     }
    

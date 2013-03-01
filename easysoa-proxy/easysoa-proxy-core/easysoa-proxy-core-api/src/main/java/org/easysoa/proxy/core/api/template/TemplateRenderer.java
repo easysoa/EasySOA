@@ -16,9 +16,6 @@
  *
  * Contact : easysoa-dev@googlegroups.com
  */
-/**
- *
- */
 package org.easysoa.proxy.core.api.template;
 
 import java.util.List;
@@ -40,9 +37,9 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
 
     // Logger
     private static Logger logger = Logger.getLogger(TemplateRenderer.class.getName());
+
     // Reference to template object provided by FraSCAti
     @Reference(required = true)
-    //protected TemplateRendererItf template;
     protected GenericTemplateRendererItf template;
 
     /**
@@ -65,7 +62,6 @@ public class TemplateRenderer implements TemplateProcessorRendererItf {
          * exchange (request) templates.
          */
         // Render the template
-        //String renderedTemplate = template.renderReq(templatePath, runName, fieldValues);
         String renderedTemplate = template.execute_custom(templatePath, runName, fieldValues, null);
         
         logger.debug("Rendered template : " + renderedTemplate);

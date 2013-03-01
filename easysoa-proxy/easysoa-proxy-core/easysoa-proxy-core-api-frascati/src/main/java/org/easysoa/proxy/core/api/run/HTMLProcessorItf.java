@@ -25,8 +25,16 @@ package org.easysoa.proxy.core.api.run;
  */
 public interface HTMLProcessorItf {
 
+    /**
+     * Return the run manager HTML index page
+     * @return A <code>String</code> containing the html index
+     */
     public String getRunManagerIndex();
     
+    /**
+     * Return the replay manager index page
+     * @return A <code>String</code> containing the html index
+     */
     public String getReplayManagerIndex();
     
 }

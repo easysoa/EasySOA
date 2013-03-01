@@ -18,14 +18,10 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package org.easysoa.proxy.core.api.template;
 
 import java.util.List;
 import java.util.Map;
-
 import org.easysoa.message.OutMessage;
 import org.easysoa.records.ExchangeRecord;
 

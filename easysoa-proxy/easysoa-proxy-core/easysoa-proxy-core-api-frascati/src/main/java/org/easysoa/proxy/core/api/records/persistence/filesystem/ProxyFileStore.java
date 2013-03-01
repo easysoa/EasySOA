@@ -105,9 +105,9 @@ public class ProxyFileStore {
             logger.debug("Using property 'path.reports' for reports path = " + this.reportPath);
         }
         catch(Exception ex){
-            this.path = "./easysoa/stores/";
-            this.templatePath = "./easysoa/webContent/templates/";
-            this.reportPath = "./easysoa/reports";
+            this.path = "easysoa/stores/";
+            this.templatePath = "easysoa/webContent/templates/";
+            this.reportPath = "easysoa/reports";
             //logger.warn("An error occurs during the ProxyFileStore initialization", ex);
             logger.warn("An error occurs during the ProxyFileStore initialization, please check the property manager.");
             logger.warn("Using default property 'path.record.store' for record store path = " + this.path);
@@ -217,11 +217,9 @@ public class ProxyFileStore {
         String reqTemplateFileName = REQ_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
         String resTemplateFileName = RES_TEMPLATE_FILE_PREFIX + templateRecord.getrecordID() + TEMPLATE_FILE_EXTENSION;
         resource = new StoreResource(reqTemplateFileName, templatePath + "/" + storeName, templateRecord.getRequestTemplate());
-        //resource = new StoreResource(reqTemplateFileName, templatePath + "/" + storeName, JSONObject.fromObject(templateRecord.getRequestTemplate()).toString());
         store.save(resource);
         templateFileMap.put("reqTemplate", reqTemplateFileName);
         resource = new StoreResource(resTemplateFileName, templatePath + "/" + storeName, templateRecord.getResponsetemplate());
-        //resource = new StoreResource(resTemplateFileName, templatePath + "/" + storeName, JSONObject.fromObject(templateRecord.getResponsetemplate()).toString());
         store.save(resource);
         templateFileMap.put("resTemplate", resTemplateFileName);
         // unlock the store
@@ -261,7 +259,6 @@ public class ProxyFileStore {
         StoreResource resource = store.load(ASSERTIONS_FILE_PREFIX + recordID + ASSERTIONS_FILE_EXTENSION, templatePath + storeName);
         @SuppressWarnings("rawtypes")
         HashMap<String, Class> classMap = new HashMap<String, Class>();
-        // classMap.put("templateFields", TemplateField.class);
         return (AssertionSuggestions) convertJSONToObject(resource.getContent(), AssertionSuggestions.class, classMap);
     }    
 
@@ -430,9 +427,7 @@ public class ProxyFileStore {
             if(resource.getResourceName().endsWith(EXCHANGE_FILE_EXTENSION)){
                 String recordID = resource.getResourceName().substring(resource.getResourceName().lastIndexOf("_")+1, resource.getResourceName().lastIndexOf("."));
                 ExchangeRecord record = this.loadExchangeRecord(storeName, recordID, false);
-                //HashMap<String, Class> classMap = new HashMap<String, Class>();
                 TemplateFieldSuggestions suggestions = this.getTemplateFieldSuggestions(storeName, recordID);
-                //TemplateFieldSuggestions suggestions = (TemplateFieldSuggestions) convertJSONToObject(resource.getContent(), TemplateFieldSuggestions.class, classMap);
                 simulStore.addRecordSuggestions(record, suggestions);                
             }
         }

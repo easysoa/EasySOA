@@ -27,7 +27,6 @@
 			<sca:interface.java interface="org.easysoa.proxy.core.api.template.TemplateProcessorRendererItf" />
 		</sca:service>
 		<sca:reference name="template">
-			<!--<sca:interface.java interface="org.easysoa.proxy.core.api.template.TemplateRendererItf" />-->
                         <sca:interface.java interface="org.easysoa.proxy.core.api.template.GenericTemplateRendererItf" />
 		</sca:reference>
 	</sca:component>
@@ -45,11 +44,9 @@
 			<sca:interface.java interface="javax.servlet.Servlet" /><!-- TODO wire & provide additional params through attributes http://appfuse.547863.n4.nabble.com/Acces-request-attribute-in-velocity-template-td1013481.html -->
 		</sca:reference>
 		<sca:reference name="templateReplayWSDLRenderer">
-			<!--<sca:interface.java interface="javax.servlet.Servlet" />-->
                         <sca:interface.java interface="org.easysoa.proxy.core.api.template.GenericTemplateRendererItf" />
 		</sca:reference>
 		<sca:reference name="templateResponseWSDLRenderer">
-			<!--<sca:interface.java interface="javax.servlet.Servlet" />-->
                         <sca:interface.java interface="org.easysoa.proxy.core.api.template.GenericTemplateRendererItf" />
 		</sca:reference>
 		<sca:reference name="wsdlDataStoreProvider">
@@ -106,14 +103,17 @@
 		</sca:service>
 	</sca:component>        
                         
-        <!-- TODO LATER handle the ProxyVelocity hack to be able to remove it -->
 	<sca:component name="ProxyWSTemplate">
-		<web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="webContent/templates" default="template.vm" />
+                <!-- TODO find an other way to configure the location folder -->
+                <!-- If the folder doesn't exists when FraSCAti start the composite, the start fails -->
+                <!-- So for tests, add in the init method some code to check and to create the required folder and template -->
+                <!-- And for production environment : put this code in the software install package -->
+		<web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="/home/jguillemotte/NetBeansProjects/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-tests/easysoa/webContent/templates" default="template.vm" />
 		<sca:service name="template">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.template.GenericTemplateRendererItf" />
 		</sca:service>
-		<sca:property name="pathArgIndex">0</sca:property> <!--type="xsd:int"-->
-		<sca:property name="storeIndex">1</sca:property> <!--type="xsd:int"-->
+		<!--<sca:property name="pathArgIndex">0</sca:property>--> <!--type="xsd:int"-->
+		<!--<sca:property name="storeIndex">1</sca:property>--> <!--type="xsd:int"-->
 	</sca:component>
         
 	<sca:wire source="TemplateProcessor/template" target="ProxyWSTemplate/template" />

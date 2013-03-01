@@ -18,13 +18,10 @@
  * Contact : easysoa-dev@googlegroups.com
  */
 
-/**
- * 
- */
 package org.easysoa.proxy.core.api.template;
 
-import org.easysoa.records.ExchangeRecord;
 import net.sf.json.JSONObject;
+import org.easysoa.records.ExchangeRecord;
 
 /**
  * @author jguillemotte
@@ -32,19 +29,25 @@ import net.sf.json.JSONObject;
  */
 public class VelocityTemplate {
 
-	//public final static String VELOCIMACRO_REQUEST_PREFIX = "#macro ( renderReq $arg0 $arg1 $arg2 )";
         public final static String VELOCIMACRO_REQUEST_PREFIX = "#macro ( execute_custom $arg0 $arg1 $arg2 )";
-	// TODO Change the response prefix
-	//public final static String VELOCIMACRO_RESPONSE_PREFIX = "#macro ( renderRes $arg0 $arg1 $arg2 )";
         public final static String VELOCIMACRO_RESPONSE_PREFIX = "#macro ( execute_custom $arg0 $arg1 $arg2 )";
 	public final static String VELOCIMACRO_SUFFIX = "#end";
 
+        // Echange record
 	private ExchangeRecord customRecord;
 	
+        /**
+         * Build a velocity template
+         * @param customRecord 
+         */
 	public VelocityTemplate(ExchangeRecord customRecord){
 		this.customRecord = customRecord;
 	}
 	
+        /**
+         * 
+         * @return 
+         */
 	public String getRequestTemplate(){
 		JSONObject jsonRecord = JSONObject.fromObject(customRecord.getInMessage());
 		String jsonString;
@@ -53,17 +56,25 @@ public class VelocityTemplate {
 		    jsonString = jsonRecord.toString();
 		} else {
 		    // Otherwise, if it contains JSON raw content, we have to replace escaped characters in template expression to avoid an error
-            jsonString = jsonRecord.toString().replace("\\\"", "\"");		    
+                    jsonString = jsonRecord.toString().replace("\\\"", "\"");		    
 		}
 		return VELOCIMACRO_REQUEST_PREFIX + "\n" + jsonString + "\n" + VELOCIMACRO_SUFFIX; 
 	}
 	
+        /**
+         * 
+         * @return 
+         */
 	public String getrecordID(){
 		return this.customRecord.getExchange().getExchangeID();
 	}
 	
+        /**
+         * 
+         * @return 
+         */
 	public String getResponsetemplate(){
 		JSONObject jsonRecord = JSONObject.fromObject(customRecord.getOutMessage());
-		return VELOCIMACRO_RESPONSE_PREFIX + "\n" + jsonRecord.toString()/*.replace("\\\"", "\"")*/ + "\n" + VELOCIMACRO_SUFFIX;
+		return VELOCIMACRO_RESPONSE_PREFIX + "\n" + jsonRecord.toString() + "\n" + VELOCIMACRO_SUFFIX;
 	}
 }
