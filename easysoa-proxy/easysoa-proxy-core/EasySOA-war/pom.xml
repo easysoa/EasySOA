@@ -76,24 +76,30 @@
             <artifactId>frascati-tinfi-runtime-api</artifactId>
             <version>${tinfi.version}</version>
         </dependency>
-       
+
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-rest</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>       
+                     
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-ws</artifactId>
             <version>${frascati.version}</version>
         </dependency>
-        
-        <dependency>
-            <groupId>org.ow2.frascati</groupId>
-            <artifactId>frascati-interface-wsdl</artifactId>
-            <version>${frascati.version}</version>
-        </dependency>
-        
+
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-http</artifactId>
             <version>${frascati.version}</version>
         </dependency>        
+                        
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-interface-wsdl</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>org.ow2.frascati</groupId>
