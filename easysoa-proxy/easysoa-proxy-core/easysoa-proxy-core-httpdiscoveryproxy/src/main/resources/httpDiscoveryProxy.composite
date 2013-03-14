@@ -2,7 +2,10 @@
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+               xmlns:web="http://frascati.ow2.org/xmlns/web/1.0"
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy">
+    
+        
     
     <!-- HTTP Proxy -->
     <!-- Run with default mode : Discovery -->
@@ -22,6 +25,15 @@
     
     <sca:wire source="httpProxyService/handlerManager" target="handlerManagerServBaseComp/handlerManagerComponentService"/>
 
+    <!-- For tests only (see FraSCAti JIRA 105) -->
+    <!--<sca:component name="proxyIndex">
+        <sca:service name="Velocity">
+            <sca:interface.java interface="javax.servlet.Servlet" />
+            <tuscany:binding.http uri="/" />
+        </sca:service>
+        <web:implementation.velocity location="webContent" default="index.html" />
+    </sca:component>-->
+    
     <!-- Handler manager -->
     <sca:component name="handlerManagerServBaseComp">
         <sca:service name="handlerManagerComponentService">

@@ -18,8 +18,10 @@
  */
 package org.easysoa.proxy.core.api.run;
 
+import java.net.InetAddress;
 import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;
+import org.easysoa.EasySOAConstants;
 import org.easysoa.proxy.core.api.configurator.ProxyConfigurator;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
 import org.osoa.sca.annotations.Reference;
@@ -100,7 +102,20 @@ public class RunManagerDriverImpl implements RunManagerDriver {
          }
          }*/
         //return help.toString();
-        return html.getRunManagerIndex();
+
+        // Run manager driver base address
+        StringBuilder baseAddress = new StringBuilder();
+        baseAddress.append("http://");
+        try {
+            baseAddress.append(InetAddress.getLocalHost().getHostName());
+            baseAddress.append(":");
+            baseAddress.append(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
+            baseAddress.append("/");
+        }
+        catch(Exception ex){
+            logger.warn("Unable to get server host name", ex);
+        }
+        return html.getRunManagerIndex(baseAddress.toString());
     }
 
     /**

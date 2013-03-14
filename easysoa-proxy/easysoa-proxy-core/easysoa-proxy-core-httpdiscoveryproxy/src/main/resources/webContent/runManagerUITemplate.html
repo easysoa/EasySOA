@@ -3,9 +3,12 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 		<title>Run manager UI</title>
-        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/jquery-1.6.4.min.js"></script>
-        <script type="text/javascript" src="http://localhost:8090/scaffoldingProxy/files/proxiedRequest.js"></script>
-		<link href="/easysoa/style.css" rel="stylesheet">
+                <!--<script type="text/javascript" src="http://localhost:8084/files/jquery-1.6.4.min.js"></script>-->
+                <!--<script type="text/javascript" src="http://localhost:8084/files/proxiedRequest.js"></script>-->
+                <script type="text/javascript" src="http://localhost:7080/EasySOA-http-proxy/files/jquery-1.6.4.min.js"></script>
+                <script type="text/javascript" src="http://localhost:7080/EasySOA-http-proxy/files/proxiedRequest.js"></script>
+                <link href="http://localhost:7080/EasySOA-http-proxy/files/style.css" rel="stylesheet">
+		<!--<link href="/easysoa/style.css" rel="stylesheet">-->
 		<script type="text/javascript">
 		
 			function sendGetRecordForm(exchangeRecordStoreName) {
@@ -18,10 +21,6 @@
 		</script>
 	</head>
 	<body>
-		<!--<p>
-			<br/>
-			$compositeTemplates.renderReq("template.vm")
-		</p>-->
 		<p>
 			<h1>Run</h1>
 			
@@ -34,19 +33,23 @@
 			#end
 			<br/>
 			#if(!$runManager.isCurrentRun())
-			<form method="post" name="createNewRunForm" action="http://localhost:8090/runManager/run/startNewRun.html">
+			<!--<form method="post" name="createNewRunForm" action="http://localhost:8090/runManager/run/startNewRun.html">-->
+                        <form method="post" name="createNewRunForm" action="$baseAddressrun/startNewRun.html">
 				Create a new run named : <input type="text" name="runName" /> <input type="submit" value="Create" />
 			</form>
 			#elseif($runManager.isCurrentRun() && $runManager.getCurrentRun().getStatus() == "RUNNING")
-			<form method="post" name="stopRunForm" action="http://localhost:8090/runManager/run/stopRun.html">
+                        <!--<form method="post" name="stopRunForm" action="http://localhost:8084/run/stopRun.html">-->
+			<form method="post" name="stopRunForm" action="$baseAddressrun/stopRun.html">
 				Stop the run : <input type="submit" value="Stop" />
 			</form>
 			#elseif($runManager.isCurrentRun() && $runManager.getCurrentRun().getStatus() == "STOPPED")
-			<form method="post" name="saveRunForm" action="http://localhost:8090/runManager/run/saveRun.html">
+                        <!--<form method="post" name="saveRunForm" action="http://localhost:8084/run/saveRun.html">-->
+			<form method="post" name="saveRunForm" action="$baseAddressrun/saveRun.html">
 				Save the run : <input type="submit" value="Save" />
 			</form>
 			#elseif($runManager.isCurrentRun() && $runManager.getCurrentRun().getStatus() == "SAVED")
-			<form method="post" name="deleteRunForm" action="http://localhost:8090/runManager/run/deleteRun.html">
+			<!--<form method="post" name="deleteRunForm" action="http://localhost:8084/run/deleteRun.html">-->
+                        <form method="post" name="deleteRunForm" action="$baseAddressrun/deleteRun.html">
 				Delete the run : <input type="submit" value="Delete" />
 			</form>
 			#end
@@ -56,7 +59,8 @@
 			<h1>Exchange store</h1>
 			Exchange record stores :
 			<br/>
-			<form method="get" name="getRecordsForm" action="http://localhost:8090/runManager/exchangeRecordStore/getRecords.html">
+                        <!--<form method="get" name="getRecordsForm" action="http://localhost:8084/exchangeRecordStore/getRecords.html">-->
+			<form method="get" name="getRecordsForm" action="$baseAddressexchangeRecordStore/getRecords.html">
 				<input type="text" name="exchangeRecordStoreName" value="" hidden=""/>
 				<ul>
 					#foreach( $exchangeRecordStore in $exchangeRecordStoreManager.getExchangeRecordStorelist() )

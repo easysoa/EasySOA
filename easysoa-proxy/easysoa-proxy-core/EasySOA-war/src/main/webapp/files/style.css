@@ -1,0 +1,229 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 100%;
+	height: 820px;
+	background-color: #EEF5FA;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3 {
+	clear: both;
+	max-width: 900px;
+}
+
+h1 {
+	padding-top: 20px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid grey;
+	color: #446;
+	font-size: 15pt;
+}
+h1:first-child {
+  padding-top: 10px;
+}
+
+h2 {
+	font: 12pt Arial;
+	font-weight: bold;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	color: #248;
+}
+
+li {
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+#logoLink {
+    width: 220px;
+    height: 50px;
+    position: absolute;
+    left: 15px;
+    top: 10px;
+}
+
+#headerWelcome {
+  width: 100%;
+  padding-top: 23px;
+  font-size: 14pt;
+  font-weight: bold;
+  height: 47px;
+  background: url('/easysoa/img/Logo.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 15px;
+  border-bottom: 2px solid #444;
+}
+#headerWelcomeContents {
+  padding-left: 220px;
+}
+
+#headerCore {
+  width: 100%;
+  padding-top: 10px;
+  font-size: 14pt;
+  height: 60px;
+  background: url('/easysoa/img/Core50.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border-bottom: 2px solid #444;
+}
+#headerCoreContents {
+  padding-left: 280px;
+}
+
+
+#headerLight {
+  width: 100%;
+  padding-top: 10px;
+  font-size: 14pt;
+  height: 60px;
+  background: url('/easysoa/img/Light50.png') white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border-bottom: 2px solid #444;
+}
+#headerLightContents {
+  padding-left: 280px;
+}
+
+#headerBreadcrumbs {
+  font-size: 10pt;
+  display: block;
+  width: 100%;
+  margin-bottom: 3px;
+}
+
+#headerUserBar {
+    font-weight: normal;
+    position: absolute;
+    left: 650px;
+    top: 25px;
+    font-size: 11pt;
+    color: #444;
+    display: none;
+    width: 250px;
+}
+
+#username {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+#container { 
+  padding: 15px;
+}
+
+p {
+  font-size: 11pt;
+  margin-bottom: 10px;
+}
+
+table {
+  border-spacing: 0;
+  border: 1px solid black;
+  margin: 10px;
+  width: 800px;
+}
+
+td {
+  border: 1px solid grey;
+  padding: 5px;
+  background-color: white;
+}
+
+th {
+  border: 1px solid grey;
+  padding: 5px;
+  background-color: #cde;
+}
+
+input[type=text] {
+  padding: 3px;
+  width: 100%;
+  font-weight: bold;
+  color: black;
+}
+
+input[type=password] {
+  padding: 3px;
+  width: 100%;
+  font-weight: bold;
+  color: black;
+}
+
+select {
+  padding: 3px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+}
+
+input[disabled] {
+  color: #444;
+}
+
+input[type=submit] {
+  padding: 3px;
+  width: 150px;
+  font-size: 12pt;
+}
+
+a {
+  color: #036;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a img {
+  border: 0;
+}
+
+fieldset { 
+	max-width: 800px;
+	background-color: #EEE;
+	padding-bottom: 10px;
+}
+
+legend {
+  margin: 5px;
+  font-weight: bold;
+  color: #444;
+}
+
+.more {
+  width: 100px;
+  text-align: right;
+  float: right;
+  border: 1px solid #373;
+  background: url('/easysoa/img/more.png') #EFE;
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  padding: 2px;
+  padding-right: 20px;
+  margin: 2px;
+  margin-left: 5px;
+  margin-bottom: 0;
+  font-size: 8pt;
+}
+
+.loginInfoBox {
+  font-size: 11pt;
+  background-color: #D5FFDA;
+  border: 1px solid green;
+  margin-bottom: 10px;
+  padding: 4px;
+}
+
+.warningInfoBox {
+  font-size: 11pt;
+  background-color: #FFE5DA;
+  border: 1px solid red;
+  margin-bottom: 10px;
+  padding: 4px;
+}

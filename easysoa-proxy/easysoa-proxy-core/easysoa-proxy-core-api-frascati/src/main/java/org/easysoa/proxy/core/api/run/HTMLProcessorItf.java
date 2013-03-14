@@ -29,7 +29,7 @@ public interface HTMLProcessorItf {
      * Return the run manager HTML index page
      * @return A <code>String</code> containing the html index
      */
-    public String getRunManagerIndex();
+    public String getRunManagerIndex(String baseAddress);
     
     /**
      * Return the replay manager index page

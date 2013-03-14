@@ -19,7 +19,6 @@
 package org.easysoa.proxy.core.api.template;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,14 +27,8 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.proxy.core.api.records.persistence.filesystem.ProxyFileStore;
-import org.easysoa.proxy.core.api.template.AbstractTemplateField;
-import org.easysoa.proxy.core.api.template.OutputTemplateField;
-import org.easysoa.proxy.core.api.template.TemplateFieldSuggestions;
 import org.osoa.sca.annotations.Scope;
 
 /**

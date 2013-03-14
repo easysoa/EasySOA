@@ -7,7 +7,7 @@
     <sca:service name="runManagerServiceRef" promote="runManagerComponent/runManagerService"/>
     
     <sca:service name="replayEngineService" promote="replayEngineRefComponent/replayEngineService">
-        <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />        
+        <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />
     </sca:service>
     
     <!-- ================================ -->
@@ -23,7 +23,7 @@
         <!-- <sca:implementation.java class="org.easysoa.run.RunManagerImpl" /> -->
         <sca:reference name="runManager" target="runManagerComponent/runManagerService" />
         <sca:reference name="exchangeRecordStoreManager">
-            <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ExchangeReplayService" />		
+            <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ExchangeReplayService" />
         </sca:reference>
         <!-- Proxy implementation Velocity -->
         <!--<sca:reference name="compositeTemplates" target="TemplateProcessor/processor" />-->
@@ -56,14 +56,14 @@
         <sca:service name="exchangeNumberGeneratorServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.messages.server.NumberGenerator" />
         </sca:service>
-        <sca:implementation.composite name="exchangeNumberGenerator.composite" />    	
-    </sca:component>	
+        <sca:implementation.composite name="exchangeNumberGenerator.composite" />
+    </sca:component>
 
     <sca:component name="replayEngineRefComponent">
         <sca:service name="replayEngineService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />
         </sca:service>
-        <sca:implementation.composite name="replayEngine.composite" />    	
+        <sca:implementation.composite name="replayEngine.composite" />
     </sca:component>
 
 </sca:composite>
