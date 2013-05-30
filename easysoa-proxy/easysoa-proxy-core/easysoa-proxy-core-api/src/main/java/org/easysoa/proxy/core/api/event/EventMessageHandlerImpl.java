@@ -23,7 +23,7 @@ import org.osoa.sca.annotations.Scope;
 /**
  * To handle and perform the steps between the inMessage's reception and the
  * calls (of the web service to launch)
- * 
+ *
  * @author fntangke
  */
 @Scope("Composite")
@@ -31,14 +31,14 @@ public class EventMessageHandlerImpl implements
 /* MessageHandler, */IEventMessageHandler {
 
     public final static String HANDLER_ID = "eventMessageHandler";
-    
+
     // Logger
-    private static Logger logger = Logger.getLogger(EventMessageHandlerImpl.class);    
-    
+    private static Logger logger = Logger.getLogger(EventMessageHandlerImpl.class);
+
     private boolean enabled = true;
-    
+
 	private ConditionsMatcher conditionsMatcher = new ConditionsMatcher();
-	
+
 	@Property
 	private int forwardHttpConnexionTimeoutMs;
 	@Property
@@ -71,22 +71,22 @@ public class EventMessageHandlerImpl implements
 		 * CompiledCondition("http://localhost:8200/esb/AirportService");
 		 * LaunchedService launchedService = new LaunchedService();
 		 * launchedService.setUrl("http://www.google.fr");
-		 * 
+		 *
 		 * List<LaunchedService> listCall = new ArrayList<LaunchedService>();
 		 * listCall.add(launchedService); Subscription subscription = new
 		 * Subscription();
-		 * 
+		 *
 		 * subscription.setConditions(conditions);
 		 * subscription.setLaunchedservices(listCall);
-		 * 
+		 *
 		 * Subscriptions subscriptions = new Subscriptions(subscription);
-		 * 
+		 *
 		 * //CompiledCondition compiledCondition1 = new
 		 * CompiledCondition("http://localhost:8200/esb/AirportService");
 		 * //List<CompiledCondition> listCompiledCondition1 = new
 		 * ArrayList<CompiledCondition>();
 		 * //listCompiledCondition1.add(compiledCondition1);
-		 * 
+		 *
 		 * this.listenedServiceUrlToServicesToLaunchUrlMap =
 		 * subscriptions.updateBehaviors(); //.put(listCompiledCondition1,
 		 * listCall); // End of Test
@@ -94,7 +94,7 @@ public class EventMessageHandlerImpl implements
 	}
 
 	/**
-	 * 
+	 *
 	 * @param inMessage
 	 * @param outMessage
 	 * @throws Exception
@@ -102,8 +102,7 @@ public class EventMessageHandlerImpl implements
 	 *         and get the result in a list
 	 */
 	@Override
-	public void handleMessage(InMessage inMessage, OutMessage outMessage)
-			throws Exception {
+	public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
 		if(enabled){
     	    ExchangeRecord exchangeRecord = new ExchangeRecord();
     		exchangeRecord.setInMessage(inMessage);
@@ -113,12 +112,12 @@ public class EventMessageHandlerImpl implements
     		 * Thread
     		 */
     		Collection<Entry<List<Condition>, List<String>>> entrySetCopy;
-    
+
     		synchronized (this) {
     			entrySetCopy = new ArrayList<Entry<List<Condition>, List<String>>>(
     					listenedServiceUrlToServicesToLaunchUrlMap.entrySet());
     		}
-    
+
     		List<String> servicesToLaunchUrls = null; // this.listenedServiceUrlToServicesToLaunchUrlMap.get(listenedServiceUrl);
     		// TODO maybe we should remove doublons from the serviceToLaunchsUrls
     		for (Entry<List<Condition>, List<String>> currentEntry : entrySetCopy) {
@@ -135,9 +134,9 @@ public class EventMessageHandlerImpl implements
     		if (servicesToLaunchUrls == null) {
     			return;
     		}
-    
+
     		// TODO LATER handle services that may have different URLs ex. REST
-    
+
     		// Request forwarder
     		RequestForwarder forwarder = new RequestForwarder();
     		forwarder
@@ -146,7 +145,7 @@ public class EventMessageHandlerImpl implements
     				.setForwardHttpSocketTimeoutMs(getForwardHttpSocketTimeoutMs());
     		// Use HttpRetryHandler default value for retry
     		// forwarder.setRetryHandler(new HttpRetryHandler());
-    
+
     		// for each service to call,
     		List<OutMessage> launchresults = new ArrayList<OutMessage>();
     		for (String serviceToLaunchUrlString : servicesToLaunchUrls) {
@@ -156,7 +155,7 @@ public class EventMessageHandlerImpl implements
     			// forwardedInMessage.setMethod("GET");
     			// forwardedInMessage.setServer("www.facebook.com");
     			// forwardedInMessage.setPath("");
-    
+
     			/*
     			 * forwardedInMessage.setProtocol(serviceToLaunchUrl.getProtocol());
     			 * forwardedInMessage.setServer(serviceToLaunchUrl.getHost());
@@ -166,7 +165,7 @@ public class EventMessageHandlerImpl implements
     			 */
     			// call it TODO LATER async using a threaded Queue Worker
     			OutMessage forwardedOutMessage = forwarder.send(forwardedInMessage);
-    
+
     			// Save the result
     			launchresults.add(forwardedOutMessage);
     		}

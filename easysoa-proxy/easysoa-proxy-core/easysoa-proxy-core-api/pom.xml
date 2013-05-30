@@ -12,37 +12,51 @@
         <version>0.5-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-   
+
     <dependencies>
+        <!-- Registry API for DBB client, replacing old Nuxeo Rest integration -->
+        <dependency>
+            <groupId>org.easysoa.registry</groupId>
+            <artifactId>easysoa-registry-doctypes-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.registry</groupId>
+            <artifactId>easysoa-registry-rest-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- Messaging api -->
         <dependency>
             <groupId>org.easysoa.registry.api</groupId>
             <artifactId>easysoa-registry-api-messaging</artifactId>
             <type>jar</type>
         </dependency>
-        <!-- Easysoa remote rest api -->
+        <!-- OBSOLETE Easysoa remote rest api -->
+        <!-- Needed by monitoring handlers working with the old EasySOA registry -->
+        <!-- To be removed when the monitoring handlers will be unpplugged -->
         <dependency>
             <groupId>org.easysoa.registry.api</groupId>
             <artifactId>easysoa-registry-api-remote</artifactId>
         </dependency>
-    	
+
         <!-- For scheduled validation -->
         <dependency>
             <groupId>org.easysoa.registry.api</groupId>
             <artifactId>easysoa-registry-api-core</artifactId>
-        </dependency>    	
-    	
+        </dependency>
+
         <!-- log4j -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
-				
+
         <!-- java rest webservices -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
-        </dependency>		
+        </dependency>
         <!-- xstream for report conversion to XML -->
         <dependency>
             <groupId>xstream</groupId>
@@ -52,7 +66,7 @@
         <dependency>
             <groupId>com.espertech</groupId>
             <artifactId>esper</artifactId>
-        </dependency>	
+        </dependency>
         <!-- json -->
         <dependency>
             <groupId>org.json</groupId>
@@ -64,18 +78,7 @@
       		<artifactId>jersey-client</artifactId>
       		<version>1.14</version>
     	</dependency>
-		<!-- Easysoa registry V1 -->
-		<dependency>
-			<groupId>org.easysoa.registry</groupId>
-			<artifactId>easysoa-registry-rest-client</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-    	<dependency>
-        	<groupId>org.easysoa.registry</groupId>
-        	<artifactId>easysoa-registry-rest-core</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-    	</dependency>	
-	
+
         <!-- Tests -->
         <!-- junit -->
         <dependency>

@@ -26,7 +26,7 @@ import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
  * @author fntangke
  */
 public interface MessageHandler {
-    
+
 	/**
 	 * Handle an exchange
 	 * @param messagein Incoming message
@@ -34,17 +34,17 @@ public interface MessageHandler {
 	 * @throws Exception
 	 */
 	public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception;
-	
+
     /**
      * Set the handlers configuration
      * @param configuration The ProxyConfiguration to be used by the handlers
      */
-    public void setHandlerConfiguration(ProxyConfiguration configuration);	
-	
+    public void setHandlerConfiguration(ProxyConfiguration configuration);
+
     public void enable();
-    
+
     public void disable();
-    
+
     public String getID();
-    
+
 }
