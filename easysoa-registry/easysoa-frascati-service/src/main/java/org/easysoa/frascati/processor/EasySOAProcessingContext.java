@@ -1,20 +1,20 @@
 /**
  * EasySOA
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 package org.easysoa.frascati.processor;
@@ -81,7 +81,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * Construct with an array of URLs used to create the ClassLoader.
-     * 
+     *
      * @param classLoader
      *            the urls array for class loader of the parser context.
      */
@@ -92,7 +92,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * Construct with a class loader.
-     * 
+     *
      * @param classLoader
      *            the class loader of the parser context.
      */
@@ -103,7 +103,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.ow2.frascati.parser.api.ParsingContext#
      *      loadClass(java.lang.String)
      */
@@ -127,7 +127,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ProcessingContext#getProcessingMode()
      */
     public ProcessingMode getProcessingMode()
@@ -137,7 +137,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ProcessingContext#setProcessingMode(ProcessingMode)
      */
     public final void setProcessingMode(ProcessingMode processingMode)
@@ -147,7 +147,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ProcessingContext#getRootComposite()
      */
     public final Composite getRootComposite()
@@ -157,7 +157,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ProcessingContext#setRootComposite(Composite)
      */
     public final void setRootComposite(Composite composite)
@@ -167,7 +167,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#getClassLoader()
      */
     public final ClassLoader getClassLoader()
@@ -177,7 +177,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#getResource(String)
      */
     public final URL getResource(String name)
@@ -187,7 +187,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#putData(Object, Class, T)
      */
     public final <T> void putData(Object key, Class<T> type, T data)
@@ -203,7 +203,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#getData(Object, Class)
      */
     @SuppressWarnings("unchecked")
@@ -219,7 +219,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#warning(String)
      */
     public void warning(String message)
@@ -231,7 +231,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#getWarnings()
      */
     public final int getWarnings()
@@ -241,7 +241,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.ow2.frascati.parser.api.ParsingContext#error(java.lang.String)
      */
     public void error(String message)
@@ -253,7 +253,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#getErrors()
      */
     public final int getErrors()
@@ -263,7 +263,7 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see ParsingContext#getLocationURI(EObject)
      */
     public String getLocationURI(EObject eObject)
@@ -274,11 +274,11 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     // ////////////////////////////////////////////
     // additional methods
-    
+
     /**
-     * Return the list of warning messages thrown during the last 
+     * Return the list of warning messages thrown during the last
      * processing process
-     * 
+     *
      * @return
      *          the list of warning messages
      */
@@ -287,11 +287,11 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
         return warningMessages;
     }
 
-    
+
     /**
-     * Return the list of error messages thrown during the last 
+     * Return the list of error messages thrown during the last
      * processing process
-     * 
+     *
      * @return
      *          the list of error messages
      */
@@ -301,5 +301,17 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
     }
 
     // ////////////////////////////////////////////
+
+    public void addProcessedComposite(Composite processedComposite) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<Composite> getProcessedComposite() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Composite getProcessedComposite(String compositeName) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }
