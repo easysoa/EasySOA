@@ -84,6 +84,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
     }
 
     @Override
+    // TODO :Return an OperationResult object instead of void !
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
         if (enabled) {
 
@@ -125,7 +126,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
                 //parents.add(new SoaNodeId(InformationService.DOCTYPE, "PrecomptePartenaireService")); // specified service
                 //parents.add(new SoaNodeId("Component", componentIds)); // specified component
                 //parents.add(new SoaNodeId("Component", "FraSCAti Studio for AXXX DPS DCV Integration")); // technical component
-                SoaNodeInformation soaNodeInfo = new SoaNodeInformation(new SoaNodeId(Endpoint.DOCTYPE, environment + ":" + inMessage.buildCompleteUrl()), properties, parents);
+                SoaNodeInformation soaNodeInfo = new SoaNodeInformation(new SoaNodeId(projectId, Endpoint.DOCTYPE, environment + ":" + inMessage.buildCompleteUrl()), properties, parents);
 
                 // Run request
                 ClientBuilder clientBuilder = new ClientBuilder();
@@ -195,11 +196,12 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
             logger.warn("An error occurs when getting the 'proxy.wsdl.request.detect' value, using default value => .*?wsdl", ex);
             pattern = ".*?wsdl";
         }
-        for (QueryParam queryParam : inMessage.getQueryString().getQueryParams()) {
-            if (inMessage.getMethod().equalsIgnoreCase("get") && queryParam.getName().toLowerCase().matches(pattern)) {
+        //for (QueryParam queryParam : inMessage.getQueryString().getQueryParams()) {
+            //if (inMessage.getMethod().equalsIgnoreCase("get") && queryParam.getName().toLowerCase().matches(pattern)) {
+            if (inMessage.getMethod().equalsIgnoreCase("get") && inMessage.getPath().toLowerCase().matches(pattern)) {
                 return true;
             }
-        }
+        //}
         return returnValue;
     }
 }

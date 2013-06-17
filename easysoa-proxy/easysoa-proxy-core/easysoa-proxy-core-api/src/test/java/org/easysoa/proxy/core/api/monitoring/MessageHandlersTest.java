@@ -59,7 +59,7 @@ public class MessageHandlersTest {
 
         record.getInMessage().setProtocol("http");
         record.getInMessage().setMethod("get");
-        record.getInMessage().setPath("/data/info.wso?WSDL");
+        record.getInMessage().setPath("/data/info.wso?wsdl");
         record.getInMessage().setServer("footballpool.dataaccess.eu");
 
         // Call handler
