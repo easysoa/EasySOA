@@ -4,9 +4,9 @@
                xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
                xmlns:web="http://frascati.ow2.org/xmlns/web/1.0"
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy">
-    
-        
-    
+
+
+
     <!-- HTTP Proxy -->
     <!-- Run with default mode : Discovery -->
     <sca:component name="httpProxyService">
@@ -22,7 +22,7 @@
         <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
         <sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>
     </sca:component>
-    
+
     <sca:wire source="httpProxyService/handlerManager" target="handlerManagerServBaseComp/handlerManagerComponentService"/>
 
     <!-- For tests only (see FraSCAti JIRA 105) -->
@@ -33,7 +33,7 @@
         </sca:service>
         <web:implementation.velocity location="webContent" default="index.html" />
     </sca:component>-->
-    
+
     <!-- Handler manager -->
     <sca:component name="handlerManagerServBaseComp">
         <sca:service name="handlerManagerComponentService">
@@ -65,7 +65,19 @@
         </sca:reference>
     </sca:component>
 
-    <sca:wire source="proxyInfoComponent/configurationService" target="proxyConfigurationServiceComponent/proxyConfigurationService"/>
+    <!-- Proxy creation strategy -->
+    <sca:component name="proxyCreationStrategyComponent">
+        <sca:service name="proxyCreationStrategyService">
+            <sca:interface.java interface="org.easysoa.proxy.strategy.ProxyCreationStrategy" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.proxy.strategy.EmbeddedProxyCreationStrategy" />
+        <sca:reference name="configurationService">
+            <sca:interface.java interface="org.easysoa.proxy.configuration.HttpProxyConfigurationService" />
+        </sca:reference>
+    </sca:component>
+
+    <sca:wire source="proxyCreationStrategyComponent/configurationService" target="proxyConfigurationServiceComponent/proxyConfigurationService"/>
+    <sca:wire source="proxyInfoComponent/proxyCreationStrategy" target="proxyCreationStrategyComponent/proxyCreationStrategyService"/>
 
     <!-- TODO : this component in a separated composite -->
     <!-- discovery proxy started automatically with easysoa ? -->
@@ -80,9 +92,9 @@
         <sca:service name="proxyInfo">
             <sca:interface.java interface="org.easysoa.proxy.management.HttpProxyManagementService"/>
         </sca:service>
-        <sca:reference name="configurationService">
-            <sca:interface.java interface="org.easysoa.proxy.configuration.HttpProxyConfigurationService" />
-        </sca:reference>    	
+        <sca:reference name="proxyCreationStrategy">
+            <sca:interface.java interface="org.easysoa.proxy.strategy.ProxyCreationStrategy" />
+        </sca:reference>
     </sca:component>
 
 </sca:composite>

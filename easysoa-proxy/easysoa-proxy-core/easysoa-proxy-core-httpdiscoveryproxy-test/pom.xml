@@ -15,6 +15,18 @@
 
   <dependencies>
 
+    <!-- Easysoa Registry V1 -->
+    <dependency>
+      <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-doctypes-api</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-rest-client</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
     <!-- esper -->
     <dependency>
       <groupId>com.espertech</groupId>
@@ -50,7 +62,7 @@
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-api</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.easysoa.proxy</groupId>
       <artifactId>easysoa-proxy-core-api-frascati</artifactId>
@@ -74,8 +86,8 @@
       <artifactId>easysoa-remote-frascati</artifactId>
       <version>${easysoa.version}</version>
      </dependency>
-     
-    
+
+
     <!-- Test scope -->
     <dependency>
         <groupId>org.easysoa.registry.api</groupId>
@@ -88,7 +100,7 @@
     		</exclusion>
     	</exclusions>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-ext</artifactId>
@@ -101,11 +113,6 @@
     <dependency>
         <groupId>org.easysoa.proxy</groupId>
         <artifactId>easysoa-proxy-core-mocks</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.easysoa.proxy</groupId>
-        <artifactId>easysoa-proxy-core-api-frascati</artifactId>
-        <version>${easysoa.version}</version>
     </dependency>
     <dependency>
         <groupId>xstream</groupId>

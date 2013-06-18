@@ -36,8 +36,7 @@ import org.ow2.frascati.util.AbstractLoggeable;
 import org.ow2.frascati.util.FrascatiClassLoader;
 
 public class EasySOAProcessingContext extends AbstractLoggeable implements
-        ProcessingContext, ParsingContext
-{
+        ProcessingContext, ParsingContext {
 
     // ---------------------------------------------------------------------------
     // Internal state.
@@ -66,6 +65,9 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /** The processed root SCA composite */
     private Composite rootComposite;
+
+    /** The processed composites **/
+    private HashMap<String, Composite> processedComposites = new HashMap<String, Composite>();
 
     // ---------------------------------------------------------------------------
     // Public methods.
@@ -303,15 +305,15 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
     // ////////////////////////////////////////////
 
     public void addProcessedComposite(Composite processedComposite) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.processedComposites.put(processedComposite.getName(), processedComposite);
     }
 
     public List<Composite> getProcessedComposite() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new ArrayList<Composite>(processedComposites.values());
     }
 
     public Composite getProcessedComposite(String compositeName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.processedComposites.get(compositeName);
     }
 
 }

@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
-	<parent> 
-		<groupId>org.easysoa.proxy</groupId> 
-		<artifactId>easysoa-proxy-parent</artifactId> 
-		<version>0.5-SNAPSHOT</version> 
-		<relativePath>../../pom.xml</relativePath> 
+
+	<parent>
+		<groupId>org.easysoa.proxy</groupId>
+		<artifactId>easysoa-proxy-parent</artifactId>
+		<version>0.5-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-		<dependency> 
+		<dependency>
 			<groupId>org.ow2.frascati</groupId>
 			<artifactId>frascati-runtime-factory</artifactId>
 			<version>${frascati.version}</version>
@@ -139,6 +139,11 @@
 			<version>2.6</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>1.2.6</version>
+        </dependency>
 		<!-- Test scope -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -171,7 +176,7 @@
 						<target>1.5</target>
 					</configuration>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -206,10 +211,10 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-			<!--<plugin>
+			<plugin>
 				<groupId>org.ow2.frascati.mojo</groupId>
 				<artifactId>frascati-compiler-plugin</artifactId>
-				<version>1.5-SNAPSHOT</version>
+				<version>1.6-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<id>compile-composite</id>
@@ -230,7 +235,7 @@
 								<pluginExecutionFilter>
 									<groupId>org.ow2.frascati.mojo</groupId>
 									<artifactId>frascati-compiler-plugin</artifactId>
-									<versionRange>1.5-SNAPSHOT</versionRange>
+									<versionRange>1.6-SNAPSHOT</versionRange>
 									<phase>compile-composite</phase>
 									<goals>
 										<goal>generate-sources</goal>
@@ -265,14 +270,15 @@
 						<artifactId>frascati-implementation-velocity</artifactId>
 						<version>${frascati.version}</version>
 					</dependency>
-					<dependency>-->
+					<dependency>
 						<!-- THIS DEPENDENCY MUST BE ACCESSIBLE TO FRASCATI -->
-						<!--<groupId>org.apache.httpcomponents</groupId>
+						<groupId>org.apache.httpcomponents</groupId>
 						<artifactId>httpclient</artifactId>
 						<version>4.1.1</version>
 					</dependency>
 				</dependencies>
-			</plugin>-->
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>

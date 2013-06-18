@@ -1,29 +1,35 @@
 /**
- * 
+ *
  */
 package org.easysoa.proxy.strategy;
 
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.management.ProxyInfo;
+import org.osoa.sca.annotations.Reference;
 
 /**
  * Instantiate the Easysoa embedded proxy
- * 
+ *
  * @author jguillemotte
  *
  */
 public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
-    
+
+    // Proxy configuration service reference
+    @Reference
+    HttpProxyConfigurationService configurationService;
+
     /**
-     * @see org.easysoa.proxy.strategy.ProxyCreationStrategy#createProxy(ProxyConfiguration) 
+     * @see org.easysoa.proxy.strategy.ProxyCreationStrategy#createProxy(ProxyConfiguration)
      */
     public ProxyInfo createProxy(ProxyConfiguration configuration) throws Exception {
 
         // Just returning the embedded proxy parameters
         // The proxy is started automatically with Easysoa
         ProxyInfo proxyInfo = new ProxyInfo();
-        
+
         // Questions :
         // - DiscoveryProxy still started automatically ?
         // - Only SOAP ProxyInfo service start and then, with a call on getProxy method, starts and returns the embedded proxy ?
@@ -34,8 +40,8 @@ public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
         proxyInfo.setProxyName("EasySOA embedded proxy");
         // Generate ID
         EmbeddedEasySOAGeneratedAppIdFactoryStrategy idFactory = new EmbeddedEasySOAGeneratedAppIdFactoryStrategy();
-        proxyInfo.setProxyID(idFactory.getId(configuration.getParameter(ProxyConfiguration.USER_PARAM_NAME), 
-                configuration.getParameter(ProxyConfiguration.PROJECTID_PARAM_NAME), 
+        proxyInfo.setProxyID(idFactory.getId(configuration.getParameter(ProxyConfiguration.USER_PARAM_NAME),
+                configuration.getParameter(ProxyConfiguration.PROJECTID_PARAM_NAME),
                 configuration.getParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME)));
 
         // Complete the configuration
@@ -43,7 +49,16 @@ public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
         configuration.addParameter(ProxyConfiguration.PROXY_PATH_PARAM_NAME, "/");
         configuration.addParameter(ProxyConfiguration.PROXY_HOST_PARAM_NAME, "localhost");
         proxyInfo.setConfiguration(configuration);
-        
+
+        // Test if incompatibility
+        //if(){
+        //    throw new Exception("Incompatibility detected !");
+            // TODO : best to return a "result" with status and
+        //} else {
+            // Update the configuration
+            configurationService.update(configuration);
+        //}
+
         return proxyInfo;
     }
 

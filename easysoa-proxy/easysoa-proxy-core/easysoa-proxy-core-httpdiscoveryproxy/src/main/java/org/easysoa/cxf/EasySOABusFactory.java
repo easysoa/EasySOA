@@ -1,20 +1,20 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -58,14 +58,14 @@ import org.springframework.core.io.Resource;
  * HACK
  * Inspired by SpringBusFactory, with an added an anti-deadlock wait
  * to prevent the deadlock described in test TODO
- * 
+ *
  * @author jguillemotte
  *
  */
 public class EasySOABusFactory extends SpringBusFactory {
-    
+
     private static final Logger LOG = LogUtils.getL7dLogger(EasySOABusFactory.class);
-    
+
     private final ApplicationContext context;
 
     public EasySOABusFactory() {
@@ -75,7 +75,7 @@ public class EasySOABusFactory extends SpringBusFactory {
     public EasySOABusFactory(ApplicationContext context) {
         this.context = context;
     }
-        
+
     /**
      * Does the same thing as SpringBusFactory.finishCreatingBus(),
      * but calls a custom myPossiblySetDefaultBus() that doesn't synchronize on threadbusses
@@ -88,16 +88,16 @@ public class EasySOABusFactory extends SpringBusFactory {
         bus.setExtension(bac, BusApplicationContext.class);
 
     	myPossiblySetDefaultBus(bus);
-        
-        initializeBus(bus);        
-        
+
+        initializeBus(bus);
+
         BusLifeCycleManager lm = bus.getExtension(BusLifeCycleManager.class);
         if (null != lm) {
             lm.registerLifeCycleListener(new BusApplicationContextLifeCycleListener(bac));
         }
-        
+
         return bus;
-    }  
+    }
 
     /**
      * Does the same thing as SpringBusFactory.finishCreatingBus(),but doesn't synchronize on threadbusses
@@ -129,7 +129,7 @@ public class EasySOABusFactory extends SpringBusFactory {
             String userCfgFile = System.getProperty(Configurer.USER_CFG_FILE_PROPERTY_NAME);
             String sysCfgFileUrl = System.getProperty(Configurer.USER_CFG_FILE_PROPERTY_URL);
             Resource r = BusApplicationContext.findResource(Configurer.DEFAULT_USER_CFG_FILE);
-            if (context == null && userCfgFile == null && cfgFiles == null && sysCfgFileUrl == null 
+            if (context == null && userCfgFile == null && cfgFiles == null && sysCfgFileUrl == null
                 && (r == null || !r.exists()) && includeDefaults) {
                 return new org.apache.cxf.bus.CXFBusFactory().createBus();
             }
@@ -146,7 +146,7 @@ public class EasySOABusFactory extends SpringBusFactory {
      *
      */
     protected BusApplicationContext createApplicationContext(String cfgFiles[], boolean includeDefaults) {
-        try {      
+        try {
             return new BusApplicationContext(cfgFiles, includeDefaults, context);
         } catch (BeansException ex) {
             LogUtils.log(LOG, Level.WARNING, "INITIAL_APP_CONTEXT_CREATION_FAILED_MSG", ex, (Object[])null);
@@ -155,7 +155,7 @@ public class EasySOABusFactory extends SpringBusFactory {
                 Thread.currentThread().setContextClassLoader(
                     BusApplicationContext.class.getClassLoader());
                 try {
-                    return new BusApplicationContext(cfgFiles, includeDefaults, context);        
+                    return new BusApplicationContext(cfgFiles, includeDefaults, context);
                 } finally {
                     Thread.currentThread().setContextClassLoader(contextLoader);
                 }
@@ -186,6 +186,6 @@ public class EasySOABusFactory extends SpringBusFactory {
         public void postShutdown() {
             bac.close();
         }
-        
+
     }
 }

@@ -118,8 +118,8 @@ public class MessageToEventMapper {
     }
 
     /**
-     * Get MessageId string. 
-     * if enforceMessageIDTransfer=true or WS-Addressing enabled explicitly (i.e with <wsa:addressing/> feature), 
+     * Get MessageId string.
+     * if enforceMessageIDTransfer=true or WS-Addressing enabled explicitly (i.e with <wsa:addressing/> feature),
      * then MessageId is not null and conform with the definition in the WS-Addressing Spec;
      * if enforceMessageIDTransfer=false and WS-Addressing doesn't enable,
      * then MessageId is null.
