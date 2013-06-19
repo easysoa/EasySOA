@@ -5,8 +5,6 @@
                xmlns:web="http://frascati.ow2.org/xmlns/web/1.0"
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy">
 
-
-
     <!-- HTTP Proxy -->
     <!-- Run with default mode : Discovery -->
     <sca:component name="httpProxyService">
@@ -57,24 +55,24 @@
     <!-- Proxy configuration service -->
     <sca:component name="proxyConfigurationServiceComponent">
         <sca:service name="proxyConfigurationService">
-            <sca:interface.java interface="org.easysoa.proxy.configuration.HttpProxyConfigurationService" />
+            <sca:interface.java interface="org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService" />
         </sca:service>
-        <sca:implementation.java class="org.easysoa.proxy.configuration.HttpProxyConfigurationServiceImpl" />
+        <sca:implementation.java class="org.easysoa.proxy.configuration.DefaultHttpProxyConfigurationService" />
         <sca:reference name="handlerManager">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
         </sca:reference>
     </sca:component>
 
     <!-- Proxy creation strategy -->
-    <sca:component name="proxyCreationStrategyComponent">
+    <!--<sca:component name="proxyCreationStrategyComponent">
         <sca:service name="proxyCreationStrategyService">
             <sca:interface.java interface="org.easysoa.proxy.strategy.ProxyCreationStrategy" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.strategy.EmbeddedProxyCreationStrategy" />
         <sca:reference name="configurationService">
-            <sca:interface.java interface="org.easysoa.proxy.configuration.HttpProxyConfigurationService" />
+            <sca:interface.java interface="org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService" />
         </sca:reference>
-    </sca:component>
+    </sca:component>-->
 
     <!-- Embedded Proxy factory strategy -->
     <sca:component name="embeddedEasySOAGeneratedAppIdFactoryStrategyComponent">
@@ -84,8 +82,7 @@
         <sca:implementation.java class="org.easysoa.proxy.strategy.EmbeddedEasySOAGeneratedAppIdFactoryStrategy" />
     </sca:component>
 
-    <sca:wire source="proxyCreationStrategyComponent/configurationService" target="proxyConfigurationServiceComponent/proxyConfigurationService"/>
-    <!--<sca:wire source="proxyInfoComponent/proxyCreationStrategy" target="proxyCreationStrategyComponent/proxyCreationStrategyService"/>-->
+    <!--<sca:wire source="proxyCreationStrategyComponent/configurationService" target="proxyConfigurationServiceComponent/proxyConfigurationService"/>-->
     <sca:wire source="proxyInfoComponent/embeddedEasySOAGeneratedAppIdFactoryStrategy" target="embeddedEasySOAGeneratedAppIdFactoryStrategyComponent/embeddedEasySOAGeneratedAppIdFactoryStrategyService"/>
     <sca:wire source="proxyInfoComponent/defaultHttpProxyInstanceConfigurationService" target="proxyConfigurationServiceComponent/proxyConfigurationService"/>
 
@@ -107,11 +104,8 @@
             <sca:interface.java interface="org.easysoa.proxy.strategy.EasySOAGeneratedAppIdFactoryStrategy" />
         </sca:reference>
         <sca:reference name="defaultHttpProxyInstanceConfigurationService">
-            <sca:interface.java interface="org.easysoa.proxy.configuration.HttpProxyConfigurationService" />
+            <sca:interface.java interface="org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService" />
         </sca:reference>
-        <!--<sca:reference name="proxyCreationStrategy">
-            <sca:interface.java interface="org.easysoa.proxy.strategy.ProxyCreationStrategy" />
-        </sca:reference>-->
     </sca:component>
 
 </sca:composite>

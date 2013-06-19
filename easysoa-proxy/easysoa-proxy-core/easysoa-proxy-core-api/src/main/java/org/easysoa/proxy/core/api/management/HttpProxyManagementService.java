@@ -35,7 +35,7 @@ public interface HttpProxyManagementService {
     @Path("/getHttpProxy")
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public ProxyConfiguration getHttpProxy(ProxyConfiguration configuration) throws Exception;
+    public EasySOAGeneratedAppConfiguration getHttpProxy(ProxyConfiguration configuration) throws Exception;
 
     /**
      * Returns informations about the app corresponding to the given ID
@@ -45,6 +45,6 @@ public interface HttpProxyManagementService {
     @GET
     @Path("/getHttpProxy/{proxyID}")
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public EasySOAGeneratedAppConfiguration get(@PathParam("proxyID") String proxyID);
+    public EasySOAGeneratedAppConfiguration get(@PathParam("proxyID") String proxyID) throws Exception;
 
 }

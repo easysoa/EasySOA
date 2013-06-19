@@ -4,7 +4,7 @@
 package org.easysoa.proxy.strategy;
 
 import org.easysoa.EasySOAConstants;
-import org.easysoa.proxy.configuration.HttpProxyConfigurationService;
+import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.management.ProxyInfo;
 import org.osoa.sca.annotations.Reference;

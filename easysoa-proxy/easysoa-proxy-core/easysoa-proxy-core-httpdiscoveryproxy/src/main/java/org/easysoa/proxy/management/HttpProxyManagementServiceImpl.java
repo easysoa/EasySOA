@@ -3,12 +3,12 @@
  */
 package org.easysoa.proxy.management;
 
+import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.proxy.configuration.HttpProxyConfigurationService;
+import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
-import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
 import org.easysoa.proxy.strategy.EasySOAGeneratedAppIdFactoryStrategy;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -117,7 +117,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
      * @param configuration The proxy configuration
      * @return <code>ProxyInfo</code> containing informations about instanced proxy
      */
-    public ProxyConfiguration getHttpProxy(ProxyConfiguration configuration) throws Exception {
+    public EasySOAGeneratedAppConfiguration getHttpProxy(ProxyConfiguration configuration) throws Exception {
 
         // Generate the App ID form the configuration
         //EmbeddedEasySOAGeneratedAppIdFactoryStrategy idFactory = new EmbeddedEasySOAGeneratedAppIdFactoryStrategy(); // TODO inject & PerUser
@@ -214,9 +214,10 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
      * @param proxyID Proxy ID
      * @return
      */
-    public EasySOAGeneratedAppConfiguration get(String proxyID){
-        // TODO : complete this method
-        return null;
+    // TODO : return EasysoaGeneratedAppConfiguration or ProxyConfiguration ?
+    public EasySOAGeneratedAppConfiguration get(String proxyID) throws Exception {
+        HttpProxyConfigurationService appInstanceConfService = defaultHttpProxyInstanceConfigurationService;
+        return appInstanceConfService.get(null);
     }
 
 }

@@ -19,7 +19,9 @@
  */
 package org.easysoa.proxy.configuration;
 
+import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.apache.log4j.Logger;
+import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
 import org.easysoa.proxy.strategy.EmbeddedEasySOAGeneratedAppIdFactoryStrategy;
@@ -29,7 +31,7 @@ import org.osoa.sca.annotations.Reference;
  * @author jguillemotte
  *
  */
-public class HttpProxyConfigurationServiceImpl implements HttpProxyConfigurationService {
+public class DefaultHttpProxyConfigurationService implements HttpProxyConfigurationService {
 
     // Handler manager
     @Reference
@@ -38,9 +40,9 @@ public class HttpProxyConfigurationServiceImpl implements HttpProxyConfiguration
     ProxyConfiguration currentProxyConf = null;
 
     // Logger
-    private Logger logger = Logger.getLogger(HttpProxyConfigurationServiceImpl.class.getName());
+    private Logger logger = Logger.getLogger(DefaultHttpProxyConfigurationService.class.getName());
 
-    public HttpProxyConfigurationServiceImpl(){
+    public DefaultHttpProxyConfigurationService(){
         currentProxyConf = new ProxyConfiguration();
         currentProxyConf.setId(EmbeddedEasySOAGeneratedAppIdFactoryStrategy.SINGLETON_ID);
     }

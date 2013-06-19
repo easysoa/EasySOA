@@ -30,6 +30,7 @@ import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.proxy.core.api.configuration.ConfigurationParameter;
+import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
 import org.easysoa.test.util.AbstractProxyTestStarter;
@@ -85,7 +86,7 @@ public class HttpProxyManagmentServiceTest extends AbstractProxyTestStarter {
         proxyConf.setParameters(params);
 
         HttpProxyManagementService client = (HttpProxyManagementService) context.getBean("proxyManagmentServiceClient");
-        ProxyConfiguration result = client.getHttpProxy(proxyConf);
+        EasySOAGeneratedAppConfiguration result = client.getHttpProxy(proxyConf);
 
         Assert.assertNotNull(result);
         Assert.assertEquals("default", result.getId());

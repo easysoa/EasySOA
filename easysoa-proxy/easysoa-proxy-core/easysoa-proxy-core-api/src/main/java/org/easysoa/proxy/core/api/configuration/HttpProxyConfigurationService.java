@@ -17,9 +17,7 @@
  *
  * Contact : easysoa-dev@googlegroups.com
  */
-package org.easysoa.proxy.configuration;
-
-import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
+package org.easysoa.proxy.core.api.configuration;
 
 /**
  * To update the Handler's configuration
