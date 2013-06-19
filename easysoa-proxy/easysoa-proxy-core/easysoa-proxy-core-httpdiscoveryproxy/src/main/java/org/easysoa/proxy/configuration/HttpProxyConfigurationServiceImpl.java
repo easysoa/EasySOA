@@ -22,6 +22,7 @@ package org.easysoa.proxy.configuration;
 import org.apache.log4j.Logger;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
+import org.easysoa.proxy.strategy.EmbeddedEasySOAGeneratedAppIdFactoryStrategy;
 import org.osoa.sca.annotations.Reference;
 
 /**
@@ -34,10 +35,15 @@ public class HttpProxyConfigurationServiceImpl implements HttpProxyConfiguration
     @Reference
     HandlerManager handlerManager;
 
-    ProxyConfiguration CurrentProxyConf = null;
+    ProxyConfiguration currentProxyConf = null;
 
     // Logger
     private Logger logger = Logger.getLogger(HttpProxyConfigurationServiceImpl.class.getName());
+
+    public HttpProxyConfigurationServiceImpl(){
+        currentProxyConf = new ProxyConfiguration();
+        currentProxyConf.setId(EmbeddedEasySOAGeneratedAppIdFactoryStrategy.SINGLETON_ID);
+    }
 
     /**
      * Handler configuration method
@@ -47,18 +53,19 @@ public class HttpProxyConfigurationServiceImpl implements HttpProxyConfiguration
     public void update(ProxyConfiguration configuration) {
         // Pass the proxy configuration to the handler manager
         logger.debug("Passing proxy configuration to handler manager");
-        this.CurrentProxyConf = configuration;
+        this.currentProxyConf = configuration;
         handlerManager.setHandlerConfiguration(configuration);
     }
 
     //@Override
-    public void reset(){
+    public void reset(ProxyConfiguration configuration) throws Exception {
         ProxyConfiguration proxyConf = new ProxyConfiguration();
+        proxyConf.setId(EmbeddedEasySOAGeneratedAppIdFactoryStrategy.SINGLETON_ID);
         update(proxyConf);
     }
 
     //@Override
-    public ProxyConfiguration get() {
-        return this.CurrentProxyConf;
+    public ProxyConfiguration get(ProxyConfiguration configuration) throws Exception {
+        return this.currentProxyConf;
     }
 }

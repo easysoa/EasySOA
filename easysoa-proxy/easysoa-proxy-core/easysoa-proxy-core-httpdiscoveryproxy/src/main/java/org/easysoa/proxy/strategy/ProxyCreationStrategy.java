@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.easysoa.proxy.strategy;
 
@@ -8,7 +8,8 @@ import org.easysoa.proxy.management.ProxyInfo;
 
 /**
  * Simple proxy creation strategy
- * 
+ * @obsolete (should be) merged in HttpProxyManagementServiceImpl(s)
+ *
  * @author jguillemotte
  *
  */
@@ -22,5 +23,5 @@ public interface ProxyCreationStrategy {
      * @throws Exception If a problem occurs
      */
     public ProxyInfo createProxy(ProxyConfiguration configuration) throws Exception;
-    
+
 }

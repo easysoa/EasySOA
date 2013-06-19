@@ -7,9 +7,7 @@ package org.easysoa.proxy.strategy;
  * @author jguillemotte
  *
  */
-public class EmbeddedEasySOAGeneratedAppIdFactoryStrategy implements EasySOAGeneratedAppIdFactoryStrategy {
-
-    public static final String SINGLETON_ID = "default";
+public class PerUserEasySOAGeneratedAppIdFactoryStrategy implements  EasySOAGeneratedAppIdFactoryStrategy {
 
     /**
      * Build an ID with the provided parameters
@@ -20,7 +18,13 @@ public class EmbeddedEasySOAGeneratedAppIdFactoryStrategy implements EasySOAGene
      */
     // TODO : complete this method
     public String getId(String user, String projectId, String componentIds){
-        return SINGLETON_ID;
+        StringBuilder builder = new StringBuilder();
+        builder.append(user);
+        builder.append("_");
+        builder.append(projectId);
+        //buffer.append("_");
+        //buffer.append(componentIds);
+        return builder.toString();
     }
 
 }

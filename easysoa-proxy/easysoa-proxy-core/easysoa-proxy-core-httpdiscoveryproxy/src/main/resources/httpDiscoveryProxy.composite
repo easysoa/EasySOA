@@ -54,7 +54,7 @@
 
     <sca:wire source="proxyConfigurationServiceComponent/handlerManager" target="handlerManagerServBaseComp/handlerManagerComponentService"/>
 
-    <!-- Proxy management service -->
+    <!-- Proxy configuration service -->
     <sca:component name="proxyConfigurationServiceComponent">
         <sca:service name="proxyConfigurationService">
             <sca:interface.java interface="org.easysoa.proxy.configuration.HttpProxyConfigurationService" />
@@ -76,25 +76,42 @@
         </sca:reference>
     </sca:component>
 
+    <!-- Embedded Proxy factory strategy -->
+    <sca:component name="embeddedEasySOAGeneratedAppIdFactoryStrategyComponent">
+        <sca:service name="embeddedEasySOAGeneratedAppIdFactoryStrategyService">
+            <sca:interface.java interface="org.easysoa.proxy.strategy.EasySOAGeneratedAppIdFactoryStrategy" />
+        </sca:service>
+        <sca:implementation.java class="org.easysoa.proxy.strategy.EmbeddedEasySOAGeneratedAppIdFactoryStrategy" />
+    </sca:component>
+
     <sca:wire source="proxyCreationStrategyComponent/configurationService" target="proxyConfigurationServiceComponent/proxyConfigurationService"/>
-    <sca:wire source="proxyInfoComponent/proxyCreationStrategy" target="proxyCreationStrategyComponent/proxyCreationStrategyService"/>
+    <!--<sca:wire source="proxyInfoComponent/proxyCreationStrategy" target="proxyCreationStrategyComponent/proxyCreationStrategyService"/>-->
+    <sca:wire source="proxyInfoComponent/embeddedEasySOAGeneratedAppIdFactoryStrategy" target="embeddedEasySOAGeneratedAppIdFactoryStrategyComponent/embeddedEasySOAGeneratedAppIdFactoryStrategyService"/>
+    <sca:wire source="proxyInfoComponent/defaultHttpProxyInstanceConfigurationService" target="proxyConfigurationServiceComponent/proxyConfigurationService"/>
 
     <!-- TODO : this component in a separated composite -->
     <!-- discovery proxy started automatically with easysoa ? -->
     <!-- Proxy Info SOAP service -->
     <sca:service name="proxyInfoService" promote="proxyInfoComponent/proxyInfo">
-        <sca:interface.java interface="org.easysoa.proxy.management.HttpProxyManagementService"/>
+        <sca:interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService"/>
         <!--<sca:binding.ws uri="http://localhost:8089/proxyInfoService"/>-->
         <frascati:binding.rest uri="http://localhost:8089/httpProxyManagementService/" />
     </sca:service>
+
     <sca:component name="proxyInfoComponent">
         <sca:implementation.java class="org.easysoa.proxy.management.HttpProxyManagementServiceImpl" />
         <sca:service name="proxyInfo">
-            <sca:interface.java interface="org.easysoa.proxy.management.HttpProxyManagementService"/>
+            <sca:interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService"/>
         </sca:service>
-        <sca:reference name="proxyCreationStrategy">
-            <sca:interface.java interface="org.easysoa.proxy.strategy.ProxyCreationStrategy" />
+        <sca:reference name="embeddedEasySOAGeneratedAppIdFactoryStrategy">
+            <sca:interface.java interface="org.easysoa.proxy.strategy.EasySOAGeneratedAppIdFactoryStrategy" />
         </sca:reference>
+        <sca:reference name="defaultHttpProxyInstanceConfigurationService">
+            <sca:interface.java interface="org.easysoa.proxy.configuration.HttpProxyConfigurationService" />
+        </sca:reference>
+        <!--<sca:reference name="proxyCreationStrategy">
+            <sca:interface.java interface="org.easysoa.proxy.strategy.ProxyCreationStrategy" />
+        </sca:reference>-->
     </sca:component>
 
 </sca:composite>

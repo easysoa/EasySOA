@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.easysoa.proxy.management;
 
@@ -7,20 +7,21 @@ import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration
 
 /**
  * Container for information about generated EasySOA app's
- * 
+ *
  * @author jguillemotte
+ * @obsolete (should be) merged in EasySOAGeneratedAppConfiguration (& ProxyConfidutation)
  *
  */
 public class EasySOAGeneratedAppInfo {
 
     // App ID
     private String easySOAGeneratedAppId;
-    
+
     // App configuration
     private EasySOAGeneratedAppConfiguration configuration;
-   
+
     /**
-     * 
+     *
      * @param id
      */
     public EasySOAGeneratedAppInfo(String id){
@@ -28,7 +29,7 @@ public class EasySOAGeneratedAppInfo {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public EasySOAGeneratedAppConfiguration getConfiguration() {
@@ -36,7 +37,7 @@ public class EasySOAGeneratedAppInfo {
     }
 
     /**
-     * 
+     *
      * @param configuration
      */
     public void setConfiguration(EasySOAGeneratedAppConfiguration configuration) {
@@ -44,7 +45,7 @@ public class EasySOAGeneratedAppInfo {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public String getEasySOAGeneratedAppId() {
@@ -52,7 +53,7 @@ public class EasySOAGeneratedAppInfo {
     }
 
     /**
-     * 
+     *
      * @param easySOAGeneratedAppId
      */
     private void setEasySOAGeneratedAppId(String easySOAGeneratedAppId) {

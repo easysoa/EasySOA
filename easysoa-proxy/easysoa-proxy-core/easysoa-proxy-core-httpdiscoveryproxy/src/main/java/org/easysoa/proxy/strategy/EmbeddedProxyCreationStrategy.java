@@ -13,6 +13,7 @@ import org.osoa.sca.annotations.Reference;
  * Instantiate the Easysoa embedded proxy
  *
  * @author jguillemotte
+ * @obsolete (should be) merged in HttpProxyManagementService embedded HTTPProxy Impl
  *
  */
 public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
@@ -41,8 +42,8 @@ public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
         // Generate ID
         EmbeddedEasySOAGeneratedAppIdFactoryStrategy idFactory = new EmbeddedEasySOAGeneratedAppIdFactoryStrategy();
         proxyInfo.setProxyID(idFactory.getId(configuration.getParameter(ProxyConfiguration.USER_PARAM_NAME),
-                configuration.getParameter(ProxyConfiguration.PROJECTID_PARAM_NAME),
-                configuration.getParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME)));
+        configuration.getParameter(ProxyConfiguration.PROJECTID_PARAM_NAME),
+        configuration.getParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME)));
 
         // Complete the configuration
         configuration.addParameter(ProxyConfiguration.PROXY_PORT_PARAM_NAME, String.valueOf(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT));
@@ -50,14 +51,8 @@ public class EmbeddedProxyCreationStrategy implements ProxyCreationStrategy {
         configuration.addParameter(ProxyConfiguration.PROXY_HOST_PARAM_NAME, "localhost");
         proxyInfo.setConfiguration(configuration);
 
-        // Test if incompatibility
-        //if(){
-        //    throw new Exception("Incompatibility detected !");
-            // TODO : best to return a "result" with status and
-        //} else {
-            // Update the configuration
-            configurationService.update(configuration);
-        //}
+        // Update the configuration
+        configurationService.update(configuration);
 
         return proxyInfo;
     }

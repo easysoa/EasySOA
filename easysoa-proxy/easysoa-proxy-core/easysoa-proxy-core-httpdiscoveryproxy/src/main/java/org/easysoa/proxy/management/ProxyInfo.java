@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.easysoa.proxy.management;
 
@@ -12,8 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Contains informations about created proxy
- * 
+ *
  * @author jguillemotte
+ * @obsolete
  *
  */
 @XmlRootElement
@@ -31,7 +32,7 @@ public class ProxyInfo {
     // contains utils informations about the proxy
     // eg : port, url ... for clients configuration
     // => can returns the ProxyConfiguration completed with default values
-    
+
     public String getProxyName() {
         return proxyName;
     }
@@ -55,5 +56,5 @@ public class ProxyInfo {
     public void setConfiguration(ProxyConfiguration configuration) {
         this.configuration = configuration;
     }
-    
+
 }

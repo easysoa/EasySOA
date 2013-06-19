@@ -20,11 +20,14 @@
 
 package org.easysoa.proxy;
 
+import org.osoa.sca.annotations.Scope;
+
 /**
  * Proxy interface. SLA Messaging interface.
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public interface Proxy {
 		
 	/**

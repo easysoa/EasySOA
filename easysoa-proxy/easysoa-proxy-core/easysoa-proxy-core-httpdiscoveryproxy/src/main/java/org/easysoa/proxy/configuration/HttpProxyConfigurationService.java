@@ -33,18 +33,18 @@ public interface HttpProxyConfigurationService {
      * Update the handlers configuration
      * @param configuration The configuration to use
      */
-    public void update(ProxyConfiguration configuration);
+    public void update(ProxyConfiguration configuration) throws Exception;
 
     /**
      * Reset the configuration
      * (Call the update method with an empty ProxyConfiguration parameter)
      */
-    public void reset();
+    public void reset(ProxyConfiguration configuration) throws Exception;
 
     /**
      * Returns the current configuration
      * @return ProxyConfiguration, null if there is no current configuration set
      */
-    public ProxyConfiguration get();
+    public ProxyConfiguration get(ProxyConfiguration configuration) throws Exception;
 
 }
