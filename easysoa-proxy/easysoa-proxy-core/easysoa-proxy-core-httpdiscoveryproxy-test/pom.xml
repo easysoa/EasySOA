@@ -87,7 +87,6 @@
       <version>${easysoa.version}</version>
      </dependency>
 
-
     <!-- Test scope -->
     <dependency>
         <groupId>org.easysoa.registry.api</groupId>
