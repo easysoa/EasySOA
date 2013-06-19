@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" 
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
-               xmlns:web="http://frascati.ow2.org/xmlns/web/1.0" 
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+               xmlns:web="http://frascati.ow2.org/xmlns/web/1.0"
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
                name="templateEngine">
 
@@ -30,9 +30,9 @@
                         <sca:interface.java interface="org.easysoa.proxy.core.api.template.GenericTemplateRendererItf" />
 		</sca:reference>
 	</sca:component>
-        
-        <sca:wire source="TemplateReplayHttpController/templateEngine" target="templateEngineComponent/templateEngineService"/>        
-        
+
+        <sca:wire source="TemplateReplayHttpController/templateEngine" target="templateEngineComponent/templateEngineService"/>
+
         <sca:component name="TemplateReplayHttpController">
 		<!-- web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="webContent/templates" default="templateReplayHttpController.vm" / -->
                 <sca:implementation.java class="org.easysoa.proxy.core.api.template.ReplayHttpControllerServlet"/>
@@ -53,9 +53,9 @@
 			<sca:interface.java interface="org.easysoa.proxy.core.api.template.WsdlDataStoreProvider" />
 		</sca:reference>
                 <sca:reference name="templateEngine">
-                        <sca:interface.java interface="org.easysoa.proxy.core.api.template.TemplateEngine" />                    
+                        <sca:interface.java interface="org.easysoa.proxy.core.api.template.TemplateEngine" />
                 </sca:reference>
-                
+
 		<!-- sca:reference name="templateReplayWSDLHTMLList">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.template.TemplateRendererItf" />
 		</sca:reference -->
@@ -101,21 +101,22 @@
 		<sca:service name="provider">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.template.WsdlDataStoreProvider" />
 		</sca:service>
-	</sca:component>        
-                        
+	</sca:component>
+
 	<sca:component name="ProxyWSTemplate">
                 <!-- TODO find an other way to configure the location folder -->
                 <!-- If the folder doesn't exists when FraSCAti start the composite, the start fails -->
                 <!-- So for tests, add in the init method some code to check and to create the required folder and template -->
                 <!-- And for production environment : put this code in the software install package -->
-		<web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="/home/jguillemotte/NetBeansProjects/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-tests/easysoa/webContent/templates" default="" />
+                <!--<web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="/home/jguillemotte/NetBeansProjects/EasySOA/easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-tests/easysoa/webContent/templates" default="/home/jguillemotte" />-->
+                <web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" location="webContent/templates" default="template.vm" />
 		<sca:service name="template">
 			<sca:interface.java interface="org.easysoa.proxy.core.api.template.GenericTemplateRendererItf" />
 		</sca:service>
 		<!--<sca:property name="pathArgIndex">0</sca:property>--> <!--type="xsd:int"-->
 		<!--<sca:property name="storeIndex">1</sca:property>--> <!--type="xsd:int"-->
 	</sca:component>
-        
+
 	<sca:wire source="TemplateProcessor/template" target="ProxyWSTemplate/template" />
 
 </sca:composite>
