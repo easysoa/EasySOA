@@ -3,12 +3,12 @@
  */
 package org.easysoa.proxy.management;
 
-import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
-import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
+import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
+import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
 import org.easysoa.proxy.strategy.EasySOAGeneratedAppIdFactoryStrategy;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -72,13 +72,14 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         }
     }
 
-    public void reset(ProxyConfiguration configuration) throws Exception {
+    public String reset(ProxyConfiguration configuration) throws Exception {
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
         if (appInstanceConfService != null) {
             appInstanceConfService.reset(configuration);
         } else {
             throw new Exception("No app with id" + configuration.getId());
         }
+        return "OK";
     }
 
     public ProxyConfiguration get(ProxyConfiguration configuration) throws Exception {
@@ -156,12 +157,10 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
         if (appInstanceConfService != null) {
             // it already exists
-
-            ///if (!appInstanceConfService.get().getParameters().isEmpty()) {
-            ///    // but maybe it's already been reset ?
-            ///    throw new Exception("Incompatible, should reset first !");
-            ///}
-
+            if (!appInstanceConfService.get(configuration).getParameters().isEmpty()) {
+                // but maybe it's already been reset ?
+                throw new Exception("Incompatible, should reset first !");
+            }
             appInstanceConfService.update(configuration);
         } else {
             if (defaultHttpProxyInstanceConfigurationService != null) {
@@ -217,6 +216,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
     // TODO : return EasysoaGeneratedAppConfiguration or ProxyConfiguration ?
     public EasySOAGeneratedAppConfiguration get(String proxyID) throws Exception {
         HttpProxyConfigurationService appInstanceConfService = defaultHttpProxyInstanceConfigurationService;
+        // Get the default instance
         return appInstanceConfService.get(null);
     }
 

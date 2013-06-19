@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * EasySOA Proxy
  * Copyright 2011-2013 Open Wide
@@ -27,6 +22,7 @@ package org.easysoa.test.managment;
 
 import java.util.ArrayList;
 import junit.framework.Assert;
+import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.proxy.core.api.configuration.ConfigurationParameter;
@@ -92,6 +88,37 @@ public class HttpProxyManagmentServiceTest extends AbstractProxyTestStarter {
         Assert.assertEquals("default", result.getId());
         Assert.assertEquals("EasySOA embedded proxy", result.getName());
         Assert.assertEquals("Toto", result.getParameter(ProxyConfiguration.USER_PARAM_NAME));
+        Assert.assertEquals("Test", result.getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME));
+
+        // Try to get the proxy with another conf
+        // must returns an error because there is already an active configuration
+        ProxyConfiguration proxyConf2 = new ProxyConfiguration();
+        proxyConf2.setName("testProxy");
+        ArrayList<ConfigurationParameter> params2 = new ArrayList<ConfigurationParameter>();
+        params2.add(new ConfigurationParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME, "componentID"));
+        params2.add(new ConfigurationParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME, "Test"));
+        params2.add(new ConfigurationParameter(ProxyConfiguration.PROJECTID_PARAM_NAME, "Test project"));
+        params2.add(new ConfigurationParameter(ProxyConfiguration.USER_PARAM_NAME, "Mike"));
+        proxyConf2.setParameters(params2);
+        int status = 0 ;
+        try {
+            client.getHttpProxy(proxyConf2);
+        } catch(ServerWebApplicationException ex){
+            logger.info("Get an exception when trying to get a proxy with another configuration !");
+            status = ex.getStatus();
+        }
+        Assert.assertEquals(500, status);
+
+        // Reset the current conf
+        proxyConf.setId("default");
+        client.reset(proxyConf);
+
+        // Try again to get the proxy with the new config
+        result = client.getHttpProxy(proxyConf2);
+        Assert.assertNotNull(result);
+        Assert.assertEquals("default", result.getId());
+        Assert.assertEquals("EasySOA embedded proxy", result.getName());
+        Assert.assertEquals("Mike", result.getParameter(ProxyConfiguration.USER_PARAM_NAME));
         Assert.assertEquals("Test", result.getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME));
 
     }

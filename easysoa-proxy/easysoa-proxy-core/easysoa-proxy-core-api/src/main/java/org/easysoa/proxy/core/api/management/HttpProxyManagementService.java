@@ -30,6 +30,7 @@ public interface HttpProxyManagementService {
      * Instantiate and returns a proxy
      * @param configuration The proxy configuration
      * @return <code>ProxyInfo</code> containing informations about the instanced proxy
+     * @throws Exception
      */
     @POST
     @Path("/getHttpProxy")
@@ -41,10 +42,21 @@ public interface HttpProxyManagementService {
      * Returns informations about the app corresponding to the given ID
      * @param proxyID The App ID
      * @return <code>EasySOAGeneratedAppInfo</code> containing app informations
+     * @throws Exception
      */
     @GET
-    @Path("/getHttpProxy/{proxyID}")
+    @Path("/getHttpProxy/{proxyId}")
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public EasySOAGeneratedAppConfiguration get(@PathParam("proxyID") String proxyID) throws Exception;
+    public EasySOAGeneratedAppConfiguration get(@PathParam("proxyId") String proxyId) throws Exception;
+
+    /**
+     * Reset the configuration corresponding to the proxy ID
+     * @param proxyId
+     * @return
+     * @throws Exception
+     */
+    @POST
+    @Path("/reset")
+    public String reset(ProxyConfiguration configuration) throws Exception;
 
 }

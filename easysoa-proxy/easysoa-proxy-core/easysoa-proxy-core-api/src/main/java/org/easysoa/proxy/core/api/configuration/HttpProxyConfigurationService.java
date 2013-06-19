@@ -36,8 +36,9 @@ public interface HttpProxyConfigurationService {
     /**
      * Reset the configuration
      * (Call the update method with an empty ProxyConfiguration parameter)
+     * @param configuration
      */
-    public void reset(ProxyConfiguration configuration) throws Exception;
+    public String reset(ProxyConfiguration configuration) throws Exception;
 
     /**
      * Returns the current configuration

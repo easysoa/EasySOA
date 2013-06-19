@@ -26,11 +26,13 @@ import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
 import org.easysoa.proxy.strategy.EmbeddedEasySOAGeneratedAppIdFactoryStrategy;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
 
 /**
  * @author jguillemotte
  *
  */
+@Scope("composite")
 public class DefaultHttpProxyConfigurationService implements HttpProxyConfigurationService {
 
     // Handler manager
@@ -60,10 +62,11 @@ public class DefaultHttpProxyConfigurationService implements HttpProxyConfigurat
     }
 
     //@Override
-    public void reset(ProxyConfiguration configuration) throws Exception {
+    public String reset(ProxyConfiguration configuration) throws Exception {
         ProxyConfiguration proxyConf = new ProxyConfiguration();
         proxyConf.setId(EmbeddedEasySOAGeneratedAppIdFactoryStrategy.SINGLETON_ID);
         update(proxyConf);
+        return proxyConf.getId();
     }
 
     //@Override
