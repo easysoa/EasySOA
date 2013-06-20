@@ -2,11 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.easysoa</groupId>
-    <artifactId>EasySOA-http-proxy-war</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <artifactId>easysoa-proxy-war</artifactId>
     <packaging>war</packaging>
-    
+
 
     <parent>
         <groupId>org.easysoa.proxy</groupId>
@@ -20,7 +18,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <frascati.version>1.5-SNAPSHOT</frascati.version><!-- at least 1.5-SNAPSHOT for implementation.velocity -->
+        <frascati.version>1.6-SNAPSHOT</frascati.version><!-- at least 1.5-SNAPSHOT for implementation.velocity -->
         <tinfi.version>1.4.6-SNAPSHOT</tinfi.version>
     </properties>
 
@@ -30,22 +28,22 @@
             <groupId>org.easysoa.proxy</groupId>
             <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
         </dependency>
-    
+
         <dependency>
             <groupId>org.easysoa.registry.api</groupId>
             <artifactId>easysoa-registry-api-messaging</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.easysoa.proxy</groupId>
             <artifactId>easysoa-proxy-core-api</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.easysoa.proxy</groupId>
             <artifactId>easysoa-proxy-core-api-frascati</artifactId>
-        </dependency>    
-    
+        </dependency>
+
         <!-- Include in the war the FraSCAti Servlet CXF. -->
         <dependency>
             <groupId>org.ow2.frascati</groupId>
@@ -59,7 +57,7 @@
             <artifactId>frascati-runtime-factory</artifactId>
             <version>${frascati.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.ow2.frascati.tinfi</groupId>
             <artifactId>frascati-tinfi-runtime-api</artifactId>
@@ -70,8 +68,8 @@
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-rest</artifactId>
             <version>${frascati.version}</version>
-        </dependency>       
-                     
+        </dependency>
+
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-ws</artifactId>
@@ -82,34 +80,34 @@
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-http</artifactId>
             <version>${frascati.version}</version>
-        </dependency>        
-                        
+        </dependency>
+
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-interface-wsdl</artifactId>
             <version>${frascati.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-implementation-velocity</artifactId>
             <version>${frascati.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
             <version>1.4.01</version>
-        </dependency>        
-        
+        </dependency>
+
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>core</artifactId>
             <version>3.3.0.771</version>
         </dependency>
-   
+
     </dependencies>
-    
+
     <build>
         <plugins>
             <!-- Build the Web Application aRchive. -->
@@ -121,9 +119,9 @@
                     <warName>EasySOA-http-proxy</warName>
                 </configuration>
             </plugin>
-            
+
             <!-- Build with java 1.6 -->
-            <plugin>            
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
@@ -132,7 +130,7 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-            
+
             <!-- FraSCAti compiler plugin -->
             <plugin>
                 <groupId>org.ow2.frascati.mojo</groupId>
@@ -200,16 +198,16 @@
                         <version>4.1.1</version>
                     </dependency>
                 </dependencies>
-            </plugin>            
-            
+            </plugin>
+
             <!-- type 'mvn jetty:run' to launch this war with Jetty. -->
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>6.1.26</version>
             </plugin>
-      
+
         </plugins>
-    </build>  
-  
+    </build>
+
 </project>
