@@ -70,7 +70,9 @@ public class EasySOAGeneratedAppConfiguration {
      * Constructor
      */
     public EasySOAGeneratedAppConfiguration() {
-        parameters = new ArrayList<ConfigurationParameter>();
+        this.parameters = new ArrayList<ConfigurationParameter>();
+        this.id = "";
+        this.name = "";
     }
 
     /**

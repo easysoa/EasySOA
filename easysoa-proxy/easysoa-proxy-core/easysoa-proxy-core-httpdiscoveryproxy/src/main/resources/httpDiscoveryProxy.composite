@@ -108,4 +108,15 @@
         </sca:reference>
     </sca:component>
 
+    <!-- TODO move in a GUI dedicated project ?? -->
+    <!-- Regroup with other proxy project UI's ? -->
+    <!--<sca:component name="httpProxyManagementUIComponent">
+        <sca:service name="httpProxyManagementUIService">
+            <sca:interface.java interface="javax.servlet.Servlet" />
+            <sca:binding.http uri="/management" />
+        </sca:service>
+        <property name="title">Http proxy management</property>
+        <web:implementation.velocity location="webContent" default="httpProxyManagement.html" />
+    </sca:component>-->
+
 </sca:composite>

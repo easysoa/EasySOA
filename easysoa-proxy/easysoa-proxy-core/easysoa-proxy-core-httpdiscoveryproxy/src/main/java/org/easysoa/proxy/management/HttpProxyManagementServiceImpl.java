@@ -3,12 +3,15 @@
  */
 package org.easysoa.proxy.management;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
+import org.easysoa.proxy.core.api.management.ManagementServiceResult;
 import org.easysoa.proxy.strategy.EasySOAGeneratedAppIdFactoryStrategy;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
@@ -73,13 +76,16 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
     }
 
     public String reset(ProxyConfiguration configuration) throws Exception {
+        logger.debug("reset..." + configuration.getId());
+        String result = "";
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
         if (appInstanceConfService != null) {
-            appInstanceConfService.reset(configuration);
+            result = appInstanceConfService.reset(configuration);
         } else {
+            logger.debug("reset error, no " + configuration.getId());
             throw new Exception("No app with id" + configuration.getId());
         }
-        return "OK";
+        return result;
     }
 
     public ProxyConfiguration get(ProxyConfiguration configuration) throws Exception {
@@ -94,6 +100,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
     public HttpProxyConfigurationService getConfigurationService(ProxyConfiguration configuration) throws Exception {
         String appID = configuration.getId();
         HttpProxyConfigurationService appInstanceConfService = defaultHttpProxyInstanceConfigurationService;
+        //ProxyConfiguration porx = appInstanceConfService.getClass().getClassLoader().loadClass("test").newInstance();
         if (appInstanceConfService != null) {
             if (appID.equals(appInstanceConfService.get(configuration).getId())) {
                 // there is one
@@ -118,7 +125,9 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
      * @param configuration The proxy configuration
      * @return <code>ProxyInfo</code> containing informations about instanced proxy
      */
-    public EasySOAGeneratedAppConfiguration getHttpProxy(ProxyConfiguration configuration) throws Exception {
+    public ManagementServiceResult getHttpProxy(ProxyConfiguration configuration) throws Exception {
+
+        ManagementServiceResult result;
 
         // Generate the App ID form the configuration
         //EmbeddedEasySOAGeneratedAppIdFactoryStrategy idFactory = new EmbeddedEasySOAGeneratedAppIdFactoryStrategy(); // TODO inject & PerUser
@@ -159,15 +168,29 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
             // it already exists
             if (!appInstanceConfService.get(configuration).getParameters().isEmpty()) {
                 // but maybe it's already been reset ?
-                throw new Exception("Incompatible, should reset first !");
+                //throw new Exception("Incompatible, should reset first !");
+                logger.debug("Incompatible, should reset first !");
+                result = new ManagementServiceResult(ManagementServiceResult.RESULT_KO, null);
+                result.setMessage("Incompatible, should reset first !");
+                return result;
             }
             appInstanceConfService.update(configuration);
         } else {
             if (defaultHttpProxyInstanceConfigurationService != null) {
-                throw new Exception("Instanciation is not supported by "
+                //throw new Exception("Instanciation is not supported by "
+                //        + this.getClass().getName() + ", should reset first !");
+                logger.debug("Instanciation is not supported by "
                         + this.getClass().getName() + ", should reset first !");
+                result = new ManagementServiceResult(ManagementServiceResult.RESULT_KO, null);
+                result.setMessage("Instanciation is not supported by "
+                        + this.getClass().getName() + ", should reset first !");
+                return result;
             } else {
-                throw new Exception("default instance not ready !");
+                //throw new Exception("default instance not ready !");
+                logger.error("default instance not ready !");
+                result = new ManagementServiceResult(ManagementServiceResult.RESULT_KO, null);
+                result.setMessage("default instance not ready !");
+                return result;
             }
         }
         // NB. FraSCAti Studio Instanciating registry impl should do something like :
@@ -193,7 +216,8 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
             appInstanceConfService.update(configuration); // if not yet done above (?)
         }*/
 
-        return configuration;
+        result = new ManagementServiceResult(ManagementServiceResult.RESULT_OK, configuration);
+        return result;
 
         // Configure the handler
         // TODO : Reactivate
@@ -218,6 +242,13 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         HttpProxyConfigurationService appInstanceConfService = defaultHttpProxyInstanceConfigurationService;
         // Get the default instance
         return appInstanceConfService.get(null);
+    }
+
+    public List<EasySOAGeneratedAppConfiguration> listInstances() throws Exception {
+        List<EasySOAGeneratedAppConfiguration> instances = new ArrayList<EasySOAGeneratedAppConfiguration>();
+        // TODO : add fstudio InstanceConfiguration service when done
+        instances.add(defaultHttpProxyInstanceConfigurationService.get(null));
+        return instances;
     }
 
 }

@@ -3,6 +3,7 @@
  */
 package org.easysoa.proxy.core.api.management;
 
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.GET;
@@ -36,7 +37,7 @@ public interface HttpProxyManagementService {
     @Path("/getHttpProxy")
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public EasySOAGeneratedAppConfiguration getHttpProxy(ProxyConfiguration configuration) throws Exception;
+    public ManagementServiceResult getHttpProxy(ProxyConfiguration configuration) throws Exception;
 
     /**
      * Returns informations about the app corresponding to the given ID
@@ -58,5 +59,9 @@ public interface HttpProxyManagementService {
     @POST
     @Path("/reset")
     public String reset(ProxyConfiguration configuration) throws Exception;
+
+    @GET
+    @Path("/listInstances")
+    public List<EasySOAGeneratedAppConfiguration> listInstances() throws Exception;
 
 }

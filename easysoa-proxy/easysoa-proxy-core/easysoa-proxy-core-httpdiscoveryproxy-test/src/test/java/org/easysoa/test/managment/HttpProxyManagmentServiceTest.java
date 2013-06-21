@@ -21,6 +21,7 @@
 package org.easysoa.test.managment;
 
 import java.util.ArrayList;
+import java.util.List;
 import junit.framework.Assert;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.log4j.Logger;
@@ -29,6 +30,7 @@ import org.easysoa.proxy.core.api.configuration.ConfigurationParameter;
 import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
+import org.easysoa.proxy.core.api.management.ManagementServiceResult;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
 import org.junit.Before;
@@ -82,13 +84,14 @@ public class HttpProxyManagmentServiceTest extends AbstractProxyTestStarter {
         proxyConf.setParameters(params);
 
         HttpProxyManagementService client = (HttpProxyManagementService) context.getBean("proxyManagmentServiceClient");
-        EasySOAGeneratedAppConfiguration result = client.getHttpProxy(proxyConf);
+        ManagementServiceResult result = client.getHttpProxy(proxyConf);
 
         Assert.assertNotNull(result);
-        Assert.assertEquals("default", result.getId());
-        Assert.assertEquals("EasySOA embedded proxy", result.getName());
-        Assert.assertEquals("Toto", result.getParameter(ProxyConfiguration.USER_PARAM_NAME));
-        Assert.assertEquals("Test", result.getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME));
+        Assert.assertEquals(result.getStatus(), ManagementServiceResult.RESULT_OK);
+        Assert.assertEquals("default", result.getConfiguration().getId());
+        Assert.assertEquals("EasySOA embedded proxy", result.getConfiguration().getName());
+        Assert.assertEquals("Toto", result.getConfiguration().getParameter(ProxyConfiguration.USER_PARAM_NAME));
+        Assert.assertEquals("Test", result.getConfiguration().getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME));
 
         // Try to get the proxy with another conf
         // must returns an error because there is already an active configuration
@@ -100,26 +103,33 @@ public class HttpProxyManagmentServiceTest extends AbstractProxyTestStarter {
         params2.add(new ConfigurationParameter(ProxyConfiguration.PROJECTID_PARAM_NAME, "Test project"));
         params2.add(new ConfigurationParameter(ProxyConfiguration.USER_PARAM_NAME, "Mike"));
         proxyConf2.setParameters(params2);
-        int status = 0 ;
-        try {
-            client.getHttpProxy(proxyConf2);
-        } catch(ServerWebApplicationException ex){
+        //int status = 0 ;
+        //try {
+        result = client.getHttpProxy(proxyConf2);
+        /*} catch(ServerWebApplicationException ex){
             logger.info("Get an exception when trying to get a proxy with another configuration !");
             status = ex.getStatus();
-        }
-        Assert.assertEquals(500, status);
+        }*/
+        //Assert.assertEquals(500, status);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.getStatus(), ManagementServiceResult.RESULT_KO);
+
+        List<EasySOAGeneratedAppConfiguration> instances = client.listInstances();
+        Assert.assertTrue(instances.size() > 0);
 
         // Reset the current conf
         proxyConf.setId("default");
-        client.reset(proxyConf);
+        String resetResult = client.reset(proxyConf);
+        Assert.assertTrue(!"".equals(resetResult));
 
         // Try again to get the proxy with the new config
         result = client.getHttpProxy(proxyConf2);
         Assert.assertNotNull(result);
-        Assert.assertEquals("default", result.getId());
-        Assert.assertEquals("EasySOA embedded proxy", result.getName());
-        Assert.assertEquals("Mike", result.getParameter(ProxyConfiguration.USER_PARAM_NAME));
-        Assert.assertEquals("Test", result.getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME));
+        Assert.assertEquals(result.getStatus(), ManagementServiceResult.RESULT_OK);
+        Assert.assertEquals("default", result.getConfiguration().getId());
+        Assert.assertEquals("EasySOA embedded proxy", result.getConfiguration().getName());
+        Assert.assertEquals("Mike", result.getConfiguration().getParameter(ProxyConfiguration.USER_PARAM_NAME));
+        Assert.assertEquals("Test", result.getConfiguration().getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME));
 
     }
 
