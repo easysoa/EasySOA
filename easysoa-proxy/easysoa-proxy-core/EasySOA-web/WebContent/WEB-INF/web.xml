@@ -1,0 +1,29 @@
+<web-app
+    xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd" version="2.5">
+
+  <display-name>Easysoa proxy web</display-name>
+
+  <!-- OW2 FraSCAti Servlet -->
+  <servlet>
+    <servlet-name>FraSCAtiServlet</servlet-name>
+    <servlet-class>org.ow2.frascati.servlet.FraSCAtiServlet</servlet-class>
+    <init-param>
+      <param-name>composite</param-name>
+      <param-value>easysoa-proxy-web</param-value>
+    </init-param>
+    <init-param>
+      <param-name>org.ow2.frascati.bootstrap</param-name>
+      <param-value>org.ow2.frascati.bootstrap.FraSCAti</param-value>
+      <!-- for web explorer : org.ow2.frascati.bootstrap.FraSCAtiWebExplorer & add its dep -->
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>FraSCAtiServlet</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

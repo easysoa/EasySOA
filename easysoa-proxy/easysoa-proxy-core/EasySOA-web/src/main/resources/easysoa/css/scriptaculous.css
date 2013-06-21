@@ -1,0 +1,29 @@
+div.autocomplete {
+  position: absolute;
+  width: 500px;
+  background-color: white;
+  border: 1px solid #888;
+  margin: 0px;
+  padding: 0px;
+}
+ 
+div.autocomplete ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  max-height: 20em;
+  overflow: auto;
+}
+ 
+div.autocomplete ul li.selected {
+    background-color: #ffb;
+    color: #000000;
+}
+ 
+div.autocomplete ul li {
+  list-style-type:none;
+  display: block;
+  margin: 0;
+  padding: 2px;
+  cursor: pointer;
+}

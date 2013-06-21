@@ -1,0 +1,324 @@
+.dhx_tabbar_zone_top{
+   position:relative;
+}
+.dhx_tabbar_zone, .dhx_tabbar_zoneB, .dhx_tabbar_zoneV, .dhx_tabbar_zoneVB{
+   position:relative;
+   width:100%;
+   height:100%;
+   overflow:hidden;
+   z-index:1;
+}
+.dhx_tablist_line{
+	height:1px;
+	width:1px;
+	background-color:#91A7B4;
+	position:absolute;
+	overflow:hidden;
+}
+.dhx_tabbar_row, .dhx_tablist_zone, .dhx_tabcontent_zone, .dhx_tab_element{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	position:absolute;
+}
+.dhx_tablist_zone{
+	z-index:3;
+	overflow:hidden;
+}
+.dhx_tabcontent_zone{
+	border:1px solid #91A7B4;
+	z-index:2;
+}
+.dhx_tabbar_zone_top .dhx_tab_element{
+	padding-top:3px;
+}
+.dhx_tab_element span{
+  white-space: nowrap;
+}
+.dhx_tab_element{
+	cursor:pointer;
+	text-align:center;
+	font-family:Tahoma;
+	font-size:8pt;
+	background-color:white;
+}
+.dhx_tabbar_zoneV .dhx_tab_element{
+	padding:0px 0px 0px 3px;
+	text-align:left;
+}
+.dhx_tabbar_zoneVB .dhx_tab_element{
+	padding:0px 3px 0px 0px;
+	text-align:right;
+}
+.dhx_tab_element div{
+	height:40px;
+	width:40px;
+	position:absolute;
+	overflow:hidden;
+}
+.dhx_tab_element span{
+	position:relative;
+	z-index:10;
+}
+
+.dhx_tabbar_zone_dhx_blue .dhx_tablist_line{
+		background-color:#C2D5DC;
+}
+.dhx_tabbar_zone_dhx_blue .dhx_tabcontent_zone{
+		border-color:#D2E3EA;
+}
+
+
+.dhx_tabbar_zone_dhx_blue .dhx_tab_element{
+		color:#006699;
+}
+.dhx_tab_element_active{
+		font-weight:bold;
+}
+.dhx_tabbar_zone_dark_blue .dhx_tab_element,.dhx_tabbar_zone_dhx_black .dhx_tab_element{
+		color:white;
+}
+.dhx_tabbar_zone_dhx_black .dhx_tablist_line{
+		background-color:#626262;
+}
+.dhx_tabbar_zone_dhx_black .dhx_tabcontent_zone{
+		border-color:#333333;
+}
+
+.dhx_tabbar_zone_dhx_web .dhx_tabbar_row{
+	background-color:#646464;
+}
+.dhx_tabbar_zone_dhx_web .dhx_tab_element span{
+	top:4px;
+	font-weight:normal !important;
+	font-size:12px;
+}
+.dhx_tabbar_zone_dhx_web .dhx_tablist_line{
+	display:none;
+}
+.dhx_tabbar_zone_dhx_web .dhx_tabcontent_zone{
+	/*
+	border-width:0px 1px 1px 1px;
+	border-color:#646464;;
+	*/
+	background-color:#646464!important;
+	border:none!important;
+}
+
+.dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_row{
+	background-image:url(../images/dhx_skyblue/bg_top.png);
+	border-right:1px solid #B6CBDD;
+	border-left:1px solid #B6CBDD;
+}
+.dhx_tabbar_zone_dhx_blue .dhx_tabbar_row{
+	background-color: #D2E3EA;
+}
+.dhx_tabbar_zone_dhx_black .dhx_tabbar_row{
+	background-color: black;
+}
+.dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineA{
+	position:absolute; 
+	left:0px; width:1px; height:3px; 
+	background-color:white; 
+	z-index:999; 
+	border-left:1px solid #A4BED4; 
+	border-right:1px solid #A4BED4; 
+	overflow:hidden;	
+}
+.dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineB{
+	position:absolute; left:2px; width:100px; height:3px; 
+	background-color: #D0E5FF; 
+	z-index:999; overflow:hidden;
+}
+.dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineC{
+	position:absolute; right:0px;  width:1px; height:21px; 
+	background-color: white; 
+	z-index:999; overflow:hidden;
+	border-right:1px solid #A4BED4;
+}
+.dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineD{
+	position:absolute; left:1px;  width:1px; height:21px; 
+	background-color: white; 
+	z-index:999; overflow:hidden;	
+}
+.dhx_tabbar_zone_top .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineD{
+	top:1px;
+}
+.dhx_tabbar_zone_top .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineC{
+	top:1px;
+}
+
+
+
+.dhx_tabbar_zone_bottom .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineD{
+	bottom:1px;
+}
+.dhx_tabbar_zone_bottom .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineC{
+	bottom:1px;
+}
+.dhx_tabbar_zone_bottom .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_row{
+	background-image:url(../images/dhx_skyblue/bg_bottom.png);
+	background-position:bottom;
+}
+.dhx_tabbar_zone_bottom .dhx_tabbar_zone_dhx_skyblue .dhx_tablist_line {
+	border-width:0px 1px 1px 0px;
+}
+.dhx_tabbar_zone_bottom .dhx_tab_element span{
+	padding-top:5px;
+	display:block;
+}
+
+
+
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineB{
+	width:3px;left:auto; top:2px;
+}
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineA{
+	width:3px;
+	border:1px solid #A4BED4;
+	border-width:1px 0px 1px 0px;
+}
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineD{
+	height:1px; width:21px; right:auto; bottom:0px; left:1px;
+	border:1px solid #A4BED4;
+	border-width:0px 0px 1px 0px;
+}
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineC{
+	height:1px; width:21px; right:auto; top:1px; left:1px;
+}
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_row{
+	background-image:url(../images/dhx_skyblue/bg_left.png);
+	border:1px solid #B6CBDD;
+	border-width:1px 0px 1px 0px;
+}
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tablist_line {
+	border-width:0px 0px 1px 1px;
+	width:2px !ie;
+}
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tab_element{
+	padding-top:0px;
+}
+.dhx_tabbar_zone_left .dhx_tabbar_zone_dhx_skyblue .dhx_tab_element span{
+	padding-top:5px;
+	display:block;
+}
+
+
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineA{
+	left:auto; width:3px;
+	border:1px solid #A4BED4;
+	border-width:1px 0px 1px 0px;
+}
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineB{
+	width:3px;left:auto; top:2px;
+}
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineD{
+	height:1px; width:21px; left:auto; bottom:0px; right:1px;
+	border:1px solid #A4BED4;
+	border-width:0px 0px 1px 0px;
+}
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_lineC{
+	height:1px; width:21px; left:auto; top:1px; right:0px;
+}
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tabbar_row{
+	background-image:url(../images/dhx_skyblue/bg_right.png);
+	background-position:right;
+	border:1px solid #B6CBDD;
+	border-width:1px 0px 1px 0px;
+}
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tablist_line {
+	border-width:0px 1px 1px 0px;
+	width:2px !ie;
+}
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tab_element{
+	padding-top:0px;
+}
+.dhx_tabbar_zone_right .dhx_tabbar_zone_dhx_skyblue .dhx_tab_element span{
+	padding-top:5px;
+	display:block;
+}
+
+
+
+.dhx_tabbar_zone_dhx_skyblue .dhx_tablist_line{
+	height:3px; border:1px solid #A4BED4; background-color:white; border-width:1px 1px 0px 0px;
+}
+.dhx_tabbar_zone_dhx_skyblue .dhx_tabcontent_zone{
+  border-color:#A4BED4;
+}
+
+/* common */
+div.dhxcont_main_content {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	overflow: hidden;
+}
+div.dhxcont_content_blocker {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 101%;
+	height: 101%;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	background: #FFFFFF;
+	z-index: 1;
+	-moz-user-select: none;
+}
+
+div.dhx_tabbar_zone_dhx_skyblue div.dhxcont_sb_container {
+	position: relative;
+	height: 24px;
+}
+div.dhx_tabbar_zone_dhx_skyblue div.dhxcont_sb_container div.dhxcont_statusbar {
+	background-image: url("../images/dhx_skyblue/dhxlayout_bg_sb.gif");
+	position: relative;
+	top: 2px;
+	height: 22px;
+	line-height: 22px;
+	background-repeat: repeat-x;
+	width: auto;
+	padding: 0px 4px;
+	overflow: hidden;
+	white-space: nowrap;
+	border-top: none;
+	border-bottom: none;
+	border-left: #a4bed4 0px solid;
+	border-right: #a4bed4 0px solid;
+	font-family: Tahoma;
+	font-size: 11px;
+	vertical-align: middle;
+	color: #000000;
+}
+
+div.dhx_tabbar_zone_dhx_web div.dhxcont_sb_container {
+	position: relative;
+	height: 41px;
+}
+div.dhx_tabbar_zone_dhx_web div.dhxcont_sb_container div.dhxcont_statusbar {
+	position: relative;
+	top: 9px;
+	height: 32px;
+	line-height: 32px;
+	background-color: #ececec;
+	width: auto;
+	padding: 0px 12px;
+	overflow: hidden;
+	white-space: nowrap;
+	font-family: "Trebuchet MS";
+	font-size: 14px;
+	vertical-align: middle;
+	color: #666666;
+}
+
+/* dhxcont cells in layout */
+.dhx_tabbar_zone_dhx_web div.dhxcont_global_content_area {
+	position: absolute;
+	overflow: hidden; /* important for IE */
+	background-color: #FFFFFF;
+}
+.dhx_tabbar_zone_dhx_web div.dhxcont_global_content_area.dhxcont_tabbar_dhx_web {
+	border: white 8px solid; /* change to white */
+}

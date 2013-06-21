@@ -1,0 +1,62 @@
+
+
+## In case of direct call
+## (ex. redirect there from the end of a POST)
+##render({ "instances" : $proxyManagementService.listInstances()})
+
+## View interface definition
+## NB. (is always the same)
+#macro ( render $arg0 )
+    #set($params = $arg0)
+
+    ## (mapping business params so the old code will work)
+    #set($instances = $params.proxyConf)
+
+    ## View layout
+
+#parse("banner.html")
+#parse("header.html")
+#parse("roundedDiv.html")
+
+<div id="welcome-title">Bienvenue $user.getLogin()</div>
+<div id="a_tabbar" class="dhtmlxTabBar" imgpath="/easysoa/images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
+        <div id="friendsView">
+            <table id="catalogServices">
+                <colgroup> <!-- 1000 -->
+                    <col width="200px">
+                    <col width="200px">
+                    <col width="100px">
+                    <col width="200px">
+                    <col width="200px">
+                    <col width="100px">
+                </colgroup>
+                <tbody>
+                    #foreach($u in $instances)
+                    <tr>
+                        <td><a href="/easysoa/httpproxy/getProxyConfiguration.html?proxyId=$u.id">$u.id</a></td>
+                        <td>u.name</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    #end
+                    <tr>
+                        <td colspan="3"><input id="back" type="button" class="orange button" onclick="cancel('$proxyConf.id')" value="Retour">
+                        <td colspan="3"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+<script type="text/javascript">
+
+
+	function cancel(){
+    	window.location='/easysoa/index.html';
+	}
+</script>
+
+#parse("footpage.html")
+
+#end

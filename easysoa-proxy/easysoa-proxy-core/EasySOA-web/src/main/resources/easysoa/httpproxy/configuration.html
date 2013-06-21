@@ -1,0 +1,89 @@
+
+## In case of direct call
+## (ex. redirect there from the end of a POST)
+##render({ "proxyConf" : $proxyManagementService.get($proxyId)})
+
+## View interface definition
+## NB. (is always the same)
+#macro ( render $arg0 )
+    #set($params = $arg0)
+
+    ## (mapping business params so the old code will work)
+    #set($proxyConf = $params.proxyConf)
+
+    ## View layout
+
+#parse("banner.html")
+#parse("header.html")
+#parse("roundedDiv.html")
+
+<div id="welcome-title">Bienvenue $user.getLogin()</div>
+<div id="a_tabbar" class="dhtmlxTabBar" imgpath="/easysoa/images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
+        <div id="friendsView">
+            <table id="catalogServices">
+                <colgroup> <!-- 1000 -->
+                    <col width="200px">
+                    <col width="200px">
+                    <col width="100px">
+                    <col width="200px">
+                    <col width="200px">
+                    <col width="100px">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td><label for="Identifiant proxy">Identifiant proxy :</label></td>
+                        <td>$proxyConf.id</td>
+                        <td></td>
+                        <td><label for="Nom">Nom :</label></td>
+                        <td>$proxyConf.name</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="Utilisateur">Utilisateur :</label></td>
+                        <td>$proxyConf.getParameter("user")</td>
+                        <td></td>
+                        <td><label for="Context">Context :</label></td>
+                        <td>$proxyConf.getParameter("projectId")</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="Environnement">Environnement :</label></td>
+                        <td>$proxyConf.getParameter("environment")</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="Machine">Machine :</label></td>
+                        <td>$proxyConf.getParameter("proxyHost")</td>
+                        <td></td>
+                        <td><label for="Port">Port :</label></td>
+                        <td>$proxyConf.getParameter("proxyPort")</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3"><input id="cancel" type="button" class="orange button" onclick="cancel('$proxyConf.id')" value="Annuler">
+                        <td colspan="3"><input id="reset" name="reset" class="orange button" onclick="reset()" value="Reset"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+<script type="text/javascript">
+
+	function reset(proxyId){
+		if(confirm("Confirmer le reset de la configuration ?")){
+			window.location='/easysoa/httpproxy/reset.html?proxyId=' + proxyId ;
+		}
+	}
+
+	function cancel(){
+    	window.location='/easysoa/index.html';
+	}
+</script>
+
+#parse("footpage.html")
+
+#end

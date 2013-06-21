@@ -1,0 +1,493 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.easysoa.proxy</groupId>
+  <artifactId>easysoa-proxy-web</artifactId>
+  <version>0.5-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>EasySOA Proxy Web App</name>
+
+  <!--<parent>
+    <groupId>org.easysoa.proxy</groupId>
+    <artifactId>easysoa-proxy-parent</artifactId>
+    <version>0.5-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>-->
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <config.directory>src/main/resources</config.directory>
+
+        <frascati.version>1.6-SNAPSHOT</frascati.version><!-- at least 1.5-SNAPSHOT for implementation.velocity -->
+        <tinfi.version>1.4.6-SNAPSHOT</tinfi.version>
+        <juliac.version>2.6-SNAPSHOT</juliac.version>
+        <slf4j.version>1.6.2</slf4j.version>
+        <xerces.version>2.9.1</xerces.version>
+        <hibernate.version>3.6.0.Final</hibernate.version>
+        <easysoa.proxy.version>0.5-SNAPSHOT</easysoa.proxy.version>
+
+		<!-- FraSCAti conf -->
+        <org.ow2.frascati.class>org.ow2.frascati.FraSCAti</org.ow2.frascati.class>
+        <org.ow2.frascati.bootstrap>org.ow2.frascati.bootstrap.FraSCAti</org.ow2.frascati.bootstrap>
+        <org.ow2.frascati.composite>org.ow2.frascati.FraSCAti</org.ow2.frascati.composite>
+
+		<!-- FraSCAti app conf -->
+        <java.util.logging.config.file>${config.directory}/logging.properties</java.util.logging.config.file>
+        <cxf.config.file>${config.directory}/frascati-cxf.xml</cxf.config.file><!-- TODO probably not required, FStudio did not correctly point to it -->
+        <composite.file>easysoa-proxy-web</composite.file>
+        <org.ow2.frascati.binding.uri.base>http://localhost:7095</org.ow2.frascati.binding.uri.base>
+
+  </properties>
+
+  <scm>
+    <connection>scm:git:git://github.com/easysoa/EasySOA-Incubation.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:easysoa/EasySOA-Incubation.git</developerConnection>
+    <url>scm:git:https://github.com/easysoa/EasySOA-Incubation.git</url>
+  </scm>
+
+  <dependencies>
+    <!-- TODO F(Studio) deps -->
+    <!-- FraSCAti -->
+    	<dependency>
+            <groupId>org.ow2.frascati.tinfi</groupId>
+            <artifactId>frascati-tinfi-runtime-api</artifactId>
+            <version>${tinfi.version}</version><!-- brought by FraSCAti ; TODO enough ?? -->
+        </dependency>
+    	<dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-runtime-factory</artifactId><!-- required else can't find generated implementation.Velocity classes-->
+            <version>${frascati.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-ws</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-interface-wsdl</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-implementation-velocity</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-http</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-binding-rest</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>
+        <!-- dependency> ??
+            <groupId>org.ow2.frascati.factory</groupId>
+            <artifactId>frascati-factory-tools</artifactId>
+            <version>${frascati.version}</version>
+        </dependency  -->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Proxy Core API -->
+        <dependency>
+            <groupId>org.easysoa.proxy</groupId>
+            <artifactId>easysoa-proxy-core-api</artifactId>
+            <version>${easysoa.proxy.version}</version>
+        </dependency>
+
+        <!--  hibernate -->
+        <!--<dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <version>3.3.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>-->
+
+		<!-- database driver : -->
+        <!--<dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901-1.jdbc4</version>
+        </dependency>-->
+        <!-- dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.14</version>
+        </dependency -->
+
+        <!-- dependency> ??
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency -->
+        <!-- dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.1</version>
+        </dependency -->
+
+
+    <!-- tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>easysoa-proxy-web</finalName>
+
+        <defaultGoal>package</defaultGoal>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering><!-- maven will replace ${} variables by its own there, see http://maven.apache.org/plugins/maven-resources-plugin/examples/filter.html -->
+            </resource>
+        </resources>
+
+    <plugins>
+
+      <!-- Compile with Java 1.6 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+
+      <!-- Package as war -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1-beta-1</version>
+        <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+        </configuration>
+      </plugin>
+
+			<!-- tests use FraSCAti -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <skipTests>false</skipTests>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <systemPropertyVariables>
+                        <org.ow2.frascati.class>${org.ow2.frascati.class}</org.ow2.frascati.class>
+                        <org.ow2.frascati.bootstrap>${org.ow2.frascati.bootstrap}</org.ow2.frascati.bootstrap>
+                        <org.ow2.frascati.composite>${org.ow2.frascati.composite}</org.ow2.frascati.composite>
+                        <org.ow2.frascati.binding.uri.base>${org.ow2.frascati.binding.uri.base}</org.ow2.frascati.binding.uri.base>
+                        <java.util.logging.config.file>${java.util.logging.config.file}</java.util.logging.config.file>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+    </plugins>
+
+
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings
+          only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.easysoa.discovery.code</groupId>
+                    <artifactId>easysoa-discovery-code-mavenplugin</artifactId>
+                    <versionRange>[0.9-SNAPSHOT,)</versionRange>
+                    <goals>
+                      <goal>discover</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+
+  <profiles>
+
+    <!--
+    EasySOA profile.
+    Enabled by default, to disable it add -DskipEasySOA to the mvn command line.
+    (doesn't even require a runnning EasySOA Registry, only its plugins to be in the maven repository)
+    Useful typically in CI. Allows :
+    * to discover services in source code and report them to EasySOA Registry if there
+    -->
+    <profile>
+      <id>EasySOA</id>
+	  <activation>
+	    <property>
+	      <name>!skipEasySOA</name>
+	    </property>
+	  </activation>
+	  <dependencies>
+	    <!-- all got as maven plugin deps -->
+	  </dependencies>
+      <build>
+        <plugins>
+
+	      <!-- EasySOA code discovery plugins -->
+	      <plugin>
+	        <groupId>org.easysoa.discovery.code</groupId>
+	        <artifactId>easysoa-discovery-code-mavenplugin</artifactId>
+	        <version>1.0-SNAPSHOT</version>
+	        <executions>
+	          <execution>
+	            <id>test</id>
+	            <phase>compile</phase>
+	            <goals>
+	              <goal>discover</goal>
+	            </goals>
+	            <configuration>
+	              <nuxeoSitesUrl>${easysoa.discovery.code.nuxeoSitesUrl}</nuxeoSitesUrl>
+	              <username>${easysoa.discovery.code.username}</username>
+	              <password>${easysoa.discovery.code.password}</password>
+	              <application>${easysoa.discovery.code.application}</application>
+                      <subproject>${easysoa.discovery.code.subproject}</subproject>
+	            </configuration>
+	          </execution>
+	        </executions>
+	      </plugin>
+	      <!-- buildnumber plugin, required by EasySOA Code discovery plugin -->
+	      <plugin>
+	        <groupId>org.codehaus.mojo</groupId>
+	        <artifactId>buildnumber-maven-plugin</artifactId>
+	        <version>1.1</version>
+	        <executions>
+	          <execution>
+	            <phase>validate</phase>
+	            <goals>
+	              <goal>create</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	        <configuration>
+	          <doCheck>false</doCheck><!-- Warn: should be true (checks unstaged files) for real projects -->
+	          <doUpdate>false</doUpdate>
+	          <revisionOnScmFailure>0</revisionOnScmFailure>
+	        </configuration>
+	      </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- to build classes from wsdl: mvn -Pbuild:wsdl -->
+    <profile>
+      <id>build:wsdl</id>
+      <build>
+        <defaultGoal>compile</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-codegen-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-sources</id>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
+                  <wsdlOptions>
+                    <wsdlOption>
+                      <wsdl>${basedir}/src/main/resources/model/ContactSvc.asmx.wsdl</wsdl>
+                      <extraargs>
+                        <extraarg>-verbose</extraarg>
+                      </extraargs>
+                    </wsdlOption>
+                  </wsdlOptions>
+                </configuration>
+                <goals>
+                  <goal>wsdl2java</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
+    <!-- FRASCATI EXECUTION PROFILES -->
+
+<!--     To execute an SCA composite type 'mvn -Prun'. -->
+        <profile>
+            <id>run</id>
+            <build>
+                <defaultGoal>org.ow2.frascati.mojo:frascati-launcher-plugin:exec</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.ow2.frascati.mojo</groupId>
+                        <artifactId>frascati-launcher-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <loggingConfFile>${java.util.logging.conf.file}</loggingConfFile>
+                            <composite>${composite.file}</composite>
+                            <service>${service.name}</service>
+                            <method>${method.name}</method>
+                            <methodParams>${method.params}</methodParams>
+                            <systemProperties>
+                                <org.ow2.frascati.class>${org.ow2.frascati.class}</org.ow2.frascati.class>
+                                <org.ow2.frascati.bootstrap>${org.ow2.frascati.bootstrap}</org.ow2.frascati.bootstrap>
+                                <org.ow2.frascati.composite>${org.ow2.frascati.composite}</org.ow2.frascati.composite>
+                                <org.ow2.frascati.binding.uri.base>${org.ow2.frascati.binding.uri.base}</org.ow2.frascati.binding.uri.base>
+                                Set the Apache CXF configuration file to load.
+                                <cxf.config.file.url>file:${cxf.config.file}</cxf.config.file.url>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+<!--         To execute an SCA composite with FraSCAti Explorer type 'mvn -Pexplorer'. -->
+        <profile>
+            <id>explorer</id>
+            <dependencies>
+<!--             here FraSCAti Explorer is put in the classpath. -->
+                <dependency>
+                    <groupId>org.ow2.frascati</groupId>
+                    <artifactId>frascati-explorer-core</artifactId>
+                    <version>${frascati.version}</version>
+                </dependency>
+            </dependencies>
+            <properties>
+                <org.ow2.frascati.bootstrap>org.ow2.frascati.bootstrap.FraSCAtiFractal</org.ow2.frascati.bootstrap>
+            </properties>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>org.ow2.frascati.explorer.FrascatiExplorerLauncher</mainClass>
+                            <arguments>
+                                <argument>${composite.file}</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+<!-- 		 To execute an SCA composite with FraSCAti Remote Introspection with   -->
+<!-- 		 FScript type 'mvn -Premote-fscript'. -->
+        <profile>
+            <id>remote-fscript</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.ow2.frascati</groupId>
+                    <artifactId>frascati-introspection-fscript-impl</artifactId>
+                    <version>${frascati.version}</version>
+                </dependency>
+            </dependencies>
+            <properties>
+                <org.ow2.frascati.bootstrap>org.ow2.frascati.bootstrap.FraSCAtiJDTFractalRest</org.ow2.frascati.bootstrap>
+            </properties>
+        </profile>
+
+<!--         To execute an SCA composite with FraSCAti Remote Introspection type 'mvn -Premote'. -->
+	    <profile>
+	      <id>remote</id>
+	      <dependencies>
+	        <dependency>
+	          <groupId>org.ow2.frascati</groupId>
+	          <artifactId>frascati-introspection-impl</artifactId>
+	          <version>${project.version}</version>
+	        </dependency>
+	      </dependencies>
+	      <properties>
+	        <org.ow2.frascati.bootstrap>org.ow2.frascati.bootstrap.FraSCAtiJDTRest</org.ow2.frascati.bootstrap>
+	      </properties>
+	    </profile>
+
+<!--         To execute an SCA composite with FraSCAti Web Explorer type 'mvn -Pweb'. -->
+        <profile>
+            <id>web</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.ow2.frascati</groupId>
+                    <artifactId>frascati-web-explorer</artifactId>
+                    <version>${frascati.version}</version>
+                </dependency>
+            </dependencies>
+            <properties>
+                <org.ow2.frascati.bootstrap>org.ow2.frascati.bootstrap.FraSCAtiWebExplorer</org.ow2.frascati.bootstrap>
+            </properties>
+        </profile>
+
+    </profiles>
+
+
+  <!-- TODO EasySOA repository at least for code disco plugin -->
+  <repositories>
+      <!-- XXX: Activating temporarily the FraSCAti repository
+    since some dependencies are missing from the Nuxeo mirror repository -->
+    <repository>
+      <id>frascati-repo</id>
+      <name>FraSCAti Nexus repository</name>
+      <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
+    </repository>
+      <repository>
+      <id>easysoa</id>
+      <name>EasySOA group repository</name>
+      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+  </repositories>
+</project>

@@ -1,0 +1,30 @@
+## new intance of proxy conf
+#set( $proxyConfiguration = $proxyManagementService.getClass().getClassLoader().loadClass("org.easysoa.proxy.core.api.configuration.ProxyConfiguration").newInstance())
+
+## set the parameters
+$proxyConfiguration.setName($proxyName)
+$proxyConfiguration.setId($proxyId)
+$proxyConfiguration.addParameter("user", $user)
+$proxyConfiguration.addParameter("projectId", $projectId)
+$proxyConfiguration.addParameter("environment", $environment)
+$proxyConfiguration.addParameter("user", $user)
+
+## create the proxy
+#set( $managementServiceResult = $proxyManagementService.getHttpProxy($proxyConfiguration) )
+
+#if( $managementServiceResult.status == "KO" )
+    ## Redirect on error page according to case
+    #set( $proxyConf = $proxyManagementService.get($proxyId) )
+
+    #if( $proxyConf )
+        #set( $text = "<br/>Click on OK to change the existing instance configuration")
+        #set( $params = {"message" : "$managementServiceResult.message$text",
+            "redirect" : "httpproxy/getProxyConfiguration.html?proxyId$proxyId"} )
+    #else
+        #set( $params = {"message" : $managementServiceResult.message, "redirect" : "management/getInstances.html"} )
+    #end
+    $errorView.render( $params )
+#else
+    ## Redirect on configuration page
+    $response.sendRedirect("/easysoa/httpproxy/getProxyConfiguration.html?proxyId=$managementServiceResult.configuration.id")
+#end

@@ -1,0 +1,5 @@
+
+#set( $proxyConf = $proxyManagementService.get("default") )
+#set($result = $proxyManagementService.reset($proxyConf))
+$result
+$response.sendRedirect("/easysoa/httpproxy/getProxyConfiguration.html")

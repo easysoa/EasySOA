@@ -1,0 +1,63 @@
+<script src="js/action-menu.js"></script>
+<script src="js/jquery-1.6.2.min.js" type="text/javascript"></script>
+<script src="js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+<script src="js/jquery.tipTip.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+#set($user = $request.getSession().getAttribute("user"))
+<input type="hidden" id="userId" value="$user.getId()"/>
+###if(!$user)
+##    $response.sendRedirect("index.html")
+###end
+<div id="banner">
+   <div id="bannerElements">
+    	<!--<div id="logo"></div>-->
+    	<div id="logo-axxx"></div>
+        <!--<a href="homePage.html" id="homepageIcon" class="menu-icon" title="Go to the homepage"></a>-->
+        <a href="clients.html" id="homepageIcon" class="menu-icon" title="Retour vers l'index"></a>
+
+        #if($!user.getFriendRequests() && $user.getFriendRequests().size()>0)
+            <a href="friendRequests.html">Friend Requests($user.getFriendRequests().size())</a>
+        #end
+
+        <!--<a href="myservices.html" id="applications" class=" menu-icon notSelected" title="Manage your applications or create a new"></a>-->
+        <!--<a href="findService.html" id="findApplication" class="menu-icon notSelected" title="Find existing applications"></a>-->
+        <!--<a href="friends.html" id="friendsMenu" class="menu-icon notSelected" title="Manage your friends or find news"></a>-->
+        <div class="arrow" id="arrow">
+
+    </div>
+        <div id="user">
+    $user.getUsername()
+    </div>
+
+    </div>
+
+</div>
+<div id="divArrow">
+        <!--<ul class="ulArrow">
+    		<li><a href="myspace.html">My space</a></li>
+    	</ul>-->
+    	<ul class="ulArrow">
+    		<li class="last"><form name="disconnect" id="disconnect" action="/pivotal/action/disconnect"><a href="" onclick="logOut();">D&eacuteconnexion</a></form></li>
+    	</ul>
+    	</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('#arrow').click(function() {
+			  $('#divArrow').slideToggle('slow', function() {
+			  });
+			});
+	});
+
+	$(document).ready(function() {
+		$(function(){
+			$('#homepageIcon').tipTip();
+			$('#applications').tipTip();
+			$('#findApplication').tipTip();
+			$('#friendsMenu').tipTip();
+		});
+	});
+
+</script>

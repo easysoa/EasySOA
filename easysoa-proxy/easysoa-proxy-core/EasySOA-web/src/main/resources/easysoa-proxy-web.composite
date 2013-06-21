@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- EasySOA                                                             -->
+<!-- Copyright (C) 2011-2012 Open Wide                                   -->
+<!--                                                                     -->
+<!-- This library is free software; you can redistribute it and/or       -->
+<!-- modify it under the terms of the GNU Lesser General Public          -->
+<!-- License as published by the Free Software Foundation; either        -->
+<!-- version 2 of the License, or (at your option) any later version.    -->
+<!--                                                                     -->
+<!-- This library is distributed in the hope that it will be useful,     -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of      -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU    -->
+<!-- Lesser General Public License for more details.                     -->
+<!--                                                                     -->
+<!-- You should have received a copy of the GNU Lesser General Public    -->
+<!-- License along with this library; if not, write to the Free Software -->
+<!-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 -->
+<!-- USA                                                                 -->
+<!--                                                                     -->
+<!-- Contact: http://www.easysoa.org                                     -->
+<!--                                                                     -->
+<!-- Author: Marc Dutoo                                                  -->
+<!--                                                                     -->
+<!-- Contributor(s): Jeremie Guillemotte, Marwane Kalam-Alami            -->
+<!--                                                                     -->
+<composite name="easysoa-proxy-web"
+    xmlns="http://www.osoa.org/xmlns/sca/1.0"
+    xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+    xmlns:wsdli="http://www.w3.org/2004/08/wsdl-instance"
+    xmlns:web="http://frascati.ow2.org/xmlns/web/1.0"
+    xmlns:sca="http://tuscany.apache.org/xmlns/sca/1.0">
+
+    <component name="EasysoaProxyWeb">
+        <service name="Velocity">
+            <interface.java interface="javax.servlet.Servlet" />
+            <sca:binding.http uri="http://localhost:8087/easysoa" />
+        </service>
+        <property name="title">Easysoa proxy</property>
+        <web:implementation.velocity location="easysoa" default="index.html" />
+        <reference name="instancesView" target="instancesView/html" />
+        <reference name="proxyConfigurationView" target="proxyConfView/html" />
+        <reference name="errorView" target="errorView/html" />
+        <reference name="proxyManagementService">
+            <interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService"/>
+            <frascati:binding.rest uri="http://localhost:8089/httpProxyManagementService/"/>
+        </reference>
+    </component>
+
+    <!-- Views -->
+    <component name="instancesView">
+        <web:implementation.velocity location="easysoa/management" default="instances.html" />
+        <service name="html">
+            <interface.java interface="org.easysoa.proxy.app.api.View" />
+        </service>
+        <property name="title">Instances</property>
+    </component>
+
+    <component name="proxyConfView">
+        <web:implementation.velocity location="easysoa/httpproxy" default="configuration.html" />
+        <service name="html">
+            <interface.java interface="org.easysoa.proxy.app.api.View" />
+        </service>
+        <property name="title">Proxy configuration</property>
+    </component>
+
+    <component name="errorView">
+        <web:implementation.velocity location="easysoa" default="error.html" />
+        <service name="html">
+            <interface.java interface="org.easysoa.proxy.app.api.View" />
+        </service>
+        <property name="title">Error</property>
+    </component>
+
+    <!-- proxy management service -->
+    <!--<component name="ProxyManagementService">
+        <implementation.java class="org.easysoa.proxy.app.impl.ProxyServiceImpl" />
+        <service name="managementService">
+            <interface.java interface="org.easysoa.proxy.app.api.ProxyService" />
+        </service>
+    </component>-->
+
+</composite>

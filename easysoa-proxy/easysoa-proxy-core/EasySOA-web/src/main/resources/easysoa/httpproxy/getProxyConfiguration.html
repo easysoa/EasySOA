@@ -1,0 +1,7 @@
+
+#if(!$proxyId)
+    #set( $proxyId = "default")
+#end
+#set( $proxyConf = $proxyManagementService.get($proxyId) )
+#set( $params = {"proxyConf" : $proxyConf} )
+$proxyConfigurationView.render( $params )

@@ -1,0 +1,81 @@
+#messages{
+	background: transparent url("../images/menus/email.png") no-repeat center top;
+	float: right;
+}
+
+#myfriends{
+	background: transparent url("../images/menus/friends.png") no-repeat center top;
+	float: right;
+}
+
+#applications{
+	background: transparent url("../images/menus/krfb.png") no-repeat center top;
+	float: left;
+}
+
+#findApplication{
+	background: transparent url("../images/menus/find-application.png") no-repeat center top;
+	float: left;
+}
+
+#friendsMenu{
+    background: transparent url("../images/menus/friends.png") no-repeat center top;
+    float: left;
+}
+
+#homepageIcon{
+	background: transparent url("../images/menus/kfm_home.png") no-repeat center top;
+	float: left;
+}
+
+.menu-icon{
+	width: 32px;
+	height: 32px;
+}
+
+.arrow{
+	background: url("../images/menus/arrow.png") no-repeat scroll left bottom transparent;
+    float: right;
+    height: 20px;
+    padding-right: 20px;
+    width: 6px;
+    cursor: pointer;
+}
+
+.ulArrow{
+	list-style: none;
+  	margin: 0;
+  	padding: 5px 0;
+    text-align: center;	
+}
+
+.ulArrow li.last{
+	border: none;
+}
+
+.ulArrow li{
+	list-style: none;
+	border-bottom: 1px solid black;
+	padding-bottom: 5px;
+}
+
+.ulArrow li a{
+	color: black;
+	font-size: 1.2em;
+	text-decoration: none;
+}
+
+#divArrow{
+	background: white;
+	display: none;
+	border: 1px solid black;
+    position: absolute;
+    right: 10px;
+    top: 51px;
+    width: 200px;
+    border-top: none;
+    -moz-border-radius: 0 0 8px 8px;
+	-webkit-border-radius: 0 0 8px 8px;
+	border-radius: 0 0 8px 8px;
+	z-index: 1;
+}

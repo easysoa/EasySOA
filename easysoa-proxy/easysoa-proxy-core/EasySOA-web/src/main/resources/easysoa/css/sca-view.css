@@ -1,0 +1,55 @@
+.component{
+    background: transparent url("../images/sca/Component.gif") no-repeat left center;
+}
+
+.componentReference{
+    background: transparent url("../images/sca/ComponentReference.gif") no-repeat center top;
+}
+
+.componentService{
+    background: transparent url("../images/sca/ComponentService.gif") no-repeat center top;
+}
+
+.composite{
+    background: transparent url("../images/sca/Composite.gif") no-repeat center top;
+}
+
+.implementation{
+    background: transparent url("../images/sca/Implementation.gif") no-repeat center top;
+}
+
+.java-implementation{
+    background: transparent url("../images/sca/Implementation.gif") no-repeat center top;
+}
+
+.java-interface{
+    background: transparent url("../images/sca/JavaInterface.gif") no-repeat center top;
+}
+
+.promote{
+    background: transparent url("../images/sca/Promote.gif") no-repeat center top;
+}
+
+.property{
+    background: transparent url("../images/sca/Property.gif") no-repeat center top;
+}
+
+.reference{
+    background: transparent url("../images/sca/Reference.gif") no-repeat center top;
+}
+
+.service{
+    background: transparent url("../images/sca/Service.gif") no-repeat center top;
+}
+
+.web-service-binding{
+    background: transparent url("../images/sca/WebServiceBinding.gif") no-repeat center top;
+}
+
+.wire{
+    background: transparent url("../images/sca/Wire.gif") no-repeat center top;
+}
+
+.wire-target{
+    background: transparent url("../images/sca/WireTarget.gif") no-repeat center top;
+}
