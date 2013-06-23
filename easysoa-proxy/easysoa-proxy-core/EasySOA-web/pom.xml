@@ -1,31 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.easysoa.proxy</groupId>
   <artifactId>easysoa-proxy-web</artifactId>
-  <version>0.5-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>EasySOA Proxy Web App</name>
 
-  <!--<parent>
+  <parent>
     <groupId>org.easysoa.proxy</groupId>
     <artifactId>easysoa-proxy-parent</artifactId>
     <version>0.5-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
-  </parent>-->
+  </parent>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <config.directory>src/main/resources</config.directory>
 
-        <frascati.version>1.6-SNAPSHOT</frascati.version><!-- at least 1.5-SNAPSHOT for implementation.velocity -->
-        <tinfi.version>1.4.6-SNAPSHOT</tinfi.version>
-        <juliac.version>2.6-SNAPSHOT</juliac.version>
-        <slf4j.version>1.6.2</slf4j.version>
-        <xerces.version>2.9.1</xerces.version>
-        <hibernate.version>3.6.0.Final</hibernate.version>
-        <easysoa.proxy.version>0.5-SNAPSHOT</easysoa.proxy.version>
+        <!-- hibernate.version>3.6.0.Final</hibernate.version -->
 
 		<!-- FraSCAti conf -->
         <org.ow2.frascati.class>org.ow2.frascati.FraSCAti</org.ow2.frascati.class>
@@ -36,15 +27,18 @@
         <java.util.logging.config.file>${config.directory}/logging.properties</java.util.logging.config.file>
         <cxf.config.file>${config.directory}/frascati-cxf.xml</cxf.config.file><!-- TODO probably not required, FStudio did not correctly point to it -->
         <composite.file>easysoa-proxy-web</composite.file>
-        <org.ow2.frascati.binding.uri.base>http://localhost:7095</org.ow2.frascati.binding.uri.base>
+        <org.ow2.frascati.binding.uri.base>http://localhost:9095</org.ow2.frascati.binding.uri.base>
+
+        <!-- Proxy Web conf -->
+        <!-- proxy-web.url.base></proxy-web.url.base --><!-- i.e. http://vmregistry:8784/ -->
+        <!-- proxy-web.url.base>http://localhost:18000/</proxy-web.url.base --><!-- when started up from maven -->
+        <proxy.url.base>http://vmregistry:9089/easysoa-proxy</proxy.url.base><!-- using alias (to be configured in /etc/hosts) that is independent from deployment target -->
+        <!-- proxy.url.base>http://vmregistry:9080/easysoa-proxy</proxy.url.base --><!-- can't be used for REST because of Servlet, TODO rationalize ports -->
+        <!-- proxy.url.base>http://localhost:8076</proxy.url.base --><!-- for test deployment (PrecomptePartenaireWebServiceTestStarter) -->
+        <!-- proxy.url.base>http://localhost:7080/easysoa-proxy/services/PrecomptePartenaireService</proxy.url.base --><!-- for local tomcat deployment -->
+        <!-- proxy.url.base>http://owsi-vm-easysoa-axxx-apv.accelance.net:7080/apv/services/PrecomptePartenaireService</proxy.url.base --><!-- for tomcat deployment on VMs -->
 
   </properties>
-
-  <scm>
-    <connection>scm:git:git://github.com/easysoa/EasySOA-Incubation.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:easysoa/EasySOA-Incubation.git</developerConnection>
-    <url>scm:git:https://github.com/easysoa/EasySOA-Incubation.git</url>
-  </scm>
 
   <dependencies>
     <!-- TODO F(Studio) deps -->
@@ -93,14 +87,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- Proxy Core API -->
         <dependency>
             <groupId>org.easysoa.proxy</groupId>
             <artifactId>easysoa-proxy-core-api</artifactId>
-            <version>${easysoa.proxy.version}</version>
         </dependency>
 
         <!--  hibernate -->
@@ -153,7 +145,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.10</version>
+      <!-- version>4.10</version ?? -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -176,7 +168,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
+        <!-- version>2.5.1</version ?? -->
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
@@ -187,9 +179,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.1-beta-1</version>
+        <version>2.1-beta-1</version><!-- 2.3 ?? -->
         <configuration>
           <warSourceDirectory>WebContent</warSourceDirectory>
+          <warName>easysoa-proxy-web</warName>
         </configuration>
       </plugin>
 
@@ -197,7 +190,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.5</version>
+                <!-- version>2.5</version ?? -->
                 <configuration>
                     <skipTests>false</skipTests>
                     <useSystemClassLoader>false</useSystemClassLoader>
@@ -269,8 +262,9 @@
       <build>
         <plugins>
 
-	      <!-- EasySOA code discovery plugins -->
-	      <plugin>
+	      <!-- EasySOA code discovery plugins, for "EasySOA by EasySOA".
+         Disabled until not compiled to 1.7 anymore (TODO may be problematic for users, rather 1.5 compat) -->
+	      <!-- plugin>
 	        <groupId>org.easysoa.discovery.code</groupId>
 	        <artifactId>easysoa-discovery-code-mavenplugin</artifactId>
 	        <version>1.0-SNAPSHOT</version>
@@ -290,7 +284,7 @@
 	            </configuration>
 	          </execution>
 	        </executions>
-	      </plugin>
+	      </plugin -->
 	      <!-- buildnumber plugin, required by EasySOA Code discovery plugin -->
 	      <plugin>
 	        <groupId>org.codehaus.mojo</groupId>

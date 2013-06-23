@@ -55,38 +55,32 @@
 		<dependency>
 			<groupId>com.espertech</groupId>
 			<artifactId>esper</artifactId>
-			<version>4.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- java rest webservices -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
-			<version>1.1.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.1.1</version>
 		</dependency>
 		<!-- Proxy persistence API -->
 		<dependency>
 			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-persistence</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<!-- Proxy core API -->
 		<dependency>
 			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-api</artifactId>
-			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-api-frascati</artifactId>
-			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<!--<dependency>
@@ -99,14 +93,12 @@
 		<dependency>
 			<groupId>org.easysoa.registry.api</groupId>
 			<artifactId>easysoa-registry-api-messaging</artifactId>
-			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Discovery API -->
 		<dependency>
 			<groupId>org.easysoa.registry.api</groupId>
 			<artifactId>easysoa-registry-api-remote</artifactId>
-			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Remote Frascati -->
@@ -126,17 +118,15 @@
 		<dependency>
 			<groupId>org.easysoa</groupId>
 			<artifactId>easysoa-common</artifactId>
-			<version>${project.version}</version>
+
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.osgi</groupId>
 			<artifactId>org.eclipse.osgi.services</artifactId>
-			<version>3.2.100.v20100503</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
 			<scope>provided</scope>
 		</dependency>
         <dependency>
@@ -149,19 +139,16 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.easysoa.proxy</groupId>
 			<artifactId>easysoa-proxy-core-mocks</artifactId>
-			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.2.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -215,7 +202,7 @@
 			<plugin>
 				<groupId>org.ow2.frascati.mojo</groupId>
 				<artifactId>frascati-compiler-plugin</artifactId>
-				<version>1.6-SNAPSHOT</version>
+				<!-- version>1.6-SNAPSHOT</version ?? -->
 				<executions>
 					<execution>
 						<id>compile-composite</id>
