@@ -169,6 +169,11 @@
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-convert-plugins</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.easysoa.registry.api</groupId>
+      <artifactId>easysoa-registry-api-messaging</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- for external tests using EasySOACoreFeature -->
     <dependency>
