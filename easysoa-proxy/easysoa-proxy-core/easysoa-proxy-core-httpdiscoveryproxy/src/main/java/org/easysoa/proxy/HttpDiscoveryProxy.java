@@ -22,10 +22,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.HashMap;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.client.HttpResponseException;
 import org.apache.log4j.Logger;
 import org.easysoa.message.Header;
@@ -34,8 +36,8 @@ import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configurator.ProxyConfigurator;
 import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
+import org.easysoa.proxy.core.api.properties.ProxyPropertyManager;
 import org.easysoa.proxy.core.api.util.RequestForwarder;
-import org.easysoa.proxy.properties.ProxyPropertyManager;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;

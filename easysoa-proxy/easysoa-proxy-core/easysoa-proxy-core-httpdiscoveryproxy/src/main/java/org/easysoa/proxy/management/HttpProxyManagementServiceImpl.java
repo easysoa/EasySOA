@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
+import org.easysoa.proxy.core.api.configuration.ConfigurationParameter;
 import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
@@ -165,12 +166,21 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         // Embedded registry impl :
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
         if (appInstanceConfService != null) {
-            // it already exists
-            if (!appInstanceConfService.get(configuration).getParameters().isEmpty()) {
+            // an appInstance with the same id already exists
+        	ProxyConfiguration existingProxyConfiguration = appInstanceConfService.get(configuration);
+        	boolean areConfigurationIncompatible = false;
+        	for (ConfigurationParameter existingParameter : existingProxyConfiguration.getParameters()) {
+        		String newValue = configuration.getParameter(existingParameter.getKey());
+        		if (newValue == null && existingParameter.getValue() != null
+        				 || newValue != null && !newValue.equals(existingParameter.getValue())) {
+        			areConfigurationIncompatible = true;
+        		}
+        	}
+            if (areConfigurationIncompatible) {
                 // but maybe it's already been reset ?
                 //throw new Exception("Incompatible, should reset first !");
                 logger.debug("Incompatible, should reset first !");
-                result = new ManagementServiceResult(ManagementServiceResult.RESULT_KO, null);
+                result = new ManagementServiceResult(ManagementServiceResult.RESULT_KO, existingProxyConfiguration);
                 result.setMessage("Incompatible, should reset first !");
                 return result;
             }
@@ -238,14 +248,14 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
      * @return
      */
     // TODO : return EasysoaGeneratedAppConfiguration or ProxyConfiguration ?
-    public EasySOAGeneratedAppConfiguration get(String proxyID) throws Exception {
+    public ProxyConfiguration get(String proxyID) throws Exception {
         HttpProxyConfigurationService appInstanceConfService = defaultHttpProxyInstanceConfigurationService;
         // Get the default instance
         return appInstanceConfService.get(null);
     }
 
-    public List<EasySOAGeneratedAppConfiguration> listInstances() throws Exception {
-        List<EasySOAGeneratedAppConfiguration> instances = new ArrayList<EasySOAGeneratedAppConfiguration>();
+    public List<ProxyConfiguration> listInstances() throws Exception {
+        List<ProxyConfiguration> instances = new ArrayList<ProxyConfiguration>();
         // TODO : add fstudio InstanceConfiguration service when done
         instances.add(defaultHttpProxyInstanceConfigurationService.get(null));
         return instances;

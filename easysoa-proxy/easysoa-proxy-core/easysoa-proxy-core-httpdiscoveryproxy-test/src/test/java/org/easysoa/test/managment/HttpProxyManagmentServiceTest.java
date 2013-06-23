@@ -22,12 +22,12 @@ package org.easysoa.test.managment;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import junit.framework.Assert;
-import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
+
 import org.apache.log4j.Logger;
 import org.easysoa.EasySOAConstants;
 import org.easysoa.proxy.core.api.configuration.ConfigurationParameter;
-import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.management.HttpProxyManagementService;
 import org.easysoa.proxy.core.api.management.ManagementServiceResult;
@@ -114,7 +114,7 @@ public class HttpProxyManagmentServiceTest extends AbstractProxyTestStarter {
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getStatus(), ManagementServiceResult.RESULT_KO);
 
-        List<EasySOAGeneratedAppConfiguration> instances = client.listInstances();
+        List<ProxyConfiguration> instances = client.listInstances();
         Assert.assertTrue(instances.size() > 0);
 
         // Reset the current conf
