@@ -10,35 +10,42 @@
     #set($params = $arg0)
 
     ## (mapping business params so the old code will work)
-    #set($instances = $params.proxyConf)
+    #set($user = $params.request.session.getAttribute("user"))
+    #set($instances = $params.instances)
 
     ## View layout
 
-#parse("banner.html")
-#parse("header.html")
-#parse("roundedDiv.html")
+#parse("../base/banner.html")
+#parse("../base/header.html")
+#parse("../base/roundedDiv.html")
 
 <div id="welcome-title">Bienvenue $user.getLogin()</div>
-<div id="a_tabbar" class="dhtmlxTabBar" imgpath="/easysoa/images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
+<div id="a_tabbar" class="dhtmlxTabBar" imgpath="../images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
         <div id="friendsView">
             <table id="catalogServices">
                 <colgroup> <!-- 1000 -->
-                    <col width="200px">
+                    <col width="150px">
+                    <col width="150px">
+                    <col width="150px">
                     <col width="200px">
                     <col width="100px">
-                    <col width="200px">
-                    <col width="200px">
-                    <col width="100px">
+                    <col width="250px">
                 </colgroup>
                 <tbody>
-                    #foreach($u in $instances)
+                    #foreach($instance in $instances)
                     <tr>
-                        <td><a href="/easysoa/httpproxy/getProxyConfiguration.html?proxyId=$u.id">$u.id</a></td>
-                        <td>u.name</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><a href="../httpproxy/getProxyConfiguration.html?proxyId=$instance.id">$instance.id</a></td>
+                        <td>$instance.name</td>
+                        <td>$instance.getParameter("user")</td>
+                        <td>$instance.getParameter("projectId")</td>
+                        <td>$instance.getParameter("environment")</td>
+                        <td width="20%">
+                        #foreach($parameter in $instance.getParameters())
+                            #if ( $parameter.getKey() != "user" && $parameter.getKey() != "projectId" && $parameter.getKey() != "environment" )
+                                $parameter.getKey(): $parameter.getValue()<br/>
+                            #end
+                        #end
+                        </td>
                     </tr>
                     #end
                     <tr>
@@ -53,10 +60,10 @@
 
 
 	function cancel(){
-    	window.location='/easysoa/index.html';
+    	window.location='../index.html';
 	}
 </script>
 
-#parse("footpage.html")
+#parse("../base/footpage.html")
 
 #end

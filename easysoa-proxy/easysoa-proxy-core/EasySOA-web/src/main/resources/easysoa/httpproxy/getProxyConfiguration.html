@@ -1,7 +1,8 @@
+#parse("base/auth")
 
 #if(!$proxyId)
     #set( $proxyId = "default")
 #end
 #set( $proxyConf = $proxyManagementService.get($proxyId) )
-#set( $params = {"proxyConf" : $proxyConf} )
+#set( $params = {"proxyConf" : $proxyConf, "request" : $request} )
 $proxyConfigurationView.render( $params )

@@ -1,13 +1,16 @@
 
 ## In case of direct call
 ## (ex. redirect there from the end of a POST)
-#render({ "message" : ""})
+#render({ "message" : $message, "redirect" : $redirect })
 
 ## View interface definition
 ## NB. (is always the same)
 #macro ( render $arg0 )
     #set($params = $arg0)
 
+    ## (mapping business params so the old code will work)
+    #set($user = $params.request.session.getAttribute("user"))
+    
     ## View layout
 
 #parse("banner.html")
@@ -15,7 +18,7 @@
 #parse("roundedDiv.html")
 
 <div id="welcome-title">Bienvenue $user.getLogin()</div>
-<div id="a_tabbar" class="dhtmlxTabBar" imgpath="/easysoa/images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
+<div id="a_tabbar" class="dhtmlxTabBar" imgpath="../images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
     <div id="rounded-div-content">
         <div id="friendsView">
             <table id="catalogServices">
@@ -29,7 +32,7 @@
                 </colgroup>
                 <tbody>
                     <tr>
-                        <td colspan="6" style="text-align:center">params.message</td>
+                        <td colspan="6" style="text-align:center">$params.message</td>
                     </tr>
                     <tr>
                         <td colspan="6"><input id="ok" type="button" class="orange button" onclick="ok('$params.redirect')" value="OK">
@@ -42,7 +45,7 @@
 <script type="text/javascript">
 
 	function ok(redirect){
-    	window.location="/easysoa/" + redirect;
+    	window.location= redirect;
 	}
 
 </script>

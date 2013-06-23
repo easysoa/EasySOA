@@ -9,16 +9,17 @@
     #set($params = $arg0)
 
     ## (mapping business params so the old code will work)
+    #set($user = $params.request.session.getAttribute("user"))
     #set($proxyConf = $params.proxyConf)
 
     ## View layout
 
-#parse("banner.html")
-#parse("header.html")
-#parse("roundedDiv.html")
+#parse("../base/banner.html")
+#parse("../base/header.html")
+#parse("../base/roundedDiv.html")
 
 <div id="welcome-title">Bienvenue $user.getLogin()</div>
-<div id="a_tabbar" class="dhtmlxTabBar" imgpath="/easysoa/images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
+<div id="a_tabbar" class="dhtmlxTabBar" imgpath="../images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
         <div id="friendsView">
             <table id="catalogServices">
                 <colgroup> <!-- 1000 -->
@@ -64,8 +65,8 @@
                     </tr>
 
                     <tr>
-                        <td colspan="3"><input id="cancel" type="button" class="orange button" onclick="cancel('$proxyConf.id')" value="Annuler">
-                        <td colspan="3"><input id="reset" name="reset" class="orange button" onclick="reset()" value="Reset"></td>
+                        <td colspan="3"><input id="cancel" type="button" class="orange button" onclick="cancel()" value="Annuler">
+                        <td colspan="3"><input id="reset" name="reset" class="orange button" onclick="reset('$proxyConf.id')" value="Reset"></td>
                     </tr>
                 </tbody>
             </table>
@@ -75,15 +76,15 @@
 
 	function reset(proxyId){
 		if(confirm("Confirmer le reset de la configuration ?")){
-			window.location='/easysoa/httpproxy/reset.html?proxyId=' + proxyId ;
+			window.location='reset.html?proxyId=' + proxyId ;
 		}
 	}
 
 	function cancel(){
-    	window.location='/easysoa/index.html';
+    	window.location='../base/index.html';
 	}
 </script>
 
-#parse("footpage.html")
+#parse("../base/footpage.html")
 
 #end

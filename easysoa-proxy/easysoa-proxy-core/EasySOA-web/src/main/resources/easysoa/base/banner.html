@@ -1,19 +1,18 @@
-<script src="js/action-menu.js"></script>
-<script src="js/jquery-1.6.2.min.js" type="text/javascript"></script>
-<script src="js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
-<script src="js/jquery.tipTip.js"></script>
+<script src="../js/action-menu.js"></script>
+<script src="../js/jquery-1.6.2.min.js" type="text/javascript"></script>
+<script src="../js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+<script src="../js/jquery.tipTip.js"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 #set($user = $request.getSession().getAttribute("user"))
 <input type="hidden" id="userId" value="$user.getId()"/>
 ###if(!$user)
-##    $response.sendRedirect("index.html")
+##    $response.sendRedirect("../index.html")
 ###end
 <div id="banner">
    <div id="bannerElements">
-    	<!--<div id="logo"></div>-->
-    	<div id="logo-axxx"></div>
+    	<div id="logo"></div>
         <!--<a href="homePage.html" id="homepageIcon" class="menu-icon" title="Go to the homepage"></a>-->
         <a href="clients.html" id="homepageIcon" class="menu-icon" title="Retour vers l'index"></a>
 
@@ -39,7 +38,7 @@
     		<li><a href="myspace.html">My space</a></li>
     	</ul>-->
     	<ul class="ulArrow">
-    		<li class="last"><form name="disconnect" id="disconnect" action="/pivotal/action/disconnect"><a href="" onclick="logOut();">D&eacuteconnexion</a></form></li>
+    		<li class="last"><form name="disconnect" id="disconnect" action="../action/disconnect"><a href="" onclick="logOut();">D&eacuteconnexion</a></form></li>
     	</ul>
     	</div>
 <script type="text/javascript">

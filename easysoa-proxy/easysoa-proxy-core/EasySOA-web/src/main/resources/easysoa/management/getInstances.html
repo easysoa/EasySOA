@@ -1,3 +1,4 @@
+#parse("base/auth")
 
-#set( $params = {"instances" : $proxyManagementService.listInstances()} )
+#set( $params = {"instances" : $proxyManagementService.listInstances(), "request" : $request} )
 $instancesView.render( $params )
