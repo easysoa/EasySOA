@@ -31,8 +31,8 @@ import org.osoa.sca.annotations.Service;
 public interface View {
 
     /**
-     * 
-     * @param params
+     * Rendering interface
+     * @param params Parameters to be used in the template
      * @return
      */
     public String render(Map<String, Object> params);
