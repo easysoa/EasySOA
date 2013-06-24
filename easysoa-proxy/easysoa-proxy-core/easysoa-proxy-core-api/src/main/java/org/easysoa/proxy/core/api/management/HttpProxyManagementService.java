@@ -11,7 +11,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.osoa.sca.annotations.Remotable;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 
@@ -60,6 +59,11 @@ public interface HttpProxyManagementService {
     @Path("/reset")
     public String reset(ProxyConfiguration configuration) throws Exception;
 
+    /**
+     * Returns the list of proxy instances
+     * @return A list of ProxyConfiguration objects
+     * @throws Exception
+     */
     @GET
     @Path("/listInstances")
     public List<ProxyConfiguration> listInstances() throws Exception;

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * EasySOA Proxy
  * Copyright 2011-2013 Open Wide
@@ -27,7 +22,6 @@ package org.easysoa.proxy.core.api.management;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 
@@ -46,13 +40,23 @@ public class ManagementServiceResult {
     private String message;
     private EasySOAGeneratedAppConfiguration configuration;
 
+    /**
+     * Default constructor initialized with the following values :
+     * - status = ""
+     * - message = ""
+     * - configuration = null
+     */
     public ManagementServiceResult(){
         this.status = "";
         this.message = "";
         this.configuration = null;
     }
 
-
+    /**
+     *
+     * @param status Result status
+     * @param configuration Configuration
+     */
     public ManagementServiceResult(String status, EasySOAGeneratedAppConfiguration configuration){
         this.status = status;
         this.message = "";

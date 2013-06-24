@@ -19,10 +19,8 @@
  */
 package org.easysoa.proxy.configuration;
 
-import java.net.InetAddress;
 import org.easysoa.proxy.core.api.configuration.HttpProxyConfigurationService;
 import org.apache.log4j.Logger;
-import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
 import org.easysoa.proxy.strategy.EmbeddedEasySOAGeneratedAppIdFactoryStrategy;
@@ -30,6 +28,8 @@ import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 /**
+ * Default HTTP proxy configuration service
+ *
  * @author jguillemotte
  *
  */
@@ -48,17 +48,6 @@ public class DefaultHttpProxyConfigurationService implements HttpProxyConfigurat
     public DefaultHttpProxyConfigurationService(){
         currentProxyConf = new ProxyConfiguration();
         currentProxyConf.setId(EmbeddedEasySOAGeneratedAppIdFactoryStrategy.SINGLETON_ID);
-        /*currentProxyConf.setName("Default proxy");
-        currentProxyConf.addParameter(ProxyConfiguration.PROXY_PORT_PARAM_NAME, "8082");
-        currentProxyConf.addParameter(ProxyConfiguration.PROXY_PATH_PARAM_NAME, "/");
-        try{
-            InetAddress addr = InetAddress.getLocalHost();
-            // TODO : ip address or host name ?
-            currentProxyConf.addParameter(ProxyConfiguration.PROXY_HOST_PARAM_NAME, addr.getHostAddress());
-        }
-        catch(Exception ex){
-            // TODO : Add warn log
-        }*/
     }
 
     /**

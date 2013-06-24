@@ -88,17 +88,17 @@ public class EasySOAGeneratedAppConfiguration {
     }
 
     /**
-     *
-     * @param paramName
-     * @param paramValue
+     * Add a parameter
+     * @param paramName Parameter name
+     * @param paramValue Parameter value
      */
     public void addParameter(String paramName, String paramValue){
         parameters.add(new ConfigurationParameter(paramName, paramValue));
     }
 
     /**
-     *
-     * @param paramName
+     * Returns the aprameter value
+     * @param paramName The parameter name
      * @return
      */
     public String getParameter(String paramName){
@@ -117,9 +117,9 @@ public class EasySOAGeneratedAppConfiguration {
     }
 
     /**
-     *
-     * @param paramName
-     * @return
+     * Check if the configuration contains the parameter
+     * @param paramName The parameter name (Case sensitive !)
+     * @return true if the configuration contains the parameter, false otherwise
      */
     public boolean containsParameterName(String paramName){
         if(paramName != null){
@@ -135,7 +135,8 @@ public class EasySOAGeneratedAppConfiguration {
     }
 
     /**
-     *
+     * Return a list containing the configuration parameters
+     * @return
      */
     public List<ConfigurationParameter> getParameters() {
         return this.parameters;

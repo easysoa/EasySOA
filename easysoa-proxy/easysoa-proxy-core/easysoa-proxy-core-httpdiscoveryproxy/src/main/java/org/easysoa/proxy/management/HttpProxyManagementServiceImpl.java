@@ -43,8 +43,6 @@ import org.osoa.sca.annotations.Scope;
 @Scope("Composite")
 public class HttpProxyManagementServiceImpl implements HttpProxyManagementService, HttpProxyConfigurationService {
 
-    // TODO : Use a singleton : the default proxy instance started in FraSCAti
-
     /**
      * Logger
      */
@@ -53,8 +51,10 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
     @Reference
     EasySOAGeneratedAppIdFactoryStrategy embeddedEasySOAGeneratedAppIdFactoryStrategy;
 
+    // singleton : the default proxy instance started in FraSCAti
     @Reference
     HttpProxyConfigurationService defaultHttpProxyInstanceConfigurationService;
+
     // NB. FraSCAti Studio HttpProxyManagementServiceImpl should have something like :
     /*@Reference
     List<HttpProxyConfigurationService> appInstanceConfigurationServices; // EasySOAGeneratedAppConfigurationService*/
@@ -66,7 +66,6 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         logger.debug("Passing in ProxyInfoServiceImpl constructor !");
     }
 
-    // TODO reset idem
     public void update(ProxyConfiguration configuration) throws Exception {
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
         if (appInstanceConfService != null) {
@@ -101,7 +100,6 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
     public HttpProxyConfigurationService getConfigurationService(ProxyConfiguration configuration) throws Exception {
         String appID = configuration.getId();
         HttpProxyConfigurationService appInstanceConfService = defaultHttpProxyInstanceConfigurationService;
-        //ProxyConfiguration porx = appInstanceConfService.getClass().getClassLoader().loadClass("test").newInstance();
         if (appInstanceConfService != null) {
             if (appID.equals(appInstanceConfService.get(configuration).getId())) {
                 // there is one
@@ -161,7 +159,6 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
 
         //ProxyCreationStrategy strategy = new EmbeddedProxyCreationStrategy();
         ////ProxyInfo proxyInfo = proxyCreationStrategy.createProxy(configuration); // TODO remove
-
 
         // Embedded registry impl :
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
@@ -239,15 +236,13 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         //* getAvailablePort(conditions ex. > 20000) TODO Q pmerle implement by storing ports in FStudio db or by introspection (AT WORST or mere json) ??
         //* (Single/Instanciating)EasySOAGeneratedApp(s)Registry.get(id, Template (httpProxy), templateParams which are easysoaGeneratedApp param PLUS port etc.)
         //* finally, calls HttpProxyConfigurationService.update((proxyid,) HttpProxyConfiguration) which dispatches to Handlers
-
     }
 
     /**
      * Get info about the proxy corresponding to the given proxy ID
      * @param proxyID Proxy ID
-     * @return
+     * @return The configuration corresponding to the proxyID
      */
-    // TODO : return EasysoaGeneratedAppConfiguration or ProxyConfiguration ?
     public ProxyConfiguration get(String proxyID) throws Exception {
         HttpProxyConfigurationService appInstanceConfService = defaultHttpProxyInstanceConfigurationService;
         // Get the default instance
@@ -256,8 +251,13 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
 
     public List<ProxyConfiguration> listInstances() throws Exception {
         List<ProxyConfiguration> instances = new ArrayList<ProxyConfiguration>();
-        // TODO : add fstudio InstanceConfiguration service when done
+        // Default embedded proxy instance
         instances.add(defaultHttpProxyInstanceConfigurationService.get(null));
+        // TODO : add fstudio InstanceConfiguration service when done
+        /*for(ProxyConfiguration conf : ){
+            instances.add();
+        }*/
+
         return instances;
     }
 
