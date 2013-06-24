@@ -29,15 +29,15 @@
   <!-- ========== -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
+
     <easysoa.version>0.5-SNAPSHOT</easysoa.version>
     <easysoa.nuxeo.version>5.5</easysoa.nuxeo.version>
     <easysoa.nuxeo-bridge.version>5.5-SNAPSHOT</easysoa.nuxeo-bridge.version>
     <easysoa.nuxeo-frascati.version>0.5-SNAPSHOT</easysoa.nuxeo-frascati.version>
-    
+
     <!-- FraSCAti must be in version 1.5-SNAPSHOT because Velocity feature is only
       available in this version at the moment -->
-    <frascati.version>1.5-SNAPSHOT</frascati.version>
+    <frascati.version>1.6-SNAPSHOT</frascati.version>
     <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
     <log4j.version>1.2.16</log4j.version>
     <slf4j.version>1.6.4</slf4j.version>
@@ -102,7 +102,7 @@
     <module>easysoa-registry/easysoa-registry-rest-miner</module>
     <!--  -->
     <module>samples</module>
-    <module>easysoa-registry-packaging</module>    
+    <module>easysoa-registry-packaging</module>
   </modules>
 
   <dependencyManagement>
@@ -128,7 +128,7 @@
         <artifactId>easysoa-registry-api-messaging</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
-      
+
       <!-- EasySOA projects - Proxy APIs -->
       <dependency>
         <groupId>org.easysoa.proxy</groupId>
@@ -145,7 +145,7 @@
 	      <artifactId>easysoa-proxy-core-persistence</artifactId>
         <version>${easysoa.version}</version>
 	    </dependency>
-      
+
       <!-- Nuxeo APIs -->
       <dependency>
         <groupId>org.nuxeo.ecm.automation</groupId>
@@ -157,21 +157,21 @@
         <artifactId>nuxeo-core-api</artifactId>
         <version>${easysoa.nuxeo.version}</version>
       </dependency>
-      
+
       <!-- Esper -->
       <dependency>
         <groupId>com.espertech</groupId>
         <artifactId>esper</artifactId>
         <version>4.2.0</version>
       </dependency>
-      
+
       <!-- OSGI -->
       <dependency>
         <groupId>org.eclipse.osgi</groupId>
         <artifactId>org.eclipse.osgi.services</artifactId>
         <version>3.2.100.v20100503</version>
       </dependency>
-      
+
       <!-- HTTP Tools -->
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
@@ -183,7 +183,7 @@
         <artifactId>httpcore</artifactId>
         <version>4.1.4</version>
       </dependency>
-      
+
       <!-- Parsing tools -->
       <dependency>
         <groupId>org.jdom</groupId>
@@ -212,7 +212,7 @@
         <artifactId>json</artifactId>
         <version>20090211</version>
       </dependency>
-      
+
       <!-- Logging -->
       <dependency>
         <groupId>log4j</groupId>
@@ -234,14 +234,14 @@
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-      
+
       <!-- Miscellaneous -->
       <dependency>
         <groupId>commons-lang</groupId>
         <artifactId>commons-lang</artifactId>
         <version>2.6</version>
       </dependency>
-      
+
       <!-- Testing -->
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
