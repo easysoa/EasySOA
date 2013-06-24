@@ -89,10 +89,10 @@
     <!-- TODO : this component in a separated composite -->
     <!-- discovery proxy started automatically with easysoa ? -->
     <!-- Proxy Info SOAP service -->
-    <sca:service name="proxyInfoService" promote="proxyInfoComponent/proxyInfo">
+    <sca:service name="HttpProxyManagementService" promote="proxyInfoComponent/proxyInfo">
         <sca:interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService"/>
-        <!--<sca:binding.ws uri="http://localhost:8089/proxyInfoService"/>-->
-        <frascati:binding.rest uri="http://localhost:8089/httpProxyManagementService/" />
+        <!-- frascati:binding.rest uri="http://localhost:9089/easysoa-proxy/HttpProxyManagementService/" / -->
+        <frascati:binding.rest uri="http://vmregistry:9089/easysoa-proxy/HttpProxyManagementService/" /><!-- 9080 error address already in use, TODO better in props or pom.xml -->
     </sca:service>
 
     <sca:component name="proxyInfoComponent">

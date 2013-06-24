@@ -1,5 +1,14 @@
+#parse("base/auth")
 
-#set( $proxyConf = $proxyManagementService.get("default") )
+#if ( !$proxyId )
+    $errorView.render( {"message" : "Some parameters are missing, required ones are: proxyId",
+        "redirect" : "../management/getInstances.html", "request" : $request} )
+#else
+
+#set( $proxyConf = $proxyManagementService.get($proxyId) )
+
 #set($result = $proxyManagementService.reset($proxyConf))
-$result
-$response.sendRedirect("/easysoa/httpproxy/getProxyConfiguration.html")
+
+$response.sendRedirect("getProxyConfiguration.html?proxyId=$proxyId")
+
+#end

@@ -17,13 +17,14 @@
  * 
  * Contact : easysoa-dev@googlegroups.com
  */
-package org.easysoa.proxy.properties;
+package org.easysoa.proxy.core.api.properties;
 
 import java.io.InputStream;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
 
 /**
  * Proxy porperty manager. Works with the httpDiscoveryProxy.properties file
+ * NB. Must be in -api project (and not -httdiscoveryproxy), else MessageHandlers can't see it !!
  * @author jguillemotte
  *
  */

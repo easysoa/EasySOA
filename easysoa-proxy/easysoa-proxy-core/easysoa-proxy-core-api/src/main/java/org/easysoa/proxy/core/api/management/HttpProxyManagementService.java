@@ -48,7 +48,7 @@ public interface HttpProxyManagementService {
     @GET
     @Path("/getHttpProxy/{proxyId}")
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public EasySOAGeneratedAppConfiguration get(@PathParam("proxyId") String proxyId) throws Exception;
+    public ProxyConfiguration get(@PathParam("proxyId") String proxyId) throws Exception;
 
     /**
      * Reset the configuration corresponding to the proxy ID
@@ -62,6 +62,6 @@ public interface HttpProxyManagementService {
 
     @GET
     @Path("/listInstances")
-    public List<EasySOAGeneratedAppConfiguration> listInstances() throws Exception;
+    public List<ProxyConfiguration> listInstances() throws Exception;
 
 }

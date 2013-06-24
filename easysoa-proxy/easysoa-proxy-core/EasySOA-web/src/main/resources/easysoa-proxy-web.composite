@@ -33,16 +33,16 @@
     <component name="EasysoaProxyWeb">
         <service name="Velocity">
             <interface.java interface="javax.servlet.Servlet" />
-            <sca:binding.http uri="http://localhost:8087/easysoa" />
+            <sca:binding.http uri="/easysoa-proxy-web" />
         </service>
-        <property name="title">Easysoa proxy</property>
+        <property name="title">EasySOA Proxy Management Web UI</property>
         <web:implementation.velocity location="easysoa" default="index.html" />
         <reference name="instancesView" target="instancesView/html" />
         <reference name="proxyConfigurationView" target="proxyConfView/html" />
         <reference name="errorView" target="errorView/html" />
         <reference name="proxyManagementService">
             <interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService"/>
-            <frascati:binding.rest uri="http://localhost:8089/httpProxyManagementService/"/>
+            <!-- frascati:binding.rest uri="${proxy.url.base}/httpProxyManagementService/"/ -->
         </reference>
     </component>
 
@@ -64,7 +64,7 @@
     </component>
 
     <component name="errorView">
-        <web:implementation.velocity location="easysoa" default="error.html" />
+        <web:implementation.velocity location="easysoa/base" default="error.html" />
         <service name="html">
             <interface.java interface="org.easysoa.proxy.app.api.View" />
         </service>
@@ -78,5 +78,16 @@
             <interface.java interface="org.easysoa.proxy.app.api.ProxyService" />
         </service>
     </component>-->
+    <component name="proxyManagementServiceComponent">
+        <implementation.java class="org.easysoa.proxy.app.impl.DelegateProxyManagementServiceImpl" />
+        <service name="HttpProxyManagementService">
+            <interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService" />
+        </service>
+        <reference name="delegate">
+            <interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService"/>
+            <frascati:binding.rest uri="${proxy.url.base}/HttpProxyManagementService/"/>
+        </reference>
+    </component>
+    <wire source="EasysoaProxyWeb/proxyManagementService" target="proxyManagementServiceComponent/HttpProxyManagementService"/>
 
 </composite>

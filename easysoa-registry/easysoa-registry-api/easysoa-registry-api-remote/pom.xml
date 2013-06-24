@@ -12,6 +12,13 @@
 
   <artifactId>easysoa-registry-api-remote</artifactId>
   <name>EasySOA Registry API Remote Implementation</name>
+  <description>
+  An implementation of EasySOA Registry API on top of REST exchanges
+  with a remote (Nuxeo-based) EasySOA Registry server
+  built using bare JSON + HttpURLConnection for notification, and providing
+  Nuxeo Automation along as a simple all-purpose tool (for making queries...).
+  Has no Nuxeo dependency besides TODO tests.
+  </description>
 
   <dependencies>
     <dependency>

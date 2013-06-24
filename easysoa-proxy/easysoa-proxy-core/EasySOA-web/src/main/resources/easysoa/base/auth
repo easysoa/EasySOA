@@ -1,0 +1,11 @@
+#set($user = $request.getSession(true).getAttribute("user"))
+
+#if(!$user)
+    #set($user = $errorView.getClass().getClassLoader().loadClass("org.easysoa.proxy.app.api.User").newInstance())
+    $user.setLogin("Administrator")
+    $user.setUsername("Administrator")
+    $request.getSession(true).setAttribute("user", $user)
+    
+    ##$request.getSession().setAttribute("messageConnection", "Error: not logged")
+    ##$response.sendRedirect("base/index.html")
+#end

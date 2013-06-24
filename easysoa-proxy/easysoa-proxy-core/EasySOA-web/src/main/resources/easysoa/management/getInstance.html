@@ -1,30 +1,48 @@
+#parse("base/auth")
+
 ## new intance of proxy conf
 #set( $proxyConfiguration = $proxyManagementService.getClass().getClassLoader().loadClass("org.easysoa.proxy.core.api.configuration.ProxyConfiguration").newInstance())
 
 ## set the parameters
+##!$proxyId ||
+#if ( (!$userLogin && !$user) || !$projectId || !$environment )
+    $errorView.render( {"message" : "Some parameters are missing, required ones are: userLogin (or an authentified user), projectId, environment",
+        "redirect" : "getInstances.html", "request" : $request} )
+#else
+
+#if ( !$proxyName )
+    #set( $proxyName = $proxyId )
+#end
 $proxyConfiguration.setName($proxyName)
-$proxyConfiguration.setId($proxyId)
-$proxyConfiguration.addParameter("user", $user)
+###$proxyConfiguration.setId($proxyId)
+#if ( !$userLogin )
+    #set( $userLogin = $user.getLogin() )
+#end
+$proxyConfiguration.addParameter("user", $userLogin)
 $proxyConfiguration.addParameter("projectId", $projectId)
 $proxyConfiguration.addParameter("environment", $environment)
-$proxyConfiguration.addParameter("user", $user)
+## TODO for #request.getParameterMap() add other params ?!?
+
 
 ## create the proxy
 #set( $managementServiceResult = $proxyManagementService.getHttpProxy($proxyConfiguration) )
 
 #if( $managementServiceResult.status == "KO" )
     ## Redirect on error page according to case
-    #set( $proxyConf = $proxyManagementService.get($proxyId) )
 
-    #if( $proxyConf )
-        #set( $text = "<br/>Click on OK to change the existing instance configuration")
-        #set( $params = {"message" : "$managementServiceResult.message$text",
-            "redirect" : "httpproxy/getProxyConfiguration.html?proxyId$proxyId"} )
+    #if( $managementServiceResult.configuration )
+        #set( $text = "<br/>Click on OK to change the existing instance configuration" )
+        #set( $params = {"message" : "$managementServiceResult.message <br/> $text",
+            "redirect" : "../httpproxy/getProxyConfiguration.html?proxyId=$managementServiceResult.configuration.id", "request" : $request} )
     #else
-        #set( $params = {"message" : $managementServiceResult.message, "redirect" : "management/getInstances.html"} )
+        #set( $params = {"message" : $managementServiceResult.message, "redirect" : "getInstances.html", "request" : $request} )
     #end
+    
     $errorView.render( $params )
+    
 #else
     ## Redirect on configuration page
-    $response.sendRedirect("/easysoa/httpproxy/getProxyConfiguration.html?proxyId=$managementServiceResult.configuration.id")
+    $response.sendRedirect("../httpproxy/getProxyConfiguration.html?proxyId=$managementServiceResult.configuration.id")
+#end
+
 #end

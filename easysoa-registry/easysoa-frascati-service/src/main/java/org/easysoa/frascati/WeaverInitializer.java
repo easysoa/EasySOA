@@ -33,16 +33,13 @@ import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.fractal.julia.ComponentInterface;
 import org.osoa.sca.annotations.Reference;
-import org.osoa.sca.annotations.Scope;
-import org.osoa.sca.annotations.Service;
 import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.api.Processor;
-import org.ow2.frascati.starter.api.AbstractInitializable;
 import org.ow2.frascati.parser.api.Parser;
 import org.ow2.frascati.parser.api.ParsingContext;
+import org.ow2.frascati.starter.api.AbstractInitializable;
 import org.ow2.frascati.tinfi.TinfiComponentInterceptor;
 import org.ow2.frascati.tinfi.api.IntentHandler;
-import org.ow2.frascati.util.AbstractLoggeable;
 import org.ow2.frascati.util.reference.ServiceReferenceUtil;
 
 public class WeaverInitializer extends AbstractInitializable

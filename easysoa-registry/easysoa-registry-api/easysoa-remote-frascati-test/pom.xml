@@ -32,8 +32,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <scope>test</scope>
     </dependency>
     
     <!-- DEPENDENCIES THAT HAVE TO BE ASSUMED BY THE ISOLATED CLASSLOADER PARENT -->

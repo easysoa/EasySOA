@@ -37,7 +37,6 @@ import org.eclipse.stp.sca.ComponentService;
 import org.eclipse.stp.sca.Composite;
 import org.eclipse.stp.sca.Reference;
 import org.eclipse.stp.sca.Service;
-import org.nuxeo.ecm.core.api.ClientException;
 
 public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
     private static Log log = LogFactory.getLog(FraSCAtiScaImporterBase.class);
@@ -52,7 +51,6 @@ public abstract class FraSCAtiScaImporterBase extends AbstractScaImporterBase {
      * @param compositeFile
      *            Composite file to import, can be null if this is used as a
      *            runtime importer
-     * @throws ClientException
      */
     public FraSCAtiScaImporterBase(BindingVisitorFactory bindingVisitorFactory, File compositeFile, FraSCAtiRegistryServiceItf frascatiRegistryService) {
         super(bindingVisitorFactory, compositeFile);

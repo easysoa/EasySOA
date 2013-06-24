@@ -32,6 +32,8 @@
 	  <module>easysoa-proxy-intents/easysoa-proxy-intents-cxfMonitoringIntent</module>
 	  <module>easysoa-proxy-core/easysoa-proxy-locator-mock-server</module>
 	  <module>easysoa-proxy-easysoaapp</module>
+          <module>easysoa-proxy-core/EasySOA-war</module>
+          <module>easysoa-proxy-core/EasySOA-web</module>
   </modules>
   
   <!-- ======================= -->

@@ -429,7 +429,12 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
         {
             try
             {
-                return (T)component.getFcInterface(serviceName);
+            	Object serviceFcInterface = component.getFcInterface(serviceName);
+            	if (serviceClass.isInstance(serviceFcInterface)) {
+            		// else FraSCAti compilation error "Type safety: Unchecked cast from Object to T"
+            		// see http://stackoverflow.com/questions/15272855/java-generics-returning-a-list-depending-on-input
+            		return serviceClass.cast(serviceFcInterface);
+            	}
                 
             } catch (NoSuchInterfaceException e)
             {
