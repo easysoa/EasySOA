@@ -4,6 +4,7 @@
 package org.easysoa.proxy.core.api.exchangehandler;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,12 +38,12 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
     public final static String HANDLER_ID = "discoveryMessageHandler";
     // TODO : remove hard coded client configuration
 	public static final String DISCOVERY_PROBE_TYPE = "HTTPProxy";
-	
+
     // Logger
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);
     private boolean enabled = true;
     private ClientBuilder clientBuilder;
-    
+
     // Proxy configuration params :
     // NB. defaults are in setHandlerConfiguration()
     // User
@@ -68,7 +69,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
         clientBuilder.setCredentials(propertyManager.getProperty("nuxeo.auth.login", "Administrator"),
         		propertyManager.getProperty("nuxeo.auth.password", "Administrator"));
     }
-    
+
     private String checkRequiredParameter(ProxyConfiguration proxyConfiguration, String parameterName) {
         String value = proxyConfiguration.getParameter(parameterName);
         if (isEmpty(value)) {
@@ -76,7 +77,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
         }
         return value;
     }
-    
+
     private boolean isEmpty(String value) {
 		return value == null || value.length() == 0;
 	}
@@ -96,9 +97,9 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
         ///if (configuration.getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME) != null) {
             environment = configuration.getParameter(ProxyConfiguration.ENVIRONMENT_PARAM_NAME);
         ///}
-        ///projectId = checkRequiredParameter(configuration, ProxyConfiguration.PROJECTID_PARAM_NAME);	
+        ///projectId = checkRequiredParameter(configuration, ProxyConfiguration.PROJECTID_PARAM_NAME);
         ///environment = checkRequiredParameter(configuration, ProxyConfiguration.ENVIRONMENT_PARAM_NAME);
-            
+
         // Getting optional parameters
         if (configuration.getParameter(ProxyConfiguration.USER_PARAM_NAME) != null) {
             user = configuration.getParameter(ProxyConfiguration.USER_PARAM_NAME);
@@ -109,7 +110,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
             // TODO as list : for now comma-separated, LATER custom service model ?
             componentIds = configuration.getParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME);
         ///}
-        
+
         // If all OK, can update the local configuration cache, else TODO reapply the old one
     	this.configuration = configuration;
     }
@@ -130,10 +131,12 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
                 Map<String, Serializable> properties = new HashMap<String, Serializable>();
                 List<SoaNodeId> parents = new ArrayList<SoaNodeId>();
 
-            	String messageUrl = inMessage.buildCompleteUrl(); // TODO normalizeUrl() to avoid ex. http://vmpivotal:7080/WS//ContactSvc.asmx
-                String endpointUrl = isSoapMessage ? messageUrl : messageUrl.substring(0, messageUrl.length() - 5); // removing ?wsdl 
+                // Normalize the URL
+                URI uriToNormalize = new URI(inMessage.buildCompleteUrl());
+            	String messageUrl = uriToNormalize.normalize().toString();
+                String endpointUrl = isSoapMessage ? messageUrl : messageUrl.substring(0, messageUrl.length() - 5); // removing ?wsdl
                 String wsdlUrl = isGetWsdlMessage ? messageUrl : messageUrl + "?wsdl";
-                
+
                 // properties
                 // GLOBAL
                 properties.put(Endpoint.XPATH_URL, endpointUrl);
@@ -232,12 +235,9 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
             logger.warn("An error occurs when getting the 'proxy.wsdl.request.detect' value, using default value => .*?wsdl", ex);
             pattern = ".*?wsdl";
         }
-        //for (QueryParam queryParam : inMessage.getQueryString().getQueryParams()) {
-            //if (inMessage.getMethod().equalsIgnoreCase("get") && queryParam.getName().toLowerCase().matches(pattern)) {
-            if (inMessage.getMethod().equalsIgnoreCase("get") && inMessage.getPath().toLowerCase().matches(pattern)) {
-                return true;
-            }
-        //}
+        if (inMessage.getMethod().equalsIgnoreCase("get") && inMessage.getPath().toLowerCase().matches(pattern)) {
+            return true;
+        }
         return returnValue;
     }
 }
