@@ -11,7 +11,7 @@
         <sca:implementation.java class="org.easysoa.proxy.HttpDiscoveryProxy" />
         <sca:service name="httpServiceInput">
             <sca:interface.java interface="javax.servlet.Servlet" /><!-- TODO not required because already said ? -->
-            <tuscany:binding.http uri="http://localhost:8082/" />
+            <tuscany:binding.http uri="http://vmregistry:8082/" /><!-- else if localhost, not available from vmapv. TODO better in props or pom -->
         </sca:service>
         <sca:reference name="handlerManager">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
@@ -44,7 +44,7 @@
     <sca:component name="runManagerDriverServiceComponent">
         <sca:service name="runManagerDriverService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManagerDriver" />
-            <frascati:binding.rest uri="http://localhost:8084/" />
+            <frascati:binding.rest uri="http://localhost:8084/" /><!-- TODO probably not available from outside, rather in props or pom -->
         </sca:service>
         <sca:implementation.composite name="runManagerDriver.composite"/>
     </sca:component>
