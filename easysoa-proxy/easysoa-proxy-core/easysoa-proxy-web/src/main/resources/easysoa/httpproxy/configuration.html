@@ -5,11 +5,13 @@
 
 ## View interface definition
 ## NB. (is always the same)
-#macro ( render $arg0 )
+#macro ( render $arg0 $arg1 $arg2  )
     #set($params = $arg0)
+    #set($request = $arg1)
+    #set($user = $arg2)
 
     ## (mapping business params so the old code will work)
-    #set($user = $params.request.session.getAttribute("user"))
+    ##set($user = $params.request.session.getAttribute("user"))
     #set($proxyConf = $params.proxyConf)
 
     ## View layout
@@ -20,6 +22,7 @@
 
 <div id="welcome-title">Bienvenue $user.getLogin()</div>
 <div id="a_tabbar" class="dhtmlxTabBar" imgpath="../images/" tabstyle="silver" skinColors="#FFFFFF,#FFFFFF" style="width:1000px; height:700px;">
+    <div id="configuration" class="rounded-div-content" name="Configuration">
         <div id="friendsView">
             <table id="catalogServices">
                 <colgroup> <!-- 1000 -->
@@ -71,6 +74,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
 </div>
 <script type="text/javascript">
 

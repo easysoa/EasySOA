@@ -5,12 +5,14 @@
 
 ## View interface definition
 ## NB. (is always the same)
-#macro ( render $arg0 )
+#macro ( render $arg0 $arg1 $arg2  )
     #set($params = $arg0)
+    #set($request = $arg1)
+    #set($user = $arg2)
 
     ## (mapping business params so the old code will work)
-    #set($user = $params.request.session.getAttribute("user"))
-    
+    ##set($user = $params.request.session.getAttribute("user"))
+
     ## View layout
 
 #parse("banner.html")
