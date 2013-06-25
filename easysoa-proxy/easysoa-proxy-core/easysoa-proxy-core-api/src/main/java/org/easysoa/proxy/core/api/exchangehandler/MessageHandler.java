@@ -41,10 +41,20 @@ public interface MessageHandler {
      */
     public void setHandlerConfiguration(ProxyConfiguration configuration);
 
+    /**
+     * Enable the handler
+     */
     public void enable();
 
+    /**
+     * Disable the handler
+     */
     public void disable();
 
+    /**
+     * Return the handler ID
+     * @return Teh handler ID
+     */
     public String getID();
 
 }

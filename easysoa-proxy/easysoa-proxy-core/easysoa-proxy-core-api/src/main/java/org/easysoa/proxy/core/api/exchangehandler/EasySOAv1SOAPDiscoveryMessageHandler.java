@@ -1,5 +1,21 @@
 /**
+ * EasySOA Proxy
+ * Copyright 2011 Open Wide
  *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contact : easysoa-dev@googlegroups.com
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
@@ -9,13 +25,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
-import org.easysoa.proxy.core.api.properties.ProxyPropertyManager;
 import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.marshalling.OperationResult;
@@ -33,16 +47,16 @@ import org.osoa.sca.annotations.Scope;
  *
  */
 @Scope("composite")
-public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
+public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
 
+    // Probe type and id
     public final static String HANDLER_ID = "discoveryMessageHandler";
-    // TODO : remove hard coded client configuration
 	public static final String DISCOVERY_PROBE_TYPE = "HTTPProxy";
 
     // Logger
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);
     private boolean enabled = true;
-    private ClientBuilder clientBuilder;
+    private ClientBuilder registryClient = null;
 
     // Proxy configuration params :
     // NB. defaults are in setHandlerConfiguration()
@@ -54,37 +68,18 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
     private String environment = null; // TODO default environment in conf
     // ComponentIDs
     private String componentIds = null;
-    /** For all other optional parameters  */
-    private ProxyConfiguration configuration = null; // TODO in MessageHandlerBase & other handlers
 
-    /**
-     * Constructor
-     *
-     */
-    // TODO : Move Jersey client configuration in another class
-    public EasySOAv1SOAPDiscoveryMessageHandler() throws Exception {
-    	PropertyManager propertyManager = ProxyPropertyManager.getPropertyManager(); // AND NOT PropertyManager because null TODO better
-        clientBuilder = new ClientBuilder();
-        clientBuilder.setNuxeoSitesUrl(propertyManager.getProperty("nuxeo.rest.service", "http://localhost:8080/nuxeo/site"));
-        clientBuilder.setCredentials(propertyManager.getProperty("nuxeo.auth.login", "Administrator"),
-        		propertyManager.getProperty("nuxeo.auth.password", "Administrator"));
-    }
-
-    private String checkRequiredParameter(ProxyConfiguration proxyConfiguration, String parameterName) {
+    /*private String checkRequiredParameter(ProxyConfiguration proxyConfiguration, String parameterName) {
         String value = proxyConfiguration.getParameter(parameterName);
         if (isEmpty(value)) {
             throw new RuntimeException("Missing required parameter"); // TODO better
         }
         return value;
-    }
+    }*/
 
     private boolean isEmpty(String value) {
 		return value == null || value.length() == 0;
 	}
-
-	public ProxyConfiguration getConfiguration() {
-    	return this.configuration;
-    }
 
     @Override
     public void setHandlerConfiguration(ProxyConfiguration configuration) {
@@ -112,15 +107,14 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
         ///}
 
         // If all OK, can update the local configuration cache, else TODO reapply the old one
-    	this.configuration = configuration;
+    	setConfiguration(configuration);
     }
 
     @Override
     // TODO :Return an OperationResult object instead of void !
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
-        if (enabled
-        		// checking required parameters :
-        		&& !isEmpty(projectId) && !isEmpty(environment)) {
+        // checking required parameters
+        if (enabled && hasValidConfiguration()) {
 
             // check if the received message is a SOAP message
         	boolean isSoapMessage = checkForSoapMessage(inMessage);
@@ -148,13 +142,15 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
 
                 // If the message is a SOAP Post request, also discovery & send an EndpointConsumption
                 if(isSoapMessage){
-                    // TODO
+                    // TODO using HTTP request referrer header or ServletRequest getRemoteAddr()
+                    // or getRemotePort() (see what's int it, already in inMessage ??)
+                    // to put in endpoint-consumption.xsd, to add to nuxeo types & layout
                 }
 
                 // PROBE
                 properties.put(ResourceDownloadInfo.XPATH_URL, wsdlUrl);
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_TYPE, DISCOVERY_PROBE_TYPE);
-                properties.put(ResourceDownloadInfo.XPATH_PROBE_INSTANCEID, this.configuration.getId());
+                properties.put(ResourceDownloadInfo.XPATH_PROBE_INSTANCEID, getConfiguration().getId());
                 //static SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 //properties.put("rdi:timestamp", dateFormater.format(new GregorianCalendar().getTime())); // if the probe downloads the wsdl itself
 
@@ -169,8 +165,14 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
                 SoaNodeId soaNodeId = new SoaNodeId(projectId, Endpoint.DOCTYPE, environment + ":" + endpointUrl);
                 SoaNodeInformation soaNodeInfo = new SoaNodeInformation(soaNodeId, properties, parents);
 
+                // Get the registry client, if not initialized => init
+                if(registryClient == null){
+                    RegistryJerseyClientConfiguration jerseyClient = new RegistryJerseyClientConfiguration();
+                    registryClient = jerseyClient.getClient();
+                }
+
                 // Run request
-                RegistryApi registryApi = clientBuilder.constructRegistryApi();
+                RegistryApi registryApi = registryClient.constructRegistryApi();
                 OperationResult result = registryApi.post(soaNodeInfo);
                 logger.debug("Registry API request response status : " + result.isSuccessful());
                 logger.debug("Registry API request response message : " + result.getMessage());
@@ -240,4 +242,16 @@ public class EasySOAv1SOAPDiscoveryMessageHandler implements MessageHandler {
         }
         return returnValue;
     }
+
+    /**
+     * Check if the proxyConfiguration is valid to be used with the registry
+     * Required parameters are :
+     * - ProjectID not empty (and not null)
+     * - Environment nor empty (and not null)
+     * @return true if the configuration is valid, false otherwise
+     */
+    private boolean hasValidConfiguration(){
+        return !isEmpty(projectId) && !isEmpty(environment);
+    }
+
 }

@@ -1,6 +1,6 @@
 /**
  * EasySOA Proxy
- * Copyright 2011 Open Wide
+ * Copyright 2011-2013 Open Wide
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,22 +20,23 @@
 
 package org.easysoa.proxy.core.api.exchangehandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 
 /**
- * @author jguillemotte
  *
+ * @author jguillemotte
  */
-@Deprecated
-public interface HttpExchangeHandler extends HandlerManager { // TODO rm
+public abstract class MessageHandlerBase implements MessageHandler {
 
-    /**
-     * Handle an exchange
-     * @param request HTTP Servlet request
-     * @param response HTTP Servlet response
-     * @throws Exception
-     */
-    public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    /** For all other optional parameters  */
+    protected ProxyConfiguration configuration = null; // TODO in MessageHandlerBase & other handlers
+
+    public void setConfiguration(ProxyConfiguration configuration){
+        this.configuration = configuration;
+    }
+
+	public ProxyConfiguration getConfiguration() {
+    	return this.configuration;
+    }
 
 }
