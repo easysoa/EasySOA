@@ -5,4 +5,4 @@
 #end
 #set( $proxyConf = $proxyManagementService.get($proxyId) )
 #set( $params = {"proxyConf" : $proxyConf, "request" : $request} )
-$proxyConfigurationView.render( $params )
+$proxyConfigurationView.render( $params, $request, $user )

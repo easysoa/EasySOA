@@ -33,7 +33,7 @@
     <component name="EasysoaProxyWeb">
         <service name="Velocity">
             <interface.java interface="javax.servlet.Servlet" />
-            <sca:binding.http uri="/easysoa-proxy-web" />
+            <sca:binding.http uri="http://localhost:9099/easysoa-proxy-web" />
         </service>
         <property name="title">EasySOA Proxy Management Web UI</property>
         <web:implementation.velocity location="easysoa" default="index.html" />

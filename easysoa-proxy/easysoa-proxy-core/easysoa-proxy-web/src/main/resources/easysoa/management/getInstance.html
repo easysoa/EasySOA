@@ -7,7 +7,7 @@
 ##!$proxyId ||
 #if ( (!$userLogin && !$user) || !$projectId || !$environment )
     $errorView.render( {"message" : "Some parameters are missing, required ones are: userLogin (or an authentified user), projectId, environment",
-        "redirect" : "getInstances.html", "request" : $request} )
+        "redirect" : "getInstances.html", "request" : $request}, $request, $user)
 #else
 
 #if ( !$proxyName )
@@ -37,9 +37,9 @@ $proxyConfiguration.addParameter("environment", $environment)
     #else
         #set( $params = {"message" : $managementServiceResult.message, "redirect" : "getInstances.html", "request" : $request} )
     #end
-    
-    $errorView.render( $params )
-    
+
+    $errorView.render( $params, $request, $user )
+
 #else
     ## Redirect on configuration page
     $response.sendRedirect("../httpproxy/getProxyConfiguration.html?proxyId=$managementServiceResult.configuration.id")

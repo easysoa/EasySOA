@@ -21,6 +21,7 @@
 package org.easysoa.proxy.app.api;
 
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.osoa.sca.annotations.Service;
 
 /**
@@ -35,6 +36,6 @@ public interface View {
      * @param params Parameters to be used in the template
      * @return
      */
-    public String render(Map<String, Object> params);
+    public String render(Map<String, Object> params, HttpServletRequest request, User user);
 
 }
