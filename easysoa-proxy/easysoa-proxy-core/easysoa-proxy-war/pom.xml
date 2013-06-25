@@ -13,7 +13,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <name>EasySOA http proxy WAR</name>
+    <name>EasySOA proxy WAR</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -110,7 +110,7 @@
 
     <build>
         <finalName>easysoa-proxy</finalName>
-    
+
         <plugins>
             <!-- Build the Web Application aRchive. -->
             <plugin>
