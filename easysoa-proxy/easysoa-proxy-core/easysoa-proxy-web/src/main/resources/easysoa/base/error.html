@@ -1,7 +1,7 @@
 
 ## In case of direct call
 ## (ex. redirect there from the end of a POST)
-#render({ "message" : $message, "redirect" : $redirect })
+#render({ "message" : $message, "redirect" : $redirect }, $request, $request.getSession(true).getAttribute("user"))
 
 ## View interface definition
 ## NB. (is always the same)
@@ -9,9 +9,6 @@
     #set($params = $arg0)
     #set($request = $arg1)
     #set($user = $arg2)
-
-    ## (mapping business params so the old code will work)
-    ##set($user = $params.request.session.getAttribute("user"))
 
     ## View layout
 
