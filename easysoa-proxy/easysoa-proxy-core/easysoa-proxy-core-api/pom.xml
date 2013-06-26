@@ -101,6 +101,14 @@
             <version>1.3</version>
             <type>jar</type>
         </dependency>
+        <!-- For xml parsing -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-ext</artifactId>
+            <version>1.7</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

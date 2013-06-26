@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.easysoa.message.Header;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
@@ -35,6 +36,7 @@ import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.marshalling.OperationResult;
 import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
 import org.easysoa.registry.types.Endpoint;
+import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.ResourceDownloadInfo;
 import org.easysoa.registry.types.Subproject;
 import org.easysoa.registry.types.ids.SoaNodeId;
@@ -102,7 +104,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
         	user = "Administrator"; // default
         }
         ///if (configuration.getParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME) != null) {
-            // TODO as list : for now comma-separated, LATER custom service model ?
+            // TODO LATER as list : for now comma-separated, LATER custom service model ?
             componentIds = configuration.getParameter(ProxyConfiguration.COMPONENTID_PARAM_NAME);
         ///}
 
@@ -121,7 +123,14 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
         	boolean isGetWsdlMessage = !isSoapMessage || checkForWsdlMessage(inMessage);
             if(isSoapMessage || isGetWsdlMessage){
 
+                // Get the registry client, if not initialized => init
+                if(registryClient == null){
+                    RegistryJerseyClientConfiguration jerseyClient = new RegistryJerseyClientConfiguration();
+                    registryClient = jerseyClient.getClient();
+                }
+
                 // Create endpoint
+                RegistryApi registryApi = registryClient.constructRegistryApi();
                 Map<String, Serializable> properties = new HashMap<String, Serializable>();
                 List<SoaNodeId> parents = new ArrayList<SoaNodeId>();
 
@@ -140,13 +149,58 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 //properties.put("*participants*", user); // TODO LATER participants meta
                 //properties.put("serviceimpl:component?", component); // TODO LATER if any ; get from conf service, default none
 
+                String endpointSoaName = environment + ':' + endpointUrl;
+
                 // If the message is a SOAP Post request, also discovery & send an EndpointConsumption
                 if(isSoapMessage){
+
+                    // Filling base info :
+                    Map<String, Serializable> ecProperties = new HashMap<String, Serializable>();
+                    List<SoaNodeId> ecParents = new ArrayList<SoaNodeId>();
+                    // TODO subprojectId
+                    // TODO LATER create it in consumer parent i.e. (placeholder) DeployedDeliverable (which has
+                    // Environment meta) with ip & host classification meta (like Application on Deliverable) & try to match
+                    String consumerHost = environment + ':' + inMessage.getRemoteHost();
+
+                    // Filling consumer info :
+                    ecProperties.put(EndpointConsumption.XPATH_CONSUMER_HOST, inMessage.getRemoteHost()); // TODO ex. "vmapv", TODO LATER alt in case of proxy see through it using request.getHeader( "X_FORWARDED_FOR" ); see nuxeo VirtualHostHelper & http://stackoverflow.com/questions/1767080/httpservletrequest-getremoteaddr-returning-wrong-address
+                    ecProperties.put(EndpointConsumption.XPATH_CONSUMER_IP, inMessage.getRemoteAddress()); // TODO Address
+                    // NB. port is useless because changes all the times on client side
+                    // TODO consumerIp=ip ex. "127.0.0.1"
+                    // TODO try referrer request header (at least println) ex. "TODO"
                     // TODO using HTTP request referrer header or ServletRequest getRemoteAddr()
                     // or getRemotePort() (see what's int it, already in inMessage ??)
                     // to put in endpoint-consumption.xsd, to add to nuxeo types & layout
+                    for(Header header : inMessage.getHeaders().getHeaderList()){
+                        System.out.println("HEADERName : " + header.getName() + " - " + header.getValue());
+                    }
+
+                    // Filling consumed endpoint info :
+                    // ec:consumedUrl & ec:consumedEnvironment
+                    // Since is ResourceDownloadInfo and WsdlInfo, resource fw will extract wsdlinfo
+                    // of consumed endpoint wsdl on EndpointConsumption (just as it's done for Endpoint)
+                    ecProperties.put(EndpointConsumption.XPATH_CONSUMED_URL, endpointUrl);
+                    ecProperties.put(EndpointConsumption.XPATH_CONSUMED_ENVIRONMENT, environment);
+
+                    // rdi:url=wsdlUrl
+                    ecProperties.put(ResourceDownloadInfo.XPATH_URL, wsdlUrl);
+
+                    // Create Endpoint Consumption SOA node ID : [consumerId]>[consumedEndpointId]
+                    String ecSoaName = consumerHost + '>' + endpointSoaName;
+                    SoaNodeId ecSoaNodeId = new SoaNodeId(projectId, EndpointConsumption.DOCTYPE, ecSoaName);
+                    SoaNodeInformation ecSoaNodeInfo = new SoaNodeInformation(ecSoaNodeId, ecProperties, ecParents);
+                    OperationResult ecResult = registryApi.post(ecSoaNodeInfo);
+                    // TODO log result
+                    if(!ecResult.isSuccessful()){
+                        logger.warn("Unable to registry the endpoint consumption : " + ecResult.getMessage());
+                        throw new Exception("An error occurs during the endpoint consumption registration : " + ecResult.getMessage());
+                    } else {
+                        // make endpoint child of endpoint consumption (which is Folderish), by providing endpoint consumption as parent of endpoint
+                        parents.add(ecSoaNodeId);
+                    }
                 }
 
+                // get request to get the wsdl
                 // PROBE
                 properties.put(ResourceDownloadInfo.XPATH_URL, wsdlUrl);
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_TYPE, DISCOVERY_PROBE_TYPE);
@@ -155,34 +209,26 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 //properties.put("rdi:timestamp", dateFormater.format(new GregorianCalendar().getTime())); // if the probe downloads the wsdl itself
 
                 // TODO LATER : STRUCTURE
-                //properties.put("iserv:operationIn", exchangeRecord.getInMessage().getMessageContent().getContentType().toString());
-                //properties.put("iserv:outContentType", exchangeRecord.getOutMessage().getMessageContent().getContentType().toString());
-
+                //properties.put("iserv:operationIn", exchangeRecord.getInMessage().getMessageContent().getContentType().toString()); // RATHER IN WSDL PARSING ??
+                //properties.put("iserv:outContentType", exchangeRecord.getOutMessage().getMessageContent().getContentType().toString()); // RATHER IN WSDL PARSING ??
                 // parents :
-                //parents.add(new SoaNodeId(InformationService.DOCTYPE, "PrecomptePartenaireService")); // specified service
+                //parents.add(new SoaNodeId(InformationService.DOCTYPE, "PrecomptePartenaireService")); // specified service NO, IN MATCHING
                 //parents.add(new SoaNodeId("Component", componentIds)); // specified component
                 //parents.add(new SoaNodeId("Component", "FraSCAti Studio for AXXX DPS DCV Integration")); // technical component
-                SoaNodeId soaNodeId = new SoaNodeId(projectId, Endpoint.DOCTYPE, environment + ":" + endpointUrl);
+                SoaNodeId soaNodeId = new SoaNodeId(projectId, Endpoint.DOCTYPE, endpointSoaName);
                 SoaNodeInformation soaNodeInfo = new SoaNodeInformation(soaNodeId, properties, parents);
 
-                // Get the registry client, if not initialized => init
-                if(registryClient == null){
-                    RegistryJerseyClientConfiguration jerseyClient = new RegistryJerseyClientConfiguration();
-                    registryClient = jerseyClient.getClient();
-                }
-
                 // Run request
-                RegistryApi registryApi = registryClient.constructRegistryApi();
                 OperationResult result = registryApi.post(soaNodeInfo);
                 logger.debug("Registry API request response status : " + result.isSuccessful());
                 logger.debug("Registry API request response message : " + result.getMessage());
 
                 // Create some document
                 if (result.isSuccessful()) {
-                    logger.info("Service registered successfully");
+                    logger.info("Endpoint registered successfully");
                 } else {
-                    logger.error("An error occurs during the service registration : " + result.getMessage());
-                    throw new Exception("An error occurs during the service registration : " + result.getMessage());
+                    logger.error("An error occurs during the endpoint registration : " + result.getMessage());
+                    throw new Exception("An error occurs during the endpoint registration : " + result.getMessage());
                 }
             }
             else {

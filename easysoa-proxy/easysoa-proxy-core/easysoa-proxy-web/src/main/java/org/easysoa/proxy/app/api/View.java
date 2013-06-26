@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.osoa.sca.annotations.Service;
 
 /**
+ * TODO LATER extract web framework in separate project,
+ * or even enrich FraSCAti ServletImplementationVelocity (ex. Wrapper for object httpRequest
+ * to maps the different params in a hashMap for easy access)
  *
  * @author jguillemotte
  */

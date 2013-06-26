@@ -1,20 +1,20 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 package org.easysoa.message;
@@ -24,21 +24,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.CharBuffer;
 import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.apache.log4j.Logger;
 
 /**
  * HTTP incoming message
- * 
+ *
  * TODO LATER extract "servlet" code in (Servlet)InMessageBuilder Make it Lazy
  * with several levels (one for headers ..., one for JSONContent or XML content)
- * 
- * 
+ *
+ *
  * @author jguillemotte
- * 
+ *
  */
 @XmlRootElement
 @SuppressWarnings("unchecked")
@@ -101,6 +99,8 @@ public class InMessage implements Message {
 	 * Request Sender Host
 	 */
 	private String remoteHost;
+    private String remoteAddress;
+    private int remotePort;
 
 	// private Long headersSize;
 	// private Long bodySize;
@@ -125,10 +125,12 @@ public class InMessage implements Message {
 		this.protocolVersion = "";
 		this.queryString = new QueryString();
 		this.remoteHost = "";
+        this.remoteAddress = "";
+        this.remotePort = -1;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method
 	 *            HTTP method
 	 * @param path
@@ -140,12 +142,12 @@ public class InMessage implements Message {
 
 	/**
 	 * Build a InMessage from an HttpServletrequest
-	 * 
+	 *
 	 * @param request
 	 *            The HttpservletRequest
 	 */
 	public InMessage(HttpServletRequest request) {
-		
+
 		// TODO : Check this code : WSDL request are not well recorded !
 		this.method = request.getMethod();
 		// Set the headers
@@ -165,7 +167,9 @@ public class InMessage implements Message {
 		this.port = request.getServerPort();
 		this.path = request.getRequestURI();
 		this.remoteHost = request.getRemoteHost();
-		// this.completeUrl = request.getRequestURL().toString();
+        this.remoteAddress = request.getRemoteAddr();
+        this.remotePort = request.getRemotePort();
+
 		// Set url parameters
 		this.queryString = new QueryString();
 		Enumeration<String> parametersNameEnum = request.getParameterNames();
@@ -178,7 +182,7 @@ public class InMessage implements Message {
 			}
 		}
 		this.messageContent = new MessageContent();
-		StringBuffer requestBody = new StringBuffer();
+		StringBuilder requestBody = new StringBuilder();
 		BufferedReader requestBodyReader = null;
 		CharBuffer buffer = CharBuffer.allocate(512);
 		try {
@@ -246,6 +250,7 @@ public class InMessage implements Message {
 		this.protocolVersion = protocolVersion;
 	}
 
+    @Override
 	public Headers getHeaders() {
 		return headers;
 	}
@@ -270,6 +275,7 @@ public class InMessage implements Message {
 		this.postData = postData;
 	}
 
+    @Override
 	public String getComment() {
 		return comment;
 	}
@@ -305,12 +311,12 @@ public class InMessage implements Message {
 
 	/**
 	 * Builds the complete url
-	 * 
+	 *
 	 * @return the complete url with protocol, server, port and path
 	 */
 	public String buildCompleteUrl() {
 		// return completeUrl;
-		StringBuffer urlBuffer = new StringBuffer();
+		StringBuilder urlBuffer = new StringBuilder();
 		urlBuffer.append(this.protocol.toLowerCase());
 		urlBuffer.append("://");
 		urlBuffer.append(this.server);
@@ -332,7 +338,7 @@ public class InMessage implements Message {
 
 	/**
 	 * Get the timestamp when the request has been received
-	 * 
+	 *
 	 * @return
 	 */
 	public long getRequestTimeStamp() {
@@ -341,7 +347,7 @@ public class InMessage implements Message {
 
 	/**
 	 * Set the timestamp
-	 * 
+	 *
 	 * @param requestTimeStamp
 	 */
 	public void setRequestTimeStamp(long requestTimeStamp) {
@@ -360,5 +366,33 @@ public class InMessage implements Message {
 	public void setRemoteHost(String remoteHost) {
 		this.remoteHost = remoteHost;
 	}
+
+    /**
+     * @return the remoteAddress
+     */
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    /**
+     * @param remoteAddress the remoteAddress to set
+     */
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }
+
+    /**
+     * @return the remotePort
+     */
+    public int getRemotePort() {
+        return remotePort;
+    }
+
+    /**
+     * @param remotePort the remotePort to set
+     */
+    public void setRemotePort(int remotePort) {
+        this.remotePort = remotePort;
+    }
 
 }
