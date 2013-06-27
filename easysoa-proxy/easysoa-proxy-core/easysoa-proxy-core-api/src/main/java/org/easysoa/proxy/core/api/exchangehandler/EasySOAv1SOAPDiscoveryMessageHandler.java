@@ -152,6 +152,8 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 // ENDPOINT
                 properties.put(Endpoint.XPATH_URL, endpointUrl);
                 properties.put(Endpoint.XPATH_ENDP_ENVIRONMENT, environment);
+                properties.put(Endpoint.XPATH_ENDP_HOST, inMessage.getRemoteHost());
+                //properties.put(Endpoint.XPATH_ENDP_IP, inMessage.getServer()); // TODO add meta
                 //properties.put("*participants*", user); // TODO LATER participants meta
                 //properties.put("serviceimpl:component?", component); // TODO LATER if any ; get from conf service, default none
                 // TODO if SOAPAction header Endpoint.XPATH_ENDP_SERVICE_PROTOCOL = SOAP, else REST
@@ -193,9 +195,9 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                     // Since is ResourceDownloadInfo and WsdlInfo, resource fw will extract wsdlinfo
                     // of consumed endpoint wsdl on EndpointConsumption (just as it's done for Endpoint)
                     ecProperties.put(EndpointConsumption.XPATH_CONSUMED_URL, endpointUrl);
-                    ecProperties.put(EndpointConsumption.XPATH_CONSUMED_ENVIRONMENT, environment);
+                    ecProperties.put(EndpointConsumption.XPATH_CONSUMED_ENVIRONMENT, environment); // TODO LATER rather merely "env:environment", shared with Endpoint
 
-                    // rdi:url=wsdlUrl
+                    // Schedule download & parsing of WSDL using Resource framework :
                     ecProperties.put(ResourceDownloadInfo.XPATH_URL, wsdlUrl);
 
                     // Create Endpoint Consumption SOA node ID : [consumerId]>[consumedEndpointId]
@@ -217,7 +219,6 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 properties.put(ResourceDownloadInfo.XPATH_URL, wsdlUrl);
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_TYPE, DISCOVERY_PROBE_TYPE);
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_INSTANCEID, getConfiguration().getId());
-                properties.put(Endpoint.XPATH_ENDP_HOST, inMessage.getRemoteHost());
                 //static SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 //properties.put("rdi:timestamp", dateFormater.format(new GregorianCalendar().getTime())); // if the probe downloads the wsdl itself
 
