@@ -68,6 +68,8 @@ public class MessageHandlersTest {
         record.getInMessage().setMethod("get");
         record.getInMessage().setPath("/data/info.wso?wsdl");
         record.getInMessage().setServer("footballpool.dataaccess.eu");
+        record.getInMessage().setRemoteHost("localhost");
+        record.getInMessage().setRemoteAddress("127.0.0.1");
 
         // Call handler
         handler.setHandlerConfiguration(proxyConf);
@@ -109,6 +111,8 @@ public class MessageHandlersTest {
         record.getInMessage().setMethod("post");
         record.getInMessage().setPath("/data/info.wso");
         record.getInMessage().setServer("footballpool.dataaccess.eu");
+        record.getInMessage().setRemoteHost("localhost");
+        record.getInMessage().setRemoteAddress("127.0.0.1");
 
         MessageContent messageContent = new MessageContent();
         // Sample SOAP message for test

@@ -55,6 +55,10 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     public final static String HANDLER_ID = "discoveryMessageHandler";
 	public static final String DISCOVERY_PROBE_TYPE = "HTTPProxy";
 
+    // Default values
+    public static final String PROJECT_ID_DEFAULT = "MyProject/Realisation";
+    public static final String ENVIRONMENT_DEFAULT = "test";
+
     // Logger
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);
     private boolean enabled = true;
@@ -205,6 +209,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 properties.put(ResourceDownloadInfo.XPATH_URL, wsdlUrl);
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_TYPE, DISCOVERY_PROBE_TYPE);
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_INSTANCEID, getConfiguration().getId());
+                properties.put(Endpoint.XPATH_ENDP_HOST, inMessage.getRemoteHost());
                 //static SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 //properties.put("rdi:timestamp", dateFormater.format(new GregorianCalendar().getTime())); // if the probe downloads the wsdl itself
 
@@ -260,7 +265,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
      * @return true if the message is a SOAP exchange
      */
     private boolean checkForSoapMessage(InMessage inMessage) {
-        //TODO : Refine the way that a WSDl message is discovered
+        //TODO LATER : Refine the way that a WSDl message is discovered
         if(inMessage.getMethod().equalsIgnoreCase("post") && (inMessage.getMessageContent().getRawContent().toLowerCase().contains("<soap:envelope")
                 || inMessage.getMessageContent().getRawContent().toLowerCase().contains("http://schemas.xmlsoap.org/soap/envelope/"))) {
             return true;
