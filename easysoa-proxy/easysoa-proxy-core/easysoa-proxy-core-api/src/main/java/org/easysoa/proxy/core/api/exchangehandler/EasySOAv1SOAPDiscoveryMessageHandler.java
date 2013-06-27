@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
-import org.easysoa.message.Header;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
@@ -146,12 +146,20 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
 
                 // properties
                 // GLOBAL
-                properties.put(Endpoint.XPATH_URL, endpointUrl);
-                properties.put(Endpoint.XPATH_TITLE, environment + " - " + endpointUrl);
-                properties.put(Endpoint.XPATH_ENDP_ENVIRONMENT, environment);
                 properties.put(Subproject.XPATH_SUBPROJECT, projectId);
+                properties.put(Endpoint.XPATH_TITLE, environment + " - " + endpointUrl);
+
+                // ENDPOINT
+                properties.put(Endpoint.XPATH_URL, endpointUrl);
+                properties.put(Endpoint.XPATH_ENDP_ENVIRONMENT, environment);
                 //properties.put("*participants*", user); // TODO LATER participants meta
                 //properties.put("serviceimpl:component?", component); // TODO LATER if any ; get from conf service, default none
+                // TODO if SOAPAction header Endpoint.XPATH_ENDP_SERVICE_PROTOCOL = SOAP, else REST
+                ///properties.put(Endpoint.XPATH_ENDP_SERVICE_PROTOCOL, agent); // SOAP, REST...
+                // TODO see in headers if anything (ex. "agent") to guess :
+                ///properties.put(Endpoint.XPATH_ENDP_SERVICE_RUNTIME, agent); // CXF (, Axis2...)
+                ///properties.put(Endpoint.XPATH_ENDP_APP_SERVER_RUNTIME, agent); // ApacheTomcat, Jetty...
+                // TODO LATER security props
 
                 String endpointSoaName = environment + ':' + endpointUrl;
 
@@ -177,6 +185,8 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                     /*for(Header header : inMessage.getHeaders().getHeaderList()){
                         System.out.println("HEADERName : " + header.getName() + " - " + header.getValue());
                     }*/
+                    // TODO LATER take protocol props (see above for Endpoint) out of Endpoint
+                    // in a facet to be also put on EndpointConsumption and fill it
 
                     // Filling consumed endpoint info :
                     // ec:consumedUrl & ec:consumedEnvironment
