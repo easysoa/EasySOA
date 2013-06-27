@@ -161,23 +161,22 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                     // Filling base info :
                     Map<String, Serializable> ecProperties = new HashMap<String, Serializable>();
                     List<SoaNodeId> ecParents = new ArrayList<SoaNodeId>();
-                    // TODO subprojectId
                     // TODO LATER create it in consumer parent i.e. (placeholder) DeployedDeliverable (which has
                     // Environment meta) with ip & host classification meta (like Application on Deliverable) & try to match
                     String consumerHost = environment + ':' + inMessage.getRemoteHost();
 
                     // Filling consumer info :
-                    ecProperties.put(EndpointConsumption.XPATH_CONSUMER_HOST, inMessage.getRemoteHost()); // TODO ex. "vmapv", TODO LATER alt in case of proxy see through it using request.getHeader( "X_FORWARDED_FOR" ); see nuxeo VirtualHostHelper & http://stackoverflow.com/questions/1767080/httpservletrequest-getremoteaddr-returning-wrong-address
-                    ecProperties.put(EndpointConsumption.XPATH_CONSUMER_IP, inMessage.getRemoteAddress()); // TODO Address
+                    ecProperties.put(EndpointConsumption.XPATH_CONSUMER_HOST, inMessage.getRemoteHost()); // ex. "vmapv", TODO LATER alt in case of proxy see through it using request.getHeader( "X_FORWARDED_FOR" ); see nuxeo VirtualHostHelper & http://stackoverflow.com/questions/1767080/httpservletrequest-getremoteaddr-returning-wrong-address
+                    ecProperties.put(EndpointConsumption.XPATH_CONSUMER_IP, inMessage.getRemoteAddress()); // Address
                     // NB. port is useless because changes all the times on client side
-                    // TODO consumerIp=ip ex. "127.0.0.1"
-                    // TODO try referrer request header (at least println) ex. "TODO"
-                    // TODO using HTTP request referrer header or ServletRequest getRemoteAddr()
+                    // consumerIp=ip ex. "127.0.0.1"
+                    // try referrer request header (at least println) ex. "" : There is no referrer header in the request
+                    // using HTTP request referrer header or ServletRequest getRemoteAddr()
                     // or getRemotePort() (see what's int it, already in inMessage ??)
                     // to put in endpoint-consumption.xsd, to add to nuxeo types & layout
-                    for(Header header : inMessage.getHeaders().getHeaderList()){
+                    /*for(Header header : inMessage.getHeaders().getHeaderList()){
                         System.out.println("HEADERName : " + header.getName() + " - " + header.getValue());
-                    }
+                    }*/
 
                     // Filling consumed endpoint info :
                     // ec:consumedUrl & ec:consumedEnvironment
@@ -194,7 +193,6 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                     SoaNodeId ecSoaNodeId = new SoaNodeId(projectId, EndpointConsumption.DOCTYPE, ecSoaName);
                     SoaNodeInformation ecSoaNodeInfo = new SoaNodeInformation(ecSoaNodeId, ecProperties, ecParents);
                     OperationResult ecResult = registryApi.post(ecSoaNodeInfo);
-                    // TODO log result
                     if(!ecResult.isSuccessful()){
                         logger.warn("Unable to registry the endpoint consumption : " + ecResult.getMessage());
                         throw new Exception("An error occurs during the endpoint consumption registration : " + ecResult.getMessage());
