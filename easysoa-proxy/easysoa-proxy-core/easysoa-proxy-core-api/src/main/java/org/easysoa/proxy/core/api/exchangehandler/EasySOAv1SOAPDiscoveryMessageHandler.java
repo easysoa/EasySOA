@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.easysoa.message.Header;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
@@ -155,10 +156,18 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 //properties.put("*participants*", user); // TODO LATER participants meta
                 //properties.put("serviceimpl:component?", component); // TODO LATER if any ; get from conf service, default none
                 // TODO if SOAPAction header Endpoint.XPATH_ENDP_SERVICE_PROTOCOL = SOAP, else REST
-                ///properties.put(Endpoint.XPATH_ENDP_SERVICE_PROTOCOL, agent); // SOAP, REST...
+                // Test with SOAP UI : SOAPAcation header is present but contains no value
+                if("SOAP".equalsIgnoreCase(inMessage.getHeaders().getHeaderValue("SOAPAction"))){
+                    properties.put(Endpoint.XPATH_ENDP_SERVICE_PROTOCOL, "SOAP");
+                } else {
+                    properties.put(Endpoint.XPATH_ENDP_SERVICE_PROTOCOL, "REST");
+                }
                 // TODO see in headers if anything (ex. "agent") to guess :
                 ///properties.put(Endpoint.XPATH_ENDP_SERVICE_RUNTIME, agent); // CXF (, Axis2...)
-                ///properties.put(Endpoint.XPATH_ENDP_APP_SERVER_RUNTIME, agent); // ApacheTomcat, Jetty...
+                // User-agent header can be used for XPATH_ENDP_APP_SERVER_RUNTIME
+                if(inMessage.getHeaders().getHeaderValue("User-Agent") != null){
+                    properties.put(Endpoint.XPATH_ENDP_APP_SERVER_RUNTIME, inMessage.getHeaders().getHeaderValue("User-Agent")); // ApacheTomcat, Jetty...
+                }
                 // TODO LATER security props
 
                 String endpointSoaName = environment + ':' + endpointUrl;
@@ -218,6 +227,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_TYPE, DISCOVERY_PROBE_TYPE);
                 properties.put(ResourceDownloadInfo.XPATH_PROBE_INSTANCEID, getConfiguration().getId());
                 properties.put(Endpoint.XPATH_ENDP_HOST, inMessage.getRemoteHost());
+                properties.put(Endpoint.XPATH_ENDP_IPADDRESS, inMessage.getRemoteAddress());
                 //static SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 //properties.put("rdi:timestamp", dateFormater.format(new GregorianCalendar().getTime())); // if the probe downloads the wsdl itself
 
