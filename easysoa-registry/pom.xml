@@ -22,7 +22,8 @@
     <spring.version>3.0.5.RELEASE</spring.version>
     <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
     <!--<juliac.version>2.4.3</juliac.version>-->
-    <juliac.version>2.5-SNAPSHOT</juliac.version>
+    <cxf.version>2.7.5</cxf.version>
+    <juliac.version>2.5.1</juliac.version>
     <joram.version>5.5.0</joram.version>
     <jaxb.version>2.1.13</jaxb.version>
     <monolog.version>1.8</monolog.version>
@@ -31,7 +32,6 @@
     <fractal-adl.version>2.3.1</fractal-adl.version>
     <fractal-rmi.version>0.3.6-SNAPSHOT</fractal-rmi.version>
   </properties>
-
 
   <modules>
     <module>easysoa-frascati-service-api</module>
@@ -81,7 +81,7 @@
   <!-- ======================= -->
   <dependencyManagement>
     <dependencies>
-    
+
       <!-- Import Nuxeo dependencyManagement -->
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
@@ -96,7 +96,7 @@
         	</exclusion>
         </exclusions>
       </dependency>
-      
+
       <!-- Additional Nuxeo projects -->
       <dependency>
         <groupId>org.nuxeo.runtime</groupId>
@@ -113,7 +113,7 @@
         <artifactId>nuxeo-opensocial-spaces</artifactId>
         <version>${easysoa.nuxeo.version}</version>
       </dependency>
-      
+
       <!-- EasySOA Projects -->
       <dependency>
         <groupId>org.easysoa.registry.api</groupId>
@@ -145,7 +145,7 @@
         <artifactId>easysoa-registry-frascati</artifactId>
         <version>${easysoa.version}</version>
       </dependency>
-      
+
       <!-- EasySOA Projects - FraSCAti in Nuxeo -->
       <dependency>
         <groupId>org.nuxeo</groupId>
@@ -157,7 +157,7 @@
         <artifactId>nuxeo-frascati-test</artifactId>
         <version>${easysoa.nuxeo-frascati.version}</version>
       </dependency>
-      
+
       <!-- Jetty -->
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
@@ -189,7 +189,7 @@
         <artifactId>jetty-util</artifactId>
         <version>${jetty.version}</version>
       </dependency>
-      
+
       <!-- Apache CXF -->
       <dependency>
         <groupId>org.apache.cxf</groupId>
@@ -291,28 +291,28 @@
         <artifactId>cxf-tools-wsdlto-frontend-jaxws</artifactId>
         <version>${cxf.version}</version>
       </dependency>
-    
+
       <!-- Parsing -->
       <dependency>
         <groupId>net.sourceforge.htmlcleaner</groupId>
         <artifactId>htmlcleaner</artifactId>
         <version>2.2</version>
       </dependency>
-      
+
       <!-- Testing -->
       <dependency>
         <groupId>com.google.code.guice</groupId>
         <artifactId>guice</artifactId>
         <version>2.0</version>
       </dependency>
-      
+
       <!-- Other -->
       <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>ecore</artifactId>
         <version>2.4.0</version>
       </dependency>
-      
+
     </dependencies>
   </dependencyManagement>
 

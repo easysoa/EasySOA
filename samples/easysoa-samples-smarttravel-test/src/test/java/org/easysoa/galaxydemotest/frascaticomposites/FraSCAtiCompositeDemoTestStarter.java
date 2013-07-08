@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
@@ -20,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.ow2.frascati.FraSCAti;
+import org.ow2.frascati.assembly.factory.api.ProcessingContext;
 import org.ow2.frascati.assembly.factory.processor.ProcessingContextImpl;
 import org.ow2.frascati.util.FrascatiException;
 
@@ -27,20 +29,20 @@ import org.ow2.frascati.util.FrascatiException;
  * Unit test for Galaxy Demo. Nuxeo and Frascati not launched in an OSGI container.
  */
 public class FraSCAtiCompositeDemoTestStarter {
-	
+
 	/**
 	 * Logger
 	 */
-	private static Logger logger = Logger.getLogger(getInvokingClassName());    
-    
+	private static Logger logger = Logger.getLogger(getInvokingClassName());
+
 	/** The FraSCAti platform */
     private static FraSCAti frascati;
-    
+
 	private static String serviceUrl = "http://localhost:9000/GalaxyTrip?wsdl";
 	private static String TNS = "http://scenario1.j1.galaxy.inria.fr/";
 	private static QName serviceName;
 	private static QName portName;
-   
+
 	//http://localhost:9000/GalaxyTrip?wsdl
 	static {
 		serviceName = new QName(TNS, "Trip");
@@ -50,22 +52,22 @@ public class FraSCAtiCompositeDemoTestStarter {
 	}
 
     /**
-     * 
+     *
      * @return
      */
     public static String getInvokingClassName() {
     	return Thread.currentThread().getStackTrace()[1].getClassName();
-    }	
-	
+    }
+
 	/**
 	 * Init the remote systems for the test
 	 * Nuxeo, Frascati, Galaxy demo and HTTP Proxy ...
 	 * Instantiate FraSCAti and retrieve services.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
    @Before
 	public final void setUp() throws FrascatiException, InterruptedException {
-	   System.setProperty("org.apache.cxf.bus.factory","org.easysoa.cxf.EasySOABusFactory");
+	    //System.setProperty("org.apache.cxf.bus.factory","org.easysoa.cxf.EasySOABusFactory");
 		// Start fraSCAti
 		startFraSCAti();
 		// Start HTTP Proxy
@@ -77,13 +79,13 @@ public class FraSCAtiCompositeDemoTestStarter {
 		// Wait for the services are completely started
 		Thread.sleep(5000);
 	}
-    
+
 	/**
 	 * @throws ClientException
 	 * @throws SOAPException
 	 * @throws IOException
-	 * @throws InterruptedException 
-	 * 
+	 * @throws InterruptedException
+	 *
 	 */
 	@Test
 	public final void testGalaxyDemo() throws ClientException, IOException, SOAPException, InterruptedException{
@@ -91,7 +93,7 @@ public class FraSCAtiCompositeDemoTestStarter {
 		logger.debug("Sending Demo request !");
         Service jaxwsService = Service.create(new URL(serviceUrl), serviceName);
 	    Dispatch<SOAPMessage> disp = jaxwsService.createDispatch(portName, SOAPMessage.class, Service.Mode.MESSAGE);
-	    
+
 	    //InputStream is = getClass().getClassLoader().getResourceAsStream("galaxyDemoTestMessage.xml");
 	    InputStream is = new FileInputStream("src/test/resources/galaxyDemoTestMessage.xml");
 	    SOAPMessage reqMsg = MessageFactory.newInstance().createMessage(null, is);
@@ -109,31 +111,42 @@ public class FraSCAtiCompositeDemoTestStarter {
 	public final void endTest() throws InterruptedException{
 		Thread.sleep(10000);
 	}
-	
+
 	/**
 	 * Start FraSCAti
-	 * @throws FrascatiException 
+	 * @throws FrascatiException
 	 */
 	private static void startFraSCAti() throws FrascatiException{
 		frascati = FraSCAti.newFraSCAti();
 	}
-	
+
 	/**
 	 * Start HTTP Proxy
 	 * @throws FrascatiException
 	 */
 	private static void startHttpProxy() throws FrascatiException{
-		URL compositeUrl = ClassLoader.getSystemResource("httpProxy.composite") ;
-		frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());		
+		URL compositeUrl = ClassLoader.getSystemResource("httpDiscoveryProxy.composite");
+        ProcessingContext processingContext = new ProcessingContextImpl();
+        Properties properties = new Properties();
+        properties.setProperty("proxyBaseAddress", "http://vmregistry:8082/");
+        properties.setProperty("proxyPort", "8082");
+        properties.setProperty("proxyForwardConnexionTimeoutMs", "3000");
+        properties.setProperty("proxyForwardSocketTimeoutMs", "3000");
+        properties.setProperty("runManagerDriverBaseAddress", "http://vmregistry:8084/");
+        properties.setProperty("httpProxyManagementServiceBaseAddress", "http://vmregistry:9089/easysoa-proxy/HttpProxyManagementService/");
+        properties.setProperty("replayEngineDriverBaseAddress", "http://vmregistry:8086/");
+        properties.setProperty("eventSubscriptionServiceBaseAddress", "http://vmregistry:8084/SubscriptionWebService/");
+        processingContext.setContextualProperty("httpDiscoveryProxy.composite", properties);
+		frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());
 	}
-	
+
 	/**
-	 * Start The Galaxy Demo 
-	 * @throws FrascatiException 
+	 * Start The Galaxy Demo
+	 * @throws FrascatiException
 	 */
 	private static void startGalaxyDemo() throws FrascatiException{
 		URL compositeUrl = ClassLoader.getSystemResource("smart-travel-mock-services.composite") ;
-		frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());		
+		frascati.processComposite(compositeUrl.toString(), new ProcessingContextImpl());
 	}
-    
+
 }

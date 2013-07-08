@@ -1206,17 +1206,17 @@
 		           <groupId>org.ow2.frascati</groupId>
 		           <artifactId>frascati-introspection-impl</artifactId>
 		           <version>${frascati.version}</version>
-            	</artifactItem>            	
+            	</artifactItem>
                 <artifactItem>
 		           <groupId>org.ow2.frascati</groupId>
 		           <artifactId>frascati-web-explorer</artifactId>
 		           <version>${frascati.version}</version>
-            	</artifactItem>  	
+            	</artifactItem>
                 <artifactItem>
 		           <groupId>org.ow2.frascati</groupId>
 		           <artifactId>frascati-web-explorer-bootstrap</artifactId>
 		           <version>${frascati.version}</version>
-            	</artifactItem>            	
+            	</artifactItem>
                 <artifactItem>
                   <groupId>org.ow2.jonas.osgi</groupId>
                   <artifactId>monolog</artifactId>

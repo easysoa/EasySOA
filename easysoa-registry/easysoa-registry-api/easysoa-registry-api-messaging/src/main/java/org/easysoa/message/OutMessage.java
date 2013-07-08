@@ -1,20 +1,20 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -25,12 +25,12 @@ import org.easysoa.servlet.http.CopyHttpServletResponse;
 
 /**
  * Outgoing message
- * 
+ *
  * TODO LATER extract "servlet" code in (servlet)OutMessageBuilder
  * Make it Lazy with several levels (one for headers ..., one for JSONContent or XML content)
- * 
+ *
  * @author jguillemotte
- * 
+ *
  */
 @XmlRootElement
 public class OutMessage implements Message {
@@ -50,7 +50,7 @@ public class OutMessage implements Message {
 	// private Long headersSize = new Long(-1);
 	// private Long bodySize = new Long(-1);
 	private String comment;
-	private long responseTimeStamp = 0;	
+	private long responseTimeStamp = 0;
 
 	public OutMessage(){
 		this.statusText = "";
@@ -72,7 +72,7 @@ public class OutMessage implements Message {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param response
 	 */
 	public OutMessage(CopyHttpServletResponse response) {
@@ -82,9 +82,11 @@ public class OutMessage implements Message {
         // Setting Message content
         this.headers = new Headers();
         // Set the headers
-        for(String headerName : response.getHeaderNames()){
+        // TODO : With servlet 2.5, the following method getHeaderNames is not available
+        // See http://stackoverflow.com/questions/12728017/how-to-get-header-from-response-in-servlet-2-3-or-2-5
+        /*for(String headerName : response.getHeaderNames()){
             this.headers.addHeader(new Header(headerName, response.getHeader(headerName)));
-        }
+        }*/
         // Set the message content
         MessageContent messageContent = new MessageContent();
         messageContent.setRawContent(response.getMessageContent());
@@ -100,8 +102,8 @@ public class OutMessage implements Message {
 
 	public void setProtocol(String protocol) {
 		this.protocol = protocol;
-	}	
-	
+	}
+
 	public String getProtocolVersion() {
 		return protocolVersion;
 	}
@@ -149,11 +151,11 @@ public class OutMessage implements Message {
 	public String getStatusText() {
 		return statusText;
 	}
-	
+
 	public void setStatus(String status) throws NumberFormatException {
 		this.status = Integer.parseInt(status);
 	}
-	
+
 	public void setStatus(int status) {
 		this.status = status;
 	}
@@ -169,5 +171,5 @@ public class OutMessage implements Message {
 	public void setResponseTimeStamp(long responseTimeStamp) {
 		this.responseTimeStamp = responseTimeStamp;
 	}
-	
+
 }

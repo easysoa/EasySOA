@@ -104,11 +104,11 @@ public class EasySOABusFactory extends SpringBusFactory {
      */
     public static synchronized boolean myPossiblySetDefaultBus(Bus bus) {
         //XXX deadlock hack : no synchronized on threadBusses
-        //TODO LATER better : add an additional custom lock...
+        // TODO LATER better : add an additional custom lock...
         // TODO tell CXF guys about it
         //synchronized (threadBusses) {
         if (threadBusses.get(Thread.currentThread()) == null) {
-            threadBusses.put(Thread.currentThread(), bus);
+            //threadBusses.put(Thread.currentThread(), bus);
         }
         //}
         if (defaultBus == null) {
@@ -116,6 +116,7 @@ public class EasySOABusFactory extends SpringBusFactory {
             return true;
         }
         return false;
+
     }
 
     /**
@@ -142,7 +143,6 @@ public class EasySOABusFactory extends SpringBusFactory {
 
     /**
      * Private in extended class, so has to be rewritten
-     * @author jguillemotte
      *
      */
     protected BusApplicationContext createApplicationContext(String cfgFiles[], boolean includeDefaults) {
@@ -167,7 +167,6 @@ public class EasySOABusFactory extends SpringBusFactory {
 
     /**
      * Package private in extended class, so has to be rewritten
-     * @author jguillemotte
      *
      */
     protected static class BusApplicationContextLifeCycleListener implements BusLifeCycleListener {

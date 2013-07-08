@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @obsolete
  *
  */
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProxyInfo {

@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="handlerManagerBase">
-    
+
     <!-- ================================ -->
     <!-- INTERFACE                        -->
-    
+
+    <!-- -->
+    <sca:service name="subscriptionWebService" promote="subscriptionWebserviceComponent/ISubscriptionWebService"/>
+
     <sca:service name="handlerManagerComponentService" promote="handlerManagerComponent/handlerManagerServiceBase">
         <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
     </sca:service>
-    
+
     <sca:service name="runManagerService" promote="runManagerComponentReference/runManagerServiceRef">
-        <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />        
+        <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
     </sca:service>
-    
+
     <!-- ================================ -->
     <!-- IMPLEMENTATION                   -->
-    
+
     <!-- Handler manager -->
     <sca:component name="handlerManagerComponent">
         <sca:service name="handlerManagerServiceBase">
@@ -37,9 +40,9 @@
             <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
         </sca:reference>
     </sca:component>
-    
+
     <sca:wire source="handlerManagerComponent/handlers" target="recordHandlerComponent/recordHandlerService" />
-    
+
     <sca:component name="runManagerComponentReference">
         <sca:service name="runManagerServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManager" />
@@ -58,17 +61,17 @@
         <sca:implementation.java class="org.easysoa.proxy.core.api.event.EventMessageHandlerImpl" />
     </sca:component>
     <sca:wire source="handlerManagerComponent/handlers" target="eventMessageHandlerComponent/eventMessageHandlerService"/>
-	
+
     <!-- Monitoring handler -->
     <sca:component name="monitoringHandlerComponent">
-        <sca:service name="monitoringHandlerService"> 
-            <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" /> 
+        <sca:service name="monitoringHandlerService">
+            <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.MonitoringHandler" />
         <sca:reference name="monitoringService" target="monitoringServiceComponentRef/monitoringServiceServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.monitoring.MonitoringService" />
         </sca:reference>
-    </sca:component> 
+    </sca:component>
     <sca:wire source="handlerManagerComponent/handlers" target="monitoringHandlerComponent/monitoringHandlerService"/>
     <sca:component name="monitoringServiceComponentRef">
         <sca:service name="monitoringServiceServiceRef">
@@ -76,7 +79,7 @@
         </sca:service>
         <sca:implementation.composite name="monitoringService.composite" />
     </sca:component>
-    
+
     <!-- Registry V1 SOAP Discovery message handler -->
     <sca:component name="V1SoapDiscoveryMessageHandlerComponent">
         <sca:service name="V1SoapDiscoveryMessageHandlerService">
@@ -84,20 +87,20 @@
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.EasySOAv1SOAPDiscoveryMessageHandler" />
     </sca:component>
-    <sca:wire source="handlerManagerComponent/handlers" target="V1SoapDiscoveryMessageHandlerComponent/V1SoapDiscoveryMessageHandlerService"/>    
-    
+    <sca:wire source="handlerManagerComponent/handlers" target="V1SoapDiscoveryMessageHandlerComponent/V1SoapDiscoveryMessageHandlerService"/>
+
     <!-- Subscription service -->
     <sca:component name ="subscriptionWebserviceComponent">
         <sca:service name="ISubscriptionWebService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.event.ISubscriptionWebService"/>
-            <frascati:binding.rest uri="http://localhost:8084/SubscriptionWebService/" />
+            <!--<frascati:binding.rest uri="http://localhost:8084/SubscriptionWebService/" />-->
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.event.SubscriptionWebserviceImpl" />
         <sca:reference name="eventMessageHandler" target="eventMessageHandlerComponent" >
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
-        </sca:reference> 
-    </sca:component>    
-    
+        </sca:reference>
+    </sca:component>
+
     <!-- Run Manager driver binding configuration -->
     <!-- sca:component name="runManagerDriverServiceComponent">
         <sca:service name="runManagerDriverService">
@@ -109,5 +112,5 @@
         </sca:reference>
         <sca:implementation.composite name="runManagerDriver.composite"/>
     </sca:component -->
-    
+
 </sca:composite>

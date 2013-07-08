@@ -3,16 +3,16 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
     <modelVersion>4.0.0</modelVersion>
-    
+
   <parent>
       <groupId>org.easysoa</groupId>
       <artifactId>parent</artifactId>
       <version>0.5-SNAPSHOT</version>
       <relativePath>../../pom.xml</relativePath>
     </parent>
-  
+
     <properties>
-        <frascati.version>1.5-SNAPSHOT</frascati.version>
+        <frascati.version>1.6-SNAPSHOT</frascati.version>
         <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
     </properties>
 
@@ -47,7 +47,7 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <!-- Compile with Java 1.6 -->

@@ -34,7 +34,7 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
     private static final Logger logger = Logger.getLogger(FraSCAtiAppComponent.class);
 
     private static List<FraSCAtiAppDescriptor> contributionCache = new LinkedList<FraSCAtiAppDescriptor>();
-    
+
     private FraSCAtiServiceItf frascatiService;
 
 
@@ -107,7 +107,7 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
             URL[] appClasspath = filesToUrls(appJar, new File(app.libsPath).listFiles());
             logger.info("Loading app " + app.name);
             String newCompositeName = frascatiService.processComposite(app.compositeName,
-                    FraSCAtiServiceItf.all, appClasspath).getName();
+                    FraSCAtiServiceItf.all, null, appClasspath).getName();
             compositeInstances.put(app, newCompositeName);
             logger.info("Successfuly started app " + app.name);
         } catch (FraSCAtiServiceException e) {
@@ -121,7 +121,7 @@ public class FraSCAtiAppComponent extends DefaultComponent implements EventListe
     private URL[] filesToUrls(File jarFile, File[] libFiles) throws MalformedURLException {
         List<URL> urls = new LinkedList<URL>();
         urls.add(jarFile.toURI().toURL());
-        for (File libFile : libFiles) { 
+        for (File libFile : libFiles) {
             if (libFile.getName().endsWith(".jar")) {
                 urls.add(libFile.toURI().toURL());
             }

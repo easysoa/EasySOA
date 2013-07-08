@@ -12,6 +12,10 @@
         <servlet-name>FraSCAtiServlet</servlet-name>
         <servlet-class>org.ow2.frascati.servlet.FraSCAtiServlet</servlet-class>
         <init-param>
+            <param-name>contextual-properties</param-name>
+            <param-value>httpDiscoveryProxy.properties</param-value>
+        </init-param>
+        <init-param>
             <param-name>composite</param-name>
             <param-value>httpDiscoveryProxy</param-value>
         </init-param>
@@ -23,18 +27,8 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.js</url-pattern>
-        <url-pattern>*.css</url-pattern>
-        <url-pattern>*.ico</url-pattern>
-        <url-pattern>*.png</url-pattern>
-        <url-pattern>*.jpg</url-pattern>
-        <url-pattern>*.gif</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
         <servlet-name>FraSCAtiServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

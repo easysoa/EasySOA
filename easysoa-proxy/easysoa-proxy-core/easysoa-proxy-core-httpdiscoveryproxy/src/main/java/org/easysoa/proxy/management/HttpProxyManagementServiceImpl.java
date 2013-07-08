@@ -1,5 +1,21 @@
 /**
+ * EasySOA Proxy
+ * Copyright 2011-2013 Open Wide
  *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contact : easysoa-dev@googlegroups.com
  */
 package org.easysoa.proxy.management;
 
@@ -66,6 +82,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         logger.debug("Passing in ProxyInfoServiceImpl constructor !");
     }
 
+    //@Override
     public void update(ProxyConfiguration configuration) throws Exception {
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
         if (appInstanceConfService != null) {
@@ -75,6 +92,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         }
     }
 
+    //@Override
     public String reset(ProxyConfiguration configuration) throws Exception {
         logger.debug("reset..." + configuration.getId());
         String result = "";
@@ -88,6 +106,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         return result;
     }
 
+    //@Override
     public ProxyConfiguration get(ProxyConfiguration configuration) throws Exception {
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
         if (appInstanceConfService != null) {
@@ -124,6 +143,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
      * @param configuration The proxy configuration
      * @return <code>ProxyInfo</code> containing informations about instanced proxy
      */
+    //@Override
     public ManagementServiceResult getHttpProxy(ProxyConfiguration configuration) throws Exception {
 
         ManagementServiceResult result;
@@ -156,9 +176,6 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         // How to determine what creation strategy to use ?
         // Set in the proxy configuration ?
         // TODO : load the ProxyCreationStrategy on demand (determined by parameters contained in the configuration)
-
-        //ProxyCreationStrategy strategy = new EmbeddedProxyCreationStrategy();
-        ////ProxyInfo proxyInfo = proxyCreationStrategy.createProxy(configuration); // TODO remove
 
         // Embedded registry impl :
         HttpProxyConfigurationService appInstanceConfService = getConfigurationService(configuration);
@@ -229,8 +246,6 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         // Configure the handler
         // TODO : Reactivate
         //configurationService.update(configuration);
-
-        ////return proxyInfo;
 
         //* (Embedded/PerUser/AndComponent)EasySOAGeneratedAppIdFactoryStrategy.getId(user, projectId, componentIds [, other SoaNode ids ex. service, impl TODO components also ?]) returns easysoaGeneratedAppId
         //* getAvailablePort(conditions ex. > 20000) TODO Q pmerle implement by storing ports in FStudio db or by introspection (AT WORST or mere json) ??

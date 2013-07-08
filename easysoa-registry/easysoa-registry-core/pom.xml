@@ -159,7 +159,7 @@
       <artifactId>mockito-all</artifactId>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- Other embedded test dependencies -->
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
@@ -193,7 +193,7 @@
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
     </dependency>
-    
+
   </dependencies>
 
   <build>

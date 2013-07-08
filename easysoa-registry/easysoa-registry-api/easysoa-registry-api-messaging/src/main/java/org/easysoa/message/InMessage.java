@@ -102,6 +102,10 @@ public class InMessage implements Message {
     private String remoteAddress;
     private int remotePort;
 
+    // Local server address and name
+    private String localAddress;
+    private String localHostName;
+
 	// private Long headersSize;
 	// private Long bodySize;
 	// private CustomFields customFields;
@@ -127,6 +131,8 @@ public class InMessage implements Message {
 		this.remoteHost = "";
         this.remoteAddress = "";
         this.remotePort = -1;
+        this.localAddress = "";
+        this.localHostName = "";
 	}
 
 	/**
@@ -169,6 +175,8 @@ public class InMessage implements Message {
 		this.remoteHost = request.getRemoteHost();
         this.remoteAddress = request.getRemoteAddr();
         this.remotePort = request.getRemotePort();
+        this.localAddress = request.getLocalAddr();
+        this.localHostName = request.getLocalName();
 
 		// Set url parameters
 		this.queryString = new QueryString();
@@ -393,6 +401,34 @@ public class InMessage implements Message {
      */
     public void setRemotePort(int remotePort) {
         this.remotePort = remotePort;
+    }
+
+    /**
+     * @return the localAddress
+     */
+    public String getLocalAddress() {
+        return localAddress;
+    }
+
+    /**
+     * @param localAddress the localAddress to set
+     */
+    public void setLocalAddress(String localAddress) {
+        this.localAddress = localAddress;
+    }
+
+    /**
+     * @return the localHostName
+     */
+    public String getLocalHostName() {
+        return localHostName;
+    }
+
+    /**
+     * @param localHostName the localHostName to set
+     */
+    public void setLocalHostName(String localHostName) {
+        this.localHostName = localHostName;
     }
 
 }

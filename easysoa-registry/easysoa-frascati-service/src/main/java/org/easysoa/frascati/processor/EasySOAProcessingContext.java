@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.stp.sca.Composite;
@@ -34,6 +33,8 @@ import org.ow2.frascati.assembly.factory.api.ProcessingMode;
 import org.ow2.frascati.parser.api.ParsingContext;
 import org.ow2.frascati.util.AbstractLoggeable;
 import org.ow2.frascati.util.FrascatiClassLoader;
+import org.ow2.frascati.util.context.ContextualProperties;
+import org.ow2.frascati.util.context.ContextualPropertiesImpl;
 
 public class EasySOAProcessingContext extends AbstractLoggeable implements
         ProcessingContext, ParsingContext {
@@ -68,6 +69,18 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     /** The processed composites **/
     private HashMap<String, Composite> processedComposites = new HashMap<String, Composite>();
+
+    /** Contextual properties **/
+    private ContextualProperties contextualProperties = new ContextualPropertiesImpl();
+
+    /** output directory for class compilation **/
+    private String outputDirectory;
+
+    /** List of Java source directories to compile **/
+    private List<String> javaSourceDirectoryToCompile = new ArrayList<String>();
+
+    /** List of membranes to generate **/
+    private List<MembraneDescription> membranesToGenerate = new ArrayList<MembraneDescription>();
 
     // ---------------------------------------------------------------------------
     // Public methods.
@@ -302,8 +315,6 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
         return errorMessages;
     }
 
-    // ////////////////////////////////////////////
-
     public void addProcessedComposite(Composite processedComposite) {
         this.processedComposites.put(processedComposite.getName(), processedComposite);
     }
@@ -314,6 +325,43 @@ public class EasySOAProcessingContext extends AbstractLoggeable implements
 
     public Composite getProcessedComposite(String compositeName) {
         return this.processedComposites.get(compositeName);
+    }
+
+    public Object getContextualProperty(String path) {
+        return this.contextualProperties.getContextualProperty(path);
+    }
+
+    public void setContextualProperty(String path, Object value) {
+        if(value != null){
+            this.contextualProperties.setContextualProperty(path, value);
+        }
+    }
+
+    public String getOutputDirectory() {
+        return this.outputDirectory;
+    }
+
+    public void setOutputDirectory(String path) {
+        this.outputDirectory = path;
+    }
+
+    public void addJavaSourceDirectoryToCompile(String path) {
+      // Only store Java source path not already registered.
+      if(!this.javaSourceDirectoryToCompile.contains(path)) {
+        this.javaSourceDirectoryToCompile.add(path);
+      }
+    }
+
+    public String[] getJavaSourceDirectoryToCompile() {
+        return this.javaSourceDirectoryToCompile.toArray(new String[this.javaSourceDirectoryToCompile.size()]);
+    }
+
+    public void addMembraneToGenerate(MembraneDescription md) {
+        this.membranesToGenerate.add(md);
+    }
+
+    public MembraneDescription[] getMembraneToGenerate() {
+        return this.membranesToGenerate.toArray(new MembraneDescription[this.membranesToGenerate.size()]);
     }
 
 }

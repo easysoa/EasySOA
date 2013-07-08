@@ -27,6 +27,13 @@
       <groupId>org.easysoa.registry.api</groupId>
       <artifactId>easysoa-registry-api-local</artifactId>
     </dependency>
+
+    <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-doctypes-core</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
@@ -61,11 +68,18 @@
       <artifactId>htmlcleaner</artifactId>
     </dependency>
 
+
     <!-- HTTP body parsing -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-common-utilities</artifactId>
+      <artifactId>cxf-rt-core</artifactId>
     </dependency>
+    <!-- To remove since the update to CXF 2.7.5 -->
+    <!-- replaced by cxf-rt-core -->
+    <!--<dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-common-utilities</artifactId>
+    </dependency>-->
 
     <!-- Tests -->
     <dependency>

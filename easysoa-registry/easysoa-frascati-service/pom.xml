@@ -22,7 +22,7 @@
     </licenses>
 
     <properties>
-        <frascati.version>1.5-SNAPSHOT</frascati.version>
+        <frascati.version>1.6-SNAPSHOT</frascati.version>
         <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
     </properties>
 
@@ -47,7 +47,19 @@
         </dependency>
         <dependency>
             <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-component-factory</artifactId>
+            <version>${frascati.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-web-explorer-bootstrap</artifactId>
+            <version>${frascati.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati.osgi</groupId>
+            <artifactId>frascati-independent-osgi-util</artifactId>
             <version>${frascati.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -67,7 +79,7 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
-    
+
     <!-- Plugin management -->
     <build>
         <pluginManagement>
@@ -75,7 +87,7 @@
                 <plugin>
                     <groupId>org.ow2.frascati.mojo</groupId>
                     <artifactId>frascati-compiler-plugin</artifactId>
-                    <version>1.5-SNAPSHOT</version>
+                    <version>1.6-SNAPSHOT</version>
                     <executions>
                         <execution>
                             <id>compile-composite</id>
@@ -114,7 +126,7 @@
                                             frascati-compiler-plugin
                                         </artifactId>
                                         <versionRange>
-                                            [1.5-SNAPSHOT,)
+                                            [1.6-SNAPSHOT,)
                                         </versionRange>
                                         <goals>
                                             <goal>compile</goal>
@@ -135,8 +147,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>

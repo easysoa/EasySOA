@@ -1,29 +1,32 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
 package org.easysoa.test.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.cxf.BusFactory;
@@ -54,7 +57,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
     protected FraSCAtiServiceItf frascati = null;
     protected RemoteFraSCAtiServiceProvider serviceProvider = null;
     protected ArrayList<Composite> componentList = null;
-    
+
     protected File lib;
 
     static
@@ -66,7 +69,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
 
     /**
      * Return the invoking class name
-     * 
+     *
      * @return The class name
      */
     public static String getInvokingClassName()
@@ -76,7 +79,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
 
     /**
      * Start FraSCAti
-     * 
+     *
      * @throws Exception
      */
     protected void startFraSCAti() throws Exception
@@ -85,23 +88,23 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
         {
             char sep = File.separatorChar;
             configure();
-            
+
             // target/test-classes/easysoa-proxy-core-httpdiscoveryproxy.jar
             // ../easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT.jar
             //StringBuilder srcBuilder = new StringBuilder("target").append(sep).append("test-classes").append(sep).append("easysoa-proxy-core-httpdiscoveryproxy.jar");
             StringBuilder srcBuilder = new StringBuilder("../easysoa-proxy-core-httpdiscoveryproxy/target/easysoa-proxy-core-httpdiscoveryproxy-0.5-SNAPSHOT.jar");
-            
+
             File srcFile = new File(srcBuilder.toString());
-            
-            FileUtils.copyFileToDirectory(srcFile.getAbsoluteFile(), 
+
+            FileUtils.copyFileToDirectory(srcFile.getAbsoluteFile(),
                     remoteFrascatiLibDir);
-            
+
             StringBuilder libBuilder = new StringBuilder(
                     remoteFrascatiLibDir.getAbsolutePath()).append(sep).append(
                          "easysoa-proxy-core-httpdiscoveryproxy.jar");
-            
+
             lib = new File(libBuilder.toString());
-            
+
             logger.info("FraSCATI Starting");
             componentList = new ArrayList<Composite>();
             serviceProvider = new RemoteFraSCAtiServiceProvider(null);
@@ -110,7 +113,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
     }
 
     /**
-     * 
+     *
      * @throws FrascatiException
      */
     protected void stopFraSCAti() throws Exception
@@ -141,7 +144,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
 
     /**
      * Remove the Jetty deployed apps to avoid blocking tests
-     * @param port The port where the Jetty application is deployed 
+     * @param port The port where the Jetty application is deployed
      */
     protected void cleanJetty(int port){
         JettyHTTPServerEngineFactory jettyFactory = BusFactory.getDefaultBus().getExtension(JettyHTTPServerEngineFactory.class);
@@ -159,24 +162,34 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
         catch(Exception ex){
             logger.warn("No beans found for app deployed on Jetty port " + port);
         }
-    }    
-    
+    }
+
     /**
      * Start HTTP Proxy
-     * 
+     *
      * @throws FrascatiException
      * @throws FraSCAtiServiceException
      */
     protected void startHttpDiscoveryProxy(String composite, URL... urls) throws Exception {
         logger.info("HTTP Discovery Proxy Starting");
-        Composite component = frascati.processComposite(composite,
-                FraSCAtiServiceItf.all, urls);
+
+        // Init contextual properties
+        Properties properties = new Properties();
+        try {
+            // Load it from the httpDiscoveryProxy.properties file.
+            properties.load(new FileInputStream("src/main/resources/httpDiscoveryProxy.properties"));
+        } catch (IOException ioe) {
+            throw new Error(ioe);
+        }
+
+        // Process the composite
+        Composite component = frascati.processComposite(composite, FraSCAtiServiceItf.all, properties, urls);
         componentList.add(component);
     }
 
     /**
      * Start the services mock for tests (Meteo mock, twitter mock ...)
-     * 
+     *
      * @param withNuxeoMock
      *            If true, the Nuxeo mock is started
      * @throws FrascatiException
@@ -198,7 +211,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
     }
 
     /**
-     * 
+     *
      * @throws Exception
      */
     public void startNewRun(String runName) throws Exception {
@@ -211,7 +224,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
     }
 
     /**
-     * 
+     *
      * @throws Exception
      */
     public void stopAndSaveRun() throws Exception {
@@ -224,7 +237,7 @@ public abstract class AbstractProxyTestStarter extends RemoteFraSCAtiServiceProv
     }
 
     /**
-     * 
+     *
      * @throws Exception
      */
     public void deleteRun() throws Exception {

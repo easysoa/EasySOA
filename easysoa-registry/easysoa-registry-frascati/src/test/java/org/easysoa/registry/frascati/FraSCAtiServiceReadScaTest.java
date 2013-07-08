@@ -1,20 +1,20 @@
 /**
  * EasySOA Registry
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -41,9 +41,9 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
 /**
  * Tests SCA read with FraSCAti
- * 
+ *
  * @author mdutoo
- * 
+ *
  */
 @RunWith(FeaturesRunner.class)
 @Features({/*EasySOACoreTestFeature.class,*/ FraSCAtiFeature.class})
@@ -54,13 +54,13 @@ public class FraSCAtiServiceReadScaTest {
     //@Inject
     //NxFraSCAtiRegistryService frascatiRegistryService;
     protected FraSCAtiServiceItf frascatiService = null;
-    
+
     @Before
     public void setUp(){
         frascatiService = (FraSCAtiServiceItf) Framework.getLocalService(FraSCAtiServiceProviderItf.class).getFraSCAtiService();
         assertNotNull(frascatiService);
     }
-    
+
     /**
      * checking that FraSCAti parsing-based import of SCA ref'ing unknown class
      * fails without custom ProcessingContext.loadClass()
@@ -75,7 +75,7 @@ public class FraSCAtiServiceReadScaTest {
         String compositeName = null;
         try {
             //compositeName = frascatiRegistryService.getFraSCAti().processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, scaFile.toURI().toURL());
-            compositeName = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, scaFile.toURI().toURL()).getName();
+            compositeName = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, null, scaFile.toURI().toURL()).getName();
 
             //Composite composite = frascatiRegistryService.getFraSCAti().getComposite(compositeName);
             Composite composite = frascatiService.getComposite(compositeName);
@@ -99,8 +99,8 @@ public class FraSCAtiServiceReadScaTest {
         // File scaFile = new File(scaFilePath);
 
         //String composite = frascatiRegistryService.getFraSCAti().processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, new File(scaFilePath).toURI().toURL());
-        String composite = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, new File(scaFilePath).toURI().toURL()).getName();
-        
+        String composite = frascatiService.processComposite("RestSoapProxy.composite", FraSCAtiServiceItf.check, null, new File(scaFilePath).toURI().toURL()).getName();
+
         Assert.assertTrue(composite != null);
         //Assert.assertTrue(frascatiRegistryService.getFraSCAti().getComposite(composite) != null);
         Assert.assertTrue(frascatiService.getComposite(composite) != null);
@@ -108,7 +108,7 @@ public class FraSCAtiServiceReadScaTest {
 
     /** Rather here than in FraSCAtiService because only public for test purpose */
     private Composite readComposite(URL compositeUrl, int mode) throws Exception {
-       return frascatiService.processComposite(compositeUrl.toString(), mode);
+       return frascatiService.processComposite(compositeUrl.toString(), mode, null);
     }
 
 }

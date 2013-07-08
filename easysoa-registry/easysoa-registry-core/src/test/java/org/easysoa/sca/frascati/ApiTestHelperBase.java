@@ -1,20 +1,20 @@
 /**
  * EasySOA Registry
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -31,57 +31,57 @@ import org.easysoa.sca.frascati.test.RemoteFraSCAtiServiceProviderTest;
 import org.eclipse.stp.sca.Composite;
 
 /**
- * 
+ *
  * @author jguillemotte
- * 
+ *
  */
 public class ApiTestHelperBase extends RemoteFraSCAtiServiceProviderTest {
 
     static final Log log = LogFactory.getLog(ApiTestHelperBase.class);
 
     /** The FraSCAti platform */
-    protected static FraSCAtiServiceItf frascati = null;   
+    protected static FraSCAtiServiceItf frascati = null;
     protected static EasySOAApiFraSCAti easy = null;
     protected static ArrayList<String> componentList = null;
 
     protected static void startMock() {
-        
+
         log.info("Services Mock Starting");
         log.info("frascati = " + frascati);
-        
+
         Composite composite = null;
-        
+
         try {
-            
+
             composite = frascati.processComposite(
-                    "src/test/resources/RestApiMock.composite", FraSCAtiServiceItf.all);
+                    "src/test/resources/RestApiMock.composite", FraSCAtiServiceItf.all, null);
             componentList.add(composite.getName());
-            
+
         } catch (FraSCAtiServiceException e) {
             
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Start FraSCAti
-     * 
+     *
      * @throws Exception
      */
     protected void startFraSCAti() throws Exception {
-        
+
         if(easy == null) {
             //char sep = File.separatorChar;
             configure();
             log.info("FraSCATI Starting");
             componentList = new ArrayList<String>();
-            easy = EasySOAApiFraSCAti.getInstance();            
+            easy = EasySOAApiFraSCAti.getInstance();
             frascati = easy.getFraSCAti();
         }
-    }    
-    
+    }
+
      public void stopFraSCAti() {
-         
+
         for (String componentCompositeName : componentList) {
             try {
                 frascati.stop(componentCompositeName);
@@ -94,7 +94,7 @@ public class ApiTestHelperBase extends RemoteFraSCAtiServiceProviderTest {
                 log.warn("Error removing composite " + componentCompositeName);
             }
         }
-        
+
         EasySOAApiFraSCAti.killInstance();
         easy = null;
         frascati = null;

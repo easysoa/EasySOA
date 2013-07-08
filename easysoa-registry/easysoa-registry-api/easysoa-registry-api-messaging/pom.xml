@@ -21,16 +21,19 @@
             <artifactId>easysoa-proxy-core-persistence</artifactId>
         </dependency>
         <!-- Javax servlet -->
-        <!--<dependency>
+        <!-- 2.5 required to stay sync with frascati-velocity -->
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
-        </dependency> -->
-        <dependency>
+        </dependency>
+        <!-- If we want to use the async features of servlet 3.0 lib -->
+        <!-- we have to deploy the httpDiscoveryProxy in a Tomcat 7 without frascati-velocity feature -->
+        <!--<dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
-        </dependency>
+        </dependency>-->
         <!--<dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>

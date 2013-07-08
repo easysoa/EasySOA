@@ -18,8 +18,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <frascati.version>1.5-SNAPSHOT</frascati.version><!-- at least 1.5-SNAPSHOT for implementation.velocity -->
-        <tinfi.version>1.4.6-SNAPSHOT</tinfi.version>
+        <frascati.version>1.6-SNAPSHOT</frascati.version>
+        <tinfi.version>1.4.6</tinfi.version>
     </properties>
 
     <dependencies>
@@ -92,6 +92,16 @@
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-implementation-velocity</artifactId>
             <version>${frascati.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo-specs</groupId>
+                    <artifactId>geronimo-servlet_3.0_spec</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -104,6 +114,11 @@
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>core</artifactId>
             <version>3.3.0.771</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
         </dependency>
 
     </dependencies>
@@ -120,6 +135,11 @@
                 <configuration>
                     <!-- warSourceDirectory>WebContent</warSourceDirectory -->
                     <warName>easysoa-proxy</warName>
+                    <!-- Following jar's excluded to avoid a conflict whith servlet-api-2.5.jar provided by Tomcat 6 -->
+                    <packagingExcludes>
+                        WEB-INF/lib/servlet-api*,
+                        WEB-INF/lib/geronimo-servlet*
+                    </packagingExcludes>
                 </configuration>
             </plugin>
 
@@ -159,7 +179,7 @@
                                 <pluginExecutionFilter>
                                     <groupId>org.ow2.frascati.mojo</groupId>
                                     <artifactId>frascati-compiler-plugin</artifactId>
-                                    <versionRange>1.5-SNAPSHOT</versionRange>
+                                    <versionRange>1.6-SNAPSHOT</versionRange>
                                     <phase>compile-composite</phase>
                                     <goals>
                                         <goal>generate-sources</goal>
@@ -171,6 +191,12 @@
                             </pluginExecution>
                         </pluginExecutions>
                     </lifecycleMappingMetadata>
+                    <contextualProperties>
+                        <contextualProperty>
+                            <!--<key>httpDiscoveryProxy.composite</key>--><!-- No prefix required -->
+                            <file>${basedir}/src/main/resources/httpDiscoveryProxy.properties</file>
+                        </contextualProperty>
+                    </contextualProperties>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -225,7 +251,7 @@
                                     <pluginExecutionFilter>
                                         <groupId>org.ow2.frascati.mojo</groupId>
                                         <artifactId>frascati-compiler-plugin</artifactId>
-                                        <versionRange>[1.5-SNAPSHOT,)</versionRange>
+                                        <versionRange>[1.6-SNAPSHOT,)</versionRange>
                                         <goals>
                                             <goal>compile</goal>
                                         </goals>

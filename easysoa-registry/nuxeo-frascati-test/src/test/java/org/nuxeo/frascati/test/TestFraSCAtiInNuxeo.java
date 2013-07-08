@@ -1,20 +1,20 @@
 /**
  * EasySOA Registry
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -46,9 +46,9 @@ public class TestFraSCAtiInNuxeo
 {
 
     private final String resourcePath = "src/test/resources/";
-    private final String pojoPath = resourcePath  + "helloworld-pojo-1.5-SNAPSHOT.jar";
-    private final String wsPath = resourcePath  + "helloworld-ws-server-1.5-SNAPSHOT.jar";
-    private final String servletPath = resourcePath + "frascati-helloworld-servlet-1.5-SNAPSHOT.jar";
+    private final String pojoPath = resourcePath  + "helloworld-pojo-1.6-SNAPSHOT.jar";
+    private final String wsPath = resourcePath  + "helloworld-ws-server-1.6-SNAPSHOT.jar";
+    private final String servletPath = resourcePath + "frascati-helloworld-servlet-1.6-SNAPSHOT.jar";
 
     protected static final Logger log = Logger
             .getLogger(TestFraSCAtiInNuxeo.class.getCanonicalName());
@@ -75,7 +75,7 @@ public class TestFraSCAtiInNuxeo
             File scaFile = new File(pojoPath);
             scaFile = scaFile.getAbsoluteFile();
             fcomponent = frascatiService.processComposite(
-                    "helloworld-pojo.composite", FraSCAtiServiceItf.all,
+                    "helloworld-pojo.composite", FraSCAtiServiceItf.all, null,
                     scaFile.toURI().toURL()).getName();
         } catch (Exception e)
         {
@@ -98,7 +98,7 @@ public class TestFraSCAtiInNuxeo
 
     /**
      * Test if an existing service can be retrieved
-     * 
+     *
      * @throws NuxeoFraSCAtiException
      */
     @Test
@@ -120,7 +120,7 @@ public class TestFraSCAtiInNuxeo
 
     /**
      * Test NuxeoFraSCAtiException is thrown if a service is unknown
-     * 
+     *
      * @throws NuxeoFraSCAtiException
      */
     @Test(expected = FraSCAtiServiceException.class)
@@ -150,7 +150,7 @@ public class TestFraSCAtiInNuxeo
             for (; n <= 1; n++)
             {
                 String componentServletName = frascatiService.processComposite(
-                        "helloworld-servlet.composite", FraSCAtiServiceItf.all,
+                        "helloworld-servlet.composite", FraSCAtiServiceItf.all, null,
                         servletFile.toURI().toURL()).getName();
                 frascatiService.remove(componentServletName);
             }
@@ -174,7 +174,7 @@ public class TestFraSCAtiInNuxeo
             {
                 String componentWSName = frascatiService.processComposite(
                         "helloworld-ws-server.composite",
-                        FraSCAtiServiceItf.all, wsFile.toURI().toURL()).getName();
+                        FraSCAtiServiceItf.all, null, wsFile.toURI().toURL()).getName();
                 frascatiService.remove(componentWSName);
             }
         } catch (FraSCAtiServiceException e)

@@ -40,26 +40,14 @@
         <dependency>
             <groupId>org.easysoa.proxy</groupId>
             <artifactId>easysoa-proxy-core-api</artifactId>
-            <version>${easysoa.version}</version>
         </dependency>
         <dependency>
             <groupId>org.easysoa.proxy</groupId>
             <artifactId>easysoa-proxy-core-api-frascati</artifactId>
-            <version>${easysoa.version}</version>
         </dependency>
         <dependency>
             <groupId>org.easysoa.proxy</groupId>
             <artifactId>easysoa-proxy-core-httpdiscoveryproxy</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.easysoa.proxy</groupId>
-            <artifactId>easysoa-proxy-core-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>		 
-        <dependency>
-            <groupId>org.easysoa.proxy</groupId>
-            <artifactId>easysoa-proxy-core-api-frascati</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.easysoa.proxy</groupId>

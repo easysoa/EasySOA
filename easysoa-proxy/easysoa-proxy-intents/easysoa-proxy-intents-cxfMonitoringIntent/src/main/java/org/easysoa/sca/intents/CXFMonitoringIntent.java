@@ -1,20 +1,20 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -46,7 +46,7 @@ import org.talend.esb.sam.common.event.Event;
 import org.talend.esb.sam.monitoringservice.v1.MonitoringService;
 
 /**
- * 
+ *
  * @author jguillemotte
  *
  */
@@ -55,12 +55,12 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
     /**
      * Logger
      */
-    private Logger logger = Logger.getLogger(CXFMonitoringIntent.class.getName());    
-    
+    private Logger logger = Logger.getLogger(CXFMonitoringIntent.class.getName());
+
     // SAM WS service reference
     @Reference
     MonitoringService samMonitoringService;
-    
+
     @Override
     public boolean handleMessage(MessageContext context) {
 
@@ -88,13 +88,13 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
         } catch (Exception ex) {
             logger.error("An error occurs when sending the event in SAM Server", ex);
             ex.printStackTrace();
-        }        
-        
+        }
+
         return true;
     }
 
     /**
-     * DEPRECATED : Method EventMapper.map(event) is more efficient and avoid 
+     * DEPRECATED : Method EventMapper.map(event) is more efficient and avoid
      * JAXB error [java.lang.IllegalArgumentException: prefix {http is not bound to a namespace]
      * Mapper to transform an Event to an EventType
      * @param event
@@ -110,7 +110,7 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
         } catch (MimeTypeParseException ex) {
             logger.error("An error occurs when setting the content. Message content is maybe null or empty", ex);
             ex.printStackTrace();
-        }            
+        }
         // Content cut
         messageEvent.setContentCut(event.isContentCut());
         // CustomInfo
@@ -136,7 +136,7 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
         // So disabled at the moment
         //messageInfoType.setOperationName(event.getMessageInfo().getOperationName());
         //messageInfoType.setPorttype(new QName(event.getMessageInfo().getPortType()));
-        
+
         messageInfoType.setTransport(event.getMessageInfo().getTransportType());
         messageEvent.setMessageInfo(messageInfoType);
         // Originator
@@ -159,7 +159,7 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
             ex.printStackTrace();
         }
         //
-        return messageEvent; 
+        return messageEvent;
     }
 
     @Override
@@ -172,9 +172,14 @@ public class CXFMonitoringIntent extends AbstractHandlerIntent implements Handle
         // TODO Auto-generated method stub
     }
 
-    @Override
+    /*@Override
     protected Handler<MessageContext> getHandler() {
         return this;
+    }*/
+
+    @Override
+    protected Handler<MessageContext> getHandler() {
+        return (Handler<MessageContext>)this ;
     }
 
 }

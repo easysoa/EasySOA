@@ -5,26 +5,20 @@
                xmlns:web="http://frascati.ow2.org/xmlns/web/1.0"
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" name="httpDiscoveryProxy">
 
-    <!-- Global properties -->
-    <sca:property name="proxyPort">${proxyPort}</sca:property><!-- 8082 -->
-    <sca:property name="proxyForwardConnexionTimeoutMs">${proxyForwardConnexionTimeoutMs}</sca:property><!-- 3000 -->
-    <sca:property name="proxyForwardSocketTimeoutMs">${proxyForwardSocketTimeoutMs}</sca:property><!-- 3000 -->
-
     <!-- HTTP Proxy -->
     <!-- Run with default mode : Discovery -->
     <sca:component name="httpProxyService">
         <sca:implementation.java class="org.easysoa.proxy.HttpDiscoveryProxy" />
         <sca:service name="httpServiceInput">
             <sca:interface.java interface="javax.servlet.Servlet" /><!-- TODO not required because already said ? -->
-            <!--<tuscany:binding.http uri="http://vmregistry:8082/" />--><!-- else if localhost, not available from vmapv. TODO better in props or pom -->
-            <tuscany:binding.http uri="${proxyBaseAddress}" />
+            <tuscany:binding.http uri="http://vmregistry:8082/" /><!-- else if localhost, not available from vmapv. TODO better in props or pom -->
         </sca:service>
         <sca:reference name="handlerManager">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.HandlerManager" />
         </sca:reference>
-        <sca:property name="proxyPort" source="$proxyPort"/>
-        <sca:property name="forwardHttpConnexionTimeoutMs" source="$proxyForwardConnexionTimeoutMs"/>
-        <sca:property name="forwardHttpSocketTimeoutMs" source="$proxyForwardSocketTimeoutMs"/>
+        <sca:property name="proxyPort">8082</sca:property>
+        <sca:property name="forwardHttpConnexionTimeoutMs">30000</sca:property>
+        <sca:property name="forwardHttpSocketTimeoutMs">30000</sca:property>
     </sca:component>
 
     <sca:wire source="httpProxyService/handlerManager" target="handlerManagerServBaseComp/handlerManagerComponentService"/>
@@ -50,8 +44,7 @@
     <sca:component name="runManagerDriverServiceComponent">
         <sca:service name="runManagerDriverService">
             <sca:interface.java interface="org.easysoa.proxy.core.api.run.RunManagerDriver" />
-            <!--<frascati:binding.rest uri="http://localhost:8084/" />--><!-- TODO probably not available from outside, rather in props or pom -->
-            <frascati:binding.rest uri="${runManagerDriverBaseAddress}" />
+            <frascati:binding.rest uri="http://localhost:8084/" /><!-- TODO probably not available from outside, rather in props or pom -->
         </sca:service>
         <sca:implementation.composite name="runManagerDriver.composite"/>
     </sca:component>
@@ -99,8 +92,7 @@
     <sca:service name="HttpProxyManagementService" promote="proxyInfoComponent/proxyInfo">
         <sca:interface.java interface="org.easysoa.proxy.core.api.management.HttpProxyManagementService"/>
         <!-- frascati:binding.rest uri="http://localhost:9089/easysoa-proxy/HttpProxyManagementService/" / -->
-        <!--<frascati:binding.rest uri="http://vmregistry:9089/easysoa-proxy/HttpProxyManagementService/" />--><!-- 9080 error address already in use, TODO better in props or pom.xml -->
-        <frascati:binding.rest uri="${httpProxyManagementServiceBaseAddress}" />
+        <frascati:binding.rest uri="http://vmregistry:9089/easysoa-proxy/HttpProxyManagementService/" /><!-- 9080 error address already in use, TODO better in props or pom.xml -->
     </sca:service>
 
     <sca:component name="proxyInfoComponent">
@@ -126,25 +118,5 @@
         <property name="title">Http proxy management</property>
         <web:implementation.velocity location="webContent" default="httpProxyManagement.html" />
     </sca:component>-->
-
-    <!-- Run Manager driver binding configuration -->
-    <sca:component name="replayEngineDriverServiceComponent">
-        <sca:service name="replayEngineDriverService">
-            <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ExchangeReplayService" />
-            <!--<frascati:binding.rest uri="http://localhost:8086/" />-->
-            <frascati:binding.rest uri="${replayEngineDriverBaseAddress}" />
-        </sca:service>
-        <sca:implementation.composite name="replayEngine.composite"/>
-    </sca:component>
-
-    <!-- Event Subscription web service -->
-    <sca:component name="eventSubscriptionWebServiceComponent">
-        <sca:service name="subscriptionWebService">
-            <sca:interface.java interface="org.easysoa.proxy.core.api.event.ISubscriptionWebService" />
-            <!--<frascati:binding.rest uri="http://localhost:8084/SubscriptionWebService/" />-->
-            <frascati:binding.rest uri="${eventSubscriptionServiceBaseAddress}" />
-        </sca:service>
-        <sca:implementation.composite name="handlerManagerBase.composite"/>
-    </sca:component>
 
 </sca:composite>

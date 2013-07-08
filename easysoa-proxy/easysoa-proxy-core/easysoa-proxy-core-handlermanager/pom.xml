@@ -125,7 +125,7 @@
 											frascati-compiler-plugin
                 						</artifactId>
 										<versionRange>
-											[1.5-SNAPSHOT,)
+											[1.6-SNAPSHOT,)
                 						</versionRange>
 										<goals>
 											<goal>compile</goal>

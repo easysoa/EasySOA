@@ -182,7 +182,7 @@
 											frascati-compiler-plugin
                 						</artifactId>
 										<versionRange>
-											[1.5-SNAPSHOT,)
+											[1.6-SNAPSHOT,)
                 						</versionRange>
 										<goals>
 											<goal>compile</goal>
@@ -235,6 +235,12 @@
 							</pluginExecution>
 						</pluginExecutions>
 					</lifecycleMappingMetadata>
+                    <contextualProperties>
+                        <contextualProperty>
+                            <!--<key>httpDiscoveryProxy.composite</key>--><!-- No prefix required -->
+                            <file>${basedir}/src/main/resources/httpDiscoveryProxy.properties</file>
+                        </contextualProperty>
+                    </contextualProperties>
 				</configuration>
 				<dependencies>
 					<dependency>

@@ -226,14 +226,14 @@
 	    <dependency>
 	      <groupId>org.easysoa.registry.api</groupId>
 	      <artifactId>easysoa-registry-api-messaging</artifactId>
-	      <scope>test</scope>      
+	      <scope>test</scope>
 	    </dependency>
 	    <!-- Discovery API -->
 	    <dependency>
 	      <groupId>org.easysoa.registry.api</groupId>
 	      <artifactId>easysoa-registry-api-remote</artifactId>
-	      <scope>test</scope>      
-	    </dependency>		
+	      <scope>test</scope>
+	    </dependency>
     </dependencies>
 
     <build>
@@ -265,14 +265,14 @@
 		                                <directory>${project.basedir}/../../easysoa-proxy/easysoa-proxy-core/easysoa-proxy-core-httpdiscoveryproxy/target</directory>
                   						<includes>
                                         	<include>**/*.jar</include>
-                                  		</includes>		                                
+                                  		</includes>
 		                            </resource>
 		                        </resources>
 		                    </configuration>
 		                </execution>
 		            </executions>
-		        </plugin>                
-                
+		        </plugin>
+
         <!--This plugin's configuration is used to store Eclipse m2e settings only.
           It has no influence on the Maven build itself. -->
                 <plugin>
