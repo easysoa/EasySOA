@@ -60,6 +60,9 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     public static final String PROJECT_ID_DEFAULT = "MyProject/Realisation";
     public static final String ENVIRONMENT_DEFAULT = "test";
 
+    // Headers
+    public static final String SOAP_ACTION_HEADER_NAME = "SOAPAction";
+
     // Logger
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);
     private boolean enabled = true;
@@ -183,13 +186,20 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 //properties.put(Endpoint.XPATH_ENDP_IP, inMessage.getServer()); // TODO add meta
                 //properties.put("*participants*", user); // TODO LATER participants meta
                 //properties.put("serviceimpl:component?", component); // TODO LATER if any ; get from conf service, default none
-                // TODO if SOAPAction header Endpoint.XPATH_ENDP_SERVICE_PROTOCOL = SOAP, else REST
-                // Test with SOAP UI : SOAPAcation header is present but contains no value
-                if("SOAP".equalsIgnoreCase(inMessage.getHeaders().getHeaderValue("SOAPAction"))){
-                    properties.put(Endpoint.XPATH_ENDP_SERVICE_PROTOCOL, "SOAP");
-                } else {
+
+                // if SOAPAction header => Endpoint.XPATH_ENDP_SERVICE_PROTOCOL = SOAP, else REST
+                // In some case, SOAPaction is present but contains no value (see http://michelchristianen.blogspot.fr/2011/02/understanding-soapaction-mystery_5785.html)
+                Boolean soapActionFound = false;
+                for(Header header : inMessage.getHeaders().getHeaderList()){
+                    if(SOAP_ACTION_HEADER_NAME.equalsIgnoreCase(header.getName())){
+                        properties.put(Endpoint.XPATH_ENDP_SERVICE_PROTOCOL, "SOAP");
+                        soapActionFound = true;
+                    }
+                }
+                if(!soapActionFound){
                     properties.put(Endpoint.XPATH_ENDP_SERVICE_PROTOCOL, "REST");
                 }
+
                 // TODO see in headers if anything (ex. "agent") to guess :
                 ///properties.put(Endpoint.XPATH_ENDP_SERVICE_RUNTIME, agent); // CXF (, Axis2...)
                 // User-agent header can be used for XPATH_ENDP_APP_SERVER_RUNTIME
@@ -197,7 +207,6 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                     properties.put(Endpoint.XPATH_ENDP_APP_SERVER_RUNTIME, inMessage.getHeaders().getHeaderValue("User-Agent")); // ApacheTomcat, Jetty...
                 }
                 // TODO LATER security props
-
                 String endpointSoaName = environment + ':' + endpointUrl;
 
                 // If the message is a SOAP Post request, also discovery & send an EndpointConsumption
