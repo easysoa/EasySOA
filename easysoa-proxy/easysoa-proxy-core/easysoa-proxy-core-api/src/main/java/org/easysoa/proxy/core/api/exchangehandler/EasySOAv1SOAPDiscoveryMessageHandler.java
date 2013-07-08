@@ -117,6 +117,29 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     	setConfiguration(configuration);
     }
 
+    /**
+     * Header list when using SOAP UI whith the proxy
+     *
+     * ** Request (inMessage)
+     * - Accept-Encoding : gzip,deflate
+     * - Content-Type : text/xml;charset=UTF-8
+     * - SOAPAction : ""
+     * - Content-Length : 865
+     * - Host : owsi-vm-easysoa-axxx-apv.accelance.net:7080
+     * - Proxy-Connection : Keep-Alive
+     * - User-Agent : Apache-HttpClient/4.1.1 (java 1.5)
+     *
+     * ** Response (outMessage)
+     * - Server : Apache-Coyote/1.1
+     * - flowid : urn:uuid:d65f7cd3-8192-4e16-9ad9-9beb685f918f
+     * - Content-Type : text/xml;charset=UTF-8
+     * - Content-Length : 315
+     * - Date : Mon, 08 Jul 2013 09:55:03 GMT
+     *
+     * @param inMessage
+     * @param outMessage
+     * @throws Exception
+     */
     @Override
     // TODO :Return an OperationResult object instead of void !
     public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception {
@@ -196,9 +219,18 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                     // using HTTP request referrer header or ServletRequest getRemoteAddr()
                     // or getRemotePort() (see what's int it, already in inMessage ??)
                     // to put in endpoint-consumption.xsd, to add to nuxeo types & layout
-                    /*for(Header header : inMessage.getHeaders().getHeaderList()){
-                        System.out.println("HEADERName : " + header.getName() + " - " + header.getValue());
-                    }*/
+                    logger.debug("inMessage HEADERS **********************************");
+                    for(Header header : inMessage.getHeaders().getHeaderList()){
+                        logger.debug("Name & value : " + header.getName() + " : " + header.getValue());
+                    }
+                    logger.debug("HEADERS ********************************** END");
+
+                    logger.debug("outMessage HEADERS **********************************");
+                    for(Header header : outMessage.getHeaders().getHeaderList()){
+                        logger.debug("Name & value : " + header.getName() + " : " + header.getValue());
+                    }
+                    logger.debug("HEADERS ********************************** END");
+
                     // TODO LATER take protocol props (see above for Endpoint) out of Endpoint
                     // in a facet to be also put on EndpointConsumption and fill it
 
