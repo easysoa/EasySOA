@@ -63,6 +63,12 @@
             <version>${frascati.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.ow2.frascati</groupId>
+            <artifactId>frascati-util</artifactId>
+            <version>${frascati.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <pluginRepositories>
