@@ -20,8 +20,6 @@
 
 package org.easysoa.proxy.core.api.exchangehandler;
 
-import org.easysoa.proxy.core.api.properties.PropertyManager;
-import org.easysoa.proxy.core.api.properties.ProxyPropertyManager;
 import org.easysoa.registry.rest.client.ClientBuilder;
 
 /**
@@ -30,28 +28,8 @@ import org.easysoa.registry.rest.client.ClientBuilder;
  *
  * @author jguillemotte
  */
-public class RegistryJerseyClientConfiguration {
+public interface RegistryJerseyClientConfiguration {
 
-    private ClientBuilder clientBuilder;
-
-    /**
-     * Initialize the jersey client
-     * @throws Exception If a problem occurs
-     */
-    public RegistryJerseyClientConfiguration() throws Exception {
-    	PropertyManager propertyManager = ProxyPropertyManager.getPropertyManager(); // AND NOT PropertyManager because null TODO better
-        clientBuilder = new ClientBuilder();
-        clientBuilder.setNuxeoSitesUrl(propertyManager.getProperty("nuxeo.rest.service", "http://localhost:8080/nuxeo/site"));
-        clientBuilder.setCredentials(propertyManager.getProperty("nuxeo.auth.login", "Administrator"),
-        		propertyManager.getProperty("nuxeo.auth.password", "Administrator"));
-    }
-
-    /**
-     * return the Registry client
-     * @return
-     */
-    public ClientBuilder getClient(){
-        return this.clientBuilder;
-    }
+    public ClientBuilder getClient();
 
 }

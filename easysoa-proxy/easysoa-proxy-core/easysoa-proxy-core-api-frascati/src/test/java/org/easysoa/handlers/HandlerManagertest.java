@@ -16,7 +16,6 @@ import org.ow2.frascati.util.FrascatiException;
 
 public class HandlerManagertest {
 
-
     // Logger
     private static Logger logger = Logger.getLogger(HandlerManagertest.class.getName());
 
@@ -24,23 +23,23 @@ public class HandlerManagertest {
     protected static FraSCAti frascati;
 
     protected static ArrayList<Component> componentList;
-    
+
     static {
         System.setProperty("org.ow2.frascati.bootstrap", "org.ow2.frascati.bootstrap.FraSCAti");
     }
-    
+
     /**
      * Start FraSCAti
-     * @throws FrascatiException 
+     * @throws FrascatiException
      */
     protected static void startFraSCAti() throws FrascatiException {
         logger.info("FraSCATI Starting");
         componentList =  new ArrayList<Component>();
         frascati = FraSCAti.newFraSCAti();
     }
-    
+
     /**
-     * 
+     *
      * @throws FrascatiException
      */
     protected static void stopFraSCAti() throws FrascatiException{
@@ -51,27 +50,27 @@ public class HandlerManagertest {
             }
         }
     }
-    
-    
+
+
     @BeforeClass
     public static void setUp() throws Exception {
         // Start fraSCAti
         startFraSCAti();
         // Start handlerManager
-        componentList.add(frascati.processComposite("handlerManager", new ProcessingContextImpl()));
+        componentList.add(frascati.processComposite("handlerManagerBase", new ProcessingContextImpl()));
     }
-    
+
     @Test
     public void test() throws Exception {
-        Component comp = frascati.getComposite("handlerManager/handlerManagerServiceBaseComp");
-        HandlerManager var =  frascati.getService(comp, "handlerManagerService", HandlerManager.class);
-        
+        Component comp = frascati.getComposite("handlerManagerBase");
+        HandlerManager var =  frascati.getService(comp, "handlerManagerComponentService", HandlerManager.class);
+
         InMessage inMessage = new InMessage();
         inMessage.setProtocol("http");
         inMessage.setMethod("get");
         inMessage.setPath("openwide/easysoanews/");
         inMessage.setServer("www.easysoa.org");
-        
+
         OutMessage outMessage = new OutMessage();
         var.handleMessage(inMessage, outMessage);
     }

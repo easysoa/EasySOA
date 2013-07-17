@@ -41,6 +41,7 @@ import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.ResourceDownloadInfo;
 import org.easysoa.registry.types.Subproject;
 import org.easysoa.registry.types.ids.SoaNodeId;
+import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
 
 /**
@@ -66,7 +67,10 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     // Logger
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);
     private boolean enabled = true;
-    private ClientBuilder registryClient = null;
+
+    @Reference
+    //private ClientBuilder registryClient = null;
+    private RegistryJerseyClientConfiguration registryClientConfiguration;
 
     // Proxy configuration params :
     // NB. defaults are in setHandlerConfiguration()
@@ -155,13 +159,13 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
             if(isSoapMessage || isGetWsdlMessage){
 
                 // Get the registry client, if not initialized => init
-                if(registryClient == null){
+                /*if(registryClient == null){
                     RegistryJerseyClientConfiguration jerseyClient = new RegistryJerseyClientConfiguration();
                     registryClient = jerseyClient.getClient();
-                }
+                }*/
 
                 // Create endpoint
-                RegistryApi registryApi = registryClient.constructRegistryApi();
+                RegistryApi registryApi = registryClientConfiguration.getClient().constructRegistryApi();
                 Map<String, Serializable> properties = new HashMap<String, Serializable>();
                 List<SoaNodeId> parents = new ArrayList<SoaNodeId>();
 
