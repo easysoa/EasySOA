@@ -69,7 +69,6 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     private boolean enabled = true;
 
     @Reference
-    //private ClientBuilder registryClient = null;
     private RegistryJerseyClientConfiguration registryClientConfiguration;
 
     // Proxy configuration params :
@@ -157,12 +156,6 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
         	boolean isSoapMessage = checkForSoapMessage(inMessage);
         	boolean isGetWsdlMessage = !isSoapMessage || checkForWsdlMessage(inMessage);
             if(isSoapMessage || isGetWsdlMessage){
-
-                // Get the registry client, if not initialized => init
-                /*if(registryClient == null){
-                    RegistryJerseyClientConfiguration jerseyClient = new RegistryJerseyClientConfiguration();
-                    registryClient = jerseyClient.getClient();
-                }*/
 
                 // Create endpoint
                 RegistryApi registryApi = registryClientConfiguration.getClient().constructRegistryApi();
