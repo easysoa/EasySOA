@@ -82,11 +82,11 @@ public class OutMessage implements Message {
         // Setting Message content
         this.headers = new Headers();
         // Set the headers
-        // TODO : With servlet 2.5, the following method getHeaderNames is not available
+        // With servlet 2.5, the following method getHeaderNames is not available
         // See http://stackoverflow.com/questions/12728017/how-to-get-header-from-response-in-servlet-2-3-or-2-5
-        /*for(String headerName : response.getHeaderNames()){
+        for(String headerName : response.getHeaderNames()){
             this.headers.addHeader(new Header(headerName, response.getHeader(headerName)));
-        }*/
+        }
         // Set the message content
         MessageContent messageContent = new MessageContent();
         messageContent.setRawContent(response.getMessageContent());
