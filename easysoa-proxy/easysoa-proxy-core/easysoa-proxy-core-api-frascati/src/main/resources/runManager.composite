@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
                xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frascati.ow2.org/xmlns/web/1.0" name="runManager">
 
     <!-- ================================ -->
     <!-- INTERFACE                        -->
     <sca:service name="runManagerServiceRef" promote="runManagerComponent/runManagerService"/>
-    
+
     <sca:service name="replayEngineService" promote="replayEngineRefComponent/replayEngineService">
         <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ReplayEngine" />
     </sca:service>
-    
+
     <!-- ================================ -->
     <!-- IMPLEMENTATION                   -->
-    
+
     <!-- Client UI for RunManager and Exchange store, Works with velocity -->
     <sca:component name="runManagerUIComponent">
         <web:implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="runManagerUITemplate.html" location="webContent" />
+        <property name="defaultRequestEncoding">UTF-8</property><!-- configures ServletImplementationVelocity --><
         <sca:service name="velocity">
             <sca:interface.java interface="javax.servlet.Servlet"/>
             <tuscany:binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/runManager" />
@@ -28,14 +29,14 @@
         <!-- Proxy implementation Velocity -->
         <!--<sca:reference name="compositeTemplates" target="TemplateProcessor/processor" />-->
     </sca:component>
-    
+
     <sca:wire source="runManagerUIComponent/exchangeRecordStoreManager" target="exchangeStoreManagerComponentRef/exchangeStoreManagerServiceRef"/>
-    
+
     <sca:component name="exchangeStoreManagerComponentRef">
         <sca:service name="exchangeStoreManagerServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.records.replay.ExchangeReplayService" />
         </sca:service>
-        <sca:implementation.composite name="storeManager.composite" />    	
+        <sca:implementation.composite name="storeManager.composite" />
     </sca:component>
 
     <!-- Run Manager -->
@@ -45,13 +46,13 @@
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.run.RunManagerImpl" />
         <sca:reference name="exchangeNumberGenerator">
-            <sca:interface.java interface="org.easysoa.proxy.core.api.messages.server.NumberGenerator" />			
+            <sca:interface.java interface="org.easysoa.proxy.core.api.messages.server.NumberGenerator" />
         </sca:reference>
         <!--<sca:reference name="replayEngine" target="replayEngineRefComponent/replayEngineService" />-->
     </sca:component>
-    
+
     <sca:wire source="runManagerComponent/exchangeNumberGenerator" target="exchangeNumberGeneratorComponentRef/exchangeNumberGeneratorServiceRef"/>
-    
+
     <sca:component name="exchangeNumberGeneratorComponentRef">
         <sca:service name="exchangeNumberGeneratorServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.messages.server.NumberGenerator" />

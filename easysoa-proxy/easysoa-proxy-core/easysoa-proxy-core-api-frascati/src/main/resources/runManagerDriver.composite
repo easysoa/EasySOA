@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" 
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
 xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frascati.ow2.org/xmlns/web/1.0" name="runManager">
 
     <!-- ================================ -->
-    <!-- INTERFACE                        -->    
+    <!-- INTERFACE                        -->
     <sca:service name="runManagerDriverService" promote="runManagerDriver/runManagerServiceDriver"/>
-    
+
     <sca:reference name="runManager" promote="runManagerDriver/runManager"/>
-    
+
     <!-- ================================ -->
-    <!-- IMPLEMENTATION                   -->    
+    <!-- IMPLEMENTATION                   -->
     <sca:component name="runManagerDriver">
         <sca:implementation.java class="org.easysoa.proxy.core.api.run.RunManagerDriverImpl" />
         <sca:service name="runManagerServiceDriver">
@@ -23,9 +23,9 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frasca
         	<sca:interface.java interface="org.easysoa.proxy.core.api.run.HTMLProcessorItf" />
         </sca:reference>
     </sca:component>
-    
+
     <!--<sca:wire source="runManagerDriver/runManager" target="runManagerComponentReference/runManagerServiceRef"/>-->
-    
+
     <!-- Problem here : if runManager.composite is called in 2 differents parent composites, we have 2 differents instance of run manager -->
     <!--<sca:component name="runManagerComponentReference">
         <sca:implementation.composite name="runManager.composite" />
@@ -40,6 +40,7 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frasca
         <sca:service name="RunManagerDriverHtml">
             <sca:interface.java interface="org.easysoa.proxy.core.api.run.HTMLProcessorItf" />
         </sca:service>
+        <property name="defaultRequestEncoding">UTF-8</property><!-- configures ServletImplementationVelocity -->
         <web:implementation.velocity location="webContent" default="htmlProcessor.vm" />
     </sca:component>
 

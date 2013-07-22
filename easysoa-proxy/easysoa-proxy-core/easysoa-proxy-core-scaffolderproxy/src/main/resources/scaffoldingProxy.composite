@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<composite xmlns="http://www.osoa.org/xmlns/sca/1.0" 
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
     xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
     xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0"
     name="scaffoldingProxy">
@@ -8,11 +8,12 @@
   <component name="scaffoldingProxyComponent">
     <!--<implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="formGenerator.html" location="contents"/>-->
     <implementation.velocity xmlns="http://frascati.ow2.org/xmlns/web/1.0" default="formGeneratorTemplate.html" location="contents"/>
+    <property name="defaultRequestEncoding">UTF-8</property><!-- configures ServletImplementationVelocity -->
     <service name="velocity">
       <binding.http xmlns="http://tuscany.apache.org/xmlns/sca/1.0" uri="/scaffoldingProxy"/>
     </service>
     <!-- HTML Form generator Reference -->
-	<reference name="formGenerator" target="formGeneratorComponent/formGeneratorService" />    
+	<reference name="formGenerator" target="formGeneratorComponent/formGeneratorService" />
   </component>
 
   <!--XSLT Form generator component -->
@@ -23,7 +24,7 @@
     <implementation.java class="org.easysoa.scaffolding.XsltFormGenerator"/>
 	<property name="defaultWsdl">defaultWsdl/airport_soap.wsdl</property>
   </component>-->
-  
+
   <!-- EasyWSDL Form generator component -->
   <component name="formGeneratorComponent">
     <service name="formGeneratorService">
@@ -43,7 +44,7 @@
     <implementation.java class="org.easysoa.scaffolding.WodenFormGenerator"/>
 	<property name="defaultWsdl">defaultWsdl/airport_soap.wsdl</property>
   </component>-->
-  
+
   <!-- Rest Soap Proxy  -->
   <component name="restSoapProxyComponent">
     <implementation.java class="org.easysoa.scaffolding.ScaffoldingProxyImpl"/>
@@ -58,7 +59,7 @@
     <interface.java interface="org.easysoa.scaffolding.ScaffoldingProxy"/>
     <frascati:binding.rest uri="http://localhost:7001/"/>
   </service>
-  
+
   <!-- WSDL Service helper component -->
   <component name="wsdlServiceHelperComponent">
     <service name="wsdlServiceHelperService">
@@ -69,6 +70,6 @@
 	<property name="httpProxyPort">8082</property -->
 	<!-- property name="httpProxyUsername">username</property>
 	<property name="httpProxyPassword">password</property -->
-  </component> 
-  
+  </component>
+
 </composite>
