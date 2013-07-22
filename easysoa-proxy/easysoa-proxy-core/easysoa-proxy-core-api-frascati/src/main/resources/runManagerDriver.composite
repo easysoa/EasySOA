@@ -40,7 +40,7 @@ xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.0" xmlns:web="http://frasca
         <sca:service name="RunManagerDriverHtml">
             <sca:interface.java interface="org.easysoa.proxy.core.api.run.HTMLProcessorItf" />
         </sca:service>
-        <property name="defaultRequestEncoding">UTF-8</property><!-- configures ServletImplementationVelocity -->
+        <sca:property name="defaultRequestEncoding">UTF-8</sca:property><!-- configures ServletImplementationVelocity -->
         <web:implementation.velocity location="webContent" default="htmlProcessor.vm" />
     </sca:component>
 
