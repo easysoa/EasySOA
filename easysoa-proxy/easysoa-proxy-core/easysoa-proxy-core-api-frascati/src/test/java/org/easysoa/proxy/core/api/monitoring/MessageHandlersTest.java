@@ -21,6 +21,7 @@
 package org.easysoa.proxy.core.api.monitoring;
 
 import java.util.ArrayList;
+import java.util.Map;
 import org.apache.log4j.Logger;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.MessageContent;
@@ -29,6 +30,7 @@ import org.easysoa.proxy.core.api.configuration.EasySOAGeneratedAppConfiguration
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.exchangehandler.EasySOAv1SOAPDiscoveryMessageHandler;
 import org.easysoa.proxy.core.api.exchangehandler.HandlerManager;
+import org.easysoa.proxy.core.api.exchangehandler.HandlerResponse;
 import org.easysoa.proxy.core.api.exchangehandler.MessageHandlerBase;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
 import org.easysoa.records.Exchange;
@@ -73,6 +75,8 @@ public class MessageHandlersTest {
     public static void setUp() throws Exception {
         // Start fraSCAti
         startFraSCAti();
+        // Start Registry API mock
+        //componentList.add(frascati.processComposite("registryApiMock", new ProcessingContextImpl()));
         // Start handlerManager
         componentList.add(frascati.processComposite("handlerManagerBase", new ProcessingContextImpl()));
     }
@@ -161,7 +165,11 @@ public class MessageHandlersTest {
 
         // Call handler
         handler.setHandlerConfiguration(proxyConf);
-        handler.handleMessage(record.getInMessage(), record.getOutMessage());
+        Map<String, HandlerResponse> handlerResponses = handler.handleMessage(record.getInMessage(), record.getOutMessage());
+
+        // Check that all handler handle the message with success
+        // TODO better, check each handler response
+        Assert.assertEquals(5, handlerResponses.size());
 
     }
 

@@ -19,6 +19,7 @@
  */
 package org.easysoa.proxy.core.api.exchangehandler;
 
+import java.util.Map;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
@@ -38,7 +39,7 @@ public interface HandlerManager {
      * @param messageout Outgoing message
      * @throws Exception
      */
-    public void handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception;
+    public Map<String, HandlerResponse> handleMessage(InMessage inMessage, OutMessage outMessage) throws Exception;
 
     /**
      * Set the handlers configuration

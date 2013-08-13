@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1" name="handlerManagerBase">
+<sca:composite xmlns:sca="http://www.osoa.org/xmlns/sca/1.0"
+               xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+               xmlns:http="org/ow2/frascati/intent/cxf/http"
+               name="handlerManagerBase">
 
     <!-- ================================ -->
     <!-- INTERFACE                        -->
@@ -81,11 +84,27 @@
     </sca:component>
 
     <!-- EasySOA regsirty jersey client configuration service -->
-    <sca:component name="registryClientConfComponentRef">
+    <!--<sca:component name="registryClientConfComponentRef">
         <sca:service name="registryClientConfServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.RegistryJerseyClientConfiguration" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.RegistryJerseyClientConfigurationImpl" />
+    </sca:component>-->
+
+    <!--<sca:component name="registryApiTestClient">
+        <sca:service name="testService">
+            <sca:interface.java interface="org.easysoa.registry.rest.RegistryApi"/>
+        </sca:service>
+        <sca:reference name="registryApi">
+            <frascati:binding.rest uri="http://localhost:8080/nuxeo/site" requires="nuxeoAuthorization EasySOARegistry"/>
+        </sca:reference>
+    </sca:component>-->
+
+    <!-- Nuxeo authentification (TODO not required) -->
+    <sca:component name="nuxeoAuthorization">
+        <sca:implementation.composite name="http:BasicAuthorizationPolicyIntent"/>
+        <sca:property name="UserName">Administrator</sca:property>
+        <sca:property name="Password">Administrator</sca:property>
     </sca:component>
 
     <!-- Registry V1 SOAP Discovery message handler -->
@@ -94,8 +113,13 @@
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.EasySOAv1SOAPDiscoveryMessageHandler" />
-        <sca:reference name="registryClientConfiguration" target="registryClientConfComponentRef/registryClientConfServiceRef">
+        <!--<sca:reference name="registryClientConfiguration" target="registryClientConfComponentRef/registryClientConfServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.RegistryJerseyClientConfiguration" />
+        </sca:reference>-->
+        <!--<sca:reference name="registryClient" target="registryClientComponentRef/registryClientServiceRef">-->
+        <sca:reference name="registryClient">
+            <sca:interface.java interface="org.easysoa.registry.rest.RegistryApi" />
+            <frascati:binding.rest uri="http://localhost:8080/nuxeo/site" requires="nuxeoAuthorization"/>
         </sca:reference>
     </sca:component>
     <sca:wire source="handlerManagerComponent/handlers" target="V1SoapDiscoveryMessageHandlerComponent/V1SoapDiscoveryMessageHandlerService"/>

@@ -12,7 +12,7 @@
         <version>0.5-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-   
+
     <dependencies>
         <!-- Messaging api -->
         <dependency>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
-        </dependency>		
+        </dependency>
         <!-- xstream for report conversion to XML -->
         <dependency>
             <groupId>xstream</groupId>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>com.espertech</groupId>
             <artifactId>esper</artifactId>
-        </dependency>	
+        </dependency>
         <!-- json -->
         <dependency>
             <groupId>org.json</groupId>
@@ -55,9 +55,56 @@
             <artifactId>frascati-implementation-velocity</artifactId>
             <version>${frascati.version}</version>
             <scope>provided</scope>
-        </dependency>        
-        
-        <!-- Tests -->
+            <!--<exclusions>
+                <exclusion>
+                    <artifactId>javax.ws.rs-api</artifactId>
+                    <groupId>javax.ws.rs</groupId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.frascati.intent.apache-cxf</groupId>
+            <artifactId>frascati-intent-apache-cxf-https</artifactId>
+            <version>${frascati.version}</version>
+            <scope>provided</scope>
+            <!--<exclusions>
+                <exclusion>
+                    <artifactId>javax.ws.rs-api</artifactId>
+                    <groupId>javax.ws.rs</groupId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.frascati.intent</groupId>
+            <artifactId>frascati-intent-apache-cxf</artifactId>
+            <version>${frascati.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>org.ow2.frascati.intent.apache-cxf</groupId>
+          <artifactId>frascati-intent-apache-cxf-http</artifactId><!-- required for authentication ; brings in also core -->
+          <version>${frascati.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>org.ow2.frascati.intent</groupId>
+          <artifactId>frascati-authentication</artifactId>
+          <version>${frascati.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tuscany.sca</groupId>
+            <artifactId>tuscany-sca-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.easysoa.proxy</groupId>
+            <artifactId>easysoa-proxy-core-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- TEST DEPENDENCIES -->
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -65,20 +112,11 @@
             <scope>test</scope>
         </dependency>
         <!--<dependency>
-             			<groupId>org.apache.httpcomponents</groupId>
-             			<artifactId>httpclient</artifactId>
-             			<version>4.1.3</version>
-      		</dependency>-->
-        <dependency>
-            <groupId>org.apache.tuscany.sca</groupId>
-            <artifactId>tuscany-sca-all</artifactId>
-        </dependency>		
-        <dependency>
-            <groupId>org.easysoa.proxy</groupId>
-            <artifactId>easysoa-proxy-core-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- TEST DEPENDENCIES -->
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.1.3</version>
+        </dependency>-->
+
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-factory</artifactId>
@@ -113,25 +151,31 @@
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-ws</artifactId>
             <version>${frascati.version}</version>
-            <scope>test</scope>      		
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-http</artifactId>
             <version>${frascati.version}</version>
-            <scope>test</scope>      		
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ow2.frascati</groupId>
             <artifactId>frascati-binding-rest</artifactId>
             <version>${frascati.version}</version>
-            <scope>test</scope>      		
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
             <version>1.4.01</version>
-            <scope>test</scope>    	
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j13</artifactId>
+            <version>1.0.1</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

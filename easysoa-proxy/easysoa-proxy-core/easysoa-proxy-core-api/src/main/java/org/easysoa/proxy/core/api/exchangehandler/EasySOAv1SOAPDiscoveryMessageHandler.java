@@ -33,9 +33,9 @@ import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
 import org.easysoa.registry.rest.RegistryApi;
-import org.easysoa.registry.rest.client.ClientBuilder;
-import org.easysoa.registry.rest.marshalling.OperationResult;
-import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
+//import org.easysoa.registry.rest.client.ClientBuilder;
+import org.easysoa.registry.rest.OperationResult;
+import org.easysoa.registry.rest.SoaNodeInformation;
 import org.easysoa.registry.types.Endpoint;
 import org.easysoa.registry.types.EndpointConsumption;
 import org.easysoa.registry.types.ResourceDownloadInfo;
@@ -68,8 +68,11 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);
     private boolean enabled = true;
 
+    //@Reference
+    //private RegistryJerseyClientConfiguration registryClientConfiguration;
+
     @Reference
-    private RegistryJerseyClientConfiguration registryClientConfiguration;
+    private RegistryApi registryClient;
 
     // Proxy configuration params :
     // NB. defaults are in setHandlerConfiguration()
@@ -158,7 +161,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
             if(isSoapMessage || isGetWsdlMessage){
 
                 // Create endpoint
-                RegistryApi registryApi = registryClientConfiguration.getClient().constructRegistryApi();
+                //RegistryApi registryApi = registryClientConfiguration.getClient().constructRegistryApi();
                 Map<String, Serializable> properties = new HashMap<String, Serializable>();
                 List<SoaNodeId> parents = new ArrayList<SoaNodeId>();
 
@@ -254,7 +257,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                     String ecSoaName = consumerHost + '>' + endpointSoaName;
                     SoaNodeId ecSoaNodeId = new SoaNodeId(projectId, EndpointConsumption.DOCTYPE, ecSoaName);
                     SoaNodeInformation ecSoaNodeInfo = new SoaNodeInformation(ecSoaNodeId, ecProperties, ecParents);
-                    OperationResult ecResult = registryApi.post(ecSoaNodeInfo);
+                    OperationResult ecResult = registryClient.post(ecSoaNodeInfo);
                     if(!ecResult.isSuccessful()){
                         logger.warn("Unable to registry the endpoint consumption : " + ecResult.getMessage());
                         throw new Exception("An error occurs during the endpoint consumption registration : " + ecResult.getMessage());
@@ -283,7 +286,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
                 SoaNodeInformation soaNodeInfo = new SoaNodeInformation(soaNodeId, properties, parents);
 
                 // Run request
-                OperationResult result = registryApi.post(soaNodeInfo);
+                OperationResult result = registryClient.post(soaNodeInfo);
                 logger.debug("Registry API request response status : " + result.isSuccessful());
                 logger.debug("Registry API request response message : " + result.getMessage());
 
