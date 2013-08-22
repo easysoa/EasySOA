@@ -1,28 +1,29 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
 /**
- * 
+ *
  */
 package org.easysoa.records.handlers;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,6 +32,7 @@ import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
+import org.easysoa.proxy.core.api.exchangehandler.HandlerResponse;
 import org.easysoa.proxy.core.api.exchangehandler.HttpExchangeHandler;
 import org.easysoa.proxy.core.api.exchangehandler.MessageRecordHandler;
 import org.easysoa.proxy.core.api.run.RunManager;
@@ -40,14 +42,14 @@ import org.nuxeo.runtime.api.Framework;
 
 /**
  * Exchange record handler : register a record from HttpServletRequest and HttpServletResponse
- * To be used in embedded Nuxeo FraSCAti 
- * 
+ * To be used in embedded Nuxeo FraSCAti
+ *
  * @author jguillemotte
  */
-public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler implements HttpExchangeHandler {
+public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler /*implements HttpExchangeHandler*/ {
 
     private boolean enabled = true;
-    
+
     /**
      * Constructor
      * @throws FraSCAtiServiceException If a problem occurs
@@ -59,11 +61,12 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
         //this.setRunManager(frascati.getService("httpDiscoveryProxy/runManagerComponent", "runManagerService", RunManager.class));
         this.setRunManager(frascati.getService("handlerManager/handlerManagerServiceBaseComp/runManagerComponent", "runManagerService", RunManager.class));
     }
-    
+
     /* (non-Javadoc)
      * @see org.easysoa.records.handlers.ExchangeHandler#handleExchange(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     //@Override
+    @Deprecated // To remove : not used
     public void handleExchange(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if(enabled){
             // Builds a new Exchange record with data contained in request and response
@@ -82,7 +85,7 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
 
     /* (non-Javadoc)
      * @see org.easysoa.records.handlers.HandlerManager#close()
-     */    
+     */
     /*public void close() {
         // TODO Auto-generated method stub
     }*/
@@ -94,5 +97,5 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler impl
     public void disableHandler(String handlerId) {
         this.enabled = false;
     }
-    
+
 }

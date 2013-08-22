@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 @Deprecated
-public interface HttpExchangeHandler extends HandlerManager { // TODO rm
+public interface HttpExchangeHandler /*extends HandlerManager*/ { // TODO rm
 
     /**
      * Handle an exchange
