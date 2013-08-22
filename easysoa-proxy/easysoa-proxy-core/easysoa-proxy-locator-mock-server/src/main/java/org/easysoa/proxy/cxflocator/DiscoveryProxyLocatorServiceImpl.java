@@ -13,8 +13,8 @@ import org.easysoa.proxy.cxflocator.interceptor.CxfLocatorInInterceptor;
 import org.easysoa.registry.types.ids.SoaNodeId;
 import org.easysoa.registry.rest.RegistryApi;
 import org.easysoa.registry.rest.client.ClientBuilder;
-import org.easysoa.registry.rest.marshalling.OperationResult;
-import org.easysoa.registry.rest.marshalling.SoaNodeInformation;
+import org.easysoa.registry.rest.OperationResult;
+import org.easysoa.registry.rest.SoaNodeInformation;
 import org.easysoa.registry.types.InformationService;
 import org.easysoa.registry.types.Endpoint;
 import org.talend.schemas.esb.locator._2011._11.BindingType;
@@ -31,16 +31,16 @@ import org.talend.services.esb.locator.v1.ServiceLocatorFault;
 /**
  * Proxies (tunnel) Talend's LocatorService to allow discovery of endpoints at registration time.
  * Also works without Talend's (Zookeeper-based) LocatorService, in which case it returns empty results.
- * 
+ *
  * @author jguillemotte
  *
  */
 public class DiscoveryProxyLocatorServiceImpl implements LocatorService {
-    
+
     private LocatorService talendLocatorService = null;
 
     private Logger logger = Logger.getLogger(DiscoveryProxyLocatorServiceImpl.class.getName());
-    
+
     public void setTalendLocatorService(LocatorService talendLocatorService) {
         this.talendLocatorService = talendLocatorService;
     }
@@ -81,24 +81,24 @@ public class DiscoveryProxyLocatorServiceImpl implements LocatorService {
 
                 Map<String, Serializable> nxProperties;
                 OperationResult result;
-                
+
                 SoaNodeId myServiceId = new SoaNodeId(InformationService.DOCTYPE, serviceName.getLocalPart());
                 nxProperties = new HashMap<String, Serializable>();
                 nxProperties.put("title", serviceName.getLocalPart());
                 // Call Rest Nuxeo service for registering Service
-                result = registryApi.post(new SoaNodeInformation(myServiceId, nxProperties, null));                
-                
+                result = registryApi.post(new SoaNodeInformation(myServiceId, nxProperties, null));
+
                 SoaNodeId myEndpointId = new SoaNodeId(Endpoint.DOCTYPE, endpoint);
                 nxProperties = new HashMap<String, Serializable>();
-                nxProperties.put("endp:url", endpoint);                
-                
+                nxProperties.put("endp:url", endpoint);
+
                 List<SoaNodeId> parentDocuments = new ArrayList<SoaNodeId>();
                 parentDocuments.add(myServiceId);
                 // Call Rest Nuxeo service for registering endpoint
                 result = registryApi.post(new SoaNodeInformation(myEndpointId, nxProperties, parentDocuments));
                 if(!result.isSuccessful()){
                     logger.error("An error occurs during the endpoint recording. " + result.getMessage());
-                } 
+                }
                 else {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Endpoint recorded successfully.");
@@ -107,11 +107,11 @@ public class DiscoveryProxyLocatorServiceImpl implements LocatorService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            finally{ 
+            finally{
                 CxfLocatorInInterceptor.endpointSession.set(null);
             }
         }
-        
+
         if (talendLocatorService != null) {
             talendLocatorService.registerEndpoint(serviceName, endpointURL, binding, transport, properties);
         }

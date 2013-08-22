@@ -104,6 +104,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.objectweb.fractal.fractaladl</groupId>
+            <artifactId>fractal-adl</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
         <!-- TEST DEPENDENCIES -->
         <!-- junit -->
         <dependency>
