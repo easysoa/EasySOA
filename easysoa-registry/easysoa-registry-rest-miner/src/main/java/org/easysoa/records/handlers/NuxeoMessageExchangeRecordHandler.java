@@ -17,23 +17,15 @@
  *
  * Contact : easysoa-dev@googlegroups.com
  */
-
-/**
- *
- */
 package org.easysoa.records.handlers;
 
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.easysoa.frascati.FraSCAtiServiceException;
 import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.proxy.core.api.exchangehandler.HandlerResponse;
-import org.easysoa.proxy.core.api.exchangehandler.HttpExchangeHandler;
 import org.easysoa.proxy.core.api.exchangehandler.MessageRecordHandler;
 import org.easysoa.proxy.core.api.run.RunManager;
 import org.easysoa.servlet.http.CopyHttpServletRequest;
@@ -46,7 +38,7 @@ import org.nuxeo.runtime.api.Framework;
  *
  * @author jguillemotte
  */
-public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler /*implements HttpExchangeHandler*/ {
+public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler {
 
     private boolean enabled = true;
 
@@ -82,13 +74,6 @@ public class NuxeoMessageExchangeRecordHandler extends MessageRecordHandler /*im
             this.handleMessage(inMessage, outMessage);
         }
     }
-
-    /* (non-Javadoc)
-     * @see org.easysoa.records.handlers.HandlerManager#close()
-     */
-    /*public void close() {
-        // TODO Auto-generated method stub
-    }*/
 
     public void enableHandler(String handlerId) {
         this.enabled = true;

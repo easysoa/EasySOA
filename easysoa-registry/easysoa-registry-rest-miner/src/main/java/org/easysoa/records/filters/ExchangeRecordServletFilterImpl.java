@@ -34,7 +34,6 @@ import org.easysoa.frascati.api.FraSCAtiServiceItf;
 import org.easysoa.frascati.api.FraSCAtiServiceProviderItf;
 import org.easysoa.message.InMessage;
 import org.easysoa.message.OutMessage;
-import org.easysoa.proxy.core.api.exchangehandler.HttpExchangeHandler;
 import org.easysoa.proxy.core.api.exchangehandler.MessageHandler;
 import org.easysoa.proxy.core.api.run.RunManager;
 import org.easysoa.servlet.http.CopyHttpServletRequest;
@@ -56,7 +55,6 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	private static ExchangeRecordServletFilterImpl singleton = null;
 
 	// Exchange handler
-	//private HttpExchangeHandler exchangeHandler = null;
     private MessageHandler exchangeHandler = null;
 
 	/**
@@ -125,7 +123,6 @@ public class ExchangeRecordServletFilterImpl implements Filter, ExchangeRecordSe
 	/**
 	 * Start the mining
 	 */
-	//public void start(HttpExchangeHandler exchangeHandler)
     public void start(MessageHandler exchangeHandler)
 			throws Exception {
 	    // NOTE: We probably can't make start() and stop() static
