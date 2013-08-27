@@ -221,8 +221,10 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
         EasySOAProcessingContext processingContext = new EasySOAProcessingContext(
                 classLoader);
 
-        for(String propertyName : properties.stringPropertyNames()) {
-            processingContext.setContextualProperty(propertyName, properties.getProperty(propertyName));
+        if(properties != null){
+            for(String propertyName : properties.stringPropertyNames()) {
+                processingContext.setContextualProperty(propertyName, properties.getProperty(propertyName));
+            }
         }
 
         processingContext.setProcessingMode(resovleProcessingMode(processingMode));
@@ -276,7 +278,7 @@ extends AbstractLoggeable implements FraSCAtiServiceItf, ParserIntentObserverItf
     public Composite processComposite(String composite)
             throws FraSCAtiServiceException
     {
-        return processComposite(composite, FraSCAtiServiceItf.all, null);
+        return processComposite(composite, FraSCAtiServiceItf.all, new Properties());
     }
 
     /**
