@@ -2,6 +2,7 @@
 
 <composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
   xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+  xmlns:https="org/ow2/frascati/intent/cxf/https"
   name="SSL_HttpClient_Test">
 
   <component name="HelloworldSampleHttpsServer">
@@ -9,7 +10,18 @@
     <service name="HelloService">
       <interface.java interface="org.easysoa.proxy.ssl.test.helloworld.HelloService" />
       <frascati:binding.rest uri="https://localhost:9090/HelloService"/>
+      <!--<frascati:binding.rest uri="http://localhost:9090/HelloService"/>-->
     </service>
   </component>
+
+  <!-- Following is the server-side configuration for SSL. -->
+  <component name="configuration-https-9090">
+    <implementation.composite name="https:TLSServerConfiguration"/>
+    <property name="Port">9090</property>
+    <property name="TrustManagerKeyStorePassword">password</property>
+    <property name="TrustManagerKeyStoreFile">src/test/resources/certificates/truststore.jks</property>
+    <property name="KeyManagerKeyStorePassword">password</property>
+    <property name="KeyManagerKeyStoreFile">src/test/resources/certificates/server.jks</property>
+   </component>
 
 </composite>
