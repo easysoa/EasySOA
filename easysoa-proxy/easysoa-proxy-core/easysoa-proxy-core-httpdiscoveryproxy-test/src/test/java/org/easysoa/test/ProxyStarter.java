@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -79,7 +80,7 @@ public class ProxyStarter extends AbstractProxyTestStarter
      * @throws IOException
      */
     @Test
-    // @Ignore
+    @Ignore
     public final void testWaitUntilRead() throws Exception
     {
         logger.info("Http Discovery Proxy started, wait for user action to stop !");

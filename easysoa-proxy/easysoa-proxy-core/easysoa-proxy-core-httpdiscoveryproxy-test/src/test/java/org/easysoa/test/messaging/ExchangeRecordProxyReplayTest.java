@@ -1,20 +1,20 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
@@ -56,14 +56,15 @@ import org.easysoa.test.util.AbstractProxyTestStarter;
 import org.easysoa.test.util.UrlMock;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * To test the replay function associated with an exchange record discovered by
  * the http discovery proxy
- * 
+ *
  * @author jguillemotte
- * 
+ *
  */
 public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
@@ -74,7 +75,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	/**
 	 * Clean old test files, start FraSCAti, start the HTTP discovery proxy and
 	 * the mock services
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Before
@@ -96,14 +97,14 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	/**
 	 * Functional test for HTTP Discovery proxy, run manager and exchange record
 	 * store manager with replay
-	 * 
+	 *
 	 * Scenario : - User starts a new run - User sends several REST request from
 	 * Twitter sample - User stop, save and delete the run to obtain an exchange
 	 * store - User get the list of exchange store - User get data about an
 	 * exchange record - User replay several exchange record
-	 * 
+	 *
 	 * This test works with the twitter mock (REST exchanges)
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -271,14 +272,14 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	/**
 	 * /** Functional test for HTTP Discovery proxy, run manager and exchange
 	 * record store manager with replay
-	 * 
+	 *
 	 * Scenario : - User starts a new run - User sends several SOAP request from
 	 * Meteo sample - User stop, save and delete the run to obtain an exchange
 	 * store - User get the list of exchange store - User get data about an
 	 * exchange record - User replay several exchange record
-	 * 
+	 *
 	 * This test works with the Meteo mock (SOAP WSDL exchanges)
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -415,12 +416,12 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 	/**
 	 * Technical test. This test do nothing, just wait for a user action to stop
 	 * the proxy.
-	 * 
+	 *
 	 * @throws Exception
 	 *             If a problem occurs
 	 */
 	@Test
-	// @Ignore
+	@Ignore
 	public final void testWaitUntilRead() throws Exception {
 		logger.info("ExchangeRecordProxyReplayTest started, wait for user action to stop !");
 		// Just push a key in the console window to stop the test
@@ -430,7 +431,7 @@ public class ExchangeRecordProxyReplayTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Stop FraSCAti components
-	 * 
+	 *
 	 * @throws FrascatiException
 	 */
 	@After

@@ -1,25 +1,25 @@
 /**
  * EasySOA Proxy
  * Copyright 2011 Open Wide
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contact : easysoa-dev@googlegroups.com
  */
 
 /**
- * 
+ *
  */
 package org.easysoa.test.messaging;
 
@@ -66,7 +66,7 @@ import org.junit.Test;
 
 /**
  * To test replay templates
- * 
+ *
  * @author jguillemotte
  *
  */
@@ -77,7 +77,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 
 	/**
 	 * Start FraSCAti, HTTP discovery proxy and mock services
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception{
@@ -93,16 +93,16 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Start mock services
 		startMockServices(true, true, true);
 	}
-	
+
 	/**
-	 * 
-	 * Deprecated : This test worked with the first templating solution. This solution is no more used today. 
-	 * 
+	 *
+	 * Deprecated : This test worked with the first templating solution. This solution is no more used today.
+	 *
 	 * Technical test
 	 * - Get the form generated from an exchange record
 	 * - Check that the form contains required fields
 	 * - Send a simulated post request with custom form values
-	 * 
+	 *
 	 * ReplayTemplateWithDefaultValue : Use the replayTemplate.html velocity HTML template to build a form.
 	 * Only with REST Exchanges
 	 * @throws ClientProtocolException
@@ -113,19 +113,19 @@ public class TemplateTest extends AbstractProxyTestStarter {
     @Deprecated
 	public void replayTemplateWithDefaultValue() throws ClientProtocolException, IOException{
 		// TODO : Complete this test with 4 kinds of parameters : formParams, pathParams, QueryParams, WSDLParams
-		
+
 	    // TODO : This test works with a store created by another test ..... See testReplayWithRestMessages in ExchangeRecordProxyReplayTest class.
 	    String testRunName = "Twitter_Rest_Test_Run";
-	    
+
 		// Read template file with a GET HTTP request
 		// returns a request for the replay system
-		DefaultHttpClient httpClient = new DefaultHttpClient();		
+		DefaultHttpClient httpClient = new DefaultHttpClient();
 		HttpGet getRequest = new HttpGet("http://localhost:8090/runManager/exchangeRecordStore/replayTemplate.html");
 		String response = httpClient.execute(getRequest, new BasicResponseHandler());
 		logger.debug("GetTemplate response = " + response);
 		assertTrue(response.contains("comment (String) : <input type=\"text\" name=\"comment\" value=\"test\" />"));
-		// Specify the exchangeRecord to use => run/exchangeRecord to get the request 
-		
+		// Specify the exchangeRecord to use => run/exchangeRecord to get the request
+
 		HttpPost postRequest = new HttpPost("http://localhost:" + EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT + "/templates/replayWithTemplate/"+testRunName+"/1/testTemplate");
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("user", "FR3Bourgogne.xml")); // tests HTTP Form-like params (others being HTTP path, query and SOAP)
@@ -137,39 +137,39 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		//postRequest.setParams(httpParams);
 		response = httpClient.execute(postRequest, new BasicResponseHandler());
 		logger.debug("replayWithTemplate response = " + response);
-		
+
 		// Set the custom values :
-		
+
 		// For WSDL : re-use the the existing code working in the scaffolder proxy
 		// For Rest : 3 different cases :
 		// Form params : get the inMessage content and change the values
 		// Query params : get the complete url and change the values
-		// Path Params : This case is harder, need to know the position of each param in the url ... must be specified in the template OR use the discovery mechanism from HTTP discovery proxy 
-		
-		// replay the request with specified values (can be default values)  
+		// Path Params : This case is harder, need to know the position of each param in the url ... must be specified in the template OR use the discovery mechanism from HTTP discovery proxy
+
+		// replay the request with specified values (can be default values)
 	}
 
 	/**
      * Functional test for the template engine (working with the ServletImplementationVelocity solution)
-     * 
+     *
      * Scenario :
      * - Start a new run
      * - Send Twitter mock request (REST)
      * - Stop, save and delete the run
      * - Get a list of exchange records corresponding to the run
-     * - For each record, call the template engine to build and replay the template 
-	 * 
-	 * TemplateFieldSuggester test with REST Exchanges 
+     * - For each record, call the template engine to build and replay the template
+	 *
+	 * TemplateFieldSuggester test with REST Exchanges
 	 * @throws Exception
 	 */
 	@Test
-	//@Ignore
+	@Ignore
 	public void templateFieldSuggesterRestTest() throws Exception {
 
 		String testStoreName = "TweeterRestTestRun";
 		// Start run
 		startNewRun(testStoreName);
-		
+
 		// Send tweeter mock requests
 		// Get the twitter mock set and send requests to the mock through the HTTP proxy
 		DefaultHttpClient httpProxyClient = new DefaultHttpClient();
@@ -177,19 +177,19 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		// Set client to use the HTTP Discovery Proxy
 		HttpHost proxy = new HttpHost("localhost", EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
 		httpProxyClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-		
+
 		// Send first request - GET request with only path parameters
 		HttpResponse response;
 		HttpGet lastTweetRequest = new HttpGet("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/lastTweet/toto");
 		response = httpProxyClient.execute(lastTweetRequest);
 		// Need to read the response body entirely to be able to send another request
-		ContentReader.read(response.getEntity().getContent());			
-		
+		ContentReader.read(response.getEntity().getContent());
+
 		// Send second request - GET request with path parameters and query parameters
 		HttpGet severalTweetRequest = new HttpGet("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/severalTweets/toto?tweetNumber=5");
 		response = httpProxyClient.execute(severalTweetRequest);
 		ContentReader.read(response.getEntity().getContent());
-		
+
 		// Send third request - POST request with form parameters
 		HttpPost postTweetRequest = new HttpPost("http://localhost:" + EasySOAConstants.TWITTER_MOCK_PORT + "/1/tweets/postNewTweet");
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -199,13 +199,13 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		postTweetRequest.setEntity(entity);
 		response = httpProxyClient.execute(postTweetRequest);
 		ContentReader.read(response.getEntity().getContent());
-		
+
 		// Stop, save and delete run
 		stopAndSaveRun();
 		deleteRun();
-		
+
 		ProxyFileStore fileStore= new ProxyFileStore();
-	
+
 		// Get the exchange record list for the run
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
 		// Get the template renderer
@@ -213,12 +213,12 @@ public class TemplateTest extends AbstractProxyTestStarter {
 
 	      // Get the replay engine service
         ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
-		
+
 		// Build an HashMap to simulate user provided values
 		HashMap<String, List<String>> fieldMap = new HashMap<String, List<String>>();
         ArrayList<String> userValueList = new ArrayList<String>();
         userValueList.add("Gaston");
-        fieldMap.put("user", userValueList);		
+        fieldMap.put("user", userValueList);
         ArrayList<String> valueList = new ArrayList<String>();
         valueList.add("4");
         fieldMap.put("tweetNumber", valueList);
@@ -231,32 +231,32 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	        replayEngine.replayWithTemplate(fieldMap, testStoreName, templatizedRecord.getExchange().getExchangeID());
 		}
 	}
-	
+
 	/**
 	 * Functional test for the template engine (working with the ServletImplementationVelocity solution)
-	 * 
+	 *
 	 * Scenario :
 	 * - Start a new run
 	 * - Send meteo mock request (SOAP)
 	 * - Stop, save and delete the run
 	 * - Get a list of exchange records corresponding to the run
 	 * - For each record, call the template engine to build and replay the template
-	 * 
-	 * TemplateFieldSuggester test with SOAP Exchanges 
+	 *
+	 * TemplateFieldSuggester test with SOAP Exchanges
 	 * @throws Exception
 	 */
 	@Test
-	//@Ignore
-	public void templateFieldSuggesterSOAPTest() throws Exception {	
-		
+	@Ignore
+	public void templateFieldSuggesterSOAPTest() throws Exception {
+
 		String testStoreName = "MeteoSoapTestRun";
 		// Start run
-		startNewRun(testStoreName);		
+		startNewRun(testStoreName);
 
 		// Set the discovery proxy
 		System.setProperty("http.proxyHost", "localhost");
 		System.setProperty("http.proxyPort", "8082");
-		
+
 		// Send the test requests
 		UrlMock urlMock = new UrlMock();
 		for(String cityName : urlMock.getMeteoMockCities()){
@@ -265,22 +265,22 @@ public class TemplateTest extends AbstractProxyTestStarter {
 			String response = port.getTomorrowForecast(cityName);
 			logger.info("Response for " + cityName + " : " + response);
 		}
-		
+
 		// Remove the discovery proxy
 		System.setProperty("http.proxyHost", "");
 		System.setProperty("http.proxyPort", "");
-		
+
 		// Stop, save and delete run
 		stopAndSaveRun();
 		deleteRun();
 
 		ProxyFileStore fileStore= new ProxyFileStore();
-	
+
 		List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
 
 		// Get the template renderer // TODO do not call this service directly, use replay engine instead
 		//TemplateProcessorRendererItf processor = frascati.getService(componentList.get(0), "processor", org.easysoa.template.TemplateProcessorRendererItf.class);
-		
+
 		// Get the replay engine service
 		ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
 
@@ -289,7 +289,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		ArrayList<String> valueList = new ArrayList<String>();
 		valueList.add("");
 		fieldMap.put("user", valueList);
-		
+
 		// For each custom record in the list
 		for(ExchangeRecord record : recordList){
 		    TemplateFieldSuggestions templateFieldsuggestions = replayEngine.getTemplateEngine().suggestFields(record, testStoreName, true);
@@ -305,10 +305,10 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	 * @throws Exception
 	 */
 	@Test
-	//@Ignore
+	@Ignore
 	public void assertionEngineWithSuggestionfieldTest() throws Exception {
-	    
-	    // Launch a replay, and compare for each field with fieldEquality tag 
+
+	    // Launch a replay, and compare for each field with fieldEquality tag
 	    // set to true the replayed value with the original value
 	    // Use the .fld's files generated by the previous test to launch assertions
 	    String runName = "TweeterRestTestRun";
@@ -325,7 +325,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 	}
 
 	/**
-	 * This test do nothing, just wait for a user action to stop the proxy. 
+	 * This test do nothing, just wait for a user action to stop the proxy.
 	 * @throws ClientException
 	 * @throws SOAPException
 	 * @throws IOException
@@ -338,7 +338,7 @@ public class TemplateTest extends AbstractProxyTestStarter {
 		System.in.read();
 		logger.info("TemplateTest stopped !");
 	}
-	
+
     /**
      * Stop FraSCAti components
      * @throws FrascatiException
@@ -356,6 +356,6 @@ public class TemplateTest extends AbstractProxyTestStarter {
         // Clean Easysoa proxy
         cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_PORT);
         cleanJetty(EasySOAConstants.HTTP_DISCOVERY_PROXY_DRIVER_PORT);
-        cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);            
-    }	
+        cleanJetty(EasySOAConstants.EXCHANGE_RECORD_REPLAY_SERVICE_PORT);
+    }
 }

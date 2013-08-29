@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.easysoa.records.simulation;
 
@@ -32,19 +32,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * @author jguillemotte
  *
  */
 public class SimulationEngineTest extends AbstractProxyTestStarter {
-    
+
     // Logger
-    private static Logger logger = Logger.getLogger(SimulationEngineTest.class.getName());    
-    
+    private static Logger logger = Logger.getLogger(SimulationEngineTest.class.getName());
+
     /**
      * Start FraSCAti and mock services
-     * @throws Exception 
+     * @throws Exception
      */
     @Before
     public void setUp() throws Exception{
@@ -53,9 +52,9 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         // Start HTTP proxy
         startHttpDiscoveryProxy("httpDiscoveryProxy.composite");
         // Start mocks
-        startMockServices(false, true, true);        
+        startMockServices(false, true, true);
     }
-    
+
     /**
      * Test the simulation engine
      * @throws Exception If a problem occurs
@@ -64,13 +63,13 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
     public void simulationEngineTest() throws Exception {
         // Creates a simulation set
         String testStoreName = "Twitter_Rest_Simulation_Test_Run";
-        
-        DefaultHttpClient httpClient = new DefaultHttpClient();     
-        
+
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+
         // Start a new Run
         HttpPost newRunPostRequest = new HttpPost("http://localhost:8084/run/start/" + testStoreName);
         assertEquals("Run '" + testStoreName + "' started !", httpClient.execute(newRunPostRequest, new BasicResponseHandler()));
-        
+
         // Get the twitter mock set and send requests to the mock through the HTTP proxy
         DefaultHttpClient httpProxyClient = new DefaultHttpClient();
 
@@ -81,11 +80,11 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         HttpResponse response;
         HttpUriRequest httpUriRequest;
         for(String url : urlMock.getTwitterUrlData("localhost:" + EasySOAConstants.TWITTER_MOCK_PORT)){
-            logger.info("Request send : " + url);           
+            logger.info("Request send : " + url);
             httpUriRequest = new HttpGet(url);
             response = httpProxyClient.execute(httpUriRequest);
             // Need to read the response body entirely to be able to send another request
-            ContentReader.read(response.getEntity().getContent());           
+            ContentReader.read(response.getEntity().getContent());
         }
 
         // Stop and save the run
@@ -94,32 +93,32 @@ public class SimulationEngineTest extends AbstractProxyTestStarter {
         // delete the run
         HttpPost deleteRunPostRequest = new HttpPost("http://localhost:8084/run/delete");
         assertEquals("Run deleted !", httpClient.execute(deleteRunPostRequest, new BasicResponseHandler()));
-        
+
         ProxyFileStore fileStore= new ProxyFileStore();
         // Launch the simulation
         List<ExchangeRecord> recordList = fileStore.getExchangeRecordlist(testStoreName);
         ReplayEngine replayEngine = frascati.getService(componentList.get(0).getName(), "replayEngineService", org.easysoa.proxy.core.api.records.replay.ReplayEngine.class);
         SimulationEngine simulationEngine = replayEngine.getSimulationEngine();
-        
+
         // Send a request to the replay service
         logger.debug("Getting simulation store ...");
         SimulationStore simulationStore = simulationEngine.getSimulationStoreFromSuggestion("testSimulationStore", recordList);
         fileStore.saveSimulationStore(simulationStore);
         for(ExchangeRecord record : recordList){
             Map<String, List<String>> fieldValues = new HashMap<String, List<String>>();
-            // TODO : add test for field values            
+            // TODO : add test for field values
             ExchangeRecord simulatedResponse = simulationEngine.simulate(record, simulationStore, new SimpleSimulationMethod(), replayEngine.getTemplateEngine(), fieldValues);
             // Works but the test data set is not appropriated
-            // Find a data set with output fields to really check the simulation engine 
+            // Find a data set with output fields to really check the simulation engine
             logger.debug("Simulated response = " +  simulatedResponse.getOutMessage().getMessageContent().getRawContent());
         }
 
     }
-    
+
     @After
     public void cleanUp() throws Exception {
         // stop FraSCati
         stopFraSCAti();
     }
-    
+
 }
