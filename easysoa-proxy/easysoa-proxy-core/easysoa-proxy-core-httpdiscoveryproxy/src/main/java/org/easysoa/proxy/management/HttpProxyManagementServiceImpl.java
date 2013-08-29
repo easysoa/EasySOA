@@ -182,12 +182,14 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         if (appInstanceConfService != null) {
             // an appInstance with the same id already exists
         	ProxyConfiguration existingProxyConfiguration = appInstanceConfService.get(configuration);
-        	boolean areConfigurationIncompatible = false;
+            ArrayList<String> incompatibleParametersNames = new ArrayList<String>();
+            boolean areConfigurationIncompatible = false;
         	for (ConfigurationParameter existingParameter : existingProxyConfiguration.getParameters()) {
         		String newValue = configuration.getParameter(existingParameter.getKey());
         		if (newValue == null && existingParameter.getValue() != null
         				 || newValue != null && !newValue.equals(existingParameter.getValue())) {
         			areConfigurationIncompatible = true;
+                    incompatibleParametersNames.add(existingParameter.getKey());
         		}
         	}
             if (areConfigurationIncompatible) {
@@ -195,7 +197,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
                 //throw new Exception("Incompatible, should reset first !");
                 logger.debug("Incompatible, should reset first !");
                 result = new ManagementServiceResult(ManagementServiceResult.RESULT_KO, existingProxyConfiguration);
-                result.setMessage("Incompatible, should reset first !");
+                result.setMessage(buildIncompatibleMessage(existingProxyConfiguration, configuration, incompatibleParametersNames));
                 return result;
             }
             appInstanceConfService.update(configuration);
@@ -251,6 +253,32 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
         //* getAvailablePort(conditions ex. > 20000) TODO Q pmerle implement by storing ports in FStudio db or by introspection (AT WORST or mere json) ??
         //* (Single/Instanciating)EasySOAGeneratedApp(s)Registry.get(id, Template (httpProxy), templateParams which are easysoaGeneratedApp param PLUS port etc.)
         //* finally, calls HttpProxyConfigurationService.update((proxyid,) HttpProxyConfiguration) which dispatches to Handlers
+    }
+
+    /**
+     * Build an incompatible error message
+     * @param existingProxyConfiguration The existing proxy configuration
+     * @param configuration The new proxy configuration
+     * @param incompatibleParameterNames A list containing the name of the incompatibles parameters
+     * @return The error message
+     */
+    private String buildIncompatibleMessage(ProxyConfiguration existingProxyConfiguration, ProxyConfiguration configuration, List<String> incompatibleParameterNames){
+        StringBuilder message = new StringBuilder();
+        message.append("Incompatible, should reset first !");
+        for (String incompatibleParameter : incompatibleParameterNames) {
+        		String existingValue = existingProxyConfiguration.getParameter(incompatibleParameter);
+                String newValue = configuration.getParameter(incompatibleParameter);
+                message.append("<br/>");
+                message.append("The parameter '");
+                message.append(incompatibleParameter);
+                message.append("' new value '");
+                message.append(newValue);
+                message.append("' is incompatible with the existing value '");
+                message.append(existingValue);
+                message.append("'");
+        }
+        //"Incompatible, should reset first !"); // TODO buildIncompatibleMessage(existingProxyConfiguration, configuration, incompatibleParameterNames) by recopying "for"
+        return message.toString();
     }
 
     /**
