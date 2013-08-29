@@ -26,6 +26,8 @@ import org.easysoa.registry.rest.client.ClientBuilder;
  * Jersey client configuration. To be used with EasySOAV1SOAPDiscoveryMessageHandler
  * to establish a connexion with EasySOA Registry V1
  *
+ * @obsolete after RegistryAPI over FraSCAti client, see #138
+ *
  * @author jguillemotte
  */
 public interface RegistryJerseyClientConfiguration {

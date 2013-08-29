@@ -169,7 +169,7 @@ public class MessageHandlersTest {
 
         // Check that all handler handle the message with success
         // TODO better, check each handler response
-        Assert.assertEquals(5, handlerResponses.size());
+        Assert.assertEquals(4, handlerResponses.size());
 
     }
 

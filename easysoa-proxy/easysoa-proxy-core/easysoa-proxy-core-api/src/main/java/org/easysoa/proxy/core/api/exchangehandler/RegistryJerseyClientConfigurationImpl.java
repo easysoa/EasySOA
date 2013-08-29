@@ -25,8 +25,10 @@ import org.easysoa.proxy.core.api.properties.ProxyPropertyManager;
 import org.easysoa.registry.rest.client.ClientBuilder;
 
 /**
- *
  * @author jguillemotte
+ *
+ * @obsolete after RegistryAPI over FraSCAti client, see #138
+ *
  */
 public class RegistryJerseyClientConfigurationImpl implements RegistryJerseyClientConfiguration {
 

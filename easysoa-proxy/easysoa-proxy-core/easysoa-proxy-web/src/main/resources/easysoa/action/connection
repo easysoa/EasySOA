@@ -1,9 +1,9 @@
-##set($user = $connection.connect($login, $password))
-###if($user)
-##    $request.getSession(true).setAttribute("user",$user)
-##    $request.getSession().setAttribute("messageConnection","")
-    $response.sendRedirect("../home.html")
-###else
-##    $request.getSession().setAttribute("messageConnection","error")
-##    $response.sendRedirect("../index.html")
-###end
+set($user = $connection.connect($login, $password))
+#if($user)
+    $request.getSession(true).setAttribute("user",$user)
+    $request.getSession().setAttribute("messageConnection","")
+    $response.sendRedirect("../index.html")
+#else
+    $request.getSession().setAttribute("messageConnection","error")
+    $response.sendRedirect("../index.html")
+#end
