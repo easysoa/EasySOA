@@ -264,12 +264,12 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
      */
     private String buildIncompatibleMessage(ProxyConfiguration existingProxyConfiguration, ProxyConfiguration configuration, List<String> incompatibleParameterNames){
         StringBuilder message = new StringBuilder();
-        message.append("Incompatible, should reset first !");
+        message.append("<p><b>Incompatible, should reset first !</b></p><p>Details : <br/>");
         for (String incompatibleParameter : incompatibleParameterNames) {
         		String existingValue = existingProxyConfiguration.getParameter(incompatibleParameter);
                 String newValue = configuration.getParameter(incompatibleParameter);
                 message.append("<br/>");
-                message.append("The parameter '");
+                message.append("&nbsp;&nbsp;- The parameter '");
                 message.append(incompatibleParameter);
                 message.append("' new value '");
                 message.append(newValue);
@@ -277,6 +277,7 @@ public class HttpProxyManagementServiceImpl implements HttpProxyManagementServic
                 message.append(existingValue);
                 message.append("'");
         }
+        message.append("</p>");
         //"Incompatible, should reset first !"); // TODO buildIncompatibleMessage(existingProxyConfiguration, configuration, incompatibleParameterNames) by recopying "for"
         return message.toString();
     }
