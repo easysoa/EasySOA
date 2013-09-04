@@ -67,9 +67,6 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     private static Logger logger = Logger.getLogger(EasySOAv1SOAPDiscoveryMessageHandler.class);
     private boolean enabled = true;
 
-    //@Reference
-    //private RegistryJerseyClientConfiguration registryClientConfiguration;
-
     /** Registry API where discovered SOA nodes are sent ; JSON or XML is rather chosen in .composite  */
     @Reference
     private RegistryApi registryClient;

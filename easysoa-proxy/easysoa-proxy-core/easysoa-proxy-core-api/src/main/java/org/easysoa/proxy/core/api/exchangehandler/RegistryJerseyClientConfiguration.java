@@ -20,7 +20,7 @@
 
 package org.easysoa.proxy.core.api.exchangehandler;
 
-import org.easysoa.registry.rest.client.ClientBuilder;
+//import org.easysoa.registry.rest.client.ClientBuilder;
 
 /**
  * Jersey client configuration. To be used with EasySOAV1SOAPDiscoveryMessageHandler
@@ -32,6 +32,6 @@ import org.easysoa.registry.rest.client.ClientBuilder;
  */
 public interface RegistryJerseyClientConfiguration {
 
-    public ClientBuilder getClient();
+    //public ClientBuilder getClient();
 
 }

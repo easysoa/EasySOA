@@ -83,7 +83,7 @@
         <sca:implementation.composite name="monitoringService.composite" />
     </sca:component>
 
-    <!-- EasySOA regsirty jersey client configuration service -->
+    <!-- OBSOLETE EasySOA registry jersey client configuration service -->
     <!--<sca:component name="registryClientConfComponentRef">
         <sca:service name="registryClientConfServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.RegistryJerseyClientConfiguration" />
@@ -113,7 +113,7 @@
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.MessageHandler" />
         </sca:service>
         <sca:implementation.java class="org.easysoa.proxy.core.api.exchangehandler.EasySOAv1SOAPDiscoveryMessageHandler" />
-        <!--<sca:reference name="registryClientConfiguration" target="registryClientConfComponentRef/registryClientConfServiceRef">
+        <!-- OBSOLETE <sca:reference name="registryClientConfiguration" target="registryClientConfComponentRef/registryClientConfServiceRef">
             <sca:interface.java interface="org.easysoa.proxy.core.api.exchangehandler.RegistryJerseyClientConfiguration" />
         </sca:reference>-->
         <!--<sca:reference name="registryClient" target="registryClientComponentRef/registryClientServiceRef">-->
