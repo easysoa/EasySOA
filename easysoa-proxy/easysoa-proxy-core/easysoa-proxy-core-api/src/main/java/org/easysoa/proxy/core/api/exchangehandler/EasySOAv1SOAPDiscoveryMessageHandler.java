@@ -33,7 +33,6 @@ import org.easysoa.message.OutMessage;
 import org.easysoa.proxy.core.api.configuration.ProxyConfiguration;
 import org.easysoa.proxy.core.api.properties.PropertyManager;
 import org.easysoa.registry.rest.RegistryApi;
-//import org.easysoa.registry.rest.client.ClientBuilder;
 import org.easysoa.registry.rest.OperationResult;
 import org.easysoa.registry.rest.SoaNodeInformation;
 import org.easysoa.registry.types.Endpoint;
@@ -71,6 +70,7 @@ public class EasySOAv1SOAPDiscoveryMessageHandler extends MessageHandlerBase {
     //@Reference
     //private RegistryJerseyClientConfiguration registryClientConfiguration;
 
+    /** Registry API where discovered SOA nodes are sent ; JSON or XML is rather chosen in .composite  */
     @Reference
     private RegistryApi registryClient;
 

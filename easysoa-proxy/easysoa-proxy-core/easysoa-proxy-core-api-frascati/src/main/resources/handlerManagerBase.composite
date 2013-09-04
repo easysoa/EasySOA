@@ -118,7 +118,7 @@
         </sca:reference>-->
         <!--<sca:reference name="registryClient" target="registryClientComponentRef/registryClientServiceRef">-->
         <sca:reference name="registryClient">
-            <sca:interface.java interface="org.easysoa.registry.rest.RegistryApi" />
+            <sca:interface.java interface="org.easysoa.registry.rest.RegistryJsonApi" /><!-- requiring JSON -->
             <frascati:binding.rest uri="http://localhost:8080/nuxeo/site" requires="nuxeoAuthorization"/>
         </sca:reference>
     </sca:component>
