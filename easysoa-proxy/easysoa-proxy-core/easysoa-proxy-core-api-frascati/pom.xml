@@ -80,6 +80,12 @@
             <groupId>org.ow2.frascati.intent</groupId>
             <artifactId>frascati-intent-apache-cxf</artifactId>
             <version>${frascati.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>cxf-rt-databinding-jibx</artifactId>
+                    <groupId>org.apache.cxf</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

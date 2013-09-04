@@ -1,6 +1,19 @@
 ## EasySOA Proxy
 
-### About
+### About :
+
+EasySOA proxy is a component of the [EasySOA project](http://www.easysoa.org) and
+developed by its partners :
+* [INRIA labs](http://www.inria.fr)
+* [EasiFab](http://easifab.net)
+* [Talend](http://www.talend.com)
+* [Nuxeo](http://www.nuxeo.org)
+* [Bull](http://www.bull.com)
+* [Open Wide](http://www.openwide.fr)
+
+
+### Features :
+
 Once configured as HTTP proxy (available on port 8082) of your middleware service
 components, EasySOA Proxy listens to HTTP service calls and provides :
 * a simple UI to configure the context of what it's listening to (which project...)
@@ -62,14 +75,18 @@ directory to "apache-tomcat7-proxy" and change all 80xx ports to 90xx in conf/se
 Copy easysoa-proxy-war/target/*war in its webapps directory and
 easysoa-proxy-web/target/easysoa-proxy-web/* in its webapps/ROOT directory :
 
-   # To a remote computer
-   scp easysoa-proxy-war/target/*.war [USER]:[REMOTE_HOST]:/home/[USER]/install/apache-tomcat7-proxy/webapps/
-   scp -r easysoa-proxy-web/target/easysoa-proxy-web/* [USER]:[REMOTE_HOST]:/home/[USER]/install/apache-tomcat7-proxy/webapps/ROOT/
+	# Deploy to a remote computer :
+	scp easysoa-proxy-war/target/*.war [USER]:[REMOTE_HOST]:/home/[USER]/install/apache-tomcat7-proxy/webapps/
+	scp -r easysoa-proxy-web/target/easysoa-proxy-web/* [USER]:[REMOTE_HOST]:/home/[USER]/install/apache-tomcat7-proxy/webapps/ROOT/
 
-   # On local computer, use these commands instead :
-   rm -rf [TOMCAT_HOME]/webapps/*
-   cp -rf easysoa-proxy-war/target/*.war [TOMCAT_HOME]/webapps/
-   cp -rf easysoa-proxy-web/target/easysoa-proxy-web [TOMCAT_HOME]/webapps/ROOT
+	# On local computer, use these commands instead :
+	cp -rf easysoa-proxy-war/target/*.war [TOMCAT_HOME]/webapps/
+	cp -rf easysoa-proxy-web/target/easysoa-proxy-web [TOMCAT_HOME]/webapps/ROOT
+
+	# If you're adding a new version, remove the older one first
+	# (else FraSCAti startup errors "component XXX is already defined") :
+	rm -rf [TOMCAT_HOME]/webapps/easysoa-proxy*
+	rm -rf [TOMCAT_HOME]/webapps/ROOT/*
 
 Then go in bin/ directory and start it :
 
@@ -87,3 +104,41 @@ If the following error message is displayed :
 Then before starting it, just go in bin folder and execute the following command : 
 
 	chmod +x *.sh
+
+
+## FAQ
+
+### OutOfMemoryError - PermGen space error
+May happen with other webapps in the same tomcat. To solve it, add to catalina.sh :
+	
+	JAVA_OPTS=-XX:MaxPermSize=128m
+
+### FraSCAti startup error - "component XXX is already defined"
+In log file (apache-tomcat7-proxy/logs/catalina.out etc.), a lot of errors such as :
+
+	sept. 04, 2013 5:20:38 PM org.ow2.frascati.parser.core.ParsingContextImpl error
+	SEVERE: jar:file:/home/mdutoo/dev/easysoa/apache-tomcat7-proxy/webapps/ROOT/WEB-INF/lib/frascati-assembly-factory-1.6-20130820.132037-101.jar!/org/ow2/frascati/assembly/factory/AssemblyFactory.composite: <sca:composite name="org.ow2.frascati.assembly.factory.AssemblyFactory"> - <component name='sca-component-property'> is already defined
+
+=> because TWO VERSIONs of FraSCAti jars with different build / release number were added
+=> rm -rf webapps/ROOT before adding them from easysoa-proxy(-web) war build
+
+going after :
+
+	sept. 04, 2013 5:23:47 PM org.ow2.frascati.util.AbstractLoggeable warning
+	WARNING: 172 errors detected during the checking phase of composite 'org/ow2/frascati/FraSCAti'
+	sept. 04, 2013 5:23:47 PM org.ow2.frascati.util.AbstractLoggeable severe
+	SEVERE: Cannot load the OW2 FraSCAti composite
+	org.ow2.frascati.util.FrascatiException: Cannot load the OW2 FraSCAti composite
+		at org.ow2.frascati.FraSCAti.initFrascatiComposite(FraSCAti.java:191)
+		at org.ow2.frascati.FraSCAti.newFraSCAti(FraSCAti.java:246)
+		at org.ow2.frascati.FraSCAti.newFraSCAti(FraSCAti.java:222)
+		at org.ow2.frascati.servlet.FraSCAtiServlet.init(FraSCAtiServlet.java:150)
+
+Solution :
+
+there are two different versions of FraSCAti in the same webapp. This probably
+happened because you tried to update webapps to newer versions. In this case, before
+updating it remove the older ones :
+
+	rm -rf [TOMCAT_HOME]/webapps/easysoa-proxy*
+	rm -rf [TOMCAT_HOME]/webapps/ROOT/*
