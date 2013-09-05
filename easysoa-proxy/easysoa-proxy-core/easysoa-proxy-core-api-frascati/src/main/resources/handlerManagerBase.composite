@@ -119,7 +119,7 @@
         <!--<sca:reference name="registryClient" target="registryClientComponentRef/registryClientServiceRef">-->
         <sca:reference name="registryClient">
             <sca:interface.java interface="org.easysoa.registry.rest.RegistryJsonApi" /><!-- requiring JSON -->
-            <frascati:binding.rest uri="http://localhost:8080/nuxeo/site" requires="nuxeoAuthorization"/>
+            <frascati:binding.rest uri="http://localhost:8080/nuxeo/site" requires="nuxeoAuthorization EasySOARegistry"/>
         </sca:reference>
     </sca:component>
     <sca:wire source="handlerManagerComponent/handlers" target="V1SoapDiscoveryMessageHandlerComponent/V1SoapDiscoveryMessageHandlerService"/>

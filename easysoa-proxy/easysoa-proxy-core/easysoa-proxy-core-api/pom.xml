@@ -18,7 +18,6 @@
         <dependency>
             <groupId>org.easysoa.registry</groupId>
             <artifactId>easysoa-registry-rest-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- OBSOLETE because rather using CXF client
         dependency>
@@ -26,6 +25,18 @@
             <artifactId>easysoa-registry-rest-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency -->
+        <!-- to get "EasySOARegistry" Jackson-provided JSON in FraSCAti, else
+        No message body writer has been found for class XXX --> 
+        <dependency>
+            <groupId>org.easysoa.registry</groupId>
+            <artifactId>easysoa-registry-integration-base</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>cxf-rt-databinding-jibx</artifactId>
+                    <groupId>org.apache.cxf</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- Messaging api -->
         <dependency>

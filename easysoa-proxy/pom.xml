@@ -36,11 +36,29 @@
       <module>easysoa-proxy-core/easysoa-proxy-web</module>
   </modules>
   
+  <properties>
+    <frascati.version>1.6-SNAPSHOT</frascati.version>
+    <tinfi.version>1.4.6</tinfi.version>
+    <easysoa.registry.v1.version>1.0-SNAPSHOT</easysoa.registry.v1.version>
+  </properties>
+  
   <!-- ======================= -->
   <!-- Dependencies management -->
   <!-- ======================= -->
   <dependencyManagement>
     <dependencies>
+    
+      <!-- Registry v1 Proxy Projects -->
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-rest-core</artifactId>
+        <version>${easysoa.registry.v1.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easysoa.registry</groupId>
+        <artifactId>easysoa-registry-integration-base</artifactId>
+        <version>${easysoa.registry.v1.version}</version>
+      </dependency>
     
       <!-- EasySOA Proxy Projects -->
       <dependency>
