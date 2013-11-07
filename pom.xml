@@ -345,57 +345,74 @@
   </scm>
 
   <profiles>
-    <!-- Activate that profile for not using -->
+    <!-- Activate that profile for not using EasySOA repository at Nuxeo Nexus -->
     <profile>
       <id>without-nuxeo-proxy</id>
       <repositories>
-        <!-- Required for EasyWSDL V3, not used in EasySOA for the moment -->
-        <!-- <repository> -->
-        <!-- <id>ebm</id> -->
-        <!-- <url>http://maven.petalslink.com/public/</url> -->
-        <!-- </repository> -->
-        <!-- For ?? -->
-        <repository>
-          <id>maven-restlet</id>
-          <name>Public online Restlet repository</name>
-          <url>http://maven.restlet.org</url>
-        </repository>
-        <!-- For FraSCAti (said as deprecated and replaced by http://repository.ow2.org/nexus...) -->
-        <repository>
-          <id>ow2</id>
-          <url>http://maven.ow2.org/maven2/</url>
-        </repository>
-        <!-- For FraSCAti SNAPSHOT versions -->
-        <repository>
-          <id>ow2-snapshot</id>
-          <url>http://maven.ow2.org/maven2-snapshot</url>
-        </repository>
         <!-- For FraSCAti continuous integration repository -->
         <repository>
           <id>frascati-repo</id>
           <name>FraSCAti Nexus repository</name>
           <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
         </repository>
+        <!-- deprecated FraSCAti repository -->
+        <!-- repository>
+          <id>inria-galaxy-repository</id>
+          <name>INRIA Galaxy Maven Repository</name>
+          <url>http://galaxy.gforge.inria.fr/repository/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository -->
+        <!-- For FraSCAti NO in its own frascati-repo (OK said as deprecated and replaced by http://repository.ow2.org/nexus...)
+        & EasyWSDL 2.1 -->
+        <repository>
+          <id>ow2.release</id><!-- renamed from ow2 -->
+          <name>OW2 Maven Releases Repository</name>
+          <url>http://repository.ow2.org/nexus/content/groups/public</url><!-- replaces deprecated http://maven.ow2.org/maven2/ -->
+        </repository>
+        <!-- For FraSCAti SNAPSHOT versions NO its own frascati-repo -->
+        <!-- repository>
+          <id>ow2.snapshot</id><!- renamed from w2-snapshot ->
+          <name>OW2 Maven Snapshots Repository</name>
+          <url>http://repository.ow2.org/nexus/content/repositories/snapshots</url><!- replaces deprecated http://maven.ow2.org/maven2-snapshot ->
+        </repository -->
+        <!-- Required for EasyWSDL V3, not used in EasySOA for the moment
+        NO EasySOA Proxy uses 2.1, which is not there nor in Central but in
+        http://repository.ow2.org/nexus/content/groups/public -->
+        <!-- repository>
+          <id>ebm</id>
+          <url>http://maven.petalslink.com/public/</url>
+        </repository -->
         <!-- For ?? -->
+        <!-- repository>
+          <id>maven-restlet</id>
+          <name>Public online Restlet repository</name>
+          <url>http://maven.restlet.org</url>
+        </repository>
         <repository>
           <id>Download.java.net</id>
           <name>Download.java.net repository</name>
           <url>http://download.java.net/maven/2/</url>
-        </repository>
-        <!-- For EMF used in FraSCAti: equinox, sca model (?) -->
-        <repository>
+        </repository -->
+        <!-- For EMF used in FraSCAti: equinox, sca model (?) ; NO even if required is replaced by FraSCAti Nexus -->
+        <!-- repository>
           <id>eclipse mirror</id>
           <name>Eclipse EMF Mirror</name>
           <url>http://www.openarchitectureware.org/m2</url>
-        </repository>
-        <!-- For tuscany sca model -->
-        <repository>
+        </repository -->
+        <!-- For tuscany sca model ; NO even if required is replaced by FraSCAti Nexus -->
+        <!-- repository>
           <id>apache.incubator</id>
           <url>http://people.apache.org/repo/m2-incubating-repository</url>
-        </repository>
-        <!-- For ?? -->
+        </repository -->
+        <!-- For Nuxeo
+        TODO (also ?) use EasySOA repository at Nuxeo Nexus -->
         <repository>
-          <id>Nuxeo</id>
+          <id>nuxeo-public</id>
           <name>Nuxeo Public Releases Repository</name>
           <url>https://maven.nuxeo.org/nexus/content/repositories/public-releases</url>
           <releases>
@@ -406,7 +423,7 @@
           </snapshots>
         </repository>
         <repository>
-          <id>Nuxeo public-snapshot</id>
+          <id>nuxeo-public-snapshot</id>
           <url>https://maven.nuxeo.org/nexus/content/repositories/public-snapshot</url>
           <releases>
             <enabled>false</enabled>
@@ -415,27 +432,16 @@
             <enabled>true</enabled>
           </snapshots>
         </repository>
-        <!-- For frascati-required jdt core only -->
-        <repository>
+        <!-- For frascati-required jdt core only ; NO even if required is replaced by FraSCAti Nexus -->
+        <!-- repository>
           <id>INRIA gforge</id>
           <url>http://maven-repo.gforge.inria.fr/releases/</url>
-        </repository>
-        <!-- For JBoss components -->
-        <repository>
+        </repository -->
+        <!-- For JBoss components TODO required ?? -->
+        <!-- repository>
           <id>Sonatype JBoss</id>
           <url>https://oss.sonatype.org/content/repositories/jboss</url>
-        </repository>
-        <!-- <repository> -->
-        <!-- <id>inria-galaxy-repository</id> -->
-        <!-- <name>INRIA Galaxy Maven Repository</name> -->
-        <!-- <url>http://galaxy.gforge.inria.fr/repository/maven2</url> -->
-        <!-- <releases> -->
-        <!-- <enabled>true</enabled> -->
-        <!-- </releases> -->
-        <!-- <snapshots> -->
-        <!-- <enabled>true</enabled> -->
-        <!-- </snapshots> -->
-        <!-- </repository> -->
+        </repository -->
       </repositories>
       <pluginRepositories>
         <pluginRepository>
@@ -454,6 +460,18 @@
   </profiles>
 
   <repositories>
+    <repository>
+      <!-- EasySOA repository at Nuxeo Nexus, proxies & contains everything that's required by EasySOA -->
+      <id>easysoa</id>
+      <name>EasySOA group repository</name>
+      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
     <!-- XXX: Activating temporarily the FraSCAti repository
     since some dependencies are missing from the Nuxeo mirror repository -->
     <repository>
@@ -461,20 +479,10 @@
       <name>FraSCAti Nexus repository</name>
       <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
     </repository>
-    <repository>
-      <id>easysoa</id>
-      <name>EasySOA group repository</name>
-      <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
+      <!-- EasySOA repository at Nuxeo Nexus, proxies & contains everything that's required by EasySOA -->
       <id>easysoa</id>
       <name>EasySOA group repository</name>
       <url>https://maven.nuxeo.org/nexus/content/groups/easysoa/</url>
@@ -484,6 +492,13 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+    </pluginRepository>
+    <!-- XXX: Activating temporarily the FraSCAti repository
+    since some dependencies are missing from the Nuxeo mirror repository -->
+    <pluginRepository>
+      <id>frascati-repo</id>
+      <name>FraSCAti Nexus repository</name>
+      <url>https://frascati-repo.inria.fr/nexus/content/groups/public</url>
     </pluginRepository>
   </pluginRepositories>
 

@@ -210,7 +210,8 @@
 
 
   <repositories>
-    <!-- For FraSCAti continuous integration repository -->
+    <!-- For FraSCAti continuous integration repository
+    (on Maven Central but not snapshots ; see https://frascati-repo.inria.fr/nexus/) -->
     <repository>
       <id>frascati-repo</id>
       <name>FraSCAti Nexus repository</name>
@@ -223,21 +224,31 @@
       </snapshots>
     </repository>
     <!-- For ?? -->
-    <!--<repository> <id>Download.java.net</id> <name>Download.java.net repository</name>
-      <url>http://download.java.net/maven/2/</url> </repository> -->
+    <!-- repository>
+      <id>Download.java.net</id>
+      <name>Download.java.net repository</name>
+      <url>http://download.java.net/maven/2/</url>
+    </repository -->
     <!-- For EMF used in FraSCAti -->
-    <!--<repository> <id>eclipse mirror</id> <name>Eclipse EMF Mirror</name> <url>http://www.openarchitectureware.org/m2</url>
-      </repository> -->
+    <!-- repository>
+      <id>eclipse mirror</id>
+      <name>Eclipse EMF Mirror</name>
+      <url>http://www.openarchitectureware.org/m2</url>
+    </repository -->
     <!-- For ?? -->
-    <!--<repository> <id>apache.incubator</id> <url>http://people.apache.org/repo/m2-incubating-repository</url>
-      </repository> -->
-    <!--<repositories> <repository> <id>apache</id> <url>https://repository.apache.org/content/groups/public/</url>
-      </repository> </repositories> -->
-    <!-- For SOAPUI -->
+    <!-- repository>
+      <id>apache.incubator</id>
+      <url>http://people.apache.org/repo/m2-incubating-repository</url>
+    </repository>
     <repository>
-      <id>soapui repo</id>
-      <name>Soap ui repo</name>
-      <url>http://www.eviware.com/repository/maven2/</url>
+      <id>apache</id>
+      <url>https://repository.apache.org/content/groups/public/</url>
+    </repository -->
+    <!-- For SOAPUI (not on Central ; see http://www.soapui.org/Test-Automation/maven-2x.html) -->
+    <repository>
+      <id>soapui</id>
+      <name>SOAPUI repository</name>
+      <url>http://www.soapui.org/repository/maven2/</url><!-- redirected from old http://www.eviware.com/repository/maven2/ -->
     </repository>
   </repositories>
 
