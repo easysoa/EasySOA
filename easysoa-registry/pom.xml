@@ -16,7 +16,7 @@
 
   <properties>
     <easysoa.nuxeo-frascati.version>0.5-SNAPSHOT</easysoa.nuxeo-frascati.version>
-    <jetty.version>7.4.5.v20110725</jetty.version>
+    <jetty.version>9.4.21.v20190926</jetty.version>
     <asm.version>3.1</asm.version>
     <explorer.version>1.0</explorer.version>
     <spring.version>3.0.5.RELEASE</spring.version>
