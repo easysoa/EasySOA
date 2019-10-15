@@ -223,7 +223,7 @@
                         <!-- THIS DEPENDENCY MUST BE ACCESSIBLE TO FRASCATI -->
                         <groupId>org.apache.httpcomponents</groupId>
                         <artifactId>httpclient</artifactId>
-                        <version>4.1.1</version>
+                        <version>4.3.6</version>
                     </dependency>
                 </dependencies>
             </plugin>
