@@ -22,7 +22,7 @@
     <spring.version>3.0.5.RELEASE</spring.version>
     <fractal-bf.version>0.10-SNAPSHOT</fractal-bf.version>
     <!--<juliac.version>2.4.3</juliac.version>-->
-    <cxf.version>2.7.5</cxf.version>
+    <cxf.version>2.7.8</cxf.version>
     <juliac.version>2.5.1</juliac.version>
     <joram.version>5.5.0</joram.version>
     <jaxb.version>2.1.13</jaxb.version>
